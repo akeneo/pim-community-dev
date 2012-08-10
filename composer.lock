@@ -1,5 +1,5 @@
 {
-    "hash": "2c0ad4beaacc810752764681fc5067a8",
+    "hash": "4cb878c45508f12f774b4be31bb52493",
     "packages": [
         {
             "package": "doctrine/common",
@@ -20,10 +20,34 @@
             "commit-date": "1344549563"
         },
         {
+            "package": "doctrine/mongodb",
+            "version": "1.0.0-BETA1"
+        },
+        {
+            "package": "doctrine/mongodb-odm",
+            "version": "1.0.0-BETA5"
+        },
+        {
+            "package": "doctrine/mongodb-odm-bundle",
+            "version": "v3.0.0-BETA1"
+        },
+        {
             "package": "doctrine/orm",
             "version": "2.3.x-dev",
             "source-reference": "17862d9a2a38bf801e564d09a26eea8503621ae0",
             "commit-date": "1343850025"
+        },
+        {
+            "package": "gedmo/doctrine-extensions",
+            "version": "dev-master",
+            "alias-pretty-version": "2.3.x-dev",
+            "alias-version": "2.3.9999999.9999999-dev"
+        },
+        {
+            "package": "gedmo/doctrine-extensions",
+            "version": "dev-master",
+            "source-reference": "9bb455ba52d223a47323f4c5832635ccc328f630",
+            "commit-date": "1344437232"
         },
         {
             "package": "jms/aop-bundle",
@@ -94,6 +118,12 @@
             "version": "dev-master",
             "source-reference": "d8fc1666f3cdb403f1b2d4320c45ddd6adbdf6a5",
             "commit-date": "1343980150"
+        },
+        {
+            "package": "stof/doctrine-extensions-bundle",
+            "version": "dev-master",
+            "source-reference": "f31a0861de08b6594f09430a4cbaf0618e5e11ad",
+            "commit-date": "1343029923"
         },
         {
             "package": "swiftmailer/swiftmailer",
