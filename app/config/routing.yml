@@ -1,19 +1,14 @@
 StrixosDataFlowBundle:
     resource: "@StrixosDataFlowBundle/Controller/"
     type:     annotation
-    prefix:   /
+    prefix:   /dataflow/
 
 StrixosReportBundle:
     resource: "@StrixosReportBundle/Controller/"
     type:     annotation
-    prefix:   /
+    prefix:   /report/
 
 StrixosCatalogBundle:
     resource: "@StrixosCatalogBundle/Controller/"
     type:     annotation
-    prefix:   /
-
-# Internal routing configuration to handle ESI
-#_internal:
-#    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
-#    prefix:   /_internal
+    prefix:   /catalog/

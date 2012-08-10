@@ -1,0 +1,4 @@
+catalog_homepage:
+    pattern:  /
+    defaults: { _controller: StrixosCatalogBundle:Default:index }
+
