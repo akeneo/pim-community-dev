@@ -57,3 +57,15 @@ swiftmailer:
     username:  %mailer_user%
     password:  %mailer_password%
     spool:     { type: memory }
+    
+# app/config/config.yml
+doctrine_mongodb:
+    connections:
+        default:
+            server: mongodb://localhost:27017
+            options:
+                connect: true
+    default_database: strixos
+    document_managers:
+        default:
+            auto_mapping: true

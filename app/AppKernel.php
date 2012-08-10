@@ -19,6 +19,14 @@ class AppKernel extends Kernel
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
+
+            new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
+
+            new Strixos\CatalogBundle\StrixosCatalogBundle(),
+            new Strixos\ReportBundle\StrixosReportBundle(),
+            new Strixos\DataFlowBundle\StrixosDataFlowBundle(),
+
+
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

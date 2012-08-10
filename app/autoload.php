@@ -11,6 +11,10 @@ if (!function_exists('intl_get_error_code')) {
     $loader->add('', __DIR__.'/../vendor/symfony/symfony/src/Symfony/Component/Locale/Resources/stubs');
 }
 
+AnnotationRegistry::registerFile(
+    __DIR__.'/../vendor/doctrine/mongodb-odm/lib/Doctrine/ODM/MongoDB/Mapping/Annotations/DoctrineAnnotations.php'
+);
+
 AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 
 return $loader;
