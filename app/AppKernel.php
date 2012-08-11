@@ -19,9 +19,11 @@ class AppKernel extends Kernel
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
-
+            // MongoDB storage
             new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
-
+            // To set up basic data
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+            // PIM modules
             new Strixos\CatalogBundle\StrixosCatalogBundle(),
             new Strixos\ReportBundle\StrixosReportBundle(),
             new Strixos\DataFlowBundle\StrixosDataFlowBundle(),

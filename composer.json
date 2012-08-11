@@ -18,9 +18,11 @@
         "sensio/generator-bundle": "dev-master",
         "jms/security-extra-bundle": "1.2.*",
         "jms/di-extra-bundle": "1.1.*",
+        
         "gedmo/doctrine-extensions": "*",
         "stof/doctrine-extensions-bundle": "*",
-        "doctrine/mongodb-odm-bundle" : "v3.0.0-BETA1"
+        "doctrine/mongodb-odm-bundle" : "v3.0.0-BETA1",
+        "doctrine/doctrine-fixtures-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [

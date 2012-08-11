@@ -47,6 +47,26 @@ class AttributeSet
     }
 
     /**
+    * Remove attributes
+    *
+    * @param Strixos\CatalogBundle\Entity\Attribute $attributes
+    */
+    public function removeAttribute(\Strixos\CatalogBundle\Entity\Attribute $attributes)
+    {
+        $this->attributes->removeElement($attributes);
+    }
+
+    /**
+     * Get attributes
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
     * Add an attribute to the set
     *
     * @param Poc\StrixosCatalogBundle\Entity\Attribute $attribute
@@ -90,22 +110,18 @@ class AttributeSet
     }
 
     /**
-     * Remove attributes
+     * Copy an attribute set
      *
-     * @param Strixos\CatalogBundle\Entity\Attribute $attributes
+     * @return AttributeSet $set
      */
-    public function removeAttribute(\Strixos\CatalogBundle\Entity\Attribute $attributes)
+    public function copy($newCode)
     {
-        $this->attributes->removeElement($attributes);
-    }
-
-    /**
-     * Get attributes
-     *
-     * @return Doctrine\Common\Collections\Collection
-     */
-    public function getAttributes()
-    {
-        return $this->attributes;
+        // TODO just unset id not works (due to lazy loading ?)
+        $copy = new AttributeSet();
+        $copy->setCode($newCode);
+        foreach ($this->getAttributes() as $attribute) {
+            $copy->addAttribute($attribute);
+        }
+        return $copy;
     }
 }
