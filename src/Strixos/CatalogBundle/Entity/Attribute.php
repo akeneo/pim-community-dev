@@ -26,6 +26,8 @@ class Attribute
     timestamp
     boolean
     file
+
+    TODO: how to deal with mult-select
     */
 
 
@@ -41,7 +43,7 @@ class Attribute
     /**
      * @var string $code
      *
-     * @ORM\Column(name="code", type="string", length=255)
+     * @ORM\Column(name="code", type="string", length=255, unique=true)
      */
     private $code;
 

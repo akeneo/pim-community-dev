@@ -1,9 +1,10 @@
 <?php
-// src/Strixos/CatalogBundle/DataFixtures/ORM/LoadUserData.php
+// src/Strixos/CatalogBundle/DataFixtures/ORM/LoadAttributeSetData.php
 
 namespace Strixos\CatalogBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Strixos\CatalogBundle\Entity\AttributeSet;
 use Strixos\CatalogBundle\Entity\Attribute;
@@ -16,7 +17,7 @@ use Strixos\CatalogBundle\Entity\Attribute;
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class LoadAtributeSetData implements FixtureInterface
+class LoadAttributeSetData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * {@inheritDoc}
@@ -27,6 +28,15 @@ class LoadAtributeSetData implements FixtureInterface
         $baseSet = $this->_createBaseSet($manager);
         // t-shirt set
         $this->_createTShirtSet($manager, $baseSet);
+    }
+
+    /**
+     * Executing order
+     * @see Doctrine\Common\DataFixtures.OrderedFixtureInterface::getOrder()
+     */
+    public function getOrder()
+    {
+        return 1;
     }
 
     /**
