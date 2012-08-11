@@ -9,6 +9,7 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Strixos\CatalogBundle\Entity\AttributeSet;
 use Strixos\CatalogBundle\Entity\Attribute;
+use Strixos\CatalogBundle\DataFixtures\ORM\LoadAttributeSetData;
 
 /**
  * Execute with "php app/console doctrine:mongodb:fixtures:load"
@@ -25,13 +26,33 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $product = new Product();
-        $product->setAttributeSetCode('tshirt-straight');
-        $product->setSku('foobar-tshirt-1');
-        $product->addValue('name', 'My t-shirt');
-        $product->addValue('short_description', 'My t-shirt foo bar lorem ipsum');
-        $product->addValue('tshirt-straight', 'M');
-        $manager->persist($product);
+        $attSets = array(
+            LoadAttributeSetData::ATTRIBUTE_SET_TSHIRT,
+            LoadAttributeSetData::ATTRIBUTE_SET_LAPTOP
+        );
+        for ($ind = 0; $ind <= 10000; $ind++) {
+            $product = new Product();
+            // get random set
+            $attSetInd = rand(0, 1);
+            $attSetCode = $attSets[$attSetInd];
+            $product->setAttributeSetCode($attSetCode);
+            // define default values
+            $product->setSku('foobar-'.$ind);
+            $product->addValue('name', 'My t-shirt '.$ind);
+            $product->addValue('short_description', 'My t-shirt foo bar lorem ipsum'.$ind);
+
+            // define specific values
+            if ($attSetCode == LoadAttributeSetData::ATTRIBUTE_SET_TSHIRT) {
+                $product->addValue(LoadAttributeSetData::ATTRIBUTE_TSHIRT_COLOR, 'Red');
+                $product->addValue(LoadAttributeSetData::ATTRIBUTE_TSHIRT_SIZE, 'M');
+            } else if ($attSetCode == LoadAttributeSetData::ATTRIBUTE_SET_LAPTOP) {
+                $product->addValue(LoadAttributeSetData::ATTRIBUTE_LAPTOP_CPU, 'I7');
+                $product->addValue(LoadAttributeSetData::ATTRIBUTE_LAPTOP_HDD, 'Sata 200 GO');
+                $product->addValue(LoadAttributeSetData::ATTRIBUTE_LAPTOP_MEMORY, '8 GO');
+                $product->addValue(LoadAttributeSetData::ATTRIBUTE_LAPTOP_SCREEN, '15"');
+            }
+            $manager->persist($product);
+        }
         $manager->flush();
     }
 

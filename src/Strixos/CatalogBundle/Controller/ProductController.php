@@ -16,29 +16,18 @@ use Strixos\CatalogBundle\Document\Product;
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class DefaultController extends Controller
+class ProductController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/product/index")
      * @Template()
      */
     public function indexAction()
     {
-        /*
-        $product = new Product();
-        $product->setSku('AFooBar');
-        $product->addValue('name', 'my product name');
-*/
-        /*
-         * Take a look on http://docs.mongodb.org/manual/use-cases/product-catalog/
-         * query = db.Product.find({'values.name': 'my product name'})
-         */
-
-/*
-        $dm = $this->get('doctrine.odm.mongodb.document_manager');
-        $dm->persist($product);
-        $dm->flush();
-        return new Response('Created product id '.$product->getId());*/
-        return array();
+        $manager = $this->get('doctrine.odm.mongodb.document_manager');
+        $repository = $manager->getRepository('StrixosCatalogBundle:Product');
+        // TODO take a look on createQueryBuilder
+        $products = $repository->findAll()->limit(1000);
+        return array('products' => $products);
     }
 }

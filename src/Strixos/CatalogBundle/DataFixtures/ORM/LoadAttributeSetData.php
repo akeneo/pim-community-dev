@@ -19,6 +19,18 @@ use Strixos\CatalogBundle\Entity\Attribute;
  */
 class LoadAttributeSetData extends AbstractFixture implements OrderedFixtureInterface
 {
+    const ATTRIBUTE_SET_BASE      = 'base';
+
+    const ATTRIBUTE_SET_TSHIRT    = 'tshirt';
+    const ATTRIBUTE_TSHIRT_COLOR  = 'tshirt-color';
+    const ATTRIBUTE_TSHIRT_SIZE   = 'tshirt-size';
+
+    const ATTRIBUTE_SET_LAPTOP    = 'laptop';
+    const ATTRIBUTE_LAPTOP_SCREEN = 'laptop-screen-size';
+    const ATTRIBUTE_LAPTOP_CPU    = 'laptop-cpu';
+    const ATTRIBUTE_LAPTOP_MEMORY = 'laptop-memory';
+    const ATTRIBUTE_LAPTOP_HDD    = 'laptop-hdd';
+
     /**
      * {@inheritDoc}
      */
@@ -28,6 +40,8 @@ class LoadAttributeSetData extends AbstractFixture implements OrderedFixtureInte
         $baseSet = $this->_createBaseSet($manager);
         // t-shirt set
         $this->_createTShirtSet($manager, $baseSet);
+        // laptop set
+        $this->_createLaptopSet($manager, $baseSet);
     }
 
     /**
@@ -46,7 +60,7 @@ class LoadAttributeSetData extends AbstractFixture implements OrderedFixtureInte
     {
         // create attribute set
         $attributeSet = new AttributeSet();
-        $attributeSet->setCode('base');
+        $attributeSet->setCode(self::ATTRIBUTE_SET_BASE);
         // default attribute code to type
         $attributes = array(
             // base
@@ -101,11 +115,40 @@ class LoadAttributeSetData extends AbstractFixture implements OrderedFixtureInte
     */
     protected function _createTShirtSet(ObjectManager $manager, AttributeSet $sourceSet)
     {
-        $attributeSet = $sourceSet->copy('tshirt-straight');
+        $attributeSet = $sourceSet->copy(self::ATTRIBUTE_SET_TSHIRT);
         // size and color attributes
         $attributes = array(
-            'tshirt-straight' => Attribute::BACKEND_TYPE_INT,
-            'tshirt-color'    => Attribute::BACKEND_TYPE_INT,
+            self::ATTRIBUTE_TSHIRT_COLOR => Attribute::BACKEND_TYPE_INT,
+            self::ATTRIBUTE_TSHIRT_SIZE  => Attribute::BACKEND_TYPE_INT,
+        );
+        // create attributes
+        foreach ($attributes as $code => $type) {
+            $attribute = new Attribute();
+            $attribute->setCode($code);
+            $attribute->setType($type);
+            $manager->persist($attribute);
+            // add attribute to default set
+            $attributeSet->addAttribute($attribute);
+        }
+        // persist set
+        $manager->persist($attributeSet);
+        $manager->flush();
+    }
+
+
+    /**
+    * Create laptop attribute set
+     */
+    protected function _createLaptopSet(ObjectManager $manager, AttributeSet $sourceSet)
+    {
+        $attributeSet = $sourceSet->copy(self::ATTRIBUTE_SET_LAPTOP);
+                // size and color attributes
+        $attributes = array(
+            self::ATTRIBUTE_LAPTOP_CPU    => Attribute::BACKEND_TYPE_VARCHAR,
+            self::ATTRIBUTE_LAPTOP_HDD    => Attribute::BACKEND_TYPE_VARCHAR,
+            self::ATTRIBUTE_LAPTOP_MEMORY => Attribute::BACKEND_TYPE_VARCHAR,
+            self::ATTRIBUTE_LAPTOP_SCREEN => Attribute::BACKEND_TYPE_VARCHAR
+
         );
         // create attributes
         foreach ($attributes as $code => $type) {

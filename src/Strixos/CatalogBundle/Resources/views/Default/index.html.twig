@@ -1,1 +1,40 @@
-Hello {{ name }}!
+{% extends 'StrixosCatalogBundle::layout.html.twig' %}
+
+{% block title %}StrixOS - Home{% endblock %}
+
+{% block content_menu '' %}
+
+{% block content %}
+
+    <div class="symfony-blocks-welcome">
+
+        <div class="block-configure">
+            <div class="illustration">
+                <img src="{{ asset('bundles/acmedemo/images/welcome-configure.gif') }}" alt="Configure your application" />
+            </div>
+            <ul>
+                <li><a class="symfony-button-green" href="{{ path('strixos_catalog_product_index') }}">Manage product type</a></li>
+            </ul>
+            
+        </div>
+
+        <div class="block-quick-tour">
+            <div class="illustration">
+                <img src="{{ asset('bundles/acmedemo/images/welcome-quick-tour.gif') }}" alt="Quick tour" />
+            </div>
+            <ul>
+                <li><a class="symfony-button-green" href="{{ path('strixos_catalog_product_index') }}">Manage products</a></li>
+            </ul>
+        </div>
+
+        <div class="block-demo">
+            <div class="illustration">
+                <img src="{{ asset('bundles/acmedemo/images/welcome-demo.gif') }}" alt="Demo" />
+            </div>
+            <ul>
+                <li><a class="symfony-button-green" href="{{ path('strixos_catalog_product_index') }}">Manage products</a></li>
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}

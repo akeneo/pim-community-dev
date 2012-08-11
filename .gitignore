@@ -1,4 +1,7 @@
-web/bundles/
+web/bundles/acmedemo
+web/bundles/framework
+web/bundles/sensiodistribution
+web/bundles/webprofiler
 app/bootstrap.php.cache
 app/cache/*
 app/logs/*

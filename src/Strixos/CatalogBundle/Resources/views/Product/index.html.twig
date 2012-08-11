@@ -1,0 +1,39 @@
+{% extends 'StrixosCatalogBundle::layout.html.twig' %}
+
+{% block title %}StrixOS - Home{% endblock %}
+
+{% block content_header '' %}
+
+{% block content_header_more %}
+    <li><a class="symfony-button-green" href="{{ path('strixos_catalog_default_index') }}">Back to home</a></li>
+    <li><a class="symfony-button-green" href="{{ path('strixos_catalog_product_index') }}">New product</a></li>
+{% endblock %}
+                
+{% block content %}
+
+    <table class="grid">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Sku</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+          <tr class="{% if loop.index is odd %}{% endif %}">
+            <td>{{product.id}}</td>
+            <td>{{product.sku}}</td>
+            <td>{{product.values.name}}</td>
+            <td>{{product.attributeSetCode}}</td>
+            <td>
+                <a href="{{ path('strixos_catalog_product_index') }}">Edit</a> - <a href="{{ path('strixos_catalog_product_index') }}">Delete</a>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
