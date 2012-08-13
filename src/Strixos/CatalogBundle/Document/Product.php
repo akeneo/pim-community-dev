@@ -2,12 +2,19 @@
 // src/Strixos/CatalogBundle/Document/Product.php
 namespace Strixos\CatalogBundle\Document;
 
+use Strixos\CoreBundle\Model\AbstractModel;
+
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
-* @MongoDB\Document
-*/
-class Product
+ *
+ * @author     Nicolas Dupont @ Strixos
+ * @copyright  Copyright (c) 2012 Strixos SAS (http://www.strixos.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @MongoDB\Document
+ */
+class Product extends AbstractModel
 {
     /**
      * @MongoDB\Id
@@ -26,6 +33,8 @@ class Product
 
     /**
     * @MongoDB\Raw
+    *
+    * TODO: problem : we miss typing ? define custom repository ?
     */
     private $values = array();
 

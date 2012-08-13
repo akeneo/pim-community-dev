@@ -1,0 +1,28 @@
+{% extends 'StrixosCatalogBundle::layout.html.twig' %}
+
+{% block title %}StrixOS - Edit Attribute{% endblock %}
+
+{% block content_header '' %}
+
+{% block content_header_more %}
+    <li><a class="symfony-button-green" href="{{ path('strixos_catalog_attribute_index') }}">Back to list</a></li>
+{% endblock %}
+                
+{% block content %}
+
+    <form class="strixos_form" action="{{ path('strixos_catalog_attribute_save') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_errors(form) }}
+    
+        {{ form_row(form.id) }}
+        {{ form_row(form.code) }}
+        {{ form_row(form.isRequired) }}
+        {{ form_row(form.isUnique) }}
+        {{ form_row(form.input) }}
+        {{ form_row(form.type) }}
+    
+        {{ form_rest(form) }}
+    
+        <input class="symfony-button-grey" type="submit" />
+    </form>
+
+{% endblock %}

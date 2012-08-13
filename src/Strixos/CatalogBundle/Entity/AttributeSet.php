@@ -2,15 +2,22 @@
 
 namespace Strixos\CatalogBundle\Entity;
 
+use Strixos\CoreBundle\Model\AbstractModel;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ *
+ * @author     Nicolas Dupont @ Strixos
+ * @copyright  Copyright (c) 2012 Strixos SAS (http://www.strixos.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
  * Strixos\CatalogBundle\Entity\AttributeSet
  *
  * @ORM\Table(name="StrixosCatalog_AttributeSet")
  * @ORM\Entity
  */
-class AttributeSet
+class AttributeSet extends AbstractModel
 {
 
     /**

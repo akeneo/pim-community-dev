@@ -24,6 +24,8 @@ class AppKernel extends Kernel
             // To set up basic data
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             // PIM modules
+            new Strixos\CoreBundle\StrixosCoreBundle(),
+
             new Strixos\CatalogBundle\StrixosCatalogBundle(),
             new Strixos\ReportBundle\StrixosReportBundle(),
             new Strixos\DataFlowBundle\StrixosDataFlowBundle(),

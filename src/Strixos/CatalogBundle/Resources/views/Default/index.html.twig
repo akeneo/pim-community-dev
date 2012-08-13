@@ -9,32 +9,39 @@
     <div class="symfony-blocks-welcome">
 
         <div class="block-configure">
+            <h2>Catalog</h2>
             <div class="illustration">
-                <img src="{{ asset('bundles/acmedemo/images/welcome-configure.gif') }}" alt="Configure your application" />
+                <img src="{{ asset('bundles/acmedemo/images/welcome-quick-tour.gif') }}" alt="Quick tour" />
             </div>
             <ul>
-                <li><a class="symfony-button-green" href="{{ path('strixos_catalog_product_index') }}">Manage product type</a></li>
+                <li><a class="symfony-button-green" href="{{ path('strixos_catalog_attributeset_index') }}">Manage types</a></li>
+                <li><a class="symfony-button-green" href="{{ path('strixos_catalog_attribute_index') }}">Manage attributes</a></li>
+<!--                <li><a class="symfony-button-green" href="{{ path('strixos_catalog_category_index') }}">Manage categories</a></li> -->
+                <li><a class="symfony-button-green" href="{{ path('strixos_catalog_product_index') }}">Manage products</a></li>
             </ul>
             
         </div>
 
         <div class="block-quick-tour">
+            <h2>DataFlow</h2>
             <div class="illustration">
-                <img src="{{ asset('bundles/acmedemo/images/welcome-quick-tour.gif') }}" alt="Quick tour" />
+                <img src="{{ asset('bundles/acmedemo/images/welcome-configure.gif') }}" alt="Configure your application" />
             </div>
             <ul>
-                <li><a class="symfony-button-green" href="{{ path('strixos_catalog_product_index') }}">Manage products</a></li>
+                <li><a class="symfony-button-green" href="{{ path('strixos_catalog_default_index') }}">Load demo data</a></li>
+                <li><a class="symfony-button-green" href="{{ path('strixos_catalog_default_index') }}">Load magento csv data</a></li>
             </ul>
         </div>
 
+<!--
         <div class="block-demo">
             <div class="illustration">
                 <img src="{{ asset('bundles/acmedemo/images/welcome-demo.gif') }}" alt="Demo" />
             </div>
             <ul>
-                <li><a class="symfony-button-green" href="{{ path('strixos_catalog_product_index') }}">Manage products</a></li>
+                <li><a class="symfony-button-green" href="{{ path('strixos_catalog_default_index') }}">Back home</a></li>
             </ul>
         </div>
     </div>
-
+-->
 {% endblock %}

@@ -1,12 +1,12 @@
 {% extends 'StrixosCatalogBundle::layout.html.twig' %}
 
-{% block title %}StrixOS - Home{% endblock %}
+{% block title %}StrixOS - Manage Attribute Set{% endblock %}
 
 {% block content_header '' %}
 
 {% block content_header_more %}
     <li><a class="symfony-button-green" href="{{ path('strixos_catalog_default_index') }}">Back to home</a></li>
-    <!--<li><a class="symfony-button-green" href="{{ path('strixos_catalog_default_index') }}">New product</a></li>-->
+    <!--<li><a class="symfony-button-green" href="{{ path('strixos_catalog_default_index') }}">New attribute set</a></li>-->
 {% endblock %}
                 
 {% block content %}
@@ -15,19 +15,15 @@
         <thead>
           <tr>
             <th>Id</th>
-            <th>Sku</th>
-            <th>Name</th>
-            <th>Type</th>
+            <th>Code</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-        {% for product in products %}
+        {% for set in sets %}
           <tr class="{% if loop.index is odd %} odd {% else %} even {% endif %}">
-            <td>{{product.id}}</td>
-            <td>{{product.sku}}</td>
-            <td>{{product.values.name}}</td>
-            <td>{{product.attributeSetCode}}</td>
+            <td>{{set.id}}</td>
+            <td>{{set.code}}</td>
             <td>
                 <!--<a href="{{ path('strixos_catalog_default_index') }}">Edit</a> - <a href="{{ path('strixos_catalog_default_index') }}">Delete</a>-->
             </td>

@@ -1,4 +1,4 @@
-/*
+    /*
 Copyright (c) 2010, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.com/yui/license.html
@@ -23,7 +23,7 @@ body
 
 a
 {
-    color:           #08C;
+    color:           #6A9211;
     text-decoration: none;
 }
 
@@ -194,6 +194,13 @@ input[type=text], input[type=password]
     border-radius:         4px;
 }
 
+.symfony-blocks-welcome ul {
+    padding-left:0px;
+}
+.symfony-blocks-welcome .symfony-button-green {
+    min-width: 200px;
+}
+
 .symfony-button-grey
 {
     color:       #868686;
@@ -233,6 +240,7 @@ input[type=text], input[type=password]
     margin-right:     14px;
     text-align:       center;
     padding:          26px 20px;
+    min-height: 220px;
 }
 
 .symfony-blocks-welcome > div.block-demo
@@ -297,7 +305,7 @@ ul#menu
 }
 
 
-
+/* data table */
 table.grid {
     border-collapse: collapse;
     background-color: #FFF;
@@ -307,9 +315,16 @@ table.grid td, table.grid th {
     border: 1px solid #DDD;
     padding: 3px 7px 2px;
 }
-table.grid tr.alt td {
-/*    background-color: #FFF;*/
+table.grid th {
+    background-color: #A7DA39;
+    font-weight:bold;
 }
-table.grid td.digits {
-    text-align: right; 
+table.grid tr.even {
+    background-color: whitesmoke;
 }
+
+/* form */
+.strixos_form label {float: left; margin-right: 10px; width: 80px;}
+.strixos_form label, .strixos_form input {}
+.strixos_form input {width: 120px;}
+
