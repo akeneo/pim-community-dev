@@ -37,6 +37,10 @@ _product_delete:
     pattern:  /product/index
     defaults: { _controller: StrixosCatalogBundle:Product:index }
 
+_product_search:
+    pattern:  /product/search
+    defaults: { _controller: StrixosCatalogBundle:Product:search }
+
 
 _category_index:
     pattern:  /category/index

@@ -68,24 +68,28 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
                 LoadAttributeSetData::ATTRIBUTE_SET_TSHIRT,
                 LoadAttributeSetData::ATTRIBUTE_SET_LAPTOP
             );
-            for ($ind = 0; $ind <= 10000; $ind++) {
+            for ($ind = 0; $ind < 10000; $ind++) {
                 $product = new Product();
                 // get random set
-                $attSetInd = rand(0, 1);
+                $attSetInd = rand(0, count($attSets)-1);
                 $attSetCode = $attSets[$attSetInd];
                 $product->setAttributeSetCode($attSetCode);
                 // define default values
                 $product->setSku('foobar-'.$ind);
-                $product->addValue('name', 'My t-shirt '.$ind);
-                $product->addValue('short_description', 'My t-shirt foo bar lorem ipsum'.$ind);
+                $product->addValue('name', 'My '.$attSetCode.' '.$ind);
+                $product->addValue('short_description', 'My '.$attSetCode.' foo bar lorem ipsum'.$ind);
 
                 // define specific values
                 if ($attSetCode == LoadAttributeSetData::ATTRIBUTE_SET_TSHIRT) {
                     $product->addValue(LoadAttributeSetData::ATTRIBUTE_TSHIRT_COLOR, 'Red');
                     $product->addValue(LoadAttributeSetData::ATTRIBUTE_TSHIRT_SIZE, 'M');
                 } else if ($attSetCode == LoadAttributeSetData::ATTRIBUTE_SET_LAPTOP) {
-                    $product->addValue(LoadAttributeSetData::ATTRIBUTE_LAPTOP_CPU, 'I7');
-                    $product->addValue(LoadAttributeSetData::ATTRIBUTE_LAPTOP_HDD, 'Sata 200 GO');
+                    $cpuValues = array('I5', 'I7');
+                    $cpuValues = $cpuValues[rand(0, count($cpuValues)-1)];
+                    $product->addValue(LoadAttributeSetData::ATTRIBUTE_LAPTOP_CPU, $cpuValues);
+                    $hddValues = array('IDE 1000 GO', 'IDE 750 GO', 'Sata 200 GO', 'Sata 400 GO');
+                    $hddValue = $hddValues[rand(0, count($hddValues)-1)];
+                    $product->addValue(LoadAttributeSetData::ATTRIBUTE_LAPTOP_HDD, $hddValue);
                     $product->addValue(LoadAttributeSetData::ATTRIBUTE_LAPTOP_MEMORY, '8 GO');
                     $product->addValue(LoadAttributeSetData::ATTRIBUTE_LAPTOP_SCREEN, '15"');
                 }

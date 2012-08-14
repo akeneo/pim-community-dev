@@ -1,6 +1,6 @@
 {% extends 'StrixosCatalogBundle::layout.html.twig' %}
 
-{% block title %}StrixOS - Manage products{% endblock %}
+{% block title %}StrixOS - Test searches{% endblock %}
 
 {% block content_header '' %}
 
@@ -14,23 +14,19 @@
     <table class="grid">
         <thead>
           <tr>
-            <th>Id</th>
-            <th>Sku</th>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Action</th>
+            <th>Description</th>
+            <th>Time</th>
+            <th>Memory</th>
+            <th>Nb Results</th>
           </tr>
         </thead>
         <tbody>
-        {% for product in products %}
+        {% for search in searches %}
           <tr class="{% if loop.index is odd %} odd {% else %} even {% endif %}">
-            <td>{{product.id}}</td>
-            <td>{{product.sku}}</td>
-            <td>{{product.values.name}}</td>
-            <td>{{product.attributeSetCode}}</td>
-            <td>
-                <!--<a href="{{ path('strixos_catalog_default_index') }}">Edit</a> - <a href="{{ path('strixos_catalog_default_index') }}">Delete</a>-->
-            </td>
+            <td>{{search.description}}</td>
+            <td>{{search.time}}</td>
+            <td>{{search.memory}}</td>
+            <td>{{search.results}}</td>
           </tr>
         {% endfor %}
         </tbody>

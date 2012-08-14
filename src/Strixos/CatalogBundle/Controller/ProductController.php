@@ -26,8 +26,126 @@ class ProductController extends Controller
     {
         $manager = $this->get('doctrine.odm.mongodb.document_manager');
         $repository = $manager->getRepository('StrixosCatalogBundle:Product');
-        // TODO take a look on createQueryBuilder
         $products = $repository->findAll()->limit(1000);
         return array('products' => $products);
+    }
+
+    /**
+    * @Route("/product/search")
+    * @Template()
+    */
+    public function searchAction()
+    {
+        $manager = $this->get('doctrine.odm.mongodb.document_manager');
+        $searches = array();
+
+        // all products
+        $start = microtime(true);
+        $queryBuilder = $manager->createQueryBuilder('StrixosCatalogBundle:Product');
+        $products = $queryBuilder->getQuery()->execute();
+        // TODO use symfony profiler to get time and query to string ?
+        $end = microtime(true);
+        $memUsed = memory_get_usage(true);
+        $search = new \stdClass;
+        $search->description = 'Find all products';
+        $search->time = (round($end - $start, 2)) . ' seconds';
+        $search->memory = round(($memUsed / 1024)/1024, 0).' Mo';
+        $search->results = count($products);
+        $searches[]= $search;
+
+        // all products of type laptop
+        $start = microtime(true);
+        $queryBuilder = $manager->createQueryBuilder('StrixosCatalogBundle:Product')
+            ->field('attributeSetCode')->equals('laptop');
+        $products = $queryBuilder->getQuery()->execute();
+        // TODO use symfony profiler to get time and query to string ?
+        $end = microtime(true);
+        $memUsed = memory_get_usage(true);
+        $search = new \stdClass;
+        $search->description = 'Find all laptops (product type)';
+        $search->time = (round($end - $start, 2)) . ' seconds';
+        $search->memory = round(($memUsed / 1024)/1024, 0).' Mo';
+        $search->results = count($products);
+        $searches[]= $search;
+
+        // all products where name 'My t-shirt 15'
+        $start = microtime(true);
+        $queryBuilder = $manager->createQueryBuilder('StrixosCatalogBundle:Product')
+        ->field('values.name')->equals('My tshirt 15');
+        $products = $queryBuilder->getQuery()->execute();
+        // TODO use symfony profiler to get time and query to string ?
+        $end = microtime(true);
+        $memUsed = memory_get_usage(true);
+        $search = new \stdClass;
+        $search->description = 'Find all product where name is My t-shirt 15';
+        $search->time = (round($end - $start, 2)) . ' seconds';
+        $search->memory = round(($memUsed / 1024)/1024, 0).' Mo';
+        $search->results = count($products);
+        $searches[]= $search;
+
+        // all products where name 'My t-shirt 1%'
+        $start = microtime(true);
+        $regexObj = new \MongoRegex("/^My tshirt*/i");
+        $queryBuilder = $manager->createQueryBuilder('StrixosCatalogBundle:Product')
+            ->field('values.name')->equals($regexObj);
+        $products = $queryBuilder->getQuery()->execute();
+        // TODO use symfony profiler to get time and query to string ?
+        $end = microtime(true);
+        $memUsed = memory_get_usage(true);
+        $search = new \stdClass;
+        $search->description = 'Find all product where name is My t-shirt%';
+        $search->time = (round($end - $start, 2)) . ' seconds';
+        $search->memory = round(($memUsed / 1024)/1024, 0).' Mo';
+        $search->results = count($products);
+        $searches[]= $search;
+
+        // all products where laptop_hdd 'Sata%'
+        $start = microtime(true);
+        $regexObj = new \MongoRegex("/^Sata*/i");
+        $queryBuilder = $manager->createQueryBuilder('StrixosCatalogBundle:Product')
+        ->field('values.laptop_hdd')->equals($regexObj);
+        $products = $queryBuilder->getQuery()->execute();
+        // TODO use symfony profiler to get time and query to string ?
+        $end = microtime(true);
+        $memUsed = memory_get_usage(true);
+        $search = new \stdClass;
+        $search->description = 'Find all product where laptop_hdd is Sata%';
+        $search->time = (round($end - $start, 2)) . ' seconds';
+        $search->memory = round(($memUsed / 1024)/1024, 0).' Mo';
+        $search->results = count($products);
+        $searches[]= $search;
+
+        // all products where laptop_hdd 'Sata 200 GO%'
+        $start = microtime(true);
+        $queryBuilder = $manager->createQueryBuilder('StrixosCatalogBundle:Product')
+            ->field('values.laptop_hdd')->equals('Sata 200 GO');
+        $products = $queryBuilder->getQuery()->execute();
+        // TODO use symfony profiler to get time and query to string ?
+        $end = microtime(true);
+        $memUsed = memory_get_usage(true);
+        $search = new \stdClass;
+        $search->description = 'Find all product where laptop_hdd is Sata 200 GO';
+        $search->time = (round($end - $start, 2)) . ' seconds';
+        $search->memory = round(($memUsed / 1024)/1024, 0).' Mo';
+        $search->results = count($products);
+        $searches[]= $search;
+
+        // all products where laptop_hdd 'Sata 200 GO%'
+        $start = microtime(true);
+        $queryBuilder = $manager->createQueryBuilder('StrixosCatalogBundle:Product')
+            ->field('values.laptop_hdd')->equals('Sata 200 GO')
+            ->field('values.laptop_cpu')->equals('I7');
+        $products = $queryBuilder->getQuery()->execute();
+        // TODO use symfony profiler to get time and query to string ?
+        $end = microtime(true);
+        $memUsed = memory_get_usage(true);
+        $search = new \stdClass;
+        $search->description = 'Find all product where laptop_hdd is Sata 200 GO and laptop_cpu is I7';
+        $search->time = (round($end - $start, 2)) . ' seconds';
+        $search->memory = round(($memUsed / 1024)/1024, 0).' Mo';
+        $search->results = count($products);
+        $searches[]= $search;
+
+        return array('searches' => $searches);
     }
 }
