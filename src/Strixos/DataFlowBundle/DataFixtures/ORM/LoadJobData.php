@@ -27,28 +27,35 @@ class LoadJobData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        /*
         // add job
         $job = new Job();
         $job->setCode('Import Magento Product');
 
-        // add steps
+        // add step read
         $stepRead = new Step();
         $stepRead->setCode('Read product file');
         $stepRead->setBehaviour('Strixos\DataFlowBundle\Model\Extract\CsvFileReader');
-
-        // TODO deal with options as json array ?
-        $filename = '~export-admin-all-configurable.csv';
-        $stepRead->setOptions($filename)
-        $job->addOrderedStep($stepRead);
+        $filename = '/home/ndupont/export-sample.csv';
+        $stepRead->setOptions(
+            array(
+                CsvFileReader::OPTIONKEY_FILEPATH   => $filename,
+                CsvFileReader::OPTIONKEY_HAS_HEADER => true
+            )
+        );
+        $stepRead->setJob($job);
         $manager->persist($stepRead);
 
-        // TODO: transform, insert
+        // add step import
+        $stepWrite = new Step();
+        $stepWrite->setCode('Import products from rows');
+        $stepWrite->setBehaviour('Strixos\DataFlowBundle\Model\Load\ProductImporter');
+        $stepWrite->setOptions(array());
+        $stepWrite->setJob($job);
+        $manager->persist($stepWrite);
 
         // flush data
         $manager->persist($job);
         $manager->flush();
-        */
     }
 
     /**

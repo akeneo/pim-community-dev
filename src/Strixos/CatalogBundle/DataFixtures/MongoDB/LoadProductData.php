@@ -26,40 +26,43 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        // get CSV file content
-        $filename = '~/export-admin-all-configurable.csv';
-        $content = array();
-        $handle = fopen($filename, 'r');
-        while (!feof($handle) && $line = fgetcsv($handle, 0, ',', '"')) {
-            $content[] = $line;
-        }
-        fclose($handle);
-        // retrieve first line which contains attribute codes
-        $attCodes = $content[0];
-        unset($content[0]);
-        // prepare products by fecthing attribute data from csv
-        $nbInsert = 0;
-        $range = 1000;
-        foreach ($content as $productData) {
-            $product = new Product();
-            $product->setAttributeSetCode(LoadAttributeSetData::ATTRIBUTE_SET_BASE);
-            foreach ($attCodes as $indAttCode => $attCode) {
-                if ($attCode == 'sku') {
-                    $product->setSku($productData[$indAttCode]);
-                } else {
-                    $product->addValue($attCode, $productData[$indAttCode]);
+        // magento data
+        if (false) {
+
+            // get CSV file content
+            $filename = '/home/ndupont/export-sample.csv';
+            $content = array();
+            $handle = fopen($filename, 'r');
+            while (!feof($handle) && $line = fgetcsv($handle, 0, ',', '"')) {
+                $content[] = $line;
+            }
+            fclose($handle);
+            // retrieve first line which contains attribute codes
+            $attCodes = $content[0];
+            unset($content[0]);
+            // prepare products by fecthing attribute data from csv
+            $nbInsert = 0;
+            $range = 1000;
+            foreach ($content as $productData) {
+                $product = new Product();
+                $product->setAttributeSetCode(LoadAttributeSetData::ATTRIBUTE_SET_BASE);
+                foreach ($attCodes as $indAttCode => $attCode) {
+                    if ($attCode == 'sku') {
+                        $product->setSku($productData[$indAttCode]);
+                    } else {
+                        $product->addValue($attCode, $productData[$indAttCode]);
+                    }
+                }
+                $manager->persist($product);
+                if ($nbInsert++ == $range) {
+                    $manager->flush();
+                    $nbInsert = 0;
                 }
             }
-            $manager->persist($product);
-            if($nbInsert++ == $range) {
-                $manager->flush();
-                $nbInsert = 0;
-            }
-        }
-        $manager->flush();
+            $manager->flush();
 
         // random
-        if (false) {
+        } else {
 
             $attSets = array(
                 LoadAttributeSetData::ATTRIBUTE_SET_TSHIRT,

@@ -1,0 +1,3 @@
+_default_loaddemodata:
+    pattern:  /loadDemoData
+    defaults: { _controller: StrixosDataFlowBundle:Default:loadDemoData }

@@ -14,6 +14,21 @@ class CsvFileReader extends FileReader
 {
     protected $_headers;
     protected $_rows;
+    protected $_rowsWithHeaderAsKeys;
+    const OPTIONKEY_HAS_HEADER = 'has_header';
+    const OPTIONKEY_FILEPATH   = 'filepath';
+
+    /**
+     * (non-PHPdoc)
+     * @see Strixos\DataFlowBundle\Entity.Step::run()
+     */
+    public function run($inputData = null)
+    {
+        $filepath = $this->getOption(self::OPTIONKEY_FILEPATH);
+        $hasHeader = $this->getOption(self::OPTIONKEY_HAS_HEADER);
+        $output = $this->loadContent($filepath, $hasHeader);
+        return $output;
+    }
 
     /**
      * @param string $filepath
@@ -24,7 +39,7 @@ class CsvFileReader extends FileReader
         // get CSV file content
         $this->_filepath = $filepath;
         $content = array();
-        $handle = fopen($filename, 'r');
+        $handle = fopen($this->_filepath, 'r');
         while (!feof($handle) && $line = fgetcsv($handle, 0, ',', '"')) {
             $content[] = $line;
         }
@@ -36,6 +51,18 @@ class CsvFileReader extends FileReader
             $this->_headers = $headers;
         }
         $this->_rows = $content;
+        // add notice message
+        $msg = __CLASS__.' : read '.count($content).' lines from '.$filepath;
+        $this->addMessage($msg);
+        // merge to get header as key in each row
+        if ($hasHeaders) {
+            $this->_rowsWithHeaderAsKeys = array();
+            foreach ($this->_rows as $line) {
+                $this->_rowsWithHeaderAsKeys[] = array_combine($this->_headers, $line);
+            }
+            return $this->_rowsWithHeaderAsKeys;
+        }
+        return $this->_rows;
     }
 
     /**

@@ -37,33 +37,28 @@ class Job extends AbstractModel
     private $code;
 
     /**
-    * @ORM\ManyToMany(targetEntity="Step")
-    * @ORM\JoinTable(name="StrixosDataFlow_Job_Step",
-    *      joinColumns={@ORM\JoinColumn(name="step_id", referencedColumnName="id")},
-    *      inverseJoinColumns={@ORM\JoinColumn(name="job_id", referencedColumnName="id")}
-    *      )
+    * @ORM\OneToMany(targetEntity="Step", mappedBy="job")
     */
-    protected $orderedSteps;
+    protected $steps;
 
-    /**
-     * Run ordered steps
-     */
-    public function run()
-    {
-        // TODO
-    }
+    protected $entityManager;
+
+    protected $documentManager;
+
+    protected $messages;
+
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->orderedSteps = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->steps = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -79,14 +74,14 @@ class Job extends AbstractModel
     public function setCode($code)
     {
         $this->code = $code;
-    
+
         return $this;
     }
 
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -94,35 +89,111 @@ class Job extends AbstractModel
     }
 
     /**
-     * Add orderedSteps
-     *
-     * @param Strixos\DataFlowBundle\Entity\Step $orderedSteps
-     * @return Job
+     * Run ordered steps
+     * @param mixed $inputData
+     * @return mixed $outputData
      */
-    public function addOrderedStep(\Strixos\DataFlowBundle\Entity\Step $orderedSteps)
+    public function run($inputData = null)
     {
-        $this->orderedSteps[] = $orderedSteps;
-    
+        $this->messages = array();
+        foreach ($this->getSteps() as $step) {
+            // behaviour contains the implemented step class
+            $class = $step->getBehaviour();
+            $stepImpl = new $class();
+            $stepImpl->setJob($this);
+            $stepImpl->setOptions($step->getOptions());
+            // run the step with precedent step input data
+            $inputData = $stepImpl->run($inputData);
+            // add step message to stack
+            $this->messages = array_merge($this->messages, $stepImpl->getMessages());
+        }
+        return $inputData;
+    }
+
+    /**
+    * Set manager
+    *
+    * @param string $entitymanager
+    * @return Job
+    */
+    public function setEntityManager($entitymanager)
+    {
+        $this->entityManager = $entitymanager;
         return $this;
     }
 
     /**
-     * Remove orderedSteps
+     * Get manager
      *
-     * @param Strixos\DataFlowBundle\Entity\Step $orderedSteps
+     * @return string
      */
-    public function removeOrderedStep(\Strixos\DataFlowBundle\Entity\Step $orderedSteps)
+    public function getEntityManager()
     {
-        $this->orderedSteps->removeElement($orderedSteps);
+        return $this->entityManager;
     }
 
     /**
-     * Get orderedSteps
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getOrderedSteps()
+    * Set manager
+    *
+    * @param string $documentmanager
+    * @return Job
+    */
+    public function setDocumentManager($documentmanager)
     {
-        return $this->orderedSteps;
+        $this->documentManager = $documentmanager;
+        return $this;
+    }
+
+    /**
+     * Get manager
+     *
+     * @return string
+     */
+    public function getDocumentManager()
+    {
+        return $this->documentManager;
+    }
+
+    /**
+     * Add steps
+     *
+     * @param Strixos\DataFlowBundle\Entity\Step $steps
+     * @return Job
+     */
+    public function addStep(\Strixos\DataFlowBundle\Entity\Step $steps)
+    {
+        $this->steps[] = $steps;
+
+        return $this;
+    }
+
+    /**
+     * Remove steps
+     *
+     * @param Strixos\DataFlowBundle\Entity\Step $steps
+     */
+    public function removeStep(\Strixos\DataFlowBundle\Entity\Step $steps)
+    {
+        $this->steps->removeElement($steps);
+    }
+
+    /**
+     * Get steps
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getSteps()
+    {
+        return $this->steps;
+    }
+
+    /**
+     * Get messages
+     *
+     * @return array
+     */
+    public function getMessages()
+    {
+        return $this->messages;
     }
 }
