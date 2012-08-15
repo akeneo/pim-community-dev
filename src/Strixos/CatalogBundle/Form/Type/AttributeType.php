@@ -1,5 +1,4 @@
 <?php
-// src/Strixos/CatalogBundle/Form/Type/TaskType.php
 namespace Strixos\CatalogBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -31,10 +30,22 @@ class AttributeType extends AbstractType
                 'required'  => true,
             )
         );
+        /*
         $builder->add(
             'type', 'choice', array(
                 'choices'   => Attribute::getBackendTypeOptions(),
                 'required'  => true,
+            )
+        );*/
+        $builder->add('defaultValue', null, array('required' => false));
+
+        $builder->add(
+            'options', 'collection',
+            array(
+                'type'         => new OptionType(),
+                'allow_add'    => true,
+                'allow_delete' => true,
+                'by_reference' => false,
             )
         );
     }
@@ -45,7 +56,7 @@ class AttributeType extends AbstractType
      */
     public function getName()
     {
-        return 'strixos_catalog_attribute_new';
+        return 'strixos_catalog_attribute';
     }
 
 }

@@ -70,7 +70,7 @@ class AttributeController extends Controller
     public function saveAction(Request $request)
     {
         // load existing object or create a new one
-        $postData = $request->get('strixos_catalog_attribute_new');
+        $postData = $request->get('strixos_catalog_attribute');
         $id = $postData['id'];
         $em = $this->getDoctrine()->getEntityManager();
         if ($id) {
@@ -78,16 +78,42 @@ class AttributeController extends Controller
         } else {
             $attribute = new Attribute();
         }
+        // create an array of the current persisted options objects
+        $originalOptions = array();
+        foreach ($attribute->getOptions() as $option) {
+            $originalOptions[] = $option;
+        }
+
         // create and bind with form
         $form = $this->createForm(new AttributeType(), $attribute);
         if ($request->getMethod() == 'POST') {
             $form->bindRequest($request);
             if ($form->isValid()) {
-                // persist
-                $em = $this->getDoctrine()->getEntityManager();
+                // filter original with no longer present
+                foreach ($attribute->getOptions() as $option) {
+                    foreach ($originalOptions as $key => $toDelete) {
+                        if ($toDelete->getId() === $option->getId()) {
+                            unset($originalOptions[$key]);
+                        }
+                    }
+                }
+                // remove option to delete
+                foreach ($originalOptions as $option) {
+                    $em->remove($option);
+                }
+                // persist existing and new options
+                foreach ($attribute->getOptions() as $option) {
+                    $option->setAttribute($attribute);
+                    $em->persist($option);
+                }
+                // persist attribute
                 $em->persist($attribute);
                 $em->flush();
-                return $this->redirect($this->generateUrl('strixos_catalog_attribute_index'));
+                // success message and redirect
+                $this->get('session')->setFlash('notice', 'Attribute has been saved!');
+                return $this->redirect(
+                    $this->generateUrl('strixos_catalog_attribute_edit', array('id' => $attribute->getId()))
+                );
             }
         }
         // TODO Exception

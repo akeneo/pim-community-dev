@@ -25,7 +25,7 @@
           <tr class="{% if loop.index is odd %} odd {% else %} even {% endif %}">
             <td>{{attribute.id}}</td>
             <td>{{attribute.code}}</td>
-            <td>{{attribute.type}}</td>
+            <td>{{attribute.input}}</td>
             <td>
                 <a href="{{ path('strixos_catalog_attribute_edit', {'id': attribute.id }) }}">Edit</a> <!-- - <a href="{{ path('strixos_catalog_default_index') }}">Delete</a>-->
             </td>

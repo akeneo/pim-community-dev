@@ -18,9 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
 class Attribute extends AbstractModel
 {
 
-    const FRONTEND_TYPE_INPUT       = 'input';
-    const FRONTEND_TYPE_SELECT      = 'select';
-    /* others ... */
+    const FRONTEND_INPUT_TEXTFIELD   = 'textfield';
+    const FRONTEND_INPUT_TEXTAREA    = 'textara';
+    const FRONTEND_INPUT_DATE        = 'date';
+    const FRONTEND_INPUT_CHECKBOX    = 'checkbox';
+    const FRONTEND_INPUT_SELECT      = 'select';
+    const FRONTEND_INPUT_MULTISELECT = 'multiselect';
+    const FRONTEND_INPUT_PRICE       = 'price';
+    /* others ... file, image, */
 
     const BACKEND_TYPE_VARCHAR  = 'string'; // TODO same in mongo ?
     const BACKEND_TYPE_TEXT     = 'string';
@@ -31,16 +36,6 @@ class Attribute extends AbstractModel
     const BACKEND_TYPE_BOOLEAN  = 'boolean';
     const BACKEND_TYPE_FILE     = 'file';
     /* others ... */
-
-    /*
-     * | attribute_code
-     * | backend_type
-     * | frontend_input
-     * | source_model
-     * | is_unique
-     * | is_required
-     * | default_value
-     */
 
     /**
      * @var integer $id
@@ -85,6 +80,25 @@ class Attribute extends AbstractModel
      * @ORM\Column(name="backend_type", type="string", length=255)
      */
     private $type;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Option",mappedBy="attribute", cascade={"persist", "remove"})
+     */
+    protected $options;
+
+    /**
+    * @var string $defaultValue
+    *
+    * @ORM\Column(name="default_value", type="string", length=255, nullable=true)
+    */
+    private $defaultValue;
+
+    /**
+     * Constructor
+     */
+    public function __construct() {
+        $this->options = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -137,7 +151,6 @@ class Attribute extends AbstractModel
     public function setType($type)
     {
         $this->type = $type;
-
         return $this;
     }
 
@@ -206,7 +219,7 @@ class Attribute extends AbstractModel
     public function setInput($input)
     {
         $this->input = $input;
-
+        $this->type = self::getBackendTypeForFrontendInput($input);
         return $this;
     }
 
@@ -247,9 +260,99 @@ class Attribute extends AbstractModel
     {
         // TODO: deal with translations
         return array(
-            self::FRONTEND_TYPE_INPUT  => self::FRONTEND_TYPE_INPUT,
-            self::FRONTEND_TYPE_SELECT => self::FRONTEND_TYPE_SELECT
+            self::FRONTEND_INPUT_TEXTFIELD   => self::FRONTEND_INPUT_TEXTFIELD,
+            self::FRONTEND_INPUT_TEXTAREA    => self::FRONTEND_INPUT_TEXTAREA,
+            self::FRONTEND_INPUT_DATE        => self::FRONTEND_INPUT_DATE,
+            self::FRONTEND_INPUT_CHECKBOX    => self::FRONTEND_INPUT_CHECKBOX,
+            self::FRONTEND_INPUT_SELECT      => self::FRONTEND_INPUT_SELECT,
+            self::FRONTEND_INPUT_MULTISELECT => self::FRONTEND_INPUT_MULTISELECT,
+            self::FRONTEND_INPUT_PRICE       => self::FRONTEND_INPUT_PRICE
         );
     }
 
+    /**
+    * Return backend type from frontend input
+    * @param string $input
+    * @return string
+    */
+    public static function getBackendTypeForFrontendInput($input)
+    {
+        $mapping = array(
+            self::FRONTEND_INPUT_TEXTFIELD   => self::BACKEND_TYPE_VARCHAR,
+            self::FRONTEND_INPUT_TEXTAREA    => self::BACKEND_TYPE_TEXT,
+            self::FRONTEND_INPUT_DATE        => self::BACKEND_TYPE_DATE,
+            self::FRONTEND_INPUT_CHECKBOX    => self::BACKEND_TYPE_BOOLEAN,
+            self::FRONTEND_INPUT_SELECT      => self::BACKEND_TYPE_INT,
+            self::FRONTEND_INPUT_MULTISELECT => self::BACKEND_TYPE_VARCHAR,
+            self::FRONTEND_INPUT_PRICE       => self::BACKEND_TYPE_VARCHAR
+        );
+        return $mapping[$input];
+    }
+
+    /**
+     * Set defaultValue
+     *
+     * @param string $defaultValue
+     * @return Attribute
+     */
+    public function setDefaultValue($defaultValue)
+    {
+        $this->defaultValue = $defaultValue;
+
+        return $this;
+    }
+
+    /**
+     * Get defaultValue
+     *
+     * @return string
+     */
+    public function getDefaultValue()
+    {
+        return $this->defaultValue;
+    }
+
+    /**
+     * Add options
+     *
+     * @param Strixos\CatalogBundle\Entity\Option $options
+     * @return Attribute
+     */
+    public function addOption(\Strixos\CatalogBundle\Entity\Option $options)
+    {
+        $this->options[] = $options;
+
+        return $this;
+    }
+
+    /**
+     * Remove options
+     *
+     * @param Strixos\CatalogBundle\Entity\Option $options
+     */
+    public function removeOption(\Strixos\CatalogBundle\Entity\Option $options)
+    {
+        $this->options->removeElement($options);
+    }
+
+    /**
+     * Get options
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * Get options
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function setOptions(Doctrine\Common\Collections\Collection $options)
+    {
+        die('idi !');
+        return $this->options;
+    }
 }
