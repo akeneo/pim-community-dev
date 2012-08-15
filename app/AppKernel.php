@@ -25,12 +25,10 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             // PIM modules
             new Strixos\CoreBundle\StrixosCoreBundle(),
-
+            new Strixos\WidgetBundle\StrixosWidgetBundle(),
             new Strixos\CatalogBundle\StrixosCatalogBundle(),
             new Strixos\ReportBundle\StrixosReportBundle(),
             new Strixos\DataFlowBundle\StrixosDataFlowBundle(),
-
-
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
