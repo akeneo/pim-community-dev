@@ -1,7 +1,3 @@
-_welcome:
-    pattern:  /
-    defaults: { _controller: StrixosCatalogBundle:Default:index }
-
 _welcomedemo:
     pattern:  /welcome
     defaults: { _controller: AcmeDemoBundle:Welcome:index }

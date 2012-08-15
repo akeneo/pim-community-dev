@@ -1,12 +1,21 @@
+_welcome:
+    pattern:  /
+    defaults: { _controller: StrixosDashboardBundle:Default:index }
+
+StrixosDashboardBundle:
+    resource: "@StrixosDashboardBundle/Controller/"
+    type:     annotation
+    prefix:   /dashboard/
+
 StrixosWidgetBundle:
     resource: "@StrixosWidgetBundle/Controller/"
     type:     annotation
-    prefix:   /
+    prefix:   /widget/
 
 StrixosCoreBundle:
     resource: "@StrixosCoreBundle/Controller/"
     type:     annotation
-    prefix:   /
+    prefix:   /core/
 
 StrixosDataFlowBundle:
     resource: "@StrixosDataFlowBundle/Controller/"

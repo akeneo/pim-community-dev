@@ -29,6 +29,7 @@ class AppKernel extends Kernel
             new Strixos\CatalogBundle\StrixosCatalogBundle(),
             new Strixos\ReportBundle\StrixosReportBundle(),
             new Strixos\DataFlowBundle\StrixosDataFlowBundle(),
+            new Strixos\DashboardBundle\StrixosDashboardBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

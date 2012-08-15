@@ -1,0 +1,64 @@
+{% extends 'StrixosWidgetBundle::layout.html.twig' %}
+
+{% block title %}StrixOS - Home{% endblock %}
+
+{% block content_menu '' %}
+
+{% block content %}
+
+    <div class="blocks-welcome">
+
+        <div class="block-catalog ui-corner-all">
+            <h2>Catalog</h2>
+            <div class="illustration">
+                <img src="{{ asset('bundles/acmedemo/images/welcome-quick-tour.gif') }}" alt="Quick tour" />
+            </div>
+            <ul>
+                <li>
+                    <a href="{{ path('strixos_catalog_attributeset_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button">
+                        <span class="ui-button-text">Manage types</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('strixos_catalog_attribute_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button">
+                        <span class="ui-button-text">Manage attributes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('strixos_catalog_product_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button">
+                        <span class="ui-button-text">Manage products</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="block-dataflow ui-corner-all">
+            <h2>DataFlow</h2>
+            <div class="illustration">
+                <img src="{{ asset('bundles/acmedemo/images/welcome-configure.gif') }}" alt="Configure your application" />
+            </div>
+            <ul>
+                <li>
+                    <a href="{{ path('strixos_dataflow_default_loadmagentodata') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button">
+                        <span class="ui-button-text">Load magento csv data</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="block-demo ui-corner-all">
+            <h2>TESTS</h2>
+            <div class="illustration">
+                <img src="{{ asset('bundles/acmedemo/images/welcome-demo.gif') }}" alt="Demo" />
+            </div>
+            <ul>
+                <li>
+                    <a href="{{ path('strixos_catalog_product_search') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button">
+                        <span class="ui-button-text">Products searches</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}

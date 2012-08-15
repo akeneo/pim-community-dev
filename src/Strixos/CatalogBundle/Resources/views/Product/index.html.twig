@@ -1,14 +1,7 @@
-{% extends 'StrixosCatalogBundle::layout.html.twig' %}
+{% extends 'StrixosWidgetBundle::layout.html.twig' %}
 
 {% block title %}StrixOS - Manage products{% endblock %}
 
-{% block content_header '' %}
-
-{% block content_header_more %}
-    <li><a class="symfony-button-green" href="{{ path('strixos_catalog_default_index') }}">Back to home</a></li>
-    <!--<li><a class="symfony-button-green" href="{{ path('strixos_catalog_default_index') }}">New product</a></li>-->
-{% endblock %}
-                
 {% block content %}
 
     <table class="grid">
@@ -29,7 +22,7 @@
             <td>{{product.values.name}}</td>
             <td>{{product.attributeSetCode}}</td>
             <td>
-                <!--<a href="{{ path('strixos_catalog_default_index') }}">Edit</a> - <a href="{{ path('strixos_catalog_default_index') }}">Delete</a>-->
+                <!--<a href="{{ path('strixos_dashboard_default_index') }}">Edit</a> - <a href="{{ path('strixos_dashboard_default_index') }}">Delete</a>-->
             </td>
           </tr>
         {% endfor %}

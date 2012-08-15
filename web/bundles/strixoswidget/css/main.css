@@ -1,0 +1,211 @@
+/*
+Copyright (c) 2010, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.com/yui/license.html
+version: 2.8.2r1
+
+Reset
+*/
+
+html{color:#000;background:#FFF;}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var,optgroup{font-style:inherit;font-weight:inherit;}del,ins{text-decoration:none;}li{list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym{border:0;font-variant:normal;}sup{vertical-align:baseline;}sub{vertical-align:baseline;}legend{color:#000;}input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;}input,button,textarea,select{*font-size:100%;}
+
+html, body
+{
+    background-color: #EFEFEF;
+}
+
+body
+{
+    font-size:        14px;
+    font-family:      "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+    color:            #313131;
+}
+
+a
+{
+    color:           #6A9211;
+    text-decoration: none;
+}
+
+a:hover
+{
+    text-decoration: underline;
+}
+
+strong
+{
+    font-weight: bold;
+}
+
+em
+{
+    font-style: italic;
+}
+
+h1, h2, h3
+{
+    font-family:    Georgia, "Times New Roman", Times, serif;
+    color:          #404040;
+}
+
+h1
+{
+    font-size:      45px;
+    padding-bottom: 30px;
+}
+
+h2
+{
+    font-weight:   bold;
+    color:         #FFFFFF;
+    /* Font is duplicated of body (sans-serif) */
+    font-family:      "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+
+    margin-bottom:    10px;
+    background-color: #aacd4e;
+    padding:          2px 4px;
+    display:          inline-block;
+    text-transform:   uppercase;
+
+}
+
+p
+{
+    line-height:    20px;
+    padding-bottom: 20px;
+}
+
+ul, ol
+{
+    padding-left: 20px;
+}
+
+ol li
+{
+    list-style-type: decimal;
+}
+
+ul li
+{
+    list-style-type: none;
+}
+
+/* Strixos default style */
+
+#body-wrapper
+{
+    width:  970px;
+    margin: 0 auto;
+}
+
+#header
+{
+    position: relative;
+    padding: 10px 10px;
+}
+#header h1 {width:600px;padding-bottom:0px;}
+#header p {padding-bottom:0px;}
+#header a  {float:right;}
+
+.content
+{
+    background-color: white;
+    border:           1px solid #DFDFDF;
+    padding:          50px;
+    margin-bottom:    20px;
+}
+
+ul#menu
+{
+    margin-bottom: 20px;
+    padding-left: 0;
+}
+#menu li
+{
+    padding-left: 0;
+    margin-right: 10px;
+    display: inline;
+}
+
+/* forms */
+.form-panel {border: 1px solid #AACD4E; margin-bottom:25px; padding:10px;}
+.ui-widget {margin-bottom:10px;}
+.ui-widget label {float:left; width:120px;}
+
+
+.options li {width: 320px;overflow:hidden;}
+.options a.action-delete-inline {float:right;}
+
+
+/* dashboard */
+.blocks-welcome ul {
+    padding-left:0px;
+}
+.blocks-welcome{
+    min-width: 200px;
+}
+
+.blocks-welcome span.ui-button-text{
+    min-width: 140px;
+}
+
+.blocks-welcome
+{
+    overflow: hidden;
+}
+
+.blocks-welcome > div
+{
+    background-color: whitesmoke;
+    float:            left;
+    width:            240px;
+    margin-right:     14px;
+    text-align:       center;
+    padding:          26px 20px;
+    min-height: 220px;
+}
+
+.blocks-welcome > div.block-demo
+{
+    margin-right: 0;
+}
+
+.blocks-welcome .illustration
+{
+    padding-bottom: 20px;
+}
+
+/* TODO: custom with jquery ui */
+
+.flash-message
+{
+    padding: 10px;
+    margin: 5px;
+    margin-top: 15px;
+    background-color: #ffe;
+}
+
+.error
+{
+    color: red;
+}
+
+/* TODO: custom with jquery ui */
+/* data table */
+table.grid {
+    border-collapse: collapse;
+    background-color: #FFF;
+    width: 100%;
+}
+table.grid td, table.grid th {
+    border: 1px solid #DDD;
+    padding: 3px 7px 2px;
+}
+table.grid th {
+    background-color: #A7DA39;
+    font-weight:bold;
+}
+table.grid tr.even {
+    background-color: whitesmoke;
+}
+

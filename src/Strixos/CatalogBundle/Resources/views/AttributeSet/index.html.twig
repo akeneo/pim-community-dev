@@ -1,14 +1,7 @@
-{% extends 'StrixosCatalogBundle::layout.html.twig' %}
+{% extends 'StrixosWidgetBundle::layout.html.twig' %}
 
 {% block title %}StrixOS - Manage Attribute Set{% endblock %}
 
-{% block content_header '' %}
-
-{% block content_header_more %}
-    <li><a class="symfony-button-green" href="{{ path('strixos_catalog_default_index') }}">Back to home</a></li>
-    <!--<li><a class="symfony-button-green" href="{{ path('strixos_catalog_default_index') }}">New attribute set</a></li>-->
-{% endblock %}
-                
 {% block content %}
 
     <table class="grid">
@@ -25,7 +18,7 @@
             <td>{{set.id}}</td>
             <td>{{set.code}}</td>
             <td>
-                <!--<a href="{{ path('strixos_catalog_default_index') }}">Edit</a> - <a href="{{ path('strixos_catalog_default_index') }}">Delete</a>-->
+                <!--<a href="{{ path('strixos_dashboard_default_index') }}">Edit</a> - <a href="{{ path('strixos_dashboard_default_index') }}">Delete</a>-->
             </td>
           </tr>
         {% endfor %}

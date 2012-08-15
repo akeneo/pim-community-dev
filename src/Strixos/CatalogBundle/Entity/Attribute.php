@@ -19,7 +19,7 @@ class Attribute extends AbstractModel
 {
 
     const FRONTEND_INPUT_TEXTFIELD   = 'textfield';
-    const FRONTEND_INPUT_TEXTAREA    = 'textara';
+    const FRONTEND_INPUT_TEXTAREA    = 'textarea';
     const FRONTEND_INPUT_DATE        = 'date';
     const FRONTEND_INPUT_CHECKBOX    = 'checkbox';
     const FRONTEND_INPUT_SELECT      = 'select';

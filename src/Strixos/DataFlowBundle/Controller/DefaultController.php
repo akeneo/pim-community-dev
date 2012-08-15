@@ -56,6 +56,6 @@ class DefaultController extends Controller
         $job->run();
         $message = 'Magento Data has been loaded with success! '.implode(', ', $job->getMessages());
         $this->get('session')->setFlash('notice', $message);
-        return $this->redirect($this->generateUrl('strixos_catalog_default_index'));
+        return $this->redirect($this->generateUrl('strixos_dashboard_default_index'));
     }
 }

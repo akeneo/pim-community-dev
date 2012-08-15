@@ -1,12 +1,14 @@
-{% extends 'StrixosCatalogBundle::layout.html.twig' %}
+{% extends 'StrixosWidgetBundle::layout.html.twig' %}
 
 {% block title %}StrixOS - Manage Attribute{% endblock %}
 
-{% block content_header '' %}
-
-{% block content_header_more %}
-    <li><a class="symfony-button-green" href="{{ path('strixos_catalog_default_index') }}">Back to home</a></li>
-    <li><a class="symfony-button-green" href="{{ path('strixos_catalog_attribute_new') }}">New attribute</a></li>
+{% block content_menu_more %}
+    {{ parent() }}
+    <li>
+        <a href="{{ path('strixos_catalog_attribute_new') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button">
+            <span class="ui-button-text">Create attribute</span>
+        </a>
+    </li>
 {% endblock %}
                 
 {% block content %}
@@ -27,7 +29,7 @@
             <td>{{attribute.code}}</td>
             <td>{{attribute.input}}</td>
             <td>
-                <a href="{{ path('strixos_catalog_attribute_edit', {'id': attribute.id }) }}">Edit</a> <!-- - <a href="{{ path('strixos_catalog_default_index') }}">Delete</a>-->
+                <a href="{{ path('strixos_catalog_attribute_edit', {'id': attribute.id }) }}">Edit</a> <!-- - <a href="{{ path('strixos_dashboard_default_index') }}">Delete</a>-->
             </td>
           </tr>
         {% endfor %}

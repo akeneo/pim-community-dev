@@ -24,6 +24,8 @@ class AttributeType extends AbstractType
         $builder->add('code');
         $builder->add('isRequired', null, array('required' => false));
         $builder->add('isUnique', null, array('required' => false));
+
+        // TODO: once it's created, disable following choice !
         $builder->add(
             'input', 'choice', array(
                 'choices'   => Attribute::getFrontendInputOptions(),

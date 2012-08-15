@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}POC STRIXos{% endblock %}</title>
+        <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/strixoswidget/css/ui-lightness/jquery-ui-1.8.23.custom.css') }}" />
+
+        <link rel="stylesheet" href="{{ asset('bundles/strixoswidget/css/main.css') }}" />
+        
+        <script type="text/javascript" src="{{ asset('bundles/strixoswidget/js/jquery-1.8.0.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/strixoswidget/js/jquery-ui-1.8.23.custom.min.js') }}"></script>
+
+    </head>
+    <body>
+        <div id="body-wrapper">
+            <div id="header">
+                <a class="logo" href="{{ path('_welcome') }}">
+                    <img src="{{ asset('bundles/strixoswidget/images/logo.gif') }}" alt="Symfony logo" />
+                </a>
+                <h1>STRIXos (Proof Of Concept)</h1>
+                <p><em>The future of catalog management is open !</em></p>
+            </div>
+
+            {% for flashMessage in app.session.flashbag.get('notice') %}
+                <div class="flash-message">
+                    <em>Notice</em>: {{ flashMessage }}
+                </div>
+            {% endfor %}
+
+            <div class="content ui-corner-all">
+
+                {% block content_menu %}
+                    <ul id="menu">
+                        {% block content_menu_more %}
+                            <li>
+                                <a href="{{ path('strixos_dashboard_default_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
+                                    <span class="ui-button-icon-primary ui-icon ui-icon-home"></span><span class="ui-button-text">Back to home</span>
+                                </a>
+                            </li>
+                        {% endblock %}
+                    </ul>
+                    <div style="clear: both"></div>
+                {% endblock %}
+
+                {% block content %}{% endblock %}
+            </div>
+
+            {% if code is defined %}
+                <h2>Code behind this page</h2>
+                <div class="symfony-content">{{ code|raw }}</div>
+            {% endif %}
+            
+            <div id="footer">
+                {% block footer %}{% endblock %}
+          </div>
+        </div>
+    </body>
+</html>

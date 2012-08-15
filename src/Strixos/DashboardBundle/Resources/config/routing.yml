@@ -1,0 +1,4 @@
+_homepage:
+    pattern:  /
+    defaults: { _controller: StrixosWidgetBundle:Default:index }
+

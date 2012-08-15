@@ -131,12 +131,23 @@ class LoadAttributeSetData extends AbstractFixture implements OrderedFixtureInte
         $attributeSet = $sourceSet->copy(self::ATTRIBUTE_SET_TSHIRT);
         // size and color attributes
         $attributes = array(
-            self::ATTRIBUTE_TSHIRT_COLOR => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
-            self::ATTRIBUTE_TSHIRT_SIZE => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
+            self::ATTRIBUTE_TSHIRT_COLOR => array('input' => Attribute::FRONTEND_INPUT_SELECT, 'is_required' => false, 'is_unique' => false),
+            self::ATTRIBUTE_TSHIRT_SIZE => array('input' => Attribute::FRONTEND_INPUT_SELECT, 'is_required' => false, 'is_unique' => false),
+        );
+        $options = array(
+            self::ATTRIBUTE_TSHIRT_COLOR => array('Red', 'Blue', 'Pink', 'Yellow'),
+            self::ATTRIBUTE_TSHIRT_SIZE => array('XS', 'S', 'M', 'L')
         );
         // create attributes
         foreach ($attributes as $code => $data) {
             $attribute = $this->_createAttribute($code, $data);
+            // add options
+            foreach ($options[$code] as $value) {
+                $option = new Option();
+                $option->setValue($value);
+                $option->setAttribute($attribute);
+                $manager->persist($option);
+            }
             $manager->persist($attribute);
             // add attribute to default set
             $attributeSet->addAttribute($attribute);
@@ -166,7 +177,6 @@ class LoadAttributeSetData extends AbstractFixture implements OrderedFixtureInte
             self::ATTRIBUTE_LAPTOP_MEMORY => array('4 GO', '8 GO'),
             self::ATTRIBUTE_LAPTOP_SCREEN => array('11"', '13"', '15"', '17"'),
         );
-
         // create attributes
         foreach ($attributes as $code => $data) {
             $attribute = $this->_createAttribute($code, $data);
