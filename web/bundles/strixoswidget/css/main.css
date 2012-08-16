@@ -209,3 +209,10 @@ table.grid tr.even {
     background-color: whitesmoke;
 }
 
+/* attribute set form */
+.connectedSortable li {width:200px; border:1px solid black; margin-bottom:5px; padding:2px;background-color:whitesmoke;}
+.set-attributes {float:left; width:250px;}
+.availables-attributes {float:right; width:550px;}
+.connectedSortable .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+.connectedSortable .add-attribute {color:green;}
+.connectedSortable .remove-attribute {color:red;}

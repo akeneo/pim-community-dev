@@ -14,7 +14,7 @@
 {% block content %}
 
     {% form_theme form 'StrixosWidgetBundle:Form:fields.html.twig' %}
-    <form action="{{ path('strixos_catalog_attribute_save') }}" method="post" {{ form_enctype(form) }}>
+    <form action="{{ path('strixos_catalog_attributeset_save') }}" method="post" {{ form_enctype(form) }}>
         {{ form_errors(form) }}
     
         <div class="form-panel ui-corner-all">
@@ -23,12 +23,58 @@
             {{ form_row(form.code) }}
         </div>
 
+        {% if form.id.vars.value <= 0 %}
+        <div class="form-panel ui-corner-all">
+            <h2>Copy from attribute set</h2>
+            {{ form_row(form.copyfromset) }}
+        </div>
+        {% endif %}
+
+        {% if form.id.vars.value > 0 %}
+        <div class="form-panel set-attributes ui-corner-all">
+            <h2>Set attributes</h2>
+            <ul id="attribute-list" class="connectedSortable">
+                {% for attribute in form.attributes %}
+                    <li class="ui-corner-all" id="{{ attribute.id.vars.value }}">{{ attribute.code.vars.value }}</li>
+                {% endfor %}
+            </ul> 
+        </div>
+        <div class="form-panel availables-attributes ui-corner-all">
+            <h2>Available attributes</h2>
+            <ul id="available-list" class="connectedSortable">
+                {% for attribute in form.others %}
+                    <li class="ui-corner-all" id="{{ attribute.id.vars.value }}">{{ attribute.code.vars.value }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <div style="clear:both;"></div>
+        {% endif %}
+
         {{ form_widget(form._token) }}
 
         <input type="submit" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" aria-disabled="false">
 
     </form>
 
+<script type="text/javascript"> 
+    /* @see http://jqueryui.com/demos/sortable/#connect-lists */
+    /* http://jqueryui.com/demos/selectable/#default */
+    
+    $( "#attribute-list").sortable({
+        connectWith: ".connectedSortable",
+        placeholder: "ui-state-highlight",
+        cursor: "move",
+        receive: function(event, ui) { ui.item.addClass("add-attribute").removeClass("remove-attribute") }
+    }).disableSelection();
+
+    $( "#available-list" ).sortable({
+        connectWith: ".connectedSortable",
+        placeholder: "ui-state-highlight",
+        cursor: "move",
+        receive: function(event, ui) { ui.item.addClass("remove-attribute").removeClass("add-attribute") }
+    }).disableSelection();
+
+</script> 
+
 {% endblock %}
-
-

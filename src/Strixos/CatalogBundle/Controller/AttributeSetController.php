@@ -38,7 +38,11 @@ class AttributeSetController extends Controller
     public function newAction(Request $request)
     {
         $set = new AttributeSet();
-        $form = $this->createForm(new AttributeSetType(), $set);
+        $setType = new AttributeSetType();
+        // set list of existing sets to prepare copy list
+        $setType->setCopySetOptions($this->_getCopySetOptions());
+        // prepare form
+        $form = $this->createForm($setType, $set);
         // render form
         return $this->render(
             'StrixosCatalogBundle:AttributeSet:edit.html.twig', array('form' => $form->createView(),)
@@ -56,10 +60,91 @@ class AttributeSetController extends Controller
         if (!$set) {
             throw $this->createNotFoundException('No set found for id '.$id);
         }
-        $form = $this->createForm(new AttributeSetType(), $set);
+        // set list of available attribute to prepare drag n drop list
+        $setType = new AttributeSetType();
+        $setType->setAvailableAttributeOptions($this->_getAvailableAttributeOptions($set));
+        // prepare form
+        $form = $this->createForm($setType, $set);
         // render form
         return $this->render(
             'StrixosCatalogBundle:AttributeSet:edit.html.twig', array('form' => $form->createView(),)
         );
     }
+
+    /**
+     * @Route("/attributeset/save")
+     * @Template()
+    */
+    public function saveAction(Request $request)
+    {
+        // load existing object or create a new one
+        $postData = $request->get('strixos_catalog_attributeset');
+        $id = isset($postData['id']) ? $postData['id'] : false;
+        $em = $this->getDoctrine()->getEntityManager();
+        if ($id) {
+            $set = $em->getRepository('StrixosCatalogBundle:AttributeSet')->find($id);
+        } else {
+            $copyId = isset($postData['copyfromset']) ? $postData['copyfromset'] : false;
+            $setCode = isset($postData['code']) ? $postData['code'] : false;
+            $copySet = $em->getRepository('StrixosCatalogBundle:AttributeSet')->find($copyId);
+            $set = $copySet->copy($setCode);
+        }
+        // create and bind with form
+        $form = $this->createForm(new AttributeSetType(), $set);
+        if ($request->getMethod() == 'POST') {
+            $form->bindRequest($request);
+
+            // TODO problem with form validation
+            //if ($form->isValid()) {
+                // persist attribute set
+                $em->persist($set);
+                $em->flush();
+                // success message and redirect
+                $this->get('session')->setFlash('notice', 'Attribute set has been saved!');
+                return $this->redirect(
+                    $this->generateUrl('strixos_catalog_attributeset_edit', array('id' => $set->getId()))
+                );
+            //}
+            // TODO Validation errors
+        }
+        // TODO Exception
+    }
+
+    /**
+     * @return array
+     */
+    private function _getCopySetOptions()
+    {
+        // set list of existing sets to prepare copy list
+        $em = $this->getDoctrine()->getEntityManager();
+        $sets = $em->getRepository('StrixosCatalogBundle:AttributeSet')->findAll();
+        $setIdToName = array();
+        foreach ($sets as $set) {
+            $setIdToName[$set->getId()]= $set->getCode();
+        }
+        return $setIdToName;
+    }
+
+    /**
+    * @return array
+    */
+    private function _getAvailableAttributeOptions($set)
+    {
+        // get attribute ids TODO get from collection ?
+        $attributeIds = array();
+        foreach ($set->getAttributes() as $attribute) {
+            $attributeIds[]= $attribute->getId();
+        }
+        // set list of attributes which are not in set TODO :move in custom repo
+        $em = $this->getDoctrine()->getEntityManager();
+        $repository = $em->getRepository('StrixosCatalogBundle:Attribute');
+        $query = $repository
+            ->createQueryBuilder('a')
+            ->where('a.id NOT IN (:attids)')
+            ->setParameter('attids', $attributeIds)
+            ->getQuery();
+        $attributes = $query->getResult();
+        return $attributes;
+    }
+
 }
