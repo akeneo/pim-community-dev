@@ -20,25 +20,24 @@ class AttributeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $entity = $options['data'];
+
+        // TODO drive from type and not add if in twig template ?
         $builder->add('id', 'hidden');
+
         $builder->add('code');
         $builder->add('isRequired', null, array('required' => false));
         $builder->add('isUnique', null, array('required' => false));
 
-        // TODO: once it's created, disable following choice !
+        // if already exists disabled this choice
         $builder->add(
             'input', 'choice', array(
                 'choices'   => Attribute::getFrontendInputOptions(),
                 'required'  => true,
+                'disabled'  => ($entity->getId())? true : false
             )
         );
-        /*
-        $builder->add(
-            'type', 'choice', array(
-                'choices'   => Attribute::getBackendTypeOptions(),
-                'required'  => true,
-            )
-        );*/
+
         $builder->add('defaultValue', null, array('required' => false));
 
         $builder->add(

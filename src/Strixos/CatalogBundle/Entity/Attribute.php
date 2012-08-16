@@ -96,7 +96,8 @@ class Attribute extends AbstractModel
     /**
      * Constructor
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->options = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -111,7 +112,7 @@ class Attribute extends AbstractModel
     }
 
     /**
-     * Set id TODO: to works with updateaction binding ...
+     * Set id TODO: to works with updateaction binding request...
      *
      */
     public function setId($id)

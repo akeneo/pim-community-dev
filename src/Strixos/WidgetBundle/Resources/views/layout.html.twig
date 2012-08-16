@@ -4,9 +4,10 @@
         <meta charset="UTF-8" />
         <title>{% block title %}POC STRIXos{% endblock %}</title>
         <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
-        <link rel="stylesheet" href="{{ asset('bundles/strixoswidget/css/ui-lightness/jquery-ui-1.8.23.custom.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/strixoswidget/css/smoothness/jquery-ui-1.8.23.custom.css') }}" />
 
         <link rel="stylesheet" href="{{ asset('bundles/strixoswidget/css/main.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/strixoswidget/css/icons-fugue.css') }}" />
         
         <script type="text/javascript" src="{{ asset('bundles/strixoswidget/js/jquery-1.8.0.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('bundles/strixoswidget/js/jquery-ui-1.8.23.custom.min.js') }}"></script>
@@ -35,7 +36,7 @@
                         {% block content_menu_more %}
                             <li>
                                 <a href="{{ path('strixos_dashboard_default_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
-                                    <span class="ui-button-icon-primary ui-icon ui-icon-home"></span><span class="ui-button-text">Back to home</span>
+                                    <span class="ui-button-icon-primary ui-icon ui-icon-fugue-home"></span><span class="ui-button-text">Back to home</span>
                                 </a>
                             </li>
                         {% endblock %}

@@ -2,6 +2,15 @@
 
 {% block title %}StrixOS - Manage Attribute Set{% endblock %}
 
+{% block content_menu_more %}
+    {{ parent() }}
+    <li>
+        <a href="{{ path('strixos_catalog_attributeset_new') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
+            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-plus-button"></span><span class="ui-button-text">Create attribute set</span>
+        </a>
+    </li>
+{% endblock %}
+
 {% block content %}
 
     <table class="grid">
@@ -18,7 +27,7 @@
             <td>{{set.id}}</td>
             <td>{{set.code}}</td>
             <td>
-                <!--<a href="{{ path('strixos_dashboard_default_index') }}">Edit</a> - <a href="{{ path('strixos_dashboard_default_index') }}">Delete</a>-->
+                <a href="{{ path('strixos_catalog_attributeset_edit', {'id': set.id }) }}">Edit</a>
             </td>
           </tr>
         {% endfor %}

@@ -71,7 +71,7 @@ class AttributeController extends Controller
     {
         // load existing object or create a new one
         $postData = $request->get('strixos_catalog_attribute');
-        $id = $postData['id'];
+        $id = isset($postData['id']) ? $postData['id'] : false;
         $em = $this->getDoctrine()->getEntityManager();
         if ($id) {
             $attribute = $em->getRepository('StrixosCatalogBundle:Attribute')->find($id);
