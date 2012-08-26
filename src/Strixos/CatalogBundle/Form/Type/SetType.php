@@ -12,7 +12,7 @@ use Strixos\CatalogBundle\Entity\Attribute;
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class AttributeSetType extends AbstractType
+class SetType extends AbstractType
 {
     private $_copySetOptions = array();
     private $_availableAttributeOptions = array();
@@ -41,6 +41,15 @@ class AttributeSetType extends AbstractType
             )
         );
 
+        // set groups
+        $builder->add(
+            'groups', 'collection',
+            array(
+                'type'         => new GroupLinkType(),
+                'by_reference' => false,
+            )
+        );
+
         // set attributes
         $builder->add(
             'attributes', 'collection',
@@ -54,7 +63,7 @@ class AttributeSetType extends AbstractType
         $builder->add(
             'others', 'collection',
             array(
-                'type'         => new AttributeLinkType(),
+                'type'          => new AttributeLinkType(),
                 'property_path' => false
             )
         );

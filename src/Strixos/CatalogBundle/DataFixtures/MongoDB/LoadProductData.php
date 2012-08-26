@@ -7,7 +7,7 @@ use Strixos\CatalogBundle\Document\Product;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Strixos\CatalogBundle\Entity\AttributeSet;
+use Strixos\CatalogBundle\Entity\Set;
 use Strixos\CatalogBundle\Entity\Attribute;
 use Strixos\CatalogBundle\DataFixtures\ORM\LoadAttributeSetData;
 

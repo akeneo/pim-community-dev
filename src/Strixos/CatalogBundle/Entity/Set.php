@@ -12,12 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright  Copyright (c) 2012 Strixos SAS (http://www.strixos.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * Strixos\CatalogBundle\Entity\AttributeSet
+ * Strixos\CatalogBundle\Entity\Set
  *
- * @ORM\Table(name="StrixosCatalog_AttributeSet")
+ * @ORM\Table(name="StrixosCatalog_Set")
  * @ORM\Entity
  */
-class AttributeSet extends AbstractModel
+class Set extends AbstractModel
 {
 
     /**
@@ -38,7 +38,7 @@ class AttributeSet extends AbstractModel
 
     /**
     * @ORM\ManyToMany(targetEntity="Attribute")
-    * @ORM\JoinTable(name="StrixosCatalog_AttributeSet_Attribute",
+    * @ORM\JoinTable(name="StrixosCatalog_Set_Attribute",
     *      joinColumns={@ORM\JoinColumn(name="attribute_id", referencedColumnName="id")},
     *      inverseJoinColumns={@ORM\JoinColumn(name="attributeset_id", referencedColumnName="id")}
     *      )
@@ -46,11 +46,21 @@ class AttributeSet extends AbstractModel
     protected $attributes;
 
     /**
+    * @ORM\ManyToMany(targetEntity="Group")
+    * @ORM\JoinTable(name="StrixosCatalog_Set_Group",
+    *      joinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")},
+    *      inverseJoinColumns={@ORM\JoinColumn(name="attributeset_id", referencedColumnName="id")}
+    *      )
+    */
+    protected $groups;
+
+    /**
     * Constructor
     */
     public function __construct()
     {
         $this->attributes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -124,11 +134,50 @@ class AttributeSet extends AbstractModel
     public function copy($newCode)
     {
         // TODO just unset id not works (due to lazy loading ?)
-        $copy = new AttributeSet();
-        $copy->setCode($newCode);
+        $copySet = new Set();
+        $copySet->setCode($newCode);
         foreach ($this->getAttributes() as $attribute) {
-            $copy->addAttribute($attribute);
+            $copySet->addAttribute($attribute);
         }
-        return $copy;
+        foreach ($this->getGroups() as $groupToCopy) {
+/*            $copyGroup = new Group();
+            $copyGroup->setCode($groupToCopy->getCode());
+            $copyGroup->setAttributeSet($copySet);*/
+            $copySet->addGroup($groupToCopy);
+        }
+        return $copySet;
+    }
+
+    /**
+     * Add groups
+     *
+     * @param Strixos\CatalogBundle\Entity\Group $groups
+     * @return AttributeSet
+     */
+    public function addGroup(\Strixos\CatalogBundle\Entity\Group $groups)
+    {
+        $this->groups[] = $groups;
+
+        return $this;
+    }
+
+    /**
+     * Remove groups
+     *
+     * @param Strixos\CatalogBundle\Entity\Group $groups
+     */
+    public function removeGroup(\Strixos\CatalogBundle\Entity\Group $groups)
+    {
+        $this->groups->removeElement($groups);
+    }
+
+    /**
+     * Get groups
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getGroups()
+    {
+        return $this->groups;
     }
 }

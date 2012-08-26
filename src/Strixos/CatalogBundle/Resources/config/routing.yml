@@ -5,7 +5,7 @@ _homepage:
 
 _attributeset_index:
     pattern:  /attributeset/index
-    defaults: { _controller: StrixosCatalogBundle:AttributeSet:index }
+    defaults: { _controller: StrixosCatalogBundle:Set:index }
 
 
 _attribute_index:

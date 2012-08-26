@@ -7,8 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Strixos\CatalogBundle\Form\Type\AttributeSetType;
-use Strixos\CatalogBundle\Entity\AttributeSet;
+use Strixos\CatalogBundle\Form\Type\SetType;
+use Strixos\CatalogBundle\Entity\Set;
 
 /**
  *
@@ -17,7 +17,7 @@ use Strixos\CatalogBundle\Entity\AttributeSet;
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class AttributeSetController extends Controller
+class SetController extends Controller
 {
     /**
      * @Route("/attributeset/index")
@@ -26,9 +26,9 @@ class AttributeSetController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getEntityManager();
-        $sets = $em->getRepository('StrixosCatalogBundle:AttributeSet')
+        $sets = $em->getRepository('StrixosCatalogBundle:Set')
             ->findAll();
-        return $this->render('StrixosCatalogBundle:AttributeSet:index.html.twig', array('sets' => $sets));
+        return $this->render('StrixosCatalogBundle:Set:index.html.twig', array('sets' => $sets));
     }
 
     /**
@@ -37,15 +37,15 @@ class AttributeSetController extends Controller
     */
     public function newAction(Request $request)
     {
-        $set = new AttributeSet();
-        $setType = new AttributeSetType();
+        $set = new Set();
+        $setType = new SetType();
         // set list of existing sets to prepare copy list
         $setType->setCopySetOptions($this->_getCopySetOptions());
         // prepare form
         $form = $this->createForm($setType, $set);
         // render form
         return $this->render(
-            'StrixosCatalogBundle:AttributeSet:edit.html.twig', array('form' => $form->createView(),)
+            'StrixosCatalogBundle:Set:edit.html.twig', array('form' => $form->createView(),)
         );
     }
 
@@ -56,18 +56,18 @@ class AttributeSetController extends Controller
     public function editAction($id)
     {
         $em = $this->getDoctrine()->getEntityManager();
-        $set = $em->getRepository('StrixosCatalogBundle:AttributeSet')->find($id);
+        $set = $em->getRepository('StrixosCatalogBundle:Set')->find($id);
         if (!$set) {
             throw $this->createNotFoundException('No set found for id '.$id);
         }
         // set list of available attribute to prepare drag n drop list
-        $setType = new AttributeSetType();
+        $setType = new SetType();
         $setType->setAvailableAttributeOptions($this->_getAvailableAttributeOptions($set));
         // prepare form
         $form = $this->createForm($setType, $set);
         // render form
         return $this->render(
-            'StrixosCatalogBundle:AttributeSet:edit.html.twig', array('form' => $form->createView(),)
+            'StrixosCatalogBundle:Set:edit.html.twig', array('form' => $form->createView(),)
         );
     }
 
@@ -82,15 +82,15 @@ class AttributeSetController extends Controller
         $id = isset($postData['id']) ? $postData['id'] : false;
         $em = $this->getDoctrine()->getEntityManager();
         if ($id) {
-            $set = $em->getRepository('StrixosCatalogBundle:AttributeSet')->find($id);
+            $set = $em->getRepository('StrixosCatalogBundle:Set')->find($id);
         } else {
             $copyId = isset($postData['copyfromset']) ? $postData['copyfromset'] : false;
             $setCode = isset($postData['code']) ? $postData['code'] : false;
-            $copySet = $em->getRepository('StrixosCatalogBundle:AttributeSet')->find($copyId);
+            $copySet = $em->getRepository('StrixosCatalogBundle:Set')->find($copyId);
             $set = $copySet->copy($setCode);
         }
         // create and bind with form
-        $form = $this->createForm(new AttributeSetType(), $set);
+        $form = $this->createForm(new SetType(), $set);
         if ($request->getMethod() == 'POST') {
             $form->bindRequest($request);
 
@@ -102,7 +102,7 @@ class AttributeSetController extends Controller
                 // success message and redirect
                 $this->get('session')->setFlash('notice', 'Attribute set has been saved!');
                 return $this->redirect(
-                    $this->generateUrl('strixos_catalog_attributeset_edit', array('id' => $set->getId()))
+                    $this->generateUrl('strixos_catalog_set_edit', array('id' => $set->getId()))
                 );
             //}
             // TODO Validation errors
@@ -117,7 +117,7 @@ class AttributeSetController extends Controller
     {
         // set list of existing sets to prepare copy list
         $em = $this->getDoctrine()->getEntityManager();
-        $sets = $em->getRepository('StrixosCatalogBundle:AttributeSet')->findAll();
+        $sets = $em->getRepository('StrixosCatalogBundle:Set')->findAll();
         $setIdToName = array();
         foreach ($sets as $set) {
             $setIdToName[$set->getId()]= $set->getCode();

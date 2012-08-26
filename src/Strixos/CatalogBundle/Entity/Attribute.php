@@ -93,6 +93,8 @@ class Attribute extends AbstractModel
     */
     private $defaultValue;
 
+
+
     /**
      * Constructor
      */
@@ -353,7 +355,6 @@ class Attribute extends AbstractModel
      */
     public function setOptions(Doctrine\Common\Collections\Collection $options)
     {
-        die('idi !');
         return $this->options;
     }
 }

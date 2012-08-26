@@ -6,7 +6,8 @@ namespace Strixos\CatalogBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Strixos\CatalogBundle\Entity\AttributeSet;
+use Strixos\CatalogBundle\Entity\Set;
+use Strixos\CatalogBundle\Entity\Group;
 use Strixos\CatalogBundle\Entity\Attribute;
 use Strixos\CatalogBundle\Entity\Option;
 
@@ -20,7 +21,13 @@ use Strixos\CatalogBundle\Entity\Option;
  */
 class LoadAttributeSetData extends AbstractFixture implements OrderedFixtureInterface
 {
-    const ATTRIBUTE_SET_BASE      = 'base';
+    const ATTRIBUTE_SET_BASE          = 'base';
+    const ATTRIBUTE_SET_GROUP_BASE    = 'base';
+    const ATTRIBUTE_SET_GROUP_META    = 'meta';
+    const ATTRIBUTE_SET_GROUP_PRICING = 'pricing';
+    const ATTRIBUTE_SET_GROUP_MEDIA   = 'media';
+    const ATTRIBUTE_SET_GROUP_TECHNIC = 'technical';
+
 
     const ATTRIBUTE_SET_TSHIRT    = 'tshirt';
     const ATTRIBUTE_TSHIRT_COLOR  = 'tshirt_color';
@@ -60,48 +67,69 @@ class LoadAttributeSetData extends AbstractFixture implements OrderedFixtureInte
     protected function _createBaseSet(ObjectManager $manager)
     {
         // create attribute set
-        $attributeSet = new AttributeSet();
+        $attributeSet = new Set();
         $attributeSet->setCode(self::ATTRIBUTE_SET_BASE);
         // default attribute code to type
         $attributes = array(
             // base
-            'name'              => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => true, 'is_unique' => false),
-            'description'       => array('input' => Attribute::FRONTEND_INPUT_TEXTAREA, 'is_required' => false, 'is_unique' => false),
-            'short_description' => array('input' => Attribute::FRONTEND_INPUT_TEXTAREA, 'is_required' => false, 'is_unique' => false),
+            self::ATTRIBUTE_SET_GROUP_BASE => array(
+                'name'              => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => true, 'is_unique' => false),
+                'description'       => array('input' => Attribute::FRONTEND_INPUT_TEXTAREA, 'is_required' => false, 'is_unique' => false),
+                'short_description' => array('input' => Attribute::FRONTEND_INPUT_TEXTAREA, 'is_required' => false, 'is_unique' => false),
+            ),
             // metas / seo
-            'meta_title'        => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
-            'meta_keyword'      => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
-            'meta_description'  => array('input' => Attribute::FRONTEND_INPUT_TEXTAREA, 'is_required' => false, 'is_unique' => false),
-            'url_key'           => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
+            self::ATTRIBUTE_SET_GROUP_META => array(
+                'meta_title'        => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
+                'meta_keyword'      => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
+                'meta_description'  => array('input' => Attribute::FRONTEND_INPUT_TEXTAREA, 'is_required' => false, 'is_unique' => false),
+                'url_key'           => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
+            ),
             // prices and costs
-            'price'             => array('input' => Attribute::FRONTEND_INPUT_PRICE, 'is_required' => false, 'is_unique' => false),
-            'special_price'     => array('input' => Attribute::FRONTEND_INPUT_PRICE, 'is_required' => false, 'is_unique' => false),
-            'special_from_date' => array('input' => Attribute::FRONTEND_INPUT_DATE, 'is_required' => false, 'is_unique' => false),
-            'special_to_date'   => array('input' => Attribute::FRONTEND_INPUT_DATE, 'is_required' => false, 'is_unique' => false),
-            'cost'              => array('input' => Attribute::FRONTEND_INPUT_PRICE, 'is_required' => false, 'is_unique' => false),
-            'tax_class'         => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
-            // image
-            'image'             => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
-            'image_label'       => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
-            'small_image'       => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
-            'small_image_label' => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
-            'thumbnail'         => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
-            'thumbnail_label'   => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
+            self::ATTRIBUTE_SET_GROUP_PRICING => array(
+                'price'             => array('input' => Attribute::FRONTEND_INPUT_PRICE, 'is_required' => false, 'is_unique' => false),
+                'special_price'     => array('input' => Attribute::FRONTEND_INPUT_PRICE, 'is_required' => false, 'is_unique' => false),
+                'special_from_date' => array('input' => Attribute::FRONTEND_INPUT_DATE, 'is_required' => false, 'is_unique' => false),
+                'special_to_date'   => array('input' => Attribute::FRONTEND_INPUT_DATE, 'is_required' => false, 'is_unique' => false),
+                'cost'              => array('input' => Attribute::FRONTEND_INPUT_PRICE, 'is_required' => false, 'is_unique' => false),
+                'tax_class'         => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
+            ),
+            // images
+            self::ATTRIBUTE_SET_GROUP_MEDIA => array(
+                'image'             => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
+                'image_label'       => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
+                'small_image'       => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
+                'small_image_label' => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
+                'thumbnail'         => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
+                'thumbnail_label'   => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
+            ),
             // technical
-            'status'            => array('input' => Attribute::FRONTEND_INPUT_SELECT, 'is_required' => false, 'is_unique' => false),
-            'weight'            => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
-            'weight_type'       => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
-            'country_of_manufacture' => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
-            'is_returnable'     => array('input' => Attribute::FRONTEND_INPUT_CHECKBOX, 'is_required' => false, 'is_unique' => false),
-            'news_from_date'    => array('input' => Attribute::FRONTEND_INPUT_DATE, 'is_required' => false, 'is_unique' => false),
-            'news_to_date'      => array('input' => Attribute::FRONTEND_INPUT_DATE, 'is_required' => false, 'is_unique' => false),
+            self::ATTRIBUTE_SET_GROUP_TECHNIC => array(
+                'status'            => array('input' => Attribute::FRONTEND_INPUT_SELECT, 'is_required' => false, 'is_unique' => false),
+                'weight'            => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
+                'weight_type'       => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
+                'country_of_manufacture' => array('input' => Attribute::FRONTEND_INPUT_TEXTFIELD, 'is_required' => false, 'is_unique' => false),
+                'is_returnable'     => array('input' => Attribute::FRONTEND_INPUT_CHECKBOX, 'is_required' => false, 'is_unique' => false),
+                'news_from_date'    => array('input' => Attribute::FRONTEND_INPUT_DATE, 'is_required' => false, 'is_unique' => false),
+                'news_to_date'      => array('input' => Attribute::FRONTEND_INPUT_DATE, 'is_required' => false, 'is_unique' => false),
+            )
         );
-        // create attributes
-        foreach ($attributes as $code => $data) {
-            $attribute = $this->_createAttribute($code, $data);
-            $manager->persist($attribute);
-            // add attribute to default set
-            $attributeSet->addAttribute($attribute);
+        foreach ($attributes as $groupCode => $attributeData) {
+            // create attribute set group
+            $attributeSetGroup = new Group();
+            $attributeSetGroup->setCode($groupCode);
+            // create attributes
+            foreach ($attributeData as $code => $data) {
+                $attribute = $this->_createAttribute($code, $data);
+                $manager->persist($attribute);
+                // add attribute to group
+                $attributeSetGroup->addAttribute($attribute);
+                // add attribute to default set
+                $attributeSet->addAttribute($attribute);
+            }
+            // add group to default set
+            $attributeSet->addGroup($attributeSetGroup);
+            // persist group
+            $manager->persist($attributeSetGroup);
         }
         // persist set
         $manager->persist($attributeSet);
@@ -126,9 +154,12 @@ class LoadAttributeSetData extends AbstractFixture implements OrderedFixtureInte
     /**
     * Create t-shirt attribute set
     */
-    protected function _createTShirtSet(ObjectManager $manager, AttributeSet $sourceSet)
+    protected function _createTShirtSet(ObjectManager $manager, Set $sourceSet)
     {
+        // get set
         $attributeSet = $sourceSet->copy(self::ATTRIBUTE_SET_TSHIRT);
+        // get technical group
+        $group = $manager->getRepository('StrixosCatalogBundle:Group')->findOneBy(array('code' => self::ATTRIBUTE_SET_GROUP_TECHNIC));
         // size and color attributes
         $attributes = array(
             self::ATTRIBUTE_TSHIRT_COLOR => array('input' => Attribute::FRONTEND_INPUT_SELECT, 'is_required' => false, 'is_unique' => false),
@@ -141,6 +172,7 @@ class LoadAttributeSetData extends AbstractFixture implements OrderedFixtureInte
         // create attributes
         foreach ($attributes as $code => $data) {
             $attribute = $this->_createAttribute($code, $data);
+            $group->addAttribute($attribute);
             // add options
             foreach ($options[$code] as $value) {
                 $option = new Option();
@@ -161,10 +193,12 @@ class LoadAttributeSetData extends AbstractFixture implements OrderedFixtureInte
     /**
     * Create laptop attribute set
      */
-    protected function _createLaptopSet(ObjectManager $manager, AttributeSet $sourceSet)
+    protected function _createLaptopSet(ObjectManager $manager, Set $sourceSet)
     {
         $attributeSet = $sourceSet->copy(self::ATTRIBUTE_SET_LAPTOP);
-                // size and color attributes
+        // get technical group
+        $group = $manager->getRepository('StrixosCatalogBundle:Group')->findOneBy(array('code' => self::ATTRIBUTE_SET_GROUP_TECHNIC));
+        // size and color attributes
         $attributes = array(
             self::ATTRIBUTE_LAPTOP_CPU => array('input' => Attribute::FRONTEND_INPUT_SELECT, 'is_required' => false, 'is_unique' => false),
             self::ATTRIBUTE_LAPTOP_HDD => array('input' => Attribute::FRONTEND_INPUT_SELECT, 'is_required' => false, 'is_unique' => false),
@@ -180,6 +214,7 @@ class LoadAttributeSetData extends AbstractFixture implements OrderedFixtureInte
         // create attributes
         foreach ($attributes as $code => $data) {
             $attribute = $this->_createAttribute($code, $data);
+            $group->addAttribute($attribute);
             // add options
             foreach ($options[$code] as $value) {
                 $option = new Option();
