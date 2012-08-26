@@ -93,8 +93,6 @@ class Attribute extends AbstractModel
     */
     private $defaultValue;
 
-
-
     /**
      * Constructor
      */

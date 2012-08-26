@@ -46,7 +46,7 @@
                     {% for group in form.groups %}
                     <div id="tabs-{{ group.id.vars.value }}">
                         <ul class="connectedSortable">
-                            {% for attribute in form.attributes %}
+                            {% for attribute in group.attributes %}
                                 <li class="ui-state-default ui-corner-all" id="{{ attribute.id.vars.value }}">{{ attribute.code.vars.value }}</li>
                             {% endfor %}
                         </ul>

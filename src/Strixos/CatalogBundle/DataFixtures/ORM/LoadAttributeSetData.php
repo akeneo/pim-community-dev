@@ -28,12 +28,13 @@ class LoadAttributeSetData extends AbstractFixture implements OrderedFixtureInte
     const ATTRIBUTE_SET_GROUP_MEDIA   = 'media';
     const ATTRIBUTE_SET_GROUP_TECHNIC = 'technical';
 
-
     const ATTRIBUTE_SET_TSHIRT    = 'tshirt';
+    const ATTRIBUTE_GROUP_TSHIRT  = 'tshirt';
     const ATTRIBUTE_TSHIRT_COLOR  = 'tshirt_color';
     const ATTRIBUTE_TSHIRT_SIZE   = 'tshirt_size';
 
     const ATTRIBUTE_SET_LAPTOP    = 'laptop';
+    const ATTRIBUTE_GROUP_LAPTOP  = 'laptop';
     const ATTRIBUTE_LAPTOP_SCREEN = 'laptop_screen_size';
     const ATTRIBUTE_LAPTOP_CPU    = 'laptop_cpu';
     const ATTRIBUTE_LAPTOP_MEMORY = 'laptop_memory';
@@ -123,11 +124,11 @@ class LoadAttributeSetData extends AbstractFixture implements OrderedFixtureInte
                 $manager->persist($attribute);
                 // add attribute to group
                 $attributeSetGroup->addAttribute($attribute);
-                // add attribute to default set
-                $attributeSet->addAttribute($attribute);
             }
             // add group to default set
             $attributeSet->addGroup($attributeSetGroup);
+            // link group to set
+            $attributeSetGroup->setSet($attributeSet);
             // persist group
             $manager->persist($attributeSetGroup);
         }
@@ -158,8 +159,11 @@ class LoadAttributeSetData extends AbstractFixture implements OrderedFixtureInte
     {
         // get set
         $attributeSet = $sourceSet->copy(self::ATTRIBUTE_SET_TSHIRT);
-        // get technical group
-        $group = $manager->getRepository('StrixosCatalogBundle:Group')->findOneBy(array('code' => self::ATTRIBUTE_SET_GROUP_TECHNIC));
+        // create custom group
+        $group = new Group();
+        $group->setCode(self::ATTRIBUTE_GROUP_TSHIRT);
+        // link group to set
+        $group->setSet($attributeSet);
         // size and color attributes
         $attributes = array(
             self::ATTRIBUTE_TSHIRT_COLOR => array('input' => Attribute::FRONTEND_INPUT_SELECT, 'is_required' => false, 'is_unique' => false),
@@ -181,9 +185,9 @@ class LoadAttributeSetData extends AbstractFixture implements OrderedFixtureInte
                 $manager->persist($option);
             }
             $manager->persist($attribute);
-            // add attribute to default set
-            $attributeSet->addAttribute($attribute);
         }
+        // persist group
+        $manager->persist($group);
         // persist set
         $manager->persist($attributeSet);
         $manager->flush();
@@ -196,8 +200,11 @@ class LoadAttributeSetData extends AbstractFixture implements OrderedFixtureInte
     protected function _createLaptopSet(ObjectManager $manager, Set $sourceSet)
     {
         $attributeSet = $sourceSet->copy(self::ATTRIBUTE_SET_LAPTOP);
-        // get technical group
-        $group = $manager->getRepository('StrixosCatalogBundle:Group')->findOneBy(array('code' => self::ATTRIBUTE_SET_GROUP_TECHNIC));
+        // create custom group
+        $group = new Group();
+        $group->setCode(self::ATTRIBUTE_GROUP_LAPTOP);
+        // link group to set
+        $group->setSet($attributeSet);
         // size and color attributes
         $attributes = array(
             self::ATTRIBUTE_LAPTOP_CPU => array('input' => Attribute::FRONTEND_INPUT_SELECT, 'is_required' => false, 'is_unique' => false),
@@ -223,9 +230,9 @@ class LoadAttributeSetData extends AbstractFixture implements OrderedFixtureInte
                 $manager->persist($option);
             }
             $manager->persist($attribute);
-            // add attribute to default set
-            $attributeSet->addAttribute($attribute);
         }
+        // persist group
+        $manager->persist($group);
         // persist set
         $manager->persist($attributeSet);
         $manager->flush();

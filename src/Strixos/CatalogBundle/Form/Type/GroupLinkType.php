@@ -42,15 +42,14 @@ class GroupLinkType extends AbstractType
         if (!is_null($this->_group)) {
             $builder->setData($this->_group);
         }
-        // set attributes
-        /*
+        // group attributes
         $builder->add(
             'attributes', 'collection',
             array(
                 'type'         => new AttributeLinkType(),
                 'by_reference' => false,
             )
-        );*/
+        );
     }
 
     /**

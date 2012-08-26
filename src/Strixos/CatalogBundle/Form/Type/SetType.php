@@ -51,13 +51,14 @@ class SetType extends AbstractType
         );
 
         // set attributes
+        /*
         $builder->add(
             'attributes', 'collection',
             array(
                 'type'         => new AttributeLinkType(),
                 'by_reference' => false,
             )
-        );
+        );*/
 
         // available attributes (not related to current set)
         $builder->add(

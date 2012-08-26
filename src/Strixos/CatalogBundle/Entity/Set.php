@@ -37,21 +37,8 @@ class Set extends AbstractModel
     private $code;
 
     /**
-    * @ORM\ManyToMany(targetEntity="Attribute")
-    * @ORM\JoinTable(name="StrixosCatalog_Set_Attribute",
-    *      joinColumns={@ORM\JoinColumn(name="attribute_id", referencedColumnName="id")},
-    *      inverseJoinColumns={@ORM\JoinColumn(name="attributeset_id", referencedColumnName="id")}
-    *      )
-    */
-    protected $attributes;
-
-    /**
-    * @ORM\ManyToMany(targetEntity="Group")
-    * @ORM\JoinTable(name="StrixosCatalog_Set_Group",
-    *      joinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")},
-    *      inverseJoinColumns={@ORM\JoinColumn(name="attributeset_id", referencedColumnName="id")}
-    *      )
-    */
+     * @ORM\OneToMany(targetEntity="Group",mappedBy="set", cascade={"persist", "remove"})
+     */
     protected $groups;
 
     /**
@@ -59,38 +46,7 @@ class Set extends AbstractModel
     */
     public function __construct()
     {
-        $this->attributes = new \Doctrine\Common\Collections\ArrayCollection();
         $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-    * Remove attributes
-    *
-    * @param Strixos\CatalogBundle\Entity\Attribute $attributes
-    */
-    public function removeAttribute(\Strixos\CatalogBundle\Entity\Attribute $attributes)
-    {
-        $this->attributes->removeElement($attributes);
-    }
-
-    /**
-     * Get attributes
-     *
-     * @return Doctrine\Common\Collections\Collection
-     */
-    public function getAttributes()
-    {
-        return $this->attributes;
-    }
-
-    /**
-    * Add an attribute to the set
-    *
-    * @param Poc\StrixosCatalogBundle\Entity\Attribute $attribute
-    */
-    public function addAttribute($attribute)
-    {
-        $this->attributes[] = $attribute;
     }
 
     /**
@@ -133,17 +89,18 @@ class Set extends AbstractModel
      */
     public function copy($newCode)
     {
-        // TODO just unset id not works (due to lazy loading ?)
         $copySet = new Set();
         $copySet->setCode($newCode);
-        foreach ($this->getAttributes() as $attribute) {
-            $copySet->addAttribute($attribute);
-        }
         foreach ($this->getGroups() as $groupToCopy) {
-/*            $copyGroup = new Group();
+            $copyGroup = new Group();
             $copyGroup->setCode($groupToCopy->getCode());
-            $copyGroup->setAttributeSet($copySet);*/
-            $copySet->addGroup($groupToCopy);
+            foreach ($groupToCopy->getAttributes() as $attributeToLink) {
+                $copyGroup->addAttribute($attributeToLink);
+            }
+            // add group to default set
+            $copySet->addGroup($copyGroup);
+            // link group to set
+            $copyGroup->setSet($copySet);
         }
         return $copySet;
     }
@@ -152,7 +109,7 @@ class Set extends AbstractModel
      * Add groups
      *
      * @param Strixos\CatalogBundle\Entity\Group $groups
-     * @return AttributeSet
+     * @return Set
      */
     public function addGroup(\Strixos\CatalogBundle\Entity\Group $groups)
     {

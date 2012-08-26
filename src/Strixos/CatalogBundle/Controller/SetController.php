@@ -132,8 +132,10 @@ class SetController extends Controller
     {
         // get attribute ids TODO get from collection ?
         $attributeIds = array();
-        foreach ($set->getAttributes() as $attribute) {
-            $attributeIds[]= $attribute->getId();
+        foreach ($set->getGroups() as $group) {
+            foreach ($group->getAttributes() as $attribute) {
+                $attributeIds[]= $attribute->getId();
+            }
         }
         // set list of attributes which are not in set TODO :move in custom repo
         $em = $this->getDoctrine()->getEntityManager();

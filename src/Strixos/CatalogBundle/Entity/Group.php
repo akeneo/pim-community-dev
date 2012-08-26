@@ -30,12 +30,21 @@ class Group extends AbstractModel
     /**
      * @var string $code
      *
-     * @ORM\Column(name="code", type="string", length=255, unique=true)
+     * @ORM\Column(name="code", type="string", length=255)
      */
     private $code;
 
     /**
-     * @ORM\OneToMany(targetEntity="Attribute",mappedBy="group", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="Set")
+     */
+    protected $set;
+
+    /**
+    * @ORM\ManyToMany(targetEntity="Attribute")
+    * @ORM\JoinTable(name="StrixosCatalog_Group_Attribute",
+    *      joinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")},
+    *      inverseJoinColumns={@ORM\JoinColumn(name="attribute_id", referencedColumnName="id")}
+    *      )
      */
     protected $attributes;
 
@@ -56,7 +65,6 @@ class Group extends AbstractModel
     {
         return $this->id;
     }
-
 
     /**
      * Set code
@@ -79,6 +87,30 @@ class Group extends AbstractModel
     public function getCode()
     {
         return $this->code;
+    }
+
+
+    /**
+     * Set set
+     *
+     * @param Strixos\CatalogBundle\Entity\Set $set
+     * @return Group
+     */
+    public function setSet(\Strixos\CatalogBundle\Entity\Set $set = null)
+    {
+        $this->set = $set;
+
+        return $this;
+    }
+
+    /**
+     * Get set
+     *
+     * @return Strixos\CatalogBundle\Entity\Set
+     */
+    public function getSet()
+    {
+        return $this->set;
     }
 
     /**
@@ -113,6 +145,4 @@ class Group extends AbstractModel
     {
         return $this->attributes;
     }
-
-
 }
