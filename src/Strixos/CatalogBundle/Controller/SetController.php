@@ -72,6 +72,34 @@ class SetController extends Controller
     }
 
     /**
+    * @Route("/attributeset/clone")
+    * @Template()
+    */
+    public function cloneAction(Request $request)
+    {
+        $postData = $request->get('strixos_catalog_attributeset');
+        $copyId = isset($postData['copyfromset']) ? $postData['copyfromset'] : false;
+        if ($copyId) {
+            $setCode = isset($postData['code']) ? $postData['code'] : false;
+            $em = $this->getDoctrine()->getEntityManager();
+            $copySet = $em->getRepository('StrixosCatalogBundle:Set')->find($copyId);
+            if ($request->getMethod() == 'POST') {
+                // persist
+                $cloneSet = $copySet->copy($setCode);
+                $cloneSet->setCode($setCode);
+                $em->persist($cloneSet);
+                $em->flush();
+                // success message and redirect
+                $this->get('session')->setFlash('notice', 'Attribute set has been saved!');
+                return $this->redirect(
+                    $this->generateUrl('strixos_catalog_set_edit', array('id' => $cloneSet->getId()))
+                );
+            }
+        }
+        // TODO exception
+    }
+
+    /**
      * @Route("/attributeset/save")
      * @Template()
     */
@@ -88,6 +116,7 @@ class SetController extends Controller
             $setCode = isset($postData['code']) ? $postData['code'] : false;
             $copySet = $em->getRepository('StrixosCatalogBundle:Set')->find($copyId);
             $set = $copySet->copy($setCode);
+
         }
         // create and bind with form
         $form = $this->createForm(new SetType(), $set);

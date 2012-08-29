@@ -210,12 +210,15 @@ table.grid tr.even {
 }
 
 /* attribute set form */
-.connectedSortable li {width:200px; border:1px solid black; margin-bottom:5px; padding:2px;background-color:whitesmoke;}
-.set-attributes {float:left; /*width:250px;*/}
+.connectedSortable {min-height: 50px;}
+.connectedSortable li {width:200px; /*border:1px solid black;*/ margin-bottom:5px; padding:2px; /*background-color:whitesmoke;*/}
+
+/*.set-attributes {float:left;}
 .availables-attributes {float:right; width:250px;}
-.connectedSortable .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
-.connectedSortable .add-attribute {color:green;}
-.connectedSortable .remove-attribute {color:red;}
+.connectedSortable .ui-state-highlight { height: 1.5em; line-height: 1.2em; }*/
+
+.connectedSortable .add-attribute {border:1px solid green;}
+.connectedSortable .remove-attribute {border:1px solid red;}
 
 /*
 .connectedSortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
