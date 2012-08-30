@@ -212,17 +212,8 @@ table.grid tr.even {
 /* attribute set form */
 .connectedSortable {min-height: 50px;}
 .connectedSortable li {width:200px; /*border:1px solid black;*/ margin-bottom:5px; padding:2px; /*background-color:whitesmoke;*/}
-
-/*.set-attributes {float:left;}
-.availables-attributes {float:right; width:250px;}
-.connectedSortable .ui-state-highlight { height: 1.5em; line-height: 1.2em; }*/
-
+.ui-tabs-nav li .ui-icon {float:left;}
 .connectedSortable .add-attribute {border:1px solid green;}
 .connectedSortable .remove-attribute {border:1px solid red;}
-
-/*
-.connectedSortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
-.connectedSortable .ui-selecting { background: #FECA40; }
-.connectedSortable .ui-selected { background: #F39814; color: white; }
-.connectedSortable li { margin: 3px; padding: 0.4em; font-size: 1.4em; height: 18px; }
-*/
+#add_tab {float:right;margin-bottom:1px;}
+.ui-tabs { border: 1px solid #AACD4E}
