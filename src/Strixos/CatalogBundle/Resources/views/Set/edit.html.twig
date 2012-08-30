@@ -47,7 +47,7 @@
                     <!-- one tab by group -->
                     <ul>
                         {% for group in form.groups %}
-                        <li><a href="#tabs-{{ group.id.vars.value }}">{{ group.code.vars.value }}</a> <span class="ui-icon ui-icon-close">Remove Tab</span></li>
+                        <li><span class="ui-icon ui-icon-close">Remove Tab</span><a href="#tabs-{{ group.id.vars.value }}">{{ group.code.vars.value }}</a></li>
                         {% endfor %}
 
                 <a id="add_tab" href="#" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" />
@@ -81,8 +81,11 @@
 
         {{ form_widget(form._token) }}
 
-        <input type="submit" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" aria-disabled="false">
-
+        {% if form.id.vars.value <= 0 %}
+            <input type="submit" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" aria-disabled="false">
+        {% else %}
+            <p>TODO : deal with set changes</p>
+        {% endif %}
     </form>
     
     <!-- add group dialog -->
@@ -150,7 +153,7 @@ $(function() {
 
     // tabs init with a custom tab template and an "add" callback filling in the content
     var $tabs = $( "#tabs").tabs({
-        tabTemplate: "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close'>Remove Group</span></li>",
+        tabTemplate: "<li><span class='ui-icon ui-icon-close'>Remove Group</span><a href='#{href}'>#{label}</a></li>",
         add: function( event, ui ) {
             var tab_content = '<ul class="connectedSortable"></ul>';
             $( ui.panel ).append(tab_content);

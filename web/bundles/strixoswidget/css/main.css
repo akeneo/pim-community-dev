@@ -211,8 +211,9 @@ table.grid tr.even {
 
 /* attribute set form */
 .connectedSortable {min-height: 50px;}
-.connectedSortable li {width:200px; /*border:1px solid black;*/ margin-bottom:5px; padding:2px; /*background-color:whitesmoke;*/}
-.ui-tabs-nav li .ui-icon {float:left;}
+.connectedSortable li {width:200px; margin-bottom:5px; padding:2px;}
+.ui-tabs-nav li {width:120px;}
+.ui-tabs-nav li .ui-icon {float:right;}
 .connectedSortable .add-attribute {border:1px solid green;}
 .connectedSortable .remove-attribute {border:1px solid red;}
 #add_tab {float:right;margin-bottom:1px;}
