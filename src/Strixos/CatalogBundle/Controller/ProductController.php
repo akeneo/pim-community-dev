@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Strixos\CatalogBundle\Document\Product;
+use Strixos\CatalogBundle\Form\Type\ProductType;
 
 /**
  *
@@ -28,6 +29,45 @@ class ProductController extends Controller
         $repository = $manager->getRepository('StrixosCatalogBundle:Product');
         $products = $repository->findAll()->limit(1000);
         return array('products' => $products);
+    }
+
+    /**
+    * @Route("/product/edit/{id}")
+    * @Template()
+    */
+    public function editAction($id)
+    {
+        // get product
+        $manager = $this->get('doctrine.odm.mongodb.document_manager');
+        $repository = $manager->getRepository('StrixosCatalogBundle:Product');
+        $product = $repository->find($id);
+        if (!$product) {
+            throw $this->createNotFoundException('No product found for id '.$id);
+        }
+        // get attribute set
+        $em = $this->getDoctrine()->getEntityManager();
+        $set = $em->getRepository('StrixosCatalogBundle:Set')->findOneBy(array('code' => $product->getAttributeSetCode()));
+        if (!$set) {
+            throw $this->createNotFoundException('No set found for code '.$product->getAttributeSetCode());
+        }
+        // set list of available attribute to prepare drag n drop list
+        $productType = new ProductType();
+        $productType->setAttributeSet($set);
+        // prepare form
+        $form = $this->createForm($productType, $product);
+        // render form
+        return $this->render(
+            'StrixosCatalogBundle:Product:edit.html.twig', array('form' => $form->createView(),)
+        );
+    }
+
+    /**
+    * @Route("/product/save")
+    * @Template()
+    */
+    public function saveAction(Request $request)
+    {
+        // TODO
     }
 
     /**

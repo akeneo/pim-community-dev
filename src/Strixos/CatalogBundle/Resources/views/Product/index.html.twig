@@ -22,7 +22,7 @@
             <td>{{product.values.name}}</td>
             <td>{{product.attributeSetCode}}</td>
             <td>
-                <!--<a href="{{ path('strixos_dashboard_default_index') }}">Edit</a> - <a href="{{ path('strixos_dashboard_default_index') }}">Delete</a>-->
+                <a href="{{ path('strixos_catalog_product_edit', {'id': product.id }) }}">Edit</a> 
             </td>
           </tr>
         {% endfor %}

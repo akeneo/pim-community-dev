@@ -22,12 +22,21 @@ class GroupLinkType extends AbstractType
     private $_group = null;
 
     /**
+    * Used to populate from the constructor
+    * @param Group
+    */
+    private $_values = null;
+
+    /**
      * Construct
      */
-    public function __construct($group = null)
+    public function __construct($group = null, $attributesToValues = null)
     {
         if ($group) {
             $this->_group = $group;
+        }
+        if ($attributesToValues) {
+            $this->_values = $attributesToValues;
         }
     }
 
@@ -39,10 +48,11 @@ class GroupLinkType extends AbstractType
     {
         $builder->add('id', 'hidden');
         $builder->add('code');
+        // set up group from constructor
         if (!is_null($this->_group)) {
             $builder->setData($this->_group);
         }
-        // group attributes
+        // add group attributes
         $builder->add(
             'attributes', 'collection',
             array(
@@ -50,6 +60,24 @@ class GroupLinkType extends AbstractType
                 'by_reference' => false,
             )
         );
+        // add attributes values (used by product form)
+        if ($this->_values) {
+            // add values collection
+            $builder->add(
+                'values', 'collection',
+                array(
+                    'type'         => new ValueType(),
+                    'by_reference' => false,
+                    'property_path' => false
+                )
+            );
+            // add attribute / value pairs
+            foreach ($this->_values as $attributeId => $attributeAndValue) {
+                $attribute = $attributeAndValue['attribute'];
+                $value = $attributeAndValue['value'];
+                $builder->get('values')->add('attribute_'.$attribute->getId(), new ValueType($attribute, $value));
+            }
+        }
     }
 
     /**

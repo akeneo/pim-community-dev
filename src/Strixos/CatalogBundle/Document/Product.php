@@ -82,6 +82,17 @@ class Product extends AbstractModel
     }
 
     /**
+     * Get value
+     *
+     * @param string $attributeCode
+     * @return mixed $value
+     */
+    public function getValue($attributeCode)
+    {
+        return (isset($this->values[$attributeCode]))? $this->values[$attributeCode] : null;
+    }
+
+    /**
      * Set values
      *
      * @param collection $values
@@ -124,4 +135,7 @@ class Product extends AbstractModel
     {
         return $this->attributeSetCode;
     }
+
+    // TODO : store set id in place of set code and add logic to retrieve related set entity
+
 }

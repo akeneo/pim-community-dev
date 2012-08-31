@@ -50,9 +50,9 @@
                         <li><span class="ui-icon ui-icon-close">Remove Tab</span><a href="#tabs-{{ group.id.vars.value }}">{{ group.code.vars.value }}</a></li>
                         {% endfor %}
 
-                <a id="add_tab" href="#" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" />
-                    <span class="ui-button-icon-primary ui-icon ui-icon-fugue-plus-button"></span><span class="ui-button-text">Add a new group</span>
-                </a>
+                        <a id="add_tab" href="#" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" />
+                            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-plus-button"></span><span class="ui-button-text">Add a new group</span>
+                        </a>
                     </ul>
                     <!-- tabs content -->
                     {% for group in form.groups %}

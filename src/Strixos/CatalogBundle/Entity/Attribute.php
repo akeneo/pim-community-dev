@@ -355,4 +355,20 @@ class Attribute extends AbstractModel
     {
         return $this->options;
     }
+
+    /**
+     * Get options
+     *
+     * @return Array
+     */
+    public function getOptionsArray()
+    {
+        $stack = array();
+        foreach ($this->getOptions() as $option) {
+            // TODO : store id ?
+            $stack[$option->getId()]= $option->getValue();
+            // $stack[$option->getValue()]= $option->getValue();
+        }
+        return $stack;
+    }
 }
