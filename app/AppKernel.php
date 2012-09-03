@@ -30,6 +30,7 @@ class AppKernel extends Kernel
             new Strixos\ReportBundle\StrixosReportBundle(),
             new Strixos\DataFlowBundle\StrixosDataFlowBundle(),
             new Strixos\DashboardBundle\StrixosDashboardBundle(),
+            new Strixos\IcecatConnectorBundle\StrixosIcecatConnectorBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

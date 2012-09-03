@@ -1,3 +1,8 @@
+StrixosIcecatConnectorBundle:
+    resource: "@StrixosIcecatConnectorBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 _welcome:
     pattern:  /
     defaults: { _controller: StrixosDashboardBundle:Default:index }
