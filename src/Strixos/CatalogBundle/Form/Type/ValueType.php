@@ -50,9 +50,9 @@ class ValueType extends AbstractType
             case Attribute::FRONTEND_INPUT_TEXTAREA:
                 $input = 'textarea';
                 break;
-            case Attribute::FRONTEND_INPUT_DATE:
+            /*case Attribute::FRONTEND_INPUT_DATE:
                 $input = 'date';
-                break;
+                break;*/
             case Attribute::FRONTEND_INPUT_SELECT:
                 $input = 'choice';
                 break;

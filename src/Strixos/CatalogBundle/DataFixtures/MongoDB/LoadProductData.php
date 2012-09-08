@@ -78,6 +78,17 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
                 $product->setSku('foobar-'.$ind);
                 $product->addValue('name', 'My '.$attSetCode.' '.$ind);
                 $product->addValue('short_description', 'My '.$attSetCode.' foo bar lorem ipsum'.$ind);
+                $product->addValue(
+                    'description',
+                    'My '.$attSetCode.' foo bar lorem ipsum lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum'.
+                    'lorem ipsum lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem'
+                );
+                $product->addValue('meta_title', 'My '.$attSetCode);
+                $product->addValue('meta_keyword', 'My '.$attSetCode);
+                $product->addValue('meta_description', 'My '.$attSetCode.' foo bar lorem ipsumfoo bar oo bar');
+                $product->addValue('url_key', 'foobar-'.$ind.'.html');
+                $product->addValue('special_from_date', '2012-01-01');
+                $product->addValue('special_to_date', '2012-01-12');
 
                 // define specific values
                 if ($attSetCode == LoadAttributeSetData::ATTRIBUTE_SET_TSHIRT) {
