@@ -54,4 +54,83 @@ class Product extends AbstractModel
 
 
 
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set productId
+     *
+     * @param string $productId
+     * @return Product
+     */
+    public function setProductId($productId)
+    {
+        $this->productId = $productId;
+    
+        return $this;
+    }
+
+    /**
+     * Get productId
+     *
+     * @return string 
+     */
+    public function getProductId()
+    {
+        return $this->productId;
+    }
+
+    /**
+     * Set productName
+     *
+     * @param string $productName
+     * @return Product
+     */
+    public function setProductName($productName)
+    {
+        $this->productName = $productName;
+    
+        return $this;
+    }
+
+    /**
+     * Get productName
+     *
+     * @return string 
+     */
+    public function getProductName()
+    {
+        return $this->productName;
+    }
+
+    /**
+     * Set supplierId
+     *
+     * @param string $supplierId
+     * @return Product
+     */
+    public function setSupplierId($supplierId)
+    {
+        $this->supplierId = $supplierId;
+    
+        return $this;
+    }
+
+    /**
+     * Get supplierId
+     *
+     * @return string 
+     */
+    public function getSupplierId()
+    {
+        return $this->supplierId;
+    }
 }

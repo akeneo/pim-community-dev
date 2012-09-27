@@ -19,25 +19,25 @@ class SupplierXmlToCsv
      */
     public function process($xmlFile, $csvFile)
     {
-        if (!file_exists($csvFile)) {
-            // create csv file
-            $fp = fopen($csvFile, 'w');
-            // read from xml file
-            $xmlString = file_get_contents($xmlFile);
-            libxml_use_internal_errors(true);
-            $xmlDoc = simplexml_load_string(utf8_encode($xmlString));
-            $supplierList = $xmlDoc->SupplierMappings->SupplierMapping;
-            foreach ($supplierList as $supplier) {
-                $supplierSymbolList = $supplier->Symbol;
-                $supplierId = $supplier['supplier_id'];
-                foreach ($supplierSymbolList as $symbol) {
-                    $symbolName = (string) $symbol;
-                    // write into csv
-                    fputcsv($fp, array('', $supplierId, $symbolName));
-                }
+        // create csv file
+        $fp = fopen($csvFile, 'w');
+        // read from xml file
+        $xmlString = file_get_contents($xmlFile);
+        libxml_use_internal_errors(true);
+        $xmlDoc = simplexml_load_string(utf8_encode($xmlString));
+        $supplierList = $xmlDoc->SupplierMappings->SupplierMapping;
+        foreach ($supplierList as $supplier) {
+            $supplierSymbolList = $supplier->Symbol;
+            $suppId = $supplier['supplier_id'];
+            $suppName = $supplier['name'];
+            foreach ($supplierSymbolList as $symbolTag) {
+                $symbol = (string) $symbolTag;
+                $distrId = $symbolTag['distributor_id'];
+                // write into csv
+                fputcsv($fp, array('', $suppId, $suppName, $distrId, $symbol));
             }
-            // then close csv stream
-            fclose($fp);
         }
+        // then close csv stream
+        fclose($fp);
     }
 }

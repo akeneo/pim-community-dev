@@ -16,40 +16,41 @@ class Supplier extends AbstractModel
 {
 
     /**
-    * @var integer $id
-    *
-    * @ORM\Column(name="id", type="integer")
-    * @ORM\Id
-    * @ORM\GeneratedValue(strategy="AUTO")
-    */
+     * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
     private $id;
 
     /**
-    * @var string $supplierId
-    *
-    * @ORM\Column(name="supplier_id", type="integer")
-    */
+     * @var string $supplierId
+     *
+     * @ORM\Column(name="supplier_id", type="integer")
+     */
     private $supplierId;
 
     /**
-    * @var string $symbol
-    *
-    * @ORM\Column(name="symbol", type="string", length=255)
-    */
-    private $symbol;
+     * @var string $supplierName
+     *
+     * @ORM\Column(name="supplier_name", type="string", length=255)
+     */
+    private $supplierName;
 
     /**
-     * Set id
+     * @var string $distributorId
      *
-     * @param integer $id
-     * @return Supplier
+     * @ORM\Column(name="distributor_id", type="integer")
      */
-    public function setId($id)
-    {
-        $this->id = $id;
+    private $distributorId;
 
-        return $this;
-    }
+    /**
+     * @var string $symbol
+     *
+     * @ORM\Column(name="symbol", type="string", length=255)
+     */
+    private $symbol;
 
     /**
      * Get id
@@ -59,29 +60,6 @@ class Supplier extends AbstractModel
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set symbol
-     *
-     * @param string $symbol
-     * @return Supplier
-     */
-    public function setSymbol($symbol)
-    {
-        $this->symbol = $symbol;
-
-        return $this;
-    }
-
-    /**
-     * Get symbol
-     *
-     * @return string
-     */
-    public function getSymbol()
-    {
-        return $this->symbol;
     }
 
     /**
@@ -105,5 +83,76 @@ class Supplier extends AbstractModel
     public function getSupplierId()
     {
         return $this->supplierId;
+    }
+
+    /**
+     * Set supplierName
+     *
+     * @param string $supplierName
+     * @return Supplier
+     */
+    public function setSupplierName($supplierName)
+    {
+        $this->supplierName = $supplierName;
+
+        return $this;
+    }
+
+    /**
+     * Get supplierName
+     *
+     * @return string
+     */
+    public function getSupplierName()
+    {
+        return $this->supplierName;
+    }
+
+    /**
+     * Set distributorId
+     *
+     * @param integer $distributorId
+     * @return Supplier
+     */
+    public function setDistributorId($distributorId)
+    {
+        $this->distributorId = $distributorId;
+
+        return $this;
+    }
+
+    /**
+     * Get distributorId
+     *
+     * @return integer
+     */
+    public function getDistributorId()
+    {
+        return $this->distributorId;
+    }
+
+
+
+    /**
+     * Set symbol
+     *
+     * @param string $symbol
+     * @return Supplier
+     */
+    public function setSymbol($symbol)
+    {
+        $this->symbol = $symbol;
+    
+        return $this;
+    }
+
+    /**
+     * Get symbol
+     *
+     * @return string 
+     */
+    public function getSymbol()
+    {
+        return $this->symbol;
     }
 }

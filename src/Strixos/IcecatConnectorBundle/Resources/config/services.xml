@@ -6,15 +6,16 @@
 
     <!--
     <parameters>
-        <parameter key="strixos_icecat_connector.example.class">Strixos\IcecatConnectorBundle\Example</parameter>
+        <parameter key="strixos_icecat_connector.supplier_loader.class">Strixos\IcecatConnectorBundle\SupplierLoader</parameter>
     </parameters>
 
     <services>
-        <service id="strixos_icecat_connector.example" class="%strixos_icecat_connector.example.class%">
-            <argument type="service" id="service_id" />
+        <service id="strixos_icecat_connector.supplier_loader.class" class="%strixos_icecat_connector.supplier_loader.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>plain_value</argument>
             <argument>%parameter_name%</argument>
         </service>
     </services>
-    -->
+     -->
+
 </container>

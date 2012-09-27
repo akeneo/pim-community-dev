@@ -1,0 +1,44 @@
+{% extends 'StrixosWidgetBundle::layout.html.twig' %}
+
+{% block title %}StrixOS - Manage Icecat suppliers{% endblock %}
+
+{% block content_menu_more %}
+    {{ parent() }}
+    <li>
+        <a href="{{ path('strixos_catalog_attribute_new') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
+            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-plus-button"></span><span class="ui-button-text">Create attribute</span>
+        </a>
+    </li>
+{% endblock %}
+
+{% block content %}
+
+    <p>Info : a same supplier as HP can have many symbols, one or many symbols can be enriched by a known distributor (or not).</p>
+    <p>{{nbSuppliers}} suppliers, {{nbSymbols}} symbols, {{nbDistributors}} distributors, {{nbProducts}} products (can be duplicated by distributors)</p>
+
+    <table class="grid">
+        <thead>
+          <tr>
+            <th>Supplier id</th>
+            <th>Supplier name</th>
+            <th>Symbol</th>
+            <th>Distributor id</th>
+            <th>Nb products</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for item in list %}
+          <tr class="{% if loop.index is odd %} odd {% else %} even {% endif %}">
+            <td>{{item.supplierId}}</td>
+            <td>{{item.supplierName}}</td>
+            <td>{{item.symbol}}</td>
+            <td>{{item.distributorId}}</td>
+            <td></td>
+            <td></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

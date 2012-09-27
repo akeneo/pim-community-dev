@@ -2,12 +2,13 @@
 
 namespace Strixos\CatalogBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
+use Doctrine\MongoDB\Connection;
+
+use Strixos\CatalogBundle\Document\MongoProduct;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Strixos\CatalogBundle\Document\Product;
 
 /**
  *
@@ -19,4 +20,37 @@ use Strixos\CatalogBundle\Document\Product;
 class DefaultController extends Controller
 {
 
+    /**
+     * @Route("/default/index")
+     * @Template()
+     */
+    public function indexAction()
+    {
+/*        $prod = new MongoProduct();
+*/
+
+//        $m = new \Mongo();
+//        $db = $m->selectDB('exemple');
+//        $collection = $m->createCollection('test')
+
+
+        // TODO: not use ODM ! only Mongo wrapper
+
+        $dbName = 'strixos';
+        $collectionName = 'flexiblemongoprod';
+        $con = new Connection();
+        $collection = $con->selectCollection($dbName, $collectionName);
+
+        $myProd = array(
+            'sku'      => '12344',
+            'features' =>array(
+                'size'  => 12,
+                'color' => 'red'
+
+            )
+        );
+        $collection->insert($myProd);
+
+        die('pouet');
+    }
 }
