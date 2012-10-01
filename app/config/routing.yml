@@ -1,5 +1,20 @@
-StrixosIcecatConnectorBundle:
-    resource: "@StrixosIcecatConnectorBundle/Controller/"
+ext_strixos:
+    resource: "@ExtStrixosBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+biz_strixos:
+    resource: "@BizStrixosBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+biz_catalog:
+    resource: "@BizCatalogBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+bap_flexible_entity:
+    resource: "@BapFlexibleEntityBundle/Controller/"
     type:     annotation
     prefix:   /
 
@@ -36,3 +51,8 @@ StrixosCatalogBundle:
     resource: "@StrixosCatalogBundle/Controller/"
     type:     annotation
     prefix:   /catalog/
+
+StrixosIcecatConnectorBundle:
+    resource: "@StrixosIcecatConnectorBundle/Controller/"
+    type:     annotation
+    prefix:   /icecatconnector/
