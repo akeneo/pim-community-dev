@@ -15,7 +15,7 @@ abstract class Entity
      * Get system id
      * @return integer $i
      */
-    public function getId();
+    public  abstract function getId();
 
     /**
      * Persist entity, create a revision by default, then erase current revision
