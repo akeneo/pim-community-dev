@@ -28,9 +28,6 @@ class ProductController extends Controller
         $manager = $this->get('doctrine.odm.mongodb.document_manager');
         $repository = $manager->getRepository('StrixosCatalogBundle:Product');
         $products = $repository->findAll()->limit(1);
-
-
-        var_dump($products);
         return array('products' => $products);
     }
 
