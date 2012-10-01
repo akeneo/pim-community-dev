@@ -22,9 +22,7 @@
         "gedmo/doctrine-extensions": "*",
         "stof/doctrine-extensions-bundle": "*",
         "doctrine/mongodb-odm-bundle" : "v3.0.0-BETA1",
-        "doctrine/doctrine-fixtures-bundle": "dev-master",
-        
-        "zendframework/zend-http": "2.0.*"
+        "doctrine/doctrine-fixtures-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
@@ -47,11 +45,5 @@
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web"
-    },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "http://packages.zendframework.com/"
-        }
-    ]
+    }
 }
