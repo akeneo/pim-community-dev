@@ -1,3 +1,3 @@
 _homepage:
-    pattern:  /eav/
+    pattern:  /
     defaults: { _controller: StrixosCatalogEavBundle:Default:index }

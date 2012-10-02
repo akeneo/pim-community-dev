@@ -1,7 +1,7 @@
-strixos_catalog_eav:
+StrixosCatalogEavBundle:
     resource: "@StrixosCatalogEavBundle/Controller/"
     type:     annotation
-    prefix:   /
+    prefix:   /eav/
 
 _welcome:
     pattern:  /
