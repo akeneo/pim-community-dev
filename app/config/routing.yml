@@ -1,3 +1,8 @@
+strixos_catalog_eav:
+    resource: "@StrixosCatalogEavBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 _welcome:
     pattern:  /
     defaults: { _controller: StrixosDashboardBundle:Default:index }

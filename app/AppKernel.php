@@ -34,6 +34,7 @@ class AppKernel extends Kernel
             new Bap\FlexibleEntityBundle\BapFlexibleEntityBundle(),
             new Biz\StrixosBundle\BizStrixosBundle(),
             new Ext\StrixosBundle\ExtStrixosBundle(),
+            new Strixos\CatalogEavBundle\StrixosCatalogEavBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
