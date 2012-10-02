@@ -11,50 +11,65 @@ namespace Bap\FlexibleEntityBundle\Model;
 abstract class EntityType
 {
     /**
-     * Set unique code
-     * @param string code
+     * @var string $code
      */
-    public abstract function setTypeCode(string $code);
-
+    protected $code;
+    
     /**
      * Get code
      * @return string code
      */
-    public abstract function getTypeCode();
+    public function getCode()
+    {
+        return $this->code;
+    }
+    
+    /**
+     * Set unique code
+     * 
+     * @param string code
+     * @return EntityType
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+    
+        return $this;
+    }
 
     /**
      * Add a group
      * @param string code
      */
-    public abstract function addAttributeGroup(string $code);
+    //public abstract function addAttributeGroup(string $code);
 
     /**
      * Get a group
      * @param string code
      * @return ???
      */
-    public abstract function getAttributeGroup(string $code);
+    //public abstract function getAttributeGroup(string $code);
 
     /**
      * Remove a group
      * @param string code
      * @return ???
      */
-    public abstract function removeAttributeGroup(string $code, boolean $forceIfNotEmpty = null);
+    //public abstract function removeAttributeGroup(string $code, boolean $forceIfNotEmpty = null);
 
     /**
      * Add an attribute
      */
-    public  abstract function addAttribute(string $code, FieldTypeInterface $type, mixed $isMultivalue, $fieldGroup);
+    //public  abstract function addAttribute(string $code, FieldTypeInterface $type, mixed $isMultivalue, $fieldGroup);
 
     /**
      * Remove an attribute
      */
-    public  abstract function removeAttribute(string $code);
+    //public  abstract function removeAttribute(string $code);
 
     /**
      * Create new flexible entity instance
      */
-    public  abstract function newFlexibleEntityInstance();
+    //public  abstract function newFlexibleEntityInstance();
 
 }

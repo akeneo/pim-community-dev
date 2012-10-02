@@ -12,10 +12,32 @@ abstract class Entity
 {
 
     /**
+     * @var integer $id
+     */
+    protected $id;
+    
+    /**
+     * @var EntityType $type
+     */
+    protected $type;
+
+    /**
      * Get system id
      * @return integer $i
      */
-    public  abstract function getId();
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
+     * Get entity type
+     * @return EntityType
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
 
     /**
      * Persist entity, create a revision by default, then erase current revision
