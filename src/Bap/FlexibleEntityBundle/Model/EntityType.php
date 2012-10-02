@@ -14,47 +14,47 @@ abstract class EntityType
      * Set unique code
      * @param string code
      */
-    public function setTypeCode(string $code);
+    public abstract function setTypeCode(string $code);
 
     /**
      * Get code
      * @return string code
      */
-    public function getTypeCode();
+    public abstract function getTypeCode();
 
     /**
      * Add a group
      * @param string code
      */
-    public function addAttributeGroup(string $code);
+    public abstract function addAttributeGroup(string $code);
 
     /**
      * Get a group
      * @param string code
      * @return ???
      */
-    public function getAttributeGroup(string $code);
+    public abstract function getAttributeGroup(string $code);
 
     /**
      * Remove a group
      * @param string code
      * @return ???
      */
-    public function removeAttributeGroup(string $code, boolean $forceIfNotEmpty = false);
+    public abstract function removeAttributeGroup(string $code, boolean $forceIfNotEmpty = null);
 
     /**
      * Add an attribute
      */
-    public function addAttribute(string $code, FieldTypeInterface $type, mixed $isMultivalue, $fieldGroup);
+    public  abstract function addAttribute(string $code, FieldTypeInterface $type, mixed $isMultivalue, $fieldGroup);
 
     /**
      * Remove an attribute
      */
-    public function removeAttribute(string $code);
+    public  abstract function removeAttribute(string $code);
 
     /**
      * Create new flexible entity instance
      */
-    public function newFlexibleEntityInstance();
+    public  abstract function newFlexibleEntityInstance();
 
 }

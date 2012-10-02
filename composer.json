@@ -8,23 +8,21 @@
         "php": ">=5.3.3",
         "symfony/symfony": "2.1.*",
         "doctrine/orm": ">=2.2.3,<2.4-dev",
-        "doctrine/doctrine-bundle": "dev-master",
-        "twig/extensions": "dev-master",
-        "symfony/assetic-bundle": "dev-master",
-        "symfony/swiftmailer-bundle": "dev-master",
-        "symfony/monolog-bundle": "dev-master",
-        "sensio/distribution-bundle": "dev-master",
-        "sensio/framework-extra-bundle": "dev-master",
-        "sensio/generator-bundle": "dev-master",
+        "doctrine/doctrine-bundle": "1.0.*",
+        "twig/extensions": "1.0.*",
+        "symfony/assetic-bundle": "2.1.*",
+        "symfony/swiftmailer-bundle": "2.1.*",
+        "symfony/monolog-bundle": "2.1.*",
+        "sensio/distribution-bundle": "2.1.*",
+        "sensio/framework-extra-bundle": "2.1.*",
+        "sensio/generator-bundle": "2.1.*",
         "jms/security-extra-bundle": "1.2.*",
         "jms/di-extra-bundle": "1.1.*",
-        
+
         "gedmo/doctrine-extensions": "*",
         "stof/doctrine-extensions-bundle": "*",
         "doctrine/mongodb-odm-bundle" : "v3.0.0-BETA1",
-        "doctrine/doctrine-fixtures-bundle": "dev-master",
-        
-        "zendframework/zend-http": "2.0.*"
+        "doctrine/doctrine-fixtures-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
@@ -47,11 +45,5 @@
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web"
-    },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "http://packages.zendframework.com/"
-        }
-    ]
+    }
 }
