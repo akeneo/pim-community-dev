@@ -2,13 +2,12 @@
 
 namespace Strixos\CatalogEavBundle\Controller;
 
+use Strixos\CatalogEavBundle\Entity\Group;
+use Strixos\CatalogEavBundle\Entity\Type;
+use Strixos\CatalogEavBundle\Entity\Value;
+use Strixos\CatalogEavBundle\Entity\Field;
 use Strixos\CatalogEavBundle\Entity\Product;
 
-use Strixos\CatalogEavBundle\Entity\Attribute;
-
-use Strixos\CatalogEavBundle\Entity\ProductType;
-
-use Strixos\CatalogEavBundle\Factory\ProductTypeFactory;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -23,23 +22,49 @@ class DefaultController extends Controller
     public function indexAction()
     {
 
-        $factory = $this->container->get('strixos_catalog_eav.typefactory');
+        $factory = $this->container->get('strixos_catalog_eav.productmanager');
         $manager = $factory->getObjectManager();
 
-        $attCode = 'name';
-        $attribute = new Attribute();
-        $attribute->setCode($attCode);
-        $manager->persist($attribute);
+        $fieldCode = 'name';
+        $fieldName = new Field();
+        $fieldName->setCode($fieldCode);
+        $manager->persist($fieldName);
+
+        $fieldCode = 'sku';
+        $fieldSku = new Field();
+        $fieldSku->setCode($fieldCode);
+        $manager->persist($fieldSku);
 
         $typCode = 'T-shirt';
-        $type = new ProductType();
+        $type = new Type();
         $type->setCode($typCode);
-        $type->addAttribute($attribute);
+        $type->addField($fieldName);
+        $type->addField($fieldSku);
         $manager->persist($type);
+
+        $groupCode = 'Informations';
+        $group = new Group();
+        $group->setCode($groupCode);
+        $group->setType($type);
+        $group->addField($fieldName);
+        $group->addField($fieldSku);
+        $manager->persist($group);
 
         $product = new Product();
         $product->setType($type);
         $manager->persist($product);
+
+        $value = new Value();
+        $value->setField($fieldName);
+        $value->setProduct($product);
+        $value->setContent('my product name');
+        $manager->persist($value);
+
+        $value = new Value();
+        $value->setField($fieldSku);
+        $value->setProduct($product);
+        $value->setContent('my-product-sku');
+        $manager->persist($value);
 
         $manager->flush();
 

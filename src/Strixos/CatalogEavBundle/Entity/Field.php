@@ -6,14 +6,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Bap\FlexibleEntityBundle\Model\EntityField;
 
 /**
- * @author Romain Monceau @ Strixos
+ * @author     Romain Monceau @ Strixos
  * @copyright  Copyright (c) 2012 Strixos SAS (http://www.strixos.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="StrixosCatalogEav_Attribute")
+ * @ORM\Table(name="StrixosCatalogEav_Product_Field")
  * @ORM\Entity
  */
-class Attribute extends EntityField
+class Field extends EntityField
 {
     /**
      * @var integer $id
@@ -31,6 +31,7 @@ class Attribute extends EntityField
      */
     private $code;
 
+
     /**
      * Get id
      *
@@ -45,7 +46,7 @@ class Attribute extends EntityField
      * Set code
      *
      * @param string $code
-     * @return Attribute
+     * @return Field
      */
     public function setCode($code)
     {
