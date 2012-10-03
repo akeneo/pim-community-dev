@@ -3,8 +3,8 @@
 namespace Strixos\CatalogEavBundle\Tests\Entity;
 
 
-use Strixos\CatalogEavBundle\Entity\ProductType;
-use Strixos\CatalogEavBundle\Entity\Product;
+use Strixos\CatalogEavBundle\Entity\Type;
+use Strixos\CatalogEavBundle\Entity\Field;
 
 
 /**
@@ -12,7 +12,7 @@ use Strixos\CatalogEavBundle\Entity\Product;
  * @copyright  Copyright (c) 2012 Strixos SAS (http://www.strixos.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductTypeTest extends EntityTest
+class FieldTypeTest extends EntityTest
 {
     /**
      * @var string
@@ -25,7 +25,7 @@ class ProductTypeTest extends EntityTest
      */
     protected function getEntityClassName()
     {
-        return 'Strixos\CatalogEavBundle\Entity\ProductType';
+        return 'Strixos\CatalogEavBundle\Entity\Type';
     }
     
     /**
@@ -61,117 +61,117 @@ class ProductTypeTest extends EntityTest
     /**
      * Test product accessors (add, remove, get)
      */
-    public function testProductAccessors()
+    public function testFieldAccessors()
     {
-        $this->assertGetProducts(0);
+        $this->assertGetFields(0);
         
         // add product
-        $firstProduct = $this->createProduct();
-        $this->entity->addProduct($firstProduct);
-        $this->assertGetProducts(1);
+        $firstField = $this->createField();
+        $this->entity->addField($firstField);
+        $this->assertGetFields(1);
         
         // add product
-        $secondProduct = $this->createProduct();
-        $this->entity->addProduct($secondProduct);
-        $this->assertGetProducts(2);
+        $secondField = $this->createField();
+        $this->entity->addField($secondField);
+        $this->assertGetFields(2);
         
         // verify first product is different of the second
-        $productList = $this->entity->getProducts();
+        $productList = $this->entity->getFields();
         $this->assertNotSame($productList->first(), $productList->last());
         
         // remove product
-        $this->entity->removeProduct($firstProduct);
-        $this->assertGetProducts(1);
+        $this->entity->removeField($firstField);
+        $this->assertGetFields(1);
         
         // verify first product is deleted and second already exists
-        $productList = $this->entity->getProducts();
+        $productList = $this->entity->getFields();
         $this->assertSame($productList->first(), $productList->last());
-        $this->assertSame($productList->first(), $secondProduct);
-        $this->assertNotSame($productList->first(), $firstProduct);
+        $this->assertSame($productList->first(), $secondField);
+        $this->assertNotSame($productList->first(), $firstField);
     }
     
     /**
      * Assert count of product list
      * @param integer $count
      */
-    protected function assertGetProducts($count)
+    protected function assertGetFields($count)
     {
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection',
-        		$this->entity->getProducts());
-        $this->assertCount($count, $this->entity->getProducts()->toArray());
+        		$this->entity->getFields());
+        $this->assertCount($count, $this->entity->getFields()->toArray());
     }
     
     /**
      * Remove a product non existant to the entity
      */
-    public function testRemoveNonExistantProduct()
+    public function testRemoveNonExistantField()
     {
-        $this->assertGetProducts(0);
+        $this->assertGetFields(0);
         // TODO ! access to first product.. -> exception ??! => must be tested
         
         // add product
-        $firstProduct = $this->createProduct();
-        $this->entity->addProduct($firstProduct);
-        $this->assertGetProducts(1);
+        $firstField = $this->createField();
+        $this->entity->addField($firstField);
+        $this->assertGetFields(1);
         
         // remove non-existant product
-        $secondProduct = $this->createProduct();
-        $this->entity->removeProduct($secondProduct);
+        $secondField = $this->createField();
+        $this->entity->removeField($secondField);
         
         // assert count is equal
-        $this->assertGetProducts(1);
+        $this->assertGetFields(1);
     }
     
     /**
      * Remove a product already removed to the entity
      */
-    public function testRemoveAlreadyRemovedProduct()
+    public function testRemoveAlreadyRemovedField()
     {
-        $this->assertGetProducts(0);
+        $this->assertGetFields(0);
         
         // add product
-        $firstProduct = $this->createProduct();
-        $this->entity->addProduct($firstProduct);
-        $this->assertGetProducts(1);
+        $firstField = $this->createField();
+        $this->entity->addField($firstField);
+        $this->assertGetFields(1);
         
         // remove product
-        $this->entity->removeProduct($firstProduct);
-        $this->assertGetProducts(0);
+        $this->entity->removeField($firstField);
+        $this->assertGetFields(0);
         
         // remove already removed product
-        $this->entity->removeProduct($firstProduct);
-        $this->assertGetProducts(0);
+        $this->entity->removeField($firstField);
+        $this->assertGetFields(0);
     }
     
     /**
      * Add a product already added to the entity
      */
-    public function testAddAlreadyAddedProduct()
+    public function testAddAlreadyAddedField()
     {
-        $this->assertGetProducts(0);
+        $this->assertGetFields(0);
         
         // create product
-        $firstProduct = $this->createProduct();
+        $firstField = $this->createField();
         
         // add product
-        $this->entity->addProduct($firstProduct);
-        $this->assertGetProducts(1);
+        $this->entity->addField($firstField);
+        $this->assertGetFields(1);
         
         // add already added product
-        $this->entity->addProduct($firstProduct);
-        $this->assertGetProducts(2);
+        $this->entity->addField($firstField);
+        $this->assertGetFields(2);
         
         // remove product
-        $this->entity->removeProduct($firstProduct);
-        $this->assertGetProducts(1);
+        $this->entity->removeField($firstField);
+        $this->assertGetFields(1);
     }
     
     /**
      * Create an empty product entity
-     * @return \Strixos\CatalogEavBundle\Entity\Product
+     * @return \Strixos\CatalogEavBundle\Entity\Field
      */
-    protected function createProduct()
+    protected function createField()
     {
-        return new Product();
+        return new Field();
     }
 }
