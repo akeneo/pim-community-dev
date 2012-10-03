@@ -1,17 +1,17 @@
 <?php
-namespace Strixos\CatalogEavBundle\Factory;
+namespace Strixos\CatalogEavBundle\Service;
 
-use Bap\FlexibleEntityBundle\Model\EntityFactory;
+use Bap\FlexibleEntityBundle\Model\FlexibleEntityManager;
 use Doctrine\ORM\EntityManager;
 
 /**
- * Responsible of create flexible entity, type, fields, values
+ * Responsible of persist flexible entity, type, fields, values
  *
  * @author     Nicolas Dupont @ Strixos
  * @copyright  Copyright (c) 2012 Strixos SAS (http://www.strixos.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductFactory extends EntityFactory
+class ProductManager extends FlexibleEntityManager
 {
     protected $_em;
 

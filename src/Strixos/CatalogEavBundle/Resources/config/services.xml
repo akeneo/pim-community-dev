@@ -19,7 +19,7 @@
     -->
 
     <services>
-        <service id="strixos_catalog_eav.typefactory" class="Strixos\CatalogEavBundle\Factory\ProductFactory">
+        <service id="strixos_catalog_eav.productmanager" class="Strixos\CatalogEavBundle\Service\ProductManager">
             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
     </services>

@@ -6,11 +6,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Bap\FlexibleEntityBundle\Model\Entity;
 
 /**
- * @author Romain Monceau @ Strixos
+ * @author     Romain Monceau @ Strixos
  * @copyright  Copyright (c) 2012 Strixos SAS (http://www.strixos.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="StrixosCatalogEav_Product")
+ * @ORM\Table(name="StrixosCatalogEav_Product_Entity")
  * @ORM\Entity
  */
 class Product extends Entity
@@ -23,13 +23,14 @@ class Product extends Entity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-    
+
     /**
      * @var EntityType $type
      *
-     * @ORM\ManyToOne(targetEntity="ProductType")
+     * @ORM\ManyToOne(targetEntity="Type")
      */
     protected $type;
+
 
     /**
      * Get id
@@ -44,10 +45,10 @@ class Product extends Entity
     /**
      * Set type
      *
-     * @param Strixos\CatalogEavBundle\Entity\ProductType $type
+     * @param Strixos\CatalogEavBundle\Entity\Type $type
      * @return Product
      */
-    public function setType(\Strixos\CatalogEavBundle\Entity\ProductType $type = null)
+    public function setType(\Strixos\CatalogEavBundle\Entity\Type $type = null)
     {
         $this->type = $type;
     
@@ -57,7 +58,7 @@ class Product extends Entity
     /**
      * Get type
      *
-     * @return Strixos\CatalogEavBundle\Entity\ProductType 
+     * @return Strixos\CatalogEavBundle\Entity\Type 
      */
     public function getType()
     {
