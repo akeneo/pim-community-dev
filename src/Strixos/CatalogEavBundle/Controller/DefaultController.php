@@ -26,49 +26,86 @@ class DefaultController extends Controller
         $manager = $factory->getObjectManager();
 
         $fieldCode = 'name';
-        $fieldName = new Field();
-        $fieldName->setCode($fieldCode);
-        $manager->persist($fieldName);
-
+        if (!$fieldName = $manager->getRepository('StrixosCatalogEavBundle:Field')
+                ->findOneBy(array('code' => $fieldCode)))
+        {
+            $fieldName = new Field();
+            $fieldName->setCode($fieldCode);
+            $manager->persist($fieldName);
+        }
+        
         $fieldCode = 'sku';
-        $fieldSku = new Field();
-        $fieldSku->setCode($fieldCode);
-        $manager->persist($fieldSku);
+        if (!$fieldSku = $manager->getRepository('StrixosCatalogEavBundle:Field')
+                ->findOneBy(array('code' => $fieldCode)))
+        {
+            $fieldSku = new Field();
+            $fieldSku->setCode($fieldCode);
+            $manager->persist($fieldSku);
+        }
+
 
         $typCode = 'T-shirt';
-        $type = new Type();
-        $type->setCode($typCode);
-        $type->addField($fieldName);
-        $type->addField($fieldSku);
-        $manager->persist($type);
+        if (!$type = $manager->getRepository('StrixosCatalogEavBundle:Type')
+                ->findOneBy(array('code' => $typCode))) {
+            $type = new Type();
+            $type->setCode($typCode);
+            $type->addField($fieldName);
+            $type->addField($fieldSku);
+            $manager->persist($type);
+        }
 
         $groupCode = 'Informations';
-        $group = new Group();
-        $group->setCode($groupCode);
-        $group->setType($type);
-        $group->addField($fieldName);
-        $group->addField($fieldSku);
-        $manager->persist($group);
+        if (!$group = $manager->getRepository('StrixosCatalogEavBundle:Group')
+                ->findOneBy(array('code' => $groupCode)))
+        {
+            $group = new Group();
+            $group->setCode($groupCode);
+            $group->setType($type);
+            $group->addField($fieldName);
+            $group->addField($fieldSku);
+            $manager->persist($group);
+        }
 
         $product = new Product();
         $product->setType($type);
         $manager->persist($product);
+        
+        echo $product->getType()->getCode();
 
-        $value = new Value();
-        $value->setField($fieldName);
-        $value->setProduct($product);
-        $value->setContent('my product name');
-        $manager->persist($value);
-
-        $value = new Value();
-        $value->setField($fieldSku);
-        $value->setProduct($product);
-        $value->setContent('my-product-sku');
-        $manager->persist($value);
+        /*if (!$value = $manager->getRepository('StrixosCatalogEavBundle:Value')
+                ->findOneByField($fieldName))
+        {
+            $value = new Value();
+            $value->setField($fieldName);
+            $value->setProduct($product);
+            $value->setContent('my product name');
+            $manager->persist($value);
+        }
+        
+        if (!$value = $manager->getRepository('StrixosCatalogEavBundle:Value')
+        		->findOneByField($fieldSku))
+        {
+            $value = new Value();
+            $value->setField($fieldSku);
+            $value->setProduct($product);
+            $value->setContent('my-product-sku');
+            $manager->persist($value);
+        }*/
 
         $manager->flush();
+        
+        
+        //$product = new Product();
+        $product = $manager->getRepository('StrixosCatalogEavBundle:Product')
+            ->findOneById(1);
+        
+        $product->setSku('yellow');
+    
+        echo 'POUIC '. $product->getSku();
+        
+        echo '<hr />';
 
         $name = 'pouet';
-        return array('name' => $name);
+        return array('name' => $name, 'product' => $product);
     }
 }
