@@ -15,7 +15,7 @@ abstract class Entity
      * @var integer $id
      */
     protected $id;
-    
+
     /**
      * @var EntityType $type
      */
@@ -29,7 +29,7 @@ abstract class Entity
     {
         return $this->id;
     }
-    
+
     /**
      * Get entity type
      * @return EntityType
@@ -38,25 +38,5 @@ abstract class Entity
     {
         return $this->type;
     }
-
-    /**
-     * Persist entity, create a revision by default, then erase current revision
-     * @param boolean $quietMode
-     * TODO in entity manager ?
-     *
-    public function save(boolean $quietMode);
-
-    /**
-     * Logical delete
-     * TODO in entity manager ?
-     *
-    public function delete();
-
-    /**
-     * Physical delete
-     * TODO in entity manager ?
-     *
-    public function purge();
-    */
 
 }

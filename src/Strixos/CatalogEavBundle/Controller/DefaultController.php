@@ -21,23 +21,65 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+        // TODO take a look on datafixtures to test
+/*
+        // use factory to build entity and manager to persist
+        $factory = $this->container->get('strixos_catalog_eav.productfactory');
+        $manager = $this->container->get('doctrine')->getEntityManager();
 
-        $factory = $this->container->get('strixos_catalog_eav.productmanager');
-        $manager = $factory->getObjectManager();
+        // create fields
+        $fieldCodes = array('sku', 'name', 'hddsize', 'cpu');
+        $fields = array();
+        foreach ($fieldCodes as $fieldCode) {
+            $field = $factory->buildField($fieldCode);
+            var_dump($field);
+            $fields[]= $field;
+            $manager->persist($field);
+        }
+        // create type
+        $type = $factory->buildType('computer');
+        foreach ($fields as $field) {
+            $type->addField($field);
+        }
+        var_dump($type);
+        $manager->persist($type);
+        // create group
+        $group = $factory->buildGroup('General', $type);
+        foreach ($fields as $field) {
+            $group->addField($field);
+        }
+        $type->addGroup($group);
+        var_dump($group);
+        var_dump($type);
+        $manager->persist($group);
+        // create product
+        $product = $factory->buildEntity($type);
+        $product->setName('Dell Xps 15z');
+        $product->setSku('dell-xps-15z');
+        $product->setHddsize('200 GO SATA');
+        $product->setCpu('Core I7');
+        $manager->persist($product);
+
+        // save data
+        $manager->flush();
+*/
+
+/*
+        exit();
+
+        $manager = $this->getDoctrine()->getEntityManager();
 
         $fieldCode = 'name';
         if (!$fieldName = $manager->getRepository('StrixosCatalogEavBundle:Field')
-                ->findOneBy(array('code' => $fieldCode)))
-        {
+                ->findOneBy(array('code' => $fieldCode))) {
             $fieldName = new Field();
             $fieldName->setCode($fieldCode);
             $manager->persist($fieldName);
         }
-        
+
         $fieldCode = 'sku';
         if (!$fieldSku = $manager->getRepository('StrixosCatalogEavBundle:Field')
-                ->findOneBy(array('code' => $fieldCode)))
-        {
+                ->findOneBy(array('code' => $fieldCode))) {
             $fieldSku = new Field();
             $fieldSku->setCode($fieldCode);
             $manager->persist($fieldSku);
@@ -56,8 +98,7 @@ class DefaultController extends Controller
 
         $groupCode = 'Informations';
         if (!$group = $manager->getRepository('StrixosCatalogEavBundle:Group')
-                ->findOneBy(array('code' => $groupCode)))
-        {
+                ->findOneBy(array('code' => $groupCode))) {
             $group = new Group();
             $group->setCode($groupCode);
             $group->setType($type);
@@ -69,43 +110,18 @@ class DefaultController extends Controller
         $product = new Product();
         $product->setType($type);
         $manager->persist($product);
-        
-        echo $product->getType()->getCode();
-
-        /*if (!$value = $manager->getRepository('StrixosCatalogEavBundle:Value')
-                ->findOneByField($fieldName))
-        {
-            $value = new Value();
-            $value->setField($fieldName);
-            $value->setProduct($product);
-            $value->setContent('my product name');
-            $manager->persist($value);
-        }
-        
-        if (!$value = $manager->getRepository('StrixosCatalogEavBundle:Value')
-        		->findOneByField($fieldSku))
-        {
-            $value = new Value();
-            $value->setField($fieldSku);
-            $value->setProduct($product);
-            $value->setContent('my-product-sku');
-            $manager->persist($value);
-        }*/
-
         $manager->flush();
-        
-        
-        //$product = new Product();
+
+
+        // get existing product
         $product = $manager->getRepository('StrixosCatalogEavBundle:Product')
             ->findOneById(1);
-        
-        $product->setSku('yellow');
-    
-        echo 'POUIC '. $product->getSku();
-        
-        echo '<hr />';
 
+        $product->setSku('yellow');
+        echo 'sku: '. $product->getSku();
+        echo '<hr />';
+*/
         $name = 'pouet';
-        return array('name' => $name, 'product' => $product);
+        return array('name' => $name);
     }
 }

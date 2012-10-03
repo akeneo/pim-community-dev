@@ -29,7 +29,8 @@ class Value
     /**
      * @var Entity $product
      *
-     * @ORM\ManyToOne(targetEntity="Product")
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="values")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      */
     protected $product;
 
@@ -52,7 +53,7 @@ class Value
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -68,14 +69,14 @@ class Value
     public function setContent($content)
     {
         $this->content = $content;
-    
+
         return $this;
     }
 
     /**
      * Get content
      *
-     * @return string 
+     * @return string
      */
     public function getContent()
     {
@@ -91,14 +92,14 @@ class Value
     public function setProduct(\Strixos\CatalogEavBundle\Entity\Product $product = null)
     {
         $this->product = $product;
-    
+
         return $this;
     }
 
     /**
      * Get product
      *
-     * @return Strixos\CatalogEavBundle\Entity\Product 
+     * @return Strixos\CatalogEavBundle\Entity\Product
      */
     public function getProduct()
     {
@@ -114,14 +115,14 @@ class Value
     public function setField(\Strixos\CatalogEavBundle\Entity\Field $field = null)
     {
         $this->field = $field;
-    
+
         return $this;
     }
 
     /**
      * Get field
      *
-     * @return Strixos\CatalogEavBundle\Entity\Field 
+     * @return Strixos\CatalogEavBundle\Entity\Field
      */
     public function getField()
     {

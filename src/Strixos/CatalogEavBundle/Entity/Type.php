@@ -2,6 +2,8 @@
 
 namespace Strixos\CatalogEavBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Doctrine\ORM\Mapping as ORM;
 use Bap\FlexibleEntityBundle\Model\EntityType;
 
@@ -32,6 +34,13 @@ class Type extends EntityType
     protected $code;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Group", mappedBy="type", cascade={"remove"})
+     */
+    protected $groups;
+
+    /**
      * @var ArrayCollection $fields
      * @ORM\ManyToMany(targetEntity="Field")
      * @ORM\JoinTable(name="StrixosCatalogEav_Product_Type_Field")
@@ -45,11 +54,11 @@ class Type extends EntityType
     {
         $this->fields = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -65,14 +74,14 @@ class Type extends EntityType
     public function setCode($code)
     {
         $this->code = $code;
-    
+
         return $this;
     }
 
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -88,7 +97,7 @@ class Type extends EntityType
     public function addField(\Strixos\CatalogEavBundle\Entity\Field $fields)
     {
         $this->fields[] = $fields;
-    
+
         return $this;
     }
 
@@ -105,10 +114,43 @@ class Type extends EntityType
     /**
      * Get fields
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getFields()
     {
         return $this->fields;
+    }
+
+    /**
+     * Add groups
+     *
+     * @param Strixos\CatalogEavBundle\Entity\Group $groups
+     * @return Type
+     */
+    public function addGroup(\Strixos\CatalogEavBundle\Entity\Group $groups)
+    {
+        $this->groups[] = $groups;
+
+        return $this;
+    }
+
+    /**
+     * Remove groups
+     *
+     * @param Strixos\CatalogEavBundle\Entity\Group $groups
+     */
+    public function removeGroup(\Strixos\CatalogEavBundle\Entity\Group $groups)
+    {
+        $this->groups->removeElement($groups);
+    }
+
+    /**
+     * Get groups
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getGroups()
+    {
+        return $this->groups;
     }
 }

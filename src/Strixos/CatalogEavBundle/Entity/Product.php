@@ -12,6 +12,7 @@ use Bap\FlexibleEntityBundle\Model\Entity;
  *
  * @ORM\Table(name="StrixosCatalogEav_Product_Entity")
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Strixos\CatalogEavBundle\Repository\ProductRepository")
  */
 class Product extends Entity
 {
@@ -30,78 +31,55 @@ class Product extends Entity
      * @ORM\ManyToOne(targetEntity="Type")
      */
     protected $type;
-    
+
     /**
+     * TODO : test in other way :
+     * - store an associative array data field_code -> value
+     * - add pre-persist event to save value in relevant table (int, varchare, etc) base on field type
+     *
      * @var Value
-     * 
-     * @ORM\OneToMany(targetEntity="Value", mappedBy="product")
+     *
+     * @ORM\OneToMany(targetEntity="Value", mappedBy="product", cascade={"persist", "remove"})
      */
     protected $values;
-    
+
     /**
-     * magic getter hehe
-     * @param unknown $property
-     * @return mixed
+     * Add magic getter / setter here
+     * TODO: take a look on EntityRepository::__call which define findBy
+     * TODO: deal with camel case
+     * TODO: enhance perfs
+     *
+     * @param string $name
+     * @param array $arguments
+     * @throws \Exception
      */
-    public function __get($property)
-    {
-        /*if (isset($this->$property))
-        {
-            return $this->$property;
-        }
-        else return null;*/
-    }
-    
-    /**
-     * magic setter =D
-     * @param unknown $property
-     * @param unknown $value
-     */
-    public function __set($property, $value)
-    {
-        echo 'call setter';
-    }
-    
     public function __call($name, $arguments)
     {
-        /*echo '<br />';
-        echo 'name -> '. $name .'<br />';
-        echo 'arguments '. $arguments .'<hr />';*/
-        
         switch (substr($name, 0, 3)) {
             case 'get':
-                
+
                 $fieldCode = strtolower(substr($name, 3));
-                
-                foreach ($this->getType()->getFields() as $field)
-                {
-                    if ($field->getCode() == $fieldCode)
-                    {
-                        foreach ($this->getValues() as $value)
-                        {
-                            if ($value->getField()->getId() == $field->getId())
-                            {
+                foreach ($this->getType()->getFields() as $field) {
+                    if ($field->getCode() == $fieldCode) {
+                        foreach ($this->getValues() as $value) {
+                            if ($value->getField()->getCode() == $field->getCode()) {
                                 return $value->getContent();
                             }
                         }
                     }
                 }
-                throw new \Exception('exception  !');
+                throw new \Exception('exception get field '. $fieldCode .' which not exist !');
+
             case 'set':
-                
+
                 $fieldCode = strtolower(substr($name, 3));
-                
-                echo 'search field code .. : '. $fieldCode .'<br />';
-                
+
                 foreach ($this->getType()->getFields() as $field) {
+
                     if ($field->getCode() == $fieldCode) {
+
                         foreach ($this->getValues() as $value) {
-                            
-                            
-                            echo 'value : '. $value->getContent() .'<br />';
-                            
-                            if ($value->getField()->getId() == $field->getId()) {
-                                echo 'OKKKKKK<br />';
+                            if ($value->getField()->getCode() == $field->getCode()) {
                                 return $value->setContent($arguments[0]);
                             }
                         }
@@ -109,24 +87,24 @@ class Product extends Entity
                         // add value
                         $value = new Value();
                         $value->setField($field);
-                        $value->setProduct($this);
                         $value->setContent($arguments[0]);
-                        break;
+                        // TODO why we have to define in both direction ?
+                        // -> perhaps because we don't use persist on manager for value cases ?
+                        $this->addValue($value);
+                        $value->setProduct($this);
+
+                        return $value->getContent();
                     }
                 }
-                
+
                 throw new \Exception('field '. $fieldCode .' not exist !');
         }
-        
-        
-        echo '<br />----- END of call method -----';
-        echo '<hr />';
     }
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -142,14 +120,14 @@ class Product extends Entity
     public function setType(\Strixos\CatalogEavBundle\Entity\Type $type = null)
     {
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return Strixos\CatalogEavBundle\Entity\Type 
+     * @return Strixos\CatalogEavBundle\Entity\Type
      */
     public function getType()
     {
@@ -162,7 +140,7 @@ class Product extends Entity
     {
         $this->values = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Add values
      *
@@ -172,7 +150,7 @@ class Product extends Entity
     public function addValue(\Strixos\CatalogEavBundle\Entity\Value $values)
     {
         $this->values[] = $values;
-    
+
         return $this;
     }
 
@@ -189,7 +167,7 @@ class Product extends Entity
     /**
      * Get values
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getValues()
     {

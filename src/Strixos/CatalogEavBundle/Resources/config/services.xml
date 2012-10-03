@@ -19,8 +19,11 @@
     -->
 
     <services>
-        <service id="strixos_catalog_eav.productmanager" class="Strixos\CatalogEavBundle\Service\ProductManager">
-            <argument type="service" id="doctrine.orm.entity_manager" />
+        <service id="strixos_catalog_eav.productfactory" class="Bap\FlexibleEntityBundle\Model\Factory">
+            <argument>Strixos\CatalogEavBundle\Entity\Product</argument>
+            <argument>Strixos\CatalogEavBundle\Entity\Type</argument>
+            <argument>Strixos\CatalogEavBundle\Entity\Group</argument>
+            <argument>Strixos\CatalogEavBundle\Entity\Field</argument>
         </service>
     </services>
 
