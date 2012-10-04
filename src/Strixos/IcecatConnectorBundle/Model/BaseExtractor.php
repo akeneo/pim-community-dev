@@ -26,8 +26,8 @@ class BaseExtractor
     const URL_PRODUCTS = 'http://data.icecat.biz/export/freeurls/export_urls_rich.txt.gz';
 
     // TODO: define in configuration !!
-    CONST AUTH_LOGIN    = '';
-    CONST AUTH_PASSWORD = '';
+    CONST AUTH_LOGIN    = 'NicolasDupont';
+    CONST AUTH_PASSWORD = '1cec4t**)';
 
     protected $_entityManager;
 

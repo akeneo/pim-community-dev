@@ -13,10 +13,6 @@ class ProductLoader
 
     CONST BASE_URL = 'http://data.Icecat.biz/xml_s3/xml_server3.cgi';
 
-    // TODO: define in configuration /refactor !!
-    CONST AUTH_LOGIN    = '';
-    CONST AUTH_PASSWORD = '';
-
     protected $_simpleDoc       = null;
     protected $_productData     = array();
     protected $_productFeatures = array();
@@ -33,18 +29,10 @@ class ProductLoader
         $url = self::BASE_URL.'?prod_id='.$prodId.';vendor='.$vendor.';lang='.$locale.';output=productxml';
         $stringXml = $this->_loadXmlContent($url);
 
-
-        //echo $stringXml;
-
-
         $this->_parseXml($stringXml);
         $this->_checkResponse();
         $this->_parseBaseData();
         $this->_parseFeatures();
-
-        var_dump($this->_productData);
-        var_dump($this->_productFeatures);
-
 
         // TODO deal with some cache or singleton pattern ?
     }
@@ -63,7 +51,7 @@ class ProductLoader
         curl_setopt($c, CURLOPT_URL, $url);
         curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($c, CURLOPT_HEADER, false);
-        curl_setopt($c, CURLOPT_USERPWD, self::AUTH_LOGIN.':'.self::AUTH_PASSWORD);
+        curl_setopt($c, CURLOPT_USERPWD, BaseExtractor::AUTH_LOGIN.':'.BaseExtractor::AUTH_PASSWORD);
         $output = curl_exec($c);
         // deal with curl exception
         if ($output === false) {
@@ -98,7 +86,7 @@ class ProductLoader
      */
     protected function _checkResponse()
     {
-        // TODO
+        // TODO to raise authentication error or product with no detailled data
         return true;
     }
 
@@ -120,6 +108,8 @@ class ProductLoader
         $this->_productData['HighPicWidth'] = (string)$productTag['HighPicWidth'];
         */
 
+        // TODO deal with other provided product data
+
         // get vendor data
         $supplierTag = $productTag->Supplier;
         $this->_productData['vendorId']   = (string) $supplierTag['ID'];
@@ -136,9 +126,7 @@ class ProductLoader
 
         // get category feature group id
         $this->_productData['CategoryFeaturesGroupId']   = (string) $productTag->CategoryFeatureGroup['ID'];
-
     }
-
 
     /**
     * Parse base product data
@@ -166,8 +154,21 @@ class ProductLoader
         $this->_productFeatures = $descriptionArray;
     }
 
+    /**
+     * Get product data
+     * @return Array:
+     */
     public function getProductData()
     {
         return $this->_productData;
+    }
+
+    /**
+    * Get product features
+    * @return Array
+    */
+    public function getProductFeatures()
+    {
+        return $this->_productFeatures;
     }
 }

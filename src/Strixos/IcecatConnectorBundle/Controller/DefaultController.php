@@ -102,12 +102,79 @@ class DefaultController extends Controller
     */
     public function loadAction()
     {
+        // get for supplier = 1 there are lot of data
+        $prodId = 'D9194B';
         $prodId = 'RJ459AV';
+
         $vendor = 'hp';
         $locale = 'fr';
 
+        // --> load data
         $loader = new ProductLoader();
         $loader->load($prodId, $vendor, $locale);
+
+        $prodData = $loader->getProductData();
+        $prodFeat = $loader->getProductFeatures();
+
+        var_dump($prodData);
+        var_dump($prodFeat);
+
+        // --> create /update product
+
+        $factory = $this->container->get('strixos_catalog_eav.productfactory');
+        $manager = $this->container->get('doctrine')->getEntityManager();
+
+        // get / create type
+        $typeCode = $prodData['vendorId'].'-'.$prodData['vendorName'];
+        $typeCode.= '-'.$prodData['CategoryId'].'-'.$prodData['CategoryName'];
+        $type = $manager->getRepository('StrixosCatalogEavBundle:Type')->findOneByCode($typeCode);
+        if (!$type) {
+            $type = $factory->buildType($typeCode);
+        }
+
+        // create product
+        $product = $manager->getRepository('StrixosCatalogEavBundle:Type')->findOneByCode($typeCode);
+        if (!$product) {
+            $product = $factory->buildEntity($type);
+        }
+
+        // get / create groups and get / create field
+        $fieldCodeToValue = array();
+        foreach ($prodFeat as $groupInd => $groupData) {
+            foreach ($groupData as $groupCode => $fieldData) {
+                // get group
+                $group = $manager->getRepository('StrixosCatalogEavBundle:Group')
+                    ->findOneBy(array('code' => $groupCode, 'type' => $type->getId()));
+                if (!$group) {
+                    $group = $factory->buildGroup($groupCode, $type);
+                    $type->addGroup($group);
+                }
+                // get fields
+                foreach ($fieldData as $fieldCode => $fieldValue) {
+                    // get field
+                    $field = $manager->getRepository('StrixosCatalogEavBundle:Field')
+                        ->findOneByCode($fieldCode);
+                    if (!$field) {
+                        $field = $factory->buildField($fieldCode);
+                        $manager->persist($field);
+                        // add attribute to type
+                        $type->addField($field);
+                        // add attribute to group
+                        $group->addField($field);
+                    }
+
+                    // TODO set product values
+
+                }
+                $manager->persist($group);
+            }
+        }
+        $manager->persist($type);
+
+        //$manager->persist($product);
+        var_dump($product);
+
+        $manager->flush();
 
         return new Response('Load detailled data.');
     }
