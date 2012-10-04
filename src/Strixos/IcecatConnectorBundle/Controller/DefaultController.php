@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use APY\DataGridBundle\Grid\Source\Entity;
+use APY\DataGridBundle\Grid\Action\RowAction;
 
 class DefaultController extends Controller
 {
@@ -27,19 +28,17 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-
-        // Creates simple grid based on your entity (ORM)
+        // creates simple grid based on entity (ORM)
         $source = new Entity('StrixosIcecatConnectorBundle:Supplier');
-
-        // Get a grid instance
+        // get a grid instance
         $grid = $this->get('grid');
-
-        // Attach the source to the grid
+        // attach the source to the grid
         $grid->setSource($source);
-
-        // Configuration of the grid
-
-        // Manage the grid redirection, exports and the response of the controller
+        // add an action column
+        $rowAction = new RowAction('Import products', 'strixos_icecatconnector_default_loadproducts');
+        $rowAction->setRouteParameters(array('supplierId'));
+        $grid->addRowAction($rowAction);
+        // manage the grid redirection, exports response of the controller
         return $grid->getGridResponse('StrixosIcecatConnectorBundle:Supplier:grid.html.twig');
     }
 
@@ -55,6 +54,16 @@ class DefaultController extends Controller
         $extractor = new BaseExtractor($entityManager);
         $extractor->process();
         return new Response('Base data (suppliers and products) have been retrieved from Open Icecat.');
+    }
+
+    /**
+     * Load all product data of supplier from open icecat
+     * @Route("/default/loadproducts/{supplierId}")
+     * @Template()
+     */
+    public function loadproductsAction($supplierId)
+    {
+        return new Response('TODO : load details for products of supplier');
     }
 
     /**
