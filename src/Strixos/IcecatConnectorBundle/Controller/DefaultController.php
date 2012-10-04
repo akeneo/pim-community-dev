@@ -94,4 +94,22 @@ class DefaultController extends Controller
         $extractor->process();
         return new Response('Base data (suppliers and products) have been retrieved from Open Icecat.');
     }
+
+    /**
+    * Load detailled product data from open icecat
+    * @Route("/default/load")
+    * @Template()
+    */
+    public function loadAction()
+    {
+        $prodId = 'RJ459AV';
+        $vendor = 'hp';
+        $locale = 'fr';
+
+        $loader = new ProductLoader();
+        $loader->load($prodId, $vendor, $locale);
+
+        return new Response('Load detailled data.');
+    }
+
 }
