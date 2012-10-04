@@ -9,38 +9,38 @@
     <div class="blocks-welcome">
 
         <div class="block-catalog ui-corner-all">
-            <h2>Catalog</h2>
+            <h2>Catalog / Products</h2>
             <div class="illustration">
                 <img src="{{ asset('bundles/acmedemo/images/welcome-quick-tour.gif') }}" alt="Quick tour" />
             </div>
             <ul>
                 <li>
-                    <a href="{{ path('strixos_catalog_attribute_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
-                        <span class="ui-button-icon-primary ui-icon ui-icon-fugue-tags"></span><span class="ui-button-text">Manage attributes</span>
+                    <a href="{{ path('strixos_catalog_product_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
+                        <span class="ui-button-icon-primary ui-icon ui-icon-fugue-documents"></span><span class="ui-button-text">Manage products</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ path('strixos_catalog_set_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
-                        <span class="ui-button-icon-primary ui-icon ui-icon-fugue-folder-open-document"></span><span class="ui-button-text">Manage sets</span>
+                        <span class="ui-button-icon-primary ui-icon ui-icon-fugue-folder-open-document"></span><span class="ui-button-text">Manage product types</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ path('strixos_catalog_product_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
-                        <span class="ui-button-icon-primary ui-icon ui-icon-fugue-documents"></span><span class="ui-button-text">Manage products</span>
+                    <a href="{{ path('strixos_catalog_attribute_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
+                        <span class="ui-button-icon-primary ui-icon ui-icon-fugue-tags"></span><span class="ui-button-text">Manage attributes</span>
                     </a>
                 </li>
             </ul>
         </div>
 
         <div class="block-dataflow ui-corner-all">
-            <h2>DataFlow</h2>
+            <h2>DataFlow / Connectors</h2>
             <div class="illustration">
                 <img src="{{ asset('bundles/acmedemo/images/welcome-configure.gif') }}" alt="Configure your application" />
             </div>
             <ul>
                 <li>
                     <a href="{{ path('strixos_icecatconnector_default_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
-                        <span class="ui-button-icon-primary ui-icon ui-icon-fugue-database"></span><span class="ui-button-text">Load Open IceCat data</span>
+                        <span class="ui-button-icon-primary ui-icon ui-icon-fugue-database"></span><span class="ui-button-text">Open IceCat Connector</span>
                     </a>
                 <!--
                     <a href="{{ path('strixos_dataflow_default_loadmagentodata') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
@@ -52,7 +52,7 @@
         </div>
 
         <div class="block-demo ui-corner-all">
-            <h2>TESTS</h2>
+            <h2>TESTS / BENCHMARKS</h2>
             <div class="illustration">
                 <img src="{{ asset('bundles/acmedemo/images/welcome-demo.gif') }}" alt="Demo" />
             </div>

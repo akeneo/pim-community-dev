@@ -19,8 +19,10 @@
                 <a class="logo" href="{{ path('_welcome') }}">
                     <img src="{{ asset('bundles/strixoswidget/images/logo.gif') }}" alt="Symfony logo" />
                 </a>
-                <h1>STRIXos (Proof Of Concept)</h1>
-                <p><em>The future of catalog management is open !</em></p>
+                <div class="header-title">
+                    <a href="{{ path('_welcome') }}"><h1>STRIXos (POC)</h1></a>
+                    <p><em>The future of catalog management is open !</em></p>
+                </div>
             </div>
 
             {% for flashMessage in app.session.flashbag.get('notice') %}

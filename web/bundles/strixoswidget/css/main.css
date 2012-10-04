@@ -94,25 +94,25 @@ ul li
 
 #body-wrapper
 {
-    width:  970px;
     margin: 0 auto;
 }
 
 #header
 {
     position: relative;
-    padding: 10px 10px;
+    padding: 10px 25px;
 }
+#header .header-title {margin-left:10px;}
 #header h1 {width:600px;padding-bottom:0px;}
 #header p {padding-bottom:0px;}
-#header a  {float:right;}
+#header a.logo {float:right;}
 
 .content
 {
     background-color: white;
     border:           1px solid #DFDFDF;
     padding:          50px;
-    margin-bottom:    20px;
+    margin:           0px 25px 20px 25px;
 }
 
 ul#menu
