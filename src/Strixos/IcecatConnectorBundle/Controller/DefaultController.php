@@ -15,6 +15,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use APY\DataGridBundle\Grid\Source\Entity;
+
 class DefaultController extends Controller
 {
     /**
@@ -25,60 +27,20 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
-        // count all
-        $query = $em->createQuery(
-            'SELECT count(distinct s.id) as nbSymbols, count(distinct s.supplierId) as nbSuppliers,
-            count(distinct s.distributorId) as nbDistributors
-            FROM StrixosIcecatConnectorBundle:Supplier as s'
-        );
-        $result = $query->getSingleResult();
-        $nbSuppliers    = $result['nbSuppliers'];
-        $nbSymbols      = $result['nbSymbols'];
-        $nbDistributors = $result['nbDistributors'];
-        // count products
-        $query = $em->createQuery(
-            'SELECT count(distinct p.id) as nbProducts
-            FROM StrixosIcecatConnectorBundle:Product as p'
-        );
-        $result = $query->getSingleResult();
-        $nbProducts     = $result['nbProducts'];
-        // get first 100 suppliers ordered by nb products TODO: change column type and add index before
-        /*$query = $em->createQuery(
-            'SELECT s, count(distinct p.id) as nbProducts
-            FROM StrixosIcecatConnectorBundle:Supplier as s
-            INNER JOIN StrixosIcecatConnectorBundle:Product as p ON (s.supplier_id = p.supplier_id)
-            GROUP BY p.supplier_id
-            ORDER BY nbProducts desc
-            LIMIT 100'
-        );*/
-        $query = $em->createQuery('
-            SELECT s
-            FROM StrixosIcecatConnectorBundle:Supplier as s'
-        );
-        $list = $query->getResult();
 
-        return $this->render(
-            'StrixosIcecatConnectorBundle:Supplier:index.html.twig', array(
-                'list'           => $list,
-                'nbSuppliers'    => $nbSuppliers,
-                'nbSymbols'      => $nbSymbols,
-                'nbDistributors' => $nbDistributors,
-                'nbProducts'     => $nbProducts
-            )
-        );
-        /*
-        $prodId = 'RJ459AV';
-        $vendor = 'hp';
-        $locale = 'fr';
+        // Creates simple grid based on your entity (ORM)
+        $source = new Entity('StrixosIcecatConnectorBundle:Supplier');
 
-        $loader = new ProductLoader();
-        $loader->load($prodId, $vendor, $locale);
+        // Get a grid instance
+        $grid = $this->get('grid');
 
-*/
+        // Attach the source to the grid
+        $grid->setSource($source);
 
+        // Configuration of the grid
 
-        return array('name' => 'toto');
+        // Manage the grid redirection, exports and the response of the controller
+        return $grid->getGridResponse('StrixosIcecatConnectorBundle:Supplier:grid.html.twig');
     }
 
     /**
