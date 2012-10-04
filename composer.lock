@@ -1,6 +1,65 @@
 {
-    "hash": "1b167545f636e7534970466b6821564a",
+    "hash": "bede0ee41f25c1657479e349127c9382",
     "packages": [
+        {
+            "name": "apy/datagrid-bundle",
+            "version": "dev-master",
+            "target-dir": "APY/DataGridBundle",
+            "source": {
+                "type": "git",
+                "url": "git://github.com/Abhoryo/APYDataGridBundle.git",
+                "reference": "6120cab2bac96b68f78667f24e30747632742031"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/Abhoryo/APYDataGridBundle/zipball/6120cab2bac96b68f78667f24e30747632742031",
+                "reference": "6120cab2bac96b68f78667f24e30747632742031",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "symfony/symfony": ">=2.0.0",
+                "twig/twig": ">=1.5.0"
+            },
+            "suggest": {
+                "ext-intl": "Translate the grid",
+                "ext-mbstring": "Convert your data with the right charset",
+                "PHPExcel": "Export the grid (Excel, HTML or PDF)"
+            },
+            "time": "1349186024",
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                }
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "APY\\DataGridBundle": ""
+                }
+            },
+            "authors": [
+                {
+                    "name": "Stanislav Turza",
+                    "email": "stanislav.turza@gmail.com"
+                },
+                {
+                    "name": "Evan Owens",
+                    "email": "eaowens@gmail.com"
+                },
+                {
+                    "name": "Yoann Petit",
+                    "email": "abhoryo@free.fr"
+                }
+            ],
+            "description": "Symfony2 Datagrid Bundle",
+            "homepage": "https://github.com/Abhoryo/APYDataGridBundle",
+            "keywords": [
+                "symfony",
+                "datagrid"
+            ]
+        },
         {
             "name": "doctrine/common",
             "version": "2.3.x-dev",
@@ -181,12 +240,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/doctrine/DoctrineBundle.git",
-                "reference": "db818ceec46d05fed4f944b957f82a4ab5197e27"
+                "reference": "e69a6fd75fa3979e35b7004e6da6e9aea3765997"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/doctrine/DoctrineBundle/zipball/db818ceec46d05fed4f944b957f82a4ab5197e27",
-                "reference": "db818ceec46d05fed4f944b957f82a4ab5197e27",
+                "url": "https://github.com/doctrine/DoctrineBundle/zipball/e69a6fd75fa3979e35b7004e6da6e9aea3765997",
+                "reference": "e69a6fd75fa3979e35b7004e6da6e9aea3765997",
                 "shasum": ""
             },
             "require": {
@@ -203,7 +262,7 @@
             "suggest": {
                 "doctrine/orm": "The Doctrine ORM integration is optional in the bundle."
             },
-            "time": "1348828243",
+            "time": "1349273376",
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
@@ -492,12 +551,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/doctrine/doctrine2.git",
-                "reference": "ea2b28857830720460a345c80c6e7d3f6adae93a"
+                "reference": "04262e2b73cd449cf12b55f2e2c318c8c24c9dd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/doctrine/doctrine2/zipball/ea2b28857830720460a345c80c6e7d3f6adae93a",
-                "reference": "ea2b28857830720460a345c80c6e7d3f6adae93a",
+                "url": "https://github.com/doctrine/doctrine2/zipball/04262e2b73cd449cf12b55f2e2c318c8c24c9dd4",
+                "reference": "04262e2b73cd449cf12b55f2e2c318c8c24c9dd4",
                 "shasum": ""
             },
             "require": {
@@ -509,7 +568,7 @@
             "suggest": {
                 "symfony/yaml": "If you want to use YAML Metadata Mapping Driver"
             },
-            "time": "1348121015",
+            "time": "1349261302",
             "bin": [
                 "bin/doctrine",
                 "bin/doctrine.php"
@@ -1046,19 +1105,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensio/SensioFrameworkExtraBundle",
-                "reference": "86a68df44eb50a64042d05a3f09548d2c21d4456"
+                "reference": "bf2ea090d602e02b975d1bf1d8ffca8f02ef8bdb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/sensio/SensioFrameworkExtraBundle/zipball/86a68df44eb50a64042d05a3f09548d2c21d4456",
-                "reference": "86a68df44eb50a64042d05a3f09548d2c21d4456",
+                "url": "https://github.com/sensio/SensioFrameworkExtraBundle/zipball/bf2ea090d602e02b975d1bf1d8ffca8f02ef8bdb",
+                "reference": "bf2ea090d602e02b975d1bf1d8ffca8f02ef8bdb",
                 "shasum": ""
             },
             "require": {
                 "symfony/framework-bundle": "2.1.*",
                 "doctrine/common": ">=2.1,<2.4-dev"
             },
-            "time": "1348064274",
+            "time": "1349361259",
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
@@ -1141,12 +1200,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/stof/StofDoctrineExtensionsBundle",
-                "reference": "0247e6f1658d76292c8ffe2c5106090bd36bd799"
+                "reference": "773b37310ca244570032541be3c8ab27b814a83f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/stof/StofDoctrineExtensionsBundle/zipball/0247e6f1658d76292c8ffe2c5106090bd36bd799",
-                "reference": "0247e6f1658d76292c8ffe2c5106090bd36bd799",
+                "url": "https://github.com/stof/StofDoctrineExtensionsBundle/zipball/773b37310ca244570032541be3c8ab27b814a83f",
+                "reference": "773b37310ca244570032541be3c8ab27b814a83f",
                 "shasum": ""
             },
             "require": {
@@ -1158,7 +1217,7 @@
                 "doctrine/doctrine-bundle": "*",
                 "doctrine/mongodb-odm-bundle": "2.1.*"
             },
-            "time": "1346283670",
+            "time": "1349111035",
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
@@ -1177,9 +1236,7 @@
             "authors": [
                 {
                     "name": "Christophe Coevoet",
-                    "email": "stof@notk.org",
-                    "homepage": null,
-                    "role": null
+                    "email": "stof@notk.org"
                 }
             ],
             "description": "Integration of the gedmo/doctrine-extensions with Symfony2",
@@ -1204,18 +1261,18 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/swiftmailer/swiftmailer.git",
-                "reference": "1a987b45ea8dcbbe9680499800c67fc97a2d07f6"
+                "reference": "22731e907f5ca288c9bfde6b54f3611ace0a6c39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/swiftmailer/swiftmailer/zipball/1a987b45ea8dcbbe9680499800c67fc97a2d07f6",
-                "reference": "1a987b45ea8dcbbe9680499800c67fc97a2d07f6",
+                "url": "https://github.com/swiftmailer/swiftmailer/zipball/22731e907f5ca288c9bfde6b54f3611ace0a6c39",
+                "reference": "22731e907f5ca288c9bfde6b54f3611ace0a6c39",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
-            "time": "1348747908",
+            "time": "1349196829",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1426,12 +1483,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/symfony/symfony.git",
-                "reference": "7b22da693cc7f65fd4a9089dd6efe109d92a8c53"
+                "reference": "2f497c99a9c84978259990531b32a7f63a998dda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/symfony/zipball/7b22da693cc7f65fd4a9089dd6efe109d92a8c53",
-                "reference": "7b22da693cc7f65fd4a9089dd6efe109d92a8c53",
+                "url": "https://github.com/symfony/symfony/zipball/2f497c99a9c84978259990531b32a7f63a998dda",
+                "reference": "2f497c99a9c84978259990531b32a7f63a998dda",
                 "shasum": ""
             },
             "require": {
@@ -1480,7 +1537,7 @@
                 "propel/propel1": "dev-master",
                 "monolog/monolog": "dev-master"
             },
-            "time": "1349091756",
+            "time": "1349343312",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1617,6 +1674,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "doctrine/mongodb-odm-bundle": 10,
-        "doctrine/doctrine-fixtures-bundle": 20
+        "doctrine/doctrine-fixtures-bundle": 20,
+        "apy/datagrid-bundle": 20
     }
 }

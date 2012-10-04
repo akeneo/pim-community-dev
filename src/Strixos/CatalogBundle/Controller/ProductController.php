@@ -10,6 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Strixos\CatalogBundle\Document\Product;
 use Strixos\CatalogBundle\Form\Type\ProductType;
 
+use APY\DataGridBundle\Grid\Source\Vector;
+
 /**
  *
  * @author Nicolas Dupont @ Strixos
@@ -186,6 +188,27 @@ class ProductController extends Controller
         $search->results = count($products);
         $searches[]= $search;
 
-        return array('searches' => $searches);
+        // test grid
+        $dataGridVector = array();
+        foreach ($searches as $search) {
+            $dataGridVector[]= array(
+                'description' => $search->description,
+                'time'        => $search->time,
+                'memory'      => $search->memory,
+                'results'     => $search->results
+            );
+        }
+        $source = new Vector($dataGridVector);
+        // get a grid instance
+        $grid = $this->get('grid');
+        // attach the source to the grid
+        $grid->setSource($source);
+        // configuration of the grid
+
+        // manage the grid redirection, exports and the response of the controller
+        return $grid->getGridResponse('StrixosCatalogBundle:Product:searchgrid.html.twig');
+        //return $this->render('StrixosCatalogBundle:Product:searchgrid.html.twig', array('grid' => $grid));
+
+//        return array('searches' => $searches);
     }
 }

@@ -22,7 +22,9 @@
         "gedmo/doctrine-extensions": "*",
         "stof/doctrine-extensions-bundle": "*",
         "doctrine/mongodb-odm-bundle" : "v3.0.0-BETA1",
-        "doctrine/doctrine-fixtures-bundle": "dev-master"
+        "doctrine/doctrine-fixtures-bundle": "dev-master",
+
+        "apy/datagrid-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [

@@ -33,6 +33,8 @@ class AppKernel extends Kernel
             new Strixos\IcecatConnectorBundle\StrixosIcecatConnectorBundle(),
             new Bap\FlexibleEntityBundle\BapFlexibleEntityBundle(),
             new Strixos\CatalogEavBundle\StrixosCatalogEavBundle(),
+
+            new APY\DataGridBundle\APYDataGridBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

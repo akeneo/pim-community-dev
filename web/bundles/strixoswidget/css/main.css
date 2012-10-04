@@ -209,6 +209,28 @@ table.grid tr.even {
     background-color: whitesmoke;
 }
 
+/* APY\DataGridBundle */
+.grid-row-titles, .grid-row-filters {
+    background-color: #A7DA39;
+    font-weight:bold;
+}
+
+.grid-row-cells {
+    border: 1px solid #DDD;
+    padding: 3px 7px 2px;
+}
+
+.grid-row-cells.even {
+    background-color: whitesmoke;
+}
+
+.grid_body th, .grid_body td {
+    border: 1px solid #DDD;
+    padding: 3px 7px 2px;
+}
+
+.grid_footer {margin-top: 10px;}
+
 /* attribute set form */
 .connectedSortable {min-height: 50px;}
 .connectedSortable li {width:200px; margin-bottom:5px; padding:2px;}
