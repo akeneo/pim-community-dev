@@ -26,7 +26,7 @@ class BaseExtractor
     const URL_PRODUCTS = 'http://data.icecat.biz/export/freeurls/export_urls_rich.txt.gz';
 
     // TODO: define in configuration !!
-    CONST AUTH_LOGIN    = 'NicolasDupont';
+    CONST AUTH_LOGIN    = '';
     CONST AUTH_PASSWORD = '';
 
     protected $_entityManager;
@@ -83,24 +83,22 @@ class BaseExtractor
     {
         // download text product archive (only few data on products)
         $pathProductArchive = '/tmp/export_urls_rich.txt.gz';
-/*        if (!file_exists($pathProductArchive)) {
+        if (!file_exists($pathProductArchive)) {
             $downloader = new FileHttpDownload();
             $downloader->process(
                 self::URL_PRODUCTS, $pathProductArchive,
                 self::AUTH_LOGIN, self::AUTH_PASSWORD
             );
-
             // extract product archive to get text file
-           */ $pathProductFile = '/tmp/export_urls_rich.txt';
-           /* if (!file_exists($pathProductFile)) {
+            $pathProductFile = '/tmp/export_urls_rich.txt';
+            if (!file_exists($pathProductFile)) {
                 $unzipper = new FileUnzip();
                 $unzipper->process($pathProductArchive, $pathProductFile);
             }
-            */
             // load csv into local table
             $supplierLoader = new ProductLoadDataInFile($this->_entityManager);
             $supplierLoader->process($pathProductFile);
-        //}
+        }
     }
 
 }
