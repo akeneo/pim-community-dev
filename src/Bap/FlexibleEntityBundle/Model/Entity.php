@@ -2,7 +2,7 @@
 namespace Bap\FlexibleEntityBundle\Model;
 
 /**
- * Entity
+ * Define a basic entity, a product, a customer, etc
  *
  * @author    Nicolas Dupont @ Strixos
  * @copyright Copyright (c) 2012 Strixos SAS (http://www.strixos.com)
