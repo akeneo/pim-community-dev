@@ -35,6 +35,8 @@ class AppKernel extends Kernel
             new Strixos\CatalogEavBundle\StrixosCatalogEavBundle(),
 
             new APY\DataGridBundle\APYDataGridBundle(),
+
+            new Nidup\TestBundle\NidupTestBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

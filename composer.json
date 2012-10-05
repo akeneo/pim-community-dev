@@ -24,8 +24,20 @@
         "doctrine/mongodb-odm-bundle" : "v3.0.0-BETA1",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
 
-        "apy/datagrid-bundle": "dev-master"
+        "apy/datagrid-bundle": "dev-master",
+        
+        "nidup/test-bundle": "dev-master"
+        
     },
+    
+    "repositories": [
+        {
+            "type": "git",
+            "url":  "https://github.com/nidup/TestBundle.git",
+            "branch": "master"
+        }
+    ],
+       
     "scripts": {
         "post-install-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",

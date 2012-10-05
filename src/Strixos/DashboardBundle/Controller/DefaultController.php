@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Nidup\TestBundle\Model\Hello;
+
 class DefaultController extends Controller
 {
     /**
@@ -14,6 +16,10 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+
+        $hello = new Hello();
+        $hello->test();
+
         return array();
     }
 }
