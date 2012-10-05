@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <!--
+    <parameters>
+        <parameter key="akeneo_catalog.example.class">Akeneo\CatalogBundle\Example</parameter>
+    </parameters>
+
+    <services>
+        <service id="akeneo_catalog.example" class="%akeneo_catalog.example.class%">
+            <argument type="service" id="service_id" />
+            <argument>plain_value</argument>
+            <argument>%parameter_name%</argument>
+        </service>
+    </services>
+    -->
+
+    <services>
+        <service id="akeneo.catalog.model_product" class="Akeneo\CatalogBundle\Model\Product">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+        </service>
+        <service id="akeneo.catalog.model_producttype" class="Akeneo\CatalogBundle\Model\ProductType">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+        </service>
+    </services>
+    
+</container>

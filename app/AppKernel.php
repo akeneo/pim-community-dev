@@ -37,6 +37,7 @@ class AppKernel extends Kernel
             new APY\DataGridBundle\APYDataGridBundle(),
 
             new Nidup\TestBundle\NidupTestBundle(),
+            new Akeneo\CatalogBundle\AkeneoCatalogBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

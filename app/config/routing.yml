@@ -46,4 +46,8 @@ StrixosCatalogEavBundle:
     resource: "@StrixosCatalogEavBundle/Controller/"
     type:     annotation
     prefix:   /eav/
- 
+
+AkeneoCatalogBundle:
+    resource: "@AkeneoCatalogBundle/Controller/"
+    type:     annotation
+    prefix:   /newcat/
