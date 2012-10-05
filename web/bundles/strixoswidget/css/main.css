@@ -23,7 +23,7 @@ body
 
 a
 {
-    color:           #6A9211;
+    color:           #7E54AE;
     text-decoration: none;
 }
 
@@ -62,7 +62,7 @@ h2
     font-family:      "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
 
     margin-bottom:    10px;
-    background-color: #aacd4e;
+    background-color: #7E54AE;
     padding:          2px 4px;
     display:          inline-block;
     text-transform:   uppercase;
@@ -99,21 +99,26 @@ ul li
 
 #header
 {
+    background-color: white;
+    border:           1px solid #DFDFDF;
+    margin:           0 25px 10px;
     position: relative;
-    padding: 10px 25px;
+    padding: 0 10px 5px 20px;
 }
 #header .header-title {margin-left:10px;}
 #header h1 {width:600px;padding-bottom:0px;}
 #header p {padding-bottom:0px;}
-#header a.logo {float:right;}
 
 .content
 {
     background-color: white;
     border:           1px solid #DFDFDF;
-    padding:          50px;
+    padding:          20px 30px 50px;
     margin:           0px 25px 20px 25px;
+    min-height:500px;
 }
+
+#footer {margin: 0px 40px 0px 0px; text-align:right;}
 
 ul#menu
 {
@@ -202,7 +207,7 @@ table.grid td, table.grid th {
     padding: 3px 7px 2px;
 }
 table.grid th {
-    background-color: #A7DA39;
+    background-color: #7E54AE;
     font-weight:bold;
 }
 table.grid tr.even {
@@ -211,7 +216,7 @@ table.grid tr.even {
 
 /* APY\DataGridBundle */
 .grid-row-titles, .grid-row-filters {
-    background-color: #A7DA39;
+    background-color: #7E54AE;
     font-weight:bold;
 }
 
@@ -227,6 +232,9 @@ table.grid tr.even {
 .grid_body th, .grid_body td {
     border: 1px solid #DDD;
     padding: 3px 7px 2px;
+}
+.grid_body a {
+color: #FFF;
 }
 
 .grid_footer {margin-top: 10px;}

@@ -15,14 +15,10 @@
     </head>
     <body>
         <div id="body-wrapper">
-            <div id="header">
+            <div id="header" class="ui-corner-bl ui-corner-br">
                 <a class="logo" href="{{ path('_welcome') }}">
                     <img src="{{ asset('bundles/strixoswidget/images/logo.gif') }}" alt="Symfony logo" />
                 </a>
-                <div class="header-title">
-                    <a href="{{ path('_welcome') }}"><h1>STRIXos (POC)</h1></a>
-                    <p><em>The future of catalog management is open !</em></p>
-                </div>
             </div>
 
             {% for flashMessage in app.session.flashbag.get('notice') %}
@@ -56,6 +52,7 @@
             
             <div id="footer">
                 {% block footer %}{% endblock %}
+                <p><em>The future of catalog management is open ! © Akeneo SAS</em></p>
           </div>
         </div>
     </body>

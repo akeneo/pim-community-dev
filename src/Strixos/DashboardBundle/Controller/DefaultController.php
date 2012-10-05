@@ -17,8 +17,8 @@ class DefaultController extends Controller
     public function indexAction()
     {
 
-        $hello = new Hello();
-        $hello->test();
+        //$hello = new Hello();
+        //$hello->test();
 
         return array();
     }
