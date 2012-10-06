@@ -2,6 +2,8 @@
 namespace Akeneo\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
 
 /**
  * Product field as sku, name, etc
@@ -34,12 +36,26 @@ class Field
     private $code;
 
     /**
+     * @var string $label
+     *
+     * @ORM\Column(name="label", type="string", length=255)
+     * @Gedmo\Translatable
+     */
+    private $label;
+
+    /**
     * @var string $type
     *
     * @ORM\Column(name="type", type="string", length=255)
     */
     private $type;
 
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
 
     /**
      * Get id
@@ -95,5 +111,37 @@ class Field
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+    * Change locale
+    * @param string $locale
+    */
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * Set label
+     *
+     * @param string $label
+     * @return Field
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+    
+        return $this;
+    }
+
+    /**
+     * Get label
+     *
+     * @return string 
+     */
+    public function getLabel()
+    {
+        return $this->label;
     }
 }

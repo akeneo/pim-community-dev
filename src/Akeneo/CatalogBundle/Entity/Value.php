@@ -2,6 +2,8 @@
 namespace Akeneo\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
 
 /**
  * Value for a product field
@@ -12,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="AkeneoCatalog_Product_Value")
  * @ORM\Entity
+ * @Gedmo\TranslationEntity(class="Akeneo\CatalogBundle\Entity\Translation\ValueTranslation")
  */
 class Value
 {
@@ -43,9 +46,17 @@ class Value
      * TODO : basic sample for basic EAV implementation, only varchar values
      * @var string $content
      *
+     * @Gedmo\Translatable
      * @ORM\Column(name="data", type="string", length=255)
      */
     private $data;
+
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
 
     /**
      * Get id
@@ -125,4 +136,14 @@ class Value
     {
         return $this->field;
     }
+
+    /**
+     * Change locale
+     * @param string $locale
+     */
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
 }

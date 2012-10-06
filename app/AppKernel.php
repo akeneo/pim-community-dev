@@ -23,6 +23,12 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
             // To set up basic data
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+            // translatable, timestampable, etc
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+
+
+            // BAP modules
+
             // PIM modules
             new Strixos\CoreBundle\StrixosCoreBundle(),
             new Strixos\WidgetBundle\StrixosWidgetBundle(),
@@ -34,8 +40,9 @@ class AppKernel extends Kernel
             new Bap\FlexibleEntityBundle\BapFlexibleEntityBundle(),
             new Strixos\CatalogEavBundle\StrixosCatalogEavBundle(),
 
-            new APY\DataGridBundle\APYDataGridBundle(),
 
+
+            new APY\DataGridBundle\APYDataGridBundle(),
             new Nidup\TestBundle\NidupTestBundle(),
             new Akeneo\CatalogBundle\AkeneoCatalogBundle(),
         );

@@ -38,13 +38,14 @@ class Product extends AbstractModel
      * Get product value for a field
      *
      * @param string $fieldCode
+     * @param string $localeCode
      * @return mixed
      */
-    public function getValue($fieldCode)
+    public function getValue($fieldCode, $localeCode = null)
     {
         // TODO check type
         $field = $this->_manager->getRepository('AkeneoCatalogBundle:Field')
-        ->findOneByCode($fieldCode);
+            ->findOneByCode($fieldCode);
         if (!$field) {
             throw new \Exception("The field {$fieldCode} doesn't exist");
         }
@@ -71,8 +72,9 @@ class Product extends AbstractModel
         $field = $this->_manager->getRepository('AkeneoCatalogBundle:Field')
             ->findOneByCode($fieldCode);
         if (!$field) {
-            throw new \Exception("The field {$fieldCode} doesn't exist");
+            throw new \Exception("The field {$fieldCode} doesn't exist !!!!");
         }
+        // insert / update value
         $value = null;
         if ($this->_entity->getId()) {
             // check value exists
@@ -85,6 +87,12 @@ class Product extends AbstractModel
             $value->setProduct($this->_entity);
             $this->_entity->addValue($value);
         }
+
+        // switch locale
+        if ($locale) {
+            $value->setTranslatableLocale($locale);
+        }
+
         $value->setData($data);
         return $this;
     }
@@ -128,6 +136,10 @@ class Product extends AbstractModel
                     // do nothing
             }
         }
+
+        var_dump($fieldName);
+        var_dump($arguments);
+
         throw new \Exception('Invalid getX / setX call');
     }
 

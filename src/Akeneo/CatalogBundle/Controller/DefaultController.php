@@ -19,10 +19,31 @@ class DefaultController extends Controller
     {
         $manager = $this->getDoctrine()->getEntityManager();
 
+
+        // get type
+        $type = new ProductType($manager, 'base');
+        // create product
+        $product = $type->newProductInstance();
+        // set values
+        $product->setValue('sku', 'mon sku 1');
+        $product->setName('mon name 1');
+        $product->setColor('Green');
+        // save
+        $product->persistAndFlush();
+        // translate value
+        $product->setValue('color', 'Vert', 'fr_fr');
+        $product->persistAndFlush();
+
+
+
+
+        exit();
+
+
         $ind = time();
 
         // create type
-        $typeCode = 'tshirt'.$ind;
+        $typeCode = 'tshirt';//.$ind;
         $type = new ProductType($manager, $typeCode);
         if (!$type->hasField('sku')) {
             $type->addField('sku', Field::TYPE_TEXT, 'General');
@@ -41,12 +62,13 @@ class DefaultController extends Controller
 
         $product->setValue('sku', 'mon sku 1');
         $product->setName('mon name 1');
-        $product->setColor('Purple');
-
-        echo $product->getColor();
+        $product->setColor('Green');
 
         $product->persistAndFlush();
+        echo $product->getColor();
 
+        $product->setValue('color', 'Vert', 'fr_fr');
+        $product->persistAndFlush();
         echo $product->getColor();
 
         $name = 'Test';

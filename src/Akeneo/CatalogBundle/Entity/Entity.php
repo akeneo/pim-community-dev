@@ -1,7 +1,9 @@
 <?php
 namespace Akeneo\CatalogBundle\Entity;
 
+use Akeneo\CatalogBundle\VersionSystem\Revision;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Flexible product
@@ -45,17 +47,16 @@ class Entity
     {
         $this->values = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
         return $this->id;
     }
-
 
     /**
      * Set type
@@ -66,14 +67,14 @@ class Entity
     public function setType(\Akeneo\CatalogBundle\Entity\Type $type = null)
     {
         $this->type = $type;
-
+    
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return Akeneo\CatalogBundle\Entity\Type
+     * @return Akeneo\CatalogBundle\Entity\Type 
      */
     public function getType()
     {
@@ -89,7 +90,7 @@ class Entity
     public function addValue(\Akeneo\CatalogBundle\Entity\Value $values)
     {
         $this->values[] = $values;
-
+    
         return $this;
     }
 
@@ -106,7 +107,7 @@ class Entity
     /**
      * Get values
      *
-     * @return Doctrine\Common\Collections\Collection
+     * @return Doctrine\Common\Collections\Collection 
      */
     public function getValues()
     {

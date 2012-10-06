@@ -37,7 +37,7 @@ class ProductType extends AbstractModel
         $this->_code = $code;
 
         // get entity type
-        $entityType = $this->_manager->getRepository('AkeneoCatalogBundle:Field')
+        $entityType = $this->_manager->getRepository('AkeneoCatalogBundle:Type')
             ->findOneByCode($code);
         if ($entityType) {
             $this->_entityType = $entityType;
@@ -69,6 +69,25 @@ class ProductType extends AbstractModel
     }
 
     /**
+     * Add a field group to product type
+     *
+     * @param string $groupCode
+     * @return ProductType
+     */
+    public function addGroup($groupCode)
+    {
+        // check if group already exists, else create a new one
+        $group = $this->getGroup($groupCode);
+        if (!$group) {
+            $group = new Group();
+            $group->setType($this->_entityType);
+            $group->setCode($groupCode);
+            $this->_entityType->addGroup($group);
+        }
+        return $this;
+    }
+
+    /**
      * Add a field to product type
      *
      * @param string $fieldCode
@@ -80,14 +99,15 @@ class ProductType extends AbstractModel
     {
         // check if field already exists
         $field = $this->getField($fieldCode);
-        if ($field) {
-            throw new \Exception("Field '{$fieldCode}' already exists");
-        }
         // create a new field
-        $field = new Field();
-        $field->setCode($fieldCode);
-        $field->setType($fieldType);
+        if (!$field) {
+            $field = new Field();
+            $field->setCode($fieldCode);
+            $field->setType($fieldType);
+            $field->setLabel('hard coded');
+        }
         // check if group already exists, else create a new one
+        // TODO: refactor with addGroup
         $group = $this->getGroup($groupCode);
         if (!$group) {
             $group = new Group();
@@ -132,8 +152,12 @@ class ProductType extends AbstractModel
      */
     public function getGroup($groupCode)
     {
+        // TODO problem when not persist ?
+        if ($this->_entityType->getId() <= 0) {
+            return false;
+        }
         $group = $this->_manager->getRepository('AkeneoCatalogBundle:Group')
-            ->findOneBy(array('type' => $this->_entityType->getId(), 'code' => $groupCode));
+            ->findOneBy(array('type' => $this->_entityType, 'code' => $groupCode));
         return $group;
     }
 
