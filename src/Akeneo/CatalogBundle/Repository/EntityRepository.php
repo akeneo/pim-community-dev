@@ -1,6 +1,6 @@
 <?php
 namespace Akeneo\CatalogBundle\Repository;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityRepository as DoctrineEntityRepository;
 
 /**
  * Provide custom repository to embed complex query logic

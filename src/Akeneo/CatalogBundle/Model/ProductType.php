@@ -121,12 +121,13 @@ class ProductType extends AbstractModel
     public function create($code)
     {
         $type = $this->getManager()->getRepository('AkeneoCatalogBundle:Type')
-        ->findOneByCode($code);
+            ->findOneByCode($code);
         if ($type) {
             throw new \Exception("There is already a product type with the code {$code}");
         } else {
             $this->_object = new Type();
             $this->_object->setCode($code);
+            $this->_code = $code;
             $this->_codeToGroup = array();
             $this->_codeToField = array();
         }
@@ -194,6 +195,7 @@ class ProductType extends AbstractModel
             $field->setCode($fieldCode);
             $field->setType($fieldType);
             $field->setLabel('hard coded');
+            $this->_codeToField[$fieldCode]= $field;
         }
         // check if group already exists, else create a new one
         $group = $this->getGroup($groupCode);

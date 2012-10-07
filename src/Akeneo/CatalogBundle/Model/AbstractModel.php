@@ -45,9 +45,12 @@ abstract class AbstractModel
 
     /**
      * Return managed object
+     *
+     * TODO: should by protected ?
+     *
      * @return mixed
      */
-    protected function getObject()
+    public function getObject()
     {
         return $this->_object;
     }
