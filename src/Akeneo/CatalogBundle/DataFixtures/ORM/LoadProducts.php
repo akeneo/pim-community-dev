@@ -76,18 +76,19 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
     protected function _createBaseType(ObjectManager $manager)
     {
         // create type
-        $type = new ProductType($manager, self::TYPE_BASE);
+        $type = $this->container->get('akeneo.catalog.model_producttype');
+        $type->create(self::TYPE_BASE);
         // add info fields
         $fields = array('sku', 'name', 'short_description', 'description', 'color');
         foreach ($fields as $fieldCode) {
-            if (!$type->hasField($fieldCode)) {
+            if (!$type->getField($fieldCode)) {
                 $type->addField($fieldCode, Field::TYPE_TEXT, self::TYPE_GROUP_INFO);
             }
         }
         // add media fields
         $fields = array('image', 'thumbnail');
         foreach ($fields as $fieldCode) {
-            if (!$type->hasField($fieldCode)) {
+            if (!$type->getField($fieldCode)) {
                 $type->addField($fieldCode, Field::TYPE_TEXT, self::TYPE_GROUP_MEDIA);
             }
         }
@@ -96,7 +97,8 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
         $type->addGroup(self::TYPE_GROUP_TECHNIC);
 
         // persist type
-        $type->persistAndFlush();
+        $type->persist();
+        $type->flush();
     }
 
     /**
@@ -105,7 +107,8 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
     protected function _createProducts(ObjectManager $manager)
     {
         // get base type
-        $type = new ProductType($manager, self::TYPE_BASE);
+        $type = $this->container->get('akeneo.catalog.model_producttype');
+        $type->find(self::TYPE_BASE);
         // create product
         $product = $type->newProductInstance();
         // set values
@@ -113,7 +116,8 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
         $product->setName('mon name 1');
         $product->setColor('Green');
         // save
-        $product->persistAndFlush();
+        $product->persist();
+        $product->flush();
         // translate value
         $product->setValue('color', 'Vert', 'fr_FR');
         $product->persistAndFlush();

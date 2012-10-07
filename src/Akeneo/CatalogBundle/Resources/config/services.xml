@@ -19,9 +19,11 @@
     -->
 
     <services>
+        <!-- 
         <service id="akeneo.catalog.model_product" class="Akeneo\CatalogBundle\Model\Product">
             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
+         -->
         <service id="akeneo.catalog.model_producttype" class="Akeneo\CatalogBundle\Model\ProductType">
             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>

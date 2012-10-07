@@ -17,21 +17,32 @@ class Product extends AbstractModel
 {
 
     /**
-     * Get real entity
-     * @var Entity
-     */
-    protected $_entity;
-
-    /**
      * Constructor
      * @param string $code
      */
     public function __construct($manager, $type)
     {
         parent::__construct($manager);
+        $this->_object = new Entity();
+        $this->_object->setType($type);
+    }
 
-        $this->_entity = new Entity();
-        $this->_entity->setType($type);
+    /**
+     * Load encapsuled entity
+     * @param integer $id
+     * @return ProductType
+     */
+    public function find($productId)
+    {
+        // get entity
+        $entity = $this->_manager->getRepository('AkeneoCatalogBundle:Entity')
+            ->findOneBy($productId);
+        if ($entity) {
+            $this->_object = $entity;
+        } else {
+            throw new \Exception("There is no product with id {$productId}");
+        }
+        return $this;
     }
 
     /**
@@ -50,11 +61,11 @@ class Product extends AbstractModel
             throw new \Exception("The field {$fieldCode} doesn't exist");
         }
         $value = null;
-        if ($this->_entity->getId()) {
+        if ($this->getObject()->getId()) {
             // check value exists
             // TODO: pb nothing if never persist
             $value = $this->_manager->getRepository('AkeneoCatalogBundle:Value')
-                ->findOneBy(array('field' => $field, 'product' => $this->_entity));
+                ->findOneBy(array('field' => $field, 'product' => $this->getObject()));
         }
         return (!$value) ? null : $value->getData();
     }
@@ -76,16 +87,16 @@ class Product extends AbstractModel
         }
         // insert / update value
         $value = null;
-        if ($this->_entity->getId()) {
+        if ($this->getObject()->getId()) {
             // check value exists
             $value = $this->_manager->getRepository('AkeneoCatalogBundle:Value')
-                ->findOneBy(array('field' => $field, 'product' => $this->_entity));
+                ->findOneBy(array('field' => $field, 'product' => $this->getObject()));
         }
         if (!$value) {
             $value = new Value();
             $value->setField($field);
-            $value->setProduct($this->_entity);
-            $this->_entity->addValue($value);
+            $value->setProduct($this->getObject());
+            $this->getObject()->addValue($value);
         }
 
         // switch locale
@@ -150,7 +161,7 @@ class Product extends AbstractModel
      */
     public function persistAndFlush()
     {
-        $this->_manager->persist($this->_entity);
+        $this->_manager->persist($this->getObject());
         $this->_manager->flush();
         return $this;
     }

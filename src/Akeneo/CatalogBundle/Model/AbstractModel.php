@@ -11,12 +11,18 @@ use Doctrine\Common\Persistence\ObjectManager;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class AbstractModel
+abstract class AbstractModel
 {
     /**
      * @var ObjectManager $_objectManager
      */
     protected $_manager;
+
+    /**
+     * Main Entity or Document managed
+     * @var mixed
+     */
+    protected $_object;
 
     /**
     * Aims to inject object manager
@@ -32,9 +38,53 @@ class AbstractModel
      * Get object manager
      * @return ObjectManager
      */
-    public function getObjectManager()
+    public function getManager()
     {
         return $this->_manager;
+    }
+
+    /**
+     * Return managed object
+     * @return mixed
+     */
+    protected function getObject()
+    {
+        return $this->_object;
+    }
+
+    /**
+     * Load encapsuled object
+     * @param string $code
+     * @return AbstractModel
+     */
+    public abstract function find($code);
+
+    /**
+    * Remove current embeded object from object manager
+    */
+    public function remove()
+    {
+        $this->getManager()->remove($this->getObject());
+    }
+
+    /**
+     * Persist current embeded object
+     * @return AbstractModel
+     */
+    public function persist()
+    {
+        $this->getManager()->persist($this->getObject());
+        return $this;
+    }
+
+    /**
+     * Flush modification of object manager on database
+     * @return AbstractModel
+     */
+    public function flush()
+    {
+        $this->getManager()->flush();
+        return $this;
     }
 
 }

@@ -19,43 +19,25 @@ class DefaultController extends Controller
     {
         $manager = $this->getDoctrine()->getEntityManager();
 
-
-        // get type
-        $type = new ProductType($manager, 'base');
-        // create product
-        $product = $type->newProductInstance();
-        // set values
-        $product->setValue('sku', 'mon sku 1');
-        $product->setName('mon name 1');
-        $product->setColor('Green');
-        // save
-        $product->persistAndFlush();
-        // translate value
-        $product->setValue('color', 'Vert', 'fr_fr');
-        $product->persistAndFlush();
-
-
-
-
-        exit();
-
-
         $ind = time();
 
         // create type
-        $typeCode = 'tshirt';//.$ind;
-        $type = new ProductType($manager, $typeCode);
-        if (!$type->hasField('sku')) {
+        $typeCode = 'tshirt'.$ind;
+        //$type = new ProductType($manager);
+        $type = $this->container->get('akeneo.catalog.model_producttype');
+        $type = $type->create($typeCode);
+        if (!$type->getField('sku')) {
             $type->addField('sku', Field::TYPE_TEXT, 'General');
         }
-        if (!$type->hasField('name')) {
+        if (!$type->getField('name')) {
             $type->addField('name', Field::TYPE_TEXT, 'General');
         }
-        if (!$type->hasField('color')) {
+        if (!$type->getField('color')) {
             $type->addField('color', Field::TYPE_TEXT, 'Technical');
         }
-        // TODO remove and use cascade ?
-        $type->persistAndFlush();
+
+        $type->persist();
+        $type->flush();
 
         // create product
         $product = $type->newProductInstance();
@@ -64,11 +46,13 @@ class DefaultController extends Controller
         $product->setName('mon name 1');
         $product->setColor('Green');
 
-        $product->persistAndFlush();
+        $product->persist();
+        $product->flush();
         echo $product->getColor();
 
         $product->setValue('color', 'Vert', 'fr_fr');
-        $product->persistAndFlush();
+        $product->persist();
+        $product->flush();
         echo $product->getColor();
 
         $name = 'Test';

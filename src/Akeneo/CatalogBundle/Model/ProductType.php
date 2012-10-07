@@ -7,7 +7,11 @@ use Akeneo\CatalogBundle\Entity\Group;
 use Akeneo\CatalogBundle\Entity\Field;
 
 /**
- * Product type, a facade of bean
+ * The product type service, a builder which allows to embed complexity of
+ * CRUD operation, of persistence and revisioning of the flexible entity type
+ *
+ * TODO: we add here some additional code to group and field array which allow
+ * to decouple from persistence and enhance type checks, good or bad idea ?
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
@@ -17,35 +21,28 @@ class ProductType extends AbstractModel
 {
 
     /**
+     * Product type code
      * @var string $code
      */
     protected $_code;
 
     /**
-     * Get real entity type
-     * @var Type
+     * List of groups codes
+     * @var Array
      */
-    protected $_entityType;
+    protected $_codeToGroup;
 
     /**
-    * Constructor
-    * @param string $code
-    */
-    public function __construct($manager, $code = null)
-    {
-        parent::__construct($manager);
-        $this->_code = $code;
+     * List of fields codes
+     * @var Array
+     */
+    protected $_codeToField;
 
-        // get entity type
-        $entityType = $this->_manager->getRepository('AkeneoCatalogBundle:Type')
-            ->findOneByCode($code);
-        if ($entityType) {
-            $this->_entityType = $entityType;
-        } else {
-            $this->_entityType = new Type();
-            $this->_entityType->setCode($code);
-        }
-    }
+    /**
+     * Used locale for embeded objects
+     * @var string
+     */
+    private $_locale;
 
     /**
      * Get code
@@ -69,26 +66,118 @@ class ProductType extends AbstractModel
     }
 
     /**
-     * Add a field group to product type
+     * Get groups code
+     * @return Array
+     */
+    public function getGroupsCodes()
+    {
+        return array_keys($this->_codeToGroup);
+    }
+
+    /**
+     * Get fields code
+     * @return Array
+     */
+    public function getFieldsCodes()
+    {
+        return array_keys($this->_codeToField);
+    }
+
+    /**
+     * Load embedded entity type
+     *
+     * @param string $code
+     * @return ProductType
+     */
+    public function find($code)
+    {
+        // get entity type
+        $this->_code = $code;
+        $type = $this->_manager->getRepository('AkeneoCatalogBundle:Type')
+            ->findOneByCode($code);
+        if ($type) {
+            $this->_object = $type;
+            $this->_codeToGroup = array();
+            $this->_codeToField = array();
+            // retrieve group code
+            foreach ($this->_object->getGroups() as $group) {
+                $this->_codeToGroup[$group->getCode()]= $group;
+                // retrieve field code
+                foreach ($group->getFields() as $field) {
+                    $this->_codeToField[$field->getCode()]= $field;
+                }
+            }
+        } else {
+            throw new \Exception("There is no product type with code {$code}");
+        }
+        return $this;
+    }
+
+    /**
+     * Create an embeded type entity
+     * @param string $code
+     * @return ProductType
+     */
+    public function create($code)
+    {
+        $type = $this->getManager()->getRepository('AkeneoCatalogBundle:Type')
+        ->findOneByCode($code);
+        if ($type) {
+            throw new \Exception("There is already a product type with the code {$code}");
+        } else {
+            $this->_object = new Type();
+            $this->_object->setCode($code);
+            $this->_codeToGroup = array();
+            $this->_codeToField = array();
+        }
+        return $this;
+    }
+
+    /**
+     * Add a group to a product type
      *
      * @param string $groupCode
      * @return ProductType
      */
     public function addGroup($groupCode)
     {
-        // check if group already exists, else create a new one
-        $group = $this->getGroup($groupCode);
-        if (!$group) {
+        if (!isset($this->_codeToGroup[$groupCode])) {
             $group = new Group();
-            $group->setType($this->_entityType);
+            $group->setType($this->getObject());
             $group->setCode($groupCode);
-            $this->_entityType->addGroup($group);
+            $this->getObject()->addGroup($group);
+            $this->_codeToGroup[$groupCode]= $group;
         }
         return $this;
     }
 
     /**
-     * Add a field to product type
+     * Get a group by code
+     *
+     * @param string $fieldGroup
+     */
+    public function getGroup($groupCode)
+    {
+        if (isset($this->_codeToGroup[$groupCode])) {
+            return $this->_codeToGroup[$groupCode];
+        }
+    }
+
+    /**
+     * Remove group by code
+     *
+     * @param $code
+     */
+    public function removeGroup($groupCode)
+    {
+        // TODO how to manage non-empty group removal : throws NonEmptyAttributeGroupException
+        $group = $this->getGroup($groupCode);
+        $this->getObject()->removeGroup($group);
+        unset($this->_codeToGroup[$groupCode]);
+    }
+
+    /**
+     * Add a field to the type
      *
      * @param string $fieldCode
      * @param string $fieldType
@@ -107,13 +196,10 @@ class ProductType extends AbstractModel
             $field->setLabel('hard coded');
         }
         // check if group already exists, else create a new one
-        // TODO: refactor with addGroup
         $group = $this->getGroup($groupCode);
         if (!$group) {
-            $group = new Group();
-            $group->setType($this->_entityType);
-            $group->setCode($groupCode);
-            $this->_entityType->addGroup($group);
+            $this->addGroup($groupCode);
+            $group = $this->getGroup($groupCode);
         }
         // add field to group
         $group->addField($field);
@@ -121,81 +207,84 @@ class ProductType extends AbstractModel
     }
 
     /**
-     * Field exists ?
-     *
-     * @param string $fieldCode
-     * @return boolean
-     */
-    public function hasField($fieldCode)
-    {
-        return $this->getField($fieldCode) != null;
-    }
-
-    /**
-     * TODO: move in repository
      * Get field by code
      *
      * @param string $fieldCode
      */
     public function getField($fieldCode)
     {
-        $field = $this->_manager->getRepository('AkeneoCatalogBundle:Field')
-            ->findOneByCode($fieldCode);
-        return $field;
-    }
-
-    /**
-     * TODO: move in repository
-     * Get group by code
-     *
-     * @param string $fieldGroup
-     */
-    public function getGroup($groupCode)
-    {
-        // TODO problem when not persist ?
-        if ($this->_entityType->getId() <= 0) {
-            return false;
+        // check in model
+        if (isset($this->codeToField[$fieldCode])) {
+            return $field;
+            // check in db
+        } else {
+            $field = $this->getManager()->getRepository('AkeneoCatalogBundle:Field')
+                ->findOneByCode($fieldCode);
+            return $field;
         }
-        $group = $this->_manager->getRepository('AkeneoCatalogBundle:Group')
-            ->findOneBy(array('type' => $this->_entityType, 'code' => $groupCode));
-        return $group;
     }
 
     /**
-     * Create and return product
+     * Remove field from group
+     *
+     * @param $code
+     */
+    public function removeFieldFromType($fieldCode)
+    {
+        $field = $this->getField($fieldCode);
+
+        // TODO remove from group -> products cascade ?
+        //$this->getObject()->removeGroup($group);
+        //unset($this->_codeToGroup[$groupCode]);
+    }
+
+    /**
+     * Remove field
+     *
+     * @param $code
+     */
+    public function removeField($fieldCode)
+    {
+        $field = $this->getField($fieldCode);
+        $this->getManager()->remove($field);
+        unset($this->_codeToField[$fieldCode]);
+    }
+
+    /**
+     * Create and return flexible product of current type
      *
      * @return Product
      */
     public function newProductInstance()
     {
-        $product = new Product($this->_manager, $this->_entityType);
+        $product = new Product($this->getManager(), $this->getObject());
+
+        // TODO: problem : product has no type !
+
         return $product;
     }
 
     /**
-     * Persist type
-     *
-     * @return Product
+     * Refresh type state from database
+     * @return ProductType
      */
-    public function persistAndFlush()
+    public function refresh()
     {
-        $this->_manager->persist($this->_entityType);
-        $this->_manager->flush();
+        // TODO : problem with groups and fields code arrays ?
+        // TODO : deal with locale
+        $this->getManager()->refresh($this->getObject());
         return $this;
     }
 
-    /*
-    -> update all entities ? revision ?
-    -> proposal / idea :
-    add base field : for every entity
-    add “type” / “group” field : for every entity of a set (ex: tshirt) & add a setType or something like this
-    addAttributeGroup($code)
-    getAttributeGroup($code)
-    removeAttributeGroup($code, forceIfNotEmpty = false)
-    how to manage non-empty group removal : throws NonEmptyAttributeGroupException
-    removeAttribute ($code)
-    newFlexibleEntityInstance()
-*/
+    /**
+     * Change locale
+     * @param string $locale
+     */
+    public function setTranslatableLocale($locale)
+    {
+        // TODO
+        $this->_locale = $locale;
 
+    }
 
 }
