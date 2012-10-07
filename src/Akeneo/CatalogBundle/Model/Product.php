@@ -1,10 +1,10 @@
 <?php
 namespace Akeneo\CatalogBundle\Model;
 
-use Akeneo\CatalogBundle\Entity\Entity;
-use Akeneo\CatalogBundle\Entity\Type;
-use Akeneo\CatalogBundle\Entity\Field;
-use Akeneo\CatalogBundle\Entity\Value;
+use Akeneo\CatalogBundle\Entity\Product\Entity;
+use Akeneo\CatalogBundle\Entity\Product\Type;
+use Akeneo\CatalogBundle\Entity\Product\Field;
+use Akeneo\CatalogBundle\Entity\Product\Value;
 
 /**
  * Flexible product
@@ -35,7 +35,7 @@ class Product extends AbstractModel
     public function find($productId)
     {
         // get entity
-        $entity = $this->_manager->getRepository('AkeneoCatalogBundle:Entity')
+        $entity = $this->_manager->getRepository('Akeneo\CatalogBundle\Entity\Product\\Entity')
             ->findOneBy($productId);
         if ($entity) {
             $this->_object = $entity;
@@ -55,7 +55,7 @@ class Product extends AbstractModel
     public function getValue($fieldCode, $localeCode = null)
     {
         // TODO check type
-        $field = $this->_manager->getRepository('AkeneoCatalogBundle:Field')
+        $field = $this->_manager->getRepository('Akeneo\CatalogBundle\Entity\Product\\Field')
             ->findOneByCode($fieldCode);
         if (!$field) {
             throw new \Exception("The field {$fieldCode} doesn't exist");
@@ -64,7 +64,7 @@ class Product extends AbstractModel
         if ($this->getObject()->getId()) {
             // check value exists
             // TODO: pb nothing if never persist
-            $value = $this->_manager->getRepository('AkeneoCatalogBundle:Value')
+            $value = $this->_manager->getRepository('Akeneo\CatalogBundle\Entity\Product\\Value')
                 ->findOneBy(array('field' => $field, 'product' => $this->getObject()));
         }
         return (!$value) ? null : $value->getData();
@@ -80,7 +80,7 @@ class Product extends AbstractModel
     public function setValue($fieldCode, $data, $locale = null)
     {
         // TODO check type
-        $field = $this->_manager->getRepository('AkeneoCatalogBundle:Field')
+        $field = $this->_manager->getRepository('Akeneo\CatalogBundle\Entity\Product\\Field')
             ->findOneByCode($fieldCode);
         if (!$field) {
             throw new \Exception("The field {$fieldCode} doesn't exist !!!!");
@@ -89,7 +89,7 @@ class Product extends AbstractModel
         $value = null;
         if ($this->getObject()->getId()) {
             // check value exists
-            $value = $this->_manager->getRepository('AkeneoCatalogBundle:Value')
+            $value = $this->_manager->getRepository('Akeneo\CatalogBundle\Entity\Product\\Value')
                 ->findOneBy(array('field' => $field, 'product' => $this->getObject()));
         }
         if (!$value) {
@@ -161,7 +161,7 @@ class Product extends AbstractModel
      */
     public function getField($fieldCode)
     {
-        $field = $this->_manager->getRepository('AkeneoCatalogBundle:Field')
+        $field = $this->_manager->getRepository('Akeneo\CatalogBundle\Entity\Product\\Field')
             ->findOneByCode($fieldCode);
         return $field;
     }

@@ -17,7 +17,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $manager = $this->getDoctrine()->getEntityManager();
+        // $manager = $this->getDoctrine()->getEntityManager();
 
         $ind = time();
 

@@ -1,10 +1,10 @@
 <?php
 namespace Akeneo\CatalogBundle\Model;
 
-use Akeneo\CatalogBundle\Entity\Entity;
-use Akeneo\CatalogBundle\Entity\Type;
-use Akeneo\CatalogBundle\Entity\Group;
-use Akeneo\CatalogBundle\Entity\Field;
+use Akeneo\CatalogBundle\Entity\Product\Entity;
+use Akeneo\CatalogBundle\Entity\Product\Type;
+use Akeneo\CatalogBundle\Entity\Product\Group;
+use Akeneo\CatalogBundle\Entity\Product\Field;
 
 /**
  * The product type service, a builder which allows to embed complexity of
@@ -93,7 +93,7 @@ class ProductType extends AbstractModel
     {
         // get entity type
         $this->_code = $code;
-        $type = $this->_manager->getRepository('AkeneoCatalogBundle:Type')
+        $type = $this->_manager->getRepository('Akeneo\CatalogBundle\Entity\Product\\Type')
             ->findOneByCode($code);
         if ($type) {
             $this->_object = $type;
@@ -120,7 +120,7 @@ class ProductType extends AbstractModel
      */
     public function create($code)
     {
-        $type = $this->getManager()->getRepository('AkeneoCatalogBundle:Type')
+        $type = $this->getManager()->getRepository('Akeneo\CatalogBundle\Entity\Product\\Type')
             ->findOneByCode($code);
         if ($type) {
             throw new \Exception("There is already a product type with the code {$code}");
@@ -220,7 +220,7 @@ class ProductType extends AbstractModel
             return $field;
             // check in db
         } else {
-            $field = $this->getManager()->getRepository('AkeneoCatalogBundle:Field')
+            $field = $this->getManager()->getRepository('Akeneo\CatalogBundle\Entity\Product\\Field')
                 ->findOneByCode($fieldCode);
             return $field;
         }

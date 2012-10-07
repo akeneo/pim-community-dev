@@ -7,7 +7,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Akeneo\CatalogBundle\Model\ProductType;
-use Akeneo\CatalogBundle\Entity\Field;
+use Akeneo\CatalogBundle\Entity\Product\Field;
 
 /**
  * Load product and types

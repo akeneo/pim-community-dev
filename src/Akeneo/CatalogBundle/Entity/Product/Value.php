@@ -1,5 +1,5 @@
 <?php
-namespace Akeneo\CatalogBundle\Entity;
+namespace Akeneo\CatalogBundle\Entity\Product;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -14,7 +14,7 @@ use Gedmo\Translatable\Translatable;
  *
  * @ORM\Table(name="AkeneoCatalog_Product_Value")
  * @ORM\Entity
- * @Gedmo\TranslationEntity(class="Akeneo\CatalogBundle\Entity\Translation\ValueTranslation")
+ * @Gedmo\TranslationEntity(class="Akeneo\CatalogBundle\Entity\Product\Translation\ValueTranslation")
  */
 class Value
 {
@@ -94,10 +94,10 @@ class Value
     /**
      * Set product
      *
-     * @param Akeneo\CatalogBundle\Entity\Entity $product
+     * @param Akeneo\CatalogBundle\Entity\Product\Entity $product
      * @return Value
      */
-    public function setProduct(\Akeneo\CatalogBundle\Entity\Entity $product = null)
+    public function setProduct(\Akeneo\CatalogBundle\Entity\Product\Entity $product = null)
     {
         $this->product = $product;
 
@@ -107,7 +107,7 @@ class Value
     /**
      * Get product
      *
-     * @return Akeneo\CatalogBundle\Entity\Entity
+     * @return Akeneo\CatalogBundle\Entity\Product\Entity
      */
     public function getProduct()
     {
@@ -117,10 +117,10 @@ class Value
     /**
      * Set field
      *
-     * @param Akeneo\CatalogBundle\Entity\Field $field
+     * @param Akeneo\CatalogBundle\Entity\Product\Field $field
      * @return Value
      */
-    public function setField(\Akeneo\CatalogBundle\Entity\Field $field = null)
+    public function setField(\Akeneo\CatalogBundle\Entity\Product\Field $field = null)
     {
         $this->field = $field;
 
@@ -130,7 +130,7 @@ class Value
     /**
      * Get field
      *
-     * @return Akeneo\CatalogBundle\Entity\Field
+     * @return Akeneo\CatalogBundle\Entity\Product\Field
      */
     public function getField()
     {

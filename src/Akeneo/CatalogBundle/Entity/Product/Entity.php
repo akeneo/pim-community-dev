@@ -1,5 +1,5 @@
 <?php
-namespace Akeneo\CatalogBundle\Entity;
+namespace Akeneo\CatalogBundle\Entity\Product;
 
 use Akeneo\CatalogBundle\VersionSystem\Revision;
 use Doctrine\ORM\Mapping as ORM;
@@ -61,10 +61,10 @@ class Entity
     /**
      * Set type
      *
-     * @param Akeneo\CatalogBundle\Entity\Type $type
+     * @param Akeneo\CatalogBundle\Entity\Product\Type $type
      * @return Entity
      */
-    public function setType(\Akeneo\CatalogBundle\Entity\Type $type = null)
+    public function setType(\Akeneo\CatalogBundle\Entity\Product\Type $type = null)
     {
         $this->type = $type;
     
@@ -74,7 +74,7 @@ class Entity
     /**
      * Get type
      *
-     * @return Akeneo\CatalogBundle\Entity\Type 
+     * @return Akeneo\CatalogBundle\Entity\Product\Type 
      */
     public function getType()
     {
@@ -84,10 +84,10 @@ class Entity
     /**
      * Add values
      *
-     * @param Akeneo\CatalogBundle\Entity\Value $values
+     * @param Akeneo\CatalogBundle\Entity\Product\Value $values
      * @return Entity
      */
-    public function addValue(\Akeneo\CatalogBundle\Entity\Value $values)
+    public function addValue(\Akeneo\CatalogBundle\Entity\Product\Value $values)
     {
         $this->values[] = $values;
     
@@ -97,9 +97,9 @@ class Entity
     /**
      * Remove values
      *
-     * @param Akeneo\CatalogBundle\Entity\Value $values
+     * @param Akeneo\CatalogBundle\Entity\Product\Value $values
      */
-    public function removeValue(\Akeneo\CatalogBundle\Entity\Value $values)
+    public function removeValue(\Akeneo\CatalogBundle\Entity\Product\Value $values)
     {
         $this->values->removeElement($values);
     }

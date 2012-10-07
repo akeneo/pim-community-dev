@@ -1,5 +1,5 @@
 <?php
-namespace Akeneo\CatalogBundle\Entity;
+namespace Akeneo\CatalogBundle\Entity\Product;
 
 use Doctrine\ORM\Mapping as ORM;
 

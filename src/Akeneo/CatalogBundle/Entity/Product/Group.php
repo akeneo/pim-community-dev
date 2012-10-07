@@ -1,5 +1,5 @@
 <?php
-namespace Akeneo\CatalogBundle\Entity;
+namespace Akeneo\CatalogBundle\Entity\Product;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -89,10 +89,10 @@ class Group
     /**
      * Set type
      *
-     * @param Akeneo\CatalogBundle\Entity\Type $type
+     * @param Akeneo\CatalogBundle\Entity\Product\Type $type
      * @return Group
      */
-    public function setType(\Akeneo\CatalogBundle\Entity\Type $type = null)
+    public function setType(\Akeneo\CatalogBundle\Entity\Product\Type $type = null)
     {
         $this->type = $type;
     
@@ -102,7 +102,7 @@ class Group
     /**
      * Get type
      *
-     * @return Akeneo\CatalogBundle\Entity\Type 
+     * @return Akeneo\CatalogBundle\Entity\Product\Type 
      */
     public function getType()
     {
@@ -112,10 +112,10 @@ class Group
     /**
      * Add fields
      *
-     * @param Akeneo\CatalogBundle\Entity\Field $fields
+     * @param Akeneo\CatalogBundle\Entity\Product\Field $fields
      * @return Group
      */
-    public function addField(\Akeneo\CatalogBundle\Entity\Field $fields)
+    public function addField(\Akeneo\CatalogBundle\Entity\Product\Field $fields)
     {
         $this->fields[] = $fields;
     
@@ -125,9 +125,9 @@ class Group
     /**
      * Remove fields
      *
-     * @param Akeneo\CatalogBundle\Entity\Field $fields
+     * @param Akeneo\CatalogBundle\Entity\Product\Field $fields
      */
-    public function removeField(\Akeneo\CatalogBundle\Entity\Field $fields)
+    public function removeField(\Akeneo\CatalogBundle\Entity\Product\Field $fields)
     {
         $this->fields->removeElement($fields);
     }

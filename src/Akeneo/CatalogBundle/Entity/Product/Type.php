@@ -1,5 +1,5 @@
 <?php
-namespace Akeneo\CatalogBundle\Entity;
+namespace Akeneo\CatalogBundle\Entity\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -83,10 +83,10 @@ class Type
     /**
      * Add groups
      *
-     * @param Akeneo\CatalogBundle\Entity\Group $groups
+     * @param Akeneo\CatalogBundle\Entity\Product\Group $groups
      * @return Type
      */
-    public function addGroup(\Akeneo\CatalogBundle\Entity\Group $groups)
+    public function addGroup(\Akeneo\CatalogBundle\Entity\Product\Group $groups)
     {
         $this->groups[] = $groups;
     
@@ -96,9 +96,9 @@ class Type
     /**
      * Remove groups
      *
-     * @param Akeneo\CatalogBundle\Entity\Group $groups
+     * @param Akeneo\CatalogBundle\Entity\Product\Group $groups
      */
-    public function removeGroup(\Akeneo\CatalogBundle\Entity\Group $groups)
+    public function removeGroup(\Akeneo\CatalogBundle\Entity\Product\Group $groups)
     {
         $this->groups->removeElement($groups);
     }
