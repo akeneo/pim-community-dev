@@ -14,7 +14,7 @@ use Gedmo\Translatable\Translatable;
  *
  * @ORM\Table(name="AkeneoCatalog_Product_Value")
  * @ORM\Entity
- * @Gedmo\TranslationEntity(class="Akeneo\CatalogBundle\Entity\Product\Translation\ValueTranslation")
+ * @Gedmo\TranslationEntity(class="Akeneo\CatalogBundle\Entity\Product\Translation")
  */
 class Value
 {
