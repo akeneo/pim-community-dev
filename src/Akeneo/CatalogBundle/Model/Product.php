@@ -137,7 +137,7 @@ class Product extends AbstractModel
         // get field code
         $fieldName = lcfirst(\Doctrine\Common\Util\Inflector::classify($by));
         // call method
-        if ($this->hasField($fieldName)) {
+        if ($this->getField($fieldName)) {
             switch (count($arguments)) {
                 case 0:
                     return $this->$method($fieldName);
@@ -155,30 +155,6 @@ class Product extends AbstractModel
     }
 
     /**
-     * Persist type
-     *
-     * @return Product
-     */
-    public function persistAndFlush()
-    {
-        $this->_manager->persist($this->getObject());
-        $this->_manager->flush();
-        return $this;
-    }
-
-    /**
-    * Field exists ?
-    *
-    * @param string $fieldCode
-    * @return boolean
-    */
-    public function hasField($fieldCode)
-    {
-        return $this->getField($fieldCode) != null;
-    }
-
-    /**
-     * TODO: move in repository
      * Get field by code
      *
      * @param string $fieldCode

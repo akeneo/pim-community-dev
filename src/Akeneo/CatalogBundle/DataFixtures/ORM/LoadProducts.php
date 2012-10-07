@@ -120,7 +120,8 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
         $product->flush();
         // translate value
         $product->setValue('color', 'Vert', 'fr_FR');
-        $product->persistAndFlush();
+        $product->persist();
+        $product->flush();
     }
 
 }
