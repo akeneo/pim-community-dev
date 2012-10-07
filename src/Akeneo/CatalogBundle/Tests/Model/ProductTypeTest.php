@@ -75,6 +75,24 @@ class ProductTypeTest extends KernelAwareTest
         $this->assertInstanceOf('Akeneo\CatalogBundle\Entity\Product\Type', $type->getObject());
         $this->assertEquals($type->getCode(), self::TYPE_BASE);
 
+        // test accessor
+        $group = $type->getGroup(self::TYPE_GROUP_SEO);
+        $this->assertInstanceOf('Akeneo\CatalogBundle\Entity\Product\Group', $group);
+        $field = $type->getField('sku');
+        $this->assertInstanceOf('Akeneo\CatalogBundle\Entity\Product\Field', $field);
+
+        // remove related entity
+        $group = $type->removeGroup(self::TYPE_GROUP_SEO);
+        $this->assertEquals(count($type->getGroupsCodes()), 3);
+        $group = $type->removeFieldFromType('short_description');
+        $this->assertEquals(count($type->getFieldsCodes()), 6);
+        $group = $type->removeField('description');
+        $this->assertEquals(count($type->getFieldsCodes()), 5);
+
+        // create product and related service
+        $product = $type->newProductInstance();
+        $this->assertInstanceOf('Akeneo\CatalogBundle\Model\Product', $product);
+
         // remove
         $type->remove();
     }

@@ -21,12 +21,6 @@ class ProductType extends AbstractModel
 {
 
     /**
-     * Product type code
-     * @var string $code
-     */
-    protected $_code;
-
-    /**
      * List of groups codes
      * @var Array
      */
@@ -50,19 +44,7 @@ class ProductType extends AbstractModel
      */
     public function getCode()
     {
-        return $this->_code;
-    }
-
-    /**
-     * Set unique code
-     *
-     * @param string code
-     * @return EntityType
-     */
-    public function setCode($code)
-    {
-        $this->_code = $code;
-        return $this;
+        return $this->getObject()->getCode();
     }
 
     /**
@@ -92,7 +74,6 @@ class ProductType extends AbstractModel
     public function find($code)
     {
         // get entity type
-        $this->_code = $code;
         $type = $this->_manager->getRepository('Akeneo\CatalogBundle\Entity\Product\\Type')
             ->findOneByCode($code);
         if ($type) {
@@ -123,11 +104,11 @@ class ProductType extends AbstractModel
         $type = $this->getManager()->getRepository('Akeneo\CatalogBundle\Entity\Product\\Type')
             ->findOneByCode($code);
         if ($type) {
+            // TODO create custom exception
             throw new \Exception("There is already a product type with the code {$code}");
         } else {
             $this->_object = new Type();
             $this->_object->setCode($code);
-            $this->_code = $code;
             $this->_codeToGroup = array();
             $this->_codeToField = array();
         }
@@ -216,9 +197,9 @@ class ProductType extends AbstractModel
     public function getField($fieldCode)
     {
         // check in model
-        if (isset($this->codeToField[$fieldCode])) {
-            return $field;
-            // check in db
+        if (isset($this->_codeToField[$fieldCode])) {
+            return $this->_codeToField[$fieldCode];
+        // check in db
         } else {
             $field = $this->getManager()->getRepository('Akeneo\CatalogBundle\Entity\Product\\Field')
                 ->findOneByCode($fieldCode);
@@ -234,6 +215,7 @@ class ProductType extends AbstractModel
     public function removeFieldFromType($fieldCode)
     {
         $field = $this->getField($fieldCode);
+        unset($this->_codeToField[$fieldCode]);
 
         // TODO remove from group -> products cascade ?
         //$this->getObject()->removeGroup($group);
