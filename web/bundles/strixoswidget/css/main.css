@@ -248,3 +248,7 @@ color: #313131;
 .connectedSortable .remove-attribute {border:1px solid red;}
 #add_tab {float:right;margin-bottom:1px;}
 .ui-tabs { border: 1px solid #AACD4E}
+
+/* connectors */
+.ui-icon-connector-icecat { background-position: 0 0; background-image:url(icons-connector/icecat-16.gif) !important;}
+.ui-icon-connector-magento { background-position: 0 0; background-image:url(icons-connector/magento-16.gif) !important;}
