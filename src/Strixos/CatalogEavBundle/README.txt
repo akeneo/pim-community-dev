@@ -1,0 +1,1 @@
+Refactor to Akeneo_Catalog then delete bundle
