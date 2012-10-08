@@ -47,11 +47,11 @@ class Entity
     {
         $this->values = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -67,14 +67,14 @@ class Entity
     public function setType(\Akeneo\CatalogBundle\Entity\Product\Type $type = null)
     {
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return Akeneo\CatalogBundle\Entity\Product\Type 
+     * @return Akeneo\CatalogBundle\Entity\Product\Type
      */
     public function getType()
     {
@@ -90,7 +90,7 @@ class Entity
     public function addValue(\Akeneo\CatalogBundle\Entity\Product\Value $values)
     {
         $this->values[] = $values;
-    
+
         return $this;
     }
 
@@ -107,7 +107,7 @@ class Entity
     /**
      * Get values
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getValues()
     {

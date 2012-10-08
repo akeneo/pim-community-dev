@@ -16,29 +16,62 @@ use Akeneo\CatalogBundle\Entity\Product\Value;
 class Product extends AbstractModel
 {
 
+    // TODO: add param for entity FQCN
+
     /**
-     * Constructor
-     * @param string $code
+     * List of fields codes
+     * @var Array
      */
-    public function __construct($manager, $type)
-    {
-        parent::__construct($manager);
-        $this->_object = new Entity();
-        $this->_object->setType($type);
-    }
+    protected $_codeToField;
+
+    /**
+     * List of fields codes
+     * @var Array
+     */
+    protected $_fieldCodeToValue;
+
+    /**
+     * Current locale code
+     * @var string
+     */
+    protected $_localeCode;
+
+    // TODO:
+    // - define default locale
+    // - fallback on translation on default (no by default -> if yes pb with reporting to know the untranslated ?)
+    // - store default locale tranlsation in translation table (no by default)
 
     /**
      * Load encapsuled entity
-     * @param integer $id
+     * @param integer
      * @return ProductType
      */
     public function find($productId)
     {
+        // locale
+        // TODO how to load ?
+        /*if ($localeCode) {
+            $this->_localeCode = $localeCode;
+        }*/
         // get entity
-        $entity = $this->_manager->getRepository('Akeneo\CatalogBundle\Entity\Product\\Entity')
-            ->findOneBy($productId);
+        $entity = $this->_manager->getRepository('Akeneo\CatalogBundle\Entity\Product\Entity')
+            ->find($productId);
         if ($entity) {
             $this->_object = $entity;
+            // retrieve group code
+            // TODO: move to product entity or custom repository
+            // TODO : problem when change type referenced by entity
+            $this->_codeToField = array();
+            $this->_fieldCodeToValue = array();
+            foreach ($this->_object->getType()->getGroups() as $group) {
+                $this->_codeToGroup[$group->getCode()]= $group;
+                foreach ($group->getFields() as $field) {
+                    $this->_codeToField[$field->getCode()]= $field;
+                }
+            }
+            foreach ($this->_object->getValues() as $value) {
+                $this->_fieldCodeToValue[$value->getField()->getCode()]= $value;
+            }
         } else {
             throw new \Exception("There is no product with id {$productId}");
         }
@@ -46,28 +79,63 @@ class Product extends AbstractModel
     }
 
     /**
-     * Get product value for a field
+     * Create an embeded type entity
+     * @param string $type
+     * @return Product
+     */
+    public function create($type)
+    {
+        $this->_object = new Entity();
+        $this->_object->setType($type);
+        $this->_codeToField = array();
+        $this->_fieldCodeToValue = array();
+        // TODO: move to product entity or custom repository
+        foreach ($this->_object->getType()->getGroups() as $group) {
+            foreach ($group->getFields() as $field) {
+                $this->_codeToField[$field->getCode()]= $field;
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * Get field by code
      *
      * @param string $fieldCode
-     * @param string $localeCode
+     */
+    public function getField($fieldCode)
+    {
+        // check in model
+        if (isset($this->_codeToField[$fieldCode])) {
+            return $this->_codeToField[$fieldCode];
+        }
+        return null;
+    }
+
+    /**
+     * Get fields codes
+     *
+     * @return Array
+     */
+    public function getFieldsCodes()
+    {
+        return array_keys($this->_codeToField);
+    }
+
+    /**
+     * Get product value for a field code
+     *
+     * @param string $fieldCode
      * @return mixed
      */
-    public function getValue($fieldCode, $localeCode = null)
+    public function getValue($fieldCode)
     {
-        // TODO check type
-        $field = $this->_manager->getRepository('Akeneo\CatalogBundle\Entity\Product\\Field')
-            ->findOneByCode($fieldCode);
+        $field = $this->getField($fieldCode);
         if (!$field) {
-            throw new \Exception("The field {$fieldCode} doesn't exist");
+            throw new \Exception("The field {$fieldCode} doesn't exist for this product type");
         }
-        $value = null;
-        if ($this->getObject()->getId()) {
-            // check value exists
-            // TODO: pb nothing if never persist
-            $value = $this->_manager->getRepository('Akeneo\CatalogBundle\Entity\Product\\Value')
-                ->findOneBy(array('field' => $field, 'product' => $this->getObject()));
-        }
-        return (!$value) ? null : $value->getData();
+        $value = $this->_fieldCodeToValue[$fieldCode];
+        return ($value) ? $value->getData() : null;
     }
 
     /**
@@ -75,35 +143,26 @@ class Product extends AbstractModel
      *
      * @param string $fieldCode
      * @param string $data
-     * @param string $locale
      */
-    public function setValue($fieldCode, $data, $locale = null)
+    public function setValue($fieldCode, $data)
     {
-        // TODO check type
-        $field = $this->_manager->getRepository('Akeneo\CatalogBundle\Entity\Product\\Field')
-            ->findOneByCode($fieldCode);
+        $field = $this->getField($fieldCode);
         if (!$field) {
-            throw new \Exception("The field {$fieldCode} doesn't exist !!!!");
+            throw new \Exception("The field {$fieldCode} doesn't exist for this product type");
         }
         // insert / update value
-        $value = null;
-        if ($this->getObject()->getId()) {
-            // check value exists
-            $value = $this->_manager->getRepository('Akeneo\CatalogBundle\Entity\Product\\Value')
-                ->findOneBy(array('field' => $field, 'product' => $this->getObject()));
-        }
+        $value = isset($this->_fieldCodeToValue[$fieldCode])? $this->_fieldCodeToValue[$fieldCode] : null;
         if (!$value) {
             $value = new Value();
             $value->setField($field);
             $value->setProduct($this->getObject());
             $this->getObject()->addValue($value);
+            $this->_fieldCodeToValue[$fieldCode]= $value;
         }
-
-        // switch locale
-        if ($locale) {
-            $value->setTranslatableLocale($locale);
+        // for current product locale (else use default)
+        if ($this->_localeCode) {
+            $value->setTranslatableLocale($this->_localeCode);
         }
-
         $value->setData($data);
         return $this;
     }
@@ -120,50 +179,35 @@ class Product extends AbstractModel
     {
         // check if method is getField or setField
         switch (true) {
+            // getValue(code)
             case (0 === strpos($method, 'get')):
                 $by = substr($method, 3);
                 $method = 'getValue';
+                $fieldName = lcfirst(\Doctrine\Common\Util\Inflector::classify($by));
+                return $this->$method($fieldName);
                 break;
+            // setValue(code, value)
             case (0 === strpos($method, 'set')):
                 $by = substr($method, 3);
                 $method = 'setValue';
+                $fieldName = lcfirst(\Doctrine\Common\Util\Inflector::classify($by));
+                return $this->$method($fieldName, $arguments[0]);
                 break;
-            default:
-                throw new \BadMethodCallException(
-                    "Undefined method '$method'. The method name must start with ".
-                    "either get or set!"
-                );
         }
-        // get field code
-        $fieldName = lcfirst(\Doctrine\Common\Util\Inflector::classify($by));
-        // call method
-        if ($this->getField($fieldName)) {
-            switch (count($arguments)) {
-                case 0:
-                    return $this->$method($fieldName);
-                case 1:
-                    return $this->$method($fieldName, $arguments[0]);
-                default:
-                    // do nothing
-            }
-        }
-
-        var_dump($fieldName);
-        var_dump($arguments);
-
-        throw new \Exception('Invalid getX / setX call');
     }
 
     /**
-     * Get field by code
+     * Change locale and refresh product data for this locale
      *
-     * @param string $fieldCode
+     * @param string $locale
      */
-    public function getField($fieldCode)
+    public function switchLocale($locale)
     {
-        $field = $this->_manager->getRepository('Akeneo\CatalogBundle\Entity\Product\\Field')
-            ->findOneByCode($fieldCode);
-        return $field;
+        $this->_localeCode = $locale;
+        foreach ($this->getObject()->getValues() as $value) {
+            $value->setTranslatableLocale($locale);
+            $this->getManager()->refresh($value);
+        }
     }
 
 }

@@ -46,11 +46,11 @@ class Type
     {
         $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -66,14 +66,14 @@ class Type
     public function setCode($code)
     {
         $this->code = $code;
-    
+
         return $this;
     }
 
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -89,7 +89,7 @@ class Type
     public function addGroup(\Akeneo\CatalogBundle\Entity\Product\Group $groups)
     {
         $this->groups[] = $groups;
-    
+
         return $this;
     }
 
@@ -106,7 +106,7 @@ class Type
     /**
      * Get groups
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getGroups()
     {

@@ -25,6 +25,12 @@ abstract class AbstractModel
     protected $_object;
 
     /**
+     * Used locale for embeded objects
+     * @var string
+     */
+    private $_locale;
+
+    /**
     * Aims to inject object manager
     *
     * @param ObjectManager $objectManager
@@ -88,6 +94,17 @@ abstract class AbstractModel
     {
         $this->getManager()->flush();
         return $this;
+    }
+
+    /**
+     * Change locale
+     * @param string $locale
+     */
+    public function setTranslatableLocale($locale)
+    {
+        // TODO
+        $this->_locale = $locale;
+
     }
 
 }

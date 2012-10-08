@@ -33,12 +33,6 @@ class ProductType extends AbstractModel
     protected $_codeToField;
 
     /**
-     * Used locale for embeded objects
-     * @var string
-     */
-    private $_locale;
-
-    /**
      * Get code
      * @return string code
      */
@@ -74,13 +68,14 @@ class ProductType extends AbstractModel
     public function find($code)
     {
         // get entity type
-        $type = $this->_manager->getRepository('Akeneo\CatalogBundle\Entity\Product\\Type')
+        $type = $this->_manager->getRepository('Akeneo\CatalogBundle\Entity\Product\Type')
             ->findOneByCode($code);
         if ($type) {
             $this->_object = $type;
             $this->_codeToGroup = array();
             $this->_codeToField = array();
             // retrieve group code
+            // TODO: move to type entity or custom repository
             foreach ($this->_object->getGroups() as $group) {
                 $this->_codeToGroup[$group->getCode()]= $group;
                 // retrieve field code
@@ -101,7 +96,7 @@ class ProductType extends AbstractModel
      */
     public function create($code)
     {
-        $type = $this->getManager()->getRepository('Akeneo\CatalogBundle\Entity\Product\\Type')
+        $type = $this->getManager()->getRepository('Akeneo\CatalogBundle\Entity\Product\Type')
             ->findOneByCode($code);
         if ($type) {
             // TODO create custom exception
@@ -201,7 +196,7 @@ class ProductType extends AbstractModel
             return $this->_codeToField[$fieldCode];
         // check in db
         } else {
-            $field = $this->getManager()->getRepository('Akeneo\CatalogBundle\Entity\Product\\Field')
+            $field = $this->getManager()->getRepository('Akeneo\CatalogBundle\Entity\Product\Field')
                 ->findOneByCode($fieldCode);
             return $field;
         }
@@ -241,10 +236,8 @@ class ProductType extends AbstractModel
      */
     public function newProductInstance()
     {
-        $product = new Product($this->getManager(), $this->getObject());
-
-        // TODO: problem : product has no type !
-
+        $product = new Product($this->getManager());
+        $product->create($this->getObject());
         return $product;
     }
 
@@ -258,17 +251,6 @@ class ProductType extends AbstractModel
         // TODO : deal with locale
         $this->getManager()->refresh($this->getObject());
         return $this;
-    }
-
-    /**
-     * Change locale
-     * @param string $locale
-     */
-    public function setTranslatableLocale($locale)
-    {
-        // TODO
-        $this->_locale = $locale;
-
     }
 
 }
