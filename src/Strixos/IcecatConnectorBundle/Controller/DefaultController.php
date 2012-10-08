@@ -18,6 +18,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use APY\DataGridBundle\Grid\Source\Entity;
 use APY\DataGridBundle\Grid\Action\RowAction;
 
+use Strixos\IcecatConnectorBundle\Model\Load\ProductLoadDataFromCsv;
+
 class DefaultController extends Controller
 {
     /**
@@ -49,10 +51,19 @@ class DefaultController extends Controller
     */
     public function setupAction()
     {
+
         // TODO replace by injection and use loader as services ?
         $entityManager = $this->getDoctrine()->getEntityManager();
-        $extractor = new BaseExtractor($entityManager);
-        $extractor->process();
+        //$extractor = new BaseExtractor($entityManager);
+
+        // TODO: to refactor
+        ini_set('max_execution_time', 0);
+        $pathProductFile = '/tmp/export_urls_rich.txt';
+        $supplierLoader = new ProductLoadDataFromCsv($entityManager);
+        $supplierLoader->process($pathProductFile);
+
+        // $extractor->process();
+        // $extractor->extractAndLoadBaseProductData();
         return new Response('Base data (suppliers and products) have been retrieved from Open Icecat.');
     }
 

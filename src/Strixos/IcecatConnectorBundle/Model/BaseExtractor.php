@@ -11,8 +11,7 @@ namespace Strixos\IcecatConnectorBundle\Model;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-use Strixos\IcecatConnectorBundle\Model\Load\ProductLoadDataInFile;
-
+use Strixos\IcecatConnectorBundle\Model\Load\ProductLoadDataFromCsv;
 use Strixos\IcecatConnectorBundle\Model\Load\SupplierLoadDataInFile;
 
 use Strixos\DataFlowBundle\Model\Extract\FileHttpDownload;
@@ -79,7 +78,7 @@ class BaseExtractor
     /**
     * Extract product data from Icecat and load in local database
     */
-    protected function _extractAndLoadBaseProductData()
+    public function extractAndLoadBaseProductData()
     {
         // download text product archive (only few data on products)
         $pathProductArchive = '/tmp/export_urls_rich.txt.gz';
@@ -96,7 +95,7 @@ class BaseExtractor
                 $unzipper->process($pathProductArchive, $pathProductFile);
             }
             // load csv into local table
-            $supplierLoader = new ProductLoadDataInFile($this->_entityManager);
+            $supplierLoader = new ProductLoadDataFromCsv($this->_entityManager);
             $supplierLoader->process($pathProductFile);
         }
     }
