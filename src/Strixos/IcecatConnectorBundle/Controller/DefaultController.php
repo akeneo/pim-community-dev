@@ -35,7 +35,7 @@ class DefaultController extends Controller
         // attach the source to the grid
         $grid->setSource($source);
         // add an action column
-        $rowAction = new RowAction('Import products', 'strixos_icecatconnector_default_loadproducts');
+        $rowAction = new RowAction('Import product details to PIM', 'strixos_icecatconnector_default_loadproducts');
         $rowAction->setRouteParameters(array('supplierId'));
         $grid->addRowAction($rowAction);
         // manage the grid redirection, exports response of the controller
