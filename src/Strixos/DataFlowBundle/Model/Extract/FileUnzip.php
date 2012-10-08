@@ -26,7 +26,10 @@ class FileUnzip extends Step
      */
     public function process($pathArchive, $pathFile)
     {
-        $gz = gzopen($pathArchive, 'rb');
+    	if (!file_exists($pathArchive)) {
+            throw new UnzipException ('unzip.archive_file.unknown');
+    	}
+    	$gz = gzopen($pathArchive, 'rb');
         // delete destination file if already exists
         if (file_exists($pathFile)) {
             unlink($pathFile);

@@ -14,7 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Supplier extends AbstractModel
 {
-
     /**
      * @var integer $id
      *
@@ -25,37 +24,23 @@ class Supplier extends AbstractModel
     private $id;
 
     /**
-     * @var string $supplierId
+     * @var string $name
      *
-     * @ORM\Column(name="supplier_id", type="integer")
+     * @ORM\Column(name="name", type="string", length=255)
      */
-    private $supplierId;
+    private $name;
 
     /**
-     * @var string $supplierName
+     * @var string $icecatId
      *
-     * @ORM\Column(name="supplier_name", type="string", length=255)
+     * @ORM\Column(name="icecat_id", type="integer", unique=true)
      */
-    private $supplierName;
-
-    /**
-     * @var string $distributorId
-     *
-     * @ORM\Column(name="distributor_id", type="integer")
-     */
-    private $distributorId;
-
-    /**
-     * @var string $symbol
-     *
-     * @ORM\Column(name="symbol", type="string", length=255)
-     */
-    private $symbol;
+    private $icecatId;
 
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -63,96 +48,48 @@ class Supplier extends AbstractModel
     }
 
     /**
-     * Set supplierId
+     * Set name
      *
-     * @param integer $supplierId
+     * @param string $name
      * @return Supplier
      */
-    public function setSupplierId($supplierId)
+    public function setName($name)
     {
-        $this->supplierId = $supplierId;
-
-        return $this;
-    }
-
-    /**
-     * Get supplierId
-     *
-     * @return integer
-     */
-    public function getSupplierId()
-    {
-        return $this->supplierId;
-    }
-
-    /**
-     * Set supplierName
-     *
-     * @param string $supplierName
-     * @return Supplier
-     */
-    public function setSupplierName($supplierName)
-    {
-        $this->supplierName = $supplierName;
-
-        return $this;
-    }
-
-    /**
-     * Get supplierName
-     *
-     * @return string
-     */
-    public function getSupplierName()
-    {
-        return $this->supplierName;
-    }
-
-    /**
-     * Set distributorId
-     *
-     * @param integer $distributorId
-     * @return Supplier
-     */
-    public function setDistributorId($distributorId)
-    {
-        $this->distributorId = $distributorId;
-
-        return $this;
-    }
-
-    /**
-     * Get distributorId
-     *
-     * @return integer
-     */
-    public function getDistributorId()
-    {
-        return $this->distributorId;
-    }
-
-
-
-    /**
-     * Set symbol
-     *
-     * @param string $symbol
-     * @return Supplier
-     */
-    public function setSymbol($symbol)
-    {
-        $this->symbol = $symbol;
+        $this->name = $name;
     
         return $this;
     }
 
     /**
-     * Get symbol
+     * Get name
      *
      * @return string 
      */
-    public function getSymbol()
+    public function getName()
     {
-        return $this->symbol;
+        return $this->name;
+    }
+
+    /**
+     * Set icecatId
+     *
+     * @param integer $icecatId
+     * @return Supplier
+     */
+    public function setIcecatId($icecatId)
+    {
+        $this->icecatId = $icecatId;
+    
+        return $this;
+    }
+
+    /**
+     * Get icecatId
+     *
+     * @return integer 
+     */
+    public function getIcecatId()
+    {
+        return $this->icecatId;
     }
 }

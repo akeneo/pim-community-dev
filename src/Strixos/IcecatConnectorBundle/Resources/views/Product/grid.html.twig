@@ -1,0 +1,13 @@
+{% extends 'StrixosWidgetBundle::layout.html.twig' %}
+
+{% block title %}StrixOS - Manage Icecat products{% endblock %}
+
+{% block content_menu_more %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+
+    {{ grid(grid) }}
+
+{% endblock %}

@@ -31,13 +31,21 @@ class FileHttpDownload extends Step
         // whole file in memory)
         $fp = fopen($path, 'w+');
         $ch = curl_init($url);
+        if (!$ch) {
+        	throw new \Exception('Curl not initialized');
+        }
+        
         if ($login and $password) {
             curl_setopt($ch, CURLOPT_USERPWD, $login.':'.$password);
         }
+        
+        // Start - 2012-10-08 - RMO - Fix SSL certificate problem
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        // End - 2012-10-08 - RMO - Fix SSL certificate problem
         curl_setopt($ch, CURLOPT_FILE, $fp);
         $data = curl_exec($ch);
         if ($data === false) {
-            throw new Exception('Curl Error : '.curl_error($ch));
+            throw new \Exception('Curl Error : '.curl_error($ch));
         }
         curl_close($ch);
         fclose($fp);

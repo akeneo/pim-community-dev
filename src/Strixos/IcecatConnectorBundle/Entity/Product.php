@@ -25,35 +25,33 @@ class Product extends AbstractModel
     private $id;
 
     /**
-     * @var string $productId
+     * @var Supplier $supplier
+     * @ORM\ManyToOne(targetEntity="Supplier")
+     */
+    private $supplier;
+
+    /**
+     * @var integer $productId
      *
-     * @ORM\Column(name="product_id", type="string", length=255)
+     * @ORM\Column(name="product_id", type="integer")
      */
     private $productId;
 
-    /**
-     * @var string $productName
-     *
-     * @ORM\Column(name="product_name", type="string", length=255)
-     */
-    private $productName;
 
     /**
-     * TODO: add fk constraint
-     * @var string $supplierId
+     * @var string $prodId
      *
-     * @ORM\Column(name="supplier_id", type="string", length=255)
+     * @ORM\Column(name="prod_id", type="string", length=255)
      */
-    private $supplierId;
-
-/* TODO store update date and xml content
-    private $updatedBase;
-    private $updatedDetails;
-    xml content
-*/
+    private $prodId;
 
 
-
+    /**
+     * @var string $mProdId
+     *
+     * @ORM\Column(name="m_prod_id", type="string", length=255)
+     */
+    private $mProdId;
 
     /**
      * Get id
@@ -89,29 +87,6 @@ class Product extends AbstractModel
     }
 
     /**
-     * Set productName
-     *
-     * @param string $productName
-     * @return Product
-     */
-    public function setProductName($productName)
-    {
-        $this->productName = $productName;
-    
-        return $this;
-    }
-
-    /**
-     * Get productName
-     *
-     * @return string 
-     */
-    public function getProductName()
-    {
-        return $this->productName;
-    }
-
-    /**
      * Set supplierId
      *
      * @param string $supplierId
@@ -132,5 +107,74 @@ class Product extends AbstractModel
     public function getSupplierId()
     {
         return $this->supplierId;
+    }
+
+    /**
+     * Set supplier
+     *
+     * @param Strixos\IcecatConnectorBundle\Entity\Supplier $supplier
+     * @return Product
+     */
+    public function setSupplier(\Strixos\IcecatConnectorBundle\Entity\Supplier $supplier = null)
+    {
+        $this->supplier = $supplier;
+    
+        return $this;
+    }
+
+    /**
+     * Get supplier
+     *
+     * @return Strixos\IcecatConnectorBundle\Entity\Supplier 
+     */
+    public function getSupplier()
+    {
+        return $this->supplier;
+    }
+
+    /**
+     * Set prodId
+     *
+     * @param string $prodId
+     * @return Product
+     */
+    public function setProdId($prodId)
+    {
+        $this->prodId = $prodId;
+    
+        return $this;
+    }
+
+    /**
+     * Get prodId
+     *
+     * @return string 
+     */
+    public function getProdId()
+    {
+        return $this->prodId;
+    }
+
+    /**
+     * Set mProdId
+     *
+     * @param string $mProdId
+     * @return Product
+     */
+    public function setMProdId($mProdId)
+    {
+        $this->mProdId = $mProdId;
+    
+        return $this;
+    }
+
+    /**
+     * Get mProdId
+     *
+     * @return string 
+     */
+    public function getMProdId()
+    {
+        return $this->mProdId;
     }
 }
