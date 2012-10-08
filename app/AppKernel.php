@@ -38,9 +38,6 @@ class AppKernel extends Kernel
             new Strixos\DashboardBundle\StrixosDashboardBundle(),
             new Strixos\IcecatConnectorBundle\StrixosIcecatConnectorBundle(),
             new Bap\FlexibleEntityBundle\BapFlexibleEntityBundle(),
-            new Strixos\CatalogEavBundle\StrixosCatalogEavBundle(),
-
-
 
             new APY\DataGridBundle\APYDataGridBundle(),
             //new Nidup\TestBundle\NidupTestBundle(),

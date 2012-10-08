@@ -42,11 +42,6 @@ bap_flexible_entity:
     type:     annotation
     prefix:   /bapflexibleentity/
 
-StrixosCatalogEavBundle:
-    resource: "@StrixosCatalogEavBundle/Controller/"
-    type:     annotation
-    prefix:   /eav/
-
 AkeneoCatalogBundle:
     resource: "@AkeneoCatalogBundle/Controller/"
     type:     annotation

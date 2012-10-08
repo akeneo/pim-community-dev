@@ -1,3 +1,0 @@
-_homepage:
-    pattern:  /
-    defaults: { _controller: StrixosCatalogEavBundle:Default:index }
