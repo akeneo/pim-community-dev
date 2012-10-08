@@ -48,7 +48,7 @@ class SupplierController extends Controller
         
         // -2- Unzip file
         $unzipper = new FileUnzip();
-        $this->process(self::TMP_FILEPATH_SUPPLIERS, self::TMP_UNZIP_FILEPATH_SUPPLIERS);
+        $unzipper->process(self::TMP_FILEPATH_SUPPLIERS, self::TMP_UNZIP_FILEPATH_SUPPLIERS);
         
         // -3- Read xml document and parse to entities (suppliers)
         $xml = new XMLReader();
