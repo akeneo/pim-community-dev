@@ -43,7 +43,7 @@ class AppKernel extends Kernel
 
 
             new APY\DataGridBundle\APYDataGridBundle(),
-            new Nidup\TestBundle\NidupTestBundle(),
+            //new Nidup\TestBundle\NidupTestBundle(),
             new Akeneo\CatalogBundle\AkeneoCatalogBundle(),
         );
 
