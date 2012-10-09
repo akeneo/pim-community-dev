@@ -15,8 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ProductField
 {
-    const TYPE_TEXT = 'text';
-
     /**
      * @var integer $id
      *
@@ -52,7 +50,7 @@ class ProductField
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -68,14 +66,14 @@ class ProductField
     public function setCode($code)
     {
         $this->code = $code;
-    
+
         return $this;
     }
 
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -91,14 +89,14 @@ class ProductField
     public function setLabel($label)
     {
         $this->label = $label;
-    
+
         return $this;
     }
 
     /**
      * Get label
      *
-     * @return string 
+     * @return string
      */
     public function getLabel()
     {
@@ -114,14 +112,14 @@ class ProductField
     public function setType($type)
     {
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {

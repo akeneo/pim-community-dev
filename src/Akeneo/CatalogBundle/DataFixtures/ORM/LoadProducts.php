@@ -7,6 +7,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Akeneo\CatalogBundle\Model\ProductType;
+use Akeneo\CatalogBundle\Model\BaseFieldFactory;
 
 /**
  * Load product and types
@@ -78,17 +79,23 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
         $type = $this->container->get('akeneo.catalog.model_producttype');
         $type->create(self::TYPE_BASE);
         // add info fields
-        $fields = array('sku', 'name', 'short_description', 'description', 'color');
-        foreach ($fields as $fieldCode) {
+        $fields = array(
+            'sku'                => BaseFieldFactory::FIELD_STRING,
+            'name'               => BaseFieldFactory::FIELD_STRING,
+            'short_description'  => BaseFieldFactory::FIELD_TEXT,
+            'description'        => BaseFieldFactory::FIELD_TEXT,
+            'color'              => BaseFieldFactory::FIELD_SELECT
+        );
+        foreach ($fields as $fieldCode => $fieldType) {
             if (!$type->getField($fieldCode)) {
-                $type->addField($fieldCode, 'text', self::TYPE_GROUP_INFO);
+                $type->addField($fieldCode, $fieldType, self::TYPE_GROUP_INFO);
             }
         }
         // add media fields
         $fields = array('image', 'thumbnail');
         foreach ($fields as $fieldCode) {
             if (!$type->getField($fieldCode)) {
-                $type->addField($fieldCode, 'text', self::TYPE_GROUP_MEDIA);
+                $type->addField($fieldCode, BaseFieldFactory::FIELD_IMAGE, self::TYPE_GROUP_MEDIA);
             }
         }
         // add others empty groups
