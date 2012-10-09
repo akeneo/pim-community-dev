@@ -1,5 +1,5 @@
 <?php
-namespace Strixos\IcecatConnectorBundle\Model\Load;
+namespace Strixos\IcecatConnectorBundle\Model\Import;
 
 /**
  * Aims to populate local referencial of products by loading text file
@@ -7,33 +7,17 @@ namespace Strixos\IcecatConnectorBundle\Model\Load;
  * @author    Nicolas Dupont @ Strixos
  * @copyright Copyright (c) 2012 Strixos SAS (http://www.strixos.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
-use Strixos\IcecatConnectorBundle\Entity\Supplier;
-
-class ProductLoadDataInFile
+class ProductImportDataInFile extends DataImport
 {
-
-    protected $_entityManager;
-
     /**
-     * Aims to inject entity manager
-     * @param \Doctrine\ORM\EntityManager $em
-     */
-    public function __construct(\Doctrine\ORM\EntityManager $em)
-    {
-        $this->_entityManager = $em;
-    }
-
-    /**
-     * Load csv file to table
-     *
-     * @param string $csvFile
+     * (non-PHPdoc)
+     * @see \Strixos\IcecatConnectorBundle\Model\Import\DataImport::process()
      */
     public function process($csvFile)
     {
         // truncate base suppliers
-        $connection = $this->_entityManager->getConnection();
+        $connection = $this->entityManager->getConnection();
         $platform   = $connection->getDatabasePlatform();
         // TODO: get table name from entity ? sure to delete for products ?
         $tableName = 'StrixosIcecatConnector_Product';

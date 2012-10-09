@@ -1,5 +1,5 @@
 <?php
-namespace Strixos\IcecatConnectorBundle\Model\Load;
+namespace Strixos\IcecatConnectorBundle\Model\Import;
 
 use Strixos\IcecatConnectorBundle\Entity\Product;
 
@@ -12,40 +12,27 @@ use Strixos\IcecatConnectorBundle\Entity\Product;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ProductLoadDataFromCsv
+class ProductImportDataFromCsv extends DataImport
 {
-
-    protected $_entityManager;
-
     /**
      * @var Array
      */
     protected $_icecatIdToSupplier;
 
     /**
-     * Aims to inject entity manager
-     * @param \Doctrine\ORM\EntityManager $em
-     */
-    public function __construct(\Doctrine\ORM\EntityManager $em)
-    {
-        $this->_entityManager = $em;
-    }
-
-    /**
-     * Load csv file to table
-     *
-     * @param string $csvFile
+     * (non-PHPdoc)
+     * @see \Strixos\IcecatConnectorBundle\Model\Import\DataImport::process()
      */
     public function process($csvFile)
     {
         // truncate base suppliers
-        $connection = $this->_entityManager->getConnection();
+        $connection = $this->entityManager->getConnection();
         $platform   = $connection->getDatabasePlatform();
         $tableName = 'StrixosIcecatConnector_Product';
         $connection->executeUpdate($platform->getTruncateTableSQL($tableName));
         // load suppliers
         // TODO: use custom repository to get associative array in more efficient way
-        $suppliers = $this->_entityManager->getRepository('StrixosIcecatConnectorBundle:Supplier')->findAll();
+        $suppliers = $this->entityManager->getRepository('StrixosIcecatConnectorBundle:Supplier')->findAll();
         $this->_icecatIdToSupplier = array();
         foreach ($suppliers as $supplier) {
             $this->_icecatIdToSupplier[$supplier->getIcecatId()] = $supplier;
@@ -68,11 +55,11 @@ class ProductLoadDataFromCsv
                 //$product->setSupplier($this->_icecatIdToSupplier[$data[4]]);
                 $product->setProdId($data[1]);
                 $product->setMProdId($data[10]);
-                $this->_entityManager->persist($product);
+                $this->entityManager->persist($product);
                 // flush and detach
                 if (($indRow % $batchSize) == 0) {
-                    $this->_entityManager->flush();
-                    $this->_entityManager->clear(); // detaches all objects from Doctrine
+                    $this->entityManager->flush();
+                    $this->entityManager->clear(); // detaches all objects from Doctrine
                 }
             }
         }

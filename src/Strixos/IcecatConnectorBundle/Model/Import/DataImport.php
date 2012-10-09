@@ -1,8 +1,8 @@
 <?php
-namespace Strixos\IcecatConnectorBundle\Model\Load;
+namespace Strixos\IcecatConnectorBundle\Model\Import;
 
 /**
- * Abstract class to load data from files
+ * Abstract class to import data into local database
  *
  * @author    Romain Monceau @ Akeneo
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
@@ -10,21 +10,21 @@ namespace Strixos\IcecatConnectorBundle\Model\Load;
  * 
  * @abstract
  */
-abstract class DataLoader
+abstract class DataImport
 {
     /**
-     * Entity manager
+     * Entity Manager
      * @var \Doctrine\ORM\EntityManager $em
      */
-    protected $_entityManager;
+    protected $entityManager;
     
     /**
-     * Constructor
+     * Constructor with entity manager
      * @param \Doctrine\ORM\EntityManager $em
      */
     public function __constructor(\Doctrine\ORM\EntityManager $em)
     {
-        $this->_entityManager = $em;
+        $this->entityManager = $em;
     }
     
     /**
