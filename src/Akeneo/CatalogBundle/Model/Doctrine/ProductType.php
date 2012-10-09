@@ -1,6 +1,7 @@
 <?php
-namespace Akeneo\CatalogBundle\Model;
+namespace Akeneo\CatalogBundle\Model\Doctrine;
 
+use Akeneo\CatalogBundle\Model\AbstractModel;
 use Akeneo\CatalogBundle\Entity\ProductEntity as EntityProductEntity;
 use Akeneo\CatalogBundle\Entity\ProductType as EntityProductType;
 use Akeneo\CatalogBundle\Entity\ProductGroup as EntityProductGroup;

@@ -2,6 +2,7 @@
 namespace Akeneo\CatalogBundle\Tests\Model;
 
 use \PHPUnit_Framework_TestCase;
+use Akeneo\CatalogBundle\Tests\Model\KernelAwareTest;
 
 /**
  *

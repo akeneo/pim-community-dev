@@ -19,17 +19,21 @@
     -->
 
     <services>
-        <!-- 
-        <service id="akeneo.catalog.model_product" class="Akeneo\CatalogBundle\Model\Product">
+
+        <service id="akeneo.catalog.model_producttype" class="Akeneo\CatalogBundle\Model\Doctrine\ProductType">
             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
-         -->
-        <service id="akeneo.catalog.model_producttype" class="Akeneo\CatalogBundle\Model\ProductType">
+        <service id="akeneo.catalog.model_product" class="Akeneo\CatalogBundle\Model\Doctrine\Product">
             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
-        <service id="akeneo.catalog.model_product" class="Akeneo\CatalogBundle\Model\Product">
-            <argument type="service" id="doctrine.orm.entity_manager" />
+
+        <service id="akeneo.catalog.model_producttype_mongo" class="Akeneo\CatalogBundle\Model\MongoDB\ProductType">
+            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
         </service>
+        <service id="akeneo.catalog.model_product_mongo" class="Akeneo\CatalogBundle\Model\MongoDB\Product">
+            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+        </service>
+
     </services>
     
 </container>

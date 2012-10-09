@@ -7,7 +7,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Akeneo\CatalogBundle\Model\Product;
 use Akeneo\CatalogBundle\Model\ProductType;
-use Akeneo\CatalogBundle\Entity\Product\Field;
+
+use Akeneo\CatalogBundle\Document\ProductTypeMongo;
+use Akeneo\CatalogBundle\Document\ProductFieldMongo;
 
 class DefaultController extends Controller
 {
@@ -17,7 +19,67 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-    die('hello');
+
+/*
+        $type = new ProductTypeMongo();
+        var_dump($type);
+
+        $field = new ProductFieldMongo();
+        $field->setCode('sku');
+        $type->addField($field);
+
+        var_dump($type);
+
+        $dm = $this->get('doctrine.odm.mongodb')->getManager();
+        $dm->persist($type);
+        $dm->flush();
+
+        var_dump($type);
+*/
+
+        // create type
+        $ind = time();
+        $typeCode = 'tshirt'.$ind;
+        $type = $this->container->get('akeneo.catalog.model_producttype_mongo');
+        $type = $type->create($typeCode);
+        $type->addField('sku', 'text', 'General');
+        $type->addField('name', 'text', 'General');
+        $type->addField('color', 'text', 'Technical');
+        // persist
+        $type->persist();
+        $type->flush();
+
+        var_dump($type);
+
+
+
+        exit();
+
+        /*
+        $type = $this->container->get('akeneo.catalog.model_producttype');
+        $type = $type->find('base');
+
+        $product = $this->container->get('akeneo.catalog.model_product_mongo');
+        $product->create('pouetpoue');
+        $product->setColor('Red');
+        $product->setName('my name');
+
+        var_dump($product->getObject());
+
+        $om = $product->getManager();
+        $om->persist($product->getObject());
+        $om->flush();
+
+        var_dump($product->getObject());
+*/
+        exit();
+
+
+
+
+        var_dump($product);
+
+        die('data');
 /*
         $article = $em->find('Entity\Article', 1);
         $article->setLocale('ru_ru');
