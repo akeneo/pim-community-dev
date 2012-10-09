@@ -1,0 +1,41 @@
+<h1>ProductField list</h1>
+
+<table class="records_list">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Code</th>
+            <th>Label</th>
+            <th>Type</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td><a href="{{ path('akeneo_catalog_productfield_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+            <td>{{ entity.code }}</td>
+            <td>{{ entity.label }}</td>
+            <td>{{ entity.type }}</td>
+            <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('akeneo_catalog_productfield_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('akeneo_catalog_productfield_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<ul>
+    <li>
+        <a href="{{ path('akeneo_catalog_productfield_new') }}">
+            Create a new entry
+        </a>
+    </li>
+</ul>

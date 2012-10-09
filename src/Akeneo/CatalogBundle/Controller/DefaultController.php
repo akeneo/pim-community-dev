@@ -17,7 +17,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-
+    die('hello');
 /*
         $article = $em->find('Entity\Article', 1);
         $article->setLocale('ru_ru');

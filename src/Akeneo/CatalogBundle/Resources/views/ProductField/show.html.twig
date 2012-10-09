@@ -1,0 +1,41 @@
+<h1>ProductField</h1>
+
+<table class="record_properties">
+    <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ entity.id }}</td>
+        </tr>
+        <tr>
+            <th>Code</th>
+            <td>{{ entity.code }}</td>
+        </tr>
+        <tr>
+            <th>Label</th>
+            <td>{{ entity.label }}</td>
+        </tr>
+        <tr>
+            <th>Type</th>
+            <td>{{ entity.type }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<ul class="record_actions">
+    <li>
+        <a href="{{ path('akeneo_catalog_productfield_index') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('akeneo_catalog_productfield_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>
+        <form action="{{ path('akeneo_catalog_productfield_delete', { 'id': entity.id }) }}" method="post">
+            {{ form_widget(delete_form) }}
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+</ul>
