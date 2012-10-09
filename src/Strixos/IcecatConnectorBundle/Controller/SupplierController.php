@@ -4,16 +4,13 @@ namespace Strixos\IcecatConnectorBundle\Controller;
 
 use Strixos\DataFlowBundle\Model\Extract\FileUnzip;
 use Strixos\DataFlowBundle\Model\Extract\FileHttpDownload;
-
-use Strixos\IcecatConnectorBundle\Entity\Supplier;
+use Strixos\IcecatConnectorBundle\Model\Load\SupplierLoadDataFromXml;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
-
-use \XMLReader;
 
 /**
  *
@@ -40,37 +37,20 @@ class SupplierController extends Controller
     {
         // -1- Download suppliers list in /tmp/...
         try {
-        	$downloader = new FileHttpDownload();
-        	$downloader->process(self::URL_SUPPLIERS, self::TMP_FILEPATH_SUPPLIERS, self::AUTH_LOGIN, self::AUTH_PASSWORD);
+            $downloader = new FileHttpDownload();
+            $downloader->process(self::URL_SUPPLIERS, self::TMP_FILEPATH_SUPPLIERS, self::AUTH_LOGIN, self::AUTH_PASSWORD);
+        
+            // -2- Unzip file
+            $unzipper = new FileUnzip();
+            $unzipper->process(self::TMP_FILEPATH_SUPPLIERS, self::TMP_UNZIP_FILEPATH_SUPPLIERS);
+        
+            // -3- Call XML Loader to save in database
+            $em = $this->getDoctrine()->getEntityManager();
+            $loader = new SupplierLoadDataFromXml($em);
+            $loader->process(self::TMP_UNZIP_FILEPATH_SUPPLIERS);
         } catch (\Exception $e) {
-        	echo $e->getMessage();
+            return array('exception' => $e);
         }
-        
-        // -2- Unzip file
-        $unzipper = new FileUnzip();
-        $unzipper->process(self::TMP_FILEPATH_SUPPLIERS, self::TMP_UNZIP_FILEPATH_SUPPLIERS);
-        
-        // -3- Read xml document and parse to entities (suppliers)
-        $xml = new XMLReader();
-        $xml->open(self::TMP_UNZIP_FILEPATH_SUPPLIERS);
-        
-        $em = $this->getDoctrine()->getEntityManager();
-        
-        while ($xml->read())
-        {
-        	if ($xml->name === 'Supplier') {
-        		$supplier = new Supplier();
-        		$supplier->setIcecatId($xml->getAttribute('ID'));
-        		$supplier->setName($xml->getAttribute('Name'));
-        		$em->persist($supplier);
-        	} else if ($xml->name === 'Response') {
-        		$date = $xml->getAttribute('Date');
-        	}
-        }
-        
-        
-        // -4- Save all entities in database
-        $em->flush();
         
         return array();
     }
@@ -82,16 +62,12 @@ class SupplierController extends Controller
      */
     public function listAction()
     {
-    	// creates simple grid based on entity (ORM)
+        // creates simple grid based on entity (ORM)
         $source = new GridEntity('StrixosIcecatConnectorBundle:Supplier');
         // get a grid instance
         $grid = $this->get('grid');
         // attach the source to the grid
         $grid->setSource($source);
-        // add an action column
-//         $rowAction = new RowAction('Import products', 'strixos_icecatconnector_default_loadproducts');
-//         $rowAction->setRouteParameters(array('supplierId'));
-//         $grid->addRowAction($rowAction);
         // manage the grid redirection, exports response of the controller
         return $grid->getGridResponse('StrixosIcecatConnectorBundle:Supplier:grid.html.twig');
     }
