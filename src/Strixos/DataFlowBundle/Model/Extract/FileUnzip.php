@@ -24,22 +24,24 @@ class FileUnzip extends Step
      * @param string $password
      * @throws Exception
      */
-    public function process($pathArchive, $pathFile)
+    public function process($pathArchive, $pathFile, $forced = true)
     {
-    	if (!file_exists($pathArchive)) {
-            throw new UnzipException ('unzip.archive_file.unknown');
-    	}
-    	$gz = gzopen($pathArchive, 'rb');
-        // delete destination file if already exists
-        if (file_exists($pathFile)) {
-            unlink($pathFile);
+        if ($forced || !file_exists($pathFile)) {
+            if (!file_exists($pathArchive)) {
+                throw new \Exception ('unzip.archive_file.unknown');
+            }
+            $gz = gzopen($pathArchive, 'rb');
+            // delete destination file if already exists
+            if (file_exists($pathFile)) {
+                unlink($pathFile);
+            }
+            $fileToWrite = fopen($pathFile, 'w+');
+            while (!gzeof($gz)) {
+                $buffer = gzgets($gz, 100000); // TODO hardcoded lenght
+                fputs($fileToWrite, $buffer);
+            }
+            gzclose($gz);
+            fclose($fileToWrite);
         }
-        $fileToWrite = fopen($pathFile, 'w+');
-        while (!gzeof($gz)) {
-            $buffer = gzgets($gz, 100000); // TODO hardcoded lenght
-            fputs($fileToWrite, $buffer);
-        }
-        gzclose($gz);
-        fclose($fileToWrite);
     }
 }

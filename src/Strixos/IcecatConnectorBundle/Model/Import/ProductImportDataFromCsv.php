@@ -52,7 +52,7 @@ class ProductImportDataFromCsv extends DataImport
                 $product = new Product();
                 $product->setProductId($data[0]);
                 // TODO: get real supplier id problem with mapping
-                //$product->setSupplier($this->_icecatIdToSupplier[$data[4]]);
+                $product->setSupplier($this->_icecatIdToSupplier[$data[4]]);
                 $product->setProdId($data[1]);
                 $product->setMProdId($data[10]);
                 $this->entityManager->persist($product);
@@ -60,8 +60,10 @@ class ProductImportDataFromCsv extends DataImport
                 if (($indRow % $batchSize) == 0) {
                     $this->entityManager->flush();
                     $this->entityManager->clear(); // detaches all objects from Doctrine
+                    return;
                 }
             }
+            $this->entityManager->flush();
         }
     }
 

@@ -25,29 +25,31 @@ class FileHttpDownload extends Step
      * @param string $password
      * @throws Exception
      */
-    public function process($url, $path, $login = null, $password = null)
+    public function process($url, $path, $login = null, $password = null, $forced = true)
     {
-        // use curl to download file (use writable stream to avoid to load
-        // whole file in memory)
-        $fp = fopen($path, 'w+');
-        $ch = curl_init($url);
-        if (!$ch) {
-        	throw new \Exception('Curl not initialized');
+        if ($forced || !file_exists($path)) {
+            // use curl to download file (use writable stream to avoid to load
+            // whole file in memory)
+            $fp = fopen($path, 'w+');
+            $ch = curl_init($url);
+            if (!$ch) {
+                throw new \Exception('Curl not initialized');
+            }
+            
+            if ($login and $password) {
+                curl_setopt($ch, CURLOPT_USERPWD, $login.':'.$password);
+            }
+            
+            // Start - 2012-10-08 - RMO - Fix SSL certificate problem
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            // End - 2012-10-08 - RMO - Fix SSL certificate problem
+            curl_setopt($ch, CURLOPT_FILE, $fp);
+            $data = curl_exec($ch);
+            if ($data === false) {
+                throw new \Exception('Curl Error : '.curl_error($ch));
+            }
+            curl_close($ch);
+            fclose($fp);
         }
-        
-        if ($login and $password) {
-            curl_setopt($ch, CURLOPT_USERPWD, $login.':'.$password);
-        }
-        
-        // Start - 2012-10-08 - RMO - Fix SSL certificate problem
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        // End - 2012-10-08 - RMO - Fix SSL certificate problem
-        curl_setopt($ch, CURLOPT_FILE, $fp);
-        $data = curl_exec($ch);
-        if ($data === false) {
-            throw new \Exception('Curl Error : '.curl_error($ch));
-        }
-        curl_close($ch);
-        fclose($fp);
     }
 }

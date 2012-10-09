@@ -4,6 +4,10 @@
 
 {% block content_menu_more %}
 
-    Hello pouic
+    {% if exception is defined %}
+        {{ exception.message }}
+    {% else %}
+        Hello world !!
+    {% endif %}
 
 {% endblock %}

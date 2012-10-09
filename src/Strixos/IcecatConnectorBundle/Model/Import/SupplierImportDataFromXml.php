@@ -29,10 +29,10 @@ class SupplierImportDataFromXml extends DataImport
         $xml->open($xmlFile);
         
         while ($xml->read()) {
-            if ($xml->name === 'Supplier') {
+            if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'SupplierMapping') {
                 $supplier = new Supplier();
-                $supplier->setIcecatId($xml->getAttribute('ID'));
-                $supplier->setName($xml->getAttribute('Name'));
+                $supplier->setIcecatId($xml->getAttribute('supplier_id'));
+                $supplier->setName($xml->getAttribute('name'));
                 $this->entityManager->persist($supplier);
 
                 // Insert by groups
@@ -40,11 +40,11 @@ class SupplierImportDataFromXml extends DataImport
                     $this->entityManager->flush();
                     $this->entityManager->clear();
                 }
-            } else if ($xml->name === 'Response') {
-                $date = $xml->getAttribute('Date');
+            } else if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'SupplierMappings') {
+                $date = $xml->getAttribute('Generated');
             }
         }
-
+        
         $this->entityManager->flush();
     }
 }
