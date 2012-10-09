@@ -28,7 +28,7 @@ class ProductTypeTest extends KernelAwareTest
         $type = $this->container->get('akeneo.catalog.model_producttype');
         $type->create(self::TYPE_BASE);
         $this->assertInstanceOf('Akeneo\CatalogBundle\Model\ProductType', $type);
-        $this->assertInstanceOf('Akeneo\CatalogBundle\Entity\Product\Type', $type->getObject());
+        $this->assertInstanceOf('Akeneo\CatalogBundle\Entity\ProductType', $type->getObject());
         $this->assertEquals($type->getCode(), self::TYPE_BASE);
     }
 
@@ -41,7 +41,7 @@ class ProductTypeTest extends KernelAwareTest
         $type = $this->container->get('akeneo.catalog.model_producttype');
         $type->create(self::TYPE_BASE);
         $this->assertInstanceOf('Akeneo\CatalogBundle\Model\ProductType', $type);
-        $this->assertInstanceOf('Akeneo\CatalogBundle\Entity\Product\Type', $type->getObject());
+        $this->assertInstanceOf('Akeneo\CatalogBundle\Entity\ProductType', $type->getObject());
         $this->assertEquals($type->getCode(), self::TYPE_BASE);
         // add info fields
         $fields = array('sku', 'name', 'short_description', 'description', 'color');
@@ -72,14 +72,14 @@ class ProductTypeTest extends KernelAwareTest
         $type = $this->container->get('akeneo.catalog.model_producttype');
         $type->find(self::TYPE_BASE);
         $this->assertInstanceOf('Akeneo\CatalogBundle\Model\ProductType', $type);
-        $this->assertInstanceOf('Akeneo\CatalogBundle\Entity\Product\Type', $type->getObject());
+        $this->assertInstanceOf('Akeneo\CatalogBundle\Entity\ProductType', $type->getObject());
         $this->assertEquals($type->getCode(), self::TYPE_BASE);
 
         // test accessor
         $group = $type->getGroup(self::TYPE_GROUP_SEO);
-        $this->assertInstanceOf('Akeneo\CatalogBundle\Entity\Product\Group', $group);
+        $this->assertInstanceOf('Akeneo\CatalogBundle\Entity\ProductGroup', $group);
         $field = $type->getField('sku');
-        $this->assertInstanceOf('Akeneo\CatalogBundle\Entity\Product\Field', $field);
+        $this->assertInstanceOf('Akeneo\CatalogBundle\Entity\ProductField', $field);
 
         // remove related entity
         $group = $type->removeGroup(self::TYPE_GROUP_SEO);

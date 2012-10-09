@@ -1,10 +1,10 @@
 <?php
 namespace Akeneo\CatalogBundle\Model;
 
-use Akeneo\CatalogBundle\Entity\Product\Entity;
-use Akeneo\CatalogBundle\Entity\Product\Type;
-use Akeneo\CatalogBundle\Entity\Product\Group;
-use Akeneo\CatalogBundle\Entity\Product\Field;
+use Akeneo\CatalogBundle\Entity\ProductEntity as EntityProductEntity;
+use Akeneo\CatalogBundle\Entity\ProductType as EntityProductType;
+use Akeneo\CatalogBundle\Entity\ProductGroup as EntityProductGroup;
+use Akeneo\CatalogBundle\Entity\ProductField as EntityProductField;
 
 /**
  * The product type service, a builder which allows to embed complexity of
@@ -68,7 +68,7 @@ class ProductType extends AbstractModel
     public function find($code)
     {
         // get entity type
-        $type = $this->_manager->getRepository('Akeneo\CatalogBundle\Entity\Product\Type')
+        $type = $this->_manager->getRepository('AkeneoCatalogBundle:ProductType')
             ->findOneByCode($code);
         if ($type) {
             $this->_object = $type;
@@ -96,13 +96,13 @@ class ProductType extends AbstractModel
      */
     public function create($code)
     {
-        $type = $this->getManager()->getRepository('Akeneo\CatalogBundle\Entity\Product\Type')
+        $type = $this->getManager()->getRepository('AkeneoCatalogBundle:ProductType')
             ->findOneByCode($code);
         if ($type) {
             // TODO create custom exception
             throw new \Exception("There is already a product type with the code {$code}");
         } else {
-            $this->_object = new Type();
+            $this->_object = new EntityProductType();
             $this->_object->setCode($code);
             $this->_codeToGroup = array();
             $this->_codeToField = array();
@@ -119,7 +119,7 @@ class ProductType extends AbstractModel
     public function addGroup($groupCode)
     {
         if (!isset($this->_codeToGroup[$groupCode])) {
-            $group = new Group();
+            $group = new EntityProductGroup();
             $group->setType($this->getObject());
             $group->setCode($groupCode);
             $this->getObject()->addGroup($group);
@@ -167,7 +167,7 @@ class ProductType extends AbstractModel
         $field = $this->getField($fieldCode);
         // create a new field
         if (!$field) {
-            $field = new Field();
+            $field = new EntityProductField();
             $field->setCode($fieldCode);
             $field->setType($fieldType);
             $field->setLabel('hard coded');
@@ -196,7 +196,7 @@ class ProductType extends AbstractModel
             return $this->_codeToField[$fieldCode];
         // check in db
         } else {
-            $field = $this->getManager()->getRepository('Akeneo\CatalogBundle\Entity\Product\Field')
+            $field = $this->getManager()->getRepository('AkeneoCatalogBundle:ProductField')
                 ->findOneByCode($fieldCode);
             return $field;
         }

@@ -1,5 +1,5 @@
 <?php
-namespace Akeneo\CatalogBundle\Entity\Product;
+namespace Akeneo\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="AkeneoCatalog_Product_Field")
  * @ORM\Entity
  */
-class Field
+class ProductField
 {
     const TYPE_TEXT = 'text';
 
@@ -47,10 +47,12 @@ class Field
     */
     private $type;
 
+
+
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -61,19 +63,19 @@ class Field
      * Set code
      *
      * @param string $code
-     * @return Field
+     * @return ProductField
      */
     public function setCode($code)
     {
         $this->code = $code;
-
+    
         return $this;
     }
 
     /**
      * Get code
      *
-     * @return string
+     * @return string 
      */
     public function getCode()
     {
@@ -81,48 +83,48 @@ class Field
     }
 
     /**
-     * Set type
-     *
-     * @param string $type
-     * @return Field
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
      * Set label
      *
      * @param string $label
-     * @return Field
+     * @return ProductField
      */
     public function setLabel($label)
     {
         $this->label = $label;
-
+    
         return $this;
     }
 
     /**
      * Get label
      *
-     * @return string
+     * @return string 
      */
     public function getLabel()
     {
         return $this->label;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     * @return ProductField
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string 
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }

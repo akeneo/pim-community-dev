@@ -1,10 +1,11 @@
 <?php
 namespace Akeneo\CatalogBundle\Model;
 
-use Akeneo\CatalogBundle\Entity\Product\Entity;
-use Akeneo\CatalogBundle\Entity\Product\Type;
-use Akeneo\CatalogBundle\Entity\Product\Field;
-use Akeneo\CatalogBundle\Entity\Product\Value;
+use Akeneo\CatalogBundle\Entity\ProductEntity as EntityProductEntity;
+use Akeneo\CatalogBundle\Entity\ProductType as EntityProductType;
+use Akeneo\CatalogBundle\Entity\ProductGroup as EntityProductGroup;
+use Akeneo\CatalogBundle\Entity\ProductField as EntityProductField;
+use Akeneo\CatalogBundle\Entity\ProductValue as EntityProductValue;
 
 /**
  * Flexible product
@@ -54,7 +55,7 @@ class Product extends AbstractModel
             $this->_localeCode = $localeCode;
         }*/
         // get entity
-        $entity = $this->_manager->getRepository('Akeneo\CatalogBundle\Entity\Product\Entity')
+        $entity = $this->_manager->getRepository('AkeneoCatalogBundle:ProductEntity')
             ->find($productId);
         if ($entity) {
             $this->_object = $entity;
@@ -85,7 +86,7 @@ class Product extends AbstractModel
      */
     public function create($type)
     {
-        $this->_object = new Entity();
+        $this->_object = new EntityProductEntity();
         $this->_object->setType($type);
         $this->_codeToField = array();
         $this->_fieldCodeToValue = array();
@@ -153,7 +154,7 @@ class Product extends AbstractModel
         // insert / update value
         $value = isset($this->_fieldCodeToValue[$fieldCode])? $this->_fieldCodeToValue[$fieldCode] : null;
         if (!$value) {
-            $value = new Value();
+            $value = new EntityProductValue();
             $value->setField($field);
             $value->setProduct($this->getObject());
             $this->getObject()->addValue($value);

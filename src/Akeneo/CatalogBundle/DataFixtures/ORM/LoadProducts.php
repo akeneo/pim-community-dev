@@ -7,7 +7,6 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Akeneo\CatalogBundle\Model\ProductType;
-use Akeneo\CatalogBundle\Entity\Product\Field;
 
 /**
  * Load product and types
@@ -82,14 +81,14 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
         $fields = array('sku', 'name', 'short_description', 'description', 'color');
         foreach ($fields as $fieldCode) {
             if (!$type->getField($fieldCode)) {
-                $type->addField($fieldCode, Field::TYPE_TEXT, self::TYPE_GROUP_INFO);
+                $type->addField($fieldCode, 'text', self::TYPE_GROUP_INFO);
             }
         }
         // add media fields
         $fields = array('image', 'thumbnail');
         foreach ($fields as $fieldCode) {
             if (!$type->getField($fieldCode)) {
-                $type->addField($fieldCode, Field::TYPE_TEXT, self::TYPE_GROUP_MEDIA);
+                $type->addField($fieldCode, 'text', self::TYPE_GROUP_MEDIA);
             }
         }
         // add others empty groups

@@ -1,5 +1,5 @@
 <?php
-namespace Akeneo\CatalogBundle\Entity\Product;
+namespace Akeneo\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -14,7 +14,7 @@ use Bap\FlexibleEntityBundle\Model\EntityType;
  * @ORM\Table(name="AkeneoCatalog_Product_Type")
  * @ORM\Entity
  */
-class Type
+class ProductType
 {
     /**
      * @var integer $id
@@ -35,7 +35,7 @@ class Type
     /**
      * @var ArrayCollection $groups
      *
-     * @ORM\OneToMany(targetEntity="Group", mappedBy="type", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="ProductGroup", mappedBy="type", cascade={"persist", "remove"})
      */
     protected $groups;
 
@@ -46,11 +46,11 @@ class Type
     {
         $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -61,19 +61,19 @@ class Type
      * Set code
      *
      * @param string $code
-     * @return Type
+     * @return ProductType
      */
     public function setCode($code)
     {
         $this->code = $code;
-
+    
         return $this;
     }
 
     /**
      * Get code
      *
-     * @return string
+     * @return string 
      */
     public function getCode()
     {
@@ -83,22 +83,22 @@ class Type
     /**
      * Add groups
      *
-     * @param Akeneo\CatalogBundle\Entity\Product\Group $groups
-     * @return Type
+     * @param Akeneo\CatalogBundle\Entity\ProductGroup $groups
+     * @return ProductType
      */
-    public function addGroup(\Akeneo\CatalogBundle\Entity\Product\Group $groups)
+    public function addGroup(\Akeneo\CatalogBundle\Entity\ProductGroup $groups)
     {
         $this->groups[] = $groups;
-
+    
         return $this;
     }
 
     /**
      * Remove groups
      *
-     * @param Akeneo\CatalogBundle\Entity\Product\Group $groups
+     * @param Akeneo\CatalogBundle\Entity\ProductGroup $groups
      */
-    public function removeGroup(\Akeneo\CatalogBundle\Entity\Product\Group $groups)
+    public function removeGroup(\Akeneo\CatalogBundle\Entity\ProductGroup $groups)
     {
         $this->groups->removeElement($groups);
     }
@@ -106,7 +106,7 @@ class Type
     /**
      * Get groups
      *
-     * @return Doctrine\Common\Collections\Collection
+     * @return Doctrine\Common\Collections\Collection 
      */
     public function getGroups()
     {

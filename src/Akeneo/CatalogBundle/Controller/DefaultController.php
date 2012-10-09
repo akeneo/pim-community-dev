@@ -25,7 +25,7 @@ class DefaultController extends Controller
         exit();
 */
 
-        $ind = time();
+//        $ind = time();
 
 /*
         // create type
@@ -96,7 +96,7 @@ class DefaultController extends Controller
         */
 
         $product = $this->container->get('akeneo.catalog.model_product');
-        $product->find(7);
+        $product->find(2);
         foreach ($product->getFieldsCodes() as $fieldCode) {
             var_dump($product->getValue($fieldCode));
         }

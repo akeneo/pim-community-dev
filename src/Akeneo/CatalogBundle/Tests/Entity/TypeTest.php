@@ -1,15 +1,15 @@
 <?php
 namespace Akeneo\CatalogBundle\Tests\Entity;
 
-use Akeneo\CatalogBundle\Entity\Product\Type;
-use Akeneo\CatalogBundle\Entity\Product\Field;
+use Akeneo\CatalogBundle\Entity\ProductType;
+use Akeneo\CatalogBundle\Entity\ProductField;
 
 /**
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TypeTest extends AbstractEntityTest
+class TypeTest extends AbstractTest
 {
     /**
      * @var string
@@ -22,7 +22,7 @@ class TypeTest extends AbstractEntityTest
      */
     protected function getEntityClassName()
     {
-        return 'Akeneo\CatalogBundle\Entity\Product\Type';
+        return 'Akeneo\CatalogBundle\Entity\ProductType';
     }
 
     /**

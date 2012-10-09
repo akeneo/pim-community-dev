@@ -1,5 +1,5 @@
 <?php
-namespace Akeneo\CatalogBundle\Entity\Product;
+namespace Akeneo\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="AkeneoCatalog_Product_Group")
  * @ORM\Entity
  */
-class Group
+class ProductGroup
 {
     /**
      * @var integer $_id
@@ -34,13 +34,13 @@ class Group
     /**
      * @var Type $type
      *
-     * @ORM\ManyToOne(targetEntity="Type", inversedBy="groups")
+     * @ORM\ManyToOne(targetEntity="ProductType", inversedBy="groups")
      */
     protected $type;
 
     /**
      * @var ArrayCollection $fields
-     * @ORM\ManyToMany(targetEntity="Field", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="ProductField", cascade={"persist"})
      * @ORM\JoinTable(name="AkeneoCatalog_Product_Group_Field")
      */
     private $fields;
@@ -67,7 +67,7 @@ class Group
      * Set code
      *
      * @param string $code
-     * @return Group
+     * @return ProductGroup
      */
     public function setCode($code)
     {
@@ -89,10 +89,10 @@ class Group
     /**
      * Set type
      *
-     * @param Akeneo\CatalogBundle\Entity\Product\Type $type
-     * @return Group
+     * @param Akeneo\CatalogBundle\Entity\ProductType $type
+     * @return ProductGroup
      */
-    public function setType(\Akeneo\CatalogBundle\Entity\Product\Type $type = null)
+    public function setType(\Akeneo\CatalogBundle\Entity\ProductType $type = null)
     {
         $this->type = $type;
     
@@ -102,7 +102,7 @@ class Group
     /**
      * Get type
      *
-     * @return Akeneo\CatalogBundle\Entity\Product\Type 
+     * @return Akeneo\CatalogBundle\Entity\ProductType 
      */
     public function getType()
     {
@@ -112,10 +112,10 @@ class Group
     /**
      * Add fields
      *
-     * @param Akeneo\CatalogBundle\Entity\Product\Field $fields
-     * @return Group
+     * @param Akeneo\CatalogBundle\Entity\ProductField $fields
+     * @return ProductGroup
      */
-    public function addField(\Akeneo\CatalogBundle\Entity\Product\Field $fields)
+    public function addField(\Akeneo\CatalogBundle\Entity\ProductField $fields)
     {
         $this->fields[] = $fields;
     
@@ -125,9 +125,9 @@ class Group
     /**
      * Remove fields
      *
-     * @param Akeneo\CatalogBundle\Entity\Product\Field $fields
+     * @param Akeneo\CatalogBundle\Entity\ProductField $fields
      */
-    public function removeField(\Akeneo\CatalogBundle\Entity\Product\Field $fields)
+    public function removeField(\Akeneo\CatalogBundle\Entity\ProductField $fields)
     {
         $this->fields->removeElement($fields);
     }

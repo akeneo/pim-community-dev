@@ -1,5 +1,5 @@
 <?php
-namespace Akeneo\CatalogBundle\Entity\Product;
+namespace Akeneo\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;
@@ -19,7 +19,7 @@ use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;
  * @ORM\Table(name="AkeneoCatalog_Product_Translation")
  * @ORM\Entity()
  */
-class Translation extends AbstractTranslation
+class ProductTranslation extends AbstractTranslation
 {
 
     // TODO : https://github.com/stof/StofDoctrineExtensionsBundle/issues/149

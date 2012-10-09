@@ -1,7 +1,6 @@
 <?php
-namespace Akeneo\CatalogBundle\Entity\Product;
+namespace Akeneo\CatalogBundle\Entity;
 
-use Akeneo\CatalogBundle\VersionSystem\Revision;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -15,7 +14,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="AkeneoCatalog_Product_Entity")
  * @ORM\Entity
  */
-class Entity
+class ProductEntity
 {
     /**
      * @var integer $id
@@ -29,14 +28,14 @@ class Entity
     /**
      * @var EntityType $type
      *
-     * @ORM\ManyToOne(targetEntity="Type")
+     * @ORM\ManyToOne(targetEntity="ProductType")
      */
     protected $type;
 
     /**
      * @var Value
      *
-     * @ORM\OneToMany(targetEntity="Value", mappedBy="product", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="ProductValue", mappedBy="product", cascade={"persist", "remove"})
      */
     protected $values;
 
@@ -47,11 +46,11 @@ class Entity
     {
         $this->values = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -61,20 +60,20 @@ class Entity
     /**
      * Set type
      *
-     * @param Akeneo\CatalogBundle\Entity\Product\Type $type
-     * @return Entity
+     * @param Akeneo\CatalogBundle\Entity\ProductType $type
+     * @return ProductEntity
      */
-    public function setType(\Akeneo\CatalogBundle\Entity\Product\Type $type = null)
+    public function setType(\Akeneo\CatalogBundle\Entity\ProductType $type = null)
     {
         $this->type = $type;
-
+    
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return Akeneo\CatalogBundle\Entity\Product\Type
+     * @return Akeneo\CatalogBundle\Entity\ProductType 
      */
     public function getType()
     {
@@ -84,22 +83,22 @@ class Entity
     /**
      * Add values
      *
-     * @param Akeneo\CatalogBundle\Entity\Product\Value $values
-     * @return Entity
+     * @param Akeneo\CatalogBundle\Entity\ProductValue $values
+     * @return ProductEntity
      */
-    public function addValue(\Akeneo\CatalogBundle\Entity\Product\Value $values)
+    public function addValue(\Akeneo\CatalogBundle\Entity\ProductValue $values)
     {
         $this->values[] = $values;
-
+    
         return $this;
     }
 
     /**
      * Remove values
      *
-     * @param Akeneo\CatalogBundle\Entity\Product\Value $values
+     * @param Akeneo\CatalogBundle\Entity\ProductValue $values
      */
-    public function removeValue(\Akeneo\CatalogBundle\Entity\Product\Value $values)
+    public function removeValue(\Akeneo\CatalogBundle\Entity\ProductValue $values)
     {
         $this->values->removeElement($values);
     }
@@ -107,7 +106,7 @@ class Entity
     /**
      * Get values
      *
-     * @return Doctrine\Common\Collections\Collection
+     * @return Doctrine\Common\Collections\Collection 
      */
     public function getValues()
     {
