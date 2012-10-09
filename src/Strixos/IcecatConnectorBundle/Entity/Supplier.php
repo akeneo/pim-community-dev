@@ -33,7 +33,7 @@ class Supplier extends AbstractModel
     /**
      * @var string $icecatId
      *
-     * @ORM\Column(name="icecat_id", type="integer", unique=true)
+     * @ORM\Column(name="icecat_id", type="integer")
      */
     private $icecatId;
 

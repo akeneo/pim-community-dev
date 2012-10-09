@@ -14,7 +14,7 @@ abstract class DataImport
 {
     /**
      * Entity Manager
-     * @var \Doctrine\ORM\EntityManager $em
+     * @var \Doctrine\ORM\EntityManager
      */
     protected $entityManager;
     
@@ -22,7 +22,7 @@ abstract class DataImport
      * Constructor with entity manager
      * @param \Doctrine\ORM\EntityManager $em
      */
-    public function __constructor(\Doctrine\ORM\EntityManager $em)
+    public function __construct(\Doctrine\ORM\EntityManager $em)
     {
         $this->entityManager = $em;
     }
