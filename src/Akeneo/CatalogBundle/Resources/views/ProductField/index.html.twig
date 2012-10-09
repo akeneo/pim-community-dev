@@ -1,41 +1,20 @@
-<h1>ProductField list</h1>
+{% extends 'StrixosWidgetBundle::layout.html.twig' %}
 
-<table class="records_list">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Code</th>
-            <th>Label</th>
-            <th>Type</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for entity in entities %}
-        <tr>
-            <td><a href="{{ path('akeneo_catalog_productfield_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-            <td>{{ entity.code }}</td>
-            <td>{{ entity.label }}</td>
-            <td>{{ entity.type }}</td>
-            <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('akeneo_catalog_productfield_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('akeneo_catalog_productfield_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-            </td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+{% block title %}Akeneo - product field list{% endblock %}
 
-<ul>
+{% block content_menu_more %}
+    {{ parent() }}
     <li>
-        <a href="{{ path('akeneo_catalog_productfield_new') }}">
-            Create a new entry
+        <a href="{{ path('akeneo_catalog_productfield_new') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
+            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-tag--plus"></span><span class="ui-button-text">New field</span>
         </a>
     </li>
-</ul>
+{% endblock %}
+
+{% block content %}
+    
+    <h1>Catalog product field list</h1>
+    
+    {{ grid(grid) }}
+
+{% endblock %}

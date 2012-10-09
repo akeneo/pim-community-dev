@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Akeneo\CatalogBundle\Entity\ProductField;
 use Akeneo\CatalogBundle\Form\ProductFieldType;
+use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
+use APY\DataGridBundle\Grid\Action\RowAction;
 
 /**
  * ProductField controller.
@@ -25,13 +27,19 @@ class ProductFieldController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('AkeneoCatalogBundle:ProductField')->findAll();
-
-        return array(
-            'entities' => $entities,
-        );
+        // creates simple grid based on entity (ORM)
+        $source = new GridEntity('AkeneoCatalogBundle:ProductField');
+        $grid = $this->get('grid');
+        $grid->setSource($source);
+        // add an action column
+        $rowAction = new RowAction('Show', 'akeneo_catalog_productfield_show');
+        $rowAction->setRouteParameters(array('id'));
+        $grid->addRowAction($rowAction);
+        $rowAction = new RowAction('Edit', 'akeneo_catalog_productfield_edit');
+        $rowAction->setRouteParameters(array('id'));
+        $grid->addRowAction($rowAction);
+        // manage the grid redirection, exports response of the controller
+        return $grid->getGridResponse('AkeneoCatalogBundle:ProductField:index.html.twig');
     }
 
     /**

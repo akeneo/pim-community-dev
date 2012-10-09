@@ -1,16 +1,33 @@
-<h1>ProductField creation</h1>
+{% extends 'StrixosWidgetBundle::layout.html.twig' %}
 
-<form action="{{ path('akeneo_catalog_productfield_create') }}" method="post" {{ form_enctype(form) }}>
-    {{ form_widget(form) }}
-    <p>
-        <button type="submit">Create</button>
-    </p>
-</form>
+{% block title %}Akeneo - new product field{% endblock %}
 
-<ul class="record_actions">
+{% block content_menu_more %}
+    {{ parent() }}
     <li>
-        <a href="{{ path('akeneo_catalog_productfield_index') }}">
-            Back to the list
+        <a href="{{ path('akeneo_catalog_productfield_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
+            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-ui-button-navigation-back"></span><span class="ui-button-text">Back to list</span>
         </a>
     </li>
-</ul>
+{% endblock %}
+
+{% block content %}
+
+    <h1>Catalog product field creation</h1>
+    
+    <form action="{{ path('akeneo_catalog_productfield_create') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <p>
+            <button type="submit">Create</button>
+        </p>
+    </form>
+    
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('akeneo_catalog_productfield_index') }}">
+                Back to the list
+            </a>
+        </li>
+    </ul>
+
+{% endblock %}

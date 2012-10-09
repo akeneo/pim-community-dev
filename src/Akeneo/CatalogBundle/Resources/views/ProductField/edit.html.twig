@@ -1,22 +1,44 @@
-<h1>ProductField edit</h1>
+{% extends 'StrixosWidgetBundle::layout.html.twig' %}
 
-<form action="{{ path('akeneo_catalog_productfield_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
-    {{ form_widget(edit_form) }}
-    <p>
-        <button type="submit">Edit</button>
-    </p>
-</form>
+{% block title %}Akeneo - edit field{% endblock %}
 
-<ul class="record_actions">
+{% block content_menu_more %}
+    {{ parent() }}
     <li>
-        <a href="{{ path('akeneo_catalog_productfield_index') }}">
-            Back to the list
+        <a href="{{ path('akeneo_catalog_productfield_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
+            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-ui-button-navigation-back"></span><span class="ui-button-text">Back to list</span>
         </a>
     </li>
     <li>
-        <form action="{{ path('akeneo_catalog_productfield_delete', { 'id': entity.id }) }}" method="post">
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
+        <a href="{{ path('akeneo_catalog_productfield_delete', { 'id': entity.id }) }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
+            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-tag--minus"></span><span class="ui-button-text">Delete field</span>
+        </a>
     </li>
-</ul>
+{% endblock %}
+
+{% block content %}
+
+    <h1>Catalog product field edit</h1>
+    
+    <form action="{{ path('akeneo_catalog_productfield_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+        {{ form_widget(edit_form) }}
+        <p>
+            <button type="submit">Edit</button>
+        </p>
+    </form>
+    
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('akeneo_catalog_productfield_index') }}">
+                Back to the list
+            </a>
+        </li>
+        <li>
+            <form action="{{ path('akeneo_catalog_productfield_delete', { 'id': entity.id }) }}" method="post">
+                {{ form_widget(delete_form) }}
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+    </ul>
+
+{% endblock %}
