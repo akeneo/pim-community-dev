@@ -4,7 +4,7 @@ namespace Strixos\IcecatConnectorBundle\Controller;
 
 use Strixos\DataFlowBundle\Model\Extract\FileUnzip;
 use Strixos\DataFlowBundle\Model\Extract\FileHttpDownload;
-use Strixos\IcecatConnectorBundle\Model\Load\SupplierLoadDataFromXml;
+use Strixos\IcecatConnectorBundle\Model\Import\SupplierImportDataFromXml;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -46,7 +46,7 @@ class SupplierController extends Controller
         
             // -3- Call XML Loader to save in database
             $em = $this->getDoctrine()->getEntityManager();
-            $loader = new SupplierLoadDataFromXml($em);
+            $loader = new SupplierImportDataFromXml($em);
             $loader->process(self::TMP_UNZIP_FILEPATH_SUPPLIERS);
         } catch (\Exception $e) {
             return array('exception' => $e);
