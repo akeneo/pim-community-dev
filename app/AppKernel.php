@@ -24,8 +24,6 @@ class AppKernel extends Kernel
             // To set up basic data
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             // translatable, timestampable, etc
-            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-
 
             // BAP modules
 
