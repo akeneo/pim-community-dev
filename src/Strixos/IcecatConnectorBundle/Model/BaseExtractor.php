@@ -1,6 +1,8 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Model;
 
+use Strixos\IcecatConnectorBundle\Model\Import\ProductImportDataFromXml;
+
 use Strixos\IcecatConnectorBundle\Model\Import\SupplierImportDataFromXml;
 use Strixos\IcecatConnectorBundle\Model\Import\ProductImportDataFromCsv;
 
@@ -21,6 +23,7 @@ class BaseExtractor
     // TODO: define in configuration !!
     const URL_SUPPLIERS = 'http://data.icecat.biz/export/freeurls/supplier_mapping.xml';
     const URL_PRODUCTS = 'http://data.icecat.biz/export/freeurls/export_urls_rich.txt.gz';
+    const URL_PRODUCT = 'http://data.Icecat.biz/xml_s3/xml_server3.cgi';
     const AUTH_LOGIN    = 'NicolasDupont';
     const AUTH_PASSWORD = '1cec4t**)';
 
@@ -104,5 +107,21 @@ class BaseExtractor
         // load csv into local table
         $loader = new ProductImportDataFromCsv($this->entityManager);
         $loader->process($txtFile);
+    }
+    
+    public function extractAndImportProduct($prodId, $supplierName, $locale)
+    {
+    	// TODO : see URL encode if necessary
+    	$urlProduct = self::URL_PRODUCT .
+    			'?prod_id='.$prodId.';vendor='.$supplierName.';lang='.$locale.';output=productxml';
+    	$xmlFile = '/tmp/product-'. $prodId .'-'. $locale .'.xml';
+    	
+    	// Download product xml file
+    	$downloader = new FileHttpDownload();
+    	$downloader->process($urlProduct, $xmlFile, self::AUTH_LOGIN, self::AUTH_PASSWORD);
+    	
+    	// Import data
+    	$loader = new ProductImportDataFromXml($this->entityManager);
+    	$loader->process($xmlFile);
     }
 }
