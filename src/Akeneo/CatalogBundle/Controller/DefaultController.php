@@ -49,7 +49,20 @@ class DefaultController extends Controller
         $type->persist();
         $type->flush();
 
-        var_dump($type);
+
+        $product = $type->newProductInstance();
+        $product->setValue('sku', 'My sku');
+        $product->setValue('name', 'My nom');
+        $product->setValue('color', 'Red');
+
+        $product->switchLocale('fr_FR');
+        $product->setValue('color', 'Rouge');
+
+        // persist
+        $product->persist();
+        $product->flush();
+
+        echo 'done';
 
 
 

@@ -102,17 +102,23 @@ class Product extends AbstractModel
     }
 
     /**
+     * Get product locale
+     *
+     * @return string $locale
+     */
+    public function getLocale()
+    {
+        return $this->getObject()->getLocale();
+    }
+
+    /**
      * Change locale and refresh product data for this locale
      *
      * @param string $locale
      */
     public function switchLocale($locale)
     {
-        $this->_localeCode = $locale;
-        foreach ($this->getObject()->getValues() as $value) {
-            $value->setTranslatableLocale($locale);
-            $this->getManager()->refresh($value);
-        }
+        $this->getObject()->setTranslatableLocale($locale);
     }
 
 }

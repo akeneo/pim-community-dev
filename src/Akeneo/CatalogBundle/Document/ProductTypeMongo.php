@@ -137,4 +137,14 @@ class ProductTypeMongo
         return $this->groups;
     }
 
+
+    /**
+     * Add fields
+     *
+     * @param Akeneo\CatalogBundle\Document\ProductFieldMongo $fields
+     */
+    public function addFields(\Akeneo\CatalogBundle\Document\ProductFieldMongo $fields)
+    {
+        $this->fields[] = $fields;
+    }
 }
