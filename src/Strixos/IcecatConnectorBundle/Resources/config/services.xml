@@ -7,6 +7,7 @@
     <!--
     <parameters>
         <parameter key="strixos_icecat_connector.supplier_loader.class">Strixos\IcecatConnectorBundle\SupplierLoader</parameter>
+        <parameter key="strixos_icecat_connector.data_import.class">Strixos\IcecatConnectorBundle\Model\Import\DataImport</parameter>
     </parameters>
 
     <services>
@@ -14,6 +15,9 @@
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>plain_value</argument>
             <argument>%parameter_name%</argument>
+        </service>
+        <service id="strixos_icecat_connector.data_import.class" class="%strixos_icecat_connector.data_import.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
     </services>
      -->

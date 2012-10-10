@@ -125,4 +125,21 @@ class ProductField
     {
         return $this->type;
     }
+    
+    /**
+     * create code for product field
+     * 
+     * @static
+     * @param integer $vendorId
+     * @param integer $categoryId
+     * @param string $fieldName
+     * @return string
+     * 
+     * TODO : Use method to slugify field name
+     * TODO : If field name changes, all codes must be corrected to verify unicity
+     */
+    public static function createCode($vendorId, $categoryId, $fieldName)
+    {
+    	return strtolower($vendorId.'-'.$categoryId.'-'.str_replace(' ', '', $fieldName));
+    }
 }

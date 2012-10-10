@@ -112,4 +112,22 @@ class ProductType
     {
         return $this->groups;
     }
+    
+    /**
+     * create code for product type
+     * 
+     * @static
+     * @param integer $vendorId
+     * @param string $vendorName
+     * @param integer $categoryId
+     * @param string $categoryName
+     * @return string
+     * 
+     * TODO : Use method to slugify vendor name and category name
+     * TODO : If vendor or category name change, all codes must be corrected to verify unicity
+     */
+    public static function createCode($vendorId, $vendorName, $categoryId, $categoryName)
+    {
+    	return strtolower($vendorId.'-'.$vendorName.'-'.$categoryId.'-'.str_replace(' ', '', $categoryName));
+    }
 }

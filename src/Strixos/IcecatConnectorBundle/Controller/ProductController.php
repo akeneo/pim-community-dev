@@ -43,7 +43,6 @@ class ProductController extends Controller
             $baseExtractor = new BaseExtractor($em);
             $baseExtractor->extractAndImportProductData();
         } catch (\Exception $e) {
-            // TODO display error message
             return array('exception' => $e);
         }
 
@@ -71,82 +70,29 @@ class ProductController extends Controller
 
     /**
      * List Icecat suppliers in a grid
-     * @Route("/supplier/load-products/{id}")
+     * @Route("/product/load-products/{id}")
      * @Template()
      */
     public function loadProductsAction($id)
     {
+    	// define values
+        $prodId = 'RJ459AV';
+        $supplierName = 'hp';
+        $locale = 'fr';
+        
+    	try {
+    		$em = $this->getDoctrine()->getEntityManager();
+    		$baseExtractor = new BaseExtractor($em);
+    		$baseExtractor->extractAndImportProduct($prodId, $supplierName, $locale);
+    	} catch (Exception $e) {
+    		return array('exception' => $e);
+    	}
         // TODO move this stuff in custom model operation
 
         // get for supplier = 1 there are lot of data
         //$prodId = 'D9194B';
-        $prodId = 'RJ459AV';
-        $vendor = 'hp';
-        $locale = 'fr';
 
-        // 1) --> load detailled product data
-        $loader = new ProductLoader();
-        $loader->load($prodId, $vendor, $locale);
-
-        $prodData = $loader->getProductData();
-        $prodFeat = $loader->getProductFeatures();
-
-        var_dump($prodData);
-        var_dump($prodFeat);
-
-        // 2) --> create type
-        $typeCode = $prodData['vendorId'].'-'.$prodData['vendorName'];
-        $typeCode.= '-'.$prodData['CategoryId'].'-'.strtolower(str_replace(' ', '', $prodData['CategoryName']));
-
-        // if not exists, create a new type
-        $type = $this->container->get('akeneo.catalog.model_producttype');
-        $return = $type->find($typeCode);
-        if (!$return) {
-            $type->create($typeCode);
-        }
-
-        // add all fields of prodData as general fields
-        $productFieldCodeToValues = array();
-        $generalGroupCode = 'General';
-        foreach ($prodData as $field => $value) {
-            if ($field != 'id') {
-                $fieldCode = $prodData['vendorId'].'-'.$prodData['CategoryId'].'-'.$field;
-                if (!$type->getField($fieldCode)) {
-                    $type->addField($fieldCode, BaseFieldFactory::FIELD_STRING, $generalGroupCode);
-                }
-                $productFieldCodeToValues[$fieldCode]= $value;
-            }
-        }
-
-        // create custom group for each features category
-        foreach ($prodFeat as $featId => $featData) {
-            foreach ($featData as $featName => $fieldData) {
-                $groupCode = $featId.'-'.strtolower(str_replace(' ', '', $featName));
-                foreach ($fieldData as $fieldName => $value) {
-                    $fieldCode = $featId.'-'.strtolower(str_replace(' ', '', $fieldName));
-                    if (!$type->getField($fieldCode)) {
-                        $type->addField($fieldCode, BaseFieldFactory::FIELD_STRING, $groupCode);
-                    }
-                    $productFieldCodeToValues[$fieldCode]= $value;
-                }
-            }
-        }
-
-        // save type
-        $type->persist();
-        $type->flush();
-
-        // 3) ----- create product
-        $product = $type->newProductInstance();
-
-        // set product values
-        foreach ($productFieldCodeToValues as $fieldCode => $value) {
-            $product->setValue($fieldCode, $value);
-        }
-
-        // save
-        $product->persist();
-        $product->flush();
+        
 
         // TODO: mark as already imported in product table with pim product id so the second time we can load existing
         // product with find an updated it not re-create (as for type)

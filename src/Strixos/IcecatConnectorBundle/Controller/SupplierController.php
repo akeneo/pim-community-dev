@@ -30,7 +30,6 @@ class SupplierController extends Controller
             $baseExtractor = new BaseExtractor($em);
             $baseExtractor->extractAndImportSupplierData();
         } catch (\Exception $e) {
-            // TODO display error message
             return array('exception' => $e);
         }
 
@@ -49,7 +48,7 @@ class SupplierController extends Controller
         $grid = $this->get('grid');
         $grid->setSource($source);
         // add an action column to load import of all products of a supplier
-        $rowAction = new RowAction('Import product to PIM', 'strixos_icecatconnector_supplier_loadproducts');
+        $rowAction = new RowAction('Import products to PIM', 'strixos_icecatconnector_supplier_loadproducts');
         $rowAction->setRouteParameters(array('icecatId'));
         $grid->addRowAction($rowAction);
         // manage the grid redirection, exports response of the controller
@@ -63,6 +62,28 @@ class SupplierController extends Controller
      */
     public function loadProductsAction($icecatId)
     {
+        $icecatSupplierId = 2;
+        $locale = 'fr';
+        
+        // get all products for supplier id requested
+        $em = $this->getDoctrine()->getEntityManager();
+        $supplier = $em->getRepository('StrixosIcecatConnectorBundle:Supplier')->findOneByIcecatId($icecatSupplierId);
+        $products = $em->getRepository('StrixosIcecatConnectorBundle:Product')->findBySupplier($supplier);
+
+        $baseExtractor = new BaseExtractor($em);
+        foreach ($products as $product) {
+            $baseExtractor->extractAndImportProduct($product->getProdId(), $supplier->getName(), $locale);
+        }
+        
+        
+        echo 'ID : '. $supplier->getId() .'<br />';
+        echo 'Name : '. $supplier->getName() .'<br />';
+        echo 'Icecat Id: '. $supplier->getIcecatId() .'<br />';
+        echo 'Count : '. count($products) .'<br />';
+        
+        //return array();
+        
+        
         die('load all products for supplier id '.$icecatId);
         // TODO load any product of this supplier
     }

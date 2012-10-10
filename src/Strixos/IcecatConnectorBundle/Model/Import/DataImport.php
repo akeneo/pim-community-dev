@@ -1,6 +1,7 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Model\Import;
 
+use Symfony\Component\DependencyInjection\ContainerAware;
 /**
  * Abstract class to import data into local database
  *
@@ -10,7 +11,7 @@ namespace Strixos\IcecatConnectorBundle\Model\Import;
  * 
  * @abstract
  */
-abstract class DataImport
+abstract class DataImport extends ContainerAware
 {
     /**
      * Entity Manager
@@ -22,7 +23,7 @@ abstract class DataImport
      * Constructor with entity manager
      * @param \Doctrine\ORM\EntityManager $em
      */
-    public function __construct(\Doctrine\ORM\EntityManager $em)
+    public function __construct($em)
     {
         $this->entityManager = $em;
     }
