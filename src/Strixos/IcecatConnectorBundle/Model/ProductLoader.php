@@ -58,9 +58,6 @@ class ProductLoader
             throw new Exception('Curl Error : '.curl_error($c));
         }
         curl_close($c);
-
-        echo $output;
-
         return $output;
     }
 

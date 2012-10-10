@@ -92,7 +92,7 @@ class Product extends AbstractModel
         $this->_codeToField = array();
         $this->_fieldCodeToValue = array();
         // TODO: move to product entity or custom repository
-        foreach ($this->_object->getType()->getGroups() as $group) {
+        foreach ($type->getGroups() as $group) {
             foreach ($group->getFields() as $field) {
                 $this->_codeToField[$field->getCode()]= $field;
             }

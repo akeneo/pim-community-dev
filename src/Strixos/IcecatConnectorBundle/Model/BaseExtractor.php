@@ -41,7 +41,7 @@ class BaseExtractor
         $this->entityManager = $em;
         $this->initialize();
     }
-    
+
     /**
      * Initialize method used here to change php environment
      */
@@ -68,15 +68,15 @@ class BaseExtractor
     {
         $xmlFileArchive = '/tmp/suppliers-list.xml.gz';
         $xmlFile = '/tmp/suppliers-list.xml';
-        
+
         // -1- Download suppliers list in /tmp/...
         $downloader = new FileHttpDownload();
         $downloader->process(self::URL_SUPPLIERS, $xmlFileArchive, self::AUTH_LOGIN, self::AUTH_PASSWORD, false);
-        
+
         // -2- Unzip file
         $unzipper = new FileUnzip();
         $unzipper->process($xmlFileArchive, $xmlFile);
-        
+
         // -3- Call XML Loader to save in database
         $loader = new SupplierImportDataFromXml($this->entityManager);
         $loader->process($xmlFile);
@@ -88,15 +88,15 @@ class BaseExtractor
     public function extractAndImportProductData()
     {
         $txtFileArchive = '/tmp/export_urls_rich.txt.gz';
-        $txtFile = '/tmp/export_urls_rich.txt.gz';
-        
+        $txtFile = '/tmp/export_urls_rich.txt';
+
         // download text product archive (only few data on products)
         $downloader = new FileHttpDownload();
         $downloader->process(
-                self::URL_PRODUCTS, $txtFileArchive,
-                self::AUTH_LOGIN, self::AUTH_PASSWORD, false
+            self::URL_PRODUCTS, $txtFileArchive,
+            self::AUTH_LOGIN, self::AUTH_PASSWORD, false
         );
-        
+
         // extract product archive to get text file
          $unzipper = new FileUnzip();
          $unzipper->process($txtFileArchive, $txtFile, false);
