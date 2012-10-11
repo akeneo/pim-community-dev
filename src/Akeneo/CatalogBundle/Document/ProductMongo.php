@@ -4,6 +4,7 @@ namespace Akeneo\CatalogBundle\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
+use APY\DataGridBundle\Grid\Mapping as GRID;
 
 /**
  * Product as Mongo Document
@@ -13,6 +14,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @MongoDB\Document
+ * @GRID\Source(columns="id")
  */
 class ProductMongo
 {
@@ -20,6 +22,7 @@ class ProductMongo
 
     /**
      * @MongoDB\Id
+     * @GRID\Column()
      */
     protected $id;
 

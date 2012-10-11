@@ -41,9 +41,17 @@ class ProductController extends Controller
      */
     public function indexAction()
     {
-        $manager = $this->get($this->managerService);
-        $products = $manager->getRepository($this->classShortname)->findAll()->limit(1000);
-        return array('products' => $products);
+        // creates simple grid based on entity or document (ORM or ODM)
+        if ($this->managerService == self::DOCTRINE_MONGO_MANAGER) {
+            $source = new GridDocument($this->classShortname);
+        } else if ($this->managerService == self::DOCTRINE_MANAGER) {
+            $source = new GridEntity($this->classShortname);
+        } else {
+            throw new \Exception('Unknow object manager');
+        }
+        $grid = $this->get('grid');
+        $grid->setSource($source);
+        return $grid->getGridResponse('AkeneoCatalogBundle:Product:index.html.twig');
     }
 
 }

@@ -13,6 +13,7 @@ use Akeneo\CatalogBundle\Form\ProductFieldType;
 use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
 use APY\DataGridBundle\Grid\Source\Document as GridDocument;
 use APY\DataGridBundle\Grid\Action\RowAction;
+use APY\DataGridBundle\Grid\Column\TextColumn;
 
 /**
  * Product field controller.
@@ -45,12 +46,6 @@ class ProductFieldController extends Controller
         // creates simple grid based on entity or document (ORM or ODM)
         if ($this->managerService == self::DOCTRINE_MONGO_MANAGER) {
             $source = new GridDocument($this->fieldShortname);
-
-            // TODO : problem with mongo source ... cf https://github.com/Abhoryo/APYDataGridBundle/issues/32
-            $manager = $this->get($this->managerService);
-            $fields = $manager->getRepository($this->fieldShortname)->findAll()->limit(1000);
-            return array('fields' => $fields);
-
         } else if ($this->managerService == self::DOCTRINE_MANAGER) {
             $source = new GridEntity($this->fieldShortname);
         } else {
@@ -58,6 +53,7 @@ class ProductFieldController extends Controller
         }
         $grid = $this->get('grid');
         $grid->setSource($source);
+
         // add an action column
         $rowAction = new RowAction('Show', 'akeneo_catalog_productfield_show');
         $rowAction->setRouteParameters(array('id'));

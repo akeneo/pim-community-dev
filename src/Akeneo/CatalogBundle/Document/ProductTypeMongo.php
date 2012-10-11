@@ -3,6 +3,7 @@ namespace Akeneo\CatalogBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Doctrine\Common\Collections\ArrayCollection;
+use APY\DataGridBundle\Grid\Mapping as GRID;
 
 /**
  * Product type as Mongo Document
@@ -12,16 +13,19 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @MongoDB\Document
+ * @GRID\Source(columns="id, code")
  */
 class ProductTypeMongo
 {
     /**
      * @MongoDB\Id
+     * @GRID\Column()
      */
     protected $id;
 
     /**
      * @MongoDB\String
+     * @GRID\Column()
      */
     protected $code;
 

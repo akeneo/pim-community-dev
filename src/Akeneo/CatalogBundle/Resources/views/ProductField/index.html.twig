@@ -15,31 +15,6 @@
     
     <h1>Catalog product field list</h1>
     
-        <table class="grid">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Code</th>
-            <th>Title</th>
-            <th>Type</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% for field in fields %}
-          <tr class="{% if loop.index is odd %} odd {% else %} even {% endif %}">
-            <td>{{field.id}}</td>
-            <td>{{field.code}}</td>
-            <td>{{field.titles}}</td>
-            <td>{{field.type}}</td>
-            <td>
-                <a href="{{ path('akeneo_catalog_productfield_edit', {'id': field.id }) }}">Edit</a> 
-            </td>
-          </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    
-    
+    {{ grid(grid) }}
 
 {% endblock %}
