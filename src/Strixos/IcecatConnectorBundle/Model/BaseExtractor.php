@@ -1,6 +1,10 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Model;
 
+use Strixos\IcecatConnectorBundle\Model\Service\LanguagesService;
+
+use Strixos\IcecatConnectorBundle\Model\Service\SuppliersService;
+
 use Strixos\IcecatConnectorBundle\Model\Import\ProductImportDataFromXml;
 use Strixos\IcecatConnectorBundle\Model\Import\SupplierImportDataFromXml;
 use Strixos\IcecatConnectorBundle\Model\Import\ProductImportDataFromCsv;
@@ -19,7 +23,6 @@ use Strixos\DataFlowBundle\Model\Extract\FileUnzip;
  */
 class BaseExtractor
 {
-
     // TODO: define in configuration !!
     const URL_SUPPLIERS = 'http://data.icecat.biz/export/freeurls/supplier_mapping.xml';
     const URL_PRODUCTS = 'http://data.icecat.biz/export/freeurls/export_urls_rich.txt.gz';
@@ -74,12 +77,14 @@ class BaseExtractor
         $xmlFile = '/tmp/suppliers-list.xml';
 
         // -1- Download suppliers list in /tmp/...
-        $downloader = new FileHttpDownload();
+        /*$downloader = new FileHttpDownload();
         $downloader->process(self::URL_SUPPLIERS, $xmlFileArchive, self::AUTH_LOGIN, self::AUTH_PASSWORD, false);
 
         // -2- Unzip file
         $unzipper = new FileUnzip();
-        $unzipper->process($xmlFileArchive, $xmlFile);
+        $unzipper->process($xmlFileArchive, $xmlFile);*/
+        $srv = new SuppliersService($this->entityManager);
+        $srv->process();
 
         // -3- Call XML Loader to save in database
         $loader = new SupplierImportDataFromXml($this->entityManager);
@@ -135,12 +140,14 @@ class BaseExtractor
         $xmlFile = '/tmp/languages-list.xml';
 
         // -1- Download suppliers list in /tmp/...
-        $downloader = new FileHttpDownload();
+        /*$downloader = new FileHttpDownload();
         $downloader->process(self::URL_LANGUAGES, $xmlFileArchive, self::AUTH_LOGIN, self::AUTH_PASSWORD, false);
 
         // -2- Unzip file
         $unzipper = new FileUnzip();
-        $unzipper->process($xmlFileArchive, $xmlFile);
+        $unzipper->process($xmlFileArchive, $xmlFile);*/
+        $srv = new LanguagesService($this->entityManager);
+        $srv->process();
 
         // -3- Call XML Loader to save in database
         $loader = new LanguageImportDataFromXml($this->entityManager);

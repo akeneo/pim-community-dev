@@ -27,8 +27,8 @@ class LanguageImportDataFromXml extends DataImport
         
         while ($xml->read()) {
             if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'Language') {
-            	$shortCode = $this->formatShortCode($xml->getAttribute('ShortCode'));
-            	
+                $shortCode = $this->formatShortCode($xml->getAttribute('ShortCode'));
+                
                 $lang = new Language();
                 $lang->setCode($xml->getAttribute('Code'));
                 $lang->setShortCode($shortCode);
@@ -51,15 +51,15 @@ class LanguageImportDataFromXml extends DataImport
      */
     private function formatShortCode($shortCode)
     {
-    	$length = strlen($shortCode);
-    	if ($length === 2) {
-    		$shortCode = strtolower($shortCode).'_'.strtoupper($shortCode);
-    	} elseif ($length === 5) {
-    		$tmpCode = explode('_', $shortCode);
-    		$shortCode = strtolower($tmpCode[0]) .'_'. strtoupper($tmpCode[1]);
-    	} else {
-    		throw new \Exception('Incorrect short code format');
-    	}
-    	return $shortCode;
+        $length = strlen($shortCode);
+        if ($length === 2) {
+            $shortCode = strtolower($shortCode).'_'.strtoupper($shortCode);
+        } elseif ($length === 5) {
+            $tmpCode = explode('_', $shortCode);
+            $shortCode = strtolower($tmpCode[0]) .'_'. strtoupper($tmpCode[1]);
+        } else {
+            throw new \Exception('Incorrect short code format');
+        }
+        return $shortCode;
     }
 }

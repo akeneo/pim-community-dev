@@ -29,6 +29,11 @@ class SupplierController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
             $baseExtractor = new BaseExtractor($em);
             $baseExtractor->extractAndImportSupplierData();
+            
+            /*$em = $this->getDoctrine()->getEntityManager();
+            $srv = new SuppliersService();*/
+            
+            
         } catch (\Exception $e) {
             return array('exception' => $e);
         }
