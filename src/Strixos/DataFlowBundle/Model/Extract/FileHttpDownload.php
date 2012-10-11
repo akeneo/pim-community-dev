@@ -40,9 +40,8 @@ class FileHttpDownload extends Step
                 curl_setopt($ch, CURLOPT_USERPWD, $login.':'.$password);
             }
             
-            // Start - 2012-10-08 - RMO - Fix SSL certificate problem
+            // Fix SSL certificate problem
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            // End - 2012-10-08 - RMO - Fix SSL certificate problem
             curl_setopt($ch, CURLOPT_FILE, $fp);
             $data = curl_exec($ch);
             if ($data === false) {
