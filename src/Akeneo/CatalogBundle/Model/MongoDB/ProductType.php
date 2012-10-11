@@ -49,7 +49,7 @@ class ProductType extends AbstractModel
         if ($type) {
             $this->object = $type;
         } else {
-            throw new \Exception("There is no product type with code {$code}");
+            return false;
         }
         return $this;
     }
