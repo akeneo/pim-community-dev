@@ -29,7 +29,6 @@ class LanguageController extends Controller
         } catch (\Exception $e) {
             return array('exception' => $e);
         }
-        die('pouic');
 
         return $this->redirect($this->generateUrl('strixos_icecatconnector_language_list'));
     }

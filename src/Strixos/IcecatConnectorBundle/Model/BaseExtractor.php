@@ -142,10 +142,8 @@ class BaseExtractor
         $unzipper = new FileUnzip();
         $unzipper->process($xmlFileArchive, $xmlFile);
 
-        echo 'call loader <br />';
         // -3- Call XML Loader to save in database
         $loader = new LanguageImportDataFromXml($this->entityManager);
         $loader->process($xmlFile);
-        echo 'end of call loader <br />';
     }
 }

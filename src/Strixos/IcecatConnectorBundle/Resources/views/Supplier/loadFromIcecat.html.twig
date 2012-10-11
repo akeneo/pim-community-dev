@@ -1,8 +1,8 @@
-{% extends 'StrixosWidgetBundle::layout.html.twig' %}
+{% extends 'StrixosIcecatConnectorBundle::layout.html.twig' %}
 
 {% block title %}StrixOS - Manage Icecat suppliers{% endblock %}
 
-{% block content_menu_more %}
+{% block content %}
 
     {% if exception is defined %}
         {{ exception.message }}

@@ -1,30 +1,6 @@
-{% extends 'StrixosWidgetBundle::layout.html.twig' %}
+{% extends 'StrixosIcecatConnectorBundle::layout.html.twig' %}
 
 {% block title %}StrixOS - Manage Icecat suppliers{% endblock %}
-
-{% block content_menu_more %}
-    {{ parent() }}
-    <li>
-        <a href="{{ path('strixos_icecatconnector_supplier_loadfromicecat') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
-            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-database-import"></span><span class="ui-button-text">Initialize suppliers from IceCat</span>
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('strixos_icecatconnector_product_loadfromicecat') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
-            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-database-import"></span><span class="ui-button-text">Initialize products from IceCat</span>
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('strixos_icecatconnector_supplier_list') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
-            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-user-business"></span><span class="ui-button-text">Base suppliers list</span>
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('strixos_icecatconnector_product_list') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
-            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-documents"></span><span class="ui-button-text">Base products list</span>
-        </a>
-    </li>
-{% endblock %}
 
 {% block content %}
 

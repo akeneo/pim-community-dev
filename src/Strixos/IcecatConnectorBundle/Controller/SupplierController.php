@@ -39,7 +39,6 @@ class SupplierController extends Controller
     /**
      * List Icecat suppliers in a grid
      * @Route("/supplier/list")
-     * @Route("/")
      * @Template()
      */
     public function listAction()
