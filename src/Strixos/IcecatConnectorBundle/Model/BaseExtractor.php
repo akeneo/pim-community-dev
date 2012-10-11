@@ -2,9 +2,9 @@
 namespace Strixos\IcecatConnectorBundle\Model;
 
 use Strixos\IcecatConnectorBundle\Model\Import\ProductImportDataFromXml;
-
 use Strixos\IcecatConnectorBundle\Model\Import\SupplierImportDataFromXml;
 use Strixos\IcecatConnectorBundle\Model\Import\ProductImportDataFromCsv;
+use Strixos\IcecatConnectorBundle\Model\Import\LanguageImportDataFromXml;
 
 use Strixos\DataFlowBundle\Model\Extract\FileHttpDownload;
 use Strixos\DataFlowBundle\Model\Extract\FileUnzip;
@@ -23,6 +23,7 @@ class BaseExtractor
     // TODO: define in configuration !!
     const URL_SUPPLIERS = 'http://data.icecat.biz/export/freeurls/supplier_mapping.xml';
     const URL_PRODUCTS = 'http://data.icecat.biz/export/freeurls/export_urls_rich.txt.gz';
+    const URL_LANGUAGES = 'https://data.icecat.biz/export/freexml/refs/LanguageList.xml.gz';
     const URL_PRODUCT = 'http://data.Icecat.biz/xml_s3/xml_server3.cgi';
     const AUTH_LOGIN    = 'NicolasDupont';
     const AUTH_PASSWORD = '1cec4t**)';
@@ -111,17 +112,40 @@ class BaseExtractor
     
     public function extractAndImportProduct($prodId, $supplierName, $locale)
     {
-    	// TODO : see URL encode if necessary
-    	$urlProduct = self::URL_PRODUCT .
-    			'?prod_id='.$prodId.';vendor='.$supplierName.';lang='.$locale.';output=productxml';
-    	$xmlFile = '/tmp/product-'. $prodId .'-'. $locale .'.xml';
-    	
-    	// Download product xml file
-    	$downloader = new FileHttpDownload();
-    	$downloader->process($urlProduct, $xmlFile, self::AUTH_LOGIN, self::AUTH_PASSWORD);
-    	
-    	// Import data
-    	$loader = new ProductImportDataFromXml($this->entityManager);
-    	$loader->process($xmlFile);
+        // TODO : see URL encode if necessary
+        $urlProduct = self::URL_PRODUCT .
+                '?prod_id='.$prodId.';vendor='.$supplierName.';lang='.$locale.';output=productxml';
+        $xmlFile = '/tmp/product-'. $prodId .'-'. $locale .'.xml';
+        
+        // Download product xml file
+        $downloader = new FileHttpDownload();
+        $downloader->process($urlProduct, $xmlFile, self::AUTH_LOGIN, self::AUTH_PASSWORD);
+        
+        // Import data
+        $loader = new ProductImportDataFromXml($this->entityManager);
+        $loader->process($xmlFile);
+    }
+
+    /**
+     * Extract languages from Icecat and load in local database
+     */
+    public function extractAndImportLanguages()
+    {
+        $xmlFileArchive = '/tmp/languages-list.xml.gz';
+        $xmlFile = '/tmp/languages-list.xml';
+
+        // -1- Download suppliers list in /tmp/...
+        $downloader = new FileHttpDownload();
+        $downloader->process(self::URL_LANGUAGES, $xmlFileArchive, self::AUTH_LOGIN, self::AUTH_PASSWORD, false);
+
+        // -2- Unzip file
+        $unzipper = new FileUnzip();
+        $unzipper->process($xmlFileArchive, $xmlFile);
+
+        echo 'call loader <br />';
+        // -3- Call XML Loader to save in database
+        $loader = new LanguageImportDataFromXml($this->entityManager);
+        $loader->process($xmlFile);
+        echo 'end of call loader <br />';
     }
 }
