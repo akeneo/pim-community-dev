@@ -16,6 +16,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class ProductMongo
 {
+    //@see https://doctrine-mongodb-odm.readthedocs.org/en/latest/reference/annotations-reference.html
+
     /**
      * @MongoDB\Id
      */
@@ -28,7 +30,9 @@ class ProductMongo
     protected $type;
 
     /**
-     * TODO: problem : how to deal with typing ? define custom repository ?
+     * TODO: problem : how to deal with typing ? define custom type to enforce this check ?
+     * TODO: no use values but directly set variable ... problem with load
+     *
      * @MongoDB\Raw
      * @var ArrayCollection
      */
@@ -46,16 +50,44 @@ class ProductMongo
      */
     private $updated;
 
-
+    /**
+    * Used locale
+    * @var string
+    */
     protected $locale;
 
+    // TODO refactor in superclass mapped
+
     /**
-     * Constructor
-     */
+    * Constructor
+    */
     public function __construct()
     {
-        $this->values = array(); //new ArrayCollection();
-        $this->locale = 'en_US'; // TODO: use default application locale or current gui locale
+        // TODO: prepersist is not enought : MongoException: zero-length keys are not allowed, did you use $ with double quotes?
+
+        $this->locale = 'en_US';
+    }
+
+    /**
+    * Ensure there is a current locale used
+    * @MongoDB\PostLoad¶
+    */
+    public function postLoad()
+    {
+        // TODO: use default application locale or current gui locale
+        $this->locale = 'en_US';
+    }
+
+    /**
+     * Ensure there is a current locale used
+     * @MongoDB\PrePersist¶
+     */
+    public function prePersist()
+    {
+        // TODO: use default application locale or current gui locale
+        if (!$this->locale) {
+            $this->locale = 'en_US';
+        }
     }
 
     /**
@@ -185,9 +217,18 @@ class ProductMongo
     }
 
     /**
-    * Set used locale
-    * @param string $locale
-    */
+     * Get used locale
+     * @return string $locale
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * Set used locale
+     * @param string $locale
+     */
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;

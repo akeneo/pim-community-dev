@@ -24,19 +24,13 @@ class Product extends AbstractModel
      * List of fields codes
      * @var Array
      */
-    protected $_codeToField;
+    protected $codeToField;
 
     /**
      * List of fields codes
      * @var Array
      */
-    protected $_fieldCodeToValue;
-
-    /**
-     * Current locale code
-     * @var string
-     */
-    protected $_localeCode;
+    protected $fieldCodeToValue;
 
     // TODO:
     // - define default locale
@@ -52,27 +46,27 @@ class Product extends AbstractModel
     {
         // locale
         // TODO how to load ?
-        /*if ($localeCode) {
-            $this->_localeCode = $localeCode;
+        /*if ($locale) {
+            $this->locale = $locale;
         }*/
         // get entity
-        $entity = $this->_manager->getRepository('AkeneoCatalogBundle:ProductEntity')
+        $entity = $this->manager->getRepository('AkeneoCatalogBundle:ProductEntity')
             ->find($productId);
         if ($entity) {
-            $this->_object = $entity;
+            $this->object = $entity;
             // retrieve group code
             // TODO: move to product entity or custom repository
             // TODO : problem when change type referenced by entity
-            $this->_codeToField = array();
-            $this->_fieldCodeToValue = array();
-            foreach ($this->_object->getType()->getGroups() as $group) {
+            $this->codeToField = array();
+            $this->fieldCodeToValue = array();
+            foreach ($this->object->getType()->getGroups() as $group) {
                 $this->_codeToGroup[$group->getCode()]= $group;
                 foreach ($group->getFields() as $field) {
-                    $this->_codeToField[$field->getCode()]= $field;
+                    $this->codeToField[$field->getCode()]= $field;
                 }
             }
-            foreach ($this->_object->getValues() as $value) {
-                $this->_fieldCodeToValue[$value->getField()->getCode()]= $value;
+            foreach ($this->object->getValues() as $value) {
+                $this->fieldCodeToValue[$value->getField()->getCode()]= $value;
             }
         } else {
             throw new \Exception("There is no product with id {$productId}");
@@ -87,14 +81,14 @@ class Product extends AbstractModel
      */
     public function create($type)
     {
-        $this->_object = new EntityProductEntity();
-        $this->_object->setType($type);
-        $this->_codeToField = array();
-        $this->_fieldCodeToValue = array();
+        $this->object = new EntityProductEntity();
+        $this->object->setType($type);
+        $this->codeToField = array();
+        $this->fieldCodeToValue = array();
         // TODO: move to product entity or custom repository
         foreach ($type->getGroups() as $group) {
             foreach ($group->getFields() as $field) {
-                $this->_codeToField[$field->getCode()]= $field;
+                $this->codeToField[$field->getCode()]= $field;
             }
         }
         return $this;
@@ -108,8 +102,8 @@ class Product extends AbstractModel
     public function getField($fieldCode)
     {
         // check in model
-        if (isset($this->_codeToField[$fieldCode])) {
-            return $this->_codeToField[$fieldCode];
+        if (isset($this->codeToField[$fieldCode])) {
+            return $this->codeToField[$fieldCode];
         }
         return null;
     }
@@ -121,7 +115,7 @@ class Product extends AbstractModel
      */
     public function getFieldsCodes()
     {
-        return array_keys($this->_codeToField);
+        return array_keys($this->codeToField);
     }
 
     /**
@@ -136,7 +130,7 @@ class Product extends AbstractModel
         if (!$field) {
             throw new \Exception("The field {$fieldCode} doesn't exist for this product type");
         }
-        $value = $this->_fieldCodeToValue[$fieldCode];
+        $value = $this->fieldCodeToValue[$fieldCode];
         return ($value) ? $value->getData() : null;
     }
 
@@ -153,17 +147,17 @@ class Product extends AbstractModel
             throw new \Exception("The field {$fieldCode} doesn't exist for this product type");
         }
         // insert / update value
-        $value = isset($this->_fieldCodeToValue[$fieldCode])? $this->_fieldCodeToValue[$fieldCode] : null;
+        $value = isset($this->fieldCodeToValue[$fieldCode])? $this->fieldCodeToValue[$fieldCode] : null;
         if (!$value) {
             $value = new EntityProductValue();
             $value->setField($field);
             $value->setProduct($this->getObject());
             $this->getObject()->addValue($value);
-            $this->_fieldCodeToValue[$fieldCode]= $value;
+            $this->fieldCodeToValue[$fieldCode]= $value;
         }
         // for current product locale (else use default)
-        if ($this->_localeCode) {
-            $value->setTranslatableLocale($this->_localeCode);
+        if ($this->getLocale()) {
+            $value->setTranslatableLocale($this->getLocale());
         }
         $value->setData($data);
         return $this;
@@ -195,20 +189,6 @@ class Product extends AbstractModel
                 $fieldName = lcfirst(\Doctrine\Common\Util\Inflector::classify($by));
                 return $this->$method($fieldName, $arguments[0]);
                 break;
-        }
-    }
-
-    /**
-     * Change locale and refresh product data for this locale
-     *
-     * @param string $locale
-     */
-    public function switchLocale($locale)
-    {
-        $this->_localeCode = $locale;
-        foreach ($this->getObject()->getValues() as $value) {
-            $value->setTranslatableLocale($locale);
-            $this->getManager()->refresh($value);
         }
     }
 

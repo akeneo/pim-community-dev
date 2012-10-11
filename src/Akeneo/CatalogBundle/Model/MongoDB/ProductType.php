@@ -47,7 +47,7 @@ class ProductType extends AbstractModel
         $type = $this->getManager()->getRepository('AkeneoCatalogBundle:ProductTypeMongo')
             ->findOneByCode($code);
         if ($type) {
-            $this->_object = $type;
+            $this->object = $type;
         } else {
             throw new \Exception("There is no product type with code {$code}");
         }
@@ -57,9 +57,10 @@ class ProductType extends AbstractModel
     /**
      * Create an embeded type entity
      * @param string $code
+     * @param string $title
      * @return ProductType
      */
-    public function create($code)
+    public function create($code, $title = null)
     {
         $type = $this->getManager()->getRepository('AkeneoCatalogBundle:ProductTypeMongo')
             ->findOneByCode($code);
@@ -67,10 +68,32 @@ class ProductType extends AbstractModel
             // TODO create custom exception
             throw new \Exception("There is already a product type with the code {$code}");
         } else {
-            $this->_object = new ProductTypeMongo();
-            $this->_object->setCode($code);
+            $this->object = new ProductTypeMongo();
+            $this->object->setCode($code);
+            if (!$title) {
+                $title = $code;
+            }
+            $this->object->setTitle($title);
         }
         return $this;
+    }
+
+    /**
+     * Get product type title
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->object->getTitle();
+    }
+
+    /**
+     * Set product type title
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->object->setTitle($title);
     }
 
     /**
@@ -91,9 +114,10 @@ class ProductType extends AbstractModel
      * @param string $fieldCode
      * @param string $fieldType
      * @param string $groupCode
+     * @param $string $title
      * @return ProductType
      */
-    public function addField($fieldCode, $fieldType, $groupCode)
+    public function addField($fieldCode, $fieldType, $groupCode, $title = null)
     {
         // check if field already exists
         $field = $this->getField($fieldCode);
@@ -102,7 +126,7 @@ class ProductType extends AbstractModel
             $field = new ProductFieldMongo();
             $field->setCode($fieldCode);
             $field->setType($fieldType);
-            $field->setLabel('hard coded');
+            $field->setTitle($title);
         }
         // add field to group
         $this->getObject()->addFieldToGroup($field, $groupCode);
@@ -157,5 +181,29 @@ class ProductType extends AbstractModel
         $this->getManager()->refresh($this->getObject());
         return $this;
     }
+
+    /**
+    * get locale code
+     *
+    * @return string $locale
+    */
+    public function getLocale()
+    {
+        $this->getObject()->getLocale();
+    }
+
+    /**
+    * Change locale and refresh data for this locale
+    *
+    * @param string $locale
+    */
+    public function switchLocale($locale)
+    {
+        $this->getObject()->setTranslatableLocale($locale);
+        foreach ($this->getObject()->getFields() as $field) {
+            $field->setTranslatableLocale($locale);
+        }
+    }
+
 
 }

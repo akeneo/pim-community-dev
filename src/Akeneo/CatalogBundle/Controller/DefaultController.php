@@ -10,6 +10,8 @@ use Akeneo\CatalogBundle\Model\ProductType;
 
 use Akeneo\CatalogBundle\Document\ProductTypeMongo;
 use Akeneo\CatalogBundle\Document\ProductFieldMongo;
+use Akeneo\CatalogBundle\Document\TestMongo;
+
 
 class DefaultController extends Controller
 {
@@ -19,6 +21,19 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+/*
+        $odm = $this->container->get('akeneo.catalog.model_producttype_mongo')->getManager();
+
+
+        $test = new TestMongo();
+        $test->setTitles(array('fr' => 'frval', 'en' =>'enval'));
+
+        $test = $odm->getRepository('AkeneoCatalogBundle:TestMongo')
+            ->findOneByCode($fieldCode);
+
+
+        exit();
+        */
 
 /*
         $type = new ProductTypeMongo();
@@ -36,19 +51,88 @@ class DefaultController extends Controller
 
         var_dump($type);
 */
+/*
+        // create type
+        $ind = time();
+        $typeCode = 'tshirt'.$ind;
+        $type = $this->container->get('akeneo.catalog.model_producttype_mongo');
+        $type = $type->create($typeCode, 'My tshirt');
+        //$type->find('tshirt1349958342');
+        $type->addField('sku', 'text', 'General', 'Sku');
+        $type->addField('name', 'text', 'General', 'Name');
+        $type->addField('color', 'text', 'Technical', 'Color');
+        // persist
+        $type->persist();
+        $type->flush();
+
+        var_dump($type->getObject()->getTitles());
+
+
+        $type = $this->container->get('akeneo.catalog.model_producttype_mongo');
+        $type->find($typeCode);
+        $type->switchLocale('fr_FR');
+        $type->setTitle('Mon t-shirt');
+
+        var_dump($type->getObject()->getTitles());
+
+
+        // persist
+        $type->persist();
+        $type->flush();
+
+        var_dump($type->getObject()->getTitles());
+
+        exit();
+*/
+
+/*
+        $odm = $this->container->get('akeneo.catalog.model_producttype_mongo')->getManager();
+        $fieldCode = 'mycode2';
+        $field = $odm->getRepository('AkeneoCatalogBundle:ProductFieldMongo')
+            ->findOneByCode($fieldCode);
+
+        if (!$field) {
+            $field = new ProductFieldMongo();
+            $field->setCode($fieldCode);
+            $field->setTitles(array('fr' => 'frval', 'en' =>'enval'));
+            $odm->persist($field);
+            $odm->flush($field);
+        }
+        var_dump($field);
+
+        $product = $odm->getRepository('AkeneoCatalogBundle:ProductMongo')
+        ->findOneBy(array('id' => '50759f629c94e1d715000005'));
+
+        $product->setTranslatableLocale('en_US');
+        var_dump($product->getValues());
+
+        exit();
+*/
 
         // create type
         $ind = time();
         $typeCode = 'tshirt'.$ind;
         $type = $this->container->get('akeneo.catalog.model_producttype_mongo');
-        $type = $type->create($typeCode);
-        $type->addField('sku', 'text', 'General');
-        $type->addField('name', 'text', 'General');
-        $type->addField('color', 'text', 'Technical');
+        $type = $type->create($typeCode, 'My tshirt');
+        //$type->find('tshirt1349958342');
+        $type->addField('sku', 'text', 'General', 'Sku');
+        $type->addField('name', 'text', 'General', 'Name');
+        $type->addField('color', 'text', 'Technical', 'Color');
+
         // persist
         $type->persist();
         $type->flush();
 
+        // translate fields
+        $type->switchLocale('fr_FR');
+        $type->setTitle('Mon t-shirt');
+        $type->getField('sku')->setTitle('Sku');
+        $type->getField('name')->setTitle('Nom');
+        $type->getField('color')->setTitle('Couleur');
+
+        // persist
+        $type->persist();
+        $type->flush();
 
         $product = $type->newProductInstance();
         $product->setValue('sku', 'My sku');
@@ -69,7 +153,7 @@ class DefaultController extends Controller
         exit();
 
         /*
-        $type = $this->container->get('akeneo.catalog.model_producttype');
+        $type = $this->container->get('akeneo.catalog.model_producttype_doctrine');
         $type = $type->find('base');
 
         $product = $this->container->get('akeneo.catalog.model_product_mongo');
@@ -106,7 +190,7 @@ class DefaultController extends Controller
         // create type
         $typeCode = 'tshirt'.$ind;
         //$type = new ProductType($manager);
-        $type = $this->container->get('akeneo.catalog.model_producttype');
+        $type = $this->container->get('akeneo.catalog.model_producttype_doctrine');
         $type = $type->create($typeCode);
         $type->addField('sku', Field::TYPE_TEXT, 'General');
         $type->addField('name', Field::TYPE_TEXT, 'General');

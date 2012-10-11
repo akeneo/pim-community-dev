@@ -14,21 +14,21 @@ use Doctrine\Common\Persistence\ObjectManager;
 abstract class AbstractModel
 {
     /**
-     * @var ObjectManager $_objectManager
+     * @var ObjectManager $manager
      */
-    protected $_manager;
+    protected $manager;
 
     /**
      * Main Entity or Document managed
      * @var mixed
      */
-    protected $_object;
+    protected $object;
 
     /**
      * Used locale for embeded objects
      * @var string
      */
-    private $_locale;
+    private $locale;
 
     /**
     * Aims to inject object manager
@@ -37,7 +37,7 @@ abstract class AbstractModel
     */
     public function __construct($objectManager)
     {
-        $this->_manager = $objectManager;
+        $this->manager = $objectManager;
     }
 
     /**
@@ -46,7 +46,7 @@ abstract class AbstractModel
      */
     public function getManager()
     {
-        return $this->_manager;
+        return $this->manager;
     }
 
     /**
@@ -58,7 +58,7 @@ abstract class AbstractModel
      */
     public function getObject()
     {
-        return $this->_object;
+        return $this->object;
     }
 
     /**
@@ -97,14 +97,23 @@ abstract class AbstractModel
     }
 
     /**
-     * Change locale
+    * Get product locale
+    *
+    * @return string $locale
+    */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * Change locale and refresh data for this locale
+     *
      * @param string $locale
      */
-    public function setTranslatableLocale($locale)
+    public function switchLocale($locale)
     {
-        // TODO
-        $this->_locale = $locale;
-
+        $this->locale = $locale;
     }
 
 }

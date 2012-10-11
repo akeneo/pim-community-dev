@@ -76,7 +76,7 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
     protected function _createBaseType(ObjectManager $manager)
     {
         // create type
-        $type = $this->container->get('akeneo.catalog.model_producttype');
+        $type = $this->container->get('akeneo.catalog.model_producttype_doctrine');
         $type->create(self::TYPE_BASE);
         // add info fields
         $fields = array(
@@ -113,7 +113,7 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
     protected function _createProducts(ObjectManager $manager)
     {
         // get base type
-        $type = $this->container->get('akeneo.catalog.model_producttype');
+        $type = $this->container->get('akeneo.catalog.model_producttype_doctrine');
         $type->find(self::TYPE_BASE);
         // create product
         $product = $type->newProductInstance();

@@ -1,6 +1,7 @@
 <?php
 namespace Akeneo\CatalogBundle\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  *
  * Product type field as document
@@ -25,10 +26,10 @@ class ProductFieldMongo
     protected $code;
 
     /**
-     * TODO translate
-     * @MongoDB\String
+     * @MongoDB\Raw
+     * @var ArrayCollection
      */
-    protected $label;
+    protected $titles = array();
 
     /**
      * TODO define custom field type ?
@@ -36,6 +37,43 @@ class ProductFieldMongo
      */
     protected $type;
 
+    /**
+     * Used locale
+     * @var string
+     */
+    protected $locale;
+
+    /**
+    * Constructor
+    */
+    public function __construct()
+    {
+        // TODO: prepersist is not enought : MongoException: zero-length keys are not allowed, did you use $ with double quotes?
+
+        $this->locale = 'en_US';
+    }
+
+    /**
+     * Ensure there is a current locale used
+     * @MongoDB\PostLoad¶
+     */
+    public function postLoad()
+    {
+        // TODO: use default application locale or current gui locale
+        $this->locale = 'en_US';
+    }
+
+    /**
+    * Ensure there is a current locale used
+    * @MongoDB\PrePersist¶
+    */
+    public function prePersist()
+    {
+        // TODO: use default application locale or current gui locale
+        if (!$this->locale) {
+            $this->locale = 'en_US';
+        }
+    }
 
     /**
      * Get id
@@ -70,28 +108,6 @@ class ProductFieldMongo
     }
 
     /**
-     * Set label
-     *
-     * @param string $label
-     * @return ProductFieldMongo
-     */
-    public function setLabel($label)
-    {
-        $this->label = $label;
-        return $this;
-    }
-
-    /**
-     * Get label
-     *
-     * @return string $label
-     */
-    public function getLabel()
-    {
-        return $this->label;
-    }
-
-    /**
      * Set type
      *
      * @param string $type
@@ -111,5 +127,67 @@ class ProductFieldMongo
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     * @return ProductTypeMongo
+     */
+    public function setTitle($title)
+    {
+        $this->titles[$this->locale] = $title;
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string $title
+     */
+    public function getTitle()
+    {
+        return $this->titles[$this->locale];
+    }
+
+    /**
+     * Set titles
+     *
+     * @param raw $titles
+     * @return ProductFieldMongo
+     */
+    public function setTitles($titles)
+    {
+        $this->titles = $titles;
+        return $this;
+    }
+
+    /**
+     * Get titles
+     *
+     * @return raw $titles
+     */
+    public function getTitles()
+    {
+        return $this->titles;
+    }
+
+    /**
+    * Get used locale
+    * @return string $locale
+    */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * Set used locale
+     * @param string $locale
+     */
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
     }
 }

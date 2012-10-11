@@ -69,15 +69,15 @@ class ProductType extends AbstractModel
     public function find($code)
     {
         // get entity type
-        $type = $this->_manager->getRepository('AkeneoCatalogBundle:ProductType')
+        $type = $this->manager->getRepository('AkeneoCatalogBundle:ProductType')
             ->findOneByCode($code);
         if ($type) {
-            $this->_object = $type;
+            $this->object = $type;
             $this->_codeToGroup = array();
             $this->_codeToField = array();
             // retrieve group code
             // TODO: move to type entity or custom repository
-            foreach ($this->_object->getGroups() as $group) {
+            foreach ($this->object->getGroups() as $group) {
                 $this->_codeToGroup[$group->getCode()]= $group;
                 // retrieve field code
                 foreach ($group->getFields() as $field) {
@@ -103,8 +103,8 @@ class ProductType extends AbstractModel
             // TODO create custom exception
             throw new \Exception("There is already a product type with the code {$code}");
         } else {
-            $this->_object = new EntityProductType();
-            $this->_object->setCode($code);
+            $this->object = new EntityProductType();
+            $this->object->setCode($code);
             $this->_codeToGroup = array();
             $this->_codeToField = array();
         }

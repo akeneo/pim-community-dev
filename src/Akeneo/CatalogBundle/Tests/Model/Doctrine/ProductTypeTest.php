@@ -15,7 +15,7 @@ use Akeneo\CatalogBundle\Tests\Model\AbtractProductTypeTest;
  */
 class ProductTypeTest extends AbtractProductTypeTest
 {
-    protected $serviceName = 'akeneo.catalog.model_producttype';
+    protected $serviceName = 'akeneo.catalog.model_producttype_doctrine';
     protected $modelType   = 'Akeneo\CatalogBundle\Model\Doctrine\ProductType';
     protected $modelEntity = 'Akeneo\CatalogBundle\Model\Doctrine\Product';
     protected $entityType  = 'Akeneo\CatalogBundle\Entity\ProductType';

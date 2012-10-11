@@ -26,8 +26,15 @@ class ProductTypeMongo
     protected $code;
 
     /**
+     * @MongoDB\Raw
+     * @var ArrayCollection
+     */
+    protected $titles = array();
+
+    /**
      * TODO: groups to organize fields but with not strong constraint to keep light model relation
      * @MongoDB\Raw
+     * @var ArrayCollection
      */
     protected $groups = array();
 
@@ -38,12 +45,45 @@ class ProductTypeMongo
     protected $fields = array();
 
     /**
+     * Used locale
+     * @var string
+     */
+    protected $locale;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->groups = array();
-        $this->fields = new ArrayCollection();
+        $this->groups = array(); // TODO problem when using array collection to store hashmap
+        $this->fields = array(); //new ArrayCollection();
+        $this->titles = array();
+
+        // TODO: prepersist is not enought : MongoException: zero-length keys are not allowed, did you use $ with double quotes?
+
+        $this->locale = 'en_US';
+    }
+
+    /**
+    * Ensure there is a current locale used
+    * @MongoDB\PostLoad¶
+    */
+    public function postLoad()
+    {
+        // TODO: use default application locale or current gui locale
+        $this->locale = 'en_US';
+    }
+
+    /**
+     * Ensure there is a current locale used
+     * @MongoDB\PrePersist¶
+     */
+    public function prePersist()
+    {
+        // TODO: use default application locale or current gui locale
+        if (!$this->locale) {
+            $this->locale = 'en_US';
+        }
     }
 
     /**
@@ -137,7 +177,6 @@ class ProductTypeMongo
         return $this->groups;
     }
 
-
     /**
      * Add fields
      *
@@ -146,5 +185,68 @@ class ProductTypeMongo
     public function addFields(\Akeneo\CatalogBundle\Document\ProductFieldMongo $fields)
     {
         $this->fields[] = $fields;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     * @return ProductTypeMongo
+     */
+    public function setTitle($title)
+    {
+        $this->titles[$this->locale] = $title;
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string $title
+     */
+    public function getTitle()
+    {
+        return $this->titles[$this->locale];
+    }
+
+    /**
+     * Get used locale
+     * @return string $locale
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * Set used locale
+     * @param string $locale
+     */
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+
+    /**
+     * Set titles
+     *
+     * @param raw $titles
+     * @return ProductTypeMongo
+     */
+    public function setTitles($titles)
+    {
+        $this->titles = $titles;
+        return $this;
+    }
+
+    /**
+     * Get titles
+     *
+     * @return raw $titles
+     */
+    public function getTitles()
+    {
+        return $this->titles;
     }
 }

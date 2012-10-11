@@ -24,10 +24,10 @@ class Product extends AbstractModel
     public function find($productId)
     {
         // get document
-        $document = $this->_manager->getRepository('AkeneoCatalogBundle:ProductMongo')
+        $document = $this->manager->getRepository('AkeneoCatalogBundle:ProductMongo')
             ->find($productId);
         if ($document) {
-            $this->_object = $document;
+            $this->object = $document;
         } else {
             throw new \Exception("There is no product with id {$productId}");
         }
@@ -41,8 +41,8 @@ class Product extends AbstractModel
      */
     public function create($type)
     {
-        $this->_object = new ProductMongo();
-        $this->_object->setType($type);
+        $this->object = new ProductMongo();
+        $this->object->setType($type);
         // TODO deal with group
         return $this;
     }
@@ -102,17 +102,17 @@ class Product extends AbstractModel
     }
 
     /**
-     * Get product locale
+     * get locale code
      *
      * @return string $locale
      */
     public function getLocale()
     {
-        return $this->getObject()->getLocale();
+        $this->getObject()->getLocale();
     }
 
     /**
-     * Change locale and refresh product data for this locale
+     * Change locale and refresh data for this locale
      *
      * @param string $locale
      */
