@@ -38,6 +38,12 @@ class ProductFieldMongo
     protected $type;
 
     /**
+     * @MongoDB\Raw
+     * @var ArrayCollection
+     */
+    protected $options = array();
+
+    /**
      * Used locale
      * @var string
      */
@@ -189,5 +195,54 @@ class ProductFieldMongo
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;
+    }
+
+    /**
+     * Set options
+     *
+     * @param raw $options
+     * @return ProductFieldMongo
+     */
+    public function setOptions($options)
+    {
+        $this->options = $options;
+        return $this;
+    }
+
+    /**
+     * Get options
+     *
+     * @return raw $options
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * Set option
+     *
+     * @param string $code
+     * @param string $title
+     *
+     * @return ProductTypeMongo
+     */
+    public function setOption($code, $title)
+    {
+        if (!isset($this->options[$code])) {
+            $this->options[$code]= array();
+        }
+        $this->options[$code][$this->locale] = $title;
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string $title
+     */
+    public function getOption($code)
+    {
+        return $this->options[$code][$this->locale];
     }
 }

@@ -26,6 +26,20 @@ class BaseFieldFactory
     const FIELD_TEXT     = 'text';
 
     /**
+     * Return available type
+     * @return array
+     */
+    public static function getTypeOptions()
+    {
+        // TODO : add others, gow to add custom
+        return array(
+            self::FIELD_STRING => self::FIELD_STRING,
+            self::FIELD_TEXT   => self::FIELD_TEXT,
+            self::FIELD_SELECT => self::FIELD_SELECT,
+        );
+    }
+
+    /**
      * Get doctrine mapping for base fields
      * @see http://docs.doctrine-project.org/en/2.0.x/reference/basic-mapping.html
      * @param string $fieldType

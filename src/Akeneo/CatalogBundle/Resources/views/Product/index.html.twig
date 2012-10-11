@@ -1,0 +1,31 @@
+{% extends 'StrixosWidgetBundle::layout.html.twig' %}
+
+{% block title %}Akeneo - product list{% endblock %}
+
+{% block content_menu_more %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    
+    <h1>Catalog product list</h1>
+    
+        <table class="grid">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Values</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+          <tr class="{% if loop.index is odd %} odd {% else %} even {% endif %}">
+            <td>{{product.id}}</td>
+            <td>{{product.values}}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    
+
+{% endblock %}

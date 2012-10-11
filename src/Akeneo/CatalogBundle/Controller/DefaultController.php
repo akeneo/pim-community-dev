@@ -21,19 +21,28 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-/*
-        $odm = $this->container->get('akeneo.catalog.model_producttype_mongo')->getManager();
+
+        $type = $this->container->get('akeneo.catalog.model_producttype_mongo');
+        $options = array(
+            'red' => array('en_US' => 'Red'),
+            'blue' => array('en_US' => 'Blue')
+        );
+        $field = $type->getField('1-151-name');
+        $field->setOptions($options)->setType('select');
+
+        $dm = $this->get('doctrine.odm.mongodb')->getManager();
+        $dm->persist($field);
+        $dm->flush();
 
 
-        $test = new TestMongo();
-        $test->setTitles(array('fr' => 'frval', 'en' =>'enval'));
 
-        $test = $odm->getRepository('AkeneoCatalogBundle:TestMongo')
-            ->findOneByCode($fieldCode);
-
+        /*
+        $type = $this->container->get('akeneo.catalog.model_producttype_mongo');
+        $type->find('1-hp-151-ordinateursportables');
+        */
 
         exit();
-        */
+
 
 /*
         $type = new ProductTypeMongo();

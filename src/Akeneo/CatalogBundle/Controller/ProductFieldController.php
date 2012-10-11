@@ -8,27 +8,54 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Akeneo\CatalogBundle\Entity\ProductField;
+use Akeneo\CatalogBundle\Document\ProductFieldMongo;
 use Akeneo\CatalogBundle\Form\ProductFieldType;
 use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
+use APY\DataGridBundle\Grid\Source\Document as GridDocument;
 use APY\DataGridBundle\Grid\Action\RowAction;
 
 /**
- * ProductField controller.
+ * Product field controller.
+ *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @Route("/productfield")
  */
 class ProductFieldController extends Controller
 {
     /**
-     * Lists all ProductField entities.
+     * TODO aims to easily change from one implementation to other
+     */
+    const DOCTRINE_MANAGER = 'doctrine.orm.entity_manager';
+    const DOCTRINE_MONGO_MANAGER = 'doctrine.odm.mongodb.document_manager';
+    protected $managerService = self::DOCTRINE_MONGO_MANAGER;
+    protected $fieldShortname = 'AkeneoCatalogBundle:ProductFieldMongo';
+    protected $fieldClassname = 'Akeneo\CatalogBundle\Document\ProductFieldMongo';
+
+    /**
+     * Lists all fields
      *
      * @Route("/index")
      * @Template()
      */
     public function indexAction()
     {
-        // creates simple grid based on entity (ORM)
-        $source = new GridEntity('AkeneoCatalogBundle:ProductField');
+        // creates simple grid based on entity or document (ORM or ODM)
+        if ($this->managerService == self::DOCTRINE_MONGO_MANAGER) {
+            $source = new GridDocument($this->fieldShortname);
+
+            // TODO : problem with mongo source ... cf https://github.com/Abhoryo/APYDataGridBundle/issues/32
+            $manager = $this->get($this->managerService);
+            $fields = $manager->getRepository($this->fieldShortname)->findAll()->limit(1000);
+            return array('fields' => $fields);
+
+        } else if ($this->managerService == self::DOCTRINE_MANAGER) {
+            $source = new GridEntity($this->fieldShortname);
+        } else {
+            throw new \Exception('Unknow object manager');
+        }
         $grid = $this->get('grid');
         $grid->setSource($source);
         // add an action column
@@ -50,9 +77,8 @@ class ProductFieldController extends Controller
      */
     public function showAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('AkeneoCatalogBundle:ProductField')->find($id);
+        $manager = $this->get($this->managerService);
+        $entity = $manager->getRepository($this->fieldShortname)->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find ProductField entity.');
@@ -64,44 +90,48 @@ class ProductFieldController extends Controller
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
         );
+
     }
 
     /**
-     * Displays a form to create a new ProductField entity.
+     * Displays a form to create a new field
      *
      * @Route("/new")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new ProductField();
+        $entity = new $this->fieldClassname();
         $form   = $this->createForm(new ProductFieldType(), $entity);
 
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+        // render form
+        return $this->render(
+            'AkeneoCatalogBundle:ProductField:new.html.twig', array('entity' => $entity, 'form' => $form->createView())
         );
     }
 
     /**
-     * Creates a new ProductField entity.
+     * Creates a new field
      *
      * @Route("/create")
      * @Method("POST")
-     * @Template("AkeneoCatalogBundle:ProductField:new.html.twig")
+     * @Template("AkeneoCatalogBundle:ProductField:edit.html.twig")
      */
     public function createAction(Request $request)
     {
-        $entity  = new ProductField();
+        $entity  = new $this->fieldClassname();
         $form = $this->createForm(new ProductFieldType(), $entity);
         $form->bind($request);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
+        // TODO : avoid to create product field with same code -> complete validation
 
-            return $this->redirect($this->generateUrl('productfield_show', array('id' => $entity->getId())));
+        if ($form->isValid()) {
+            $manager = $this->get($this->managerService);
+            $manager->persist($entity);
+            $manager->flush();
+            $this->get('session')->setFlash('notice', 'Field has been created');
+
+            return $this->redirect($this->generateUrl('akeneo_catalog_productfield_edit', array('id' => $entity->getId())));
         }
 
         return array(
@@ -111,33 +141,39 @@ class ProductFieldController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing ProductField entity.
+     * Displays a form to edit an existing field entity.
      *
      * @Route("/{id}/edit")
      * @Template()
      */
     public function editAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $manager = $this->get($this->managerService);
 
-        $entity = $em->getRepository('AkeneoCatalogBundle:ProductField')->find($id);
+        $entity = $manager->getRepository($this->fieldShortname)->find($id);
+
+var_dump($entity)        ; exit();
+
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find ProductField entity.');
+            throw $this->createNotFoundException('Unable to find product field.');
         }
 
         $editForm = $this->createForm(new ProductFieldType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        return array(
+        $params = array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
+
+        // render form
+        return $this->render('AkeneoCatalogBundle:ProductField:edit.html.twig', $params);
     }
 
     /**
-     * Edits an existing ProductField entity.
+     * Edits an existing field entity.
      *
      * @Route("/{id}/update")
      * @Method("POST")
@@ -145,12 +181,12 @@ class ProductFieldController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $manager = $this->get($this->managerService);
 
-        $entity = $em->getRepository('AkeneoCatalogBundle:ProductField')->find($id);
+        $entity = $manager->getRepository($this->fieldShortname)->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find ProductField entity.');
+            throw $this->createNotFoundException('Unable to find product field.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -158,10 +194,11 @@ class ProductFieldController extends Controller
         $editForm->bind($request);
 
         if ($editForm->isValid()) {
-            $em->persist($entity);
-            $em->flush();
+            $manager->persist($entity);
+            $manager->flush();
+            $this->get('session')->setFlash('notice', 'Field has been updated');
 
-            return $this->redirect($this->generateUrl('productfield_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('akeneo_catalog_productfield_edit', array('id' => $id)));
         }
 
         return array(
@@ -183,18 +220,18 @@ class ProductFieldController extends Controller
         $form->bind($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('AkeneoCatalogBundle:ProductField')->find($id);
+            $manager = $this->get($this->managerService);
+            $entity = $manager->getRepository($this->fieldShortname)->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find ProductField entity.');
+                throw $this->createNotFoundException('Unable to find product field.');
             }
 
-            $em->remove($entity);
-            $em->flush();
+            $manager->remove($entity);
+            $manager->flush();
         }
 
-        return $this->redirect($this->generateUrl('productfield_index'));
+        return $this->redirect($this->generateUrl('akeneo_catalog_productfield_index'));
     }
 
     private function createDeleteForm($id)

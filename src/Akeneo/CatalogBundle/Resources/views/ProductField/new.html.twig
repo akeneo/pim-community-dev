@@ -14,20 +14,23 @@
 {% block content %}
 
     <h1>Catalog product field creation</h1>
-    
+
+    {% form_theme form 'StrixosWidgetBundle:Form:fields.html.twig' %}
     <form action="{{ path('akeneo_catalog_productfield_create') }}" method="post" {{ form_enctype(form) }}>
-        {{ form_widget(form) }}
-        <p>
-            <button type="submit">Create</button>
-        </p>
-    </form>
+        {{ form_errors(form) }}
     
-    <ul class="record_actions">
-        <li>
-            <a href="{{ path('akeneo_catalog_productfield_index') }}">
-                Back to the list
-            </a>
-        </li>
-    </ul>
+        <div class="form-panel ui-corner-all">
+            <h2>General</h2>
+            {{ form_row(form.id) }}
+            {{ form_row(form.code) }}
+            {{ form_row(form.type) }}
+        </div>
+
+        {{ form_widget(form._token) }}
+
+        <input type="submit" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" aria-disabled="false">
+
+    </form>
+
 
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'StrixosWidgetBundle::layout.html.twig' %}
 
-{% block title %}Akeneo - edit field{% endblock %}
+{% block title %}Akeneo - edit product field{% endblock %}
 
 {% block content_menu_more %}
     {{ parent() }}
@@ -19,26 +19,93 @@
 {% block content %}
 
     <h1>Catalog product field edit</h1>
+
+    {% form_theme form 'StrixosWidgetBundle:Form:fields.html.twig' %}
+    <form action="{{ path('akeneo_catalog_productfield_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_errors(form) }}
     
-    <form action="{{ path('akeneo_catalog_productfield_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
-        {{ form_widget(edit_form) }}
-        <p>
-            <button type="submit">Edit</button>
-        </p>
+        <div class="form-panel ui-corner-all">
+            <h2>General</h2>
+            {{ form_row(form.id) }}
+            {{ form_row(form.code) }}
+            {{ form_row(form.type) }}
+        </div>
+
+        {% if form.type.vars.value == "select" or form.type.vars.value == "multiselect" %}
+        <div class="form-panel ui-corner-all">
+                <h2>Options</h2>
+                <div>
+                    <ul class="options" data-prototype="{{ form_widget(form.options.vars.prototype)|e }}" >
+                        {% for option in form.options %}
+                            <li>{{ form_row(option.value) }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+        </div>
+        {% endif %}
+
+        {{ form_widget(form._token) }}
+
+        <input type="submit" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" aria-disabled="false">
+
     </form>
+
+    <script type="text/javascript">
+    // Get the div that holds the collection of options
+    var collectionHolder = $('ul.options');
     
-    <ul class="record_actions">
-        <li>
-            <a href="{{ path('akeneo_catalog_productfield_index') }}">
-                Back to the list
-            </a>
-        </li>
-        <li>
-            <form action="{{ path('akeneo_catalog_productfield_delete', { 'id': entity.id }) }}" method="post">
-                {{ form_widget(delete_form) }}
-                <button type="submit">Delete</button>
-            </form>
-        </li>
-    </ul>
+    // setup an "add an option" link
+    var $addOptionLink = $('<a href="#" class="add_option_link">Add an option</a>');
+    var $newLinkLi = $('<li></li>').append($addOptionLink);
+    
+    jQuery(document).ready(function() {
+        // add a delete link to all of the existing option form li elements
+        collectionHolder.find('li').each(function() {
+            addOptionFormDeleteLink($(this));
+        });
+    
+        // add the "add a option" anchor and li to the options ul
+        collectionHolder.append($newLinkLi);
+    
+        $addOptionLink.on('click', function(e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
+    
+            // add a new tag form (see next code block)
+            addOptionForm(collectionHolder, $newLinkLi);
+        });
+    });
+    
+    function addOptionForm(collectionHolder, $newLinkLi) {
+        // Get the data-prototype we explained earlier
+        var prototype = collectionHolder.attr('data-prototype');
+    
+        // Replace '__name__' in the prototype's HTML to
+        // instead be a number based on the current collection's length.
+        var newForm = prototype.replace(/__name__/g, collectionHolder.children().length);
+    
+        // Display the form in the page in an li, before the "Add an option" link li
+        var $newFormLi = $('<li></li>').append(newForm);
+        $newLinkLi.before($newFormLi);
+    
+        // add a delete link to the new form
+        addOptionFormDeleteLink($newFormLi);
+    }
+    
+    function addOptionFormDeleteLink($optFormLi) {
+        var $removeFormA = $('<a class="action-delete-inline" href="#">Delete ^</a>');
+
+        $optFormLi.append($removeFormA);
+    
+        $removeFormA.on('click', function(e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
+    
+            // remove the li for the tag form
+            $optFormLi.remove();
+        });
+    }
+    
+    </script>
 
 {% endblock %}
