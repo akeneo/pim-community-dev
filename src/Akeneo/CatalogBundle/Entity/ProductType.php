@@ -128,6 +128,6 @@ class ProductType
      */
     public static function createCode($vendorId, $vendorName, $categoryId, $categoryName)
     {
-    	return strtolower($vendorId.'-'.$vendorName.'-'.$categoryId.'-'.str_replace(' ', '', $categoryName));
+        return strtolower($vendorId.'-'.$vendorName.'-'.$categoryId.'-'.str_replace(' ', '', $categoryName));
     }
 }

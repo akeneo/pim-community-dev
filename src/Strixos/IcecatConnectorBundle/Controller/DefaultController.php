@@ -23,12 +23,12 @@ class DefaultController extends Controller
     /**
      * Display list of suppliers
      *
-     * @Route("/default/index")
+     * @Route("/")
      * @Template()
      */
     public function indexAction()
     {
-        return new Response('TODO : allow to define config here');
+        return $this->redirect($this->generateUrl('strixos_icecatconnector_supplier_list'));
     }
 
 }

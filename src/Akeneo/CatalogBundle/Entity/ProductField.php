@@ -140,6 +140,6 @@ class ProductField
      */
     public static function createCode($vendorId, $categoryId, $fieldName)
     {
-    	return strtolower($vendorId.'-'.$categoryId.'-'.str_replace(' ', '', $fieldName));
+        return strtolower($vendorId.'-'.$categoryId.'-'.str_replace(' ', '', $fieldName));
     }
 }

@@ -56,7 +56,7 @@ class ProductController extends Controller
      */
     public function listAction()
     {
-    	// creates simple grid based on entity (ORM)
+        // creates simple grid based on entity (ORM)
         $source = new GridEntity('StrixosIcecatConnectorBundle:Product');
         $grid = $this->get('grid');
         $grid->setSource($source);
@@ -75,18 +75,18 @@ class ProductController extends Controller
      */
     public function loadProductsAction($id)
     {
-    	// define values
+        // define values
         $prodId = 'RJ459AV';
         $supplierName = 'hp';
         $locale = 'fr';
         
-    	try {
-    		$em = $this->getDoctrine()->getEntityManager();
-    		$baseExtractor = new BaseExtractor($em);
-    		$baseExtractor->extractAndImportProduct($prodId, $supplierName, $locale);
-    	} catch (Exception $e) {
-    		return array('exception' => $e);
-    	}
+        try {
+            $em = $this->getDoctrine()->getEntityManager();
+            $baseExtractor = new BaseExtractor($em);
+            $baseExtractor->extractAndImportProduct($prodId, $supplierName, $locale);
+        } catch (Exception $e) {
+            return array('exception' => $e);
+        }
         // TODO move this stuff in custom model operation
 
         // get for supplier = 1 there are lot of data
