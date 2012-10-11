@@ -1,0 +1,13 @@
+{% extends 'StrixosWidgetBundle::layout.html.twig' %}
+
+{% block title %}StrixOS - Manage Icecat languages{% endblock %}
+
+{% block content_menu_more %}
+
+    {% if exception is defined %}
+        {{ exception.message }}
+    {% else %}
+        Hello world !!
+    {% endif %}
+
+{% endblock %}
