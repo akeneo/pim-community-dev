@@ -68,8 +68,8 @@ abstract class AbstractTest extends PHPUnit_Framework_TestCase
      */
     protected function createEntity()
     {
-    	$className = $this->getEntityClassName();
-    	return new $className();
+        $className = $this->getEntityClassName();
+        return new $className();
     }
 
     /**
@@ -90,6 +90,6 @@ abstract class AbstractTest extends PHPUnit_Framework_TestCase
     public function testConstructor()
     {
         $obj = $this->createEntity();
-    	$this->assertClass($this->getEntityClassName(), $obj);
+        $this->assertClass($this->getEntityClassName(), $obj);
     }
 }
