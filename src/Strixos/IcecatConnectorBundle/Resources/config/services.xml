@@ -22,4 +22,14 @@
     </services>
      -->
 
+    <parameters>
+        <parameter key="strixos_icecat_connector.connectorservice.class">Strixos\IcecatConnectorBundle\Service\ConnectorService</parameter>
+    </parameters>
+
+    <services>
+        <service id="akeneo.icecatconnector_service" class="%strixos_icecat_connector.connectorservice.class%">
+            <argument type="service" id="service_container" />
+        </service>
+    </services>
+
 </container>

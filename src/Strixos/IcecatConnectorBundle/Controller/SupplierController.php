@@ -29,11 +29,11 @@ class SupplierController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
             $baseExtractor = new BaseExtractor($em);
             $baseExtractor->extractAndImportSupplierData();
-            
+
             /*$em = $this->getDoctrine()->getEntityManager();
             $srv = new SuppliersService();*/
-            
-            
+
+
         } catch (\Exception $e) {
             return array('exception' => $e);
         }
@@ -48,6 +48,12 @@ class SupplierController extends Controller
      */
     public function listAction()
     {
+
+        $conncServ = $this->container->get('akeneo.icecatconnector_service');
+        $conncServ->hello();
+        exit();
+
+
         // creates simple grid based on entity (ORM)
         $source = new GridEntity('StrixosIcecatConnectorBundle:Supplier');
         $grid = $this->get('grid');
@@ -69,7 +75,7 @@ class SupplierController extends Controller
     {
         $icecatSupplierId = 2;
         $locale = 'fr';
-        
+
         // get all products for supplier id requested
         $em = $this->getDoctrine()->getEntityManager();
         $supplier = $em->getRepository('StrixosIcecatConnectorBundle:Supplier')->findOneByIcecatId($icecatSupplierId);
@@ -79,16 +85,16 @@ class SupplierController extends Controller
         foreach ($products as $product) {
             $baseExtractor->extractAndImportProduct($product->getProdId(), $supplier->getName(), $locale);
         }
-        
-        
+
+
         echo 'ID : '. $supplier->getId() .'<br />';
         echo 'Name : '. $supplier->getName() .'<br />';
         echo 'Icecat Id: '. $supplier->getIcecatId() .'<br />';
         echo 'Count : '. count($products) .'<br />';
-        
+
         //return array();
-        
-        
+
+
         die('load all products for supplier id '.$icecatId);
         // TODO load any product of this supplier
     }
