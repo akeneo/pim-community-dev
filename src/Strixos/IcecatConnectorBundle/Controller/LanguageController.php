@@ -23,9 +23,8 @@ class LanguageController extends Controller
     public function loadFromIcecatAction()
     {
         try {
-            $em = $this->getDoctrine()->getEntityManager();
-            $baseExtractor = new BaseExtractor($em);
-            $baseExtractor->extractAndImportLanguages();
+        	$srvConnector = $this->container->get('akeneo.icecatconnector_service');
+        	$srvConnector->importLanguages();
         } catch (\Exception $e) {
             return array('exception' => $e);
         }

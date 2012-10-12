@@ -1,5 +1,5 @@
 <?php
-namespace Strixos\IcecatConnectorBundle\Model\Extract;
+namespace Strixos\IcecatConnectorBundle\Extract;
 
 use Strixos\DataFlowBundle\Model\Extract\AbstractExtract;
 

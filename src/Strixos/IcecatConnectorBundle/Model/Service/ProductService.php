@@ -22,16 +22,4 @@ class ProductService extends AbstractService
     const BASE_URL         = 'http://data.Icecat.biz/xml_s3/xml_server3.cgi';
     const XML_FILE_ARCHIVE = '/tmp/suppliers-list.xml.gz';
     const XML_FILE         = '/tmp/suppliers-list.xml';
-    
-    /**
-     * (non-PHPdoc)
-     * @see \Strixos\DataFlowBundle\Model\EtlService\AbstractService::process()
-     */
-    public function process()
-    {
-        $extract = new ProductExtract();
-        $extract->process();
-        
-        // TODO : Call Transformer and Loader
-    }
 }

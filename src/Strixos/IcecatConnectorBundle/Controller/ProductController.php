@@ -39,9 +39,13 @@ class ProductController extends Controller
     public function loadFromIcecatAction()
     {
         try {
-            $em = $this->getDoctrine()->getEntityManager();
+        	
+        	$srvConnector = $this->container->get('akeneo.icecatconnector_service');
+        	$srvConnector->importProducts();
+        	
+            /*$em = $this->getDoctrine()->getEntityManager();
             $baseExtractor = new BaseExtractor($em);
-            $baseExtractor->extractAndImportProductData();
+            $baseExtractor->extractAndImportProductData();*/
         } catch (\Exception $e) {
             return array('exception' => $e);
         }

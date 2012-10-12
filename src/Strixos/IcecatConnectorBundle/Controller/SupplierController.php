@@ -26,14 +26,10 @@ class SupplierController extends Controller
     public function loadFromIcecatAction()
     {
         try {
-            $em = $this->getDoctrine()->getEntityManager();
-            $baseExtractor = new BaseExtractor($em);
-            $baseExtractor->extractAndImportSupplierData();
-
-            /*$em = $this->getDoctrine()->getEntityManager();
-            $srv = new SuppliersService();*/
-
-
+        	
+        	$srvConnector = $this->container->get('akeneo.icecatconnector_service');
+        	$srvConnector->importSuppliers();
+        	
         } catch (\Exception $e) {
             return array('exception' => $e);
         }
@@ -48,12 +44,6 @@ class SupplierController extends Controller
      */
     public function listAction()
     {
-
-        $conncServ = $this->container->get('akeneo.icecatconnector_service');
-        $conncServ->hello();
-        exit();
-
-
         // creates simple grid based on entity (ORM)
         $source = new GridEntity('StrixosIcecatConnectorBundle:Supplier');
         $grid = $this->get('grid');

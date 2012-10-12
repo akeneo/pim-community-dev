@@ -22,16 +22,4 @@ class LanguagesService extends AbstractService
 	const URL              = 'https://data.icecat.biz/export/freexml/refs/LanguageList.xml.gz';
     const XML_FILE_ARCHIVE = '/tmp/languages-list.xml.gz';
     const XML_FILE         = '/tmp/languages-list.xml';
-    
-    /**
-     * (non-PHPdoc)
-     * @see \Strixos\DataFlowBundle\Model\EtlService\AbstractService::process()
-     */
-    public function process()
-    {
-        $extract = new LanguagesExtract();
-        $extract->process();
-        
-        // TODO Call Transformer and Loader
-    }
 }

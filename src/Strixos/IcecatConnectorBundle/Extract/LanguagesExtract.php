@@ -1,7 +1,9 @@
 <?php
-namespace Strixos\IcecatConnectorBundle\Model\Extract;
+namespace Strixos\IcecatConnectorBundle\Extract;
 
-use Strixos\IcecatConnectorBundle\Model\Service\SuppliersService;
+use Strixos\IcecatConnectorBundle\Extract\IcecatExtract;
+
+use Strixos\IcecatConnectorBundle\Model\Service\LanguagesService;
 
 /**
  * 
@@ -10,9 +12,11 @@ use Strixos\IcecatConnectorBundle\Model\Service\SuppliersService;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * 
+ * TODO : URL must be set in configuration files
  *
  */
-class SuppliersExtract extends IcecatExtract
+class LanguagesExtract extends IcecatExtract
 {
     /**
      * (non-PHPdoc)
@@ -29,7 +33,8 @@ class SuppliersExtract extends IcecatExtract
      */
     public function process()
     {
-        $this->download(SuppliersService::URL, SuppliersService::XML_FILE_ARCHIVE);
-        $this->unzip(SuppliersService::XML_FILE_ARCHIVE, SuppliersService::XML_FILE);
+    	// TODO : Change constants.. Call configuration files ?
+        $this->download(LanguagesService::URL, LanguagesService::XML_FILE_ARCHIVE);
+        $this->unzip(LanguagesService::XML_FILE_ARCHIVE, LanguagesService::XML_FILE);
     }
 }
