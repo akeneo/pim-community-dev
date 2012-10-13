@@ -11,3 +11,4 @@ composer.phar
 .buildpath
 .project
 /cov
+/bin
