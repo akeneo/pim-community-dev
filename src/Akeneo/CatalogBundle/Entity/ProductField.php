@@ -140,7 +140,7 @@ class ProductField
      */
     public static function createCode($prefix, $vendorId, $categoryId)
     {
-    	echo 'create ProductField code : '. strtolower($prefix.'-'.$vendorId.'-'.$categoryId) .'<br />';
+//     	echo 'create ProductField code : '. strtolower($prefix.'-'.$vendorId.'-'.$categoryId) .'<br />';
         return strtolower($prefix.'-'.$vendorId.'-'.$categoryId);
     }
 }

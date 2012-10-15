@@ -77,7 +77,7 @@ class ConnectorService extends AbstractService
         $prodId = $product->getProdId();
         $supplierName = $product->getSupplier()->getName();
         
-        echo '<hr />Product ID : '. $product->getId().' - '. $product->getProdId() .'<br />';
+//         echo '<hr />Product ID : '. $product->getId().' - '. $product->getProdId() .'<br />';
         
         // TODO : parcours des locales avec lesquelles on travaille
         $locales = array('fr');

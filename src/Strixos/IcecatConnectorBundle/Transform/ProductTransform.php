@@ -94,7 +94,7 @@ class ProductTransform extends IcecatTransform
             foreach ($featData as $featName => $fieldData) {
                 $groupCode = $featId.'-'.strtolower(str_replace(' ', '', $featName));
                 foreach ($fieldData as $fieldName => $value) {
-                	var_dump($fieldData);
+//                 	var_dump($fieldData);
                     $fieldCode = ProductField::createCode(self::PREFIX, $prodData['vendorId'], $featId);;
                     if (!$type->getField($fieldCode)) {
                         $type->addField($fieldCode, BaseFieldFactory::FIELD_STRING, $groupCode);
@@ -110,8 +110,8 @@ class ProductTransform extends IcecatTransform
         
         // 3) ----- create product
         $product = $type->newProductInstance();
-        echo '<br />product field code to values<br />';
-        var_dump($productFieldCodeToValues);
+//         echo '<br />product field code to values<br />';
+//         var_dump($productFieldCodeToValues);
         
         // set product values
         foreach ($productFieldCodeToValues as $fieldCode => $value) {
