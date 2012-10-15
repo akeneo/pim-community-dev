@@ -14,8 +14,8 @@ use Strixos\IcecatConnectorBundle\Model\Service\ProductService;
  */
 class LanguagesExtract extends IcecatExtract
 {
-	protected $url;
-	
+    protected $url;
+    
     /**
      * (non-PHPdoc)
      * @see \Strixos\DataFlowBundle\Model\Extract\AbstractExtract::initialize()

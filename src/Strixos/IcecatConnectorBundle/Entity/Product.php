@@ -27,6 +27,7 @@ class Product extends AbstractModel
     /**
      * @var Supplier $supplier
      * @ORM\ManyToOne(targetEntity="Supplier")
+     * @ORM\JoinColumn(name="supplier_id", referencedColumnName="id")
      */
     private $supplier;
 
@@ -66,7 +67,7 @@ class Product extends AbstractModel
     /**
      * Set productId
      *
-     * @param string $productId
+     * @param integer $productId
      * @return Product
      */
     public function setProductId($productId)
@@ -79,57 +80,11 @@ class Product extends AbstractModel
     /**
      * Get productId
      *
-     * @return string 
+     * @return integer 
      */
     public function getProductId()
     {
         return $this->productId;
-    }
-
-    /**
-     * Set supplierId
-     *
-     * @param string $supplierId
-     * @return Product
-     */
-    public function setSupplierId($supplierId)
-    {
-        $this->supplierId = $supplierId;
-    
-        return $this;
-    }
-
-    /**
-     * Get supplierId
-     *
-     * @return string 
-     */
-    public function getSupplierId()
-    {
-        return $this->supplierId;
-    }
-
-    /**
-     * Set supplier
-     *
-     * @param Strixos\IcecatConnectorBundle\Entity\Supplier $supplier
-     * @return Product
-     */
-    public function setSupplier(\Strixos\IcecatConnectorBundle\Entity\Supplier $supplier = null)
-    {
-        $this->supplier = $supplier;
-    
-        return $this;
-    }
-
-    /**
-     * Get supplier
-     *
-     * @return Strixos\IcecatConnectorBundle\Entity\Supplier 
-     */
-    public function getSupplier()
-    {
-        return $this->supplier;
     }
 
     /**
@@ -176,5 +131,28 @@ class Product extends AbstractModel
     public function getMProdId()
     {
         return $this->mProdId;
+    }
+
+    /**
+     * Set supplier
+     *
+     * @param Strixos\IcecatConnectorBundle\Entity\Supplier $supplier
+     * @return Product
+     */
+    public function setSupplier(\Strixos\IcecatConnectorBundle\Entity\Supplier $supplier = null)
+    {
+        $this->supplier = $supplier;
+    
+        return $this;
+    }
+
+    /**
+     * Get supplier
+     *
+     * @return Strixos\IcecatConnectorBundle\Entity\Supplier 
+     */
+    public function getSupplier()
+    {
+        return $this->supplier;
     }
 }

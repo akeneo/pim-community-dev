@@ -12,5 +12,5 @@ namespace Strixos\IcecatConnectorBundle\Transform;
  */
 abstract class IcecatTransform
 {
-	abstract public function process();
+    //abstract public function process();
 }

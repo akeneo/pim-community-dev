@@ -26,10 +26,10 @@ class SupplierController extends Controller
     public function loadFromIcecatAction()
     {
         try {
-        	
-        	$srvConnector = $this->container->get('akeneo.icecatconnector_service');
-        	$srvConnector->importSuppliers();
-        	
+            
+            $srvConnector = $this->container->get('akeneo.icecatconnector_service');
+            $srvConnector->importSuppliers();
+            
         } catch (\Exception $e) {
             return array('exception' => $e);
         }
@@ -63,29 +63,21 @@ class SupplierController extends Controller
      */
     public function loadProductsAction($icecatId)
     {
-        $icecatSupplierId = 2;
-        $locale = 'fr';
-
-        // get all products for supplier id requested
-        $em = $this->getDoctrine()->getEntityManager();
-        $supplier = $em->getRepository('StrixosIcecatConnectorBundle:Supplier')->findOneByIcecatId($icecatSupplierId);
-        $products = $em->getRepository('StrixosIcecatConnectorBundle:Product')->findBySupplier($supplier);
-
-        $baseExtractor = new BaseExtractor($em);
-        foreach ($products as $product) {
-            $baseExtractor->extractAndImportProduct($product->getProdId(), $supplier->getName(), $locale);
+        try {
+            $supplier = $this->getDoctrine()->getRepository('StrixosIcecatConnectorBundle:Supplier')
+                    ->findOneByIcecatId($icecatId);
+            
+            $srvConnector = $this->container->get('akeneo.icecatconnector_service');
+            $srvConnector->importProductsFromSupplier($supplier);
+            
+            //$products = $this->getDoctrine()->getRepository('StrixosIcecatConnectorBundle:Product')->find($id);
+            
+        } catch (Exception $e) {
+            return array('exception' => $e);
         }
-
-
-        echo 'ID : '. $supplier->getId() .'<br />';
-        echo 'Name : '. $supplier->getName() .'<br />';
-        echo 'Icecat Id: '. $supplier->getIcecatId() .'<br />';
-        echo 'Count : '. count($products) .'<br />';
-
-        //return array();
-
-
-        die('load all products for supplier id '.$icecatId);
-        // TODO load any product of this supplier
+        
+        $products = array();
+        
+        return array('supplier' => $supplier, 'products' => $products);
     }
 }

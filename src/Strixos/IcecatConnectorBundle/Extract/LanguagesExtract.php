@@ -33,7 +33,7 @@ class LanguagesExtract extends IcecatExtract
      */
     public function process()
     {
-    	// TODO : Change constants.. Call configuration files ?
+        // TODO : Change constants.. Call configuration files ?
         $this->download(LanguagesService::URL, LanguagesService::XML_FILE_ARCHIVE);
         $this->unzip(LanguagesService::XML_FILE_ARCHIVE, LanguagesService::XML_FILE);
     }

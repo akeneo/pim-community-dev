@@ -101,6 +101,9 @@ class Product extends AbstractModel
      */
     public function getField($fieldCode)
     {
+        echo '<br />Get Field --> '. $fieldCode .'<br />code to field.. <br />';
+        var_dump($this->codeToField);
+        echo '<br />';
         // check in model
         if (isset($this->codeToField[$fieldCode])) {
             return $this->codeToField[$fieldCode];

@@ -30,7 +30,7 @@ abstract class AbstractExtract
      * execute extract process
      * @abstract
      */
-    abstract public function process();
+    //abstract public function process();
     
     /**
      * Download file in defined path

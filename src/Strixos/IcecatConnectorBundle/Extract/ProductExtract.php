@@ -3,7 +3,7 @@ namespace Strixos\IcecatConnectorBundle\Extract;
 
 use Strixos\IcecatConnectorBundle\Extract\IcecatExtract;
 
-use Strixos\IcecatConnectorBundle\Model\Service\SuppliersService;
+use Strixos\IcecatConnectorBundle\Model\Service\ProductService;
 
 /**
  * 
@@ -16,8 +16,13 @@ use Strixos\IcecatConnectorBundle\Model\Service\SuppliersService;
  * TODO : URL must be set in configuration files
  *
  */
-class SuppliersExtract extends IcecatExtract
+class ProductExtract extends IcecatExtract
 {
+    
+    private $url;
+    private $fileArchivePath;
+    private $filePath;
+    
     /**
      * (non-PHPdoc)
      * @see \Strixos\DataFlowBundle\Model\Extract\AbstractExtract::initialize()
@@ -31,9 +36,25 @@ class SuppliersExtract extends IcecatExtract
      * (non-PHPdoc)
      * @see \Strixos\DataFlowBundle\Model\Extract\AbstractExtract::process()
      */
-    public function process()
+    public function process($productId, $supplierName, $locale)
     {
-        $this->download(SuppliersService::URL, SuppliersService::XML_FILE_ARCHIVE);
-        $this->unzip(SuppliersService::XML_FILE_ARCHIVE, SuppliersService::XML_FILE);
+        $this->prepareUrl($productId, $supplierName, $locale);
+        $this->download($this->url, $this->fileArchivePath);
+        $this->unzip($this->fileArchivePath, $this->filePath);
+        
+        return $this->filePath;
+    }
+    
+    private function prepareUrl($productId, $supplierName, $locale)
+    {
+        $this->url = ProductService::BASE_URL .
+                '?prod_id='.$productId.';vendor='.$supplierName.';lang='.$locale.';output=productxml';
+        $this->filePath = '/tmp/product-'. $productId .'-'. $locale .'.xml';
+        $this->fileArchivePath = $this->filePath .'.gz';
+    }
+    
+    private function getFilePath()
+    {
+        return $this->filePath;
     }
 }

@@ -12,5 +12,4 @@ namespace Strixos\IcecatConnectorBundle\Load;
  */
 abstract class IcecatLoad
 {
-	
 }

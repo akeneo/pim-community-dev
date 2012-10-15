@@ -18,12 +18,12 @@ use Strixos\IcecatConnectorBundle\Model\Service\SuppliersService;
  */
 class SuppliersTransform extends IcecatTransform
 {
-	
-	protected $loader;
-	
-	
-	
-	/**
+    
+    protected $loader;
+    
+    
+    
+    /**
      * Constructor
      * @param SupplierLoader $loader
      */
@@ -32,7 +32,7 @@ class SuppliersTransform extends IcecatTransform
         //$this->container = $container;
         $this->loader = $loader;
     }
-	
+    
     /**
      * Transform xml file to csv
      *
@@ -41,21 +41,21 @@ class SuppliersTransform extends IcecatTransform
      */
     public function process()
     {
-    	// read xml document and parse to suppliers entities
-    	$xml = new XMLReader();
-    	$xml->open(SuppliersService::XML_FILE);
-    	
-    	while ($xml->read()) {
-    		if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'SupplierMapping') {
-    			$supplier = new Supplier();
-    			$supplier->setIcecatId($xml->getAttribute('supplier_id'));
-    			$supplier->setName($xml->getAttribute('name'));
-    			$this->loader->add($supplier);
-    		} else if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'SupplierMappings') {
-    			$date = $xml->getAttribute('Generated');
-    		}
-    	}
-    	
-    	$this->loader->load();
+        // read xml document and parse to suppliers entities
+        $xml = new XMLReader();
+        $xml->open(SuppliersService::XML_FILE);
+        
+        while ($xml->read()) {
+            if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'SupplierMapping') {
+                $supplier = new Supplier();
+                $supplier->setIcecatId($xml->getAttribute('supplier_id'));
+                $supplier->setName($xml->getAttribute('name'));
+                $this->loader->add($supplier);
+            } else if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'SupplierMappings') {
+                $date = $xml->getAttribute('Generated');
+            }
+        }
+        
+        $this->loader->load();
     }
 }

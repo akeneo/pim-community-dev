@@ -33,7 +33,7 @@ class ProductsExtract extends IcecatExtract
      */
     public function process()
     {
-        $this->download(ProductsService::URL, ProductsService::XML_FILE_ARCHIVE);
-        $this->unzip(ProductsService::XML_FILE_ARCHIVE, ProductsService::XML_FILE);
+        $this->download(ProductsService::URL, ProductsService::FILE_ARCHIVE);
+        $this->unzip(ProductsService::FILE_ARCHIVE, ProductsService::FILE);
     }
 }

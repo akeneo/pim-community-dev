@@ -16,10 +16,10 @@ use Strixos\DataFlowBundle\Model\Service\AbstractService;
  */
 class ProductsService extends AbstractService
 {
-	/**
-	 * @staticvar string
-	 */
-    const URL              = 'http://data.icecat.biz/export/freeurls/export_urls_rich.txt.gz';
-    const XML_FILE_ARCHIVE = '/tmp/suppliers-list.xml.gz';
-    const XML_FILE         = '/tmp/suppliers-list.xml';
+    /**
+     * @staticvar string
+     */
+    const URL          = 'http://data.icecat.biz/export/freeurls/export_urls_rich.txt.gz';
+    const FILE_ARCHIVE = '/tmp/export_urls_rich.txt.gz';
+    const FILE         = '/tmp/export_urls_rich.txt';
 }

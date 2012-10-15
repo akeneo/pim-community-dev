@@ -130,16 +130,17 @@ class ProductField
      * create code for product field
      * 
      * @static
+     * @param string $prefix
      * @param integer $vendorId
      * @param integer $categoryId
-     * @param string $fieldName
      * @return string
      * 
      * TODO : Use method to slugify field name
      * TODO : If field name changes, all codes must be corrected to verify unicity
      */
-    public static function createCode($vendorId, $categoryId, $fieldName)
+    public static function createCode($prefix, $vendorId, $categoryId)
     {
-        return strtolower($vendorId.'-'.$categoryId.'-'.str_replace(' ', '', $fieldName));
+    	echo 'create ProductField code : '. strtolower($prefix.'-'.$vendorId.'-'.$categoryId) .'<br />';
+        return strtolower($prefix.'-'.$vendorId.'-'.$categoryId);
     }
 }

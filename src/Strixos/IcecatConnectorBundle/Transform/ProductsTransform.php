@@ -1,6 +1,8 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Transform;
 
+use Strixos\IcecatConnectorBundle\Entity\SupplierRepository;
+
 use Strixos\IcecatConnectorBundle\Entity\Product;
 
 use Strixos\IcecatConnectorBundle\Load\EntityLoad;
@@ -18,21 +20,25 @@ use Strixos\IcecatConnectorBundle\Model\Service\ProductsService;
  */
 class ProductsTransform extends IcecatTransform
 {
-	
-	protected $loader;
-	
-	
-	
-	/**
-     * Constructor
-     * @param SupplierLoader $loader
+    
+    protected $loader;
+    
+    /**
+     * 
+     * @var EntityManager
      */
-    public function __construct($loader)
+    protected $entityManager;
+    
+    /**
+     * Constructor
+     * @param EntityManager $loader
+     */
+    public function __construct($em)
     {
-        //$this->container = $container;
-        $this->loader = $loader;
+        $this->entityManager = $em;
+        $this->loader = new EntityLoad($this->entityManager);
     }
-	
+    
     /**
      * Transform xml file to csv
      *
@@ -41,23 +47,19 @@ class ProductsTransform extends IcecatTransform
      */
     public function process()
     {
-    // truncate base suppliers
-        $connection = $this->entityManager->getConnection();
-        $platform   = $connection->getDatabasePlatform();
-        $tableName = 'StrixosIcecatConnector_Product';
-        $connection->executeUpdate($platform->getTruncateTableSQL($tableName));
-        // load suppliers
-        // TODO: use custom repository to get associative array in more efficient way
+        // get associative array with suppliers icecat ids and suppliers
         $suppliers = $this->entityManager->getRepository('StrixosIcecatConnectorBundle:Supplier')->findAll();
         $this->_icecatIdToSupplier = array();
         foreach ($suppliers as $supplier) {
             $this->_icecatIdToSupplier[$supplier->getIcecatId()] = $supplier;
         }
+        
         // import products
-        if (($handle = fopen($csvFile, 'r')) !== false) {
+        if (($handle = fopen(ProductsService::FILE, 'r')) !== false) {
             $length = 1000;
             $delimiter = "\t";
             $indRow = 0;
+            $batchSize = 5000;
             while (($data = fgetcsv($handle, $length, $delimiter)) !== false) {
                 // not parse header
                 if ($indRow++ == 0) {
@@ -71,8 +73,13 @@ class ProductsTransform extends IcecatTransform
                 $product->setProdId($data[1]);
                 $product->setMProdId($data[10]);
                 $this->loader->add($product);
+                
+                if ($indRow % $batchSize === 0) {
+                    $this->loader->load();
+                    return; // TODO : must be deleted !! Actually create a bug with clean method
+                }
             }
-            $this->loader->flush();
+            $this->loader->load();
         }
     }
 }

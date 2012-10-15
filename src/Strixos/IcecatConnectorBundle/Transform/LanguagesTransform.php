@@ -19,12 +19,12 @@ use Strixos\IcecatConnectorBundle\Model\Service\LanguagesService;
  */
 class LanguagesTransform extends IcecatTransform
 {
-	
-	protected $loader;
-	
-	
-	
-	/**
+    
+    protected $loader;
+    
+    
+    
+    /**
      * Constructor
      * @param SupplierLoader $loader
      */
@@ -33,7 +33,7 @@ class LanguagesTransform extends IcecatTransform
         //$this->container = $container;
         $this->loader = $loader;
     }
-	
+    
     /**
      * Transform xml file to csv
      *
@@ -42,27 +42,27 @@ class LanguagesTransform extends IcecatTransform
      */
     public function process()
     {
-    	// read xml document and parse to suppliers entities
-    	$xml = new XMLReader();
-    	$xml->open(LanguagesService::XML_FILE);
-    	
-    	while ($xml->read()) {
-	    	if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'Language') {
-	            $shortCode = $this->formatShortCode($xml->getAttribute('ShortCode'));
-	            
-	            $lang = new Language();
-	            $lang->setCode($xml->getAttribute('Code'));
-	            $lang->setShortCode($shortCode);
-	            $lang->setIcecatShortCode($xml->getAttribute('ShortCode'));
-	            $lang->setIcecatId($xml->getAttribute('ID'));
-	            
-	            $this->loader->add($lang);
-	        } else if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'Response') {
-	            $date = $xml->getAttribute('Date');
-	        }
-    	}
-	        
-    	$this->loader->load();
+        // read xml document and parse to suppliers entities
+        $xml = new XMLReader();
+        $xml->open(LanguagesService::XML_FILE);
+        
+        while ($xml->read()) {
+            if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'Language') {
+                $shortCode = $this->formatShortCode($xml->getAttribute('ShortCode'));
+                
+                $lang = new Language();
+                $lang->setCode($xml->getAttribute('Code'));
+                $lang->setShortCode($shortCode);
+                $lang->setIcecatShortCode($xml->getAttribute('ShortCode'));
+                $lang->setIcecatId($xml->getAttribute('ID'));
+                
+                $this->loader->add($lang);
+            } else if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'Response') {
+                $date = $xml->getAttribute('Date');
+            }
+        }
+            
+        $this->loader->load();
     }
     
     /**

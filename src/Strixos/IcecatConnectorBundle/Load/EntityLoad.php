@@ -14,32 +14,31 @@ namespace Strixos\IcecatConnectorBundle\Load;
  */
 class EntityLoad extends IcecatLoad
 {
-	protected $entityManager;
-	
-	protected $size;
-	
-	protected static $limit = 2000; //TODO : must be const
-	
-	public function __construct($entityManager)
-	{
-		$this->entityManager = $entityManager;
-		$this->size = 0;
-		$this->list = array();
-	}
-	
-	public function add($entity)
-	{
-		$this->entityManager->persist($entity);
+    protected $entityManager;
+    
+    protected $size;
+    
+    protected static $limit = 5000; //TODO : must be const
+    
+    public function __construct($entityManager)
+    {
+        $this->entityManager = $entityManager;
+        $this->size = 0;
+        $this->list = array();
+    }
+    
+    public function add($entity)
+    {
+        $this->entityManager->persist($entity);
 
-		if (++$this->size % self::$limit === 0) {
-			$this->load();
-		}
-	}
-	
-	public function load()
-	{
-		$this->entityManager->flush();
-		$this->entityManager->clear();
-		$this->size = 0;
-	}
+        if (++$this->size % self::$limit === 0) {
+            $this->load();
+        }
+    }
+    
+    public function load()
+    {
+        $this->entityManager->flush();
+        $this->entityManager->clear();
+    }
 }

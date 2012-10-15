@@ -1,6 +1,8 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Controller;
 
+use Strixos\IcecatConnectorBundle\Extract\ProductExtract;
+
 use Strixos\IcecatConnectorBundle\Model\BaseExtractor;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -39,14 +41,14 @@ class ProductController extends Controller
     public function loadFromIcecatAction()
     {
         try {
-        	
-        	$srvConnector = $this->container->get('akeneo.icecatconnector_service');
-        	$srvConnector->importProducts();
-        	
+            
+            $srvConnector = $this->container->get('akeneo.icecatconnector_service');
+            $srvConnector->importProducts();
             /*$em = $this->getDoctrine()->getEntityManager();
             $baseExtractor = new BaseExtractor($em);
             $baseExtractor->extractAndImportProductData();*/
         } catch (\Exception $e) {
+            die ($e->getMessage() );
             return array('exception' => $e);
         }
 
@@ -65,7 +67,7 @@ class ProductController extends Controller
         $grid = $this->get('grid');
         $grid->setSource($source);
         // add an action column to load import of all products of a supplier
-        $rowAction = new RowAction('Import product to PIM', 'strixos_icecatconnector_product_loadproducts');
+        $rowAction = new RowAction('Import product to PIM', 'strixos_icecatconnector_product_loadproduct');
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
         // manage the grid redirection, exports response of the controller
@@ -74,33 +76,22 @@ class ProductController extends Controller
 
     /**
      * List Icecat suppliers in a grid
-     * @Route("/product/load-products/{id}")
+     * @Route("/product/load-product/{id}")
      * @Template()
      */
-    public function loadProductsAction($id)
+    public function loadProductAction($id)
     {
-        // define values
-        $prodId = 'RJ459AV';
-        $supplierName = 'hp';
-        $locale = 'fr';
-        
         try {
-            $em = $this->getDoctrine()->getEntityManager();
-            $baseExtractor = new BaseExtractor($em);
-            $baseExtractor->extractAndImportProduct($prodId, $supplierName, $locale);
+            
+            $srvConnector = $this->container->get('akeneo.icecatconnector_service');
+            $srvConnector->importProduct($id);
+            
+            $product = $this->getDoctrine()->getRepository('StrixosIcecatConnectorBundle:Product')->find($id);
+            
         } catch (Exception $e) {
             return array('exception' => $e);
         }
-        // TODO move this stuff in custom model operation
 
-        // get for supplier = 1 there are lot of data
-        //$prodId = 'D9194B';
-
-        
-
-        // TODO: mark as already imported in product table with pim product id so the second time we can load existing
-        // product with find an updated it not re-create (as for type)
-
-        return new Response('Load detailled data.');
+        return array('product' => $product);
     }
 }
