@@ -53,6 +53,22 @@ class Product extends AbstractModel
      * @ORM\Column(name="m_prod_id", type="string", length=255)
      */
     private $mProdId;
+    
+    /**
+     * @var boolean $is_imported
+     * 
+     * @ORM\Column(name="imported", type="boolean")
+     */
+    private $is_imported;
+    
+    /**
+     * Constructor for product
+     * Define default value for is_imported attribute
+     */
+    public function __construct()
+    {
+        $this->is_imported = false;
+    }
 
     /**
      * Get id
@@ -154,5 +170,28 @@ class Product extends AbstractModel
     public function getSupplier()
     {
         return $this->supplier;
+    }
+
+    /**
+     * Set is_imported
+     *
+     * @param bool $isImported
+     * @return Product
+     */
+    public function setIsImported(\bool $isImported)
+    {
+        $this->is_imported = $isImported;
+    
+        return $this;
+    }
+
+    /**
+     * Get is_imported
+     *
+     * @return bool 
+     */
+    public function getIsImported()
+    {
+        return $this->is_imported;
     }
 }
