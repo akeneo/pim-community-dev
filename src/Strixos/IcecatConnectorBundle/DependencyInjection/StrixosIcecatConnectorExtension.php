@@ -22,7 +22,11 @@ class StrixosIcecatConnectorExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $fileLocator = new FileLocator(__DIR__.'/../Resources/config');
+        $loader = new Loader\XmlFileLoader($container, $fileLocator);
         $loader->load('services.xml');
+        
+        $loaderIni = new Loader\IniFileLoader($container, $fileLocator);
+        $loaderIni->load('parameters.ini');
     }
 }

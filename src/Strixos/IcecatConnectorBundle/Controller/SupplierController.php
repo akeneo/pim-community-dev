@@ -44,6 +44,7 @@ class SupplierController extends Controller
      */
     public function listAction()
     {
+    	echo $this->container->getParameter('pouic');
         // creates simple grid based on entity (ORM)
         $source = new GridEntity('StrixosIcecatConnectorBundle:Supplier');
         $grid = $this->get('grid');
@@ -76,7 +77,8 @@ class SupplierController extends Controller
             return array('exception' => $e);
         }
         
-        $products = array();
+        $products = $this->getDoctrine()->getRepository('StrixosIcecatConnectorBundle:Product')
+                ->findBySupplier($supplier);
         
         return array('supplier' => $supplier, 'products' => $products);
     }
