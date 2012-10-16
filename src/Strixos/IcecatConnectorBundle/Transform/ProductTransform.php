@@ -24,9 +24,9 @@ use Akeneo\CatalogBundle\Model\Doctrine\ProductType as ProductTypeService;
 class ProductTransform extends IcecatTransform
 {
     const PREFIX = 'icecat';
-    
+
     protected $type;
-    
+
     /**
      * Constructor
      * @param SupplierLoader $loader
@@ -38,7 +38,7 @@ class ProductTransform extends IcecatTransform
 //         $this->documentManager = $dm;
         //$this->loader = new EntityLoad($this->entityManager);
     }
-    
+
     /**
      * Transform xml file to csv
      *
@@ -51,34 +51,34 @@ class ProductTransform extends IcecatTransform
         if (!file_exists($filePath)) {
             throw new \Exception('xml file non-existent');
         }
-        
+
         $stringXml = file_get_contents($filePath);
         $this->_parseXml($stringXml);
         $this->_checkResponse();
         $this->_parseBaseData();
         $this->_parseFeatures();
-        
-        
+
+
         $prodData = $this->getProductData();
         $prodFeat = $this->getProductFeatures();
-        
+
         //$this->printArray($prodData);
-        
+
         //var_dump($prodData);
         //var_dump($prodFeat);
-        
+
         $type = $this->type;
-        
+
         // 2) --> create type
         $typeCode = ProductType::createCode(self::PREFIX, $prodData['vendorId'], $prodData['CategoryId']);
-        
+
         // if not exists, create a new type
 //         $type = new ProductTypeService($this->entityManager);
         $return = $type->find($typeCode);
         if (!$return) {
             $type->create($typeCode);
         }
-        
+
         // add all fields of prodData as general fields
         $productFieldCodeToValues = array();
         $generalGroupCode = 'General';
@@ -86,48 +86,48 @@ class ProductTransform extends IcecatTransform
             if ($field != 'id') {
                 $fieldCode = ProductField::createCode(self::PREFIX, $prodData['vendorId'], $prodData['CategoryId']);
 //                 if (!$type->getField($fieldCode)) {
-                    $type->addField($fieldCode, BaseFieldFactory::FIELD_STRING, $generalGroupCode);
+                    $type->addField($fieldCode, BaseFieldFactory::FIELD_STRING, $generalGroupCode, $field);
 //                     $productFieldCodeToValues[$fieldCode]= $value;
 //                 }
                 $productFieldCodeToValues[$fieldCode]= $value;
             }
         }
-        
+
         // create custom group for each features category
         foreach ($prodFeat as $featId => $featData) {
             foreach ($featData as $featName => $fieldData) {
                 $groupCode = $featId.'-'.strtolower(str_replace(' ', '', $featName));
                 foreach ($fieldData as $fieldName => $value) {
 //                     var_dump($fieldData);
-                    $fieldCode = ProductField::createCode(self::PREFIX, $prodData['vendorId'], $featId);;
+                    $fieldCode = ProductField::createCode(self::PREFIX, $prodData['vendorId'], $featId);
 //                     if (!$type->getField($fieldCode)) {
-                        $type->addField($fieldCode, BaseFieldFactory::FIELD_STRING, $groupCode);
+                        $type->addField($fieldCode, BaseFieldFactory::FIELD_STRING, $groupCode, $fieldName);
 //                         $productFieldCodeToValues[$fieldCode]= $value;
 //                     }
                     $productFieldCodeToValues[$fieldCode]= $value;
                 }
             }
         }
-        
+
         // save type
         $type->persist();
         $type->flush();
-        
+
         // 3) ----- create product
         $product = $type->newProductInstance();
 //         echo '<br />product field code to values<br />';
 //         var_dump($productFieldCodeToValues);
-        
+
         // set product values
         foreach ($productFieldCodeToValues as $fieldCode => $value) {
             $product->setValue($fieldCode, $value);
         }
-        
+
         // save
         $product->persist();
         $product->flush();
     }
-    
+
     /**
      * Parse xml response
      * @param string $stringXml
@@ -146,7 +146,7 @@ class ProductTransform extends IcecatTransform
         }
         return false;
     }
-    
+
     /**
      * Check Icecat response content
      * @return boolean
@@ -156,7 +156,7 @@ class ProductTransform extends IcecatTransform
         // TODO to raise authentication error or product with no detailled data
         return true;
     }
-    
+
     /**
      * Parse base product data
      */
@@ -174,9 +174,9 @@ class ProductTransform extends IcecatTransform
         $this->_productData['HighPicSize'] = (string)$productTag['HighPicSize'];
         $this->_productData['HighPicWidth'] = (string)$productTag['HighPicWidth'];
         */
-    
+
         // TODO deal with other provided product data
-    
+
         // get vendor data
         $supplierTag = $productTag->Supplier;
         $this->_productData['vendorId']   = (string) $supplierTag['ID'];
@@ -185,16 +185,16 @@ class ProductTransform extends IcecatTransform
         $summaryTag = $productTag->SummaryDescription;
         $this->_productData['ShortDescription'] = (string) $productTag->SummaryDescription->ShortSummaryDescription;
         $this->_productData['LongDescription']  = (string) $productTag->SummaryDescription->LongSummaryDescription;
-    
+
         // get category data
         $categoryTag = $productTag->Category;
         $this->_productData['CategoryId']   = (string) $categoryTag['ID'];
         $this->_productData['CategoryName'] = (string) $categoryTag->Name['Value'];
-    
+
         // get category feature group id
         $this->_productData['CategoryFeaturesGroupId']   = (string) $productTag->CategoryFeatureGroup['ID'];
     }
-    
+
     /**
      * Parse base product data
      */
@@ -220,7 +220,7 @@ class ProductTransform extends IcecatTransform
         krsort($descriptionArray);
         $this->_productFeatures = $descriptionArray;
     }
-    
+
     /**
      * Get product data
      * @return Array:
@@ -229,7 +229,7 @@ class ProductTransform extends IcecatTransform
     {
         return $this->_productData;
     }
-    
+
     /**
      * Get product features
      * @return Array
@@ -238,8 +238,8 @@ class ProductTransform extends IcecatTransform
     {
         return $this->_productFeatures;
     }
-    
-    private function printArray($tab) 
+
+    private function printArray($tab)
     {
     	echo '<br />Print array --> length : '. count($tab) .'<br />';
     	foreach ($tab as $key => $value) {
