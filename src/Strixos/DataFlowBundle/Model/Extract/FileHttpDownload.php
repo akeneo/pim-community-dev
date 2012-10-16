@@ -17,7 +17,8 @@ class FileHttpDownload extends Step
      * Process downloading a file with curl, if login and password are provided
      * use them for basic authentication
      *
-     * TODO: replace login / password by option array
+     * TODO : replace login / password by option array
+     * TODO : throw exception on fopen function
      *
      * @param string $url
      * @param string $path
