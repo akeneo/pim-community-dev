@@ -29,7 +29,7 @@ class ProductExtract extends IcecatExtract
      */
     public function initialize()
     {
-        $this->forced = false;
+        $this->forced = true;
     }
     
     /**
@@ -47,14 +47,16 @@ class ProductExtract extends IcecatExtract
     
     private function prepareUrl($productId, $supplierName, $locale)
     {
+    	$search = array('/', ' ');
+    	$replace = array('', '');
+    	$this->filePath = '/tmp/product-'. str_replace($search, $replace, $productId) .'-'. $locale .'.xml';
+    	$this->fileArchivePath = $this->filePath .'.gz';
+    	
+    	//$productId = rawurlencode($productId);
+    	$supplierName = rawurlencode($supplierName);
+    	$productId    = rawurlencode($productId);
+    	
         $this->url = ProductService::BASE_URL .
                 '?prod_id='.$productId.';vendor='.$supplierName.';lang='.$locale.';output=productxml';
-        $this->filePath = '/tmp/product-'. $productId .'-'. $locale .'.xml';
-        $this->fileArchivePath = $this->filePath .'.gz';
-    }
-    
-    private function getFilePath()
-    {
-        return $this->filePath;
     }
 }
