@@ -27,8 +27,9 @@
     </parameters>
 
     <services>
-        <service id="akeneo.icecatconnector_service" class="%strixos_icecat_connector.connectorservice.class%">
+        <service id="akeneo.connector.icecat_service" class="%strixos_icecat_connector.connectorservice.class%">
             <argument type="service" id="service_container" />
+            <tag name="akeneo.connector" />
         </service>
     </services>
 

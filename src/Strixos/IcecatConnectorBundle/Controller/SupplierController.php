@@ -26,10 +26,10 @@ class SupplierController extends Controller
     public function loadFromIcecatAction()
     {
         try {
-            
-            $srvConnector = $this->container->get('akeneo.icecatconnector_service');
+
+            $srvConnector = $this->container->get('akeneo.connector.icecat_service');
             $srvConnector->importSuppliers();
-            
+
         } catch (\Exception $e) {
             return array('exception' => $e);
         }
@@ -67,19 +67,19 @@ class SupplierController extends Controller
         try {
             $supplier = $this->getDoctrine()->getRepository('StrixosIcecatConnectorBundle:Supplier')
                     ->findOneByIcecatId($icecatId);
-            
-            $srvConnector = $this->container->get('akeneo.icecatconnector_service');
+
+            $srvConnector = $this->container->get('akeneo.connector.icecat_service');
             $srvConnector->importProductsFromSupplier($supplier);
-            
+
             //$products = $this->getDoctrine()->getRepository('StrixosIcecatConnectorBundle:Product')->find($id);
-            
+
         } catch (Exception $e) {
             return array('exception' => $e);
         }
-        
+
         $products = $this->getDoctrine()->getRepository('StrixosIcecatConnectorBundle:Product')
                 ->findBySupplier($supplier);
-        
+
         return array('supplier' => $supplier, 'products' => $products);
     }
 }

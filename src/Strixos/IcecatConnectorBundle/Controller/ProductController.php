@@ -41,8 +41,8 @@ class ProductController extends Controller
     public function loadFromIcecatAction()
     {
         try {
-            
-            $srvConnector = $this->container->get('akeneo.icecatconnector_service');
+
+            $srvConnector = $this->container->get('akeneo.connector.icecat_service');
             $srvConnector->importProducts();
             /*$em = $this->getDoctrine()->getEntityManager();
             $baseExtractor = new BaseExtractor($em);
@@ -82,12 +82,12 @@ class ProductController extends Controller
     public function loadProductAction($id)
     {
         try {
-            
-            $srvConnector = $this->container->get('akeneo.icecatconnector_service');
+
+            $srvConnector = $this->container->get('akeneo.connector.icecat_service');
             $srvConnector->importProduct($id);
-            
+
             $product = $this->getDoctrine()->getRepository('StrixosIcecatConnectorBundle:Product')->find($id);
-            
+
         } catch (Exception $e) {
             return array('exception' => $e);
         }

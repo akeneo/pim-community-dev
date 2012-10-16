@@ -23,7 +23,7 @@ class LanguageController extends Controller
     public function loadFromIcecatAction()
     {
         try {
-            $srvConnector = $this->container->get('akeneo.icecatconnector_service');
+            $srvConnector = $this->container->get('akeneo.connector.icecat_service');
             $srvConnector->importLanguages();
         } catch (\Exception $e) {
             return array('exception' => $e);
