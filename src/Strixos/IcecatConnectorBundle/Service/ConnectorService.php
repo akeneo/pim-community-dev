@@ -63,7 +63,6 @@ class ConnectorService extends AbstractService
         $extract = new ProductsExtract();
         $extract->process();
         
-        //$loader = new EntityLoad($this->container->get('doctrine.orm.entity_manager'));
         $transform = new ProductsTransform($this->container->get('doctrine.orm.entity_manager'));
         $transform->process();
     }
@@ -72,6 +71,8 @@ class ConnectorService extends AbstractService
     {
         // get product from id and set prodId and supplier name
         $em = $this->container->get('doctrine.orm.entity_manager');
+//         $dm = $this->container->get('doctrine.orm.document_manager');
+        
         $product = $em->getRepository('StrixosIcecatConnectorBundle:Product')->find($productId);
         
         $prodId = $product->getProdId();
@@ -83,7 +84,7 @@ class ConnectorService extends AbstractService
         $locales = array('fr');
         
         $extract = new ProductExtract();
-        $transform = new ProductTransform($em);
+        $transform = new ProductTransform($this->container->get('akeneo.catalog.model_producttype'));
         
         
         foreach ($locales as $locale) {

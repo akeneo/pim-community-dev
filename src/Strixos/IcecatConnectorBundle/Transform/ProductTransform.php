@@ -25,18 +25,18 @@ class ProductTransform extends IcecatTransform
 {
     const PREFIX = 'icecat';
     
-    protected $loader;
-    
-    protected $entityManager;
+    protected $type;
     
     /**
      * Constructor
      * @param SupplierLoader $loader
      */
-    public function __construct($em)
+    public function __construct($srv)
     {
-        $this->entityManager = $em;
-        $this->loader = new EntityLoad($this->entityManager);
+    	$this->type = $srv;
+//         $this->entityManager = $em;
+//         $this->documentManager = $dm;
+        //$this->loader = new EntityLoad($this->entityManager);
     }
     
     /**
@@ -61,16 +61,19 @@ class ProductTransform extends IcecatTransform
         
         $prodData = $this->getProductData();
         $prodFeat = $this->getProductFeatures();
-         
+        
+        //$this->printArray($prodData);
+        
         //var_dump($prodData);
         //var_dump($prodFeat);
         
+        $type = $this->type;
         
         // 2) --> create type
         $typeCode = ProductType::createCode(self::PREFIX, $prodData['vendorId'], $prodData['CategoryId']);
         
         // if not exists, create a new type
-        $type = new ProductTypeService($this->entityManager);
+//         $type = new ProductTypeService($this->entityManager);
         $return = $type->find($typeCode);
         if (!$return) {
             $type->create($typeCode);
@@ -82,9 +85,10 @@ class ProductTransform extends IcecatTransform
         foreach ($prodData as $field => $value) {
             if ($field != 'id') {
                 $fieldCode = ProductField::createCode(self::PREFIX, $prodData['vendorId'], $prodData['CategoryId']);
-                if (!$type->getField($fieldCode)) {
+//                 if (!$type->getField($fieldCode)) {
                     $type->addField($fieldCode, BaseFieldFactory::FIELD_STRING, $generalGroupCode);
-                }
+//                     $productFieldCodeToValues[$fieldCode]= $value;
+//                 }
                 $productFieldCodeToValues[$fieldCode]= $value;
             }
         }
@@ -94,11 +98,12 @@ class ProductTransform extends IcecatTransform
             foreach ($featData as $featName => $fieldData) {
                 $groupCode = $featId.'-'.strtolower(str_replace(' ', '', $featName));
                 foreach ($fieldData as $fieldName => $value) {
-//                 	var_dump($fieldData);
+//                     var_dump($fieldData);
                     $fieldCode = ProductField::createCode(self::PREFIX, $prodData['vendorId'], $featId);;
-                    if (!$type->getField($fieldCode)) {
+//                     if (!$type->getField($fieldCode)) {
                         $type->addField($fieldCode, BaseFieldFactory::FIELD_STRING, $groupCode);
-                    }
+//                         $productFieldCodeToValues[$fieldCode]= $value;
+//                     }
                     $productFieldCodeToValues[$fieldCode]= $value;
                 }
             }
@@ -232,5 +237,14 @@ class ProductTransform extends IcecatTransform
     public function getProductFeatures()
     {
         return $this->_productFeatures;
+    }
+    
+    private function printArray($tab) 
+    {
+    	echo '<br />Print array --> length : '. count($tab) .'<br />';
+    	foreach ($tab as $key => $value) {
+    		echo $key .' => '. $value .'<br />';
+    	}
+    	echo '<br />';
     }
 }

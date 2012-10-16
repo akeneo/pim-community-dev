@@ -7,7 +7,7 @@
     {% if exception is defined %}
         {{ exception.message }}
     {% else %}
-        Supplier {{ supplier.name }} - 
+        Supplier {{ supplier.name }} - {{ products | length }} products inserted
     {% endif %}
 
 {% endblock %}
