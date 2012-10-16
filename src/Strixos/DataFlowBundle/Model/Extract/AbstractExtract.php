@@ -18,6 +18,8 @@ abstract class AbstractExtract
      */
     public function __construct()
     {
+    	ini_set('max_execution_time', 0);
+    	ini_set('max_input_time', -1);
         $this->initialize();
     }
     
