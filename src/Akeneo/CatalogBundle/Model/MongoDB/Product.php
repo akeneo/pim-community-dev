@@ -14,8 +14,6 @@ use Akeneo\CatalogBundle\Document\ProductMongo;
 class Product extends AbstractModel
 {
 
-    // TODO: add param for entity FQCN or shortname
-
     /**
      * Load encapsuled entity
      * @param integer
@@ -44,9 +42,11 @@ class Product extends AbstractModel
     {
         // get document
         $fieldSourceId = $sourceCode.'_source_id';
-        // TODO: default locale herd coded
-        $document = $this->manager->getRepository('AkeneoCatalogBundle:ProductMongo')
-            ->findOneBy(array('values.en_US.'.$fieldSourceId => $sourceProductId));
+        // TODO: default locale is hard coded
+        $document = $this->manager->createQueryBuilder('AkeneoCatalogBundle:ProductMongo')
+            ->field('values_en_US.icecat_source_id')->equals('C8934A#A2L')
+            ->getQuery()
+            ->getSingleResult();
         if ($document) {
             $this->object = $document;
         } else {

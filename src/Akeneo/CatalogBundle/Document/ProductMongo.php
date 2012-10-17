@@ -33,13 +33,24 @@ class ProductMongo
     protected $type;
 
     /**
-     * TODO: problem : how to deal with typing ? define custom type to enforce this check ?
-     * TODO: no use values but directly set variable ... problem with load
-     *
-     * @MongoDB\Raw
-     * @var ArrayCollection
-     */
-    protected $values = array();
+    * TODO: problem : how to deal with typing ? define custom type to enforce this check ?
+    * TODO: no use values but directly set variable ... problem with load
+    *
+    * @MongoDB\Raw
+    * @var ArrayCollection
+    */
+    protected $values_en_US = array();
+
+    /**
+    * TODO: problem : how to deal with typing ? define custom type to enforce this check ?
+    * TODO: no use values but directly set variable ... problem with load
+    *
+    * @MongoDB\Raw
+    * @var ArrayCollection
+    */
+    protected $values_fr_FR = array();
+
+    // TODO deal with dynamic locale add, when testing with sub array as values.en_US[field] there is problem with doctrine query builder on field
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -134,34 +145,10 @@ class ProductMongo
      */
     public function setValue($code, $value)
     {
-        if (!isset($this->values[$this->locale])) {
-            $this->values[$this->locale] = array();
+        if (!isset($this->{'values_'.$this->locale})) {
+            $this->{'values_'.$this->locale} = array();
         }
-        $this->values[$this->locale][$code] = $value;
-        return $this;
-    }
-
-    /**
-     * Set values
-     *
-     * @param raw $values
-     * @return ProductMongo
-     */
-    public function addValue($value)
-    {
-        $this->values[] = $values;
-        return $this;
-    }
-
-    /**
-     * Set values
-     *
-     * @param raw $values
-     * @return ProductMongo
-     */
-    public function setValues($values)
-    {
-        $this->values = $values;
+        $this->{'values_'.$this->locale}[$code] = $value;
         return $this;
     }
 
@@ -172,7 +159,7 @@ class ProductMongo
      */
     public function getValues()
     {
-        return $this->values[$this->locale];
+        return $this->{'values_'.$this->locale};
     }
 
     /**
