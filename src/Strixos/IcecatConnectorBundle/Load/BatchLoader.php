@@ -11,7 +11,7 @@ namespace Strixos\IcecatConnectorBundle\Load;
  * TODO : Add automatically an import line validated or not
  *
  */
-class BatchLoader extends AbstractLoader
+class BatchLoader implements LoadInterface
 {
     /**
      * Object manager which deals with persist entity or document

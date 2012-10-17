@@ -29,7 +29,6 @@ use Strixos\IcecatConnectorBundle\Load\BatchLoader;
  */
 class ConnectorService
 {
-    // TODO extends abstract service
 
     protected $container;
 
@@ -48,8 +47,8 @@ class ConnectorService
         $extract->extract();
 
         $loader = new BatchLoader($this->container->get('doctrine.orm.entity_manager'));
-        $transform = new SuppliersTransform($loader);
-        $transform->process();
+        $transformer = new SuppliersTransform($loader);
+        $transformer->transform();
     }
 
     public function importLanguages()
@@ -62,8 +61,8 @@ class ConnectorService
         $extractor->extract();
 
         $loader = new BatchLoader($this->container->get('doctrine.orm.entity_manager'));
-        $transform = new LanguagesTransform($loader);
-        $transform->process();
+        $transformer = new LanguagesTransform($loader);
+        $transformer->transform();
     }
 
     public function importProducts()
@@ -71,8 +70,8 @@ class ConnectorService
         $extractor = new ProductsExtract();
         $extractor->extract();
 
-        $transform = new ProductsTransform($this->container->get('doctrine.orm.entity_manager'));
-        $transform->process();
+        $transformer = new ProductsTransform($this->container->get('doctrine.orm.entity_manager'));
+        $transformer->transform();
     }
 
     /**
@@ -93,21 +92,21 @@ class ConnectorService
             $supplierName = $baseProduct->getSupplier()->getName();
 
             // 2. extract product xml from icecat
-            $extractor = new ProductXmlExtractor();
-            $extractor->extract($prodId, $supplierName, $icecatLocale);
+            $extractor = new ProductXmlExtractor($prodId, $supplierName, $icecatLocale);
+            $extractor->extract();
             $simpleXml = $extractor->getXmlElement();
 
             // 3. transform product xml to lines (associative array)
-            $transformer = new ProductXmlToArrayTransformer();
-            $transformer->extract($simpleXml);
+            $transformer = new ProductXmlToArrayTransformer($simpleXml);
+            $transformer->transform();
             $productBaseData = $transformer->getProductBaseData();
             $productFeatures = $transformer->getProductFeatures();
 
             // 4. transform array to pim product
             $productTypeService = $this->container->get('akeneo.catalog.model_producttype');
             $productService = $this->container->get('akeneo.catalog.model_product');
-            $transformer = new ProductArrayToCatalogProductTransformer($productTypeService, $productService);
-            $transformer->process($productBaseData, $productFeatures, $pimLocale);
+            $transformer = new ProductArrayToCatalogProductTransformer($productTypeService, $productService, $productBaseData, $productFeatures, $pimLocale);
+            $transformer->transform();
 
         // 5. load product (move persist / flush from transform to allow batch using for supplier import)
        /*

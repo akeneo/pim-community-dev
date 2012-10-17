@@ -10,7 +10,7 @@ use Akeneo\CatalogBundle\Model\BaseFieldFactory;
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductArrayToCatalogProductTransformer
+class ProductArrayToCatalogProductTransformer implements TransformInterface
 {
     const PREFIX = 'icecat';
 
@@ -36,10 +36,13 @@ class ProductArrayToCatalogProductTransformer
     * Constructor
     * @param Service $loader
     */
-    public function __construct($serviceType, $serviceProduct)
+    public function __construct($serviceType, $serviceProduct, $prodData, $prodFeat, $localeCode)
     {
         $this->typeService = $serviceType;
         $this->productService = $serviceProduct;
+        $this->prodData = $prodData;
+        $this->prodFeat = $prodFeat;
+        $this->localeCode = $localeCode;
     }
 
     /**
@@ -49,8 +52,12 @@ class ProductArrayToCatalogProductTransformer
     * @param array $features
     * @param string $localeCode
     */
-    public function process($prodData, $prodFeat, $localeCode)
+    public function transform()
     {
+        $prodData = $this->prodData;
+        $prodFeat = $this->prodFeat;
+        $localeCode = $this->localeCode;
+
         // 1) if not exists, create a new type
         $typeCode = self::PREFIX.'-'.$prodData['vendorId'].'-'.$prodData['CategoryId'];
         $return = $this->typeService->find($typeCode);

@@ -33,9 +33,9 @@ class ProductXmlExtractor implements ExtractInterface
      */
     public function __construct($productId, $supplierName, $locale)
     {
-        $this->productId = $url;
-        $this->supplierName = file;
-        $this->locale = $forceDownloadFile;
+        $this->productId = $productId;
+        $this->supplierName = $supplierName;
+        $this->locale = $locale;
     }
 
     /**

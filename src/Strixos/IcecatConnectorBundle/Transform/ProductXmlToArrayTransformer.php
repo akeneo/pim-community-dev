@@ -8,10 +8,16 @@ namespace Strixos\IcecatConnectorBundle\Transform;
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductXmlToArrayTransformer
+class ProductXmlToArrayTransformer implements TransformInterface
 {
 
     const PREFIX = 'icecat';
+
+    /**
+     * Xml element to parse
+     * @var SimpleXMLElement
+     */
+    protected $simpleDoc;
 
     /**
      * Get product base data
@@ -26,15 +32,24 @@ class ProductXmlToArrayTransformer
     protected $productFeatures;
 
     /**
+    * Constructor
+    * @param SimpleXMLElement $simpleDoc
+    */
+    public function __construct(\SimpleXMLElement $simpleDoc)
+    {
+        $this->simpleDoc = $simpleDoc;
+    }
+
+    /**
     * Transform xml file to csv
     *
     * @param string $simpleDoc
     * @param string $csvFile
     */
-    public function process($simpleDoc)
+    public function transform()
     {
-        $this->parseBaseData($simpleDoc);
-        $this->parseFeatures($simpleDoc);
+        $this->parseBaseData($this->simpleDoc);
+        $this->parseFeatures($this->simpleDoc);
     }
 
     /**

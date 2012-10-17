@@ -2,15 +2,19 @@
 namespace Strixos\IcecatConnectorBundle\Transform;
 
 /**
- * 
- * Enter description here ...
+ *
+ * Interface transform
+ * TODO: should be moved in dataflow ?
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-abstract class IcecatTransform
+interface TransformInterface
 {
-    //abstract public function process();
+    /**
+     * Transform data xml to array, csv to xml, etc
+     */
+    public function transform();
 }

@@ -14,7 +14,7 @@ use \XMLReader;
  *
  * TODO : MAKE interfaces to implements xml to csv, xml to php, csv to php, etc.
  */
-class LanguagesTransform extends IcecatTransform
+class LanguagesTransform implements TransformInterface
 {
     const URL              = 'https://data.icecat.biz/export/freexml/refs/LanguageList.xml.gz';
     const XML_FILE_ARCHIVE = '/tmp/languages-list.xml.gz';
@@ -41,7 +41,7 @@ class LanguagesTransform extends IcecatTransform
      * @param string $xmlFile
      * @param string $csvFile
      */
-    public function process()
+    public function transform()
     {
         // read xml document and parse to suppliers entities
         $xml = new XMLReader();

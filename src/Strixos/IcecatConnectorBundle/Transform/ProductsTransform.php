@@ -14,7 +14,7 @@ use Strixos\IcecatConnectorBundle\Load\BatchLoader;
  *
  * TODO : MAKE interfaces to implements xml to csv, xml to php, csv to php, etc.
  */
-class ProductsTransform extends IcecatTransform
+class ProductsTransform implements TransformInterface
 {
 
     const URL          = 'http://data.icecat.biz/export/freeurls/export_urls_rich.txt.gz';
@@ -45,7 +45,7 @@ class ProductsTransform extends IcecatTransform
      * @param string $xmlFile
      * @param string $csvFile
      */
-    public function process()
+    public function transform()
     {
         // get associative array with suppliers icecat ids and suppliers
         $suppliers = $this->entityManager->getRepository('StrixosIcecatConnectorBundle:SourceSupplier')->findAll();
