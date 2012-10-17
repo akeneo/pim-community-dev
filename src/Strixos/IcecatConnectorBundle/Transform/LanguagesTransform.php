@@ -1,9 +1,7 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Transform;
 
-use Strixos\IcecatConnectorBundle\Entity\Language;
-
-use Strixos\IcecatConnectorBundle\Entity\Languages;
+use Strixos\IcecatConnectorBundle\Entity\SourceLanguage;
 
 use \XMLReader;
 
@@ -53,7 +51,7 @@ class LanguagesTransform extends IcecatTransform
             if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'Language') {
                 $shortCode = $this->formatShortCode($xml->getAttribute('ShortCode'));
 
-                $lang = new Language();
+                $lang = new SourceLanguage();
                 $lang->setCode($xml->getAttribute('Code'));
                 $lang->setShortCode($shortCode);
                 $lang->setIcecatShortCode($xml->getAttribute('ShortCode'));

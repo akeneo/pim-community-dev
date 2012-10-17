@@ -45,7 +45,7 @@ class ConnectorService
     public function importSuppliers()
     {
         $extract = new SuppliersExtract();
-        $extract->process();
+        $extract->extract();
 
         $loader = new BatchLoader($this->container->get('doctrine.orm.entity_manager'));
         $transform = new SuppliersTransform($loader);
@@ -58,8 +58,8 @@ class ConnectorService
         $url  = $em->getRepository('StrixosIcecatConnectorBundle:Config')->findOneByCode(Config::LANGUAGES_URL)->getValue();
         $file = $em->getRepository('StrixosIcecatConnectorBundle:Config')->findOneByCode(Config::LANGUAGES_FILE)->getValue();
 
-        $extract = new LanguagesExtract();
-        $extract->extract($url, $file);
+        $extractor = new LanguagesExtract($url, $file);
+        $extractor->extract();
 
         $loader = new BatchLoader($this->container->get('doctrine.orm.entity_manager'));
         $transform = new LanguagesTransform($loader);
@@ -68,8 +68,8 @@ class ConnectorService
 
     public function importProducts()
     {
-        $extract = new ProductsExtract();
-        $extract->process();
+        $extractor = new ProductsExtract();
+        $extractor->extract();
 
         $transform = new ProductsTransform($this->container->get('doctrine.orm.entity_manager'));
         $transform->process();
@@ -94,12 +94,12 @@ class ConnectorService
 
             // 2. extract product xml from icecat
             $extractor = new ProductXmlExtractor();
-            $extractor->process($prodId, $supplierName, $icecatLocale);
+            $extractor->extract($prodId, $supplierName, $icecatLocale);
             $simpleXml = $extractor->getXmlElement();
 
             // 3. transform product xml to lines (associative array)
             $transformer = new ProductXmlToArrayTransformer();
-            $transformer->process($simpleXml);
+            $transformer->extract($simpleXml);
             $productBaseData = $transformer->getProductBaseData();
             $productFeatures = $transformer->getProductFeatures();
 

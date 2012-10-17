@@ -5,7 +5,6 @@ use Strixos\DataFlowBundle\Model\Extract\FileUnzip;
 
 use Strixos\DataFlowBundle\Model\Extract\FileHttpDownload;
 
-use Strixos\IcecatConnectorBundle\Extract\IcecatExtract;
 
 /**
  *
@@ -18,23 +17,31 @@ use Strixos\IcecatConnectorBundle\Extract\IcecatExtract;
  * TODO : URL must be set in configuration files
  *
  */
-class LanguagesExtract extends IcecatExtract implements DownloadInterface, UnpackInterface
+class LanguagesExtract implements ExtractInterface, DownloadInterface, UnpackInterface
 {
+    const AUTH_LOGIN    = 'NicolasDupont';
+    const AUTH_PASSWORD = '1cec4t**)';
+
     /**
-     * (non-PHPdoc)
-     * @see \Strixos\DataFlowBundle\Model\Extract\AbstractExtract::initialize()
+     * Constructor
+     *
+     * @param string $url
+     * @param string $file
+     * @param string $forceDownloadFile : if false use file system file if exists
      */
-    public function initialize()
+    public function __construct($url, $file, $forceDownloadFile = false)
     {
-        $this->forced = false;
+        $this->url = $url;
+        $this->file = $file;
+        $this->forced = $forceDownloadFile;
     }
 
-    public function extract($url, $file)
+    public function extract()
     {
-        $file = '/tmp/'.$file;
+        $file = '/tmp/'.$this->file;
         $archivedFile = $file .'.gz';
 
-        $this->download($url, $file);
+        $this->download($this->url, $file);
         $this->unpack($archivedFile, $file);
     }
 
@@ -58,24 +65,4 @@ class LanguagesExtract extends IcecatExtract implements DownloadInterface, Unpac
         $unpacker = new FileUnzip();
         $unpacker->process($archivedFile, $file, $this->forced);
     }
-
-    /**
-     * (non-PHPdoc)
-     * @see \Strixos\DataFlowBundle\Model\Extract\AbstractExtract::process()
-     */
-    /*public function process($url, $file)
-    {
-        $this->url = $url;
-        $this->file = $file;
-        $this->baseDir = '/tmp/'; // TODO : may be in config definition
-
-        $this->prepareUrl();
-        $this->download(LanguagesService::URL, LanguagesService::XML_FILE_ARCHIVE);
-        $this->unzip(LanguagesService::XML_FILE_ARCHIVE, LanguagesService::XML_FILE);
-    }*/
-
-    /*public function prepareUrl()
-    {
-        $this->archiveFilePath = $this->baseDir . $this->file .'.gz';
-    }*/
 }

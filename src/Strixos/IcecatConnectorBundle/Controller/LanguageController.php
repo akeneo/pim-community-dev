@@ -40,7 +40,7 @@ class LanguageController extends Controller
     public function listAction()
     {
         // creates simple grid based on entity (ORM)
-        $source = new GridEntity('StrixosIcecatConnectorBundle:Language');
+        $source = new GridEntity('StrixosIcecatConnectorBundle:SourceLanguage');
         $grid = $this->get('grid');
         $grid->setSource($source);
         // manage the grid redirection, exports response of the controller

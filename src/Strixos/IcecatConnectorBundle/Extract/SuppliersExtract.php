@@ -1,7 +1,8 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Extract;
 
-use Strixos\IcecatConnectorBundle\Extract\IcecatExtract;
+use Strixos\DataFlowBundle\Model\Extract\FileUnzip;
+use Strixos\DataFlowBundle\Model\Extract\FileHttpDownload;
 
 /**
  *
@@ -14,17 +15,19 @@ use Strixos\IcecatConnectorBundle\Extract\IcecatExtract;
  * TODO : URL must be set in configuration files
  *
  */
-class SuppliersExtract extends IcecatExtract
+class SuppliersExtract implements ExtractInterface, DownloadInterface, UnpackInterface
 {
     const URL              = 'http://data.icecat.biz/export/freeurls/supplier_mapping.xml';
     const XML_FILE_ARCHIVE = '/tmp/suppliers-list.xml.gz';
     const XML_FILE         = '/tmp/suppliers-list.xml';
 
+    const AUTH_LOGIN    = 'NicolasDupont';
+    const AUTH_PASSWORD = '1cec4t**)';
+
     /**
-     * (non-PHPdoc)
-     * @see \Strixos\DataFlowBundle\Model\Extract\AbstractExtract::initialize()
+     * Constructor
      */
-    public function initialize()
+    public function __construct()
     {
         $this->forced = false;
     }
@@ -33,9 +36,30 @@ class SuppliersExtract extends IcecatExtract
      * (non-PHPdoc)
      * @see \Strixos\DataFlowBundle\Model\Extract\AbstractExtract::process()
      */
-    public function process()
+    public function extract()
     {
         $this->download(self::URL, self::XML_FILE_ARCHIVE);
-        $this->unzip(self::XML_FILE_ARCHIVE, self::XML_FILE);
+        $this->unpack(self::XML_FILE_ARCHIVE, self::XML_FILE);
+    }
+
+    /**
+    * (non-PHPdoc)
+    * @see \Strixos\IcecatConnectorBundle\Extract\DownloadInterface::download()
+    */
+    public function download($url, $file)
+    {
+        $downloader = new FileHttpDownload();
+        $downloader->process($url, $file, self::AUTH_LOGIN, self::AUTH_PASSWORD, $this->forced);
+    }
+
+    /**
+     *
+     * @param unknown_type $archivedFile
+     * @param unknown_type $file
+     */
+    public function unpack($archivedFile, $file)
+    {
+        $unpacker = new FileUnzip();
+        $unpacker->process($archivedFile, $file, $this->forced);
     }
 }

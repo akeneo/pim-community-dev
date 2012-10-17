@@ -8,8 +8,11 @@ namespace Strixos\IcecatConnectorBundle\Extract;
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductXmlExtractor
+class ProductXmlExtractor implements ExtractInterface
 {
+
+    const AUTH_LOGIN    = 'NicolasDupont';
+    const AUTH_PASSWORD = '1cec4t**)';
 
     const BASE_URL         = 'http://data.Icecat.biz/xml_s3/xml_server3.cgi';
     const XML_FILE_ARCHIVE = '/tmp/suppliers-list.xml.gz';
@@ -22,15 +25,29 @@ class ProductXmlExtractor
     protected $xmlElement;
 
     /**
+     * Constructor
+     *
+     * @param string $productId
+     * @param string $supplierName
+     * @param string $locale
+     */
+    public function __construct($productId, $supplierName, $locale)
+    {
+        $this->productId = $url;
+        $this->supplierName = file;
+        $this->locale = $forceDownloadFile;
+    }
+
+    /**
      * Get xml content
      *
      * @param string $productId
      * @param string $supplierName
      * @param string $locale
      */
-    public function process($productId, $supplierName, $locale)
+    public function extract()
     {
-        $url = $this->prepareUrl($productId, $supplierName, $locale);
+        $url = $this->prepareUrl($this->productId, $this->supplierName, $this->locale);
         $stringXml = $this->getXmlString($url);
         $this->parseXml($stringXml);
         $this->checkResponse();
@@ -68,7 +85,7 @@ class ProductXmlExtractor
         curl_setopt($c, CURLOPT_URL, $url);
         curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($c, CURLOPT_HEADER, false);
-        curl_setopt($c, CURLOPT_USERPWD, IcecatExtract::AUTH_LOGIN.':'.IcecatExtract::AUTH_PASSWORD);
+        curl_setopt($c, CURLOPT_USERPWD, self::AUTH_LOGIN.':'.self::AUTH_PASSWORD);
         $output = curl_exec($c);
         // deal with curl exception
         if ($output === false) {

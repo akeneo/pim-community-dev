@@ -1,8 +1,10 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Extract;
+
 /**
- * 
+ *
  * Interface downloadable
+ * TODO: should be moved in dataflow ?
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
