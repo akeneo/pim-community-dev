@@ -17,6 +17,20 @@ use Doctrine\ORM\Mapping as ORM;
 class Config
 {
 
+    
+    const LANGUAGES_URL = 'languages_url';
+    const LANGUAGES_FILE = 'languages-file';
+    
+    const PRODUCTS_URL = 'products-url';
+    const PRODUCTS_FILE = 'products-file';
+    
+    const PRODUCT_URL = 'product-url';
+    const PRODUCT_FILE = 'product-file';
+    
+    const SUPPLIERS_URL = 'suppliers-url';
+    const SUPPLIERS_FILE = 'suppliers-file';
+    
+    
    /**
      * @var integer $id
      *
