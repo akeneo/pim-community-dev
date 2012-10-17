@@ -19,7 +19,7 @@ class Product extends AbstractModel
     /**
      * Load encapsuled entity
      * @param integer
-     * @return ProductType
+     * @return Product
      */
     public function find($productId)
     {
@@ -30,6 +30,27 @@ class Product extends AbstractModel
             $this->object = $document;
         } else {
             throw new \Exception("There is no product with id {$productId}");
+        }
+        return $this;
+    }
+
+    /**
+     * Load encapsuled entity by source id
+     * @param string $sourceCode
+     * @param string $sourceProductId
+     * @return Product
+     */
+    public function findBySourceId($sourceCode, $sourceProductId)
+    {
+        // get document
+        $fieldSourceId = $sourceCode.'_source_id';
+        // TODO: default locale herd coded
+        $document = $this->manager->getRepository('AkeneoCatalogBundle:ProductMongo')
+            ->findOneBy(array('values.en_US.'.$fieldSourceId => $sourceProductId));
+        if ($document) {
+            $this->object = $document;
+        } else {
+            return false;
         }
         return $this;
     }

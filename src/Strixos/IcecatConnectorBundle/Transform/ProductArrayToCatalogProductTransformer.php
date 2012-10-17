@@ -24,15 +24,22 @@ class ProductArrayToCatalogProductTransformer
      * Get product type service
      * @var Service
      */
-    protected $type;
+    protected $typeService;
+
+    /**
+    * Get product service
+    * @var Service
+    */
+    protected $productService;
 
     /**
     * Constructor
     * @param Service $loader
     */
-    public function __construct($service)
+    public function __construct($serviceType, $serviceProduct)
     {
-        $this->type = $service;
+        $this->typeService = $serviceType;
+        $this->productService = $serviceProduct;
     }
 
     /**
@@ -40,28 +47,29 @@ class ProductArrayToCatalogProductTransformer
     *
     * @param array $prodData
     * @param array $features
+    * @param string $localeCode
     */
-    public function process($prodData, $prodFeat)
+    public function process($prodData, $prodFeat, $localeCode)
     {
-        // 2) --> create type
+        // 1) if not exists, create a new type
         $typeCode = self::PREFIX.'-'.$prodData['vendorId'].'-'.$prodData['CategoryId'];
-
-        // if not exists, create a new type
-        $return = $this->type->find($typeCode);
+        $return = $this->typeService->find($typeCode);
         if (!$return) {
-            $this->type->create($typeCode);
+            $this->typeService->create($typeCode);
         }
 
         // add all fields of prodData as general fields
         $productFieldCodeToValues = array();
         $generalGroupCode = 'General';
+        $productSourceId = null;
         foreach ($prodData as $field => $value) {
             if ($field == 'id') {
                 $fieldCode = self::PREFIX.'_source_id';
+                $productSourceId = $value;
             } else {
                 $fieldCode = self::PREFIX.'-'.$prodData['vendorId'].'-'.$prodData['CategoryId'].'-'.strtolower($field);
             }
-            $this->type->addField($fieldCode, BaseFieldFactory::FIELD_STRING, $generalGroupCode, $field);
+            $this->typeService->addField($fieldCode, BaseFieldFactory::FIELD_STRING, $generalGroupCode, $field);
             $productFieldCodeToValues[$fieldCode]= $value;
         }
 
@@ -73,19 +81,22 @@ class ProductArrayToCatalogProductTransformer
                     $fieldName = $fieldData['name'];
                     $value = $fieldData['value'];
                     $fieldCode = self::PREFIX.'-'.$prodData['vendorId'].'-'.$featId.'-'.$fieldId;
-                    $this->type->addField($fieldCode, BaseFieldFactory::FIELD_STRING, $groupCode, $fieldName);
+                    $this->typeService->addField($fieldCode, BaseFieldFactory::FIELD_STRING, $groupCode, $fieldName);
                     $productFieldCodeToValues[$fieldCode]= $value;
                 }
             }
         }
 
         // save type
-        $this->type->persist();
-        $this->type->flush();
+        $this->typeService->persist();
+        $this->typeService->flush();
 
-        // 3) ----- create product
-        // TODO get product from icecat_source_id if already exists
-        $product = $this->type->newProductInstance();
+        // 2) if not exists create a product
+        $product = $this->productService->findBySourceId(self::PREFIX, $productSourceId);
+        if (!$product) {
+            $product = $this->typeService->newProductInstance();
+        }
+        $product->switchLocale($localeCode);
 
         // set product values
         foreach ($productFieldCodeToValues as $fieldCode => $value) {

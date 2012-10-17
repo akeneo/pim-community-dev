@@ -73,38 +73,43 @@ class ConnectorService
      * Import a product by its icecat id
      * @param string $productId
      */
-    public function importProduct($productId)
+    public function importProductFromIcecatXml($productId)
     {
-        $locale = 'fr'; // TODO
+        // TODO by configuration, for now en_US first is important
+        $localeIceToPim = array('US' => 'en_US', 'FR' => 'fr_FR');
 
-        // 0. get base product from icecat referential
-        $em = $this->container->get('doctrine.orm.entity_manager');
-        $baseProduct = $em->getRepository('StrixosIcecatConnectorBundle:Product')->find($productId);
-        $prodId = $baseProduct->getProdId();
-        $supplierName = $baseProduct->getSupplier()->getName();
+        foreach ($localeIceToPim as $icecatLocale => $pimLocale) {
 
-        // 1. extract product xml from icecat
-        $extractor = new ProductXmlExtractor();
-        $extractor->process($prodId, $supplierName, $locale);
-        $simpleXml = $extractor->getXmlElement();
+            // 1. get base product from icecat referential
+            $em = $this->container->get('doctrine.orm.entity_manager');
+            $baseProduct = $em->getRepository('StrixosIcecatConnectorBundle:Product')->find($productId);
+            $prodId = $baseProduct->getProdId();
+            $supplierName = $baseProduct->getSupplier()->getName();
 
-        // 2. transform product xml to lines (associative array)
-        $transformer = new ProductXmlToArrayTransformer();
-        $transformer->process($simpleXml);
-        $productBaseData = $transformer->getProductBaseData();
-        $productFeatures = $transformer->getProductFeatures();
+            // 2. extract product xml from icecat
+            $extractor = new ProductXmlExtractor();
+            $extractor->process($prodId, $supplierName, $icecatLocale);
+            $simpleXml = $extractor->getXmlElement();
 
-        // 3. transform array to pim product
-        $productTypeService = $this->container->get('akeneo.catalog.model_producttype');
-        $transformer = new ProductArrayToCatalogProductTransformer($productTypeService);
-        $transformer->process($productBaseData, $productFeatures);
+            // 3. transform product xml to lines (associative array)
+            $transformer = new ProductXmlToArrayTransformer();
+            $transformer->process($simpleXml);
+            $productBaseData = $transformer->getProductBaseData();
+            $productFeatures = $transformer->getProductFeatures();
 
-        // 4. load product (move persist / flush from transform to allow batch using)
+            // 4. transform array to pim product
+            $productTypeService = $this->container->get('akeneo.catalog.model_producttype');
+            $productService = $this->container->get('akeneo.catalog.model_product');
+            $transformer = new ProductArrayToCatalogProductTransformer($productTypeService, $productService);
+            $transformer->process($productBaseData, $productFeatures, $pimLocale);
+
+        // 5. load product (move persist / flush from transform to allow batch using for supplier import)
        /*
         foreach ($locales as $locale) {
             $fp = $extract->process($prodId, $supplierName, $locale);
             $transform->process($fp);
         }*/
+        }
     }
 
     public function importProductsFromSupplier($supplier)
