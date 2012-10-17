@@ -18,8 +18,8 @@ abstract class AbstractExtract
      */
     public function __construct()
     {
-    	ini_set('max_execution_time', 0);
-    	ini_set('max_input_time', -1);
+        ini_set('max_execution_time', 0);
+        ini_set('max_input_time', -1);
         $this->initialize();
     }
     
@@ -39,13 +39,13 @@ abstract class AbstractExtract
      * @param string $url
      * @param string $path
      */
-    public function download($url, $path)
-    {
-        // get config for user login and password
+//     public function download($url, $path)
+//     {
+//         // get config for user login and password
     
-        $downloader = new FileHttpDownload();
-        $downloader->process($url, $path);
-    }
+//         $downloader = new FileHttpDownload();
+//         $downloader->process($url, $path);
+//     }
     
     /**
      * Unzip file
@@ -54,9 +54,9 @@ abstract class AbstractExtract
      *
      * TODO : set args for unzip password for example
      */
-    public function unzip($archivePath, $filePath)
-    {
-        $unzipper = new FileUnzip();
-        $unzipper->process($archivePath, $filePath);
-    }
+//     public function unzip($archivePath, $filePath)
+//     {
+//         $unzipper = new FileUnzip();
+//         $unzipper->process($archivePath, $filePath);
+//     }
 }

@@ -31,20 +31,20 @@ abstract class IcecatExtract extends AbstractExtract
      * (non-PHPdoc)
      * @see \Strixos\DataFlowBundle\Model\Extract\AbstractExtract::download()
      */
-    public function download($url, $path)
-    {
-        // get config for user login and password
-        $downloader = new FileHttpDownload();
-        $downloader->process($url, $path, self::AUTH_LOGIN, self::AUTH_PASSWORD, $this->forced);
-    }
+//     public function download($url, $path)
+//     {
+//         // get config for user login and password
+//         $downloader = new FileHttpDownload();
+//         $downloader->process($url, $path, self::AUTH_LOGIN, self::AUTH_PASSWORD, $this->forced);
+//     }
     
     /**
      * (non-PHPdoc)
      * @see \Strixos\DataFlowBundle\Model\Extract\AbstractExtract::unzip()
      */
-    public function unzip($archivePath, $filePath)
-    {
-        $unzipper = new FileUnzip();
-        $unzipper->process($archivePath, $filePath, $this->forced);
-    }
+//     public function unzip($archivePath, $filePath)
+//     {
+//         $unzipper = new FileUnzip();
+//         $unzipper->process($archivePath, $filePath, $this->forced);
+//     }
 }

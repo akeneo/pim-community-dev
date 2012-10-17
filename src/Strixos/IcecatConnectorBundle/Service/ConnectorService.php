@@ -1,6 +1,8 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Service;
 
+use Strixos\IcecatConnectorBundle\Entity\Config;
+
 use Strixos\IcecatConnectorBundle\Extract\ProductXmlExtractor;
 use Strixos\IcecatConnectorBundle\Transform\ProductXmlToArrayTransformer;
 use Strixos\IcecatConnectorBundle\Transform\ProductArrayToCatalogProductTransformer;
@@ -52,8 +54,12 @@ class ConnectorService
 
     public function importLanguages()
     {
+        $em   = $this->container->get('doctrine.orm.entity_manager');
+        $url  = $em->getRepository('StrixosIcecatConnectorBundle:Config')->findOneByCode(Config::LANGUAGES_URL)->getValue();
+        $file = $em->getRepository('StrixosIcecatConnectorBundle:Config')->findOneByCode(Config::LANGUAGES_FILE)->getValue();
+        
         $extract = new LanguagesExtract();
-        $extract->process();
+        $extract->extract($url, $file);
 
         $loader = new BatchLoader($this->container->get('doctrine.orm.entity_manager'));
         $transform = new LanguagesTransform($loader);
