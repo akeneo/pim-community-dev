@@ -118,7 +118,7 @@ class ConnectorService
         $products = $em->getRepository('StrixosIcecatConnectorBundle:Product')->findBySupplier($supplier);
 
         foreach ($products as $product) {
-            $this->importProduct($product->getId());
+            $this->importProductFromIcecatXml($product->getId());
         }
     }
 }
