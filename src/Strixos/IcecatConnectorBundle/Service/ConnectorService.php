@@ -1,6 +1,10 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Service;
 
+use Strixos\IcecatConnectorBundle\Extract\ProductXmlExtractor;
+use Strixos\IcecatConnectorBundle\Transform\ProductXmlToArrayTransformer;
+use Strixos\IcecatConnectorBundle\Transform\ProductArrayToCatalogProductTransformer;
+
 use Strixos\IcecatConnectorBundle\Extract\LanguagesExtract;
 use Strixos\IcecatConnectorBundle\Extract\ProductExtract;
 use Strixos\IcecatConnectorBundle\Extract\ProductsExtract;
@@ -14,7 +18,7 @@ use Strixos\IcecatConnectorBundle\Transform\SuppliersTransform;
 use Strixos\IcecatConnectorBundle\Load\BatchLoader;
 
 /**
- * Connector service
+ * Connector service, accessibble from anywhere in application
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
@@ -65,30 +69,42 @@ class ConnectorService
         $transform->process();
     }
 
+    /**
+     * Import a product by its icecat id
+     * @param string $productId
+     */
     public function importProduct($productId)
     {
-        // get product from id and set prodId and supplier name
+        $locale = 'fr'; // TODO
+
+        // 0. get base product from icecat referential
         $em = $this->container->get('doctrine.orm.entity_manager');
-//         $dm = $this->container->get('doctrine.orm.document_manager');
+        $baseProduct = $em->getRepository('StrixosIcecatConnectorBundle:Product')->find($productId);
+        $prodId = $baseProduct->getProdId();
+        $supplierName = $baseProduct->getSupplier()->getName();
 
-        $product = $em->getRepository('StrixosIcecatConnectorBundle:Product')->find($productId);
+        // 1. extract product xml from icecat
+        $extractor = new ProductXmlExtractor();
+        $extractor->process($prodId, $supplierName, $locale);
+        $simpleXml = $extractor->getXmlElement();
 
-        $prodId = $product->getProdId();
-        $supplierName = $product->getSupplier()->getName();
+        // 2. transform product xml to lines (associative array)
+        $transformer = new ProductXmlToArrayTransformer();
+        $transformer->process($simpleXml);
+        $productBaseData = $transformer->getProductBaseData();
+        $productFeatures = $transformer->getProductFeatures();
 
-//         echo '<hr />Product ID : '. $product->getId().' - '. $product->getProdId() .'<br />';
+        // 3. transform array to pim product
+        $productTypeService = $this->container->get('akeneo.catalog.model_producttype');
+        $transformer = new ProductArrayToCatalogProductTransformer($productTypeService);
+        $transformer->process($productBaseData, $productFeatures);
 
-        // TODO : parcours des locales avec lesquelles on travaille
-        $locales = array('fr');
-
-        $extract = new ProductExtract();
-        $transform = new ProductTransform($this->container->get('akeneo.catalog.model_producttype'));
-
-
+        // 4. load product (move persist / flush from transform to allow batch using)
+       /*
         foreach ($locales as $locale) {
             $fp = $extract->process($prodId, $supplierName, $locale);
             $transform->process($fp);
-        }
+        }*/
     }
 
     public function importProductsFromSupplier($supplier)
