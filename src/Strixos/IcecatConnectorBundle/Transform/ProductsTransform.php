@@ -5,9 +5,7 @@ use Strixos\IcecatConnectorBundle\Entity\SupplierRepository;
 
 use Strixos\IcecatConnectorBundle\Entity\Product;
 
-use Strixos\IcecatConnectorBundle\Load\EntityLoad;
-use \XMLReader;
-use Strixos\IcecatConnectorBundle\Model\Service\ProductsService;
+use Strixos\IcecatConnectorBundle\Load\BatchLoader;
 
 /**
  * Aims to transform suppliers xml file to csv file
@@ -20,15 +18,19 @@ use Strixos\IcecatConnectorBundle\Model\Service\ProductsService;
  */
 class ProductsTransform extends IcecatTransform
 {
-    
+
+    const URL          = 'http://data.icecat.biz/export/freeurls/export_urls_rich.txt.gz';
+    const FILE_ARCHIVE = '/tmp/export_urls_rich.txt.gz';
+    const FILE         = '/tmp/export_urls_rich.txt';
+
     protected $loader;
-    
+
     /**
-     * 
+     *
      * @var EntityManager
      */
     protected $entityManager;
-    
+
     /**
      * Constructor
      * @param EntityManager $loader
@@ -36,9 +38,9 @@ class ProductsTransform extends IcecatTransform
     public function __construct($em)
     {
         $this->entityManager = $em;
-        $this->loader = new EntityLoad($this->entityManager);
+        $this->loader = new BatchLoader($this->entityManager);
     }
-    
+
     /**
      * Transform xml file to csv
      *
@@ -53,9 +55,9 @@ class ProductsTransform extends IcecatTransform
         foreach ($suppliers as $supplier) {
             $this->_icecatIdToSupplier[$supplier->getIcecatId()] = $supplier;
         }
-        
+
         // import products
-        if (($handle = fopen(ProductsService::FILE, 'r')) !== false) {
+        if (($handle = fopen(self::FILE, 'r')) !== false) {
             $length = 1000;
             $delimiter = "\t";
             $indRow = 0;
@@ -73,7 +75,7 @@ class ProductsTransform extends IcecatTransform
                 $product->setProdId($data[1]);
                 $product->setMProdId($data[10]);
                 $this->loader->add($product);
-                
+
                 if ($indRow % $batchSize === 0) {
                     $this->loader->load();
                     return; // TODO : must be deleted !! Actually create a bug with clean method

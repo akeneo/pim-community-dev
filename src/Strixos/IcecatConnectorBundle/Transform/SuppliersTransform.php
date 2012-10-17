@@ -5,7 +5,6 @@ use Strixos\IcecatConnectorBundle\Entity\Supplier;
 
 use Strixos\IcecatConnectorBundle\Load\SupplierLoad;
 use \XMLReader;
-use Strixos\IcecatConnectorBundle\Model\Service\SuppliersService;
 
 /**
  * Aims to transform suppliers xml file to csv file
@@ -18,11 +17,15 @@ use Strixos\IcecatConnectorBundle\Model\Service\SuppliersService;
  */
 class SuppliersTransform extends IcecatTransform
 {
-    
+
+    const URL              = 'http://data.icecat.biz/export/freeurls/supplier_mapping.xml';
+    const XML_FILE_ARCHIVE = '/tmp/suppliers-list.xml.gz';
+    const XML_FILE         = '/tmp/suppliers-list.xml';
+
     protected $loader;
-    
-    
-    
+
+
+
     /**
      * Constructor
      * @param SupplierLoader $loader
@@ -32,7 +35,7 @@ class SuppliersTransform extends IcecatTransform
         //$this->container = $container;
         $this->loader = $loader;
     }
-    
+
     /**
      * Transform xml file to csv
      *
@@ -43,8 +46,8 @@ class SuppliersTransform extends IcecatTransform
     {
         // read xml document and parse to suppliers entities
         $xml = new XMLReader();
-        $xml->open(SuppliersService::XML_FILE);
-        
+        $xml->open(self::XML_FILE);
+
         while ($xml->read()) {
             if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'SupplierMapping') {
                 $supplier = new Supplier();
@@ -55,7 +58,7 @@ class SuppliersTransform extends IcecatTransform
                 $date = $xml->getAttribute('Generated');
             }
         }
-        
+
         $this->loader->load();
     }
 }

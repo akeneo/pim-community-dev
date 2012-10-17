@@ -6,7 +6,6 @@ use Strixos\IcecatConnectorBundle\Entity\Language;
 use Strixos\IcecatConnectorBundle\Entity\Languages;
 
 use \XMLReader;
-use Strixos\IcecatConnectorBundle\Model\Service\LanguagesService;
 
 /**
  * Aims to transform suppliers xml file to csv file
@@ -19,11 +18,15 @@ use Strixos\IcecatConnectorBundle\Model\Service\LanguagesService;
  */
 class LanguagesTransform extends IcecatTransform
 {
-    
+    const URL              = 'https://data.icecat.biz/export/freexml/refs/LanguageList.xml.gz';
+    const XML_FILE_ARCHIVE = '/tmp/languages-list.xml.gz';
+    const XML_FILE         = '/tmp/languages-list.xml';
+
+
     protected $loader;
-    
-    
-    
+
+
+
     /**
      * Constructor
      * @param SupplierLoader $loader
@@ -33,7 +36,7 @@ class LanguagesTransform extends IcecatTransform
         //$this->container = $container;
         $this->loader = $loader;
     }
-    
+
     /**
      * Transform xml file to csv
      *
@@ -44,30 +47,30 @@ class LanguagesTransform extends IcecatTransform
     {
         // read xml document and parse to suppliers entities
         $xml = new XMLReader();
-        $xml->open(LanguagesService::XML_FILE);
-        
+        $xml->open(self::XML_FILE);
+
         while ($xml->read()) {
             if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'Language') {
                 $shortCode = $this->formatShortCode($xml->getAttribute('ShortCode'));
-                
+
                 $lang = new Language();
                 $lang->setCode($xml->getAttribute('Code'));
                 $lang->setShortCode($shortCode);
                 $lang->setIcecatShortCode($xml->getAttribute('ShortCode'));
                 $lang->setIcecatId($xml->getAttribute('ID'));
-                
+
                 $this->loader->add($lang);
             } else if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'Response') {
                 $date = $xml->getAttribute('Date');
             }
         }
-            
+
         $this->loader->load();
     }
-    
+
     /**
      * Formatter for short code language
-     * 
+     *
      * @param string $shortCode
      * @return string
      */

@@ -1,8 +1,6 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Extract;
 
-use Strixos\IcecatConnectorBundle\Model\Service\ProductService;
-
 /**
  * Get product xml details from icecat
  *
@@ -12,6 +10,10 @@ use Strixos\IcecatConnectorBundle\Model\Service\ProductService;
  */
 class ProductXmlExtractor
 {
+
+    const BASE_URL         = 'http://data.Icecat.biz/xml_s3/xml_server3.cgi';
+    const XML_FILE_ARCHIVE = '/tmp/suppliers-list.xml.gz';
+    const XML_FILE         = '/tmp/suppliers-list.xml';
 
     /**
      * Get xml product content
@@ -49,7 +51,7 @@ class ProductXmlExtractor
         $this->fileArchivePath = $this->filePath .'.gz';
         $supplierName = rawurlencode($supplierName);
         $productId    = rawurlencode($productId);
-        return ProductService::BASE_URL .'?prod_id='.$productId.';vendor='.$supplierName.';lang='.$locale.';output=productxml';
+        return self::BASE_URL .'?prod_id='.$productId.';vendor='.$supplierName.';lang='.$locale.';output=productxml';
     }
 
     /**
