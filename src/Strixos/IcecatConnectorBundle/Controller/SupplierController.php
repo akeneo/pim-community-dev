@@ -29,6 +29,7 @@ class SupplierController extends Controller
 
             $srvConnector = $this->container->get('akeneo.connector.icecat_service');
             $srvConnector->importSuppliers();
+            $this->get('session')->setFlash('notice', 'Base suppliers has been imported from Icecat');
 
         } catch (\Exception $e) {
             return array('exception' => $e);
@@ -45,7 +46,7 @@ class SupplierController extends Controller
     public function listAction()
     {
         // creates simple grid based on entity (ORM)
-        $source = new GridEntity('StrixosIcecatConnectorBundle:Supplier');
+        $source = new GridEntity('StrixosIcecatConnectorBundle:SourceSupplier');
         $grid = $this->get('grid');
         $grid->setSource($source);
         // add an action column to load import of all products of a supplier
@@ -64,19 +65,17 @@ class SupplierController extends Controller
     public function loadProductsAction($icecatId)
     {
         try {
-            $supplier = $this->getDoctrine()->getRepository('StrixosIcecatConnectorBundle:Supplier')
+            $supplier = $this->getDoctrine()->getRepository('StrixosIcecatConnectorBundle:SourceSupplier')
                     ->findOneByIcecatId($icecatId);
 
             $srvConnector = $this->container->get('akeneo.connector.icecat_service');
             $srvConnector->importProductsFromSupplier($supplier);
 
-            //$products = $this->getDoctrine()->getRepository('StrixosIcecatConnectorBundle:Product')->find($id);
-
         } catch (Exception $e) {
             return array('exception' => $e);
         }
 
-        $products = $this->getDoctrine()->getRepository('StrixosIcecatConnectorBundle:Product')
+        $products = $this->getDoctrine()->getRepository('StrixosIcecatConnectorBundle:SourceProduct')
                 ->findBySupplier($supplier);
 
         return array('supplier' => $supplier, 'products' => $products);

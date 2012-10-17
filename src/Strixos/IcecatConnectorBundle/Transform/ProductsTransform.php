@@ -1,9 +1,7 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Transform;
 
-use Strixos\IcecatConnectorBundle\Entity\SupplierRepository;
-
-use Strixos\IcecatConnectorBundle\Entity\Product;
+use Strixos\IcecatConnectorBundle\Entity\SourceProduct;
 
 use Strixos\IcecatConnectorBundle\Load\BatchLoader;
 
@@ -50,7 +48,7 @@ class ProductsTransform extends IcecatTransform
     public function process()
     {
         // get associative array with suppliers icecat ids and suppliers
-        $suppliers = $this->entityManager->getRepository('StrixosIcecatConnectorBundle:Supplier')->findAll();
+        $suppliers = $this->entityManager->getRepository('StrixosIcecatConnectorBundle:SourceSupplier')->findAll();
         $this->_icecatIdToSupplier = array();
         foreach ($suppliers as $supplier) {
             $this->_icecatIdToSupplier[$supplier->getIcecatId()] = $supplier;
@@ -68,7 +66,7 @@ class ProductsTransform extends IcecatTransform
                     continue;
                 }
                 // inject as product
-                $product = new Product();
+                $product = new SourceProduct();
                 $product->setProductId($data[0]);
                 // TODO: get real supplier id problem with mapping
                 $product->setSupplier($this->_icecatIdToSupplier[$data[4]]);

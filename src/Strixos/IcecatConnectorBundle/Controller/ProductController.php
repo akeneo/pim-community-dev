@@ -41,9 +41,9 @@ class ProductController extends Controller
     public function loadFromIcecatAction()
     {
         try {
-
             $srvConnector = $this->container->get('akeneo.connector.icecat_service');
             $srvConnector->importProducts();
+            $this->get('session')->setFlash('notice', 'Base products has been imported from Icecat');
         } catch (\Exception $e) {
             die ($e->getMessage() );
             return array('exception' => $e);
@@ -60,7 +60,7 @@ class ProductController extends Controller
     public function listAction()
     {
         // creates simple grid based on entity (ORM)
-        $source = new GridEntity('StrixosIcecatConnectorBundle:Product');
+        $source = new GridEntity('StrixosIcecatConnectorBundle:SourceProduct');
         $grid = $this->get('grid');
         $grid->setSource($source);
         // add an action column to load import of all products of a supplier
@@ -83,7 +83,7 @@ class ProductController extends Controller
             $srvConnector = $this->container->get('akeneo.connector.icecat_service');
             $srvConnector->importProductFromIcecatXml($id);
 
-            $product = $this->getDoctrine()->getRepository('StrixosIcecatConnectorBundle:Product')->find($id);
+            $product = $this->getDoctrine()->getRepository('StrixosIcecatConnectorBundle:SourceProduct')->find($id);
 
         } catch (Exception $e) {
             return array('exception' => $e);

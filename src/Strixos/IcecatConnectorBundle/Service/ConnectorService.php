@@ -57,7 +57,7 @@ class ConnectorService
         $em   = $this->container->get('doctrine.orm.entity_manager');
         $url  = $em->getRepository('StrixosIcecatConnectorBundle:Config')->findOneByCode(Config::LANGUAGES_URL)->getValue();
         $file = $em->getRepository('StrixosIcecatConnectorBundle:Config')->findOneByCode(Config::LANGUAGES_FILE)->getValue();
-        
+
         $extract = new LanguagesExtract();
         $extract->extract($url, $file);
 
@@ -88,7 +88,7 @@ class ConnectorService
 
             // 1. get base product from icecat referential
             $em = $this->container->get('doctrine.orm.entity_manager');
-            $baseProduct = $em->getRepository('StrixosIcecatConnectorBundle:Product')->find($productId);
+            $baseProduct = $em->getRepository('StrixosIcecatConnectorBundle:SourceProduct')->find($productId);
             $prodId = $baseProduct->getProdId();
             $supplierName = $baseProduct->getSupplier()->getName();
 
@@ -121,7 +121,7 @@ class ConnectorService
     public function importProductsFromSupplier($supplier)
     {
         $em = $this->container->get('doctrine.orm.entity_manager');
-        $products = $em->getRepository('StrixosIcecatConnectorBundle:Product')->findBySupplier($supplier);
+        $products = $em->getRepository('StrixosIcecatConnectorBundle:SourceProduct')->findBySupplier($supplier);
 
         foreach ($products as $product) {
             $this->importProductFromIcecatXml($product->getId());

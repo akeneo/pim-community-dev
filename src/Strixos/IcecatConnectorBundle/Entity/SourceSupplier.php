@@ -9,10 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright  Copyright (c) 2012 Strixos SAS (http://www.strixos.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="StrixosIcecatConnector_Supplier")
+ * @ORM\Table(name="StrixosIcecatConnector_SourceSupplier")
  * @ORM\Entity
  */
-class Supplier extends AbstractModel
+class SourceSupplier extends AbstractModel
 {
     /**
      * @var integer $id
@@ -40,7 +40,7 @@ class Supplier extends AbstractModel
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -56,14 +56,14 @@ class Supplier extends AbstractModel
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -79,14 +79,14 @@ class Supplier extends AbstractModel
     public function setIcecatId($icecatId)
     {
         $this->icecatId = $icecatId;
-    
+
         return $this;
     }
 
     /**
      * Get icecatId
      *
-     * @return integer 
+     * @return integer
      */
     public function getIcecatId()
     {

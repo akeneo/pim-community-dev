@@ -9,10 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright  Copyright (c) 2012 Strixos SAS (http://www.strixos.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="StrixosIcecatConnector_Product")
+ * @ORM\Table(name="StrixosIcecatConnector_SourceProduct")
  * @ORM\Entity
  */
-class Product extends AbstractModel
+class SourceProduct extends AbstractModel
 {
 
    /**
@@ -26,7 +26,7 @@ class Product extends AbstractModel
 
     /**
      * @var Supplier $supplier
-     * @ORM\ManyToOne(targetEntity="Supplier")
+     * @ORM\ManyToOne(targetEntity="SourceSupplier")
      * @ORM\JoinColumn(name="supplier_id", referencedColumnName="id")
      */
     private $supplier;
@@ -53,14 +53,14 @@ class Product extends AbstractModel
      * @ORM\Column(name="m_prod_id", type="string", length=255)
      */
     private $mProdId;
-    
+
     /**
      * @var boolean $is_imported
-     * 
+     *
      * @ORM\Column(name="imported", type="boolean")
      */
     private $is_imported;
-    
+
     /**
      * Constructor for product
      * Define default value for is_imported attribute
@@ -73,7 +73,7 @@ class Product extends AbstractModel
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -89,14 +89,14 @@ class Product extends AbstractModel
     public function setProductId($productId)
     {
         $this->productId = $productId;
-    
+
         return $this;
     }
 
     /**
      * Get productId
      *
-     * @return integer 
+     * @return integer
      */
     public function getProductId()
     {
@@ -112,14 +112,14 @@ class Product extends AbstractModel
     public function setProdId($prodId)
     {
         $this->prodId = $prodId;
-    
+
         return $this;
     }
 
     /**
      * Get prodId
      *
-     * @return string 
+     * @return string
      */
     public function getProdId()
     {
@@ -135,14 +135,14 @@ class Product extends AbstractModel
     public function setMProdId($mProdId)
     {
         $this->mProdId = $mProdId;
-    
+
         return $this;
     }
 
     /**
      * Get mProdId
      *
-     * @return string 
+     * @return string
      */
     public function getMProdId()
     {
@@ -152,20 +152,20 @@ class Product extends AbstractModel
     /**
      * Set supplier
      *
-     * @param Strixos\IcecatConnectorBundle\Entity\Supplier $supplier
+     * @param Strixos\IcecatConnectorBundle\Entity\SourceSupplier $supplier
      * @return Product
      */
-    public function setSupplier(\Strixos\IcecatConnectorBundle\Entity\Supplier $supplier = null)
+    public function setSupplier(\Strixos\IcecatConnectorBundle\Entity\SourceSupplier $supplier = null)
     {
         $this->supplier = $supplier;
-    
+
         return $this;
     }
 
     /**
      * Get supplier
      *
-     * @return Strixos\IcecatConnectorBundle\Entity\Supplier 
+     * @return Strixos\IcecatConnectorBundle\Entity\SourceSupplier
      */
     public function getSupplier()
     {
@@ -181,14 +181,14 @@ class Product extends AbstractModel
     public function setIsImported(\bool $isImported)
     {
         $this->is_imported = $isImported;
-    
+
         return $this;
     }
 
     /**
      * Get is_imported
      *
-     * @return bool 
+     * @return bool
      */
     public function getIsImported()
     {

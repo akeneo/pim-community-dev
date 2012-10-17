@@ -1,7 +1,7 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Transform;
 
-use Strixos\IcecatConnectorBundle\Entity\Supplier;
+use Strixos\IcecatConnectorBundle\Entity\SourceSupplier;
 
 use Strixos\IcecatConnectorBundle\Load\SupplierLoad;
 use \XMLReader;
@@ -50,7 +50,7 @@ class SuppliersTransform extends IcecatTransform
 
         while ($xml->read()) {
             if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'SupplierMapping') {
-                $supplier = new Supplier();
+                $supplier = new SourceSupplier();
                 $supplier->setIcecatId($xml->getAttribute('supplier_id'));
                 $supplier->setName($xml->getAttribute('name'));
                 $this->loader->add($supplier);
