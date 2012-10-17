@@ -44,9 +44,6 @@ class ProductController extends Controller
 
             $srvConnector = $this->container->get('akeneo.connector.icecat_service');
             $srvConnector->importProducts();
-            /*$em = $this->getDoctrine()->getEntityManager();
-            $baseExtractor = new BaseExtractor($em);
-            $baseExtractor->extractAndImportProductData();*/
         } catch (\Exception $e) {
             die ($e->getMessage() );
             return array('exception' => $e);
@@ -84,7 +81,7 @@ class ProductController extends Controller
         try {
 
             $srvConnector = $this->container->get('akeneo.connector.icecat_service');
-            $srvConnector->importProduct($id);
+            $srvConnector->importProductFromIcecatXml($id);
 
             $product = $this->getDoctrine()->getRepository('StrixosIcecatConnectorBundle:Product')->find($id);
 
