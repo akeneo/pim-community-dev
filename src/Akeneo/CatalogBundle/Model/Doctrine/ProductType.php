@@ -192,18 +192,13 @@ class ProductType extends AbstractModel
      */
     public function getField($fieldCode)
     {
-        echo 'FIELD CODE : '. $fieldCode .'<br />';
-        var_dump($this->_codeToField);
-        echo '<br />';
         // check in model
         if (isset($this->_codeToField[$fieldCode])) {
-            echo 'code to field is already set<br />';
             return $this->_codeToField[$fieldCode];
         // check in db
         } else {
             $field = $this->getManager()->getRepository('AkeneoCatalogBundle:ProductField')
                 ->findOneByCode($fieldCode);
-            echo 'get field from repository : '. get_class($field) .'<br />';
             return $field;
         }
     }
