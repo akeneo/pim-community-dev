@@ -58,11 +58,9 @@ class ProductTypeManager extends EntityTypeManager
      */
     public function find($code)
     {
-        // get entity type
-        $type = $this->manager->getRepository('AkeneoCatalogBundle:ProductType')
-            ->findOneByCode($code);
+        $type = parent::find($code);
+        // if found prepare group and field array too
         if ($type) {
-            $this->object = $type;
             $this->_codeToGroup = array();
             $this->_codeToField = array();
             // retrieve group code
@@ -85,13 +83,13 @@ class ProductTypeManager extends EntityTypeManager
      * @param string $code
      * @return ProductType
      */
-    public function create($code)
+    public function create($code, $title = null)
     {
-        $type = $this->getManager()->getRepository('AkeneoCatalogBundle:ProductType')
-            ->findOneByCode($code);
+        // check if exists
+        $type = $this->repository->findOneByCode($code);
         if ($type) {
             // TODO create custom exception
-            throw new \Exception("There is already a product type with the code {$code}");
+            throw new \Exception("There is already an entity type {$this->class} with the code {$code}");
         } else {
             $this->object = new EntityProductType();
             $this->object->setCode($code);

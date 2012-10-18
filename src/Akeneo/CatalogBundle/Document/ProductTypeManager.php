@@ -7,6 +7,8 @@ use Akeneo\CatalogBundle\Document\ProductTypeMongo;
 use Akeneo\CatalogBundle\Document\ProductFieldMongo;
 
 /**
+ * Manager of flexible product type stored with doctrine documents
+ *
  * The product type service, a builder which allows to embed complexity of
  * CRUD operation, of persistence and revisioning of the flexible entity type
  *
@@ -24,67 +26,6 @@ class ProductTypeManager extends EntityTypeManager
     public function getGroupsCodes()
     {
         return array_keys($this->getObject()->getGroups());
-    }
-
-    /**
-     * Load embedded entity type
-     *
-     * @param string $code
-     * @return ProductType
-     */
-    public function find($code)
-    {
-        // get entity type
-        $type = $this->getManager()->getRepository('AkeneoCatalogBundle:ProductTypeMongo')
-            ->findOneByCode($code);
-        if ($type) {
-            $this->object = $type;
-        } else {
-            return false;
-        }
-        return $this;
-    }
-
-    /**
-     * Create an embeded type entity
-     * @param string $code
-     * @param string $title
-     * @return ProductType
-     */
-    public function create($code, $title = null)
-    {
-        $type = $this->getManager()->getRepository('AkeneoCatalogBundle:ProductTypeMongo')
-            ->findOneByCode($code);
-        if ($type) {
-            // TODO create custom exception
-            throw new \Exception("There is already a product type with the code {$code}");
-        } else {
-            $this->object = new ProductTypeMongo();
-            $this->object->setCode($code);
-            if (!$title) {
-                $title = $code;
-            }
-            $this->object->setTitle($title);
-        }
-        return $this;
-    }
-
-    /**
-     * Get product type title
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->object->getTitle();
-    }
-
-    /**
-     * Set product type title
-     * @param string $title
-     */
-    public function setTitle($title)
-    {
-        $this->object->setTitle($title);
     }
 
     /**

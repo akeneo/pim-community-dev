@@ -26,6 +26,48 @@ class EntityTypeManager extends AbstractManager
     protected $objectClass;
 
     /**
+    * Load embedded entity type
+    *
+    * @param string $code
+    * @return EntityTypeManager
+    */
+    public function find($code)
+    {
+        // get entity type
+        $type = $this->repository->findOneByCode($code);
+        if ($type) {
+            $this->object = $type;
+            return $this;
+        } else {
+            return null;
+        }
+    }
+
+     /**
+     * Create an embeded type entity
+     * @param string $code
+     * @param string $title
+     * @return EntityTypeManager
+     */
+    public function create($code, $title = null)
+    {
+        // check if exists
+        $type = $this->repository->findOneByCode($code);
+        if ($type) {
+            // TODO create custom exception
+            throw new \Exception("There is already an entity type {$this->class} with the code {$code}");
+        } else {
+            $this->object = new $this->class();
+            $this->object->setCode($code);
+            if (!$title) {
+                $title = $code;
+            }
+            $this->object->setTitle($title);
+        }
+        return $this;
+    }
+
+    /**
      * Get type object code
      * @return string code
      */
@@ -33,4 +75,23 @@ class EntityTypeManager extends AbstractManager
     {
         return $this->getObject()->getCode();
     }
+
+    /**
+     * Get product type title
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->object->getTitle();
+    }
+
+    /**
+     * Set product type title
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->object->setTitle($title);
+    }
+
 }

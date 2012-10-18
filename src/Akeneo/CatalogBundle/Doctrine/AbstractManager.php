@@ -50,8 +50,6 @@ abstract class AbstractManager
     public function __construct(ObjectManager $om, $class)
     {
         $this->manager = $om;
-        // TODO : why there is some quote inside ?
-        $class = str_replace('"', '', $class);
         $this->repository = $om->getRepository($class);
         $metadata = $om->getClassMetadata($class);
         $this->class = $metadata->getName();
