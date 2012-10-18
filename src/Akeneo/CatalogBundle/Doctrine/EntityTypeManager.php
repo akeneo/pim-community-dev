@@ -14,6 +14,25 @@ abstract class EntityTypeManager extends AbstractManager
 {
 
     /**
+     * entity manager
+     * @var EntityManager $entityManager
+     */
+    protected $entityManager;
+
+    /**
+     * Constructor.
+     *
+     * @param ObjectManager           $om
+     * @param string                  $typeclass
+     * @param EntityManager           $entityManager
+     */
+    public function __construct(ObjectManager $om, $typeclass, $entityManager)
+    {
+        parent::__construct($om, $typeclass);
+        $this->entityManager = $entityManager;
+    }
+
+    /**
     * Load embedded entity type
     *
     * @param string $code
@@ -128,7 +147,7 @@ abstract class EntityTypeManager extends AbstractManager
      *
      * @param $code
      */
-    //public abstract function removeFieldFromType($fieldCode);
+    public abstract function removeFieldFromType($fieldCode);
 
     /**
      * Remove field
@@ -137,11 +156,15 @@ abstract class EntityTypeManager extends AbstractManager
      */
     public abstract function removeField($fieldCode);
 
-    /**
-     * Create and return flexible product of current type
-     *
-     * @return ProductManager
-     */
-     public abstract function newProductInstance();
+     /**
+      * Create flexible entity of current type and return entity manager
+      *
+      * @return EntityManager
+      */
+     public function newEntityInstance()
+     {
+         $em = $this->entityManager->create($this->getObject());
+         return $em;
+     }
 
 }

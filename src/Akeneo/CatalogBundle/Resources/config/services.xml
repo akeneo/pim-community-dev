@@ -26,6 +26,7 @@
         <service id="akeneo.catalog.model_producttype_doctrine" class="%pim.catalog.producttypemanager.entity.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>%pim.catalog.producttype.entity.class%</argument>
+            <argument type="service" id="akeneo.catalog.model_product_doctrine" />
         </service>
         <service id="akeneo.catalog.model_product_doctrine" class="%pim.catalog.productmanager.entity.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
@@ -36,6 +37,7 @@
         <service id="akeneo.catalog.model_producttype_mongo" class="%pim.catalog.producttypemanager.mongodocument.class%">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <argument>%pim.catalog.producttype.mongodocument.class%</argument>
+            <argument type="service" id="akeneo.catalog.model_product_mongo" />
         </service>
         <service id="akeneo.catalog.model_product_mongo" class="%pim.catalog.productmanager.mongodocument.class%">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
@@ -46,6 +48,7 @@
         <service id="akeneo.catalog.model_producttype" class="%pim.catalog.producttypemanager.mongodocument.class%">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <argument>%pim.catalog.producttype.mongodocument.class%</argument>
+            <argument type="service" id="akeneo.catalog.model_product" />
         </service>
         <service id="akeneo.catalog.model_product" class="%pim.catalog.productmanager.mongodocument.class%">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />

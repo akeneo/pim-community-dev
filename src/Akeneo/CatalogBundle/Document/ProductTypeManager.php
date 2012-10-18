@@ -117,18 +117,6 @@ class ProductTypeManager extends EntityTypeManager
     }
 
     /**
-     * Create and return flexible product of current type
-     *
-     * @return Product
-     */
-    public function newProductInstance()
-    {
-        $product = new ProductManager($this->getManager());
-        $product->create($this->getObject());
-        return $product;
-    }
-
-    /**
      * Refresh type state from database
      * @return ProductType
      */
@@ -153,5 +141,12 @@ class ProductTypeManager extends EntityTypeManager
         }
     }
 
-
+    /**
+     * @see newEntityInstance
+     * @return ProductManager
+     */
+    public function newProductInstance()
+    {
+        return parent::newEntityInstance();
+    }
 }
