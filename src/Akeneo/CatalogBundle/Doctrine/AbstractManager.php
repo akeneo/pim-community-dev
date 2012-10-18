@@ -12,22 +12,31 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 abstract class AbstractManager
 {
-    protected $objectManager;
-    protected $repository;
-    protected $class;
+    /**
+    * @var ObjectManager $manager
+    */
+    protected $manager;
 
     /**
-     * Constructor.
-     *
-     * @param ObjectManager           $om
-     * @param string                  $class
+     * Main Entity or Document managed
+     * @var mixed
      */
-    public function __construct(ObjectManager $om, $class)
+    protected $object;
+
+    /**
+     * Used locale for embeded objects
+     * @var string
+     */
+    private $locale;
+
+    /**
+     * Aims to inject object manager
+     *
+     * @param ObjectManager $objectManager
+     */
+    public function __construct($objectManager)
     {
-        $this->objectManager = $om;
-        $this->repository = $om->getRepository($class);
-        $metadata = $om->getClassMetadata($class);
-        $this->class = $metadata->getName();
+        $this->manager = $objectManager;
     }
 
     /**
@@ -36,16 +45,73 @@ abstract class AbstractManager
      */
     public function getManager()
     {
-        return $this->objectManager;
+        return $this->manager;
     }
 
     /**
-    * Get class
-    * @return
-    */
-    public function getClass()
+     * Return managed object
+     *
+     * TODO: should by protected ?
+     *
+     * @return mixed
+     */
+    public function getObject()
     {
-        return $this->class;
+        return $this->object;
     }
 
+    /**
+     * Load encapsuled object
+     * @param string $code
+     * @return AbstractModel
+     */
+///    public abstract function find($code);
+
+    /**
+     * Remove current embeded object from object manager
+     */
+    public function remove()
+    {
+        $this->getManager()->remove($this->getObject());
+    }
+
+    /**
+     * Persist current embeded object
+     * @return AbstractModel
+     */
+    public function persist()
+    {
+        $this->getManager()->persist($this->getObject());
+        return $this;
+    }
+
+    /**
+     * Flush modification of object manager on database
+     * @return AbstractModel
+     */
+    public function flush()
+    {
+        $this->getManager()->flush();
+        return $this;
+    }
+
+    /**
+     * Get product locale
+     *
+     * @return string $locale
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * Change locale and refresh data for this locale
+     *
+     * @param string $locale
+     */
+    public function switchLocale($locale)
+    {
+        $this->locale = $locale;
+    }
 }

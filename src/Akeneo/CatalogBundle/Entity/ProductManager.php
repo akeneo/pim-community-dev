@@ -1,7 +1,7 @@
 <?php
 namespace Akeneo\CatalogBundle\Entity;
 
-use Akeneo\CatalogBundle\Model\AbstractModel;
+use Akeneo\CatalogBundle\Doctrine\EntityManager;
 use Akeneo\CatalogBundle\Entity\ProductEntity as EntityProductEntity;
 use Akeneo\CatalogBundle\Entity\ProductType as EntityProductType;
 use Akeneo\CatalogBundle\Entity\ProductGroup as EntityProductGroup;
@@ -15,7 +15,7 @@ use Akeneo\CatalogBundle\Entity\ProductValue as EntityProductValue;
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductManager extends AbstractModel
+class ProductManager extends EntityManager
 {
 
     // TODO: add param for entity FQCN

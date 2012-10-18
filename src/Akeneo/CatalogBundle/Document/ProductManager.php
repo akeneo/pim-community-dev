@@ -1,7 +1,7 @@
 <?php
 namespace Akeneo\CatalogBundle\Document;
 
-use Akeneo\CatalogBundle\Model\AbstractModel;
+use Akeneo\CatalogBundle\Doctrine\EntityManager;
 use Akeneo\CatalogBundle\Document\ProductMongo;
 
 /**
@@ -11,7 +11,7 @@ use Akeneo\CatalogBundle\Document\ProductMongo;
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductManager extends AbstractModel
+class ProductManager extends EntityManager
 {
 
     /**

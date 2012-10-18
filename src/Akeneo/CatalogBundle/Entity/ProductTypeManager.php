@@ -1,7 +1,7 @@
 <?php
 namespace Akeneo\CatalogBundle\Entity;
 
-use Akeneo\CatalogBundle\Model\AbstractModel;
+use Akeneo\CatalogBundle\Doctrine\EntityTypeManager;
 use Akeneo\CatalogBundle\Entity\ProductEntity as EntityProductEntity;
 use Akeneo\CatalogBundle\Entity\ProductType as EntityProductType;
 use Akeneo\CatalogBundle\Entity\ProductGroup as EntityProductGroup;
@@ -17,7 +17,7 @@ use Akeneo\CatalogBundle\Entity\ProductField as EntityProductField;
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductTypeManager extends AbstractModel
+class ProductTypeManager extends EntityTypeManager
 {
 
     /**

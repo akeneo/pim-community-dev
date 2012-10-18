@@ -13,34 +13,4 @@ use Doctrine\Common\Persistence\ObjectManager;
 class EntityTypeManager extends AbstractManager
 {
 
-    /**
-     * List of groups codes
-     * @var Array
-     */
-    protected $_codeToGroup;
-
-    /**
-     * List of fields codes
-     * @var Array
-     */
-    protected $_codeToField;
-
-    /**
-     * Get groups code
-     * @return Array
-     */
-    public function getGroupsCodes()
-    {
-        return array_keys($this->_codeToGroup);
-    }
-
-    /**
-     * Get fields code
-     * @return Array
-     */
-    public function getFieldsCodes()
-    {
-        return array_keys($this->_codeToField);
-    }
-
 }
