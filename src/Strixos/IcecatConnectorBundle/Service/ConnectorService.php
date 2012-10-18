@@ -8,9 +8,8 @@ use Strixos\IcecatConnectorBundle\Transform\ProductXmlToArrayTransformer;
 use Strixos\IcecatConnectorBundle\Transform\ProductArrayToCatalogProductTransformer;
 
 use Strixos\IcecatConnectorBundle\Extract\LanguagesExtract;
-use Strixos\IcecatConnectorBundle\Extract\ProductExtract;
-use Strixos\IcecatConnectorBundle\Extract\ProductsExtract;
-use Strixos\IcecatConnectorBundle\Extract\SuppliersExtract;
+use Strixos\IcecatConnectorBundle\Extract\DownloadAndUnpackSourceProducts;
+use Strixos\IcecatConnectorBundle\Extract\DownloadAndUnpackSourceSuppliers;
 
 use Strixos\IcecatConnectorBundle\Transform\LanguagesTransform;
 use Strixos\IcecatConnectorBundle\Transform\ProductTransform;
@@ -43,8 +42,15 @@ class ConnectorService
 
     public function importSuppliers()
     {
-        $extract = new SuppliersExtract();
-        $extract->extract();
+        // TODO get from config
+        $url = 'http://data.icecat.biz/export/freeurls/supplier_mapping.xml';
+        $login = 'NicolasDupont';
+        $password = '1cec4t**)';
+        $archivePath = '/tmp/suppliers-list.xml.gz';
+        $filePath = '/tmp/suppliers-list.xml';
+        $forceDownloadFile = false;
+        $extractor = new DownloadAndUnpackSourceSuppliers($url, $login, $password, $archivePath, $filePath, $forceDownloadFile);
+        $extractor->extract();
 
         $loader = new BatchLoader($this->container->get('doctrine.orm.entity_manager'));
         $transformer = new SuppliersTransform($loader);
@@ -67,7 +73,14 @@ class ConnectorService
 
     public function importProducts()
     {
-        $extractor = new ProductsExtract();
+        // TODO get from config
+        $url = 'http://data.icecat.biz/export/freeurls/export_urls_rich.txt.gz';
+        $login = 'NicolasDupont';
+        $password = '1cec4t**)';
+        $archivePath = '/tmp/export_urls_rich.txt.gz';
+        $filePath = '/tmp/export_urls_rich.txt';
+        $forceDownloadFile = false;
+        $extractor = new DownloadAndUnpackSourceProducts($url, $login, $password, $archivePath, $filePath, $forceDownloadFile);
         $extractor->extract();
 
         $transformer = new ProductsTransform($this->container->get('doctrine.orm.entity_manager'));
