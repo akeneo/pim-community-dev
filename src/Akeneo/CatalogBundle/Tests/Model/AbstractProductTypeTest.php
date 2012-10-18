@@ -48,20 +48,19 @@ abstract class AbtractProductTypeTest extends KernelAwareTest
         $this->assertInstanceOf($this->modelType, $type);
         $this->assertInstanceOf($this->entityType, $type->getObject());
         $this->assertEquals($type->getCode(), self::TYPE_BASE);
+
         // add info fields
         $fields = array('sku', 'name', 'short_description', 'description', 'color');
         foreach ($fields as $fieldCode) {
-            //if (!$type->getField($fieldCode)) {
-                $type->addField($fieldCode, 'text', self::TYPE_GROUP_INFO);
-            //}
+            $type->addField($fieldCode, 'text', self::TYPE_GROUP_INFO);
         }
+
         // add media fields
         $fields = array('image', 'thumbnail');
         foreach ($fields as $fieldCode) {
-            //if (!$type->getField($fieldCode)) {
-                $type->addField($fieldCode, 'text', self::TYPE_GROUP_MEDIA);
-            //}
+            $type->addField($fieldCode, 'text', self::TYPE_GROUP_MEDIA);
         }
+
         // add others empty groups
         $type->addGroup(self::TYPE_GROUP_SEO);
         $type->addGroup(self::TYPE_GROUP_TECHNIC);
@@ -69,9 +68,12 @@ abstract class AbtractProductTypeTest extends KernelAwareTest
         // persist type
         $type->persist();
         $type->flush();
+
         // asserts
         $this->assertEquals(count($type->getGroupsCodes()), 4);
-/*        $this->assertEquals(count($type->getFieldsCodes()), 7);
+        /*
+        $this->assertEquals(count($type->getFieldsCodes()), 7);
+
 
         // find
         $type = $this->container->get($this->serviceName);

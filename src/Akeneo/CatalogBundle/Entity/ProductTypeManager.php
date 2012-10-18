@@ -1,5 +1,5 @@
 <?php
-namespace Akeneo\CatalogBundle\Model\Doctrine;
+namespace Akeneo\CatalogBundle\Entity;
 
 use Akeneo\CatalogBundle\Model\AbstractModel;
 use Akeneo\CatalogBundle\Entity\ProductEntity as EntityProductEntity;
@@ -8,17 +8,16 @@ use Akeneo\CatalogBundle\Entity\ProductGroup as EntityProductGroup;
 use Akeneo\CatalogBundle\Entity\ProductField as EntityProductField;
 
 /**
+ * Manager of flexible product type stored with doctrine entities
+ *
  * The product type service, a builder which allows to embed complexity of
  * CRUD operation, of persistence and revisioning of the flexible entity type
- *
- * TODO: we add here some additional code to group and field array which allow
- * to decouple from persistence and enhance type checks, good or bad idea ?
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductType extends AbstractModel
+class ProductTypeManager extends AbstractModel
 {
 
     /**

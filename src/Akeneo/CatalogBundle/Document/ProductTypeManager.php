@@ -1,5 +1,5 @@
 <?php
-namespace Akeneo\CatalogBundle\Model\MongoDB;
+namespace Akeneo\CatalogBundle\Document;
 
 use Akeneo\CatalogBundle\Model\AbstractModel;
 use Akeneo\CatalogBundle\Document\ProductMongo;
@@ -14,7 +14,7 @@ use Akeneo\CatalogBundle\Document\ProductFieldMongo;
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductType extends AbstractModel
+class ProductTypeManager extends AbstractModel
 {
 
     /**

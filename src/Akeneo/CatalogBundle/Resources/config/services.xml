@@ -7,26 +7,26 @@
     <services>
 
         <!-- dotrine eav test implementation -->
-        <service id="akeneo.catalog.model_producttype_doctrine" class="Akeneo\CatalogBundle\Model\Doctrine\ProductType">
+        <service id="akeneo.catalog.model_producttype_doctrine" class="Akeneo\CatalogBundle\Entity\ProductTypeManager">
             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
-        <service id="akeneo.catalog.model_product_doctrine" class="Akeneo\CatalogBundle\Model\Doctrine\Product">
+        <service id="akeneo.catalog.model_product_doctrine" class="Akeneo\CatalogBundle\Entity\ProductManager">
             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
 
         <!-- mongo document test implementation -->
-        <service id="akeneo.catalog.model_producttype_mongo" class="Akeneo\CatalogBundle\Model\MongoDB\ProductType">
+        <service id="akeneo.catalog.model_producttype_mongo" class="Akeneo\CatalogBundle\Document\ProductTypeManager">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
         </service>
-        <service id="akeneo.catalog.model_product_mongo" class="Akeneo\CatalogBundle\Model\MongoDB\Product">
+        <service id="akeneo.catalog.model_product_mongo" class="Akeneo\CatalogBundle\Document\ProductManager">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
         </service>
         
         <!-- used implementation on others bundles -->
-        <service id="akeneo.catalog.model_producttype" class="Akeneo\CatalogBundle\Model\MongoDB\ProductType">
+        <service id="akeneo.catalog.model_producttype" class="Akeneo\CatalogBundle\Document\ProductTypeManager">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
         </service>
-        <service id="akeneo.catalog.model_product" class="Akeneo\CatalogBundle\Model\MongoDB\Product">
+        <service id="akeneo.catalog.model_product" class="Akeneo\CatalogBundle\Document\ProductManager">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
         </service>
 

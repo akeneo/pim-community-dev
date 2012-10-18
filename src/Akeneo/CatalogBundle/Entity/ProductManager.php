@@ -1,5 +1,5 @@
 <?php
-namespace Akeneo\CatalogBundle\Model\Doctrine;
+namespace Akeneo\CatalogBundle\Entity;
 
 use Akeneo\CatalogBundle\Model\AbstractModel;
 use Akeneo\CatalogBundle\Entity\ProductEntity as EntityProductEntity;
@@ -9,13 +9,13 @@ use Akeneo\CatalogBundle\Entity\ProductField as EntityProductField;
 use Akeneo\CatalogBundle\Entity\ProductValue as EntityProductValue;
 
 /**
- * Flexible product
+ * Manager of flexible product stored with doctrine entities
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Product extends AbstractModel
+class ProductManager extends AbstractModel
 {
 
     // TODO: add param for entity FQCN
