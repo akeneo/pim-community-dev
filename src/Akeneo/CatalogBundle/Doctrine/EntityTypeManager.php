@@ -14,18 +14,6 @@ class EntityTypeManager extends AbstractManager
 {
 
     /**
-     * Object type class
-     * @var mixed
-     */
-    protected $typeClass;
-
-    /**
-    * Object class
-    * @var mixed
-    */
-    protected $objectClass;
-
-    /**
     * Load embedded entity type
     *
     * @param string $code

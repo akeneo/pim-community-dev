@@ -2,9 +2,6 @@
 namespace Akeneo\CatalogBundle\Document;
 
 use Akeneo\CatalogBundle\Doctrine\EntityTypeManager;
-use Akeneo\CatalogBundle\Document\ProductMongo;
-use Akeneo\CatalogBundle\Document\ProductTypeMongo;
-use Akeneo\CatalogBundle\Document\ProductFieldMongo;
 
 /**
  * Manager of flexible product type stored with doctrine documents
@@ -97,7 +94,7 @@ class ProductTypeManager extends EntityTypeManager
      */
     public function newProductInstance()
     {
-        $product = new Product($this->getManager());
+        $product = new ProductManager($this->getManager());
         $product->create($this->getObject());
         return $product;
     }

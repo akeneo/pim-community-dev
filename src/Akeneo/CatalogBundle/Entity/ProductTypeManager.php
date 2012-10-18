@@ -2,10 +2,6 @@
 namespace Akeneo\CatalogBundle\Entity;
 
 use Akeneo\CatalogBundle\Doctrine\EntityTypeManager;
-use Akeneo\CatalogBundle\Entity\ProductEntity as EntityProductEntity;
-use Akeneo\CatalogBundle\Entity\ProductType as EntityProductType;
-use Akeneo\CatalogBundle\Entity\ProductGroup as EntityProductGroup;
-use Akeneo\CatalogBundle\Entity\ProductField as EntityProductField;
 
 /**
  * Manager of flexible product type stored with doctrine entities
@@ -91,7 +87,7 @@ class ProductTypeManager extends EntityTypeManager
             // TODO create custom exception
             throw new \Exception("There is already an entity type {$this->class} with the code {$code}");
         } else {
-            $this->object = new EntityProductType();
+            $this->object = new $this->class();
             $this->object->setCode($code);
             $this->_codeToGroup = array();
             $this->_codeToField = array();
@@ -108,7 +104,7 @@ class ProductTypeManager extends EntityTypeManager
     public function addGroup($groupCode)
     {
         if (!isset($this->_codeToGroup[$groupCode])) {
-            $group = new EntityProductGroup();
+            $group = new ProductGroup();
             $group->setType($this->getObject());
             $group->setCode($groupCode);
             $this->getObject()->addGroup($group);
@@ -150,16 +146,19 @@ class ProductTypeManager extends EntityTypeManager
      * @param string $groupCode
      * @return ProductType
      */
-    public function addField($fieldCode, $fieldType, $groupCode)
+    public function addField($fieldCode, $fieldType, $groupCode, $title = null)
     {
         // check if field already exists
         $field = $this->getField($fieldCode);
         // create a new field
         if (!$field) {
-            $field = new EntityProductField();
+            $field = new ProductField();
             $field->setCode($fieldCode);
             $field->setType($fieldType);
-            $field->setLabel('hard coded');
+            if (!$title) {
+                $title = $fieldCode;
+            }
+            $field->setTitle($title);
             $this->_codeToField[$fieldCode]= $field;
         }
         // check if group already exists, else create a new one
@@ -225,7 +224,7 @@ class ProductTypeManager extends EntityTypeManager
      */
     public function newProductInstance()
     {
-        $product = new Product($this->getManager());
+        $product = new ProductManager($this->getManager());
         $product->create($this->getObject());
         return $product;
     }

@@ -32,11 +32,11 @@ class ProductField
     private $code;
 
     /**
-     * @var string $label
+     * @var string $title
      *
-     * @ORM\Column(name="label", type="string", length=255)
+     * @ORM\Column(name="title", type="string", length=255)
      */
-    private $label;
+    private $title;
 
     /**
     * @var string $type
@@ -81,26 +81,26 @@ class ProductField
     }
 
     /**
-     * Set label
+     * Set title
      *
-     * @param string $label
+     * @param string $title
      * @return ProductField
      */
-    public function setLabel($label)
+    public function setTitle($title)
     {
-        $this->label = $label;
+        $this->title = $title;
 
         return $this;
     }
 
     /**
-     * Get label
+     * Get title
      *
      * @return string
      */
-    public function getLabel()
+    public function getTitle()
     {
-        return $this->label;
+        return $this->title;
     }
 
     /**
@@ -125,16 +125,16 @@ class ProductField
     {
         return $this->type;
     }
-    
+
     /**
      * create code for product field
-     * 
+     *
      * @static
      * @param string $prefix
      * @param integer $vendorId
      * @param integer $categoryId
      * @return string
-     * 
+     *
      * TODO : Use method to slugify field name
      * TODO : If field name changes, all codes must be corrected to verify unicity
      */
