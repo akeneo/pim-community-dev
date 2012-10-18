@@ -10,7 +10,7 @@ use Doctrine\Common\Persistence\ObjectManager;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class EntityTypeManager extends AbstractManager
+abstract class EntityTypeManager extends AbstractManager
 {
 
     /**
@@ -81,5 +81,67 @@ class EntityTypeManager extends AbstractManager
     {
         $this->object->setTitle($title);
     }
+
+    /**
+     * Add a group to a product type
+     *
+     * @param string $groupCode
+     * @return EntityTypeManager
+     */
+    public abstract function addGroup($groupCode);
+
+    /**
+     * Get a group by code
+     *
+     * @param string $fieldGroup
+     * @return mixed
+     */
+    public abstract function getGroup($groupCode);
+
+    /**
+     * Remove group by code
+     *
+     * @param $code
+     */
+    public abstract function removeGroup($groupCode);
+
+    /**
+     * Add a field to the type
+     *
+     * @param string $fieldCode
+     * @param string $fieldType
+     * @param string $groupCode
+     * @return ProductType
+     */
+    public abstract function addField($fieldCode, $fieldType, $groupCode, $title = null);
+
+    /**
+     * Get field by code
+     *
+     * @param string $fieldCode
+     * @return mixed
+     */
+     public abstract function getField($fieldCode);
+
+    /**
+     * Remove field from group
+     *
+     * @param $code
+     */
+    //public abstract function removeFieldFromType($fieldCode);
+
+    /**
+     * Remove field
+     *
+     * @param $code
+     */
+    public abstract function removeField($fieldCode);
+
+    /**
+     * Create and return flexible product of current type
+     *
+     * @return ProductManager
+     */
+     public abstract function newProductInstance();
 
 }

@@ -3,7 +3,7 @@ namespace Akeneo\CatalogBundle\Doctrine;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
- * Abstract manager
+ * Abstract object manager, contains an entity and provide high level methods to play with flexible entity
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
@@ -66,22 +66,12 @@ abstract class AbstractManager
 
     /**
      * Return managed object
-     *
-     * TODO: should by protected ?
-     *
      * @return mixed
      */
     public function getObject()
     {
         return $this->object;
     }
-
-    /**
-     * Load encapsuled object
-     * @param string $code
-     * @return AbstractModel
-     */
-///    public abstract function find($code);
 
     /**
      * Remove current embeded object from object manager
@@ -93,7 +83,7 @@ abstract class AbstractManager
 
     /**
      * Persist current embeded object
-     * @return AbstractModel
+     * @return AbstractManager
      */
     public function persist()
     {
@@ -103,11 +93,21 @@ abstract class AbstractManager
 
     /**
      * Flush modification of object manager on database
-     * @return AbstractModel
+     * @return AbstractManager
      */
     public function flush()
     {
         $this->getManager()->flush();
+        return $this;
+    }
+
+    /**
+     * Refresh type state from database
+     * @return AbstractManager
+     */
+    public function refresh()
+    {
+        $this->getManager()->refresh($this->getObject());
         return $this;
     }
 

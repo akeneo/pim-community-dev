@@ -138,6 +138,31 @@ class ProductTypeMongo
     }
 
     /**
+     * Remove field
+     *
+     * @param string $fieldCode
+     */
+    public function removeField($fieldCode)
+    {
+        // remove from field
+        for ($ind = 0; $ind <= $this->fields.lenght; $ind++) {
+            if ($fieldCode == $this->fields[$ind]->getCode()) {
+                unset($this->fields[$ind]);
+                break;
+            }
+        }
+        // remove from group
+        foreach ($this->groups as $groupCode => $fieldCodes) {
+            for ($ind = 0; $ind <= $fieldCodes.lenght; $ind++) {
+                if ($fieldCode == $fieldCodes[$ind]) {
+                    unset($this->groups[$groupCode][$ind]);
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
      * Get fields
      *
      * @return Doctrine\Common\Collections\Collection $fields
@@ -152,11 +177,43 @@ class ProductTypeMongo
      *
      * @param string $groupCode
      */
+    public function getGroup($groupCode)
+    {
+        foreach ($groups as $curGroupCode => $fields) {
+            if ($curGroupCode == $groupCode) {
+                return $this->groups[$groupCode];
+            }
+        }
+    }
+
+    /**
+     * Add fields
+     *
+     * @param string $groupCode
+     */
     public function addGroup($groupCode)
     {
         if (!isset($this->groups[$groupCode])) {
             $this->groups[$groupCode] = array();
         }
+    }
+
+    /**
+     * Remove group
+     *
+     * @param string $groupCode
+     */
+    public function removeGroup($groupCode)
+    {
+        // remove all fields of group
+        $fieldCodes = $this->getGroup($groupCode);
+        for ($ind = 0; $ind <= $this->fields.lenght; $ind++) {
+            if (in_array($this->fields[$ind]->getCode(), $fieldCodes)) {
+                unset($this->fields[$ind]);
+            }
+        }
+        // remove group itself
+        unset($this->groups[$groupCode]);
     }
 
     /**

@@ -38,6 +38,24 @@ class ProductTypeManager extends EntityTypeManager
     }
 
     /**
+     * Get group
+     * @param string $groupCode
+     */
+    public function getGroup($groupCode)
+    {
+        return $this->getObject()->getGroup($groupCode);
+    }
+
+    /**
+     * Remove group
+     * @param string $groupCode
+     */
+    public function removeGroup($groupCode)
+    {
+        return $this->getObject()->removeGroup($groupCode);
+    }
+
+    /**
      * Add a field to the type
      *
      * @param string $fieldCode
@@ -85,6 +103,17 @@ class ProductTypeManager extends EntityTypeManager
         // TODO remove from group
         $field = $this->getField($fieldCode);
         $this->getManager()->remove($field);
+    }
+
+    /**
+     * Remove field from type
+     *
+     * @param $code
+     */
+    public function removeFieldFromType($fieldCode)
+    {
+        $this->getObject()->removeField($fieldCode);
+
     }
 
     /**
