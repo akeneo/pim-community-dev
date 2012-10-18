@@ -5,7 +5,7 @@ use Strixos\DataFlowBundle\Model\Extract\FileUnzip;
 use Strixos\DataFlowBundle\Model\Extract\FileHttpDownload;
 
 /**
- * Download a source archive (product, supplier base data) and unpack to a destination file
+ * Download a source archive (product, supplier, language base data) and unpack to a destination file
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)

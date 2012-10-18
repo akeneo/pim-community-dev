@@ -7,9 +7,7 @@ use Strixos\IcecatConnectorBundle\Extract\ProductXmlExtractor;
 use Strixos\IcecatConnectorBundle\Transform\ProductXmlToArrayTransformer;
 use Strixos\IcecatConnectorBundle\Transform\ProductArrayToCatalogProductTransformer;
 
-use Strixos\IcecatConnectorBundle\Extract\LanguagesExtract;
-use Strixos\IcecatConnectorBundle\Extract\DownloadAndUnpackSourceProducts;
-use Strixos\IcecatConnectorBundle\Extract\DownloadAndUnpackSourceSuppliers;
+use Strixos\IcecatConnectorBundle\Extract\DownloadAndUnpackSource;
 
 use Strixos\IcecatConnectorBundle\Transform\LanguagesTransform;
 use Strixos\IcecatConnectorBundle\Transform\ProductTransform;
@@ -49,7 +47,7 @@ class ConnectorService
         $archivePath = '/tmp/suppliers-list.xml.gz';
         $filePath = '/tmp/suppliers-list.xml';
         $forceDownloadFile = false;
-        $extractor = new DownloadAndUnpackSourceSuppliers($url, $login, $password, $archivePath, $filePath, $forceDownloadFile);
+        $extractor = new DownloadAndUnpackSource($url, $login, $password, $archivePath, $filePath, $forceDownloadFile);
         $extractor->extract();
 
         $loader = new BatchLoader($this->container->get('doctrine.orm.entity_manager'));
@@ -62,8 +60,14 @@ class ConnectorService
         $em   = $this->container->get('doctrine.orm.entity_manager');
         $url  = $em->getRepository('StrixosIcecatConnectorBundle:Config')->findOneByCode(Config::LANGUAGES_URL)->getValue();
         $file = $em->getRepository('StrixosIcecatConnectorBundle:Config')->findOneByCode(Config::LANGUAGES_FILE)->getValue();
+        $filePath = '/tmp/'.$file;
+        $archivePath = $file .'.gz';
+        // TODO get from config
+        $login = 'NicolasDupont';
+        $password = '1cec4t**)';
+        $forceDownloadFile = false;
 
-        $extractor = new LanguagesExtract($url, $file);
+        $extractor = new DownloadAndUnpackSource($url, $login, $password, $archivePath, $filePath, $forceDownloadFile);
         $extractor->extract();
 
         $loader = new BatchLoader($this->container->get('doctrine.orm.entity_manager'));
@@ -80,7 +84,7 @@ class ConnectorService
         $archivePath = '/tmp/export_urls_rich.txt.gz';
         $filePath = '/tmp/export_urls_rich.txt';
         $forceDownloadFile = false;
-        $extractor = new DownloadAndUnpackSourceProducts($url, $login, $password, $archivePath, $filePath, $forceDownloadFile);
+        $extractor = new DownloadAndUnpackSource($url, $login, $password, $archivePath, $filePath, $forceDownloadFile);
         $extractor->extract();
 
         $transformer = new ProductsTransform($this->container->get('doctrine.orm.entity_manager'));
