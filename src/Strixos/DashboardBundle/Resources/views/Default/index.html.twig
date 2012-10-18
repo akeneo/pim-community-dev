@@ -8,7 +8,7 @@
 
     <div class="blocks-welcome">
 
-        <div class="block-catalog ui-corner-all">
+        <div class="block-dashboard ui-corner-all">
             <h2>Catalog / Products</h2>
             <ul>
 
@@ -46,7 +46,7 @@
             </ul>
         </div>
 
-        <div class="block-dataflow ui-corner-all">
+        <div class="block-dashboard ui-corner-all">
             <h2>DataFlow / Connectors</h2>
             <ul>
                 <li>
@@ -60,8 +60,19 @@
             </ul>
         </div>
 
+        <div class="block-dashboard ui-corner-all">
+            <h2>Test / users</h2>
+            <ul>
+                <li>
+                    <a href="{{ path('pim_user_user_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
+                        <span class="ui-button-icon-primary ui-icon ui-icon-fugue-users"></span><span class="ui-button-text">Users list</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
         <div class="block-demo ui-corner-all">
-            <h2>TESTS / BENCHMARKS</h2>
+            <h2>Test / benchmark</h2>
             <ul>
                 <li>
                     <a href="{{ path('strixos_catalog_product_search') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">

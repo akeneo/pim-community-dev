@@ -36,10 +36,14 @@ class AppKernel extends Kernel
             new Strixos\DashboardBundle\StrixosDashboardBundle(),
             new Strixos\IcecatConnectorBundle\StrixosIcecatConnectorBundle(),
             new Bap\FlexibleEntityBundle\BapFlexibleEntityBundle(),
-
-            new APY\DataGridBundle\APYDataGridBundle(),
-            //new Nidup\TestBundle\NidupTestBundle(),
             new Akeneo\CatalogBundle\AkeneoCatalogBundle(),
+
+            // community bundles
+            new APY\DataGridBundle\APYDataGridBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
+
+            //new Nidup\TestBundle\NidupTestBundle(),
+            new Pim\Bundle\UserBundle\PimUserBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

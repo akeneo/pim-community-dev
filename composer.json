@@ -25,7 +25,9 @@
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "gedmo/doctrine-extensions": "*",
 
-        "apy/datagrid-bundle": "dev-master"
+        "apy/datagrid-bundle": "dev-master",
+
+        "friendsofsymfony/user-bundle" : "dev-master"
 
     },
 

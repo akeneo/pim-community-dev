@@ -74,8 +74,13 @@ doctrine_mongodb:
             server: mongodb://localhost:27017
             options:
                 connect: true
-    default_database: strixos
+    default_database: akeneo_pim
     document_managers:
         default:
             auto_mapping: true
 
+# FOS User configuration
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    firewall_name: main
+    user_class: Pim\Bundle\UserBundle\Entity\User
