@@ -3,6 +3,7 @@ namespace Strixos\IcecatConnectorBundle\Entity;
 
 use Strixos\CoreBundle\Model\AbstractModel;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Base connector config
@@ -44,6 +45,8 @@ class Config
     * @var string $code
     *
     * @ORM\Column(name="code", type="string", length=255)
+    * 
+    * @Assert\NotBlank()
     */
     private $code;
 
@@ -51,6 +54,8 @@ class Config
      * @var string $value
      *
      * @ORM\Column(name="value", type="string", length=255)
+     * 
+     * @Assert\NotBlank()
      */
     private $value;
 
