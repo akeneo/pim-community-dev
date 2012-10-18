@@ -166,33 +166,4 @@ class ProductManager extends EntityManager
         return $this;
     }
 
-    /**
-     * Adds support for magic getter / setter.
-     *
-     * @return array|object The found entity/entities.
-     * @throws BadMethodCallException  If the method called is an invalid find* method
-     *                                 or no find* method at all and therefore an invalid
-     *                                 method call.
-     */
-    public function __call($method, $arguments)
-    {
-        // check if method is getField or setField
-        switch (true) {
-            // getValue(code)
-            case (0 === strpos($method, 'get')):
-                $by = substr($method, 3);
-                $method = 'getValue';
-                $fieldName = lcfirst(\Doctrine\Common\Util\Inflector::classify($by));
-                return $this->$method($fieldName);
-                break;
-            // setValue(code, value)
-            case (0 === strpos($method, 'set')):
-                $by = substr($method, 3);
-                $method = 'setValue';
-                $fieldName = lcfirst(\Doctrine\Common\Util\Inflector::classify($by));
-                return $this->$method($fieldName, $arguments[0]);
-                break;
-        }
-    }
-
 }

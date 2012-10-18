@@ -37,6 +37,8 @@ abstract class AbstractManager
 
     /**
      * Used locale for embeded objects
+     *
+     * TODO: useless ? based on object locale ?
      * @var string
      */
     private $locale;
