@@ -21,8 +21,25 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+/*
+        $dm = $this->get('doctrine.odm.mongodb')->getManager();
+        $rep = $dm->getRepository('AkeneoCatalogBundle:ProductTypeMongo');
+//        var_dump($rep);
+
+        $dm = $this->get('doctrine')->getManager();
+        $rep = $dm->getRepository('AkeneoCatalogBundle:ProductType');
+*/
+
+        $type = $this->container->get('akeneo.catalog.model_producttype_doctrine');
+
+        $type = $this->container->get('akeneo.catalog.model_product_doctrine');
 
         $type = $this->container->get('akeneo.catalog.model_producttype_mongo');
+
+        $type = $this->container->get('akeneo.catalog.model_product_mongo');
+
+        exit();
+
         $options = array(
             'red' => array('en_US' => 'Red'),
             'blue' => array('en_US' => 'Blue')

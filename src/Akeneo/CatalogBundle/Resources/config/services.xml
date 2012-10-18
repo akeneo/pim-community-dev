@@ -4,30 +4,52 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
+    <parameters>
+
+        <!-- entity implementation (eav) -->
+        <parameter key="pim.catalog.producttypemanager.entity.class">Akeneo\CatalogBundle\Entity\ProductTypeManager</parameter>
+        <parameter key="pim.catalog.producttype.entity.class">AkeneoCatalogBundle:ProductType</parameter>
+        <parameter key="pim.catalog.productmanager.entity.class">Akeneo\CatalogBundle\Entity\ProductManager</parameter>
+        <parameter key="pim.catalog.product.entity.class">AkeneoCatalogBundle:ProductEntity</parameter>
+
+        <!-- mongodb implementation -->
+        <parameter key="pim.catalog.producttypemanager.mongodocument.class">Akeneo\CatalogBundle\Document\ProductTypeManager</parameter>
+        <parameter key="pim.catalog.producttype.mongodocument.class">AkeneoCatalogBundle:ProductTypeMongo</parameter>
+        <parameter key="pim.catalog.productmanager.mongodocument.class">Akeneo\CatalogBundle\Document\ProductManager</parameter>
+        <parameter key="pim.catalog.product.mongodocument.class">AkeneoCatalogBundle:ProductMongo</parameter>
+
+    </parameters>
+
     <services>
 
         <!-- dotrine eav test implementation -->
-        <service id="akeneo.catalog.model_producttype_doctrine" class="Akeneo\CatalogBundle\Entity\ProductTypeManager">
+        <service id="akeneo.catalog.model_producttype_doctrine" class="%pim.catalog.producttypemanager.entity.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%pim.catalog.producttype.entity.class%</argument>
         </service>
-        <service id="akeneo.catalog.model_product_doctrine" class="Akeneo\CatalogBundle\Entity\ProductManager">
+        <service id="akeneo.catalog.model_product_doctrine" class="%pim.catalog.productmanager.entity.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%pim.catalog.product.entity.class%</argument>
         </service>
 
         <!-- mongo document test implementation -->
-        <service id="akeneo.catalog.model_producttype_mongo" class="Akeneo\CatalogBundle\Document\ProductTypeManager">
+        <service id="akeneo.catalog.model_producttype_mongo" class="%pim.catalog.producttypemanager.mongodocument.class%">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument>%pim.catalog.producttype.mongodocument.class%</argument>
         </service>
-        <service id="akeneo.catalog.model_product_mongo" class="Akeneo\CatalogBundle\Document\ProductManager">
+        <service id="akeneo.catalog.model_product_mongo" class="%pim.catalog.productmanager.mongodocument.class%">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument>%pim.catalog.product.mongodocument.class%</argument>
         </service>
-        
+
         <!-- used implementation on others bundles -->
-        <service id="akeneo.catalog.model_producttype" class="Akeneo\CatalogBundle\Document\ProductTypeManager">
+        <service id="akeneo.catalog.model_producttype" class="%pim.catalog.producttypemanager.mongodocument.class%">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument>%pim.catalog.producttype.mongodocument.class%</argument>
         </service>
-        <service id="akeneo.catalog.model_product" class="Akeneo\CatalogBundle\Document\ProductManager">
+        <service id="akeneo.catalog.model_product" class="%pim.catalog.productmanager.mongodocument.class%">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument>%pim.catalog.product.mongodocument.class%</argument>
         </service>
 
     </services>

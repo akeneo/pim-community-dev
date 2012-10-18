@@ -18,6 +18,18 @@ abstract class AbstractManager
     protected $manager;
 
     /**
+     * object class
+     * @var string $class
+     */
+    protected $class;
+
+    /**
+     * object repository
+     * @var str
+     */
+    protected $repository;
+
+    /**
      * Main Entity or Document managed
      * @var mixed
      */
@@ -30,13 +42,19 @@ abstract class AbstractManager
     private $locale;
 
     /**
-     * Aims to inject object manager
+     * Constructor.
      *
-     * @param ObjectManager $objectManager
+     * @param ObjectManager           $om
+     * @param string                  $class
      */
-    public function __construct($objectManager)
+    public function __construct(ObjectManager $om, $class)
     {
-        $this->manager = $objectManager;
+        $this->manager = $om;
+        // TODO : why there is some quote inside ?
+        $class = str_replace('"', '', $class);
+        $this->repository = $om->getRepository($class);
+        $metadata = $om->getClassMetadata($class);
+        $this->class = $metadata->getName();
     }
 
     /**

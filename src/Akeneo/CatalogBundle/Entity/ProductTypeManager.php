@@ -33,15 +33,6 @@ class ProductTypeManager extends EntityTypeManager
     protected $_codeToField;
 
     /**
-     * Get code
-     * @return string code
-     */
-    public function getCode()
-    {
-        return $this->getObject()->getCode();
-    }
-
-    /**
      * Get groups code
      * @return Array
      */

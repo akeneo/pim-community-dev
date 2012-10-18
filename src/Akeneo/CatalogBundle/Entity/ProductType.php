@@ -4,7 +4,6 @@ namespace Akeneo\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Doctrine\ORM\Mapping as ORM;
-use Bap\FlexibleEntityBundle\Model\EntityType;
 
 /**
  * @author    Nicolas Dupont <nicolas@akeneo.com>
@@ -46,11 +45,11 @@ class ProductType
     {
         $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -66,14 +65,14 @@ class ProductType
     public function setCode($code)
     {
         $this->code = $code;
-    
+
         return $this;
     }
 
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -89,7 +88,7 @@ class ProductType
     public function addGroup(\Akeneo\CatalogBundle\Entity\ProductGroup $groups)
     {
         $this->groups[] = $groups;
-    
+
         return $this;
     }
 
@@ -106,22 +105,22 @@ class ProductType
     /**
      * Get groups
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getGroups()
     {
         return $this->groups;
     }
-    
+
     /**
      * create code for product type
-     * 
+     *
      * @static
      * @param string $prefix
      * @param integer $vendorId
      * @param integer $categoryId
      * @return string
-     * 
+     *
      * TODO : Use method to slugify vendor name and category name
      * TODO : If vendor or category name change, all codes must be corrected to verify unicity
      */

@@ -18,15 +18,6 @@ class ProductTypeManager extends EntityTypeManager
 {
 
     /**
-     * Get code
-     * @return string code
-     */
-    public function getCode()
-    {
-        return $this->getObject()->getCode();
-    }
-
-    /**
      * Get groups code
      * @return Array
      */
@@ -180,16 +171,6 @@ class ProductTypeManager extends EntityTypeManager
         // TODO : deal with locale
         $this->getManager()->refresh($this->getObject());
         return $this;
-    }
-
-    /**
-    * get locale code
-     *
-    * @return string $locale
-    */
-    public function getLocale()
-    {
-        $this->getObject()->getLocale();
     }
 
     /**

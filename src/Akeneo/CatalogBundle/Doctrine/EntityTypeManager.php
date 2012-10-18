@@ -13,4 +13,24 @@ use Doctrine\Common\Persistence\ObjectManager;
 class EntityTypeManager extends AbstractManager
 {
 
+    /**
+     * Object type class
+     * @var mixed
+     */
+    protected $typeClass;
+
+    /**
+    * Object class
+    * @var mixed
+    */
+    protected $objectClass;
+
+    /**
+     * Get type object code
+     * @return string code
+     */
+    public function getCode()
+    {
+        return $this->getObject()->getCode();
+    }
 }
