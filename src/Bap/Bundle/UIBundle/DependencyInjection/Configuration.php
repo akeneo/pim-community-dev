@@ -1,6 +1,6 @@
 <?php
 
-namespace Strixos\WidgetBundle\DependencyInjection;
+namespace Bap\Bundle\UIBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('strixos_widget');
+        $rootNode = $treeBuilder->root('bap_ui');
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for

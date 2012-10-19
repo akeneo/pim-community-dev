@@ -6,11 +6,11 @@
 
     <!--
     <parameters>
-        <parameter key="strixos_widget.example.class">Strixos\WidgetBundle\Example</parameter>
+        <parameter key="pim_ui.example.class">Pim\Bundle\UIBundle\Example</parameter>
     </parameters>
 
     <services>
-        <service id="strixos_widget.example" class="%strixos_widget.example.class%">
+        <service id="pim_ui.example" class="%pim_ui.example.class%">
             <argument type="service" id="service_id" />
             <argument>plain_value</argument>
             <argument>%parameter_name%</argument>

@@ -27,10 +27,12 @@ class AppKernel extends Kernel
 
             // BAP modules
             new Bap\Bundle\FlexibleEntityBundle\BapFlexibleEntityBundle(),
+            new Bap\Bundle\UIBundle\BapUIBundle(),
 
             // PIM modules
+            new Pim\Bundle\UIBundle\PimUIBundle(),
+            new Pim\Bundle\UserBundle\PimUserBundle(),
             new Strixos\CoreBundle\StrixosCoreBundle(),
-            new Strixos\WidgetBundle\StrixosWidgetBundle(),
             new Strixos\CatalogBundle\StrixosCatalogBundle(),
             new Strixos\ReportBundle\StrixosReportBundle(),
             new Strixos\DataFlowBundle\StrixosDataFlowBundle(),
@@ -43,7 +45,6 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
 
             //new Nidup\TestBundle\NidupTestBundle(),
-            new Pim\Bundle\UserBundle\PimUserBundle(),
 
         );
 
