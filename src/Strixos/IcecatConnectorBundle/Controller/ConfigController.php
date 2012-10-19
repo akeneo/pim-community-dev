@@ -1,6 +1,12 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
+use Strixos\IcecatConnectorBundle\Form\Type\ConfigsType;
+
+use Strixos\IcecatConnectorBundle\Entity\Configs;
+
 use Strixos\IcecatConnectorBundle\Form\Type\CollectionType;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -40,11 +46,14 @@ class ConfigController extends Controller
      */
     public function editAction()
     {
+        // get configuration values from database
         $em = $this->getDoctrine()->getEntityManager();
-        $configs = $em->getRepository('StrixosIcecatConnectorBundle:Config')->findAll();
+        $listConfigs = $em->getRepository('StrixosIcecatConnectorBundle:Config')->findAll();
         
+        // Create a Configs entity
+        $configs = new Configs($listConfigs);
         
-        $form = $this->createForm(new CollectionType(), $configs);
+        $form = $this->createForm(new ConfigsType(), $configs);
         
         return $this->render('StrixosIcecatConnectorBundle:Config:edit.html.twig', array(
                 'form' => $form->createView(),
@@ -59,9 +68,9 @@ class ConfigController extends Controller
      */
     public function saveAction(Request $request)
     {
-    	var_dump($_POST);
-    	
-    	
+        var_dump($_POST);
+        
+        
         // get current persisted config entities
         $em = $this->getDoctrine()->getEntityManager();
         $originalConfigs = $em->getRepository('StrixosIcecatConnectorBundle:Config')->findAll();
@@ -70,19 +79,19 @@ class ConfigController extends Controller
         $form = $this->createForm(new CollectionType(), $originalConfigs);
         
         if ($request->isMethod('POST')) {
-        	$form->bindRequest($request);
-        	
-        	if ($form->isValid()) {
-        		
-        		// TODO : remove config rows
-        		
-        		// TODO : Add config rows
-        		
-        		// TODO : Edit config rows
-        		
-        		
-        		return array('message' => 'Insert with success');
-        	}
+            $form->bindRequest($request);
+            
+            if ($form->isValid()) {
+                
+                // TODO : remove config rows
+                
+                // TODO : Add config rows
+                
+                // TODO : Edit config rows
+                
+                
+                return array('message' => 'Insert with success');
+            }
         }
         
         return array('message' => 'Insert fail');

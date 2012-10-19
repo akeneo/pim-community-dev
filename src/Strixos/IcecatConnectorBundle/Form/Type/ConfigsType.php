@@ -2,7 +2,6 @@
 namespace Strixos\IcecatConnectorBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\Form\AbstractType;
 
 /**
@@ -12,7 +11,7 @@ use Symfony\Component\Form\AbstractType;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class CollectionType extends AbstractType
+class ConfigsType extends AbstractType
 {
     /**
      * (non-PHPdoc)
@@ -20,20 +19,23 @@ class CollectionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $entities = $options['data'];
-        
-        foreach ($entities as $entity)
-        {
-        	$builder->add(
-        		'configs', 'collection',
-        		array(
-        			'type' 		   => new ConfigType($builder, $entity),
-        			'allow_add'	   => true,
-        			'allow_delete' => true,
-        			'by_reference' => false,
-        		)
-        	);
-        }
+        $builder->add('configs', 'collection', array(
+                'type' => new ConfigType(),
+                'allow_add' => true,
+                'by_reference' => false,
+            )
+        );
+    }
+    
+    /**
+     * (non-PHPdoc)
+     * @see \Symfony\Component\Form\AbstractType::getDefaultOptions()
+     */
+    public function getDefaultOptions(array $options)
+    {
+        return array(
+            'data_class' => 'Strixos\IcecatConnectorBundle\Entity\Configs'
+        );
     }
     
     /**
@@ -42,6 +44,6 @@ class CollectionType extends AbstractType
      */
     public function getName()
     {
-        return 'strixos_icecatconnector_config';
+        return 'configs';
     }
 }
