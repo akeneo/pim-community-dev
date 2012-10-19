@@ -43,8 +43,8 @@ class ConfigController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
         $configs = $em->getRepository('StrixosIcecatConnectorBundle:Config')->findAll();
         
-        $form = $this->createForm(new CollectionType(), $configs);
         
+        $form = $this->createForm(new CollectionType(), $configs);
         
         return $this->render('StrixosIcecatConnectorBundle:Config:edit.html.twig', array(
                 'form' => $form->createView(),
