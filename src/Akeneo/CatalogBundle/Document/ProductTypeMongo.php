@@ -1,6 +1,7 @@
 <?php
 namespace Akeneo\CatalogBundle\Document;
 
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityType as AbstractEntityType;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Doctrine\Common\Collections\ArrayCollection;
 use APY\DataGridBundle\Grid\Mapping as GRID;
@@ -15,7 +16,7 @@ use APY\DataGridBundle\Grid\Mapping as GRID;
  * @MongoDB\Document
  * @GRID\Source(columns="id, code")
  */
-class ProductTypeMongo
+class ProductTypeMongo extends AbstractEntityType
 {
     /**
      * @MongoDB\Id
@@ -88,38 +89,6 @@ class ProductTypeMongo
         if (!$this->locale) {
             $this->locale = 'en_US';
         }
-    }
-
-    /**
-     * Get id
-     *
-     * @return id $id
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set code
-     *
-     * @param string $code
-     * @return ProductTypeMongo
-     */
-    public function setCode($code)
-    {
-        $this->code = $code;
-        return $this;
-    }
-
-    /**
-     * Get code
-     *
-     * @return string $code
-     */
-    public function getCode()
-    {
-        return $this->code;
     }
 
     /**

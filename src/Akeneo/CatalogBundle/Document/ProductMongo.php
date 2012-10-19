@@ -1,6 +1,7 @@
 <?php
 namespace Akeneo\CatalogBundle\Document;
 
+use Bap\Bundle\FlexibleEntityBundle\Model\Entity as AbstractEntity;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -16,7 +17,7 @@ use APY\DataGridBundle\Grid\Mapping as GRID;
  * @MongoDB\Document
  * @GRID\Source(columns="id")
  */
-class ProductMongo
+class ProductMongo extends AbstractEntity
 {
     //@see https://doctrine-mongodb-odm.readthedocs.org/en/latest/reference/annotations-reference.html
 
@@ -102,38 +103,6 @@ class ProductMongo
         if (!$this->locale) {
             $this->locale = 'en_US';
         }
-    }
-
-    /**
-     * Get id
-     *
-     * @return id $id
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set type
-     *
-     * @param Akeneo\CatalogBundle\Document\ProductTypeMongo $type
-     * @return ProductMongo
-     */
-    public function setType(\Akeneo\CatalogBundle\Document\ProductTypeMongo $type)
-    {
-        $this->type = $type;
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @return Akeneo\CatalogBundle\Document\ProductTypeMongo $type
-     */
-    public function getType()
-    {
-        return $this->type;
     }
 
     /**

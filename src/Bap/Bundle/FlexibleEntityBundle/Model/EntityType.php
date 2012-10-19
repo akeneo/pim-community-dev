@@ -3,25 +3,25 @@ namespace Bap\Bundle\FlexibleEntityBundle\Model;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
- * Abstract entity, independent of storage
+ * Abstract entity type, independent of storage
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-abstract class Entity
+abstract class EntityType
 {
 
     /**
      * @var integer $id
      */
-    protected $id;
+    private $id;
 
     /**
-     * @var EntityType $type
+     * @var string $code
      */
-    protected $type;
+    protected $code;
 
     /**
      * Get id
@@ -34,24 +34,24 @@ abstract class Entity
     }
 
     /**
-     * Get type
+     * Get code
      *
-     * @return EntityType
+     * @return string
      */
-    public function getType()
+    public function getCode()
     {
-        return $this->type;
+        return $this->code;
     }
 
     /**
-     * Set type
+     * Set code
      *
-     * @param EntityType $type
-     * @return Entity
+     * @param string $code
+     * @return ProductType
      */
-    public function setType($type = null)
+    public function setCode($code)
     {
-        $this->type = $type;
+        $this->code = $code;
         return $this;
     }
 

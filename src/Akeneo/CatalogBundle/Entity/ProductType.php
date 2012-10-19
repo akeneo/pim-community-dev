@@ -1,6 +1,7 @@
 <?php
 namespace Akeneo\CatalogBundle\Entity;
 
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityType as AbstractEntityType;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="AkeneoCatalog_Product_Type")
  * @ORM\Entity
  */
-class ProductType
+class ProductType extends AbstractEntityType
 {
     /**
      * @var integer $id
@@ -44,39 +45,6 @@ class ProductType
     public function __construct()
     {
         $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set code
-     *
-     * @param string $code
-     * @return ProductType
-     */
-    public function setCode($code)
-    {
-        $this->code = $code;
-
-        return $this;
-    }
-
-    /**
-     * Get code
-     *
-     * @return string
-     */
-    public function getCode()
-    {
-        return $this->code;
     }
 
     /**
@@ -112,20 +80,4 @@ class ProductType
         return $this->groups;
     }
 
-    /**
-     * create code for product type
-     *
-     * @static
-     * @param string $prefix
-     * @param integer $vendorId
-     * @param integer $categoryId
-     * @return string
-     *
-     * TODO : Use method to slugify vendor name and category name
-     * TODO : If vendor or category name change, all codes must be corrected to verify unicity
-     */
-    public static function createCode($prefix, $vendorId, $categoryId)
-    {
-        return strtolower($prefix.'-'.$vendorId.'-'.$categoryId);
-    }
 }
