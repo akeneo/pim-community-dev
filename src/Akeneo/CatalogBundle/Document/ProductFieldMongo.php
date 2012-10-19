@@ -1,11 +1,12 @@
 <?php
 namespace Akeneo\CatalogBundle\Document;
+
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityField as AbstractEntityField;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Doctrine\Common\Collections\ArrayCollection;
 use APY\DataGridBundle\Grid\Mapping as GRID;
 
 /**
- *
  * Product type field as document
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
@@ -15,7 +16,7 @@ use APY\DataGridBundle\Grid\Mapping as GRID;
  * @MongoDB\Document
  * @GRID\Source(columns="id, code, type")
  */
-class ProductFieldMongo
+class ProductFieldMongo extends AbstractEntityField
 {
 
     /**
@@ -85,60 +86,6 @@ class ProductFieldMongo
         if (!$this->locale) {
             $this->locale = 'en_US';
         }
-    }
-
-    /**
-     * Get id
-     *
-     * @return id $id
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set code
-     *
-     * @param string $code
-     * @return ProductFieldMongo
-     */
-    public function setCode($code)
-    {
-        $this->code = $code;
-        return $this;
-    }
-
-    /**
-     * Get code
-     *
-     * @return string $code
-     */
-    public function getCode()
-    {
-        return $this->code;
-    }
-
-    /**
-     * Set type
-     *
-     * @param string $type
-     * @return ProductFieldMongo
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @return string $type
-     */
-    public function getType()
-    {
-        return $this->type;
     }
 
     /**

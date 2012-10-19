@@ -1,6 +1,5 @@
 <?php
 namespace Bap\Bundle\FlexibleEntityBundle\Model;
-use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * Abstract entity type, independent of storage
@@ -16,7 +15,7 @@ abstract class EntityType
     /**
      * @var integer $id
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string $code

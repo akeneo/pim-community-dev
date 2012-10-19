@@ -1,6 +1,5 @@
 <?php
 namespace Bap\Bundle\FlexibleEntityBundle\Model;
-use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * Abstract entity, independent of storage
