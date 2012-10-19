@@ -1,1 +1,6 @@
 {% extends 'BapUIBundle::layout.html.twig' %}
+
+{% block head_css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/pimui/css/main-pim.css') }}" />
+{% endblock %}
