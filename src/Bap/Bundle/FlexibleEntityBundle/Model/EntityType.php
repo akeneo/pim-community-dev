@@ -23,6 +23,11 @@ abstract class EntityType
     protected $code;
 
     /**
+    * @var string $title
+    */
+    protected $title;
+
+    /**
      * Get id
      *
      * @return integer
@@ -46,12 +51,36 @@ abstract class EntityType
      * Set code
      *
      * @param string $code
-     * @return ProductType
+     * @return EntityType
      */
     public function setCode($code)
     {
         $this->code = $code;
         return $this;
+    }
+
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     * @return EntityType
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
     }
 
 }

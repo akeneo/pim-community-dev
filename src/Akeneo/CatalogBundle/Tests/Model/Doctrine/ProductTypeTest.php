@@ -19,6 +19,7 @@ class ProductTypeTest extends AbtractProductTypeTest
     protected $modelType   = 'Akeneo\CatalogBundle\Entity\ProductTypeManager';
     protected $modelEntity = 'Akeneo\CatalogBundle\Entity\ProductManager';
     protected $entityType  = 'Akeneo\CatalogBundle\Entity\ProductType';
+    protected $entity      = 'Akeneo\CatalogBundle\Entity\ProductEntity';
     protected $entityGroup = 'Akeneo\CatalogBundle\Entity\ProductGroup';
     protected $entityField = 'Akeneo\CatalogBundle\Entity\ProductField';
 }

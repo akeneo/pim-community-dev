@@ -16,9 +16,11 @@ use Akeneo\CatalogBundle\Tests\Model\AbtractProductTypeTest;
 class ProductTypeTest extends AbtractProductTypeTest
 {
     protected $serviceName = 'akeneo.catalog.model_producttype_mongo';
+
     protected $modelType   = 'Akeneo\CatalogBundle\Document\ProductTypeManager';
     protected $modelEntity = 'Akeneo\CatalogBundle\Document\ProductManager';
+
     protected $entityType  = 'Akeneo\CatalogBundle\Document\ProductTypeMongo';
-    protected $entityGroup = 'Akeneo\CatalogBundle\Document\ProductGroupMongo';
+    protected $entity      = 'Akeneo\CatalogBundle\Document\ProductMongo';
     protected $entityField = 'Akeneo\CatalogBundle\Document\ProductFieldMongo';
 }

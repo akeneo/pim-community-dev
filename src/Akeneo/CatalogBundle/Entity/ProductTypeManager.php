@@ -89,6 +89,10 @@ class ProductTypeManager extends EntityTypeManager
         } else {
             $this->object = new $this->class();
             $this->object->setCode($code);
+            if (!$title) {
+                $title = $code;
+            }
+            $this->object->setTitle($title);
             $this->_codeToGroup = array();
             $this->_codeToField = array();
         }

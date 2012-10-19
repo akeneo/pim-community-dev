@@ -23,13 +23,117 @@ abstract class AbtractProductTypeTest extends KernelAwareTest
     protected $serviceName = null;
     protected $modelType   = null;
     protected $modelEntity = null;
+    protected $entity      = null;
     protected $entityType  = null;
     protected $entityGroup = null;
     protected $entityField = null;
 
+    protected $newTypeCode = null;
+
+    /**
+    * (non-documented)
+    * TODO : Automatic link to PHPUnit_Framework_TestCase::setUp documentation
+    */
+    public function setUp()
+    {
+        parent::setUp();
+        if (!$this->newTypeCode) {
+            $this->newTypeCode = self::TYPE_BASE.'_'.time();
+            $manager = $this->container->get($this->serviceName);
+            $manager->create($this->newTypeCode);
+        }
+    }
+
+    /**
+     * test related method
+     */
+    public function testFind()
+    {
+        $manager = $this->container->get($this->serviceName);
+        $manager->find($this->newTypeCode);
+        $this->assertInstanceOf($this->modelType, $manager);
+        $this->assertInstanceOf($this->entityType, $manager->getObject());
+        $this->assertEquals($manager->getCode(), $this->newTypeCode);
+    }
+
+    /**
+     * test related method
+     */
+    public function testCreate()
+    {
+        $code = $this->newTypeCode.'_2';
+        $manager = $this->container->get($this->serviceName);
+        $manager->create($code);
+        $this->assertInstanceOf($this->modelType, $manager);
+        $this->assertInstanceOf($this->entityType, $manager->getObject());
+    }
+
+    /**
+    * test basic getters / setters
+    */
+    public function testGettersSetters()
+    {
+        $code = $this->newTypeCode.'_3';
+        $manager = $this->container->get($this->serviceName);
+        $manager->create($code);
+        $this->assertEquals($code, $manager->getCode());
+        $title = 'my title';
+        $manager->setTitle($title);
+        $this->assertEquals($title, $manager->getTitle());
+    }
+
+    /**
+     * test method related to groups and fields
+     */
+    public function testGroupsAndFields()
+    {
+        $manager = $this->container->get($this->serviceName);
+        $manager->find($this->newTypeCode);
+
+        // add info fields
+        $fields = array('sku', 'name', 'short_description', 'description', 'color');
+        foreach ($fields as $fieldCode) {
+            $manager->addField($fieldCode, 'text', self::TYPE_GROUP_INFO);
+        }
+
+        // add media fields
+        $fields = array('image', 'thumbnail');
+        foreach ($fields as $fieldCode) {
+            $manager->addField($fieldCode, 'text', self::TYPE_GROUP_MEDIA);
+        }
+
+        // add others empty groups
+        $manager->addGroup(self::TYPE_GROUP_SEO);
+        $manager->addGroup(self::TYPE_GROUP_TECHNIC);
+
+        $this->assertEquals(count($manager->getGroupsCodes()), 4);
+
+        // TODO : nb fields
+
+
+        // persist type
+        $manager->persist();
+        $manager->flush();
+
+        // create product and related service
+        $productManager = $manager->newProductInstance();
+        $this->assertInstanceOf($this->entity, $productManager->getObject());
+
+        // remove
+        $manager->remove();
+    }
+
+    /**
+     * test related method
+     */
+    public function testNewEntityInstance()
+    {
+    }
+
+
     /**
      * TODO: explode in more atomic tests
-     */
+     *
     public function testPersistence()
     {
         // remove if exists
@@ -71,9 +175,7 @@ abstract class AbtractProductTypeTest extends KernelAwareTest
 
         // asserts
         $this->assertEquals(count($type->getGroupsCodes()), 4);
-        /*
-        $this->assertEquals(count($type->getFieldsCodes()), 7);
-
+/*        $this->assertEquals(count($type->getFieldsCodes()), 7);
 
         // find
         $type = $this->container->get($this->serviceName);
@@ -99,8 +201,8 @@ abstract class AbtractProductTypeTest extends KernelAwareTest
         // create product and related service
         $product = $type->newProductInstance();
         $this->assertInstanceOf($this->modelEntity, $product);
-*/
+
         // remove
         $type->remove();
-    }
+    }*/
 }

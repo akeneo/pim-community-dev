@@ -33,6 +33,13 @@ class ProductType extends AbstractEntityType
     protected $code;
 
     /**
+    * @var string $title
+    *
+    * @ORM\Column(name="title", type="string", length=255)
+    */
+    protected $title;
+
+    /**
      * @var ArrayCollection $groups
      *
      * @ORM\OneToMany(targetEntity="ProductGroup", mappedBy="type", cascade={"persist", "remove"})
