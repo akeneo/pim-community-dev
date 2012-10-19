@@ -1,7 +1,7 @@
 <?php
 namespace Akeneo\CatalogBundle\Entity;
 
-use Akeneo\CatalogBundle\Doctrine\EntityTypeManager;
+use Bap\Bundle\FlexibleEntityBundle\Doctrine\EntityTypeManager;
 
 /**
  * Manager of flexible product type stored with doctrine entities

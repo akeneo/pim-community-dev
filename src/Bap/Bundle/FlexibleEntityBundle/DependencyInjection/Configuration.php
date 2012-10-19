@@ -1,6 +1,6 @@
 <?php
 
-namespace Bap\FlexibleEntityBundle\DependencyInjection;
+namespace Bap\Bundle\FlexibleEntityBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

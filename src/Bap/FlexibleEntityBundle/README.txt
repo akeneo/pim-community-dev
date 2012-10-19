@@ -1,1 +1,0 @@
-Provide generic implementation from Akeneo_Catalog (concrete implementation on product)

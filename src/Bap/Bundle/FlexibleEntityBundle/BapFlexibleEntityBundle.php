@@ -1,6 +1,6 @@
 <?php
 
-namespace Bap\FlexibleEntityBundle;
+namespace Bap\Bundle\FlexibleEntityBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

@@ -1,7 +1,7 @@
 <?php
 namespace Akeneo\CatalogBundle\Document;
 
-use Akeneo\CatalogBundle\Doctrine\EntityManager;
+use Bap\Bundle\FlexibleEntityBundle\Doctrine\EntityManager;
 use Akeneo\CatalogBundle\Document\ProductMongo;
 
 /**

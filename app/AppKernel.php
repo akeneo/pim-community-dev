@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             // translatable, timestampable, etc
 
             // BAP modules
+            new Bap\Bundle\FlexibleEntityBundle\BapFlexibleEntityBundle(),
 
             // PIM modules
             new Strixos\CoreBundle\StrixosCoreBundle(),
@@ -35,7 +36,6 @@ class AppKernel extends Kernel
             new Strixos\DataFlowBundle\StrixosDataFlowBundle(),
             new Strixos\DashboardBundle\StrixosDashboardBundle(),
             new Strixos\IcecatConnectorBundle\StrixosIcecatConnectorBundle(),
-            new Bap\FlexibleEntityBundle\BapFlexibleEntityBundle(),
             new Akeneo\CatalogBundle\AkeneoCatalogBundle(),
 
             // community bundles
@@ -44,6 +44,7 @@ class AppKernel extends Kernel
 
             //new Nidup\TestBundle\NidupTestBundle(),
             new Pim\Bundle\UserBundle\PimUserBundle(),
+
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -1,5 +1,5 @@
 <?php
-namespace Akeneo\CatalogBundle\Doctrine;
+namespace Bap\Bundle\FlexibleEntityBundle\Doctrine;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
@@ -84,7 +84,7 @@ abstract class EntityTypeManager extends AbstractManager
     }
 
     /**
-     * Get product type title
+     * Get entity type title
      * @return string
      */
     public function getTitle()
@@ -93,7 +93,7 @@ abstract class EntityTypeManager extends AbstractManager
     }
 
     /**
-     * Set product type title
+     * Set entity type title
      * @param string $title
      */
     public function setTitle($title)
@@ -102,7 +102,7 @@ abstract class EntityTypeManager extends AbstractManager
     }
 
     /**
-     * Add a group to a product type
+     * Add a group to a entity type
      *
      * @param string $groupCode
      * @return EntityTypeManager
@@ -130,7 +130,7 @@ abstract class EntityTypeManager extends AbstractManager
      * @param string $fieldCode
      * @param string $fieldType
      * @param string $groupCode
-     * @return ProductType
+     * @return EntityTypeManager
      */
     public abstract function addField($fieldCode, $fieldType, $groupCode, $title = null);
 

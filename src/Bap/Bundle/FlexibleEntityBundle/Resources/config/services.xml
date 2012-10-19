@@ -6,7 +6,7 @@
 
     <!--
     <parameters>
-        <parameter key="bap_flexible_entity.example.class">Bap\FlexibleEntityBundle\Example</parameter>
+        <parameter key="bap_flexible_entity.example.class">Bap\Bundle\FlexibleEntityBundle\Example</parameter>
     </parameters>
 
     <services>

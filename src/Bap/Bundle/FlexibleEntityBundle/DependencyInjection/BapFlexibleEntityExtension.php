@@ -1,6 +1,6 @@
 <?php
 
-namespace Bap\FlexibleEntityBundle\DependencyInjection;
+namespace Bap\Bundle\FlexibleEntityBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;

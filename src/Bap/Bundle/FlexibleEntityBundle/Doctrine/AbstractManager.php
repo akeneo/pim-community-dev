@@ -1,5 +1,5 @@
 <?php
-namespace Akeneo\CatalogBundle\Doctrine;
+namespace Bap\Bundle\FlexibleEntityBundle\Doctrine;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
@@ -114,7 +114,7 @@ abstract class AbstractManager
     }
 
     /**
-     * Get product locale
+     * Get entity locale
      *
      * @return string $locale
      */

@@ -1,5 +1,5 @@
 <?php
-namespace Akeneo\CatalogBundle\Doctrine;
+namespace Bap\Bundle\FlexibleEntityBundle\Doctrine;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
@@ -15,10 +15,10 @@ abstract class EntityManager extends AbstractManager
 
     /**
      * Load encapsuled entity
-     * @param integer
-     * @return ProductType
+     * @param integer $entityId
+     * @return EntityTypeManager
      */
-    public abstract function find($productId);
+    public abstract function find($entityId);
 
     /**
      * Create an embeded type entity
