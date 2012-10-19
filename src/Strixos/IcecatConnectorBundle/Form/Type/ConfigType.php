@@ -20,10 +20,9 @@ class ConfigType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-    	$builder->add('id', 'hidden');
-    	$builder->add('code');
-    	$builder->add('value');
-    	
+        $builder->add('id', 'hidden');
+        $builder->add('code');
+        $builder->add('value');
     }
 
     /**
@@ -43,6 +42,6 @@ class ConfigType extends AbstractType
      */
     public function getName()
     {
-        return 'strixos_icecatconnector_config';
+        return 'config';
     }
 }
