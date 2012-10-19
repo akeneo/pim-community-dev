@@ -109,6 +109,17 @@ class ProductMongo extends AbstractEntity
      * Set values
      *
      * @param string $code
+     * @return ProductMongo
+     */
+    public function getValue($code)
+    {
+        return $this->{'values_'.$this->locale}[$code];
+    }
+
+    /**
+     * Set values
+     *
+     * @param string $code
      * @param string $value
      * @return ProductMongo
      */
