@@ -80,11 +80,8 @@ class ProductFieldController extends Controller
             throw $this->createNotFoundException('Unable to find ProductField entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-
         return array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
+            'entity'      => $entity
         );
 
     }
@@ -148,20 +145,15 @@ class ProductFieldController extends Controller
 
         $entity = $manager->getRepository($this->fieldShortname)->find($id);
 
-var_dump($entity)        ; exit();
-
-
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find product field.');
         }
 
         $editForm = $this->createForm(new ProductFieldType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
 
         $params = array(
             'entity'      => $entity,
             'form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         );
 
         // render form
@@ -185,7 +177,6 @@ var_dump($entity)        ; exit();
             throw $this->createNotFoundException('Unable to find product field.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createForm(new ProductFieldType(), $entity);
         $editForm->bind($request);
 
@@ -200,7 +191,6 @@ var_dump($entity)        ; exit();
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         );
     }
 
@@ -208,33 +198,22 @@ var_dump($entity)        ; exit();
      * Deletes a ProductField entity.
      *
      * @Route("/{id}/delete")
-     * @Method("POST")
      */
     public function deleteAction(Request $request, $id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->bind($request);
+        $manager = $this->get($this->managerService);
+        $entity = $manager->getRepository($this->fieldShortname)->find($id);
 
-        if ($form->isValid()) {
-            $manager = $this->get($this->managerService);
-            $entity = $manager->getRepository($this->fieldShortname)->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find product field.');
-            }
-
-            $manager->remove($entity);
-            $manager->flush();
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find product field.');
         }
+
+        $manager->remove($entity);
+        $manager->flush();
+
+        $this->get('session')->setFlash('notice', 'Field has been deleted');
 
         return $this->redirect($this->generateUrl('akeneo_catalog_productfield_index'));
     }
 
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder(array('id' => $id))
-            ->add('id', 'hidden')
-            ->getForm()
-        ;
-    }
 }

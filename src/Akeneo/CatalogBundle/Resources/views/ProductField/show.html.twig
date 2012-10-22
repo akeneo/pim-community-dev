@@ -43,12 +43,6 @@
                 Edit
             </a>
         </li>
-        <li>
-            <form action="{{ path('akeneo_catalog_productfield_delete', { 'id': entity.id }) }}" method="post">
-                {{ form_widget(delete_form) }}
-                <button type="submit">Delete</button>
-            </form>
-        </li>
     </ul>
 
 {% endblock %}

@@ -1,5 +1,4 @@
 <?php
-
 namespace Akeneo\CatalogBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -35,19 +34,13 @@ class ProductFieldType extends AbstractType
             )
         );
 
-
-
-        /*
-        $builder->add(
-            'titles', 'collection',
-            array(
-                'allow_add'    => true,
+        $builder->add('options', 'collection', array(
+                'type' => new ProductFieldOptionType(),
+                'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
             )
         );
-*/
-
 
 //        var_dump($entity->getOptions());
 
