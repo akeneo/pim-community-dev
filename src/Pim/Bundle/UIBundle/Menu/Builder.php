@@ -38,7 +38,9 @@ class Builder extends ContainerAware
         $menu['Users']->setAttribute('class', $firstLevelCssClass);
 
         // second level items
-        $menu['Catalog']->addChild('Product List', array('route' => 'akeneo_catalog_product_index'));
+        $menu['Catalog']->addChild('Products', array('route' => 'akeneo_catalog_product_index'));
+        $menu['Catalog']->addChild('Product types', array('route' => 'akeneo_catalog_producttype_index'));
+        $menu['Catalog']->addChild('Product fields', array('route' => 'akeneo_catalog_productfield_index'));
         $menu['Connectors']->addChild('Icecat');
         $menu['Connectors']['Icecat']->addChild('Settings', array('route' => 'strixos_icecatconnector_config_edit'));
         $menu['Connectors']['Icecat']->addChild('Suppliers list', array('route' => 'strixos_icecatconnector_supplier_list'));

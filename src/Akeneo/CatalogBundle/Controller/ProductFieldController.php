@@ -55,35 +55,11 @@ class ProductFieldController extends Controller
         $grid->setSource($source);
 
         // add an action column
-        $rowAction = new RowAction('Show', 'akeneo_catalog_productfield_show');
-        $rowAction->setRouteParameters(array('id'));
-        $grid->addRowAction($rowAction);
         $rowAction = new RowAction('Edit', 'akeneo_catalog_productfield_edit');
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
         // manage the grid redirection, exports response of the controller
         return $grid->getGridResponse('AkeneoCatalogBundle:ProductField:index.html.twig');
-    }
-
-    /**
-     * Finds and displays a ProductField entity.
-     *
-     * @Route("/{id}/show")
-     * @Template()
-     */
-    public function showAction($id)
-    {
-        $manager = $this->get($this->managerService);
-        $entity = $manager->getRepository($this->fieldShortname)->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find ProductField entity.');
-        }
-
-        return array(
-            'entity'      => $entity
-        );
-
     }
 
     /**
