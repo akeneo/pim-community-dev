@@ -1,5 +1,5 @@
 {
-    "hash": "586da0a0374e6f74f54ee64809fb7530",
+    "hash": "7110ea9b1cb3643e1b1549a86e2abc55",
     "packages": [
         {
             "name": "apy/datagrid-bundle",
@@ -8,12 +8,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/Abhoryo/APYDataGridBundle.git",
-                "reference": "c3df54dc57af50145b212e5e71228f6a9f30506f"
+                "reference": "e980c974f0f8e34d16cc0b39c20f43ede8c30fd8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/Abhoryo/APYDataGridBundle/zipball/c3df54dc57af50145b212e5e71228f6a9f30506f",
-                "reference": "c3df54dc57af50145b212e5e71228f6a9f30506f",
+                "url": "https://github.com/Abhoryo/APYDataGridBundle/zipball/e980c974f0f8e34d16cc0b39c20f43ede8c30fd8",
+                "reference": "e980c974f0f8e34d16cc0b39c20f43ede8c30fd8",
                 "shasum": ""
             },
             "require": {
@@ -26,7 +26,7 @@
                 "ext-mbstring": "Convert your data with the right charset",
                 "PHPExcel": "Export the grid (Excel, HTML or PDF)"
             },
-            "time": "1350513995",
+            "time": "1350564961",
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
@@ -616,12 +616,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle",
-                "reference": "127391cd83e86bcf97e5d861aac1e39c14d3999d"
+                "reference": "fe0f21f6abfe1303c58839c18bedc09135247909"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/FriendsOfSymfony/FOSUserBundle/zipball/127391cd83e86bcf97e5d861aac1e39c14d3999d",
-                "reference": "127391cd83e86bcf97e5d861aac1e39c14d3999d",
+                "url": "https://github.com/FriendsOfSymfony/FOSUserBundle/zipball/fe0f21f6abfe1303c58839c18bedc09135247909",
+                "reference": "fe0f21f6abfe1303c58839c18bedc09135247909",
                 "shasum": ""
             },
             "require": {
@@ -642,7 +642,7 @@
                 "doctrine/doctrine-bundle": "*",
                 "doctrine/mongodb-odm-bundle": "*"
             },
-            "time": "1350050664",
+            "time": "1350660447",
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
@@ -995,17 +995,135 @@
             "time": "1346947943"
         },
         {
+            "name": "knplabs/knp-menu",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "http://github.com/KnpLabs/KnpMenu.git",
+                "reference": "b750b0346cec3cb77e49ed75c6e272bc9636a47b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/KnpLabs/KnpMenu/zipball/b750b0346cec3cb77e49ed75c6e272bc9636a47b",
+                "reference": "b750b0346cec3cb77e49ed75c6e272bc9636a47b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "silex/silex": "1.0.*",
+                "twig/twig": ">=1.2,<2.0-dev",
+                "pimple/pimple": "1.0.*"
+            },
+            "suggest": {
+                "pimple/pimple": "for the built-in implementations of the menu provider and renderer provider",
+                "silex/silex": "for the integration with your silex application",
+                "twig/twig": "for the TwigRenderer and the integration with your templates"
+            },
+            "time": "1348823561",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Knp\\Menu\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christophe Coevoet",
+                    "email": "stof@notk.org"
+                },
+                {
+                    "name": "KnpLabs",
+                    "homepage": "http://knplabs.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://github.com/KnpLabs/KnpMenu/contributors"
+                }
+            ],
+            "description": "An object oriented menu library",
+            "homepage": "http://knplabs.com",
+            "keywords": [
+                "menu",
+                "tree"
+            ]
+        },
+        {
+            "name": "knplabs/knp-menu-bundle",
+            "version": "dev-master",
+            "target-dir": "Knp/Bundle/MenuBundle",
+            "source": {
+                "type": "git",
+                "url": "http://github.com/KnpLabs/KnpMenuBundle.git",
+                "reference": "6040c533f561da285e38e8bda271d7aaaf62fd10"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/KnpLabs/KnpMenuBundle/zipball/6040c533f561da285e38e8bda271d7aaaf62fd10",
+                "reference": "6040c533f561da285e38e8bda271d7aaaf62fd10",
+                "shasum": ""
+            },
+            "require": {
+                "knplabs/knp-menu": "2.0.*",
+                "symfony/framework-bundle": ">=2.0,<2.3-dev"
+            },
+            "time": "1350241999",
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Knp\\Bundle\\MenuBundle": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christophe Coevoet",
+                    "email": "stof@notk.org"
+                },
+                {
+                    "name": "Knplabs",
+                    "homepage": "http://knplabs.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://github.com/KnpLabs/KnpMenuBundle/contributors"
+                }
+            ],
+            "description": "This bundle provides an integration of the KnpMenu library",
+            "keywords": [
+                "menu"
+            ]
+        },
+        {
             "name": "kriswallsmith/assetic",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "http://github.com/kriswallsmith/assetic.git",
-                "reference": "e22c5e07e672bb0cf43127e97e9368b53abf4aa8"
+                "reference": "fa85fb99d63ad0a10d832bde584fc3963e0a7918"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/kriswallsmith/assetic/zipball/e22c5e07e672bb0cf43127e97e9368b53abf4aa8",
-                "reference": "e22c5e07e672bb0cf43127e97e9368b53abf4aa8",
+                "url": "https://github.com/kriswallsmith/assetic/zipball/fa85fb99d63ad0a10d832bde584fc3963e0a7918",
+                "reference": "fa85fb99d63ad0a10d832bde584fc3963e0a7918",
                 "shasum": ""
             },
             "require": {
@@ -1026,6 +1144,7 @@
                 "ptachoire/cssembed": "Assetic provides the integration with phpcssembed to embed data uris",
                 "leafo/scssphp-compass": "Assetic provides the integration with the SCSS compass plugin"
             },
+            "time": "1350597340",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1057,8 +1176,7 @@
                 "assets",
                 "compression",
                 "minification"
-            ],
-            "time": "1349004759"
+            ]
         },
         {
             "name": "monolog/monolog",
@@ -1313,12 +1431,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/AsseticBundle",
-                "reference": "7d7393fc9d01f77a3da254735303d696181048c1"
+                "reference": "03528c45a8128cde610a305a9a67611eae4074aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/AsseticBundle/zipball/7d7393fc9d01f77a3da254735303d696181048c1",
-                "reference": "7d7393fc9d01f77a3da254735303d696181048c1",
+                "url": "https://github.com/symfony/AsseticBundle/zipball/03528c45a8128cde610a305a9a67611eae4074aa",
+                "reference": "03528c45a8128cde610a305a9a67611eae4074aa",
                 "shasum": ""
             },
             "require": {
@@ -1338,7 +1456,7 @@
             "suggest": {
                 "symfony/twig-bundle": ">=2.1.0,<2.3-dev"
             },
-            "time": "1350218039",
+            "time": "1350597352",
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
@@ -1485,12 +1603,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/symfony/symfony.git",
-                "reference": "defccb35161e29c99cb0b2f18b6d6e97a6a1632b"
+                "reference": "dba9bc35953b0d2b6e33ca316b3587f4049232f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/symfony/zipball/defccb35161e29c99cb0b2f18b6d6e97a6a1632b",
-                "reference": "defccb35161e29c99cb0b2f18b6d6e97a6a1632b",
+                "url": "https://github.com/symfony/symfony/zipball/dba9bc35953b0d2b6e33ca316b3587f4049232f5",
+                "reference": "dba9bc35953b0d2b6e33ca316b3587f4049232f5",
                 "shasum": ""
             },
             "require": {
@@ -1539,7 +1657,7 @@
                 "propel/propel1": "dev-master",
                 "monolog/monolog": "1.*"
             },
-            "time": "1350396939",
+            "time": "1350645874",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1625,22 +1743,22 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Twig.git",
-                "reference": "bac6bc7851c51692af1d855065e88b564e047b3b"
+                "reference": "244eaf53b30632850c2b582fcea57ff1b9ac407f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Twig/zipball/bac6bc7851c51692af1d855065e88b564e047b3b",
-                "reference": "bac6bc7851c51692af1d855065e88b564e047b3b",
+                "url": "https://github.com/fabpot/Twig/zipball/244eaf53b30632850c2b582fcea57ff1b9ac407f",
+                "reference": "244eaf53b30632850c2b582fcea57ff1b9ac407f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
-            "time": "1350391198",
+            "time": "1350650176",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.10-dev"
+                    "dev-master": "1.11-dev"
                 }
             },
             "installation-source": "source",
@@ -1678,6 +1796,7 @@
         "doctrine/mongodb-odm-bundle": 10,
         "doctrine/doctrine-fixtures-bundle": 20,
         "apy/datagrid-bundle": 20,
-        "friendsofsymfony/user-bundle": 20
+        "friendsofsymfony/user-bundle": 20,
+        "knplabs/knp-menu-bundle": 20
     }
 }

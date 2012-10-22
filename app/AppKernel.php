@@ -43,6 +43,8 @@ class AppKernel extends Kernel
             // community bundles
             new APY\DataGridBundle\APYDataGridBundle(),
             new FOS\UserBundle\FOSUserBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+
 
             //new Nidup\TestBundle\NidupTestBundle(),
 

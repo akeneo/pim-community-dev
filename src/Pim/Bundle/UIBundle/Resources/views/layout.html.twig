@@ -4,3 +4,8 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('bundles/pimui/css/main-pim.css') }}" />
 {% endblock %}
+
+{% block main_menu %}
+    {{ knp_menu_render('PimUIBundle:Builder:mainMenu') }}
+{% endblock %}
+

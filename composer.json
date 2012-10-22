@@ -26,8 +26,8 @@
         "gedmo/doctrine-extensions": "*",
 
         "apy/datagrid-bundle": "dev-master",
-
-        "friendsofsymfony/user-bundle" : "dev-master"
+        "friendsofsymfony/user-bundle" : "dev-master",
+        "knplabs/knp-menu-bundle":"dev-master"
 
     },
 
