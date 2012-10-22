@@ -54,4 +54,17 @@ class Configs
     {
         $this->configs = $configs;
     }
+    
+    public function removeConfig(Config $config)
+    {
+    	$key = array_search($config, $this->configs, true);
+    	
+    	if ($key !== false) {
+    		unset($this->configs[$key]);
+    	
+    		return true;
+    	}
+    	
+    	return false;
+    }
 }

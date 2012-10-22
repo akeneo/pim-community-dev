@@ -68,6 +68,19 @@ class Config
     {
         return $this->id;
     }
+    
+    /**
+     * Set id
+     * 
+     * @param integer $id
+     * @return Config
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        
+        return $this;
+    }
 
     /**
      * Set code

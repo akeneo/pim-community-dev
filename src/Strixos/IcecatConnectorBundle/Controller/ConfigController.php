@@ -78,9 +78,9 @@ class ConfigController extends Controller
         $form = $this->createForm(new ConfigsType(), $configs);
         
         if ($request->isMethod('POST')) {
-            $form->bindRequest($request);
+            $form->bind($request);
             
-            /*if ($form->isValid()) {
+            if ($form->isValid()) {
             	foreach ($configs as $config) {
             		$em->persists($config);
             	}
@@ -88,7 +88,10 @@ class ConfigController extends Controller
             	$em->flush();
             	                
                 return array('message' => 'Insert with success');
-            }*/
+            }
+            else {
+            	return array('message' => $form->getErrors());
+            }
         }
         
         return array('message' => 'Insert fail');
