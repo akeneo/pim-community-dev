@@ -25,12 +25,6 @@
 
             {% block main_menu %}{% endblock %}
 
-            {% for flashMessage in app.session.flashbag.get('notice') %}
-                <div class="flash-message">
-                    <em>Notice</em>: {{ flashMessage }}
-                </div>
-            {% endfor %}
-
             <div class="content ui-corner-all">
 
                 {% block content_menu %}
@@ -45,6 +39,12 @@
                     </ul>
                     <div style="clear: both"></div>
                 {% endblock %}
+    
+                {% for flashMessage in app.session.flashbag.get('notice') %}
+                    <div class="flash-message">
+                        <em>Notice</em>: {{ flashMessage }}
+                    </div>
+                {% endfor %}
 
                 {% block content %}{% endblock %}
             </div>
