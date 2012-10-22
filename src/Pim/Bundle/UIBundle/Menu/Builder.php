@@ -14,6 +14,8 @@ use Symfony\Component\DependencyInjection\ContainerAware;
  */
 class Builder extends ContainerAware
 {
+    const MAIN_MENU_CODE = 'PIM_MAIN_MENU';
+
     /**
      * Create our main menu
      * @param FactoryInterface $factory
@@ -22,14 +24,27 @@ class Builder extends ContainerAware
      */
     public function mainMenu(FactoryInterface $factory, array $options)
     {
-        $menu = $factory->createItem('root');
+        $menu = $factory->createItem(self::MAIN_MENU_CODE);
 
+        // first level items
+        $firstLevelCssClass = 'first-level';
         $menu->addChild('Dashboard', array('route' => '_welcome'));
-        $menu->addChild('Product List', array('route' => 'akeneo_catalog_product_index'));
-
-
+        $menu['Dashboard']->setAttribute('class', $firstLevelCssClass);
+        $menu->addChild('Catalog');
+        $menu['Catalog']->setAttribute('class', $firstLevelCssClass);
         $menu->addChild('Connectors');
-        $menu['Connectors']->addChild('Supplier List', array('route' => 'strixos_icecatconnector_supplier_list'));
+        $menu['Connectors']->setAttribute('class', $firstLevelCssClass);
+        $menu->addChild('Users');
+        $menu['Users']->setAttribute('class', $firstLevelCssClass);
+
+        // second level items
+        $menu['Catalog']->addChild('Product List', array('route' => 'akeneo_catalog_product_index'));
+        $menu['Connectors']->addChild('Icecat');
+        $menu['Connectors']['Icecat']->addChild('Settings', array('route' => 'strixos_icecatconnector_config_edit'));
+        $menu['Connectors']['Icecat']->addChild('Suppliers list', array('route' => 'strixos_icecatconnector_supplier_list'));
+        $menu['Connectors']['Icecat']->addChild('Products list', array('route' => 'strixos_icecatconnector_product_list'));
+
+        // TODO get menu items from bundles (each can define its own items)
 
         // TODO : get from tree structure (get from database, so each bundle can declare its own items)
         /*

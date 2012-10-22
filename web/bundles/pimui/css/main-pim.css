@@ -2,3 +2,12 @@
 /* connectors */
 .ui-icon-connector-icecat { background-position: 0 0; background-image:url(icons-connector/icecat-16.gif) !important;}
 .ui-icon-connector-magento { background-position: 0 0; background-image:url(icons-connector/magento-16.gif) !important;}
+
+#main-menu-pim {
+    background-color: white;
+    border: 1px solid #DFDFDF;
+    margin: 0 25px 20px;
+    padding: 10px;
+    height:80px;
+}
+#main-menu-pim li.first-level { float: left; margin-right: 25px;}
