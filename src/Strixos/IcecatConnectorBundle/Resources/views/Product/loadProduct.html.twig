@@ -1,6 +1,6 @@
 {% extends 'StrixosIcecatConnectorBundle::layout.html.twig' %}
 
-{% block title %}StrixOS - Product {{ product.getProdId }} {% endblock %}
+{% block title %}{{ parent() }} Product {{ product.getProdId }} {% endblock %}
 
 {% block content %}
 
