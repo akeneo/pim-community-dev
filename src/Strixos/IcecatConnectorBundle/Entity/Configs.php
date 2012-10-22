@@ -27,16 +27,6 @@ class Configs
     }
     
     /**
-     * Add a Config entity to the collection
-     * 
-     * @param Config $config
-     */
-    public function addConfig(Config $config)
-    {
-        $this->configs[] = $config;
-    }
-    
-    /**
      * Get configs
      * 
      * @return ArrayCollection
@@ -50,21 +40,8 @@ class Configs
      * Set configs
      * @param array $configs
      */
-    public function setConfigs(array $configs)
+    public function setConfigs($configs)
     {
         $this->configs = $configs;
-    }
-    
-    public function removeConfig(Config $config)
-    {
-    	$key = array_search($config, $this->configs, true);
-    	
-    	if ($key !== false) {
-    		unset($this->configs[$key]);
-    	
-    		return true;
-    	}
-    	
-    	return false;
     }
 }

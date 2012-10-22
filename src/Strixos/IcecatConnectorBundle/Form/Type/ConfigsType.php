@@ -21,8 +21,8 @@ class ConfigsType extends AbstractType
     {
         $builder->add('configs', 'collection', array(
                 'type' => new ConfigType(),
-                'allow_add' => true,
-        		'allow_delete' => true,
+                'allow_add' => false,
+        		'allow_delete' => false,
                 'by_reference' => false,
             )
         );

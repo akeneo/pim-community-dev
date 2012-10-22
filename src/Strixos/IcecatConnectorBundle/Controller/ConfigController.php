@@ -41,10 +41,11 @@ class ConfigController extends Controller
     
     /**
      * Edit configuration of icecat connector
+     * @var Request $request
      * @Route("/config/edit")
      * @Template()
      */
-    public function editAction()
+    public function editAction(Request $request)
     {
         // get configuration values from database
         $em = $this->getDoctrine()->getEntityManager();
@@ -55,45 +56,24 @@ class ConfigController extends Controller
         
         $form = $this->createForm(new ConfigsType(), $configs);
         
-        return $this->render('StrixosIcecatConnectorBundle:Config:edit.html.twig', array(
-                'form' => $form->createView(),
-        ));
-    }
-    
-    /**
-     * 
-     * @var Request $request
-     * @Route("/config/save")
-     * @Template()
-     */
-    public function saveAction(Request $request)
-    {
-        // get current persisted config entities
-        $em = $this->getDoctrine()->getEntityManager();
-        $listConfigs = $em->getRepository('StrixosIcecatConnectorBundle:Config')->findAll();
-        
-        // Create a Configs entity
-        $configs = new Configs($listConfigs);
-        
-        $form = $this->createForm(new ConfigsType(), $configs);
-        
+        // validate form if method POST
         if ($request->isMethod('POST')) {
             $form->bind($request);
-            
+        
             if ($form->isValid()) {
-            	foreach ($configs as $config) {
-            		$em->persists($config);
-            	}
-            	
-            	$em->flush();
-            	                
-                return array('message' => 'Insert with success');
-            }
-            else {
-            	return array('message' => $form->getErrors());
+                // if form is valid, save datas
+                foreach ($configs as $config) {
+                    $em->persists($config);
+                }
+                 
+                $em->flush();
+
+                $this->get('session')->setFlash('message', 'Insert with success');
             }
         }
         
-        return array('message' => 'Insert fail');
+        return $this->render('StrixosIcecatConnectorBundle:Config:edit.html.twig', array(
+                'form' => $form->createView(),
+        ));
     }
 }

@@ -44,7 +44,7 @@ class Config
     /**
     * @var string $code
     *
-    * @ORM\Column(name="code", type="string", length=255)
+    * @ORM\Column(name="code", type="string", length=30, unique=true)
     * 
     * @Assert\NotBlank()
     */

@@ -21,7 +21,7 @@ class ConfigType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('id', 'hidden');
-        $builder->add('code');
+        $builder->add('code', 'text', array('read_only' => true));
         $builder->add('value');
     }
 
