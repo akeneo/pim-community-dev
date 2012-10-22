@@ -61,6 +61,7 @@ class ProductFieldType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
+        //    'data_class' => 'Akeneo\CatalogBundle\Entity\ProductField'
             'data_class' => 'Akeneo\CatalogBundle\Document\ProductFieldMongo'
         ));
     }

@@ -1,5 +1,4 @@
 <?php
-
 namespace Akeneo\CatalogBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -24,16 +23,17 @@ use APY\DataGridBundle\Grid\Column\TextColumn;
  *
  * @Route("/productfield")
  */
-class ProductFieldController extends Controller
+class ProductFieldController extends AbstractProductController
 {
+
     /**
-     * TODO aims to easily change from one implementation to other
+     * (non-PHPdoc)
+     * @see Parent
      */
-    const DOCTRINE_MANAGER = 'doctrine.orm.entity_manager';
-    const DOCTRINE_MONGO_MANAGER = 'doctrine.odm.mongodb.document_manager';
-    protected $managerService = self::DOCTRINE_MONGO_MANAGER;
-    protected $fieldShortname = 'AkeneoCatalogBundle:ProductFieldMongo';
-    protected $fieldClassname = 'Akeneo\CatalogBundle\Document\ProductFieldMongo';
+    public function getObjectShortName()
+    {
+        return $this->container->getParameter('pim.catalog.product.field.class');
+    }
 
     /**
      * Lists all fields
@@ -44,13 +44,7 @@ class ProductFieldController extends Controller
     public function indexAction()
     {
         // creates simple grid based on entity or document (ORM or ODM)
-        if ($this->managerService == self::DOCTRINE_MONGO_MANAGER) {
-            $source = new GridDocument($this->fieldShortname);
-        } else if ($this->managerService == self::DOCTRINE_MANAGER) {
-            $source = new GridEntity($this->fieldShortname);
-        } else {
-            throw new \Exception('Unknow object manager');
-        }
+        $source = $this->getGridSource();
         $grid = $this->get('grid');
         $grid->setSource($source);
 
@@ -58,6 +52,7 @@ class ProductFieldController extends Controller
         $rowAction = new RowAction('Edit', 'akeneo_catalog_productfield_edit');
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
+
         // manage the grid redirection, exports response of the controller
         return $grid->getGridResponse('AkeneoCatalogBundle:ProductField:index.html.twig');
     }
@@ -70,7 +65,7 @@ class ProductFieldController extends Controller
      */
     public function newAction()
     {
-        $entity = new $this->fieldClassname();
+        $entity = $this->getNewObject();
         $form   = $this->createForm(new ProductFieldType(), $entity);
 
         // render form
@@ -88,14 +83,14 @@ class ProductFieldController extends Controller
      */
     public function createAction(Request $request)
     {
-        $entity  = new $this->fieldClassname();
+        $entity  = $this->getNewObject();
         $form = $this->createForm(new ProductFieldType(), $entity);
         $form->bind($request);
 
         // TODO : avoid to create product field with same code -> complete validation
 
         if ($form->isValid()) {
-            $manager = $this->get($this->managerService);
+            $manager = $this->get($this->getObjectManagerService());
             $manager->persist($entity);
             $manager->flush();
             $this->get('session')->setFlash('notice', 'Field has been created');
@@ -117,9 +112,9 @@ class ProductFieldController extends Controller
      */
     public function editAction($id)
     {
-        $manager = $this->get($this->managerService);
+        $manager = $this->get($this->getObjectManagerService());
 
-        $entity = $manager->getRepository($this->fieldShortname)->find($id);
+        $entity = $manager->getRepository($this->getObjectShortName())->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find product field.');
@@ -145,9 +140,9 @@ class ProductFieldController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $manager = $this->get($this->managerService);
+        $manager = $this->get($this->getObjectManagerService());
 
-        $entity = $manager->getRepository($this->fieldShortname)->find($id);
+        $entity = $manager->getRepository($this->getObjectShortName())->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find product field.');
@@ -177,8 +172,8 @@ class ProductFieldController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        $manager = $this->get($this->managerService);
-        $entity = $manager->getRepository($this->fieldShortname)->find($id);
+        $manager = $this->get($this->getObjectManagerService());
+        $entity = $manager->getRepository($this->getObjectShortName())->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find product field.');
