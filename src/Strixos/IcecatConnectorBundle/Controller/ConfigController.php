@@ -68,30 +68,27 @@ class ConfigController extends Controller
      */
     public function saveAction(Request $request)
     {
-        var_dump($_POST);
-        
-        
         // get current persisted config entities
         $em = $this->getDoctrine()->getEntityManager();
-        $originalConfigs = $em->getRepository('StrixosIcecatConnectorBundle:Config')->findAll();
+        $listConfigs = $em->getRepository('StrixosIcecatConnectorBundle:Config')->findAll();
         
+        // Create a Configs entity
+        $configs = new Configs($listConfigs);
         
-        $form = $this->createForm(new CollectionType(), $originalConfigs);
+        $form = $this->createForm(new ConfigsType(), $configs);
         
         if ($request->isMethod('POST')) {
             $form->bindRequest($request);
             
-            if ($form->isValid()) {
-                
-                // TODO : remove config rows
-                
-                // TODO : Add config rows
-                
-                // TODO : Edit config rows
-                
-                
+            /*if ($form->isValid()) {
+            	foreach ($configs as $config) {
+            		$em->persists($config);
+            	}
+            	
+            	$em->flush();
+            	                
                 return array('message' => 'Insert with success');
-            }
+            }*/
         }
         
         return array('message' => 'Insert fail');
