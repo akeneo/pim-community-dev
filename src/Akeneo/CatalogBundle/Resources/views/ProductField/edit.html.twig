@@ -20,7 +20,7 @@
 
     <h1>Catalog product field edit</h1>
 
-    {% form_theme form 'StrixosWidgetBundle:Form:fields.html.twig' %}
+    {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
     <form action="{{ path('akeneo_catalog_productfield_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(form) }}>
         {{ form_errors(form) }}
     
