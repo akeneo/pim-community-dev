@@ -16,14 +16,7 @@ use \XMLReader;
  */
 class LanguagesTransform implements TransformInterface
 {
-    const URL              = 'https://data.icecat.biz/export/freexml/refs/LanguageList.xml.gz';
-    const XML_FILE_ARCHIVE = '/tmp/languages-list.xml.gz';
-    const XML_FILE         = '/tmp/languages-list.xml';
-
-
     protected $loader;
-
-
 
     /**
      * Constructor

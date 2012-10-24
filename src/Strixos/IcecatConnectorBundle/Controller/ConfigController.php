@@ -1,6 +1,8 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Controller;
 
+use Strixos\IcecatConnectorBundle\Entity\ConfigManager;
+
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Strixos\IcecatConnectorBundle\Form\Type\ConfigsType;
@@ -49,7 +51,8 @@ class ConfigController extends Controller
     {
         // get configuration values from database
         $em = $this->getDoctrine()->getEntityManager();
-        $listConfigs = $em->getRepository('StrixosIcecatConnectorBundle:Config')->findAll();
+        $configManager = new ConfigManager($em);
+        $listConfigs = $configManager->getConfig();
         
         // Create a Configs entity
         $configs = new Configs($listConfigs);

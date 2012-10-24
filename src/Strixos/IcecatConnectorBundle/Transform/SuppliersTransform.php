@@ -17,23 +17,25 @@ use \XMLReader;
  */
 class SuppliersTransform implements TransformInterface
 {
-
-    const URL              = 'http://data.icecat.biz/export/freeurls/supplier_mapping.xml';
-    const XML_FILE_ARCHIVE = '/tmp/suppliers-list.xml.gz';
-    const XML_FILE         = '/tmp/suppliers-list.xml';
-
+    /**
+     * @var BatchLoader
+     */
     protected $loader;
-
-
+    
+    /**
+     * @var string
+     */
+    protected $filePath;
 
     /**
      * Constructor
-     * @param SupplierLoader $loader
+     * @param BatchLoader $loader
      */
-    public function __construct($loader)
+    public function __construct($loader, $filePath)
     {
         //$this->container = $container;
         $this->loader = $loader;
+        $this->filePath = $filePath;
     }
 
     /**
@@ -46,7 +48,7 @@ class SuppliersTransform implements TransformInterface
     {
         // read xml document and parse to suppliers entities
         $xml = new XMLReader();
-        $xml->open(self::XML_FILE);
+        $xml->open($this->filePath);
 
         while ($xml->read()) {
             if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'SupplierMapping') {

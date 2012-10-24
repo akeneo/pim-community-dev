@@ -25,5 +25,6 @@ class StrixosIcecatConnectorExtension extends Extension
         $fileLocator = new FileLocator(__DIR__.'/../Resources/config');
         $loader = new Loader\XmlFileLoader($container, $fileLocator);
         $loader->load('services.xml');
+//         $loader->load('validation.xml');
     }
 }

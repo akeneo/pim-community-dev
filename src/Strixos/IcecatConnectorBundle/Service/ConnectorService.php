@@ -2,11 +2,13 @@
 namespace Strixos\IcecatConnectorBundle\Service;
 
 use Strixos\IcecatConnectorBundle\Entity\Config;
+use Strixos\IcecatConnectorBundle\Entity\ConfigManager;
 
 use Strixos\IcecatConnectorBundle\Extract\ProductXmlExtractor;
 use Strixos\IcecatConnectorBundle\Transform\ProductXmlToArrayTransformer;
 use Strixos\IcecatConnectorBundle\Transform\ProductArrayToCatalogProductTransformer;
 
+use Strixos\IcecatConnectorBundle\Extract\DownloadSource;
 use Strixos\IcecatConnectorBundle\Extract\DownloadAndUnpackSource;
 
 use Strixos\IcecatConnectorBundle\Transform\LanguagesTransform;
@@ -26,8 +28,16 @@ use Strixos\IcecatConnectorBundle\Load\BatchLoader;
  */
 class ConnectorService
 {
-
+    /**
+     * @var ContainerInterface $container
+     */
     protected $container;
+    
+    /**
+     * Config manager
+     * @var ConfigManager
+     */
+    protected $configManager;
 
     /**
      * Constructor
@@ -36,37 +46,46 @@ class ConnectorService
     public function __construct($container)
     {
         $this->container = $container;
+        $this->configManager = new ConfigManager($this->container->get('doctrine.orm.entity_manager'));
     }
 
+    /**
+     * Import suppliers from icecat database
+     */
     public function importSuppliers()
     {
-        // TODO get from config
-        $url = 'http://data.icecat.biz/export/freeurls/supplier_mapping.xml';
-        $login = 'NicolasDupont';
-        $password = '1cec4t**)';
-        $archivePath = '/tmp/suppliers-list.xml.gz';
-        $filePath = '/tmp/suppliers-list.xml';
-        $forceDownloadFile = false;
-        $extractor = new DownloadAndUnpackSource($url, $login, $password, $archivePath, $filePath, $forceDownloadFile);
+        // Get config
+        $login    = $this->configManager->getValue(Config::LOGIN);
+        $password = $this->configManager->getValue(Config::PASSWORD);
+        $url      = $this->configManager->getValue(Config::SUPPLIERS_URL);
+        $baseDir  = $this->configManager->getValue(Config::BASE_DIR);
+        $filePath    = $baseDir . $this->configManager->getValue(Config::SUPPLIERS_FILE);
+        $forceDownloadFile = true;
+        
+        // Call extractor
+        $extractor = new DownloadSource($url, $login, $password, $filePath, $forceDownloadFile);
         $extractor->extract();
 
         $loader = new BatchLoader($this->container->get('doctrine.orm.entity_manager'));
-        $transformer = new SuppliersTransform($loader);
+        $transformer = new SuppliersTransform($loader, $filePath);
         $transformer->transform();
     }
 
+    /**
+     * Import languages from icecat database
+     */
     public function importLanguages()
     {
-        $em   = $this->container->get('doctrine.orm.entity_manager');
-        $url  = $em->getRepository('StrixosIcecatConnectorBundle:Config')->findOneByCode(Config::LANGUAGES_URL)->getValue();
-        $file = $em->getRepository('StrixosIcecatConnectorBundle:Config')->findOneByCode(Config::LANGUAGES_FILE)->getValue();
-        $filePath = '/tmp/'.$file;
-        $archivePath = $file .'.gz';
-        // TODO get from config
-        $login = 'NicolasDupont';
-        $password = '1cec4t**)';
-        $forceDownloadFile = false;
+        // Get config
+        $login    = $this->configManager->getValue(Config::LOGIN);
+        $password = $this->configManager->getValue(Config::PASSWORD);
+        $url      = $this->configManager->getValue(Config::LANGUAGES_URL);
+        $baseDir  = $this->configManager->getValue(Config::BASE_DIR);
+        $filePath = $baseDir . $this->configManager->getValue(Config::LANGUAGES_FILE);
+        $archivePath = $baseDir . $this->configManager->getValue(Config::LANGUAGES_ARCHIVED_FILE);
+        $forceDownloadFile = true;
 
+        // Call extractor
         $extractor = new DownloadAndUnpackSource($url, $login, $password, $archivePath, $filePath, $forceDownloadFile);
         $extractor->extract();
 
@@ -75,15 +94,22 @@ class ConnectorService
         $transformer->transform();
     }
 
+    /**
+     * Import products from icecat database
+     */
     public function importProducts()
     {
-        // TODO get from config
-        $url = 'http://data.icecat.biz/export/freeurls/export_urls_rich.txt.gz';
-        $login = 'NicolasDupont';
-        $password = '1cec4t**)';
-        $archivePath = '/tmp/export_urls_rich.txt.gz';
-        $filePath = '/tmp/export_urls_rich.txt';
+        // Get config
+        $login    = $this->configManager->getValue(Config::LOGIN);
+        $password = $this->configManager->getValue(Config::PASSWORD);
+        $url      = $this->configManager->getValue(Config::PRODUCTS_URL);
+        $baseDir  = $this->configManager->getValue(Config::BASE_DIR);
+        $filePath = $baseDir . $this->configManager->getValue(Config::PRODUCTS_FILE);
+        $archiveFile = $baseDir . $this->configManager->getValue(Config::PRODUCTS_ARCHIVED_FILE);
+        $archivePath = $filePath .'.gz';
         $forceDownloadFile = false;
+        
+        // Call extractor
         $extractor = new DownloadAndUnpackSource($url, $login, $password, $archivePath, $filePath, $forceDownloadFile);
         $extractor->extract();
 
@@ -134,6 +160,10 @@ class ConnectorService
         }
     }
 
+    /**
+     * Import all products from a supplier
+     * @param Supplier $supplier
+     */
     public function importProductsFromSupplier($supplier)
     {
         $em = $this->container->get('doctrine.orm.entity_manager');

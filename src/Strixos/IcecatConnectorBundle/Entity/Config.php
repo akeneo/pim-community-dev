@@ -17,20 +17,26 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Config
 {
-
-    
-    const LANGUAGES_URL = 'languages_url';
+    /**
+     * @staticvar string
+     */
+    const LANGUAGES_URL  = 'languages-url';
     const LANGUAGES_FILE = 'languages-file';
+    const LANGUAGES_ARCHIVED_FILE = 'languages-archived-file';
     
-    const PRODUCTS_URL = 'products-url';
-    const PRODUCTS_FILE = 'products-file';
+    const PRODUCTS_URL   = 'products-url';
+    const PRODUCTS_FILE  = 'products-file';
+    const PRODUCTS_ARCHIVED_FILE = 'products-archived-file';
     
-    const PRODUCT_URL = 'product-url';
-    const PRODUCT_FILE = 'product-file';
+    const PRODUCT_URL    = 'product-url';
+    const PRODUCT_FILE   = 'product-file';
     
-    const SUPPLIERS_URL = 'suppliers-url';
+    const SUPPLIERS_URL  = 'suppliers-url';
     const SUPPLIERS_FILE = 'suppliers-file';
     
+    const LOGIN          = 'login';
+    const PASSWORD       = 'password';
+    const BASE_DIR       = 'base-dir';
     
    /**
      * @var integer $id
@@ -42,12 +48,14 @@ class Config
     private $id;
 
     /**
-    * @var string $code
-    *
-    * @ORM\Column(name="code", type="string", length=30, unique=true)
-    * 
-    * @Assert\NotBlank()
-    */
+     * @var string $code
+     * 
+     * @ORM\Column(name="code", type="string", length=30, unique=true)
+     * 
+     * @Assert\NotBlank()
+     * @Assert\MinLength(5)
+     * @Assert\MaxLength(30)
+     */
     private $code;
 
     /**

@@ -30,8 +30,11 @@ class IcecatController extends Controller
             $connection->executeUpdate("SET foreign_key_checks = 0");
             
             $connection->executeUpdate($platform->getTruncateTableSQL('StrixosIcecatConnector_Language', true));
-            $connection->executeUpdate($platform->getTruncateTableSQL('StrixosIcecatConnector_Supplier', true));
             $connection->executeUpdate($platform->getTruncateTableSQL('StrixosIcecatConnector_Product', true));
+            $connection->executeUpdate($platform->getTruncateTableSQL('StrixosIcecatConnector_SourceLanguage', true));
+            $connection->executeUpdate($platform->getTruncateTableSQL('StrixosIcecatConnector_SourceProduct', true));
+            $connection->executeUpdate($platform->getTruncateTableSQL('StrixosIcecatConnector_SourceSupplier', true));
+            $connection->executeUpdate($platform->getTruncateTableSQL('StrixosIcecatConnector_Supplier', true));
             
             $connection->executeUpdate("SET foreign_key_checks = 1");
             $connection->commit();
@@ -60,8 +63,11 @@ class IcecatController extends Controller
             
             // truncate icecat tables
             $connection->executeUpdate($platform->getTruncateTableSQL('StrixosIcecatConnector_Language', true));
-            $connection->executeUpdate($platform->getTruncateTableSQL('StrixosIcecatConnector_Supplier', true));
             $connection->executeUpdate($platform->getTruncateTableSQL('StrixosIcecatConnector_Product', true));
+            $connection->executeUpdate($platform->getTruncateTableSQL('StrixosIcecatConnector_SourceLanguage', true));
+            $connection->executeUpdate($platform->getTruncateTableSQL('StrixosIcecatConnector_SourceProduct', true));
+            $connection->executeUpdate($platform->getTruncateTableSQL('StrixosIcecatConnector_SourceSupplier', true));
+            $connection->executeUpdate($platform->getTruncateTableSQL('StrixosIcecatConnector_Supplier', true));
             
             // truncate pim tables
             $connection->executeUpdate($platform->getTruncateTableSQL('AkeneoCatalog_Product_Entity', true));
