@@ -30,6 +30,7 @@ class Config
     
     const PRODUCT_URL    = 'product-url';
     const PRODUCT_FILE   = 'product-file';
+    const PRODUCT_ARCHIVED_FILE = 'product-archived-file';
     
     const SUPPLIERS_URL  = 'suppliers-url';
     const SUPPLIERS_FILE = 'suppliers-file';

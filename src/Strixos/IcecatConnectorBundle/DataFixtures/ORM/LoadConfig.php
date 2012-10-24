@@ -53,6 +53,7 @@ class LoadConfig extends AbstractFixture implements OrderedFixtureInterface, Con
         $this->loadConfig(Config::LANGUAGES_URL, 'https://data.icecat.biz/export/freexml/refs/LanguageList.xml.gz');
         
         $this->loadConfig(Config::PRODUCT_FILE, 'product-%%product_id%%-%%locale%%.xml');
+        $this->loadConfig(Config::PRODUCT_ARCHIVED_FILE, 'product-%%product_id%%-%%locale%%.xml.gz');
         $this->loadConfig(Config::PRODUCT_URL, 'http://data.Icecat.biz/xml_s3/xml_server3.cgi');
         
         $this->loadConfig(Config::PRODUCTS_FILE, 'export_urls_rich.txt');
