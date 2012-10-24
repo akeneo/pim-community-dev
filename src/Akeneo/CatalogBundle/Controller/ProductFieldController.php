@@ -87,8 +87,7 @@ class ProductFieldController extends AbstractProductController
         $form = $this->createForm(new ProductFieldType(), $entity);
         $form->bind($request);
 
-        // TODO : avoid to create product field with same code -> complete validation
-
+        // TODO : avoid to create product field with same code -> complete validation !
         if ($form->isValid()) {
             $manager = $this->get($this->getObjectManagerService());
             $manager->persist($entity);
