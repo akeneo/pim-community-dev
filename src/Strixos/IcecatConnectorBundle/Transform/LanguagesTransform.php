@@ -4,6 +4,7 @@ namespace Strixos\IcecatConnectorBundle\Transform;
 use Strixos\IcecatConnectorBundle\Entity\SourceLanguage;
 
 use \XMLReader;
+use \Exception;
 
 /**
  * Aims to transform suppliers xml file to csv file
@@ -16,16 +17,25 @@ use \XMLReader;
  */
 class LanguagesTransform implements TransformInterface
 {
+	/**
+	 * @var BatchLoader
+	 */
     protected $loader;
+    
+    /**
+     * @var string
+     */
+    protected $filePath;
 
     /**
      * Constructor
-     * @param SupplierLoader $loader
+     * @param BatchLoader $loader
+     * @param string $filePath
      */
-    public function __construct($loader)
+    public function __construct($loader, $filePath)
     {
-        //$this->container = $container;
         $this->loader = $loader;
+        $this->filePath = $filePath;
     }
 
     /**
@@ -38,7 +48,7 @@ class LanguagesTransform implements TransformInterface
     {
         // read xml document and parse to suppliers entities
         $xml = new XMLReader();
-        $xml->open(self::XML_FILE);
+        $xml->open($this->filePath);
 
         while ($xml->read()) {
             if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'Language') {
@@ -74,7 +84,7 @@ class LanguagesTransform implements TransformInterface
             $tmpCode = explode('_', $shortCode);
             $shortCode = strtolower($tmpCode[0]) .'_'. strtoupper($tmpCode[1]);
         } else {
-            throw new \Exception('Incorrect short code format');
+            throw new Exception('Incorrect short code format');
         }
         return $shortCode;
     }

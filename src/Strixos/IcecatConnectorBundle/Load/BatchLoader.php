@@ -25,7 +25,12 @@ class BatchLoader implements LoadInterface
      */
     protected $size;
 
-    protected static $limit = 5000; //TODO : should be configurable
+    /**
+     * Limit batch size
+     * @staticvar
+     * @var integer
+     */
+    protected static $limit = 5000;
 
     /**
      * Set object manager

@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="StrixosIcecatConnector_Config")
  * @ORM\Entity
  */
-class Config
+class Config extends AbstractModel
 {
     /**
      * @staticvar string

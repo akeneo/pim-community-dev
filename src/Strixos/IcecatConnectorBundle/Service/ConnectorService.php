@@ -5,9 +5,6 @@ use Strixos\IcecatConnectorBundle\Entity\Config;
 use Strixos\IcecatConnectorBundle\Entity\ConfigManager;
 
 use Strixos\IcecatConnectorBundle\Extract\ProductXmlExtractor;
-use Strixos\IcecatConnectorBundle\Transform\ProductXmlToArrayTransformer;
-use Strixos\IcecatConnectorBundle\Transform\ProductArrayToCatalogProductTransformer;
-
 use Strixos\IcecatConnectorBundle\Extract\DownloadSource;
 use Strixos\IcecatConnectorBundle\Extract\DownloadAndUnpackSource;
 
@@ -15,6 +12,8 @@ use Strixos\IcecatConnectorBundle\Transform\LanguagesTransform;
 use Strixos\IcecatConnectorBundle\Transform\ProductTransform;
 use Strixos\IcecatConnectorBundle\Transform\ProductsTransform;
 use Strixos\IcecatConnectorBundle\Transform\SuppliersTransform;
+use Strixos\IcecatConnectorBundle\Transform\ProductXmlToArrayTransformer;
+use Strixos\IcecatConnectorBundle\Transform\ProductArrayToCatalogProductTransformer;
 
 use Strixos\IcecatConnectorBundle\Load\BatchLoader;
 
@@ -57,8 +56,8 @@ class ConnectorService
         // Get config
         $login    = $this->configManager->getValue(Config::LOGIN);
         $password = $this->configManager->getValue(Config::PASSWORD);
-        $url      = $this->configManager->getValue(Config::SUPPLIERS_URL);
         $baseDir  = $this->configManager->getValue(Config::BASE_DIR);
+        $url      = $this->configManager->getValue(Config::SUPPLIERS_URL);
         $filePath    = $baseDir . $this->configManager->getValue(Config::SUPPLIERS_FILE);
         $forceDownloadFile = true;
         
@@ -79,8 +78,8 @@ class ConnectorService
         // Get config
         $login    = $this->configManager->getValue(Config::LOGIN);
         $password = $this->configManager->getValue(Config::PASSWORD);
-        $url      = $this->configManager->getValue(Config::LANGUAGES_URL);
         $baseDir  = $this->configManager->getValue(Config::BASE_DIR);
+        $url      = $this->configManager->getValue(Config::LANGUAGES_URL);
         $filePath = $baseDir . $this->configManager->getValue(Config::LANGUAGES_FILE);
         $archivePath = $baseDir . $this->configManager->getValue(Config::LANGUAGES_ARCHIVED_FILE);
         $forceDownloadFile = true;
@@ -90,7 +89,7 @@ class ConnectorService
         $extractor->extract();
 
         $loader = new BatchLoader($this->container->get('doctrine.orm.entity_manager'));
-        $transformer = new LanguagesTransform($loader);
+        $transformer = new LanguagesTransform($loader, $filePath);
         $transformer->transform();
     }
 
@@ -102,18 +101,17 @@ class ConnectorService
         // Get config
         $login    = $this->configManager->getValue(Config::LOGIN);
         $password = $this->configManager->getValue(Config::PASSWORD);
-        $url      = $this->configManager->getValue(Config::PRODUCTS_URL);
         $baseDir  = $this->configManager->getValue(Config::BASE_DIR);
+        $url      = $this->configManager->getValue(Config::PRODUCTS_URL);
         $filePath = $baseDir . $this->configManager->getValue(Config::PRODUCTS_FILE);
-        $archiveFile = $baseDir . $this->configManager->getValue(Config::PRODUCTS_ARCHIVED_FILE);
-        $archivePath = $filePath .'.gz';
+        $archivePath = $baseDir . $this->configManager->getValue(Config::PRODUCTS_ARCHIVED_FILE);
         $forceDownloadFile = false;
         
         // Call extractor
         $extractor = new DownloadAndUnpackSource($url, $login, $password, $archivePath, $filePath, $forceDownloadFile);
         $extractor->extract();
 
-        $transformer = new ProductsTransform($this->container->get('doctrine.orm.entity_manager'));
+        $transformer = new ProductsTransform($this->container->get('doctrine.orm.entity_manager'), $filePath);
         $transformer->transform();
     }
 
@@ -123,19 +121,19 @@ class ConnectorService
      */
     public function importProductFromIcecatXml($productId)
     {
-        // TODO by configuration, for now en_US first is important
+	    // TODO by configuration, for now en_US first is important
         $localeIceToPim = array('US' => 'en_US', 'FR' => 'fr_FR');
-
+        
+        // 1. get base product from icecat referential
+        $em = $this->container->get('doctrine.orm.entity_manager');
+        $baseProduct = $em->getRepository('StrixosIcecatConnectorBundle:SourceProduct')->find($productId);
+        $prodId = $baseProduct->getProdId();
+        $supplierName = $baseProduct->getSupplier()->getName();
+        
         foreach ($localeIceToPim as $icecatLocale => $pimLocale) {
 
-            // 1. get base product from icecat referential
-            $em = $this->container->get('doctrine.orm.entity_manager');
-            $baseProduct = $em->getRepository('StrixosIcecatConnectorBundle:SourceProduct')->find($productId);
-            $prodId = $baseProduct->getProdId();
-            $supplierName = $baseProduct->getSupplier()->getName();
-
             // 2. extract product xml from icecat
-            $extractor = new ProductXmlExtractor($prodId, $supplierName, $icecatLocale);
+            $extractor = new ProductXmlExtractor($prodId, $supplierName, $icecatLocale, $this->configManager);
             $extractor->extract();
             $simpleXml = $extractor->getXmlElement();
 

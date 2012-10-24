@@ -3,7 +3,6 @@ namespace Strixos\IcecatConnectorBundle\Transform;
 
 use Strixos\IcecatConnectorBundle\Entity\SourceSupplier;
 
-use Strixos\IcecatConnectorBundle\Load\SupplierLoad;
 use \XMLReader;
 
 /**
@@ -30,10 +29,10 @@ class SuppliersTransform implements TransformInterface
     /**
      * Constructor
      * @param BatchLoader $loader
+     * @param string $filePath
      */
     public function __construct($loader, $filePath)
     {
-        //$this->container = $container;
         $this->loader = $loader;
         $this->filePath = $filePath;
     }

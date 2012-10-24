@@ -5,6 +5,8 @@ use Strixos\IcecatConnectorBundle\Entity\SourceProduct;
 
 use Strixos\IcecatConnectorBundle\Load\BatchLoader;
 
+use \Exception;
+
 /**
  * Aims to transform suppliers xml file to csv file
  *
@@ -16,27 +18,30 @@ use Strixos\IcecatConnectorBundle\Load\BatchLoader;
  */
 class ProductsTransform implements TransformInterface
 {
-
-    const URL          = 'http://data.icecat.biz/export/freeurls/export_urls_rich.txt.gz';
-    const FILE_ARCHIVE = '/tmp/export_urls_rich.txt.gz';
-    const FILE         = '/tmp/export_urls_rich.txt';
-
+	/**
+	 * @var BatchLoader
+	 */
     protected $loader;
 
     /**
-     *
      * @var EntityManager
      */
     protected $entityManager;
+    
+    /**
+     * @var string
+     */
+    protected $filePath;
 
     /**
      * Constructor
      * @param EntityManager $loader
      */
-    public function __construct($em)
+    public function __construct($em, $filePath)
     {
         $this->entityManager = $em;
         $this->loader = new BatchLoader($this->entityManager);
+        $this->filePath = $filePath;
     }
 
     /**
@@ -53,9 +58,14 @@ class ProductsTransform implements TransformInterface
         foreach ($suppliers as $supplier) {
             $this->_icecatIdToSupplier[$supplier->getIcecatId()] = $supplier;
         }
+        
+        // throw exception if no suppliers already imported
+        if (!$suppliers) {
+        	throw new Exception('Suppliers must be imported before products. Please try to import suppliers.');
+        }
 
         // import products
-        if (($handle = fopen(self::FILE, 'r')) !== false) {
+        if (($handle = fopen($this->filePath, 'r')) !== false) {
             $length = 1000;
             $delimiter = "\t";
             $indRow = 0;
