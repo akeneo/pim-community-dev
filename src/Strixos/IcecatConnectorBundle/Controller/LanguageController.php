@@ -1,8 +1,6 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Controller;
 
-use Strixos\IcecatConnectorBundle\Model\BaseExtractor;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -31,6 +29,7 @@ class LanguageController extends Controller
         try {
             $srvConnector = $this->container->get('akeneo.connector.icecat_service');
             $srvConnector->importLanguages();
+            $this->get('session')->setFlash('notice', 'Base languages has been imported from Icecat');
         } catch (Exception $e) {
             return array('exception' => $e);
         }
