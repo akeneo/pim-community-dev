@@ -103,7 +103,7 @@ class ProductManager extends EntityManager
     public function getLocale()
     {
     	if ($this->getObject()) {
-    		return $this->getObject()->getLocale();
+                return $this->getObject()->getLocale();
     	}
         return self::$defaultLocale;
     }

@@ -112,7 +112,7 @@ class DownloadAndUnpackSource implements ExtractInterface, DownloadInterface, Un
     public function read($file)
     {
     	if (!$this->content) {
-    		$this->content = file_get_contents($file);
+                $this->content = file_get_contents($file);
     	}
     	return $this->content;
     }

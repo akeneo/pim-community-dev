@@ -31,7 +31,7 @@ class FileHttpReader extends Step
     	// use curl to get xml product content with basic authentication
     	$c = curl_init();
     	if (!$c) {
-    		throw new Exception('Curl not initialized');
+                throw new Exception('Curl not initialized');
     	}
     	
     	curl_setopt($c, CURLOPT_URL, $url);
@@ -44,7 +44,7 @@ class FileHttpReader extends Step
     	
     	// deal with curl exception
     	if ($output === false) {
-    		throw new Exception('Curl Error : '.curl_error($c));
+                throw new Exception('Curl Error : '.curl_error($c));
     	}
     	curl_close($c);
     	return $output;
