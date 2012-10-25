@@ -1,13 +1,5 @@
-{% extends 'StrixosIcecatConnectorBundle::layout.html.twig' %}
-
-{% block title %}{{ parent() }} Import products from supplier {{ supplier.name }} {% endblock %}
-
-{% block content %}
-
-    {% if exception is defined %}
-        {{ exception.message }}
-    {% else %}
-        Supplier {{ supplier.name }} - {{ products | length }} products inserted
-    {% endif %}
-
-{% endblock %}
+{% if exception is defined %}
+    {{ exception.message }}
+{% else %}
+    Supplier {{ supplier.name }} - {{ products | length }} products inserted
+{% endif %}

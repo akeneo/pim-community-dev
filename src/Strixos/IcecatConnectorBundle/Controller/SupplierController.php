@@ -60,7 +60,7 @@ class SupplierController extends Controller
     }
 
     /**
-     * List Icecat suppliers in a grid
+     * Load all product linked to a defined supplier
      * 
      * @Route("/supplier/load-products/{icecatId}")
      * @Template()
@@ -70,17 +70,22 @@ class SupplierController extends Controller
         try {
             $supplier = $this->getDoctrine()->getRepository('StrixosIcecatConnectorBundle:SourceSupplier')
                     ->findOneByIcecatId($icecatId);
-
             $srvConnector = $this->container->get('akeneo.connector.icecat_service');
             $srvConnector->importProductsFromSupplier($supplier);
-
+            
+            // Get supplier products
+            $products = $this->getDoctrine()->getRepository('StrixosIcecatConnectorBundle:SourceProduct')
+                    ->findBySupplier($supplier);
+            
+            // Prepare notice message
+            $viewRenderer = $this->render('StrixosIcecatConnectorBundle:Supplier:loadProducts.html.twig',
+                    array('supplier' => $supplier, 'products' => $products));
+            $this->get('session')->setFlash('notice', $viewRenderer->getContent());
+            
+            // Redirect to suppliers list
+            return $this->redirect($this->generateUrl('strixos_icecatconnector_supplier_list'));
         } catch (Exception $e) {
             return array('exception' => $e);
         }
-
-        $products = $this->getDoctrine()->getRepository('StrixosIcecatConnectorBundle:SourceProduct')
-                ->findBySupplier($supplier);
-
-        return array('supplier' => $supplier, 'products' => $products);
     }
 }

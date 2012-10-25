@@ -74,7 +74,7 @@ class ProductController extends Controller
             
             // Prepare notice message
             $viewRenderer = $this->render('StrixosIcecatConnectorBundle:Product:loadProduct.html.twig', 
-                        array('product' => $product));
+                    array('product' => $product));
             $this->get('session')->setFlash('notice', $viewRenderer->getContent());
             
             // Redirect to products list
