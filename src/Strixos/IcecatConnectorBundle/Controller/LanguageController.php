@@ -9,7 +9,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
 
+use \Exception;
+
 /**
+ * Icecat language controller regroups all features for languages entities as loading and listing 
+ * 
  * @author    Romain Monceau @ Akeneo
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -17,6 +21,8 @@ use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
 class LanguageController extends Controller
 {
     /**
+     * Loading languages from icecat to local database
+     * 
      * @Route("/language/load-from-icecat")
      * @Template()
      */
@@ -25,7 +31,7 @@ class LanguageController extends Controller
         try {
             $srvConnector = $this->container->get('akeneo.connector.icecat_service');
             $srvConnector->importLanguages();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return array('exception' => $e);
         }
 
@@ -34,6 +40,7 @@ class LanguageController extends Controller
 
     /**
      * List Icecat languages in a grid
+     * 
      * @Route("/language/list")
      * @Template()
      */
