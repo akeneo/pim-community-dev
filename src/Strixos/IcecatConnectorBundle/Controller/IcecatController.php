@@ -5,6 +5,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use \Exception as Exception;
+
 /**
  * Icecat controller used for global actions like truncate tables
  * 
@@ -38,7 +40,7 @@ class IcecatController extends Controller
             
             $connection->executeUpdate("SET foreign_key_checks = 1");
             $connection->commit();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $connection->rollback();
             throw $e;
         }
@@ -80,7 +82,7 @@ class IcecatController extends Controller
             
             $connection->executeUpdate("SET foreign_key_checks = 1");
             $connection->commit();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $connection->rollback();
             throw $e;
         }
