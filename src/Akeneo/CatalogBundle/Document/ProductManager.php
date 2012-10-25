@@ -42,9 +42,11 @@ class ProductManager extends EntityManager
     {
         // get document
         $fieldSourceId = $sourceCode.'_source_id';
-        // TODO: default locale is hard coded
+        $fieldLocale   = 'values_'. $this->getLocale();
+        
+        // prepare query
         $document = $this->manager->createQueryBuilder('AkeneoCatalogBundle:ProductMongo')
-            ->field('values_en_US.icecat_source_id')->equals('C8934A#A2L')
+            ->field($fieldLocale .'.'. $fieldSourceId)->equals($sourceProductId)
             ->getQuery()
             ->getSingleResult();
         if ($document) {
@@ -100,7 +102,10 @@ class ProductManager extends EntityManager
      */
     public function getLocale()
     {
-        $this->getObject()->getLocale();
+    	if ($this->getObject()) {
+    		return $this->getObject()->getLocale();
+    	}
+        return self::$defaultLocale;
     }
 
     /**
