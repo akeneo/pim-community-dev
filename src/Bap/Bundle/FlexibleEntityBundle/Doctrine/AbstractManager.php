@@ -42,6 +42,13 @@ abstract class AbstractManager
      * @var string
      */
     private $locale;
+    
+    /**
+     * Set a static default locale used by all managers
+     * @staticvar string
+     * TODO : Must be used in another level of architecture
+     */
+    protected static $defaultLocale = 'en_US';
 
     /**
      * Constructor.
