@@ -34,7 +34,7 @@ class FileHttpDownload extends Step
             $fp = fopen($path, 'w+');
             $ch = curl_init($url);
             if (!$ch) {
-                throw new \Exception('Curl not initialized');
+                throw new Exception('Curl not initialized');
             }
             
             if ($login and $password) {
@@ -45,8 +45,10 @@ class FileHttpDownload extends Step
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_FILE, $fp);
             $data = curl_exec($ch);
+            
+            // Deal with curl exception
             if ($data === false) {
-                throw new \Exception('Curl Error : '.curl_error($ch));
+                throw new Exception('Curl Error : '.curl_error($ch));
             }
             curl_close($ch);
             fclose($fp);
