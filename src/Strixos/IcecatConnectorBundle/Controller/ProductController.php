@@ -1,25 +1,19 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Controller;
 
-use Strixos\IcecatConnectorBundle\Extract\ProductExtract;
-
-use Strixos\IcecatConnectorBundle\Model\BaseExtractor;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
 use APY\DataGridBundle\Grid\Action\RowAction;
 
-use Strixos\IcecatConnectorBundle\Model\ProductLoader;
-use Akeneo\CatalogBundle\Model\BaseFieldFactory;
-
 use \XMLReader;
+use \Exception;
 
 /**
- *
+ * Icecat product controller regroups all features for products entities (import and list)
+ * 
  * @author    Romain Monceau @ Akeneo
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -27,14 +21,9 @@ use \XMLReader;
  */
 class ProductController extends Controller
 {
-    // TODO : put in configuration file
-    const URL_PRODUCT = 'https://data.icecat.biz/export/freexml/product_mapping.xml';
-    const TMP_FILEPATH_PRODUCTS = '/tmp/product_mapping.xml';
-    const AUTH_LOGIN = 'NicolasDupont';
-    const AUTH_PASSWORD = '1cec4t**)';
-
-
     /**
+     * Load only products identifiers from icecat to local database
+     * 
      * @Route("/product/load-from-icecat")
      * @Template()
      */
@@ -44,8 +33,7 @@ class ProductController extends Controller
             $srvConnector = $this->container->get('akeneo.connector.icecat_service');
             $srvConnector->importProducts();
             $this->get('session')->setFlash('notice', 'Base products has been imported from Icecat');
-        } catch (\Exception $e) {
-            die ($e->getMessage() );
+        } catch (Exception $e) {
             return array('exception' => $e);
         }
 
@@ -54,6 +42,7 @@ class ProductController extends Controller
 
     /**
      * List Icecat products in a grid
+     * 
      * @Route("/product/list")
      * @Template()
      */
@@ -72,23 +61,27 @@ class ProductController extends Controller
     }
 
     /**
-     * List Icecat suppliers in a grid
+     * Load all icecat product data to local database
+     * 
      * @Route("/product/load-product/{id}")
      * @Template()
      */
     public function loadProductAction($id)
     {
         try {
-
             $srvConnector = $this->container->get('akeneo.connector.icecat_service');
             $srvConnector->importProductFromIcecatXml($id);
-
             $product = $this->getDoctrine()->getRepository('StrixosIcecatConnectorBundle:SourceProduct')->find($id);
-
+            
+            // Prepare notice message
+            $viewRenderer = $this->render('StrixosIcecatConnectorBundle:Product:loadProduct.html.twig', 
+            			array('product' => $product));
+            $this->get('session')->setFlash('notice', $viewRenderer->getContent());
+            
+            // Redirect to products list
+            return $this->redirect($this->generateUrl('strixos_icecatconnector_product_list'));
         } catch (Exception $e) {
             return array('exception' => $e);
         }
-
-        return array('product' => $product);
     }
 }

@@ -1,13 +1,5 @@
-{% extends 'StrixosIcecatConnectorBundle::layout.html.twig' %}
-
-{% block title %}{{ parent() }} Product {{ product.getProdId }} {% endblock %}
-
-{% block content %}
-
-    {% if exception is defined %}
-        {{ exception.message }}
-    {% else %}
-        Product {{ product.id }} - {{ product.getProdId }} inserted
-    {% endif %}
-
-{% endblock %}
+{% if exception is defined %}
+    {{ exception.message }}
+{% else %}
+    Product {{ product.id }} - {{ product.getProdId }} inserted
+{% endif %}
