@@ -47,7 +47,7 @@ class IcecatController extends Controller
     }
     
     /**
-     * Empty tables
+     * Empty all tables of the akeneo_pim database
      * 
      * @Route("/empty-tables")
      * @Template()
