@@ -178,7 +178,7 @@ class SourceProduct extends AbstractModel
      * @param bool $isImported
      * @return Product
      */
-    public function setIsImported(\bool $isImported)
+    public function setIsImported($isImported)
     {
         $this->is_imported = $isImported;
 
