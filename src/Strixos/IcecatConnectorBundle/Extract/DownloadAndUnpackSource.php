@@ -111,10 +111,10 @@ class DownloadAndUnpackSource implements ExtractInterface, DownloadInterface, Un
      */
     public function read($file)
     {
-    	if (!$this->content) {
+        if (!$this->content) {
                 $this->content = file_get_contents($file);
-    	}
-    	return $this->content;
+        }
+        return $this->content;
     }
     
     /**
@@ -123,6 +123,6 @@ class DownloadAndUnpackSource implements ExtractInterface, DownloadInterface, Un
      */
     public function getReadContent()
     {
-    	return $this->read($this->filePath);
+        return $this->read($this->filePath);
     }
 }

@@ -18,9 +18,9 @@ use \Exception;
  */
 class ProductsTransform implements TransformInterface
 {
-	/**
-	 * @var BatchLoader
-	 */
+    /**
+     * @var BatchLoader
+     */
     protected $loader;
 
     /**
@@ -61,7 +61,7 @@ class ProductsTransform implements TransformInterface
         
         // throw exception if no suppliers already imported
         if (!$suppliers) {
-        	throw new Exception('Suppliers must be imported before products. Please try to import suppliers.');
+            throw new Exception('Suppliers must be imported before products. Please try to import suppliers.');
         }
 
         // import products

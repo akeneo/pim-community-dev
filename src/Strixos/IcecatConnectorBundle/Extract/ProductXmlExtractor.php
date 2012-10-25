@@ -56,8 +56,8 @@ class ProductXmlExtractor implements ExtractInterface, ReadInterface
      */
     protected static function preparePath($basePath, $productId, $locale)
     {
-    	$path = str_replace('%%product_id%%', self::slugify($productId), $basePath);
-    	return str_replace('%%locale%%', $locale, $path);
+        $path = str_replace('%%product_id%%', self::slugify($productId), $basePath);
+        return str_replace('%%locale%%', $locale, $path);
     }
     
     /**
@@ -114,7 +114,7 @@ class ProductXmlExtractor implements ExtractInterface, ReadInterface
      */
     public function read($url)
     {
-    	$fileReader = new FileHttpReader();
+        $fileReader = new FileHttpReader();
         $this->xmlContent = $fileReader->process($url, $this->login, $this->password);
     }
 
@@ -153,6 +153,6 @@ class ProductXmlExtractor implements ExtractInterface, ReadInterface
      */
     public function getReadContent()
     {
-    	return $this->xmlContent;
+        return $this->xmlContent;
     }
 }

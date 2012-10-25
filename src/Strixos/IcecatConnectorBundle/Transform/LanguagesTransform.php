@@ -17,9 +17,9 @@ use \Exception;
  */
 class LanguagesTransform implements TransformInterface
 {
-	/**
-	 * @var LoadInterface
-	 */
+    /**
+     * @var LoadInterface
+     */
     protected $loader;
     
     /**

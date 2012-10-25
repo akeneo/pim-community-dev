@@ -8,7 +8,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
 use APY\DataGridBundle\Grid\Action\RowAction;
 
-use \XMLReader;
 use \Exception;
 
 /**
@@ -75,7 +74,7 @@ class ProductController extends Controller
             
             // Prepare notice message
             $viewRenderer = $this->render('StrixosIcecatConnectorBundle:Product:loadProduct.html.twig', 
-            			array('product' => $product));
+                        array('product' => $product));
             $this->get('session')->setFlash('notice', $viewRenderer->getContent());
             
             // Redirect to products list

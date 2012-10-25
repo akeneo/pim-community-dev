@@ -125,7 +125,7 @@ class ConnectorService
      */
     public function importProductFromIcecatXml($productId)
     {
-	    // TODO by configuration, for now en_US first is important
+        // TODO by configuration, for now en_US first is important
         $localeIceToPim = array('US' => 'en_US', 'FR' => 'fr_FR');
         
         // 1. get base product from icecat referential

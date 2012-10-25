@@ -1,8 +1,6 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Controller;
 
-use Strixos\IcecatConnectorBundle\Model\BaseExtractor;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -10,8 +8,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
 use APY\DataGridBundle\Grid\Action\RowAction;
 
+use \Exception;
+
 /**
- *
+ * Icecat supplier controller regroups all features for suppliers entities (import, list and import linked products)
+ * 
  * @author    Romain Monceau @ Akeneo
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -20,18 +21,18 @@ use APY\DataGridBundle\Grid\Action\RowAction;
 class SupplierController extends Controller
 {
     /**
+     * Load suppliers from icecat to local database
+     * 
      * @Route("/supplier/load-from-icecat")
      * @Template()
      */
     public function loadFromIcecatAction()
     {
         try {
-
             $srvConnector = $this->container->get('akeneo.connector.icecat_service');
             $srvConnector->importSuppliers();
             $this->get('session')->setFlash('notice', 'Base suppliers has been imported from Icecat');
-
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return array('exception' => $e);
         }
 
@@ -40,6 +41,7 @@ class SupplierController extends Controller
 
     /**
      * List Icecat suppliers in a grid
+     * 
      * @Route("/supplier/list")
      * @Template()
      */
@@ -59,6 +61,7 @@ class SupplierController extends Controller
 
     /**
      * List Icecat suppliers in a grid
+     * 
      * @Route("/supplier/load-products/{icecatId}")
      * @Template()
      */

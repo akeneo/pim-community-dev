@@ -28,25 +28,25 @@ class FileHttpReader extends Step
      */
     public function process($url, $login = null, $password = null)
     {
-    	// use curl to get xml product content with basic authentication
-    	$c = curl_init();
-    	if (!$c) {
+        // use curl to get xml product content with basic authentication
+        $c = curl_init();
+        if (!$c) {
                 throw new Exception('Curl not initialized');
-    	}
-    	
-    	curl_setopt($c, CURLOPT_URL, $url);
-    	curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-    	curl_setopt($c, CURLOPT_HEADER, false);
-    	if ($login and $password) {
-    	    curl_setopt($c, CURLOPT_USERPWD, $login.':'.$password);
-    	}
-    	$output = curl_exec($c);
-    	
-    	// deal with curl exception
-    	if ($output === false) {
+        }
+        
+        curl_setopt($c, CURLOPT_URL, $url);
+        curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($c, CURLOPT_HEADER, false);
+        if ($login and $password) {
+            curl_setopt($c, CURLOPT_USERPWD, $login.':'.$password);
+        }
+        $output = curl_exec($c);
+        
+        // deal with curl exception
+        if ($output === false) {
                 throw new Exception('Curl Error : '.curl_error($c));
-    	}
-    	curl_close($c);
-    	return $output;
+        }
+        curl_close($c);
+        return $output;
     }
 }
