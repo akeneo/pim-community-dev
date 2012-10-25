@@ -1,6 +1,8 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Service;
 
+use Strixos\IcecatConnectorBundle\Extract\SuppliersXmlExtractor;
+
 use Strixos\IcecatConnectorBundle\Entity\Config;
 use Strixos\IcecatConnectorBundle\Entity\ConfigManager;
 
@@ -62,11 +64,12 @@ class ConnectorService
         $forceDownloadFile = true;
         
         // Call extractor
-        $extractor = new DownloadSource($url, $login, $password, $filePath, $forceDownloadFile);
+        $extractor = new SuppliersXmlExtractor($url, $login, $password);
         $extractor->extract();
-
+        $xmlContent = $extractor->getReadContent();
+        
         $loader = new BatchLoader($this->container->get('doctrine.orm.entity_manager'));
-        $transformer = new SuppliersTransform($loader, $filePath);
+        $transformer = new SuppliersTransform($loader, $xmlContent);
         $transformer->transform();
     }
 
@@ -87,9 +90,10 @@ class ConnectorService
         // Call extractor
         $extractor = new DownloadAndUnpackSource($url, $login, $password, $archivePath, $filePath, $forceDownloadFile);
         $extractor->extract();
+        $xmlContent = $extractor->getReadContent();
 
         $loader = new BatchLoader($this->container->get('doctrine.orm.entity_manager'));
-        $transformer = new LanguagesTransform($loader, $filePath);
+        $transformer = new LanguagesTransform($loader, $xmlContent);
         $transformer->transform();
     }
 
@@ -135,7 +139,7 @@ class ConnectorService
             // 2. extract product xml from icecat
             $extractor = new ProductXmlExtractor($prodId, $supplierName, $icecatLocale, $this->configManager);
             $extractor->extract();
-            $simpleXml = $extractor->getXmlElement();
+            $simpleXml = $extractor->getReadContent();
 
             // 3. transform product xml to lines (associative array)
             $transformer = new ProductXmlToArrayTransformer($simpleXml);

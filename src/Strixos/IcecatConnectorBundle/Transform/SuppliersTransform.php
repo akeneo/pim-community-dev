@@ -17,24 +17,24 @@ use \XMLReader;
 class SuppliersTransform implements TransformInterface
 {
     /**
-     * @var BatchLoader
+     * @var LoadInterface
      */
     protected $loader;
     
     /**
      * @var string
      */
-    protected $filePath;
+    protected $xmlContent;
 
     /**
      * Constructor
-     * @param BatchLoader $loader
-     * @param string $filePath
+     * @param LoadInterface $loader
+     * @param string $xmlContent
      */
-    public function __construct($loader, $filePath)
+    public function __construct($loader, $xmlContent)
     {
         $this->loader = $loader;
-        $this->filePath = $filePath;
+        $this->xmlContent = $xmlContent;
     }
 
     /**
@@ -47,7 +47,8 @@ class SuppliersTransform implements TransformInterface
     {
         // read xml document and parse to suppliers entities
         $xml = new XMLReader();
-        $xml->open($this->filePath);
+        $xml->XML($this->xmlContent);
+//         $xml->open($this->filePath);
 
         while ($xml->read()) {
             if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'SupplierMapping') {

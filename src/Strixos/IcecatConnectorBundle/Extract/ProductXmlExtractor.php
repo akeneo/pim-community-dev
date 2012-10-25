@@ -1,10 +1,9 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Extract;
 
-use Strixos\IcecatConnectorBundle\Entity\Config;
+use Strixos\DataFlowBundle\Model\Extract\FileHttpReader;
 
-use Strixos\DataFlowBundle\Model\Extract\FileUnzip;
-use Strixos\DataFlowBundle\Model\Extract\FileHttpDownload;
+use Strixos\IcecatConnectorBundle\Entity\Config;
 
 /**
  * Get product xml details from icecat
@@ -13,16 +12,8 @@ use Strixos\DataFlowBundle\Model\Extract\FileHttpDownload;
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductXmlExtractor implements ExtractInterface, DownloadInterface, UnpackInterface
+class ProductXmlExtractor implements ExtractInterface, ReadInterface
 {
-
-    /*const AUTH_LOGIN    = 'NicolasDupont';
-    const AUTH_PASSWORD = '1cec4t**)';
-
-    const BASE_URL         = 'http://data.Icecat.biz/xml_s3/xml_server3.cgi';
-    const XML_FILE_ARCHIVE = '/tmp/suppliers-list.xml.gz';
-    const XML_FILE         = '/tmp/suppliers-list.xml';*/
-
     /**
      * Get xml product content
      * @var SimpleXMLElement
@@ -37,15 +28,8 @@ class ProductXmlExtractor implements ExtractInterface, DownloadInterface, Unpack
      * @param string $locale
      * @param ConfigManager $configManager
      */
-    public function __construct($productId, $supplierName, $locale, $configManager, $forceDownloadFile = false)
+    public function __construct($productId, $supplierName, $locale, $configManager)
     {
-    	// TODO : this 3 parameters must be deleted (not instance variable just local to define download paths and url)
-        $this->productId = $productId;
-        $this->supplierName = $supplierName;
-        $this->locale = $locale;
-        
-        $this->forceDownload = $forceDownloadFile;
-        
         // get configuration from config manager
         $this->login = $configManager->getValue(Config::LOGIN);
         $this->password = $configManager->getValue(Config::PASSWORD);
@@ -116,32 +100,9 @@ class ProductXmlExtractor implements ExtractInterface, DownloadInterface, Unpack
      */
     public function extract()
     {
-    	$this->download($this->url, $this->archiveFilePath);
-    	$this->unpack($this->archiveFilePath, $this->filePath);
-//         $url = $this->prepareUrl($this->productId, $this->supplierName, $this->locale);
-        $stringXml = $this->getXmlString($this->url);
-        $this->parseXml($stringXml);
+        $this->read($this->url);
+        $this->parseXml($this->xmlContent);
         $this->checkResponse();
-    }
-    
-    /**
-     * (non-PHPdoc)
-     * @see \Strixos\IcecatConnectorBundle\Extract\DownloadInterface::download()
-     */
-    public function download($url, $file)
-    {
-    	$downloader = new FileHttpDownload();
-    	$downloader->process($url, $file, $this->login, $this->password, $this->forceDownload);
-    }
-    
-    /**
-     * (non-PHPdoc)
-     * @see \Strixos\IcecatConnectorBundle\Extract\UnpackInterface::unpack()
-     */
-    public function unpack($archivedFile, $file)
-    {
-    	$unpacker = new FileUnzip();
-    	$unpacker->process($archivedFile, $file, $this->forceDownload);
     }
 
     /**
@@ -151,21 +112,10 @@ class ProductXmlExtractor implements ExtractInterface, DownloadInterface, Unpack
      * @throws Exception
      * @return string
      */
-    protected function getXmlString($url)
+    public function read($url)
     {
-        // use curl to get xml product content with basic authentication
-        $c = curl_init();
-        curl_setopt($c, CURLOPT_URL, $url);
-        curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($c, CURLOPT_HEADER, false);
-        curl_setopt($c, CURLOPT_USERPWD, $this->login.':'.$this->password);
-        $output = curl_exec($c);
-        // deal with curl exception
-        if ($output === false) {
-            throw new Exception('Curl Error : '.curl_error($c));
-        }
-        curl_close($c);
-        return $output;
+    	$fileReader = new FileHttpReader();
+        $this->xmlContent = $fileReader->process($url, $this->login, $this->password);
     }
 
     /**
@@ -176,12 +126,12 @@ class ProductXmlExtractor implements ExtractInterface, DownloadInterface, Unpack
     protected function parseXml($stringXml)
     {
         libxml_use_internal_errors(true);
-        $this->xmlElement = simplexml_load_string($stringXml);
-        if ($this->xmlElement) {
+        $this->xmlContent = simplexml_load_string($stringXml);
+        if ($this->xmlContent) {
             return true;
         }
-        $this->xmlElement = simplexml_load_string(utf8_encode($stringXml));
-        if ($this->xmlElement) {
+        $this->xmlContent = simplexml_load_string(utf8_encode($stringXml));
+        if ($this->xmlContent) {
             return true;
         }
         return false;
@@ -196,14 +146,13 @@ class ProductXmlExtractor implements ExtractInterface, DownloadInterface, Unpack
         // TODO to raise authentication error or product with no detailled data
         return true;
     }
-
+    
     /**
-     * Get xml
-     * @return SimpleXMLElement
+     * (non-PHPdoc)
+     * @see Strixos\IcecatConnectorBundle\Extract.ReadInterface::getReadContent()
      */
-    public function getXmlElement()
+    public function getReadContent()
     {
-        return $this->xmlElement;
+    	return $this->xmlContent;
     }
-
 }

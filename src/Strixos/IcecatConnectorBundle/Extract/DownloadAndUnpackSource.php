@@ -12,7 +12,7 @@ use Strixos\DataFlowBundle\Model\Extract\FileHttpDownload;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class DownloadAndUnpackSource implements ExtractInterface, DownloadInterface, UnpackInterface
+class DownloadAndUnpackSource implements ExtractInterface, DownloadInterface, UnpackInterface, ReadInterface
 {
     /**
      * Archive url
@@ -45,10 +45,16 @@ class DownloadAndUnpackSource implements ExtractInterface, DownloadInterface, Un
     protected $filePath;
 
     /**
-     * Force archive download (else use already downloaded one)
+     * Force archive download (else use already downloaded one) and unpack
      * @var boolean
      */
-    protected $forceDownload;
+    protected $force;
+    
+    /**
+     * Read content from file downloaded
+     * @var string
+     */
+    protected $content;
 
     /**
      * Download the archive to the given url then extract it in file path
@@ -57,16 +63,16 @@ class DownloadAndUnpackSource implements ExtractInterface, DownloadInterface, Un
      * @param string $password
      * @param string $archivePath
      * @param string $filePath
-     * @param boolean $forceDownloadFile
+     * @param boolean $force
      */
-    public function __construct($url, $login, $password, $archivePath, $filePath, $forceDownloadFile = false)
+    public function __construct($url, $login, $password, $archivePath, $filePath, $force = false)
     {
         $this->url = $url;
         $this->login = $login;
         $this->password = $password;
         $this->filePath = $filePath;
         $this->archivePath = $archivePath;
-        $this->forceDownload = $forceDownloadFile;
+        $this->force = $force;
     }
 
     /**
@@ -86,7 +92,7 @@ class DownloadAndUnpackSource implements ExtractInterface, DownloadInterface, Un
     public function download($url, $file)
     {
         $downloader = new FileHttpDownload();
-        $downloader->process($url, $file, $this->login, $this->password, $this->forceDownload);
+        $downloader->process($url, $file, $this->login, $this->password, $this->force);
     }
 
     /**
@@ -96,6 +102,27 @@ class DownloadAndUnpackSource implements ExtractInterface, DownloadInterface, Un
     public function unpack($archivedFile, $file)
     {
         $unpacker = new FileUnzip();
-        $unpacker->process($archivedFile, $file, $this->forceDownload);
+        $unpacker->process($archivedFile, $file, $this->force);
+    }
+    
+    /**
+     * (non-PHPdoc)
+     * @see Strixos\IcecatConnectorBundle\Extract.ReadInterface::read()
+     */
+    public function read($file)
+    {
+    	if (!$this->content) {
+    		$this->content = file_get_contents($file);
+    	}
+    	return $this->content;
+    }
+    
+    /**
+     * (non-PHPdoc)
+     * @see Strixos\IcecatConnectorBundle\Extract.ReadInterface::getReadContent()
+     */
+    public function getReadContent()
+    {
+    	return $this->read($this->filePath);
     }
 }
