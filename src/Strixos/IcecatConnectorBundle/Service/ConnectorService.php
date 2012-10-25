@@ -160,6 +160,11 @@ class ConnectorService
             $transform->process($fp);
         }*/
         }
+        
+        // 6. Update icecat product imported
+        $baseProduct->setIsImported(true);
+        $em->persist($baseProduct);
+        $em->flush();
     }
 
     /**
