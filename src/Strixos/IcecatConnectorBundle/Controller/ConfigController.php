@@ -1,19 +1,13 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Controller;
 
+use Strixos\IcecatConnectorBundle\Form\Type\ConfigsType;
+use Strixos\IcecatConnectorBundle\Entity\Configs;
 use Strixos\IcecatConnectorBundle\Entity\ConfigManager;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
-use Strixos\IcecatConnectorBundle\Form\Type\ConfigsType;
-
-use Strixos\IcecatConnectorBundle\Entity\Configs;
-
-use Strixos\IcecatConnectorBundle\Form\Type\CollectionType;
-
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
