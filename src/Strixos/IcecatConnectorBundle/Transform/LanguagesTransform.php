@@ -1,7 +1,7 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Transform;
 
-use Strixos\IcecatConnectorBundle\Load\BatchLoader;
+use Strixos\IcecatConnectorBundle\Load\LoadInterface;
 
 use Strixos\IcecatConnectorBundle\Entity\SourceLanguage;
 
@@ -31,17 +31,18 @@ class LanguagesTransform implements TransformInterface
 
     /**
      * Constructor
-     * @param BatchLoader $loader
+     * @param LoadInterface $loader
      * @param string $xmlContent
      */
-    public function __construct(BatchLoader $loader, $xmlContent)
+    public function __construct(LoadInterface $loader, $xmlContent)
     {
         $this->loader = $loader;
         $this->xmlContent = $xmlContent;
     }
 
     /**
-     * Transform xml file to csv
+     * (non-PHPdoc)
+     * @see Strixos\IcecatConnectorBundle\Transform.LanguagesTransform::transform()
      */
     public function transform()
     {

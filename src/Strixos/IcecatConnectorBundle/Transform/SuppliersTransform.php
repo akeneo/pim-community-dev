@@ -38,10 +38,8 @@ class SuppliersTransform implements TransformInterface
     }
 
     /**
-     * Transform xml file to csv
-     *
-     * @param string $xmlFile
-     * @param string $csvFile
+     * (non-PHPdoc)
+     * @see Strixos\IcecatConnectorBundle\Transform.LanguagesTransform::transform()
      */
     public function transform()
     {

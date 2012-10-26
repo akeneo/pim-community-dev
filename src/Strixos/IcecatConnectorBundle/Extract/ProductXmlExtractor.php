@@ -20,6 +20,21 @@ class ProductXmlExtractor implements ExtractInterface, ReadInterface
      * @var SimpleXMLElement
      */
     protected $xmlElement;
+    
+    /**
+     * @var string
+     */
+    protected $login;
+    
+    /**
+     * @var string
+     */
+    protected $password;
+    
+    /**
+     * @var string
+     */
+    protected $url;
 
     /**
      * Constructor
@@ -58,11 +73,8 @@ class ProductXmlExtractor implements ExtractInterface, ReadInterface
     }
 
     /**
-     * Get xml content
-     *
-     * @param string $productId
-     * @param string $supplierName
-     * @param string $locale
+     * (non-PHPdoc)
+     * @see Strixos\IcecatConnectorBundle\Extract.ExtractInterface::extract()
      */
     public function extract()
     {
@@ -72,11 +84,8 @@ class ProductXmlExtractor implements ExtractInterface, ReadInterface
     }
 
     /**
-     * Get xml product content
-     *
-     * @param string $url
-     * @throws Exception
-     * @return string
+     * (non-PHPdoc)
+     * @see Strixos\IcecatConnectorBundle\Extract.ReadInterface::read()
      */
     public function read($url)
     {
@@ -84,14 +93,7 @@ class ProductXmlExtractor implements ExtractInterface, ReadInterface
         return $fileReader->process($url, $this->login, $this->password);
     }
 
-    /**
-     * Parse xml response
-     * 
-     * @param string $stringXml
-     * @return boolean
-     * 
-     * TODO : Must be in Transform ?
-     */
+    
     protected function parseXml($stringXml)
     {
         libxml_use_internal_errors(true);

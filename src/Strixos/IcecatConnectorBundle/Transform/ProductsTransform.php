@@ -1,6 +1,8 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Transform;
 
+use Bap\Bundle\FlexibleEntityBundle\Doctrine\EntityManager;
+
 use Strixos\IcecatConnectorBundle\Entity\SourceProduct;
 
 use Strixos\IcecatConnectorBundle\Load\BatchLoader;
@@ -36,8 +38,9 @@ class ProductsTransform implements TransformInterface
     /**
      * Constructor
      * @param EntityManager $loader
+     * @param string $filePath
      */
-    public function __construct($em, $filePath)
+    public function __construct(EntityManager $em, $filePath)
     {
         $this->entityManager = $em;
         $this->loader = new BatchLoader($this->entityManager);
@@ -45,10 +48,8 @@ class ProductsTransform implements TransformInterface
     }
 
     /**
-     * Transform xml file to csv
-     *
-     * @param string $xmlFile
-     * @param string $csvFile
+     * (non-PHPdoc)
+     * @see Strixos\IcecatConnectorBundle\Transform.LanguagesTransform::transform()
      */
     public function transform()
     {

@@ -20,12 +20,6 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
     const PREFIX = 'icecat';
 
     /**
-     * Get product instance
-     * @var Object
-     */
-    protected $product;
-
-    /**
      * Get product type service
      * @var Service
      */
@@ -36,16 +30,31 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
     * @var Service
     */
     protected $productService;
+    
+    /**
+     * @var array
+     */
+    protected $prodData;
+    
+    /**
+     * @var array
+     */
+    protected $prodFeat;
+    
+    /**
+     * @var string
+     */
+    protected $localeCode;
 
     /**
-    * Constructor
-    * 
-    * @param EntityTypeManager $serviceType
-    * @param EntityManager $serviceProduct
-    * @param array $prodData
-    * @param array $prodFeat
-    * @param string $localeCode
-    */
+     * Constructor
+     * 
+     * @param EntityTypeManager $serviceType
+     * @param EntityManager $serviceProduct
+     * @param array $prodData
+     * @param array $prodFeat
+     * @param string $localeCode
+     */
     public function __construct(EntityTypeManager $serviceType, EntityManager $serviceProduct, $prodData, $prodFeat, $localeCode)
     {
         $this->typeService = $serviceType;
@@ -56,12 +65,9 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
     }
 
     /**
-    * Transform product array data to product instance
-    *
-    * @param array $prodData
-    * @param array $features
-    * @param string $localeCode
-    */
+     * (non-PHPdoc)
+     * @see Strixos\IcecatConnectorBundle\Transform.LanguagesTransform::transform()
+     */
     public function transform()
     {
     	// TODO : directly use $this->var instead of copy var
@@ -124,14 +130,5 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
         // save
         $product->persist();
         $product->flush();
-    }
-
-    /**
-     * Get product instance
-     * @return Product
-     */
-    public function getProduct()
-    {
-        return $this->product;
     }
 }

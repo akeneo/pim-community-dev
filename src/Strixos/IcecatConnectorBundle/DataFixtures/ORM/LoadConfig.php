@@ -28,6 +28,11 @@ class LoadConfig extends AbstractFixture implements OrderedFixtureInterface, Con
     * @var ContainerInterface
     */
     protected $container;
+    
+    /**
+     * @var ObjectManager
+     */
+    protected $manager;
 
     /**
      * {@inheritDoc}

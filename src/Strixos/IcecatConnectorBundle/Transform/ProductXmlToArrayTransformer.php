@@ -35,20 +35,18 @@ class ProductXmlToArrayTransformer implements TransformInterface
     protected $productFeatures;
 
     /**
-    * Constructor
-    * @param SimpleXMLElement $simpleDoc
-    */
+     * Constructor
+     * @param SimpleXMLElement $simpleDoc
+     */
     public function __construct(SimpleXMLElement $simpleDoc)
     {
         $this->simpleDoc = $simpleDoc;
     }
 
     /**
-    * Transform xml file to csv
-    *
-    * @param string $simpleDoc
-    * @param string $csvFile
-    */
+     * (non-PHPdoc)
+     * @see Strixos\IcecatConnectorBundle\Transform.LanguagesTransform::transform()
+     */
     public function transform()
     {
         $this->parseBaseData($this->simpleDoc);
@@ -57,9 +55,9 @@ class ProductXmlToArrayTransformer implements TransformInterface
 
     /**
      * Parse base product data
-     * @param unknown_type $simpleDoc
+     * @param SimpleXMLElement $simpleDoc
      */
-    protected function parseBaseData($simpleDoc)
+    protected function parseBaseData(SimpleXMLElement $simpleDoc)
     {
         // get product data
         $productTag = $simpleDoc->Product;
@@ -68,11 +66,10 @@ class ProductXmlToArrayTransformer implements TransformInterface
         $this->productBaseData['HighPic']  = (string)$productTag['HighPic'];
         $this->productBaseData['LowPic']   = (string)$productTag['HighPic'];
         $this->productBaseData['ThumbPic'] = (string)$productTag['ThumbPic'];
-            /* TODO : deal with image id and size ?
-        $this->productBaseData['HighPicHeight'] = (string)$productTag['HighPicHeight'];
-        $this->productBaseData['HighPicSize'] = (string)$productTag['HighPicSize'];
-        $this->productBaseData['HighPicWidth'] = (string)$productTag['HighPicWidth'];
-        */
+        // TODO : deal with image id and size ?
+//         $this->productBaseData['HighPicHeight'] = (string)$productTag['HighPicHeight'];
+//         $this->productBaseData['HighPicSize'] = (string)$productTag['HighPicSize'];
+//         $this->productBaseData['HighPicWidth'] = (string)$productTag['HighPicWidth'];
         // TODO deal with other provided product data
 
         // get vendor data
@@ -95,9 +92,9 @@ class ProductXmlToArrayTransformer implements TransformInterface
 
     /**
      * Parse base product data
-     * @param unknown_type $simpleDoc
+     * @param SimpleXMLElement $simpleDoc
      */
-    protected function parseFeatures($simpleDoc)
+    protected function parseFeatures(SimpleXMLElement $simpleDoc)
     {
         $descriptionArray = array();
         $specGroups = $simpleDoc->Product->CategoryFeatureGroup;
