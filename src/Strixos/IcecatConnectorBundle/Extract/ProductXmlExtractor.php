@@ -4,6 +4,7 @@ namespace Strixos\IcecatConnectorBundle\Extract;
 use Strixos\DataFlowBundle\Model\Extract\FileHttpReader;
 
 use Strixos\IcecatConnectorBundle\Entity\Config;
+use Strixos\IcecatConnectorBundle\Entity\ConfigManager;
 
 /**
  * Get product xml details from icecat
@@ -28,50 +29,15 @@ class ProductXmlExtractor implements ExtractInterface, ReadInterface
      * @param string $locale
      * @param ConfigManager $configManager
      */
-    public function __construct($productId, $supplierName, $locale, $configManager)
+    public function __construct($productId, $supplierName, $locale, ConfigManager $configManager)
     {
         // get configuration from config manager
         $this->login = $configManager->getValue(Config::LOGIN);
         $this->password = $configManager->getValue(Config::PASSWORD);
-        $baseDir = $configManager->getValue(Config::BASE_DIR);
-        
-        $baseFilePath = $baseDir . $configManager->getValue(Config::PRODUCT_FILE);
-        $baseArchiveFilePath = $baseDir . $configManager->getValue(Config::PRODUCT_ARCHIVED_FILE);
         $baseUrl = $configManager->getValue(Config::PRODUCT_URL);
         
         // prepare url and paths
         $this->url = self::prepareUrl($baseUrl, $productId, $supplierName, $locale);
-        $this->archiveFilePath = self::preparePath($baseFilePath, $productId, $locale);
-        $this->filePath = self::preparePath($baseArchiveFilePath, $productId, $locale);
-    }
-    
-    /**
-     * Prepare path for downloading and extracting data
-     * 
-     * @static
-     * @param string $basePath
-     * @param string $productId
-     * @param string $locale
-     * @return string
-     */
-    protected static function preparePath($basePath, $productId, $locale)
-    {
-        $path = str_replace('%%product_id%%', self::slugify($productId), $basePath);
-        return str_replace('%%locale%%', $locale, $path);
-    }
-    
-    /**
-     * Slugify a string to be used in filepath or url
-     * 
-     * @static
-     * @param string $name
-     * @return string
-     */
-    protected static function slugify($name)
-    {
-        $search = array('/', ' ');
-        $replace = array('', '');
-        return str_replace($search, $replace, $name);
     }
 
     /**
@@ -100,8 +66,8 @@ class ProductXmlExtractor implements ExtractInterface, ReadInterface
      */
     public function extract()
     {
-        $this->read($this->url);
-        $this->parseXml($this->xmlContent);
+        $stringXml = $this->read($this->url);
+        $this->parseXml($stringXml);
         $this->checkResponse();
     }
 
@@ -115,23 +81,26 @@ class ProductXmlExtractor implements ExtractInterface, ReadInterface
     public function read($url)
     {
         $fileReader = new FileHttpReader();
-        $this->xmlContent = $fileReader->process($url, $this->login, $this->password);
+        return $fileReader->process($url, $this->login, $this->password);
     }
 
     /**
      * Parse xml response
-     * @param SimpleXMLElement $stringXml
+     * 
+     * @param string $stringXml
      * @return boolean
+     * 
+     * TODO : Must be in Transform ?
      */
     protected function parseXml($stringXml)
     {
         libxml_use_internal_errors(true);
-        $this->xmlContent = simplexml_load_string($stringXml);
-        if ($this->xmlContent) {
+        $this->xmlElement = simplexml_load_string($stringXml);
+        if ($this->xmlElement) {
             return true;
         }
-        $this->xmlContent = simplexml_load_string(utf8_encode($stringXml));
-        if ($this->xmlContent) {
+        $this->xmlElement = simplexml_load_string(utf8_encode($stringXml));
+        if ($this->xmlElement) {
             return true;
         }
         return false;
@@ -153,6 +122,6 @@ class ProductXmlExtractor implements ExtractInterface, ReadInterface
      */
     public function getReadContent()
     {
-        return $this->xmlContent;
+        return $this->xmlElement;
     }
 }
