@@ -70,7 +70,7 @@ class LoadConfig extends AbstractFixture implements OrderedFixtureInterface, Con
     /**
      * Load a config entity in database
      * @param string $code
-     * @param mixed $value
+     * @param string $value
      */
     protected function loadConfig($code, $value)
     {
