@@ -40,9 +40,9 @@
                     <div style="clear: both"></div>
                 {% endblock %}
     
-                {% for flashMessage in app.session.flashbag.get('notice') %}
+                {% for key, flashMessage in app.session.getFlashes() %}
                     <div class="flash-message">
-                        <em>Notice</em>: {{ flashMessage }}
+                        <em>{{ key | capitalize }}</em>: {{ flashMessage }}
                     </div>
                 {% endfor %}
 
