@@ -1,24 +1,21 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Service;
 
-use Strixos\IcecatConnectorBundle\Extract\SuppliersXmlExtractor;
-
 use Strixos\IcecatConnectorBundle\Entity\Config;
 use Strixos\IcecatConnectorBundle\Entity\ConfigManager;
+use Strixos\IcecatConnectorBundle\Entity\Supplier;
 
 use Strixos\IcecatConnectorBundle\Extract\ProductXmlExtractor;
-use Strixos\IcecatConnectorBundle\Extract\DownloadSource;
+use Strixos\IcecatConnectorBundle\Extract\SuppliersXmlExtractor;
 use Strixos\IcecatConnectorBundle\Extract\DownloadAndUnpackSource;
 
 use Strixos\IcecatConnectorBundle\Transform\LanguagesTransform;
-use Strixos\IcecatConnectorBundle\Transform\ProductTransform;
 use Strixos\IcecatConnectorBundle\Transform\ProductsTransform;
 use Strixos\IcecatConnectorBundle\Transform\SuppliersTransform;
 use Strixos\IcecatConnectorBundle\Transform\ProductXmlToArrayTransformer;
 use Strixos\IcecatConnectorBundle\Transform\ProductArrayToCatalogProductTransformer;
 
 use Strixos\IcecatConnectorBundle\Load\BatchLoader;
-
 /**
  * Connector service, accessibble from anywhere in application
  *
@@ -171,7 +168,7 @@ class ConnectorService
      * Import all products from a supplier
      * @param Supplier $supplier
      */
-    public function importProductsFromSupplier($supplier)
+    public function importProductsFromSupplier(Supplier $supplier)
     {
         $em = $this->container->get('doctrine.orm.entity_manager');
         $products = $em->getRepository('StrixosIcecatConnectorBundle:SourceProduct')->findBySupplier($supplier);
