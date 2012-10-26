@@ -12,6 +12,9 @@ use Akeneo\CatalogBundle\Model\BaseFieldFactory;
  */
 class ProductArrayToCatalogProductTransformer implements TransformInterface
 {
+	/**
+	 * @staticvar string
+	 */
     const PREFIX = 'icecat';
 
     /**

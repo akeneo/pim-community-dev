@@ -10,7 +10,9 @@ namespace Strixos\IcecatConnectorBundle\Transform;
  */
 class ProductXmlToArrayTransformer implements TransformInterface
 {
-
+	/**
+	 * @staticvar string
+	 */
     const PREFIX = 'icecat';
 
     /**
