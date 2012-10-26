@@ -8,7 +8,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
 
 use \Exception;
-
 /**
  * Icecat language controller regroups all features for languages entities as loading and listing 
  * 
@@ -33,7 +32,6 @@ class LanguageController extends Controller
         } catch (Exception $e) {
             $this->get('session')->setFlash('exception', $e->getMessage());
         }
-
         return $this->redirect($this->generateUrl('strixos_icecatconnector_language_list'));
     }
 
