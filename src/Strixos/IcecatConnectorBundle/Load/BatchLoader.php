@@ -1,6 +1,8 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Load;
 
+use Doctrine\Common\Persistence\ObjectManager;
+
 /**
  * Provide default batch loader
  *
@@ -36,7 +38,7 @@ class BatchLoader implements LoadInterface
      * Set object manager
      * @param ObjectManager $objectManager
      */
-    public function __construct($objectManager)
+    public function __construct(ObjectManager $objectManager)
     {
         $this->objectManager = $objectManager;
         $this->size = 0;
@@ -44,9 +46,9 @@ class BatchLoader implements LoadInterface
 
     /**
      * Persist an object with manager
-     * @param Object $object
+     * @param AbstractModel $object
      */
-    public function add($object)
+    public function add(AbstractModel $object)
     {
         $this->objectManager->persist($object);
         if (++$this->size % self::$limit === 0) {

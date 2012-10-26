@@ -2,9 +2,7 @@
 namespace Strixos\IcecatConnectorBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\Form\AbstractType;
-
 /**
  * 
  * @author    Romain Monceau <romain@akeneo.com>
