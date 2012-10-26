@@ -33,7 +33,7 @@ class SupplierController extends Controller
             $srvConnector->importSuppliers();
             $this->get('session')->setFlash('notice', 'Base suppliers has been imported from Icecat');
         } catch (Exception $e) {
-            return array('exception' => $e);
+            $this->get('session')->setFlash('exception', $e->getMessage());
         }
 
         return $this->redirect($this->generateUrl('strixos_icecatconnector_supplier_list'));
@@ -81,11 +81,11 @@ class SupplierController extends Controller
             $viewRenderer = $this->render('StrixosIcecatConnectorBundle:Supplier:loadProducts.html.twig',
                     array('supplier' => $supplier, 'products' => $products));
             $this->get('session')->setFlash('notice', $viewRenderer->getContent());
-            
-            // Redirect to suppliers list
-            return $this->redirect($this->generateUrl('strixos_icecatconnector_supplier_list'));
         } catch (Exception $e) {
-            return array('exception' => $e);
+            $this->get('session')->setFlash('exception', $e->getMessage());
         }
+            
+        // Redirect to suppliers list
+        return $this->redirect($this->generateUrl('strixos_icecatconnector_supplier_list'));
     }
 }

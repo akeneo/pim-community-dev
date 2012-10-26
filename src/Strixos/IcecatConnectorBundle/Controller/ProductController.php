@@ -33,7 +33,7 @@ class ProductController extends Controller
             $srvConnector->importProducts();
             $this->get('session')->setFlash('notice', 'Base products has been imported from Icecat');
         } catch (Exception $e) {
-            return array('exception' => $e);
+            $this->get('session')->setFlash('exception', $e->getMessage());
         }
 
         return $this->redirect($this->generateUrl('strixos_icecatconnector_product_list'));
@@ -76,11 +76,11 @@ class ProductController extends Controller
             $viewRenderer = $this->render('StrixosIcecatConnectorBundle:Product:loadProduct.html.twig', 
                     array('product' => $product));
             $this->get('session')->setFlash('notice', $viewRenderer->getContent());
-            
-            // Redirect to products list
-            return $this->redirect($this->generateUrl('strixos_icecatconnector_product_list'));
         } catch (Exception $e) {
-            return array('exception' => $e);
+            $this->get('session')->setFlash('exception', $e->getMessage());
         }
+        
+        // Redirect to products list
+        return $this->redirect($this->generateUrl('strixos_icecatconnector_product_list'));
     }
 }

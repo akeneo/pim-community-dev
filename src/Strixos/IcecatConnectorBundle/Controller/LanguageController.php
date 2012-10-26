@@ -31,7 +31,7 @@ class LanguageController extends Controller
             $srvConnector->importLanguages();
             $this->get('session')->setFlash('notice', 'Base languages has been imported from Icecat');
         } catch (Exception $e) {
-            return array('exception' => $e);
+            $this->get('session')->setFlash('exception', $e->getMessage());
         }
 
         return $this->redirect($this->generateUrl('strixos_icecatconnector_language_list'));

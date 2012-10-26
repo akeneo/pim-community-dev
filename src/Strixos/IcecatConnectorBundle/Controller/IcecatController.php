@@ -42,7 +42,7 @@ class IcecatController extends Controller
             $connection->commit();
         } catch (Exception $e) {
             $connection->rollback();
-            throw $e;
+            $this->get('session')->setFlash('exception', $e->getMessage());
         }
         
         return $this->redirect($this->generateUrl('strixos_icecatconnector_default_index'));
@@ -84,7 +84,7 @@ class IcecatController extends Controller
             $connection->commit();
         } catch (Exception $e) {
             $connection->rollback();
-            throw $e;
+            $this->get('session')->setFlash('exception', $e->getMessage());
         }
         
         return $this->redirect($this->generateUrl('strixos_icecatconnector_default_index'));
