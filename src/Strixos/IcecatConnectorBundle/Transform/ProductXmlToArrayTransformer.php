@@ -11,9 +11,9 @@ use \SimpleXMLElement;
  */
 class ProductXmlToArrayTransformer implements TransformInterface
 {
-	/**
-	 * @staticvar string
-	 */
+    /**
+     * @staticvar string
+     */
     const PREFIX = 'icecat';
 
     /**

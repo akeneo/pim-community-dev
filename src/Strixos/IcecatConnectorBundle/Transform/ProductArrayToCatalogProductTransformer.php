@@ -14,9 +14,9 @@ use Bap\Bundle\FlexibleEntityBundle\Doctrine\EntityTypeManager;
  */
 class ProductArrayToCatalogProductTransformer implements TransformInterface
 {
-	/**
-	 * @staticvar string
-	 */
+    /**
+     * @staticvar string
+     */
     const PREFIX = 'icecat';
 
     /**
@@ -70,7 +70,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
      */
     public function transform()
     {
-    	// TODO : directly use $this->var instead of copy var
+        // TODO : directly use $this->var instead of copy var
         $prodData = $this->prodData;
         $prodFeat = $this->prodFeat;
         $localeCode = $this->localeCode;
