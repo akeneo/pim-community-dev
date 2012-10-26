@@ -21,35 +21,35 @@ class SourceLanguage extends AbstractModel
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string $code
      *
      * @ORM\Column(name="code", type="string", length=50, unique=true)
      */
-    private $code;
+    protected $code;
 
     /**
      * @var string $shortCode
      *
      * @ORM\Column(name="shortCode", type="string", length=5, unique=true)
      */
-    private $shortCode;
+    protected $shortCode;
 
     /**
      * @var string $icecatShortCode
      *
      * @ORM\Column(name="icecatShortCode", type="string", length=5, unique=true)
      */
-    private $icecatShortCode;
+    protected $icecatShortCode;
 
     /**
      * @var integer $icecatId
      *
      * @ORM\Column(name="icecat_id", type="integer")
      */
-    private $icecatId;
+    protected $icecatId;
 
     /**
      * Get id

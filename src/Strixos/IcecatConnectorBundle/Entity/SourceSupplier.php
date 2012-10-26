@@ -21,21 +21,21 @@ class SourceSupplier extends AbstractModel
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string $name
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string $icecatId
      *
      * @ORM\Column(name="icecat_id", type="integer")
      */
-    private $icecatId;
+    protected $icecatId;
 
     /**
      * Get id

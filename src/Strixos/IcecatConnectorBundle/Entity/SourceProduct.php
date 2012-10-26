@@ -22,21 +22,21 @@ class SourceProduct extends AbstractModel
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Supplier $supplier
      * @ORM\ManyToOne(targetEntity="SourceSupplier")
      * @ORM\JoinColumn(name="supplier_id", referencedColumnName="id")
      */
-    private $supplier;
+    protected $supplier;
 
     /**
      * @var integer $productId
      *
      * @ORM\Column(name="product_id", type="integer")
      */
-    private $productId;
+    protected $productId;
 
 
     /**
@@ -44,7 +44,7 @@ class SourceProduct extends AbstractModel
      *
      * @ORM\Column(name="prod_id", type="string", length=255)
      */
-    private $prodId;
+    protected $prodId;
 
 
     /**
@@ -52,14 +52,14 @@ class SourceProduct extends AbstractModel
      *
      * @ORM\Column(name="m_prod_id", type="string", length=255)
      */
-    private $mProdId;
+    protected $mProdId;
 
     /**
      * @var boolean $is_imported
      *
      * @ORM\Column(name="imported", type="boolean")
      */
-    private $is_imported;
+    protected $is_imported;
 
     /**
      * Constructor for product

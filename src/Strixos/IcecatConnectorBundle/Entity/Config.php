@@ -46,7 +46,7 @@ class Config extends AbstractModel
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string $code
@@ -57,7 +57,7 @@ class Config extends AbstractModel
      * @Assert\MinLength(5)
      * @Assert\MaxLength(30)
      */
-    private $code;
+    protected $code;
 
     /**
      * @var string $value
@@ -66,7 +66,7 @@ class Config extends AbstractModel
      * 
      * @Assert\NotBlank()
      */
-    private $value;
+    protected $value;
 
     /**
      * Get id
