@@ -1,6 +1,7 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Transform;
 
+use \SimpleXMLElement;
 /**
  * Aims to transform xml product data to array
  *
@@ -37,7 +38,7 @@ class ProductXmlToArrayTransformer implements TransformInterface
     * Constructor
     * @param SimpleXMLElement $simpleDoc
     */
-    public function __construct(\SimpleXMLElement $simpleDoc)
+    public function __construct(SimpleXMLElement $simpleDoc)
     {
         $this->simpleDoc = $simpleDoc;
     }

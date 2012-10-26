@@ -1,6 +1,8 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Transform;
 
+use Strixos\IcecatConnectorBundle\Load\BatchLoader;
+
 use Strixos\IcecatConnectorBundle\Entity\SourceLanguage;
 
 use \XMLReader;
@@ -32,7 +34,7 @@ class LanguagesTransform implements TransformInterface
      * @param BatchLoader $loader
      * @param string $xmlContent
      */
-    public function __construct($loader, $xmlContent)
+    public function __construct(BatchLoader $loader, $xmlContent)
     {
         $this->loader = $loader;
         $this->xmlContent = $xmlContent;
@@ -40,16 +42,12 @@ class LanguagesTransform implements TransformInterface
 
     /**
      * Transform xml file to csv
-     *
-     * @param string $xmlFile
-     * @param string $csvFile
      */
     public function transform()
     {
         // read xml document and parse to suppliers entities
         $xml = new XMLReader();
         $xml->XML($this->xmlContent);
-//         $xml->open($this->filePath);
 
         while ($xml->read()) {
             if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'Language') {

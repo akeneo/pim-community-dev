@@ -3,6 +3,8 @@ namespace Strixos\IcecatConnectorBundle\Transform;
 
 use Akeneo\CatalogBundle\Model\BaseFieldFactory;
 
+use Bap\Bundle\FlexibleEntityBundle\Doctrine\EntityManager;
+use Bap\Bundle\FlexibleEntityBundle\Doctrine\EntityTypeManager;
 /**
  * Aims to transform array product data to catalog product instance
  *
@@ -37,9 +39,14 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
 
     /**
     * Constructor
-    * @param Service $loader
+    * 
+    * @param EntityTypeManager $serviceType
+    * @param EntityManager $serviceProduct
+    * @param array $prodData
+    * @param array $prodFeat
+    * @param string $localeCode
     */
-    public function __construct($serviceType, $serviceProduct, $prodData, $prodFeat, $localeCode)
+    public function __construct(EntityTypeManager $serviceType, EntityManager $serviceProduct, $prodData, $prodFeat, $localeCode)
     {
         $this->typeService = $serviceType;
         $this->productService = $serviceProduct;
@@ -57,6 +64,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
     */
     public function transform()
     {
+    	// TODO : directly use $this->var instead of copy var
         $prodData = $this->prodData;
         $prodFeat = $this->prodFeat;
         $localeCode = $this->localeCode;

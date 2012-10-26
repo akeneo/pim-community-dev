@@ -3,7 +3,7 @@ namespace Strixos\IcecatConnectorBundle\Service;
 
 use Strixos\IcecatConnectorBundle\Entity\Config;
 use Strixos\IcecatConnectorBundle\Entity\ConfigManager;
-use Strixos\IcecatConnectorBundle\Entity\Supplier;
+use Strixos\IcecatConnectorBundle\Entity\SourceSupplier;
 
 use Strixos\IcecatConnectorBundle\Extract\ProductXmlExtractor;
 use Strixos\IcecatConnectorBundle\Extract\SuppliersXmlExtractor;
@@ -166,9 +166,9 @@ class ConnectorService
 
     /**
      * Import all products from a supplier
-     * @param Supplier $supplier
+     * @param SourceSupplier $supplier
      */
-    public function importProductsFromSupplier(Supplier $supplier)
+    public function importProductsFromSupplier(SourceSupplier $supplier)
     {
         $em = $this->container->get('doctrine.orm.entity_manager');
         $products = $em->getRepository('StrixosIcecatConnectorBundle:SourceProduct')->findBySupplier($supplier);
