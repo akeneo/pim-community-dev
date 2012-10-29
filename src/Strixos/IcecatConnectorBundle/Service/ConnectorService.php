@@ -65,8 +65,7 @@ class ConnectorService
         $extractor->extract();
         $xmlContent = $extractor->getReadContent();
         
-        $loader = new BatchLoader($this->container->get('doctrine.orm.entity_manager'));
-        $transformer = new SuppliersTransform($loader, $xmlContent);
+        $transformer = new SuppliersTransform($this->container->get('doctrine.orm.entity_manager'), $xmlContent);
         $transformer->transform();
     }
 

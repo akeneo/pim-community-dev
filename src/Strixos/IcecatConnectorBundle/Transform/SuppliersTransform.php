@@ -1,6 +1,10 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Transform;
 
+use Strixos\IcecatConnectorBundle\Load\BatchLoader;
+
+use Doctrine\ORM\EntityManager;
+
 use Strixos\IcecatConnectorBundle\Entity\SourceSupplier;
 
 use \XMLReader;
@@ -17,9 +21,14 @@ use \XMLReader;
 class SuppliersTransform implements TransformInterface
 {
     /**
-     * @var LoadInterface
+     * @var BatchLoader
      */
     protected $loader;
+    
+    /**
+     * @var EntityManager
+     */
+    protected $entityManager;
     
     /**
      * @var string
@@ -28,12 +37,13 @@ class SuppliersTransform implements TransformInterface
 
     /**
      * Constructor
-     * @param LoadInterface $loader
+     * @param EntityManager $em
      * @param string $xmlContent
      */
-    public function __construct($loader, $xmlContent)
+    public function __construct(EntityManager $em, $xmlContent)
     {
-        $this->loader = $loader;
+        $this->entityManager = $em;
+        $this->loader = new BatchLoader($this->entityManager);
         $this->xmlContent = $xmlContent;
     }
 
@@ -50,8 +60,14 @@ class SuppliersTransform implements TransformInterface
 
         while ($xml->read()) {
             if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'SupplierMapping') {
-                $supplier = new SourceSupplier();
-                $supplier->setIcecatId($xml->getAttribute('supplier_id'));
+                
+                // get SourceSupplier from database if exists
+                $supplier = $this->entityManager->getRepository('StrixosIcecatConnectorBundle:SourceSupplier')
+                        ->findOneByIcecatId($xml->getAttribute('supplier_id'));
+                if (!$supplier) {
+                    $supplier = new SourceSupplier();
+                    $supplier->setIcecatId($xml->getAttribute('supplier_id'));
+                }
                 $supplier->setName($xml->getAttribute('name'));
                 $this->loader->add($supplier);
             } else if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'SupplierMappings') {

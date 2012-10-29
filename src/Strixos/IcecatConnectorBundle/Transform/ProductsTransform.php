@@ -1,7 +1,7 @@
 <?php
 namespace Strixos\IcecatConnectorBundle\Transform;
 
-use Bap\Bundle\FlexibleEntityBundle\Doctrine\EntityManager;
+use Doctrine\ORM\EntityManager;
 
 use Strixos\IcecatConnectorBundle\Entity\SourceProduct;
 
@@ -37,7 +37,7 @@ class ProductsTransform implements TransformInterface
 
     /**
      * Constructor
-     * @param EntityManager $loader
+     * @param EntityManager $em
      * @param string $filePath
      */
     public function __construct(EntityManager $em, $filePath)
@@ -76,9 +76,15 @@ class ProductsTransform implements TransformInterface
                 if ($indRow++ == 0) {
                     continue;
                 }
-                // inject as product
-                $product = new SourceProduct();
-                $product->setProductId($data[0]);
+                
+                // Get product if already exists
+                $product = $this->entityManager->getRepository('StrixosIcecatConnectorBundle:SourceProduct')
+                        ->findOneByProductId($data[0]);
+                if (!$product) {
+                    $product = new SourceProduct();
+                    $product->setProductId($data[0]);
+                }
+                
                 // TODO: get real supplier id problem with mapping
                 $product->setSupplier($this->_icecatIdToSupplier[$data[4]]);
                 $product->setProdId($data[1]);

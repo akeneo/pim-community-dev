@@ -33,7 +33,7 @@ class SourceSupplier extends AbstractModel
     /**
      * @var string $icecatId
      *
-     * @ORM\Column(name="icecat_id", type="integer")
+     * @ORM\Column(name="icecat_id", type="integer", unique=true)
      */
     protected $icecatId;
 
