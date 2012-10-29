@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
 
 use \Exception;
+use Doctrine\DBAL\DBALException;
 /**
  * Icecat language controller regroups all features for languages entities as loading and listing 
  * 
@@ -29,6 +30,9 @@ class LanguageController extends Controller
             $srvConnector = $this->container->get('akeneo.connector.icecat_service');
             $srvConnector->importLanguages();
             $this->get('session')->setFlash('notice', 'Base languages has been imported from Icecat');
+        } catch (DBALException $e) {
+            $this->container->get('logger')->err($e->getCode() .' : '. $e->getMessage());
+            $this->get('session')->setFlash('exception', 'Erreur en base de données lors de l\'import');
         } catch (Exception $e) {
             $this->get('session')->setFlash('exception', $e->getMessage());
         }
