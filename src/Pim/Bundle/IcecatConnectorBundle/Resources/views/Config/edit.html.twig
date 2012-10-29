@@ -1,0 +1,35 @@
+{% extends 'PimIcecatConnectorBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} Manage Icecat configuration{% endblock %}
+
+{% block content %}
+
+    <h2>Edit Icecat connector configuration</h2>
+    
+    {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
+    
+    <form action="{{ path('pim_icecatconnector_config_edit') }}" method="post" {{ form_enctype(form) }} class="form-config">
+    
+        <div class="error">{{ form_errors(form) }}</div><br />
+  
+      {% if app.session.hasFlash('message') %}
+        <div class="flash-message">{{ app.session.flash('message') }}</div>
+      {% endif %}
+
+        <div class="form-panel ui-corner-all">
+          {% for config in form.configs %}
+            <div class="ui-widget">
+                {{ form_widget(config.id) }}
+                {{ form_widget(config.code) }}
+                {{ form_widget(config.value) }}
+            </div>
+          {% endfor %}
+        </div>
+        
+        {{ form_rest(form) }}
+
+        <input type="submit" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" aria-disabled="false">
+
+    </form>
+
+{% endblock %}

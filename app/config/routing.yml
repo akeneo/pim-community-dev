@@ -27,8 +27,8 @@ StrixosCatalogBundle:
     type:     annotation
     prefix:   /catalog/
 
-StrixosIcecatConnectorBundle:
-    resource: "@StrixosIcecatConnectorBundle/Controller/"
+PimIcecatConnectorBundle:
+    resource: "@PimIcecatConnectorBundle/Controller/"
     type:     annotation
     prefix:   /icecatconnector/
 
