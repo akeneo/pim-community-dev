@@ -10,10 +10,11 @@
         <link rel="stylesheet" href="{{ asset('bundles/bapui/css/main-bap.css') }}" />
         <link rel="stylesheet" href="{{ asset('bundles/bapui/css/icons-fugue.css') }}" />
         {% endblock %}
-        
+
+        {% block head_js %}
         <script type="text/javascript" src="{{ asset('bundles/bapui/js/jquery-1.8.0.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('bundles/bapui/js/jquery-ui-1.8.23.custom.min.js') }}"></script>
-
+        {% endblock %}
     </head>
     <body>
         <div id="body-wrapper">
@@ -46,14 +47,13 @@
                     </div>
                 {% endfor %}
 
+                {% block leftcolumn %}{% endblock %}
+
                 {% block content %}{% endblock %}
+                
+                {% block rightcolumn %}{% endblock %}
             </div>
 
-            {% if code is defined %}
-                <h2>Code behind this page</h2>
-                <div class="symfony-content">{{ code|raw }}</div>
-            {% endif %}
-            
             <div id="footer">
                 {% block footer %}{% endblock %}
                 <p><em>The future of catalog management is open ! © Akeneo SAS.</em></p>
