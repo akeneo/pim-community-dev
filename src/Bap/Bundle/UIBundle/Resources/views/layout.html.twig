@@ -24,7 +24,9 @@
                 </a>
             </div>
 
-            {% block main_menu %}{% endblock %}
+            {% block main_menu %}
+                {{ knp_menu_render('BapMainMenu') }}
+            {% endblock %}
 
             <div class="content ui-corner-all">
 
@@ -60,6 +62,12 @@
                 {% endblock %}
           </div>
         </div>
-        {% block afterfooter %}{% endblock %}
+        {% block afterfooter %}
+        <script>
+            $(function() {
+                $("#BapMainMenu").menu({ position: { at: "bottom" }});
+            });
+        </script>
+        {% endblock %}
     </body>
 </html>

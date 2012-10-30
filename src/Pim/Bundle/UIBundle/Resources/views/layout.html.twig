@@ -6,22 +6,3 @@
 {% endblock %}
 
 {% block title %}Akeneo - {% endblock %}
-
-{% block main_menu %}
-
-    {{ knp_menu_render('PimUIBundle:Builder:mainMenu') }}
-    
-    
-    {{ knp_menu_render('BapMainMenu') }}
-    
-{% endblock %}
-
-{% block afterfooter %}
-    <script>
-        $(function() {
-            $("#mainmenu").menu({ position: { at: "bottom" }});
-            
-            $("#BapMainMenu").menu({ position: { at: "bottom" }});
-        });
-    </script>
-{% endblock %}
