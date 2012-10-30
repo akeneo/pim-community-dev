@@ -24,3 +24,4 @@
 }
 #mainmenu li.first-level {padding:5px;}
 
+#mainmenu .ui-menu { z-index: 2;}
