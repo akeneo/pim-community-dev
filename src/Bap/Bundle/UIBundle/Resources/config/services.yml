@@ -1,0 +1,14 @@
+services:
+
+    bap_ui.menu_builder:
+        class: Bap\Bundle\UIBundle\Menu\Builder
+        arguments: ["@knp_menu.factory", "@event_dispatcher"]
+
+    bap_ui.menu.main: #if you want create a lot of menu change this line 
+        class: Knp\Menu\MenuItem # the service definition requires setting the class
+        factory_service: bap_ui.menu_builder
+        factory_method: createMenu
+        arguments: ["@request", BapMainMenu_event, BapMainMenu]  # The event name change it if create another menu
+        scope: request # needed as we have the request as a dependency here
+        tags:
+            - { name: knp_menu.menu, alias: BapMainMenu } # The alias is what is used to retrieve the 
