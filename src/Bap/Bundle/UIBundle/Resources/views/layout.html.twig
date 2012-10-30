@@ -55,9 +55,11 @@
             </div>
 
             <div id="footer">
-                {% block footer %}{% endblock %}
-                <p><em>The future of catalog management is open ! © Akeneo SAS.</em></p>
+                {% block footer %}
+                    <p><em>The future of catalog management is open ! © Akeneo SAS.</em></p>
+                {% endblock %}
           </div>
         </div>
+        {% block afterfooter %}{% endblock %}
     </body>
 </html>

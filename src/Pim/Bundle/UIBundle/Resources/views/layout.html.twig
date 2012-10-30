@@ -5,11 +5,16 @@
     <link rel="stylesheet" href="{{ asset('bundles/pimui/css/main-pim.css') }}" />
 {% endblock %}
 
-{% block main_menu %}
-    <div id="main-menu-pim" class="ui-corner-all">
-        {{ knp_menu_render('PimUIBundle:Builder:mainMenu') }}
-    </div>
-{% endblock %}
-
 {% block title %}Akeneo - {% endblock %}
 
+{% block main_menu %}
+    {{ knp_menu_render('PimUIBundle:Builder:mainMenu') }}
+{% endblock %}
+
+{% block afterfooter %}
+    <script>
+        $(function() {
+            $( "#mainmenu" ).menu();
+        });
+    </script>
+{% endblock %}

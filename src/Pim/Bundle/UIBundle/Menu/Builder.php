@@ -26,9 +26,13 @@ class Builder extends ContainerAware
     {
         $menu = $factory->createItem(self::MAIN_MENU_CODE);
 
+        $menu->setChildrenAttribute('id', 'mainmenu');
+
         // first level items
         $firstLevelCssClass = 'first-level';
-        $menu->addChild('Dashboard', array('route' => '_welcome'));
+        $menu->addChild('Dashboard');
+        $menu['Dashboard']->addChild('Home', array('route' => '_welcome'));
+
         $menu['Dashboard']->setAttribute('class', $firstLevelCssClass);
         $menu->addChild('Catalog');
         $menu['Catalog']->setAttribute('class', $firstLevelCssClass);

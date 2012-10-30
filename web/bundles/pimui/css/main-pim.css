@@ -1,13 +1,26 @@
 
-/* connectors */
+/* connectors icons */
 .ui-icon-connector-icecat { background-position: 0 0; background-image:url(icons-connector/icecat-16.gif) !important;}
 .ui-icon-connector-magento { background-position: 0 0; background-image:url(icons-connector/magento-16.gif) !important;}
 
-#main-menu-pim {
-    background-color: white;
-    border: 1px solid #DFDFDF;
-    margin: 0 25px 20px;
-    padding: 10px;
-    height:80px;
+/* clearfix for the main menu to horizontal use */
+#mainmenu {
+    margin: 0 25px 10px;
 }
-#main-menu-pim li.first-level { float: left; margin-right: 25px;}
+#mainmenu:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+#mainmenu .first-level {
+    display: inline-block;
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: auto;
+}
+#mainmenu li.first-level {padding:5px;}
+
