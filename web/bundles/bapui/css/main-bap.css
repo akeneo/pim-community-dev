@@ -371,7 +371,7 @@ th div {
 .connectedSortable .add-attribute {border:1px solid green;}
 .connectedSortable .remove-attribute {border:1px solid red;}
 #add_tab {float:right;margin-bottom:1px;}
-.ui-tabs { border: 1px solid #AACD4E}
+.ui-tabs { border: 0px solid }
 
 
 /* clearfix for the main menu to horizontal use */
