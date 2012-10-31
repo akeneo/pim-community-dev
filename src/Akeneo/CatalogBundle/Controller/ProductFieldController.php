@@ -66,7 +66,8 @@ class ProductFieldController extends AbstractProductController
     public function newAction()
     {
         $entity = $this->getNewObject();
-        $form   = $this->createForm(new ProductFieldType(), $entity);
+        $classFullName = $this->getObjectClassFullName();
+        $form = $this->createForm(new ProductFieldType($classFullName), $entity);
 
         // render form
         return $this->render(
@@ -84,7 +85,8 @@ class ProductFieldController extends AbstractProductController
     public function createAction(Request $request)
     {
         $entity  = $this->getNewObject();
-        $form = $this->createForm(new ProductFieldType(), $entity);
+        $classFullName = $this->getObjectClassFullName();
+        $form = $this->createForm(new ProductFieldType($classFullName), $entity);
         $form->bind($request);
 
         // TODO : avoid to create product field with same code -> complete validation !
@@ -119,7 +121,8 @@ class ProductFieldController extends AbstractProductController
             throw $this->createNotFoundException('Unable to find product field.');
         }
 
-        $editForm = $this->createForm(new ProductFieldType(), $entity);
+        $classFullName = $this->getObjectClassFullName();
+        $editForm = $this->createForm(new ProductFieldType($classFullName), $entity);
 
         $params = array(
             'entity'      => $entity,
@@ -147,7 +150,8 @@ class ProductFieldController extends AbstractProductController
             throw $this->createNotFoundException('Unable to find product field.');
         }
 
-        $editForm = $this->createForm(new ProductFieldType(), $entity);
+        $classFullName = $this->getObjectClassFullName();
+        $editForm = $this->createForm(new ProductFieldType($classFullName), $entity);
         $editForm->bind($request);
 
         if ($editForm->isValid()) {

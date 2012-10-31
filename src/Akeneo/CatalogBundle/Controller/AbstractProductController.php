@@ -61,14 +61,24 @@ abstract class AbstractProductController extends Controller
     }
 
     /**
+     * Return full name of object class
+     * @return unknown
+     */
+    public function getObjectClassFullName()
+    {
+        $om = $this->container->get($this->getObjectManagerService());
+        $metadata = $om->getClassMetadata($this->getObjectShortName());
+        $classFullName = $metadata->getName();
+        return $classFullName;
+    }
+
+    /**
      * Return new instance of object
      * @return unknown
      */
     public function getNewObject()
     {
-        $om = $this->container->get($this->getObjectManagerService());
-        $metadata = $om->getClassMetadata($this->getObjectShortName());
-        $classFullName = $metadata->getName();
+        $classFullName = $this->getObjectClassFullName();
         $entity = new $classFullName();
         return $entity;
     }

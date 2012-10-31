@@ -7,7 +7,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Akeneo\CatalogBundle\Model\BaseFieldFactory;
 
 /**
- * Type for field form
+ * Type for field form (independant of persistence)
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
@@ -16,6 +16,25 @@ use Akeneo\CatalogBundle\Model\BaseFieldFactory;
  */
 class ProductFieldType extends AbstractType
 {
+    /**
+     * @var string
+     */
+    protected $fieldClass;
+
+    /**
+     * Construct with full name of concrete impl of field class
+     * @param unknown_type $fieldClass
+     */
+    public function __construct($fieldClass)
+    {
+        $this->fieldClass = $fieldClass;
+    }
+
+    /**
+     * Build form
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $entity = $options['data'];
@@ -72,14 +91,23 @@ class ProductFieldType extends AbstractType
         );
     }
 
+    /**
+     * Setup default options
+     * @param OptionsResolverInterface $resolver
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-        //    'data_class' => 'Akeneo\CatalogBundle\Entity\ProductField'
-            'data_class' => 'Akeneo\CatalogBundle\Document\ProductFieldMongo'
-        ));
+        $resolver->setDefaults(
+            array(
+                'data_class' => $this->fieldClass
+            )
+        );
     }
 
+    /**
+     * Get identifier
+     * @return string
+     */
     public function getName()
     {
         return 'akeneo_catalogbundle_productfieldtype';
