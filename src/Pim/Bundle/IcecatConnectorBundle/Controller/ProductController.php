@@ -54,7 +54,7 @@ class ProductController extends Controller
         $source = new GridEntity('PimIcecatConnectorBundle:SourceProduct');
         $grid = $this->get('grid');
         $grid->setSource($source);
-        // add an action column to load import of all products of a supplier
+        // add an action column to load import of all datas of the product
         $rowAction = new RowAction('Import product to PIM', 'pim_icecatconnector_product_loadproduct');
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
