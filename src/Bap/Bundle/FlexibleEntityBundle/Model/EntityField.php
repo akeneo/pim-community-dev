@@ -31,6 +31,21 @@ abstract class EntityField
     protected $type;
 
     /**
+     * @var boolean $uniqueValue
+     */
+    protected $uniqueValue;
+
+    /**
+    * @var boolean $valueRequired
+    */
+    protected $valueRequired;
+
+    /**
+    * @var string $searchable
+    */
+    protected $searchable;
+
+    /**
      * Get id
      *
      * @return integer
@@ -107,6 +122,73 @@ abstract class EntityField
     public function getType()
     {
         return $this->type;
+    }
+
+
+    /**
+     * Set uniqueValue
+     *
+     * @param boolean $uniqueValue
+     * @return EntityField
+     */
+    public function setUniqueValue($uniqueValue)
+    {
+        $this->uniqueValue = $uniqueValue;
+        return $this;
+    }
+
+    /**
+     * Get uniqueValue
+     *
+     * @return boolean $uniqueValue
+     */
+    public function getUniqueValue()
+    {
+        return $this->uniqueValue;
+    }
+
+    /**
+     * Set valueRequired
+     *
+     * @param string $valueRequired
+     * @return EntityField
+     */
+    public function setValueRequired($valueRequired)
+    {
+        $this->valueRequired = $valueRequired;
+        return $this;
+    }
+
+    /**
+     * Get valueRequired
+     *
+     * @return string $valueRequired
+     */
+    public function getValueRequired()
+    {
+        return $this->valueRequired;
+    }
+
+    /**
+     * Set searchable
+     *
+     * @param boolean $searchable
+     * @return EntityField
+     */
+    public function setSearchable($searchable)
+    {
+        $this->searchable = $searchable;
+        return $this;
+    }
+
+    /**
+     * Get searchable
+     *
+     * @return boolean $searchable
+     */
+    public function getSearchable()
+    {
+        return $this->searchable;
     }
 
 }

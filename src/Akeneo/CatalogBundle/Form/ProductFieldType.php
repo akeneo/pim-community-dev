@@ -23,7 +23,11 @@ class ProductFieldType extends AbstractType
         // TODO drive from type and not add if in twig template ?
         $builder->add('id', 'hidden');
 
-        $builder->add('code');
+        $builder->add(
+            'code', 'text', array(
+                'disabled'  => ($entity->getId())? true : false
+            )
+        );
 
         // if already exists disabled this choice
         $builder->add(
@@ -34,28 +38,38 @@ class ProductFieldType extends AbstractType
             )
         );
 
-        $builder->add('options', 'collection', array(
+        $builder->add(
+            'uniqueValue', 'choice', array(
+                'choices'   => array(false => 'No', true => 'Yes'),
+                'required'  => true,
+                'label'     => 'Is unique'
+            )
+        );
+
+        $builder->add(
+            'valueRequired', 'choice', array(
+                'choices'   => array(false => 'No', true => 'Yes'),
+                'required'  => true,
+                'label'     => 'Value required'
+            )
+        );
+
+        $builder->add(
+            'searchable', 'choice', array(
+                'choices'   => array(false => 'No', true => 'Yes'),
+                'required'  => true,
+                'label'     => 'Is searchable'
+            )
+        );
+
+        $builder->add(
+            'options', 'collection', array(
                 'type' => new ProductFieldOptionType(),
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
             )
         );
-
-//        var_dump($entity->getOptions());
-
-//        var_dump($entity->getOption('blue'));
-
-/*
-        $builder->add(
-            'options', 'collection',
-            array(
-                'allow_add'    => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-            )
-        );*/
-
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

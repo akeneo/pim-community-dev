@@ -40,10 +40,25 @@ class ProductField extends AbstractEntityField
     protected $title;
 
     /**
-    * @var string $type
-    *
-    * @ORM\Column(name="type", type="string", length=255)
-    */
+     * @var string $type
+     *
+     * @ORM\Column(name="type", type="string", length=255)
+     */
     protected $type;
+
+    /**
+     * @ORM\Column(name="uniqueValue", type="boolean")
+     */
+    protected $uniqueValue;
+
+    /**
+     * @ORM\Column(name="valueRequired", type="boolean")
+     */
+    protected $valueRequired;
+
+    /**
+     * @ORM\Column(name="searchable", type="boolean")
+     */
+    protected $searchable;
 
 }

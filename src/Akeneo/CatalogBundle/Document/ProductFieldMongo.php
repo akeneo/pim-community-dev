@@ -26,9 +26,9 @@ class ProductFieldMongo extends AbstractEntityField
     protected $id;
 
     /**
-    * @MongoDB\String
-    * @GRID\Column()
-    */
+     * @MongoDB\String
+     * @GRID\Column()
+     */
     protected $code;
 
     /**
@@ -55,6 +55,21 @@ class ProductFieldMongo extends AbstractEntityField
      * @var string
      */
     protected $locale;
+
+    /**
+     * @MongoDB\Boolean
+     */
+    protected $uniqueValue;
+
+    /**
+     * @MongoDB\Boolean
+     */
+    protected $valueRequired;
+
+    /**
+     * @MongoDB\Boolean
+     */
+    protected $searchable;
 
     /**
     * Constructor
@@ -198,4 +213,60 @@ class ProductFieldMongo extends AbstractEntityField
     {
         return $this->options[$code][$this->locale];
     }
+
+
+    /**
+     * Get id
+     *
+     * @return id $id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     * @return ProductFieldMongo
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string $code
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     * @return ProductFieldMongo
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string $type
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
 }

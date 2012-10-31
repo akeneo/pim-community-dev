@@ -29,6 +29,9 @@
             {{ form_row(form.id) }}
             {{ form_row(form.code) }}
             {{ form_row(form.type) }}
+            {{ form_row(form.uniqueValue) }}
+            {{ form_row(form.valueRequired) }}
+            {{ form_row(form.searchable) }}
         </div>
 
         {% if form.type.vars.value == "select" or form.type.vars.value == "multiselect" %}
