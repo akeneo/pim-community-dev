@@ -18,11 +18,8 @@
     </head>
     <body>
         <div id="body-wrapper">
-            <div id="header" class="ui-corner-bl ui-corner-br">
-                <a class="logo" href="{{ path('_welcome') }}">
-                    <img src="{{ asset('bundles/bapui/images/logo.gif') }}" alt="Akeneo logo" />
-                </a>
-            </div>
+
+            {% block header %}{% endblock %}
 
             {% block main_menu %}
                 {{ knp_menu_render('BapMainMenu') }}
