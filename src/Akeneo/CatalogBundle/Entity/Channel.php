@@ -32,17 +32,16 @@ class Channel
     protected $code;
 
     /**
-     * @var string $defaultLocale
-     * @ORM\Column(name="default_locale", type="string")
-     */
-    protected $defaultLocale = 'fr_FR'; // TODO
-
-    /**
      * @var $locales
      *
      * @ORM\OneToMany(targetEntity="ChannelLocale", mappedBy="channel", cascade={"persist", "remove"})
      */
     protected $locales;
+
+    /**
+     * @ORM\Column(name="is_default", type="boolean")
+     */
+    protected $isDefault;
 
     /**
      * Constructor
@@ -98,26 +97,26 @@ class Channel
     }
 
     /**
-     * Set defaultLocale
+     * Set as default channel
      *
-     * @param string $defaultLocale
+     * @param boolean $default
      * @return Channel
      */
-    public function setDefaultLocale($defaultLocale)
+    public function setIsDefault($default)
     {
-        $this->defaultLocale = $defaultLocale;
+        $this->isDefault = $default;
 
         return $this;
     }
 
     /**
-     * Get defaultLocale
+     * Get is default
      *
-     * @return string
+     * @return boolean
      */
-    public function getDefaultLocale()
+    public function getIsDefault()
     {
-        return $this->defaultLocale;
+        return $this->isDefault;
     }
 
     /**

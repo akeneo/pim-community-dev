@@ -56,6 +56,11 @@ class ChannelType extends AbstractType
             )
         );
 
+        $builder->add(
+            'isDefault', 'checkbox', array('label' => 'Is default', 'required' => false)
+        );
+
+        /*
         // TODO:provides exhaustive or configured list
         $localeOptions = array('fr_FR' => 'fr_FR', 'en_US' => 'en_US');
 
@@ -65,7 +70,7 @@ class ChannelType extends AbstractType
                 'required'  => true,
                 'label'     => 'Locale'
             )
-        );
+        );*/
 
         $builder->add(
             'locales', 'collection', array(

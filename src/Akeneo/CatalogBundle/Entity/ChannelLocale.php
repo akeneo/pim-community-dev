@@ -40,6 +40,11 @@ class ChannelLocale
     protected $channel;
 
     /**
+     * @ORM\Column(name="is_default", type="boolean")
+     */
+    protected $isDefault;
+
+    /**
      * Get id
      *
      * @return integer
@@ -70,6 +75,29 @@ class ChannelLocale
     public function getCode()
     {
         return $this->code;
+    }
+
+    /**
+     * Set as default channel
+     *
+     * @param boolean $default
+     * @return Channel
+     */
+    public function setIsDefault($default)
+    {
+        $this->isDefault = $default;
+
+        return $this;
+    }
+
+    /**
+     * Get is default
+     *
+     * @return boolean
+     */
+    public function getIsDefault()
+    {
+        return $this->isDefault;
     }
 
     /**

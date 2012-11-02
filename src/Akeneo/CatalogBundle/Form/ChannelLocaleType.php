@@ -48,6 +48,10 @@ class ChannelLocaleType extends AbstractType
                 'label'     => 'Locale'
             )
         );
+
+        $builder->add(
+            'isDefault', 'checkbox', array('label' => 'Is default', 'required' => false)
+        );
     }
 
     /**

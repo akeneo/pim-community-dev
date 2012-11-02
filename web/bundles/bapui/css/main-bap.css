@@ -138,9 +138,10 @@ ul#menu
 .ui-widget label {float:left; width:120px;}
 
 
-.options li {width: 320px;overflow:hidden;}
-.options a.action-delete-inline {float:right;}
-
+.options li {width: 500px;overflow:hidden;}
+.options a.action-delete-inline {float:right; background-image:url(icons-fugue/cross.png); background-repeat: no-repeat; padding-left:20px;}
+.options a.add_option_link { background-image:url(icons-fugue/plus.png); background-repeat: no-repeat; padding-left:20px;}
+.options li div.ui-widget {float:left; margin-right: 10px;}
 
 /* dashboard */
 .blocks-welcome ul {
@@ -180,7 +181,6 @@ ul#menu
     padding-bottom: 20px;
 }
 
-/* TODO: custom with jquery ui */
 
 .flash-message
 {
@@ -190,9 +190,23 @@ ul#menu
     background-color: #ffe;
 }
 
-.error
+.flash-message li {
+    padding-left: 20px;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+}
+li.success
+{
+    background-image:url(icons-fugue/tick-circle.png);
+}
+li.notice
+{
+    background-image:url(icons-fugue/exclamation-diamond.png);
+}
+li.error
 {
     color: red;
+    background-image:url(icons-fugue/exclamation-red.png);
 }
 
 /* TODO: custom with jquery ui */
@@ -369,6 +383,9 @@ th div {
 .ui-tabs-nav li {width:120px;}
 .ui-tabs-nav li .ui-icon {float:right;}
 .connectedSortable .add-attribute {border:1px solid green;}
+
+
+
 .connectedSortable .remove-attribute {border:1px solid red;}
 #add_tab {float:right;margin-bottom:1px;}
 .ui-tabs { border: 0px solid }

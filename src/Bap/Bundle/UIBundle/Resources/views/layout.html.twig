@@ -42,7 +42,9 @@
     
                 {% for key, flashMessage in app.session.getFlashes() %}
                     <div class="flash-message">
-                        <em>{{ key | capitalize }}</em>: {{ flashMessage }}
+                        <ul>
+                            <li class="{{ key }}">{{ flashMessage }}</li>
+                        </ul>
                     </div>
                 {% endfor %}
 

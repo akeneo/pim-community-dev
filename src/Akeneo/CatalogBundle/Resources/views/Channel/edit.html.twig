@@ -16,14 +16,14 @@
     <h1>Catalog channel creation</h1>
 
     {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
-    <form action="{{ path('akeneo_catalog_channel_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(form) }}>
+    <form action="{{ formAction }}" method="post" {{ form_enctype(form) }}>
         {{ form_errors(form) }}
     
         <div class="form-panel ui-corner-all">
             <h2>General</h2>
             {{ form_row(form.id) }}
             {{ form_row(form.code) }}
-            {{ form_row(form.defaultLocale) }}
+            {{ form_row(form.isDefault) }}
         </div>
 
         <div class="form-panel ui-corner-all">
@@ -31,7 +31,7 @@
                 <div>
                     <ul class="options" data-prototype="{{ form_widget(form.locales.vars.prototype)|e }}" >
                         {% for locale in form.locales %}
-                            <li>{{ form_row(locale.code) }}</li>
+                            <li>{{ form_row(locale.code) }} {{ form_row(locale.isDefault) }}</li>
                         {% endfor %}
                     </ul>
                 </div>

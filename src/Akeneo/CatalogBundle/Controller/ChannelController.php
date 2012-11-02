@@ -56,12 +56,16 @@ class ChannelController extends AbstractProductController
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
 
+        // add an action column
+        $rowAction = new RowAction('Delete', 'akeneo_catalog_channel_delete');
+        $rowAction->setRouteParameters(array('id'));
+        $grid->addRowAction($rowAction);
 
         return $grid->getGridResponse('AkeneoCatalogBundle:Channel:index.html.twig');
     }
 
     /**
-     * Displays a form to create a new field
+     * Displays a form to create a new channel
      *
      * @Route("/new")
      * @Template()
@@ -72,20 +76,63 @@ class ChannelController extends AbstractProductController
         $classFullName = $this->getObjectClassFullName();
         $localeClassFullName = 'Akeneo\CatalogBundle\Entity\ChannelLocale';
         $form = $this->createForm(new ChannelType($classFullName, $localeClassFullName), $entity);
-
+        $formAction = $this->generateUrl('akeneo_catalog_channel_create');
         // render form
         return $this->render(
-            'AkeneoCatalogBundle:Channel:new.html.twig', array('entity' => $entity, 'form' => $form->createView())
+            'AkeneoCatalogBundle:Channel:edit.html.twig', array('entity' => $entity, 'form' => $form->createView(), 'formAction' => $formAction)
         );
     }
 
+    /**
+     * Disable old default channel
+     */
+    protected function disableOldDefaultChannel()
+    {
+        $manager = $this->get($this->getObjectManagerService());
+        $channels = $manager->getRepository('AkeneoCatalogBundle:Channel')
+            ->findBy(array('isDefault' => 1));
+        foreach ($channels as $channel) {
+            $channel->setIsDefault(false);
+            $manager->persist($channel);
+        }
+    }
 
     /**
-    * Creates a new field
+    * Disable old default channel
+    */
+    protected function hasDefaultChannel()
+    {
+        $manager = $this->get($this->getObjectManagerService());
+        $channels = $manager->getRepository('AkeneoCatalogBundle:Channel')
+            ->findBy(array('isDefault' => 1));
+        return (count($channels) > 0);
+    }
+
+    /**
+     * Check if there is one default locale
+     * @param unknown_type $entity
+     */
+    protected function hasDefaultLocale($entity)
+    {
+        $hasDefault = 0;
+        // check there is only one default locale
+        foreach ($entity->getLocales() as $locale) {
+            if ($locale->getIsDefault()) {
+                $hasDefault++;
+            }
+        }
+        if ($hasDefault != 1) {
+            $this->get('session')->setFlash('error', 'A channel needs only one default locale');
+            return false;
+        }
+        return true;
+    }
+
+    /**
+    * Creates a new channel
      *
     * @Route("/create")
     * @Method("POST")
-    * @Template("AkeneoCatalogBundle:ProductField:edit.html.twig")
     */
     public function createAction(Request $request)
     {
@@ -99,9 +146,19 @@ class ChannelController extends AbstractProductController
 
             $manager = $this->get($this->getObjectManagerService());
             $manager->persist($entity);
+
+            // change old default channel
+            if ($entity->getIsDefault()) {
+                $this->disableOldDefaultChannel();
+            }
+            // has default locale
+            if (!$this->hasDefaultLocale($entity)) {
+                return $this->redirect($this->generateUrl('akeneo_catalog_channel_new'));
+            }
+
             $manager->flush();
 
-            $this->get('session')->setFlash('notice', 'Channel has been created');
+            $this->get('session')->setFlash('success', 'Channel has been created');
 
             return $this->redirect($this->generateUrl('akeneo_catalog_channel_edit', array('id' => $entity->getId())));
         }
@@ -112,9 +169,8 @@ class ChannelController extends AbstractProductController
         );
     }
 
-
     /**
-    * Displays a form to edit an existing field entity.
+    * Displays a form to edit an existing channel entity.
      *
     * @Route("/{id}/edit")
     * @Template()
@@ -126,16 +182,18 @@ class ChannelController extends AbstractProductController
         $entity = $manager->getRepository($this->getObjectShortName())->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find product field.');
+            throw $this->createNotFoundException('Unable to find channel.');
         }
 
         $classFullName = $this->getObjectClassFullName();
         $localeClassFullName = 'Akeneo\CatalogBundle\Entity\ChannelLocale';
         $editForm = $this->createForm(new ChannelType($classFullName, $localeClassFullName), $entity);
+        $formAction = $this->generateUrl('akeneo_catalog_channel_update', array('id' => $entity->getId()));
 
         $params = array(
-            'entity'      => $entity,
-            'form'   => $editForm->createView(),
+            'entity'     => $entity,
+            'form'       => $editForm->createView(),
+            'formAction' => $formAction
         );
 
         // render form
@@ -143,11 +201,10 @@ class ChannelController extends AbstractProductController
     }
 
     /**
-    * Edits an existing field entity.
+    * Edits an existing channel entity.
     *
     * @Route("/{id}/update")
     * @Method("POST")
-         * @Template("AkeneoCatalogBundle:ProductField:edit.html.twig")
     */
     public function updateAction(Request $request, $id)
     {
@@ -166,8 +223,20 @@ class ChannelController extends AbstractProductController
 
         if ($editForm->isValid()) {
             $manager->persist($entity);
+
+            // change old default channel
+            if ($entity->getIsDefault()) {
+                $this->disableOldDefaultChannel();
+            // check there is a default channel
+            } else if (!$this->hasDefaultChannel()) {
+                $this->get('session')->setFlash('error', 'There is no default channel');
+                return $this->redirect($this->generateUrl('akeneo_catalog_channel_edit', array('id' => $id)));
+            } else if (!$this->hasDefaultLocale($entity)) {
+                return $this->redirect($this->generateUrl('akeneo_catalog_channel_edit', array('id' => $id)));
+            }
+
             $manager->flush();
-            $this->get('session')->setFlash('notice', 'Channel has been updated');
+            $this->get('session')->setFlash('success', 'Channel has been updated');
 
             return $this->redirect($this->generateUrl('akeneo_catalog_channel_edit', array('id' => $id)));
         }
@@ -175,6 +244,27 @@ class ChannelController extends AbstractProductController
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
         );
+    }
+
+    /**
+     * Delete an existing channel entity.
+     *
+     * @Route("/{id}/delete")
+     * @Template()
+     */
+    public function deleteAction($id)
+    {
+        $manager = $this->get($this->getObjectManagerService());
+        $entity = $manager->getRepository($this->getObjectShortName())->find($id);
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find channel.');
+        }
+        // delete
+        $manager->remove($entity);
+        $manager->flush();
+        $this->get('session')->setFlash('success', "Channel '{$entity->getCode()}' has been delete");
+
+        return $this->redirect($this->generateUrl('akeneo_catalog_channel_index'));
     }
 
 }
