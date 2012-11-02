@@ -94,7 +94,7 @@ class ProductFieldController extends AbstractProductController
             $manager = $this->get($this->getObjectManagerService());
             $manager->persist($entity);
             $manager->flush();
-            $this->get('session')->setFlash('notice', 'Field has been created');
+            $this->get('session')->setFlash('success', 'Field has been created');
 
             return $this->redirect($this->generateUrl('akeneo_catalog_productfield_edit', array('id' => $entity->getId())));
         }
@@ -157,7 +157,7 @@ class ProductFieldController extends AbstractProductController
         if ($editForm->isValid()) {
             $manager->persist($entity);
             $manager->flush();
-            $this->get('session')->setFlash('notice', 'Field has been updated');
+            $this->get('session')->setFlash('success', 'Field has been updated');
 
             return $this->redirect($this->generateUrl('akeneo_catalog_productfield_edit', array('id' => $id)));
         }
@@ -185,7 +185,7 @@ class ProductFieldController extends AbstractProductController
         $manager->remove($entity);
         $manager->flush();
 
-        $this->get('session')->setFlash('notice', 'Field has been deleted');
+        $this->get('session')->setFlash('success', 'Field has been deleted');
 
         return $this->redirect($this->generateUrl('akeneo_catalog_productfield_index'));
     }

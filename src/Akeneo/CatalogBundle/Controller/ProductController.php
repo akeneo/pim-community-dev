@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Akeneo\CatalogBundle\Entity\ProductField;
 use Akeneo\CatalogBundle\Document\ProductFieldMongo;
-use Akeneo\CatalogBundle\Form\ProductFieldType;
+use Akeneo\CatalogBundle\Form\ProductType;
 use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
 use APY\DataGridBundle\Grid\Source\Document as GridDocument;
 use APY\DataGridBundle\Grid\Action\RowAction;
@@ -23,15 +23,26 @@ use APY\DataGridBundle\Grid\Action\RowAction;
  *
  * @Route("/product")
  */
-class ProductController extends Controller
+class ProductController extends AbstractProductController
 {
     /**
      * TODO aims to easily change from one implementation to other
-     */
+     *
     const DOCTRINE_MANAGER = 'doctrine.orm.entity_manager';
     const DOCTRINE_MONGO_MANAGER = 'doctrine.odm.mongodb.document_manager';
     protected $managerService = self::DOCTRINE_MONGO_MANAGER;
     protected $classShortname = 'AkeneoCatalogBundle:ProductMongo';
+    */
+
+
+    /**
+     * (non-PHPdoc)
+     * @see Parent
+     */
+    public function getObjectShortName()
+    {
+        return $this->container->getParameter('pim.catalog.product.entity.class');
+    }
 
     /**
      * Lists all fields
@@ -42,16 +53,78 @@ class ProductController extends Controller
     public function indexAction()
     {
         // creates simple grid based on entity or document (ORM or ODM)
-        if ($this->managerService == self::DOCTRINE_MONGO_MANAGER) {
-            $source = new GridDocument($this->classShortname);
-        } else if ($this->managerService == self::DOCTRINE_MANAGER) {
-            $source = new GridEntity($this->classShortname);
-        } else {
-            throw new \Exception('Unknow object manager');
-        }
+        $source = $this->getGridSource();
         $grid = $this->get('grid');
         $grid->setSource($source);
+
+        // add an action column
+        $rowAction = new RowAction('Edit', 'akeneo_catalog_product_edit');
+        $rowAction->setRouteParameters(array('id'));
+        $grid->addRowAction($rowAction);
+
         return $grid->getGridResponse('AkeneoCatalogBundle:Product:index.html.twig');
+    }
+
+    /**
+     * Displays a form to edit an existing product entity.
+     *
+     * @Route("/{id}/edit")
+     * @Template()
+     */
+    public function editAction($id)
+    {
+        $manager = $this->get($this->getObjectManagerService());
+
+        $entity = $manager->getRepository($this->getObjectShortName())->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find product.');
+        }
+
+        $classFullName = $this->getObjectClassFullName();
+        $editForm = $this->createForm(new ProductType($classFullName), $entity);
+
+        $params = array(
+            'entity'      => $entity,
+            'form'   => $editForm->createView(),
+        );
+
+        // render form
+        return $this->render('AkeneoCatalogBundle:Product:edit.html.twig', $params);
+    }
+
+    /**
+    * Edits an existing product entity.
+     *
+    * @Route("/{id}/update")
+    * @Method("POST")
+    */
+    public function updateAction(Request $request, $id)
+    {
+        $manager = $this->get($this->getObjectManagerService());
+
+        $entity = $manager->getRepository($this->getObjectShortName())->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find product.');
+        }
+
+        $classFullName = $this->getObjectClassFullName();
+        $editForm = $this->createForm(new ProductFieldType($classFullName), $entity);
+        $editForm->bind($request);
+
+        if ($editForm->isValid()) {
+            $manager->persist($entity);
+            $manager->flush();
+            $this->get('session')->setFlash('success', 'Product has been updated');
+
+            return $this->redirect($this->generateUrl('akeneo_catalog_product_edit', array('id' => $id)));
+        }
+
+        return array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
+        );
     }
 
 }
