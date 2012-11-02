@@ -25,6 +25,10 @@ class BaseFieldFactory
     const FIELD_STRING   = 'string';
     const FIELD_TEXT     = 'text';
 
+    const SCOPE_GLOBAL   = 'Global';
+    const SCOPE_CHANNEL  = 'Channel';
+    const SCOPE_LOCALE   = 'Locale';
+
     /**
      * Return available type
      * @return array
@@ -36,6 +40,19 @@ class BaseFieldFactory
             self::FIELD_STRING => self::FIELD_STRING,
             self::FIELD_TEXT   => self::FIELD_TEXT,
             self::FIELD_SELECT => self::FIELD_SELECT,
+        );
+    }
+
+    /**
+     * Return available scope
+     * @return array
+     */
+    public static function getScopeOptions()
+    {
+        return array(
+            self::SCOPE_GLOBAL,
+            self::SCOPE_CHANNEL,
+            self::SCOPE_LOCALE,
         );
     }
 

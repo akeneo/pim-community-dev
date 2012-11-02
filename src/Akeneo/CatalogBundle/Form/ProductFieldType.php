@@ -58,6 +58,14 @@ class ProductFieldType extends AbstractType
         );
 
         $builder->add(
+            'scope', 'choice', array(
+                'choices'   => BaseFieldFactory::getScopeOptions(),
+                'required'  => true,
+                'label'     => 'Scope'
+            )
+        );
+
+        $builder->add(
             'uniqueValue', 'choice', array(
                 'choices'   => array(false => 'No', true => 'Yes'),
                 'required'  => true,

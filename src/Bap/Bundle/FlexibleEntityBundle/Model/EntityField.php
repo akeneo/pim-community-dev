@@ -41,9 +41,14 @@ abstract class EntityField
     protected $valueRequired;
 
     /**
-    * @var string $searchable
-    */
+     * @var string $searchable
+     */
     protected $searchable;
+
+    /**
+     * @var integer $scope
+     */
+    protected $scope;
 
     /**
      * Get id
@@ -189,6 +194,28 @@ abstract class EntityField
     public function getSearchable()
     {
         return $this->searchable;
+    }
+
+    /**
+     * Set scope
+     *
+     * @param integer $scope
+     * @return EntityField
+     */
+    public function setScope($scope)
+    {
+        $this->scope = $scope;
+        return $this;
+    }
+
+    /**
+     * Get scope
+     *
+     * @return integer $scope
+     */
+    public function getScope()
+    {
+        return $this->scope;
     }
 
 }

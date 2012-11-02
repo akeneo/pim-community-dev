@@ -61,4 +61,8 @@ class ProductField extends AbstractEntityField
      */
     protected $searchable;
 
+    /**
+     * @ORM\Column(name="scope", type="integer")
+     */
+    protected $scope;
 }

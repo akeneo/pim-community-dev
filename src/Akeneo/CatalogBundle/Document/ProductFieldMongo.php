@@ -72,6 +72,11 @@ class ProductFieldMongo extends AbstractEntityField
     protected $searchable;
 
     /**
+     * @MongoDB\Int
+     */
+    protected $scope;
+
+    /**
     * Constructor
     */
     public function __construct()
