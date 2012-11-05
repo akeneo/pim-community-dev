@@ -35,9 +35,9 @@ class AppKernel extends Kernel
             new Pim\Bundle\ConnectorIcecatBundle\PimConnectorIcecatBundle(),
             new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
             new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
+            new Pim\Bundle\DataFlowBundle\PimDataFlowBundle(),
 
             new Strixos\CatalogBundle\StrixosCatalogBundle(),
-            new Strixos\DataFlowBundle\StrixosDataFlowBundle(),
 
 
             // community bundles

@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Extract;
 
-use Strixos\DataFlowBundle\Model\Extract\FileHttpReader;
+use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpReader;
 
 use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\ConfigManager;

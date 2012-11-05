@@ -1,8 +1,8 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Extract;
 
-use Strixos\DataFlowBundle\Model\Extract\FileUnzip;
-use Strixos\DataFlowBundle\Model\Extract\FileHttpDownload;
+use Pim\Bundle\DataFlowBundle\Model\Extract\FileUnzip;
+use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpDownload;
 
 /**
  * Download a source archive (product, supplier, language base data) and unpack to a destination file

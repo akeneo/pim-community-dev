@@ -6,11 +6,11 @@
 
     <!--
     <parameters>
-        <parameter key="strixos_data_flow.example.class">Strixos\DataFlowBundle\Example</parameter>
+        <parameter key="pim_data_flow.example.class">Pim\Bundle\DataFlowBundle\Example</parameter>
     </parameters>
 
     <services>
-        <service id="strixos_data_flow.example" class="%strixos_data_flow.example.class%">
+        <service id="pim_data_flow.example" class="%pim_data_flow.example.class%">
             <argument type="service" id="service_id" />
             <argument>plain_value</argument>
             <argument>%parameter_name%</argument>

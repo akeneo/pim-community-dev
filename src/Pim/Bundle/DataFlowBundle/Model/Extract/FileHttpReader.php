@@ -1,5 +1,5 @@
 <?php
-namespace Strixos\DataFlowBundle\Model\Extract;
+namespace Pim\Bundle\DataFlowBundle\Model\Extract;
 
 use \Exception as Exception;
 

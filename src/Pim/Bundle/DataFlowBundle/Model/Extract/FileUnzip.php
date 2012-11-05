@@ -1,10 +1,10 @@
 <?php
-namespace Strixos\DataFlowBundle\Model\Extract;
+namespace Pim\Bundle\DataFlowBundle\Model\Extract;
 
 /**
  *
- * @author    Nicolas Dupont @ Strixos
- * @copyright Copyright (c) 2012 Strixos SAS (http://www.strixos.com)
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
