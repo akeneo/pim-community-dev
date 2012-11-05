@@ -7,11 +7,6 @@ StrixosDashboardBundle:
     type:     annotation
     prefix:   /dashboard/
 
-StrixosCoreBundle:
-    resource: "@StrixosCoreBundle/Controller/"
-    type:     annotation
-    prefix:   /core/
-
 StrixosDataFlowBundle:
     resource: "@StrixosDataFlowBundle/Controller/"
     type:     annotation

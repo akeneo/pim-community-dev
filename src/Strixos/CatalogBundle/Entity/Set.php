@@ -2,8 +2,6 @@
 
 namespace Strixos\CatalogBundle\Entity;
 
-use Strixos\CoreBundle\Model\AbstractModel;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="StrixosCatalog_Set")
  * @ORM\Entity
  */
-class Set extends AbstractModel
+class Set
 {
 
     /**

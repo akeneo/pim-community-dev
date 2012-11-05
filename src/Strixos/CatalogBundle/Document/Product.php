@@ -2,8 +2,6 @@
 // src/Strixos/CatalogBundle/Document/Product.php
 namespace Strixos\CatalogBundle\Document;
 
-use Strixos\CoreBundle\Model\AbstractModel;
-
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
@@ -14,7 +12,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
  *
  * @MongoDB\Document
  */
-class Product extends AbstractModel
+class Product
 {
     /**
      * @MongoDB\Id

@@ -2,7 +2,6 @@
 
 namespace Strixos\CatalogBundle\Entity;
 
-use Strixos\CoreBundle\Model\AbstractModel;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="StrixosCatalog_Option")
  * @ORM\Entity
  */
-class Option extends AbstractModel
+class Option
 {
 
     /**
@@ -81,14 +80,14 @@ class Option extends AbstractModel
     public function setAttribute(\Strixos\CatalogBundle\Entity\Attribute $attribute = null)
     {
         $this->attribute = $attribute;
-    
+
         return $this;
     }
 
     /**
      * Get attribute
      *
-     * @return Strixos\CatalogBundle\Entity\Attribute 
+     * @return Strixos\CatalogBundle\Entity\Attribute
      */
     public function getAttribute()
     {

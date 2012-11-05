@@ -2,7 +2,6 @@
 namespace Pim\Bundle\IcecatConnectorBundle\Load;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Strixos\CoreBundle\Model\AbstractModel;
 
 /**
  * Provide default batch loader

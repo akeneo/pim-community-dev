@@ -1,7 +1,6 @@
 <?php
 namespace Strixos\DataFlowBundle\Entity;
 
-use Strixos\CoreBundle\Model\AbstractModel;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="StrixosDataFlow_Step")
  * @ORM\Entity
  */
-class Step extends AbstractModel
+class Step
 {
 
     /**

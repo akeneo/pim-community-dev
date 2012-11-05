@@ -1,7 +1,6 @@
 <?php
 namespace Strixos\DataFlowBundle\Entity;
 
-use Strixos\CoreBundle\Model\AbstractModel;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="StrixosDataFlow_Job")
  * @ORM\Entity
  */
-class Job extends AbstractModel
+class Job
 {
 
     /**

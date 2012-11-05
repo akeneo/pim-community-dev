@@ -2,7 +2,6 @@
 
 namespace Strixos\CatalogBundle\Entity;
 
-use Strixos\CoreBundle\Model\AbstractModel;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="StrixosCatalog_Attribute")
  * @ORM\Entity
  */
-class Attribute extends AbstractModel
+class Attribute
 {
 
     const FRONTEND_INPUT_TEXTFIELD   = 'textfield';

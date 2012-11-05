@@ -1,7 +1,6 @@
 <?php
 namespace Pim\Bundle\IcecatConnectorBundle\Entity;
 
-use Strixos\CoreBundle\Model\AbstractModel;
 use Doctrine\ORM\Mapping as ORM;
 /**
  * Base connector config
@@ -13,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="StrixosIcecatConnector_Config")
  * @ORM\Entity
  */
-class Config extends AbstractModel
+class Config
 {
     /**
      * @staticvar string
@@ -21,22 +20,22 @@ class Config extends AbstractModel
     const LANGUAGES_URL  = 'languages-url';
     const LANGUAGES_FILE = 'languages-file';
     const LANGUAGES_ARCHIVED_FILE = 'languages-archived-file';
-    
+
     const PRODUCTS_URL   = 'products-url';
     const PRODUCTS_FILE  = 'products-file';
     const PRODUCTS_ARCHIVED_FILE = 'products-archived-file';
-    
+
     const PRODUCT_URL    = 'product-url';
     const PRODUCT_FILE   = 'product-file';
     const PRODUCT_ARCHIVED_FILE = 'product-archived-file';
-    
+
     const SUPPLIERS_URL  = 'suppliers-url';
     const SUPPLIERS_FILE = 'suppliers-file';
-    
+
     const LOGIN          = 'login';
     const PASSWORD       = 'password';
     const BASE_DIR       = 'base-dir';
-    
+
    /**
      * @var integer $id
      *
@@ -48,7 +47,7 @@ class Config extends AbstractModel
 
     /**
      * @var string $code
-     * 
+     *
      * @ORM\Column(name="code", type="string", length=30, unique=true)
      */
     protected $code;
@@ -69,17 +68,17 @@ class Config extends AbstractModel
     {
         return $this->id;
     }
-    
+
     /**
      * Set id
-     * 
+     *
      * @param integer $id
      * @return Config
      */
     public function setId($id)
     {
         $this->id = $id;
-        
+
         return $this;
     }
 

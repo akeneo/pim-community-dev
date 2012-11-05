@@ -1,22 +1,21 @@
 <?php
 namespace Pim\Bundle\IcecatConnectorBundle\Entity;
 
-use Strixos\CoreBundle\Model\AbstractModel;
 use Doctrine\ORM\Mapping as ORM;
 /**
- * 
+ *
  * Icecat connector import
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * 
+ *
  * TODO : Must be set in lower level to be used by all connectors
- * 
+ *
  * @ORM\Table(name="StrixosIcecatConnector_Import")
  * @ORM\Entity
  */
-class Import extends AbstractModel
+class Import
 {
     /**
      * @staticvar string
@@ -25,7 +24,7 @@ class Import extends AbstractModel
     const IMPORT_PRODUCT    = 'import-product';
     const IMPORT_PRODUCTS   = 'import-products';
     const IMPORT_SUPPLIERS  = 'import-suppliers';
-    
+
    /**
      * @var integer $id
      *
@@ -37,7 +36,7 @@ class Import extends AbstractModel
 
     /**
      * @var string $label
-     * 
+     *
      * @ORM\Column(name="label", type="string", length=30)
      */
     protected $label;
@@ -48,17 +47,17 @@ class Import extends AbstractModel
      * @ORM\Column(name="result", type="boolean")
      */
     protected $result;
-    
+
     /**
      * @var datetime $importedAt
-     * 
+     *
      * @ORM\Column(name="importedAt", type="datetime")
      */
     protected $importedAt;
-    
+
     /**
      * @var string $errorMessage
-     * 
+     *
      * @ORM\Column(name="error_message", type="string", length=255, nullable=true)
      */
     protected $errorMessage;
@@ -66,7 +65,7 @@ class Import extends AbstractModel
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -82,14 +81,14 @@ class Import extends AbstractModel
     public function setLabel($label)
     {
         $this->label = $label;
-    
+
         return $this;
     }
 
     /**
      * Get label
      *
-     * @return string 
+     * @return string
      */
     public function getLabel()
     {
@@ -105,14 +104,14 @@ class Import extends AbstractModel
     public function setResult($result)
     {
         $this->result = $result;
-    
+
         return $this;
     }
 
     /**
      * Get result
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getResult()
     {
@@ -128,14 +127,14 @@ class Import extends AbstractModel
     public function setImportedAt($importedAt)
     {
         $this->importedAt = $importedAt;
-    
+
         return $this;
     }
 
     /**
      * Get importedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getImportedAt()
     {
@@ -151,14 +150,14 @@ class Import extends AbstractModel
     public function setErrorMessage($errorMessage)
     {
         $this->errorMessage = $errorMessage;
-    
+
         return $this;
     }
 
     /**
      * Get errorMessage
      *
-     * @return string 
+     * @return string
      */
     public function getErrorMessage()
     {

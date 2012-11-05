@@ -1,7 +1,6 @@
 <?php
 namespace Pim\Bundle\IcecatConnectorBundle\Entity;
 
-use Strixos\CoreBundle\Model\AbstractModel;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="StrixosIcecatConnector_SourceSupplier")
  * @ORM\Entity
  */
-class SourceSupplier extends AbstractModel
+class SourceSupplier
 {
     /**
      * @var integer $id
