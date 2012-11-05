@@ -32,7 +32,7 @@ class AppKernel extends Kernel
             // PIM modules
             new Pim\Bundle\UIBundle\PimUIBundle(),
             new Pim\Bundle\UserBundle\PimUserBundle(),
-            new Pim\Bundle\IcecatConnectorBundle\PimIcecatConnectorBundle(),
+            new Pim\Bundle\ConnectorIcecatBundle\PimConnectorIcecatBundle(),
             new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
             new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
 

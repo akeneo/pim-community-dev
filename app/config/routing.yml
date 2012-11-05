@@ -7,8 +7,8 @@ pim_dashboard:
     type:     annotation
     prefix:   /dashboard/
 
-PimIcecatConnectorBundle:
-    resource: "@PimIcecatConnectorBundle/Controller/"
+pim_connectoricecat:
+    resource: "@PimConnectorIcecatBundle/Controller/"
     type:     annotation
     prefix:   /icecatconnector/
 

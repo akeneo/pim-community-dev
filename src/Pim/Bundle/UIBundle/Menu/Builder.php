@@ -46,9 +46,9 @@ class Builder extends ContainerAware
         $menu['Catalog']->addChild('Product types', array('route' => 'akeneo_catalog_producttype_index'));
         $menu['Catalog']->addChild('Product fields', array('route' => 'akeneo_catalog_productfield_index'));
         $menu['Connectors']->addChild('Icecat');
-        $menu['Connectors']['Icecat']->addChild('Settings', array('route' => 'pim_icecatconnector_config_edit'));
-        $menu['Connectors']['Icecat']->addChild('Suppliers list', array('route' => 'pim_icecatconnector_supplier_list'));
-        $menu['Connectors']['Icecat']->addChild('Products list', array('route' => 'pim_icecatconnector_product_list'));
+        $menu['Connectors']['Icecat']->addChild('Settings', array('route' => 'pim_connectoricecat_config_edit'));
+        $menu['Connectors']['Icecat']->addChild('Suppliers list', array('route' => 'pim_connectoricecat_supplier_list'));
+        $menu['Connectors']['Icecat']->addChild('Products list', array('route' => 'pim_connectoricecat_product_list'));
 
         // TODO get menu items from bundles (each can define its own items)
 

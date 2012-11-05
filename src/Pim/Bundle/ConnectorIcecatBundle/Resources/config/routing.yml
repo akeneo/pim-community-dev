@@ -1,0 +1,3 @@
+_default_index:
+    pattern:  /default/index
+    defaults: { _controller: PimConnectorIcecatBundle:Default:index }
