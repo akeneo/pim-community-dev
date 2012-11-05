@@ -66,6 +66,14 @@ class ProductController extends AbstractProductController
     }
 
     /**
+     * Get used object manager service
+     */
+    public function getManagerService()
+    {
+        return $this->container->get('akeneo.catalog.model_product');
+    }
+
+    /**
      * Displays a form to edit an existing product entity.
      *
      * @Route("/{id}/edit")
@@ -74,7 +82,6 @@ class ProductController extends AbstractProductController
     public function editAction($id)
     {
         $manager = $this->get($this->getObjectManagerService());
-
         $entity = $manager->getRepository($this->getObjectShortName())->find($id);
 
         if (!$entity) {
@@ -110,12 +117,21 @@ class ProductController extends AbstractProductController
         }
 
         $classFullName = $this->getObjectClassFullName();
-        $editForm = $this->createForm(new ProductFieldType($classFullName), $entity);
+        $editForm = $this->createForm(new ProductType($classFullName), $entity);
         $editForm->bind($request);
 
         if ($editForm->isValid()) {
+
+            // TODO : add some constraints in form
+
+            $postData = $request->get('akeneo_catalogbundle_product');
+            foreach ($postData as $fieldCode => $fieldValue) {
+                $entity->setValue($fieldCode, $fieldValue);
+            }
+
             $manager->persist($entity);
             $manager->flush();
+
             $this->get('session')->setFlash('success', 'Product has been updated');
 
             return $this->redirect($this->generateUrl('akeneo_catalog_product_edit', array('id' => $id)));

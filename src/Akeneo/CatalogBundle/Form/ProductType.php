@@ -19,15 +19,15 @@ class ProductType extends AbstractType
     /**
      * @var string
      */
-    protected $fieldClass;
+    protected $productClass;
 
     /**
-     * Construct with full name of concrete impl of field class
-     * @param unknown_type $fieldClass
+     * Construct with full name of concrete impl of product class
+     * @param unknown_type $productClass
      */
-    public function __construct($fieldClass)
+    public function __construct($productClass)
     {
-        $this->fieldClass = $fieldClass;
+        $this->productClass = $productClass;
     }
 
     /**
@@ -42,6 +42,35 @@ class ProductType extends AbstractType
         // TODO drive from type and not add if in twig template ?
         $builder->add('id', 'hidden');
 
+        // add product field
+        foreach ($entity->getType()->getFields() as $field) {
+
+            // TODO required, scope etc
+
+            // prepare common fields options
+            $customOptions = array(
+                'label'         => $field->getTitle(),
+                'data'          => $entity->getValue($field->getCode()),
+                'by_reference'  => false,
+                'property_path' => false,
+                'required'      => ($field->getValueRequired() == 1)
+            );
+
+            // add text fields options
+            if ($field->getType() == BaseFieldFactory::FIELD_STRING) {
+                $fieldType = 'text';
+
+            // add select field options
+            } else if ($field->getType() == BaseFieldFactory::FIELD_SELECT) {
+                $fieldType = 'choice';
+                $choices = $field->getOptions();
+                $customOptions['choices']= $choices;
+            }
+
+            // add field
+            $builder->add($field->getCode(), $fieldType, $customOptions);
+        }
+
     }
 
     /**
@@ -52,7 +81,7 @@ class ProductType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => $this->fieldClass
+                'data_class' => $this->productClass
             )
         );
     }

@@ -35,7 +35,7 @@
                 <div id="tabs-{{ groupCode }}">
                     <ul>
                         {% for field in group %}
-                            <li>{{ field }}</li>
+                            <li>{{ form_row(attribute(form, field)) }}</li>
                         {% endfor %}
                     </ul>
                 </div>

@@ -135,8 +135,8 @@ ul#menu
 /* forms */
 .form-panel {border: 1px solid #7E54AE; margin-bottom:25px; padding:10px;}
 .ui-widget {margin-bottom:10px;}
-.ui-widget label {float:left; width:120px;}
-
+.ui-widget label {float:left; width:200px;}
+.ui-widget input, .ui-widget select, .ui-widget text-area {margin-bottom: 5px;}
 
 .options li {width: 500px;overflow:hidden;}
 .options a.action-delete-inline {float:right; background-image:url(icons-fugue/cross.png); background-repeat: no-repeat; padding-left:20px;}
@@ -380,11 +380,9 @@ th div {
 /* attribute set form */
 .connectedSortable {min-height: 50px;}
 .connectedSortable li {width:200px; margin-bottom:5px; padding:2px;}
-.ui-tabs-nav li {width:120px;}
+.ui-tabs-nav li {min-width:120px;}
 .ui-tabs-nav li .ui-icon {float:right;}
 .connectedSortable .add-attribute {border:1px solid green;}
-
-
 
 .connectedSortable .remove-attribute {border:1px solid red;}
 #add_tab {float:right;margin-bottom:1px;}
