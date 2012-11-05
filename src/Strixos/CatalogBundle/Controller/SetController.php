@@ -121,7 +121,7 @@ class SetController extends Controller
         // create and bind with form
         $form = $this->createForm(new SetType(), $set);
         if ($request->getMethod() == 'POST') {
-            $form->bindRequest($request);
+            $form->bindRequest($request); // TODO : method bindRequest is deprecated.. use bind
 
             // TODO problem with form validation
             //if ($form->isValid()) {
