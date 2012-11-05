@@ -33,10 +33,9 @@ class AppKernel extends Kernel
             new Pim\Bundle\UIBundle\PimUIBundle(),
             new Pim\Bundle\UserBundle\PimUserBundle(),
             new Pim\Bundle\IcecatConnectorBundle\PimIcecatConnectorBundle(),
-            
+
             new Strixos\CoreBundle\StrixosCoreBundle(),
             new Strixos\CatalogBundle\StrixosCatalogBundle(),
-            new Strixos\ReportBundle\StrixosReportBundle(),
             new Strixos\DataFlowBundle\StrixosDataFlowBundle(),
             new Strixos\DashboardBundle\StrixosDashboardBundle(),
             new Akeneo\CatalogBundle\AkeneoCatalogBundle(),

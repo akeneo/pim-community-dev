@@ -17,11 +17,6 @@ StrixosDataFlowBundle:
     type:     annotation
     prefix:   /dataflow/
 
-StrixosReportBundle:
-    resource: "@StrixosReportBundle/Controller/"
-    type:     annotation
-    prefix:   /report/
-
 StrixosCatalogBundle:
     resource: "@StrixosCatalogBundle/Controller/"
     type:     annotation
