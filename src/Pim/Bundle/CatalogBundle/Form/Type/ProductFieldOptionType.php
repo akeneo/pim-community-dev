@@ -1,5 +1,5 @@
 <?php
-namespace Pim\Bundle\CatalogBundle\Form;
+namespace Pim\Bundle\CatalogBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
