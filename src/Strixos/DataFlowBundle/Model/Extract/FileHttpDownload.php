@@ -1,8 +1,6 @@
 <?php
 namespace Strixos\DataFlowBundle\Model\Extract;
 
-use Strixos\DataFlowBundle\Entity\Step;
-
 /**
  *
  * @author    Nicolas Dupont @ Strixos
@@ -10,7 +8,7 @@ use Strixos\DataFlowBundle\Entity\Step;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class FileHttpDownload extends Step
+class FileHttpDownload
 {
 
     /**
@@ -36,16 +34,16 @@ class FileHttpDownload extends Step
             if (!$ch) {
                 throw new Exception('Curl not initialized');
             }
-            
+
             if ($login and $password) {
                 curl_setopt($ch, CURLOPT_USERPWD, $login.':'.$password);
             }
-            
+
             // Fix SSL certificate problem
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_FILE, $fp);
             $data = curl_exec($ch);
-            
+
             // Deal with curl exception
             if ($data === false) {
                 throw new Exception('Curl Error : '.curl_error($ch));

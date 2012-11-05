@@ -1,8 +1,6 @@
 <?php
 namespace Strixos\DataFlowBundle\Model\Extract;
 
-use Strixos\DataFlowBundle\Entity\Step;
-
 use \Exception as Exception;
 
 /**
@@ -13,13 +11,13 @@ use \Exception as Exception;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class FileHttpReader extends Step
+class FileHttpReader
 {
     /**
      * Process reading HTTP file with curl, if login and password are provided use them for basic authentication
-     * 
+     *
      * TODO : replace login / password by option array
-     * 
+     *
      * @param string $url
      * @param string $login
      * @param string $password
@@ -33,7 +31,7 @@ class FileHttpReader extends Step
         if (!$c) {
                 throw new Exception('Curl not initialized');
         }
-        
+
         curl_setopt($c, CURLOPT_URL, $url);
         curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($c, CURLOPT_HEADER, false);
@@ -41,7 +39,7 @@ class FileHttpReader extends Step
             curl_setopt($c, CURLOPT_USERPWD, $login.':'.$password);
         }
         $output = curl_exec($c);
-        
+
         // deal with curl exception
         if ($output === false) {
                 throw new Exception('Curl Error : '.curl_error($c));

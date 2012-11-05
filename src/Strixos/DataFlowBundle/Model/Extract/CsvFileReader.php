@@ -20,7 +20,6 @@ class CsvFileReader extends FileReader
 
     /**
      * (non-PHPdoc)
-     * @see Strixos\DataFlowBundle\Entity.Step::run()
      */
     public function run($inputData = null)
     {
