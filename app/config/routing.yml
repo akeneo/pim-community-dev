@@ -7,11 +7,6 @@ pim_dashboard:
     type:     annotation
     prefix:   /dashboard/
 
-StrixosDataFlowBundle:
-    resource: "@StrixosDataFlowBundle/Controller/"
-    type:     annotation
-    prefix:   /dataflow/
-
 StrixosCatalogBundle:
     resource: "@StrixosCatalogBundle/Controller/"
     type:     annotation
