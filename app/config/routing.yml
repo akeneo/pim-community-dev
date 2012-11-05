@@ -1,9 +1,9 @@
 _welcome:
     pattern:  /
-    defaults: { _controller: StrixosDashboardBundle:Default:index }
+    defaults: { _controller: PimDashboardBundle:Default:index }
 
-StrixosDashboardBundle:
-    resource: "@StrixosDashboardBundle/Controller/"
+pim_dashboard:
+    resource: "@PimDashboardBundle/Controller/"
     type:     annotation
     prefix:   /dashboard/
 

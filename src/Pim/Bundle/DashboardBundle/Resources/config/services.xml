@@ -6,11 +6,11 @@
 
     <!--
     <parameters>
-        <parameter key="strixos_dashboard.example.class">Strixos\DashboardBundle\Example</parameter>
+        <parameter key="pim_dashboard.example.class">Pim\Bundle\DashboardBundle\Example</parameter>
     </parameters>
 
     <services>
-        <service id="strixos_dashboard.example" class="%strixos_dashboard.example.class%">
+        <service id="pim_dashboard.example" class="%pim_dashboard.example.class%">
             <argument type="service" id="service_id" />
             <argument>plain_value</argument>
             <argument>%parameter_name%</argument>
