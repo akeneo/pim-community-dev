@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright  Copyright (c) 2012 Strixos SAS (http://www.strixos.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="StrixosIcecatConnector_SourceProduct")
+ * @ORM\Table(name="PimConnectorIcecat_SourceProduct")
  * @ORM\Entity
  */
 class SourceProduct

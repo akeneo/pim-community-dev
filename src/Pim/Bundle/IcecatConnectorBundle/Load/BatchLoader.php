@@ -46,9 +46,9 @@ class BatchLoader implements LoadInterface
 
     /**
      * Persist an object with manager
-     * @param AbstractModel $object
+     * @param $object
      */
-    public function add(AbstractModel $object)
+    public function add($object)
     {
         $this->objectManager->persist($object);
         if (++$this->size % self::$limit === 0) {

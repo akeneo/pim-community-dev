@@ -1,5 +1,5 @@
 <?php
-namespace Akeneo\CatalogBundle\DataFixtures\ORM;
+namespace Pim\Bundle\CatalogBundle\DataFixtures\ORM;
 
 use Pim\Bundle\IcecatConnectorBundle\Entity\Config;
 

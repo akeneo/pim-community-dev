@@ -1,0 +1,192 @@
+{% extends 'PimUIBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} Edit Attribute Set{% endblock %}
+
+{% block content_menu_more %}
+    {{ parent() }}
+    <li>
+        <a href="{{ path('pim_catalog_producttype_list') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
+            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-ui-button-navigation-back"></span><span class="ui-button-text">Back to list</span>
+        </a>
+    </li>
+{% endblock %}
+
+{% block content %}
+
+    {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
+    
+    <form action="{{ path('pim_catalog_producttype_update') }}" method="post" {{ form_enctype(form) }}>
+
+        {{ form_errors(form) }}
+    
+        <div class="form-panel ui-corner-all">
+            <h2>General</h2>
+            {{ form_row(form.id) }}
+            {{ form_row(form.code) }}
+        </div>
+        
+        <div class="form-panel ui-corner-all">
+            <h2>Groups and attributes</h2>
+            <div id="tabs">
+                <ul>
+                    {% for group in form.groups %}
+                        <li>
+                            <span class="ui-icon-close">Remove Group</span>
+                            <a href="#tabs-{{ group.code.vars.value }}">{{ group.code.vars.value }}</a>
+                        </li>
+                    {% endfor %}
+                    
+                    <a id="add_tab" href="#" role="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-icon-only">
+                        <span class="ui-button-icon-primary ui-icon ui-icon-fugue-plus-button"></span><span class="ui-button-text">Add a new group</span>
+                    </a>
+                </ul>
+            </div>
+        </div>
+
+        {{ form_widget(form._token) }}
+
+        <input type="submit" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" aria-disabled="false" />
+
+    </form>
+    
+    
+    
+    <!-- add group dialog -->
+    <div id="dialog" title="Add a new group">
+        {{ formGroup|raw }}
+    </div>
+
+    <!-- delete group -->
+    <div id="dialog-message-delete-group-forbidden" title="This group can't be delete" style="display:none">
+        <p>
+            <span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+            This group contains attributes, <b>please remove them before</b>.
+        </p>
+    </div>
+
+<script>
+
+function resetListMoves() {
+    /* set groups and attributes */
+    $( ".connectedSortable" ).sortable().disableSelection();
+    var $tabs = $( "#tabs" ).tabs();
+    var $tab_items = $( "ul:first li", $tabs ).droppable({
+        accept: ".connectedSortable li",
+        hoverClass: "ui-state-hover",
+        drop: function( event, ui ) {
+            var $item = $( this );
+            var $list = $( $item.find( "a" ).attr( "href" ) )
+                .find( ".connectedSortable" );
+            ui.draggable.hide( "slow", function() {
+                $tabs.tabs( "select", $tab_items.index( $item ) );
+                $( this ).appendTo( $list ).show( "slow" );
+            });
+        }
+    });
+    
+    /* remove an attribute from set */
+    $( ".connectedSortable" ).sortable({
+        connectWith: "#available-list",
+        placeholder: "ui-state-highlight",
+        cursor: "move",
+        receive: function(event, ui) { ui.item.addClass("add-attribute").removeClass("remove-attribute") }
+    }).disableSelection();
+    
+    /* add an available attribute to set */
+    $( "#available-list" ).sortable({
+        connectWith: ".connectedSortable",
+        placeholder: "ui-state-highlight",
+        cursor: "move",
+        receive: function(event, ui) { ui.item.addClass("remove-attribute").removeClass("add-attribute") }
+    }).disableSelection();
+}
+
+$(function() {
+
+    resetListMoves();
+
+    /* add a group */
+    var $tab_title_input = $( "#tab_title"),
+    $tab_content_input = $( "#tab_content" );
+    var tab_counter = 2;
+
+    // tabs init with a custom tab template and an "add" callback filling in the content
+    var $tabs = $( "#tabs").tabs({
+        tabTemplate: "<li><span class='ui-icon ui-icon-close'>Remove Group</span><a href='#{href}'>#{label}</a></li>",
+        add: function( event, ui ) {
+            var tab_content = '<ul class="connectedSortable"></ul>';
+            $( ui.panel ).append(tab_content);
+            /* aims to drag / drop from and to this new tab */
+            resetListMoves();
+        }
+    });
+    
+    /* allow to sort tabs */
+    $( "#tabs" ).tabs().find( ".ui-tabs-nav" ).sortable({ axis: "x" });
+
+    // modal dialog init: custom buttons and a "close" callback reseting the form inside
+    var $dialog = $( "#dialog" ).dialog({
+        autoOpen: false,
+        modal: true,
+        open: function() {
+            $tab_title_input.focus();
+        },
+        close: function() {
+            $form[ 0 ].reset();
+        }
+    });
+    
+    $('#form_group').submit(function() {
+        $.post( "{{ path('pim_catalog_producttype_creategroup') }}", function(data) {
+                    console.log(data);
+                })
+    });
+    
+
+    // addTab form: calls addTab function on submit and closes the dialog
+    var $form = $( "form", $dialog ).submit(function() {
+        addTab();
+        $dialog.dialog( "close" );
+        return false;
+    });
+
+    // actual addTab function: adds new tab using the title input from the form above
+    function addTab() {
+        var tab_title = $tab_title_input.val() || "Tab " + tab_counter;
+        $tabs.tabs( "add", "#tabs-" + tab_counter, tab_title );
+        tab_counter++;
+    }
+
+    // addTab button: just opens the dialog
+    $( "#add_tab" ).click(function() {
+            $dialog.dialog( "open" );
+    });
+
+    // close icon: removing the tab on click
+    // note: closable tabs gonna be an option in the future - see http://dev.jqueryui.com/ticket/3924
+    $( "#tabs span.ui-icon-close" ).live( "click", function() {
+    
+    
+        /* popup add group doesn't work anymore */
+    
+        /* can't be deleted TODO: allow to move all attributes ? 
+        // a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
+        $( "#dialog:ui-dialog" ).dialog( "destroy" );
+        $( "#dialog-message-delete-group-forbidden" ).dialog({
+            modal: true,
+            buttons: {
+                Ok: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });*/
+    
+        /*
+        var index = $( "li", $tabs ).index( $( this ).parent() );
+        $tabs.tabs( "remove", index );
+        */
+    });
+});
+</script>
+
+{% endblock %}

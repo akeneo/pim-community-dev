@@ -34,10 +34,11 @@ class AppKernel extends Kernel
             new Pim\Bundle\UserBundle\PimUserBundle(),
             new Pim\Bundle\IcecatConnectorBundle\PimIcecatConnectorBundle(),
             new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
+            new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
 
             new Strixos\CatalogBundle\StrixosCatalogBundle(),
             new Strixos\DataFlowBundle\StrixosDataFlowBundle(),
-            new Akeneo\CatalogBundle\AkeneoCatalogBundle(),
+
 
             // community bundles
             new APY\DataGridBundle\APYDataGridBundle(),

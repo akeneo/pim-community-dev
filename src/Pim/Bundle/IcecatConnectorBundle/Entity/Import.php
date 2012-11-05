@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * TODO : Must be set in lower level to be used by all connectors
  *
- * @ORM\Table(name="StrixosIcecatConnector_Import")
+ * @ORM\Table(name="PimConnectorIcecat_Import")
  * @ORM\Entity
  */
 class Import

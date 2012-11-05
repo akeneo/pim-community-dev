@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\IcecatConnectorBundle\Transform;
 
-use Akeneo\CatalogBundle\Model\BaseFieldFactory;
+use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
 
 use Bap\Bundle\FlexibleEntityBundle\Doctrine\EntityManager;
 use Bap\Bundle\FlexibleEntityBundle\Doctrine\EntityTypeManager;

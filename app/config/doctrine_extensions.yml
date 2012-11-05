@@ -1,7 +1,7 @@
 services:
     # KernelRequest listener
     extension.listener:
-        class: Akeneo\CatalogBundle\Listener\DoctrineExtensionListener
+        class: Pim\Bundle\CatalogBundle\Listener\DoctrineExtensionListener
         calls:
             - [ setContainer, [ @service_container ] ]
         tags:
