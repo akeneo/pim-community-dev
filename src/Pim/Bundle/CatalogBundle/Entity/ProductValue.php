@@ -12,7 +12,7 @@ use Gedmo\Translatable\Translatable;
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="PimCatalog_Product_Value")
+ * @ORM\Table(name="Akeneo_PimCatalog_Product_Value")
  * @ORM\Entity
  * @Gedmo\TranslationEntity(class="Pim\Bundle\CatalogBundle\Entity\ProductTranslation")
  */

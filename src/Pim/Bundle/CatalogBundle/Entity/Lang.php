@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="PimCatalog_Lang")
+ * @ORM\Table(name="Akeneo_PimCatalog_Lang")
  * @ORM\Entity
  */
 class Lang

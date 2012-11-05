@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="AkeneoPimUser_User")
+ * @ORM\Table(name="Akeneo_PimUser_User")
  */
 class User extends BaseUser
 {

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="PimCatalog_Product_Group")
+ * @ORM\Table(name="Akeneo_PimCatalog_Product_Group")
  * @ORM\Entity
  */
 class ProductGroup
@@ -41,7 +41,7 @@ class ProductGroup
     /**
      * @var ArrayCollection $fields
      * @ORM\ManyToMany(targetEntity="ProductField", cascade={"persist"})
-     * @ORM\JoinTable(name="PimCatalog_Product_Group_Field")
+     * @ORM\JoinTable(name="Akeneo_PimCatalog_Product_Group_Field")
      */
     private $fields;
 
