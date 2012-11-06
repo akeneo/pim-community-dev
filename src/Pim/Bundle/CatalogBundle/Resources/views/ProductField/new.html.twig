@@ -21,16 +21,8 @@
     
         <div class="form-panel ui-corner-all">
             <h2>General</h2>
-            {{ form_row(form.id) }}
-            {{ form_row(form.code) }}
-            {{ form_row(form.type) }}
-            {{ form_row(form.scope) }}
-            {{ form_row(form.uniqueValue) }}
-            {{ form_row(form.valueRequired) }}
-            {{ form_row(form.searchable) }}
+            {{ form_widget(form) }}
         </div>
-
-        {{ form_widget(form._token) }}
 
         <input type="submit" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" aria-disabled="false">
 

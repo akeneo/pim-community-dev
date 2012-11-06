@@ -13,6 +13,8 @@ use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
 use APY\DataGridBundle\Grid\Source\Document as GridDocument;
 use APY\DataGridBundle\Grid\Action\RowAction;
 use APY\DataGridBundle\Grid\Column\TextColumn;
+use APY\DataGridBundle\Grid\Export\ExcelExport;
+use APY\DataGridBundle\Grid\Export\CSVExport;
 
 /**
  * Product field controller.
@@ -47,9 +49,16 @@ class ProductFieldController extends AbstractProductController
         $source = $this->getGridSource();
         $grid = $this->get('grid');
         $grid->setSource($source);
+        $grid->addExport(new ExcelExport('Excel Export'));
+        $grid->addExport(new CSVExport('CSV Export'));
 
-        // add an action column
-        $rowAction = new RowAction('Edit', 'pim_catalog_productfield_edit');
+        // add action columns
+        $grid->setActionsColumnSeparator('&nbsp;');
+        $rowAction = new RowAction('Edit', 'pim_catalog_productfield_edit', false, '_self', array('class' => 'grid_action ui-icon-fugue-tag--pencil'));
+        $rowAction->setRouteParameters(array('id'));
+        $grid->addRowAction($rowAction);
+
+        $rowAction = new RowAction('Delete', 'pim_catalog_productfield_delete', true, '_self', array('class' => 'grid_action ui-icon-fugue-tag--minus'));
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
 

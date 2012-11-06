@@ -48,6 +48,8 @@ class ProductFieldType extends AbstractType
             )
         );
 
+        $builder->add('title', 'text', array('required' => true));
+
         // if already exists disabled this choice
         $builder->add(
             'type', 'choice', array(
@@ -89,14 +91,16 @@ class ProductFieldType extends AbstractType
             )
         );
 
-        $builder->add(
-            'options', 'collection', array(
-                'type' => new ProductFieldOptionType(),
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-            )
-        );
+        if ($entity->getType() == BaseFieldFactory::FIELD_SELECT) {
+            $builder->add(
+                'options', 'collection', array(
+                    'type' => new ProductFieldOptionType(),
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                )
+            );
+        }
     }
 
     /**

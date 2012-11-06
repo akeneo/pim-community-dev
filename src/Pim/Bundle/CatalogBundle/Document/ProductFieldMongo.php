@@ -84,6 +84,7 @@ class ProductFieldMongo extends AbstractEntityField
         // TODO: prepersist is not enought : MongoException: zero-length keys are not allowed, did you use $ with double quotes?
 
         $this->locale = 'en_US';
+        $this->titles[$this->locale]= '';
     }
 
     /**

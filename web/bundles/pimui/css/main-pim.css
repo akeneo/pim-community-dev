@@ -26,5 +26,6 @@
 
 #mainmenu .ui-menu { z-index: 2;}
 
-
+/* product field views */
+.grid_action {padding-left:20px; background-repeat: no-repeat;}
 
