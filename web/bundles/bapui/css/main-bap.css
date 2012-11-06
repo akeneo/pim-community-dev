@@ -144,23 +144,23 @@ ul#menu
 .options li div.ui-widget {float:left; margin-right: 10px;}
 
 /* dashboard */
-.blocks-welcome ul {
+.blocks-dashboard ul {
     padding-left:0px;
 }
-.blocks-welcome{
+.blocks-dashboard {
     min-width: 200px;
 }
 
-.blocks-welcome span.ui-button-text{
+.blocks-dashboard span.ui-button-text{
     min-width: 160px;
 }
 
-.blocks-welcome
+.blocks-dashboard
 {
     overflow: hidden;
 }
 
-.blocks-welcome > div
+.blocks-dashboard > div
 {
     background-color: whitesmoke;
     float:            left;
@@ -170,17 +170,6 @@ ul#menu
     padding:          26px 20px;
     min-height: 220px;
 }
-
-.blocks-welcome > div.block-demo
-{
-    margin-right: 0;
-}
-
-.blocks-welcome .illustration
-{
-    padding-bottom: 20px;
-}
-
 
 .flash-message
 {
