@@ -389,28 +389,5 @@ th div {
 .ui-tabs { border: 0px solid }
 
 
-/* clearfix for the main menu to horizontal use */
-#BapMainMenu {
-    margin: 0 25px 10px;
-}
-#BapMainMenu:after {
-    content: ".";
-    display: block;
-    clear: both;
-    visibility: hidden;
-    line-height: 0;
-    height: 0;
-}
-#BapMainMenu li {
-    display: inline-block;
-    float: left;
-    margin: 0;
-    padding: 0;
-    width: auto;
-}
-
-#BapMainMenu .ui-menu { z-index: 2;}
-
-
 
 

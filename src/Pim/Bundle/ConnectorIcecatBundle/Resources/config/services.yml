@@ -19,11 +19,12 @@ services:
               root:  # this is the name of the node where to add the following children
                   Connectors:  # name of the child
                       route: '_welcome'
-                  Catalog:
-                      route: 'pim_connectoricecat_config_edit'
 
               Connectors: # this is the name of the node where you want add the following children (so below matches2)
                   IceCat:
+                      route: 'pim_connectoricecat_config_edit'
+
+                  Catalog:
                       route: 'pim_connectoricecat_config_edit'
 
               IceCat: # this is the name of the node where you want add the following children (so below matches2)
@@ -34,8 +35,4 @@ services:
                   Products:
                       route: 'pim_connectoricecat_product_list'
 
-
-#              Catalog: # this is the name of the node where you want add the following children (so below matches2)
-#                  Settings2:
-#                      route: 'pim_connectoricecat_config_edit'
 

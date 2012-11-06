@@ -29,22 +29,16 @@ class Builder extends ContainerAware
         $menu->setChildrenAttribute('id', 'mainmenu');
 
         // first level items
-        $firstLevelCssClass = 'first-level';
         $menu->addChild('Dashboard');
         $menu['Dashboard']->addChild('Home', array('route' => '_welcome'));
-
-        $menu['Dashboard']->setAttribute('class', $firstLevelCssClass);
         $menu->addChild('Catalog');
-        $menu['Catalog']->setAttribute('class', $firstLevelCssClass);
         $menu->addChild('Connectors');
-        $menu['Connectors']->setAttribute('class', $firstLevelCssClass);
-        $menu->addChild('Users');
-        $menu['Users']->setAttribute('class', $firstLevelCssClass);
 
         // second level items
-        $menu['Catalog']->addChild('Products', array('route' => 'akeneo_catalog_product_index'));
-        $menu['Catalog']->addChild('Product types', array('route' => 'akeneo_catalog_producttype_index'));
-        $menu['Catalog']->addChild('Product fields', array('route' => 'akeneo_catalog_productfield_index'));
+        $menu['Catalog']->addChild('Products', array('route' => 'pim_catalog_product_index'));
+        $menu['Catalog']->addChild('Product types', array('route' => 'pim_catalog_producttype_index'));
+        $menu['Catalog']->addChild('Product fields', array('route' => 'pim_catalog_productfield_index'));
+        $menu['Catalog']->addChild('Channels', array('route' => 'pim_catalog_channel_index'));
         $menu['Connectors']->addChild('Icecat');
         $menu['Connectors']['Icecat']->addChild('Settings', array('route' => 'pim_connectoricecat_config_edit'));
         $menu['Connectors']['Icecat']->addChild('Suppliers list', array('route' => 'pim_connectoricecat_supplier_list'));
