@@ -25,15 +25,6 @@ use APY\DataGridBundle\Grid\Action\RowAction;
  */
 class ProductController extends AbstractProductController
 {
-    /**
-     * TODO aims to easily change from one implementation to other
-     *
-    const DOCTRINE_MANAGER = 'doctrine.orm.entity_manager';
-    const DOCTRINE_MONGO_MANAGER = 'doctrine.odm.mongodb.document_manager';
-    protected $managerService = self::DOCTRINE_MONGO_MANAGER;
-    protected $classShortname = 'PimCatalogBundle:ProductMongo';
-    */
-
 
     /**
      * (non-PHPdoc)
@@ -41,7 +32,7 @@ class ProductController extends AbstractProductController
      */
     public function getObjectShortName()
     {
-        return $this->container->getParameter('pim.catalog.product.entity.class');
+        return $this->get('pim.catalog.product_manager')->getEntityShortname();
     }
 
     /**
@@ -66,14 +57,6 @@ class ProductController extends AbstractProductController
     }
 
     /**
-     * Get used object manager service
-     */
-    public function getManagerService()
-    {
-        return $this->container->get('akeneo.catalog.model_product');
-    }
-
-    /**
      * Displays a form to edit an existing product entity.
      *
      * @Route("/{id}/edit")
@@ -81,7 +64,7 @@ class ProductController extends AbstractProductController
      */
     public function editAction($id)
     {
-        $manager = $this->get($this->getObjectManagerService());
+        $manager = $this->getObjectManagerService();
         $entity = $manager->getRepository($this->getObjectShortName())->find($id);
 
         if (!$entity) {
@@ -108,7 +91,7 @@ class ProductController extends AbstractProductController
     */
     public function updateAction(Request $request, $id)
     {
-        $manager = $this->get($this->getObjectManagerService());
+        $manager = $this->getObjectManagerService();
 
         $entity = $manager->getRepository($this->getObjectShortName())->find($id);
 

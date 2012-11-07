@@ -57,6 +57,7 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
      */
     public function load(ObjectManager $manager)
     {
+        return true;
         $base = $this->_createBaseType($manager);
         $this->_createProducts($manager);
     }
