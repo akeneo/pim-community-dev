@@ -2,7 +2,7 @@
 namespace Pim\Bundle\CatalogBundle\Document;
 
 use Bap\Bundle\FlexibleEntityBundle\Doctrine\EntityManager;
-use Pim\Bundle\CatalogBundle\Document\ProductMongo;
+use Pim\Bundle\CatalogBundle\Document\ProductEntity;
 
 /**
  * Manager of flexible product stored with doctrine documents
@@ -22,7 +22,7 @@ class ProductManager extends EntityManager
     public function find($productId)
     {
         // get document
-        $document = $this->manager->getRepository('PimCatalogBundle:ProductMongo')
+        $document = $this->manager->getRepository('PimCatalogBundle:ProductEntity')
             ->find($productId);
         if ($document) {
             $this->object = $document;
@@ -45,7 +45,7 @@ class ProductManager extends EntityManager
         $fieldLocale   = 'values_'. $this->getLocale();
         
         // prepare query
-        $document = $this->manager->createQueryBuilder('PimCatalogBundle:ProductMongo')
+        $document = $this->manager->createQueryBuilder('PimCatalogBundle:ProductEntity')
             ->field($fieldLocale .'.'. $fieldSourceId)->equals($sourceProductId)
             ->getQuery()
             ->getSingleResult();
@@ -64,7 +64,7 @@ class ProductManager extends EntityManager
      */
     public function create($type)
     {
-        $this->object = new ProductMongo();
+        $this->object = new ProductEntity();
         $this->object->setType($type);
         // TODO deal with group
         return $this;

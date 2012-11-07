@@ -17,7 +17,7 @@ use APY\DataGridBundle\Grid\Mapping as GRID;
  * @MongoDB\Document
  * @GRID\Source(columns="id")
  */
-class ProductMongo extends AbstractEntity
+class ProductEntity extends AbstractEntity
 {
     //@see https://doctrine-mongodb-odm.readthedocs.org/en/latest/reference/annotations-reference.html
 
@@ -29,7 +29,7 @@ class ProductMongo extends AbstractEntity
 
     /**
      * Simple reference, only store id TODO: test
-     * @MongoDB\ReferenceOne(targetDocument="ProductTypeMongo", simple=true)
+     * @MongoDB\ReferenceOne(targetDocument="ProductType", simple=true)
      */
     protected $type;
 
@@ -109,7 +109,7 @@ class ProductMongo extends AbstractEntity
      * Set values
      *
      * @param string $code
-     * @return ProductMongo
+     * @return ProductEntity
      */
     public function getValue($code)
     {
@@ -121,7 +121,7 @@ class ProductMongo extends AbstractEntity
      *
      * @param string $code
      * @param string $value
-     * @return ProductMongo
+     * @return ProductEntity
      */
     public function setValue($code, $value)
     {
@@ -146,7 +146,7 @@ class ProductMongo extends AbstractEntity
      * Set created
      *
      * @param date $created
-     * @return ProductMongo
+     * @return ProductEntity
      */
     public function setCreated($created)
     {
@@ -168,7 +168,7 @@ class ProductMongo extends AbstractEntity
      * Set updated
      *
      * @param date $updated
-     * @return ProductMongo
+     * @return ProductEntity
      */
     public function setUpdated($updated)
     {

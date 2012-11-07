@@ -16,7 +16,7 @@ use APY\DataGridBundle\Grid\Mapping as GRID;
  * @MongoDB\Document
  * @GRID\Source(columns="id, code, type")
  */
-class ProductFieldMongo extends AbstractEntityField
+class ProductField extends AbstractEntityField
 {
 
     /**
@@ -113,7 +113,7 @@ class ProductFieldMongo extends AbstractEntityField
      * Set title
      *
      * @param string $title
-     * @return ProductTypeMongo
+     * @return ProductType
      */
     public function setTitle($title)
     {
@@ -135,7 +135,7 @@ class ProductFieldMongo extends AbstractEntityField
      * Set titles
      *
      * @param raw $titles
-     * @return ProductFieldMongo
+     * @return ProductField
      */
     public function setTitles($titles)
     {
@@ -175,7 +175,7 @@ class ProductFieldMongo extends AbstractEntityField
      * Set options
      *
      * @param raw $options
-     * @return ProductFieldMongo
+     * @return ProductField
      */
     public function setOptions($options)
     {
@@ -199,7 +199,7 @@ class ProductFieldMongo extends AbstractEntityField
      * @param string $code
      * @param string $title
      *
-     * @return ProductTypeMongo
+     * @return ProductType
      */
     public function setOption($code, $title)
     {
@@ -235,7 +235,7 @@ class ProductFieldMongo extends AbstractEntityField
      * Set code
      *
      * @param string $code
-     * @return ProductFieldMongo
+     * @return ProductField
      */
     public function setCode($code)
     {
@@ -257,7 +257,7 @@ class ProductFieldMongo extends AbstractEntityField
      * Set type
      *
      * @param string $type
-     * @return ProductFieldMongo
+     * @return ProductField
      */
     public function setType($type)
     {

@@ -16,7 +16,7 @@ use APY\DataGridBundle\Grid\Mapping as GRID;
  * @MongoDB\Document
  * @GRID\Source(columns="id, code")
  */
-class ProductTypeMongo extends AbstractEntityType
+class ProductType extends AbstractEntityType
 {
     /**
      * @MongoDB\Id
@@ -37,7 +37,7 @@ class ProductTypeMongo extends AbstractEntityType
     protected $titles = array();
 
     /**
-     * @MongoDB\EmbedMany(targetDocument="ProductGroupMongo")
+     * @MongoDB\EmbedMany(targetDocument="ProductGroup")
      */
     protected $groups = array();
 
@@ -87,7 +87,7 @@ class ProductTypeMongo extends AbstractEntityType
      * Set title
      *
      * @param string $title
-     * @return ProductTypeMongo
+     * @return ProductType
      */
     public function setTitle($title)
     {
@@ -128,7 +128,7 @@ class ProductTypeMongo extends AbstractEntityType
      * Set titles
      *
      * @param raw $titles
-     * @return ProductTypeMongo
+     * @return ProductType
      */
     public function setTitles($titles)
     {

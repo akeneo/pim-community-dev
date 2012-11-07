@@ -8,11 +8,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Model\ProductType;
 
-use Pim\Bundle\CatalogBundle\Document\ProductGroupMongo;
-use Pim\Bundle\CatalogBundle\Document\ProductTypeMongo;
-use Pim\Bundle\CatalogBundle\Document\ProductFieldMongo;
-use Pim\Bundle\CatalogBundle\Document\TestMongo;
-
 use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
 
 
@@ -25,18 +20,27 @@ class DefaultController extends Controller
     public function indexAction()
     {
 
-        $dm = $this->get('doctrine.odm.mongodb')->getManager();
+        $productManager = $this->get('pim.catalog.product_manager');
 
-        $type = new ProductTypeMongo();
+        //$dm = $this->get('doctrine.odm.mongodb')->getManager();
+        $dm = $productManager->getPersistenceManager();
+
+        //$type = new ProductTypeMongo();
+        $class = $productManager->getTypeClass();
+        $type = new $class();
         $type->setCode('binomed-type');
         $type->setTitle('Binomed');
 
-        $field = new ProductFieldMongo();
+        //$field = new ProductFieldMongo();
+        $class = $productManager->getFieldClass();
+        $field = new $class();
         $field->setCode('binomed-att');
         $field->setTitle('Attribute !');
         $field->setType(BaseFieldFactory::FIELD_STRING);
 
-        $group = new ProductGroupMongo();
+        $class = $productManager->getGroupClass();
+        $group = new $class();
+        //$group = new ProductGroupMongo();
         $group->setCode('binomed-group');
         $group->setTitle('Grouped');
 

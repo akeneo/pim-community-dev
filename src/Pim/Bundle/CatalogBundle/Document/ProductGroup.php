@@ -14,7 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @MongoDB\EmbeddedDocument
  */
-class ProductGroupMongo extends AbstractEntityGroup
+class ProductGroup extends AbstractEntityGroup
 {
     /**
      * @MongoDB\Id
@@ -32,7 +32,7 @@ class ProductGroupMongo extends AbstractEntityGroup
     protected $title;
 
     /**
-     * @MongoDB\ReferenceMany(targetDocument="ProductFieldMongo", cascade={"persist"})
+     * @MongoDB\ReferenceMany(targetDocument="ProductField", cascade={"persist"})
      * @var ArrayCollection
      */
     protected $fields = array();

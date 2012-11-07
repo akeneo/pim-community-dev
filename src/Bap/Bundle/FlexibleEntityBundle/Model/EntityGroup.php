@@ -87,7 +87,6 @@ abstract class EntityGroup
         return $this->title;
     }
 
-
     /**
      * Add field
      *
@@ -96,9 +95,9 @@ abstract class EntityGroup
      */
     public function addField(EntityField $field)
     {
-    $this->fields[] = $field;
+        $this->fields[] = $field;
 
-    return $this;
+        return $this;
     }
 
     /**

@@ -6,31 +6,39 @@
 
     <parameters>
 
-        <!-- entity implementation (eav) -->
+        <!-- entity implementation (eav)
         <parameter key="pim.catalog.orm.producttypemanager.class">Pim\Bundle\CatalogBundle\Entity\ProductTypeManager</parameter>
         <parameter key="pim.catalog.orm.producttype.class">PimCatalogBundle:ProductType</parameter>
         <parameter key="pim.catalog.orm.productmanager.class">Pim\Bundle\CatalogBundle\Entity\ProductManager</parameter>
         <parameter key="pim.catalog.orm.product.class">PimCatalogBundle:ProductEntity</parameter>
-
-        <!-- mongodb implementation -->
+        -->
+        <!-- mongodb implementation 
         <parameter key="pim.catalog.odm.mongo.producttypemanager.class">Pim\Bundle\CatalogBundle\Document\ProductTypeManager</parameter>
         <parameter key="pim.catalog.odm.mongo.producttype.class">PimCatalogBundle:ProductTypeMongo</parameter>
         <parameter key="pim.catalog.odm.mongo.productmanager.class">Pim\Bundle\CatalogBundle\Document\ProductManager</parameter>
         <parameter key="pim.catalog.odm.mongo.product.class">PimCatalogBundle:ProductMongo</parameter>
-
-        <!-- used implementation -->
+        -->
+        <!-- used implementation 
         <parameter key="pim.catalog.product.objectmanager">doctrine.odm.mongodb.document_manager</parameter>
         <parameter key="pim.catalog.product.typemanager.class">Pim\Bundle\CatalogBundle\Document\ProductTypeManager</parameter>
         <parameter key="pim.catalog.product.entitymanager.class">Pim\Bundle\CatalogBundle\Document\ProductManager</parameter>
         <parameter key="pim.catalog.product.type.class">PimCatalogBundle:ProductTypeMongo</parameter>
         <parameter key="pim.catalog.product.entity.class">PimCatalogBundle:ProductMongo</parameter>
         <parameter key="pim.catalog.product.field.class">PimCatalogBundle:ProductFieldMongo</parameter>
-
+        -->
+        
+        <parameter key="pim.catalog.product_manager.class">Pim\Bundle\CatalogBundle\Doctrine\ProductManager</parameter>
+        <parameter key="pim.catalog.product.object_manager">doctrine.odm.mongodb.document_manager</parameter>
+        
     </parameters>
 
     <services>
 
-        <!-- dotrine eav test implementation -->
+        <service id="pim.catalog.product_manager" class="%pim.catalog.product_manager.class%">
+            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+        </service>
+
+        <!-- dotrine eav test implementation 
         <service id="akeneo.catalog.model_producttype_doctrine" class="%pim.catalog.orm.producttypemanager.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>%pim.catalog.orm.producttype.class%</argument>
@@ -40,8 +48,9 @@
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>%pim.catalog.orm.product.class%</argument>
         </service>
+        -->
 
-        <!-- mongo document test implementation -->
+        <!-- mongo document test implementation 
         <service id="akeneo.catalog.model_producttype_mongo" class="%pim.catalog.odm.mongo.producttypemanager.class%">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <argument>%pim.catalog.odm.mongo.producttype.class%</argument>
@@ -51,8 +60,9 @@
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <argument>%pim.catalog.odm.mongo.product.class%</argument>
         </service>
+        -->
 
-        <!-- used implementation on others bundles -->
+        <!-- used implementation on others bundles
         <service id="akeneo.catalog.model_producttype" class="%pim.catalog.product.typemanager.class%">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <argument>%pim.catalog.product.type.class%</argument>
@@ -62,6 +72,7 @@
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <argument>%pim.catalog.product.entity.class%</argument>
         </service>
+        -->
         <!--
         <service id="akeneo.catalog.model_producttype" class="%pim.catalog.producttypemanager.entity.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />

@@ -70,7 +70,7 @@ class ProductTypeManager extends EntityTypeManager
         $field = $this->getField($fieldCode);
         // create a new field
         if (!$field) {
-            $field = new ProductFieldMongo();
+            $field = new ProductField();
             $field->setCode($fieldCode);
             $field->setType($fieldType);
             $field->setTitle($title);
@@ -87,7 +87,7 @@ class ProductTypeManager extends EntityTypeManager
      */
     public function getField($fieldCode)
     {
-        $field = $this->getManager()->getRepository('PimCatalogBundle:ProductFieldMongo')
+        $field = $this->getManager()->getRepository('PimCatalogBundle:ProductField')
             ->findOneByCode($fieldCode);
         return $field;
     }
