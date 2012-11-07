@@ -1,7 +1,7 @@
 <?php
-namespace Pim\Bundle\CatalogBundle\Tests\Model;
+namespace Pim\Bundle\CatalogBundle\Tests;
 
-require_once dirname(__DIR__).'/../../../../../app/AppKernel.php';
+require_once dirname(__DIR__).'/../../../../app/AppKernel.php';
 
 /**
  * Test case class helpful with Entity tests requiring the database interaction.

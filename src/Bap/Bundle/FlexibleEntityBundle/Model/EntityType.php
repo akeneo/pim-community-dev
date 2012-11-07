@@ -101,9 +101,9 @@ abstract class EntityType
      *
      * @param EntityGroup $group
      */
-    public function removeGroup(EntityGroup $groups)
+    public function removeGroup(EntityGroup $group)
     {
-        $this->groups->removeElement($groups);
+        $this->groups->removeElement($group);
     }
 
     /**

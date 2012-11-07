@@ -44,7 +44,7 @@ class ProductGroup extends AbstractEntityGroup
      * @ORM\ManyToMany(targetEntity="ProductField", cascade={"persist"})
      * @ORM\JoinTable(name="Akeneo_PimCatalog_Product_Group_Field")
      */
-    protected $fields;
+    protected $fields = array();
 
     /**
      * Constructor

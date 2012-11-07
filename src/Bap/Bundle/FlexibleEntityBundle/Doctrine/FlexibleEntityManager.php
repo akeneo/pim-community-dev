@@ -62,7 +62,7 @@ abstract class FlexibleEntityManager
     public abstract function getFieldShortname();
 
     /**
-     * Return implmentation class that can be use to instanciate
+     * Return implementation class that can be use to instanciate
      * @return string
      */
     public function getEntityClass()
@@ -71,7 +71,7 @@ abstract class FlexibleEntityManager
     }
 
     /**
-     * Return implmentation class that can be use to instanciate
+     * Return implementation class that can be use to instanciate
      * @return string
      */
     public function getTypeClass()
@@ -80,7 +80,7 @@ abstract class FlexibleEntityManager
     }
 
     /**
-     * Return implmentation class that can be use to instanciate
+     * Return implementation class that can be use to instanciate
      * @return string
      */
     public function getGroupClass()
@@ -89,12 +89,48 @@ abstract class FlexibleEntityManager
     }
 
     /**
-     * Return implmentation class that can be use to instanciate
+     * Return implementation class that can be use to instanciate
      * @return string
      */
     public function getFieldClass()
     {
         return $this->manager->getClassMetadata($this->getFieldShortname())->getName();
+    }
+
+    /**
+     * Return related repository
+     * @return Doctrine\Common\Persistence\ObjectRepository
+     */
+    public function getEntityRepository()
+    {
+        return $this->manager->getRepository($this->getEntityShortname());
+    }
+
+    /**
+     * Return related repository
+     * @return Doctrine\Common\Persistence\ObjectRepository
+     */
+    public function getTypeRepository()
+    {
+        return $this->manager->getRepository($this->getTypeShortname());
+    }
+
+    /**
+     * Return related repository
+     * @return Doctrine\Common\Persistence\ObjectRepository
+     */
+    public function getGroupRepository()
+    {
+        return $this->manager->getRepository($this->getGroupShortname());
+    }
+
+    /**
+     * Return related repository
+     * @return Doctrine\Common\Persistence\ObjectRepository
+     */
+    public function getFieldRepository()
+    {
+        return $this->manager->getRepository($this->getFieldShortname());
     }
 
 }

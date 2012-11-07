@@ -30,7 +30,7 @@ abstract class EntityGroup
     /**
      * @var ArrayCollection $fields
      */
-    protected $fields;
+    protected $fields = array();
 
     /**
      * Get id
@@ -107,7 +107,7 @@ abstract class EntityGroup
      */
     public function removeField(EntityField $field)
     {
-        $this->fields->removeElement($fields);
+        $this->fields->removeElement($field);
     }
 
     /**
