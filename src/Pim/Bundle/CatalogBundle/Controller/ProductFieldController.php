@@ -34,7 +34,7 @@ class ProductFieldController extends AbstractProductController
      */
     public function getObjectShortName()
     {
-        return $this->container->getParameter('pim.catalog.product.field.class');
+        return $this->get('pim.catalog.product_manager')->getFieldShortname();
     }
 
     /**
@@ -100,7 +100,7 @@ class ProductFieldController extends AbstractProductController
 
         // TODO : avoid to create product field with same code -> complete validation !
         if ($form->isValid()) {
-            $manager = $this->get($this->getObjectManagerService());
+            $manager = $this->getObjectManagerService();
             $manager->persist($entity);
             $manager->flush();
             $this->get('session')->setFlash('success', 'Field has been created');
@@ -122,7 +122,7 @@ class ProductFieldController extends AbstractProductController
      */
     public function editAction($id)
     {
-        $manager = $this->get($this->getObjectManagerService());
+        $manager = $this->getObjectManagerService();
 
         $entity = $manager->getRepository($this->getObjectShortName())->find($id);
 
@@ -151,7 +151,7 @@ class ProductFieldController extends AbstractProductController
      */
     public function updateAction(Request $request, $id)
     {
-        $manager = $this->get($this->getObjectManagerService());
+        $manager = $this->getObjectManagerService();
 
         $entity = $manager->getRepository($this->getObjectShortName())->find($id);
 
@@ -184,7 +184,7 @@ class ProductFieldController extends AbstractProductController
      */
     public function deleteAction(Request $request, $id)
     {
-        $manager = $this->get($this->getObjectManagerService());
+        $manager = $this->getObjectManagerService();
         $entity = $manager->getRepository($this->getObjectShortName())->find($id);
 
         if (!$entity) {

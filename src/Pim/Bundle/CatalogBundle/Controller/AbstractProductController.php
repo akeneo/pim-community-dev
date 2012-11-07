@@ -24,25 +24,14 @@ use APY\DataGridBundle\Grid\Column\TextColumn;
  */
 abstract class AbstractProductController extends Controller
 {
-    /**
-     * TODO aims to easily change from one implementation to other
-     */
-    const DOCTRINE_MANAGER = 'doctrine.orm.entity_manager';
-    const DOCTRINE_MONGO_MANAGER = 'doctrine.odm.mongodb.document_manager';
 
     /**
      * Get used object manager
      */
     public function getObjectManagerService()
     {
-        return $this->container->getParameter('pim.catalog.product.objectmanager');
+        return $this->get('pim.catalog.product_manager')->getPersistenceManager();
     }
-
-    /**
-     * Get object class used by controller
-     */
-    public abstract function getObjectShortName();
-
 
     /**
      * Return grid source for APY grid
@@ -51,9 +40,9 @@ abstract class AbstractProductController extends Controller
     public function getGridSource()
     {
         // source to create simple grid based on entity or document (ORM or ODM)
-        if ($this->getObjectManagerService() == self::DOCTRINE_MONGO_MANAGER) {
+        if ($this->getObjectManagerService() instanceof \Doctrine\ODM\MongoDB\DocumentManager) {
             return new GridDocument($this->getObjectShortName());
-        } else if ($this->getObjectManagerService() == self::DOCTRINE_MANAGER) {
+        } else if ($this->getObjectManagerService() instanceof \Doctrine\ORM\EntityManager) {
             return new GridEntity($this->getObjectShortName());
         } else {
             throw new \Exception('Unknow object manager');
@@ -61,12 +50,17 @@ abstract class AbstractProductController extends Controller
     }
 
     /**
+     * Get object class used by controller
+     */
+    public abstract function getObjectShortName();
+
+    /**
      * Return full name of object class
      * @return unknown
      */
     public function getObjectClassFullName()
     {
-        $om = $this->container->get($this->getObjectManagerService());
+        $om = $this->getObjectManagerService();
         $metadata = $om->getClassMetadata($this->getObjectShortName());
         $classFullName = $metadata->getName();
         return $classFullName;

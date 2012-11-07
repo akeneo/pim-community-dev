@@ -35,7 +35,8 @@
     <services>
 
         <service id="pim.catalog.product_manager" class="%pim.catalog.product_manager.class%">
-            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+<!--            <argument type="service" id="doctrine.orm.entity_manager" />  -->
+             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
         </service>
 
         <!-- dotrine eav test implementation 

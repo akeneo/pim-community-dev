@@ -10,7 +10,7 @@
         </a>
     </li>
     <li>
-        <a href="{{ path('pim_catalog_productfield_delete', { 'id': entity.id }) }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
+        <a onclick="return confirm('Are you sure ?')" href="{{ path('pim_catalog_productfield_delete', { 'id': entity.id }) }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
             <span class="ui-button-icon-primary ui-icon ui-icon-fugue-tag--minus"></span><span class="ui-button-text">Delete field</span>
         </a>
     </li>
@@ -55,6 +55,10 @@
 
     </form>
 
+{% endblock %}
+
+{% block afterfooter %}
+    {{parent()}}
     <script type="text/javascript">
     // Get the div that holds the collection of options
     var collectionHolder = $('ul.options');
@@ -110,7 +114,4 @@
             $optFormLi.remove();
         });
     }
-    
-    </script>
-
 {% endblock %}
