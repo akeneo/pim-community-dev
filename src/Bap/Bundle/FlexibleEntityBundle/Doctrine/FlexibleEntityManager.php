@@ -1,5 +1,11 @@
 <?php
 namespace Bap\Bundle\FlexibleEntityBundle\Doctrine;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityValue;
+
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityField;
+
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityGroup;
+
 use Bap\Bundle\FlexibleEntityBundle\Model\Entity;
 
 use Bap\Bundle\FlexibleEntityBundle\Model\EntityType;
@@ -161,8 +167,55 @@ abstract class FlexibleEntityManager
         return $this->manager->getRepository($this->getValueShortname());
     }
 
-    // TODO add newEntity, newType etc
+    /**
+     * Return a new instance
+     * @return Entity
+     */
+    public function getNewEntityInstance()
+    {
+        $class = $this->getEntityClass();
+        return new $class();
+    }
 
+    /**
+     * Return a new instance
+     * @return EntityType
+     */
+    public function getNewTypeInstance()
+    {
+        $class = $this->getTypeClass();
+        return new $class();
+    }
+
+    /**
+     * Return a new instance
+     * @return EntityGroup
+     */
+    public function getNewGroupInstance()
+    {
+        $class = $this->getGroupClass();
+        return new $class();
+    }
+
+    /**
+     * Return a new instance
+     * @return EntityField
+     */
+    public function getNewFieldInstance()
+    {
+        $class = $this->getFieldClass();
+        return new $class();
+    }
+
+    /**
+     * Return a new instance
+     * @return EntityValue
+     */
+    public function getNewValueInstance()
+    {
+        $class = $this->getValueClass();
+        return new $class();
+    }
 
     /**
      * Clone an entity type
@@ -173,28 +226,25 @@ abstract class FlexibleEntityManager
     public function cloneType($entityType)
     {
         // create new entity type
-        $typeClass = $this->getTypeClass();
-        $cloneType = new $typeClass();
+        $cloneType = $this->getNewTypeInstance();
 
         // clone entity type values
         $cloneType->setCode($entityType->getCode());
-        $cloneType->setTitles($entityType->getTitles());
+        $cloneType->setTitle($entityType->getTitle());
 
-        // clone linked entities
-        $groupClass = $this->getGroupClass();
+        // clone groups
         foreach ($entityType->getGroups() as $groupToClone) {
+
             // clone group entity
-            $cloneGroup = new $groupClass();
+            $cloneGroup = $this->getNewGroupInstance();
             $cloneGroup->setTitle($groupToClone->getTitle());
             $cloneGroup->setCode($groupToClone->getCode());
-
-            // clone fields
-            foreach ($groupToClone->getFields() as $attributeToLink) {
-                $cloneGroup->addField($attributeToLink);
-            }
-
-            // add group to default set
             $cloneType->addGroup($cloneGroup);
+
+            // link to same fields
+            foreach ($groupToClone->getFields() as $fieldToLink) {
+                $cloneGroup->addField($fieldToLink);
+            }
         }
         return $cloneType;
     }

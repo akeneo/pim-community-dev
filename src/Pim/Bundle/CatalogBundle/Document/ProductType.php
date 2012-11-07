@@ -31,10 +31,10 @@ class ProductType extends AbstractEntityType
     protected $code;
 
     /**
-     * @MongoDB\Raw
-     * @var ArrayCollection
-     */
-    protected $titles = array();
+    * @MongoDB\String
+    * @GRID\Column()
+    */
+    protected $title;
 
     /**
      * @MongoDB\EmbedMany(targetDocument="ProductGroup")
@@ -53,11 +53,8 @@ class ProductType extends AbstractEntityType
     public function __construct()
     {
         $this->groups = new ArrayCollection();
-      // $this->fields = array(); //new ArrayCollection();
-        $this->titles = array();
 
         // TODO: prepersist is not enought : MongoException: zero-length keys are not allowed, did you use $ with double quotes?
-
         $this->locale = 'en_US';
     }
 
@@ -84,28 +81,6 @@ class ProductType extends AbstractEntityType
     }
 
     /**
-     * Set title
-     *
-     * @param string $title
-     * @return ProductType
-     */
-    public function setTitle($title)
-    {
-        $this->titles[$this->locale] = $title;
-        return $this;
-    }
-
-    /**
-     * Get title
-     *
-     * @return string $title
-     */
-    public function getTitle()
-    {
-        return $this->titles[$this->locale];
-    }
-
-    /**
      * Get used locale
      * @return string $locale
      */
@@ -123,26 +98,4 @@ class ProductType extends AbstractEntityType
         $this->locale = $locale;
     }
 
-
-    /**
-     * Set titles
-     *
-     * @param raw $titles
-     * @return ProductType
-     */
-    public function setTitles($titles)
-    {
-        $this->titles = $titles;
-        return $this;
-    }
-
-    /**
-     * Get titles
-     *
-     * @return raw $titles
-     */
-    public function getTitles()
-    {
-        return $this->titles;
-    }
 }
