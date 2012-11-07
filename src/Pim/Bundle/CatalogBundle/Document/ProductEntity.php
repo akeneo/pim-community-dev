@@ -34,7 +34,7 @@ class ProductEntity extends AbstractEntity
     protected $type;
 
     /**
-     * @MongoDB\ReferenceMany(targetDocument="ProductValue", cascade={"persist"})
+     * @MongoDB\EmbedMany(targetDocument="ProductValue")
      * @var ArrayCollection
      */
     protected $values = array();
