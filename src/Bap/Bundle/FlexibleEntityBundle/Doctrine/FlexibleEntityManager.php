@@ -1,5 +1,9 @@
 <?php
 namespace Bap\Bundle\FlexibleEntityBundle\Doctrine;
+use Bap\Bundle\FlexibleEntityBundle\Model\Entity;
+
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityType;
+
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
@@ -133,4 +137,57 @@ abstract class FlexibleEntityManager
         return $this->manager->getRepository($this->getFieldShortname());
     }
 
+    /**
+     * Clone an entity type
+     *
+     * @param EntityType $entityType
+     * @return EntityType
+     */
+    public function cloneType($entityType)
+    {
+        // create new entity type
+        $typeClass = $this->getTypeClass();
+        $cloneType = new $typeClass();
+        
+        // clone entity type values
+        $cloneType->setCode($entityType->getCode());
+        $cloneType->setTitles($entityType->getTitles());
+        
+        // clone linked entities
+        $groupClass = $this->getGroupClass();
+        foreach ($entityType->getGroups() as $groupToClone) {
+            // clone group entity
+            $cloneGroup = new $groupClass();
+            $cloneGroup->setTitle($groupToClone->getTitle());
+            $cloneGroup->setCode($groupToClone->getCode());
+            
+            // clone fields
+            foreach ($groupToClone->getFields() as $attributeToLink) {
+                $cloneGroup->addField($attributeToLink);
+            }
+            
+            // add group to default set
+            $cloneType->addGroup($cloneGroup);
+        }
+        return $cloneType;
+    }
+    
+    /**
+     * Clone an entity
+     * 
+     * @param Entity $entity
+     * @return Entity
+     */
+    public function cloneEntity($entity)
+    {
+        // create a new entity
+        $class = $this->getEntityClass();
+        $clone = new $class();
+        
+        // clone entity type
+        $cloneType = $this->cloneType($entity->getType());
+        $clone->setType($cloneType);
+        
+        return $clone;
+    }
 }

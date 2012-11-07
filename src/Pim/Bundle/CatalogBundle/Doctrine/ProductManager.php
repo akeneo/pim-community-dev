@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityType;
+
 use Bap\Bundle\FlexibleEntityBundle\Doctrine\FlexibleEntityManager;
 
 /**
@@ -48,5 +50,4 @@ class ProductManager extends FlexibleEntityManager
     {
         return 'PimCatalogBundle:ProductField';
     }
-
 }
