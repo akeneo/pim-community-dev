@@ -26,16 +26,16 @@
             <div id="tabs">
                 <!-- one tab by group -->
                 <ul>
-                    {% for groupCode,group in entity.type.groups %}
-                        <li><span class="ui-icon">Group tab</span><a href="#tabs-{{ groupCode }}">{{ groupCode }}</a></li>
+                    {% for group in entity.type.groups %}
+                        <li><span class="ui-icon">Group tab</span><a href="#tabs-{{ group.id }}">{{ group.code }}</a></li>
                     {% endfor %}
                 </ul>
                 <!-- tabs content -->
-                {% for groupCode,group in entity.type.groups %}
-                <div id="tabs-{{ groupCode }}">
+                {% for group in entity.type.groups %}
+                <div id="tabs-{{ group.id }}">
                     <ul>
-                        {% for field in group %}
-                            <li>{{ form_row(attribute(form, field)) }}</li>
+                        {% for field in group.fields %}
+                            <li>{{ form_row(attribute(form, field.code)) }}</li>
                         {% endfor %}
                     </ul>
                 </div>

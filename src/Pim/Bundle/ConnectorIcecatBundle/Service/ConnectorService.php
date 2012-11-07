@@ -30,7 +30,7 @@ class ConnectorService
      * @var ContainerInterface $container
      */
     protected $container;
-    
+
     /**
      * Config manager
      * @var ConfigManager
@@ -59,12 +59,12 @@ class ConnectorService
         $url      = $this->configManager->getValue(Config::SUPPLIERS_URL);
         $filePath    = $baseDir . $this->configManager->getValue(Config::SUPPLIERS_FILE);
         $forceDownloadFile = true;
-        
+
         // Call extractor
         $extractor = new SuppliersXmlExtractor($url, $login, $password);
         $extractor->extract();
         $xmlContent = $extractor->getReadContent();
-        
+
         $transformer = new SuppliersTransform($this->container->get('doctrine.orm.entity_manager'), $xmlContent);
         $transformer->transform();
     }
@@ -106,7 +106,7 @@ class ConnectorService
         $filePath = $baseDir . $this->configManager->getValue(Config::PRODUCTS_FILE);
         $archivePath = $baseDir . $this->configManager->getValue(Config::PRODUCTS_ARCHIVED_FILE);
         $forceDownloadFile = false;
-        
+
         // Call extractor
         $extractor = new DownloadAndUnpackSource($url, $login, $password, $archivePath, $filePath, $forceDownloadFile);
         $extractor->extract();
@@ -122,14 +122,14 @@ class ConnectorService
     public function importProductFromIcecatXml($productId)
     {
         // TODO by configuration, for now en_US first is important
-        $localeIceToPim = array('US' => 'en_US', 'FR' => 'fr_FR');
-        
+        $localeIceToPim = array('US' => 'en_US'/*, 'FR' => 'fr_FR'*/); // no translate for now
+
         // 1. get base product from icecat referential
         $em = $this->container->get('doctrine.orm.entity_manager');
         $baseProduct = $em->getRepository('PimConnectorIcecatBundle:SourceProduct')->find($productId);
         $prodId = $baseProduct->getProdId();
         $supplierName = $baseProduct->getSupplier()->getName();
-        
+
         foreach ($localeIceToPim as $icecatLocale => $pimLocale) {
 
             // 2. extract product xml from icecat
@@ -144,9 +144,8 @@ class ConnectorService
             $productFeatures = $transformer->getProductFeatures();
 
             // 4. transform array to pim product
-            $productTypeService = $this->container->get('akeneo.catalog.model_producttype');
-            $productService = $this->container->get('akeneo.catalog.model_product');
-            $transformer = new ProductArrayToCatalogProductTransformer($productTypeService, $productService, $productBaseData, $productFeatures, $pimLocale);
+            $productManager = $this->container->get('pim.catalog.product_manager');
+            $transformer = new ProductArrayToCatalogProductTransformer($productManager, $productBaseData, $productFeatures, $pimLocale);
             $transformer->transform();
 
         // 5. load product (move persist / flush from transform to allow batch using for supplier import)
@@ -156,7 +155,7 @@ class ConnectorService
             $transform->process($fp);
         }*/
         }
-        
+
         // 6. Update icecat product imported
         $baseProduct->setIsImported(true);
         $em->persist($baseProduct);

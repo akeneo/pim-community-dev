@@ -20,16 +20,10 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
     const PREFIX = 'icecat';
 
     /**
-     * Get product type service
+     * Get product manager service
      * @var Service
      */
-    protected $typeService;
-
-    /**
-    * Get product service
-    * @var Service
-    */
-    protected $productService;
+    protected $productManager;
 
     /**
      * @var array
@@ -55,10 +49,9 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
      * @param array $prodFeat
      * @param string $localeCode
      */
-    public function __construct(EntityTypeManager $serviceType, EntityManager $serviceProduct, $prodData, $prodFeat, $localeCode)
+    public function __construct(\Pim\Bundle\CatalogBundle\Doctrine\ProductManager $productManager, $prodData, $prodFeat, $localeCode)
     {
-        $this->typeService = $serviceType;
-        $this->productService = $serviceProduct;
+        $this->productManager = $productManager;
         $this->prodData = $prodData;
         $this->prodFeat = $prodFeat;
         $this->localeCode = $localeCode;
@@ -77,50 +70,112 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
 
         // 1) if not exists, create a new type
         $typeCode = self::PREFIX.'-'.$prodData['vendorId'].'-'.$prodData['CategoryId'];
-        $return = $this->typeService->find($typeCode);
-        if (!$return) {
-            $this->typeService->create($typeCode);
+        $typeRepository = $this->productManager->getTypeRepository();
+        $type = $typeRepository->findOneByCode($typeCode);
+        if (!$type) {
+            $classType = $this->productManager->getTypeClass();
+            $type = new $classType();
+            $type->setCode($typeCode);
+            $type->setTitle($typeCode);
         }
 
-        // add all fields of prodData as general fields
+        // 2) add all fields of prodData as general fields
         $productFieldCodeToValues = array();
+
+        // 2a) create general group if not exists
         $generalGroupCode = 'General';
-        $productSourceId = null;
+        $group = $type->getGroup($generalGroupCode);
+        if (!$group) {
+            $classGroup = $this->productManager->getGroupClass();
+            $group = new $classGroup();
+            $group->setCode($generalGroupCode);
+            $group->setTitle($generalGroupCode);
+            $type->addGroup($group);
+        }
+
+        // 2b) add fields
         foreach ($prodData as $field => $value) {
+
             if ($field == 'id') {
                 $fieldCode = self::PREFIX.'_source_id';
                 $productSourceId = $value;
             } else {
                 $fieldCode = self::PREFIX.'-'.$prodData['vendorId'].'-'.$prodData['CategoryId'].'-'.strtolower($field);
             }
-            $this->typeService->addField($fieldCode, BaseFieldFactory::FIELD_STRING, $generalGroupCode, $field);
+
+            // get field or create TODO: if it's already in other group ?
+            $field = $group->getField($fieldCode);
+            if (!$field) {
+                $classField = $this->productManager->getFieldClass();
+                $field = new $classField();
+                $field->setCode($fieldCode);
+                $field->setTitle($fieldCode);
+                $field->setType(BaseFieldFactory::FIELD_STRING);
+                // TODO unique etc ?
+                $group->addField($field);
+            }
+
+            // prepare field code to value for next step
             $productFieldCodeToValues[$fieldCode]= $value;
+
         }
 
-        // create custom group for each features category
+        // 3) create custom group for each features category
         foreach ($prodFeat as $featId => $featData) {
             foreach ($featData as $featName => $fieldData) {
                 $groupCode = 'feat-'.$featId;//.'-'.strtolower(str_replace('&', '', str_replace(' ', '', $featName)));
+
                 foreach ($fieldData as $fieldId => $fieldData) {
                     $fieldName = $fieldData['name'];
                     $value = $fieldData['value'];
                     $fieldCode = self::PREFIX.'-'.$prodData['vendorId'].'-'.$featId.'-'.$fieldId;
-                    $this->typeService->addField($fieldCode, BaseFieldFactory::FIELD_STRING, $groupCode, $fieldName);
+
+                    // if not exists add group
+                    $group = $type->getGroup($groupCode);
+                    if (!$group) {
+                        $classGroup = $this->productManager->getGroupClass();
+                        $group = new $classGroup();
+                        $group->setCode($groupCode);
+                        $group->setTitle($groupCode);
+                        $type->addGroup($group);
+                    }
+
+                    // get field or create TODO: if it's already in other group ?
+                    $field = $group->getField($fieldCode);
+                    if (!$field) {
+                        $classField = $this->productManager->getFieldClass();
+                        $field = new $classField();
+                        $field->setCode($fieldCode);
+                        $field->setTitle($fieldCode);
+                        $field->setType(BaseFieldFactory::FIELD_STRING);
+                        // TODO unique etc ?
+                        $group->addField($field);
+                    }
+
                     $productFieldCodeToValues[$fieldCode]= $value;
                 }
             }
         }
 
-        // save type
-        $this->typeService->persist();
-        $this->typeService->flush();
+        // 4) save type
+        $persistanceManager = $this->productManager->getPersistenceManager();
+        $persistanceManager->persist($type);
+        $persistanceManager->flush();
 
-        // 2) if not exists create a product
-        $product = $this->productService->findBySourceId(self::PREFIX, $productSourceId);
+        // 5) if not exists create a product
+        $productSourceId = null;
+        $productRepository = $this->productManager->getEntityRepository();
+//        $product = $productRepository->findBySourceId(self::PREFIX, $productSourceId);
+
+        $sourceField = self::PREFIX.'_source_id';
+        $product = null; //$productRepository->findOneBy(array($sourceField => $productSourceId));
+
         if (!$product) {
-            $product = $this->typeService->newProductInstance();
+            $classProd = $this->productManager->getEntityClass();
+            $product = new $classProd();
+            $product->setType($type);
         }
-        $product->switchLocale($localeCode);
+ // TODO       $product->switchLocale($localeCode);
 
         // set product values
         foreach ($productFieldCodeToValues as $fieldCode => $value) {
@@ -128,7 +183,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
         }
 
         // save
-        $product->persist();
-        $product->flush();
+        $persistanceManager->persist($product);
+        $persistanceManager->flush();
     }
 }

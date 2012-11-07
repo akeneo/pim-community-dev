@@ -120,4 +120,20 @@ abstract class EntityGroup
         return $this->fields;
     }
 
+    /**
+     * Get group
+     *
+     * @param string $code
+     * @return EntityField
+     */
+    public function getField($code)
+    {
+        foreach ($this->fields as $field) {
+            if ($field->getCode() == $code) {
+                return $field;
+            }
+        }
+        return false;
+    }
+
 }

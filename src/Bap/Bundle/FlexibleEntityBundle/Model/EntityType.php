@@ -116,4 +116,19 @@ abstract class EntityType
         return $this->groups;
     }
 
+    /**
+     * Get group
+     *
+     * @param string $code
+     * @return EntityGroup
+     */
+    public function getGroup($code)
+    {
+        foreach ($this->groups as $group) {
+            if ($group->getCode() == $code) {
+                return $group;
+            }
+        }
+        return false;
+    }
 }

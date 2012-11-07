@@ -23,7 +23,6 @@ class DefaultController extends Controller
         $productManager = $this->get('pim.catalog.product_manager');
 
         //$dm = $this->get('doctrine.odm.mongodb')->getManager();
-        $dm = $productManager->getPersistenceManager();
 
         //$type = new ProductTypeMongo();
         $class = $productManager->getTypeClass();

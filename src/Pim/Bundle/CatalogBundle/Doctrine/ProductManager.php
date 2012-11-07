@@ -50,4 +50,5 @@ class ProductManager extends FlexibleEntityManager
     {
         return 'PimCatalogBundle:ProductField';
     }
+
 }
