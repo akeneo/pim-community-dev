@@ -2,6 +2,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityGroup as AbstractEntityGroup;
 
 /**
  * Product field group (general, media, seo, etc)
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="Akeneo_PimCatalog_Product_Group")
  * @ORM\Entity
  */
-class ProductGroup
+class ProductGroup extends AbstractEntityGroup
 {
     /**
      * @var integer $_id
@@ -22,14 +23,14 @@ class ProductGroup
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string $_code
      *
      * @ORM\Column(name="code", type="string")
      */
-    private $code;
+    protected $code;
 
     /**
      * @var Type $type
@@ -43,7 +44,7 @@ class ProductGroup
      * @ORM\ManyToMany(targetEntity="ProductField", cascade={"persist"})
      * @ORM\JoinTable(name="Akeneo_PimCatalog_Product_Group_Field")
      */
-    private $fields;
+    protected $fields;
 
     /**
      * Constructor
@@ -52,11 +53,11 @@ class ProductGroup
     {
         $this->fields = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -72,14 +73,14 @@ class ProductGroup
     public function setCode($code)
     {
         $this->code = $code;
-    
+
         return $this;
     }
 
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -95,50 +96,18 @@ class ProductGroup
     public function setType(\Pim\Bundle\CatalogBundle\Entity\ProductType $type = null)
     {
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return Pim\Bundle\CatalogBundle\Entity\ProductType 
+     * @return Pim\Bundle\CatalogBundle\Entity\ProductType
      */
     public function getType()
     {
         return $this->type;
     }
 
-    /**
-     * Add fields
-     *
-     * @param Pim\Bundle\CatalogBundle\Entity\ProductField $fields
-     * @return ProductGroup
-     */
-    public function addField(\Pim\Bundle\CatalogBundle\Entity\ProductField $fields)
-    {
-        $this->fields[] = $fields;
-    
-        return $this;
-    }
-
-    /**
-     * Remove fields
-     *
-     * @param Pim\Bundle\CatalogBundle\Entity\ProductField $fields
-     */
-    public function removeField(\Pim\Bundle\CatalogBundle\Entity\ProductField $fields)
-    {
-        $this->fields->removeElement($fields);
-    }
-
-    /**
-     * Get fields
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getFields()
-    {
-        return $this->fields;
-    }
 }

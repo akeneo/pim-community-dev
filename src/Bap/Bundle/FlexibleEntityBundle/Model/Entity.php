@@ -48,7 +48,7 @@ abstract class Entity
      * @param EntityType $type
      * @return Entity
      */
-    public function setType($type = null)
+    public function setType(EntityType $type = null)
     {
         $this->type = $type;
         return $this;

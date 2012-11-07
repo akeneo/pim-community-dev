@@ -54,37 +54,4 @@ class ProductType extends AbstractEntityType
         $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    /**
-     * Add groups
-     *
-     * @param Pim\Bundle\CatalogBundle\Entity\ProductGroup $groups
-     * @return ProductType
-     */
-    public function addGroup(\Pim\Bundle\CatalogBundle\Entity\ProductGroup $groups)
-    {
-        $this->groups[] = $groups;
-
-        return $this;
-    }
-
-    /**
-     * Remove groups
-     *
-     * @param Pim\Bundle\CatalogBundle\Entity\ProductGroup $groups
-     */
-    public function removeGroup(\Pim\Bundle\CatalogBundle\Entity\ProductGroup $groups)
-    {
-        $this->groups->removeElement($groups);
-    }
-
-    /**
-     * Get groups
-     *
-     * @return Doctrine\Common\Collections\Collection
-     */
-    public function getGroups()
-    {
-        return $this->groups;
-    }
-
 }

@@ -8,9 +8,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Model\ProductType;
 
+use Pim\Bundle\CatalogBundle\Document\ProductGroupMongo;
 use Pim\Bundle\CatalogBundle\Document\ProductTypeMongo;
 use Pim\Bundle\CatalogBundle\Document\ProductFieldMongo;
 use Pim\Bundle\CatalogBundle\Document\TestMongo;
+
+use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
 
 
 class DefaultController extends Controller
@@ -21,6 +24,35 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+
+        $dm = $this->get('doctrine.odm.mongodb')->getManager();
+
+        $type = new ProductTypeMongo();
+        $type->setCode('binomed-type');
+        $type->setTitle('Binomed');
+
+        $field = new ProductFieldMongo();
+        $field->setCode('binomed-att');
+        $field->setTitle('Attribute !');
+        $field->setType(BaseFieldFactory::FIELD_STRING);
+
+        $group = new ProductGroupMongo();
+        $group->setCode('binomed-group');
+        $group->setTitle('Grouped');
+
+        $group->addField($field);
+
+        $type->addGroup($group);
+
+        $dm->persist($type);
+        $dm->flush();
+
+        var_dump($field);
+        var_dump($type);
+
+
+        exit();
+
 /*
         $dm = $this->get('doctrine.odm.mongodb')->getManager();
         $rep = $dm->getRepository('PimCatalogBundle:ProductTypeMongo');

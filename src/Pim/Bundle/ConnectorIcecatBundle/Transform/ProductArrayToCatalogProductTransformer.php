@@ -30,17 +30,17 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
     * @var Service
     */
     protected $productService;
-    
+
     /**
      * @var array
      */
     protected $prodData;
-    
+
     /**
      * @var array
      */
     protected $prodFeat;
-    
+
     /**
      * @var string
      */
@@ -48,7 +48,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
 
     /**
      * Constructor
-     * 
+     *
      * @param EntityTypeManager $serviceType
      * @param EntityManager $serviceProduct
      * @param array $prodData
@@ -100,7 +100,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
         // create custom group for each features category
         foreach ($prodFeat as $featId => $featData) {
             foreach ($featData as $featName => $fieldData) {
-                $groupCode = $featId.'-'.strtolower(str_replace(' ', '', $featName));
+                $groupCode = 'feat-'.$featId;//.'-'.strtolower(str_replace('&', '', str_replace(' ', '', $featName)));
                 foreach ($fieldData as $fieldId => $fieldData) {
                     $fieldName = $fieldData['name'];
                     $value = $fieldData['value'];

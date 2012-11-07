@@ -2,14 +2,14 @@
 namespace Bap\Bundle\FlexibleEntityBundle\Model;
 
 /**
- * Abstract entity type, independent of storage
+ * Abstract entity group, independent of storage
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-abstract class EntityType
+abstract class EntityGroup
 {
 
     /**
@@ -26,6 +26,11 @@ abstract class EntityType
     * @var string $title
     */
     protected $title;
+
+    /**
+     * @var ArrayCollection $fields
+     */
+    protected $fields;
 
     /**
      * Get id
@@ -59,7 +64,6 @@ abstract class EntityType
         return $this;
     }
 
-
     /**
      * Set title
      *
@@ -83,37 +87,38 @@ abstract class EntityType
         return $this->title;
     }
 
-    /**
-     * Add group
-     *
-     * @param EntityGroup $groups
-     * @return EntityType
-     */
-    public function addGroup(EntityGroup $groups)
-    {
-        $this->groups[] = $groups;
 
-        return $this;
+    /**
+     * Add field
+     *
+     * @param EntityField $fields
+     * @return ProductGroup
+     */
+    public function addField(EntityField $field)
+    {
+    $this->fields[] = $field;
+
+    return $this;
     }
 
     /**
-     * Remove group
+     * Remove field
      *
-     * @param EntityGroup $group
+     * @param EntityField $field
      */
-    public function removeGroup(EntityGroup $groups)
+    public function removeField(EntityField $field)
     {
-        $this->groups->removeElement($groups);
+        $this->fields->removeElement($fields);
     }
 
     /**
-     * Get groups
+     * Get fields
      *
      * @return Doctrine\Common\Collections\Collection
      */
-    public function getGroups()
+    public function getFields()
     {
-        return $this->groups;
+        return $this->fields;
     }
 
 }
