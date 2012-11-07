@@ -2,6 +2,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Bap\Bundle\FlexibleEntityBundle\Model\Entity as AbstractEntity;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityValue as AbstractEntityValue;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -49,35 +50,17 @@ class ProductEntity extends AbstractEntity
     }
 
     /**
-     * Add values
+     * Add value
      *
-     * @param Pim\Bundle\CatalogBundle\Entity\ProductValue $values
-     * @return ProductEntity
+     * @param AbstractEntityValue $value
+     * @return AbstractEntity
      */
-    public function addValue(\Pim\Bundle\CatalogBundle\Entity\ProductValue $values)
+    public function addValue(AbstractEntityValue $value)
     {
-        $this->values[] = $values;
+        $this->values[] = $value;
+        $value->setEntity($this);
 
         return $this;
     }
 
-    /**
-     * Remove values
-     *
-     * @param Pim\Bundle\CatalogBundle\Entity\ProductValue $values
-     */
-    public function removeValue(\Pim\Bundle\CatalogBundle\Entity\ProductValue $values)
-    {
-        $this->values->removeElement($values);
-    }
-
-    /**
-     * Get values
-     *
-     * @return Doctrine\Common\Collections\Collection
-     */
-    public function getValues()
-    {
-        return $this->values;
-    }
 }

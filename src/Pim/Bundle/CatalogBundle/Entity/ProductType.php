@@ -2,6 +2,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Bap\Bundle\FlexibleEntityBundle\Model\EntityType as AbstractEntityType;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityGroup as AbstractEntityGroup;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -52,6 +53,19 @@ class ProductType extends AbstractEntityType
     public function __construct()
     {
         $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Custom add group method to ensure group is added in type without explicit call (due to oneToMany)
+     *
+     * @param  AbstractEntityGroup $group
+     * @return AbstractEntityType
+     */
+    public function addGroup(AbstractEntityGroup $group)
+    {
+        $this->groups[] = $group;
+        $group->setType($this);
+        return $this;
     }
 
 }

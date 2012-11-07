@@ -90,24 +90,13 @@ class ProductGroup extends AbstractEntityGroup
     /**
      * Set type
      *
-     * @param Pim\Bundle\CatalogBundle\Entity\ProductType $type
+     * @param ProductType $type
      * @return ProductGroup
      */
-    public function setType(\Pim\Bundle\CatalogBundle\Entity\ProductType $type = null)
+    public function setType(ProductType $type = null)
     {
         $this->type = $type;
 
         return $this;
     }
-
-    /**
-     * Get type
-     *
-     * @return Pim\Bundle\CatalogBundle\Entity\ProductType
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
 }

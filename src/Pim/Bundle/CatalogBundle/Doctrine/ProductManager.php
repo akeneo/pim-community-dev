@@ -51,4 +51,13 @@ class ProductManager extends FlexibleEntityManager
         return 'PimCatalogBundle:ProductField';
     }
 
+    /**
+     * Return shortname that can be used to get the repository or instance
+     * @return string
+     */
+    public function getValueShortname()
+    {
+        return 'PimCatalogBundle:ProductValue';
+    }
+
 }

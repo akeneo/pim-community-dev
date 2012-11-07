@@ -23,6 +23,11 @@ abstract class Entity
     protected $type;
 
     /**
+     * @var  Doctrine\Common\Collections\Collection
+     */
+    protected $values;
+
+    /**
      * Get id
      *
      * @return integer
@@ -52,6 +57,39 @@ abstract class Entity
     {
         $this->type = $type;
         return $this;
+    }
+
+    /**
+     * Add value
+     *
+     * @param EntityValue $value
+     * @return Entity
+     */
+    public function addValue(EntityValue $value)
+    {
+        $this->values[] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Remove value
+     *
+     * @param EntityValue $value
+     */
+    public function removeValue(EntityValue $value)
+    {
+        $this->values->removeElement($value);
+    }
+
+    /**
+     * Get values
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getValues()
+    {
+        return $this->values;
     }
 
 }

@@ -86,12 +86,12 @@ abstract class EntityType
     /**
      * Add group
      *
-     * @param EntityGroup $groups
+     * @param EntityGroup $group
      * @return EntityType
      */
-    public function addGroup(EntityGroup $groups)
+    public function addGroup(EntityGroup $group)
     {
-        $this->groups[] = $groups;
+        $this->groups[] = $group;
 
         return $this;
     }
