@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
-use Pim\Bundle\CatalogBundle\Form\Type\GroupType;
-
 use Pim\Bundle\CatalogBundle\Form\Type\ProductTypeType;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -14,8 +12,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
 use APY\DataGridBundle\Grid\Source\Document as GridDocument;
 use APY\DataGridBundle\Grid\Action\RowAction;
-
-use Pim\Bundle\CatalogBundle\Document\ProductTypeMongo;
 
 use \Exception;
 /**
@@ -33,7 +29,7 @@ class ProductTypeController extends Controller
     /**
      * @return ProductManager
      */
-    public function getProductManager()
+    protected function getProductManager()
     {
         return $this->get('pim.catalog.product_manager');
     }
@@ -41,7 +37,7 @@ class ProductTypeController extends Controller
     /**
      * @return ObjectManager
      */
-    public function getPersistenceManager()
+    protected function getPersistenceManager()
     {
         return $this->getProductManager()->getPersistenceManager();
     }
@@ -90,6 +86,38 @@ class ProductTypeController extends Controller
 
         // manage the grid redirection, exports response of the controller
         return $grid->getGridResponse('PimCatalogBundle:ProductType:index.html.twig');
+    }
+
+    /**
+     * @Route("/new")
+     * @Template()
+     */
+    public function newAction(Request $request)
+    {
+        // create new product type
+        $productManager = $this->getProductManager();
+        $entity = $productManager->getNewTypeInstance();
+
+        // create type, set list of existing type to prepare copy list
+        $type = new ProductTypeType();
+        $type->setCopyTypeOptions($this->_getCopyTypeOptions());
+
+        // prepare & render form
+        $form = $this->createForm($type, $entity);
+        return $this->render('PimCatalogBundle:ProductType:new.html.twig', array('form' => $form->createView()));
+    }
+
+    /**
+     * @return array
+     */
+    private function _getCopyTypeOptions()
+    {
+        $types = $this->getProductManager()->getTypeRepository()->findAll();
+        $typeIdToName = array();
+        foreach ($types as $type) {
+            $typeIdToName[$type->getId()]= $type->getCode();
+        }
+        return $typeIdToName;
     }
 
 }
