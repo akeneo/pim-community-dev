@@ -225,10 +225,8 @@ abstract class FlexibleEntityManager
      */
     public function cloneType($entityType)
     {
-        // create new entity type
+        // create new entity type and clone values
         $cloneType = $this->getNewTypeInstance();
-
-        // clone entity type values
         $cloneType->setCode($entityType->getCode());
         $cloneType->setTitle($entityType->getTitle());
 
