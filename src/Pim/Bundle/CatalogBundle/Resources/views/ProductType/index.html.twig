@@ -1,0 +1,15 @@
+{% extends 'PimUIBundle::layout.html.twig' %}
+
+{% block title %}Akeneo - product type list{% endblock %}
+
+{% block content_menu_more %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    
+    <h1>Catalog product type list</h1>
+    
+    {{ grid(grid) }}
+
+{% endblock %}
