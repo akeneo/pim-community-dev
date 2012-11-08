@@ -51,7 +51,7 @@ class AttributeLinkType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         return array(
-            'data_class' => 'Strixos\CatalogBundle\Entity\Attribute',
+            'data_class' => 'Bap\Bundle\FlexibleEntityBundle\Model\EntityField',
         );
     }
 

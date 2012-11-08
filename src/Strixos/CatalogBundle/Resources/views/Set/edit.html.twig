@@ -47,7 +47,10 @@
                     <!-- one tab by group -->
                     <ul>
                         {% for group in form.groups %}
-                        <li><span class="ui-icon ui-icon-close">Remove Tab</span><a href="#tabs-{{ group.id.vars.value }}">{{ group.code.vars.value }}</a></li>
+                        <li>
+                            <span class="ui-icon ui-icon-close">Remove Tab</span>
+                            <a href="#tabs-{{ group.id.vars.value }}">{{ group.code.vars.value }}</a>
+                        </li>
                         {% endfor %}
 
                         <a id="add_tab" href="#" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" />
@@ -58,7 +61,7 @@
                     {% for group in form.groups %}
                     <div id="tabs-{{ group.id.vars.value }}">
                         <ul class="connectedSortable">
-                            {% for attribute in group.attributes %}
+                            {% for attribute in group.fields %}
                                 <li class="ui-state-default ui-corner-all" id="{{ attribute.id.vars.value }}">{{ attribute.code.vars.value }}</li>
                             {% endfor %}
                         </ul>

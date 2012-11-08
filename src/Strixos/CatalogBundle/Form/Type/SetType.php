@@ -60,7 +60,7 @@ class SetType extends AbstractType
         );
         // add attributes
         foreach ($this->getAvailableAttributeOptions() as $attribute) {
-            $builder->get('others')->add('attribute_'.$attribute->getId(), new AttributeLinkType($attribute));
+            $builder->get('others')->add('attribute_'.$attribute, new AttributeLinkType($attribute));
         }
 
     }

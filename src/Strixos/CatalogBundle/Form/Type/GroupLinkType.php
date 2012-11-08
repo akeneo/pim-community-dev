@@ -54,7 +54,7 @@ class GroupLinkType extends AbstractType
         }
         // add group attributes
         $builder->add(
-            'attributes', 'collection',
+            'fields', 'collection',
             array(
                 'type'         => new AttributeLinkType(),
                 'by_reference' => false,
@@ -87,7 +87,7 @@ class GroupLinkType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         return array(
-            'data_class' => 'Strixos\CatalogBundle\Entity\Group',
+            'data_class' => 'Bap\Bundle\FlexibleEntityBundle\Model\EntityGroup',
         );
     }
 
