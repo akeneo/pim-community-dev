@@ -41,6 +41,18 @@ abstract class EntityGroup
     {
         return $this->id;
     }
+    
+    /**
+     * Set id
+     * 
+     * @param integer $id
+     * @return EntityGroup
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
 
     /**
      * Get code

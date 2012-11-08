@@ -14,7 +14,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 class ProductTypeType extends AbstractType
 {
     private $_copyTypeOptions = array();
-    private $_availableAttributeOptions = array();
+    private $_availableFields = array();
 
     /**
      * (non-PHPdoc)
@@ -39,12 +39,12 @@ class ProductTypeType extends AbstractType
                 'property_path' => false
             )
         );
-/*
+
         // set groups
         $builder->add(
             'groups', 'collection',
             array(
-                'type'         => new GroupLinkType(),
+                'type'         => new ProductGroupType(),
                 'by_reference' => false,
             )
         );
@@ -53,15 +53,14 @@ class ProductTypeType extends AbstractType
         $builder->add(
             'others', 'collection',
             array(
-                'type'          => new AttributeLinkType(),
+                'type'          => new ProductGroupFieldType(),
                 'property_path' => false
             )
         );
         // add attributes
-        foreach ($this->getAvailableAttributeOptions() as $attribute) {
-            $builder->get('others')->add('attribute_'.$attribute, new AttributeLinkType($attribute));
+        foreach ($this->getAvailableFields() as $field) {
+            $builder->get('others')->add('field_'.$field->getId(), new ProductGroupFieldType($field));
         }
-*/
     }
 
     /**
@@ -92,21 +91,22 @@ class ProductTypeType extends AbstractType
     }
 
     /**
-    * Return list of attributes
-    * @return Array
-    *
-    public function setAvailableAttributeOptions($attributes)
+     * Return list of fields
+     * @return Array
+     *
+     */
+    public function setAvailableFields($fields)
     {
-        $this->_availableAttributeOptions = $attributes;
-    }*/
+        $this->_availableFields = $fields;
+    }
 
     /**
      * Return list of attributes
      * @return Array
-     *
-    public function getAvailableAttributeOptions()
+     */
+    public function getAvailableFields()
     {
-        return $this->_availableAttributeOptions;
-    }*/
+        return $this->_availableFields;
+    }
 
 }
