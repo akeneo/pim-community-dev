@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
+use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
+
 use Pim\Bundle\CatalogBundle\Form\Type\ProductTypeType;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -69,7 +71,7 @@ class ProductTypeController extends Controller
         $productManager = $this->getProductManager();
 
         // creates simple grid based on entity or document (ORM or ODM)
-        $source = $this->getGridSource($productManager->getFieldShortname());
+        $source = $this->getGridSource($productManager->getTypeShortname());
 
         $grid = $this->get('grid');
         $grid->setSource($source);
@@ -106,6 +108,50 @@ class ProductTypeController extends Controller
         $form = $this->createForm($type, $entity);
         return $this->render('PimCatalogBundle:ProductType:new.html.twig', array('form' => $form->createView()));
     }
+    
+    /**
+     * 
+     * @param Request $request
+     * 
+     * @Route("/create")
+     * @Template()
+     */
+    public function createAction(Request $request)
+    {
+        // create new product type
+        $productManager = $this->getProductManager();
+        $entity = $productManager->getNewTypeInstance();
+        
+        // create type, set list of existing type to prepare copy list
+        $type = new ProductTypeType();
+        $type->setCopyTypeOptions($this->_getCopyTypeOptions());
+        
+        // prepare & render form
+        $form = $this->createForm($type, $entity);
+        
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+            $postData = $request->get('akeneo_catalog_producttype');
+            
+            // TODO : Must be in validation form
+            if ($form->isValid() && isset($postData['copyfromset'])) {
+                // persist
+                $productType = $this->getProductManager()->getTypeRepository()->find($postData['copyfromset']);
+                $cloneType = $this->getProductManager()->cloneType($productType);
+                $cloneType->setCode($postData['code']);
+                $this->getPersistenceManager()->persist($cloneType);
+                $this->getPersistenceManager()->flush();
+                
+                $this->get('session')->setFlash('notice', 'product type has been saved');
+                
+                return $this->redirect(
+                        $this->generateUrl('pim_catalog_producttype_create', array('id' => $cloneType->getId()))
+                );
+            }
+        }
+        
+        return $this->render('PimCatalogBundle:ProductType:new.html.twig', array('form' => $form->createView()));
+    }
 
     /**
      * @return array
@@ -119,5 +165,4 @@ class ProductTypeController extends Controller
         }
         return $typeIdToName;
     }
-
 }
