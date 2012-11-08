@@ -43,39 +43,41 @@ class ProductType extends AbstractType
         $builder->add('id', 'hidden');
 
         // add product field
-        foreach ($entity->getType()->getGroups() as $group) {
-            foreach ($group->getFields() as $field) {
+        if ($entity->getType()) {
+            foreach ($entity->getType()->getGroups() as $group) {
+                foreach ($group->getFields() as $field) {
 
-                // TODO required, scope etc
+                    // TODO required, scope etc
 
-                // TODO filter values not efficient
-                $values = $entity->getValues()->filter(function($value) use ($field) {
-                    return $value->getField() == $field;
-                });
-                $value = $values->first();
+                    // TODO filter values not efficient
+                    $values = $entity->getValues()->filter(function($value) use ($field) {
+                        return $value->getField() == $field;
+                    });
+                    $value = $values->first();
 
-                // prepare common fields options
-                $customOptions = array(
-                    'label'         => $field->getTitle(),
-                    'data'          => ($value) ? $value->getData() : '',
-                    'by_reference'  => false,
-                    'property_path' => false,
-                    'required'      => ($field->getValueRequired() == 1)
-                );
+                    // prepare common fields options
+                    $customOptions = array(
+                        'label'         => $field->getTitle(),
+                        'data'          => ($value) ? $value->getData() : '',
+                        'by_reference'  => false,
+                        'property_path' => false,
+                        'required'      => ($field->getValueRequired() == 1)
+                    );
 
-                // add text fields options
-                if ($field->getType() == BaseFieldFactory::FIELD_STRING) {
-                    $fieldType = 'text';
+                    // add text fields options
+                    if ($field->getType() == BaseFieldFactory::FIELD_STRING) {
+                        $fieldType = 'text';
 
-                // add select field options
-                } else if ($field->getType() == BaseFieldFactory::FIELD_SELECT) {
-                    $fieldType = 'choice';
-                    $choices = $field->getOptions();
-                    $customOptions['choices']= $choices;
+                    // add select field options
+                    } else if ($field->getType() == BaseFieldFactory::FIELD_SELECT) {
+                        $fieldType = 'choice';
+                        $choices = $field->getOptions();
+                        $customOptions['choices']= $choices;
+                    }
+
+                    // add field
+                    $builder->add($field->getCode(), $fieldType, $customOptions);
                 }
-
-                // add field
-                $builder->add($field->getCode(), $fieldType, $customOptions);
             }
         }
 
