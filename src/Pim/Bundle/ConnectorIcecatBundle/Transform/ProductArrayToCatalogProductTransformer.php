@@ -73,32 +73,31 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
         $typeRepository = $this->productManager->getTypeRepository();
         $type = $typeRepository->findOneByCode($typeCode);
         if (!$type) {
-            $classType = $this->productManager->getTypeClass();
-            $type = new $classType();
+            $type = $this->productManager->getNewTypeInstance();
             $type->setCode($typeCode);
             $type->setTitle($typeCode);
         }
 
         // 2) add all fields of prodData as general fields
         $productFieldCodeToValues = array();
+        $productValues = array();
 
         // 2a) create general group if not exists
         $generalGroupCode = 'General';
         $group = $type->getGroup($generalGroupCode);
         if (!$group) {
-            $classGroup = $this->productManager->getGroupClass();
-            $group = new $classGroup();
+            $group = $this->productManager->getNewGroupInstance();
             $group->setCode($generalGroupCode);
             $group->setTitle($generalGroupCode);
             $type->addGroup($group);
         }
 
         // 2b) add fields
-        foreach ($prodData as $field => $value) {
+        foreach ($prodData as $field => $valueData) {
 
             if ($field == 'id') {
                 $fieldCode = self::PREFIX.'_source_id';
-                $productSourceId = $value;
+                $productSourceId = $valueData;
             } else {
                 $fieldCode = self::PREFIX.'-'.$prodData['vendorId'].'-'.$prodData['CategoryId'].'-'.strtolower($field);
             }
@@ -106,8 +105,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
             // get field or create TODO: if it's already in other group ?
             $field = $group->getField($fieldCode);
             if (!$field) {
-                $classField = $this->productManager->getFieldClass();
-                $field = new $classField();
+                $field = $this->productManager->getNewFieldInstance();
                 $field->setCode($fieldCode);
                 $field->setTitle($fieldCode);
                 $field->setType(BaseFieldFactory::FIELD_STRING);
@@ -116,7 +114,13 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
             }
 
             // prepare field code to value for next step
-            $productFieldCodeToValues[$fieldCode]= $value;
+            $productFieldCodeToValues[$fieldCode]= $valueData;
+
+            // TODO : deal with existing values
+            $value = $this->productManager->getNewValueInstance();
+            $value->setField($field);
+            $value->setData($valueData);
+            $productValues[]= $value;
 
         }
 
@@ -127,7 +131,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
 
                 foreach ($fieldData as $fieldId => $fieldData) {
                     $fieldName = $fieldData['name'];
-                    $value = $fieldData['value'];
+                    $valueData = $fieldData['value'];
                     $fieldCode = self::PREFIX.'-'.$prodData['vendorId'].'-'.$featId.'-'.$fieldId;
 
                     // if not exists add group
@@ -136,7 +140,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
                         $classGroup = $this->productManager->getGroupClass();
                         $group = new $classGroup();
                         $group->setCode($groupCode);
-                        $group->setTitle($groupCode);
+                        $group->setTitle($featName);
                         $type->addGroup($group);
                     }
 
@@ -146,13 +150,19 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
                         $classField = $this->productManager->getFieldClass();
                         $field = new $classField();
                         $field->setCode($fieldCode);
-                        $field->setTitle($fieldCode);
+                        $field->setTitle($fieldName);
                         $field->setType(BaseFieldFactory::FIELD_STRING);
                         // TODO unique etc ?
                         $group->addField($field);
                     }
 
-                    $productFieldCodeToValues[$fieldCode]= $value;
+                    $productFieldCodeToValues[$fieldCode]= $valueData;
+
+                    // TODO : deal with existing values
+                    $value = $this->productManager->getNewValueInstance();
+                    $value->setField($field);
+                    $value->setData($valueData);
+                    $productValues[]= $value;
                 }
             }
         }
@@ -178,8 +188,8 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
  // TODO       $product->switchLocale($localeCode);
 
         // set product values
-        foreach ($productFieldCodeToValues as $fieldCode => $value) {
-            $product->setValue($fieldCode, $value);
+        foreach ($productValues as $value) {
+            $product->addValue($value);
         }
 
         // save

@@ -23,11 +23,6 @@ abstract class Entity
     protected $type;
 
     /**
-     * @var  Doctrine\Common\Collections\Collection
-     */
-    protected $values;
-
-    /**
      * Get id
      *
      * @return integer

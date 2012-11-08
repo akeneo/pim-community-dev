@@ -65,7 +65,7 @@ class ProductController extends AbstractProductController
     public function editAction($id)
     {
         $manager = $this->getObjectManagerService();
-        $entity = $manager->getRepository($this->getObjectShortName())->find($id);
+        $entity = $this->get('pim.catalog.product_manager')->getEntityRepository()->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find product.');

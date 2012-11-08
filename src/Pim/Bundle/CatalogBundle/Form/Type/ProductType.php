@@ -48,10 +48,16 @@ class ProductType extends AbstractType
 
                 // TODO required, scope etc
 
+                // TODO filter values not efficient
+                $values = $entity->getValues()->filter(function($value) use ($field) {
+                    return $value->getField() == $field;
+                });
+                $value = $values->first();
+
                 // prepare common fields options
                 $customOptions = array(
                     'label'         => $field->getTitle(),
-                    'data'          => $entity->getValue($field->getCode()),
+                    'data'          => ($value) ? $value->getData() : '',
                     'by_reference'  => false,
                     'property_path' => false,
                     'required'      => ($field->getValueRequired() == 1)

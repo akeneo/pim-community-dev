@@ -35,29 +35,8 @@ class ProductEntity extends AbstractEntity
 
     /**
      * @MongoDB\EmbedMany(targetDocument="ProductValue")
-     * @var ArrayCollection
      */
     protected $values = array();
-
-    /**
-    * TODO: problem : how to deal with typing ? define custom type to enforce this check ?
-    * TODO: no use values but directly set variable ... problem with load
-    *
-    * @MongoDB\Raw
-    * @var ArrayCollection
-    */
-    protected $values_en_US = array();
-
-    /**
-    * TODO: problem : how to deal with typing ? define custom type to enforce this check ?
-    * TODO: no use values but directly set variable ... problem with load
-    *
-    * @MongoDB\Raw
-    * @var ArrayCollection
-    */
-    protected $values_fr_FR = array();
-
-    // TODO deal with dynamic locale add, when testing with sub array as values.en_US[field] there is problem with doctrine query builder on field
 
     /**
     * Used locale
@@ -76,7 +55,7 @@ class ProductEntity extends AbstractEntity
 
         $this->locale = 'en_US';
 
-        $this->values = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->values = new ArrayCollection();
     }
 
     /**
