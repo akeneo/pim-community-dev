@@ -32,7 +32,7 @@ class ProductGroup extends AbstractEntityGroup
     protected $title;
 
     /**
-     * @MongoDB\ReferenceMany(targetDocument="ProductField", cascade={"persist"})
+     * @MongoDB\ReferenceMany(targetDocument="ProductField")
      * @var ArrayCollection
      */
     protected $fields = array();

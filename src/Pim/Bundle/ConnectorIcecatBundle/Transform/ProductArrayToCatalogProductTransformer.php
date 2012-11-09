@@ -64,6 +64,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
     public function transform()
     {
         // TODO : directly use $this->var instead of copy var
+        $persistanceManager = $this->productManager->getPersistenceManager();
         $prodData = $this->prodData;
         $prodFeat = $this->prodFeat;
         $localeCode = $this->localeCode;
@@ -109,6 +110,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
                 $field->setCode($fieldCode);
                 $field->setTitle($fieldCode);
                 $field->setType(BaseFieldFactory::FIELD_STRING);
+                $persistanceManager->persist($field);
                 // TODO unique etc ?
                 $group->addField($field);
             }
@@ -152,6 +154,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
                         $field->setCode($fieldCode);
                         $field->setTitle($fieldName);
                         $field->setType(BaseFieldFactory::FIELD_STRING);
+                        $persistanceManager->persist($field);
                         // TODO unique etc ?
                         $group->addField($field);
                     }
@@ -168,7 +171,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
         }
 
         // 4) save type
-        $persistanceManager = $this->productManager->getPersistenceManager();
+
         $persistanceManager->persist($type);
         $persistanceManager->flush();
 

@@ -102,6 +102,7 @@ abstract class AbtractProductTest extends KernelAwareTest
         $field->setUniqueValue(true);
         $field->setValueRequired(true);
         $field->setSearchable(false);
+        $this->productManager->getPersistenceManager()->persist($field);
         $groupInfo->addField($field);
         $this->assertEquals($groupInfo->getFields()->count(), 1);
 
@@ -123,6 +124,7 @@ abstract class AbtractProductTest extends KernelAwareTest
         $field->setUniqueValue(false);
         $field->setValueRequired(true);
         $field->setSearchable(true);
+        $this->productManager->getPersistenceManager()->persist($field);
         $groupInfo->addField($field);
         $this->assertEquals($groupInfo->getFields()->count(), 2);
 
@@ -135,6 +137,7 @@ abstract class AbtractProductTest extends KernelAwareTest
         $field->setUniqueValue(false);
         $field->setValueRequired(false);
         $field->setSearchable(false);
+        $this->productManager->getPersistenceManager()->persist($field);
         $groupTechnic->addField($field);
         $this->assertEquals($groupTechnic->getFields()->count(), 1);
 
