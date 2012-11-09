@@ -37,9 +37,6 @@ class AppKernel extends Kernel
             new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
             new Pim\Bundle\DataFlowBundle\PimDataFlowBundle(),
 
-            new Strixos\CatalogBundle\StrixosCatalogBundle(),
-
-
             // community bundles
             new APY\DataGridBundle\APYDataGridBundle(),
             new FOS\UserBundle\FOSUserBundle(),

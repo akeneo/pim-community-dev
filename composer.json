@@ -1,6 +1,13 @@
 {
-    "name": "symfony/framework-standard-edition",
-    "description": "The \"Symfony Standard Edition\" distribution",
+    "name": "akeneo/pim",
+    "description": "Akeneo PIM, the future of catalog management is open !",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Ajeneo",
+            "homepage": "http://akeneo.com"
+        }
+    ],
     "autoload": {
         "psr-0": {
             "": "src/"

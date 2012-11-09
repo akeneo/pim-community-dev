@@ -20,7 +20,7 @@ bap_flexible_entity:
 pim_catalog:
     resource: "@PimCatalogBundle/Controller/"
     type:     annotation
-    prefix:   /newcat/
+    prefix:   /catalog/
 
 pim_user:
     resource: "@PimUserBundle/Controller/"
@@ -45,8 +45,3 @@ fos_user_resetting:
 fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile
-
-StrixosCatalogBundle:
-    resource: "@StrixosCatalogBundle/Controller/"
-    type:     annotation
-    prefix:   /catalog/
