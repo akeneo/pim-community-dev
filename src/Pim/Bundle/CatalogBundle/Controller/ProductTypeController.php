@@ -98,19 +98,9 @@ class ProductTypeController extends Controller
      * @Route("/new")
      * @Template()
      */
-    public function newAction(Request $request)
+    public function newAction()
     {
-        // create new product type
-        $productManager = $this->getProductManager();
-        $entity = $productManager->getNewTypeInstance();
-
-        // create type, set list of existing type to prepare copy list
-        $type = new ProductTypeType();
-        $type->setCopyTypeOptions($this->_getCopyTypeOptions());
-
-        // prepare & render form
-        $form = $this->createForm($type, $entity);
-        return $this->render('PimCatalogBundle:ProductType:new.html.twig', array('form' => $form->createView()));
+        return $this->forward('PimCatalogBundle:ProductType:create');
     }
     
     /**
@@ -120,7 +110,7 @@ class ProductTypeController extends Controller
      * @Route("/create")
      * @Template()
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request = null)
     {
         // create new product type
         $productManager = $this->getProductManager();
@@ -133,24 +123,30 @@ class ProductTypeController extends Controller
         // prepare & render form
         $form = $this->createForm($type, $entity);
         
-        if ($request->isMethod('POST')) {
+        if ($request && $request->isMethod('POST')) {
             $form->bind($request);
             $postData = $request->get('akeneo_catalog_producttype');
             
             // TODO : Must be in validation form
             if ($form->isValid() && isset($postData['copyfromset'])) {
+                
+                $copy = $postData['copyfromset'];
+                
+                if ($copy !== '') { // create by copy
+                    $productType = $this->getProductManager()->getTypeRepository()->find($postData['copyfromset']);
+                    $entity = $this->getProductManager()->cloneType($productType);
+                    $entity->setCode($postData['code']);
+                }
+                
                 // persist
-                $productType = $this->getProductManager()->getTypeRepository()->find($postData['copyfromset']);
-                $cloneType = $this->getProductManager()->cloneType($productType);
-                $cloneType->setCode($postData['code']);
-                $this->getPersistenceManager()->persist($cloneType);
+                $this->getPersistenceManager()->persist($entity);
                 $this->getPersistenceManager()->flush();
                 
                 $this->get('session')->setFlash('notice', 'product type has been saved');
                 
                 // TODO : redirect to edit
                 return $this->redirect(
-                        $this->generateUrl('pim_catalog_producttype_create', array('id' => $cloneType->getId()))
+                        $this->generateUrl('pim_catalog_producttype_edit', array('id' => $entity->getId()))
                 );
             }
         }
@@ -181,6 +177,7 @@ class ProductTypeController extends Controller
     }
     
     /**
+     * Get fields 
      * @return ArrayCollection
      * TODO : must be move in custom repository storage agnostic
      */
@@ -204,6 +201,10 @@ class ProductTypeController extends Controller
         if ($request->isMethod('POST')) {
             // get product type
             $postData = $request->get('akeneo_catalog_producttype');
+//             var_dump($postData);
+            
+//             exit;
+            
             $id = isset($postData['id']) ? $postData['id'] : false;
             $entity = $this->getProductManager()->getTypeRepository()->find($id);
             if (!$entity) {
@@ -227,9 +228,7 @@ class ProductTypeController extends Controller
             
         } else {
             $this->get('session')->setFlash('notice', 'Incorrect update product type call');
-            return $this->redirect(
-                    $this->generateUrl('pim_catalog_producttype_index')
-            );
+            return $this->redirect($this->generateUrl('pim_catalog_producttype_index'));
         }
     }
     

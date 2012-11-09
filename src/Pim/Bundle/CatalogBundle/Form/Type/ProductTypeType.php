@@ -32,10 +32,11 @@ class ProductTypeType extends AbstractType
             )
         );
 
+        // create by copy
         $builder->add(
             'copyfromset', 'choice', array(
                 'choices'       => $this->getCopyTypeOptions(),
-                'required'      => true,
+                'required'      => false,
                 'property_path' => false
             )
         );
@@ -45,7 +46,7 @@ class ProductTypeType extends AbstractType
             'groups', 'collection',
             array(
                 'type'         => new ProductGroupType(),
-                'by_reference' => false,
+//                 'by_reference' => false
             )
         );
 
