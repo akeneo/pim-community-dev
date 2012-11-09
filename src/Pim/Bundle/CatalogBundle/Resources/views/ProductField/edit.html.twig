@@ -59,6 +59,7 @@
 
 {% block afterfooter %}
     {{parent()}}
+    
     <script type="text/javascript">
     // Get the div that holds the collection of options
     var collectionHolder = $('ul.options');
@@ -114,4 +115,6 @@
             $optFormLi.remove();
         });
     }
+    </script>
+    
 {% endblock %}
