@@ -40,7 +40,7 @@
         <div class="form-panel ui-corner-all">
                 <h2>Options</h2>
                 <div>
-                    <ul class="options" data-prototype="{{ form_widget(form.options.vars.prototype)|e }}" >
+                    <ul id="sortable-options" class="options" data-prototype="{{ form_widget(form.options.vars.prototype)|e }}" >
                         {% for option in form.options %}
                             <li>{{ form_row(option.value) }}</li>
                         {% endfor %}
@@ -66,7 +66,7 @@
     
     // setup an "add an option" link
     var $addOptionLink = $('<a href="#" class="add_option_link">Add an option</a>');
-    var $newLinkLi = $('<li></li>').append($addOptionLink);
+    var $newLinkLi = $('<li class="not-sortable"></li>').append($addOptionLink);
     
     jQuery(document).ready(function() {
         // add a delete link to all of the existing option form li elements
@@ -103,10 +103,12 @@
     }
     
     function addOptionFormDeleteLink($optFormLi) {
-        var $removeFormA = $('<a class="action-delete-inline" href="#">Delete ^</a>');
 
+        var $moveFormA = $('<span class="action-drag-inline">Sort</span>');
+        $optFormLi.append($moveFormA);
+
+        var $removeFormA = $('<a class="action-delete-inline" href="#">Delete</a>');
         $optFormLi.append($removeFormA);
-    
         $removeFormA.on('click', function(e) {
             // prevent the link from creating a "#" on the URL
             e.preventDefault();
@@ -115,6 +117,11 @@
             $optFormLi.remove();
         });
     }
-    </script>
     
+    // make options sortable
+    $("#sortable-options").sortable({
+        cancel: ":input, button, a, .not-sortable"
+    });
+    $( "#sortable" ).disableSelection();
+</script>
 {% endblock %}

@@ -138,8 +138,9 @@ ul#menu
 .ui-widget label {float:left; width:200px;}
 .ui-widget input, .ui-widget select, .ui-widget text-area {margin-bottom: 5px;}
 
-.options li {width: 500px;overflow:hidden;}
-.options a.action-delete-inline {float:right; background-image:url(icons-fugue/cross.png); background-repeat: no-repeat; padding-left:20px;}
+.options li {width: 600px;overflow:hidden;}
+.options a.action-delete-inline {float:right; background-image:url(icons-fugue/cross.png); background-repeat: no-repeat; padding-left:20px; margin-top:2px;}
+.options span.action-drag-inline {float:right; background-image:url(icons-fugue/hand.png); background-repeat: no-repeat; padding-left:20px; margin-left:15px;  margin-top:2px;}
 .options a.add_option_link { background-image:url(icons-fugue/plus.png); background-repeat: no-repeat; padding-left:20px;}
 .options li div.ui-widget {float:left; margin-right: 10px;}
 
