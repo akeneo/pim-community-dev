@@ -3,6 +3,8 @@ namespace Pim\Bundle\CatalogBundle\Tests\Doctrine;
 
 use \PHPUnit_Framework_TestCase;
 
+use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
+
 /**
  * Provide abstract test for product model (can be used for different implementation)
  *

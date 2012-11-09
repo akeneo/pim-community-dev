@@ -45,7 +45,7 @@ abstract class AbtractProductTest extends KernelAwareTest
         $this->codeFieldSize = 'size_'.microtime();
         $this->productSku    = 'my-sku-'.microtime();
 
-        // TODO : take a look on KernelAwareTest to avoid to drop data at any setUp + rename test method as testMethod
+        // TODO : take a look on KernelAwareTest to avoid to drop data at any setUp + rename test method as testMethod ?
     }
 
     /**
@@ -62,59 +62,6 @@ abstract class AbtractProductTest extends KernelAwareTest
         $this->createProduct();
 
         $this->cloneType();
-/*
-//        $persistenceManager->clear();
-
-        // find type / check type
-        $type2 = $this->productManager->getTypeRepository()->findOneByCode($newTypeCode);
-        $this->assertEquals($type->getCode(), $newTypeCode);
-        $this->assertEquals($type->getId(), $type2->getId());
-        $this->assertEquals($type->getTitle(), $type2->getTitle());
-//        $this->assertEquals(count($type2->getGroups()), 1);
-
-        // check group
-        $groups = $this->productManager->getGroupRepository()->findAll();
-        $this->assertTrue($groups != null);
-        $this->assertEquals($group->getCode(), self::TYPE_GROUP_INFO);
-        $this->assertTrue($group->getId() != null);
-        $this->assertEquals($group->getTitle(), 'Group');
-        $this->assertEquals(count($group->getFields()), 1);
-    //    $group->removeField($field);
-     //   $this->assertEquals(count($group->getFields()), 0);
-
-        // remove group
-        $type->removeGroup($group);
-//        $this->assertEquals(count($type->getGroups()), 0);
-
-        // find field
-        $field2 = $this->productManager->getFieldRepository()->findOneByCode($newFieldCode);
-        $this->assertEquals($field2->getCode(), $newFieldCode);
-        $this->assertEquals($field2->getTitle(), 'Field');
-        $this->assertEquals($field2->getId(), $field->getId());
-        $this->assertEquals($field2->getType(), $field->getType());
-        $this->assertEquals($field2->getUniqueValue(), $field->getUniqueValue());
-        $this->assertEquals($field2->getValueRequired(), $field->getValueRequired());
-        $this->assertEquals($field2->getSearchable(), $field->getSearchable());
-//        $this->assertEquals($field2->getScope(), $field->getScope());
-
-        // create product
-        $class = $this->productManager->getEntityClass();
-        $product = new $class;
-        $product->setType($type);
-
-        // create value
-        $class = $this->productManager->getValueClass();
-        $value = new $class;
-        $value->setField($field);
-        $value->setData('My value data');
-        $product->addValue($value);
-
-
-        // persist product
-
-        $persistenceManager->persist($product);
-        $persistenceManager->flush();
-*/
     }
 
     /**
@@ -188,9 +135,17 @@ abstract class AbtractProductTest extends KernelAwareTest
         $field->setUniqueValue(false);
         $field->setValueRequired(false);
         $field->setSearchable(false);
-        // TODO : test options !
         $groupTechnic->addField($field);
         $this->assertEquals($groupTechnic->getFields()->count(), 1);
+
+        // add options
+        $values = array('S', 'M', 'L', 'XL');
+        foreach ($values as $value) {
+            $option = $this->productManager->getNewFieldOptionInstance();
+            $option->setValue('XXL');
+            $field->addOption($option);
+        }
+        $this->assertEquals($field->getOptions()->count(), count($values));
 
         // persist
         $this->productManager->getPersistenceManager()->persist($type);

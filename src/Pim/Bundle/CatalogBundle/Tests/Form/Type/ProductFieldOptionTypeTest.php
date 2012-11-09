@@ -6,7 +6,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
 use Pim\Bundle\CatalogBundle\Tests\KernelAwareTest;
-use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
 
 /**
  * Test related class
@@ -15,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductFieldTypeTest extends KernelAwareTest
+class ProductFieldOptionTypeTest extends KernelAwareTest
 {
 
     /**
@@ -25,18 +24,10 @@ class ProductFieldTypeTest extends KernelAwareTest
      */
     public function testBuildForm()
     {
-        // text field
         $productManager = $this->container->get('pim.catalog.product_manager');
-        $classFullName = $productManager->getFieldClass();
-        $entity = $productManager->getNewFieldInstance();
-        $this->container->get('form.factory')->create(new ProductFieldType($classFullName), $entity);
-
-        // select field
-        $productManager = $this->container->get('pim.catalog.product_manager');
-        $classFullName = $productManager->getFieldClass();
-        $entity = $productManager->getNewFieldInstance();
-        $entity->setType(BaseFieldFactory::FIELD_SELECT);
-        $this->container->get('form.factory')->create(new ProductFieldType($classFullName), $entity);
+        $classFullName = $productManager->getFieldOptionClass();
+        $entity = $productManager->getNewFieldOptionInstance();
+        $this->container->get('form.factory')->create(new ProductFieldOptionType($classFullName), $entity);
     }
 
 }

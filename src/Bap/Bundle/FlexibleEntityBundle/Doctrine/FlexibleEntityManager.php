@@ -75,6 +75,12 @@ abstract class FlexibleEntityManager
      * Return shortname that can be used to get the repository or instance
      * @return string
      */
+    public abstract function getFieldOptionShortname();
+
+    /**
+     * Return shortname that can be used to get the repository or instance
+     * @return string
+     */
     public abstract function getValueShortname();
 
     /**
@@ -111,6 +117,15 @@ abstract class FlexibleEntityManager
     public function getFieldClass()
     {
         return $this->manager->getClassMetadata($this->getFieldShortname())->getName();
+    }
+
+    /**
+     * Return implementation class that can be use to instanciate
+     * @return string
+     */
+    public function getFieldOptionClass()
+    {
+        return $this->manager->getClassMetadata($this->getFieldOptionShortname())->getName();
     }
 
     /**
@@ -162,6 +177,15 @@ abstract class FlexibleEntityManager
      * Return related repository
      * @return Doctrine\Common\Persistence\ObjectRepository
      */
+    public function getFieldOptionRepository()
+    {
+        return $this->manager->getRepository($this->getFieldOptionShortname());
+    }
+
+    /**
+     * Return related repository
+     * @return Doctrine\Common\Persistence\ObjectRepository
+     */
     public function getValueRepository()
     {
         return $this->manager->getRepository($this->getValueShortname());
@@ -204,6 +228,16 @@ abstract class FlexibleEntityManager
     public function getNewFieldInstance()
     {
         $class = $this->getFieldClass();
+        return new $class();
+    }
+
+    /**
+     * Return a new instance
+     * @return EntityFieldOption
+     */
+    public function getNewFieldOptionInstance()
+    {
+        $class = $this->getFieldOptionClass();
         return new $class();
     }
 

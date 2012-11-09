@@ -45,8 +45,7 @@ class ProductField extends AbstractEntityField
     protected $type;
 
     /**
-     * @MongoDB\Raw
-     * @var ArrayCollection
+     * @MongoDB\EmbedMany(targetDocument="ProductFieldOption")
      */
     protected $options = array();
 
@@ -81,6 +80,8 @@ class ProductField extends AbstractEntityField
     */
     public function __construct()
     {
+        $this->options = new ArrayCollection();
+
         // TODO: prepersist is not enought : MongoException: zero-length keys are not allowed, did you use $ with double quotes?
 
         $this->locale = 'en_US';
@@ -170,56 +171,6 @@ class ProductField extends AbstractEntityField
     {
         $this->locale = $locale;
     }
-
-    /**
-     * Set options
-     *
-     * @param raw $options
-     * @return ProductField
-     */
-    public function setOptions($options)
-    {
-        $this->options = $options;
-        return $this;
-    }
-
-    /**
-     * Get options
-     *
-     * @return raw $options
-     */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
-    /**
-     * Set option
-     *
-     * @param string $code
-     * @param string $title
-     *
-     * @return ProductType
-     */
-    public function setOption($code, $title)
-    {
-        if (!isset($this->options[$code])) {
-            $this->options[$code]= array();
-        }
-        $this->options[$code][$this->locale] = $title;
-        return $this;
-    }
-
-    /**
-     * Get title
-     *
-     * @return string $title
-     */
-    public function getOption($code)
-    {
-        return $this->options[$code][$this->locale];
-    }
-
 
     /**
      * Get id

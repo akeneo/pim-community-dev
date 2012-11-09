@@ -2,6 +2,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Bap\Bundle\FlexibleEntityBundle\Model\EntityField as AbstractEntityField;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityFieldOption as AbstractEntityFieldOption;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -65,4 +66,34 @@ class ProductField extends AbstractEntityField
      * @ORM\Column(name="scope", type="integer")
      */
     protected $scope;
+
+    /**
+     * @var ArrayCollection $options
+     *
+     * @ORM\OneToMany(targetEntity="ProductFieldOption", mappedBy="field", cascade={"persist", "remove"})
+     */
+    protected $options;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->options = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add option
+     *
+     * @param AbstractEntityFieldOption $option
+     * @return AbstractEntityField
+     */
+    public function addOption(AbstractEntityFieldOption $option)
+    {
+        $this->options[] = $option;
+        $option->setField($this);
+
+        return $this;
+    }
+
 }

@@ -27,7 +27,6 @@ use APY\DataGridBundle\Grid\Export\CSVExport;
  */
 class ProductFieldController extends AbstractProductController
 {
-
     /**
      * (non-PHPdoc)
      * @see Parent
@@ -75,8 +74,8 @@ class ProductFieldController extends AbstractProductController
     public function newAction()
     {
         $entity = $this->getNewObject();
-        $classFullName = $this->getObjectClassFullName();
-        $form = $this->createForm(new ProductFieldType($classFullName), $entity);
+        $fieldClassFullName = $this->get('pim.catalog.product_manager')->getFieldClass();
+        $form = $this->createForm(new ProductFieldType($fieldClassFullName), $entity);
 
         // render form
         return $this->render(
@@ -94,8 +93,9 @@ class ProductFieldController extends AbstractProductController
     public function createAction(Request $request)
     {
         $entity  = $this->getNewObject();
-        $classFullName = $this->getObjectClassFullName();
-        $form = $this->createForm(new ProductFieldType($classFullName), $entity);
+        $fieldClassFullName = $this->get('pim.catalog.product_manager')->getFieldClass();
+
+        $form = $this->createForm(new ProductFieldType($fieldClassFullName), $entity);
         $form->bind($request);
 
         // TODO : avoid to create product field with same code -> complete validation !
@@ -130,8 +130,8 @@ class ProductFieldController extends AbstractProductController
             throw $this->createNotFoundException('Unable to find product field.');
         }
 
-        $classFullName = $this->getObjectClassFullName();
-        $editForm = $this->createForm(new ProductFieldType($classFullName), $entity);
+        $fieldClassFullName = $this->get('pim.catalog.product_manager')->getFieldClass();
+        $editForm = $this->createForm(new ProductFieldType($fieldClassFullName), $entity);
 
         $params = array(
             'entity'      => $entity,
@@ -159,8 +159,8 @@ class ProductFieldController extends AbstractProductController
             throw $this->createNotFoundException('Unable to find product field.');
         }
 
-        $classFullName = $this->getObjectClassFullName();
-        $editForm = $this->createForm(new ProductFieldType($classFullName), $entity);
+        $fieldClassFullName = $this->get('pim.catalog.product_manager')->getFieldClass();
+        $editForm = $this->createForm(new ProductFieldType($fieldClassFullName), $entity);
         $editForm->bind($request);
 
         if ($editForm->isValid()) {

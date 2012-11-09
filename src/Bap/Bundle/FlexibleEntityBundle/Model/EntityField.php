@@ -59,17 +59,17 @@ abstract class EntityField
     {
         return $this->id;
     }
-    
+
     /**
      * Set id
-     * 
+     *
      * @param integer $id
      * @return EntityField
      */
     public function setId($id)
     {
         $this->id = $id;
-        
+
         return $this;
     }
 
@@ -229,6 +229,39 @@ abstract class EntityField
     public function getScope()
     {
         return $this->scope;
+    }
+
+    /**
+     * Add option
+     *
+     * @param EntityFieldOption $option
+     * @return EntityField
+     */
+    public function addOption(EntityFieldOption $option)
+    {
+        $this->options[] = $option;
+
+        return $this;
+    }
+
+    /**
+     * Remove option
+     *
+     * @param EntityFieldOption $option
+     */
+    public function removeOption(EntityFieldOption $option)
+    {
+        $this->options->removeElement($option);
+    }
+
+    /**
+     * Get options
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getOptions()
+    {
+        return $this->options;
     }
 
 }

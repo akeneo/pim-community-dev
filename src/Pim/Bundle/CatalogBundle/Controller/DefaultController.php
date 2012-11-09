@@ -22,6 +22,33 @@ class DefaultController extends Controller
 
         $productManager = $this->get('pim.catalog.product_manager');
 
+        $field = $productManager->getNewFieldInstance();
+        $field->setCode('size'.time());
+        $field->setTitle('My title ');
+        $field->setType(BaseFieldFactory::FIELD_SELECT);
+        $field->setScope(BaseFieldFactory::SCOPE_GLOBAL);
+        $field->setUniqueValue(false);
+        $field->setValueRequired(false);
+        $field->setSearchable(false);
+
+        // add options
+        $values = array('S', 'M', 'L', 'XL');
+        foreach ($values as $value) {
+            $option = $productManager->getNewFieldOptionInstance();
+            $option->setValue('XXL');
+            $field->addOption($option);
+        }
+
+        $pm = $productManager->getPersistenceManager();
+        $pm->persist($field);
+        $pm->flush();
+
+
+        var_dump($field);
+
+
+        exit();
+
         //$dm = $this->get('doctrine.odm.mongodb')->getManager();
 
         //$type = new ProductTypeMongo();
