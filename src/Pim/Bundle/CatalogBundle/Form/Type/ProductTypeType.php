@@ -46,7 +46,9 @@ class ProductTypeType extends AbstractType
             'groups', 'collection',
             array(
                 'type'         => new ProductGroupType(),
-//                 'by_reference' => false
+                'by_reference' => true,
+                'allow_add'    => true,
+                'allow_delete' => true
             )
         );
 

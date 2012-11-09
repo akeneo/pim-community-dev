@@ -49,8 +49,12 @@
                 <div id="tabs-{{ group.id.vars.value }}">
                     <ul class="connectedSortable">
                         {{ form_row(group.id) }}
+                        {{ form_row(group.code) }}
                         {% for field in group.fields %}
-                            <li class="ui-state-default ui-corner-all" id="{{ field.id.vars.value }}">{{ field.code.vars.value }}</li>
+                            <li class="ui-state-default ui-corner-all" id="{{ field.id.vars.value }}">
+                                {{ field.code.vars.value }}
+                                {{ form_row(field.id) }}
+                            </li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -63,7 +67,10 @@
             <h2>Available fields</h2>
             <ul id="available-list" class="connectedSortable">
                 {% for field in form.others %}
-                    <li class="ui-state-default ui-corner-all" id="{{ field.id.vars.value }}">{{ field.code.vars.value }}</li>
+                    <li class="ui-state-default ui-corner-all" id="{{ field.id.vars.value }}">
+                        {{ field.code.vars.value }}
+                        {{ form_row(field.id) }}
+                    </li>
                 {% endfor %}
             </ul>
         </div>
@@ -110,12 +117,16 @@ function resetListMoves() {
         }
     });
     
-    /* remove an field from set */
+    /* remove a field from set */
     $( ".connectedSortable" ).sortable({
         connectWith: "#available-list",
         placeholder: "ui-state-highlight",
         cursor: "move",
-        receive: function(event, ui) { ui.item.addClass("add-field").removeClass("remove-field") }
+        receive: function(event, ui) {
+            ui.item.addClass("add-field").removeClass("remove-field")
+            console.log(event);
+            console.log(ui);
+        }
     }).disableSelection();
     
     /* add an available field to set */
@@ -142,7 +153,9 @@ $(function() {
         add: function( event, ui ) {
             var tab_content = '<ul class="connectedSortable">'+
                 '<input type="hidden" id="akeneo_catalog_producttype_groups_'+tab_counter+'_id" '+
-                'name="akeneo_catalog_producttype[groups]['+tab_counter+'][code]" value="'+$tab_title_input.val()+'">'+
+                'name="akeneo_catalog_producttype[groups]['+tab_counter+'][id]">'+
+                '<input type="hidden" id="akeneo_catalog_producttype_groups_'+tab_counter+'_code" '+
+                'name="akeneo_catalog_producttype[groups]['+tab_counter+'][code]" value="'+$tab_title_input.val()+'" />'+
                 '</ul>';
             $( ui.panel ).append(tab_content);
             /* aims to drag / drop from and to this new tab */
@@ -184,7 +197,6 @@ $(function() {
     // actual addTab function: adds new tab using the title input from the form above
     function addTab() {
         var tab_title = $tab_title_input.val() || "Tab " + tab_counter;
-        console.log('tab title -> ' + tab_title);
         $tabs.tabs( "add", "#tabs-" + tab_counter, tab_title );
         tab_counter++;
     }

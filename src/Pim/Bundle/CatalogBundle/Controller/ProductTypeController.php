@@ -142,7 +142,7 @@ class ProductTypeController extends Controller
                 $this->getPersistenceManager()->persist($entity);
                 $this->getPersistenceManager()->flush();
                 
-                $this->get('session')->setFlash('notice', 'product type has been saved');
+                $this->get('session')->setFlash('success', 'product type has been saved');
                 
                 // TODO : redirect to edit
                 return $this->redirect(
@@ -201,8 +201,7 @@ class ProductTypeController extends Controller
         if ($request->isMethod('POST')) {
             // get product type
             $postData = $request->get('akeneo_catalog_producttype');
-//             var_dump($postData);
-            
+            var_dump($postData);
 //             exit;
             
             $id = isset($postData['id']) ? $postData['id'] : false;
@@ -216,12 +215,15 @@ class ProductTypeController extends Controller
             
             $form = $this->createForm($type, $entity);
             $form->bind($request);
-            
+            foreach ($entity->getGroups() as $group) {
+                var_dump($group->getFields()->count());
+            }
+//             exit;
             if ($form->isValid()) {
                 $this->getPersistenceManager()->persist($entity);
                 $this->getPersistenceManager()->flush();
                 
-                $this->get('session')->setFlash('notice', 'product type has been saved');
+                $this->get('session')->setFlash('success', 'product type has been saved');
             }
             
             return $this->render('PimCatalogBundle:ProductType:edit.html.twig', array('form' => $form->createView()));
@@ -255,7 +257,7 @@ class ProductTypeController extends Controller
         $this->getPersistenceManager()->remove($entity);
         $this->getPersistenceManager()->flush();
         
-        $this->get('session')->setFlash('notice', 'product has been removed');
+        $this->get('session')->setFlash('success', 'product has been removed');
         
         return $this->redirect(
                 $this->generateUrl('pim_catalog_producttype_index')

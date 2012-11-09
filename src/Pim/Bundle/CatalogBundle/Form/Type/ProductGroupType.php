@@ -18,13 +18,15 @@ class ProductGroupType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('id', 'hidden');
-        $builder->add('code');
+        $builder->add('code', 'hidden');
         // add group attributes
         $builder->add(
             'fields', 'collection',
             array(
                 'type'         => new ProductGroupFieldType(),
                 'by_reference' => false,
+                'allow_add'    => true,
+                'allow_delete' => true
             )
         );
     }
@@ -32,11 +34,13 @@ class ProductGroupType extends AbstractType
     /**
      * (non-PHPdoc)
      * @see Symfony\Component\Form.AbstractType::getDefaultOptions()
+     * 
+     * TODO : must be persistence agnostic
      */
     public function getDefaultOptions(array $options)
     {
         return array(
-            'data_class' => 'Bap\Bundle\FlexibleEntityBundle\Model\EntityGroup',
+            'data_class' => 'Pim\Bundle\CatalogBundle\Document\ProductGroup',
         );
     }
 
