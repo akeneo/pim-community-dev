@@ -143,9 +143,11 @@ abstract class AbtractProductTest extends KernelAwareTest
 
         // add options
         $values = array('S', 'M', 'L', 'XL');
+        $order = 1;
         foreach ($values as $value) {
             $option = $this->productManager->getNewFieldOptionInstance();
-            $option->setValue('XXL');
+            $option->setValue($order++);
+            $option->setSortOrder(1);
             $field->addOption($option);
         }
         $this->assertEquals($field->getOptions()->count(), count($values));
