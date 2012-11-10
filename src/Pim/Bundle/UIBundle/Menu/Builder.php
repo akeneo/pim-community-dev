@@ -38,7 +38,7 @@ class Builder extends ContainerAware
         $menu['Catalog']->addChild('Products', array('route' => 'pim_catalog_product_index'));
         $menu['Catalog']->addChild('Product types', array('route' => 'pim_catalog_producttype_index'));
         $menu['Catalog']->addChild('Product fields', array('route' => 'pim_catalog_productfield_index'));
-        $menu['Catalog']->addChild('Channels', array('route' => 'pim_catalog_channel_index'));
+        //$menu['Catalog']->addChild('Channels', array('route' => 'pim_catalog_channel_index'));
         $menu['Connectors']->addChild('Icecat');
         $menu['Connectors']['Icecat']->addChild('Settings', array('route' => 'pim_connectoricecat_config_edit'));
         $menu['Connectors']['Icecat']->addChild('Suppliers list', array('route' => 'pim_connectoricecat_supplier_list'));

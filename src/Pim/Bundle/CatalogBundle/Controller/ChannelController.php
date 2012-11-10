@@ -19,7 +19,7 @@ use APY\DataGridBundle\Grid\Action\RowAction;
  *
  * @Route("/channel")
  */
-class ChannelController extends AbstractProductController
+class ChannelController extends Controller
 {
 
     /**
@@ -39,6 +39,30 @@ class ChannelController extends AbstractProductController
         return 'doctrine.orm.entity_manager';
     }
 
+
+    /**
+     * Return full name of object class
+     * @return unknown
+     */
+    public function getObjectClassFullName()
+    {
+        $om = $this->get($this->getObjectManagerService());
+        $metadata = $om->getClassMetadata($this->getObjectShortName());
+        $classFullName = $metadata->getName();
+        return $classFullName;
+    }
+
+    /**
+     * Return new instance of object
+     * @return unknown
+     */
+    public function getNewObject()
+     {
+         $classFullName = $this->getObjectClassFullName();
+        $entity = new $classFullName();
+        return $entity;
+    }
+
     /**
      * Lists all channels
      *
@@ -47,7 +71,7 @@ class ChannelController extends AbstractProductController
      */
     public function indexAction()
     {
-        $source = $this->getGridSource();
+        $source = new GridEntity($this->getObjectShortName());
         $grid = $this->get('grid');
         $grid->setSource($source);
 
