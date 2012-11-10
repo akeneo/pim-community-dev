@@ -135,8 +135,6 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
 
                 foreach ($fieldData as $fieldId => $fieldData) {
 
-                    var_dump($fieldData);exit();
-
                     $fieldName = $fieldData['name'];
                     $valueData = $fieldData['value'];
                     $fieldCode = self::PREFIX.'-'.$prodData['vendorId'].'-'.$featId.'-'.$fieldId;

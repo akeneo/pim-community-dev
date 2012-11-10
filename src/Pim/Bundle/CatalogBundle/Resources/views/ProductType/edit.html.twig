@@ -9,13 +9,18 @@
             <span class="ui-button-icon-primary ui-icon ui-icon-fugue-ui-button-navigation-back"></span><span class="ui-button-text">Back to list</span>
         </a>
     </li>
+    <li>
+        <a href="#" onclick="$('#edit-form').submit(); return false;" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
+            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-disk"></span><span class="ui-button-text">Save</span>
+        </a>
+    </li>
 {% endblock %}
 
 {% block content %}
 
     {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
     
-    <form action="{{ path('pim_catalog_producttype_update') }}" method="post" {{ form_enctype(form) }}>
+    <form id="edit-product-type" action="{{ path('pim_catalog_producttype_update') }}" method="post" {{ form_enctype(form) }}>
 
         {{ form_errors(form) }}
     
@@ -25,8 +30,26 @@
             {{ form_row(form.code) }}
         </div>
 
+        <!-- notice -->
+        <div class="form-panel ui-corner-all notice">
+            <em>You can drag attributes from availables to set groups, you can create new group</em> 
+        </div>
+
+        <!-- available fields -->
+        <div class="form-panel ui-corner-all type-available-fields">
+            <h2>Available fields</h2>
+            <ul id="available-list" class="connectedSortable">
+                {% for field in form.others %}
+                    <li class="ui-state-default ui-corner-all" id="{{ field.id.vars.value }}">
+                        {{ field.title.vars.value }} ({{ field.code.vars.value }})
+                        {{ form_row(field.id) }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
         <!-- set fields -->
-        <div class="ui-corner-all form-panel">
+        <div class="ui-corner-all form-panel type-group-fields">
 
             <div id="tabs">
                 <h2>Groups and fields</h2>
@@ -61,23 +84,11 @@
                 {% endfor %}
             </div>
         </div>
-        
-        <!-- available fields -->
-        <div class="form-panel ui-corner-all">
-            <h2>Available fields</h2>
-            <ul id="available-list" class="connectedSortable">
-                {% for field in form.others %}
-                    <li class="ui-state-default ui-corner-all" id="{{ field.id.vars.value }}">
-                        {{ field.title.vars.value }} ({{ field.code.vars.value }})
-                        {{ form_row(field.id) }}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
 
         {{ form_widget(form._token) }}
 
         <input type="submit" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" aria-disabled="false">
+
     </form>
     
     <!-- add group dialog -->
@@ -162,6 +173,10 @@ $(function() {
             resetListMoves();
         }
     });
+    
+    /* vertical tabs */
+    $( "#tabs" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+    $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
     
     /* allow to sort tabs */
     $( "#tabs" ).tabs().find( ".ui-tabs-nav" ).sortable({ axis: "x" });

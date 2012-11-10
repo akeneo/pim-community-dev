@@ -49,7 +49,8 @@ class ProductController extends AbstractProductController
         $grid->setSource($source);
 
         // add an action column
-        $rowAction = new RowAction('Edit', 'pim_catalog_product_edit');
+        $grid->setActionsColumnSeparator('&nbsp;');
+        $rowAction = new RowAction('Edit', 'pim_catalog_product_edit', false, '_self', array('class' => 'grid_action ui-icon-fugue-pencil'));
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
 

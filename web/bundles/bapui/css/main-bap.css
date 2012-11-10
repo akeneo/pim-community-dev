@@ -116,6 +116,7 @@ ul li
     padding:          20px 30px 50px;
     margin: 0 25px 5px;
     min-height:500px;
+    overflow: hidden;
 }
 
 #footer {margin: 0px 40px 0px 0px; text-align:right;}

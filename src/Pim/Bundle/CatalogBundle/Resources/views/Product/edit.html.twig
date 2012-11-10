@@ -27,7 +27,7 @@
                 <!-- one tab by group -->
                 <ul>
                     {% for group in entity.type.groups %}
-                        <li><span class="ui-icon">Group tab</span><a href="#tabs-{{ group.id }}">{{ group.code }}</a></li>
+                        <li><span class="ui-icon">Group tab</span><a href="#tabs-{{ group.id }}">{{ group.title }}</a></li>
                     {% endfor %}
                 </ul>
                 <!-- tabs content -->
@@ -51,6 +51,9 @@
     <script>
     $(function() {
         var $tabs = $( "#tabs" ).tabs();
+        /* vertical tabs */
+        $( "#tabs" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+        $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
     });
     </script>
 
