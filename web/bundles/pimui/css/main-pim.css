@@ -29,3 +29,15 @@
 /* product field views */
 .grid_action {padding-left:20px; background-repeat: no-repeat;}
 
+
+
+/* attribute set form */
+.connectedSortable {min-height: 50px;}
+.connectedSortable li {width:500px; margin-bottom:5px; padding:2px;}
+.ui-tabs-nav li {min-width:120px;}
+.ui-tabs-nav li .ui-icon {float:right;}
+.connectedSortable .add-attribute {border:1px solid green;}
+
+.connectedSortable .remove-attribute {border:1px solid red;}
+#add_tab {float:right;margin-bottom:1px;}
+.ui-tabs { border: 0px solid }

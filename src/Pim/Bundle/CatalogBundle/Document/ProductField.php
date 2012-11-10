@@ -32,10 +32,10 @@ class ProductField extends AbstractEntityField
     protected $code;
 
     /**
-     * @MongoDB\Raw
-     * @var ArrayCollection
-     */
-    protected $titles = array();
+    * @MongoDB\String
+    * @GRID\Column()
+    */
+    protected $title;
 
     /**
      * TODO define custom field type ?
@@ -85,7 +85,6 @@ class ProductField extends AbstractEntityField
         // TODO: prepersist is not enought : MongoException: zero-length keys are not allowed, did you use $ with double quotes?
 
         $this->locale = 'en_US';
-        $this->titles[$this->locale]= '';
     }
 
     /**
@@ -111,50 +110,6 @@ class ProductField extends AbstractEntityField
     }
 
     /**
-     * Set title
-     *
-     * @param string $title
-     * @return ProductType
-     */
-    public function setTitle($title)
-    {
-        $this->titles[$this->locale] = $title;
-        return $this;
-    }
-
-    /**
-     * Get title
-     *
-     * @return string $title
-     */
-    public function getTitle()
-    {
-        return $this->titles[$this->locale];
-    }
-
-    /**
-     * Set titles
-     *
-     * @param raw $titles
-     * @return ProductField
-     */
-    public function setTitles($titles)
-    {
-        $this->titles = $titles;
-        return $this;
-    }
-
-    /**
-     * Get titles
-     *
-     * @return raw $titles
-     */
-    public function getTitles()
-    {
-        return $this->titles;
-    }
-
-    /**
     * Get used locale
     * @return string $locale
     */
@@ -170,60 +125,6 @@ class ProductField extends AbstractEntityField
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;
-    }
-
-    /**
-     * Get id
-     *
-     * @return id $id
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set code
-     *
-     * @param string $code
-     * @return ProductField
-     */
-    public function setCode($code)
-    {
-        $this->code = $code;
-        return $this;
-    }
-
-    /**
-     * Get code
-     *
-     * @return string $code
-     */
-    public function getCode()
-    {
-        return $this->code;
-    }
-
-    /**
-     * Set type
-     *
-     * @param string $type
-     * @return ProductField
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @return string $type
-     */
-    public function getType()
-    {
-        return $this->type;
     }
 
 }

@@ -39,10 +39,9 @@ class ProductGroupFieldType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-//         $entity = $options['data'];
-        
         $builder->add('id', 'hidden');
         $builder->add('code');
+        $builder->add('title', 'hidden');
         if (!is_null($this->field)) {
             $builder->setData($this->field);
         }

@@ -94,13 +94,13 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
         }
 
         // 2b) add fields
-        foreach ($prodData as $field => $valueData) {
+        foreach ($prodData as $fieldName => $valueData) {
 
-            if ($field == 'id') {
+            if ($fieldName == 'id') {
                 $fieldCode = self::PREFIX.'_source_id';
                 $productSourceId = $valueData;
             } else {
-                $fieldCode = self::PREFIX.'-'.$prodData['vendorId'].'-'.$prodData['CategoryId'].'-'.strtolower($field);
+                $fieldCode = self::PREFIX.'-'.$prodData['vendorId'].'-'.$prodData['CategoryId'].'-'.strtolower($fieldName);
             }
 
             // get field or create TODO: if it's already in other group ?
@@ -108,7 +108,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
             if (!$field) {
                 $field = $this->productManager->getNewFieldInstance();
                 $field->setCode($fieldCode);
-                $field->setTitle($fieldCode);
+                $field->setTitle($fieldName);
                 $field->setType(BaseFieldFactory::FIELD_STRING);
                 $persistanceManager->persist($field);
                 // TODO unique etc ?
@@ -128,10 +128,15 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
 
         // 3) create custom group for each features category
         foreach ($prodFeat as $featId => $featData) {
+
             foreach ($featData as $featName => $fieldData) {
+
                 $groupCode = 'feat-'.$featId;//.'-'.strtolower(str_replace('&', '', str_replace(' ', '', $featName)));
 
                 foreach ($fieldData as $fieldId => $fieldData) {
+
+                    var_dump($fieldData);exit();
+
                     $fieldName = $fieldData['name'];
                     $valueData = $fieldData['value'];
                     $fieldCode = self::PREFIX.'-'.$prodData['vendorId'].'-'.$featId.'-'.$fieldId;

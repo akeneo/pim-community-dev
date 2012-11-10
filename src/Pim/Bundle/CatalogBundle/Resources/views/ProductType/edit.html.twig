@@ -35,7 +35,7 @@
                     {% for group in form.groups %}
                     <li>
                         <span class="ui-icon ui-icon-close">Remove Tab</span>
-                        <a href="#tabs-{{ group.id.vars.value }}">{{ group.code.vars.value }}</a>
+                        <a href="#tabs-{{ group.id.vars.value }}">{{ group.title.vars.value }}</a>
                     </li>
                     {% endfor %}
 
@@ -52,7 +52,7 @@
                         {{ form_row(group.code) }}
                         {% for field in group.fields %}
                             <li class="ui-state-default ui-corner-all" id="{{ field.id.vars.value }}">
-                                {{ field.code.vars.value }}
+                                {{ field.title.vars.value }} ({{ field.code.vars.value }})
                                 {{ form_row(field.id) }}
                             </li>
                         {% endfor %}
@@ -68,7 +68,7 @@
             <ul id="available-list" class="connectedSortable">
                 {% for field in form.others %}
                     <li class="ui-state-default ui-corner-all" id="{{ field.id.vars.value }}">
-                        {{ field.code.vars.value }}
+                        {{ field.title.vars.value }} ({{ field.code.vars.value }})
                         {{ form_row(field.id) }}
                     </li>
                 {% endfor %}

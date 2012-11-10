@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class ProductGroupType extends AbstractType
 {
-    
+
     /**
      * (non-PHPdoc)
      * @see Symfony\Component\Form.AbstractType::buildForm()
@@ -19,6 +19,7 @@ class ProductGroupType extends AbstractType
     {
         $builder->add('id', 'hidden');
         $builder->add('code', 'hidden');
+        $builder->add('title', 'hidden');
         // add group attributes
         $builder->add(
             'fields', 'collection',
@@ -30,11 +31,11 @@ class ProductGroupType extends AbstractType
             )
         );
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see Symfony\Component\Form.AbstractType::getDefaultOptions()
-     * 
+     *
      * TODO : must be persistence agnostic
      */
     public function getDefaultOptions(array $options)
