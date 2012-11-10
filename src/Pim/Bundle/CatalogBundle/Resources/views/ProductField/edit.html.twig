@@ -42,7 +42,7 @@
                 <div>
                     <ul id="sortable-options" class="options" data-prototype="{{ form_widget(form.options.vars.prototype)|e }}" >
                         {% for option in form.options %}
-                            <li>{{ form_row(option.value) }}</li>
+                            <li>{{ form_row(option.id) }} {{ form_row(option.sortOrder) }} {{ form_row(option.value) }}</li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -121,6 +121,19 @@
     // make options sortable
     $("#sortable-options").sortable({
         cancel: ":input, button, a, .not-sortable"
+        
+        /*
+        update: function() {
+
+            $("#sortable-options").children().each(function(i) {
+                var li = $(this);
+                alert(li);
+                
+                stringDiv += " "+li.attr("id") + '=' + i + '&';
+                
+            });
+        }*/
+            
     });
     $( "#sortable" ).disableSelection();
 </script>

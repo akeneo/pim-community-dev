@@ -21,6 +21,11 @@ abstract class EntityFieldOption
     protected $value;
 
     /**
+     * @var integer $sortOrder
+     */
+    protected $sortOrder;
+
+    /**
      * Get id
      *
      * @return integer
@@ -66,4 +71,26 @@ abstract class EntityFieldOption
         return $this->value;
     }
 
+    /**
+     * Set sort order
+     *
+     * @param string $sortOrder
+     * @return EntityValue
+     */
+    public function setSortOrder($sortOrder)
+    {
+        $this->sortOrder = $sortOrder;
+
+        return $this;
+    }
+
+    /**
+     * Get sort order
+     *
+     * @return integer
+     */
+    public function getSortOrder()
+    {
+        return $this->sortOrder;
+    }
 }

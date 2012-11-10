@@ -26,4 +26,9 @@ class ProductFieldOption extends AbstractEntityFieldOption
      */
     protected $value;
 
+    /**
+     * @MongoDB\Int
+     */
+    protected $sortOrder;
+
 }

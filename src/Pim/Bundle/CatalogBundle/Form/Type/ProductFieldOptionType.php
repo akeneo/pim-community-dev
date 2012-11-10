@@ -22,6 +22,7 @@ class ProductFieldOptionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('id', 'hidden');
+        $builder->add('sortOrder', 'hidden');
         $builder->add('value');
     }
 

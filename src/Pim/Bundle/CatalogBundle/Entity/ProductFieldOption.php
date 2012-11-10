@@ -40,6 +40,11 @@ class ProductFieldOption extends AbstractEntityFieldOption
     protected $value;
 
     /**
+     * @ORM\Column(name="sort_order", type="integer")
+     */
+    protected $sortOrder;
+
+    /**
      * Set field
      *
      * @param ProductField $field

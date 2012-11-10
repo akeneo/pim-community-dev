@@ -163,7 +163,36 @@ class ProductFieldController extends AbstractProductController
         $editForm = $this->createForm(new ProductFieldType($fieldClassFullName), $entity);
         $editForm->bind($request);
 
+        /*
+        // sort options
+        $postData = $request->get('pim_catalogbundle_productfieldtype');
+        if (isset($postData['options']) and count($postData['options']) > 0) {
+            $indOption = 1;
+            foreach ($postData['options'] as &$option) {
+                $option['sortOrder']= $indOption++;
+            }
+        }
+
+
+
+
+        var_dump($postData['options']);
+
+        foreach ($entity->getOptions() as $opt) {
+            var_dump($opt);
+        }
+
+        exit();
+	*/
+
+
+
         if ($editForm->isValid()) {
+
+            // set option order
+
+
+
             $manager->persist($entity);
             $manager->flush();
             $this->get('session')->setFlash('success', 'Field has been updated');

@@ -239,7 +239,7 @@ abstract class EntityField
      */
     public function addOption(EntityFieldOption $option)
     {
-        $this->options[] = $option;
+        $this->options[] = $option;;
 
         return $this;
     }

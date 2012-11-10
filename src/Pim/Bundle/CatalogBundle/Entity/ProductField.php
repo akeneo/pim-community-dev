@@ -71,6 +71,7 @@ class ProductField extends AbstractEntityField
      * @var ArrayCollection $options
      *
      * @ORM\OneToMany(targetEntity="ProductFieldOption", mappedBy="field", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $options;
 
