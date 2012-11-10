@@ -39,11 +39,12 @@ abstract class AbtractProductTest extends KernelAwareTest
         $objectManager = $this->container->get($this->objectManagerName);
         $this->productManager = new ProductManager($objectManager);
 
-        $this->codeType      = 'sku_'.microtime();
-        $this->codeFieldSku  = 'sku_'.microtime();
-        $this->codeFieldName = 'name_'.microtime();
-        $this->codeFieldSize = 'size_'.microtime();
-        $this->productSku    = 'my-sku-'.microtime();
+        $timestamp = str_replace('.', '', microtime(true));
+        $this->codeType      = 'type_'.$timestamp;
+        $this->codeFieldSku  = 'sku_'.$timestamp;
+        $this->codeFieldName = 'name_'.$timestamp;
+        $this->codeFieldSize = 'size_'.$timestamp;
+        $this->productSku    = 'my_sku_'.$timestamp;
 
         // TODO : take a look on KernelAwareTest to avoid to drop data at any setUp + rename test method as testMethod ?
     }
