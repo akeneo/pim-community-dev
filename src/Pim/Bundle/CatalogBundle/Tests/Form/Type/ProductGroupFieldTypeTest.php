@@ -25,8 +25,8 @@ class ProductGroupFieldTypeTest extends KernelAwareTest
     public function testBuildForm()
     {
         $productManager = $this->container->get('pim.catalog.product_manager');
-        $classFullName = $productManager->getFieldClass();
-        $entity = $productManager->getNewFieldInstance();
+        $classFullName = $productManager->getAttributeClass();
+        $entity = $productManager->getNewAttributeInstance();
         $this->container->get('form.factory')->create(new ProductGroupFieldType($entity), $entity);
     }
 

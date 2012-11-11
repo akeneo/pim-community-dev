@@ -25,7 +25,7 @@ class ProductSetTypeTest extends KernelAwareTest
     public function testBuildForm()
     {
         $productManager = $this->container->get('pim.catalog.product_manager');
-        $entity = $productManager->getNewTypeInstance();
+        $entity = $productManager->getNewSetInstance();
         $this->container->get('form.factory')->create(new ProductSetType(), $entity);
     }
 

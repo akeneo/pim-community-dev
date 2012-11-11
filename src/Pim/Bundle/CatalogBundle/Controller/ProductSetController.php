@@ -75,7 +75,7 @@ class ProductSetController extends Controller
         $productManager = $this->getProductManager();
 
         // creates simple grid based on entity or document (ORM or ODM)
-        $source = $this->getGridSource($productManager->getTypeShortname());
+        $source = $this->getGridSource($productManager->getSetShortname());
 
         $grid = $this->get('grid');
         $grid->setSource($source);
@@ -114,7 +114,7 @@ class ProductSetController extends Controller
     {
         // create new product type
         $productManager = $this->getProductManager();
-        $entity = $productManager->getNewTypeInstance();
+        $entity = $productManager->getNewSetInstance();
 
         // create type, set list of existing type to prepare copy list
         $type = new ProductSetType();
@@ -133,8 +133,8 @@ class ProductSetController extends Controller
                 $copy = $postData['copyfromset'];
 
                 if ($copy !== '') { // create by copy
-                    $productType = $this->getProductManager()->getTypeRepository()->find($postData['copyfromset']);
-                    $entity = $this->getProductManager()->cloneType($productType);
+                    $productType = $this->getProductManager()->getSetRepository()->find($postData['copyfromset']);
+                    $entity = $this->getProductManager()->cloneSet($productType);
                     $entity->setCode($postData['code']);
                 }
 
@@ -163,7 +163,7 @@ class ProductSetController extends Controller
      */
     public function editAction($id)
     {
-        $entity = $this->getProductManager()->getTypeRepository()->find($id);
+        $entity = $this->getProductManager()->getSetRepository()->find($id);
         if (!$entity) {
             throw $this->createNotFoundException('No product type found for id '. $id);
         }
@@ -184,7 +184,7 @@ class ProductSetController extends Controller
     protected function getAvailableFields()
     {
         $dm = $this->getPersistenceManager();
-        $qb = $dm->createQueryBuilder($this->getProductManager()->getFieldShortname());
+        $qb = $dm->createQueryBuilder($this->getProductManager()->getAttributeShortname());
         $q = $qb->field('code')->notIn(array('binomed-att'))->getQuery();
         return $q->execute();
     }
@@ -205,7 +205,7 @@ class ProductSetController extends Controller
 //             exit;
 
             $id = isset($postData['id']) ? $postData['id'] : false;
-            $entity = $this->getProductManager()->getTypeRepository()->find($id);
+            $entity = $this->getProductManager()->getSetRepository()->find($id);
             if (!$entity) {
                 throw $this->createNotFoundException('No product type found for id '. $id);
             }
@@ -248,7 +248,7 @@ class ProductSetController extends Controller
      */
     public function deleteAction($id)
     {
-        $entity = $this->getProductManager()->getTypeRepository()->find($id);
+        $entity = $this->getProductManager()->getSetRepository()->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('No product type found for id '. $id);
@@ -269,7 +269,7 @@ class ProductSetController extends Controller
      */
     private function _getCopyTypeOptions()
     {
-        $types = $this->getProductManager()->getTypeRepository()->findAll();
+        $types = $this->getProductManager()->getSetRepository()->findAll();
         $typeIdToName = array();
         foreach ($types as $type) {
             $typeIdToName[$type->getId()]= $type->getCode();

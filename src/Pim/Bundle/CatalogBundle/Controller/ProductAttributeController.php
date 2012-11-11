@@ -33,7 +33,7 @@ class ProductAttributeController extends AbstractProductController
      */
     public function getObjectShortName()
     {
-        return $this->get('pim.catalog.product_manager')->getFieldShortname();
+        return $this->get('pim.catalog.product_manager')->getAttributeShortname();
     }
 
     /**
@@ -74,7 +74,7 @@ class ProductAttributeController extends AbstractProductController
     public function newAction()
     {
         $entity = $this->getNewObject();
-        $fieldClassFullName = $this->get('pim.catalog.product_manager')->getFieldClass();
+        $fieldClassFullName = $this->get('pim.catalog.product_manager')->getAttributeClass();
         $form = $this->createForm(new ProductAttributeType($fieldClassFullName), $entity);
 
         // render form
@@ -93,7 +93,7 @@ class ProductAttributeController extends AbstractProductController
     public function createAction(Request $request)
     {
         $entity  = $this->getNewObject();
-        $fieldClassFullName = $this->get('pim.catalog.product_manager')->getFieldClass();
+        $fieldClassFullName = $this->get('pim.catalog.product_manager')->getAttributeClass();
 
         $form = $this->createForm(new ProductAttributeType($fieldClassFullName), $entity);
         $form->bind($request);
@@ -130,7 +130,7 @@ class ProductAttributeController extends AbstractProductController
             throw $this->createNotFoundException('Unable to find product field.');
         }
 
-        $fieldClassFullName = $this->get('pim.catalog.product_manager')->getFieldClass();
+        $fieldClassFullName = $this->get('pim.catalog.product_manager')->getAttributeClass();
         $editForm = $this->createForm(new ProductAttributeType($fieldClassFullName), $entity);
 
         $params = array(
@@ -159,7 +159,7 @@ class ProductAttributeController extends AbstractProductController
             throw $this->createNotFoundException('Unable to find product field.');
         }
 
-        $fieldClassFullName = $this->get('pim.catalog.product_manager')->getFieldClass();
+        $fieldClassFullName = $this->get('pim.catalog.product_manager')->getAttributeClass();
         $editForm = $this->createForm(new ProductAttributeType($fieldClassFullName), $entity);
         $editForm->bind($request);
 

@@ -57,7 +57,7 @@ abstract class FlexibleEntityManager
      * Return shortname that can be used to get the repository or instance
      * @return string
      */
-    public abstract function getTypeShortname();
+    public abstract function getSetShortname();
 
     /**
      * Return shortname that can be used to get the repository or instance
@@ -69,19 +69,19 @@ abstract class FlexibleEntityManager
      * Return shortname that can be used to get the repository or instance
      * @return string
      */
-    public abstract function getFieldShortname();
+    public abstract function getAttributeShortname();
 
     /**
      * Return shortname that can be used to get the repository or instance
      * @return string
      */
-    public abstract function getFieldOptionShortname();
+    public abstract function getAttributeOptionShortname();
 
     /**
      * Return shortname that can be used to get the repository or instance
      * @return string
      */
-    public abstract function getValueShortname();
+    public abstract function getAttributeValueShortname();
 
     /**
      * Return implementation class that can be use to instanciate
@@ -96,9 +96,9 @@ abstract class FlexibleEntityManager
      * Return implementation class that can be use to instanciate
      * @return string
      */
-    public function getTypeClass()
+    public function getSetClass()
     {
-        return $this->manager->getClassMetadata($this->getTypeShortname())->getName();
+        return $this->manager->getClassMetadata($this->getSetShortname())->getName();
     }
 
     /**
@@ -114,27 +114,27 @@ abstract class FlexibleEntityManager
      * Return implementation class that can be use to instanciate
      * @return string
      */
-    public function getFieldClass()
+    public function getAttributeClass()
     {
-        return $this->manager->getClassMetadata($this->getFieldShortname())->getName();
+        return $this->manager->getClassMetadata($this->getAttributeShortname())->getName();
     }
 
     /**
      * Return implementation class that can be use to instanciate
      * @return string
      */
-    public function getFieldOptionClass()
+    public function getAttributeOptionClass()
     {
-        return $this->manager->getClassMetadata($this->getFieldOptionShortname())->getName();
+        return $this->manager->getClassMetadata($this->getAttributeOptionShortname())->getName();
     }
 
     /**
      * Return implementation class that can be use to instanciate
      * @return string
      */
-    public function getValueClass()
+    public function getAttributeValueClass()
     {
-        return $this->manager->getClassMetadata($this->getValueShortname())->getName();
+        return $this->manager->getClassMetadata($this->getAttributeValueShortname())->getName();
     }
 
     /**
@@ -150,9 +150,9 @@ abstract class FlexibleEntityManager
      * Return related repository
      * @return Doctrine\Common\Persistence\ObjectRepository
      */
-    public function getTypeRepository()
+    public function getSetRepository()
     {
-        return $this->manager->getRepository($this->getTypeShortname());
+        return $this->manager->getRepository($this->getSetShortname());
     }
 
     /**
@@ -168,27 +168,27 @@ abstract class FlexibleEntityManager
      * Return related repository
      * @return Doctrine\Common\Persistence\ObjectRepository
      */
-    public function getFieldRepository()
+    public function getAttributeRepository()
     {
-        return $this->manager->getRepository($this->getFieldShortname());
+        return $this->manager->getRepository($this->getAttributeShortname());
     }
 
     /**
      * Return related repository
      * @return Doctrine\Common\Persistence\ObjectRepository
      */
-    public function getFieldOptionRepository()
+    public function getAttributeOptionRepository()
     {
-        return $this->manager->getRepository($this->getFieldOptionShortname());
+        return $this->manager->getRepository($this->getAttributeOptionShortname());
     }
 
     /**
      * Return related repository
      * @return Doctrine\Common\Persistence\ObjectRepository
      */
-    public function getValueRepository()
+    public function getAttributeValueRepository()
     {
-        return $this->manager->getRepository($this->getValueShortname());
+        return $this->manager->getRepository($this->getAttributeValueShortname());
     }
 
     /**
@@ -205,9 +205,9 @@ abstract class FlexibleEntityManager
      * Return a new instance
      * @return EntitySet
      */
-    public function getNewTypeInstance()
+    public function getNewSetInstance()
     {
-        $class = $this->getTypeClass();
+        $class = $this->getSetClass();
         return new $class();
     }
 
@@ -225,9 +225,9 @@ abstract class FlexibleEntityManager
      * Return a new instance
      * @return EntityAttribute
      */
-    public function getNewFieldInstance()
+    public function getNewAttributeInstance()
     {
-        $class = $this->getFieldClass();
+        $class = $this->getAttributeClass();
         return new $class();
     }
 
@@ -235,9 +235,9 @@ abstract class FlexibleEntityManager
      * Return a new instance
      * @return EntityAttributeOption
      */
-    public function getNewFieldOptionInstance()
+    public function getNewAttributeOptionInstance()
     {
-        $class = $this->getFieldOptionClass();
+        $class = $this->getAttributeOptionClass();
         return new $class();
     }
 
@@ -245,9 +245,9 @@ abstract class FlexibleEntityManager
      * Return a new instance
      * @return EntityAttributeValue
      */
-    public function getNewValueInstance()
+    public function getNewAttributeValueInstance()
     {
-        $class = $this->getValueClass();
+        $class = $this->getAttributeValueClass();
         return new $class();
     }
 
@@ -257,12 +257,12 @@ abstract class FlexibleEntityManager
      * @param EntitySet $entityType
      * @return EntitySet
      */
-    public function cloneType($entityType)
+    public function cloneSet($entityType)
     {
         // create new entity type and clone values
-        $cloneType = $this->getNewTypeInstance();
-        $cloneType->setCode($entityType->getCode());
-        $cloneType->setTitle($entityType->getTitle());
+        $cloneSet = $this->getNewSetInstance();
+        $cloneSet->setCode($entityType->getCode());
+        $cloneSet->setTitle($entityType->getTitle());
 
         // clone groups
         foreach ($entityType->getGroups() as $groupToClone) {
@@ -271,14 +271,14 @@ abstract class FlexibleEntityManager
             $cloneGroup = $this->getNewGroupInstance();
             $cloneGroup->setTitle($groupToClone->getTitle());
             $cloneGroup->setCode($groupToClone->getCode());
-            $cloneType->addGroup($cloneGroup);
+            $cloneSet->addGroup($cloneGroup);
 
             // link to same fields
             foreach ($groupToClone->getFields() as $fieldToLink) {
                 $cloneGroup->addField($fieldToLink);
             }
         }
-        return $cloneType;
+        return $cloneSet;
     }
 
     /**
@@ -294,8 +294,8 @@ abstract class FlexibleEntityManager
         $clone = new $class();
 
         // clone entity type
-        $cloneType = $this->cloneType($entity->getType());
-        $clone->setType($cloneType);
+        $cloneSet = $this->cloneSet($entity->getType());
+        $clone->setType($cloneSet);
 
         return $clone;
     }

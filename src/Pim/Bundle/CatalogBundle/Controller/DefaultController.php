@@ -22,7 +22,7 @@ class DefaultController extends Controller
 
         $productManager = $this->get('pim.catalog.product_manager');
 
-        $field = $productManager->getNewFieldInstance();
+        $field = $productManager->getNewAttributeInstance();
         $field->setCode('size'.time());
         $field->setTitle('My title ');
         $field->setType(BaseFieldFactory::FIELD_SELECT);
@@ -34,7 +34,7 @@ class DefaultController extends Controller
         // add options
         $values = array('S', 'M', 'L', 'XL');
         foreach ($values as $value) {
-            $option = $productManager->getNewFieldOptionInstance();
+            $option = $productManager->getNewAttributeOptionInstance();
             $option->setValue('XXL');
             $field->addOption($option);
         }
@@ -52,13 +52,13 @@ class DefaultController extends Controller
         //$dm = $this->get('doctrine.odm.mongodb')->getManager();
 
         //$type = new ProductSetMongo();
-        $class = $productManager->getTypeClass();
+        $class = $productManager->getSetClass();
         $type = new $class();
         $type->setCode('binomed-type');
         $type->setTitle('Binomed');
 
         //$field = new ProductAttributeMongo();
-        $class = $productManager->getFieldClass();
+        $class = $productManager->getAttributeClass();
         $field = new $class();
         $field->setCode('binomed-att');
         $field->setTitle('Attribute !');

@@ -25,8 +25,8 @@ class ProductAttributeOptionTypeTest extends KernelAwareTest
     public function testBuildForm()
     {
         $productManager = $this->container->get('pim.catalog.product_manager');
-        $classFullName = $productManager->getFieldOptionClass();
-        $entity = $productManager->getNewFieldOptionInstance();
+        $classFullName = $productManager->getAttributeOptionClass();
+        $entity = $productManager->getNewAttributeOptionInstance();
         $this->container->get('form.factory')->create(new ProductAttributeOptionType($classFullName), $entity);
     }
 

@@ -28,7 +28,7 @@ class ProductManager extends FlexibleEntityManager
      * Return shortname that can be used to get the repository or instance
      * @return string
      */
-    public function getTypeShortname()
+    public function getSetShortname()
     {
         return 'PimCatalogBundle:ProductSet';
     }
@@ -46,7 +46,7 @@ class ProductManager extends FlexibleEntityManager
      * Return shortname that can be used to get the repository or instance
      * @return string
      */
-    public function getFieldShortname()
+    public function getAttributeShortname()
     {
         return 'PimCatalogBundle:ProductAttribute';
     }
@@ -55,7 +55,7 @@ class ProductManager extends FlexibleEntityManager
      * Return shortname that can be used to get the repository or instance
      * @return string
      */
-    public function getFieldOptionShortname()
+    public function getAttributeOptionShortname()
     {
         return 'PimCatalogBundle:ProductAttributeOption';
     }
@@ -64,7 +64,7 @@ class ProductManager extends FlexibleEntityManager
      * Return shortname that can be used to get the repository or instance
      * @return string
      */
-    public function getValueShortname()
+    public function getAttributeValueShortname()
     {
         return 'PimCatalogBundle:ProductAttributeValue';
     }
