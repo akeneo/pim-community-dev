@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductSet;
 use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
 
 /**
- * Load product and types
+ * Load products samples
  *
  * Execute with "php app/console doctrine:fixtures:load"
  *
@@ -21,28 +21,28 @@ use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
  */
 class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
-    const TYPE_BASE          = 'base';
-    const TYPE_GROUP_INFO    = 'general';
-    const TYPE_GROUP_MEDIA   = 'media';
-    const TYPE_GROUP_SEO     = 'seo';
-    const TYPE_GROUP_TECHNIC = 'technical';
+    const SET_BASE          = 'base';
+    const SET_GROUP_INFO    = 'general';
+    const SET_GROUP_MEDIA   = 'media';
+    const SET_GROUP_SEO     = 'seo';
+    const SET_GROUP_TECHNIC = 'technical';
+    const SET_ATT_SKU       = 'sku';
+    const SET_ATT_NAME      = 'name';
 
-    const TYPE_TSHIRT        = 'tshirt';
-    const TYPE_GROUP_TSHIRT  = 'tshirt';
-    const FIELD_TSHIRT_COLOR = 'tshirt_color';
-    const FIELD_TSHIRT_SIZE  = 'tshirt_size';
-
-    const TYPE_LAPTOP         = 'laptop';
-    const TYPE_GROUP_LAPTOP   = 'laptop';
-    const FIELD_LAPTOP_SCREEN = 'laptop_screen_size';
-    const FIELD_LAPTOP_CPU    = 'laptop_cpu';
-    const FIELD_LAPTOP_MEMORY = 'laptop_memory';
-    const FIELD_LAPTOP_HDD    = 'laptop_hdd';
+    const SET_TSHIRT         = 'tshirt';
+    const SET_GROUP_TSHIRT   = 'tshirt';
+    const SET_ATT_SIZE       = 'tshirt_size';
 
     /**
     * @var ContainerInterface
     */
-    private $container;
+    protected $container;
+
+    /**
+     * ProductManager
+     * @var ProductManager
+     */
+    protected $productManager;
 
     /**
      * {@inheritDoc}
@@ -57,9 +57,10 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
      */
     public function load(ObjectManager $manager)
     {
-        return true;
-        $base = $this->_createBaseType($manager);
-        $this->_createProducts($manager);
+        $this->productManager = $this->container->get('pim.catalog.product_manager');
+        $baseSet = $this->createBaseSet();
+        $tshirtSet = $this->createTshirtSet($baseSet);
+        $this->createTshirtProducts($tshirtSet);
     }
 
     /**
@@ -74,67 +75,105 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
     /**
      * Create base product type
      */
-    protected function _createBaseType(ObjectManager $manager)
+    protected function createBaseSet()
     {
-        // create type
-        $type = $this->container->get('akeneo.catalog.model_productset_doctrine');
-        $type->create(self::TYPE_BASE);
-        // add info fields
-        $fields = array(
-            'sku'                => BaseFieldFactory::FIELD_STRING,
-            'name'               => BaseFieldFactory::FIELD_STRING,
-            'short_description'  => BaseFieldFactory::FIELD_TEXT,
-            'description'        => BaseFieldFactory::FIELD_TEXT,
-            'color'              => BaseFieldFactory::FIELD_SELECT
-        );
-        foreach ($fields as $fieldCode => $fieldType) {
-            if (!$type->getField($fieldCode)) {
-                $type->addAttribute($fieldCode, $fieldType, self::TYPE_GROUP_INFO);
-            }
-        }
-        // add media fields
-        $fields = array('image', 'thumbnail');
-        foreach ($fields as $fieldCode) {
-            if (!$type->getField($fieldCode)) {
-                $type->addAttribute($fieldCode, BaseFieldFactory::FIELD_IMAGE, self::TYPE_GROUP_MEDIA);
-            }
-        }
-        // add others empty groups
-        $type->addGroup(self::TYPE_GROUP_SEO);
-        $type->addGroup(self::TYPE_GROUP_TECHNIC);
+        // create product type
+        $set = $this->productManager->getNewSetInstance();
+        $set->setCode(self::SET_BASE);
+        $set->setTitle('Default');
 
-        // persist type
-        $type->persist();
-        $type->flush();
+        // add groups
+        $groups = array();
+        $groupCodes = array(self::SET_GROUP_INFO, self::SET_GROUP_TECHNIC);
+        foreach ($groupCodes as $code) {
+            $group = $this->productManager->getNewGroupInstance();
+            $group->setCode($code);
+            $group->setTitle('Group '.$code);
+            $set->addGroup($group);
+        }
+        $groupInfo = $set->getGroups()->first();
+        $groupTechnic = $set->getGroups()->last();
+
+        // add a attribute sku
+        $attribute = $this->productManager->getNewAttributeInstance();
+        $attribute->setCode(self::SET_ATT_SKU);
+        $title = 'Sku';
+        $attribute->setTitle($title);
+        $attribute->setType(BaseFieldFactory::FIELD_STRING);
+        $attribute->setScope(BaseFieldFactory::SCOPE_GLOBAL);
+        $attribute->setUniqueValue(true);
+        $attribute->setValueRequired(true);
+        $attribute->setSearchable(false);
+        $this->productManager->getPersistenceManager()->persist($attribute);
+        $groupInfo->addAttribute($attribute);
+
+        // add a attribute name
+        $attribute = $this->productManager->getNewAttributeInstance();
+        $attribute->setCode(self::SET_ATT_NAME);
+        $attribute->setTitle('Name');
+        $attribute->setType(BaseFieldFactory::FIELD_STRING);
+        $attribute->setScope(BaseFieldFactory::SCOPE_GLOBAL);
+        $attribute->setUniqueValue(false);
+        $attribute->setValueRequired(true);
+        $attribute->setSearchable(true);
+        $this->productManager->getPersistenceManager()->persist($attribute);
+        $groupInfo->addAttribute($attribute);
+
+        // persist
+        $this->productManager->getPersistenceManager()->persist($set);
+        $this->productManager->getPersistenceManager()->flush();
+
+        return $set;
+    }
+
+    /**
+    * Create base product type
+    */
+    protected function createTshirtSet($baseSet)
+    {
+        // clone base product type
+        $set = $this->productManager->cloneSet($baseSet);
+        $set->setCode(self::SET_TSHIRT);
+        $set->setTitle('T-shirt');
+
+        // add a size attribute
+        $attribute = $this->productManager->getNewAttributeInstance();
+        $attribute->setCode(self::SET_ATT_SIZE);
+        $attribute->setTitle('Size');
+        $attribute->setType(BaseFieldFactory::FIELD_SELECT);
+        $attribute->setScope(BaseFieldFactory::SCOPE_GLOBAL);
+        $attribute->setUniqueValue(false);
+        $attribute->setValueRequired(false);
+        $attribute->setSearchable(false);
+        // add options
+        $values = array('S', 'M', 'L', 'XL');
+        $order = 1;
+        foreach ($values as $value) {
+            $option = $this->productManager->getNewAttributeOptionInstance();
+            $option->setValue($order++);
+            $option->setSortOrder(1);
+            $attribute->addOption($option);
+        }
+        $this->productManager->getPersistenceManager()->persist($attribute);
+
+        // add technical group
+        $groupTechnic = $set->getGroup(self::SET_GROUP_TECHNIC);
+        $groupTechnic->addAttribute($attribute);
+
+        // persist
+        $this->productManager->getPersistenceManager()->persist($set);
+        $this->productManager->getPersistenceManager()->flush();
+
+        return $set;
     }
 
     /**
      * Create products
      */
-    protected function _createProducts(ObjectManager $manager)
+    protected function createTshirtProducts()
     {
-        // get base type
-        $type = $this->container->get('akeneo.catalog.model_productset_doctrine');
-        $type->find(self::TYPE_BASE);
-        // create product
-        $product = $type->newProductInstance();
-        // set values
-        //        $product->setValue('sku', 'mon sku 1');
-        $product->setName('mon name 1');
-        $product->setColor('Green');
-        // save
-        $product->persist();
-        $product->flush();
-        // translate value in FR
-        $product->switchLocale('fr_FR');
-        $product->setValue('color', 'Vert');
-        $product->persist();
-        $product->flush();
-        // translate value in DE
-        $product->switchLocale('de_DE');
-        $product->setValue('color', 'Grün');
-        $product->persist();
-        $product->flush();
+        $att = $this->productManager->getAttributeRepository()->findByCode(self::SET_ATT_SIZE);
+        //$options = $att->getOptions();
     }
 
 }
