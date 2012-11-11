@@ -2,7 +2,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Bap\Bundle\FlexibleEntityBundle\Model\Entity as AbstractEntity;
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityValue as AbstractEntityValue;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttributeValue as AbstractEntityAttributeValue;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
@@ -18,7 +18,7 @@ use Gedmo\Translatable\Translatable;
  * @ORM\Entity
  * @Gedmo\TranslationEntity(class="Pim\Bundle\CatalogBundle\Entity\ProductTranslation")
  */
-class ProductValue extends AbstractEntityValue
+class ProductAttributeValue extends AbstractEntityAttributeValue
 {
     /**
      * @var integer $id
@@ -32,7 +32,7 @@ class ProductValue extends AbstractEntityValue
     /**
      * @var Field $field
      *
-     * @ORM\ManyToOne(targetEntity="ProductField")
+     * @ORM\ManyToOne(targetEntity="ProductAttribute")
      */
     protected $field;
 
@@ -72,7 +72,7 @@ class ProductValue extends AbstractEntityValue
      * Set entity
      *
      * @param AbstractEntity $entity
-     * @return ProductValue
+     * @return ProductAttributeValue
      */
     public function setEntity(AbstractEntity $entity = null)
     {

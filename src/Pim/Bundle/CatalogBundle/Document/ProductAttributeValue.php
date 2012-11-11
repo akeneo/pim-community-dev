@@ -1,12 +1,12 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Document;
 
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityFieldOption as AbstractEntityFieldOption;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttributeValue as AbstractEntityAttributeValue;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Product field option as Embedded Mongo Document
+ * Product value as Embedded Mongo Document
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
@@ -14,7 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @MongoDB\EmbeddedDocument
  */
-class ProductFieldOption extends AbstractEntityFieldOption
+class ProductAttributeValue extends AbstractEntityAttributeValue
 {
     /**
      * @MongoDB\Id
@@ -22,13 +22,13 @@ class ProductFieldOption extends AbstractEntityFieldOption
     protected $id;
 
     /**
-     * @MongoDB\String
+     * @MongoDB\ReferenceOne(targetDocument="ProductAttribute", simple=true)
      */
-    protected $value;
+    protected $field;
 
     /**
-     * @MongoDB\Int
-     */
-    protected $sortOrder;
+    * @MongoDB\String
+    */
+    protected $data;
 
 }

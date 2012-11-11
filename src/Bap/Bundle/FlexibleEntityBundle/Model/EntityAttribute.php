@@ -8,7 +8,7 @@ namespace Bap\Bundle\FlexibleEntityBundle\Model;
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class EntityField
+abstract class EntityAttribute
 {
     /**
      * @var integer $id
@@ -64,7 +64,7 @@ abstract class EntityField
      * Set id
      *
      * @param integer $id
-     * @return EntityField
+     * @return EntityAttribute
      */
     public function setId($id)
     {
@@ -77,7 +77,7 @@ abstract class EntityField
      * Set code
      *
      * @param string $code
-     * @return EntityField
+     * @return EntityAttribute
      */
     public function setCode($code)
     {
@@ -100,7 +100,7 @@ abstract class EntityField
      * Set title
      *
      * @param string $title
-     * @return EntityField
+     * @return EntityAttribute
      */
     public function setTitle($title)
     {
@@ -123,7 +123,7 @@ abstract class EntityField
      * Set type
      *
      * @param string $type
-     * @return EntityField
+     * @return EntityAttribute
      */
     public function setType($type)
     {
@@ -147,7 +147,7 @@ abstract class EntityField
      * Set uniqueValue
      *
      * @param boolean $uniqueValue
-     * @return EntityField
+     * @return EntityAttribute
      */
     public function setUniqueValue($uniqueValue)
     {
@@ -169,7 +169,7 @@ abstract class EntityField
      * Set valueRequired
      *
      * @param string $valueRequired
-     * @return EntityField
+     * @return EntityAttribute
      */
     public function setValueRequired($valueRequired)
     {
@@ -191,7 +191,7 @@ abstract class EntityField
      * Set searchable
      *
      * @param boolean $searchable
-     * @return EntityField
+     * @return EntityAttribute
      */
     public function setSearchable($searchable)
     {
@@ -213,7 +213,7 @@ abstract class EntityField
      * Set scope
      *
      * @param integer $scope
-     * @return EntityField
+     * @return EntityAttribute
      */
     public function setScope($scope)
     {
@@ -234,10 +234,10 @@ abstract class EntityField
     /**
      * Add option
      *
-     * @param EntityFieldOption $option
-     * @return EntityField
+     * @param EntityAttributeOption $option
+     * @return EntityAttribute
      */
-    public function addOption(EntityFieldOption $option)
+    public function addOption(EntityAttributeOption $option)
     {
         $this->options[] = $option;;
 
@@ -247,9 +247,9 @@ abstract class EntityField
     /**
      * Remove option
      *
-     * @param EntityFieldOption $option
+     * @param EntityAttributeOption $option
      */
-    public function removeOption(EntityFieldOption $option)
+    public function removeOption(EntityAttributeOption $option)
     {
         $this->options->removeElement($option);
     }

@@ -6,9 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Pim\Bundle\CatalogBundle\Entity\ProductField;
-use Pim\Bundle\CatalogBundle\Document\ProductFieldMongo;
-use Pim\Bundle\CatalogBundle\Form\Type\ProductFieldType;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Document\ProductAttributeMongo;
+use Pim\Bundle\CatalogBundle\Form\Type\ProductAttributeType;
 use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
 use APY\DataGridBundle\Grid\Source\Document as GridDocument;
 use APY\DataGridBundle\Grid\Action\RowAction;
@@ -23,9 +23,9 @@ use APY\DataGridBundle\Grid\Export\CSVExport;
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @Route("/productfield")
+ * @Route("/productattribute")
  */
-class ProductFieldController extends AbstractProductController
+class ProductAttributeController extends AbstractProductController
 {
     /**
      * (non-PHPdoc)
@@ -53,16 +53,16 @@ class ProductFieldController extends AbstractProductController
 
         // add action columns
         $grid->setActionsColumnSeparator('&nbsp;');
-        $rowAction = new RowAction('Edit', 'pim_catalog_productfield_edit', false, '_self', array('class' => 'grid_action ui-icon-fugue-tag--pencil'));
+        $rowAction = new RowAction('Edit', 'pim_catalog_productattribute_edit', false, '_self', array('class' => 'grid_action ui-icon-fugue-tag--pencil'));
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
 
-        $rowAction = new RowAction('Delete', 'pim_catalog_productfield_delete', true, '_self', array('class' => 'grid_action ui-icon-fugue-tag--minus'));
+        $rowAction = new RowAction('Delete', 'pim_catalog_productattribute_delete', true, '_self', array('class' => 'grid_action ui-icon-fugue-tag--minus'));
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
 
         // manage the grid redirection, exports response of the controller
-        return $grid->getGridResponse('PimCatalogBundle:ProductField:index.html.twig');
+        return $grid->getGridResponse('PimCatalogBundle:ProductAttribute:index.html.twig');
     }
 
     /**
@@ -75,11 +75,11 @@ class ProductFieldController extends AbstractProductController
     {
         $entity = $this->getNewObject();
         $fieldClassFullName = $this->get('pim.catalog.product_manager')->getFieldClass();
-        $form = $this->createForm(new ProductFieldType($fieldClassFullName), $entity);
+        $form = $this->createForm(new ProductAttributeType($fieldClassFullName), $entity);
 
         // render form
         return $this->render(
-            'PimCatalogBundle:ProductField:new.html.twig', array('entity' => $entity, 'form' => $form->createView())
+            'PimCatalogBundle:ProductAttribute:new.html.twig', array('entity' => $entity, 'form' => $form->createView())
         );
     }
 
@@ -88,14 +88,14 @@ class ProductFieldController extends AbstractProductController
      *
      * @Route("/create")
      * @Method("POST")
-     * @Template("PimCatalogBundle:ProductField:edit.html.twig")
+     * @Template("PimCatalogBundle:ProductAttribute:edit.html.twig")
      */
     public function createAction(Request $request)
     {
         $entity  = $this->getNewObject();
         $fieldClassFullName = $this->get('pim.catalog.product_manager')->getFieldClass();
 
-        $form = $this->createForm(new ProductFieldType($fieldClassFullName), $entity);
+        $form = $this->createForm(new ProductAttributeType($fieldClassFullName), $entity);
         $form->bind($request);
 
         // TODO : avoid to create product field with same code -> complete validation !
@@ -105,7 +105,7 @@ class ProductFieldController extends AbstractProductController
             $manager->flush();
             $this->get('session')->setFlash('success', 'Field has been created');
 
-            return $this->redirect($this->generateUrl('pim_catalog_productfield_edit', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('pim_catalog_productattribute_edit', array('id' => $entity->getId())));
         }
 
         return array(
@@ -131,7 +131,7 @@ class ProductFieldController extends AbstractProductController
         }
 
         $fieldClassFullName = $this->get('pim.catalog.product_manager')->getFieldClass();
-        $editForm = $this->createForm(new ProductFieldType($fieldClassFullName), $entity);
+        $editForm = $this->createForm(new ProductAttributeType($fieldClassFullName), $entity);
 
         $params = array(
             'entity'      => $entity,
@@ -139,7 +139,7 @@ class ProductFieldController extends AbstractProductController
         );
 
         // render form
-        return $this->render('PimCatalogBundle:ProductField:edit.html.twig', $params);
+        return $this->render('PimCatalogBundle:ProductAttribute:edit.html.twig', $params);
     }
 
     /**
@@ -147,7 +147,7 @@ class ProductFieldController extends AbstractProductController
      *
      * @Route("/{id}/update")
      * @Method("POST")
-     * @Template("PimCatalogBundle:ProductField:edit.html.twig")
+     * @Template("PimCatalogBundle:ProductAttribute:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
@@ -160,12 +160,12 @@ class ProductFieldController extends AbstractProductController
         }
 
         $fieldClassFullName = $this->get('pim.catalog.product_manager')->getFieldClass();
-        $editForm = $this->createForm(new ProductFieldType($fieldClassFullName), $entity);
+        $editForm = $this->createForm(new ProductAttributeType($fieldClassFullName), $entity);
         $editForm->bind($request);
 
         /*
         // sort options
-        $postData = $request->get('pim_catalogbundle_productfieldtype');
+        $postData = $request->get('pim_catalogbundle_ProductAttributetype');
         if (isset($postData['options']) and count($postData['options']) > 0) {
             $indOption = 1;
             foreach ($postData['options'] as &$option) {
@@ -197,7 +197,7 @@ class ProductFieldController extends AbstractProductController
             $manager->flush();
             $this->get('session')->setFlash('success', 'Field has been updated');
 
-            return $this->redirect($this->generateUrl('pim_catalog_productfield_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('pim_catalog_productattribute_edit', array('id' => $id)));
         }
 
         return array(
@@ -207,7 +207,7 @@ class ProductFieldController extends AbstractProductController
     }
 
     /**
-     * Deletes a ProductField entity.
+     * Deletes a ProductAttribute entity.
      *
      * @Route("/{id}/delete")
      */
@@ -225,7 +225,7 @@ class ProductFieldController extends AbstractProductController
 
         $this->get('session')->setFlash('success', 'Field has been deleted');
 
-        return $this->redirect($this->generateUrl('pim_catalog_productfield_index'));
+        return $this->redirect($this->generateUrl('pim_catalog_productattribute_index'));
     }
 
 }

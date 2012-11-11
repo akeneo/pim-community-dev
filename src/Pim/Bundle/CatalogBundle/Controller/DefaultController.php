@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\CatalogBundle\Model\Product;
-use Pim\Bundle\CatalogBundle\Model\ProductType;
+use Pim\Bundle\CatalogBundle\Model\ProductSet;
 
 use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
 
@@ -51,13 +51,13 @@ class DefaultController extends Controller
 
         //$dm = $this->get('doctrine.odm.mongodb')->getManager();
 
-        //$type = new ProductTypeMongo();
+        //$type = new ProductSetMongo();
         $class = $productManager->getTypeClass();
         $type = new $class();
         $type->setCode('binomed-type');
         $type->setTitle('Binomed');
 
-        //$field = new ProductFieldMongo();
+        //$field = new ProductAttributeMongo();
         $class = $productManager->getFieldClass();
         $field = new $class();
         $field->setCode('binomed-att');
@@ -85,18 +85,18 @@ class DefaultController extends Controller
 
 /*
         $dm = $this->get('doctrine.odm.mongodb')->getManager();
-        $rep = $dm->getRepository('PimCatalogBundle:ProductTypeMongo');
+        $rep = $dm->getRepository('PimCatalogBundle:ProductSetMongo');
 //        var_dump($rep);
 
         $dm = $this->get('doctrine')->getManager();
-        $rep = $dm->getRepository('PimCatalogBundle:ProductType');
+        $rep = $dm->getRepository('PimCatalogBundle:ProductSet');
 */
 
-        $type = $this->container->get('akeneo.catalog.model_producttype_doctrine');
+        $type = $this->container->get('akeneo.catalog.model_productset_doctrine');
 
         $type = $this->container->get('akeneo.catalog.model_product_doctrine');
 
-        $type = $this->container->get('akeneo.catalog.model_producttype_mongo');
+        $type = $this->container->get('akeneo.catalog.model_productset_mongo');
 
         $type = $this->container->get('akeneo.catalog.model_product_mongo');
 
@@ -116,7 +116,7 @@ class DefaultController extends Controller
 
 
         /*
-        $type = $this->container->get('akeneo.catalog.model_producttype_mongo');
+        $type = $this->container->get('akeneo.catalog.model_productset_mongo');
         $type->find('1-hp-151-ordinateursportables');
         */
 
@@ -124,10 +124,10 @@ class DefaultController extends Controller
 
 
 /*
-        $type = new ProductTypeMongo();
+        $type = new ProductSetMongo();
         var_dump($type);
 
-        $field = new ProductFieldMongo();
+        $field = new ProductAttributeMongo();
         $field->setCode('sku');
         $type->addField($field);
 
@@ -143,7 +143,7 @@ class DefaultController extends Controller
         // create type
         $ind = time();
         $typeCode = 'tshirt'.$ind;
-        $type = $this->container->get('akeneo.catalog.model_producttype_mongo');
+        $type = $this->container->get('akeneo.catalog.model_productset_mongo');
         $type = $type->create($typeCode, 'My tshirt');
         //$type->find('tshirt1349958342');
         $type->addField('sku', 'text', 'General', 'Sku');
@@ -156,7 +156,7 @@ class DefaultController extends Controller
         var_dump($type->getObject()->getTitles());
 
 
-        $type = $this->container->get('akeneo.catalog.model_producttype_mongo');
+        $type = $this->container->get('akeneo.catalog.model_productset_mongo');
         $type->find($typeCode);
         $type->switchLocale('fr_FR');
         $type->setTitle('Mon t-shirt');
@@ -174,13 +174,13 @@ class DefaultController extends Controller
 */
 
 /*
-        $odm = $this->container->get('akeneo.catalog.model_producttype_mongo')->getManager();
+        $odm = $this->container->get('akeneo.catalog.model_productset_mongo')->getManager();
         $fieldCode = 'mycode2';
-        $field = $odm->getRepository('PimCatalogBundle:ProductFieldMongo')
+        $field = $odm->getRepository('PimCatalogBundle:ProductAttributeMongo')
             ->findOneByCode($fieldCode);
 
         if (!$field) {
-            $field = new ProductFieldMongo();
+            $field = new ProductAttributeMongo();
             $field->setCode($fieldCode);
             $field->setTitles(array('fr' => 'frval', 'en' =>'enval'));
             $odm->persist($field);
@@ -200,7 +200,7 @@ class DefaultController extends Controller
         // create type
         $ind = time();
         $typeCode = 'tshirt'.$ind;
-        $type = $this->container->get('akeneo.catalog.model_producttype_mongo');
+        $type = $this->container->get('akeneo.catalog.model_productset_mongo');
         $type = $type->create($typeCode, 'My tshirt');
         //$type->find('tshirt1349958342');
         $type->addField('sku', 'text', 'General', 'Sku');
@@ -241,7 +241,7 @@ class DefaultController extends Controller
         exit();
 
         /*
-        $type = $this->container->get('akeneo.catalog.model_producttype_doctrine');
+        $type = $this->container->get('akeneo.catalog.model_productset_doctrine');
         $type = $type->find('base');
 
         $product = $this->container->get('akeneo.catalog.model_product_mongo');
@@ -277,8 +277,8 @@ class DefaultController extends Controller
 /*
         // create type
         $typeCode = 'tshirt'.$ind;
-        //$type = new ProductType($manager);
-        $type = $this->container->get('akeneo.catalog.model_producttype_doctrine');
+        //$type = new ProductSet($manager);
+        $type = $this->container->get('akeneo.catalog.model_productset_doctrine');
         $type = $type->create($typeCode);
         $type->addField('sku', Field::TYPE_TEXT, 'General');
         $type->addField('name', Field::TYPE_TEXT, 'General');

@@ -8,7 +8,7 @@ namespace Bap\Bundle\FlexibleEntityBundle\Model;
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class EntityFieldOption
+abstract class EntityAttributeOption
 {
     /**
      * @var integer $id
@@ -39,7 +39,7 @@ abstract class EntityFieldOption
      * Set id
      *
      * @param integer $id
-     * @return EntityValue
+     * @return EntityAttributeValue
      */
     public function setId($id)
     {
@@ -52,7 +52,7 @@ abstract class EntityFieldOption
      * Set value
      *
      * @param string $value
-     * @return EntityValue
+     * @return EntityAttributeValue
      */
     public function setValue($value)
     {
@@ -75,7 +75,7 @@ abstract class EntityFieldOption
      * Set sort order
      *
      * @param string $sortOrder
-     * @return EntityValue
+     * @return EntityAttributeValue
      */
     public function setSortOrder($sortOrder)
     {

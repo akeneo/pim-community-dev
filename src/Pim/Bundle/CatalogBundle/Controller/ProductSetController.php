@@ -8,7 +8,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
 
-use Pim\Bundle\CatalogBundle\Form\Type\ProductTypeType;
+use Pim\Bundle\CatalogBundle\Form\Type\ProductSetType;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -27,9 +27,9 @@ use \Exception;
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @Route("/producttype")
+ * @Route("/productset")
  */
-class ProductTypeController extends Controller
+class ProductSetController extends Controller
 {
 
     /**
@@ -82,16 +82,16 @@ class ProductTypeController extends Controller
 
         // add action columns
         $grid->setActionsColumnSeparator('&nbsp;');
-        $rowAction = new RowAction('Edit', 'pim_catalog_producttype_edit', false, '_self', array('class' => 'grid_action ui-icon-fugue-folder--pencil'));
+        $rowAction = new RowAction('Edit', 'pim_catalog_productset_edit', false, '_self', array('class' => 'grid_action ui-icon-fugue-folder--pencil'));
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
 
-        $rowAction = new RowAction('Delete', 'pim_catalog_producttype_delete', true, '_self', array('class' => 'grid_action ui-icon-fugue-folder--minus'));
+        $rowAction = new RowAction('Delete', 'pim_catalog_productset_delete', true, '_self', array('class' => 'grid_action ui-icon-fugue-folder--minus'));
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
 
         // manage the grid redirection, exports response of the controller
-        return $grid->getGridResponse('PimCatalogBundle:ProductType:index.html.twig');
+        return $grid->getGridResponse('PimCatalogBundle:ProductSet:index.html.twig');
     }
 
     /**
@@ -100,7 +100,7 @@ class ProductTypeController extends Controller
      */
     public function newAction()
     {
-        return $this->forward('PimCatalogBundle:ProductType:create');
+        return $this->forward('PimCatalogBundle:ProductSet:create');
     }
 
     /**
@@ -117,7 +117,7 @@ class ProductTypeController extends Controller
         $entity = $productManager->getNewTypeInstance();
 
         // create type, set list of existing type to prepare copy list
-        $type = new ProductTypeType();
+        $type = new ProductSetType();
         $type->setCopyTypeOptions($this->_getCopyTypeOptions());
 
         // prepare & render form
@@ -146,12 +146,12 @@ class ProductTypeController extends Controller
 
                 // TODO : redirect to edit
                 return $this->redirect(
-                        $this->generateUrl('pim_catalog_producttype_edit', array('id' => $entity->getId()))
+                        $this->generateUrl('pim_catalog_productset_edit', array('id' => $entity->getId()))
                 );
             }
         }
 
-        return $this->render('PimCatalogBundle:ProductType:new.html.twig', array('form' => $form->createView()));
+        return $this->render('PimCatalogBundle:ProductSet:new.html.twig', array('form' => $form->createView()));
     }
 
     /**
@@ -168,12 +168,12 @@ class ProductTypeController extends Controller
             throw $this->createNotFoundException('No product type found for id '. $id);
         }
 
-        $type = new ProductTypeType();
+        $type = new ProductSetType();
         $type->setAvailableFields($this->getAvailableFields());
 
         // prepare & render form
         $form = $this->createForm($type, $entity);
-        return $this->render('PimCatalogBundle:ProductType:edit.html.twig', array('form' => $form->createView()));
+        return $this->render('PimCatalogBundle:ProductSet:edit.html.twig', array('form' => $form->createView()));
     }
 
     /**
@@ -211,7 +211,7 @@ class ProductTypeController extends Controller
             }
 
             //
-            $type = new ProductTypeType();
+            $type = new ProductSetType();
 
             $form = $this->createForm($type, $entity);
             $form->bind($request);
@@ -226,11 +226,11 @@ class ProductTypeController extends Controller
                 $this->get('session')->setFlash('success', 'product type has been saved');
             }
 
-            return $this->render('PimCatalogBundle:ProductType:edit.html.twig', array('form' => $form->createView()));
+            return $this->render('PimCatalogBundle:ProductSet:edit.html.twig', array('form' => $form->createView()));
 
         } else {
             $this->get('session')->setFlash('notice', 'Incorrect update product type call');
-            return $this->redirect($this->generateUrl('pim_catalog_producttype_index'));
+            return $this->redirect($this->generateUrl('pim_catalog_productset_index'));
         }
     }
 
@@ -260,7 +260,7 @@ class ProductTypeController extends Controller
         $this->get('session')->setFlash('success', 'product has been removed');
 
         return $this->redirect(
-                $this->generateUrl('pim_catalog_producttype_index')
+                $this->generateUrl('pim_catalog_productset_index')
         );
     }
 

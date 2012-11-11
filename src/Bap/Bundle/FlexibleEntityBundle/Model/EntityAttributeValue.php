@@ -9,7 +9,7 @@ namespace Bap\Bundle\FlexibleEntityBundle\Model;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-abstract class EntityValue
+abstract class EntityAttributeValue
 {
 
     /**
@@ -18,7 +18,7 @@ abstract class EntityValue
     protected $id;
 
     /**
-     * @var EntityField $field
+     * @var EntityAttribute $field
      */
     protected $field;
 
@@ -41,7 +41,7 @@ abstract class EntityValue
      * Set data
      *
      * @param string $data
-     * @return EntityValue
+     * @return EntityAttributeValue
      */
      public function setData($data)
      {
@@ -63,10 +63,10 @@ abstract class EntityValue
     /**
      * Set field
      *
-     * @param EntityField $field
-     * @return EntityValue
+     * @param EntityAttribute $field
+     * @return EntityAttributeValue
      */
-    public function setField(EntityField $field = null)
+    public function setField(EntityAttribute $field = null)
     {
         $this->field = $field;
 
@@ -76,7 +76,7 @@ abstract class EntityValue
     /**
      * Get field
      *
-     * @return EntityField
+     * @return EntityAttribute
      */
     public function getField()
     {

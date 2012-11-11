@@ -7,8 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Pim\Bundle\CatalogBundle\Entity\ProductField;
-use Pim\Bundle\CatalogBundle\Document\ProductFieldMongo;
 use Pim\Bundle\CatalogBundle\Form\Type\ProductType;
 use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
 use APY\DataGridBundle\Grid\Source\Document as GridDocument;

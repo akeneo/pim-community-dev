@@ -1,14 +1,14 @@
 <?php
 namespace Bap\Bundle\FlexibleEntityBundle\Doctrine;
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityValue;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttributeValue;
 
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityField;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttribute;
 
 use Bap\Bundle\FlexibleEntityBundle\Model\EntityGroup;
 
 use Bap\Bundle\FlexibleEntityBundle\Model\Entity;
 
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityType;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntitySet;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -203,7 +203,7 @@ abstract class FlexibleEntityManager
 
     /**
      * Return a new instance
-     * @return EntityType
+     * @return EntitySet
      */
     public function getNewTypeInstance()
     {
@@ -223,7 +223,7 @@ abstract class FlexibleEntityManager
 
     /**
      * Return a new instance
-     * @return EntityField
+     * @return EntityAttribute
      */
     public function getNewFieldInstance()
     {
@@ -233,7 +233,7 @@ abstract class FlexibleEntityManager
 
     /**
      * Return a new instance
-     * @return EntityFieldOption
+     * @return EntityAttributeOption
      */
     public function getNewFieldOptionInstance()
     {
@@ -243,7 +243,7 @@ abstract class FlexibleEntityManager
 
     /**
      * Return a new instance
-     * @return EntityValue
+     * @return EntityAttributeValue
      */
     public function getNewValueInstance()
     {
@@ -254,8 +254,8 @@ abstract class FlexibleEntityManager
     /**
      * Clone an entity type
      *
-     * @param EntityType $entityType
-     * @return EntityType
+     * @param EntitySet $entityType
+     * @return EntitySet
      */
     public function cloneType($entityType)
     {

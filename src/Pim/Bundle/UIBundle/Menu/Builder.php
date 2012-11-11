@@ -36,8 +36,8 @@ class Builder extends ContainerAware
 
         // second level items
         $menu['Catalog']->addChild('Products', array('route' => 'pim_catalog_product_index'));
-        $menu['Catalog']->addChild('Product types', array('route' => 'pim_catalog_producttype_index'));
-        $menu['Catalog']->addChild('Product fields', array('route' => 'pim_catalog_productfield_index'));
+        $menu['Catalog']->addChild('Product sets', array('route' => 'pim_catalog_productset_index'));
+        $menu['Catalog']->addChild('Product attributes', array('route' => 'pim_catalog_productattribute_index'));
         //$menu['Catalog']->addChild('Channels', array('route' => 'pim_catalog_channel_index'));
         $menu['Connectors']->addChild('Icecat');
         $menu['Connectors']['Icecat']->addChild('Settings', array('route' => 'pim_connectoricecat_config_edit'));

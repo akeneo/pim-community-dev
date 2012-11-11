@@ -2,10 +2,10 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Pim\Bundle\CatalogBundle\Entity\ProductEntity as EntityProductEntity;
-use Pim\Bundle\CatalogBundle\Entity\ProductType as EntityProductType;
+use Pim\Bundle\CatalogBundle\Entity\ProductSet as EntityProductSet;
 use Pim\Bundle\CatalogBundle\Entity\ProductGroup as EntityProductGroup;
-use Pim\Bundle\CatalogBundle\Entity\ProductField as EntityProductField;
-use Pim\Bundle\CatalogBundle\Entity\ProductValue as EntityProductValue;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute as EntityProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttributeValue as EntityProductAttributeValue;
 
 /**
  * Base field type to define high level types related to a default backend type, a renderer, etc

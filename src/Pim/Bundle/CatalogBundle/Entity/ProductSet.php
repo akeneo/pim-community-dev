@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityType as AbstractEntityType;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntitySet as AbstractEntitySet;
 use Bap\Bundle\FlexibleEntityBundle\Model\EntityGroup as AbstractEntityGroup;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="Akeneo_PimCatalog_Product_Type")
  * @ORM\Entity
  */
-class ProductType extends AbstractEntityType
+class ProductSet extends AbstractEntitySet
 {
     /**
      * @var integer $id
@@ -59,7 +59,7 @@ class ProductType extends AbstractEntityType
      * Custom add group method to ensure group is added in type without explicit call (due to oneToMany)
      *
      * @param  AbstractEntityGroup $group
-     * @return AbstractEntityType
+     * @return AbstractEntitySet
      */
     public function addGroup(AbstractEntityGroup $group)
     {

@@ -51,6 +51,6 @@ class ProductGroupType extends AbstractType
      */
     public function getName()
     {
-        return 'akeneo_producttype_group';
+        return 'akeneo_productset_group';
     }
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Document;
 
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityField as AbstractEntityField;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttribute as AbstractEntityAttribute;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Doctrine\Common\Collections\ArrayCollection;
 use APY\DataGridBundle\Grid\Mapping as GRID;
@@ -16,7 +16,7 @@ use APY\DataGridBundle\Grid\Mapping as GRID;
  * @MongoDB\Document
  * @GRID\Source(columns="id, code, title, type")
  */
-class ProductField extends AbstractEntityField
+class ProductAttribute extends AbstractEntityAttribute
 {
 
     /**
@@ -45,7 +45,7 @@ class ProductField extends AbstractEntityField
     protected $type;
 
     /**
-     * @MongoDB\EmbedMany(targetDocument="ProductFieldOption")
+     * @MongoDB\EmbedMany(targetDocument="ProductAttributeOption")
      */
     protected $options = array();
 

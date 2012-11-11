@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Form\Type;
 
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityField;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttribute;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -26,7 +26,7 @@ class ProductGroupFieldType extends AbstractType
     /**
      * Construct
      */
-    public function __construct(EntityField $field = null)
+    public function __construct(EntityAttribute $field = null)
     {
         if ($field) {
             $this->field = $field;
@@ -54,7 +54,7 @@ class ProductGroupFieldType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         return array(
-            'data_class' => 'Bap\Bundle\FlexibleEntityBundle\Model\EntityField',
+            'data_class' => 'Bap\Bundle\FlexibleEntityBundle\Model\EntityAttribute',
         );
     }
 
@@ -64,7 +64,7 @@ class ProductGroupFieldType extends AbstractType
      */
     public function getName()
     {
-        return 'akeneo_producttype_field';
+        return 'akeneo_productset_field';
     }
 
 }

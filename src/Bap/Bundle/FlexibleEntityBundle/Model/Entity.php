@@ -18,7 +18,7 @@ abstract class Entity
     protected $id;
 
     /**
-     * @var EntityType $type
+     * @var EntitySet $type
      */
     protected $type;
 
@@ -35,7 +35,7 @@ abstract class Entity
     /**
      * Get type
      *
-     * @return EntityType
+     * @return EntitySet
      */
     public function getType()
     {
@@ -45,10 +45,10 @@ abstract class Entity
     /**
      * Set type
      *
-     * @param EntityType $type
+     * @param EntitySet $type
      * @return Entity
      */
-    public function setType(EntityType $type = null)
+    public function setType(EntitySet $type = null)
     {
         $this->type = $type;
         return $this;
@@ -57,10 +57,10 @@ abstract class Entity
     /**
      * Add value
      *
-     * @param EntityValue $value
+     * @param EntityAttributeValue $value
      * @return Entity
      */
-    public function addValue(EntityValue $value)
+    public function addValue(EntityAttributeValue $value)
     {
         $this->values[] = $value;
 
@@ -70,9 +70,9 @@ abstract class Entity
     /**
      * Remove value
      *
-     * @param EntityValue $value
+     * @param EntityAttributeValue $value
      */
-    public function removeValue(EntityValue $value)
+    public function removeValue(EntityAttributeValue $value)
     {
         $this->values->removeElement($value);
     }

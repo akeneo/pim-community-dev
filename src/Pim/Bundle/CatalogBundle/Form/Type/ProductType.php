@@ -71,8 +71,14 @@ class ProductType extends AbstractType
                     // add select field options
                     } else if ($field->getType() == BaseFieldFactory::FIELD_SELECT) {
                         $fieldType = 'choice';
-                        $choices = $field->getOptions();
+                        $options = $field->getOptions();
+                        $choices = array();
+                        // TODO option order
+                        foreach ($options as $option) {
+                            $choices[$option->getId()]= $option->getValue();
+                        }
                         $customOptions['choices']= $choices;
+                        $customOptions['data']= ($value) ? $value->getData() : '';
                     }
 
                     // add field

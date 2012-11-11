@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ProductFieldOptionType extends AbstractType
+class ProductAttributeOptionType extends AbstractType
 {
     /**
      * (non-PHPdoc)
@@ -34,7 +34,7 @@ class ProductFieldOptionType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Document\ProductFieldOption'
+                'data_class' => 'Pim\Bundle\CatalogBundle\Document\ProductAttributeOption'
             )
         );
     }
@@ -45,6 +45,6 @@ class ProductFieldOptionType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_catalogbundle_productfieldoptiontype';
+        return 'pim_catalogbundle_ProductAttributeoptiontype';
     }
 }

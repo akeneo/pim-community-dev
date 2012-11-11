@@ -2,7 +2,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Bap\Bundle\FlexibleEntityBundle\Model\Entity as AbstractEntity;
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityValue as AbstractEntityValue;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttributeValue as AbstractEntityAttributeValue;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -28,16 +28,16 @@ class ProductEntity extends AbstractEntity
     protected $id;
 
     /**
-     * @var EntityType $type
+     * @var EntitySet $type
      *
-     * @ORM\ManyToOne(targetEntity="ProductType")
+     * @ORM\ManyToOne(targetEntity="ProductSet")
      */
     protected $type;
 
     /**
      * @var Value
      *
-     * @ORM\OneToMany(targetEntity="ProductValue", mappedBy="product", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="ProductAttributeValue", mappedBy="product", cascade={"persist", "remove"})
      */
     protected $values;
 
@@ -52,10 +52,10 @@ class ProductEntity extends AbstractEntity
     /**
      * Add value
      *
-     * @param AbstractEntityValue $value
+     * @param AbstractEntityAttributeValue $value
      * @return AbstractEntity
      */
-    public function addValue(AbstractEntityValue $value)
+    public function addValue(AbstractEntityAttributeValue $value)
     {
         $this->values[] = $value;
         $value->setEntity($this);

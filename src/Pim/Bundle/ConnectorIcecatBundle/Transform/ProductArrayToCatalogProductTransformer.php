@@ -3,8 +3,6 @@ namespace Pim\Bundle\ConnectorIcecatBundle\Transform;
 
 use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
 
-use Bap\Bundle\FlexibleEntityBundle\Doctrine\EntityManager;
-use Bap\Bundle\FlexibleEntityBundle\Doctrine\EntityTypeManager;
 /**
  * Aims to transform array product data to catalog product instance
  *
@@ -43,8 +41,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
     /**
      * Constructor
      *
-     * @param EntityTypeManager $serviceType
-     * @param EntityManager $serviceProduct
+     * @param ProductManager $productManager
      * @param array $prodData
      * @param array $prodFeat
      * @param string $localeCode
@@ -80,7 +77,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
         }
 
         // 2) add all fields of prodData as general fields
-        $productFieldCodeToValues = array();
+        $ProductAttributeCodeToValues = array();
         $productValues = array();
 
         // 2a) create general group if not exists
@@ -116,7 +113,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
             }
 
             // prepare field code to value for next step
-            $productFieldCodeToValues[$fieldCode]= $valueData;
+            $ProductAttributeCodeToValues[$fieldCode]= $valueData;
 
             // TODO : deal with existing values
             $value = $this->productManager->getNewValueInstance();
@@ -162,7 +159,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
                         $group->addField($field);
                     }
 
-                    $productFieldCodeToValues[$fieldCode]= $valueData;
+                    $ProductAttributeCodeToValues[$fieldCode]= $valueData;
 
                     // TODO : deal with existing values
                     $value = $this->productManager->getNewValueInstance();

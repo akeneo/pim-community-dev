@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityType;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntitySet;
 
 use Bap\Bundle\FlexibleEntityBundle\Doctrine\FlexibleEntityManager;
 
@@ -30,7 +30,7 @@ class ProductManager extends FlexibleEntityManager
      */
     public function getTypeShortname()
     {
-        return 'PimCatalogBundle:ProductType';
+        return 'PimCatalogBundle:ProductSet';
     }
 
     /**
@@ -48,7 +48,7 @@ class ProductManager extends FlexibleEntityManager
      */
     public function getFieldShortname()
     {
-        return 'PimCatalogBundle:ProductField';
+        return 'PimCatalogBundle:ProductAttribute';
     }
 
     /**
@@ -57,7 +57,7 @@ class ProductManager extends FlexibleEntityManager
      */
     public function getFieldOptionShortname()
     {
-        return 'PimCatalogBundle:ProductFieldOption';
+        return 'PimCatalogBundle:ProductAttributeOption';
     }
 
     /**
@@ -66,7 +66,7 @@ class ProductManager extends FlexibleEntityManager
      */
     public function getValueShortname()
     {
-        return 'PimCatalogBundle:ProductValue';
+        return 'PimCatalogBundle:ProductAttributeValue';
     }
 
 }

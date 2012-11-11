@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Document;
 
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityType as AbstractEntityType;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntitySet as AbstractEntitySet;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Doctrine\Common\Collections\ArrayCollection;
 use APY\DataGridBundle\Grid\Mapping as GRID;
@@ -16,7 +16,7 @@ use APY\DataGridBundle\Grid\Mapping as GRID;
  * @MongoDB\Document
  * @GRID\Source(columns="id, code, title")
  */
-class ProductType extends AbstractEntityType
+class ProductSet extends AbstractEntitySet
 {
     /**
      * @MongoDB\Id

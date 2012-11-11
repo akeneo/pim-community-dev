@@ -35,13 +35,13 @@ class ProductGroup extends AbstractEntityGroup
     /**
      * @var Type $type
      *
-     * @ORM\ManyToOne(targetEntity="ProductType", inversedBy="groups")
+     * @ORM\ManyToOne(targetEntity="ProductSet", inversedBy="groups")
      */
     protected $type;
 
     /**
      * @var ArrayCollection $fields
-     * @ORM\ManyToMany(targetEntity="ProductField")
+     * @ORM\ManyToMany(targetEntity="ProductAttribute")
      * @ORM\JoinTable(name="Akeneo_PimCatalog_Product_Group_Field")
      */
     protected $fields = array();
@@ -90,10 +90,10 @@ class ProductGroup extends AbstractEntityGroup
     /**
      * Set type
      *
-     * @param ProductType $type
+     * @param ProductSet $type
      * @return ProductGroup
      */
-    public function setType(ProductType $type = null)
+    public function setType(ProductSet $type = null)
     {
         $this->type = $type;
 

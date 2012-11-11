@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Model\ProductType;
+use Pim\Bundle\CatalogBundle\Model\ProductSet;
 use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
 
 /**
@@ -77,7 +77,7 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
     protected function _createBaseType(ObjectManager $manager)
     {
         // create type
-        $type = $this->container->get('akeneo.catalog.model_producttype_doctrine');
+        $type = $this->container->get('akeneo.catalog.model_productset_doctrine');
         $type->create(self::TYPE_BASE);
         // add info fields
         $fields = array(
@@ -114,7 +114,7 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
     protected function _createProducts(ObjectManager $manager)
     {
         // get base type
-        $type = $this->container->get('akeneo.catalog.model_producttype_doctrine');
+        $type = $this->container->get('akeneo.catalog.model_productset_doctrine');
         $type->find(self::TYPE_BASE);
         // create product
         $product = $type->newProductInstance();

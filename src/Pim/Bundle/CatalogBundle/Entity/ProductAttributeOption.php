@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityFieldOption as AbstractEntityFieldOption;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttributeOption as AbstractEntityAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
@@ -13,10 +13,10 @@ use Gedmo\Translatable\Translatable;
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="Akeneo_PimCatalog_Product_FieldOption")
+ * @ORM\Table(name="Akeneo_PimCatalog_Product_AttributeOption")
  * @ORM\Entity
  */
-class ProductFieldOption extends AbstractEntityFieldOption
+class ProductAttributeOption extends AbstractEntityAttributeOption
 {
     /**
      * @var integer $id
@@ -30,7 +30,7 @@ class ProductFieldOption extends AbstractEntityFieldOption
     /**
      * @var Field $field
      *
-     * @ORM\ManyToOne(targetEntity="ProductField")
+     * @ORM\ManyToOne(targetEntity="ProductAttribute")
      */
     protected $field;
 
@@ -47,10 +47,10 @@ class ProductFieldOption extends AbstractEntityFieldOption
     /**
      * Set field
      *
-     * @param ProductField $field
-     * @return ProductFieldOption
+     * @param ProductAttribute $field
+     * @return ProductAttributeOption
      */
-    public function setField(ProductField $field = null)
+    public function setField(ProductAttribute $field = null)
     {
         $this->field = $field;
 

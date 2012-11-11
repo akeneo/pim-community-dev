@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Tests\KernelAwareTest;
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductTypeTypeTest extends KernelAwareTest
+class ProductSetTypeTest extends KernelAwareTest
 {
 
     /**
@@ -26,7 +26,7 @@ class ProductTypeTypeTest extends KernelAwareTest
     {
         $productManager = $this->container->get('pim.catalog.product_manager');
         $entity = $productManager->getNewTypeInstance();
-        $this->container->get('form.factory')->create(new ProductTypeType(), $entity);
+        $this->container->get('form.factory')->create(new ProductSetType(), $entity);
     }
 
 }

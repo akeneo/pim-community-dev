@@ -68,7 +68,7 @@ abstract class EntityGroup
      * Set code
      *
      * @param string $code
-     * @return EntityType
+     * @return EntitySet
      */
     public function setCode($code)
     {
@@ -80,7 +80,7 @@ abstract class EntityGroup
      * Set title
      *
      * @param string $title
-     * @return EntityType
+     * @return EntitySet
      */
     public function setTitle($title)
     {
@@ -102,10 +102,10 @@ abstract class EntityGroup
     /**
      * Add field
      *
-     * @param EntityField $fields
+     * @param EntityAttribute $fields
      * @return ProductGroup
      */
-    public function addField(EntityField $field)
+    public function addField(EntityAttribute $field)
     {
         $this->fields[] = $field;
 
@@ -115,9 +115,9 @@ abstract class EntityGroup
     /**
      * Remove field
      *
-     * @param EntityField $field
+     * @param EntityAttribute $field
      */
-    public function removeField(EntityField $field)
+    public function removeField(EntityAttribute $field)
     {
         $this->fields->removeElement($field);
     }
@@ -136,7 +136,7 @@ abstract class EntityGroup
      * Get group
      *
      * @param string $code
-     * @return EntityField
+     * @return EntityAttribute
      */
     public function getField($code)
     {

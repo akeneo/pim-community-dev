@@ -54,11 +54,11 @@ abstract class AbtractProductTest extends KernelAwareTest
      */
     public function testFlexibleProduct()
     {
-        $this->createProductType();
+        $this->createProductSet();
 
-        $this->findProductType();
+        $this->findProductSet();
         $this->findProductGroup();
-        $this->findProductField();
+        $this->findProductAttribute();
 
         $this->createProduct();
 
@@ -68,7 +68,7 @@ abstract class AbtractProductTest extends KernelAwareTest
     /**
      * test related method(s)
      */
-    public function createProductType()
+    public function createProductSet()
     {
         // create product type
         $type = $this->productManager->getNewTypeInstance();
@@ -166,7 +166,7 @@ abstract class AbtractProductTest extends KernelAwareTest
     /**
      * test related method(s)
      */
-    public function findProductType()
+    public function findProductSet()
     {
         $type = $this->productManager->getTypeRepository()->findOneByCode($this->codeType);
         $class = $this->productManager->getTypeClass();
@@ -186,7 +186,7 @@ abstract class AbtractProductTest extends KernelAwareTest
     /**
      * test related method(s)
      */
-    public function findProductField()
+    public function findProductAttribute()
     {
         $field = $this->productManager->getFieldRepository()->findOneByCode($this->codeFieldSku);
         $class = $this->productManager->getFieldClass();

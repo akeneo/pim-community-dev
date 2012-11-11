@@ -1,8 +1,8 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityField as AbstractEntityField;
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityFieldOption as AbstractEntityFieldOption;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttribute as AbstractEntityAttribute;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttributeOption as AbstractEntityAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,10 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="Akeneo_PimCatalog_Product_Field")
+ * @ORM\Table(name="Akeneo_PimCatalog_Product_Attribute")
  * @ORM\Entity
  */
-class ProductField extends AbstractEntityField
+class ProductAttribute extends AbstractEntityAttribute
 {
     /**
      * @var integer $id
@@ -70,7 +70,7 @@ class ProductField extends AbstractEntityField
     /**
      * @var ArrayCollection $options
      *
-     * @ORM\OneToMany(targetEntity="ProductFieldOption", mappedBy="field", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="ProductAttributeOption", mappedBy="field", cascade={"persist", "remove"})
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $options;
@@ -86,10 +86,10 @@ class ProductField extends AbstractEntityField
     /**
      * Add option
      *
-     * @param AbstractEntityFieldOption $option
-     * @return AbstractEntityField
+     * @param AbstractEntityAttributeOption $option
+     * @return AbstractEntityAttribute
      */
-    public function addOption(AbstractEntityFieldOption $option)
+    public function addOption(AbstractEntityAttributeOption $option)
     {
         $this->options[] = $option;
         $option->setField($this);

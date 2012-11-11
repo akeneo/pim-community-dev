@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ProductFieldType extends AbstractType
+class ProductAttributeType extends AbstractType
 {
     /**
      * @var string
@@ -94,7 +94,7 @@ class ProductFieldType extends AbstractType
         if ($entity->getType() == BaseFieldFactory::FIELD_SELECT) {
             $builder->add(
                 'options', 'collection', array(
-                    'type' => new ProductFieldOptionType(),
+                    'type' => new ProductAttributeOptionType(),
                     'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => true,
@@ -122,6 +122,6 @@ class ProductFieldType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_catalogbundle_productfieldtype';
+        return 'pim_catalogbundle_ProductAttributetype';
     }
 }

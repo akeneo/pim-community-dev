@@ -9,7 +9,7 @@ namespace Bap\Bundle\FlexibleEntityBundle\Model;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-abstract class EntityType
+abstract class EntitySet
 {
 
     /**
@@ -51,7 +51,7 @@ abstract class EntityType
      * Set code
      *
      * @param string $code
-     * @return EntityType
+     * @return EntitySet
      */
     public function setCode($code)
     {
@@ -64,7 +64,7 @@ abstract class EntityType
      * Set title
      *
      * @param string $title
-     * @return EntityType
+     * @return EntitySet
      */
     public function setTitle($title)
     {
@@ -87,7 +87,7 @@ abstract class EntityType
      * Add group
      *
      * @param EntityGroup $group
-     * @return EntityType
+     * @return EntitySet
      */
     public function addGroup(EntityGroup $group)
     {
