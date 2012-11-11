@@ -101,7 +101,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
             }
 
             // get attribute or create TODO: if it's already in other group ?
-            $attribute = $group->getField($attributeCode);
+            $attribute = $group->getAttribute($attributeCode);
             if (!$attribute) {
                 $attribute = $this->productManager->getNewAttributeInstance();
                 $attribute->setCode($attributeCode);
@@ -147,7 +147,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
                     }
 
                     // get attribute or create TODO: if it's already in other group ?
-                    $attribute = $group->getField($attributeCode);
+                    $attribute = $group->getAttribute($attributeCode);
                     if (!$attribute) {
                         $classField = $this->productManager->getAttributeClass();
                         $attribute = new $classField();
@@ -178,7 +178,6 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
         // 5) if not exists create a product
         $productSourceId = null;
         $productRepository = $this->productManager->getEntityRepository();
-//        $product = $productRepository->findBySourceId(self::PREFIX, $productSourceId);
 
         $sourceField = self::PREFIX.'_source_id';
         $product = null; //$productRepository->findOneBy(array($sourceField => $productSourceId));
@@ -188,7 +187,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
             $product = new $classProd();
             $product->setSet($set);
         }
- // TODO       $product->switchLocale($localeCode);
+        // TODO $product->switchLocale($localeCode);
 
         // set product values
         foreach ($productValues as $value) {

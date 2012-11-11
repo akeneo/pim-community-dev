@@ -24,9 +24,9 @@ abstract class AbtractProductTest extends KernelAwareTest
     protected $objectManagerName = null;
     protected $productManager = null;
     protected $codeSet      = null;
-    protected $codeFieldSku  = null;
-    protected $codeFieldName = null;
-    protected $codeFieldSize = null;
+    protected $codeAttributeSku  = null;
+    protected $codeAttributeName = null;
+    protected $codeAttributeSize = null;
     protected $productSku = null;
 
     /**
@@ -41,9 +41,9 @@ abstract class AbtractProductTest extends KernelAwareTest
 
         $timestamp = str_replace('.', '', microtime(true));
         $this->codeSet      = 'set_'.$timestamp;
-        $this->codeFieldSku  = 'sku_'.$timestamp;
-        $this->codeFieldName = 'name_'.$timestamp;
-        $this->codeFieldSize = 'size_'.$timestamp;
+        $this->codeAttributeSku  = 'sku_'.$timestamp;
+        $this->codeAttributeName = 'name_'.$timestamp;
+        $this->codeAttributeSize = 'size_'.$timestamp;
         $this->productSku    = 'my_sku_'.$timestamp;
 
         // TODO : take a look on KernelAwareTest to avoid to drop data at any setUp + rename test method as testMethod ?
@@ -95,8 +95,8 @@ abstract class AbtractProductTest extends KernelAwareTest
 
         // add a field sku
         $field = $this->productManager->getNewAttributeInstance();
-        $field->setCode($this->codeFieldSku);
-        $title = 'My title '.$this->codeFieldSku;
+        $field->setCode($this->codeAttributeSku);
+        $title = 'Sku';
         $field->setTitle($title);
         $field->setType(BaseFieldFactory::FIELD_STRING);
         $field->setScope(BaseFieldFactory::SCOPE_GLOBAL);
@@ -108,7 +108,7 @@ abstract class AbtractProductTest extends KernelAwareTest
         $this->assertEquals($groupInfo->getAttributes()->count(), 1);
 
         // check field getter / setter
-        $this->assertEquals($field->getCode(), $this->codeFieldSku);
+        $this->assertEquals($field->getCode(), $this->codeAttributeSku);
         $this->assertEquals($field->getTitle(), $title);
         $this->assertEquals($field->getType(), BaseFieldFactory::FIELD_STRING);
         $this->assertEquals($field->getScope(), BaseFieldFactory::SCOPE_GLOBAL);
@@ -118,8 +118,8 @@ abstract class AbtractProductTest extends KernelAwareTest
 
         // add a field name
         $field = $this->productManager->getNewAttributeInstance();
-        $field->setCode($this->codeFieldName);
-        $field->setTitle('My title '.$this->codeFieldName);
+        $field->setCode($this->codeAttributeName);
+        $field->setTitle('Name');
         $field->setType(BaseFieldFactory::FIELD_STRING);
         $field->setScope(BaseFieldFactory::SCOPE_GLOBAL);
         $field->setUniqueValue(false);
@@ -131,8 +131,8 @@ abstract class AbtractProductTest extends KernelAwareTest
 
         // add a field size
         $field = $this->productManager->getNewAttributeInstance();
-        $field->setCode($this->codeFieldSize);
-        $field->setTitle('My title '.$this->codeFieldSize);
+        $field->setCode($this->codeAttributeSize);
+        $field->setTitle('Size');
         $field->setType(BaseFieldFactory::FIELD_SELECT);
         $field->setScope(BaseFieldFactory::SCOPE_GLOBAL);
         $field->setUniqueValue(false);
@@ -188,10 +188,10 @@ abstract class AbtractProductTest extends KernelAwareTest
      */
     public function findProductAttribute()
     {
-        $field = $this->productManager->getAttributeRepository()->findOneByCode($this->codeFieldSku);
+        $field = $this->productManager->getAttributeRepository()->findOneByCode($this->codeAttributeSku);
         $class = $this->productManager->getAttributeClass();
         $this->assertTrue($field instanceof $class);
-        $this->assertEquals($field->getCode(), $this->codeFieldSku);
+        $this->assertEquals($field->getCode(), $this->codeAttributeSku);
     }
 
     /**
@@ -207,7 +207,7 @@ abstract class AbtractProductTest extends KernelAwareTest
         $product->setSet($set);
 
         // create value
-        $field = $this->productManager->getAttributeRepository()->findOneByCode($this->codeFieldSku);
+        $field = $this->productManager->getAttributeRepository()->findOneByCode($this->codeAttributeSku);
         $value = $this->productManager->getNewAttributeValueInstance();
         $value->setAttribute($field);
         $value->setData($this->productSku);

@@ -7,7 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
 
 /**
- * Field options
+ * Attribute options
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
@@ -28,7 +28,7 @@ class ProductAttributeOption extends AbstractEntityAttributeOption
     protected $id;
 
     /**
-     * @var Field $attribute
+     * @var Attribute $attribute
      *
      * @ORM\ManyToOne(targetEntity="ProductAttribute")
      */

@@ -30,7 +30,7 @@ class ProductAttributeValue extends AbstractEntityAttributeValue
     protected $id;
 
     /**
-     * @var Field $attribute
+     * @var Attribute $attribute
      *
      * @ORM\ManyToOne(targetEntity="ProductAttribute")
      */
