@@ -31,7 +31,6 @@ class AppKernel extends Kernel
 
             // PIM modules
             new Pim\Bundle\UIBundle\PimUIBundle(),
-            new Pim\Bundle\UserBundle\PimUserBundle(),
             new Pim\Bundle\ConnectorIcecatBundle\PimConnectorIcecatBundle(),
             new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
             new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
@@ -39,7 +38,6 @@ class AppKernel extends Kernel
 
             // community bundles
             new APY\DataGridBundle\APYDataGridBundle(),
-            new FOS\UserBundle\FOSUserBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
             //new Nidup\TestBundle\NidupTestBundle(),

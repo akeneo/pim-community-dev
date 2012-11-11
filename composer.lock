@@ -1,5 +1,5 @@
 {
-    "hash": "7110ea9b1cb3643e1b1549a86e2abc55",
+    "hash": "6d6f2b621a94eb3e7a045c22e6f85345",
     "packages": [
         {
             "name": "apy/datagrid-bundle",
@@ -8,12 +8,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/Abhoryo/APYDataGridBundle.git",
-                "reference": "8dc2fe46415751f0ecc6c4e93bc74c18b09852db"
+                "reference": "9f559d1f44d2f560330c5d8c4d5cfc09fc3a35bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/Abhoryo/APYDataGridBundle/zipball/8dc2fe46415751f0ecc6c4e93bc74c18b09852db",
-                "reference": "8dc2fe46415751f0ecc6c4e93bc74c18b09852db",
+                "url": "https://github.com/Abhoryo/APYDataGridBundle/archive/9f559d1f44d2f560330c5d8c4d5cfc09fc3a35bc.zip",
+                "reference": "9f559d1f44d2f560330c5d8c4d5cfc09fc3a35bc",
                 "shasum": ""
             },
             "require": {
@@ -26,7 +26,7 @@
                 "ext-mbstring": "Convert your data with the right charset",
                 "PHPExcel": "Export the grid (Excel, HTML or PDF)"
             },
-            "time": "1351601597",
+            "time": "1352426315",
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
@@ -176,19 +176,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal",
-                "reference": "9395ca33971c0ff875d71a0271e6c0d5b0f01508"
+                "reference": "97801a74ba646d069c6674439ed74e75b34e80ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/doctrine/dbal/zipball/9395ca33971c0ff875d71a0271e6c0d5b0f01508",
-                "reference": "9395ca33971c0ff875d71a0271e6c0d5b0f01508",
+                "url": "https://github.com/doctrine/dbal/archive/97801a74ba646d069c6674439ed74e75b34e80ca.zip",
+                "reference": "97801a74ba646d069c6674439ed74e75b34e80ca",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2",
                 "doctrine/common": "2.3.*"
             },
-            "time": "1350419590",
+            "time": "1352496774",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -240,19 +240,20 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/doctrine/DoctrineBundle.git",
-                "reference": "a3b99ec049b7c488c70b8776a67c594e6ddf54cd"
+                "reference": "4fa47caf19c426d607a636b2da73bc0e5a87ec66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/doctrine/DoctrineBundle/zipball/a3b99ec049b7c488c70b8776a67c594e6ddf54cd",
-                "reference": "a3b99ec049b7c488c70b8776a67c594e6ddf54cd",
+                "url": "https://github.com/doctrine/DoctrineBundle/archive/4fa47caf19c426d607a636b2da73bc0e5a87ec66.zip",
+                "reference": "4fa47caf19c426d607a636b2da73bc0e5a87ec66",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2",
                 "doctrine/dbal": ">=2.2,<2.4-dev",
                 "symfony/framework-bundle": ">=2.1,<2.3-dev",
-                "symfony/doctrine-bridge": ">=2.1,<2.3-dev"
+                "symfony/doctrine-bridge": ">=2.1,<2.3-dev",
+                "jdorn/sql-formatter": "1.0.1"
             },
             "require-dev": {
                 "doctrine/orm": ">=2.2,<2.4-dev",
@@ -262,7 +263,7 @@
             "suggest": {
                 "doctrine/orm": "The Doctrine ORM integration is optional in the bundle."
             },
-            "time": "1350120716",
+            "time": "1352579798",
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
@@ -534,12 +535,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/doctrine/doctrine2.git",
-                "reference": "6bad0109599348c5216df35f62b80a20ba16c507"
+                "reference": "c6eb04de145b986d968be1ddb0e0a43cd8110b8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/doctrine/doctrine2/archive/6bad0109599348c5216df35f62b80a20ba16c507.zip",
-                "reference": "6bad0109599348c5216df35f62b80a20ba16c507",
+                "url": "https://github.com/doctrine/doctrine2/archive/c6eb04de145b986d968be1ddb0e0a43cd8110b8e.zip",
+                "reference": "c6eb04de145b986d968be1ddb0e0a43cd8110b8e",
                 "shasum": ""
             },
             "require": {
@@ -551,7 +552,7 @@
             "suggest": {
                 "symfony/yaml": "If you want to use YAML Metadata Mapping Driver"
             },
-            "time": "1350071385",
+            "time": "1352495804",
             "bin": [
                 "bin/doctrine",
                 "bin/doctrine.php"
@@ -596,76 +597,6 @@
             "keywords": [
                 "database",
                 "orm"
-            ]
-        },
-        {
-            "name": "friendsofsymfony/user-bundle",
-            "version": "dev-master",
-            "target-dir": "FOS/UserBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/FriendsOfSymfony/FOSUserBundle",
-                "reference": "a197484ad0b53a056e07a13b639ed69466c06c95"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/FriendsOfSymfony/FOSUserBundle/zipball/a197484ad0b53a056e07a13b639ed69466c06c95",
-                "reference": "a197484ad0b53a056e07a13b639ed69466c06c95",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2",
-                "symfony/framework-bundle": ">=2.1,<2.3-dev",
-                "symfony/security-bundle": ">=2.1,<2.3-dev"
-            },
-            "require-dev": {
-                "twig/twig": "*",
-                "doctrine/doctrine-bundle": "*",
-                "swiftmailer/swiftmailer": "*",
-                "willdurand/propel-typehintable-behavior": "dev-master",
-                "symfony/validator": "2.1.*",
-                "symfony/yaml": "2.1.*"
-            },
-            "suggest": {
-                "doctrine/couchdb-odm-bundle": "*",
-                "doctrine/doctrine-bundle": "*",
-                "doctrine/mongodb-odm-bundle": "*"
-            },
-            "time": "1351955784",
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "installation-source": "source",
-            "autoload": {
-                "psr-0": {
-                    "FOS\\UserBundle": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Christophe Coevoet",
-                    "email": "stof@notk.org"
-                },
-                {
-                    "name": "Thibault Duplessis",
-                    "email": "thibault.duplessis@gmail.com",
-                    "homepage": "http://ornicar.github.com"
-                },
-                {
-                    "name": "FriendsOfSymfony Community",
-                    "homepage": "https://github.com/friendsofsymfony/FOSUserBundle/contributors"
-                }
-            ],
-            "description": "Symfony FOSUserBundle",
-            "homepage": "http://friendsofsymfony.github.com",
-            "keywords": [
-                "User management"
             ]
         },
         {
@@ -726,6 +657,53 @@
                 "nestedset",
                 "sortable",
                 "timestampable"
+            ]
+        },
+        {
+            "name": "jdorn/sql-formatter",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "git://github.com/jdorn/sql-formatter.git",
+                "reference": "v1.0.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/jdorn/sql-formatter/zipball/v1.0.1",
+                "reference": "v1.0.1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.4"
+            },
+            "time": "2012-10-04 22:10:16",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "classmap": [
+                    "lib"
+                ]
+            },
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Jeremy Dorn",
+                    "email": "jeremy@jeremydorn.com",
+                    "homepage": "http://jeremydorn.com/"
+                }
+            ],
+            "description": "a PHP SQL highlighting library",
+            "homepage": "https://github.com/jdorn/sql-formatter/",
+            "keywords": [
+                "sql",
+                "highlight"
             ]
         },
         {
@@ -1107,12 +1085,12 @@
             "source": {
                 "type": "git",
                 "url": "http://github.com/kriswallsmith/assetic.git",
-                "reference": "685b7381241fb13c47c994fe5d2e8c4964021f40"
+                "reference": "d6203098559cf9fc90e2890c10533d0adad33bd0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/kriswallsmith/assetic/zipball/685b7381241fb13c47c994fe5d2e8c4964021f40",
-                "reference": "685b7381241fb13c47c994fe5d2e8c4964021f40",
+                "url": "https://github.com/kriswallsmith/assetic/archive/d6203098559cf9fc90e2890c10533d0adad33bd0.zip",
+                "reference": "d6203098559cf9fc90e2890c10533d0adad33bd0",
                 "shasum": ""
             },
             "require": {
@@ -1133,7 +1111,7 @@
                 "ptachoire/cssembed": "Assetic provides the integration with phpcssembed to embed data uris",
                 "leafo/scssphp-compass": "Assetic provides the integration with the SCSS compass plugin"
             },
-            "time": "1351610079",
+            "time": "1352285252",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1173,12 +1151,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog",
-                "reference": "30b48f1231b041bfd363517a77a3a2ea02b1f576"
+                "reference": "bcb51e01406965ebd030d4b99eb199a9226c3fef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/Seldaek/monolog/zipball/30b48f1231b041bfd363517a77a3a2ea02b1f576",
-                "reference": "30b48f1231b041bfd363517a77a3a2ea02b1f576",
+                "url": "https://github.com/Seldaek/monolog/archive/bcb51e01406965ebd030d4b99eb199a9226c3fef.zip",
+                "reference": "bcb51e01406965ebd030d4b99eb199a9226c3fef",
                 "shasum": ""
             },
             "require": {
@@ -1192,7 +1170,7 @@
                 "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
                 "ext-mongo": "Allow sending log messages to a MongoDB server"
             },
-            "time": "1352047076",
+            "time": "1352653384",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1323,12 +1301,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensio/SensioGeneratorBundle",
-                "reference": "v2.1.3"
+                "reference": "56c2029d1f3f41b39dd0df40009cb448df010bf1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/sensio/SensioGeneratorBundle/zipball/v2.1.3",
-                "reference": "v2.1.3",
+                "url": "https://github.com/sensio/SensioGeneratorBundle/archive/56c2029d1f3f41b39dd0df40009cb448df010bf1.zip",
+                "reference": "56c2029d1f3f41b39dd0df40009cb448df010bf1",
                 "shasum": ""
             },
             "require": {
@@ -1340,7 +1318,7 @@
                 "doctrine/orm": ">=2.1,<2.4-dev",
                 "twig/twig": ">=1.8,<2.0-dev"
             },
-            "time": "1348030981",
+            "time": "1352464423",
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
@@ -1420,12 +1398,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/AsseticBundle",
-                "reference": "3aa58aed64e6ddb1ea65176fff7814b212a6ed77"
+                "reference": "30d3841dc9643d352503a72f3cdf93d193c439d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/AsseticBundle/zipball/3aa58aed64e6ddb1ea65176fff7814b212a6ed77",
-                "reference": "3aa58aed64e6ddb1ea65176fff7814b212a6ed77",
+                "url": "https://github.com/symfony/AsseticBundle/archive/30d3841dc9643d352503a72f3cdf93d193c439d2.zip",
+                "reference": "30d3841dc9643d352503a72f3cdf93d193c439d2",
                 "shasum": ""
             },
             "require": {
@@ -1445,7 +1423,7 @@
             "suggest": {
                 "symfony/twig-bundle": ">=2.1.0,<2.3-dev"
             },
-            "time": "1351619963",
+            "time": "1352285268",
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
@@ -1592,12 +1570,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/symfony/symfony.git",
-                "reference": "3d993740142a4cef26336b8d5f20526367dca110"
+                "reference": "d9b291b87878969dc64aca1c434e804f4f8dc9ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/symfony/archive/3d993740142a4cef26336b8d5f20526367dca110.zip",
-                "reference": "3d993740142a4cef26336b8d5f20526367dca110",
+                "url": "https://github.com/symfony/symfony/archive/d9b291b87878969dc64aca1c434e804f4f8dc9ff.zip",
+                "reference": "d9b291b87878969dc64aca1c434e804f4f8dc9ff",
                 "shasum": ""
             },
             "require": {
@@ -1646,7 +1624,7 @@
                 "propel/propel1": "dev-master",
                 "monolog/monolog": "1.*"
             },
-            "time": "1352017759",
+            "time": "1352572826",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1732,18 +1710,18 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Twig.git",
-                "reference": "abec35b833abfce5eb0ac7ce2bf2bf3462a5bebf"
+                "reference": "b16765ce8f8edd227c6c90dba489326001fd348a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Twig/archive/abec35b833abfce5eb0ac7ce2bf2bf3462a5bebf.zip",
-                "reference": "abec35b833abfce5eb0ac7ce2bf2bf3462a5bebf",
+                "url": "https://github.com/fabpot/Twig/archive/b16765ce8f8edd227c6c90dba489326001fd348a.zip",
+                "reference": "b16765ce8f8edd227c6c90dba489326001fd348a",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
-            "time": "1352101924",
+            "time": "1352654530",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1785,7 +1763,6 @@
         "doctrine/mongodb-odm-bundle": 10,
         "doctrine/doctrine-fixtures-bundle": 20,
         "apy/datagrid-bundle": 20,
-        "friendsofsymfony/user-bundle": 20,
         "knplabs/knp-menu-bundle": 20
     }
 }

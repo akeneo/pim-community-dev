@@ -78,9 +78,3 @@ doctrine_mongodb:
     document_managers:
         default:
             auto_mapping: true
-
-# FOS User configuration
-fos_user:
-    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
-    firewall_name: main
-    user_class: Pim\Bundle\UserBundle\Entity\User
