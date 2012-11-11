@@ -16,10 +16,10 @@ use Pim\Bundle\CatalogBundle\Tests\KernelAwareTest;
  */
 abstract class AbtractProductTest extends KernelAwareTest
 {
-    const TYPE_GROUP_INFO    = 'general';
-    const TYPE_GROUP_MEDIA   = 'media';
-    const TYPE_GROUP_SEO     = 'seo';
-    const TYPE_GROUP_TECHNIC = 'technical';
+    const SET_GROUP_INFO    = 'general';
+    const SET_GROUP_MEDIA   = 'media';
+    const SET_GROUP_SEO     = 'seo';
+    const SET_GROUP_TECHNIC = 'technical';
 
     protected $objectManagerName = null;
     protected $productManager = null;
@@ -71,75 +71,75 @@ abstract class AbtractProductTest extends KernelAwareTest
     public function createProductSet()
     {
         // create product type
-        $type = $this->productManager->getNewSetInstance();
-        $type->setCode($this->codeSet);
-        $type->setTitle('My type title');
-        $this->assertEquals($type->getCode(), $this->codeSet);
+        $set = $this->productManager->getNewSetInstance();
+        $set->setCode($this->codeSet);
+        $set->setTitle('My type title');
+        $this->assertEquals($set->getCode(), $this->codeSet);
 
         // add groups
         $groups = array();
-        $groupCodes = array(self::TYPE_GROUP_INFO, self::TYPE_GROUP_MEDIA, self::TYPE_GROUP_SEO, self::TYPE_GROUP_TECHNIC);
+        $groupCodes = array(self::SET_GROUP_INFO, self::SET_GROUP_MEDIA, self::SET_GROUP_SEO, self::SET_GROUP_TECHNIC);
         foreach ($groupCodes as $code) {
             $group = $this->productManager->getNewGroupInstance();
             $group->setCode($code);
             $group->setTitle('Group '.$code);
-            $type->addGroup($group);
+            $set->addGroup($group);
         }
-        $this->assertEquals($type->getGroups()->count(), count($groupCodes));
-        $groupInfo = $type->getGroups()->first();
-        $groupTechnic = $type->getGroups()->last();
+        $this->assertEquals($set->getGroups()->count(), count($groupCodes));
+        $groupInfo = $set->getGroups()->first();
+        $groupTechnic = $set->getGroups()->last();
 
         // check group getter / setter
-        $this->assertEquals($groupInfo->getCode(), self::TYPE_GROUP_INFO);
-        $this->assertEquals($groupInfo->getTitle(), 'Group '.self::TYPE_GROUP_INFO);
+        $this->assertEquals($groupInfo->getCode(), self::SET_GROUP_INFO);
+        $this->assertEquals($groupInfo->getTitle(), 'Group '.self::SET_GROUP_INFO);
 
         // add a field sku
-        $field = $this->productManager->getNewAttributeInstance();
-        $field->setCode($this->codeAttributeSku);
+        $attribute = $this->productManager->getNewAttributeInstance();
+        $attribute->setCode($this->codeAttributeSku);
         $title = 'Sku';
-        $field->setTitle($title);
-        $field->setType(BaseFieldFactory::FIELD_STRING);
-        $field->setScope(BaseFieldFactory::SCOPE_GLOBAL);
-        $field->setUniqueValue(true);
-        $field->setValueRequired(true);
-        $field->setSearchable(false);
-        $this->productManager->getPersistenceManager()->persist($field);
-        $groupInfo->addAttribute($field);
+        $attribute->setTitle($title);
+        $attribute->setType(BaseFieldFactory::FIELD_STRING);
+        $attribute->setScope(BaseFieldFactory::SCOPE_GLOBAL);
+        $attribute->setUniqueValue(true);
+        $attribute->setValueRequired(true);
+        $attribute->setSearchable(false);
+        $this->productManager->getPersistenceManager()->persist($attribute);
+        $groupInfo->addAttribute($attribute);
         $this->assertEquals($groupInfo->getAttributes()->count(), 1);
 
         // check field getter / setter
-        $this->assertEquals($field->getCode(), $this->codeAttributeSku);
-        $this->assertEquals($field->getTitle(), $title);
-        $this->assertEquals($field->getType(), BaseFieldFactory::FIELD_STRING);
-        $this->assertEquals($field->getScope(), BaseFieldFactory::SCOPE_GLOBAL);
-        $this->assertEquals($field->getUniqueValue(), true);
-        $this->assertEquals($field->getValueRequired(), true);
-        $this->assertEquals($field->getSearchable(), false);
+        $this->assertEquals($attribute->getCode(), $this->codeAttributeSku);
+        $this->assertEquals($attribute->getTitle(), $title);
+        $this->assertEquals($attribute->getType(), BaseFieldFactory::FIELD_STRING);
+        $this->assertEquals($attribute->getScope(), BaseFieldFactory::SCOPE_GLOBAL);
+        $this->assertEquals($attribute->getUniqueValue(), true);
+        $this->assertEquals($attribute->getValueRequired(), true);
+        $this->assertEquals($attribute->getSearchable(), false);
 
         // add a field name
-        $field = $this->productManager->getNewAttributeInstance();
-        $field->setCode($this->codeAttributeName);
-        $field->setTitle('Name');
-        $field->setType(BaseFieldFactory::FIELD_STRING);
-        $field->setScope(BaseFieldFactory::SCOPE_GLOBAL);
-        $field->setUniqueValue(false);
-        $field->setValueRequired(true);
-        $field->setSearchable(true);
-        $this->productManager->getPersistenceManager()->persist($field);
-        $groupInfo->addAttribute($field);
+        $attribute = $this->productManager->getNewAttributeInstance();
+        $attribute->setCode($this->codeAttributeName);
+        $attribute->setTitle('Name');
+        $attribute->setType(BaseFieldFactory::FIELD_STRING);
+        $attribute->setScope(BaseFieldFactory::SCOPE_GLOBAL);
+        $attribute->setUniqueValue(false);
+        $attribute->setValueRequired(true);
+        $attribute->setSearchable(true);
+        $this->productManager->getPersistenceManager()->persist($attribute);
+        $groupInfo->addAttribute($attribute);
         $this->assertEquals($groupInfo->getAttributes()->count(), 2);
 
         // add a field size
-        $field = $this->productManager->getNewAttributeInstance();
-        $field->setCode($this->codeAttributeSize);
-        $field->setTitle('Size');
-        $field->setType(BaseFieldFactory::FIELD_SELECT);
-        $field->setScope(BaseFieldFactory::SCOPE_GLOBAL);
-        $field->setUniqueValue(false);
-        $field->setValueRequired(false);
-        $field->setSearchable(false);
-        $this->productManager->getPersistenceManager()->persist($field);
-        $groupTechnic->addAttribute($field);
+        $attribute = $this->productManager->getNewAttributeInstance();
+        $attribute->setCode($this->codeAttributeSize);
+        $attribute->setTitle('Size');
+        $attribute->setType(BaseFieldFactory::FIELD_SELECT);
+        $attribute->setScope(BaseFieldFactory::SCOPE_GLOBAL);
+        $attribute->setUniqueValue(false);
+        $attribute->setValueRequired(false);
+        $attribute->setSearchable(false);
+        $this->productManager->getPersistenceManager()->persist($attribute);
+        $groupTechnic->addAttribute($attribute);
         $this->assertEquals($groupTechnic->getAttributes()->count(), 1);
 
         // add options
@@ -149,18 +149,18 @@ abstract class AbtractProductTest extends KernelAwareTest
             $option = $this->productManager->getNewAttributeOptionInstance();
             $option->setValue($order++);
             $option->setSortOrder(1);
-            $field->addOption($option);
+            $attribute->addOption($option);
         }
-        $this->assertEquals($field->getOptions()->count(), count($values));
+        $this->assertEquals($attribute->getOptions()->count(), count($values));
 
         // persist
-        $this->productManager->getPersistenceManager()->persist($type);
+        $this->productManager->getPersistenceManager()->persist($set);
         $this->productManager->getPersistenceManager()->flush();
 
         // test ids
-        $this->assertNotNull($type->getId());
+        $this->assertNotNull($set->getId());
         $this->assertNotNull($groupInfo->getId());
-        $this->assertNotNull($field->getId());
+        $this->assertNotNull($attribute->getId());
     }
 
     /**
@@ -168,11 +168,11 @@ abstract class AbtractProductTest extends KernelAwareTest
      */
     public function findProductSet()
     {
-        $type = $this->productManager->getSetRepository()->findOneByCode($this->codeSet);
+        $set = $this->productManager->getSetRepository()->findOneByCode($this->codeSet);
         $class = $this->productManager->getSetClass();
-        $this->assertTrue($type instanceof $class);
-        $this->assertEquals($type->getCode(), $this->codeSet);
-        $this->assertEquals($type->getGroups()->count(), 4);
+        $this->assertTrue($set instanceof $class);
+        $this->assertEquals($set->getCode(), $this->codeSet);
+        $this->assertEquals($set->getGroups()->count(), 4);
     }
 
     /**
@@ -188,10 +188,10 @@ abstract class AbtractProductTest extends KernelAwareTest
      */
     public function findProductAttribute()
     {
-        $field = $this->productManager->getAttributeRepository()->findOneByCode($this->codeAttributeSku);
+        $attribute = $this->productManager->getAttributeRepository()->findOneByCode($this->codeAttributeSku);
         $class = $this->productManager->getAttributeClass();
-        $this->assertTrue($field instanceof $class);
-        $this->assertEquals($field->getCode(), $this->codeAttributeSku);
+        $this->assertTrue($attribute instanceof $class);
+        $this->assertEquals($attribute->getCode(), $this->codeAttributeSku);
     }
 
     /**
@@ -207,9 +207,9 @@ abstract class AbtractProductTest extends KernelAwareTest
         $product->setSet($set);
 
         // create value
-        $field = $this->productManager->getAttributeRepository()->findOneByCode($this->codeAttributeSku);
+        $attribute = $this->productManager->getAttributeRepository()->findOneByCode($this->codeAttributeSku);
         $value = $this->productManager->getNewAttributeValueInstance();
-        $value->setAttribute($field);
+        $value->setAttribute($attribute);
         $value->setData($this->productSku);
         $product->addValue($value);
 
@@ -224,13 +224,13 @@ abstract class AbtractProductTest extends KernelAwareTest
     public function cloneSet()
     {
         // get product type
-        $type = $this->productManager->getSetRepository()->findOneByCode($this->codeSet);
+        $set = $this->productManager->getSetRepository()->findOneByCode($this->codeSet);
 
         // clone
-        $clonedType = $this->productManager->cloneSet($type);
+        $clonedType = $this->productManager->cloneSet($set);
         // check
-        $this->assertEquals($type->getCode(), $clonedType->getCode());
-        $this->assertEquals($type->getGroups()->count(), $clonedType->getGroups()->count());
+        $this->assertEquals($set->getCode(), $clonedType->getCode());
+        $this->assertEquals($set->getGroups()->count(), $clonedType->getGroups()->count());
     }
 
 }

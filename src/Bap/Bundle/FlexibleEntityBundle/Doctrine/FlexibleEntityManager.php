@@ -254,18 +254,18 @@ abstract class FlexibleEntityManager
     /**
      * Clone an entity type
      *
-     * @param EntitySet $entityType
+     * @param EntitySet $entitySet
      * @return EntitySet
      */
-    public function cloneSet($entityType)
+    public function cloneSet($entitySet)
     {
         // create new entity type and clone values
         $cloneSet = $this->getNewSetInstance();
-        $cloneSet->setCode($entityType->getCode());
-        $cloneSet->setTitle($entityType->getTitle());
+        $cloneSet->setCode($entitySet->getCode());
+        $cloneSet->setTitle($entitySet->getTitle());
 
         // clone groups
-        foreach ($entityType->getGroups() as $groupToClone) {
+        foreach ($entitySet->getGroups() as $groupToClone) {
 
             // clone group entity
             $cloneGroup = $this->getNewGroupInstance();
