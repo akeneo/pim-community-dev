@@ -8,7 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
 
 /**
- * Value for a product field
+ * Value for a product attribute
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
@@ -30,11 +30,11 @@ class ProductAttributeValue extends AbstractEntityAttributeValue
     protected $id;
 
     /**
-     * @var Field $field
+     * @var Field $attribute
      *
      * @ORM\ManyToOne(targetEntity="ProductAttribute")
      */
-    protected $field;
+    protected $attribute;
 
     /**
      * @var Entity $entity
@@ -55,7 +55,7 @@ class ProductAttributeValue extends AbstractEntityAttributeValue
     /**
      * @Gedmo\Locale
      * Used locale to override Translation listener`s locale
-     * this is not a mapped field of entity metadata, just a simple property
+     * this is not a mapped attribute of entity metadata, just a simple property
      */
     protected $locale;
 

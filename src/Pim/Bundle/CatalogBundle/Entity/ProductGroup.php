@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Bap\Bundle\FlexibleEntityBundle\Model\EntityGroup as AbstractEntityGroup;
 
 /**
- * Product field group (general, media, seo, etc)
+ * Product attribute group (general, media, seo, etc)
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
@@ -33,25 +33,25 @@ class ProductGroup extends AbstractEntityGroup
     protected $code;
 
     /**
-     * @var Type $type
+     * @var Set set
      *
      * @ORM\ManyToOne(targetEntity="ProductSet", inversedBy="groups")
      */
-    protected $type;
+    protected $set;
 
     /**
-     * @var ArrayCollection $fields
+     * @var ArrayCollection $attributes
      * @ORM\ManyToMany(targetEntity="ProductAttribute")
-     * @ORM\JoinTable(name="Akeneo_PimCatalog_Product_Group_Field")
+     * @ORM\JoinTable(name="Akeneo_PimCatalog_Product_Group_Attribute")
      */
-    protected $fields = array();
+    protected $attributes = array();
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->fields = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->attributes = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -88,14 +88,14 @@ class ProductGroup extends AbstractEntityGroup
     }
 
     /**
-     * Set type
+     * Set Set
      *
-     * @param ProductSet $type
+     * @param ProductSet $set
      * @return ProductGroup
      */
-    public function setType(ProductSet $type = null)
+    public function setSet(ProductSet $set = null)
     {
-        $this->type = $type;
+        $this->set = $set;
 
         return $this;
     }

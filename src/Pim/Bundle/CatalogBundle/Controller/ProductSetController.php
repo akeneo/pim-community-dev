@@ -216,7 +216,7 @@ class ProductSetController extends Controller
             $form = $this->createForm($type, $entity);
             $form->bind($request);
             foreach ($entity->getGroups() as $group) {
-                var_dump($group->getFields()->count());
+                var_dump($group->getAttributes()->count());
             }
 //             exit;
             if ($form->isValid()) {

@@ -15,7 +15,7 @@ use Strixos\CatalogBundle\Entity\Attribute;
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ProductGroupFieldType extends AbstractType
+class ProductGroupAttributeType extends AbstractType
 {
     /**
      * Used to populate from the constructor

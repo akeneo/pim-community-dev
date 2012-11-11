@@ -23,7 +23,7 @@ abstract class AbtractProductTest extends KernelAwareTest
 
     protected $objectManagerName = null;
     protected $productManager = null;
-    protected $codeType      = null;
+    protected $codeSet      = null;
     protected $codeFieldSku  = null;
     protected $codeFieldName = null;
     protected $codeFieldSize = null;
@@ -40,7 +40,7 @@ abstract class AbtractProductTest extends KernelAwareTest
         $this->productManager = new ProductManager($objectManager);
 
         $timestamp = str_replace('.', '', microtime(true));
-        $this->codeType      = 'type_'.$timestamp;
+        $this->codeSet      = 'set_'.$timestamp;
         $this->codeFieldSku  = 'sku_'.$timestamp;
         $this->codeFieldName = 'name_'.$timestamp;
         $this->codeFieldSize = 'size_'.$timestamp;
@@ -72,9 +72,9 @@ abstract class AbtractProductTest extends KernelAwareTest
     {
         // create product type
         $type = $this->productManager->getNewSetInstance();
-        $type->setCode($this->codeType);
+        $type->setCode($this->codeSet);
         $type->setTitle('My type title');
-        $this->assertEquals($type->getCode(), $this->codeType);
+        $this->assertEquals($type->getCode(), $this->codeSet);
 
         // add groups
         $groups = array();
@@ -104,8 +104,8 @@ abstract class AbtractProductTest extends KernelAwareTest
         $field->setValueRequired(true);
         $field->setSearchable(false);
         $this->productManager->getPersistenceManager()->persist($field);
-        $groupInfo->addField($field);
-        $this->assertEquals($groupInfo->getFields()->count(), 1);
+        $groupInfo->addAttribute($field);
+        $this->assertEquals($groupInfo->getAttributes()->count(), 1);
 
         // check field getter / setter
         $this->assertEquals($field->getCode(), $this->codeFieldSku);
@@ -126,8 +126,8 @@ abstract class AbtractProductTest extends KernelAwareTest
         $field->setValueRequired(true);
         $field->setSearchable(true);
         $this->productManager->getPersistenceManager()->persist($field);
-        $groupInfo->addField($field);
-        $this->assertEquals($groupInfo->getFields()->count(), 2);
+        $groupInfo->addAttribute($field);
+        $this->assertEquals($groupInfo->getAttributes()->count(), 2);
 
         // add a field size
         $field = $this->productManager->getNewAttributeInstance();
@@ -139,8 +139,8 @@ abstract class AbtractProductTest extends KernelAwareTest
         $field->setValueRequired(false);
         $field->setSearchable(false);
         $this->productManager->getPersistenceManager()->persist($field);
-        $groupTechnic->addField($field);
-        $this->assertEquals($groupTechnic->getFields()->count(), 1);
+        $groupTechnic->addAttribute($field);
+        $this->assertEquals($groupTechnic->getAttributes()->count(), 1);
 
         // add options
         $values = array('S', 'M', 'L', 'XL');
@@ -168,10 +168,10 @@ abstract class AbtractProductTest extends KernelAwareTest
      */
     public function findProductSet()
     {
-        $type = $this->productManager->getSetRepository()->findOneByCode($this->codeType);
+        $type = $this->productManager->getSetRepository()->findOneByCode($this->codeSet);
         $class = $this->productManager->getSetClass();
         $this->assertTrue($type instanceof $class);
-        $this->assertEquals($type->getCode(), $this->codeType);
+        $this->assertEquals($type->getCode(), $this->codeSet);
         $this->assertEquals($type->getGroups()->count(), 4);
     }
 
@@ -200,16 +200,16 @@ abstract class AbtractProductTest extends KernelAwareTest
     public function createProduct()
     {
         // get product type
-        $type = $this->productManager->getSetRepository()->findOneByCode($this->codeType);
+        $set = $this->productManager->getSetRepository()->findOneByCode($this->codeSet);
 
         // create product
         $product = $this->productManager->getNewEntityInstance();
-        $product->setType($type);
+        $product->setSet($set);
 
         // create value
         $field = $this->productManager->getAttributeRepository()->findOneByCode($this->codeFieldSku);
         $value = $this->productManager->getNewAttributeValueInstance();
-        $value->setField($field);
+        $value->setAttribute($field);
         $value->setData($this->productSku);
         $product->addValue($value);
 
@@ -224,7 +224,7 @@ abstract class AbtractProductTest extends KernelAwareTest
     public function cloneSet()
     {
         // get product type
-        $type = $this->productManager->getSetRepository()->findOneByCode($this->codeType);
+        $type = $this->productManager->getSetRepository()->findOneByCode($this->codeSet);
 
         // clone
         $clonedType = $this->productManager->cloneSet($type);

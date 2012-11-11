@@ -43,35 +43,35 @@ class ProductType extends AbstractType
         $builder->add('id', 'hidden');
 
         // add product field
-        if ($entity->getType()) {
-            foreach ($entity->getType()->getGroups() as $group) {
-                foreach ($group->getFields() as $field) {
+        if ($entity->getSet()) {
+            foreach ($entity->getSet()->getGroups() as $group) {
+                foreach ($group->getAttributes() as $attribute) {
 
                     // TODO required, scope etc
 
                     // TODO filter values not efficient
-                    $values = $entity->getValues()->filter(function($value) use ($field) {
-                        return $value->getField() == $field;
+                    $values = $entity->getValues()->filter(function($value) use ($attribute) {
+                        return $value->getAttribute() == $attribute;
                     });
                     $value = $values->first();
 
                     // prepare common fields options
                     $customOptions = array(
-                        'label'         => $field->getTitle(),
+                        'label'         => $attribute->getTitle(),
                         'data'          => ($value) ? $value->getData() : '',
                         'by_reference'  => false,
                         'property_path' => false,
-                        'required'      => ($field->getValueRequired() == 1)
+                        'required'      => ($attribute->getValueRequired() == 1)
                     );
 
                     // add text fields options
-                    if ($field->getType() == BaseFieldFactory::FIELD_STRING) {
-                        $fieldType = 'text';
+                    if ($attribute->getType() == BaseFieldFactory::FIELD_STRING) {
+                        $attributeType = 'text';
 
                     // add select field options
-                    } else if ($field->getType() == BaseFieldFactory::FIELD_SELECT) {
-                        $fieldType = 'choice';
-                        $options = $field->getOptions();
+                    } else if ($attribute->getType() == BaseFieldFactory::FIELD_SELECT) {
+                        $attributeType = 'choice';
+                        $options = $attribute->getOptions();
                         $choices = array();
                         // TODO option order
                         foreach ($options as $option) {
@@ -82,7 +82,7 @@ class ProductType extends AbstractType
                     }
 
                     // add field
-                    $builder->add($field->getCode(), $fieldType, $customOptions);
+                    $builder->add($attribute->getCode(), $attributeType, $customOptions);
                 }
             }
         }

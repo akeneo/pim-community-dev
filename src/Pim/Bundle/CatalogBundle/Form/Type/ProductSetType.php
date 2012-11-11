@@ -56,13 +56,13 @@ class ProductSetType extends AbstractType
         $builder->add(
             'others', 'collection',
             array(
-                'type'          => new ProductGroupFieldType(),
+                'type'          => new ProductGroupAttributeType(),
                 'property_path' => false
             )
         );
         // add attributes
         foreach ($this->getAvailableFields() as $field) {
-            $builder->get('others')->add('field_'.$field->getId(), new ProductGroupFieldType($field));
+            $builder->get('others')->add('field_'.$field->getId(), new ProductGroupAttributeType($field));
         }
     }
 

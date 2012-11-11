@@ -109,7 +109,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
                 $field->setType(BaseFieldFactory::FIELD_STRING);
                 $persistanceManager->persist($field);
                 // TODO unique etc ?
-                $group->addField($field);
+                $group->addAttribute($field);
             }
 
             // prepare field code to value for next step
@@ -117,7 +117,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
 
             // TODO : deal with existing values
             $value = $this->productManager->getNewAttributeValueInstance();
-            $value->setField($field);
+            $value->setAttribute($field);
             $value->setData($valueData);
             $productValues[]= $value;
 
@@ -156,14 +156,14 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
                         $field->setType(BaseFieldFactory::FIELD_STRING);
                         $persistanceManager->persist($field);
                         // TODO unique etc ?
-                        $group->addField($field);
+                        $group->addAttribute($field);
                     }
 
                     $ProductAttributeCodeToValues[$fieldCode]= $valueData;
 
                     // TODO : deal with existing values
                     $value = $this->productManager->getNewAttributeValueInstance();
-                    $value->setField($field);
+                    $value->setAttribute($field);
                     $value->setData($valueData);
                     $productValues[]= $value;
                 }

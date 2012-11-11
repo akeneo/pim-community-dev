@@ -18,9 +18,9 @@ abstract class Entity
     protected $id;
 
     /**
-     * @var EntitySet $type
+     * @var EntitySet $set
      */
-    protected $type;
+    protected $set;
 
     /**
      * Get id
@@ -33,24 +33,24 @@ abstract class Entity
     }
 
     /**
-     * Get type
+     * Get set
      *
      * @return EntitySet
      */
-    public function getType()
+    public function getSet()
     {
-        return $this->type;
+        return $this->set;
     }
 
     /**
-     * Set type
+     * Set set
      *
-     * @param EntitySet $type
+     * @param EntitySet $set
      * @return Entity
      */
-    public function setType(EntitySet $type = null)
+    public function setSet(EntitySet $set = null)
     {
-        $this->type = $type;
+        $this->set = $set;
         return $this;
     }
 

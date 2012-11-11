@@ -89,14 +89,14 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
         );
         foreach ($fields as $fieldCode => $fieldType) {
             if (!$type->getField($fieldCode)) {
-                $type->addField($fieldCode, $fieldType, self::TYPE_GROUP_INFO);
+                $type->addAttribute($fieldCode, $fieldType, self::TYPE_GROUP_INFO);
             }
         }
         // add media fields
         $fields = array('image', 'thumbnail');
         foreach ($fields as $fieldCode) {
             if (!$type->getField($fieldCode)) {
-                $type->addField($fieldCode, BaseFieldFactory::FIELD_IMAGE, self::TYPE_GROUP_MEDIA);
+                $type->addAttribute($fieldCode, BaseFieldFactory::FIELD_IMAGE, self::TYPE_GROUP_MEDIA);
             }
         }
         // add others empty groups

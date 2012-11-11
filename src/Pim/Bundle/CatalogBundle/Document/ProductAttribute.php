@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use APY\DataGridBundle\Grid\Mapping as GRID;
 
 /**
- * Product type field as document
+ * Product type attribute as document
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
@@ -38,7 +38,7 @@ class ProductAttribute extends AbstractEntityAttribute
     protected $title;
 
     /**
-     * TODO define custom field type ?
+     * TODO define custom attribute type ?
      * @MongoDB\String
      * @GRID\Column()
      */

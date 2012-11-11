@@ -12,7 +12,7 @@ use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * ORM\Table(name="Akeneo_PimCatalog_Product_Translation", indexes={
- *      ORM\index(name="translation_idx", columns={"locale", "object_class", "field", "foreign_key"})
+ *      ORM\index(name="translation_idx", columns={"locale", "object_class", "attribute", "foreign_key"})
  * })
  * ORM\Entity(repositoryClass="Gedmo\Translatable\Entity\Repository\TranslationRepository")
  *

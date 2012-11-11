@@ -22,9 +22,9 @@ class ProductGroupType extends AbstractType
         $builder->add('title', 'hidden');
         // add group attributes
         $builder->add(
-            'fields', 'collection',
+            'attributes', 'collection',
             array(
-                'type'         => new ProductGroupFieldType(),
+                'type'         => new ProductGroupAttributeType(),
                 'by_reference' => false,
                 'allow_add'    => true,
                 'allow_delete' => true

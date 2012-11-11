@@ -64,7 +64,7 @@ class ProductSet extends AbstractEntitySet
     public function addGroup(AbstractEntityGroup $group)
     {
         $this->groups[] = $group;
-        $group->setType($this);
+        $group->setSet($this);
         return $this;
     }
 

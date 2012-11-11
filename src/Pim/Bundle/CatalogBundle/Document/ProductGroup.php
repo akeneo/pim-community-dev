@@ -35,13 +35,13 @@ class ProductGroup extends AbstractEntityGroup
      * @MongoDB\ReferenceMany(targetDocument="ProductAttribute")
      * @var ArrayCollection
      */
-    protected $fields = array();
+    protected $attributes = array();
 
     /**
     * Constructor
      */
     public function __construct()
     {
-        $this->fields = new ArrayCollection();
+        $this->attributes = new ArrayCollection();
     }
 }

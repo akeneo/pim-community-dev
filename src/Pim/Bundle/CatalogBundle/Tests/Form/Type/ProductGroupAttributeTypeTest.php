@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Tests\KernelAwareTest;
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductGroupFieldTypeTest extends KernelAwareTest
+class ProductGroupAttributeTypeTest extends KernelAwareTest
 {
 
     /**
@@ -27,7 +27,7 @@ class ProductGroupFieldTypeTest extends KernelAwareTest
         $productManager = $this->container->get('pim.catalog.product_manager');
         $classFullName = $productManager->getAttributeClass();
         $entity = $productManager->getNewAttributeInstance();
-        $this->container->get('form.factory')->create(new ProductGroupFieldType($entity), $entity);
+        $this->container->get('form.factory')->create(new ProductGroupAttributeType($entity), $entity);
     }
 
 }

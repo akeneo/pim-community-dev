@@ -28,11 +28,11 @@ class ProductEntity extends AbstractEntity
     protected $id;
 
     /**
-     * @var EntitySet $type
+     * @var EntitySet $set
      *
      * @ORM\ManyToOne(targetEntity="ProductSet")
      */
-    protected $type;
+    protected $set;
 
     /**
      * @var Value

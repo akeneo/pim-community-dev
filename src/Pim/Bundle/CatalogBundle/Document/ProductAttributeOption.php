@@ -6,7 +6,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Product field option as Embedded Mongo Document
+ * Product attribute option as Embedded Mongo Document
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)

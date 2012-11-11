@@ -31,7 +31,7 @@ class ProductEntity extends AbstractEntity
      * Simple reference, only store id TODO: test
      * @MongoDB\ReferenceOne(targetDocument="ProductSet", simple=true)
      */
-    protected $type;
+    protected $set;
 
     /**
      * @MongoDB\EmbedMany(targetDocument="ProductAttributeValue")

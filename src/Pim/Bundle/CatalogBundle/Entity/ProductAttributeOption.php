@@ -28,11 +28,11 @@ class ProductAttributeOption extends AbstractEntityAttributeOption
     protected $id;
 
     /**
-     * @var Field $field
+     * @var Field $attribute
      *
      * @ORM\ManyToOne(targetEntity="ProductAttribute")
      */
-    protected $field;
+    protected $attribute;
 
     /**
      * @ORM\Column(name="data", type="string", length=255)
@@ -45,14 +45,14 @@ class ProductAttributeOption extends AbstractEntityAttributeOption
     protected $sortOrder;
 
     /**
-     * Set field
+     * Set attribute
      *
-     * @param ProductAttribute $field
+     * @param ProductAttribute $attribute
      * @return ProductAttributeOption
      */
-    public function setField(ProductAttribute $field = null)
+    public function setAttribute(ProductAttribute $attribute = null)
     {
-        $this->field = $field;
+        $this->attribute = $attribute;
 
         return $this;
     }

@@ -28,9 +28,9 @@ abstract class EntityGroup
     protected $title;
 
     /**
-     * @var ArrayCollection $fields
+     * @var ArrayCollection $attributes
      */
-    protected $fields = array();
+    protected $attributes = array();
 
     /**
      * Get id
@@ -41,10 +41,10 @@ abstract class EntityGroup
     {
         return $this->id;
     }
-    
+
     /**
      * Set id
-     * 
+     *
      * @param integer $id
      * @return EntityGroup
      */
@@ -100,36 +100,36 @@ abstract class EntityGroup
     }
 
     /**
-     * Add field
+     * Add attribute
      *
-     * @param EntityAttribute $fields
+     * @param EntityAttribute $attributes
      * @return ProductGroup
      */
-    public function addField(EntityAttribute $field)
+    public function addAttribute(EntityAttribute $attribute)
     {
-        $this->fields[] = $field;
+        $this->attributes[] = $attribute;
 
         return $this;
     }
 
     /**
-     * Remove field
+     * Remove attribute
      *
-     * @param EntityAttribute $field
+     * @param EntityAttribute $attribute
      */
-    public function removeField(EntityAttribute $field)
+    public function removeAttribute(EntityAttribute $attribute)
     {
-        $this->fields->removeElement($field);
+        $this->attributes->removeElement($attribute);
     }
 
     /**
-     * Get fields
+     * Get attributes
      *
      * @return Doctrine\Common\Collections\Collection
      */
-    public function getFields()
+    public function getAttributes()
     {
-        return $this->fields;
+        return $this->attributes;
     }
 
     /**
@@ -138,11 +138,11 @@ abstract class EntityGroup
      * @param string $code
      * @return EntityAttribute
      */
-    public function getField($code)
+    public function getAttribute($code)
     {
-        foreach ($this->fields as $field) {
-            if ($field->getCode() == $code) {
-                return $field;
+        foreach ($this->attributes as $attribute) {
+            if ($attribute->getCode() == $code) {
+                return $attribute;
             }
         }
         return false;

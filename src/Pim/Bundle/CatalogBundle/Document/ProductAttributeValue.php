@@ -24,7 +24,7 @@ class ProductAttributeValue extends AbstractEntityAttributeValue
     /**
      * @MongoDB\ReferenceOne(targetDocument="ProductAttribute", simple=true)
      */
-    protected $field;
+    protected $attribute;
 
     /**
     * @MongoDB\String

@@ -2,7 +2,7 @@
 namespace Bap\Bundle\FlexibleEntityBundle\Model;
 
 /**
- * Abstract entity field, independent of storage
+ * Abstract entity attribute, independent of storage
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)

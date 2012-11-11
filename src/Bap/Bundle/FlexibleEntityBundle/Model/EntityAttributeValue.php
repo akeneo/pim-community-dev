@@ -18,9 +18,9 @@ abstract class EntityAttributeValue
     protected $id;
 
     /**
-     * @var EntityAttribute $field
+     * @var EntityAttribute $attribute
      */
-    protected $field;
+    protected $attribute;
 
     /**
      * @var mixed $data
@@ -61,26 +61,26 @@ abstract class EntityAttributeValue
      }
 
     /**
-     * Set field
+     * Set attribute
      *
-     * @param EntityAttribute $field
+     * @param EntityAttribute $attribute
      * @return EntityAttributeValue
      */
-    public function setField(EntityAttribute $field = null)
+    public function setAttribute(EntityAttribute $attribute = null)
     {
-        $this->field = $field;
+        $this->attribute = $attribute;
 
         return $this;
     }
 
     /**
-     * Get field
+     * Get attribute
      *
      * @return EntityAttribute
      */
-    public function getField()
+    public function getAttribute()
     {
-        return $this->field;
+        return $this->attribute;
     }
 
 }

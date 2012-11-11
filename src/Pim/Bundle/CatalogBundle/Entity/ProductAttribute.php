@@ -6,7 +6,7 @@ use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttributeOption as AbstractEntit
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Product field as sku, name, etc
+ * Product attribute as sku, name, etc
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
@@ -70,7 +70,7 @@ class ProductAttribute extends AbstractEntityAttribute
     /**
      * @var ArrayCollection $options
      *
-     * @ORM\OneToMany(targetEntity="ProductAttributeOption", mappedBy="field", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="ProductAttributeOption", mappedBy="attribute", cascade={"persist", "remove"})
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $options;
@@ -92,7 +92,7 @@ class ProductAttribute extends AbstractEntityAttribute
     public function addOption(AbstractEntityAttributeOption $option)
     {
         $this->options[] = $option;
-        $option->setField($this);
+        $option->setAttribute($this);
 
         return $this;
     }

@@ -274,8 +274,8 @@ abstract class FlexibleEntityManager
             $cloneSet->addGroup($cloneGroup);
 
             // link to same fields
-            foreach ($groupToClone->getFields() as $fieldToLink) {
-                $cloneGroup->addField($fieldToLink);
+            foreach ($groupToClone->getAttributes() as $attToLink) {
+                $cloneGroup->addAttribute($attToLink);
             }
         }
         return $cloneSet;
@@ -294,8 +294,8 @@ abstract class FlexibleEntityManager
         $clone = new $class();
 
         // clone entity type
-        $cloneSet = $this->cloneSet($entity->getType());
-        $clone->setType($cloneSet);
+        $cloneSet = $this->cloneSet($entity->getSet());
+        $clone->setSet($cloneSet);
 
         return $clone;
     }
