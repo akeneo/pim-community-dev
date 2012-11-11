@@ -7,7 +7,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
 
 /**
- * Type for field form (independant of persistence)
+ * Type for attribute form (independant of persistence)
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
@@ -19,15 +19,15 @@ class ProductAttributeType extends AbstractType
     /**
      * @var string
      */
-    protected $fieldClass;
+    protected $attributeClass;
 
     /**
-     * Construct with full name of concrete impl of field class
-     * @param unknown_type $fieldClass
+     * Construct with full name of concrete impl of attribute class
+     * @param unknown_type $attributeClass
      */
-    public function __construct($fieldClass)
+    public function __construct($attributeClass)
     {
-        $this->fieldClass = $fieldClass;
+        $this->attributeClass = $attributeClass;
     }
 
     /**
@@ -111,7 +111,7 @@ class ProductAttributeType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => $this->fieldClass
+                'data_class' => $this->attributeClass
             )
         );
     }

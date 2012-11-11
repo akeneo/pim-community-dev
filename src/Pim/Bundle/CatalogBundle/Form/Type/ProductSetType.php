@@ -13,8 +13,8 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class ProductSetType extends AbstractType
 {
-    private $_copyTypeOptions = array();
-    private $_availableFields = array();
+    private $copySetOptions = array();
+    private $availableAttributes = array();
 
     /**
      * (non-PHPdoc)
@@ -35,7 +35,7 @@ class ProductSetType extends AbstractType
         // create by copy
         $builder->add(
             'copyfromset', 'choice', array(
-                'choices'       => $this->getCopyTypeOptions(),
+                'choices'       => $this->getCopySetOptions(),
                 'required'      => false,
                 'property_path' => false
             )
@@ -61,8 +61,8 @@ class ProductSetType extends AbstractType
             )
         );
         // add attributes
-        foreach ($this->getAvailableFields() as $field) {
-            $builder->get('others')->add('field_'.$field->getId(), new ProductGroupAttributeType($field));
+        foreach ($this->getAvailableAttributes() as $attribute) {
+            $builder->get('others')->add('attribute_'.$attribute->getId(), new ProductGroupAttributeType($attribute));
         }
     }
 
@@ -72,44 +72,44 @@ class ProductSetType extends AbstractType
      */
     public function getName()
     {
-        return 'akeneo_catalog_producttype';
+        return 'akeneo_catalog_productset';
     }
 
     /**
      * Return list of $types
      * @return Array
      */
-    public function setCopyTypeOptions($types)
+    public function setCopySetOptions($types)
     {
-        $this->_copyTypeOptions = $types;
+        $this->copySetOptions = $types;
     }
 
     /**
      * Return list of type
      * @return Array
      */
-    public function getCopyTypeOptions()
+    public function getCopySetOptions()
     {
-        return $this->_copyTypeOptions;
+        return $this->copySetOptions;
     }
 
     /**
-     * Return list of fields
+     * Return list of attributes
      * @return Array
      *
      */
-    public function setAvailableFields($fields)
+    public function setAvailableAttributes($attributes)
     {
-        $this->_availableFields = $fields;
+        $this->availableAttributes = $attributes;
     }
 
     /**
      * Return list of attributes
      * @return Array
      */
-    public function getAvailableFields()
+    public function getAvailableAttributes()
     {
-        return $this->_availableFields;
+        return $this->availableAttributes;
     }
 
 }

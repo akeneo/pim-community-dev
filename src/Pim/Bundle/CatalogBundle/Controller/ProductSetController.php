@@ -21,7 +21,7 @@ use APY\DataGridBundle\Grid\Action\RowAction;
 
 use \Exception;
 /**
- * Product type controller.
+ * Product set controller.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
@@ -65,7 +65,7 @@ class ProductSetController extends Controller
     }
 
     /**
-     * Lists all fields
+     * Lists all sets
      *
      * @Route("/index")
      * @Template()
@@ -112,20 +112,20 @@ class ProductSetController extends Controller
      */
     public function createAction(Request $request = null)
     {
-        // create new product type
+        // create new product set
         $productManager = $this->getProductManager();
         $entity = $productManager->getNewSetInstance();
 
-        // create type, set list of existing type to prepare copy list
-        $type = new ProductSetType();
-        $type->setCopyTypeOptions($this->_getCopyTypeOptions());
+        // create set, set list of existing set to prepare copy list
+        $set = new ProductSetType();
+        $set->setCopySetOptions($this->_getCopySetOptions());
 
         // prepare & render form
-        $form = $this->createForm($type, $entity);
+        $form = $this->createForm($set, $entity);
 
         if ($request && $request->isMethod('POST')) {
             $form->bind($request);
-            $postData = $request->get('akeneo_catalog_producttype');
+            $postData = $request->get('akeneo_catalog_productset');
 
             // TODO : Must be in validation form
             if ($form->isValid() && isset($postData['copyfromset'])) {
@@ -142,7 +142,7 @@ class ProductSetController extends Controller
                 $this->getPersistenceManager()->persist($entity);
                 $this->getPersistenceManager()->flush();
 
-                $this->get('session')->setFlash('success', 'product type has been saved');
+                $this->get('session')->setFlash('success', 'product set has been saved');
 
                 // TODO : redirect to edit
                 return $this->redirect(
@@ -165,26 +165,27 @@ class ProductSetController extends Controller
     {
         $entity = $this->getProductManager()->getSetRepository()->find($id);
         if (!$entity) {
-            throw $this->createNotFoundException('No product type found for id '. $id);
+            throw $this->createNotFoundException('No product set found for id '. $id);
         }
 
-        $type = new ProductSetType();
-        $type->setAvailableFields($this->getAvailableFields());
+        $set = new ProductSetType();
+        $set->setAvailableAttributes($this->getAvailableAttributes());
 
         // prepare & render form
-        $form = $this->createForm($type, $entity);
+        $form = $this->createForm($set, $entity);
         return $this->render('PimCatalogBundle:ProductSet:edit.html.twig', array('form' => $form->createView()));
     }
 
     /**
-     * Get fields
+     * Get attributes
      * @return ArrayCollection
      * TODO : must be move in custom repository storage agnostic
      */
-    protected function getAvailableFields()
+    protected function getAvailableAttributes()
     {
         $dm = $this->getPersistenceManager();
         $qb = $dm->createQueryBuilder($this->getProductManager()->getAttributeShortname());
+        // TODO : to finish
         $q = $qb->field('code')->notIn(array('binomed-att'))->getQuery();
         return $q->execute();
     }
@@ -199,21 +200,21 @@ class ProductSetController extends Controller
     public function updateAction(Request $request)
     {
         if ($request->isMethod('POST')) {
-            // get product type
-            $postData = $request->get('akeneo_catalog_producttype');
+            // get product set
+            $postData = $request->get('akeneo_catalog_productset');
             var_dump($postData);
 //             exit;
 
             $id = isset($postData['id']) ? $postData['id'] : false;
             $entity = $this->getProductManager()->getSetRepository()->find($id);
             if (!$entity) {
-                throw $this->createNotFoundException('No product type found for id '. $id);
+                throw $this->createNotFoundException('No product set found for id '. $id);
             }
 
             //
-            $type = new ProductSetType();
+            $set = new ProductSetType();
 
-            $form = $this->createForm($type, $entity);
+            $form = $this->createForm($set, $entity);
             $form->bind($request);
             foreach ($entity->getGroups() as $group) {
                 var_dump($group->getAttributes()->count());
@@ -223,13 +224,13 @@ class ProductSetController extends Controller
                 $this->getPersistenceManager()->persist($entity);
                 $this->getPersistenceManager()->flush();
 
-                $this->get('session')->setFlash('success', 'product type has been saved');
+                $this->get('session')->setFlash('success', 'product set has been saved');
             }
 
             return $this->render('PimCatalogBundle:ProductSet:edit.html.twig', array('form' => $form->createView()));
 
         } else {
-            $this->get('session')->setFlash('notice', 'Incorrect update product type call');
+            $this->get('session')->setFlash('notice', 'Incorrect update product set call');
             return $this->redirect($this->generateUrl('pim_catalog_productset_index'));
         }
     }
@@ -251,7 +252,7 @@ class ProductSetController extends Controller
         $entity = $this->getProductManager()->getSetRepository()->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('No product type found for id '. $id);
+            throw $this->createNotFoundException('No product set found for id '. $id);
         }
 
         $this->getPersistenceManager()->remove($entity);
@@ -267,13 +268,13 @@ class ProductSetController extends Controller
     /**
      * @return array
      */
-    private function _getCopyTypeOptions()
+    private function _getCopySetOptions()
     {
-        $types = $this->getProductManager()->getSetRepository()->findAll();
-        $typeIdToName = array();
-        foreach ($types as $type) {
-            $typeIdToName[$type->getId()]= $type->getCode();
+        $sets = $this->getProductManager()->getSetRepository()->findAll();
+        $setIdToName = array();
+        foreach ($sets as $set) {
+            $setIdToName[$set->getId()]= $set->getCode();
         }
-        return $typeIdToName;
+        return $setIdToName;
     }
 }

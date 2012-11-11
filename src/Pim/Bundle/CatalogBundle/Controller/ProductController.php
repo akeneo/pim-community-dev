@@ -34,7 +34,7 @@ class ProductController extends AbstractProductController
     }
 
     /**
-     * Lists all fields
+     * Lists all products
      *
      * @Route("/index")
      * @Template()
@@ -107,8 +107,8 @@ class ProductController extends AbstractProductController
             // TODO : add some constraints in form
 
             $postData = $request->get('pim_catalogbundle_product');
-            foreach ($postData as $fieldCode => $fieldValue) {
-                $entity->setValue($fieldCode, $fieldValue);
+            foreach ($postData as $attributeCode => $attributeValue) {
+                $entity->setValue($attributeCode, $attributeValue);
             }
 
             $manager->persist($entity);

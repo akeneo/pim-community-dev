@@ -17,7 +17,7 @@ use APY\DataGridBundle\Grid\Export\ExcelExport;
 use APY\DataGridBundle\Grid\Export\CSVExport;
 
 /**
- * Product field controller.
+ * Product attribute controller.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
@@ -37,7 +37,7 @@ class ProductAttributeController extends AbstractProductController
     }
 
     /**
-     * Lists all fields
+     * Lists all attributes
      *
      * @Route("/index")
      * @Template()
@@ -66,7 +66,7 @@ class ProductAttributeController extends AbstractProductController
     }
 
     /**
-     * Displays a form to create a new field
+     * Displays a form to create a new attribute
      *
      * @Route("/new")
      * @Template()
@@ -74,8 +74,8 @@ class ProductAttributeController extends AbstractProductController
     public function newAction()
     {
         $entity = $this->getNewObject();
-        $fieldClassFullName = $this->get('pim.catalog.product_manager')->getAttributeClass();
-        $form = $this->createForm(new ProductAttributeType($fieldClassFullName), $entity);
+        $classFullName = $this->get('pim.catalog.product_manager')->getAttributeClass();
+        $form = $this->createForm(new ProductAttributeType($classFullName), $entity);
 
         // render form
         return $this->render(
@@ -84,7 +84,7 @@ class ProductAttributeController extends AbstractProductController
     }
 
     /**
-     * Creates a new field
+     * Creates a new attribute
      *
      * @Route("/create")
      * @Method("POST")
@@ -93,12 +93,12 @@ class ProductAttributeController extends AbstractProductController
     public function createAction(Request $request)
     {
         $entity  = $this->getNewObject();
-        $fieldClassFullName = $this->get('pim.catalog.product_manager')->getAttributeClass();
+        $classFullName = $this->get('pim.catalog.product_manager')->getAttributeClass();
 
-        $form = $this->createForm(new ProductAttributeType($fieldClassFullName), $entity);
+        $form = $this->createForm(new ProductAttributeType($classFullName), $entity);
         $form->bind($request);
 
-        // TODO : avoid to create product field with same code -> complete validation !
+        // TODO : avoid to create product attribute with same code -> complete validation !
         if ($form->isValid()) {
             $manager = $this->getObjectManagerService();
             $manager->persist($entity);
@@ -115,7 +115,7 @@ class ProductAttributeController extends AbstractProductController
     }
 
     /**
-     * Displays a form to edit an existing field entity.
+     * Displays a form to edit an existing attribute entity.
      *
      * @Route("/{id}/edit")
      * @Template()
@@ -127,11 +127,11 @@ class ProductAttributeController extends AbstractProductController
         $entity = $manager->getRepository($this->getObjectShortName())->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find product field.');
+            throw $this->createNotFoundException('Unable to find product attribute.');
         }
 
-        $fieldClassFullName = $this->get('pim.catalog.product_manager')->getAttributeClass();
-        $editForm = $this->createForm(new ProductAttributeType($fieldClassFullName), $entity);
+        $classFullName = $this->get('pim.catalog.product_manager')->getAttributeClass();
+        $editForm = $this->createForm(new ProductAttributeType($classFullName), $entity);
 
         $params = array(
             'entity'      => $entity,
@@ -143,7 +143,7 @@ class ProductAttributeController extends AbstractProductController
     }
 
     /**
-     * Edits an existing field entity.
+     * Edits an existing attribute entity.
      *
      * @Route("/{id}/update")
      * @Method("POST")
@@ -156,11 +156,11 @@ class ProductAttributeController extends AbstractProductController
         $entity = $manager->getRepository($this->getObjectShortName())->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find product field.');
+            throw $this->createNotFoundException('Unable to find product attribute.');
         }
 
-        $fieldClassFullName = $this->get('pim.catalog.product_manager')->getAttributeClass();
-        $editForm = $this->createForm(new ProductAttributeType($fieldClassFullName), $entity);
+        $classFullName = $this->get('pim.catalog.product_manager')->getAttributeClass();
+        $editForm = $this->createForm(new ProductAttributeType($classFullName), $entity);
         $editForm->bind($request);
 
         /*
@@ -217,7 +217,7 @@ class ProductAttributeController extends AbstractProductController
         $entity = $manager->getRepository($this->getObjectShortName())->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find product field.');
+            throw $this->createNotFoundException('Unable to find product attribute.');
         }
 
         $manager->remove($entity);

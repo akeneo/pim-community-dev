@@ -273,7 +273,7 @@ abstract class FlexibleEntityManager
             $cloneGroup->setCode($groupToClone->getCode());
             $cloneSet->addGroup($cloneGroup);
 
-            // link to same fields
+            // link to same attributes
             foreach ($groupToClone->getAttributes() as $attToLink) {
                 $cloneGroup->addAttribute($attToLink);
             }

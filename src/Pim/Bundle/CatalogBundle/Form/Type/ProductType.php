@@ -42,7 +42,7 @@ class ProductType extends AbstractType
         // TODO drive from type and not add if in twig template ?
         $builder->add('id', 'hidden');
 
-        // add product field
+        // add product attribute
         if ($entity->getSet()) {
             foreach ($entity->getSet()->getGroups() as $group) {
                 foreach ($group->getAttributes() as $attribute) {
@@ -55,7 +55,7 @@ class ProductType extends AbstractType
                     });
                     $value = $values->first();
 
-                    // prepare common fields options
+                    // prepare common attributes options
                     $customOptions = array(
                         'label'         => $attribute->getTitle(),
                         'data'          => ($value) ? $value->getData() : '',
@@ -64,11 +64,11 @@ class ProductType extends AbstractType
                         'required'      => ($attribute->getValueRequired() == 1)
                     );
 
-                    // add text fields options
+                    // add text attributes options
                     if ($attribute->getType() == BaseFieldFactory::FIELD_STRING) {
                         $attributeType = 'text';
 
-                    // add select field options
+                    // add select attribute options
                     } else if ($attribute->getType() == BaseFieldFactory::FIELD_SELECT) {
                         $attributeType = 'choice';
                         $options = $attribute->getOptions();
@@ -81,7 +81,7 @@ class ProductType extends AbstractType
                         $customOptions['data']= ($value) ? $value->getData() : '';
                     }
 
-                    // add field
+                    // add attribute
                     $builder->add($attribute->getCode(), $attributeType, $customOptions);
                 }
             }

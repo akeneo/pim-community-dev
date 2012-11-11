@@ -67,57 +67,57 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
         $localeCode = $this->localeCode;
 
         // 1) if not exists, create a new type
-        $typeCode = self::PREFIX.'-'.$prodData['vendorId'].'-'.$prodData['CategoryId'];
-        $typeRepository = $this->productManager->getSetRepository();
-        $type = $typeRepository->findOneByCode($typeCode);
-        if (!$type) {
-            $type = $this->productManager->getNewSetInstance();
-            $type->setCode($typeCode);
-            $type->setTitle($typeCode);
+        $setCode = self::PREFIX.'-'.$prodData['vendorId'].'-'.$prodData['CategoryId'];
+        $setRepository = $this->productManager->getSetRepository();
+        $set = $setRepository->findOneByCode($setCode);
+        if (!$set) {
+            $set = $this->productManager->getNewSetInstance();
+            $set->setCode($setCode);
+            $set->setTitle($setCode);
         }
 
-        // 2) add all fields of prodData as general fields
+        // 2) add all attributes of prodData as general attributes
         $ProductAttributeCodeToValues = array();
         $productValues = array();
 
         // 2a) create general group if not exists
         $generalGroupCode = 'General';
-        $group = $type->getGroup($generalGroupCode);
+        $group = $set->getGroup($generalGroupCode);
         if (!$group) {
             $group = $this->productManager->getNewGroupInstance();
             $group->setCode($generalGroupCode);
             $group->setTitle($generalGroupCode);
-            $type->addGroup($group);
+            $set->addGroup($group);
         }
 
-        // 2b) add fields
-        foreach ($prodData as $fieldName => $valueData) {
+        // 2b) add attributes
+        foreach ($prodData as $attributeName => $valueData) {
 
-            if ($fieldName == 'id') {
-                $fieldCode = self::PREFIX.'_source_id';
+            if ($attributeName == 'id') {
+                $attributeCode = self::PREFIX.'_source_id';
                 $productSourceId = $valueData;
             } else {
-                $fieldCode = self::PREFIX.'-'.$prodData['vendorId'].'-'.$prodData['CategoryId'].'-'.strtolower($fieldName);
+                $attributeCode = self::PREFIX.'-'.$prodData['vendorId'].'-'.$prodData['CategoryId'].'-'.strtolower($attributeName);
             }
 
-            // get field or create TODO: if it's already in other group ?
-            $field = $group->getField($fieldCode);
-            if (!$field) {
-                $field = $this->productManager->getNewAttributeInstance();
-                $field->setCode($fieldCode);
-                $field->setTitle($fieldName);
-                $field->setType(BaseFieldFactory::FIELD_STRING);
-                $persistanceManager->persist($field);
+            // get attribute or create TODO: if it's already in other group ?
+            $attribute = $group->getField($attributeCode);
+            if (!$attribute) {
+                $attribute = $this->productManager->getNewAttributeInstance();
+                $attribute->setCode($attributeCode);
+                $attribute->setTitle($attributeName);
+                $attribute->setType(BaseFieldFactory::FIELD_STRING);
+                $persistanceManager->persist($attribute);
                 // TODO unique etc ?
-                $group->addAttribute($field);
+                $group->addAttribute($attribute);
             }
 
-            // prepare field code to value for next step
-            $ProductAttributeCodeToValues[$fieldCode]= $valueData;
+            // prepare attribute code to value for next step
+            $ProductAttributeCodeToValues[$attributeCode]= $valueData;
 
             // TODO : deal with existing values
             $value = $this->productManager->getNewAttributeValueInstance();
-            $value->setAttribute($field);
+            $value->setAttribute($attribute);
             $value->setData($valueData);
             $productValues[]= $value;
 
@@ -126,44 +126,44 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
         // 3) create custom group for each features category
         foreach ($prodFeat as $featId => $featData) {
 
-            foreach ($featData as $featName => $fieldData) {
+            foreach ($featData as $featName => $attributeData) {
 
                 $groupCode = 'feat-'.$featId;//.'-'.strtolower(str_replace('&', '', str_replace(' ', '', $featName)));
 
-                foreach ($fieldData as $fieldId => $fieldData) {
+                foreach ($attributeData as $attributeId => $attributeData) {
 
-                    $fieldName = $fieldData['name'];
-                    $valueData = $fieldData['value'];
-                    $fieldCode = self::PREFIX.'-'.$prodData['vendorId'].'-'.$featId.'-'.$fieldId;
+                    $attributeName = $attributeData['name'];
+                    $valueData = $attributeData['value'];
+                    $attributeCode = self::PREFIX.'-'.$prodData['vendorId'].'-'.$featId.'-'.$attributeId;
 
                     // if not exists add group
-                    $group = $type->getGroup($groupCode);
+                    $group = $set->getGroup($groupCode);
                     if (!$group) {
                         $classGroup = $this->productManager->getGroupClass();
                         $group = new $classGroup();
                         $group->setCode($groupCode);
                         $group->setTitle($featName);
-                        $type->addGroup($group);
+                        $set->addGroup($group);
                     }
 
-                    // get field or create TODO: if it's already in other group ?
-                    $field = $group->getField($fieldCode);
-                    if (!$field) {
+                    // get attribute or create TODO: if it's already in other group ?
+                    $attribute = $group->getField($attributeCode);
+                    if (!$attribute) {
                         $classField = $this->productManager->getAttributeClass();
-                        $field = new $classField();
-                        $field->setCode($fieldCode);
-                        $field->setTitle($fieldName);
-                        $field->setType(BaseFieldFactory::FIELD_STRING);
-                        $persistanceManager->persist($field);
+                        $attribute = new $classField();
+                        $attribute->setCode($attributeCode);
+                        $attribute->setTitle($attributeName);
+                        $attribute->setType(BaseFieldFactory::FIELD_STRING);
+                        $persistanceManager->persist($attribute);
                         // TODO unique etc ?
-                        $group->addAttribute($field);
+                        $group->addAttribute($attribute);
                     }
 
-                    $ProductAttributeCodeToValues[$fieldCode]= $valueData;
+                    $ProductAttributeCodeToValues[$attributeCode]= $valueData;
 
                     // TODO : deal with existing values
                     $value = $this->productManager->getNewAttributeValueInstance();
-                    $value->setAttribute($field);
+                    $value->setAttribute($attribute);
                     $value->setData($valueData);
                     $productValues[]= $value;
                 }
@@ -172,7 +172,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
 
         // 4) save type
 
-        $persistanceManager->persist($type);
+        $persistanceManager->persist($set);
         $persistanceManager->flush();
 
         // 5) if not exists create a product
@@ -186,7 +186,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
         if (!$product) {
             $classProd = $this->productManager->getEntityClass();
             $product = new $classProd();
-            $product->setType($type);
+            $product->setSet($set);
         }
  // TODO       $product->switchLocale($localeCode);
 

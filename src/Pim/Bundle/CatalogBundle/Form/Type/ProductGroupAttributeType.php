@@ -21,15 +21,15 @@ class ProductGroupAttributeType extends AbstractType
      * Used to populate from the constructor
      * @param Attribute
      */
-    private $field = null;
+    private $attribute = null;
 
     /**
      * Construct
      */
-    public function __construct(EntityAttribute $field = null)
+    public function __construct(EntityAttribute $attribute = null)
     {
-        if ($field) {
-            $this->field = $field;
+        if ($attribute) {
+            $this->attribute = $attribute;
         }
     }
 
@@ -42,8 +42,8 @@ class ProductGroupAttributeType extends AbstractType
         $builder->add('id', 'hidden');
         $builder->add('code');
         $builder->add('title', 'hidden');
-        if (!is_null($this->field)) {
-            $builder->setData($this->field);
+        if (!is_null($this->attribute)) {
+            $builder->setData($this->attribute);
         }
     }
 
@@ -64,7 +64,7 @@ class ProductGroupAttributeType extends AbstractType
      */
     public function getName()
     {
-        return 'akeneo_productset_field';
+        return 'akeneo_productgroup_attribute';
     }
 
 }
