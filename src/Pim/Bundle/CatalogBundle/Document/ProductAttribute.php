@@ -27,6 +27,7 @@ class ProductAttribute extends AbstractEntityAttribute
 
     /**
      * @MongoDB\String
+     * @MongoDB\Index(unique=true)
      * @GRID\Column()
      */
     protected $code;

@@ -119,13 +119,18 @@ class ProductAttributeController extends Controller
         // TODO : avoid to create product attribute with same code -> complete validation !
         if ($form->isValid()) {
             $manager = $this->getPersistenceManager();
-            $manager->persist($instance);
-            $manager->flush();
-            $this->get('session')->setFlash('success', "Attribute {$instance->getCode()} has been created");
 
-            return $this->redirect(
-                $this->generateUrl('pim_catalog_productattribute_edit', array('id' => $instance->getId()))
-            );
+            try {
+                $manager->persist($instance);
+                $manager->flush();
+                $this->get('session')->setFlash('success', "Attribute {$instance->getCode()} has been created");
+
+                return $this->redirect(
+                    $this->generateUrl('pim_catalog_productattribute_edit', array('id' => $instance->getId()))
+                );
+            } catch (\Exception $e) {
+                $this->get('session')->setFlash('error', $e->getMessage());
+            }
         }
 
         // render form with errors
@@ -205,12 +210,18 @@ class ProductAttributeController extends Controller
                 $option->setSortOrder($order);
             }
 
-            $manager = $this->getPersistenceManager();
-            $manager->persist($instance);
-            $manager->flush();
-            $this->get('session')->setFlash('success', "Attribute {$instance->getCode()} has been updated");
+            try {
+                $manager = $this->getPersistenceManager();
+                $manager->persist($instance);
+                $manager->flush();
+                $this->get('session')->setFlash('success', "Attribute {$instance->getCode()} has been updated");
 
-            return $this->redirect($this->generateUrl('pim_catalog_productattribute_edit', array('id' => $id)));
+                return $this->redirect($this->generateUrl('pim_catalog_productattribute_edit', array('id' => $id)));
+
+            } catch (\Exception $e) {
+                $this->get('session')->setFlash('error', $e->getMessage());
+            }
+
         }
 
         // render form with error
