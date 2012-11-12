@@ -18,7 +18,7 @@
 
 {% block content %}
 
-    <h1>Catalog product attribute edit</h1>
+    <h1>Product attribute edition</h1>
 
     {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
     <form action="{{ path('pim_catalog_productattribute_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(form) }}>

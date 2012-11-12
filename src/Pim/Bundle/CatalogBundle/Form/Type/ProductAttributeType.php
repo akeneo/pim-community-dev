@@ -22,12 +22,18 @@ class ProductAttributeType extends AbstractType
     protected $attributeClass;
 
     /**
-     * Construct with full name of concrete impl of attribute class
-     * @param unknown_type $attributeClass
+     * @var string
      */
-    public function __construct($attributeClass)
+    protected $optionClass;
+
+    /**
+     * Construct with full name of concrete impl of attribute and option classes
+     * @param string $attributeClass
+     */
+    public function __construct($attributeClass, $optionClass)
     {
         $this->attributeClass = $attributeClass;
+        $this->optionClass = $optionClass;
     }
 
     /**
@@ -102,8 +108,8 @@ class ProductAttributeType extends AbstractType
         if ($entity->getType() == BaseFieldFactory::FIELD_SELECT) {
             $builder->add(
                 'options', 'collection', array(
-                    'type' => new ProductAttributeOptionType(),
-                    'allow_add' => true,
+                    'type'         => new ProductAttributeOptionType($this->optionClass),
+                    'allow_add'    => true,
                     'allow_delete' => true,
                     'by_reference' => true,
                 )
@@ -130,6 +136,6 @@ class ProductAttributeType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_catalogbundle_ProductAttributetype';
+        return 'pim_catalogbundle_productattributetype';
     }
 }

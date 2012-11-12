@@ -11,8 +11,8 @@
     <services>
         <service id="pim.catalog.product_manager" class="%pim.catalog.product_manager.class%">
             <!-- to switch to orm impl -->
-<!--            <argument type="service" id="doctrine.orm.entity_manager" /> -->
-             <argument type="service" id="doctrine.odm.mongodb.document_manager" /> 
+            <argument type="service" id="doctrine.orm.entity_manager" />
+<!--             <argument type="service" id="doctrine.odm.mongodb.document_manager" />  -->
         </service>
     </services>
 

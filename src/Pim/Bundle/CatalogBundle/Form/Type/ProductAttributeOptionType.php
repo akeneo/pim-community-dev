@@ -16,6 +16,20 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class ProductAttributeOptionType extends AbstractType
 {
     /**
+     * @var string
+     */
+    protected $optionClass;
+
+    /**
+     * Construct with full name of concrete impl of option class
+     * @param string $optionClass
+     */
+    public function __construct($optionClass)
+    {
+        $this->optionClass = $optionClass;
+    }
+
+    /**
      * (non-PHPdoc)
      * @see \Symfony\Component\Form\AbstractType::buildForm()
      */
@@ -34,7 +48,7 @@ class ProductAttributeOptionType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Document\ProductAttributeOption'
+                'data_class' => $this->optionClass
             )
         );
     }
@@ -45,6 +59,6 @@ class ProductAttributeOptionType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_catalogbundle_ProductAttributeoptiontype';
+        return 'pim_catalogbundle_productattributeoptiontype';
     }
 }

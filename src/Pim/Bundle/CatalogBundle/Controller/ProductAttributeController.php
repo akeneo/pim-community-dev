@@ -6,15 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
-use Pim\Bundle\CatalogBundle\Document\ProductAttributeMongo;
 use Pim\Bundle\CatalogBundle\Form\Type\ProductAttributeType;
-use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
-use APY\DataGridBundle\Grid\Source\Document as GridDocument;
+use Pim\Bundle\UIBundle\Grid\Helper as GridHelper;
 use APY\DataGridBundle\Grid\Action\RowAction;
 use APY\DataGridBundle\Grid\Column\TextColumn;
 use APY\DataGridBundle\Grid\Export\ExcelExport;
 use APY\DataGridBundle\Grid\Export\CSVExport;
+use Symfony\Component\Form\Form;
 
 /**
  * Product attribute controller.
@@ -25,15 +23,23 @@ use APY\DataGridBundle\Grid\Export\CSVExport;
  *
  * @Route("/productattribute")
  */
-class ProductAttributeController extends AbstractProductController
+class ProductAttributeController extends Controller
 {
+
     /**
-     * (non-PHPdoc)
-     * @see Parent
+     * @return ProductManager
      */
-    public function getObjectShortName()
+    protected function getProductManager()
     {
-        return $this->get('pim.catalog.product_manager')->getAttributeShortname();
+        return $this->get('pim.catalog.product_manager');
+    }
+
+    /**
+     * @return DocumentManager
+     */
+    protected function getPersistenceManager()
+    {
+        return $this->getProductManager()->getPersistenceManager();
     }
 
     /**
@@ -45,7 +51,7 @@ class ProductAttributeController extends AbstractProductController
     public function indexAction()
     {
         // creates simple grid based on entity or document (ORM or ODM)
-        $source = $this->getGridSource();
+        $source = GridHelper::getGridSource($this->getPersistenceManager(), $this->getProductManager()->getAttributeShortname());
         $grid = $this->get('grid');
         $grid->setSource($source);
         $grid->addExport(new ExcelExport('Excel Export'));
@@ -66,6 +72,20 @@ class ProductAttributeController extends AbstractProductController
     }
 
     /**
+     *
+     * Enter description here ...
+     * @param ProductAttribute $instance
+     * @return Form
+     */
+    protected function createAttributeForm($attribute)
+    {
+        $attClassFullName = $this->getProductManager()->getAttributeClass();
+        $optClassFullName = $this->getProductManager()->getAttributeOptionClass();
+        $form = $this->createForm(new ProductAttributeType($attClassFullName, $optClassFullName), $attribute);
+        return $form;
+    }
+
+    /**
      * Displays a form to create a new attribute
      *
      * @Route("/new")
@@ -73,13 +93,13 @@ class ProductAttributeController extends AbstractProductController
      */
     public function newAction()
     {
-        $entity = $this->getNewObject();
-        $classFullName = $this->get('pim.catalog.product_manager')->getAttributeClass();
-        $form = $this->createForm(new ProductAttributeType($classFullName), $entity);
+        $instance = $this->getProductManager()->getNewAttributeInstance();
+        $form = $this->createAttributeForm($instance);
 
         // render form
         return $this->render(
-            'PimCatalogBundle:ProductAttribute:new.html.twig', array('entity' => $entity, 'form' => $form->createView())
+            'PimCatalogBundle:ProductAttribute:new.html.twig',
+            array('entity' => $instance, 'form' => $form->createView())
         );
     }
 
@@ -92,25 +112,26 @@ class ProductAttributeController extends AbstractProductController
      */
     public function createAction(Request $request)
     {
-        $entity  = $this->getNewObject();
-        $classFullName = $this->get('pim.catalog.product_manager')->getAttributeClass();
-
-        $form = $this->createForm(new ProductAttributeType($classFullName), $entity);
+        $instance = $this->getProductManager()->getNewAttributeInstance();
+        $form = $this->createAttributeForm($instance);
         $form->bind($request);
 
         // TODO : avoid to create product attribute with same code -> complete validation !
         if ($form->isValid()) {
-            $manager = $this->getObjectManagerService();
-            $manager->persist($entity);
+            $manager = $this->getPersistenceManager();
+            $manager->persist($instance);
             $manager->flush();
-            $this->get('session')->setFlash('success', 'Attribute has been created');
+            $this->get('session')->setFlash('success', "Attribute {$instance->getCode()} has been created");
 
-            return $this->redirect($this->generateUrl('pim_catalog_productattribute_edit', array('id' => $entity->getId())));
+            return $this->redirect(
+                $this->generateUrl('pim_catalog_productattribute_edit', array('id' => $instance->getId()))
+            );
         }
 
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+        // render form with errors
+        return $this->render(
+            'PimCatalogBundle:ProductAttribute:new.html.twig',
+            array('entity' => $instance, 'form' => $form->createView())
         );
     }
 
@@ -122,24 +143,19 @@ class ProductAttributeController extends AbstractProductController
      */
     public function editAction($id)
     {
-        $manager = $this->getObjectManagerService();
+        $instance = $this->getProductManager()->getAttributeRepository()->find($id);
 
-        $entity = $manager->getRepository($this->getObjectShortName())->find($id);
-
-        if (!$entity) {
+        if (!$instance) {
             throw $this->createNotFoundException('Unable to find product attribute.');
         }
 
-        $classFullName = $this->get('pim.catalog.product_manager')->getAttributeClass();
-        $editForm = $this->createForm(new ProductAttributeType($classFullName), $entity);
-
-        $params = array(
-            'entity'      => $entity,
-            'form'   => $editForm->createView(),
-        );
+        $form = $this->createAttributeForm($instance);
 
         // render form
-        return $this->render('PimCatalogBundle:ProductAttribute:edit.html.twig', $params);
+        return $this->render(
+            'PimCatalogBundle:ProductAttribute:edit.html.twig',
+            array('entity' => $instance, 'form' => $form->createView())
+        );
     }
 
     /**
@@ -151,17 +167,14 @@ class ProductAttributeController extends AbstractProductController
      */
     public function updateAction(Request $request, $id)
     {
-        $manager = $this->getObjectManagerService();
+        $instance = $this->getProductManager()->getAttributeRepository()->find($id);
 
-        $entity = $manager->getRepository($this->getObjectShortName())->find($id);
-
-        if (!$entity) {
+        if (!$instance) {
             throw $this->createNotFoundException('Unable to find product attribute.');
         }
 
-        $classFullName = $this->get('pim.catalog.product_manager')->getAttributeClass();
-        $editForm = $this->createForm(new ProductAttributeType($classFullName), $entity);
-        $editForm->bind($request);
+        $form = $this->createAttributeForm($instance);
+        $form->bind($request);
 
         /*
         // sort options
@@ -173,36 +186,35 @@ class ProductAttributeController extends AbstractProductController
             }
         }
 
-
-
-
         var_dump($postData['options']);
 
-        foreach ($entity->getOptions() as $opt) {
+        foreach ($instance->getOptions() as $opt) {
             var_dump($opt);
         }
 
         exit();
 	*/
 
+        if ($form->isValid()) {
 
+            // TODO set option order
+            foreach ($instance->getOptions() as $option) {
+                $option->setAttribute($instance);
+                $option->setSortOrder(1);
+            }
 
-        if ($editForm->isValid()) {
-
-            // set option order
-
-
-
-            $manager->persist($entity);
+            $manager = $this->getPersistenceManager();
+            $manager->persist($instance);
             $manager->flush();
-            $this->get('session')->setFlash('success', 'Attribute has been updated');
+            $this->get('session')->setFlash('success', "Attribute {$instance->getCode()} has been updated");
 
             return $this->redirect($this->generateUrl('pim_catalog_productattribute_edit', array('id' => $id)));
         }
 
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+        // render form with error
+        return $this->render(
+            'PimCatalogBundle:ProductAttribute:edit.html.twig',
+            array('entity' => $instance, 'form' => $form->createView())
         );
     }
 
@@ -213,17 +225,18 @@ class ProductAttributeController extends AbstractProductController
      */
     public function deleteAction(Request $request, $id)
     {
-        $manager = $this->getObjectManagerService();
-        $entity = $manager->getRepository($this->getObjectShortName())->find($id);
+        $instance = $this->getProductManager()->getAttributeRepository()->find($id);
 
-        if (!$entity) {
+        if (!$instance) {
             throw $this->createNotFoundException('Unable to find product attribute.');
         }
 
-        $manager->remove($entity);
+        $attributeCode = $instance->getCode();
+        $manager = $this->getPersistenceManager();
+        $manager->remove($instance);
         $manager->flush();
 
-        $this->get('session')->setFlash('success', 'Attribute has been deleted');
+        $this->get('session')->setFlash('success', "Attribute {$attributeCode} has been deleted");
 
         return $this->redirect($this->generateUrl('pim_catalog_productattribute_index'));
     }

@@ -4,8 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
-
 use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
 
 use Pim\Bundle\CatalogBundle\Form\Type\ProductSetType;
