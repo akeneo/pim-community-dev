@@ -9,6 +9,11 @@
             <span class="ui-button-icon-primary ui-icon ui-icon-fugue-ui-button-navigation-back"></span><span class="ui-button-text">Back to list</span>
         </a>
     </li>
+    <li>
+        <a href="#" onclick="$('#edit-form-submit').click(); return false;" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
+            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-disk"></span><span class="ui-button-text">Save</span>
+        </a>
+    </li>
 {% endblock %}
 
 {% block content %}
@@ -24,9 +29,10 @@
             {{ form_widget(form) }}
         </div>
 
-        <input type="submit" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" aria-disabled="false">
+        <input id="edit-form-submit" type="submit" value="Save" class="ui-helper-hidden" role="button" aria-disabled="false">
+
+        {{ form_widget(form._token) }}
 
     </form>
-
 
 {% endblock %}

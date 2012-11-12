@@ -10,7 +10,7 @@
         </a>
     </li>
     <li>
-        <a href="#" onclick="$('#edit-form').submit(); return false;" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
+        <a href="#" onclick="$('#edit-form-submit').click(); return false;" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
             <span class="ui-button-icon-primary ui-icon ui-icon-fugue-disk"></span><span class="ui-button-text">Save</span>
         </a>
     </li>
@@ -20,7 +20,7 @@
 
     {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
     
-    <form id="edit-product-type" action="{{ path('pim_catalog_productset_update') }}" method="post" {{ form_enctype(form) }}>
+    <form action="{{ path('pim_catalog_productset_update') }}" method="post" {{ form_enctype(form) }}>
 
         {{ form_errors(form) }}
     
@@ -87,7 +87,7 @@
 
         {{ form_widget(form._token) }}
 
-        <input type="submit" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" aria-disabled="false">
+        <input id="edit-form-submit" type="submit" value="Save" class="ui-helper-hidden" role="button" aria-disabled="false">
 
     </form>
     
