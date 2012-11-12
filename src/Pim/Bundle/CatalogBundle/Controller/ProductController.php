@@ -11,6 +11,7 @@ use Pim\Bundle\CatalogBundle\Form\Type\ProductType;
 use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
 use APY\DataGridBundle\Grid\Source\Document as GridDocument;
 use APY\DataGridBundle\Grid\Action\RowAction;
+use Pim\Bundle\UIBundle\Grid\Helper as GridHelper;
 
 /**
  * Product controller.
@@ -21,16 +22,23 @@ use APY\DataGridBundle\Grid\Action\RowAction;
  *
  * @Route("/product")
  */
-class ProductController extends AbstractProductController
+class ProductController extends Controller
 {
 
     /**
-     * (non-PHPdoc)
-     * @see Parent
+     * @return ProductManager
      */
-    public function getObjectShortName()
+    protected function getProductManager()
     {
-        return $this->get('pim.catalog.product_manager')->getEntityShortname();
+        return $this->get('pim.catalog.product_manager');
+    }
+
+    /**
+     * @return DocumentManager
+     */
+    protected function getPersistenceManager()
+    {
+        return $this->getProductManager()->getPersistenceManager();
     }
 
     /**
@@ -42,17 +50,30 @@ class ProductController extends AbstractProductController
     public function indexAction()
     {
         // creates simple grid based on entity or document (ORM or ODM)
-        $source = $this->getGridSource();
+        $source = GridHelper::getGridSource($this->getPersistenceManager(), $this->getProductManager()->getEntityShortname());
         $grid = $this->get('grid');
         $grid->setSource($source);
 
         // add an action column
         $grid->setActionsColumnSeparator('&nbsp;');
-        $rowAction = new RowAction('Edit', 'pim_catalog_product_edit', false, '_self', array('class' => 'grid_action ui-icon-fugue-pencil'));
+        $rowAction = new RowAction('Details', 'pim_catalog_product_edit', false, '_self', array('class' => 'grid_action ui-icon-fugue-magnifier'));
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
 
         return $grid->getGridResponse('PimCatalogBundle:Product:index.html.twig');
+    }
+
+    /**
+     * Create product form
+     *
+     * @param ProductEntity $product
+     * @return Form
+     */
+    protected function createProductForm($product)
+    {
+        $prodClassFullName = $this->getProductManager()->getEntityClass();
+        $form = $this->createForm(new ProductType($prodClassFullName), $product);
+        return $form;
     }
 
     /**
@@ -63,23 +84,19 @@ class ProductController extends AbstractProductController
      */
     public function editAction($id)
     {
-        $manager = $this->getObjectManagerService();
-        $entity = $this->get('pim.catalog.product_manager')->getEntityRepository()->find($id);
+        $entity = $this->getProductManager()->getEntityRepository()->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find product.');
         }
 
-        $classFullName = $this->getObjectClassFullName();
-        $editForm = $this->createForm(new ProductType($classFullName), $entity);
-
-        $params = array(
-            'entity'      => $entity,
-            'form'   => $editForm->createView(),
-        );
+        $form = $this->createProductForm($entity);
 
         // render form
-        return $this->render('PimCatalogBundle:Product:edit.html.twig', $params);
+        return $this->render(
+            'PimCatalogBundle:Product:edit.html.twig',
+            array('entity' => $entity, 'form' => $form->createView())
+        );
     }
 
     /**
@@ -90,28 +107,26 @@ class ProductController extends AbstractProductController
     */
     public function updateAction(Request $request, $id)
     {
-        $manager = $this->getObjectManagerService();
-
-        $entity = $manager->getRepository($this->getObjectShortName())->find($id);
+        $entity = $this->getProductManager()->getEntityRepository()->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find product.');
         }
 
-        $classFullName = $this->getObjectClassFullName();
-        $editForm = $this->createForm(new ProductType($classFullName), $entity);
-        $editForm->bind($request);
+        $form = $this->createProductForm($entity);
+        $form->bind($request);
 
-        if ($editForm->isValid()) {
+        if ($form->isValid()) {
 
             // TODO : add some constraints in form
 
-            $postData = $request->get('pim_catalogbundle_product');
+            //$postData = $request->get('pim_catalogbundle_product');
             /*
             foreach ($postData as $attributeCode => $attributeValue) {
                 $entity->setValue($attributeCode, $attributeValue);
             }*/
 
+            $manager = $this->getPersistenceManager();
             $manager->persist($entity);
             $manager->flush();
 
@@ -120,9 +135,10 @@ class ProductController extends AbstractProductController
             return $this->redirect($this->generateUrl('pim_catalog_product_edit', array('id' => $id)));
         }
 
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+        // render form
+        return $this->render(
+            'PimCatalogBundle:Product:edit.html.twig',
+            array('entity' => $entity, 'form' => $form->createView())
         );
     }
 

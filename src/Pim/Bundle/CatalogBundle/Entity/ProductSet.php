@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="Akeneo_PimCatalog_Product_Type")
+ * @ORM\Table(name="Akeneo_PimCatalog_Product_Set")
  * @ORM\Entity
  */
 class ProductSet extends AbstractEntitySet
@@ -43,7 +43,7 @@ class ProductSet extends AbstractEntitySet
     /**
      * @var ArrayCollection $groups
      *
-     * @ORM\OneToMany(targetEntity="ProductGroup", mappedBy="type", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="ProductGroup", mappedBy="set", cascade={"persist", "remove"})
      */
     protected $groups;
 

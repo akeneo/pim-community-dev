@@ -72,9 +72,9 @@ class ProductAttributeController extends Controller
     }
 
     /**
+     * Create attribute form
      *
-     * Enter description here ...
-     * @param ProductAttribute $instance
+     * @param ProductAttribute $attribute
      * @return Form
      */
     protected function createAttributeForm($attribute)
@@ -176,31 +176,33 @@ class ProductAttributeController extends Controller
         $form = $this->createAttributeForm($instance);
         $form->bind($request);
 
-        /*
-        // sort options
-        $postData = $request->get('pim_catalogbundle_ProductAttributetype');
-        if (isset($postData['options']) and count($postData['options']) > 0) {
-            $indOption = 1;
-            foreach ($postData['options'] as &$option) {
-                $option['sortOrder']= $indOption++;
-            }
-        }
-
-        var_dump($postData['options']);
-
-        foreach ($instance->getOptions() as $opt) {
-            var_dump($opt);
-        }
-
-        exit();
-	*/
-
         if ($form->isValid()) {
 
-            // TODO set option order
+            // sort options (get post order and use id or name as key which is not optimal for collision)
+            $postData = $request->get('pim_catalogbundle_productattributetype');
+            $optionIdToOrder = array();
+            $optionValueToOrder = array();
+            if (isset($postData['options']) and count($postData['options']) > 0) {
+                $indOption = 1;
+                foreach ($postData['options'] as $option) {
+                    if ($option['id'] > 0) {
+                        $optionIdToOrder[$option['id']] = $indOption;
+                    } else {
+                        $optionValueToOrder[$option['value']] = $indOption;
+                    }
+                    $indOption++;
+                }
+            }
+
+            // set option order
             foreach ($instance->getOptions() as $option) {
-                $option->setAttribute($instance);
-                $option->setSortOrder(1);
+                // TODO only work for ORM
+                //$option->setAttribute($instance);
+                $order = (isset($optionIdToOrder[$option->getId()])) ? $optionIdToOrder[$option->getId()] : null;
+                if (!$order) {
+                    $order = (isset($optionValueToOrder[$option->getValue()])) ? $optionValueToOrder[$option->getValue()] : 1;
+                }
+                $option->setSortOrder($order);
             }
 
             $manager = $this->getPersistenceManager();

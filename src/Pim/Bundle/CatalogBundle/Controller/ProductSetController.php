@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
 use APY\DataGridBundle\Grid\Source\Document as GridDocument;
 use APY\DataGridBundle\Grid\Action\RowAction;
+use Pim\Bundle\UIBundle\Grid\Helper as GridHelper;
 
 use \Exception;
 /**
@@ -47,22 +48,6 @@ class ProductSetController extends Controller
     }
 
     /**
-     * Return grid source for APY grid
-     * @return APY\DataGridBundle\Grid\Source\Entity
-    */
-    public function getGridSource($shortName)
-    {
-        // source to create simple grid based on entity or document (ORM or ODM)
-        if ($this->getPersistenceManager() instanceof \Doctrine\ODM\MongoDB\DocumentManager) {
-            return new GridDocument($shortName);
-        } else if ($this->getPersistenceManager() instanceof \Doctrine\ORM\EntityManager) {
-            return new GridEntity($shortName);
-        } else {
-            throw new \Exception('Unknow object manager');
-        }
-    }
-
-    /**
      * Lists all sets
      *
      * @Route("/index")
@@ -73,7 +58,7 @@ class ProductSetController extends Controller
         $productManager = $this->getProductManager();
 
         // creates simple grid based on entity or document (ORM or ODM)
-        $source = $this->getGridSource($productManager->getSetShortname());
+        $source = GridHelper::getGridSource($this->getPersistenceManager(), $this->getProductManager()->getSetShortname());
 
         $grid = $this->get('grid');
         $grid->setSource($source);

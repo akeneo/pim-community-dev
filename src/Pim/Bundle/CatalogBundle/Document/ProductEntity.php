@@ -15,7 +15,7 @@ use APY\DataGridBundle\Grid\Mapping as GRID;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @MongoDB\Document
- * @GRID\Source(columns="id")
+ * @GRID\Source(columns="id, set.code")
  */
 class ProductEntity extends AbstractEntity
 {

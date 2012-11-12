@@ -37,7 +37,7 @@ class ProductEntity extends AbstractEntity
     /**
      * @var Value
      *
-     * @ORM\OneToMany(targetEntity="ProductAttributeValue", mappedBy="product", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="ProductAttributeValue", mappedBy="entity", cascade={"persist", "remove"})
      */
     protected $values;
 

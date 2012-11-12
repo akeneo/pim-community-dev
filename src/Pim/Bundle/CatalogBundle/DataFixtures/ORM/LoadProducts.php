@@ -175,8 +175,23 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
      */
     protected function createTshirtProducts()
     {
-        $att = $this->productManager->getAttributeRepository()->findByCode(self::SET_ATT_SIZE);
+        //$attSize = $this->productManager->getAttributeRepository()->findByCode(self::SET_ATT_SIZE);
         //$options = $att->getOptions();
+
+        $set = $this->productManager->getSetRepository()->findOneByCode(self::SET_TSHIRT);
+        $product = $this->productManager->getNewEntityInstance();
+        $product->setSet($set);
+
+        // create value
+        $attSku = $this->productManager->getAttributeRepository()->findOneByCode(self::SET_ATT_SKU);
+        $value = $this->productManager->getNewAttributeValueInstance();
+        $value->setAttribute($attSku);
+        $value->setData('my-sku-1');
+        $product->addValue($value);
+
+        // persist product
+        $this->productManager->getPersistenceManager()->persist($product);
+        $this->productManager->getPersistenceManager()->flush();
     }
 
 }
