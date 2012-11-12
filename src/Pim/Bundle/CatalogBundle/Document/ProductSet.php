@@ -42,60 +42,11 @@ class ProductSet extends AbstractEntitySet
     protected $groups = array();
 
     /**
-     * Used locale
-     * @var string
-     */
-    protected $locale;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
         $this->groups = new ArrayCollection();
-
-        // TODO: prepersist is not enought : MongoException: zero-length keys are not allowed, did you use $ with double quotes?
-        $this->locale = 'en_US';
-    }
-
-    /**
-    * Ensure there is a current locale used
-    * @MongoDB\PostLoad¶
-    */
-    public function postLoad()
-    {
-        // TODO: use default application locale or current gui locale
-        $this->locale = 'en_US';
-    }
-
-    /**
-     * Ensure there is a current locale used
-     * @MongoDB\PrePersist¶
-     */
-    public function prePersist()
-    {
-        // TODO: use default application locale or current gui locale
-        if (!$this->locale) {
-            $this->locale = 'en_US';
-        }
-    }
-
-    /**
-     * Get used locale
-     * @return string $locale
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * Set used locale
-     * @param string $locale
-     */
-    public function setTranslatableLocale($locale)
-    {
-        $this->locale = $locale;
     }
 
 }

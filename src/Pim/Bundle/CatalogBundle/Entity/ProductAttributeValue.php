@@ -76,8 +76,8 @@ class ProductAttributeValue extends AbstractEntityAttributeValue
      */
     public function setEntity(AbstractEntity $entity = null)
     {
-    $this->entity = $entity;
+        $this->entity = $entity;
 
-    return $this;
+        return $this;
     }
 }
