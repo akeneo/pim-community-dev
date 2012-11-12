@@ -77,6 +77,16 @@ abstract class EntityGroup
     }
 
     /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
      * Set title
      *
      * @param string $title
@@ -87,16 +97,6 @@ abstract class EntityGroup
         $this->title = $title;
 
         return $this;
-    }
-
-    /**
-     * Get title
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
     }
 
     /**
@@ -123,17 +123,7 @@ abstract class EntityGroup
     }
 
     /**
-     * Get attributes
-     *
-     * @return Doctrine\Common\Collections\Collection
-     */
-    public function getAttributes()
-    {
-        return $this->attributes;
-    }
-
-    /**
-     * Get group
+     * Get attribute
      *
      * @param string $code
      * @return EntityAttribute
@@ -146,6 +136,16 @@ abstract class EntityGroup
             }
         }
         return false;
+    }
+
+    /**
+     * Get attributes
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
     }
 
 }

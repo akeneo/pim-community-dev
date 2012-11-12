@@ -17,7 +17,7 @@ use Bap\Bundle\FlexibleEntityBundle\Model\EntityGroup as AbstractEntityGroup;
 class ProductGroup extends AbstractEntityGroup
 {
     /**
-     * @var integer $_id
+     * @var integer $id
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -26,11 +26,18 @@ class ProductGroup extends AbstractEntityGroup
     protected $id;
 
     /**
-     * @var string $_code
+     * @var string $code
      *
      * @ORM\Column(name="code", type="string")
      */
     protected $code;
+
+    /**
+     * @var string $title
+     *
+     * @ORM\Column(name="title", type="string")
+     */
+    protected $title;
 
     /**
      * @var Set set
@@ -52,39 +59,6 @@ class ProductGroup extends AbstractEntityGroup
     public function __construct()
     {
         $this->attributes = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set code
-     *
-     * @param string $code
-     * @return ProductGroup
-     */
-    public function setCode($code)
-    {
-        $this->code = $code;
-
-        return $this;
-    }
-
-    /**
-     * Get code
-     *
-     * @return string
-     */
-    public function getCode()
-    {
-        return $this->code;
     }
 
     /**
