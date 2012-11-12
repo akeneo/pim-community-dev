@@ -153,8 +153,8 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
         $order = 1;
         foreach ($values as $value) {
             $option = $this->productManager->getNewAttributeOptionInstance();
-            $option->setValue($order++);
-            $option->setSortOrder(1);
+            $option->setValue($value);
+            $option->setSortOrder($order++);
             $attribute->addOption($option);
         }
         $this->productManager->getPersistenceManager()->persist($attribute);
@@ -182,11 +182,17 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
         $product = $this->productManager->getNewEntityInstance();
         $product->setSet($set);
 
-        // create value
+        // create values
         $attSku = $this->productManager->getAttributeRepository()->findOneByCode(self::SET_ATT_SKU);
         $value = $this->productManager->getNewAttributeValueInstance();
         $value->setAttribute($attSku);
         $value->setData('my-sku-1');
+        $product->addValue($value);
+
+        $attName = $this->productManager->getAttributeRepository()->findOneByCode(self::SET_ATT_NAME);
+        $value = $this->productManager->getNewAttributeValueInstance();
+        $value->setAttribute($attName);
+        $value->setData('My product name');
         $product->addValue($value);
 
         // persist product

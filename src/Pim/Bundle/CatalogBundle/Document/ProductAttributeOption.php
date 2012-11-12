@@ -23,6 +23,7 @@ class ProductAttributeOption extends AbstractEntityAttributeOption
 
     /**
      * @MongoDB\String
+     * @MongoDB\Index(sparse=true)
      */
     protected $value;
 

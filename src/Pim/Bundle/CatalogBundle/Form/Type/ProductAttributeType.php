@@ -111,7 +111,7 @@ class ProductAttributeType extends AbstractType
                     'type'         => new ProductAttributeOptionType($this->optionClass),
                     'allow_add'    => true,
                     'allow_delete' => true,
-                    'by_reference' => true,
+                    'by_reference' => false,
                 )
             );
         }

@@ -201,8 +201,6 @@ class ProductAttributeController extends Controller
 
             // set option order
             foreach ($instance->getOptions() as $option) {
-                // TODO only work for ORM
-                //$option->setAttribute($instance);
                 $order = (isset($optionIdToOrder[$option->getId()])) ? $optionIdToOrder[$option->getId()] : null;
                 if (!$order) {
                     $order = (isset($optionValueToOrder[$option->getValue()])) ? $optionValueToOrder[$option->getValue()] : 1;

@@ -83,4 +83,24 @@ class ProductAttribute extends AbstractEntityAttribute
         $this->options = new ArrayCollection();
     }
 
+    /**
+     * Override to sort options
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getOptions()
+    {
+        $sorted = array();
+        // remove option
+        foreach ($this->options as $key => $option) {
+            $sorted[$option->getSortOrder()] = $option;
+            $this->options->remove($key);
+        }
+        // sort and add with sorted index
+        ksort($sorted);
+        foreach ($sorted as $key => $option) {
+            $this->options[$key] = $option;
+        }
+        return $this->options;
+    }
 }

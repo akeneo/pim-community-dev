@@ -266,7 +266,7 @@ abstract class EntityAttribute
      */
     public function addOption(EntityAttributeOption $option)
     {
-        $this->options[] = $option;;
+        $this->options[] = $option;
 
         return $this;
     }

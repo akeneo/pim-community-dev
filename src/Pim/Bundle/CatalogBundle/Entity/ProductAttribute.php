@@ -75,7 +75,7 @@ class ProductAttribute extends AbstractEntityAttribute
     /**
      * @var ArrayCollection $options
      *
-     * @ORM\OneToMany(targetEntity="ProductAttributeOption", mappedBy="attribute", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="ProductAttributeOption", mappedBy="attribute", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $options;
