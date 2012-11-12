@@ -104,6 +104,7 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
         $attribute->setUniqueValue(true);
         $attribute->setValueRequired(true);
         $attribute->setSearchable(false);
+        $attribute->setTranslatable(false);
         $this->productManager->getPersistenceManager()->persist($attribute);
         $groupInfo->addAttribute($attribute);
 
@@ -116,6 +117,7 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
         $attribute->setUniqueValue(false);
         $attribute->setValueRequired(true);
         $attribute->setSearchable(true);
+        $attribute->setTranslatable(false);
         $this->productManager->getPersistenceManager()->persist($attribute);
         $groupInfo->addAttribute($attribute);
 
@@ -145,6 +147,7 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
         $attribute->setUniqueValue(false);
         $attribute->setValueRequired(false);
         $attribute->setSearchable(false);
+        $attribute->setTranslatable(false);
         // add options
         $values = array('S', 'M', 'L', 'XL');
         $order = 1;

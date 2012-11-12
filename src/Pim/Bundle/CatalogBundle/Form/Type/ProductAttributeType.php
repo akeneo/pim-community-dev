@@ -91,6 +91,14 @@ class ProductAttributeType extends AbstractType
             )
         );
 
+        $builder->add(
+            'translatable', 'choice', array(
+                'choices'   => array(false => 'No', true => 'Yes'),
+                'required'  => true,
+                'label'     => 'Is translatable'
+            )
+        );
+
         if ($entity->getType() == BaseFieldFactory::FIELD_SELECT) {
             $builder->add(
                 'options', 'collection', array(

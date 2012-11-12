@@ -41,9 +41,14 @@ abstract class EntityAttribute
     protected $valueRequired;
 
     /**
-     * @var string $searchable
+     * @var boolean $searchable
      */
     protected $searchable;
+
+    /**
+    * @var boolean $translatable
+    */
+    protected $translatable;
 
     /**
      * @var integer $scope
@@ -207,6 +212,28 @@ abstract class EntityAttribute
     public function getSearchable()
     {
         return $this->searchable;
+    }
+
+    /**
+     * Set translatable
+     *
+     * @param boolean $translatable
+     * @return EntityAttribute
+     */
+    public function setTranslatable($translatable)
+    {
+        $this->translatable = $translatable;
+        return $this;
+    }
+
+    /**
+     * Get translatable
+     *
+     * @return boolean $translatable
+     */
+    public function getTranslatable()
+    {
+        return $this->translatable;
     }
 
     /**

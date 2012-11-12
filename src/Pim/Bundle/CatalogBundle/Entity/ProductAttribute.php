@@ -63,6 +63,11 @@ class ProductAttribute extends AbstractEntityAttribute
     protected $searchable;
 
     /**
+     * @ORM\Column(name="translatable", type="boolean")
+     */
+    protected $translatable;
+
+    /**
      * @ORM\Column(name="scope", type="integer")
      */
     protected $scope;

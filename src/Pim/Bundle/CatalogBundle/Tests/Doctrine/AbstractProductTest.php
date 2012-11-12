@@ -103,6 +103,7 @@ abstract class AbtractProductTest extends KernelAwareTest
         $attribute->setUniqueValue(true);
         $attribute->setValueRequired(true);
         $attribute->setSearchable(false);
+        $attribute->setTranslatable(false);
         $this->productManager->getPersistenceManager()->persist($attribute);
         $groupInfo->addAttribute($attribute);
         $this->assertEquals($groupInfo->getAttributes()->count(), 1);
@@ -115,6 +116,7 @@ abstract class AbtractProductTest extends KernelAwareTest
         $this->assertEquals($attribute->getUniqueValue(), true);
         $this->assertEquals($attribute->getValueRequired(), true);
         $this->assertEquals($attribute->getSearchable(), false);
+        $this->assertEquals($attribute->getTranslatable(), false);
 
         // add a field name
         $attribute = $this->productManager->getNewAttributeInstance();
@@ -125,6 +127,7 @@ abstract class AbtractProductTest extends KernelAwareTest
         $attribute->setUniqueValue(false);
         $attribute->setValueRequired(true);
         $attribute->setSearchable(true);
+        $attribute->setTranslatable(false);
         $this->productManager->getPersistenceManager()->persist($attribute);
         $groupInfo->addAttribute($attribute);
         $this->assertEquals($groupInfo->getAttributes()->count(), 2);
@@ -138,6 +141,7 @@ abstract class AbtractProductTest extends KernelAwareTest
         $attribute->setUniqueValue(false);
         $attribute->setValueRequired(false);
         $attribute->setSearchable(false);
+        $attribute->setTranslatable(false);
         $this->productManager->getPersistenceManager()->persist($attribute);
         $groupTechnic->addAttribute($attribute);
         $this->assertEquals($groupTechnic->getAttributes()->count(), 1);

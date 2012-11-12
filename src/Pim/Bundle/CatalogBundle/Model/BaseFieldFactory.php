@@ -27,7 +27,6 @@ class BaseFieldFactory
 
     const SCOPE_GLOBAL   = 'Global';
     const SCOPE_CHANNEL  = 'Channel';
-    const SCOPE_LOCALE   = 'Locale';
 
     /**
      * Return available type
@@ -51,8 +50,7 @@ class BaseFieldFactory
     {
         return array(
             self::SCOPE_GLOBAL,
-            self::SCOPE_CHANNEL,
-            self::SCOPE_LOCALE,
+            self::SCOPE_CHANNEL
         );
     }
 

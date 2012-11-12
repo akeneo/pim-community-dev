@@ -65,6 +65,11 @@ class ProductAttribute extends AbstractEntityAttribute
     protected $searchable;
 
     /**
+     * @MongoDB\Boolean
+     */
+    protected $translatable;
+
+    /**
      * @MongoDB\Int
      */
     protected $scope;
