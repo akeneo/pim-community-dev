@@ -184,7 +184,7 @@ class ProductAttributeController extends Controller
         if ($form->isValid()) {
 
             // sort options (get post order and use id or name as key which is not optimal for collision)
-            $postData = $request->get('pim_catalogbundle_productattributetype');
+            $postData = $request->get('pim_catalogbundle_productattributeset');
             $optionIdToOrder = array();
             $optionValueToOrder = array();
             if (isset($postData['options']) and count($postData['options']) > 0) {

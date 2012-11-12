@@ -26,8 +26,9 @@ class ProductGroupAttributeType extends AbstractType
     /**
      * Construct
      */
-    public function __construct(EntityAttribute $attribute = null)
+    public function __construct($attributeClass, EntityAttribute $attribute = null)
     {
+        $this->attributeClass = $attributeClass;
         if ($attribute) {
             $this->attribute = $attribute;
         }
@@ -54,7 +55,7 @@ class ProductGroupAttributeType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         return array(
-            'data_class' => 'Bap\Bundle\FlexibleEntityBundle\Model\EntityAttribute',
+            'data_class' => $this->attributeClass,
         );
     }
 

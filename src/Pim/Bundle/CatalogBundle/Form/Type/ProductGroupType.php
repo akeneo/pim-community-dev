@@ -12,6 +12,26 @@ class ProductGroupType extends AbstractType
 {
 
     /**
+     * @var string
+     */
+    protected $groupClass;
+
+    /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
+     * Construct with full name of concrete impl of group class
+     * @param string $groupClass
+     */
+    public function __construct($groupClass, $attributeClass)
+    {
+        $this->groupClass = $groupClass;
+        $this->attributeClass = $attributeClass;
+    }
+
+    /**
      * (non-PHPdoc)
      * @see Symfony\Component\Form.AbstractType::buildForm()
      */
@@ -24,7 +44,7 @@ class ProductGroupType extends AbstractType
         $builder->add(
             'attributes', 'collection',
             array(
-                'type'         => new ProductGroupAttributeType(),
+                'type'         => new ProductGroupAttributeType($this->attributeClass),
                 'by_reference' => false,
                 'allow_add'    => true,
                 'allow_delete' => true
@@ -41,7 +61,7 @@ class ProductGroupType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         return array(
-            'data_class' => 'Pim\Bundle\CatalogBundle\Document\ProductGroup',
+            'data_class' => $this->groupClass
         );
     }
 

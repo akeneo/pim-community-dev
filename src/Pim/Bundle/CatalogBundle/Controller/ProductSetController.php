@@ -48,6 +48,24 @@ class ProductSetController extends Controller
     }
 
     /**
+     * Create set form
+     *
+     * @param ProductSet $set
+     * @return Form
+     */
+    protected function createSetForm($set)
+    {
+        $setClass = $this->getProductManager()->getSetClass();
+        $groupClass = $this->getProductManager()->getGroupClass();
+        $attClass = $this->getProductManager()->getAttributeClass();
+        $formType = new ProductSetType(
+            $setClass, $groupClass, $attClass, $this->_getCopySetOptions(), $this->getAvailableAttributes()
+        );
+        $form = $this->createForm($formType, $set);
+        return $form;
+    }
+
+    /**
      * Lists all sets
      *
      * @Route("/index")
@@ -99,16 +117,12 @@ class ProductSetController extends Controller
         $productManager = $this->getProductManager();
         $entity = $productManager->getNewSetInstance();
 
-        // create set, set list of existing set to prepare copy list
-        $set = new ProductSetType();
-        $set->setCopySetOptions($this->_getCopySetOptions());
-
-        // prepare & render form
-        $form = $this->createForm($set, $entity);
+        // prepare form
+        $form = $this->createSetForm($entity);
 
         if ($request && $request->isMethod('POST')) {
             $form->bind($request);
-            $postData = $request->get('akeneo_catalog_productset');
+            $postData = $request->get('pim_catalogbundle_productattributeset');
 
             // TODO : Must be in validation form
             if ($form->isValid() && isset($postData['copyfromset'])) {
@@ -125,7 +139,7 @@ class ProductSetController extends Controller
                 $this->getPersistenceManager()->persist($entity);
                 $this->getPersistenceManager()->flush();
 
-                $this->get('session')->setFlash('success', 'product set has been saved');
+                $this->get('session')->setFlash('success', 'product set has been created');
 
                 // TODO : redirect to edit
                 return $this->redirect(
@@ -151,11 +165,8 @@ class ProductSetController extends Controller
             throw $this->createNotFoundException('No product set found for id '. $id);
         }
 
-        $set = new ProductSetType();
-        $set->setAvailableAttributes($this->getAvailableAttributes());
-
         // prepare & render form
-        $form = $this->createForm($set, $entity);
+        $form = $this->createSetForm($entity);
         return $this->render('PimCatalogBundle:ProductSet:edit.html.twig', array('form' => $form->createView()));
     }
 
@@ -184,7 +195,7 @@ class ProductSetController extends Controller
     {
         if ($request->isMethod('POST')) {
             // get product set
-            $postData = $request->get('akeneo_catalog_productset');
+            $postData = $request->get('pim_catalogbundle_productattributeset');
             var_dump($postData);
 //             exit;
 
@@ -194,10 +205,11 @@ class ProductSetController extends Controller
                 throw $this->createNotFoundException('No product set found for id '. $id);
             }
 
-            //
-            $set = new ProductSetType();
 
-            $form = $this->createForm($set, $entity);
+            $form = $this->createSetForm($entity);
+
+
+
             $form->bind($request);
             foreach ($entity->getGroups() as $group) {
                 var_dump($group->getAttributes()->count());

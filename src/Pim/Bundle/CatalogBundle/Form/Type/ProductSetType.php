@@ -3,6 +3,7 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  *
@@ -13,8 +14,49 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class ProductSetType extends AbstractType
 {
-    private $copySetOptions = array();
-    private $availableAttributes = array();
+
+    /**
+     * @var string
+     */
+    protected $setClass;
+
+    /**
+     * @var string
+     */
+    protected $groupClass;
+
+
+    /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
+     * var Collection
+     */
+    protected $copySets = array();
+
+    /**
+     * var Collection
+     */
+    protected $availableAttributes = array();
+
+    /**
+     * Construct with full name of concrete impl of set and group class
+     * @param string $setClass
+     * @param string $groupClass
+     * @param string $attributeClass
+     * @param Collection $copySets
+     * @param Collection $availableAttributes
+     */
+    public function __construct($setClass, $groupClass, $attributeClass, $copySets, $availableAttributes)
+    {
+        $this->setClass   = $setClass;
+        $this->groupClass = $groupClass;
+        $this->attributeClass = $attributeClass;
+        $this->copySets   = $copySets;
+        $this->availableAttributes = $availableAttributes;
+    }
 
     /**
      * (non-PHPdoc)
@@ -35,7 +77,7 @@ class ProductSetType extends AbstractType
         // create by copy
         $builder->add(
             'copyfromset', 'choice', array(
-                'choices'       => $this->getCopySetOptions(),
+                'choices'       => $this->copySets,
                 'required'      => false,
                 'property_path' => false
             )
@@ -45,7 +87,7 @@ class ProductSetType extends AbstractType
         $builder->add(
             'groups', 'collection',
             array(
-                'type'         => new ProductGroupType(),
+                'type'         => new ProductGroupType($this->groupClass, $this->attributeClass),
                 'by_reference' => true,
                 'allow_add'    => true,
                 'allow_delete' => true
@@ -56,60 +98,35 @@ class ProductSetType extends AbstractType
         $builder->add(
             'others', 'collection',
             array(
-                'type'          => new ProductGroupAttributeType(),
+                'type'          => new ProductGroupAttributeType($this->attributeClass),
                 'property_path' => false
             )
         );
         // add attributes
-        foreach ($this->getAvailableAttributes() as $attribute) {
-            $builder->get('others')->add('attribute_'.$attribute->getId(), new ProductGroupAttributeType($attribute));
+        foreach ($this->availableAttributes as $attribute) {
+            $builder->get('others')->add('attribute_'.$attribute->getId(), new ProductGroupAttributeType($this->attributeClass, $attribute));
         }
     }
 
     /**
-     * Return identifier
-     * @see Symfony\Component\Form.FormTypeInterface::getName()
+     * Setup default options
+     * @param OptionsResolverInterface $resolver
+    */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(
+            array(
+                'data_class' => $this->setClass
+            )
+        );
+    }
+
+    /**
+     * Get identifier
+     * @return string
      */
     public function getName()
     {
-        return 'akeneo_catalog_productset';
+         return 'pim_catalogbundle_productattributeset';
     }
-
-    /**
-     * Return list of $types
-     * @return Array
-     */
-    public function setCopySetOptions($types)
-    {
-        $this->copySetOptions = $types;
-    }
-
-    /**
-     * Return list of type
-     * @return Array
-     */
-    public function getCopySetOptions()
-    {
-        return $this->copySetOptions;
-    }
-
-    /**
-     * Return list of attributes
-     * @return Array
-     *
-     */
-    public function setAvailableAttributes($attributes)
-    {
-        $this->availableAttributes = $attributes;
-    }
-
-    /**
-     * Return list of attributes
-     * @return Array
-     */
-    public function getAvailableAttributes()
-    {
-        return $this->availableAttributes;
-    }
-
 }
