@@ -59,7 +59,7 @@ class ProductSetController extends Controller
         $groupClass = $this->getProductManager()->getGroupClass();
         $attClass = $this->getProductManager()->getAttributeClass();
         $formType = new ProductSetType(
-            $setClass, $groupClass, $attClass, $this->_getCopySetOptions(), $this->getAvailableAttributes()
+            $setClass, $groupClass, $attClass, $this->getCopySetOptions(), $this->getAvailableAttributes($set)
         );
         $form = $this->createForm($formType, $set);
         return $form;
@@ -171,20 +171,6 @@ class ProductSetController extends Controller
     }
 
     /**
-     * Get attributes
-     * @return ArrayCollection
-     * TODO : must be move in custom repository storage agnostic
-     */
-    protected function getAvailableAttributes()
-    {
-        $dm = $this->getPersistenceManager();
-        $qb = $dm->createQueryBuilder($this->getProductManager()->getAttributeShortname());
-        // TODO : to finish
-        $q = $qb->field('code')->notIn(array('binomed-att'))->getQuery();
-        return $q->execute();
-    }
-
-    /**
      *
      * @param Request $request
      *
@@ -261,9 +247,20 @@ class ProductSetController extends Controller
     }
 
     /**
+     * Get attributes
+     * @return ArrayCollection
+     * TODO : must be move in custom repository storage agnostic
+     */
+    protected function getAvailableAttributes($set)
+    {
+        $repo = $this->getProductManager()->getAttributeRepository();
+        return $repo->findAllExcept($set);
+    }
+
+    /**
      * @return array
      */
-    private function _getCopySetOptions()
+    private function getCopySetOptions()
     {
         $sets = $this->getProductManager()->getSetRepository()->findAll();
         $setIdToName = array();
