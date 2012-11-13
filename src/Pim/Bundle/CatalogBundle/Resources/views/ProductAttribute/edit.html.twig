@@ -103,6 +103,9 @@
         // Display the form in the page in an li, before the "Add an option" link li
         var $newFormLi = $('<li></li>').append(newForm);
         $newLinkLi.before($newFormLi);
+        
+        // define option order for new one
+        resetOptionsOrder();
     
         // add a delete link to the new form
         addOptionFormDeleteLink($newFormLi);
@@ -126,21 +129,19 @@
     
     // make options sortable
     $("#sortable-options").sortable({
-        cancel: ":input, button, a, .not-sortable"
-        
-        /*
-        update: function() {
-
-            $("#sortable-options").children().each(function(i) {
-                var li = $(this);
-                alert(li);
-                
-                stringDiv += " "+li.attr("id") + '=' + i + '&';
-                
-            });
-        }*/
-            
+        cancel: ":input, button, a, .not-sortable",
+        update: function () { resetOptionsOrder(); }
     });
     $( "#sortable" ).disableSelection();
+
+    /* add sort order each time we add or move an option */
+    function resetOptionsOrder() {
+        var indOpt = 1;
+        $("#sortable-options input.sort-order").each(function(index) {
+            var input = $(this);
+            input.val(index);
+        });
+    }
+    
 </script>
 {% endblock %}

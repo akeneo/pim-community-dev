@@ -36,7 +36,7 @@ class ProductAttributeOptionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('id', 'hidden');
-        $builder->add('sortOrder', 'hidden');
+        $builder->add('sortOrder', 'hidden', array('attr' => array('class' => 'sort-order')));
         $builder->add('value');
     }
 

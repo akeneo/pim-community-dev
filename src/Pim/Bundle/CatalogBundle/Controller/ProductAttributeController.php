@@ -183,31 +183,6 @@ class ProductAttributeController extends Controller
 
         if ($form->isValid()) {
 
-            // sort options (get post order and use id or name as key which is not optimal for collision)
-            $postData = $request->get('pim_catalogbundle_productattributeset');
-            $optionIdToOrder = array();
-            $optionValueToOrder = array();
-            if (isset($postData['options']) and count($postData['options']) > 0) {
-                $indOption = 1;
-                foreach ($postData['options'] as $option) {
-                    if ($option['id'] > 0) {
-                        $optionIdToOrder[$option['id']] = $indOption;
-                    } else {
-                        $optionValueToOrder[$option['value']] = $indOption;
-                    }
-                    $indOption++;
-                }
-            }
-
-            // set option order
-            foreach ($instance->getOptions() as $option) {
-                $order = (isset($optionIdToOrder[$option->getId()])) ? $optionIdToOrder[$option->getId()] : null;
-                if (!$order) {
-                    $order = (isset($optionValueToOrder[$option->getValue()])) ? $optionValueToOrder[$option->getValue()] : 1;
-                }
-                $option->setSortOrder($order);
-            }
-
             try {
                 $manager = $this->getPersistenceManager();
                 $manager->persist($instance);
