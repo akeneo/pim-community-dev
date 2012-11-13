@@ -1,18 +1,21 @@
 _welcome:
-    pattern:  /
-    defaults: { _controller: PimDashboardBundle:Default:index }
+    pattern:  /{_locale}
+    defaults: { _controller: PimDashboardBundle:Default:index, _locale: %locale% }
 
 pim_dashboard:
     resource: "@PimDashboardBundle/Controller/"
     type:     annotation
-    prefix:   /dashboard/
+    prefix:   /{_locale}/dashboard/
+    defaults: { _locale: %locale% }
 
 pim_connectoricecat:
     resource: "@PimConnectorIcecatBundle/Controller/"
     type:     annotation
-    prefix:   /icecatconnector/
+    prefix:   /{_locale}/icecatconnector/
+    defaults: { _locale: %locale% }
 
 pim_catalog:
     resource: "@PimCatalogBundle/Controller/"
     type:     annotation
-    prefix:   /catalog/
+    prefix:   /{_locale}/catalog/
+    defaults: { _locale: %locale% }

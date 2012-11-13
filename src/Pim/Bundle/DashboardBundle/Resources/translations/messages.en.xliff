@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1">
+                <source>dashboard.title.enrich</source>
+                <target>Enrich</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>dashboard.title.import-export</source>
+                <target>Import / Export</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>dashboard.products</source>
+                <target>Products</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>dashboard.product-sets</source>
+                <target>Product sets</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>dashboard.product-attributes</source>
+                <target>Product attributes</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>dashboard.connector-icecat</source>
+                <target>Connector IceCat</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>dashboard.connector-magento</source>
+                <target>Connector Magento</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -8,6 +8,7 @@
 {% block title %}Akeneo - {% endblock %}
 
 {% block header %}
+    {{ parent() }}
     <div id="header" class="ui-corner-bl ui-corner-br">
         <a class="logo" href="{{ path('_welcome') }}">
             <img src="{{ asset('bundles/pimui/images/logo-akeneo.gif') }}" alt="Akeneo logo" />

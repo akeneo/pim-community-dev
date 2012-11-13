@@ -344,6 +344,11 @@ th div {
 
 .grid_footer {margin-top: 10px;}
 
-
+/* flags icons */
+#menu-lang {
+    align: right;
+}
+.ui-icon-flag-us { background-position: 0 0; background-image:url(../images/icons/famfamfam/us.png) !important;}
+.ui-icon-flag-fr { background-position: 0 0; background-image:url(../images/icons/famfamfam/fr.png) !important;}
 
 

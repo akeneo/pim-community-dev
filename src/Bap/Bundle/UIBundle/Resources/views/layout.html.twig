@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app.request.locale }}">
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Akeneo{% endblock %}</title>
@@ -19,7 +19,14 @@
     <body>
         <div id="body-wrapper">
 
-            {% block header %}{% endblock %}
+            {% block header %}
+                <a href="{{ path(app.request.attributes.get('_route'), {"_locale": "en_US"}) }}">
+                    <span class="ui-button-icon-primary ui-icon ui-icon-flag-us"></span>
+                </a>
+                <a href="{{ path(app.request.attributes.get('_route'), {"_locale": "fr"}) }}">
+                    <span class="ui-button-icon-primary ui-icon ui-icon-flag-fr"></span>
+                </a>
+            {% endblock %}
 
             {% block main_menu %}{% endblock %}
 
@@ -30,7 +37,8 @@
                         {% block content_menu_more %}
                             <li>
                                 <a href="{{ path('pim_dashboard_default_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
-                                    <span class="ui-button-icon-primary ui-icon ui-icon-fugue-home"></span><span class="ui-button-text">Back to home</span>
+                                    <span class="ui-button-icon-primary ui-icon ui-icon-fugue-home"></span>
+                                    <span class="ui-button-text">{% trans %}bap.navigation.back-home{% endtrans %}</span>
                                 </a>
                             </li>
                         {% endblock %}
