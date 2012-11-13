@@ -151,8 +151,8 @@ abstract class AbtractProductTest extends KernelAwareTest
         $order = 1;
         foreach ($values as $value) {
             $option = $this->productManager->getNewAttributeOptionInstance();
-            $option->setValue($order++);
-            $option->setSortOrder(1);
+            $option->setValue($value);
+            $option->setSortOrder($order++);
             $attribute->addOption($option);
         }
         $this->assertEquals($attribute->getOptions()->count(), count($values));

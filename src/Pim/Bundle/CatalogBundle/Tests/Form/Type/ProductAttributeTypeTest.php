@@ -27,16 +27,16 @@ class ProductAttributeTypeTest extends KernelAwareTest
     {
         // text field
         $productManager = $this->container->get('pim.catalog.product_manager');
-        $classFullName = $productManager->getAttributeClass();
+        $attClass = $productManager->getAttributeClass();
+        $optClass = $productManager->getAttributeOptionClass();
         $entity = $productManager->getNewAttributeInstance();
-        $this->container->get('form.factory')->create(new ProductAttributeType($classFullName), $entity);
+        $this->container->get('form.factory')->create(new ProductAttributeType($attClass, $optClass), $entity);
 
         // select field
         $productManager = $this->container->get('pim.catalog.product_manager');
-        $classFullName = $productManager->getAttributeClass();
         $entity = $productManager->getNewAttributeInstance();
         $entity->setType(BaseFieldFactory::FIELD_SELECT);
-        $this->container->get('form.factory')->create(new ProductAttributeType($classFullName), $entity);
+        $this->container->get('form.factory')->create(new ProductAttributeType($attClass, $optClass), $entity);
     }
 
 }
