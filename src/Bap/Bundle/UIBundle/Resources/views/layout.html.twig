@@ -20,12 +20,14 @@
         <div id="body-wrapper">
 
             {% block header %}
-                <a href="{{ path(app.request.attributes.get('_route'), {"_locale": "en_US"}) }}">
-                    <span class="ui-button-icon-primary ui-icon ui-icon-flag-us"></span>
-                </a>
-                <a href="{{ path(app.request.attributes.get('_route'), {"_locale": "fr"}) }}">
-                    <span class="ui-button-icon-primary ui-icon ui-icon-flag-fr"></span>
-                </a>
+                <ul class="switch-language">
+                    <li>
+                        <a href="{{ path(app.request.attributes.get('_route'), {"_locale": "en_US"}) }}" class="ui-icon-flag-us"></a>
+                    </li>
+                    <li>
+                        <a href="{{ path(app.request.attributes.get('_route'), {"_locale": "fr"}) }}" class="ui-icon-flag-fr"></a>
+                    </li>
+                </ul>
             {% endblock %}
 
             {% block main_menu %}{% endblock %}

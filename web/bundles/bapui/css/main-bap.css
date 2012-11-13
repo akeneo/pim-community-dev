@@ -345,10 +345,17 @@ th div {
 .grid_footer {margin-top: 10px;}
 
 /* flags icons */
-#menu-lang {
-    align: right;
+ul.switch-language {
+    float:right;
 }
-.ui-icon-flag-us { background-position: 0 0; background-image:url(../images/icons/famfamfam/us.png) !important;}
-.ui-icon-flag-fr { background-position: 0 0; background-image:url(../images/icons/famfamfam/fr.png) !important;}
+ul.switch-language li {
+    display: inline-block;
+    width: auto;
+}
+ul.switch-language li a {
+    display: block; height:11px; width:16px; background-position: 0 0; background-repeat: no-repeat;
+}
+.ui-icon-flag-us { background-image:url(../images/icons/famfamfam/us.png) !important; }
+.ui-icon-flag-fr { background-image:url(../images/icons/famfamfam/fr.png) !important;}
 
 
