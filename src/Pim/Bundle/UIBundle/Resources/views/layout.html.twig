@@ -19,5 +19,7 @@
 {% block main_menu %}{{ parent() }}{% endblock %}
 
 {% block footer %}
-    <p><em>The future of catalog management is open ! © Akeneo SAS.</em></p>
+    <p><em>
+        {% trans %}pim.footer.description{% endtrans %} {% trans %}pim.footer.akeneo.copyright{% endtrans %}.
+    </em></p>
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'PimUIBundle::layout.html.twig' %}
 
-{% block title %}Akeneo - product list{% endblock %}
+{% block title %}Akeneo - {% trans %}pim.catalog.product.title.list{% endtrans %}{% endblock %}
 
 {% block content_menu_more %}
     {{ parent() }}
@@ -8,7 +8,7 @@
 
 {% block content %}
     
-    <h1>Catalog product list</h1>
+    <h1>{% trans %}pim.catalog.product.title.list{% endtrans %}</h1>
     
     {{ grid(grid) }}
 

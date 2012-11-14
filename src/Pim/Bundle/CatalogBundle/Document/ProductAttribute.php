@@ -35,7 +35,9 @@ class ProductAttribute extends AbstractEntityAttribute
 
     /**
     * @MongoDB\String
-    * @GRID\Column()
+    * @GRID\Column(title="pim.catalog.productattribute.title")
+    * 
+    * TODO : clean up must be made for column name
     */
     protected $title;
 

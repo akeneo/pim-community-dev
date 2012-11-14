@@ -1,33 +1,34 @@
 {% extends 'PimUIBundle::layout.html.twig' %}
 
-{% block title %}Akeneo - edit channel{% endblock %}
+{% block title %}Akeneo - {% trans %}pim.catalog.channel.title.edit{% endtrans %}{% endblock %}
 
 {% block content_menu_more %}
     {{ parent() }}
     <li>
         <a href="{{ path('pim_catalog_channel_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
-            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-ui-button-navigation-back"></span><span class="ui-button-text">Back to list</span>
+            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-ui-button-navigation-back"></span>
+            <span class="ui-button-text">{% trans %}bap.navigation.back-list{% endtrans %}</span>
         </a>
     </li>
 {% endblock %}
 
 {% block content %}
 
-    <h1>Catalog channel creation</h1>
+    <h1>{% trans %}pim.catalog.channel.title.create{% endtrans %}</h1>
 
     {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
     <form action="{{ formAction }}" method="post" {{ form_enctype(form) }}>
         {{ form_errors(form) }}
     
         <div class="form-panel ui-corner-all">
-            <h2>General</h2>
+            <h2>{% trans %}pim.catalog.channel.fieldset.general{% endtrans %}</h2>
             {{ form_row(form.id) }}
             {{ form_row(form.code) }}
             {{ form_row(form.isDefault) }}
         </div>
 
         <div class="form-panel ui-corner-all">
-                <h2>Locales</h2>
+                <h2>{% trans %}pim.catalog.channel.fieldset.locale{% endtrans %}</h2>
                 <div>
                     <ul class="options" data-prototype="{{ form_widget(form.locales.vars.prototype)|e }}" >
                         {% for locale in form.locales %}
@@ -39,7 +40,7 @@
 
         {{ form_widget(form._token) }}
 
-        <input type="submit" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" aria-disabled="false">
+        <input type="submit" value="{% trans %}bap.button.save{% endtrans %}" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" aria-disabled="false">
 
     </form>
 
@@ -48,7 +49,7 @@
     var collectionHolder = $('ul.options');
     
     // setup an "add an option" link
-    var $addOptionLink = $('<a href="#" class="add_option_link">Add a locale</a>');
+    var $addOptionLink = $('<a href="#" class="add_option_link">{% trans %}pim.catalog.channel.text.add-locale{% endtrans %}</a>');
     var $newLinkLi = $('<li></li>').append($addOptionLink);
     
     jQuery(document).ready(function() {
@@ -86,7 +87,7 @@
     }
     
     function addOptionFormDeleteLink($optFormLi) {
-        var $removeFormA = $('<a class="action-delete-inline" href="#">Delete ^</a>');
+        var $removeFormA = $('<a class="action-delete-inline" href="#">{% trans %}pim.catalog.text.delete-locale{% endtrans %} ^</a>');
 
         $optFormLi.append($removeFormA);
     

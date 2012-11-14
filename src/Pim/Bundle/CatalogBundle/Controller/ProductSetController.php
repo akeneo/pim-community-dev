@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Form\Type\ProductSetType;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -99,19 +100,29 @@ class ProductSetController extends Controller
      * @Route("/new")
      * @Template()
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
-        return $this->forward('PimCatalogBundle:ProductSet:create');
+        // create new product set
+        $productManager = $this->getProductManager();
+        $entity = $productManager->getNewSetInstance();
+
+        // prepare form
+        $form = $this->createSetForm($entity);
+        
+        return $this->render('PimCatalogBundle:ProductSet:new.html.twig', array('form' => $form->createView()));
+//         return $this->createAction($request);
+//         return $this->forward('PimCatalogBundle:ProductSet:create');
     }
 
     /**
      *
      * @param Request $request
-     *
+     * 
      * @Route("/create")
+     * @Method("POST")
      * @Template()
      */
-    public function createAction(Request $request = null)
+    public function createAction(Request $request)
     {
         // create new product set
         $productManager = $this->getProductManager();
@@ -120,33 +131,33 @@ class ProductSetController extends Controller
         // prepare form
         $form = $this->createSetForm($entity);
 
-        if ($request && $request->isMethod('POST')) {
-            $form->bind($request);
-            $postData = $request->get('pim_catalogbundle_productattributeset');
+//         if ($request->isMethod('POST')) {
+        $form->bind($request);
+        $postData = $request->get('pim_catalogbundle_productattributeset');
 
-            // TODO : Must be in validation form
-            if ($form->isValid() && isset($postData['copyfromset'])) {
+        // TODO : Must be in validation form
+        if ($form->isValid() && isset($postData['copyfromset'])) {
 
-                $copy = $postData['copyfromset'];
+            $copy = $postData['copyfromset'];
 
-                if ($copy !== '') { // create by copy
-                    $productType = $this->getProductManager()->getSetRepository()->find($postData['copyfromset']);
-                    $entity = $this->getProductManager()->cloneSet($productType);
-                    $entity->setCode($postData['code']);
-                }
-
-                // persist
-                $this->getPersistenceManager()->persist($entity);
-                $this->getPersistenceManager()->flush();
-
-                $this->get('session')->setFlash('success', 'product set has been created');
-
-                // TODO : redirect to edit
-                return $this->redirect(
-                        $this->generateUrl('pim_catalog_productset_edit', array('id' => $entity->getId()))
-                );
+            if ($copy !== '') { // create by copy
+                $productType = $this->getProductManager()->getSetRepository()->find($postData['copyfromset']);
+                $entity = $this->getProductManager()->cloneSet($productType);
+                $entity->setCode($postData['code']);
             }
+
+            // persist
+            $this->getPersistenceManager()->persist($entity);
+            $this->getPersistenceManager()->flush();
+
+            $this->get('session')->setFlash('success', 'product set has been created');
+
+            // TODO : redirect to edit
+            return $this->redirect(
+                    $this->generateUrl('pim_catalog_productset_edit', array('id' => $entity->getId()))
+            );
         }
+//         }
 
         return $this->render('PimCatalogBundle:ProductSet:new.html.twig', array('form' => $form->createView()));
     }

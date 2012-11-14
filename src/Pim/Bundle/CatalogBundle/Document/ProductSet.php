@@ -32,7 +32,6 @@ class ProductSet extends AbstractEntitySet
 
     /**
     * @MongoDB\String
-    * @GRID\Column()
     */
     protected $title;
 

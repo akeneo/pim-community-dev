@@ -56,7 +56,7 @@ class ProductController extends Controller
 
         // add an action column
         $grid->setActionsColumnSeparator('&nbsp;');
-        $rowAction = new RowAction('pim.action.details', 'pim_catalog_product_edit', false, '_self', array('class' => 'grid_action ui-icon-fugue-magnifier'));
+        $rowAction = new RowAction('bap.action.details', 'pim_catalog_product_edit', false, '_self', array('class' => 'grid_action ui-icon-fugue-magnifier'));
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
 

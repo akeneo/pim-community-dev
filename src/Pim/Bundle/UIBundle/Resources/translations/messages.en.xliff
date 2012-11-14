@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1">
+                <source>pim.footer.description</source>
+                <target>The future of catalog management is open !</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>pim.footer.akeneo.copyright</source>
+                <target>© Akeneo SAS</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

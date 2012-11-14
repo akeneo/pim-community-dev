@@ -7,8 +7,24 @@
                 <target>Back to home</target>
             </trans-unit>
             <trans-unit id="2">
-                <source>pim.action.details</source>
+                <source>bap.navigation.back-list</source>
+                <target>Back to list</target>
+            </trans-unit>
+            
+            <trans-unit id="3">
+                <source>bap.action.details</source>
                 <target>Details</target>
+            </trans-unit>
+            
+            <trans-unit id="4">
+                <source>bap.button.save</source>
+                <target>Save</target>
+            </trans-unit>
+            
+            
+            <trans-unit id="5">
+                <source>bap.dialog.confirm</source>
+                <target>Are you sure ?</target>
             </trans-unit>
         </body>
     </file>

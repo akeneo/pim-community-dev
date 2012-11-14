@@ -1,36 +1,39 @@
 {% extends 'PimUIBundle::layout.html.twig' %}
 
-{% block title %}Akeneo - edit product attribute{% endblock %}
+{% block title %}Akeneo - {% trans %}pim.catalog.attribute.title.edit{% endtrans %}{% endblock %}
 
 {% block content_menu_more %}
     {{ parent() }}
     <li>
         <a href="{{ path('pim_catalog_productattribute_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
-            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-ui-button-navigation-back"></span><span class="ui-button-text">Back to list</span>
+            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-ui-button-navigation-back"></span>
+            <span class="ui-button-text">{% trans %}bap.navigation.back-list{% endtrans %}</span>
         </a>
     </li>
     <li>
-        <a onclick="return confirm('Are you sure ?')" href="{{ path('pim_catalog_productattribute_delete', { 'id': entity.id }) }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
-            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-tag--minus"></span><span class="ui-button-text">Delete attribute</span>
+        <a onclick="return confirm('{% trans %}bap.dialog.confirm{% endtrans %}')" href="{{ path('pim_catalog_productattribute_delete', { 'id': entity.id }) }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
+            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-tag--minus"></span>
+            <span class="ui-button-text">{% trans %}pim.catalog.attribute.button.delete{% endtrans %}</span>
         </a>
     </li>
     <li>
         <a href="#" onclick="$('#edit-form-submit').click(); return false;" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
-            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-disk"></span><span class="ui-button-text">Save</span>
+            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-disk"></span>
+            <span class="ui-button-text">{% trans %}bap.button.save{% endtrans %}</span>
         </a>
     </li>
 {% endblock %}
 
 {% block content %}
 
-    <h1>Product attribute edition</h1>
+    <h1>{% trans %}pim.catalog.attribute.title.edit{% endtrans %}</h1>
 
     {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
     <form action="{{ path('pim_catalog_productattribute_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(form) }}>
         {{ form_errors(form) }}
     
         <div class="form-panel ui-corner-all">
-            <h2>General</h2>
+            <h2>{% trans %}pim.catalog.attribute.fieldset.general{% endtrans %}</h2>
             {{ form_row(form.id) }}
             {{ form_row(form.code) }}
             {{ form_row(form.title) }}
@@ -44,7 +47,7 @@
 
         {% if form.type.vars.value == "select" or form.type.vars.value == "multiselect" %}
         <div class="form-panel ui-corner-all">
-                <h2>Options</h2>
+                <h2>{% trans %}pim.catalog.attribute.fieldset.option{% endtrans %}</h2>
                 <div>
                     <ul id="sortable-options" class="options" data-prototype="{{ form_widget(form.options.vars.prototype)|e }}" >
                         {% for option in form.options %}
@@ -57,7 +60,7 @@
 
         {{ form_widget(form._token) }}
 
-        <input id="edit-form-submit" type="submit" value="Save" class="ui-helper-hidden" role="button" aria-disabled="false">
+        <input id="edit-form-submit" type="submit" value="{% trans %}bap.button.save{% endtrans %}" class="ui-helper-hidden" role="button" aria-disabled="false">
 
     </form>
 

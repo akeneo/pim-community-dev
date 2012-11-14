@@ -30,6 +30,10 @@
                 <source>dashboard.connector-magento</source>
                 <target>Connecteur Magento</target>
             </trans-unit>
+            <trans-unit id="8">
+                <source>pim.catalog.productattribute.title</source>
+                <target>Titre</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
