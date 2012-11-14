@@ -155,7 +155,7 @@ class ProductSetController extends Controller
      *
      * @param integer $id
      *
-     * @Route("/edit/{id}")
+     * @Route("/{id}/edit")
      * @Template()
      */
     public function editAction($id)
@@ -167,17 +167,17 @@ class ProductSetController extends Controller
 
         // prepare & render form
         $form = $this->createSetForm($entity);
-        return $this->render('PimCatalogBundle:ProductSet:edit.html.twig', array('form' => $form->createView()));
+        return $this->render('PimCatalogBundle:ProductSet:edit.html.twig', array('form' => $form->createView(), 'entity' => $entity));
     }
 
     /**
      *
      * @param Request $request
      *
-     * @Route("/update")
+    * @Route("/{id}/update")
      * @Template()
      */
-    public function updateAction(Request $request)
+    public function updateAction(Request $request, $id)
     {
         if ($request->isMethod('POST')) {
             // get product set
@@ -221,7 +221,7 @@ class ProductSetController extends Controller
      *
      * @param integer $id
      *
-     * @Route("/delete/{id}")
+     * @Route("/{id}/delete")
      * @Template()
      *
      * TODO : Must prevent against incorrect id

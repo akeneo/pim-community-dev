@@ -15,7 +15,7 @@
 
     {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
     
-    <form action="{{ path('pim_catalog_productset_update') }}" method="post" {{ form_enctype(form) }}>
+    <form action="{{ path('pim_catalog_productset_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(form) }}>
 
         {{ form_errors(form) }}
     
