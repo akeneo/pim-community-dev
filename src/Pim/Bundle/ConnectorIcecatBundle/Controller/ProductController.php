@@ -12,7 +12,7 @@ use \Exception;
 use Doctrine\DBAL\DBALException;
 /**
  * Icecat product controller regroups all features for products entities (import and list)
- * 
+ *
  * @author    Romain Monceau @ Akeneo
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -22,7 +22,7 @@ class ProductController extends Controller
 {
     /**
      * Load only products identifiers from icecat to local database
-     * 
+     *
      * @Route("/product/load-from-icecat")
      * @Template()
      */
@@ -44,7 +44,7 @@ class ProductController extends Controller
 
     /**
      * List Icecat products in a grid
-     * 
+     *
      * @Route("/product/list")
      * @Template()
      */
@@ -64,8 +64,8 @@ class ProductController extends Controller
 
     /**
      * Load all icecat product data to local database
-     * 
-     * @Route("/product/load-product/{id}")
+     *
+     * @Route("/product/{id}/load-product")
      * @Template()
      */
     public function loadProductAction($id)
@@ -74,15 +74,15 @@ class ProductController extends Controller
             $srvConnector = $this->container->get('akeneo.connector.icecat_service');
             $srvConnector->importProductFromIcecatXml($id);
             $product = $this->getDoctrine()->getRepository('PimConnectorIcecatBundle:SourceProduct')->find($id);
-            
+
             // Prepare notice message
-            $viewRenderer = $this->render('PimConnectorIcecatBundle:Product:loadProduct.html.twig', 
+            $viewRenderer = $this->render('PimConnectorIcecatBundle:Product:loadProduct.html.twig',
                     array('product' => $product));
             $this->get('session')->setFlash('notice', $viewRenderer->getContent());
         } catch (Exception $e) {
             $this->get('session')->setFlash('exception', $e->getMessage());
         }
-        
+
         // Redirect to products list
         return $this->redirect($this->generateUrl('pim_connectoricecat_product_list'));
     }

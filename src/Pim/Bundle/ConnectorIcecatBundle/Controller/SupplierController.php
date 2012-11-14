@@ -12,7 +12,7 @@ use \Exception;
 use Doctrine\DBAL\DBALException;
 /**
  * Icecat supplier controller regroups all features for suppliers entities (import, list and import linked products)
- * 
+ *
  * @author    Romain Monceau @ Akeneo
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -22,7 +22,7 @@ class SupplierController extends Controller
 {
     /**
      * Load suppliers from icecat to local database
-     * 
+     *
      * @Route("/supplier/load-from-icecat")
      * @Template()
      */
@@ -44,7 +44,7 @@ class SupplierController extends Controller
 
     /**
      * List Icecat suppliers in a grid
-     * 
+     *
      * @Route("/supplier/list")
      * @Template()
      */
@@ -64,8 +64,8 @@ class SupplierController extends Controller
 
     /**
      * Load all product linked to a defined supplier
-     * 
-     * @Route("/supplier/load-products/{icecatId}")
+     *
+     * @Route("/supplier/{icecatId}/load-products")
      * @Template()
      */
     public function loadProductsAction($icecatId)
@@ -75,11 +75,11 @@ class SupplierController extends Controller
                     ->findOneByIcecatId($icecatId);
             $srvConnector = $this->container->get('akeneo.connector.icecat_service');
             $srvConnector->importProductsFromSupplier($supplier);
-            
+
             // Get supplier products
             $products = $this->getDoctrine()->getRepository('PimConnectorIcecatBundle:SourceProduct')
                     ->findBySupplier($supplier);
-            
+
             // Prepare notice message
             $viewRenderer = $this->render('PimConnectorIcecatBundle:Supplier:loadProducts.html.twig',
                     array('supplier' => $supplier, 'products' => $products));
@@ -87,7 +87,7 @@ class SupplierController extends Controller
         } catch (Exception $e) {
             $this->get('session')->setFlash('exception', $e->getMessage());
         }
-            
+
         // Redirect to suppliers list
         return $this->redirect($this->generateUrl('pim_connectoricecat_supplier_list'));
     }
