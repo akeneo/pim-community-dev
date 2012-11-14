@@ -22,10 +22,10 @@
             {% block header %}
                 <ul class="switch-language">
                     <li>
-                        <a href="{{ path(app.request.attributes.get('_route'), {"_locale": "en_US"}) }}" class="ui-icon-flag-us"></a>
+                        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({"_locale": "en_US"})) }}" class="ui-icon-flag-us"></a>
                     </li>
                     <li>
-                        <a href="{{ path(app.request.attributes.get('_route'), {"_locale": "fr"}) }}" class="ui-icon-flag-fr"></a>
+                        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({"_locale": "fr"})) }}" class="ui-icon-flag-fr"></a>
                     </li>
                 </ul>
             {% endblock %}
