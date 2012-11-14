@@ -38,10 +38,6 @@ class AppKernel extends Kernel
 
             // community bundles
             new APY\DataGridBundle\APYDataGridBundle(),
-            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-
-            //new Nidup\TestBundle\NidupTestBundle(),
-
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -32,9 +32,7 @@
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "gedmo/doctrine-extensions": "*",
 
-        "apy/datagrid-bundle": "dev-master",
-        "knplabs/knp-menu-bundle":"dev-master"
-
+        "apy/datagrid-bundle": "dev-master"
     },
 
     "scripts": {

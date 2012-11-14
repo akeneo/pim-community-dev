@@ -16,20 +16,8 @@
     </div>
 {% endblock %}
 
-{% block main_menu %}
-    {{ parent() }}
-    {{ knp_menu_render('PimUIBundle:Builder:mainMenu') }}
-{% endblock %}
+{% block main_menu %}{{ parent() }}{% endblock %}
 
 {% block footer %}
     <p><em>The future of catalog management is open ! © Akeneo SAS.</em></p>
-{% endblock %}
-
-{% block afterfooter %}
-    {{ parent() }}
-    <script>
-        $(function() {
-            $("#mainmenu").menu({ position: { at: "bottom" }});
-        });
-    </script>
 {% endblock %}

@@ -4,24 +4,4 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-
-    <parameters>
-        <parameter key="bap_ui.menu_builder.class">Bap\Bundle\UIBundle\Menu\Builder</parameter>
-        <parameter key="bap_ui.menu_item.class">Knp\Menu\MenuItem</parameter>
-    </parameters>
-
-    <services>
-        <!-- define menu builder service -->
-        <service id="bap_ui.menu_builder" class="%bap_ui.menu_builder.class%">
-            <argument type="service" id="knp_menu.factory" />
-            <argument type="service" id="event_dispatcher" />
-        </service>
-        <!-- define main menu service -->
-        <service id="bap_ui.mainmenu" class="%bap_ui.menu_item.class%" factory-service="bap_ui.menu_builder" factory-method="createMenu" scope="request">
-            <argument type="service" id="request" />
-            <argument>mainmenu_event</argument>
-            <tag name="knp_menu.menu" alias="bap_main_menu" />
-        </service>
-    </services>
-
 </container>

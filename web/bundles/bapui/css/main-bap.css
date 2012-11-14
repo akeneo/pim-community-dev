@@ -347,6 +347,7 @@ th div {
 /* flags icons */
 ul.switch-language {
     float:right;
+    margin-top: 60px;
 }
 ul.switch-language li {
     display: inline-block;
