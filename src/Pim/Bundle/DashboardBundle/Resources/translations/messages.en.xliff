@@ -3,35 +3,35 @@
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
             <trans-unit id="1">
-                <source>dashboard.title.enrich</source>
+                <source>pim.dashboard.title.enrich</source>
                 <target>Enrich</target>
             </trans-unit>
             <trans-unit id="2">
-                <source>dashboard.title.import-export</source>
+                <source>pim.dashboard.title.import-export</source>
                 <target>Import / Export</target>
             </trans-unit>
             <trans-unit id="3">
-                <source>dashboard.products</source>
+                <source>pim.dashboard.products</source>
                 <target>Products</target>
             </trans-unit>
             <trans-unit id="4">
-                <source>dashboard.product-sets</source>
+                <source>pim.dashboard.product-sets</source>
                 <target>Product sets</target>
             </trans-unit>
             <trans-unit id="5">
-                <source>dashboard.product-attributes</source>
+                <source>pim.dashboard.product-attributes</source>
                 <target>Product attributes</target>
             </trans-unit>
             <trans-unit id="6">
-                <source>dashboard.connector-icecat</source>
+                <source>pim.dashboard.connector-icecat</source>
                 <target>Connector IceCat</target>
             </trans-unit>
             <trans-unit id="7">
-                <source>dashboard.connector-magento</source>
+                <source>pim.dashboard.connector-magento</source>
                 <target>Connector Magento</target>
             </trans-unit>
             <trans-unit id="8">
-                <source>pim.dashboard.title.home</source>
+                <source>pim.pim.dashboard.title.home</source>
                 <target>Home</target>
             </trans-unit>
         </body>

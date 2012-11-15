@@ -9,43 +9,43 @@
     <div class="blocks-dashboard">
 
         <div class="block-dashboard ui-corner-all">
-            <h2>{{ "dashboard.title.enrich" | trans }</h2>
+            <h2>{{ "pim.dashboard.title.enrich" | trans }}</h2>
             <ul>
                 <li>
                     <a href="{{ path('pim_catalog_product_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
                         <span class="ui-button-icon-primary ui-icon ui-icon-fugue-documents"></span>
-                        <span class="ui-button-text">{{ "dashboard.products" | trans }</span>
+                        <span class="ui-button-text">{{ "pim.dashboard.products" | trans }}</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ path('pim_catalog_productset_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
                         <span class="ui-button-icon-primary ui-icon ui-icon-fugue-folder-open-document"></span>
-                        <span class="ui-button-text">{% trans %}dashboard.product-sets</span>
+                        <span class="ui-button-text">{{ "pim.dashboard.product-sets" | trans }}</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ path('pim_catalog_productattribute_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
                         <span class="ui-button-icon-primary ui-icon ui-icon-fugue-tags"></span>
-                        <span class="ui-button-text">{% trans %}dashboard.product-attributes</span>
+                        <span class="ui-button-text">{{ "pim.dashboard.product-attributes" | trans }}</span>
                     </a>
                 </li>
             </ul>
         </div>
 
         <div class="block-dashboard ui-corner-all">
-            <h2>{% trans %}dashboard.title.import-export</h2>
+            <h2>{{ "pim.dashboard.title.import-export" | trans }}</h2>
             <ul>
                 <li>
                     <a href="{{ path('pim_connectoricecat_supplier_list') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
                         <span class="ui-button-icon-primary ui-icon ui-icon-connector-icecat"></span>
-                        <span class="ui-button-text">{% trans %}dashboard.connector-icecat</span>
+                        <span class="ui-button-text">{{ "pim.dashboard.connector-icecat" | trans }}</span>
                     </a>
                 </li>
                 <!--
                 <li>
                     <a href="{{ path('pim_connectoricecat_supplier_list') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
                         <span class="ui-button-icon-primary ui-icon ui-icon-connector-magento"></span>
-                        <span class="ui-button-text">{% trans %}dashboard.connector-magento</span>
+                        <span class="ui-button-text">{{ "pim.dashboard.connector-magento" | trans }}</span>
                     </a>
                 </li>
                 -->
