@@ -1,6 +1,6 @@
 {% extends 'PimUIBundle::layout.html.twig' %}
 
-{% block title %}Akeneo - {{ "pim.catalog.channel.button.new" | trans }}{% endblock %}
+{% block title %}Akeneo - {{ "pim.catalog.product.title.edit" | trans }}{% endblock %}
 
 {% block content_menu_more %}
     {{ parent() }}
@@ -14,7 +14,7 @@
 
 {% block content %}
 
-    <h1>{{ "pim.catalog.channel.button.new" | trans }}</h1>
+    <h1>{{ "pim.catalog.product.title.edit" | trans }}</h1>
 
     {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
     <form action="{{ path('pim_catalog_product_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(form) }}>
