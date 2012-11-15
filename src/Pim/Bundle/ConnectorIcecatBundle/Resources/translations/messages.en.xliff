@@ -6,6 +6,46 @@
                 <source>pim.connector.icecat.config.title.edit</source>
                 <target>Manage Icecat configuration</target>
             </trans-unit>
+            <trans-unit id="2">
+                <source>pim.connector.icecat.language.title.list</source>
+                <target>List languages</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>pim.connector.icecat.product.title.list</source>
+                <target>List products</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>pim.connector.icecat.supplier.title.list</source>
+                <target>List suppliers</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>pim.connector.icecat.menu.config</source>
+                <target>Configuration</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>pim.connector.icecat.menu.base-product-list</source>
+                <target>List base products</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>pim.connector.icecat.menu.base-supplier-list</source>
+                <target>List base suppliers</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>pim.connector.icecat.menu.initialize-product</source>
+                <target>Initialize base products (only 5k)</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>pim.connector.icecat.menu.initialize-supplier</source>
+                <target>Initialize base suppliers</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>pim.connector.icecat.product.message.inserted</source>
+                <target>Product %id% - %prodId% inserted</target>
+            </trans-unit>
+            <trans-unit id="11">
+                <source>pim.connector.icecat.supplier.message.inserted</source>
+                <target>Supplier %name% - %count% products inserted</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
