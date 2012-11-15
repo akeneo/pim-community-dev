@@ -124,42 +124,27 @@ class ProductSetController extends Controller
     {
         // create new product set
         $productManager = $this->getProductManager();
-        $entity = $productManager->getNewSetInstance();
 
-        // prepare form
-        $form = $this->createSetForm($entity);
-
-        $form->bind($request);
+        // clone product set
         $postData = $request->get('pim_catalogbundle_productattributeset');
+        $copy = $postData['copyfromset'];
+        $productType = $this->getProductManager()->getSetRepository()->find($copy);
+        $entity = $this->getProductManager()->cloneSet($productType);
+        $entity->setCode($postData['code']);
 
-        // TODO : Must be in validation form
-        if ($form->isValid() && isset($postData['copyfromset'])) {
+        try {
+            // persist
+            $this->getPersistenceManager()->persist($entity);
+            $this->getPersistenceManager()->flush();
 
-            $copy = $postData['copyfromset'];
+            $this->get('session')->setFlash('success', 'product set has been created');
+            return $this->redirect($this->generateUrl('pim_catalog_productset_edit', array('id' => $entity->getId())));
 
-            if ($copy !== '') { // create by copy
-                $productType = $this->getProductManager()->getSetRepository()->find($postData['copyfromset']);
-                $entity = $this->getProductManager()->cloneSet($productType);
-                $entity->setCode($postData['code']);
-            }
-
-            try {
-                // persist
-                $this->getPersistenceManager()->persist($entity);
-                $this->getPersistenceManager()->flush();
-
-                $this->get('session')->setFlash('success', 'product set has been created');
-
-                // TODO : redirect to edit
-                return $this->redirect(
-                    $this->generateUrl('pim_catalog_productset_edit', array('id' => $entity->getId()))
-                );
-
-            } catch (\Exception $e) {
-                $this->get('session')->setFlash('error', $e->getMessage());
-            }
+        } catch (\Exception $e) {
+            $this->get('session')->setFlash('error', $e->getMessage());
         }
 
+        $form = $this->createSetForm($entity);
         return $this->render('PimCatalogBundle:ProductSet:new.html.twig', array('form' => $form->createView()));
     }
 

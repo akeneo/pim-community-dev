@@ -8,7 +8,7 @@
 
 /* attribute set form */
 .connectedSortable {min-height: 50px;}
-.connectedSortable li {width:500px; margin-bottom:5px; padding:2px;}
+.connectedSortable li {width:250px; margin-bottom:5px; padding:2px;}
 .ui-tabs-nav li {min-width:120px;}
 .ui-tabs-nav li .ui-icon {float:right;}
 .connectedSortable .add-attribute {border:1px solid green;}
@@ -24,6 +24,14 @@
 .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; border-right-width: 1px; }
 .ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: right; width: 40em;}
 
-
-.type-available-fields, .type-group-fields {float: left;}
-.type-available-fields {width: 550px; margin-right:20px;}
+.type-available-fields, .fluid-column-wrapper {float: left;}
+.fluid-column-wrapper {
+    width:100%;
+}
+.type-group-fields {
+    margin-left: 340px;
+}
+.type-available-fields {
+    width: 300px;
+    margin-left: -100%;
+}

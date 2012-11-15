@@ -177,6 +177,12 @@ abstract class AbtractProductTest extends KernelAwareTest
         $this->assertTrue($set instanceof $class);
         $this->assertEquals($set->getCode(), $this->codeSet);
         $this->assertEquals($set->getGroups()->count(), 4);
+        // check attributes are well retrieved
+        foreach ($set->getGroups() as $group) {
+            foreach ($group->getAttributes() as $attribute) {
+                $this->assertNotNull($attribute->getCode());
+            }
+        }
     }
 
     /**
