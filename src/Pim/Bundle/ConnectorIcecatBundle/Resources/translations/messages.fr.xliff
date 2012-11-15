@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="fr" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1">
+                <source>pim.connector.icecat.config.title.edit</source>
+                <target>Modification de la configuration d'Icecat</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>pim.connector.icecat.language.title.list</source>
+                <target>Liste des langues</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>pim.connector.icecat.product.title.list</source>
+                <target>Liste des produits</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>pim.connector.icecat.supplier.title.list</source>
+                <target>Liste des fournisseurs</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>pim.connector.icecat.menu.config</source>
+                <target>Configuration</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>pim.connector.icecat.menu.base-product-list</source>
+                <target>Liste des produits IceCat</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>pim.connector.icecat.menu.base-supplier-list</source>
+                <target>Liste des fournisseurs IceCat</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>pim.connector.icecat.menu.initialize-product</source>
+                <target>Initialisation des produits IceCat (Seulement 5k)</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>pim.connector.icecat.menu.initialize-supplier</source>
+                <target>Initialisation des fournisseurs IceCat</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>pim.connector.icecat.product.message.inserted</source>
+                <target>Produit %id% - %prodId% inséré</target>
+            </trans-unit>
+            <trans-unit id="11">
+                <source>pim.connector.icecat.supplier.message.inserted</source>
+                <target>Fournisseur %name% - %count% produits insérés</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

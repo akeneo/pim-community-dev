@@ -1,10 +1,10 @@
 {% extends 'PimConnectorIcecatBundle::layout.html.twig' %}
 
-{% block title %}{{ parent() }} Manage Icecat configuration{% endblock %}
+{% block title %}{{ parent() }} {{ "pim.connector.icecat.config.title.edit" | trans }}{% endblock %}
 
 {% block content %}
 
-    <h2>Edit Icecat connector configuration</h2>
+    <h2>{{ "pim.connector.icecat.config.title.edit" | trans }}</h2>
     
     {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
     
@@ -28,7 +28,7 @@
         
         {{ form_rest(form) }}
 
-        <input type="submit" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" aria-disabled="false">
+        <input type="submit" value="{{ "bap.button.save" | trans }}" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" aria-disabled="false">
 
     </form>
 

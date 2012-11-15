@@ -1,5 +1,5 @@
 {% if exception is defined %}
     {{ exception.message }}
 {% else %}
-    Product {{ product.id }} - {{ product.getProdId }} inserted
+    {{ "pim.connector.icecat.product.message.inserted" | trans({'%id%': product.id, '%prodId%': product.getProdId}) }}
 {% endif %}
