@@ -7,7 +7,7 @@
     <li>
         <a href="{{ path('pim_catalog_productset_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
             <span class="ui-button-icon-primary ui-icon ui-icon-fugue-ui-button-navigation-back"></span>
-            <span class="ui-button-text">{% trans %}bap.navigation.back-list{% endtrans %}t</span>
+            <span class="ui-button-text">{% trans %}bap.navigation.back-list{% endtrans %}</span>
         </a>
     </li>
 {% endblock %}
@@ -73,7 +73,7 @@
         
         <!-- available attributes -->
         <div class="form-panel ui-corner-all type-available-fields">
-            <h2>{% trans %}pim.catalog.set.fieldset/available-attribute{% endtrans %}</h2>
+            <h2>{% trans %}pim.catalog.set.fieldset.available-attribute{% endtrans %}</h2>
             <ul id="available-list" class="connectedSortable">
                 {% for field in form.others %}
                     <li class="ui-state-default ui-corner-all" id="{{ field.id.vars.value }}">
