@@ -128,9 +128,14 @@ class ProductSetController extends Controller
         // clone product set
         $postData = $request->get('pim_catalogbundle_productattributeset');
         $copy = $postData['copyfromset'];
-        $productType = $this->getProductManager()->getSetRepository()->find($copy);
-        $entity = $this->getProductManager()->cloneSet($productType);
-        $entity->setCode($postData['code']);
+        if ($copy !== '') {
+            $productType = $this->getProductManager()->getSetRepository()->find($copy);
+            $entity = $this->getProductManager()->cloneSet($productType);
+            $entity->setCode($postData['code']);
+        } else {
+            $entity = $this->getProductManager()->getNewSetInstance();
+            $entity->setCode($postData['code']);
+        }
 
         try {
             // persist
