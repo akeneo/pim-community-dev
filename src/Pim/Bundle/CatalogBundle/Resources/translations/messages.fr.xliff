@@ -14,7 +14,6 @@
                 <source>pim.catalog.channel.title.list</source>
                 <target>Liste des canaux</target>
             </trans-unit>
-            
             <trans-unit id="4">
                 <source>pim.catalog.product.title.edit</source>
                 <target>Modification d'un produit</target>
@@ -23,65 +22,116 @@
                 <source>pim.catalog.product.title.list</source>
                 <target>Liste des produits</target>
             </trans-unit>
-            
             <trans-unit id="6">
+                <source>pim.catalog.attribute.title.create</source>
+                <target>Création d'un attribut produit</target>
+            </trans-unit>
+            <trans-unit id="7">
                 <source>pim.catalog.attribute.title.edit</source>
                 <target>Modification d'un attribut</target>
             </trans-unit>
-            <trans-unit id="7">
+            <trans-unit id="8">
                 <source>pim.catalog.attribute.title.list</source>
                 <target>Liste des attributs produit</target>
             </trans-unit>
+            <trans-unit id="9">
+                <source>pim.catalog.set.title.create</source>
+                <target>Création d'un type de produits</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>pim.catalog.set.title.edit</source>
+                <target>Modification d'un type de produits</target>
+            </trans-unit>
+            <trans-unit id="11">
+                <source>pim.catalog.set.title.list</source>
+                <target>Liste des types de produits</target>
+            </trans-unit>
             
-            
-            <trans-unit id="8">
+            <!-- Buttons -->
+            <trans-unit id="12">
                 <source>pim.catalog.channel.button.new</source>
                 <target>Créer un canal</target>
             </trans-unit>
-            <trans-unit id="9">
+            <trans-unit id="13">
                 <source>pim.catalog.attribute.button.delete</source>
                 <target>Supprimer un attribut</target>
             </trans-unit>
+            <trans-unit id="14">
+                <source>pim.catalog.attribute.button.new</source>
+                <target>Créer un attribut</target>
+            </trans-unit>
+            <trans-unit id="15">
+                <source>pim.catalog.set.button.new</source>
+                <target>Créer un type</target>
+            </trans-unit>
             
-            
-            
-            <trans-unit id="10">
+            <!-- Fieldsets -->
+            <trans-unit id="16">
                 <source>pim.catalog.channel.fieldset.general</source>
                 <target>Général</target>
             </trans-unit>
-            <trans-unit id="11">
+            <trans-unit id="17">
                 <source>pim.catalog.channel.fieldset.locale</source>
                 <target>Traductions</target>
             </trans-unit>
-            <trans-unit id="12">
+            <trans-unit id="18">
                 <source>pim.catalog.product.fieldset.general</source>
                 <target>Général</target>
             </trans-unit>
-            <trans-unit id="13">
+            <trans-unit id="19">
                 <source>pim.catalog.attribute.fieldset.general</source>
                 <target>Général</target>
             </trans-unit>
-            <trans-unit id="14">
+            <trans-unit id="20">
                 <source>pim.catalog.attribute.fieldset.option</source>
                 <target>Options</target>
             </trans-unit>
-            
-            
-            <trans-unit id="15">
-                <source>pim.catalog.channel.text.add-locale</source>
-                <target>Ajouter une traduction</target>
+            <trans-unit id="21">
+                <source>pim.catalog.set.fieldset.general</source>
+                <target>Général</target>
             </trans-unit>
-            <trans-unit id="16">
+            <trans-unit id="22">
+                <source>pim.catalog.set.fieldset.available-attribute</source>
+                <target>Attributs disponibles</target>
+            </trans-unit>
+            <trans-unit id="23">
+                <source>pim.catalog.set.fieldset.group-attribute</source>
+                <target>Groupes et attributs</target>
+            </trans-unit>
+            <trans-unit id="24">
+                <source>pim.catalog.set.fieldset.copy</source>
+                <target>Copie depuis un autre type</target>
+            </trans-unit>
+            
+            <!-- Texts -->
+            <trans-unit id="25">
+                <source>pim.catalog.channel.text.add-locale</source>
+                <target>Ajouter une nouvelle traduction</target>
+            </trans-unit>
+            <trans-unit id="26">
                 <source>pim.catalog.channel.text.delete-locale</source>
                 <target>Supprimer une traduction</target>
             </trans-unit>
-            
-            <trans-unit id="17">
+            <trans-unit id="27">
                 <source>pim.catalog.product.text.group-tab</source>
                 <target>Onglet des groupes</target>
             </trans-unit>
-            
-            
+            <trans-unit id="28">
+                <source>pim.catalog.set.text.add-group</source>
+                <target>Ajouter un nouveau groupe</target>
+            </trans-unit>
+            <trans-unit id="29">
+                <source>pim.catalog.set.text.delete-group</source>
+                <target>Supprimer un groupe</target>
+            </trans-unit>
+            <trans-unit id="30">
+                <source>pim.catalog.set.message.group-not-delete</source>
+                <target>Ce groupe ne peut être supprimé</target>
+            </trans-unit>
+            <trans-unit id="31">
+                <source>pim.catalog.set.message.demo-view</source>
+                <target>Cet écran est une démonstration. La mise à jour ne fonctionne pas encore. Nous devons encore définir les maquettes et les intéractions avant. Vous pouvez glisser les attributs de la liste des disponibles vers les groupes et créer de nouveaux groupes.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

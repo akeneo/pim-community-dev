@@ -1,17 +1,19 @@
 {% extends 'PimUIBundle::layout.html.twig' %}
 
-{% block title %}{{ parent() }} Add product set{% endblock %}
+{% block title %}{{ parent() }} {% trans %}{% endblock %}
 
 {% block content_menu_more %}
     {{ parent() }}
     <li>
         <a href="{{ path('pim_catalog_productset_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
-            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-ui-button-navigation-back"></span><span class="ui-button-text">Back to list</span>
+            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-ui-button-navigation-back"></span>
+            <span class="ui-button-text">{% trans %}bap.navigation.back-list{% endtrans %}</span>
         </a>
     </li>
     <li>
         <a href="#" onclick="$('#edit-form-submit').click(); return false;" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
-            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-disk"></span><span class="ui-button-text">Save</span>
+            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-disk"></span>
+            <span class="ui-button-text">{% trans %}bap.button.save{% endtrans %}</span>
         </a>
     </li>
 {% endblock %}
@@ -25,18 +27,18 @@
         {{ form_errors(form) }}
     
         <div class="form-panel ui-corner-all">
-            <h2>General</h2>
+            <h2>{% trans %}pim.catalog.set.fieldset.general{% endtrans %}</h2>
             {{ form_row(form.code) }}
         </div>
         
         <div class="form-panel ui-corner-all">
-            <h2>Copy from existing type</h2>
+            <h2>{% trans %}pim.catalog.set.fieldset.copy{% endtrans %}</h2>
             {{ form_row(form.copyfromset) }}
         </div>
 
         {{ form_widget(form._token) }}
 
-        <input id="edit-form-submit" type="submit" value="Save" class="ui-helper-hidden" role="button" aria-disabled="false">
+        <input id="edit-form-submit" type="submit" value="{% trans %}bap.button.save{% endtrans %}" class="ui-helper-hidden" role="button" aria-disabled="false">
     </form>
 
 {% endblock %}

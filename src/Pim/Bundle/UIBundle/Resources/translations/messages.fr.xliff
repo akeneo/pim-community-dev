@@ -3,10 +3,6 @@
     <file source-language="fr" datatype="plaintext" original="file.ext">
         <body>
             <trans-unit id="1">
-                <source>pim.footer.description</source>
-                <target>L'avenir de la gestion de catalogues est libre !</target>
-            </trans-unit>
-            <trans-unit id="2">
                 <source>pim.footer.akeneo.copyright</source>
                 <target>© Akeneo SAS</target>
             </trans-unit>

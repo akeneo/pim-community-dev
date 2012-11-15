@@ -1,19 +1,20 @@
 {% extends 'PimUIBundle::layout.html.twig' %}
 
-{% block title %}Akeneo - product attributes{% endblock %}
+{% block title %}Akeneo - {% trans %}pim.catalog.attribute.title.list{% endtrans %}{% endblock %}
 
 {% block content_menu_more %}
     {{ parent() }}
     <li>
         <a href="{{ path('pim_catalog_productattribute_new') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
-            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-tag--plus"></span><span class="ui-button-text">New attribute</span>
+            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-tag--plus"></span>
+            <span class="ui-button-text">{% trans %}pim.catalog.attribute.button.new{% endtrans %}</span>
         </a>
     </li>
 {% endblock %}
 
 {% block content %}
     
-    <h1>Product attributes</h1>
+    <h1>{% trans %}pim.catalog.attribute.title.list{% endtrans %}</h1>
     
     {{ grid(grid) }}
 
