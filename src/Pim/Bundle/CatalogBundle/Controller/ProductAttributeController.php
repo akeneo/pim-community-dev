@@ -54,16 +54,16 @@ class ProductAttributeController extends Controller
         $source = GridHelper::getGridSource($this->getPersistenceManager(), $this->getProductManager()->getAttributeShortname());
         $grid = $this->get('grid');
         $grid->setSource($source);
-        $grid->addExport(new ExcelExport('Excel Export'));
-        $grid->addExport(new CSVExport('CSV Export'));
+        $grid->addExport(new ExcelExport('bap.action.export.excel'));
+        $grid->addExport(new CSVExport('bap.action.export.csv'));
 
         // add action columns
         $grid->setActionsColumnSeparator('&nbsp;');
-        $rowAction = new RowAction('Edit', 'pim_catalog_productattribute_edit', false, '_self', array('class' => 'grid_action ui-icon-fugue-tag--pencil'));
+        $rowAction = new RowAction('bap.action.edit', 'pim_catalog_productattribute_edit', false, '_self', array('class' => 'grid_action ui-icon-fugue-tag--pencil'));
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
 
-        $rowAction = new RowAction('Delete', 'pim_catalog_productattribute_delete', true, '_self', array('class' => 'grid_action ui-icon-fugue-tag--minus'));
+        $rowAction = new RowAction('bap.action.delete', 'pim_catalog_productattribute_delete', true, '_self', array('class' => 'grid_action ui-icon-fugue-tag--minus'));
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
 

@@ -15,14 +15,30 @@
                 <source>bap.action.details</source>
                 <target>Détails</target>
             </trans-unit>
-            
-            
             <trans-unit id="4">
+                <source>bap.action.edit</source>
+                <target>Edit</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>bap.action.delete</source>
+                <target>Delete</target>
+            </trans-unit>
+            
+            <trans-unit id="6">
+                <source>bap.action.export.csv</source>
+                <target>Export CSV</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>bap.action.export.excel</source>
+                <target>Export Excel</target>
+            </trans-unit>
+            
+            <trans-unit id="8">
                 <source>bap.button.save</source>
                 <target>Enregistrer</target>
             </trans-unit>
             
-            <trans-unit id="5">
+            <trans-unit id="9">
                 <source>bap.dialog.confirm</source>
                 <target>Êtes-vous sûr ?</target>
             </trans-unit>
