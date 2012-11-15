@@ -17,11 +17,11 @@
             </trans-unit>
             <trans-unit id="4">
                 <source>bap.action.edit</source>
-                <target>Edit</target>
+                <target>Modifier</target>
             </trans-unit>
             <trans-unit id="5">
                 <source>bap.action.delete</source>
-                <target>Delete</target>
+                <target>Supprimer</target>
             </trans-unit>
             
             <trans-unit id="6">
