@@ -1,27 +1,27 @@
 {% extends 'PimUIBundle::layout.html.twig' %}
 
-{% block title %}Akeneo - {% trans %}pim.catalog.channel.button.new{% endtrans %}{% endblock %}
+{% block title %}Akeneo - {{ "pim.catalog.channel.button.new" | trans }}{% endblock %}
 
 {% block content_menu_more %}
     {{ parent() }}
     <li>
         <a href="{{ path('pim_catalog_product_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
             <span class="ui-button-icon-primary ui-icon ui-icon-fugue-ui-button-navigation-back"></span>
-            <span class="ui-button-text">{% trans from "navigation" %}bap.navigation.back-list{% endtrans %}</span>
+            <span class="ui-button-text">{{ "bap.navigation.back-list" | trans }}</span>
         </a>
     </li>
 {% endblock %}
 
 {% block content %}
 
-    <h1>{% trans %}pim.catalog.channel.button.new{% endtrans %}</h1>
+    <h1>{{ "pim.catalog.channel.button.new" | trans }}</h1>
 
     {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
     <form action="{{ path('pim_catalog_product_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(form) }}>
         {{ form_errors(form) }}
     
         <div class="form-panel ui-corner-all">
-            <h2>{% trans %}pim.catalog.product.fieldset.general{% endtrans %}</h2>
+            <h2>{{ "pim.catalog.product.fieldset.general" | trans }}</h2>
             {{ form_row(form.id) }}
 
             <div id="tabs">
@@ -29,7 +29,7 @@
                 <ul>
                     {% for group in entity.set.groups %}
                         <li>
-                            <span class="ui-icon">{% trans %}pim.catalog.product.text.group-tab{% endtrans %}</span>
+                            <span class="ui-icon">{{ "pim.catalog.product.text.group-tab" | trans }}</span>
                             <a href="#tabs-{{ group.id }}">{{ group.title }}</a>
                         </li>
                     {% endfor %}
@@ -49,7 +49,7 @@
         {{ form_widget(form._token) }}
 
         <!--
-        <input type="submit" value="{% trans %}bap.button.save{% endtrans %}" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" aria-disabled="false">
+        <input type="submit" value="{{ "bap.button.save" | trans }}" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" aria-disabled="false">
         -->
 
     </form>

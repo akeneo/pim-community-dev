@@ -1,20 +1,20 @@
 {% extends 'PimUIBundle::layout.html.twig' %}
 
-{% block title %}Akeneo - {% trans %}pim.catalog.channel.title.list{% endtrans %}{% endblock %}
+{% block title %}Akeneo - {{ "pim.catalog.channel.title.list" | trans }}{% endblock %}
 
 {% block content_menu_more %}
     {{ parent() }}
     <li>
         <a href="{{ path('pim_catalog_channel_new') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
             <span class="ui-button-icon-primary ui-icon ui-icon-fugue-book--plus"></span>
-            <span class="ui-button-text">{% trans %}pim.catalog.channel.button.new{% endtrans %}</span>
+            <span class="ui-button-text">{{ "pim.catalog.channel.button.new" | trans }}</span>
         </a>
     </li>
 {% endblock %}
 
 {% block content %}
     
-    <h1>{% trans %}pim.catalog.channel.title.list{% endtrans %}</h1>
+    <h1>{{ "pim.catalog.channel.title.list" | trans }}</h1>
     
     {{ grid(grid) }}
 

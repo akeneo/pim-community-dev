@@ -30,6 +30,10 @@
                 <source>dashboard.connector-magento</source>
                 <target>Connector Magento</target>
             </trans-unit>
+            <trans-unit id="8">
+                <source>pim.dashboard.title.home</source>
+                <target>Home</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

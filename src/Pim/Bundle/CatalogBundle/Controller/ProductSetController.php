@@ -124,32 +124,42 @@ class ProductSetController extends Controller
     {
         // create new product set
         $productManager = $this->getProductManager();
+        $entity = $productManager->getNewSetInstance();
 
-        // clone product set
-        $postData = $request->get('pim_catalogbundle_productattributeset');
-        $copy = $postData['copyfromset'];
-        if ($copy !== '') {
-            $productType = $this->getProductManager()->getSetRepository()->find($copy);
-            $entity = $this->getProductManager()->cloneSet($productType);
-            $entity->setCode($postData['code']);
-        } else {
-            $entity = $this->getProductManager()->getNewSetInstance();
-            $entity->setCode($postData['code']);
-        }
-
-        try {
-            // persist
-            $this->getPersistenceManager()->persist($entity);
-            $this->getPersistenceManager()->flush();
-
-            $this->get('session')->setFlash('success', 'product set has been created');
-            return $this->redirect($this->generateUrl('pim_catalog_productset_edit', array('id' => $entity->getId())));
-
-        } catch (\Exception $e) {
-            $this->get('session')->setFlash('error', $e->getMessage());
-        }
-
+        // prepare form
         $form = $this->createSetForm($entity);
+
+        $form->bind($request);
+        $postData = $request->get('pim_catalogbundle_productattributeset');
+
+        // TODO : Must be in validation form
+        if ($form->isValid() && isset($postData['copyfromset'])) {
+
+            $copy = $postData['copyfromset'];
+
+            if ($copy !== '') { // create by copy
+                $productType = $this->getProductManager()->getSetRepository()->find($postData['copyfromset']);
+                $entity = $this->getProductManager()->cloneSet($productType);
+                $entity->setCode($postData['code']);
+            }
+
+            try {
+                // persist
+                $this->getPersistenceManager()->persist($entity);
+                $this->getPersistenceManager()->flush();
+
+                $this->get('session')->setFlash('success', 'product set has been created');
+
+                // TODO : redirect to edit
+                return $this->redirect(
+                    $this->generateUrl('pim_catalog_productset_edit', array('id' => $entity->getId()))
+                );
+
+            } catch (\Exception $e) {
+                $this->get('session')->setFlash('error', $e->getMessage());
+            }
+        }
+
         return $this->render('PimCatalogBundle:ProductSet:new.html.twig', array('form' => $form->createView()));
     }
 

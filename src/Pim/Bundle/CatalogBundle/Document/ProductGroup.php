@@ -32,7 +32,7 @@ class ProductGroup extends AbstractEntityGroup
     protected $title;
 
     /**
-     * @MongoDB\ReferenceMany(targetDocument="ProductAttribute", simple=true)
+     * @MongoDB\ReferenceMany(targetDocument="ProductAttribute")
      * @var ArrayCollection
      */
     protected $attributes = array();

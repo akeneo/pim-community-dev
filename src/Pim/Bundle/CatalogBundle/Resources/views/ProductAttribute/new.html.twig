@@ -1,37 +1,37 @@
 {% extends 'PimUIBundle::layout.html.twig' %}
 
-{% block title %}Akeneo - {% trans %}pim.catalog.attribute.title.create{% endtrans %}{% endblock %}
+{% block title %}Akeneo - {{ "pim.catalog.attribute.title.create" | trans }}{% endblock %}
 
 {% block content_menu_more %}
     {{ parent() }}
     <li>
         <a href="{{ path('pim_catalog_productattribute_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
             <span class="ui-button-icon-primary ui-icon ui-icon-fugue-ui-button-navigation-back"></span>
-            <span class="ui-button-text">{% trans %}bap.navigation.back-list{% endtrans %}</span>
+            <span class="ui-button-text">{{ "bap.navigation.back-list" | trans }}</span>
         </a>
     </li>
     <li>
         <a href="#" onclick="$('#edit-form-submit').click(); return false;" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
             <span class="ui-button-icon-primary ui-icon ui-icon-fugue-disk"></span>
-            <span class="ui-button-text">{% trans %}bap.button.save{% endtrans %}</span>
+            <span class="ui-button-text">{{ "bap.button.save" | trans }}</span>
         </a>
     </li>
 {% endblock %}
 
 {% block content %}
 
-    <h1>{% trans %}pim.catalog.attribute.title.create{% endtrans %}</h1>
+    <h1>{{ "pim.catalog.attribute.title.create | trans }}</h1>
 
     {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
     <form action="{{ path('pim_catalog_productattribute_create') }}" method="post" {{ form_enctype(form) }}>
         {{ form_errors(form) }}
     
         <div class="form-panel ui-corner-all">
-            <h2>{% trans %}pim.catalog.attribute.fieldset.general{% endtrans %}</h2>
+            <h2>{{ "pim.catalog.attribute.fieldset.general" | trans }}</h2>
             {{ form_widget(form) }}
         </div>
 
-        <input id="edit-form-submit" type="submit" value="{% trans %}bap.button.save{% endtrans %}" class="ui-helper-hidden" role="button" aria-disabled="false">
+        <input id="edit-form-submit" type="submit" value="{{ "bap.button.save" | trans }}" class="ui-helper-hidden" role="button" aria-disabled="false">
 
         {{ form_widget(form._token) }}
 
