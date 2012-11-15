@@ -21,21 +21,6 @@ use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
 class ConfigController extends Controller
 {
     /**
-     * List Icecat configurations values in a grid
-     * @Route("/config/list")
-     * @Template()
-     */
-    public function listAction()
-    {
-        // creates simple grid based on entity (ORM)
-        $source = new GridEntity('PimConnectorIcecatBundle:Config');
-        $grid = $this->get('grid');
-        $grid->setSource($source);
-        // manage the grid redirection, exports response of the controller
-        return $grid->getGridResponse('PimConnectorIcecatBundle:Config:grid.html.twig');
-    }
-    
-    /**
      * Edit configuration of icecat connector
      * @var Request $request
      * @Route("/config/edit")
