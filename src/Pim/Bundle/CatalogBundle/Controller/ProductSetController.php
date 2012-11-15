@@ -108,16 +108,14 @@ class ProductSetController extends Controller
 
         // prepare form
         $form = $this->createSetForm($entity);
-        
+
         return $this->render('PimCatalogBundle:ProductSet:new.html.twig', array('form' => $form->createView()));
-//         return $this->createAction($request);
-//         return $this->forward('PimCatalogBundle:ProductSet:create');
     }
 
     /**
      *
      * @param Request $request
-     * 
+     *
      * @Route("/create")
      * @Method("POST")
      * @Template()
@@ -131,7 +129,6 @@ class ProductSetController extends Controller
         // prepare form
         $form = $this->createSetForm($entity);
 
-//         if ($request->isMethod('POST')) {
         $form->bind($request);
         $postData = $request->get('pim_catalogbundle_productattributeset');
 
@@ -146,18 +143,22 @@ class ProductSetController extends Controller
                 $entity->setCode($postData['code']);
             }
 
-            // persist
-            $this->getPersistenceManager()->persist($entity);
-            $this->getPersistenceManager()->flush();
+            try {
+                // persist
+                $this->getPersistenceManager()->persist($entity);
+                $this->getPersistenceManager()->flush();
 
-            $this->get('session')->setFlash('success', 'product set has been created');
+                $this->get('session')->setFlash('success', 'product set has been created');
 
-            // TODO : redirect to edit
-            return $this->redirect(
+                // TODO : redirect to edit
+                return $this->redirect(
                     $this->generateUrl('pim_catalog_productset_edit', array('id' => $entity->getId()))
-            );
+                );
+
+            } catch (\Exception $e) {
+                $this->get('session')->setFlash('error', $e->getMessage());
+            }
         }
-//         }
 
         return $this->render('PimCatalogBundle:ProductSet:new.html.twig', array('form' => $form->createView()));
     }

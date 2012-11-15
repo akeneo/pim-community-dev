@@ -26,6 +26,7 @@ class ProductSet extends AbstractEntitySet
 
     /**
      * @MongoDB\String
+     * @MongoDB\Index(unique=true)
      * @GRID\Column()
      */
     protected $code;
