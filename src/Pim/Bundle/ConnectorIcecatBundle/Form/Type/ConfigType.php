@@ -20,7 +20,7 @@ class ConfigType extends AbstractType
     {
         $builder->add('id', 'hidden');
         $builder->add('code', 'text', array('read_only' => true));
-        $builder->add('value');
+        $builder->add('value', 'text', array('attr' => array('style' => 'width:500px')));
     }
 
     /**

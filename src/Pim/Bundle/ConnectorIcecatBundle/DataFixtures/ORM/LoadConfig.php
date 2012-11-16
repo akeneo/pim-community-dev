@@ -51,15 +51,19 @@ class LoadConfig extends AbstractFixture implements OrderedFixtureInterface, Con
         
         $this->loadConfig(Config::LOGIN, 'NicolasDupont');
         $this->loadConfig(Config::PASSWORD, '1cec4t**)');
+        
         $this->loadConfig(Config::BASE_DIR, '/tmp/');
+        $this->loadConfig(Config::BASE_URL, 'http://data.icecat.biz/');
+        
+        $this->loadConfig(Config::BASE_PRODUCTS_URL, 'export/freexml.int/INT/');
         
         $this->loadConfig(Config::LANGUAGES_FILE, 'languages-list.xml');
         $this->loadConfig(Config::LANGUAGES_ARCHIVED_FILE, 'languages-list.xml.gz');
-        $this->loadConfig(Config::LANGUAGES_URL, 'https://data.icecat.biz/export/freexml/refs/LanguageList.xml.gz');
+        $this->loadConfig(Config::LANGUAGES_URL, 'http://data.icecat.biz/export/freexml/refs/LanguageList.xml.gz');
         
         $this->loadConfig(Config::PRODUCT_FILE, 'product-%%product_id%%-%%locale%%.xml');
         $this->loadConfig(Config::PRODUCT_ARCHIVED_FILE, 'product-%%product_id%%-%%locale%%.xml.gz');
-        $this->loadConfig(Config::PRODUCT_URL, 'http://data.Icecat.biz/xml_s3/xml_server3.cgi');
+        $this->loadConfig(Config::PRODUCT_URL, 'http://data.icecat.biz/xml_s3/xml_server3.cgi');
         
         $this->loadConfig(Config::PRODUCTS_FILE, 'export_urls_rich.txt');
         $this->loadConfig(Config::PRODUCTS_ARCHIVED_FILE, 'export_urls_rich.txt.gz');
