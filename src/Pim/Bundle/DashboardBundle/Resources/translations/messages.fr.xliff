@@ -31,7 +31,7 @@
                 <target>Connecteur Magento</target>
             </trans-unit>
             <trans-unit id="8">
-                <source>pim.pim.dashboard.title.home</source>
+                <source>pim.dashboard.title.home</source>
                 <target>Accueil</target>
             </trans-unit>
         </body>
