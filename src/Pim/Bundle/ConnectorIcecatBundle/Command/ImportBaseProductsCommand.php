@@ -51,31 +51,31 @@ class ImportBaseProductsCommand extends ContainerAwareCommand
         $login = $configManager->getValue(Config::LOGIN);
         $password = $configManager->getValue(Config::PASSWORD);
         $downloadUrl = $configManager->getValue(Config::BASE_URL) . $configManager->getValue(Config::BASE_PRODUCTS_URL);
-//         echo $downloadUrl;
         
         // get xml content
         $fileReader = new FileHttpReader();
         $content = $fileReader->process($downloadUrl, $login, $password);
         
+        var_dump($content);
         
         // get document manager
         $om = $this->getContainer()->get('doctrine.odm.mongodb.document_manager');
         
         // read xlk cibtebt
-        libxml_use_internal_errors(true);
-        $xmlContent = simplexml_load_string($content);
+//         libxml_use_internal_errors(true);
+//         $xmlContent = simplexml_load_string($content);
         
-        foreach ($xmlContent->xpath('//file') as $file) {
-            $doc = new ProductDataSheetDocument();
-            $doc->setImportPath($file['path']->asXML());
-            $doc->setIsImported(false); // TODO : Must be default value
-            $doc->setProductId($file['Product_ID']);
-            $doc->setXmlBaseData($file->asXML());
+//         foreach ($xmlContent->xpath('//file') as $file) {
+//             $doc = new ProductDataSheetDocument();
+//             $doc->setImportPath($file['path']->asXML());
+//             $doc->setIsImported(false); // TODO : Must be default value
+//             $doc->setProductId($file['Product_ID']);
+//             $doc->setXmlBaseData($file->asXML());
             
-            $om->persist($doc);
-        }
+//             $om->persist($doc);
+//         }
         
-        $om->flush();
+//         $om->flush();
         
         $output->writeln(strlen($content));
     }
