@@ -6,12 +6,16 @@
 
     <parameters>
         <parameter key="pim_icecat_connector.connectorservice.class">Pim\Bundle\ConnectorIcecatBundle\Service\ConnectorService</parameter>
+        <parameter key="pim_icecat_connector.configmanager.class">Pim\Bundle\ConnectorIcecatBundle\Entity\ConfigManager</parameter>
     </parameters>
 
     <services>
         <service id="akeneo.connector.icecat_service" class="%pim_icecat_connector.connectorservice.class%">
             <argument type="service" id="service_container" />
             <tag name="akeneo.connector" />
+        </service>
+        <service id="pim.connector.icecat.configmanager" class="%pim_icecat_connector.configmanager.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
     </services>
 
