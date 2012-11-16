@@ -35,6 +35,9 @@ class Config
     const LOGIN          = 'login';
     const PASSWORD       = 'password';
     const BASE_DIR       = 'base-dir';
+    const BASE_URL       = 'base-url';
+    
+    const BASE_PRODUCTS_URL  = 'base-products-url';
 
    /**
      * @var integer $id
