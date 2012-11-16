@@ -11,7 +11,7 @@
         </a>
     </li>
     <li>
-        <a onclick="return confirm('{{ "bap.dialog.confirm | trans }}')" href="{{ path('pim_catalog_productattribute_delete', { 'id': entity.id }) }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
+        <a onclick="return confirm('{{ "bap.dialog.confirm" | trans }}')" href="{{ path('pim_catalog_productattribute_delete', { 'id': entity.id }) }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
             <span class="ui-button-icon-primary ui-icon ui-icon-fugue-tag--minus"></span>
             <span class="ui-button-text">{{ "pim.catalog.attribute.button.delete" | trans }}</span>
         </a>
