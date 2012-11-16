@@ -104,7 +104,10 @@ class ProductSetType extends AbstractType
         );
         // add attributes
         foreach ($this->availableAttributes as $attribute) {
-            $builder->get('others')->add('attribute_'.$attribute->getId(), new ProductGroupAttributeType($this->attributeClass, $attribute));
+            $builder->get('others')->add(
+                'attribute_'.$attribute->getId(),
+                new ProductGroupAttributeType($this->attributeClass, $attribute)
+            );
         }
     }
 
