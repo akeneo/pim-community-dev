@@ -84,11 +84,11 @@ class ProductSetController extends Controller
 
         // add action columns
         $grid->setActionsColumnSeparator('&nbsp;');
-        $rowAction = new RowAction('bap.action.edit', 'pim_catalog_productset_edit', false, '_self', array('class' => 'grid_action ui-icon-fugue-folder--pencil'));
+        $rowAction = new RowAction('Edit', 'pim_catalog_productset_edit', false, '_self', array('class' => 'grid_action ui-icon-fugue-folder--pencil'));
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
 
-        $rowAction = new RowAction('bap.action.delete', 'pim_catalog_productset_delete', true, '_self', array('class' => 'grid_action ui-icon-fugue-folder--minus'));
+        $rowAction = new RowAction('Delete', 'pim_catalog_productset_delete', true, '_self', array('class' => 'grid_action ui-icon-fugue-folder--minus'));
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
 
@@ -124,42 +124,32 @@ class ProductSetController extends Controller
     {
         // create new product set
         $productManager = $this->getProductManager();
-        $entity = $productManager->getNewSetInstance();
 
-        // prepare form
-        $form = $this->createSetForm($entity);
-
-        $form->bind($request);
+        // clone product set
         $postData = $request->get('pim_catalogbundle_productattributeset');
-
-        // TODO : Must be in validation form
-        if ($form->isValid() && isset($postData['copyfromset'])) {
-
-            $copy = $postData['copyfromset'];
-
-            if ($copy !== '') { // create by copy
-                $productType = $this->getProductManager()->getSetRepository()->find($postData['copyfromset']);
-                $entity = $this->getProductManager()->cloneSet($productType);
-                $entity->setCode($postData['code']);
-            }
-
-            try {
-                // persist
-                $this->getPersistenceManager()->persist($entity);
-                $this->getPersistenceManager()->flush();
-
-                $this->get('session')->setFlash('success', 'product set has been created');
-
-                // TODO : redirect to edit
-                return $this->redirect(
-                    $this->generateUrl('pim_catalog_productset_edit', array('id' => $entity->getId()))
-                );
-
-            } catch (\Exception $e) {
-                $this->get('session')->setFlash('error', $e->getMessage());
-            }
+        $copy = $postData['copyfromset'];
+        if ($copy !== '') {
+            $productType = $this->getProductManager()->getSetRepository()->find($copy);
+            $entity = $this->getProductManager()->cloneSet($productType);
+            $entity->setCode($postData['code']);
+        } else {
+            $entity = $this->getProductManager()->getNewSetInstance();
+            $entity->setCode($postData['code']);
         }
 
+        try {
+            // persist
+            $this->getPersistenceManager()->persist($entity);
+            $this->getPersistenceManager()->flush();
+
+            $this->get('session')->setFlash('success', 'product set has been created');
+            return $this->redirect($this->generateUrl('pim_catalog_productset_edit', array('id' => $entity->getId())));
+
+        } catch (\Exception $e) {
+            $this->get('session')->setFlash('error', $e->getMessage());
+        }
+
+        $form = $this->createSetForm($entity);
         return $this->render('PimCatalogBundle:ProductSet:new.html.twig', array('form' => $form->createView()));
     }
 
@@ -186,46 +176,92 @@ class ProductSetController extends Controller
      *
      * @param Request $request
      *
-    * @Route("/{id}/update")
+     * @Route("/{id}/update")
+     * @Method("POST")
      * @Template()
      */
     public function updateAction(Request $request, $id)
     {
-        if ($request->isMethod('POST')) {
-            // get product set
-            $postData = $request->get('pim_catalogbundle_productattributeset');
-            var_dump($postData);
-//             exit;
-
-            $id = isset($postData['id']) ? $postData['id'] : false;
-            $entity = $this->getProductManager()->getSetRepository()->find($id);
-            if (!$entity) {
-                throw $this->createNotFoundException('No product set found for id '. $id);
-            }
-
-
-            $form = $this->createSetForm($entity);
-
-
-
-            $form->bind($request);
-            foreach ($entity->getGroups() as $group) {
-                var_dump($group->getAttributes()->count());
-            }
-//             exit;
-            if ($form->isValid()) {
-                $this->getPersistenceManager()->persist($entity);
-                $this->getPersistenceManager()->flush();
-
-                $this->get('session')->setFlash('success', 'product set has been saved');
-            }
-
-            return $this->render('PimCatalogBundle:ProductSet:edit.html.twig', array('form' => $form->createView()));
-
-        } else {
-            $this->get('session')->setFlash('notice', 'Incorrect update product set call');
-            return $this->redirect($this->generateUrl('pim_catalog_productset_index'));
+        $entity = $this->getProductManager()->getSetRepository()->find($id);
+        if (!$entity) {
+            throw $this->createNotFoundException('No product set found for id '. $id);
         }
+
+        // get product set
+        $postData = $request->get('pim_catalogbundle_productattributeset');
+
+        // TODO refactor following, try to bind form directly
+
+        // create new groups
+        $groupsUpdate = array();
+        $groupsNew = array();
+        foreach ($postData['groups'] as $group) {
+
+            // add new group
+            if ($group['id'] == '') {
+                // add group
+                $groupsNew[]= $group;
+                $newGroup = $this->getProductManager()->getNewGroupInstance();
+                $newGroup->setCode($group['code']);
+                $newGroup->setTitle($group['code']);
+                $entity->addGroup($newGroup);
+
+                // add attributes in new group
+                if (isset($group['attributes'])) {
+                    foreach ($group['attributes'] as $attInd => $attData) {
+                        $attId = current($attData);
+                        $attribute = $this->getProductManager()->getAttributeRepository()->find($attId);
+                        $newGroup->addAttribute($attribute);
+                    }
+                }
+            // group to update
+            } else {
+                $groupsUpdate[$group['id']]= $group;
+            }
+        }
+
+        // update existing groups
+        foreach ($entity->getGroups() as $group) {
+            // delete
+            if (!in_array($group->getId(), array_keys($groupsUpdate))) {
+                $entity->removeGroup($group);
+            // update each attribute
+            } else {
+                // prepare attribute ids
+                $attributesUpdate = isset($groupsUpdate[$group->getId()]['attributes']) ? $groupsUpdate[$group->getId()]['attributes'] : array();
+                foreach ($attributesUpdate as $ind => $att) {
+                    $attributesUpdate[$ind]= current($att);
+                }
+                // delete moved attributes
+                foreach ($group->getAttributes() as $attribute) {
+                    // delete
+                    if (!in_array($attribute->getId(), array_keys($attributesUpdate))) {
+                        $group->removeAttribute($attribute);
+                    }
+                }
+                // add new attributes
+                foreach ($attributesUpdate as $attId) {
+                    $attribute = $this->getProductManager()->getAttributeRepository()->find($attId);
+                    $group->addAttribute($attribute);
+                }
+            }
+        }
+        try {
+            $this->getPersistenceManager()->persist($entity);
+            $this->getPersistenceManager()->flush();
+
+            $this->get('session')->setFlash('success', 'product set has been updated');
+
+            return $this->redirect(
+                $this->generateUrl('pim_catalog_productset_edit', array('id' => $entity->getId()))
+            );
+        } catch (\Exception $e) {
+            $this->get('session')->setFlash('error', $e->getMessage());
+        }
+
+        $form = $this->createSetForm($entity);
+        return $this->render('PimCatalogBundle:ProductSet:edit.html.twig', array('form' => $form->createView(), 'entity' => $entity));
+
     }
 
     /**
