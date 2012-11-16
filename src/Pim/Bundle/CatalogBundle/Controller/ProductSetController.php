@@ -242,7 +242,9 @@ class ProductSetController extends Controller
                 // add new attributes
                 foreach ($attributesUpdate as $attId) {
                     $attribute = $this->getProductManager()->getAttributeRepository()->find($attId);
-                    $group->addAttribute($attribute);
+                    if (!$group->getAttributes()->contains($attribute)) {
+                        $group->addAttribute($attribute);
+                    }
                 }
             }
         }
