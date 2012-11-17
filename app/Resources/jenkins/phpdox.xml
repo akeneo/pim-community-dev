@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<phpdox xmlns="http://phpdox.de/config">
+    <project name="Symfony2 App" source="./src" workdir="app/build/phpdox">
+        <collector publiconly="false">
+            <include mask="*.php" />
+            <exclude mask="*Autoload.php" />
+        </collector>
+
+        <generator output="app/build">
+            <build engine="html" enabled="true" output="api"/>
+        </generator>
+    </project>
+</phpdox>
