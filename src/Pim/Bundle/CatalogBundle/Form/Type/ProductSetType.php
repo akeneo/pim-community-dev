@@ -74,6 +74,8 @@ class ProductSetType extends AbstractType
             )
         );
 
+        $builder->add('title', 'text', array('required' => true));
+
         // create by copy
         $builder->add(
             'copyfromset', 'choice', array(

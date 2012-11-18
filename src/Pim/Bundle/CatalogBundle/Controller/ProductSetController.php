@@ -132,9 +132,11 @@ class ProductSetController extends Controller
             $productType = $this->getProductManager()->getSetRepository()->find($copy);
             $entity = $this->getProductManager()->cloneSet($productType);
             $entity->setCode($postData['code']);
+            $entity->setTitle($postData['title']);
         } else {
             $entity = $this->getProductManager()->getNewSetInstance();
             $entity->setCode($postData['code']);
+            $entity->setTitle($postData['title']);
         }
 
         try {
@@ -191,6 +193,7 @@ class ProductSetController extends Controller
         $postData = $request->get('pim_catalogbundle_productattributeset');
 
         // TODO refactor following, try to bind form directly or use transformer array to set
+        $entity->setTitle($postData['title']);
 
         // create new groups
         $groupsUpdate = array();
