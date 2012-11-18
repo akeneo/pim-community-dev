@@ -63,7 +63,7 @@ class SourceLanguage
     /**
      * Set code
      *
-     * @param string $code
+     * @param  string   $code
      * @return Language
      */
     public function setCode($code)
@@ -86,7 +86,7 @@ class SourceLanguage
     /**
      * Set shortCode
      *
-     * @param string $shortCode
+     * @param  string   $shortCode
      * @return Language
      */
     public function setShortCode($shortCode)
@@ -109,7 +109,7 @@ class SourceLanguage
     /**
      * Set icecatId
      *
-     * @param integer $icecatId
+     * @param  integer  $icecatId
      * @return Language
      */
     public function setIcecatId($icecatId)
@@ -132,7 +132,7 @@ class SourceLanguage
     /**
      * Set icecatShortCode
      *
-     * @param string $icecatShortCode
+     * @param  string   $icecatShortCode
      * @return Language
      */
     public function setIcecatShortCode($icecatShortCode)

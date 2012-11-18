@@ -14,8 +14,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
-use APY\DataGridBundle\Grid\Source\Document as GridDocument;
 use APY\DataGridBundle\Grid\Action\RowAction;
 use Pim\Bundle\UIBundle\Grid\Helper as GridHelper;
 
@@ -51,7 +49,7 @@ class ProductSetController extends Controller
     /**
      * Create set form
      *
-     * @param ProductSet $set
+     * @param  ProductSet $set
      * @return Form
      */
     protected function createSetForm($set)
@@ -63,6 +61,7 @@ class ProductSetController extends Controller
             $setClass, $groupClass, $attClass, $this->getCopySetOptions(), $this->getAvailableAttributes($set)
         );
         $form = $this->createForm($formType, $set);
+
         return $form;
     }
 
@@ -145,6 +144,7 @@ class ProductSetController extends Controller
             $this->getPersistenceManager()->flush();
 
             $this->get('session')->setFlash('success', 'product set has been created');
+
             return $this->redirect($this->generateUrl('pim_catalog_productset_edit', array('id' => $entity->getId())));
 
         } catch (\Exception $e) {
@@ -152,6 +152,7 @@ class ProductSetController extends Controller
         }
 
         $form = $this->createSetForm($entity);
+
         return $this->render('PimCatalogBundle:ProductSet:new.html.twig', array('form' => $form->createView()));
     }
 
@@ -171,6 +172,7 @@ class ProductSetController extends Controller
 
         // prepare & render form
         $form = $this->createSetForm($entity);
+
         return $this->render('PimCatalogBundle:ProductSet:edit.html.twig', array('form' => $form->createView(), 'entity' => $entity));
     }
 
@@ -269,6 +271,7 @@ class ProductSetController extends Controller
         }
 
         $form = $this->createSetForm($entity);
+
         return $this->render('PimCatalogBundle:ProductSet:edit.html.twig', array('form' => $form->createView(), 'entity' => $entity));
 
     }
@@ -311,6 +314,7 @@ class ProductSetController extends Controller
     protected function getAvailableAttributes($set)
     {
         $repo = $this->getProductManager()->getAttributeRepository();
+
         return $repo->findAllExcept($set);
     }
 
@@ -324,6 +328,7 @@ class ProductSetController extends Controller
         foreach ($sets as $set) {
             $setIdToName[$set->getId()]= $set->getCode();
         }
+
         return $setIdToName;
     }
 }

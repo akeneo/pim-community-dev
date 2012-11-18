@@ -9,7 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\CatalogBundle\Form\Type\ProductAttributeType;
 use Pim\Bundle\UIBundle\Grid\Helper as GridHelper;
 use APY\DataGridBundle\Grid\Action\RowAction;
-use APY\DataGridBundle\Grid\Column\TextColumn;
 use APY\DataGridBundle\Grid\Export\ExcelExport;
 use APY\DataGridBundle\Grid\Export\CSVExport;
 use Symfony\Component\Form\Form;
@@ -74,7 +73,7 @@ class ProductAttributeController extends Controller
     /**
      * Create attribute form
      *
-     * @param ProductAttribute $attribute
+     * @param  ProductAttribute $attribute
      * @return Form
      */
     protected function createAttributeForm($attribute)
@@ -82,6 +81,7 @@ class ProductAttributeController extends Controller
         $attClassFullName = $this->getProductManager()->getAttributeClass();
         $optClassFullName = $this->getProductManager()->getAttributeOptionClass();
         $form = $this->createForm(new ProductAttributeType($attClassFullName, $optClassFullName), $attribute);
+
         return $form;
     }
 

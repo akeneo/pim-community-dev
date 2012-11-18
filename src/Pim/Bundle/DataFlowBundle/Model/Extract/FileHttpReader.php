@@ -18,9 +18,9 @@ class FileHttpReader
      *
      * TODO : replace login / password by option array
      *
-     * @param string $url
-     * @param string $login
-     * @param string $password
+     * @param  string    $url
+     * @param  string    $login
+     * @param  string    $password
      * @return string
      * @throws Exception
      */
@@ -45,6 +45,7 @@ class FileHttpReader
                 throw new Exception('Curl Error : '.curl_error($c));
         }
         curl_close($c);
+
         return $output;
     }
 }

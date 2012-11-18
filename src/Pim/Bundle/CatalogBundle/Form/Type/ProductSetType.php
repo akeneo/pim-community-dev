@@ -25,7 +25,6 @@ class ProductSetType extends AbstractType
      */
     protected $groupClass;
 
-
     /**
      * @var string
      */
@@ -43,9 +42,9 @@ class ProductSetType extends AbstractType
 
     /**
      * Construct with full name of concrete impl of set and group class
-     * @param string $setClass
-     * @param string $groupClass
-     * @param string $attributeClass
+     * @param string     $setClass
+     * @param string     $groupClass
+     * @param string     $attributeClass
      * @param Collection $copySets
      * @param Collection $availableAttributes
      */

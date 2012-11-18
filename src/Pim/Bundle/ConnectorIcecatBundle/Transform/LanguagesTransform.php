@@ -23,7 +23,7 @@ class LanguagesTransform implements TransformInterface
      * @var LoadInterface
      */
     protected $loader;
-    
+
     /**
      * @var string
      */
@@ -32,7 +32,7 @@ class LanguagesTransform implements TransformInterface
     /**
      * Constructor
      * @param LoadInterface $loader
-     * @param string $xmlContent
+     * @param string        $xmlContent
      */
     public function __construct(LoadInterface $loader, $xmlContent)
     {
@@ -61,7 +61,7 @@ class LanguagesTransform implements TransformInterface
                 $lang->setIcecatId($xml->getAttribute('ID'));
 
                 $this->loader->add($lang);
-            } else if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'Response') {
+            } elseif ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'Response') {
                 $date = $xml->getAttribute('Date');
             }
         }
@@ -72,7 +72,7 @@ class LanguagesTransform implements TransformInterface
     /**
      * Formatter for short code language
      *
-     * @param string $shortCode
+     * @param  string $shortCode
      * @return string
      */
     private function formatShortCode($shortCode)
@@ -86,6 +86,7 @@ class LanguagesTransform implements TransformInterface
         } else {
             throw new Exception('Incorrect short code format');
         }
+
         return $shortCode;
     }
 }

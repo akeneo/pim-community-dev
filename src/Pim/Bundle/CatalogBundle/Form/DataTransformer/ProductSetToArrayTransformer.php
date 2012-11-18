@@ -3,7 +3,6 @@ namespace Pim\Bundle\CatalogBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
 use Bap\Bundle\FlexibleEntityBundle\Model\EntitySet as ProductSet;
 
@@ -75,7 +74,7 @@ class ProductSetToArrayTransformer implements DataTransformerInterface
     /**
      * Transforms a array to an object (product set).
      *
-     * @param  array $data
+     * @param  array                         $data
      * @return ProductSet
      * @throws TransformationFailedException if object (set) is not found.
      */
@@ -91,7 +90,6 @@ class ProductSetToArrayTransformer implements DataTransformerInterface
             $set = $this->pm->getNewSetInstance();
         }
         // TODO
-
         return $set;
     }
 }

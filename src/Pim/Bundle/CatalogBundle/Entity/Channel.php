@@ -2,7 +2,6 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Catalog channel, aims to define scopes
@@ -63,7 +62,7 @@ class Channel
 
     /**
      * Set id
-     * @param integer $id
+     * @param  integer $id
      * @return Channel
      */
     public function setId($id)
@@ -76,7 +75,7 @@ class Channel
     /**
      * Set code
      *
-     * @param string $code
+     * @param  string  $code
      * @return Channel
      */
     public function setCode($code)
@@ -99,7 +98,7 @@ class Channel
     /**
      * Set as default channel
      *
-     * @param boolean $default
+     * @param  boolean $default
      * @return Channel
      */
     public function setIsDefault($default)
@@ -122,13 +121,14 @@ class Channel
     /**
      * Add locales
      *
-     * @param Pim\Bundle\CatalogBundle\Entity\ChannelLocale $locales
+     * @param  Pim\Bundle\CatalogBundle\Entity\ChannelLocale $locales
      * @return Channel
      */
     public function addLocale(\Pim\Bundle\CatalogBundle\Entity\ChannelLocale $locale)
     {
         $locale->setChannel($this);
         $this->locales[] = $locale;
+
         return $this;
     }
 

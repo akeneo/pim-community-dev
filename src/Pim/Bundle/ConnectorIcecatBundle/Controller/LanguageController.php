@@ -10,8 +10,8 @@ use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
 use \Exception;
 use Doctrine\DBAL\DBALException;
 /**
- * Icecat language controller regroups all features for languages entities as loading and listing 
- * 
+ * Icecat language controller regroups all features for languages entities as loading and listing
+ *
  * @author    Romain Monceau @ Akeneo
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -20,7 +20,7 @@ class LanguageController extends Controller
 {
     /**
      * Loading languages from icecat to local database
-     * 
+     *
      * @Route("/language/load-from-icecat")
      * @Template()
      */
@@ -36,12 +36,13 @@ class LanguageController extends Controller
         } catch (Exception $e) {
             $this->get('session')->setFlash('exception', $e->getMessage());
         }
+
         return $this->redirect($this->generateUrl('pim_connectoricecat_language_list'));
     }
 
     /**
      * List Icecat languages in a grid
-     * 
+     *
      * @Route("/language/list")
      * @Template()
      */

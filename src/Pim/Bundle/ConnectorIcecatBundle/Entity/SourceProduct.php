@@ -37,14 +37,12 @@ class SourceProduct
      */
     protected $productId;
 
-
     /**
      * @var string $prodId
      *
      * @ORM\Column(name="prod_id", type="string", length=255)
      */
     protected $prodId;
-
 
     /**
      * @var string $mProdId
@@ -82,7 +80,7 @@ class SourceProduct
     /**
      * Set productId
      *
-     * @param integer $productId
+     * @param  integer $productId
      * @return Product
      */
     public function setProductId($productId)
@@ -105,7 +103,7 @@ class SourceProduct
     /**
      * Set prodId
      *
-     * @param string $prodId
+     * @param  string  $prodId
      * @return Product
      */
     public function setProdId($prodId)
@@ -128,7 +126,7 @@ class SourceProduct
     /**
      * Set mProdId
      *
-     * @param string $mProdId
+     * @param  string  $mProdId
      * @return Product
      */
     public function setMProdId($mProdId)
@@ -151,7 +149,7 @@ class SourceProduct
     /**
      * Set supplier
      *
-     * @param Pim\Bundle\ConnectorIcecatBundle\Entity\SourceSupplier $supplier
+     * @param  Pim\Bundle\ConnectorIcecatBundle\Entity\SourceSupplier $supplier
      * @return Product
      */
     public function setSupplier(\Pim\Bundle\ConnectorIcecatBundle\Entity\SourceSupplier $supplier = null)
@@ -174,7 +172,7 @@ class SourceProduct
     /**
      * Set is_imported
      *
-     * @param bool $isImported
+     * @param  bool    $isImported
      * @return Product
      */
     public function setIsImported($isImported)

@@ -3,9 +3,6 @@ namespace Pim\Bundle\ConnectorIcecatBundle\Extract;
 
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpReader;
 
-use Pim\Bundle\DataFlowBundle\Model\Extract\FileUnzip;
-use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpDownload;
-
 /**
  * Download a source archive (product, supplier, language base data) and unpack to a destination file
  *
@@ -61,7 +58,7 @@ class SuppliersXmlExtractor implements ExtractInterface, ReadInterface
     {
         $this->read($this->url);
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see Pim\Bundle\ConnectorIcecatBundle\Extract.ReadInterface::read()
@@ -71,7 +68,7 @@ class SuppliersXmlExtractor implements ExtractInterface, ReadInterface
         $fileReader = new FileHttpReader();
         $this->xmlContent = $fileReader->process($url, $this->login, $this->password);
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see Pim\Bundle\ConnectorIcecatBundle\Extract.ReadInterface::getReadContent()

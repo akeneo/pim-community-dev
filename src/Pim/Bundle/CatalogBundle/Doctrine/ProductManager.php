@@ -1,8 +1,6 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
-use Bap\Bundle\FlexibleEntityBundle\Model\EntitySet;
-
 use Bap\Bundle\FlexibleEntityBundle\Doctrine\FlexibleEntityManager;
 
 /**

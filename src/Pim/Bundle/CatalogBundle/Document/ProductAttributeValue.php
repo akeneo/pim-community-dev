@@ -3,7 +3,6 @@ namespace Pim\Bundle\CatalogBundle\Document;
 
 use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttributeValue as AbstractEntityAttributeValue;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Product value as Embedded Mongo Document

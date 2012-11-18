@@ -42,9 +42,9 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
      * Constructor
      *
      * @param ProductManager $productManager
-     * @param array $prodData
-     * @param array $prodFeat
-     * @param string $localeCode
+     * @param array          $prodData
+     * @param array          $prodFeat
+     * @param string         $localeCode
      */
     public function __construct(\Pim\Bundle\CatalogBundle\Doctrine\ProductManager $productManager, $prodData, $prodFeat, $localeCode)
     {

@@ -33,7 +33,7 @@ class ProductType extends AbstractType
     /**
      * Build form
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -69,7 +69,7 @@ class ProductType extends AbstractType
                         $attributeType = 'text';
 
                     // add select attribute options
-                    } else if ($attribute->getType() == BaseFieldFactory::FIELD_SELECT) {
+                    } elseif ($attribute->getType() == BaseFieldFactory::FIELD_SELECT) {
                         $attributeType = 'choice';
                         $options = $attribute->getOptions();
                         $choices = array();

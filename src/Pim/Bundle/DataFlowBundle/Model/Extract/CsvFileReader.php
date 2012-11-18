@@ -26,11 +26,12 @@ class CsvFileReader extends FileReader
         $filepath = $this->getOption(self::OPTIONKEY_FILEPATH);
         $hasHeader = $this->getOption(self::OPTIONKEY_HAS_HEADER);
         $output = $this->loadContent($filepath, $hasHeader);
+
         return $output;
     }
 
     /**
-     * @param string $filepath
+     * @param string  $filepath
      * @param boolean $hasHeaders
      */
     public function loadContent($filepath, $hasHeaders = true)
@@ -59,8 +60,10 @@ class CsvFileReader extends FileReader
             foreach ($this->_rows as $line) {
                 $this->_rowsWithHeaderAsKeys[] = array_combine($this->_headers, $line);
             }
+
             return $this->_rowsWithHeaderAsKeys;
         }
+
         return $this->_rows;
     }
 

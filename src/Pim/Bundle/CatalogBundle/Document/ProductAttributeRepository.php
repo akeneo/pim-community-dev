@@ -31,6 +31,7 @@ class ProductAttributeRepository extends DocumentRepository implements ProductAt
         // query
         $qb = $this->createQueryBuilder();
         $q = $qb->field('id')->notIn($excludeIds)->getQuery();
+
         return $q->execute();
     }
 }

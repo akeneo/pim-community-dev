@@ -39,7 +39,6 @@ class ChannelController extends Controller
         return 'doctrine.orm.entity_manager';
     }
 
-
     /**
      * Return full name of object class
      * @return unknown
@@ -49,6 +48,7 @@ class ChannelController extends Controller
         $om = $this->get($this->getObjectManagerService());
         $metadata = $om->getClassMetadata($this->getObjectShortName());
         $classFullName = $metadata->getName();
+
         return $classFullName;
     }
 
@@ -60,6 +60,7 @@ class ChannelController extends Controller
      {
          $classFullName = $this->getObjectClassFullName();
         $entity = new $classFullName();
+
         return $entity;
     }
 
@@ -129,6 +130,7 @@ class ChannelController extends Controller
         $manager = $this->get($this->getObjectManagerService());
         $channels = $manager->getRepository('PimCatalogBundle:Channel')
             ->findBy(array('isDefault' => 1));
+
         return (count($channels) > 0);
     }
 
@@ -147,8 +149,10 @@ class ChannelController extends Controller
         }
         if ($hasDefault != 1) {
             $this->get('session')->setFlash('error', 'A channel needs only one default locale');
+
             return false;
         }
+
         return true;
     }
 
@@ -252,10 +256,11 @@ class ChannelController extends Controller
             if ($entity->getIsDefault()) {
                 $this->disableOldDefaultChannel();
             // check there is a default channel
-            } else if (!$this->hasDefaultChannel()) {
+            } elseif (!$this->hasDefaultChannel()) {
                 $this->get('session')->setFlash('error', 'There is no default channel');
+
                 return $this->redirect($this->generateUrl('pim_catalog_channel_edit', array('id' => $id)));
-            } else if (!$this->hasDefaultLocale($entity)) {
+            } elseif (!$this->hasDefaultLocale($entity)) {
                 return $this->redirect($this->generateUrl('pim_catalog_channel_edit', array('id' => $id)));
             }
 
@@ -264,6 +269,7 @@ class ChannelController extends Controller
 
             return $this->redirect($this->generateUrl('pim_catalog_channel_edit', array('id' => $id)));
         }
+
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),

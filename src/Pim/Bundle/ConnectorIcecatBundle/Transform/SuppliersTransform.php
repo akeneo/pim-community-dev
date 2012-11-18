@@ -24,12 +24,12 @@ class SuppliersTransform implements TransformInterface
      * @var BatchLoader
      */
     protected $loader;
-    
+
     /**
      * @var EntityManager
      */
     protected $entityManager;
-    
+
     /**
      * @var string
      */
@@ -38,7 +38,7 @@ class SuppliersTransform implements TransformInterface
     /**
      * Constructor
      * @param EntityManager $em
-     * @param string $xmlContent
+     * @param string        $xmlContent
      */
     public function __construct(EntityManager $em, $xmlContent)
     {
@@ -60,7 +60,7 @@ class SuppliersTransform implements TransformInterface
 
         while ($xml->read()) {
             if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'SupplierMapping') {
-                
+
                 // get SourceSupplier from database if exists
                 $supplier = $this->entityManager->getRepository('PimConnectorIcecatBundle:SourceSupplier')
                         ->findOneByIcecatId($xml->getAttribute('supplier_id'));
@@ -70,7 +70,7 @@ class SuppliersTransform implements TransformInterface
                 }
                 $supplier->setName($xml->getAttribute('name'));
                 $this->loader->add($supplier);
-            } else if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'SupplierMappings') {
+            } elseif ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'SupplierMappings') {
                 $date = $xml->getAttribute('Generated');
             }
         }

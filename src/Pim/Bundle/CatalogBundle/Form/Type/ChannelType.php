@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
 
 /**
  * Type for channel form (independant of concrete impl)
@@ -41,7 +40,7 @@ class ChannelType extends AbstractType
     /**
      * Build form
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

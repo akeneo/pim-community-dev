@@ -16,10 +16,10 @@ class FileUnzip
      *
      * TODO: add options + deal with exceptions
      *
-     * @param string $pathArchive
-     * @param string $pathFile
-     * @param string $login
-     * @param string $password
+     * @param  string    $pathArchive
+     * @param  string    $pathFile
+     * @param  string    $login
+     * @param  string    $password
      * @throws Exception
      */
     public function process($pathArchive, $pathFile, $forced = true)

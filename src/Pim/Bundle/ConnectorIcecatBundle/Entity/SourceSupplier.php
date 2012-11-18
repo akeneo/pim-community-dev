@@ -49,7 +49,7 @@ class SourceSupplier
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string   $name
      * @return Supplier
      */
     public function setName($name)
@@ -72,7 +72,7 @@ class SourceSupplier
     /**
      * Set icecatId
      *
-     * @param integer $icecatId
+     * @param  integer  $icecatId
      * @return Supplier
      */
     public function setIcecatId($icecatId)

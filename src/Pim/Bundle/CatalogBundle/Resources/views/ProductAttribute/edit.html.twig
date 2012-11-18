@@ -31,7 +31,7 @@
     {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
     <form action="{{ path('pim_catalog_productattribute_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(form) }}>
         {{ form_errors(form) }}
-    
+
         <div class="form-panel ui-corner-all">
             <h2>{{ "pim.catalog.attribute.fieldset.general" | trans }}</h2>
             {{ form_row(form.id) }}
@@ -68,52 +68,52 @@
 
 {% block afterfooter %}
     {{parent()}}
-    
+
     <script type="text/javascript">
     // Get the div that holds the collection of options
     var collectionHolder = $('ul.options');
-    
+
     // setup an "add an option" link
     var $addOptionLink = $('<a href="#" class="add_option_link">Add an option</a>');
     var $newLinkLi = $('<li class="not-sortable"></li>').append($addOptionLink);
-    
+
     jQuery(document).ready(function() {
         // add a delete link to all of the existing option form li elements
         collectionHolder.find('li').each(function() {
             addOptionFormDeleteLink($(this));
         });
-    
+
         // add the "add a option" anchor and li to the options ul
         collectionHolder.append($newLinkLi);
-    
+
         $addOptionLink.on('click', function(e) {
             // prevent the link from creating a "#" on the URL
             e.preventDefault();
-    
+
             // add a new tag form (see next code block)
             addOptionForm(collectionHolder, $newLinkLi);
         });
     });
-    
+
     function addOptionForm(collectionHolder, $newLinkLi) {
         // Get the data-prototype we explained earlier
         var prototype = collectionHolder.attr('data-prototype');
-    
+
         // Replace '__name__' in the prototype's HTML to
         // instead be a number based on the current collection's length.
         var newForm = prototype.replace(/__name__/g, collectionHolder.children().length);
-    
+
         // Display the form in the page in an li, before the "Add an option" link li
         var $newFormLi = $('<li></li>').append(newForm);
         $newLinkLi.before($newFormLi);
-        
+
         // define option order for new one
         resetOptionsOrder();
-    
+
         // add a delete link to the new form
         addOptionFormDeleteLink($newFormLi);
     }
-    
+
     function addOptionFormDeleteLink($optFormLi) {
 
         var $moveFormA = $('<span class="action-drag-inline">Sort</span>');
@@ -124,12 +124,12 @@
         $removeFormA.on('click', function(e) {
             // prevent the link from creating a "#" on the URL
             e.preventDefault();
-    
+
             // remove the li for the tag form
             $optFormLi.remove();
         });
     }
-    
+
     // make options sortable
     $("#sortable-options").sortable({
         cancel: ":input, button, a, .not-sortable",
@@ -145,6 +145,6 @@
             input.val(index);
         });
     }
-    
+
 </script>
 {% endblock %}

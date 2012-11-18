@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Bap\Bundle\FlexibleEntityBundle\Model\Entity as AbstractEntity;
 use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttributeValue as AbstractEntityAttributeValue;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Flexible product
@@ -52,7 +51,7 @@ class ProductEntity extends AbstractEntity
     /**
      * Add value
      *
-     * @param AbstractEntityAttributeValue $value
+     * @param  AbstractEntityAttributeValue $value
      * @return AbstractEntity
      */
     public function addValue(AbstractEntityAttributeValue $value)

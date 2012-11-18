@@ -18,7 +18,7 @@ interface ReadInterface
      * @param string $url
      */
     public function read($url);
-    
+
     /**
      * Get the read content
      * @return string

@@ -29,7 +29,7 @@ class ProductsTransform implements TransformInterface
      * @var EntityManager
      */
     protected $entityManager;
-    
+
     /**
      * @var string
      */
@@ -38,7 +38,7 @@ class ProductsTransform implements TransformInterface
     /**
      * Constructor
      * @param EntityManager $em
-     * @param string $filePath
+     * @param string        $filePath
      */
     public function __construct(EntityManager $em, $filePath)
     {
@@ -59,7 +59,7 @@ class ProductsTransform implements TransformInterface
         foreach ($suppliers as $supplier) {
             $this->_icecatIdToSupplier[$supplier->getIcecatId()] = $supplier;
         }
-        
+
         // throw exception if no suppliers already imported
         if (!$suppliers) {
             throw new Exception('Suppliers must be imported before products. Please try to import suppliers.');
@@ -76,7 +76,7 @@ class ProductsTransform implements TransformInterface
                 if ($indRow++ == 0) {
                     continue;
                 }
-                
+
                 // Get product if already exists
                 $product = $this->entityManager->getRepository('PimConnectorIcecatBundle:SourceProduct')
                         ->findOneByProductId($data[0]);
@@ -84,7 +84,7 @@ class ProductsTransform implements TransformInterface
                     $product = new SourceProduct();
                     $product->setProductId($data[0]);
                 }
-                
+
                 // TODO: get real supplier id problem with mapping
                 $product->setSupplier($this->_icecatIdToSupplier[$data[4]]);
                 $product->setProdId($data[1]);
@@ -93,6 +93,7 @@ class ProductsTransform implements TransformInterface
 
                 if ($indRow % $batchSize === 0) {
                     $this->loader->load();
+
                     return; // TODO : must be deleted !! Actually create a bug with clean method
                 }
             }

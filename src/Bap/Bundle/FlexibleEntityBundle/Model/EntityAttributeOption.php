@@ -38,7 +38,7 @@ abstract class EntityAttributeOption
     /**
      * Set id
      *
-     * @param integer $id
+     * @param  integer              $id
      * @return EntityAttributeValue
      */
     public function setId($id)
@@ -51,7 +51,7 @@ abstract class EntityAttributeOption
     /**
      * Set value
      *
-     * @param string $value
+     * @param  string               $value
      * @return EntityAttributeValue
      */
     public function setValue($value)
@@ -74,7 +74,7 @@ abstract class EntityAttributeOption
     /**
      * Set sort order
      *
-     * @param string $sortOrder
+     * @param  string               $sortOrder
      * @return EntityAttributeValue
      */
     public function setSortOrder($sortOrder)

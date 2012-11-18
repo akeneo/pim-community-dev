@@ -7,61 +7,61 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations\String;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 /**
- * 
+ *
  * Enter description here ...
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * 
+ *
  * @MongoDB\Document
  */
 class ProductDataSheetDocument
 {
     /**
      * @var integer
-     * 
+     *
      * @MongoDB\Id
      */
     protected $id;
-    
+
     /**
      * Reference to icecat product id
      * @var integer
-     * 
+     *
      * @MongoDB\Int
      * @MongoDB\Index(unique=true)
      */
     protected $productId;
-    
+
     /**
      * Product detailed remote import path
      * @var string
-     * 
+     *
      * @MongoDB\String
      */
     protected $importPath;
-    
+
     /**
      * Whole line for basic product data
      * @var string
-     * 
+     *
      * @MongoDB\String
      */
     protected $xmlBaseData;
-    
+
     /**
      * Detailed data for product
      * @var string
-     * 
+     *
      * @MongoDB\String
      */
     protected $xmlDetailledData;
-    
+
     /**
      * Detailled data is imported
      * @var Boolean
-     * 
+     *
      * @MongoDB\Boolean
      */
     protected $isImported;
@@ -79,12 +79,13 @@ class ProductDataSheetDocument
     /**
      * Set productId
      *
-     * @param int $productId
+     * @param  int                      $productId
      * @return ProductDataSheetDocument
      */
     public function setProductId($productId)
     {
         $this->productId = $productId;
+
         return $this;
     }
 
@@ -101,12 +102,13 @@ class ProductDataSheetDocument
     /**
      * Set importPath
      *
-     * @param string $importPath
+     * @param  string                   $importPath
      * @return ProductDataSheetDocument
      */
     public function setImportPath($importPath)
     {
         $this->importPath = $importPath;
+
         return $this;
     }
 
@@ -123,12 +125,13 @@ class ProductDataSheetDocument
     /**
      * Set xmlBaseData
      *
-     * @param string $xmlBaseData
+     * @param  string                   $xmlBaseData
      * @return ProductDataSheetDocument
      */
     public function setXmlBaseData($xmlBaseData)
     {
         $this->xmlBaseData = $xmlBaseData;
+
         return $this;
     }
 
@@ -145,12 +148,13 @@ class ProductDataSheetDocument
     /**
      * Set xmlDetailledData
      *
-     * @param string $xmlDetailledData
+     * @param  string                   $xmlDetailledData
      * @return ProductDataSheetDocument
      */
     public function setXmlDetailledData($xmlDetailledData)
     {
         $this->xmlDetailledData = $xmlDetailledData;
+
         return $this;
     }
 
@@ -167,12 +171,13 @@ class ProductDataSheetDocument
     /**
      * Set isImported
      *
-     * @param boolean $isImported
+     * @param  boolean                  $isImported
      * @return ProductDataSheetDocument
      */
     public function setIsImported($isImported)
     {
         $this->isImported = $isImported;
+
         return $this;
     }
 

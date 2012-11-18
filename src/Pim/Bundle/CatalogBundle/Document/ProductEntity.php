@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Document;
 use Bap\Bundle\FlexibleEntityBundle\Model\Entity as AbstractEntity;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Doctrine\Common\Collections\ArrayCollection;
-use Gedmo\Mapping\Annotation as Gedmo;
 use APY\DataGridBundle\Grid\Mapping as GRID;
 
 /**

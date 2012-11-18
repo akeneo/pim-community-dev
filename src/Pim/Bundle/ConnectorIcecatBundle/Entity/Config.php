@@ -36,7 +36,7 @@ class Config
     const PASSWORD       = 'password';
     const BASE_DIR       = 'base-dir';
     const BASE_URL       = 'base-url';
-    
+
     const BASE_PRODUCTS_URL  = 'base-products-url';
 
    /**
@@ -75,7 +75,7 @@ class Config
     /**
      * Set id
      *
-     * @param integer $id
+     * @param  integer $id
      * @return Config
      */
     public function setId($id)
@@ -88,7 +88,7 @@ class Config
     /**
      * Set code
      *
-     * @param string $code
+     * @param  string $code
      * @return Config
      */
     public function setCode($code)
@@ -111,7 +111,7 @@ class Config
     /**
      * Set value
      *
-     * @param string $value
+     * @param  string $value
      * @return Config
      */
     public function setValue($value)

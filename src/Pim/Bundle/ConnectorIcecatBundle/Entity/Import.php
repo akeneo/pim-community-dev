@@ -75,7 +75,7 @@ class Import
     /**
      * Set label
      *
-     * @param string $label
+     * @param  string $label
      * @return Import
      */
     public function setLabel($label)
@@ -98,7 +98,7 @@ class Import
     /**
      * Set result
      *
-     * @param boolean $result
+     * @param  boolean $result
      * @return Import
      */
     public function setResult($result)
@@ -121,7 +121,7 @@ class Import
     /**
      * Set importedAt
      *
-     * @param \DateTime $importedAt
+     * @param  \DateTime $importedAt
      * @return Import
      */
     public function setImportedAt($importedAt)
@@ -144,7 +144,7 @@ class Import
     /**
      * Set errorMessage
      *
-     * @param string $errorMessage
+     * @param  string $errorMessage
      * @return Import
      */
     public function setErrorMessage($errorMessage)

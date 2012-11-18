@@ -61,15 +61,15 @@ class ProductXmlToArrayTransformer implements TransformInterface
     {
         // get product data
         $productTag = $simpleDoc->Product;
-        $this->productBaseData['id']       = (string)$productTag['Prod_id'];
-        $this->productBaseData['name']     = (string)$productTag['Name'];
-        $this->productBaseData['HighPic']  = (string)$productTag['HighPic'];
-        $this->productBaseData['LowPic']   = (string)$productTag['HighPic'];
-        $this->productBaseData['ThumbPic'] = (string)$productTag['ThumbPic'];
+        $this->productBaseData['id']       = (string) $productTag['Prod_id'];
+        $this->productBaseData['name']     = (string) $productTag['Name'];
+        $this->productBaseData['HighPic']  = (string) $productTag['HighPic'];
+        $this->productBaseData['LowPic']   = (string) $productTag['HighPic'];
+        $this->productBaseData['ThumbPic'] = (string) $productTag['ThumbPic'];
         // TODO : deal with image id and size ?
-//         $this->productBaseData['HighPicHeight'] = (string)$productTag['HighPicHeight'];
-//         $this->productBaseData['HighPicSize'] = (string)$productTag['HighPicSize'];
-//         $this->productBaseData['HighPicWidth'] = (string)$productTag['HighPicWidth'];
+//         $this->productBaseData['HighPicHeight'] = (string) $productTag['HighPicHeight'];
+//         $this->productBaseData['HighPicSize'] = (string) $productTag['HighPicSize'];
+//         $this->productBaseData['HighPicWidth'] = (string) $productTag['HighPicWidth'];
         // TODO deal with other provided product data
 
         // get vendor data
@@ -100,15 +100,15 @@ class ProductXmlToArrayTransformer implements TransformInterface
         $specGroups = $simpleDoc->Product->CategoryFeatureGroup;
         $specFeatures = $simpleDoc->Product->ProductFeature;
         foreach ($specFeatures as $feature) {
-            $id = (int)$feature['CategoryFeatureGroup_ID'];
+            $id = (int) $feature['CategoryFeatureGroup_ID'];
             $featureText = (string) $feature["Presentation_Value"];
             $featureName = (string) $feature->Feature->Name["Value"];
             $featureId = (string) $feature["ID"];
             foreach ($specGroups as $group) {
-                $groupId = (int)$group["ID"];
+                $groupId = (int) $group["ID"];
                 if ($groupId == $id) {
                     $groupName = (string) $group->FeatureGroup->Name["Value"];
-                    $rating = (int)$group['No'];
+                    $rating = (int) $group['No'];
                     $descriptionArray[$rating][$groupName][$featureId] = array('name' => $featureName, 'value' => $featureText);
                     break;
                 }

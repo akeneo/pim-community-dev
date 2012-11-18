@@ -30,8 +30,8 @@ abstract class FlexibleEntityManager
     /**
      * Constructor.
      *
-     * @param ObjectManager           $om
-     * @param string                  $class
+     * @param ObjectManager $om
+     * @param string        $class
      */
     public function __construct(ObjectManager $om)
     {
@@ -51,37 +51,37 @@ abstract class FlexibleEntityManager
      * Return shortname that can be used to get the repository or instance
      * @return string
      */
-    public abstract function getEntityShortname();
+    abstract public function getEntityShortname();
 
     /**
      * Return shortname that can be used to get the repository or instance
      * @return string
      */
-    public abstract function getSetShortname();
+    abstract public function getSetShortname();
 
     /**
      * Return shortname that can be used to get the repository or instance
      * @return string
      */
-    public abstract function getGroupShortname();
+    abstract public function getGroupShortname();
 
     /**
      * Return shortname that can be used to get the repository or instance
      * @return string
      */
-    public abstract function getAttributeShortname();
+    abstract public function getAttributeShortname();
 
     /**
      * Return shortname that can be used to get the repository or instance
      * @return string
      */
-    public abstract function getAttributeOptionShortname();
+    abstract public function getAttributeOptionShortname();
 
     /**
      * Return shortname that can be used to get the repository or instance
      * @return string
      */
-    public abstract function getAttributeValueShortname();
+    abstract public function getAttributeValueShortname();
 
     /**
      * Return implementation class that can be use to instanciate
@@ -198,6 +198,7 @@ abstract class FlexibleEntityManager
     public function getNewEntityInstance()
     {
         $class = $this->getEntityClass();
+
         return new $class();
     }
 
@@ -208,6 +209,7 @@ abstract class FlexibleEntityManager
     public function getNewSetInstance()
     {
         $class = $this->getSetClass();
+
         return new $class();
     }
 
@@ -218,6 +220,7 @@ abstract class FlexibleEntityManager
     public function getNewGroupInstance()
     {
         $class = $this->getGroupClass();
+
         return new $class();
     }
 
@@ -228,6 +231,7 @@ abstract class FlexibleEntityManager
     public function getNewAttributeInstance()
     {
         $class = $this->getAttributeClass();
+
         return new $class();
     }
 
@@ -238,6 +242,7 @@ abstract class FlexibleEntityManager
     public function getNewAttributeOptionInstance()
     {
         $class = $this->getAttributeOptionClass();
+
         return new $class();
     }
 
@@ -248,13 +253,14 @@ abstract class FlexibleEntityManager
     public function getNewAttributeValueInstance()
     {
         $class = $this->getAttributeValueClass();
+
         return new $class();
     }
 
     /**
      * Clone an entity type
      *
-     * @param EntitySet $entitySet
+     * @param  EntitySet $entitySet
      * @return EntitySet
      */
     public function cloneSet($entitySet)
@@ -278,13 +284,14 @@ abstract class FlexibleEntityManager
                 $cloneGroup->addAttribute($attToLink);
             }
         }
+
         return $cloneSet;
     }
 
     /**
      * Clone an entity
      *
-     * @param Entity $entity
+     * @param  Entity $entity
      * @return Entity
      */
     public function cloneEntity($entity)

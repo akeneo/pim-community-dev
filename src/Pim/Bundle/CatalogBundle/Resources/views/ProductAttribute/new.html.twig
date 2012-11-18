@@ -25,7 +25,7 @@
     {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
     <form action="{{ path('pim_catalog_productattribute_create') }}" method="post" {{ form_enctype(form) }}>
         {{ form_errors(form) }}
-    
+
         <div class="form-panel ui-corner-all">
             <h2>{{ "pim.catalog.attribute.fieldset.general" | trans }}</h2>
             {{ form_widget(form) }}

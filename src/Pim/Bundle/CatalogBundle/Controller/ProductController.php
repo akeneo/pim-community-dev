@@ -8,8 +8,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\CatalogBundle\Form\Type\ProductType;
-use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
-use APY\DataGridBundle\Grid\Source\Document as GridDocument;
 use APY\DataGridBundle\Grid\Action\RowAction;
 use Pim\Bundle\UIBundle\Grid\Helper as GridHelper;
 
@@ -66,13 +64,14 @@ class ProductController extends Controller
     /**
      * Create product form
      *
-     * @param ProductEntity $product
+     * @param  ProductEntity $product
      * @return Form
      */
     protected function createProductForm($product)
     {
         $prodClassFullName = $this->getProductManager()->getEntityClass();
         $form = $this->createForm(new ProductType($prodClassFullName), $product);
+
         return $form;
     }
 

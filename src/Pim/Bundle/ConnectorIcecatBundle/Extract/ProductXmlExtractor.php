@@ -20,17 +20,17 @@ class ProductXmlExtractor implements ExtractInterface, ReadInterface
      * @var SimpleXMLElement
      */
     protected $xmlElement;
-    
+
     /**
      * @var string
      */
     protected $login;
-    
+
     /**
      * @var string
      */
     protected $password;
-    
+
     /**
      * @var string
      */
@@ -39,9 +39,9 @@ class ProductXmlExtractor implements ExtractInterface, ReadInterface
     /**
      * Constructor
      *
-     * @param string $productId
-     * @param string $supplierName
-     * @param string $locale
+     * @param string        $productId
+     * @param string        $supplierName
+     * @param string        $locale
      * @param ConfigManager $configManager
      */
     public function __construct($productId, $supplierName, $locale, ConfigManager $configManager)
@@ -50,7 +50,7 @@ class ProductXmlExtractor implements ExtractInterface, ReadInterface
         $this->login = $configManager->getValue(Config::LOGIN);
         $this->password = $configManager->getValue(Config::PASSWORD);
         $baseUrl = $configManager->getValue(Config::PRODUCT_URL);
-        
+
         // prepare url and paths
         $this->url = self::prepareUrl($baseUrl, $productId, $supplierName, $locale);
     }
@@ -59,16 +59,17 @@ class ProductXmlExtractor implements ExtractInterface, ReadInterface
      * Prepare url to get xml content
      *
      * @static
-     * @param string $baseUrl
-     * @param string $productId
-     * @param string $supplierName
-     * @param string $locale
+     * @param  string $baseUrl
+     * @param  string $productId
+     * @param  string $supplierName
+     * @param  string $locale
      * @return string
      */
     protected static function prepareUrl($baseUrl, $productId, $supplierName, $locale)
     {
         $supplierName = rawurlencode($supplierName);
         $productId    = rawurlencode($productId);
+
         return $baseUrl .'?prod_id='.$productId.';vendor='.$supplierName.';lang='.$locale.';output=productxml';
     }
 
@@ -90,10 +91,10 @@ class ProductXmlExtractor implements ExtractInterface, ReadInterface
     public function read($url)
     {
         $fileReader = new FileHttpReader();
+
         return $fileReader->process($url, $this->login, $this->password);
     }
 
-    
     protected function parseXml($stringXml)
     {
         libxml_use_internal_errors(true);
@@ -105,6 +106,7 @@ class ProductXmlExtractor implements ExtractInterface, ReadInterface
         if ($this->xmlElement) {
             return true;
         }
+
         return false;
     }
 
@@ -117,7 +119,7 @@ class ProductXmlExtractor implements ExtractInterface, ReadInterface
         // TODO to raise authentication error or product with no detailled data
         return true;
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see Pim\Bundle\ConnectorIcecatBundle\Extract.ReadInterface::getReadContent()

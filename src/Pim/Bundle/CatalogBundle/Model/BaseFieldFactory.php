@@ -1,12 +1,6 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Model;
 
-use Pim\Bundle\CatalogBundle\Entity\ProductEntity as EntityProductEntity;
-use Pim\Bundle\CatalogBundle\Entity\ProductSet as EntityProductSet;
-use Pim\Bundle\CatalogBundle\Entity\ProductGroup as EntityProductGroup;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute as EntityProductAttribute;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttributeValue as EntityProductAttributeValue;
-
 /**
  * Base field type to define high level types related to a default backend type, a renderer, etc
  *
@@ -57,7 +51,7 @@ class BaseFieldFactory
     /**
      * Get doctrine mapping for base fields
      * @see http://docs.doctrine-project.org/en/2.0.x/reference/basic-mapping.html
-     * @param string $fieldType
+     * @param  string $fieldType
      * @return string
      */
     public function getDoctrineMapping($fieldType)
@@ -65,11 +59,11 @@ class BaseFieldFactory
         // TODO: update, complete ...
         if ($fieldType == self::FIELD_INTEGER or $fieldType == self::FIELD_SELECT) {
             return 'integer';
-        } else if ($fieldType == self::FIELD_DATETIME) {
+        } elseif ($fieldType == self::FIELD_DATETIME) {
             return 'datetime';
-        } else if ($fieldType == self::FIELD_DECIMAL) {
+        } elseif ($fieldType == self::FIELD_DECIMAL) {
             return 'decimal';
-        } else if ($fieldType == self::FIELD_TEXT) {
+        } elseif ($fieldType == self::FIELD_TEXT) {
             return 'text';
         } else {
             return 'string';

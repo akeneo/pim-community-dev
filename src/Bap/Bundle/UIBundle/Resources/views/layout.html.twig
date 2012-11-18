@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <title>{% block title %}Akeneo{% endblock %}</title>
         <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
-        
+
         {% block head_css %}
         <link rel="stylesheet" href="{{ asset('bundles/bapui/css/smoothness/jquery-ui-1.9.1.custom.css') }}" />
         <link rel="stylesheet" href="{{ asset('bundles/bapui/css/main-bap.css') }}" />
@@ -33,7 +33,7 @@
                     </li>
                     <li>
                         <a href="{{ path(
-                            app.request.attributes.get('_route'), 
+                            app.request.attributes.get('_route'),
                             route_params | merge({"_locale": "fr"})
                         ) }}" data-role="button" class="ui-icon-flag-fr"></a>
                     </li>
@@ -57,7 +57,7 @@
                     </ul>
                     <div style="clear: both"></div>
                 {% endblock %}
-    
+
                 {% for key, flashMessage in app.session.flashes %}
                     <div class="flash-message">
                         <ul>
@@ -69,7 +69,7 @@
                 {% block leftcolumn %}{% endblock %}
 
                 {% block content %}{% endblock %}
-                
+
                 {% block rightcolumn %}{% endblock %}
             </div>
 

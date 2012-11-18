@@ -71,7 +71,7 @@ class ProductAttributeValue extends AbstractEntityAttributeValue
     /**
      * Set entity
      *
-     * @param AbstractEntity $entity
+     * @param  AbstractEntity        $entity
      * @return ProductAttributeValue
      */
     public function setEntity(AbstractEntity $entity = null)

@@ -18,10 +18,10 @@ class FileHttpDownload
      * TODO : replace login / password by option array
      * TODO : throw exception on fopen function
      *
-     * @param string $url
-     * @param string $path
-     * @param string $login
-     * @param string $password
+     * @param  string    $url
+     * @param  string    $path
+     * @param  string    $login
+     * @param  string    $password
      * @throws Exception
      */
     public function process($url, $path, $login = null, $password = null, $forced = true)

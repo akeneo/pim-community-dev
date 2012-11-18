@@ -16,8 +16,8 @@ class Helper
     /**
      * Return relevant grid source for APY grid
      *
-     * @param \Doctrine\Common\Persistence\ObjectManager $objectManager
-     * @param string $objectShortname
+     * @param  \Doctrine\Common\Persistence\ObjectManager $objectManager
+     * @param  string                                     $objectShortname
      * @throws \Exception
      * @return APY\DataGridBundle\Grid\Source\Entity
      */
@@ -26,7 +26,7 @@ class Helper
         // source to create simple grid based on entity or document (ORM or ODM)
         if ($objectManager instanceof \Doctrine\ODM\MongoDB\DocumentManager) {
             return new GridDocument($objectShortname);
-        } else if ($objectManager instanceof \Doctrine\ORM\EntityManager) {
+        } elseif ($objectManager instanceof \Doctrine\ORM\EntityManager) {
             return new GridEntity($objectShortname);
         } else {
             throw new \Exception('There is no grid source for this object manager');

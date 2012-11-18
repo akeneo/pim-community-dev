@@ -3,8 +3,6 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttributeOption as AbstractEntityAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Translatable\Translatable;
 
 /**
  * Attribute options
@@ -48,7 +46,7 @@ class ProductAttributeOption extends AbstractEntityAttributeOption
     /**
      * Set attribute
      *
-     * @param ProductAttribute $attribute
+     * @param  ProductAttribute       $attribute
      * @return ProductAttributeOption
      */
     public function setAttribute(ProductAttribute $attribute = null)

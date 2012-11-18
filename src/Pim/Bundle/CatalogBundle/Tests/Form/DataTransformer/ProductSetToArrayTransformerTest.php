@@ -1,9 +1,6 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
 use Pim\Bundle\CatalogBundle\Tests\KernelAwareTest;
 use Pim\Bundle\CatalogBundle\Form\DataTransformer\ProductSetToArrayTransformer;

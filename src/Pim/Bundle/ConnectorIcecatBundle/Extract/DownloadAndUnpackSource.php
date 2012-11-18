@@ -49,7 +49,7 @@ class DownloadAndUnpackSource implements ExtractInterface, DownloadInterface, Un
      * @var boolean
      */
     protected $force;
-    
+
     /**
      * Read content from file downloaded
      * @var string
@@ -58,11 +58,11 @@ class DownloadAndUnpackSource implements ExtractInterface, DownloadInterface, Un
 
     /**
      * Download the archive to the given url then extract it in file path
-     * @param string $url
-     * @param string $login
-     * @param string $password
-     * @param string $archivePath
-     * @param string $filePath
+     * @param string  $url
+     * @param string  $login
+     * @param string  $password
+     * @param string  $archivePath
+     * @param string  $filePath
      * @param boolean $force
      */
     public function __construct($url, $login, $password, $archivePath, $filePath, $force = false)
@@ -104,7 +104,7 @@ class DownloadAndUnpackSource implements ExtractInterface, DownloadInterface, Un
         $unpacker = new FileUnzip();
         $unpacker->process($archivedFile, $file, $this->force);
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see Pim\Bundle\ConnectorIcecatBundle\Extract.ReadInterface::read()
@@ -114,9 +114,10 @@ class DownloadAndUnpackSource implements ExtractInterface, DownloadInterface, Un
         if (!$this->content) {
                 $this->content = file_get_contents($file);
         }
+
         return $this->content;
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see Pim\Bundle\ConnectorIcecatBundle\Extract.ReadInterface::getReadContent()

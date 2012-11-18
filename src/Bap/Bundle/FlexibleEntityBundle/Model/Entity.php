@@ -45,19 +45,20 @@ abstract class Entity
     /**
      * Set set
      *
-     * @param EntitySet $set
+     * @param  EntitySet $set
      * @return Entity
      */
     public function setSet(EntitySet $set = null)
     {
         $this->set = $set;
+
         return $this;
     }
 
     /**
      * Add value
      *
-     * @param EntityAttributeValue $value
+     * @param  EntityAttributeValue $value
      * @return Entity
      */
     public function addValue(EntityAttributeValue $value)

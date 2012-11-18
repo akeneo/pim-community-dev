@@ -6,7 +6,7 @@ use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
 use Doctrine\Common\Persistence\ObjectManager;
 use \Exception;
 /**
- * 
+ *
  * Service class to get bundle configuration
  * An object manager must be set before use static methods
  *
@@ -23,25 +23,25 @@ class ConfigManager
      * @var array
      */
     protected static $configs = array();
-    
+
     /**
      * @var ObjectManager
      */
     protected $objectManager;
-    
+
     /**
-     * 
+     *
      * @param ObjectManager $om
      */
     public function __construct($om)
     {
         $this->objectManager = $om;
     }
-    
+
     /**
-     * Get configuration from code 
-     * 
-     * @param string $code
+     * Get configuration from code
+     *
+     * @param  string    $code
      * @throws Exception
      * @return Config
      */
@@ -54,11 +54,11 @@ class ConfigManager
             return $config[$code];
         }
     }
-    
+
     /**
      * Get configuration value from code
-     * 
-     * @param string $code
+     *
+     * @param  string    $code
      * @throws Exception
      * @return string
      */
@@ -66,10 +66,10 @@ class ConfigManager
     {
         return $this->get($code)->getValue();
     }
-    
+
     /**
      * Get config associative array
-     * 
+     *
      * @throws Exception
      * @return array
      */
@@ -82,12 +82,13 @@ class ConfigManager
                 self::$configs[$config->getCode()] = $config;
             }
         }
+
         return self::$configs;
     }
-    
+
     /**
      * Find all Config objects
-     * 
+     *
      * @throws Exception
      * @return array
      */

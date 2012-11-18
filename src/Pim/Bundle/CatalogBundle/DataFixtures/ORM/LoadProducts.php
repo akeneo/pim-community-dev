@@ -6,7 +6,6 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Model\ProductSet;
 use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
 
 /**
