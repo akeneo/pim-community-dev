@@ -23,6 +23,10 @@
         <delete dir="${basedir}/app/build/coverage"/>
         <delete dir="${basedir}/app/build/logs"/>
         <delete dir="${basedir}/app/build/pdepend"/>
+
+        <delete file="${basedir}/composer.phar" />
+        <delete file="${basedir}/app/config/parameters.yml" />
+        <delete dir="${basedir}/app/cache" />
     </target>
 
     <target name="prepare" depends="clean" description="Prepare for build">
@@ -32,6 +36,8 @@
         <mkdir dir="${basedir}/app/build/logs"/>
         <mkdir dir="${basedir}/app/build/pdepend"/>
         <mkdir dir="${basedir}/app/build/phpdox"/>
+
+        <mkdir dir="${basedir}/app/cache" />
         <copy file="/var/lib/jenkins/conf-akeneo-pim-standard/parameters.yml" tofile="${basedir}/app/config/parameters.yml" />
     </target>
 
