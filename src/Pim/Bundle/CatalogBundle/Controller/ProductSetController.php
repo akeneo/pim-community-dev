@@ -190,7 +190,7 @@ class ProductSetController extends Controller
         // get product set
         $postData = $request->get('pim_catalogbundle_productattributeset');
 
-        // TODO refactor following, try to bind form directly
+        // TODO refactor following, try to bind form directly or use transformer array to set
 
         // create new groups
         $groupsUpdate = array();
@@ -222,8 +222,8 @@ class ProductSetController extends Controller
 
         // update existing groups
         foreach ($entity->getGroups() as $group) {
-            // delete
-            if (!in_array($group->getId(), array_keys($groupsUpdate))) {
+            // delete if not a new one and not in updated
+            if ($group->getId() and !in_array($group->getId(), array_keys($groupsUpdate))) {
                 $entity->removeGroup($group);
             // update each attribute
             } else {
@@ -248,6 +248,7 @@ class ProductSetController extends Controller
                 }
             }
         }
+
         try {
             $this->getPersistenceManager()->persist($entity);
             $this->getPersistenceManager()->flush();
