@@ -217,6 +217,7 @@ class ProductSetController extends Controller
                         $newGroup->addAttribute($attribute);
                     }
                 }
+
             // group to update
             } else {
                 $groupsUpdate[$group['id']]= $group;
@@ -236,10 +237,12 @@ class ProductSetController extends Controller
                     $attributesUpdate[$ind]= current($att);
                 }
                 // delete moved attributes
-                foreach ($group->getAttributes() as $attribute) {
-                    // delete
-                    if (!in_array($attribute->getId(), array_keys($attributesUpdate))) {
-                        $group->removeAttribute($attribute);
+                if ($group->getId()) {
+                    foreach ($group->getAttributes() as $attribute) {
+                        // delete
+                        if (!in_array($attribute->getId(), array_keys($attributesUpdate))) {
+                            $group->removeAttribute($attribute);
+                        }
                     }
                 }
                 // add new attributes
