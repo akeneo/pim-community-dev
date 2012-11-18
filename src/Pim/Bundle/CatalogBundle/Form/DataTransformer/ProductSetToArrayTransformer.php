@@ -55,16 +55,17 @@ class ProductSetToArrayTransformer implements DataTransformerInterface
             $groupData['title']= $group->getTitle();
             // attributes
             $groupData['attributes']= array();
+            /**
             foreach ($group->getAttributes() as $attribute) {
                 if (!$attribute->getCode()) {
-                    throw new TransformationFailedException(sprintf('A attribute of set "%s" has no code !', $set->getId()));
+                    throw new TransformationFailedException(sprintf('An attribute of set "%s" has no code !', $set->getId()));
                 }
                 $attributeData = array();
                 $attributeData['id']=    $attribute->getId();
                 $attributeData['code']=  $attribute->getCode();
                 $attributeData['title']= $attribute->getTitle();
                 $groupData['attributes'][$attribute->getCode()]= $attributeData;
-            }
+            }*/
             $data['groups'][$group->getCode()]= $groupData;
         }
 
