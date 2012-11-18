@@ -10,7 +10,7 @@ use Bap\Bundle\FlexibleEntityBundle\Model\EntitySet as ProductSet;
  * Aims to transform array to product set and reverse operation
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
@@ -32,7 +32,7 @@ class ProductSetToArrayTransformer implements DataTransformerInterface
     /**
      * Transforms an object (product set) to a array.
      *
-     * @param  ProductSet $set
+     * @param ProductSet $set
      * @return array
      */
     public function transform($set)
@@ -74,7 +74,7 @@ class ProductSetToArrayTransformer implements DataTransformerInterface
     /**
      * Transforms a array to an object (product set).
      *
-     * @param  array                         $data
+     * @param array                         $data
      * @return ProductSet
      * @throws TransformationFailedException if object (set) is not found.
      */

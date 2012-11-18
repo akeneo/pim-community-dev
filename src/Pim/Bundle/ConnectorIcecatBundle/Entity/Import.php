@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Icecat connector import
  *
  * @author    Romain Monceau <romain@akeneo.com>
- * @copyright Copyright (c) 2012 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * TODO : Must be set in lower level to be used by all connectors
