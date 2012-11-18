@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="pim" default="build">    
-    <target name="build" depends="prepare,composer,setupdb,vendors,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
+    <target name="build" depends="prepare,composer,vendors,setupdb,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
     
     <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
 
