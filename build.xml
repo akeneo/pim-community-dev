@@ -32,6 +32,7 @@
         <mkdir dir="${basedir}/app/build/logs"/>
         <mkdir dir="${basedir}/app/build/pdepend"/>
         <mkdir dir="${basedir}/app/build/phpdox"/>
+        <copy file="/var/lib/jenkins/conf-akeneo-pim-standard/parameters.yml" tofile="${basedir}/app/config/parameters.yml" />
     </target>
 
     <target name="lint" description="Perform syntax check of sourcecode files">
