@@ -130,7 +130,7 @@
             </trans-unit>
             <trans-unit id="31">
                 <source>pim.catalog.set.message.demo-view</source>
-                <target>Cet écran est une démonstration. La mise à jour ne fonctionne pas encore. Nous devons encore définir les maquettes et les intéractions avant. Vous pouvez glisser les attributs de la liste des disponibles vers les groupes et créer de nouveaux groupes.</target>
+                <target>Cet écran est une démonstration. Nous devons encore définir les maquettes et les interactions. Vous pouvez glisser les attributs de la liste des disponibles vers les groupes et créer de nouveaux groupes.</target>
             </trans-unit>
         </body>
     </file>

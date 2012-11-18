@@ -130,7 +130,7 @@
             </trans-unit>
             <trans-unit id="31">
                 <source>pim.catalog.set.message.demo-view</source>
-                <target>It's a demo view, update and save not works yet, we have to define mockup and interactions together before .You can drag attributes from available list to set groups, you can create new group</target>
+                <target>It's a demo view, we have to define mockup and interactions together.You can drag attributes from available list to set groups, you can create new group</target>
             </trans-unit>
         </body>
     </file>
