@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * Product set class
+ * 
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -58,7 +60,8 @@ class ProductSet extends AbstractEntitySet
     /**
      * Custom add group method to ensure group is added in type without explicit call (due to oneToMany)
      *
-     * @param  AbstractEntityGroup $group
+     * @param AbstractEntityGroup $group
+     * 
      * @return AbstractEntitySet
      */
     public function addGroup(AbstractEntityGroup $group)

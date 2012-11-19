@@ -46,7 +46,8 @@ class ProductAttributeOption extends AbstractEntityAttributeOption
     /**
      * Set attribute
      *
-     * @param  ProductAttribute       $attribute
+     * @param ProductAttribute $attribute
+     * 
      * @return ProductAttributeOption
      */
     public function setAttribute(ProductAttribute $attribute = null)

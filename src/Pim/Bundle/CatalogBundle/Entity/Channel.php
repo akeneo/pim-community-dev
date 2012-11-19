@@ -62,7 +62,8 @@ class Channel
 
     /**
      * Set id
-     * @param  integer $id
+     * @param integer $id
+     * 
      * @return Channel
      */
     public function setId($id)
@@ -75,7 +76,8 @@ class Channel
     /**
      * Set code
      *
-     * @param  string  $code
+     * @param string $code
+     * 
      * @return Channel
      */
     public function setCode($code)
@@ -98,7 +100,8 @@ class Channel
     /**
      * Set as default channel
      *
-     * @param  boolean $default
+     * @param boolean $default
+     * 
      * @return Channel
      */
     public function setIsDefault($default)
@@ -121,7 +124,8 @@ class Channel
     /**
      * Add locales
      *
-     * @param  Pim\Bundle\CatalogBundle\Entity\ChannelLocale $locales
+     * @param Pim\Bundle\CatalogBundle\Entity\ChannelLocale $locale
+     * 
      * @return Channel
      */
     public function addLocale(\Pim\Bundle\CatalogBundle\Entity\ChannelLocale $locale)
@@ -135,11 +139,11 @@ class Channel
     /**
      * Remove locales
      *
-     * @param Pim\Bundle\CatalogBundle\Entity\ChannelLocale $locales
+     * @param Pim\Bundle\CatalogBundle\Entity\ChannelLocale $locale
      */
-    public function removeLocale(\Pim\Bundle\CatalogBundle\Entity\ChannelLocale $locales)
+    public function removeLocale(\Pim\Bundle\CatalogBundle\Entity\ChannelLocale $locale)
     {
-        $this->locales->removeElement($locales);
+        $this->locales->removeElement($locale);
     }
 
     /**

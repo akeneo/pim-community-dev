@@ -91,7 +91,8 @@ class ProductAttribute extends AbstractEntityAttribute
     /**
      * Add option
      *
-     * @param  AbstractEntityAttributeOption $option
+     * @param AbstractEntityAttributeOption $option
+     * 
      * @return AbstractEntityAttribute
      */
     public function addOption(AbstractEntityAttributeOption $option)

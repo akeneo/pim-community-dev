@@ -46,6 +46,7 @@ abstract class Entity
      * Set set
      *
      * @param  EntitySet $set
+     * 
      * @return Entity
      */
     public function setSet(EntitySet $set = null)
@@ -59,6 +60,7 @@ abstract class Entity
      * Add value
      *
      * @param  EntityAttributeValue $value
+     * 
      * @return Entity
      */
     public function addValue(EntityAttributeValue $value)

@@ -51,7 +51,8 @@ class ProductEntity extends AbstractEntity
     /**
      * Add value
      *
-     * @param  AbstractEntityAttributeValue $value
+     * @param AbstractEntityAttributeValue $value
+     * 
      * @return AbstractEntity
      */
     public function addValue(AbstractEntityAttributeValue $value)

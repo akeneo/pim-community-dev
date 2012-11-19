@@ -1,7 +1,6 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Extract;
 /**
- *
  * Interface extractable
  * TODO: should be moved in dataflow ?
  *

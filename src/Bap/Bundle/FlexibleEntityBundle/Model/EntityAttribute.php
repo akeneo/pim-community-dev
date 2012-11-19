@@ -82,6 +82,7 @@ abstract class EntityAttribute
      * Set code
      *
      * @param  string          $code
+     * 
      * @return EntityAttribute
      */
     public function setCode($code)

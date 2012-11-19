@@ -157,7 +157,6 @@ class ProductSetController extends Controller
     }
 
     /**
-     *
      * @param integer $id
      *
      * @Route("/{id}/edit")

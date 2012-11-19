@@ -18,8 +18,8 @@ class FileUnzip
      *
      * @param  string    $pathArchive
      * @param  string    $pathFile
-     * @param  string    $login
-     * @param  string    $password
+     * @param  boolean   $forced
+     * 
      * @throws Exception
      */
     public function process($pathArchive, $pathFile, $forced = true)

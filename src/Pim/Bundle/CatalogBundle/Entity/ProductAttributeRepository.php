@@ -16,8 +16,11 @@ use Bap\Bundle\FlexibleEntityBundle\Model\EntitySet as AbstractEntitySet;
 class ProductAttributeRepository extends EntityRepository implements ProductAttributeRepositoryInterface
 {
     /**
-     * @see interface
      * @param AbstractEntitySet $set
+     * 
+     * @see interface
+     * 
+     * @return ArrayCollection
      */
     public function findAllExcept(AbstractEntitySet $set)
     {

@@ -75,7 +75,8 @@ class Config
     /**
      * Set id
      *
-     * @param  integer $id
+     * @param integer $id
+     * 
      * @return Config
      */
     public function setId($id)
@@ -88,7 +89,8 @@ class Config
     /**
      * Set code
      *
-     * @param  string $code
+     * @param string $code
+     *
      * @return Config
      */
     public function setCode($code)
@@ -111,7 +113,8 @@ class Config
     /**
      * Set value
      *
-     * @param  string $value
+     * @param string $value
+     * 
      * @return Config
      */
     public function setValue($value)

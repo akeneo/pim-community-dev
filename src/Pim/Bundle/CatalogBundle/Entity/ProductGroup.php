@@ -64,7 +64,8 @@ class ProductGroup extends AbstractEntityGroup
     /**
      * Set Set
      *
-     * @param  ProductSet   $set
+     * @param ProductSet $set
+     * 
      * @return ProductGroup
      */
     public function setSet(ProductSet $set = null)

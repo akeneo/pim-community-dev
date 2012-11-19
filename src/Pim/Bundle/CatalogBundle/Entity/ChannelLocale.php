@@ -56,7 +56,8 @@ class ChannelLocale
     /**
      * Set code
      *
-     * @param  string        $code
+     * @param string $code
+     * 
      * @return ChannelLocale
      */
     public function setCode($code)
@@ -79,7 +80,8 @@ class ChannelLocale
     /**
      * Set as default channel
      *
-     * @param  boolean $default
+     * @param boolean $default
+     * 
      * @return Channel
      */
     public function setIsDefault($default)
@@ -102,7 +104,8 @@ class ChannelLocale
     /**
      * Set channel
      *
-     * @param  Pim\Bundle\CatalogBundle\Entity\Channel $channel
+     * @param Pim\Bundle\CatalogBundle\Entity\Channel $channel
+     * 
      * @return ChannelLocale
      */
     public function setChannel(\Pim\Bundle\CatalogBundle\Entity\Channel $channel = null)

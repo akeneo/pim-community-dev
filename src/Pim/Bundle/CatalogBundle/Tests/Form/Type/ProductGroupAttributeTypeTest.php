@@ -16,9 +16,7 @@ class ProductGroupAttributeTypeTest extends KernelAwareTest
 {
 
     /**
-     * Build form
-     * @param FormBuilderInterface $builder
-     * @param array                $options
+     * Test related method
      */
     public function testBuildForm()
     {

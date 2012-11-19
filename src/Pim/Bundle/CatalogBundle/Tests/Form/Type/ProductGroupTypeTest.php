@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
 use Pim\Bundle\CatalogBundle\Tests\KernelAwareTest;
-// use Pim\Bundle\CatalogBundle\Form\Type;
+
 /**
  * Test related class
  *
@@ -16,9 +16,7 @@ class ProductGroupTypeTest extends KernelAwareTest
 {
 
     /**
-     * Build form
-     * @param FormBuilderInterface $builder
-     * @param array                $options
+     * Test related method
      */
     public function testBuildForm()
     {

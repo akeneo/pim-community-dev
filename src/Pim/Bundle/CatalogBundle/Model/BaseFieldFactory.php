@@ -52,6 +52,7 @@ class BaseFieldFactory
      * Get doctrine mapping for base fields
      * @see http://docs.doctrine-project.org/en/2.0.x/reference/basic-mapping.html
      * @param  string $fieldType
+     * 
      * @return string
      */
     public function getDoctrineMapping($fieldType)
