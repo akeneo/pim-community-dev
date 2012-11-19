@@ -259,7 +259,8 @@ abstract class FlexibleEntityManager
     /**
      * Clone an entity type
      *
-     * @param  EntitySet $entitySet
+     * @param EntitySet $entitySet to clone
+     * 
      * @return EntitySet
      */
     public function cloneSet($entitySet)
@@ -290,7 +291,8 @@ abstract class FlexibleEntityManager
     /**
      * Clone an entity
      *
-     * @param  Entity $entity
+     * @param Entity $entity to clone
+     * 
      * @return Entity
      */
     public function cloneEntity($entity)
