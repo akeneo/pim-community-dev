@@ -2,32 +2,24 @@
 namespace Pim\Bundle\ConnectorIcecatBundle\Command;
 
 use Pim\Bundle\ConnectorIcecatBundle\Document\ProductDataSheetDocument;
-
-use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpReader;
-
 use Pim\Bundle\ConnectorIcecatBundle\Entity\ConfigManager;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
+
+use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpReader;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
 /**
- *
+ * Import whole set of basic data products from icecat
+ * 
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class ImportBaseProductsCommand extends ContainerAwareCommand
 {
-    /**
-     *
-     * @var string
-     */
-    protected $content;
-
     /**
      * (non-PHPdoc)
      * @see \Symfony\Component\Console\Command\Command::configure()
@@ -54,28 +46,25 @@ class ImportBaseProductsCommand extends ContainerAwareCommand
         $fileReader = new FileHttpReader();
         $content = $fileReader->process($downloadUrl, $login, $password);
 
-        var_dump($content);
-
         // get document manager
         $om = $this->getContainer()->get('doctrine.odm.mongodb.document_manager');
 
         // read xlk cibtebt
-//         libxml_use_internal_errors(true);
-//         $xmlContent = simplexml_load_string($content);
+        libxml_use_internal_errors(true);
+        $xmlContent = simplexml_load_string($content);
 
-//         foreach ($xmlContent->xpath('//file') as $file) {
-//             $doc = new ProductDataSheetDocument();
-//             $doc->setImportPath($file['path']->asXML());
-//             $doc->setIsImported(false); // TODO : Must be default value
-//             $doc->setProductId($file['Product_ID']);
-//             $doc->setXmlBaseData($file->asXML());
+        foreach ($xmlContent->xpath('//file') as $file) {
+            // Instanciate new object
+            $doc = new ProductDataSheetDocument();
+            $doc->setImportPath($file['path']->asXML());
+            $doc->setProductId($file['Product_ID']);
+            $doc->setXmlBaseData($file->asXML());
 
-//             $om->persist($doc);
-//         }
+            $om->persist($doc);
+        }
 
-//         $om->flush();
-
-        $output->writeln(strlen($content));
+        // persist documents with constraint validation
+        $om->flush(array('safe' => true));
     }
 
     /**

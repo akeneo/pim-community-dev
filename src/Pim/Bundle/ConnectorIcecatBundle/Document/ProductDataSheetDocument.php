@@ -60,11 +60,20 @@ class ProductDataSheetDocument
 
     /**
      * Detailled data is imported
-     * @var Boolean
+     * @var boolean
      *
      * @MongoDB\Boolean
      */
     protected $isImported;
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->isImported = false;
+        $this->xmlDetailledData = false;
+    }
 
     /**
      * Get id
