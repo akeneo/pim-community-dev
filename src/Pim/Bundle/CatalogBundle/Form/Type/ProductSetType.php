@@ -7,9 +7,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  *
- * @author     Romain @ Akeneo
- * @copyright  Copyright (c) 2012 Strixos SAS (http://www.strixos.com)
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
 class ProductSetType extends AbstractType

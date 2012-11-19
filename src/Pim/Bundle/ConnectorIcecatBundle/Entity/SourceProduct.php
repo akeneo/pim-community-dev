@@ -4,9 +4,9 @@ namespace Pim\Bundle\ConnectorIcecatBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @author     Nicolas Dupont @ Strixos
- * @copyright  Copyright (c) 2012 Strixos SAS (http://www.strixos.com)
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ORM\Table(name="Akeneo_PimConnectorIcecat_SourceProduct")
  * @ORM\Entity

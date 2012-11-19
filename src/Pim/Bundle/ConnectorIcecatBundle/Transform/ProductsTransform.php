@@ -13,7 +13,7 @@ use \Exception;
  * Aims to transform suppliers xml file to csv file
  *
  * @author    Romain Monceau <romain@akeneo.com>
- * @copyright Copyright (c) 2012 Strixos SAS (http://www.strixos.com)
+ * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * TODO : MAKE interfaces to implements xml to csv, xml to php, csv to php, etc.
