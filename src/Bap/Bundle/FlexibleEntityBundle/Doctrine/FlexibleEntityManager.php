@@ -31,7 +31,6 @@ abstract class FlexibleEntityManager
      * Constructor.
      *
      * @param ObjectManager $om
-     * @param string        $class
      */
     public function __construct(ObjectManager $om)
     {
