@@ -1,6 +1,10 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Command;
 
+use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpDownload;
+
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+
 use Pim\Bundle\ConnectorIcecatBundle\Document\ProductDataSheetDocument;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\ConfigManager;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
@@ -44,10 +48,11 @@ class ImportBaseProductsCommand extends ContainerAwareCommand
 
         // get xml content
         $fileReader = new FileHttpReader();
-        $content = $fileReader->process($downloadUrl, $login, $password);
+        $fileReader = new FileHttpDownload();
+        $content = $fileReader->process($downloadUrl, '/tmp/icecat-base-products.xml', $login, $password);
 
         // get document manager
-        $om = $this->getContainer()->get('doctrine.odm.mongodb.document_manager');
+        $dm = $this->getContainer()->get('doctrine.odm.mongodb.document_manager');
 
         // read xlk cibtebt
         libxml_use_internal_errors(true);
@@ -60,11 +65,13 @@ class ImportBaseProductsCommand extends ContainerAwareCommand
             $doc->setProductId($file['Product_ID']);
             $doc->setXmlBaseData($file->asXML());
 
-            $om->persist($doc);
+            $dm->persist($doc);
         }
 
         // persist documents with constraint validation
-        $om->flush(array('safe' => true));
+        $dm->flush();
+        
+        $output->writeln('command executed successfully');
     }
 
     /**
