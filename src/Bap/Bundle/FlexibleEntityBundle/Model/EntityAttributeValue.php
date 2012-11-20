@@ -40,7 +40,8 @@ abstract class EntityAttributeValue
     /**
      * Set data
      *
-     * @param  string               $data
+     * @param string $data
+     * 
      * @return EntityAttributeValue
      */
      public function setData($data)
@@ -63,7 +64,8 @@ abstract class EntityAttributeValue
     /**
      * Set attribute
      *
-     * @param  EntityAttribute      $attribute
+     * @param EntityAttribute $attribute
+     * 
      * @return EntityAttributeValue
      */
     public function setAttribute(EntityAttribute $attribute = null)

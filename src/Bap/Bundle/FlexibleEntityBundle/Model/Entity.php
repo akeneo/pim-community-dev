@@ -45,7 +45,7 @@ abstract class Entity
     /**
      * Set set
      *
-     * @param  EntitySet $set
+     * @param EntitySet $set
      * 
      * @return Entity
      */
@@ -59,7 +59,7 @@ abstract class Entity
     /**
      * Add value
      *
-     * @param  EntityAttributeValue $value
+     * @param EntityAttributeValue $value
      * 
      * @return Entity
      */

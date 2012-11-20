@@ -50,7 +50,8 @@ abstract class EntitySet
     /**
      * Set code
      *
-     * @param  string    $code
+     * @param string $code
+     * 
      * @return EntitySet
      */
     public function setCode($code)
@@ -63,7 +64,8 @@ abstract class EntitySet
     /**
      * Set title
      *
-     * @param  string    $title
+     * @param string $title
+     * 
      * @return EntitySet
      */
     public function setTitle($title)
@@ -86,7 +88,8 @@ abstract class EntitySet
     /**
      * Add group
      *
-     * @param  EntityGroup $group
+     * @param EntityGroup $group
+     * 
      * @return EntitySet
      */
     public function addGroup(EntityGroup $group)
@@ -119,7 +122,8 @@ abstract class EntitySet
     /**
      * Get group
      *
-     * @param  string      $code
+     * @param string $code
+     * 
      * @return EntityGroup
      */
     public function getGroup($code)

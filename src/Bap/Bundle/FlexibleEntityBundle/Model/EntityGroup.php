@@ -45,7 +45,8 @@ abstract class EntityGroup
     /**
      * Set id
      *
-     * @param  integer     $id
+     * @param integer $id
+     * 
      * @return EntityGroup
      */
     public function setId($id)
@@ -68,7 +69,8 @@ abstract class EntityGroup
     /**
      * Set code
      *
-     * @param  string    $code
+     * @param string $code
+     * 
      * @return EntitySet
      */
     public function setCode($code)
@@ -91,7 +93,8 @@ abstract class EntityGroup
     /**
      * Set title
      *
-     * @param  string    $title
+     * @param string $title
+     * 
      * @return EntitySet
      */
     public function setTitle($title)
@@ -104,7 +107,8 @@ abstract class EntityGroup
     /**
      * Add attribute
      *
-     * @param  EntityAttribute $attributes
+     * @param EntityAttribute $attribute
+     * 
      * @return ProductGroup
      */
     public function addAttribute(EntityAttribute $attribute)
@@ -127,7 +131,8 @@ abstract class EntityGroup
     /**
      * Get attribute
      *
-     * @param  string          $code
+     * @param string $code
+     * 
      * @return EntityAttribute
      */
     public function getAttribute($code)

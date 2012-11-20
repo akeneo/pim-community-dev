@@ -68,7 +68,8 @@ abstract class EntityAttribute
     /**
      * Set id
      *
-     * @param  integer         $id
+     * @param integer $id
+     * 
      * @return EntityAttribute
      */
     public function setId($id)
@@ -81,7 +82,7 @@ abstract class EntityAttribute
     /**
      * Set code
      *
-     * @param  string          $code
+     * @param string $code
      * 
      * @return EntityAttribute
      */
@@ -105,7 +106,8 @@ abstract class EntityAttribute
     /**
      * Set title
      *
-     * @param  string          $title
+     * @param string $title
+     * 
      * @return EntityAttribute
      */
     public function setTitle($title)
@@ -128,7 +130,8 @@ abstract class EntityAttribute
     /**
      * Set type
      *
-     * @param  string          $type
+     * @param string $type
+     * 
      * @return EntityAttribute
      */
     public function setType($type)
@@ -151,7 +154,8 @@ abstract class EntityAttribute
     /**
      * Set uniqueValue
      *
-     * @param  boolean         $uniqueValue
+     * @param boolean $uniqueValue
+     * 
      * @return EntityAttribute
      */
     public function setUniqueValue($uniqueValue)
@@ -174,7 +178,8 @@ abstract class EntityAttribute
     /**
      * Set valueRequired
      *
-     * @param  string          $valueRequired
+     * @param string $valueRequired
+     * 
      * @return EntityAttribute
      */
     public function setValueRequired($valueRequired)
@@ -197,7 +202,8 @@ abstract class EntityAttribute
     /**
      * Set searchable
      *
-     * @param  boolean         $searchable
+     * @param boolean $searchable
+     * 
      * @return EntityAttribute
      */
     public function setSearchable($searchable)
@@ -220,7 +226,8 @@ abstract class EntityAttribute
     /**
      * Set translatable
      *
-     * @param  boolean         $translatable
+     * @param boolean $translatable
+     * 
      * @return EntityAttribute
      */
     public function setTranslatable($translatable)
@@ -243,7 +250,8 @@ abstract class EntityAttribute
     /**
      * Set scope
      *
-     * @param  integer         $scope
+     * @param integer $scope
+     * 
      * @return EntityAttribute
      */
     public function setScope($scope)
@@ -266,7 +274,8 @@ abstract class EntityAttribute
     /**
      * Add option
      *
-     * @param  EntityAttributeOption $option
+     * @param EntityAttributeOption $option
+     * 
      * @return EntityAttribute
      */
     public function addOption(EntityAttributeOption $option)
