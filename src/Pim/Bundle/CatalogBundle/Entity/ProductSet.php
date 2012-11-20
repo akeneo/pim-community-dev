@@ -72,4 +72,15 @@ class ProductSet extends AbstractEntitySet
         return $this;
     }
 
+    /**
+     * Custom remove group method to ensure group is removed without explicit call (due to oneToMany)
+     *
+     * @param AbstractEntityGroup $group
+     */
+    public function removeGroup(AbstractEntityGroup $group)
+    {
+        $this->groups->removeElement($group);
+        $group->setSet(null);
+    }
+
 }
