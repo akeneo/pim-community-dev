@@ -6,6 +6,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
+ * Set form builder
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
@@ -42,11 +43,12 @@ class ProductSetType extends AbstractType
 
     /**
      * Construct with full name of concrete impl of set and group class
-     * @param string     $setClass
-     * @param string     $groupClass
-     * @param string     $attributeClass
-     * @param Collection $copySets
-     * @param Collection $availableAttributes
+     * 
+     * @param string     $setClass            set class
+     * @param string     $groupClass          group class
+     * @param string     $attributeClass      att class
+     * @param Collection $copySets            copy sets
+     * @param Collection $availableAttributes available attributes
      */
     public function __construct($setClass, $groupClass, $attributeClass, $copySets, $availableAttributes)
     {
@@ -59,7 +61,9 @@ class ProductSetType extends AbstractType
 
     /**
      * (non-PHPdoc)
-     * @see Symfony\Component\Form.AbstractType::buildForm()
+     * 
+     * @param FormBuilderInterface $builder builder
+     * @param array                $options options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -67,11 +71,7 @@ class ProductSetType extends AbstractType
 
         $builder->add('id', 'hidden');
 
-        $builder->add(
-            'code', null, array(
-                'disabled'  => ($entity->getId())? true : false
-            )
-        );
+        $builder->add('code', 'text');
 
         $builder->add('title', 'text', array('required' => true));
 

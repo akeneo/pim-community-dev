@@ -25,6 +25,7 @@ class ChannelController extends Controller
     /**
      * (non-PHPdoc)
      * @see Parent
+     * @return string
      */
     public function getObjectShortName()
     {
@@ -33,6 +34,7 @@ class ChannelController extends Controller
 
     /**
      * Get used object manager
+     * @return string
      */
     public function getObjectManagerService()
     {
@@ -57,7 +59,7 @@ class ChannelController extends Controller
      * @return unknown
      */
     public function getNewObject()
-     {
+    {
          $classFullName = $this->getObjectClassFullName();
         $entity = new $classFullName();
 
@@ -69,6 +71,8 @@ class ChannelController extends Controller
      *
      * @Route("/index")
      * @Template()
+     * 
+     * @return multitype
      */
     public function indexAction()
     {
@@ -94,6 +98,8 @@ class ChannelController extends Controller
      *
      * @Route("/new")
      * @Template()
+     * 
+     * @return multitype
      */
     public function newAction()
     {
@@ -124,6 +130,8 @@ class ChannelController extends Controller
 
     /**
     * Disable old default channel
+    * 
+    * @return boolean
     */
     protected function hasDefaultChannel()
     {
@@ -136,7 +144,9 @@ class ChannelController extends Controller
 
     /**
      * Check if there is one default locale
-     * @param unknown_type $entity
+     * @param Channel $entity
+     * 
+     * @return boolean
      */
     protected function hasDefaultLocale($entity)
     {
@@ -157,11 +167,15 @@ class ChannelController extends Controller
     }
 
     /**
-    * Creates a new channel
+     * Creates a new channel
      *
-    * @Route("/create")
-    * @Method("POST")
-    */
+     * @param Request $request
+     * 
+     * @Route("/create")
+     * @Method("POST")
+     * 
+     * @return multitype
+     */
     public function createAction(Request $request)
     {
         $entity  = $this->getNewObject();
@@ -198,11 +212,15 @@ class ChannelController extends Controller
     }
 
     /**
-    * Displays a form to edit an existing channel entity.
+     * Displays a form to edit an existing channel entity.
      *
-    * @Route("/{id}/edit")
-    * @Template()
-    */
+     * @param integer $id
+     *
+     * @Route("/{id}/edit")
+     * @Template()
+     * 
+     * @return multitype
+     */
     public function editAction($id)
     {
         $manager = $this->get($this->getObjectManagerService());
@@ -229,11 +247,16 @@ class ChannelController extends Controller
     }
 
     /**
-    * Edits an existing channel entity.
-    *
-    * @Route("/{id}/update")
-    * @Method("POST")
-    */
+     * Edits an existing channel entity.
+     * 
+     * @param Request $request request
+     * @param integer $id      channel id
+     * 
+     * @Route("/{id}/update")
+     * @Method("POST")
+     * 
+     * @return multitype
+     */
     public function updateAction(Request $request, $id)
     {
         $manager = $this->get($this->getObjectManagerService());
@@ -279,8 +302,12 @@ class ChannelController extends Controller
     /**
      * Delete an existing channel entity.
      *
+     * @param integer $id
+     *
      * @Route("/{id}/delete")
      * @Template()
+     * 
+     * @return multitype
      */
     public function deleteAction($id)
     {

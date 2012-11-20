@@ -22,15 +22,49 @@ class ProductSetToArrayTransformerTest extends KernelAwareTest
     {
         // get first set
         $productManager = $this->container->get('pim.catalog.product_manager');
-        $set = $productManager->getSetRepository()->findAll()->getSingleResult();
+        $set = $productManager->getSetRepository()->findOneByCode('base');
         $this->assertNotNull($set);
+
         // transform to array
         $transformer = new ProductSetToArrayTransformer($productManager);
         $data = $transformer->transform($set);
+
         // assert
-        $this->assertEquals($set->getCode(), $data['code']);
-        $this->assertEquals($set->getTitle(), $data['title']);
-        $this->assertEquals($set->getGroups()->count(), count($data['groups']));
+        $this->assertCompareArrayAndSet($data, $set);
+
+        // move one attribute from existing group to a new
+        $oldGroup = $set->getGroups()->first();
+        $oldAttributes = array();
+        foreach ($oldGroup->getAttributes() as $att) {
+            $oldAttributes[]= $att->getId();
+            // add only one
+            break;
+        }
+
+        // add attribute no yet in this set
+        $repo = $productManager->getAttributeRepository();
+        $othersAttributes = $repo->findAllExcept($set);
+        foreach ($othersAttributes as $att) {
+            // add only one
+            $oldAttributes[]= $att->getId();
+        }
+
+        // remove group
+        $oldGroupTwo = $set->getGroups()->next();
+        unset($data['groups'][$oldGroupTwo->getCode()]);
+
+        // add new group with removed attribute
+        $timestamp = str_replace('.', '', microtime(true));
+        $grpCode = 'new-grp'.$timestamp;
+        $data['groups'][$grpCode]= array(
+            'id'    => null,
+            'code'  => $grpCode,
+            'title' => 'new-title',
+            'attributes' => $oldAttributes
+        );
+
+        $set = $transformer->reverseTransform($data);
+        $this->assertCompareArrayAndSet($data, $set);
     }
 
     /**
@@ -56,12 +90,33 @@ class ProductSetToArrayTransformerTest extends KernelAwareTest
             )
         );
         $set = $transformer->reverseTransform($data);
+
         // assert
-        /*
+        $this->assertCompareArrayAndSet($data, $set);
+    }
+
+    /**
+     * refactor asserts fot transform and reverse
+     * 
+     * @param array      $data set data
+     * @param ProductSet $set  set entity
+     */
+    protected function assertCompareArrayAndSet($data, $set)
+    {
+        // base data
         $this->assertEquals($set->getCode(), $data['code']);
         $this->assertEquals($set->getTitle(), $data['title']);
-        $this->assertEquals($set->getGroupByCode('new-group')->getTitle(), $data['groups']['new-group']['title']);
-        */
+        // groups
+        $this->assertEquals($set->getGroups()->count(), count($data['groups']));
+        foreach ($set->getGroups() as $group) {
+            $this->assertEquals($group->getCode(), $data['groups'][$group->getCode()]['code']);
+            $this->assertEquals($group->getTitle(), $data['groups'][$group->getCode()]['title']);
+            $this->assertEquals($group->getAttributes()->count(), count($data['groups'][$group->getCode()]['attributes']));
+            // attributes
+            foreach ($group->getAttributes() as $attribute) {
+                $this->assertTrue(in_array($attribute->getId(), $data['groups'][$group->getCode()]['attributes']));
+            }
+        }
     }
 
 }

@@ -18,6 +18,7 @@ use APY\DataGridBundle\Grid\Action\RowAction;
 use Pim\Bundle\UIBundle\Grid\Helper as GridHelper;
 
 use \Exception;
+use Pim\Bundle\CatalogBundle\Form\DataTransformer\ProductSetToArrayTransformer;
 /**
  * Product set controller.
  *
@@ -49,7 +50,8 @@ class ProductSetController extends Controller
     /**
      * Create set form
      *
-     * @param  ProductSet $set
+     * @param ProductSet $set
+     * 
      * @return Form
      */
     protected function createSetForm($set)
@@ -70,6 +72,8 @@ class ProductSetController extends Controller
      *
      * @Route("/index")
      * @Template()
+     * 
+     * @return multitype
      */
     public function indexAction()
     {
@@ -96,8 +100,12 @@ class ProductSetController extends Controller
     }
 
     /**
+     * @param Request $request
+     * 
      * @Route("/new")
      * @Template()
+     * 
+     * @return multitype
      */
     public function newAction(Request $request)
     {
@@ -112,12 +120,13 @@ class ProductSetController extends Controller
     }
 
     /**
-     *
      * @param Request $request
      *
      * @Route("/create")
      * @Method("POST")
      * @Template()
+     * 
+     * @return multitype
      */
     public function createAction(Request $request)
     {
@@ -161,6 +170,8 @@ class ProductSetController extends Controller
      *
      * @Route("/{id}/edit")
      * @Template()
+     * 
+     * @return multitype
      */
     public function editAction($id)
     {
@@ -176,12 +187,16 @@ class ProductSetController extends Controller
     }
 
     /**
-     *
-     * @param Request $request
+     * update action
+     * 
+     * @param Request $request the request
+     * @param integer $id      set id
      *
      * @Route("/{id}/update")
      * @Method("POST")
      * @Template()
+     * 
+     * @return multitype
      */
     public function updateAction(Request $request, $id)
     {
@@ -193,69 +208,29 @@ class ProductSetController extends Controller
         // get product set
         $postData = $request->get('pim_catalogbundle_productattributeset');
 
-        // TODO refactor following, try to bind form directly or use transformer array to set
-        $entity->setTitle($postData['title']);
-
-        // create new groups
-        $groupsUpdate = array();
-        $groupsNew = array();
-        foreach ($postData['groups'] as $group) {
-
-            // add new group
-            if ($group['id'] == '') {
-                // add group
-                $groupsNew[]= $group;
-                $newGroup = $this->getProductManager()->getNewGroupInstance();
-                $newGroup->setCode($group['code']);
-                $newGroup->setTitle($group['code']);
-                $entity->addGroup($newGroup);
-
-                // add attributes in new group
-                if (isset($group['attributes'])) {
-                    foreach ($group['attributes'] as $attInd => $attData) {
-                        $attId = current($attData);
-                        $attribute = $this->getProductManager()->getAttributeRepository()->find($attId);
-                        $newGroup->addAttribute($attribute);
-                    }
-                }
-
-            // group to update
-            } else {
-                $groupsUpdate[$group['id']]= $group;
-            }
-        }
-
-        // update existing groups
-        foreach ($entity->getGroups() as $group) {
-            // delete if not a new one and not in updated
-            if ($group->getId() and !in_array($group->getId(), array_keys($groupsUpdate))) {
-                $entity->removeGroup($group);
-            // update each attribute
-            } else {
-                // prepare attribute ids
-                $attributesUpdate = isset($groupsUpdate[$group->getId()]['attributes']) ? $groupsUpdate[$group->getId()]['attributes'] : array();
-                foreach ($attributesUpdate as $ind => $att) {
-                    $attributesUpdate[$ind]= current($att);
-                }
-                // delete moved attributes
-                if ($group->getId()) {
-                    foreach ($group->getAttributes() as $attribute) {
-                        // delete
-                        if (!in_array($attribute->getId(), array_keys($attributesUpdate))) {
-                            $group->removeAttribute($attribute);
-                        }
-                    }
-                }
-                // add new attributes
-                foreach ($attributesUpdate as $attId) {
-                    $attribute = $this->getProductManager()->getAttributeRepository()->find($attId);
-                    if (!$group->getAttributes()->contains($attribute)) {
-                        $group->addAttribute($attribute);
-                    }
+        // transform to array understandable by array to set transformer
+        $setData = array();
+        $setData['id']     = $id;
+        $setData['code']   = $postData['code'];
+        $setData['title']  = $postData['title'];
+        $setData['groups'] = $postData['groups'];
+        // format group
+        foreach ($setData['groups'] as $indexGrp => $group) {
+            $setData['groups'][$group['code']]= $group;
+            unset($setData['groups'][$indexGrp]);
+            // format attributes
+            if (isset($setData['groups'][$group['code']]['attributes'])) {
+                foreach ($setData['groups'][$group['code']]['attributes'] as $indexAtt => $attribute) {
+                    $setData['groups'][$group['code']]['attributes'][$indexAtt]= current($attribute);
                 }
             }
         }
 
+        // array to set
+        $transformer = new ProductSetToArrayTransformer($this->getProductManager());
+        $entity = $transformer->reverseTransform($setData);
+
+        // persist
         try {
             $this->getPersistenceManager()->persist($entity);
             $this->getPersistenceManager()->flush();
@@ -286,6 +261,8 @@ class ProductSetController extends Controller
      * TODO : Must prevent against incorrect id
      * TODO : Just a flag to disable entity without physically remove
      * TODO : Add form and verify it.. CSRF fault
+     * 
+     * @return multitype
      */
     public function deleteAction($id)
     {
@@ -300,15 +277,15 @@ class ProductSetController extends Controller
 
         $this->get('session')->setFlash('success', 'product has been removed');
 
-        return $this->redirect(
-                $this->generateUrl('pim_catalog_productset_index')
-        );
+        return $this->redirect($this->generateUrl('pim_catalog_productset_index'));
     }
 
     /**
      * Get attributes
+     * 
+     * @param ProductSet $set
+     * 
      * @return ArrayCollection
-     * TODO : must be move in custom repository storage agnostic
      */
     protected function getAvailableAttributes($set)
     {
