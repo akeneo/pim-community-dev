@@ -67,7 +67,7 @@ class ProductAttributeControllerTest extends WebTestCase
         // get first attribute
         $client = static::createClient();
         $container = $client->getContainer();
-        $attribute = current($container->get('pim.catalog.product_manager')->getAttributeRepository()->findAll());
+        $attribute = $container->get('pim.catalog.product_manager')->getAttributeRepository()->findOneBy(array());
         $this->assertNotNull($attribute);
         // get page
         $crawler = $client->request('GET', "/fr/catalog/productattribute/{$attribute->getId()}/edit");
@@ -90,7 +90,7 @@ class ProductAttributeControllerTest extends WebTestCase
         // get first attribute
         $client = static::createClient();
         $container = $client->getContainer();
-        $attribute = $container->get('pim.catalog.product_manager')->getAttributeRepository()->findAll()->getSingleResult();
+        $attribute = $container->get('pim.catalog.product_manager')->getAttributeRepository()->findOneBy(array());
         $this->assertNotNull($attribute);
         // delete call
         $crawler = $client->request('GET', "/fr/catalog/productattribute/{$attribute->getId()}/delete");
