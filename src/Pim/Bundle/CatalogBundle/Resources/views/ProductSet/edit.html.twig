@@ -67,6 +67,7 @@
                         <ul class="connectedSortable">
                             {{ form_row(group.id) }}
                             {{ form_row(group.code) }}
+                            {{ form_row(group.title) }}
                             {% for attribute in group.attributes %}
                                 <li class="ui-state-default ui-corner-all" id="{{ attribute.id.vars.value }}">
                                     {{ attribute.title.vars.value }} ({{ attribute.code.vars.value }})
@@ -103,7 +104,11 @@
     <div id="dialog" title="{% trans %}pim.catalog.product.text.group-tab{% endtrans %}">
         <form>
             <fieldset class="ui-helper-reset">
-                <label for="tab_title">Code</label>
+                <label for="tab_code">Code</label>
+                <input type="text" name="tab_code" id="tab_code" value="" class="ui-widget-content ui-required ui-corner-all" />
+            </fieldset>
+            <fieldset class="ui-helper-reset">
+                <label for="tab_title">Title</label>
                 <input type="text" name="tab_title" id="tab_title" value="" class="ui-widget-content ui-required ui-corner-all" />
             </fieldset>
         </form>
@@ -188,9 +193,9 @@ $(function() {
     resetListMoves();
 
     /* add a group */
+    var tabCodeInput = $("#tab_code");
     var tabTitleInput = $("#tab_title");
     var tabCounter = $("#tabs ul").children('li.tab').length + 1;
-console.log(tabCounter);
 
     // tabs init with a custom tab template and an "add" callback filling in the content
     var groupTabs = $( "#tabs").tabs({
@@ -199,7 +204,8 @@ console.log(tabCounter);
             var tabContent =
                 '<ul class="connectedSortable">'+
                     '<input type="hidden" name="pim_catalogbundle_productattributeset[groups]['+tabCounter+'][id]" value="">'+
-                    '<input type="hidden" name="pim_catalogbundle_productattributeset[groups]['+tabCounter+'][code]" value="'+tabTitleInput.val()+'" />'+
+                    '<input type="hidden" name="pim_catalogbundle_productattributeset[groups]['+tabCounter+'][code]" value="'+tabCodeInput.val()+'" />'+
+                    '<input type="hidden" name="pim_catalogbundle_productattributeset[groups]['+tabCounter+'][title]" value="'+tabTitleInput.val()+'" />'+
                 '</ul>';
             $( ui.panel ).append(tabContent);
             /* aims to drag / drop from and to this new tab */
