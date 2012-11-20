@@ -67,7 +67,7 @@ class ProductAttributeControllerTest extends WebTestCase
         // get first attribute
         $client = static::createClient();
         $container = $client->getContainer();
-        $attribute = $container->get('pim.catalog.product_manager')->getAttributeRepository()->findAll()->getSingleResult();
+        $attribute = current($container->get('pim.catalog.product_manager')->getAttributeRepository()->findAll());
         $this->assertNotNull($attribute);
         // get page
         $crawler = $client->request('GET', "/fr/catalog/productattribute/{$attribute->getId()}/edit");

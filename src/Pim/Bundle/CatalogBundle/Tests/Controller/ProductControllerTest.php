@@ -31,7 +31,7 @@ class ProductControllerTest extends WebTestCase
         // get first entity
         $client = static::createClient();
         $container = $client->getContainer();
-        $product = $container->get('pim.catalog.product_manager')->getEntityRepository()->findAll()->getSingleResult();
+        $product = current($container->get('pim.catalog.product_manager')->getEntityRepository()->findAll());
         $this->assertNotNull($product);
         // get page
         $crawler = $client->request('GET', "/fr/catalog/product/{$product->getId()}/edit");

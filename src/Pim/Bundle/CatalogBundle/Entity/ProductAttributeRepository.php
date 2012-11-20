@@ -33,8 +33,9 @@ class ProductAttributeRepository extends EntityRepository implements ProductAttr
         }
         // query
         $qb = $this->createQueryBuilder('a');
-        $qb->add('where', $qb->expr()->notIn('a.id', $excludeIds));
-
+        if (count($excludeIds) > 0) {
+            $qb->add('where', $qb->expr()->notIn('a.id', $excludeIds));
+        }
         return $qb->getQuery()->getResult();
     }
 }
