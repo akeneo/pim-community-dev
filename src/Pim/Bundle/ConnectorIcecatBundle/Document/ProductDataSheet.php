@@ -7,7 +7,6 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations\String;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 /**
- *
  * Enter description here ...
  *
  * @author    Romain Monceau <romain@akeneo.com>
@@ -16,7 +15,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
  *
  * @MongoDB\Document
  */
-class ProductDataSheetDocument
+class ProductDataSheet
 {
     /**
      * @var integer
@@ -89,7 +88,7 @@ class ProductDataSheetDocument
      * Set productId
      *
      * @param  int                      $productId
-     * @return ProductDataSheetDocument
+     * @return ProductDataSheet
      */
     public function setProductId($productId)
     {
@@ -112,7 +111,7 @@ class ProductDataSheetDocument
      * Set importPath
      *
      * @param  string                   $importPath
-     * @return ProductDataSheetDocument
+     * @return ProductDataSheet
      */
     public function setImportPath($importPath)
     {
@@ -135,7 +134,7 @@ class ProductDataSheetDocument
      * Set xmlBaseData
      *
      * @param  string                   $xmlBaseData
-     * @return ProductDataSheetDocument
+     * @return ProductDataSheet
      */
     public function setXmlBaseData($xmlBaseData)
     {
@@ -158,7 +157,7 @@ class ProductDataSheetDocument
      * Set xmlDetailledData
      *
      * @param  string                   $xmlDetailledData
-     * @return ProductDataSheetDocument
+     * @return ProductDataSheet
      */
     public function setXmlDetailledData($xmlDetailledData)
     {
@@ -181,7 +180,7 @@ class ProductDataSheetDocument
      * Set isImported
      *
      * @param  boolean                  $isImported
-     * @return ProductDataSheetDocument
+     * @return ProductDataSheet
      */
     public function setIsImported($isImported)
     {

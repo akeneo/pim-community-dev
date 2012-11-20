@@ -1,11 +1,11 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Command;
 
+use Pim\Bundle\DataFlowBundle\Model\Extract\FileUnzip;
+
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpDownload;
 
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
-
-use Pim\Bundle\ConnectorIcecatBundle\Document\ProductDataSheetDocument;
+use Pim\Bundle\ConnectorIcecatBundle\Document\ProductDataSheet;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\ConfigManager;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
 
@@ -44,34 +44,63 @@ class ImportBaseProductsCommand extends ContainerAwareCommand
         $configManager = $this->getConfigManager();
         $login = $configManager->getValue(Config::LOGIN);
         $password = $configManager->getValue(Config::PASSWORD);
-        $downloadUrl = $configManager->getValue(Config::BASE_URL) . $configManager->getValue(Config::BASE_PRODUCTS_URL);
+        $downloadUrl = /*$configManager->getValue(Config::BASE_URL) .*/ $configManager->getValue(Config::PRODUCTS_URL);
+        $archivedFilePath = '/tmp/'. $configManager->getValue(Config::PRODUCTS_ARCHIVED_FILE);
+        $filePath = '/tmp/base-products-complete.csv';
 
         // get xml content
-        $fileReader = new FileHttpReader();
         $fileReader = new FileHttpDownload();
-        $content = $fileReader->process($downloadUrl, '/tmp/icecat-base-products.xml', $login, $password);
-
+        $fileReader->process($downloadUrl, $archivedFilePath, $login, $password, false);
+        
+        // unpack source
+        $unpacker = new FileUnzip();
+        $unpacker->process($archivedFilePath, $filePath, false);
+        
         // get document manager
         $dm = $this->getContainer()->get('doctrine.odm.mongodb.document_manager');
-
-        // read xlk cibtebt
-        libxml_use_internal_errors(true);
-        $xmlContent = simplexml_load_string($content);
-
-        foreach ($xmlContent->xpath('//file') as $file) {
-            // Instanciate new object
-            $doc = new ProductDataSheetDocument();
-            $doc->setImportPath($file['path']->asXML());
-            $doc->setProductId($file['Product_ID']);
-            $doc->setXmlBaseData($file->asXML());
-
-            $dm->persist($doc);
+        
+        // import products
+        if (($handle = fopen($filePath, 'r')) !== false) {
+            $batchSize = 0;
+            
+            // not parse header
+            $headers = fgetcsv($handle, 1000, "\t");
+            while (($data = fgetcsv($handle, 1000, "\t")) !== false) {
+                
+                
+                // instanciate new object
+                $product = new ProductDataSheet();
+                $product->setProductId($data[0]);
+                $product->setImportPath('http://data.icecat.biz/export/freexml.int/INT/'. $data[0] .'.xml');
+                $product->setXmlBaseData(implode("\t", $data));
+        
+                $dm->persist($product);
+                if (++$batchSize % 10000 === 0) {
+                    $dm->flush();
+                    $output->writeln('Batch size : '. $batchSize);
+                    $output->writeln('memory usage -> '. $this->getMemoryUsage());
+                    $dm->clear();
+                    $output->writeln('after clear memory usage -> '. $this->getMemoryUsage());
+                    gc_collect_cycles();
+                    $output->writeln('after gc_collect_cycles -> '. $this->getMemoryUsage());
+                }
+            }
         }
-
+        
         // persist documents with constraint validation
         $dm->flush();
         
         $output->writeln('command executed successfully');
+    }
+    
+    /**
+     * Get memory usage in
+     * @return number
+     */
+    private function getMemoryUsage()
+    {
+        $size = memory_get_usage(true);
+        return $size / 1024 / 1024;
     }
 
     /**
