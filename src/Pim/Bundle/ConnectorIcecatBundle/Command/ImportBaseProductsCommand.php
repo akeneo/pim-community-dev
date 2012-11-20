@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Command;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
+
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileUnzip;
 
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpDownload;
@@ -41,12 +43,13 @@ class ImportBaseProductsCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // get config
-        $configManager = $this->getConfigManager();
-        $login = $configManager->getValue(Config::LOGIN);
-        $password = $configManager->getValue(Config::PASSWORD);
-        $downloadUrl = /*$configManager->getValue(Config::BASE_URL) .*/ $configManager->getValue(Config::PRODUCTS_URL);
-        $archivedFilePath = '/tmp/'. $configManager->getValue(Config::PRODUCTS_ARCHIVED_FILE);
-        $filePath = '/tmp/base-products-complete.csv';
+        $configManager    = $this->getConfigManager();
+        $login            = $configManager->getValue(Config::LOGIN);
+        $password         = $configManager->getValue(Config::PASSWORD);
+        $baseDir          = $configManager->getValue(Config::BASE_DIR);
+        $downloadUrl      = $configManager->getValue(Config::PRODUCTS_URL);
+        $archivedFilePath = $baseDir . $configManager->getValue(Config::PRODUCTS_ARCHIVED_FILE);
+        $filePath         = $baseDir . $configManager->getValue(Config::PRODUCT_FILE);
 
         // get xml content
         $fileReader = new FileHttpDownload();
@@ -57,7 +60,7 @@ class ImportBaseProductsCommand extends ContainerAwareCommand
         $unpacker->process($archivedFilePath, $filePath, false);
         
         // get document manager
-        $dm = $this->getContainer()->get('doctrine.odm.mongodb.document_manager');
+        $dm = $this->getDocumentManager();
         
         // import products
         if (($handle = fopen($filePath, 'r')) !== false) {
@@ -66,16 +69,12 @@ class ImportBaseProductsCommand extends ContainerAwareCommand
             // not parse header
             $headers = fgetcsv($handle, 1000, "\t");
             while (($data = fgetcsv($handle, 1000, "\t")) !== false) {
-                
-                
                 // instanciate new object
                 $product = new ProductDataSheet();
                 $product->setProductId($data[0]);
-                $product->setImportPath('http://data.icecat.biz/export/freexml.int/INT/'. $data[0] .'.xml');
-                $product->setXmlBaseData(implode("\t", $data));
         
                 $dm->persist($product);
-                if (++$batchSize % 10000 === 0) {
+                if (++$batchSize % 20000 === 0) {
                     $dm->flush();
                     $output->writeln('Batch size : '. $batchSize);
                     $output->writeln('memory usage -> '. $this->getMemoryUsage());
@@ -109,5 +108,13 @@ class ImportBaseProductsCommand extends ContainerAwareCommand
     protected function getConfigManager()
     {
         return $this->getContainer()->get('pim.connector.icecat.configmanager');
+    }
+    
+    /**
+     * @return DocumentManager
+     */
+    protected function getDocumentManager()
+    {
+        return $this->getContainer()->get('doctrine.odm.mongodb.document_manager');
     }
 }
