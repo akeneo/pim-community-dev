@@ -100,7 +100,8 @@ class ProductSetToArrayTransformer implements DataTransformerInterface
                 $groupsNew[]= $groupData;
                 $newGroup = $this->pm->getNewGroupInstance();
                 $newGroup->setCode($groupData['code']);
-                $newGroup->setTitle($groupData['title']);
+                $grpTitle = isset($groupData['title']) ? $groupData['title'] : $groupData['code'];
+                $newGroup->setTitle($grpTitle);
                 $entity->addGroup($newGroup);
 
                 // add attributes in new group
