@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Bap\Bundle\FlexibleEntityBundle\Model\Entity as AbstractEntity;
+use Bap\Bundle\FlexibleEntityBundle\Entity\Entity as AbstractEntity;
 use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttributeValue as AbstractEntityAttributeValue;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -17,14 +17,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ProductEntity extends AbstractEntity
 {
-    /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
 
     /**
      * @var EntitySet $set
@@ -39,28 +31,5 @@ class ProductEntity extends AbstractEntity
      * @ORM\OneToMany(targetEntity="ProductAttributeValue", mappedBy="entity", cascade={"persist", "remove"})
      */
     protected $values;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->values = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add value
-     *
-     * @param AbstractEntityAttributeValue $value
-     * 
-     * @return AbstractEntity
-     */
-    public function addValue(AbstractEntityAttributeValue $value)
-    {
-        $this->values[] = $value;
-        $value->setEntity($this);
-
-        return $this;
-    }
 
 }

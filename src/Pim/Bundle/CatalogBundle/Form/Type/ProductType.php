@@ -51,7 +51,7 @@ class ProductType extends AbstractType
 
                     // TODO filter values not efficient
                     $values = $entity->getValues()->filter(function($value) use ($attribute) {
-                        return $value->getAttribute() == $attribute;
+                        return $value->getAttribute()->getId() == $attribute->getId();
                     });
                     $value = $values->first();
 

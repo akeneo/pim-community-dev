@@ -2,7 +2,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityGroup as AbstractEntityGroup;
+use Bap\Bundle\FlexibleEntityBundle\Entity\EntityGroup as AbstractEntityGroup;
 
 /**
  * Product attribute group (general, media, seo, etc)
@@ -16,28 +16,6 @@ use Bap\Bundle\FlexibleEntityBundle\Model\EntityGroup as AbstractEntityGroup;
  */
 class ProductGroup extends AbstractEntityGroup
 {
-    /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
-
-    /**
-     * @var string $code
-     *
-     * @ORM\Column(name="code", type="string")
-     */
-    protected $code;
-
-    /**
-     * @var string $title
-     *
-     * @ORM\Column(name="title", type="string")
-     */
-    protected $title;
 
     /**
      * @var Set set
@@ -53,25 +31,4 @@ class ProductGroup extends AbstractEntityGroup
      */
     protected $attributes = array();
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->attributes = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Set Set
-     *
-     * @param ProductSet $set
-     * 
-     * @return ProductGroup
-     */
-    public function setSet(ProductSet $set = null)
-    {
-        $this->set = $set;
-
-        return $this;
-    }
 }

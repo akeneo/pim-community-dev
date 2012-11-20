@@ -2,7 +2,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Bap\Bundle\FlexibleEntityBundle\Model\Entity as AbstractEntity;
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttributeValue as AbstractEntityAttributeValue;
+use Bap\Bundle\FlexibleEntityBundle\Entity\EntityAttributeValue as AbstractEntityAttributeValue;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
@@ -21,15 +21,6 @@ use Gedmo\Translatable\Translatable;
 class ProductAttributeValue extends AbstractEntityAttributeValue
 {
     /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
-
-    /**
      * @var Attribute $attribute
      *
      * @ORM\ManyToOne(targetEntity="ProductAttribute")
@@ -43,42 +34,4 @@ class ProductAttributeValue extends AbstractEntityAttributeValue
      */
     protected $entity;
 
-    /**
-     * TODO : basic sample for basic EAV implementation, only varchar values
-     * @var string $content
-     *
-     * @Gedmo\Translatable
-     * @ORM\Column(name="data", type="string", length=255)
-     */
-    protected $data;
-
-    /**
-     * @Gedmo\Locale
-     * Used locale to override Translation listener`s locale
-     * this is not a mapped attribute of entity metadata, just a simple property
-     */
-    protected $locale;
-
-    /**
-     * Set used locale
-     * @param string $locale
-     */
-    public function setTranslatableLocale($locale)
-    {
-        $this->locale = $locale;
-    }
-
-    /**
-     * Set entity
-     *
-     * @param AbstractEntity $entity
-     * 
-     * @return ProductAttributeValue
-     */
-    public function setEntity(AbstractEntity $entity = null)
-    {
-        $this->entity = $entity;
-
-        return $this;
-    }
 }

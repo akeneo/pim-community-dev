@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttributeOption as AbstractEntityAttributeOption;
+use Bap\Bundle\FlexibleEntityBundle\Entity\EntityAttributeOption as AbstractEntityAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,16 +16,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ProductAttributeOption extends AbstractEntityAttributeOption
 {
-    /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
 
     /**
+     * Overrided to change target entity name
+     * 
      * @var Attribute $attribute
      *
      * @ORM\ManyToOne(targetEntity="ProductAttribute")
@@ -33,27 +27,4 @@ class ProductAttributeOption extends AbstractEntityAttributeOption
      */
     protected $attribute;
 
-    /**
-     * @ORM\Column(name="data", type="string", length=255)
-     */
-    protected $value;
-
-    /**
-     * @ORM\Column(name="sort_order", type="integer")
-     */
-    protected $sortOrder;
-
-    /**
-     * Set attribute
-     *
-     * @param ProductAttribute $attribute
-     * 
-     * @return ProductAttributeOption
-     */
-    public function setAttribute(ProductAttribute $attribute = null)
-    {
-        $this->attribute = $attribute;
-
-        return $this;
-    }
 }
