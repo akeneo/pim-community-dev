@@ -20,5 +20,7 @@ class ImportBaseProductsCommandTest extends CommandTestCase
         $client = self::createClient();
 
         $output = $this->runCommand($client, "connectoricecat:importBaseProducts");
+
+        echo $output;
     }
 }
