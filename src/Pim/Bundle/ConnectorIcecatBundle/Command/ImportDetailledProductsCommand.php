@@ -58,6 +58,7 @@ class ImportDetailledProductsCommand extends ContainerAwareCommand
     {
         // get arguments
         $limit = $input->getArgument('limit');
+        $startLimit = $limit;
         
         // get config
         $configManager = $this->getConfigManager();
@@ -79,28 +80,36 @@ class ImportDetailledProductsCommand extends ContainerAwareCommand
         
         // prepare objects
         $reader = new FileHttpReader();
-        $productManager = $this->getProductManager();
-        libxml_use_internal_errors(true);
+//         $productManager = $this->getProductManager();
+//         $xmlToArray = new ProductXmlToArrayTransformer();
+//         $arrayToProduct = new ProductArrayToCatalogProductTransformer($productManager, array(), array(), 'en_US');
+//         libxml_use_internal_errors(true);
         
+//         $time = array();
+//         $startTime = microtime(true);
         
         // loop on products
         foreach ($products as $product)
         {
+            $start = microtime(true);
             $file = $product->getProductId() .'.xml';
             $content = $reader->process($baseFilePath . $file, $login, $password, false);
-            $content = simplexml_load_string($content);
+//             $content = simplexml_load_string($content);
             
-            $xmlToArray = new ProductXmlToArrayTransformer($content);
-            $xmlToArray->transform();
+//             $xmlToArray->setSimpleDoc($content);
+//             $xmlToArray->transform();
             
-            $baseData = $xmlToArray->getProductBaseData();
-            $features = $xmlToArray->getProductFeatures();
+//             $baseData = $xmlToArray->getProductBaseData();
+//             $features = $xmlToArray->getProductFeatures();
             
-            $arrayToProduct = new ProductArrayToCatalogProductTransformer($productManager, $baseData, $features, 'en_US');
-            $arrayToProduct->transform();
-            
+//             $arrayToProduct->setProdData($baseData);
+//             $arrayToProduct->setProdFeat($features);
+//             $arrayToProduct->transform();
+            $product->setXmlDetailledData($content);
             $product->setIsImported(true);
             $dm->persist($product);
+            
+//             echo (microtime(true) - $start) ." secs\n";
             
             if (--$limit === 0) {
                 $dm->flush();

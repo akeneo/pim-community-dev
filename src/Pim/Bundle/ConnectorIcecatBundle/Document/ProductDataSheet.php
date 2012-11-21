@@ -34,20 +34,12 @@ class ProductDataSheet
     protected $productId;
 
     /**
-     * Product detailed remote import path
-     * @var string
+     * Detailled data is imported
+     * @var boolean
      *
-     * @MongoDB\String
+     * @MongoDB\Boolean
      */
-    protected $importPath;
-
-    /**
-     * Whole line for basic product data
-     * @var string
-     *
-     * @MongoDB\String
-     */
-    protected $xmlBaseData;
+    protected $isImported;
 
     /**
      * Detailed data for product
@@ -56,14 +48,6 @@ class ProductDataSheet
      * @MongoDB\String
      */
     protected $xmlDetailledData;
-
-    /**
-     * Detailled data is imported
-     * @var boolean
-     *
-     * @MongoDB\Boolean
-     */
-    protected $isImported;
     
     /**
      * Constructor
@@ -71,7 +55,6 @@ class ProductDataSheet
     public function __construct()
     {
         $this->isImported = false;
-        $this->xmlDetailledData = false;
     }
 
     /**
@@ -108,49 +91,26 @@ class ProductDataSheet
     }
 
     /**
-     * Set importPath
+     * Set isImported
      *
-     * @param  string                   $importPath
+     * @param  boolean                  $isImported
      * @return ProductDataSheet
      */
-    public function setImportPath($importPath)
+    public function setIsImported($isImported)
     {
-        $this->importPath = $importPath;
+        $this->isImported = $isImported;
 
         return $this;
     }
 
     /**
-     * Get importPath
+     * Get isImported
      *
-     * @return string $importPath
+     * @return boolean $isImported
      */
-    public function getImportPath()
+    public function getIsImported()
     {
-        return $this->importPath;
-    }
-
-    /**
-     * Set xmlBaseData
-     *
-     * @param  string                   $xmlBaseData
-     * @return ProductDataSheet
-     */
-    public function setXmlBaseData($xmlBaseData)
-    {
-        $this->xmlBaseData = $xmlBaseData;
-
-        return $this;
-    }
-
-    /**
-     * Get xmlBaseData
-     *
-     * @return string $xmlBaseData
-     */
-    public function getXmlBaseData()
-    {
-        return $this->xmlBaseData;
+        return $this->isImported;
     }
 
     /**
@@ -174,28 +134,5 @@ class ProductDataSheet
     public function getXmlDetailledData()
     {
         return $this->xmlDetailledData;
-    }
-
-    /**
-     * Set isImported
-     *
-     * @param  boolean                  $isImported
-     * @return ProductDataSheet
-     */
-    public function setIsImported($isImported)
-    {
-        $this->isImported = $isImported;
-
-        return $this;
-    }
-
-    /**
-     * Get isImported
-     *
-     * @return boolean $isImported
-     */
-    public function getIsImported()
-    {
-        return $this->isImported;
     }
 }
