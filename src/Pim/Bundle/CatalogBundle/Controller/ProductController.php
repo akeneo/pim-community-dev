@@ -44,6 +44,8 @@ class ProductController extends Controller
      *
      * @Route("/index")
      * @Template()
+     *
+     * @return multitype
      */
     public function indexAction()
     {
@@ -64,7 +66,8 @@ class ProductController extends Controller
     /**
      * Create product form
      *
-     * @param  ProductEntity $product
+     * @param ProductEntity $product
+     *
      * @return Form
      */
     protected function createProductForm($product)
@@ -78,8 +81,12 @@ class ProductController extends Controller
     /**
      * Displays a form to edit an existing product entity.
      *
+     * @param integer $id the product id
+     *
      * @Route("/{id}/edit")
      * @Template()
+     *
+     * @return multitype
      */
     public function editAction($id)
     {
@@ -99,11 +106,16 @@ class ProductController extends Controller
     }
 
     /**
-    * Edits an existing product entity.
+     * Edits an existing product entity.
      *
-    * @Route("/{id}/update")
-    * @Method("POST")
-    */
+     * @param Request $request the request
+     * @param integer $id      the product id
+     *
+     * @Route("/{id}/update")
+     * @Method("POST")
+     *
+     * @return multitype
+     */
     public function updateAction(Request $request, $id)
     {
         $entity = $this->getProductManager()->getEntityRepository()->find($id);

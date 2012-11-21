@@ -20,17 +20,26 @@ class DoctrineExtensionListener implements ContainerAwareInterface
      */
     protected $container;
 
+    /**
+     * @param ContainerInterface $container
+     */
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function onLateKernelRequest(GetResponseEvent $event)
     {
         $translatable = $this->container->get('gedmo.listener.translatable');
         $translatable->setTranslatableLocale($event->getRequest()->getLocale());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function onKernelRequest(GetResponseEvent $event)
     {
         $securityContext = $this->container->get('security.context', ContainerInterface::NULL_ON_INVALID_REFERENCE);

@@ -16,11 +16,7 @@ use Bap\Bundle\FlexibleEntityBundle\Model\EntitySet as AbstractEntitySet;
 class ProductAttributeRepository extends EntityRepository implements ProductAttributeRepositoryInterface
 {
     /**
-     * @param AbstractEntitySet $set
-     * 
-     * @see interface
-     * 
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function findAllExcept(AbstractEntitySet $set)
     {
@@ -36,6 +32,7 @@ class ProductAttributeRepository extends EntityRepository implements ProductAttr
         if (count($excludeIds) > 0) {
             $qb->add('where', $qb->expr()->notIn('a.id', $excludeIds));
         }
+
         return $qb->getQuery()->getResult();
     }
 }

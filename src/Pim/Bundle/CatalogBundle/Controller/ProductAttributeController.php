@@ -46,6 +46,8 @@ class ProductAttributeController extends Controller
      *
      * @Route("/index")
      * @Template()
+     *
+     * @return multitype
      */
     public function indexAction()
     {
@@ -73,7 +75,8 @@ class ProductAttributeController extends Controller
     /**
      * Create attribute form
      *
-     * @param  ProductAttribute $attribute
+     * @param ProductAttribute $attribute
+     *
      * @return Form
      */
     protected function createAttributeForm($attribute)
@@ -90,6 +93,8 @@ class ProductAttributeController extends Controller
      *
      * @Route("/new")
      * @Template()
+     *
+     * @return multitype
      */
     public function newAction()
     {
@@ -106,9 +111,13 @@ class ProductAttributeController extends Controller
     /**
      * Creates a new attribute
      *
+     * @param Request $request the request
+     *
      * @Route("/create")
      * @Method("POST")
      * @Template("PimCatalogBundle:ProductAttribute:edit.html.twig")
+     *
+     * @return multitype
      */
     public function createAction(Request $request)
     {
@@ -143,8 +152,12 @@ class ProductAttributeController extends Controller
     /**
      * Displays a form to edit an existing attribute entity.
      *
+     * @param integer $id attribute id
+     *
      * @Route("/{id}/edit")
      * @Template()
+     *
+     * @return multitype
      */
     public function editAction($id)
     {
@@ -166,9 +179,14 @@ class ProductAttributeController extends Controller
     /**
      * Edits an existing attribute entity.
      *
+     * @param Request $request the request
+     * @param integer $id      attribute id
+     *
      * @Route("/{id}/update")
      * @Method("POST")
      * @Template("PimCatalogBundle:ProductAttribute:edit.html.twig")
+     *
+     * @return multitype
      */
     public function updateAction(Request $request, $id)
     {
@@ -207,7 +225,12 @@ class ProductAttributeController extends Controller
     /**
      * Deletes a ProductAttribute entity.
      *
+     * @param Request $request the request
+     * @param integer $id      attribute id
+     *
      * @Route("/{id}/delete")
+     *
+     * @return multitype
      */
     public function deleteAction(Request $request, $id)
     {

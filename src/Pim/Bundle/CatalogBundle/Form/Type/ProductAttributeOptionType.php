@@ -30,11 +30,8 @@ class ProductAttributeOptionType extends AbstractType
     }
 
     /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
-     *
-     * (non-PHPdoc)
-     * @see \Symfony\Component\Form\AbstractType::buildForm()
+     * @param FormBuilderInterface $builder the builder
+     * @param array                $options the options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -59,7 +56,7 @@ class ProductAttributeOptionType extends AbstractType
     /**
      * (non-PHPdoc)
      * @see \Symfony\Component\Form\FormTypeInterface::getName()
-     * 
+     *
      * @return string
      */
     public function getName()

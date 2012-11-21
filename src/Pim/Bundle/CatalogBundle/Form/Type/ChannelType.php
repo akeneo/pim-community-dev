@@ -28,9 +28,9 @@ class ChannelType extends AbstractType
 
     /**
      * Construct with full name of concrete impl of channel and locale classes
-     * 
-     * @param string $channelClass
-     * @param string $channelLocaleClass
+     *
+     * @param string $channelClass       channel class
+     * @param string $channelLocaleClass channel locale class
      */
     public function __construct($channelClass, $channelLocaleClass)
     {

@@ -4,6 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 /**
+ * Group form type
+ *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -23,7 +25,9 @@ class ProductGroupType extends AbstractType
 
     /**
      * Construct with full name of concrete impl of group class
-     * @param string $groupClass
+     *
+     * @param string $groupClass     the group class
+     * @param string $attributeClass the attribute class
      */
     public function __construct($groupClass, $attributeClass)
     {
@@ -32,8 +36,7 @@ class ProductGroupType extends AbstractType
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Symfony\Component\Form.AbstractType::buildForm()
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -53,10 +56,7 @@ class ProductGroupType extends AbstractType
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Symfony\Component\Form.AbstractType::getDefaultOptions()
-     *
-     * TODO : must be persistence agnostic
+     * {@inheritdoc}
      */
     public function getDefaultOptions(array $options)
     {
@@ -66,8 +66,7 @@ class ProductGroupType extends AbstractType
     }
 
     /**
-     * (non-PHPdoc)
-     * @see \Symfony\Component\Form\FormTypeInterface::getName()
+     * {@inheritdoc}
      */
     public function getName()
     {

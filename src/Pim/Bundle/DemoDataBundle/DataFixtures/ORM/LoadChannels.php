@@ -40,8 +40,7 @@ class LoadChannels extends AbstractFixture implements OrderedFixtureInterface
     }
 
     /**
-     * Executing order
-     * @see Doctrine\Common\DataFixtures.OrderedFixtureInterface::getOrder()
+     * {@inheritdoc}
      */
     public function getOrder()
     {

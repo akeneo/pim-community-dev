@@ -28,9 +28,9 @@ class ProductAttributeType extends AbstractType
 
     /**
      * Construct with full name of concrete impl of attribute and option classes
-     * 
-     * @param string $attributeClass
-     * @param string $optionClass
+     *
+     * @param string $attributeClass attribute class
+     * @param string $optionClass    attribute option class
      */
     public function __construct($attributeClass, $optionClass)
     {

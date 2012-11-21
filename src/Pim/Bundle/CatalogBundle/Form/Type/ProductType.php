@@ -23,7 +23,8 @@ class ProductType extends AbstractType
 
     /**
      * Construct with full name of concrete impl of product class
-     * @param unknown_type $productClass
+     *
+     * @param string $productClass
      */
     public function __construct($productClass)
     {
@@ -31,9 +32,7 @@ class ProductType extends AbstractType
     }
 
     /**
-     * Build form
-     * @param FormBuilderInterface $builder
-     * @param array                $options
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -90,8 +89,7 @@ class ProductType extends AbstractType
     }
 
     /**
-     * Setup default options
-     * @param OptionsResolverInterface $resolver
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -103,8 +101,7 @@ class ProductType extends AbstractType
     }
 
     /**
-     * Get identifier
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {

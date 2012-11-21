@@ -25,6 +25,9 @@ class ProductGroupAttributeType extends AbstractType
 
     /**
      * Construct
+     *
+     * @param string          $attributeClass attribute class
+     * @param EntityAttribute $attribute      attribut instance
      */
     public function __construct($attributeClass, EntityAttribute $attribute = null)
     {
@@ -35,8 +38,7 @@ class ProductGroupAttributeType extends AbstractType
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Symfony\Component\Form.AbstractType::buildForm()
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -49,8 +51,7 @@ class ProductGroupAttributeType extends AbstractType
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Symfony\Component\Form.AbstractType::getDefaultOptions()
+     * {@inheritdoc}
      */
     public function getDefaultOptions(array $options)
     {
@@ -60,8 +61,7 @@ class ProductGroupAttributeType extends AbstractType
     }
 
     /**
-     * Return identifier
-     * @see Symfony\Component\Form.FormTypeInterface::getName()
+     * {@inheritdoc}
      */
     public function getName()
     {

@@ -63,8 +63,7 @@ abstract class AbstractLoadProducts extends AbstractFixture implements OrderedFi
     }
 
     /**
-     * Executing order
-     * @see Doctrine\Common\DataFixtures.OrderedFixtureInterface::getOrder()
+     * {@inheritdoc}
      */
     public function getOrder()
     {
@@ -73,6 +72,8 @@ abstract class AbstractLoadProducts extends AbstractFixture implements OrderedFi
 
     /**
      * Create base product type
+     *
+     * @return ProductSet
      */
     protected function createBaseSet()
     {
@@ -128,8 +129,12 @@ abstract class AbstractLoadProducts extends AbstractFixture implements OrderedFi
     }
 
     /**
-    * Create base product type
-    */
+     * Create base product type
+     *
+     * @param ProductSet $baseSet
+     *
+     * @return ProductSet
+     */
     protected function createTshirtSet($baseSet)
     {
         // clone base product type
