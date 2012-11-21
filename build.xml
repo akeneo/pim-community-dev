@@ -155,6 +155,7 @@
     </target>
 
     <target name="setupdb" description="Setup db">
+        <!-- doctrine -->
         <exec executable="app/console">
           <arg value="doctrine:database:drop" />
           <arg value="-n" />
@@ -169,6 +170,23 @@
           <arg value="-n" />
           <arg value="--complete" />
           <arg value="--force" />
+        </exec>
+        <!-- mongodb -->
+        <exec executable="app/console">
+          <arg value="doctrine:mongodb:schema:drop" />
+          <arg value="-n" />
+          <arg value="--force" />
+        </exec>
+        <exec executable="app/console">
+          <arg value="doctrine:mongodb:schema:create" />
+          <arg value="--index" />
+        </exec>
+        <!-- load fixtures -->
+        <exec executable="app/console">
+          <arg value="doctrine:fixtures:load" />
+        </exec>
+        <exec executable="app/console">
+          <arg value="doctrine:mongodb:fixtures:load" />
         </exec>
     </target>
 

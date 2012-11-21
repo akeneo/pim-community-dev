@@ -38,6 +38,7 @@ class AppKernel extends Kernel
 
             // community bundles
             new APY\DataGridBundle\APYDataGridBundle(),
+            new Pim\Bundle\DemoDataBundle\PimDemoDataBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

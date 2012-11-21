@@ -1,5 +1,5 @@
 <?php
-namespace Pim\Bundle\CatalogBundle\DataFixtures\ORM;
+namespace Pim\Bundle\DemoDataBundle\DataFixtures\Base;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -9,7 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
 
 /**
- * Load products samples
+ * Load products samples (independent of storage)
  *
  * Execute with "php app/console doctrine:fixtures:load"
  *
@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
+abstract class AbstractLoadProducts extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
     const SET_BASE          = 'base';
     const SET_GROUP_INFO    = 'general';
@@ -56,7 +56,7 @@ class LoadProducts extends AbstractFixture implements OrderedFixtureInterface, C
      */
     public function load(ObjectManager $manager)
     {
-        $this->productManager = $this->container->get('pim.catalog.product_manager');
+        // have to define product manager
         $baseSet = $this->createBaseSet();
         $tshirtSet = $this->createTshirtSet($baseSet);
         $this->createTshirtProducts($tshirtSet);
