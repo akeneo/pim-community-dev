@@ -174,8 +174,6 @@
         <!-- mongodb -->
         <exec executable="app/console">
           <arg value="doctrine:mongodb:schema:drop" />
-          <arg value="-n" />
-          <arg value="--force" />
         </exec>
         <exec executable="app/console">
           <arg value="doctrine:mongodb:schema:create" />
