@@ -19,7 +19,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Import whole set of basic data products from icecat
- * 
+ *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -27,8 +27,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ImportBaseProductsCommand extends ContainerAwareCommand
 {
     /**
-     * (non-PHPdoc)
-     * @see \Symfony\Component\Console\Command\Command::configure()
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -37,8 +36,7 @@ class ImportBaseProductsCommand extends ContainerAwareCommand
     }
 
     /**
-     * (non-PHPdoc)
-     * @see \Symfony\Component\Console\Command\Command::execute()
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -54,25 +52,25 @@ class ImportBaseProductsCommand extends ContainerAwareCommand
         // get xml content
         $fileReader = new FileHttpDownload();
         $fileReader->process($downloadUrl, $archivedFilePath, $login, $password, false);
-        
+
         // unpack source
         $unpacker = new FileUnzip();
         $unpacker->process($archivedFilePath, $filePath, false);
-        
+
         // get document manager
         $dm = $this->getDocumentManager();
-        
+
         // import products
         if (($handle = fopen($filePath, 'r')) !== false) {
             $batchSize = 0;
-            
+
             // not parse header
             $headers = fgetcsv($handle, 1000, "\t");
             while (($data = fgetcsv($handle, 1000, "\t")) !== false) {
                 // instanciate new object
                 $product = new ProductDataSheet();
                 $product->setProductId($data[0]);
-        
+
                 $dm->persist($product);
                 if (++$batchSize % 20000 === 0) {
                     $dm->flush();
@@ -85,13 +83,13 @@ class ImportBaseProductsCommand extends ContainerAwareCommand
                 }
             }
         }
-        
+
         // persist documents with constraint validation
         $dm->flush();
-        
+
         $output->writeln('command executed successfully');
     }
-    
+
     /**
      * Get memory usage in
      * @return number
@@ -99,6 +97,7 @@ class ImportBaseProductsCommand extends ContainerAwareCommand
     private function getMemoryUsage()
     {
         $size = memory_get_usage(true);
+
         return $size / 1024 / 1024;
     }
 
@@ -109,7 +108,7 @@ class ImportBaseProductsCommand extends ContainerAwareCommand
     {
         return $this->getContainer()->get('pim.connector.icecat.configmanager');
     }
-    
+
     /**
      * @return DocumentManager
      */

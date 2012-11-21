@@ -36,8 +36,7 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 class ImportDetailledProductsCommand extends ContainerAwareCommand
 {
     /**
-     * (non-PHPdoc)
-     * @see \Symfony\Component\Console\Command\Command::configure()
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -49,17 +48,16 @@ class ImportDetailledProductsCommand extends ContainerAwareCommand
                 'Number of products to be imported'
             );
     }
-    
+
     /**
-     * (non-PHPdoc)
-     * @see \Symfony\Component\Console\Command\Command::execute()
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // get arguments
         $limit = $input->getArgument('limit');
         $startLimit = $limit;
-        
+
         // get config
         $configManager = $this->getConfigManager();
         $login       = $configManager->getValue(Config::LOGIN);
@@ -67,7 +65,7 @@ class ImportDetailledProductsCommand extends ContainerAwareCommand
         $baseDir     = $configManager->getValue(Config::BASE_DIR);
         $downloadUrl = $configManager->getValue(Config::BASE_URL) . $configManager->getValue(Config::BASE_PRODUCTS_URL);
         $baseFilePath= 'http://data.icecat.biz/export/freexml.int/INT/';
-        
+
         // get data objects
         $dm = $this->getDocumentManager();
         $qb = $dm->getRepository('PimConnectorIcecatBundle:ProductDataSheet')->createQueryBuilder();
@@ -75,49 +73,48 @@ class ImportDetailledProductsCommand extends ContainerAwareCommand
                 ->limit($limit)
                 ->getQuery();
         $products = $q->execute();
-        
+
         echo count($products) ."\n";
-        
+
         // prepare objects
         $reader = new FileHttpReader();
 //         $productManager = $this->getProductManager();
 //         $xmlToArray = new ProductXmlToArrayTransformer();
 //         $arrayToProduct = new ProductArrayToCatalogProductTransformer($productManager, array(), array(), 'en_US');
 //         libxml_use_internal_errors(true);
-        
+
 //         $time = array();
 //         $startTime = microtime(true);
-        
+
         // loop on products
-        foreach ($products as $product)
-        {
+        foreach ($products as $product) {
             $start = microtime(true);
             $file = $product->getProductId() .'.xml';
             $content = $reader->process($baseFilePath . $file, $login, $password, false);
 //             $content = simplexml_load_string($content);
-            
+
 //             $xmlToArray->setSimpleDoc($content);
 //             $xmlToArray->transform();
-            
+
 //             $baseData = $xmlToArray->getProductBaseData();
 //             $features = $xmlToArray->getProductFeatures();
-            
+
 //             $arrayToProduct->setProdData($baseData);
 //             $arrayToProduct->setProdFeat($features);
 //             $arrayToProduct->transform();
             $product->setXmlDetailledData($content);
             $product->setIsImported(true);
             $dm->persist($product);
-            
+
 //             echo (microtime(true) - $start) ." secs\n";
-            
+
             if (--$limit === 0) {
                 $dm->flush();
                 break;
             }
         }
     }
-    
+
     /**
      * @return Doctrine\ODM\MongoDB\Query\Builder;
      */
@@ -125,7 +122,7 @@ class ImportDetailledProductsCommand extends ContainerAwareCommand
     {
         return $this->getDocumentManager()->getRepository('PimConnectorIcecatBundle:ProductDataSheet')->createQueryBuilder();
     }
-    
+
     /**
      * @return ConfigManager
      */
@@ -133,7 +130,7 @@ class ImportDetailledProductsCommand extends ContainerAwareCommand
     {
         return $this->getContainer()->get('pim.connector.icecat.configmanager');
     }
-    
+
     /**
      * @return DocumentManager
      */
@@ -141,7 +138,7 @@ class ImportDetailledProductsCommand extends ContainerAwareCommand
     {
         return $this->getContainer()->get('doctrine.odm.mongodb.document_manager');
     }
-    
+
     /**
      * @return ProductManager
      */
