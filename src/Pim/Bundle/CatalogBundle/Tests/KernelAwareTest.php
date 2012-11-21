@@ -37,7 +37,8 @@ abstract class KernelAwareTest extends \PHPUnit_Framework_TestCase
         $this->container = $this->kernel->getContainer();
         $this->entityManager = $this->container->get('doctrine')->getEntityManager();
 
-        $this->generateSchema();
+        // TODO done into build.xml, useless here ?
+        //$this->generateSchema();
 
         parent::setUp();
     }
