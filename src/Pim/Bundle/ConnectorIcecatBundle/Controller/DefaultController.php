@@ -1,12 +1,13 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
- *
  * Enter description here ...
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
@@ -18,7 +19,7 @@ class DefaultController extends Controller
 {
     /**
      * Display list of suppliers
-     *
+     * @return Response
      * @Route("/")
      * @Template()
      */

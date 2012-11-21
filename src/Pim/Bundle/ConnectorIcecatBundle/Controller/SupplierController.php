@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -22,6 +24,8 @@ class SupplierController extends Controller
 {
     /**
      * Load suppliers from icecat to local database
+     *
+     * @return Response
      *
      * @Route("/supplier/load-from-icecat")
      * @Template()
@@ -45,6 +49,8 @@ class SupplierController extends Controller
     /**
      * List Icecat suppliers in a grid
      *
+     * @return Response
+     *
      * @Route("/supplier/list")
      * @Template()
      */
@@ -65,6 +71,10 @@ class SupplierController extends Controller
     /**
      * Load all product linked to a defined supplier
      *
+     * @param integer $icecatId
+     *
+     * @return Response
+     *
      * @Route("/supplier/{icecatId}/load-products")
      * @Template()
      */
@@ -82,7 +92,8 @@ class SupplierController extends Controller
 
             // Prepare notice message
             $viewRenderer = $this->render('PimConnectorIcecatBundle:Supplier:loadProducts.html.twig',
-                    array('supplier' => $supplier, 'products' => $products));
+                array('supplier' => $supplier, 'products' => $products)
+            );
             $this->get('session')->setFlash('notice', $viewRenderer->getContent());
         } catch (Exception $e) {
             $this->get('session')->setFlash('exception', $e->getMessage());

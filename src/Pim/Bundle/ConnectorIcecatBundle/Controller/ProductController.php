@@ -23,6 +23,8 @@ class ProductController extends Controller
     /**
      * Load only products identifiers from icecat to local database
      *
+     * @return Response
+     *
      * @Route("/product/load-from-icecat")
      * @Template()
      */
@@ -45,6 +47,8 @@ class ProductController extends Controller
     /**
      * List Icecat products in a grid
      *
+     * @return Response
+     *
      * @Route("/product/list")
      * @Template()
      */
@@ -65,6 +69,10 @@ class ProductController extends Controller
     /**
      * Load all icecat product data to local database
      *
+     * @param id $id
+     *
+     * @return Response
+     *
      * @Route("/product/{id}/load-product")
      * @Template()
      */
@@ -77,7 +85,8 @@ class ProductController extends Controller
 
             // Prepare notice message
             $viewRenderer = $this->render('PimConnectorIcecatBundle:Product:loadProduct.html.twig',
-                    array('product' => $product));
+                array('product' => $product)
+            );
             $this->get('session')->setFlash('notice', $viewRenderer->getContent());
         } catch (Exception $e) {
             $this->get('session')->setFlash('exception', $e->getMessage());

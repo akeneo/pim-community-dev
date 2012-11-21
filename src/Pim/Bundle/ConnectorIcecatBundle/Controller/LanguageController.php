@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -20,6 +22,8 @@ class LanguageController extends Controller
 {
     /**
      * Loading languages from icecat to local database
+     *
+     * @return Response
      *
      * @Route("/language/load-from-icecat")
      * @Template()
@@ -42,6 +46,8 @@ class LanguageController extends Controller
 
     /**
      * List Icecat languages in a grid
+     *
+     * @return Response
      *
      * @Route("/language/list")
      * @Template()

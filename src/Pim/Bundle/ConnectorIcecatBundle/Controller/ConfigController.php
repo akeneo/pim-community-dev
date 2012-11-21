@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
 use Pim\Bundle\ConnectorIcecatBundle\Form\Type\ConfigsType;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\Configs;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\ConfigManager;
@@ -12,6 +14,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
+ * Enter description here ...
+ *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -20,7 +24,10 @@ class ConfigController extends Controller
 {
     /**
      * Edit configuration of icecat connector
-     * @var Request $request
+     * @param Request $request
+     *
+     * @return Response
+     *
      * @Route("/config/edit")
      * @Template()
      */

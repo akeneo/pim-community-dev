@@ -48,7 +48,7 @@ class ProductDataSheet
      * @MongoDB\String
      */
     protected $xmlDetailledData;
-    
+
     /**
      * Constructor
      */
@@ -70,7 +70,8 @@ class ProductDataSheet
     /**
      * Set productId
      *
-     * @param  int                      $productId
+     * @param int $productId
+     *
      * @return ProductDataSheet
      */
     public function setProductId($productId)
@@ -93,7 +94,8 @@ class ProductDataSheet
     /**
      * Set isImported
      *
-     * @param  boolean                  $isImported
+     * @param boolean $isImported
+     *
      * @return ProductDataSheet
      */
     public function setIsImported($isImported)
@@ -116,7 +118,8 @@ class ProductDataSheet
     /**
      * Set xmlDetailledData
      *
-     * @param  string                   $xmlDetailledData
+     * @param string $xmlDetailledData
+     *
      * @return ProductDataSheet
      */
     public function setXmlDetailledData($xmlDetailledData)

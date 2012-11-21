@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -18,6 +20,8 @@ class IcecatController extends Controller
 {
     /**
      * Empty icecat tables
+     *
+     * @return Response
      *
      * @Route("/empty-icecat-tables")
      * @Template()
@@ -47,6 +51,8 @@ class IcecatController extends Controller
 
     /**
      * Empty all tables of the akeneo_pim database
+     *
+     * @return Response
      *
      * @Route("/empty-tables")
      * @Template()

@@ -77,9 +77,10 @@ class LoadConfig extends AbstractFixture implements OrderedFixtureInterface, Con
     }
 
     /**
-     * Load a config entity in database
-     * @param string $code
-     * @param string $value
+     * Load a config entity in a database
+     *
+     * @param string $code  my code
+     * @param string $value my value
      */
     protected function loadConfig($code, $value)
     {
@@ -90,8 +91,7 @@ class LoadConfig extends AbstractFixture implements OrderedFixtureInterface, Con
     }
 
     /**
-     * Executing order
-     * @see Doctrine\Common\DataFixtures.OrderedFixtureInterface::getOrder()
+     * {@inheritdoc}
      */
     public function getOrder()
     {
