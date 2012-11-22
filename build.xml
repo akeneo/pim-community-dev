@@ -26,6 +26,7 @@
 
         <delete file="${basedir}/composer.phar" />
         <delete file="${basedir}/app/config/parameters.yml" />
+        <delete file="${basedir}/app/config/parameters_test.yml" />
         <delete dir="${basedir}/app/cache" />
     </target>
 
