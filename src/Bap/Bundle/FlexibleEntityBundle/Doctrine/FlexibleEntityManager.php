@@ -260,7 +260,7 @@ abstract class FlexibleEntityManager
      * Clone an entity type
      *
      * @param EntitySet $entitySet to clone
-     * 
+     *
      * @return EntitySet
      */
     public function cloneSet($entitySet)
@@ -292,7 +292,7 @@ abstract class FlexibleEntityManager
      * Clone an entity
      *
      * @param Entity $entity to clone
-     * 
+     *
      * @return Entity
      */
     public function cloneEntity($entity)
@@ -301,9 +301,16 @@ abstract class FlexibleEntityManager
         $class = $this->getEntityClass();
         $clone = new $class();
 
-        // clone entity type
-        $cloneSet = $this->cloneSet($entity->getSet());
-        $clone->setSet($cloneSet);
+        // same set
+        $clone->setSet($entity->getSet());
+
+        // clone values
+        foreach ($entity->getValues() as $value) {
+            $cloneValue = $this->getNewAttributeValueInstance();
+            $cloneValue->setAttribute($value->getAttribute());
+            $cloneValue->setData($value->getData());
+            $clone->addValue($cloneValue);
+        }
 
         return $clone;
     }

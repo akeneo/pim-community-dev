@@ -173,6 +173,30 @@ class ProductController extends Controller
     }
 
     /**
+     * Clone a product and display edit form
+     *
+     * @param integer $id the product id to clone
+     *
+     * @Route("/{id}/clone")
+     * @Template()
+     *
+     * @return multitype
+     */
+    public function cloneAction($id)
+    {
+        $entity = $this->getProductManager()->getEntityRepository()->find($id);
+
+        // clone entity
+        $cloneEntity = $this->getProductManager()->cloneEntity($entity);
+        $manager = $this->getPersistenceManager();
+        $manager->persist($cloneEntity);
+        $manager->flush();
+        $this->get('session')->setFlash('success', "Product {$cloneEntity->getId()} has been cloned from product {$entity->getId()}");
+
+        return $this->redirect($this->generateUrl('pim_catalog_product_edit', array('id' => $cloneEntity->getId())));
+    }
+
+    /**
      * Edits an existing product entity.
      *
      * @param Request $request the request
