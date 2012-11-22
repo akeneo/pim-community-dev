@@ -22,6 +22,11 @@ class ProductType extends AbstractType
     protected $productClass;
 
     /**
+     * @var array
+     */
+    protected $setOptions;
+
+    /**
      * Construct with full name of concrete impl of product class
      *
      * @param string $productClass
@@ -41,8 +46,18 @@ class ProductType extends AbstractType
         // TODO drive from type and not add if in twig template ?
         $builder->add('id', 'hidden');
 
-        // add product attribute
-        if ($entity->getSet()) {
+        // add product
+        if (!$entity->getSet()) {
+
+            $builder->add(
+                'set', 'choice', array(
+                    'choices'   => $this->setOptions,
+                    'required'  => true
+                )
+            );
+
+        // update product
+        } else {
             foreach ($entity->getSet()->getGroups() as $group) {
                 foreach ($group->getAttributes() as $attribute) {
 
@@ -106,5 +121,15 @@ class ProductType extends AbstractType
     public function getName()
     {
         return 'pim_catalogbundle_product';
+    }
+
+    /**
+     * Set up available sets
+     *
+     * @param array $sets
+     */
+    public function setSetOptions($sets)
+    {
+        $this->setOptions = $sets;
     }
 }

@@ -4,6 +4,12 @@
 
 {% block content_menu_more %}
     {{ parent() }}
+    <li>
+        <a href="{{ path('pim_catalog_product_new') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
+            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-document--plus"></span>
+            <span class="ui-button-text">{{ "pim.catalog.product.button.new" | trans }}</span>
+        </a>
+    </li>
 {% endblock %}
 
 {% block content %}

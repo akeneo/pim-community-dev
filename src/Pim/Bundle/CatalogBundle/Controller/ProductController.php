@@ -56,7 +56,7 @@ class ProductController extends Controller
 
         // add an action column
         $grid->setActionsColumnSeparator('&nbsp;');
-        $rowAction = new RowAction('bap.action.details', 'pim_catalog_product_edit', false, '_self', array('class' => 'grid_action ui-icon-fugue-magnifier'));
+        $rowAction = new RowAction('bap.action.edit', 'pim_catalog_product_edit', false, '_self', array('class' => 'grid_action ui-icon-fugue-document--pencil'));
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
 
@@ -66,16 +66,83 @@ class ProductController extends Controller
     /**
      * Create product form
      *
-     * @param ProductEntity $product
+     * @param ProductEntity $product product
+     * @param array         $sets    sets array
      *
      * @return Form
      */
-    protected function createProductForm($product)
+    protected function createProductForm($product, $sets = null)
     {
         $prodClassFullName = $this->getProductManager()->getEntityClass();
-        $form = $this->createForm(new ProductType($prodClassFullName), $product);
+        $productType = new ProductType($prodClassFullName);
+        // when create new product
+        if ($sets) {
+            $productType->setSetOptions($sets);
+        }
+        $form = $this->createForm($productType, $product);
 
         return $form;
+    }
+
+
+    /**
+     * Displays a form to create a new attribute
+     *
+     * @Route("/new")
+     * @Template()
+     *
+     * @return multitype
+     */
+    public function newAction()
+    {
+        $instance = $this->getProductManager()->getNewEntityInstance();
+        $fromSets = $this->getCopySetOptions();
+        $form = $this->createProductForm($instance, $fromSets);
+
+        // render form
+        return $this->render(
+            'PimCatalogBundle:Product:new.html.twig', array('entity' => $instance, 'form' => $form->createView())
+        );
+    }
+
+
+    /**
+     * Creates a new attribute
+     *
+     * @param Request $request the request
+     *
+     * @Route("/create")
+     * @Method("POST")
+     * @Template("PimCatalogBundle:ProductAttribute:edit.html.twig")
+     *
+     * @return multitype
+     */
+    public function createAction(Request $request)
+    {
+        // preapre new product
+        $instance = $this->getProductManager()->getNewEntityInstance();
+        $postData = $request->get('pim_catalogbundle_product');
+        $setId = $postData['set'];
+        $set = $this->getProductManager()->getSetRepository()->find($setId);
+        $instance->setSet($set);
+
+        // persist it
+        try {
+            $manager = $this->getPersistenceManager();
+            $manager->persist($instance);
+            $manager->flush();
+            $this->get('session')->setFlash('success', "Product {$instance->getId()} has been created from set {$set->getCode()}");
+
+            return $this->redirect($this->generateUrl('pim_catalog_product_edit', array('id' => $instance->getId())));
+        } catch (\Exception $e) {
+            $this->get('session')->setFlash('error', $e->getMessage());
+        }
+
+
+        // render form with errors
+        return $this->render(
+            'PimCatalogBundle:Product:new.html.twig', array('entity' => $instance, 'form' => $form->createView())
+        );
     }
 
     /**
@@ -151,6 +218,20 @@ class ProductController extends Controller
             'PimCatalogBundle:Product:edit.html.twig',
             array('entity' => $entity, 'form' => $form->createView())
         );
+    }
+
+    /**
+     * @return array
+     */
+    private function getCopySetOptions()
+    {
+        $sets = $this->getProductManager()->getSetRepository()->findAll();
+        $setIdToName = array();
+        foreach ($sets as $set) {
+            $setIdToName[$set->getId()]= $set->getCode();
+        }
+
+        return $setIdToName;
     }
 
 }
