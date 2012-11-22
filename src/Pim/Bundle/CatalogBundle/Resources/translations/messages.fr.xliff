@@ -46,6 +46,11 @@
                 <source>pim.catalog.set.title.list</source>
                 <target>Liste des types de produits</target>
             </trans-unit>
+            <trans-unit id="33">
+                <source>pim.catalog.product.title.create</source>
+                <target>Création d'un produit</target>
+            </trans-unit>
+            
             
             <!-- Buttons -->
             <trans-unit id="12">
@@ -64,7 +69,11 @@
                 <source>pim.catalog.set.button.new</source>
                 <target>Créer un type</target>
             </trans-unit>
-            
+            <trans-unit id="32">
+                <source>pim.catalog.product.button.new</source>
+                <target>Créer un produit</target>
+            </trans-unit>
+
             <!-- Fieldsets -->
             <trans-unit id="16">
                 <source>pim.catalog.channel.fieldset.general</source>

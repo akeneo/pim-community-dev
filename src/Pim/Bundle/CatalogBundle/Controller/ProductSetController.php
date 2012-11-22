@@ -51,7 +51,7 @@ class ProductSetController extends Controller
      * Create set form
      *
      * @param ProductSet $set
-     * 
+     *
      * @return Form
      */
     protected function createSetForm($set)
@@ -72,7 +72,7 @@ class ProductSetController extends Controller
      *
      * @Route("/index")
      * @Template()
-     * 
+     *
      * @return multitype
      */
     public function indexAction()
@@ -101,10 +101,10 @@ class ProductSetController extends Controller
 
     /**
      * @param Request $request
-     * 
+     *
      * @Route("/new")
      * @Template()
-     * 
+     *
      * @return multitype
      */
     public function newAction(Request $request)
@@ -125,7 +125,7 @@ class ProductSetController extends Controller
      * @Route("/create")
      * @Method("POST")
      * @Template()
-     * 
+     *
      * @return multitype
      */
     public function createAction(Request $request)
@@ -170,7 +170,7 @@ class ProductSetController extends Controller
      *
      * @Route("/{id}/edit")
      * @Template()
-     * 
+     *
      * @return multitype
      */
     public function editAction($id)
@@ -188,18 +188,19 @@ class ProductSetController extends Controller
 
     /**
      * update action
-     * 
+     *
      * @param Request $request the request
      * @param integer $id      set id
      *
      * @Route("/{id}/update")
      * @Method("POST")
      * @Template()
-     * 
+     *
      * @return multitype
      */
     public function updateAction(Request $request, $id)
     {
+        // TODO avoid to load twice !
         $entity = $this->getProductManager()->getSetRepository()->find($id);
         if (!$entity) {
             throw $this->createNotFoundException('No product set found for id '. $id);
@@ -261,7 +262,7 @@ class ProductSetController extends Controller
      * TODO : Must prevent against incorrect id
      * TODO : Just a flag to disable entity without physically remove
      * TODO : Add form and verify it.. CSRF fault
-     * 
+     *
      * @return multitype
      */
     public function deleteAction($id)
@@ -282,9 +283,9 @@ class ProductSetController extends Controller
 
     /**
      * Get attributes
-     * 
+     *
      * @param ProductSet $set
-     * 
+     *
      * @return ArrayCollection
      */
     protected function getAvailableAttributes($set)

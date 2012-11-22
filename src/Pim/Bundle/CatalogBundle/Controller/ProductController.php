@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\CatalogBundle\Form\Type\ProductType;
 use APY\DataGridBundle\Grid\Action\RowAction;
 use Pim\Bundle\UIBundle\Grid\Helper as GridHelper;
+use Pim\Bundle\CatalogBundle\Form\DataTransformer\ProductToArrayTransformer;
 
 /**
  * Product controller.
@@ -138,7 +139,6 @@ class ProductController extends Controller
             $this->get('session')->setFlash('error', $e->getMessage());
         }
 
-
         // render form with errors
         return $this->render(
             'PimCatalogBundle:Product:new.html.twig', array('entity' => $instance, 'form' => $form->createView())
@@ -209,38 +209,40 @@ class ProductController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $entity = $this->getProductManager()->getEntityRepository()->find($id);
-
-        if (!$entity) {
+        // TODO avoid to load twice !
+        $instance = $this->getProductManager()->getEntityRepository()->find($id);
+        if (!$instance) {
             throw $this->createNotFoundException('Unable to find product.');
         }
 
-        $form = $this->createProductForm($entity);
-        $form->bind($request);
+        // transform posted data to understandable data
+        $postData = $request->get('pim_catalogbundle_product');
+        $productData = array();
+        $productData['id']= $postData['id'];
+        unset($postData['id']);
+        unset($postData['_token']);
+        $productData['values']= array();
+        $productData['values'] = $postData;
 
-        if ($form->isValid()) {
+        // array to set
+        $transformer = new ProductToArrayTransformer($this->getProductManager());
+        $instance = $transformer->reverseTransform($productData);
 
-            // TODO : add some constraints in form
-
-            //$postData = $request->get('pim_catalogbundle_product');
-            /*
-            foreach ($postData as $attributeCode => $attributeValue) {
-                $entity->setValue($attributeCode, $attributeValue);
-            }*/
-
+        // persist it
+        try {
             $manager = $this->getPersistenceManager();
-            $manager->persist($entity);
+            $manager->persist($instance);
             $manager->flush();
+            $this->get('session')->setFlash('success', "Product {$instance->getId()} has been updated");
 
-            $this->get('session')->setFlash('success', 'Product has been updated');
-
-            return $this->redirect($this->generateUrl('pim_catalog_product_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('pim_catalog_product_edit', array('id' => $instance->getId())));
+        } catch (\Exception $e) {
+            $this->get('session')->setFlash('error', $e->getMessage());
         }
 
         // render form
         return $this->render(
-            'PimCatalogBundle:Product:edit.html.twig',
-            array('entity' => $entity, 'form' => $form->createView())
+            'PimCatalogBundle:Product:edit.html.twig', array('entity' => $instance, 'form' => $form->createView())
         );
     }
 

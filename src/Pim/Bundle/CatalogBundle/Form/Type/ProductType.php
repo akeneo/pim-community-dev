@@ -58,6 +58,7 @@ class ProductType extends AbstractType
 
         // update product
         } else {
+
             foreach ($entity->getSet()->getGroups() as $group) {
                 foreach ($group->getAttributes() as $attribute) {
 

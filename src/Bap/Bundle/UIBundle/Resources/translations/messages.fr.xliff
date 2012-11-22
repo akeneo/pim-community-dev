@@ -10,7 +10,6 @@
                 <source>bap.navigation.back-list</source>
                 <target>Retour à la liste</target>
             </trans-unit>
-            
             <trans-unit id="3">
                 <source>bap.action.details</source>
                 <target>Détails</target>
@@ -23,7 +22,6 @@
                 <source>bap.action.delete</source>
                 <target>Supprimer</target>
             </trans-unit>
-            
             <trans-unit id="6">
                 <source>bap.action.export.csv</source>
                 <target>Export CSV</target>
@@ -32,15 +30,17 @@
                 <source>bap.action.export.excel</source>
                 <target>Export Excel</target>
             </trans-unit>
-            
             <trans-unit id="8">
                 <source>bap.button.save</source>
                 <target>Enregistrer</target>
             </trans-unit>
-            
             <trans-unit id="9">
                 <source>bap.dialog.confirm</source>
                 <target>Êtes-vous sûr ?</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>bap.button.clone</source>
+                <target>Dupliquer</target>
             </trans-unit>
         </body>
     </file>
