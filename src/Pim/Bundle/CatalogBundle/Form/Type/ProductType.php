@@ -59,6 +59,14 @@ class ProductType extends AbstractType
         // update product
         } else {
 
+            $builder->add(
+                'set', 'text', array(
+                    'data'          => $entity->getSet()->getTitle().' ('.$entity->getSet()->getCode().')',
+                    'property_path' => false,
+                     'disabled'     => true
+                )
+            );
+
             foreach ($entity->getSet()->getGroups() as $group) {
                 foreach ($group->getAttributes() as $attribute) {
 

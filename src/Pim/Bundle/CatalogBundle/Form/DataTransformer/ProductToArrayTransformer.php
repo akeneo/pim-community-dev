@@ -70,9 +70,23 @@ class ProductToArrayTransformer implements DataTransformerInterface
         }
 
         // change values
+        $updated = array();
         foreach ($product->getValues() as $value) {
-            $newData = $data['values'][$value->getAttribute()->getCode()];
+            $attributeCode = $value->getAttribute()->getCode();
+            $newData = $data['values'][$attributeCode];
             $value->setData($newData);
+            $updated[]= $attributeCode;
+        }
+
+        // add values
+        foreach ($data['values'] as $code => $data) {
+            if (!in_array($code, $updated)) {
+                $attribute = $this->pm->getAttributeRepository()->findOneByCode($code);
+                $newValue = $this->pm->getNewAttributeValueInstance();
+                $newValue->setAttribute($attribute);
+                $newValue->setData($data);
+                $product->addValue($newValue);
+            }
         }
 
         return $product;

@@ -33,7 +33,7 @@ class ProductSetToArrayTransformer implements DataTransformerInterface
      * Transforms an object (product set) to a array.
      *
      * @param ProductSet $set
-     * 
+     *
      * @return array
      */
     public function transform($set)
@@ -67,10 +67,10 @@ class ProductSetToArrayTransformer implements DataTransformerInterface
     /**
      * Transforms a array to an object (product set).
      *
-     * @param array                         $data
-     * 
+     * @param array $data
+     *
      * @return ProductSet
-     * 
+     *
      * @throws TransformationFailedException if object (set) is not found.
      */
     public function reverseTransform($data)
