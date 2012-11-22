@@ -71,53 +71,35 @@ class ImportDetailledProductsCommand extends ContainerAwareCommand
 
         $products = $dm->getRepository('PimConnectorIcecatBundle:ProductDataSheet')->findBy(array('isImported' => 0));
 
-        /*
-
-        $qb = $dm->getRepository('PimConnectorIcecatBundle:ProductDataSheet')->createQueryBuilder();
-        $q = $qb->field('isImported')->equals(0)
-                ->skip(0)
-                ->limit(10)
-                ->getQuery();
-        $products = $q->execute();
-*/
-        echo count($products) ."\n";
-
-//        exit();
+        echo count($products).PHP_EOL;
 
         // prepare objects
         $reader = new FileHttpReader();
-//         $productManager = $this->getProductManager();
-//         $xmlToArray = new ProductXmlToArrayTransformer();
-//         $arrayToProduct = new ProductArrayToCatalogProductTransformer($productManager, array(), array(), 'en_US');
-//         libxml_use_internal_errors(true);
-
-//         $time = array();
-//         $startTime = microtime(true);
 
         // loop on products
         $batchSize = 0;
         foreach ($products as $product) {
             $start = microtime(true);
+
+            // get xml content
             $file = $product->getProductId() .'.xml';
             $content = $reader->process($baseFilePath . $file, $login, $password, false);
-//             $content = simplexml_load_string($content);
+            $content = simplexml_load_string($content);
 
-//             $xmlToArray->setSimpleDoc($content);
-//             $xmlToArray->transform();
+            // keep only used data, convert to array and encode ton json format
+            $xmlToArray = new ProductXmlToArrayTransformer($content);
+            $xmlToArray->transform();
+            $baseData = $xmlToArray->getProductBaseData();
+            $features = $xmlToArray->getProductFeatures();
+            $data= array('basedata' => $baseData, 'features' => $features);
 
-//             $baseData = $xmlToArray->getProductBaseData();
-//             $features = $xmlToArray->getProductFeatures();
-
-//             $arrayToProduct->setProdData($baseData);
-//             $arrayToProduct->setProdFeat($features);
-//             $arrayToProduct->transform();
-            $product->setXmlDetailledData($content);
+            // persist details
+            $product->setXmlDetailledData(json_encode($data));
             $product->setIsImported(1);
             $dm->persist($product);
             echo 'insert '.$product->getProductId().PHP_EOL;
 
-//             echo (microtime(true) - $start) ." secs\n";
-
+            // save by batch of x product details
             if (++$batchSize % 10 === 0) {
                 $dm->flush();
                 $output->writeln('Batch size : '. $batchSize);
@@ -128,11 +110,11 @@ class ImportDetailledProductsCommand extends ContainerAwareCommand
                 $output->writeln('after gc_collect_cycles -> '. $this->getMemoryUsage());
             }
 
+            // stop when limit is attempted
             if (--$limit === 0) {
                 $dm->flush();
                 break;
             }
-
         }
     }
 
