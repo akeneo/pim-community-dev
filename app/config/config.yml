@@ -74,7 +74,7 @@ doctrine_mongodb:
             server: mongodb://localhost:27017
             options:
                 connect: true
-    default_database: akeneo_pim
+    default_database: %database_name%
     document_managers:
         default:
             auto_mapping: true
