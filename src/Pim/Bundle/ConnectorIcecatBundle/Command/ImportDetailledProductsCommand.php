@@ -95,6 +95,7 @@ class ImportDetailledProductsCommand extends ContainerAwareCommand
 //         $startTime = microtime(true);
 
         // loop on products
+        $batchSize = 0;
         foreach ($products as $product) {
             $start = microtime(true);
             $file = $product->getProductId() .'.xml';
@@ -117,10 +118,21 @@ class ImportDetailledProductsCommand extends ContainerAwareCommand
 
 //             echo (microtime(true) - $start) ." secs\n";
 
+            if (++$batchSize % 10 === 0) {
+                $dm->flush();
+                $output->writeln('Batch size : '. $batchSize);
+                $output->writeln('memory usage -> '. $this->getMemoryUsage());
+                $dm->clear();
+                $output->writeln('after clear memory usage -> '. $this->getMemoryUsage());
+                gc_collect_cycles();
+                $output->writeln('after gc_collect_cycles -> '. $this->getMemoryUsage());
+            }
+
             if (--$limit === 0) {
                 $dm->flush();
                 break;
             }
+
         }
     }
 
@@ -154,5 +166,16 @@ class ImportDetailledProductsCommand extends ContainerAwareCommand
     protected function getProductManager()
     {
         return $this->getContainer()->get('pim.catalog.product_manager');
+    }
+
+    /**
+     * Get memory usage in
+     * @return number
+     */
+    private function getMemoryUsage()
+    {
+        $size = memory_get_usage(true);
+
+        return $size / 1024 / 1024;
     }
 }
