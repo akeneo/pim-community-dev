@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Command;
 
+use Pim\Bundle\ConnectorIcecatBundle\Helper\MemoryHelper;
+
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpDownload;
@@ -129,9 +131,9 @@ class ImportBaseProductsCommand extends AbstractPimCommand
     {
         $this->getDocumentManager()->flush();
         $this->writeln('Batch size : '. $this->batchSize);
-        $this->writeln('memory usage -> '. $this->getMemoryUsage());
+        $this->writeln('Point -> '. MemoryHelper::writePoint('memory'));
         $this->getDocumentManager()->clear();
-        $this->writeln('after clear memory usage -> '. $this->getMemoryUsage());
+        $this->writeln('Gap   -> '. MemoryHelper::writeGap('memory'));
     }
 
     /**
