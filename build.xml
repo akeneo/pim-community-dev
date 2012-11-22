@@ -39,6 +39,7 @@
 
         <mkdir dir="${basedir}/app/cache" />
         <copy file="/var/lib/jenkins/conf-akeneo-pim-standard/parameters.yml" tofile="${basedir}/app/config/parameters.yml" />
+        <copy file="/var/lib/jenkins/conf-akeneo-pim-standard/parameters.yml" tofile="${basedir}/app/config/parameters_test.yml" />
     </target>
 
     <target name="lint" description="Perform syntax check of sourcecode files">
