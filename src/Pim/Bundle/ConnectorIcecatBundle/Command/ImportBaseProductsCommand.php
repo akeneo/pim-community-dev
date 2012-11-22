@@ -70,6 +70,7 @@ class ImportBaseProductsCommand extends ContainerAwareCommand
                 // instanciate new object
                 $product = new ProductDataSheet();
                 $product->setProductId($data[0]);
+                $product->setIsImported(0);
 
                 $dm->persist($product);
                 if (++$batchSize % 20000 === 0) {

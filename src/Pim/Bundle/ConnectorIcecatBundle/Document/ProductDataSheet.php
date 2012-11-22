@@ -35,9 +35,9 @@ class ProductDataSheet
 
     /**
      * Detailled data is imported
-     * @var boolean
+     * @var integer
      *
-     * @MongoDB\Boolean
+     * @MongoDB\Int
      */
     protected $isImported;
 
@@ -48,14 +48,6 @@ class ProductDataSheet
      * @MongoDB\String
      */
     protected $xmlDetailledData;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->isImported = false;
-    }
 
     /**
      * Get id
@@ -94,7 +86,7 @@ class ProductDataSheet
     /**
      * Set isImported
      *
-     * @param boolean $isImported
+     * @param integer $isImported
      *
      * @return ProductDataSheet
      */
@@ -108,7 +100,7 @@ class ProductDataSheet
     /**
      * Get isImported
      *
-     * @return boolean $isImported
+     * @return integer $isImported
      */
     public function getIsImported()
     {

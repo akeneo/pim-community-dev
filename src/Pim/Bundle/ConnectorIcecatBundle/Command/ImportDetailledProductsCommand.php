@@ -68,13 +68,21 @@ class ImportDetailledProductsCommand extends ContainerAwareCommand
 
         // get data objects
         $dm = $this->getDocumentManager();
+
+        $products = $dm->getRepository('PimConnectorIcecatBundle:ProductDataSheet')->findBy(array('isImported' => 0));
+
+        /*
+
         $qb = $dm->getRepository('PimConnectorIcecatBundle:ProductDataSheet')->createQueryBuilder();
-        $q = $qb->field('is_imported')->equals(null)
-                ->limit($limit)
+        $q = $qb->field('isImported')->equals(0)
+                ->skip(0)
+                ->limit(10)
                 ->getQuery();
         $products = $q->execute();
-
+*/
         echo count($products) ."\n";
+
+//        exit();
 
         // prepare objects
         $reader = new FileHttpReader();
@@ -103,8 +111,9 @@ class ImportDetailledProductsCommand extends ContainerAwareCommand
 //             $arrayToProduct->setProdFeat($features);
 //             $arrayToProduct->transform();
             $product->setXmlDetailledData($content);
-            $product->setIsImported(true);
+            $product->setIsImported(1);
             $dm->persist($product);
+            echo 'insert '.$product->getProductId().PHP_EOL;
 
 //             echo (microtime(true) - $start) ." secs\n";
 
