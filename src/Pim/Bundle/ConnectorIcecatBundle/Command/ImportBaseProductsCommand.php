@@ -125,9 +125,11 @@ class ImportBaseProductsCommand extends AbstractPimCommand
      */
     protected function createProduct($data)
     {
-        // instanciate new object
-        $product = new ProductDataSheet();
-        $product->setProductId($data[0]);
+        // get already exists product or instanciate new object
+        if ($product = $this->findProductDataSheet($data[0])) {
+            $product = new ProductDataSheet();
+            $product->setProductId($data[0]);
+        }
         $product->setIsImported(0);
 
         // persist object and flush if necessary
@@ -139,6 +141,19 @@ class ImportBaseProductsCommand extends AbstractPimCommand
     }
 
     /**
+     * Get product data sheet document by a product id
+     * @param integer $productId
+     *
+     * @return ProductDataSheet
+     */
+    protected function findProductDataSheet($productId)
+    {
+        return $this->getDocumentManager()
+                    ->getRepository('PimConnectorIcecatBundle:ProductDataSheet')
+                    ->findBy(array('productId' => $productId));
+    }
+
+    /**
      * Call document manager to flush data
      */
     protected function flush()
@@ -147,7 +162,6 @@ class ImportBaseProductsCommand extends AbstractPimCommand
         $this->writeln('Batch size : '. $this->batchSize);
         $this->writeln('Before clear -> '. MemoryHelper::writeValue('memory'));
         $this->getDocumentManager()->clear();
-
         $this->writeln('After clear   -> '. MemoryHelper::writeGap('memory'));
     }
 }
