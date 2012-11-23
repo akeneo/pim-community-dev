@@ -55,7 +55,7 @@ class ImportBaseProductsCommand extends AbstractPimCommand
         $downloadUrl      = $this->getConfigManager()->getValue(Config::PRODUCTS_URL);
         $baseDir          = $configManager->getValue(Config::BASE_DIR);
         $archivedFilePath = $baseDir . $configManager->getValue(Config::PRODUCTS_ARCHIVED_FILE);
-        $filePath         = $baseDir . $configManager->getValue(Config::PRODUCT_FILE);
+        $filePath         = $baseDir . $configManager->getValue(Config::PRODUCTS_FILE);
 
         // download source
         $this->downloadFile($downloadUrl, $archivedFilePath);
@@ -64,6 +64,20 @@ class ImportBaseProductsCommand extends AbstractPimCommand
         $this->unpackFile($archivedFilePath, $filePath);
 
         // import products
+        $this->importData($filePath);
+
+        // persist documents with constraint validation
+        $this->getDocumentManager()->flush();
+
+        $this->writeln('command executed successfully');
+    }
+
+    /**
+     * Import data from file to local database
+     * @param string $filePath
+     */
+    public function importData($filePath)
+    {
         if (($handle = fopen($filePath, 'r')) !== false) {
             $this->batchSize = 0;
 
@@ -72,12 +86,9 @@ class ImportBaseProductsCommand extends AbstractPimCommand
             while (($data = fgetcsv($handle, 1000, "\t")) !== false) {
                 $this->createProduct($data);
             }
+
+            fclose($handle);
         }
-
-        // persist documents with constraint validation
-        $this->getDocumentManager()->flush();
-
-        $this->writeln('command executed successfully');
     }
 
     /**

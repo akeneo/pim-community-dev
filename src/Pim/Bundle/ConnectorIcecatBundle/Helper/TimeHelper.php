@@ -53,8 +53,6 @@ class TimeHelper
      */
     protected static function format($value)
     {
-        $value = $value *1000;
-
         return $value .' '. self::getMeasure();
     }
 
