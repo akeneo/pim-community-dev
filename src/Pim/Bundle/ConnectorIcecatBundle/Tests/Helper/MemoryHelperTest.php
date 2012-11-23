@@ -70,7 +70,7 @@ class MemoryHelperTest extends KernelAwareTest
         MemoryHelper::addValue('test-write-gap');
         // write a gap
         $str = MemoryHelper::writeGap('test-write-gap');
-        $this->assertStringMatchesFormat('%f Mo', $str);
+        $this->assertStringMatchesFormat('%f Mo (%f Mo)', $str);
 
         // TODO : Test write gap on an unexisting event name -> failed actually
 
