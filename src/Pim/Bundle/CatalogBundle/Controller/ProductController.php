@@ -209,27 +209,21 @@ class ProductController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        // TODO avoid to load twice !
-        $instance = $this->getProductManager()->getEntityRepository()->find($id);
-        if (!$instance) {
-            throw $this->createNotFoundException('Unable to find product.');
-        }
-
-        // transform posted data to understandable data
-        $postData = $request->get('pim_catalogbundle_product');
-        $productData = array();
-        $productData['id']= $postData['id'];
-        unset($postData['id']);
-        unset($postData['_token']);
-        $productData['values']= array();
-        $productData['values'] = $postData;
-
-        // array to set
-        $transformer = new ProductToArrayTransformer($this->getProductManager());
-        $instance = $transformer->reverseTransform($productData);
-
-        // persist it
         try {
+            // transform posted data to understandable data
+            $postData = $request->get('pim_catalogbundle_product');
+            $productData = array();
+            $productData['id']= $postData['id'];
+            unset($postData['id']);
+            unset($postData['_token']);
+            $productData['values']= array();
+            $productData['values'] = $postData;
+
+            // transform array to set
+            $transformer = new ProductToArrayTransformer($this->getProductManager());
+            $instance = $transformer->reverseTransform($productData);
+
+            // persist and flush set
             $manager = $this->getPersistenceManager();
             $manager->persist($instance);
             $manager->flush();
