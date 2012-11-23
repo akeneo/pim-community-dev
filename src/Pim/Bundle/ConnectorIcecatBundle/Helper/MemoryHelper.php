@@ -97,6 +97,18 @@ class MemoryHelper
     }
 
     /**
+     * Return the last value formatted to be written on log
+     * @param string $eventName
+     *
+     * @return string
+     * @static
+     */
+    public static function getLastValueFormatted($eventName)
+    {
+        return self::format(self::getLastValue($eventName));
+    }
+
+    /**
      * Get all values for a specific event
      * @param string $eventName
      *

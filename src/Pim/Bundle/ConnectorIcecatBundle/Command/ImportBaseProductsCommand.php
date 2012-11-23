@@ -1,20 +1,16 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Command;
 
-use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
-
+use Pim\Bundle\ConnectorIcecatBundle\Document\ProductDataSheet;
+use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
 use Pim\Bundle\ConnectorIcecatBundle\Helper\MemoryHelper;
-
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
 
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpDownload;
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileUnzip;
 
-use Pim\Bundle\ConnectorIcecatBundle\Document\ProductDataSheet;
-
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
 /**
  * Import whole set of basic data products from icecat
  *
@@ -149,8 +145,10 @@ class ImportBaseProductsCommand extends AbstractPimCommand
     {
         $this->getDocumentManager()->flush();
         $this->writeln('Batch size : '. $this->batchSize);
-        $this->writeln('Point -> '. MemoryHelper::writeValue('memory'));
+        $this->writeln('Before clear -> '. MemoryHelper::writeValue('memory'));
         $this->getDocumentManager()->clear();
-        $this->writeln('Gap   -> '. MemoryHelper::writeGap('memory'));
+
+        $diff = MemoryHelper::writeGap('memory');
+        $this->writeln('After clear   -> '. MemoryHelper::getLastValueFormatted('memory') .' ('. $diff .')');
     }
 }

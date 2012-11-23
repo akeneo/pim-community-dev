@@ -1,6 +1,10 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Command;
 
+use Pim\Bundle\ConnectorIcecatBundle\Helper\MemoryHelper;
+
+use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
+
 use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductArrayToCatalogProductTransformer;
 
 use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductXmlToArrayTransformer;
@@ -11,19 +15,16 @@ use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
 
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpDownload;
 
-use Pim\Bundle\ConnectorIcecatBundle\PimConnectorIcecatBundle;
-
-use Doctrine\ODM\MongoDB\DocumentManager;
+// use Pim\Bundle\ConnectorIcecatBundle\PimConnectorIcecatBundle;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Pim\Bundle\ConnectorIcecatBundle\Document\ProductDataSheet;
-use Pim\Bundle\ConnectorIcecatBundle\Entity\ConfigManager;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+// use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 /**
@@ -33,7 +34,7 @@ use Doctrine\ODM\MongoDB\Query\Builder;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ImportDetailledProductsCommand extends ContainerAwareCommand
+class ImportDetailledProductsCommand extends AbstractPimCommand
 {
     /**
      * {@inheritdoc}
@@ -78,8 +79,10 @@ class ImportDetailledProductsCommand extends ContainerAwareCommand
 
         // loop on products
         $batchSize = 0;
+
+        TimeHelper::addValue('load-product');
+        MemoryHelper::addValue('load-product');
         foreach ($products as $product) {
-            $start = microtime(true);
 
             // get xml content
             $file = $product->getProductId() .'.xml';
@@ -115,6 +118,7 @@ class ImportDetailledProductsCommand extends ContainerAwareCommand
                 $dm->flush();
                 break;
             }
+            $this->writeln('Load product : '. TimeHelper::writeGap('load-product') .' - '. MemoryHelper::writeGap('load-product'));
         }
     }
 
@@ -123,23 +127,9 @@ class ImportDetailledProductsCommand extends ContainerAwareCommand
      */
     protected function createQB()
     {
-        return $this->getDocumentManager()->getRepository('PimConnectorIcecatBundle:ProductDataSheet')->createQueryBuilder();
-    }
-
-    /**
-     * @return ConfigManager
-     */
-    protected function getConfigManager()
-    {
-        return $this->getContainer()->get('pim.connector.icecat.configmanager');
-    }
-
-    /**
-     * @return DocumentManager
-     */
-    protected function getDocumentManager()
-    {
-        return $this->getContainer()->get('doctrine.odm.mongodb.document_manager');
+        return $this->getDocumentManager()
+                    ->getRepository('PimConnectorIcecatBundle:ProductDataSheet')
+                    ->createQueryBuilder();
     }
 
     /**
@@ -148,16 +138,5 @@ class ImportDetailledProductsCommand extends ContainerAwareCommand
     protected function getProductManager()
     {
         return $this->getContainer()->get('pim.catalog.product_manager');
-    }
-
-    /**
-     * Get memory usage in
-     * @return number
-     */
-    private function getMemoryUsage()
-    {
-        $size = memory_get_usage(true);
-
-        return $size / 1024 / 1024;
     }
 }
