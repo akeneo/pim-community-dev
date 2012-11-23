@@ -1,24 +1,24 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Helper;
 /**
- * Helper to manage memory usage creating events on scripts
+ * Helper to manage time creating events on scripts
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class MemoryHelper
+class TimeHelper
 {
-    /**
-     * Store for memory usage
+/**
+     * Store for timestamp
      * @staticvar
      * @var array
      */
-    protected static $memories = array();
+    protected static $times = array();
 
     /**
-     * Write a memory usage for a specific event
+     * Write microtime for a specific event
      * @param string $eventName
      *
      * @return string
@@ -32,14 +32,14 @@ class MemoryHelper
     }
 
     /**
-     * Add a memory usage for a specific event
+     * Add microtime for a specific event
      * @param string $eventName
      *
      * @static
      */
     public static function addValue($eventName)
     {
-        self::$memories[$eventName][] = memory_get_usage(true);
+        self::$times[$eventName][] = microtime(true);
     }
 
     /**
@@ -51,8 +51,6 @@ class MemoryHelper
      */
     protected static function format($value)
     {
-        $value = $value / 1024 / 1024;
-
         return $value .' '. self::getMeasure();
     }
 
@@ -68,7 +66,7 @@ class MemoryHelper
     }
 
     /**
-     * Write a gap beetween the two last memory usage of a event
+     * Write a gap beetween the two last microtime of a event
      * @param string $eventName
      *
      * @return string
@@ -93,7 +91,7 @@ class MemoryHelper
      */
     protected static function getLastValue($eventName)
     {
-        return end(self::$memories[$eventName]);
+        return end(self::$times[$eventName]);
     }
 
     /**
@@ -105,17 +103,17 @@ class MemoryHelper
      */
     public static function getValues($eventName)
     {
-        return self::$memories[$eventName];
+        return self::$times[$eventName];
     }
 
     /**
-     * Get all memory values stored
+     * Get all time values stored
      * @return array
      * @static
      */
     public static function getInstance()
     {
-        return self::$memories;
+        return self::$times;
     }
 
     /**
@@ -127,15 +125,15 @@ class MemoryHelper
     public static function resetPoint($eventName)
     {
         // TODO : replace by unset ? -> requiring test update
-        self::$memories[$eventName] = array();
+        self::$times[$eventName] = array();
     }
 
     /**
-     * Reset all memory values stored
+     * Reset all time values stored
      * @static
      */
     public static function resetAllPoints()
     {
-        self::$memories = array();
+        self::$times = array();
     }
 }

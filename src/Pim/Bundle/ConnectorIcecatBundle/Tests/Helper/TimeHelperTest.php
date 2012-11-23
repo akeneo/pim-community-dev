@@ -1,18 +1,18 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Tests\Helper;
 
-use Pim\Bundle\ConnectorIcecatBundle\Helper\MemoryHelper;
+use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
 
 use Pim\Bundle\CatalogBundle\Tests\KernelAwareTest;
 /**
- * Test for MemoryHelper utility class
+ * Test for TimeHelper utility class
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class MemoryHelperTest extends KernelAwareTest
+class TimeHelperTest extends KernelAwareTest
 {
     /**
      * {@inheritdoc}
@@ -26,7 +26,7 @@ class MemoryHelperTest extends KernelAwareTest
      */
     public function tearDown()
     {
-        MemoryHelper::resetAllPoints();
+        TimeHelper::resetAllPoints();
     }
 
     /**
@@ -36,19 +36,19 @@ class MemoryHelperTest extends KernelAwareTest
     {
         // add a value for a event
         $eventName = 'test-add-event';
-        MemoryHelper::addValue($eventName);
-        $values = MemoryHelper::getValues($eventName);
+        TimeHelper::addValue($eventName);
+        $values = TimeHelper::getValues($eventName);
         $this->assertCount(1, $values);
 
         // add a second value for the same event
-        MemoryHelper::addValue($eventName);
-        $values = MemoryHelper::getValues($eventName);
+        TimeHelper::addValue($eventName);
+        $values = TimeHelper::getValues($eventName);
         $this->assertCount(2, $values);
 
         // add a value for another event
         $eventName2 = 'test-add-event-2';
-        MemoryHelper::addValue($eventName2);
-        $values = MemoryHelper::getValues($eventName2);
+        TimeHelper::addValue($eventName2);
+        $values = TimeHelper::getValues($eventName2);
         $this->assertCount(1, $values);
     }
 
@@ -57,7 +57,7 @@ class MemoryHelperTest extends KernelAwareTest
      */
     public function testWritePoint()
     {
-        $str = MemoryHelper::writeValue('test-write-event');
+        $str = TimeHelper::writeValue('test-write-event');
         $this->assertStringMatchesFormat('%f Mo', $str);
     }
 
@@ -67,9 +67,9 @@ class MemoryHelperTest extends KernelAwareTest
     public function testWriteGap()
     {
         // create a first event
-        MemoryHelper::addValue('test-write-gap');
+        TimeHelper::addValue('test-write-gap');
         // write a gap
-        $str = MemoryHelper::writeGap('test-write-gap');
+        $str = TimeHelper::writeGap('test-write-gap');
         $this->assertStringMatchesFormat('%f Mo', $str);
 
         // TODO : Test write gap on an unexisting event name -> failed actually
@@ -85,13 +85,13 @@ class MemoryHelperTest extends KernelAwareTest
         $eventName = 'test-all-values';
 
         // add some events
-        MemoryHelper::addValue($eventName);
-        MemoryHelper::addValue($eventName);
-        MemoryHelper::addValue($eventName);
-        MemoryHelper::addValue($eventName);
-        MemoryHelper::addValue($eventName);
+        TimeHelper::addValue($eventName);
+        TimeHelper::addValue($eventName);
+        TimeHelper::addValue($eventName);
+        TimeHelper::addValue($eventName);
+        TimeHelper::addValue($eventName);
 
-        $values = MemoryHelper::getValues($eventName);
+        $values = TimeHelper::getValues($eventName);
         $this->assertCount(5, $values);
     }
 
@@ -104,21 +104,21 @@ class MemoryHelperTest extends KernelAwareTest
         $eventName2 = 'test-reset-event-2';
 
         // add events
-        MemoryHelper::addValue($eventName1);
-        MemoryHelper::addValue($eventName1);
-        MemoryHelper::addValue($eventName1);
-        MemoryHelper::addValue($eventName2);
+        TimeHelper::addValue($eventName1);
+        TimeHelper::addValue($eventName1);
+        TimeHelper::addValue($eventName1);
+        TimeHelper::addValue($eventName2);
 
-        MemoryHelper::resetPoint($eventName1);
+        TimeHelper::resetPoint($eventName1);
 
         // assert count
-        $values = MemoryHelper::getValues($eventName1);
+        $values = TimeHelper::getValues($eventName1);
         $this->assertCount(0, $values);
 
-        $values = MemoryHelper::getValues($eventName2);
+        $values = TimeHelper::getValues($eventName2);
         $this->assertCount(1, $values);
 
-        $events = MemoryHelper::getInstance();
+        $events = TimeHelper::getInstance();
         $this->assertCount(2, $events);
     }
 
@@ -131,15 +131,15 @@ class MemoryHelperTest extends KernelAwareTest
         $eventName2 = 'test-reset-all-events-2';
 
         // add events
-        MemoryHelper::addValue($eventName1);
-        MemoryHelper::addValue($eventName1);
-        MemoryHelper::addValue($eventName1);
-        MemoryHelper::addValue($eventName2);
+        TimeHelper::addValue($eventName1);
+        TimeHelper::addValue($eventName1);
+        TimeHelper::addValue($eventName1);
+        TimeHelper::addValue($eventName2);
 
-        MemoryHelper::resetAllPoints();
+        TimeHelper::resetAllPoints();
 
         // assert count
-        $events = MemoryHelper::getInstance();
+        $events = TimeHelper::getInstance();
         $this->assertCount(0, $events);
 
         // TODO : test getValues but there are bugs index actually
