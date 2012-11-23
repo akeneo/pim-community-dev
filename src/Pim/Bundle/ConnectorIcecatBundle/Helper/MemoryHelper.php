@@ -81,7 +81,7 @@ class MemoryHelper
         $value2 = self::getLastValue($eventName);
         $gap = $value2 - $value1;
 
-        return self::format($gap);
+        return self::format($value2) .' ('. self::format($gap) .')';
     }
 
     /**
@@ -94,18 +94,6 @@ class MemoryHelper
     protected static function getLastValue($eventName)
     {
         return end(self::$memories[$eventName]);
-    }
-
-    /**
-     * Return the last value formatted to be written on log
-     * @param string $eventName
-     *
-     * @return string
-     * @static
-     */
-    public static function getLastValueFormatted($eventName)
-    {
-        return self::format(self::getLastValue($eventName));
     }
 
     /**

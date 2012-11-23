@@ -148,7 +148,6 @@ class ImportBaseProductsCommand extends AbstractPimCommand
         $this->writeln('Before clear -> '. MemoryHelper::writeValue('memory'));
         $this->getDocumentManager()->clear();
 
-        $diff = MemoryHelper::writeGap('memory');
-        $this->writeln('After clear   -> '. MemoryHelper::getLastValueFormatted('memory') .' ('. $diff .')');
+        $this->writeln('After clear   -> '. MemoryHelper::writeGap('memory'));
     }
 }
