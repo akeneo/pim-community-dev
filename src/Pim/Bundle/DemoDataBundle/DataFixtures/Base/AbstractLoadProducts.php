@@ -32,6 +32,10 @@ abstract class AbstractLoadProducts extends AbstractFixture implements OrderedFi
     const SET_GROUP_TSHIRT   = 'tshirt';
     const SET_ATT_SIZE       = 'tshirt_size';
 
+    const SET_LAPTOP         = 'laptop';
+    const SET_GROUP_LAPTOP   = 'laptop';
+    const SET_LAP_ATT_SIZE   = 'hdd_size';
+
     /**
     * @var ContainerInterface
     */
@@ -59,6 +63,7 @@ abstract class AbstractLoadProducts extends AbstractFixture implements OrderedFi
         // have to define product manager
         $baseSet = $this->createBaseSet();
         $tshirtSet = $this->createTshirtSet($baseSet);
+        $laptopSet = $this->createLaptopSet($baseSet);
         $this->createTshirtProducts($tshirtSet);
     }
 
@@ -71,7 +76,7 @@ abstract class AbstractLoadProducts extends AbstractFixture implements OrderedFi
     }
 
     /**
-     * Create base product type
+     * Create base product set
      *
      * @return ProductSet
      */
@@ -129,7 +134,7 @@ abstract class AbstractLoadProducts extends AbstractFixture implements OrderedFi
     }
 
     /**
-     * Create base product type
+     * Create tshirt product set
      *
      * @param ProductSet $baseSet
      *
@@ -154,6 +159,52 @@ abstract class AbstractLoadProducts extends AbstractFixture implements OrderedFi
         $attribute->setTranslatable(false);
         // add options
         $values = array('S', 'M', 'L', 'XL');
+        $order = 1;
+        foreach ($values as $value) {
+            $option = $this->productManager->getNewAttributeOptionInstance();
+            $option->setValue($value);
+            $option->setSortOrder($order++);
+            $attribute->addOption($option);
+        }
+        $this->productManager->getPersistenceManager()->persist($attribute);
+
+        // add technical group
+        $groupTechnic = $set->getGroup(self::SET_GROUP_TECHNIC);
+        $groupTechnic->addAttribute($attribute);
+
+        // persist
+        $this->productManager->getPersistenceManager()->persist($set);
+        $this->productManager->getPersistenceManager()->flush();
+
+        return $set;
+    }
+
+    /**
+     * Create laptop product set
+     *
+     * @param ProductSet $baseSet
+     *
+     * @return ProductSet
+     */
+    protected function createLaptopSet($baseSet)
+    {
+        // clone base product type
+        $set = $this->productManager->cloneSet($baseSet);
+        $set->setCode(self::SET_LAPTOP);
+        $set->setTitle('Laptop');
+
+        // add a size attribute
+        $attribute = $this->productManager->getNewAttributeInstance();
+        $attribute->setCode(self::SET_LAP_ATT_SIZE);
+        $attribute->setTitle('Size');
+        $attribute->setType(BaseFieldFactory::FIELD_SELECT);
+        $attribute->setScope(BaseFieldFactory::SCOPE_GLOBAL);
+        $attribute->setUniqueValue(false);
+        $attribute->setValueRequired(false);
+        $attribute->setSearchable(false);
+        $attribute->setTranslatable(false);
+        // add options
+        $values = array('100 Go', '200 GO', '1000 GO');
         $order = 1;
         foreach ($values as $value) {
             $option = $this->productManager->getNewAttributeOptionInstance();
