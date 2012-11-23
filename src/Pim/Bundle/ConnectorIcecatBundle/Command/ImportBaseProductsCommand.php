@@ -131,19 +131,8 @@ class ImportBaseProductsCommand extends AbstractPimCommand
     {
         $this->getDocumentManager()->flush();
         $this->writeln('Batch size : '. $this->batchSize);
-        $this->writeln('Point -> '. MemoryHelper::writePoint('memory'));
+        $this->writeln('Point -> '. MemoryHelper::writeValue('memory'));
         $this->getDocumentManager()->clear();
         $this->writeln('Gap   -> '. MemoryHelper::writeGap('memory'));
-    }
-
-    /**
-     * Get memory usage in
-     * @return number
-     */
-    private function getMemoryUsage()
-    {
-        $size = memory_get_usage(true);
-
-        return $size / 1024 / 1024;
     }
 }

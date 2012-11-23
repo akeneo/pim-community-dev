@@ -19,27 +19,27 @@ class MemoryHelper
 
     /**
      * Write a memory usage for a specific point
-     * @param string $point
+     * @param string $pointName
      *
      * @return string
      * @static
      */
-    public static function writePoint($point)
+    public static function writeValue($pointName)
     {
-        self::addPoint($point);
+        self::addValue($pointName);
 
-        return self::format(self::getLastPoint($point));
+        return self::format(self::getLastValue($pointName));
     }
 
     /**
      * Add a memory usage for a specific point
-     * @param string $point
+     * @param string $pointName
      *
      * @static
      */
-    protected static function addPoint($point)
+    public static function addValue($pointName)
     {
-        self::$memories[$point][] = memory_get_usage(true);
+        self::$memories[$pointName][] = memory_get_usage(true);
     }
 
     /**
@@ -68,31 +68,74 @@ class MemoryHelper
     }
 
     /**
-     * Write a gap beetween the two last memory usage
-     * @param string $point
+     * Write a gap beetween the two last memory usage of a point
+     * @param string $pointName
      *
      * @return string
      * @static
      */
-    public static function writeGap($point)
+    public static function writeGap($pointName)
     {
-        $point1 = self::getLastPoint($point);
-        self::addPoint($point);
-        $point2 = self::getLastPoint($point);
-        $gap = $point2 - $point1;
+        $value1 = self::getLastValue($pointName);
+        self::addValue($pointName);
+        $value2 = self::getLastValue($pointName);
+        $gap = $value2 - $value1;
 
         return self::format($gap);
     }
 
     /**
-     * Get the last measured point
-     * @param string $point
+     * Get the last measured value for a specific point
+     * @param string $pointName
      *
      * @return integer
      * @static
      */
-    protected static function getLastPoint($point)
+    protected static function getLastValue($pointName)
     {
-        return end(self::$memories[$point]);
+        return end(self::$memories[$pointName]);
+    }
+
+    /**
+     * Get all values for a specific point
+     * @param string $pointName
+     *
+     * @return array
+     * @static
+     */
+    public static function getValues($pointName)
+    {
+        return self::$memories[$pointName];
+    }
+
+    /**
+     * Get all memory values stored
+     * @return array
+     * @static
+     */
+    public static function getInstance()
+    {
+        return self::$memories;
+    }
+
+    /**
+     * Reset values for a defined point
+     * @param string $pointName
+     *
+     * @static
+     */
+    public static function resetPoint($pointName)
+    {
+        // TODO : replace by unset ? -> requiring test update
+        self::$memories[$pointName] = array();
+    }
+
+    /**
+     * Reset all memory values stored
+     * @static
+     */
+    public static function resetAllPoints()
+    {
+        self::$memories = array();
     }
 }
