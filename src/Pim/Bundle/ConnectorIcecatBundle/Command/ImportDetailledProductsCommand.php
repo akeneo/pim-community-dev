@@ -7,7 +7,7 @@ use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
 
 use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductArrayToCatalogProductTransformer;
 
-use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductXmlToArrayTransformer;
+use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductIntXmlToArrayTransformer;
 
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpReader;
 
@@ -53,29 +53,35 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
     /**
      * {@inheritdoc}
      */
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        parent::initialize($input, $output);
+        // get arguments
+        $this->limit = $input->getArgument('limit');
+
+        // initialize base file path
+        $baseUrl    = $this->getConfigManager()->getValue(Config::BASE_URL);
+        $productUrl = $this->getConfigManager()->getValue(Config::BASE_PRODUCTS_URL);
+        $this->baseFilePath = $baseUrl . $productUrl;
+
+        // initialize reader
+        $this->reader = new FileHttpReader();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // get arguments
-        $limit = $input->getArgument('limit');
-        $startLimit = $limit;
-
         // get config
         $configManager = $this->getConfigManager();
         $login       = $configManager->getValue(Config::LOGIN);
         $password    = $configManager->getValue(Config::PASSWORD);
-        $baseDir     = $configManager->getValue(Config::BASE_DIR);
-        $downloadUrl = $configManager->getValue(Config::BASE_URL) . $configManager->getValue(Config::BASE_PRODUCTS_URL);
-        $baseFilePath= 'http://data.icecat.biz/export/freexml.int/INT/';
 
-        // get data objects
-        $dm = $this->getDocumentManager();
+        $products = $this->getDocumentManager()->getRepository('PimConnectorIcecatBundle:ProductDataSheet')
+                         ->findBy(array('isImported' => 0));
 
-        $products = $dm->getRepository('PimConnectorIcecatBundle:ProductDataSheet')->findBy(array('isImported' => 0));
-
-        echo count($products).PHP_EOL;
-
-        // prepare objects
-        $reader = new FileHttpReader();
+        $this->writeln(count($products) .'products found'.PHP_EOL);
 
         // loop on products
         $batchSize = 0;
@@ -86,36 +92,33 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
 
             // get xml content
             $file = $product->getProductId() .'.xml';
-            $content = $reader->process($baseFilePath . $file, $login, $password, false);
+            $content = $this->reader->process($this->baseFilePath . $file, $login, $password, false);
             $content = simplexml_load_string($content);
 
             // keep only used data, convert to array and encode ton json format
-            $xmlToArray = new ProductXmlToArrayTransformer($content);
-            $xmlToArray->transform();
-            $baseData = $xmlToArray->getProductBaseData();
-            $features = $xmlToArray->getProductFeatures();
-            $data= array('basedata' => $baseData, 'features' => $features);
+            $xmlToArray = new ProductIntXmlToArrayTransformer($content);
+            $data = $xmlToArray->transform();
 
             // persist details
             $product->setXmlDetailledData(json_encode($data));
             $product->setIsImported(1);
-            $dm->persist($product);
+            $this->getDocumentManager()->persist($product);
             echo 'insert '.$product->getProductId().PHP_EOL;
 
             // save by batch of x product details
-            if (++$batchSize % 10 === 0) {
-                $dm->flush();
+            if (++$batchSize === 10) {
+                $this->getDocumentManager()->flush();
                 $output->writeln('Batch size : '. $batchSize);
-                $output->writeln('memory usage -> '. $this->getMemoryUsage());
-                $dm->clear();
-                $output->writeln('after clear memory usage -> '. $this->getMemoryUsage());
-                gc_collect_cycles();
-                $output->writeln('after gc_collect_cycles -> '. $this->getMemoryUsage());
+                $output->writeln('memory usage -> '. MemoryHelper::writeValue('memory'));
+                $this->getDocumentManager()->clear();
+                $output->writeln('after clear memory usage -> '. MemoryHelper::writeGap('memory'));
+                $batchSize = 0;
             }
 
             // stop when limit is attempted
-            if (--$limit === 0) {
-                $dm->flush();
+            // TODO : must be remove when query with where clause and limit work
+            if (--$this->limit === 0) {
+                $this->getDocumentManager()->flush();
                 break;
             }
             $this->writeln('Load product : '. TimeHelper::writeGap('load-product') .' - '. MemoryHelper::writeGap('load-product'));
