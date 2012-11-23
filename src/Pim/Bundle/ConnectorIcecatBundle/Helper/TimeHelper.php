@@ -23,6 +23,8 @@ class TimeHelper
      *
      * @return string
      * @static
+     *
+     * TODO : Useless ?!
      */
     public static function writeValue($eventName)
     {
@@ -51,6 +53,8 @@ class TimeHelper
      */
     protected static function format($value)
     {
+        $value = $value *1000;
+
         return $value .' '. self::getMeasure();
     }
 
@@ -62,7 +66,7 @@ class TimeHelper
      */
     protected static function getMeasure()
     {
-        return 'Mo';
+        return 'secs';
     }
 
     /**

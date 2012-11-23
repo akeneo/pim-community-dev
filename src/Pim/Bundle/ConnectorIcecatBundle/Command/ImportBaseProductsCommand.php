@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Command;
 
+use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
+
 use Pim\Bundle\ConnectorIcecatBundle\Helper\MemoryHelper;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -90,8 +92,10 @@ class ImportBaseProductsCommand extends AbstractPimCommand
         $password         = $this->getConfigManager()->getValue(Config::PASSWORD);
 
         // download xml file
+        TimeHelper::addValue('download-file');
         $downloader = new FileHttpDownload();
         $downloader->process($downloadUrl, $archivedFilePath, $login, $password, false);
+        $this->writeln('Download File -> '. TimeHelper::writeGap('download-file'));
     }
 
     /**
@@ -101,8 +105,11 @@ class ImportBaseProductsCommand extends AbstractPimCommand
      */
     protected function unpackFile($archivedFilePath, $filePath)
     {
+        TimeHelper::addValue('unpack');
+        MemoryHelper::addValue('unpack');
         $unpacker = new FileUnzip();
         $unpacker->process($archivedFilePath, $filePath, false);
+        $this->writeln('Unpack File -> '. TimeHelper::writeGap('unpack') .' - '. MemoryHelper::writeGap('unpack'));
     }
 
     /**

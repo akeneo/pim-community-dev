@@ -58,7 +58,7 @@ class TimeHelperTest extends KernelAwareTest
     public function testWritePoint()
     {
         $str = TimeHelper::writeValue('test-write-event');
-        $this->assertStringMatchesFormat('%f Mo', $str);
+        $this->assertStringMatchesFormat('%f secs', $str);
     }
 
     /**
@@ -70,7 +70,7 @@ class TimeHelperTest extends KernelAwareTest
         TimeHelper::addValue('test-write-gap');
         // write a gap
         $str = TimeHelper::writeGap('test-write-gap');
-        $this->assertStringMatchesFormat('%f Mo', $str);
+        $this->assertStringMatchesFormat('%f secs', $str);
 
         // TODO : Test write gap on an unexisting event name -> failed actually
 
