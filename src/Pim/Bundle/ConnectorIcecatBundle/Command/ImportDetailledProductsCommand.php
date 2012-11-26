@@ -125,7 +125,7 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
             // stop when limit is attempted
             // TODO : must be remove when query with where clause and limit work
             if (--$this->limit === 0) {
-                $this->getDocumentManager()->flush();
+                $this->flush();
                 break;
             }
             $this->writeln('Load product : '. TimeHelper::writeGap('load-product') .' - '. MemoryHelper::writeGap('load-product'));
@@ -150,8 +150,8 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
     {
         $this->getDocumentManager()->flush();
         $this->writeln('Batch size : '. $this->batchSize);
-        $this->writeln('memory usage -> '. MemoryHelper::writeGap('memory'));
+        $this->writeln('memory usage -> '. MemoryHelper::writeGap('load-product'));
         $this->getDocumentManager()->clear();
-        $this->writeln('after clear memory usage -> '. MemoryHelper::writeGap('memory'));
+        $this->writeln('after clear memory usage -> '. MemoryHelper::writeGap('load-product'));
     }
 }
