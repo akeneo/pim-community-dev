@@ -66,6 +66,8 @@ class ProductIntXmlToArrayTransformer implements TransformInterface
     {
         // verify if product id really exists
         if (isset($this->simpleDoc->Product['Code']) && $this->simpleDoc->Product['Code'] == -1) {
+            file_put_contents('/tmp/productFailed.xml', $this->simpleDoc->asXML());
+
             throw new TransformException('unexistent product id');
         }
 

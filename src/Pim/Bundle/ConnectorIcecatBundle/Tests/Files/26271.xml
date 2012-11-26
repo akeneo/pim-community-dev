@@ -1,7 +1,8 @@
-<!DOCTYPE icecat-interface SYSTEM "dtd/ICECAT-interface_response.dtd">
-<!-- saved from url=(0055)http://data.icecat.biz/export/freexml.int/INT/26271.xml -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><style type="text/css"></style></head><body><icecat-interface xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nonamespaceschemalocation="http://data.icecat.biz/xsd/ICECAT-interface_response.xsd">
-    <product code="-1" id="?0?" errormessage="The requested XML data-sheet is not present in the Icecat database.">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ICECAT-interface SYSTEM "dtd/ICECAT-interface_response.dtd">
+<!-- source: Icecat.biz 2012 -->
+<ICECAT-interface xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://data.icecat.biz/xsd/ICECAT-interface_response.xsd">
+    <Product Code="-1" ID="?0?" ErrorMessage="The requested XML data-sheet is not present in the Icecat database.">
         &lt;?xml version="1.0" encoding="UTF-8"?&gt;\n&lt;!DOCTYPE ICECAT-interface SYSTEM "dtd/ICECAT-interface_response.dtd"&gt;&lt;!-- source: Icecat.biz 2012 --&gt;&lt;ICECAT-interface xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://data.icecat.biz/xsd/ICECAT-interface_response.xsd"&gt;&lt;Product Code="-1" ID="?0?" ErrorMessage="The requested XML data-sheet is not present in the Icecat database."  /&gt;&lt;/ICECAT-interface&gt;
-    </product>
-</icecat-interface></body></html>
+    </Product>
+</ICECAT-interface>

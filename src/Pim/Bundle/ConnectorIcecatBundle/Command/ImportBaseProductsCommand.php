@@ -159,7 +159,6 @@ class ImportBaseProductsCommand extends AbstractPimCommand
     protected function flush()
     {
         $this->getDocumentManager()->flush();
-        $this->writeln('Batch size : '. $this->batchSize);
         $this->writeln('Before clear -> '. MemoryHelper::writeValue('memory'));
         $this->getDocumentManager()->clear();
         $this->writeln('After clear   -> '. MemoryHelper::writeGap('memory'));

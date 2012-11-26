@@ -58,10 +58,12 @@ class ProductIntXmlToArrayTransformerTest extends KernelAwareTest
      */
     public function testProductNotPresent()
     {
-        $filename = '26271.xml';
-        $resultArray = $this->loadFile($filename);
-
-        // TODO : catch exception
+        try {
+            $filename = '26271.xml';
+            $resultArray = $this->loadFile($filename);
+        } catch (\Exception $e) {
+            $this->assertEquals('Pim\Bundle\ConnectorIcecatBundle\Exception\TransformException', get_class($e));
+        }
     }
 
     /**
@@ -72,7 +74,7 @@ class ProductIntXmlToArrayTransformerTest extends KernelAwareTest
      */
     protected function loadFile($filename)
     {
-        $filepath = dirname(__FILE__ .'/../Files/'. $filename);
+        $filepath = dirname(__FILE__) .'/../Files/'. $filename;
         $content = simplexml_load_file($filepath);
 
         // call transformer
@@ -124,7 +126,7 @@ class ProductIntXmlToArrayTransformerTest extends KernelAwareTest
      */
     protected function assertCategory($category, $categoryId)
     {
-        $this->assertValue('id', $count, $category);
+        $this->assertValue('id', $categoryId, $category);
         $this->assertI18N($category['name']);
     }
 
