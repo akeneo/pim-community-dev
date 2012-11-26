@@ -100,7 +100,6 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
         TimeHelper::addValue('load-product');
         MemoryHelper::addValue('load-product');
         foreach ($products as $product) {
-
             // get xml content
             $file = $product->getProductId() .'.xml';
             $content = $this->reader->process($this->baseFilePath . $file, $login, $password, false);
@@ -128,7 +127,6 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
                 $this->flush();
                 break;
             }
-            $this->writeln('Load product : '. TimeHelper::writeGap('load-product') .' - '. MemoryHelper::writeGap('load-product'));
         }
     }
 
