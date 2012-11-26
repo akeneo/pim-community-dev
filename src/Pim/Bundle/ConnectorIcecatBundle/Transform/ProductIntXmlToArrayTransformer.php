@@ -96,8 +96,8 @@ class ProductIntXmlToArrayTransformer implements TransformInterface
 
         // get summary description data
         $summaryTag = $productTag->SummaryDescription;
-        $this->productBaseData['ShortDescription'] = (string) $productTag->SummaryDescription->ShortSummaryDescription;
-        $this->productBaseData['LongDescription']  = (string) $productTag->SummaryDescription->LongSummaryDescription;
+        $this->productBaseData['ShortDescription'] = (string) $summaryTag->ShortSummaryDescription;
+        $this->productBaseData['LongDescription']  = (string) $summaryTag->LongSummaryDescription;
     }
 
     /**
