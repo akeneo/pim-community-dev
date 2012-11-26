@@ -37,6 +37,18 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 class ImportDetailledProductsCommand extends AbstractPimCommand
 {
     /**
+     * Actual counter for inserting loop
+     * @var integer
+     */
+    protected $batchSize;
+
+    /**
+     * Max counter for inserting loop. When batch size achieve this value, manager make a flush/clean
+     * @staticvar integer
+     */
+    protected static $maxBatchSize = 100;
+
+    /**
      * {@inheritdoc}
      */
     protected function configure()
@@ -78,13 +90,11 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
         $login       = $configManager->getValue(Config::LOGIN);
         $password    = $configManager->getValue(Config::PASSWORD);
 
-        $products = $this->getDocumentManager()->getRepository('PimConnectorIcecatBundle:ProductDataSheet')
-                         ->findBy(array('isImported' => 0));
-
-        $this->writeln(count($products) .'products found'.PHP_EOL);
+        // get products
+        $products =
 
         // loop on products
-        $batchSize = 0;
+        $this->batchSize = 0;
 
         TimeHelper::addValue('load-product');
         MemoryHelper::addValue('load-product');
@@ -103,16 +113,12 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
             $product->setXmlDetailledData(json_encode($data));
             $product->setIsImported(1);
             $this->getDocumentManager()->persist($product);
-            echo 'insert '.$product->getProductId().PHP_EOL;
+            $this->writeln('insert '. $product->getProductId());
 
             // save by batch of x product details
-            if (++$batchSize === 10) {
-                $this->getDocumentManager()->flush();
-                $output->writeln('Batch size : '. $batchSize);
-                $output->writeln('memory usage -> '. MemoryHelper::writeValue('memory'));
-                $this->getDocumentManager()->clear();
-                $output->writeln('after clear memory usage -> '. MemoryHelper::writeGap('memory'));
-                $batchSize = 0;
+            if (++$this->batchSize === self::$maxBatchSize) {
+                $this->flush();
+                $this->batchSize = 0;
             }
 
             // stop when limit is attempted
@@ -126,20 +132,26 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
     }
 
     /**
-     * @return Doctrine\ODM\MongoDB\Query\Builder;
+     * Get all product data sheet
+     * @return ProductDataSheet
      */
-    protected function createQB()
+    protected function getProductsDataSheet()
     {
         return $this->getDocumentManager()
-                    ->getRepository('PimConnectorIcecatBundle:ProductDataSheet')
-                    ->createQueryBuilder();
+                         ->getRepository('PimConnectorIcecatBundle:ProductDataSheet')
+                         ->findBy(array('isImported' => 0));
+        $this->writeln(count($products) .'products found'.PHP_EOL);
     }
 
     /**
-     * @return ProductManager
+     * Call document manager to flush data
      */
-    protected function getProductManager()
+    protected function flush()
     {
-        return $this->getContainer()->get('pim.catalog.product_manager');
+        $this->getDocumentManager()->flush();
+        $this->writeln('Batch size : '. $this->batchSize);
+        $this->writeln('memory usage -> '. MemoryHelper::writeGap('memory'));
+        $this->getDocumentManager()->clear();
+        $this->writeln('after clear memory usage -> '. MemoryHelper::writeGap('memory'));
     }
 }
