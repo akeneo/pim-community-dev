@@ -91,7 +91,8 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
         $password    = $configManager->getValue(Config::PASSWORD);
 
         // get products
-        $products =
+        $products = $this->getProductsDataSheet();
+        $this->writeln(count($products) .'products found'.PHP_EOL);
 
         // loop on products
         $this->batchSize = 0;
@@ -140,7 +141,6 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
         return $this->getDocumentManager()
                          ->getRepository('PimConnectorIcecatBundle:ProductDataSheet')
                          ->findBy(array('isImported' => 0));
-        $this->writeln(count($products) .'products found'.PHP_EOL);
     }
 
     /**
