@@ -44,8 +44,13 @@ class ImportProductsCommand extends AbstractPimCommand
             // launch detailled product data importing
             $detailledCommand = $this->getApplication()->find('connectoricecat:importDetailledProducts');
             // TODO : Use a fork manager to implements parallel command execution
-            $inputArgs = array('limit' => self::$detailledImport);
-            $returnCode = $detailledCommand->run(new ArrayInput($inputArgs), $output);
+            $args = array(
+                'command' => 'connectoricecat:importDetailledProducts',
+                'limit'   => self::$detailledImport,
+                '--no-debug' => true
+            );
+            $inputArgs = new ArrayInput($args);
+            $returnCode = $detailledCommand->run($inputArgs, $output);
 
             if ($returnCode === 0) {
                 $this->writeln(self::$detailledImport .' detailled products imported');
