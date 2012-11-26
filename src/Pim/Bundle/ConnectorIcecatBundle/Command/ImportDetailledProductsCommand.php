@@ -100,32 +100,36 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
         TimeHelper::addValue('load-product');
         MemoryHelper::addValue('load-product');
         foreach ($products as $product) {
-            // get xml content
-            $file = $product->getProductId() .'.xml';
-            $content = $this->reader->process($this->baseFilePath . $file, $login, $password, false);
-            $content = simplexml_load_string($content);
+            try {
+                // get xml content
+                $file = $product->getProductId() .'.xml';
+                $content = $this->reader->process($this->baseFilePath . $file, $login, $password, false);
+                $content = simplexml_load_string($content);
 
-            // keep only used data, convert to array and encode ton json format
-            $xmlToArray = new ProductIntXmlToArrayTransformer($content);
-            $data = $xmlToArray->transform();
+                // keep only used data, convert to array and encode ton json format
+                $xmlToArray = new ProductIntXmlToArrayTransformer($content);
+                $data = $xmlToArray->transform();
 
-            // persist details
-            $product->setXmlDetailledData(json_encode($data));
-            $product->setIsImported(1);
-            $this->getDocumentManager()->persist($product);
-            $this->writeln('insert '. $product->getProductId());
+                // persist details
+                $product->setXmlDetailledData(json_encode($data));
+                $product->setIsImported(1);
+                $this->getDocumentManager()->persist($product);
+                $this->writeln('insert '. $product->getProductId());
 
-            // save by batch of x product details
-            if (++$this->batchSize === self::$maxBatchSize) {
-                $this->flush();
-                $this->batchSize = 0;
-            }
+                // save by batch of x product details
+                if (++$this->batchSize === self::$maxBatchSize) {
+                    $this->flush();
+                    $this->batchSize = 0;
+                }
 
-            // stop when limit is attempted
-            // TODO : must be remove when query with where clause and limit work
-            if (--$this->limit === 0) {
-                $this->flush();
-                break;
+                // stop when limit is attempted
+                // TODO : must be remove when query with where clause and limit work
+                if (--$this->limit === 0) {
+                    $this->flush();
+                    break;
+                }
+            } catch (\Exception $e) {
+                $this->writeln('Exception -> '. $e->getMessage());
             }
         }
     }

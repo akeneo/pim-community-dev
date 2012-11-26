@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Transform;
 
+use Pim\Bundle\ConnectorIcecatBundle\Exception\TransformException;
+
 use \SimpleXMLElement;
 /**
  * Aims to transform xml product data to array
@@ -62,6 +64,11 @@ class ProductIntXmlToArrayTransformer implements TransformInterface
      */
     public function transform()
     {
+        // verify if product id really exists
+        if (isset($this->simpleDoc->Product['Code']) && $this->simpleDoc->Product['Code'] == -1) {
+            throw new TransformException('unexistent product id');
+        }
+
         $this->parseBaseData($this->simpleDoc);
         $this->parseCategory($this->simpleDoc);
         $this->parseGroups($this->simpleDoc);

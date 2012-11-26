@@ -36,44 +36,70 @@ class ProductIntXmlToArrayTransformerTest extends KernelAwareTest
     protected $fileContent;
 
     /**
-     * {@inheritdoc}
+     * Test data import with product id 10
      */
-    public function setUp()
+    public function testProductId10()
     {
-        parent::setUp();
+        $filename = '10.xml';
+        $resultArray = $this->loadFile($filename);
 
-        $content = file_get_contents(dirname(__FILE__) .'/../../'. self::FILEPATH . self::FILENAME);
-        $this->fileContent = simplexml_load_string($content);
+        // assert global data
+        $this->assertTransformXmlToArray($resultArray);
+
+        // assertions for each part of the global array
+        $this->assertProductId10($resultArray['basedata']);
+        $this->assertCategory($resultArray['category'], 234);
+        $this->assertCategoryFeatureGroups($resultArray['categoryfeaturegroups'], 31);
+        $this->assertProductFeatures($resultArray['productfeatures'], 57);
+    }
+
+    /**
+     * Test loading product when product id unexistent (file 26271.xml)
+     */
+    public function testProductNotPresent()
+    {
+        $filename = '26271.xml';
+        $resultArray = $this->loadFile($filename);
+
+        // TODO : catch exception
+    }
+
+    /**
+     * Load a file in SimpleXmlElement format
+     * @param string $filename
+     *
+     * @return SimpleXMLElement
+     */
+    protected function loadFile($filename)
+    {
+        $filepath = dirname(__FILE__ .'/../Files/'. $filename);
+        $content = simplexml_load_file($filepath);
+
+        // call transformer
+        $transformer = new ProductIntXmlToArrayTransformer($content);
+
+        return $transformer->transform();
     }
 
     /**
      * Test to extract xml data to array
+     * @param array $resultArray
      */
-    public function testTransformXmlToArray()
+    protected function assertTransformXmlToArray($resultArray)
     {
-        // call transformer
-        $transformer = new ProductIntXmlToArrayTransformer($this->fileContent);
-        $resultArray = $transformer->transform();
-
         // global array assertions
         $this->assertCount(4, $resultArray);
         $this->assertArrayHasKey('basedata', $resultArray);
         $this->assertArrayHasKey('category', $resultArray);
         $this->assertArrayHasKey('categoryfeaturegroups', $resultArray);
         $this->assertArrayHasKey('productfeatures', $resultArray);
-
-        // assertions for each part of the global array
-        $this->assertBaseData($resultArray['basedata']);
-        $this->assertCategory($resultArray['category']);
-        $this->assertCategoryFeatureGroups($resultArray['categoryfeaturegroups']);
-        $this->assertProductFeatures($resultArray['productfeatures']);
     }
 
     /**
      * Assert base data for products
      * @param array $baseData
      */
-    protected function assertBaseData($baseData)
+    protected function assertProductId10($baseData)
     {
         // assert product data
         $this->assertValue('id', 'C8934A#A2L', $baseData);
@@ -93,21 +119,23 @@ class ProductIntXmlToArrayTransformerTest extends KernelAwareTest
 
     /**
      * Assert category data of the product
-     * @param array $category
+     * @param array   $category   category array for i18n
+     * @param integer $categoryId Id of product category
      */
-    protected function assertCategory($category)
+    protected function assertCategory($category, $categoryId)
     {
-        $this->assertValue('id', 234, $category);
+        $this->assertValue('id', $count, $category);
         $this->assertI18N($category['name']);
     }
 
     /**
      * Assert group data
-     * @param array $groups
+     * @param array   $groups groups array
+     * @param integer $count  number of groups expected
      */
-    protected function assertCategoryFeatureGroups($groups)
+    protected function assertCategoryFeatureGroups($groups, $count)
     {
-        $this->assertCount(31, $groups);
+        $this->assertCount($count, $groups);
         foreach ($groups as $group) {
             $this->assertI18N($group);
         }
@@ -115,11 +143,12 @@ class ProductIntXmlToArrayTransformerTest extends KernelAwareTest
 
     /**
      * Assert features data
-     * @param array $features
+     * @param array   $features features array
+     * @param integer $count    number of features expected
      */
-    protected function assertProductFeatures($features)
+    protected function assertProductFeatures($features, $count)
     {
-        $this->assertCount(57, $features);
+        $this->assertCount($count, $features);
         foreach ($features as $feature) {
             $this->assertArrayHasKey('CategoryFeatureGroup_ID', $feature);
             $this->assertArrayHasKey('Value', $feature);
