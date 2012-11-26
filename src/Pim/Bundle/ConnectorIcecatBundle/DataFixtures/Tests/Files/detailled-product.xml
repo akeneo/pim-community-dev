@@ -1,0 +1,1608 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ICECAT-interface SYSTEM "http://data.icecat.biz/dtd/ICECAT-interface_response.dtd">
+	<!-- source: Icecat.biz 2012 -->
+	<ICECAT-interface xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://data.icecat.biz/xsd/ICECAT-interface_response.xsd">
+<Product Code="1" HighPic="http://images.icecat.biz/img/norm/high/1317.jpg" HighPicHeight="190" HighPicSize="5387" HighPicWidth="170" ID="10" LowPic="http://images.icecat.biz/img/norm/low/1317.jpg" LowPicHeight="190" LowPicSize="3890" LowPicWidth="170" Name="deskjet 845c printer" Pic500x500="" Pic500x500Height="0" Pic500x500Size="0" Pic500x500Width="0" Prod_id="C8934A#A2L" Quality="ICECAT" ReleaseDate="2004-12-01" ThumbPic="http://images.icecat.biz/thumbs/1317.jpg" ThumbPicSize="3788" Title="HP deskjet 845c printer">
+    <Category ID="234">
+    <Name ID="469" Value="inkjet printers" langid="1"/>
+    <Name ID="471237" Value="inkjetprinters" langid="2"/>
+    <Name ID="343979" Value="imprimantes jets d'encres" langid="3"/>
+    <Name ID="521904" Value="喷墨式打印机" langid="12"/>
+    </Category>
+   <CategoryFeatureGroup ID="352" No="-1">
+     <FeatureGroup ID="0">
+       <Name ID="5073" Value="Technical details" langid="1"/>
+       <Name ID="478422" Value="Technische details" langid="2"/>
+       <Name ID="344646" Value="Détails techniques" langid="3"/>
+       <Name ID="529036" Value="技术细节" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="2783" No="75">
+     <FeatureGroup ID="1">
+       <Name ID="4859" Value="Processor" langid="1"/>
+       <Name ID="478395" Value="Processor" langid="2"/>
+       <Name ID="344619" Value="Processeur" langid="3"/>
+       <Name ID="529009" Value="处理器" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="782" No="74">
+     <FeatureGroup ID="3">
+       <Name ID="4863" Value="Memory" langid="1"/>
+       <Name ID="478397" Value="Geheugen" langid="2"/>
+       <Name ID="344621" Value="Mémoire vive" langid="3"/>
+       <Name ID="529011" Value="内存" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="2153" No="4">
+     <FeatureGroup ID="5">
+       <Name ID="4867" Value="Display" langid="1"/>
+       <Name ID="478399" Value="Beeldscherm" langid="2"/>
+       <Name ID="630177" Value="Écran" langid="3"/>
+       <Name ID="529013" Value="显示器" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="50" No="11">
+     <FeatureGroup ID="8">
+       <Name ID="4885" Value="System requirements" langid="1"/>
+       <Name ID="478402" Value="Minimale systeemeisen" langid="2"/>
+       <Name ID="344626" Value="Configuration minimale du système" langid="3"/>
+       <Name ID="529016" Value="系统要求" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="52" No="58">
+     <FeatureGroup ID="12">
+       <Name ID="4995" Value="Ports &amp; interfaces" langid="1"/>
+       <Name ID="478405" Value="Aansluitingen" langid="2"/>
+       <Name ID="344629" Value="Connectivité" langid="3"/>
+       <Name ID="529019" Value="连通度" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="53" No="44">
+     <FeatureGroup ID="14">
+       <Name ID="5023" Value="Weight &amp; dimensions" langid="1"/>
+       <Name ID="478407" Value="Gewicht en omvang" langid="2"/>
+       <Name ID="344631" Value="Poids et dimensions" langid="3"/>
+       <Name ID="529021" Value="重量和尺寸" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="46" No="78">
+     <FeatureGroup ID="15">
+       <Name ID="5025" Value="Printing" langid="1"/>
+       <Name ID="478408" Value="Printsnelheid" langid="2"/>
+       <Name ID="344632" Value="Vitesse d'impression" langid="3"/>
+       <Name ID="529022" Value="打印速度" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="47" No="80">
+     <FeatureGroup ID="16">
+       <Name ID="5027" Value="Print quality" langid="1"/>
+       <Name ID="478409" Value="Printkwaliteit" langid="2"/>
+       <Name ID="344633" Value="Qualité d'impression" langid="3"/>
+       <Name ID="529023" Value="打印质量" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="48" No="68">
+     <FeatureGroup ID="17">
+       <Name ID="5029" Value="Output capacity" langid="1"/>
+       <Name ID="478410" Value="Uitvoercapaciteit" langid="2"/>
+       <Name ID="344634" Value="Capacité de sortie" langid="3"/>
+       <Name ID="529024" Value="输出容量" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="49" No="70">
+     <FeatureGroup ID="18">
+       <Name ID="5031" Value="Input capacity" langid="1"/>
+       <Name ID="478411" Value="Invoercapaciteit" langid="2"/>
+       <Name ID="344635" Value="Capacité d'entrée" langid="3"/>
+       <Name ID="529025" Value="输入容量" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="51" No="14">
+     <FeatureGroup ID="19">
+       <Name ID="5033" Value="Media formats" langid="1"/>
+       <Name ID="478412" Value="Mediaformaten" langid="2"/>
+       <Name ID="626757" Value="Formats des supports" langid="3"/>
+       <Name ID="529026" Value="媒体格式" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="54" No="77">
+     <FeatureGroup ID="20">
+       <Name ID="5035" Value="Print technology" langid="1"/>
+       <Name ID="478413" Value="Printtechnologie" langid="2"/>
+       <Name ID="344637" Value="Technologie d'impression" langid="3"/>
+       <Name ID="529027" Value="打印技术" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="2081" No="5">
+     <FeatureGroup ID="24">
+       <Name ID="5043" Value="Scanning" langid="1"/>
+       <Name ID="478404" Value="Scannen" langid="2"/>
+       <Name ID="344628" Value="Numérisation" langid="3"/>
+       <Name ID="529018" Value="扫描" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="2779" No="0">
+     <FeatureGroup ID="25">
+       <Name ID="5045" Value="Copying" langid="1"/>
+       <Name ID="478417" Value="Kopiëren" langid="2"/>
+       <Name ID="354689" Value="Copieur" langid="3"/>
+       <Name ID="770787" Value="仿形的" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="2781" No="0">
+     <FeatureGroup ID="26">
+       <Name ID="5047" Value="Fax" langid="1"/>
+       <Name ID="478418" Value="Faxen" langid="2"/>
+       <Name ID="344642" Value="Fax" langid="3"/>
+       <Name ID="529032" Value="传真" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="1518" No="43">
+     <FeatureGroup ID="27">
+       <Name ID="5049" Value="Energy management" langid="1"/>
+       <Name ID="478419" Value="Energie" langid="2"/>
+       <Name ID="344643" Value="Gestion d'énergie" langid="3"/>
+       <Name ID="529033" Value="能量控制" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="1519" No="42">
+     <FeatureGroup ID="28">
+       <Name ID="5067" Value="Operational conditions" langid="1"/>
+       <Name ID="478420" Value="Eisen aan de omgeving" langid="2"/>
+       <Name ID="344644" Value="Conditions environnementales" langid="3"/>
+       <Name ID="529034" Value="环境条件" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="2780" No="0">
+     <FeatureGroup ID="35">
+       <Name ID="5167" Value="Networking" langid="1"/>
+       <Name ID="478427" Value="Netwerk" langid="2"/>
+       <Name ID="344651" Value="Réseau" langid="3"/>
+       <Name ID="529041" Value="联网" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="2782" No="0">
+     <FeatureGroup ID="36">
+       <Name ID="5181" Value="Colour" langid="1"/>
+       <Name ID="478428" Value="Kleur" langid="2"/>
+       <Name ID="344652" Value="Couleur" langid="3"/>
+       <Name ID="529042" Value="色彩" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="825" No="45">
+     <FeatureGroup ID="38">
+       <Name ID="5189" Value="Sound emission" langid="1"/>
+       <Name ID="478430" Value="Geluidsproductie" langid="2"/>
+       <Name ID="344654" Value="Émission sonore" langid="3"/>
+       <Name ID="529044" Value="立体声发射" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="823" No="12">
+     <FeatureGroup ID="39">
+       <Name ID="5205" Value="Consumables" langid="1"/>
+       <Name ID="478431" Value="Verbruiksgoederen" langid="2"/>
+       <Name ID="344655" Value="Consommables" langid="3"/>
+       <Name ID="529045" Value="消耗品" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="2778" No="66">
+     <FeatureGroup ID="40">
+       <Name ID="5221" Value="Paper handling" langid="1"/>
+       <Name ID="478432" Value="Papier" langid="2"/>
+       <Name ID="565024" Value="Gestion du papier" langid="3"/>
+       <Name ID="529046" Value="纸张处理" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="2784" No="30">
+     <FeatureGroup ID="67">
+       <Name ID="27423" Value="Packaging data" langid="1"/>
+       <Name ID="478456" Value="Verpakking" langid="2"/>
+       <Name ID="344680" Value="Emballage" langid="3"/>
+       <Name ID="529070" Value="封装机" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="2785" No="0">
+     <FeatureGroup ID="75">
+       <Name ID="27867" Value="Security" langid="1"/>
+       <Name ID="478464" Value="Beveiliging" langid="2"/>
+       <Name ID="344688" Value="Sécurité" langid="3"/>
+       <Name ID="529078" Value="安全" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="2777" No="40">
+     <FeatureGroup ID="76">
+       <Name ID="28540" Value="Certificates" langid="1"/>
+       <Name ID="478465" Value="Certificaten" langid="2"/>
+       <Name ID="344689" Value="Certificat" langid="3"/>
+       <Name ID="529079" Value="控制性审查" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="3458" No="0">
+     <FeatureGroup ID="79">
+       <Name ID="28858" Value="Illumination/Alarms" langid="1"/>
+       <Name ID="478468" Value="Verlichting/Alarminstallaties" langid="2"/>
+       <Name ID="565027" Value="Illuminations/Alarmes" langid="3"/>
+       <Name ID="529082" Value="照明和报警设备" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="6106" No="50">
+     <FeatureGroup ID="90">
+       <Name ID="30562" Value="Operating system/software" langid="1"/>
+       <Name ID="478477" Value="Besturingssysteem/software" langid="2"/>
+       <Name ID="344701" Value="Système d'exploitation/logiciel" langid="3"/>
+       <Name ID="529091" Value="操作系统/软件" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="3425" No="13">
+     <FeatureGroup ID="103">
+       <Name ID="39902" Value="Media types" langid="1"/>
+       <Name ID="478490" Value="Mediatypes" langid="2"/>
+       <Name ID="626760" Value="Types de supports" langid="3"/>
+       <Name ID="529104" Value="介质类型" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="3430" No="0">
+     <FeatureGroup ID="104">
+       <Name ID="40021" Value="Media weight" langid="1"/>
+       <Name ID="478489" Value="Gewicht media" langid="2"/>
+       <Name ID="626761" Value="Poids des supports" langid="3"/>
+       <Name ID="529103" Value="介质重量" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+    <CategoryFeatureGroup ID="9054" No="0">
+     <FeatureGroup ID="146">
+       <Name ID="624346" Value="Other features" langid="1"/>
+       <Name ID="624347" Value="Other features" langid="2"/>
+       <Name ID="745318" Value="Autres caractéristiques" langid="3"/>
+       <Name ID="770803" Value="Other features" langid="12"/>
+     </FeatureGroup>
+    </CategoryFeatureGroup>
+   <EANCode/>
+   <FeatureLogo ID="4" Feature_ID="838" Value="Y" LogoPic="http://images.icecat.biz/img/feature_logo/4-8210.png" Width="195" Height="200" Size="35338">
+        <Descriptions>
+            <Description ID="3" langid="1">
+                <![CDATA[Energy Star is an international standard for energy efficient consumer products created in 1992. Devices carrying the Energy Star service mark generally use 20%–30% less energy than average.]]>
+            </Description>
+            <Description ID="4" langid="2">
+                <![CDATA[Energy Star is een internationale overheidsstandaard voor energiezuinige consumentenproducten. Apparaten die het Energy Star logo voeren gebruiken zo'n 20% tot 30% minder energie dan gemiddeld.]]>
+            </Description>
+        </Descriptions>
+    </FeatureLogo>
+
+   <ReasonsToBuy/>
+   <ProductBundled/>
+       <ProductDescription ID="21249607" LongDesc="The HP Deskjet 845c is the ideal colour inkjet printer for your home printing needs.It inherited all of HP's advanced technology and reliability at an affordable price.It will definitely convince you with its remarkable combination of stunning photo quality as well as sharp, black text and vibrant colour graphics.Its whisper-quiet operation, compact size and ease-of-use make it the perfect partner for the home printing environment." ManualPDFSize="0" ManualPDFURL="" PDFSize="0" PDFURL="" ShortDesc="Deskjet 845c printer" URL="http://h10010.www1.hp.com/wwpc/us/en/sm/WF10a/18972-236251-236261-14438-236261-43059.html" WarrantyInfo="1 year" langid="1"/>
+    <ProductDescription ID="21249608" LongDesc="De HP Deskjet 845c is de ideale kleureninkjetprinter voor uw printwerk thuis. De printer biedt de geavanceerde technologie en de betrouwbaarheid van HP voor een aantrekkelijk prijs. Hij produceert fotokwaliteit, scherpe zwarte tekst en heldere kleuren. Door zijn fluisterstille werking, z'n compacte formaat en z'n gebruiksgemak is dit de perfecte partner voor al uw printwerk thuis." ManualPDFSize="0" ManualPDFURL="" PDFSize="0" PDFURL="" ShortDesc="Deskjet 845c Printer" URL="http://search.hp.com/gwnldut/query.html?lang=nl&amp;submit.x=11&amp;submit.y=9&amp;qt=deskjet+845c&amp;la=nl&amp;cc=nl" WarrantyInfo="1 jaar" langid="2"/>
+    <ProductDescription ID="21249609" LongDesc="L'imprimante hp deskjet 845C offre une excellente qualité d'impression, en texte comme en photo. Ses technologies HP PhotoREt IIe (améliorée) et HP ColorSmart III lui permettent d'atteindre d'excellents résultats sur du papier ordinaire. Silencieuse et compacte, elle apporte aux familles la simplicité et la fiabilité des imprimantes à jet d'encre HP." ManualPDFSize="0" ManualPDFURL="" PDFSize="0" PDFURL="" ShortDesc="L'imprimante Deskjet 845c" URL="http://h10010.www1.hp.com/wwpc/us/en/sm/WF10a/18972-236251-236261-14438-236261-43059.html" WarrantyInfo="" langid="3"/>
+    <ProductDescription ID="21249610" LongDesc="Farbige Dokumente werden nicht nur eher gelesen als schwarzweiße - auch die darin enthaltenen Informationen können leichter verstanden und verarbeitet werden. Farbe weckt Emotionen und verändert unsere Wahrnehmung. Warum machen Sie sich diesen Umstand nicht zunutze? Bringen Sie Farbe in Ihr Büro - mit HP. Denn HP liefert Ihnen die optimale Lösung für genau Ihre Business-Anforderungen. Der HP DeskJet 845C ermöglicht gestochen scharfen Text sowie Fotoqualität bereits auf Normalpapier ohne Einsetzen einer speziellen Fotopatrone. Weiterhin überzeugt dieser Drucker durch geräuscharmen Betrieb, Bedienerfreundlichkeit und bewährte HP Zuverlässigkeit." ManualPDFSize="0" ManualPDFURL="" PDFSize="0" PDFURL="" ShortDesc="Deskjet 845c-Drucker" URL="http://h10010.www1.hp.com/wwpc/us/en/sm/WF10a/18972-236251-236261-14438-236261-43059.html" WarrantyInfo="" langid="4"/>
+   
+	<ProductFeature Localized="0" ID="23850946" Local_ID="0" Value="Y" CategoryFeature_ID="4617" CategoryFeatureGroup_ID="47" No="10105500" Presentation_Value="Y" Translated="0" Mandatory="1" Searchable="1">
+	  <Feature ID="46">
+	    <Measure ID="29" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="1429" langid="1" Value="Colour"/><Name ID="474838" langid="2" Value="Kleur"/><Name ID="344613" langid="3" Value="Couleur"/><Name ID="525458" langid="12" Value="颜色"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850915" Local_ID="0" Value="600 x 600" CategoryFeature_ID="4623" CategoryFeatureGroup_ID="47" No="10100001" Presentation_Value="600 x 600" Translated="0" Mandatory="1" Searchable="1">
+	  <Feature ID="61">
+	    <Measure ID="35" Sign="">
+	      <Signs><Sign ID="19" langid="1"><![CDATA[DPI]]></Sign><Sign ID="8750" langid="3"><![CDATA[DPI]]></Sign><Sign ID="7764" langid="12"><![CDATA[每英寸点数]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="1459" langid="1" Value="Maximum resolution"/><Name ID="474235" langid="2" Value="Maximale resolutie"/><Name ID="354354" langid="3" Value="Résolution maximale"/><Name ID="524857" langid="12" Value="最大分辨率"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850922" Local_ID="0" Value="4.7" CategoryFeature_ID="1399" CategoryFeatureGroup_ID="46" No="10114292" Presentation_Value="4.7" Translated="0" Mandatory="1" Searchable="1">
+	  <Feature ID="558">
+	    <Measure ID="59" Sign="">
+	      <Signs><Sign ID="42" langid="1"><![CDATA[ppm]]></Sign><Sign ID="8763" langid="3"><![CDATA[ppm]]></Sign><Sign ID="7787" langid="12"><![CDATA[每分钟的打印速度]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="2647" langid="1" Value="Print speed (black, normal quality, A4/US Letter)"/><Name ID="475968" langid="2" Value="Printsnelheid (zwart, standaardkwaliteit, A4/US Letter)"/><Name ID="354513" langid="3" Value="Vitesse d'impression (noir, qualité normale, A4/US Letter)"/><Name ID="526591" langid="12" Value="打印速度（黑色，一般质量，A4/US Letter）"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850925" Local_ID="0" Value="5" CategoryFeature_ID="1402" CategoryFeatureGroup_ID="46" No="114295" Presentation_Value="5" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="460">
+	    <Measure ID="59" Sign="">
+	      <Signs><Sign ID="42" langid="1"><![CDATA[ppm]]></Sign><Sign ID="8763" langid="3"><![CDATA[ppm]]></Sign><Sign ID="7787" langid="12"><![CDATA[每分钟的打印速度]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="2451" langid="1" Value="Print speed (colour, draft quality, A4/US Letter)"/><Name ID="475940" langid="2" Value="Printsnelheid (kleur, concept, A4/US Letter)"/><Name ID="354419" langid="3" Value="Vitesse d'impression (couleur, qualité brouillon, A4/US Letter)"/><Name ID="526563" langid="12" Value="打印速度（彩色，粗糙品质，A4/US Letter）"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850921" Local_ID="0" Value="8" CategoryFeature_ID="1398" CategoryFeatureGroup_ID="46" No="114291" Presentation_Value="8" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="826">
+	    <Measure ID="59" Sign="">
+	      <Signs><Sign ID="42" langid="1"><![CDATA[ppm]]></Sign><Sign ID="8763" langid="3"><![CDATA[ppm]]></Sign><Sign ID="7787" langid="12"><![CDATA[每分钟的打印速度]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="3183" langid="1" Value="Print speed (black, draft quality, A4/US Letter)"/><Name ID="476062" langid="2" Value="Printsnelheid (zwart, concept, A4/US Letter)"/><Name ID="451756" langid="3" Value="Vitesse d'impression (noir, qualité brouillon, A4/US Letter)"/><Name ID="526684" langid="12" Value="打印速度(黑,粗糙质量,A4/US Letter)"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850927" Local_ID="0" Value="3.6" CategoryFeature_ID="1404" CategoryFeatureGroup_ID="46" No="100095" Presentation_Value="3.6" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="488">
+	    <Measure ID="59" Sign="">
+	      <Signs><Sign ID="42" langid="1"><![CDATA[ppm]]></Sign><Sign ID="8763" langid="3"><![CDATA[ppm]]></Sign><Sign ID="7787" langid="12"><![CDATA[每分钟的打印速度]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="2507" langid="1" Value="Print speed (colour, normal quality, A4/US Letter)"/><Name ID="475947" langid="2" Value="Printsnelheid (kleur, standaard, A4/US Letter)"/><Name ID="354447" langid="3" Value="Vitesse d'impression (couleur, qualité normale, A4/US Letter)"/><Name ID="526570" langid="12" Value="打印速度（彩色，一般品质，A4/US Letter）"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850945" Local_ID="0" Value="2" CategoryFeature_ID="1422" CategoryFeatureGroup_ID="54" No="10100015" Presentation_Value="2" Translated="0" Mandatory="1" Searchable="1">
+	  <Feature ID="455">
+	    <Measure ID="29" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="2441" langid="1" Value="Number of print cartridges"/><Name ID="475939" langid="2" Value="Aantal printcartridges"/><Name ID="354415" langid="3" Value="Nombre de cartouches d'impression"/><Name ID="526562" langid="12" Value="油墨数量"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850943" Local_ID="0" Value="hp pcl level 3" CategoryFeature_ID="1421" CategoryFeatureGroup_ID="54" No="114324" Presentation_Value="hp pcl level 3" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="459">
+	    <Measure ID="29" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="2449" langid="1" Value="Standard printer languages"/><Name ID="473741" langid="2" Value="Standaard printertalen"/><Name ID="354418" langid="3" Value="Langues standards de l'imprimante"/><Name ID="524366" langid="12" Value="标准打印机语言"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850939" Local_ID="0" Value="2" CategoryFeature_ID="1416" CategoryFeatureGroup_ID="782" No="100100" Presentation_Value="2" Translated="0" Mandatory="1" Searchable="0">
+	  <Feature ID="6">
+	    <Measure ID="19" Sign="">
+	      <Signs><Sign ID="8" langid="1"><![CDATA[MB]]></Sign><Sign ID="196" langid="2"><![CDATA[MB]]></Sign><Sign ID="10130" langid="3"><![CDATA[Mo]]></Sign><Sign ID="7751" langid="12"><![CDATA[百万字节]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="1295" langid="1" Value="Internal memory"/><Name ID="476508" langid="2" Value="Intern geheugen"/><Name ID="344585" langid="3" Value="Mémoire interne"/><Name ID="527130" langid="12" Value="内置存储器"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850910" Local_ID="0" Value="48" CategoryFeature_ID="18753" CategoryFeatureGroup_ID="782" No="100000" Presentation_Value="48" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="1451">
+	    <Measure ID="47" Sign="">
+	      <Signs><Sign ID="31" langid="1"><![CDATA[KB]]></Sign><Sign ID="424" langid="2"><![CDATA[KB]]></Sign><Sign ID="10134" langid="3"><![CDATA[Ko]]></Sign><Sign ID="7776" langid="12"><![CDATA[千字节]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="4559" langid="1" Value="Buffer size"/><Name ID="473189" langid="2" Value="Buffergrootte"/><Name ID="562582" langid="3" Value="Taille du buffer"/><Name ID="523817" langid="12" Value="缓冲区大小"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850938" Local_ID="0" Value="100" CategoryFeature_ID="1415" CategoryFeatureGroup_ID="49" No="100095" Presentation_Value="100" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="683">
+	    <Measure ID="62" Sign="">
+	      <Signs><Sign ID="45" langid="1"><![CDATA[sheets]]></Sign><Sign ID="550" langid="2"><![CDATA[vel]]></Sign><Sign ID="5755" langid="3"><![CDATA[feuilles]]></Sign><Sign ID="7790" langid="12"><![CDATA[页]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="2897" langid="1" Value="Maximum input capacity"/><Name ID="473762" langid="2" Value="Maximum invoercapaciteit"/><Name ID="451613" langid="3" Value="Capacité maximale d'entrée"/><Name ID="524387" langid="12" Value="最大输入容量"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850941" Local_ID="0" Value="50" CategoryFeature_ID="1419" CategoryFeatureGroup_ID="48" No="100100" Presentation_Value="50" Translated="0" Mandatory="1" Searchable="0">
+	  <Feature ID="846">
+	    <Measure ID="62" Sign="">
+	      <Signs><Sign ID="45" langid="1"><![CDATA[sheets]]></Sign><Sign ID="550" langid="2"><![CDATA[vel]]></Sign><Sign ID="5755" langid="3"><![CDATA[feuilles]]></Sign><Sign ID="7790" langid="12"><![CDATA[页]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="3223" langid="1" Value="Standard output capacity"/><Name ID="473771" langid="2" Value="Standaard uitvoercapaciteit"/><Name ID="451773" langid="3" Value="Capacité de sortie standard"/><Name ID="524396" langid="12" Value="标准输出容量"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850937" Local_ID="0" Value="50" CategoryFeature_ID="1414" CategoryFeatureGroup_ID="48" No="100095" Presentation_Value="50" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="637">
+	    <Measure ID="62" Sign="">
+	      <Signs><Sign ID="45" langid="1"><![CDATA[sheets]]></Sign><Sign ID="550" langid="2"><![CDATA[vel]]></Sign><Sign ID="5755" langid="3"><![CDATA[feuilles]]></Sign><Sign ID="7790" langid="12"><![CDATA[页]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="2805" langid="1" Value="Maximum output capacity"/><Name ID="475991" langid="2" Value="Maximale uitvoercapaciteit"/><Name ID="451479" langid="3" Value="Capacité maximale de sortie"/><Name ID="526614" langid="12" Value="最大输出能力"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="90768509" Local_ID="0" Value="Card stock, Coated paper, Envelopes, Labels, Plain paper, Transparencies, Iron-On Transfers, Photo paper" CategoryFeature_ID="42610" CategoryFeatureGroup_ID="2778" No="100100" Presentation_Value="Card stock, Coated paper, Envelopes, Labels, Plain paper, Transparencies, Iron-On Transfers, Photo paper" Translated="0" Mandatory="1" Searchable="0">
+	  <Feature ID="7358">
+	    <Measure ID="29" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="510698" langid="1" Value="Standard tray media types"/><Name ID="510699" langid="2" Value="Typen printmedia"/><Name ID="563962" langid="3" Value="Types de support/média d'impression"/><Name ID="510709" langid="12" Value="Standard tray media types"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850988" Local_ID="0" Value="A4, A5, A6" CategoryFeature_ID="20552" CategoryFeatureGroup_ID="2778" No="100095" Presentation_Value="A4, A5, A6" Translated="0" Mandatory="1" Searchable="0">
+	  <Feature ID="3628">
+	    <Measure ID="29" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="39951" langid="1" Value="ISO A-series sizes (A0...A9)"/><Name ID="476210" langid="2" Value="ISO A-series afmetingen (A0...A9)"/><Name ID="563947" langid="3" Value="ISO, Format Series A (A0...A9)"/><Name ID="526832" langid="12" Value="ISO A-系列 尺寸（A0…A-9）"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850991" Local_ID="0" Value="C6 &amp; DL" CategoryFeature_ID="20555" CategoryFeatureGroup_ID="2778" No="100091" Presentation_Value="C6 &amp; DL" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="3627">
+	    <Measure ID="29" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="39944" langid="1" Value="Envelopes sizes"/><Name ID="476211" langid="2" Value="Afmetingen enveloppen"/><Name ID="354690" langid="3" Value="Tailles enveloppes"/><Name ID="526833" langid="12" Value="信封尺寸"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850955" Local_ID="0" Value="446" CategoryFeature_ID="17054" CategoryFeatureGroup_ID="53" No="100012" Presentation_Value="446" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="1649">
+	    <Measure ID="24" Sign="">
+	      <Signs><Sign ID="3" langid="1"><![CDATA[mm]]></Sign><Sign ID="8742" langid="3"><![CDATA[mm]]></Sign><Sign ID="7756" langid="12"><![CDATA[毫米]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="5143" langid="1" Value="Width"/><Name ID="476854" langid="2" Value="Breedte"/><Name ID="251817" langid="3" Value="Largeur"/><Name ID="527474" langid="12" Value="宽度"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850956" Local_ID="0" Value="351" CategoryFeature_ID="17055" CategoryFeatureGroup_ID="53" No="100011" Presentation_Value="351" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="1650">
+	    <Measure ID="24" Sign="">
+	      <Signs><Sign ID="3" langid="1"><![CDATA[mm]]></Sign><Sign ID="8742" langid="3"><![CDATA[mm]]></Sign><Sign ID="7756" langid="12"><![CDATA[毫米]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="5145" langid="1" Value="Depth"/><Name ID="476855" langid="2" Value="Diepte"/><Name ID="251818" langid="3" Value="Profondeur"/><Name ID="527475" langid="12" Value="深度"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850957" Local_ID="0" Value="183" CategoryFeature_ID="17056" CategoryFeatureGroup_ID="53" No="100010" Presentation_Value="183" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="1464">
+	    <Measure ID="24" Sign="">
+	      <Signs><Sign ID="3" langid="1"><![CDATA[mm]]></Sign><Sign ID="8742" langid="3"><![CDATA[mm]]></Sign><Sign ID="7756" langid="12"><![CDATA[毫米]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="4625" langid="1" Value="Height"/><Name ID="476837" langid="2" Value="Hoogte"/><Name ID="251662" langid="3" Value="Hauteur"/><Name ID="527457" langid="12" Value="高度"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850947" Local_ID="0" Value="484 x 232 x 414" CategoryFeature_ID="1424" CategoryFeatureGroup_ID="53" No="99999" Presentation_Value="484 x 232 x 414" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="582">
+	    <Measure ID="24" Sign="">
+	      <Signs><Sign ID="3" langid="1"><![CDATA[mm]]></Sign><Sign ID="8742" langid="3"><![CDATA[mm]]></Sign><Sign ID="7756" langid="12"><![CDATA[毫米]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="2695" langid="1" Value="Package dimensions (WxDxH)"/><Name ID="476571" langid="2" Value="Afmetingen verpakking (BxDxH)"/><Name ID="354535" langid="3" Value="Dimensions du colis (LxPxH)"/><Name ID="527193" langid="12" Value="包装尺寸(宽度 × 深度 × 高度)"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850950" Local_ID="0" Value="7260" CategoryFeature_ID="1427" CategoryFeatureGroup_ID="53" No="99998" Presentation_Value="7.26 kg" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="762">
+	    <Measure ID="38" Sign="">
+	      <Signs><Sign ID="22" langid="1"><![CDATA[g]]></Sign><Sign ID="8753" langid="3"><![CDATA[g]]></Sign><Sign ID="7767" langid="12"><![CDATA[克]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="3055" langid="1" Value="Package weight"/><Name ID="476598" langid="2" Value="Gewicht pakket"/><Name ID="451693" langid="3" Value="Poids du paquet"/><Name ID="527220" langid="12" Value="包装重量"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850912" Local_ID="0" Value="4" CategoryFeature_ID="9949" CategoryFeatureGroup_ID="1518" No="100100" Presentation_Value="4" Translated="0" Mandatory="1" Searchable="0">
+	  <Feature ID="445">
+	    <Measure ID="44" Sign="">
+	      <Signs><Sign ID="28" langid="1"><![CDATA[W]]></Sign><Sign ID="8757" langid="3"><![CDATA[W]]></Sign><Sign ID="7773" langid="12"><![CDATA[瓦特]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="2257" langid="1" Value="Power consumption (typical)"/><Name ID="476561" langid="2" Value="Stroomverbruik"/><Name ID="354407" langid="3" Value="Consommation électrique"/><Name ID="527183" langid="12" Value="能耗"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850953" Local_ID="0" Value="5 - 40" CategoryFeature_ID="5553" CategoryFeatureGroup_ID="1519" No="100100" Presentation_Value="5 - 40" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="1112">
+	    <Measure ID="65" Sign="">
+	      <Signs><Sign ID="48" langid="1"><![CDATA[°C]]></Sign><Sign ID="8767" langid="3"><![CDATA[°C]]></Sign><Sign ID="7793" langid="12"><![CDATA[摄氏]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="3765" langid="1" Value="Operating temperature range (T-T)"/><Name ID="476765" langid="2" Value="Temperatuur, in bedrijf"/><Name ID="452008" langid="3" Value="Fourchette de température de fonctionnement"/><Name ID="527385" langid="12" Value="操作温度范围"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850951" Local_ID="0" Value="15 - 80" CategoryFeature_ID="1431" CategoryFeatureGroup_ID="1519" No="100085" Presentation_Value="15 - 80" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="703">
+	    <Measure ID="64" Sign="">
+	      <Signs><Sign ID="47" langid="1"><![CDATA[%]]></Sign><Sign ID="8766" langid="3"><![CDATA[%]]></Sign><Sign ID="7792" langid="12"><![CDATA[%]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="2937" langid="1" Value="Operating relative humidity range"/><Name ID="476588" langid="2" Value="Relatieve luchtvochtigheid, in bedrijf"/><Name ID="451633" langid="3" Value="Taux d'humidité de fonctionnement"/><Name ID="527210" langid="12" Value="运行湿度范围"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850936" Local_ID="0" Value="Y" CategoryFeature_ID="1413" CategoryFeatureGroup_ID="2777" No="10100000" Presentation_Value="Y" Translated="0" Mandatory="1" Searchable="1">
+	  <Feature ID="838">
+	    <Measure ID="26" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="3207" langid="1" Value="Energy Star certified"/><Name ID="476603" langid="2" Value="Energy Star-certificaat"/><Name ID="451766" langid="3" Value="Certifié Energy Star"/><Name ID="527224" langid="12" Value="能源之星认证"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850931" Local_ID="0" Value="128" CategoryFeature_ID="18960" CategoryFeatureGroup_ID="50" No="100003" Presentation_Value="128" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="68">
+	    <Measure ID="19" Sign="">
+	      <Signs><Sign ID="8" langid="1"><![CDATA[MB]]></Sign><Sign ID="196" langid="2"><![CDATA[MB]]></Sign><Sign ID="10130" langid="3"><![CDATA[Mo]]></Sign><Sign ID="7751" langid="12"><![CDATA[百万字节]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="1473" langid="1" Value="Minimum RAM"/><Name ID="476537" langid="2" Value="Minimaal RAM"/><Name ID="626079" langid="3" Value="Mémoire vive (RAM) minimale"/><Name ID="527159" langid="12" Value="最低内存"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850932" Local_ID="0" Value="Pentium 233 MHz" CategoryFeature_ID="18959" CategoryFeatureGroup_ID="50" No="100001" Presentation_Value="Pentium 233 MHz" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="67">
+	    <Measure ID="29" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="1471" langid="1" Value="Minimum processor"/><Name ID="477749" langid="2" Value="Minimale processor"/><Name ID="354359" langid="3" Value="Processeur minimal"/><Name ID="528357" langid="12" Value="最低处理器"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850911" Local_ID="0" Value="Windows 98, Me, 2000, XP Home &amp; Professional, Mac OS 8.6. +" CategoryFeature_ID="13887" CategoryFeatureGroup_ID="50" No="100000" Presentation_Value="Windows 98, Me, 2000, XP Home &amp; Professional, Mac OS 8.6. +" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="2507">
+	    <Measure ID="29" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="12828" langid="1" Value="Compatible operating systems"/><Name ID="476926" langid="2" Value="Compatibele besturingssystemen"/><Name ID="564166" langid="3" Value="Systèmes d'exploitation compatibles"/><Name ID="527545" langid="12" Value="兼容性操作系统"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850948" Local_ID="0" Value="446 x 351 x 183" CategoryFeature_ID="1425" CategoryFeatureGroup_ID="352" No="100008" Presentation_Value="446 x 351 x 183" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="49">
+	    <Measure ID="24" Sign="">
+	      <Signs><Sign ID="3" langid="1"><![CDATA[mm]]></Sign><Sign ID="8742" langid="3"><![CDATA[mm]]></Sign><Sign ID="7756" langid="12"><![CDATA[毫米]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="1435" langid="1" Value="Dimensions (WxDxH)"/><Name ID="476530" langid="2" Value="Afmetingen (BxDxH)"/><Name ID="626077" langid="3" Value="Dimensions (LxPxH)"/><Name ID="527152" langid="12" Value="尺寸 宽度 × 深度 × 高度"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850944" Local_ID="0" Value="Inkjet" CategoryFeature_ID="30" CategoryFeatureGroup_ID="352" No="100000" Presentation_Value="Inkjet" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="78">
+	    <Measure ID="29" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="1493" langid="1" Value="Print technology"/><Name ID="474849" langid="2" Value="Printtechnologie"/><Name ID="354368" langid="3" Value="Technologie d'impression"/><Name ID="525469" langid="12" Value="打印技术"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850913" Local_ID="0" Value="100 - 240 VAC (+/- 10%), 50/60 Hz (+/- 3 Hz)" CategoryFeature_ID="1390" CategoryFeatureGroup_ID="352" No="100000" Presentation_Value="100 - 240 VAC (+/- 10%), 50/60 Hz (+/- 3 Hz)" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="780">
+	    <Measure ID="29" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="3091" langid="1" Value="Power requirements"/><Name ID="476600" langid="2" Value="Stroomvoorziening"/><Name ID="451711" langid="3" Value="Exigences d'alimentation"/><Name ID="527222" langid="12" Value="电源需求"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850918" Local_ID="0" Value="600" CategoryFeature_ID="1395" CategoryFeatureGroup_ID="47" No="14288" Presentation_Value="600" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="479">
+	    <Measure ID="35" Sign="">
+	      <Signs><Sign ID="19" langid="1"><![CDATA[DPI]]></Sign><Sign ID="8750" langid="3"><![CDATA[DPI]]></Sign><Sign ID="7764" langid="12"><![CDATA[每英寸点数]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="2489" langid="1" Value="Print quality (colour, best quality)"/><Name ID="473744" langid="2" Value="Printkwaliteit (kleur, presentatiekwaliteit)"/><Name ID="354438" langid="3" Value="Qualité d'impression (couleur, qualité supèrieure)"/><Name ID="524369" langid="12" Value="打印质量（彩色，最高质量）"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850917" Local_ID="0" Value="600" CategoryFeature_ID="1394" CategoryFeatureGroup_ID="47" No="14287" Presentation_Value="600" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="697">
+	    <Measure ID="35" Sign="">
+	      <Signs><Sign ID="19" langid="1"><![CDATA[DPI]]></Sign><Sign ID="8750" langid="3"><![CDATA[DPI]]></Sign><Sign ID="7764" langid="12"><![CDATA[每英寸点数]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="2925" langid="1" Value="Print quality (black, normal quality)"/><Name ID="476013" langid="2" Value="Printkwaliteit (zwart, standaard)"/><Name ID="451627" langid="3" Value="Qualité d'impression (noir, qualité normale)"/><Name ID="526635" langid="12" Value="打印质量（黑色，一般品质）"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850916" Local_ID="0" Value="300" CategoryFeature_ID="1393" CategoryFeatureGroup_ID="47" No="14286" Presentation_Value="300" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="568">
+	    <Measure ID="35" Sign="">
+	      <Signs><Sign ID="19" langid="1"><![CDATA[DPI]]></Sign><Sign ID="8750" langid="3"><![CDATA[DPI]]></Sign><Sign ID="7764" langid="12"><![CDATA[每英寸点数]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="2667" langid="1" Value="Print quality (black, draft quality)"/><Name ID="475972" langid="2" Value="Printkwaliteit (zwart, concept)"/><Name ID="354522" langid="3" Value="Qualité d'impression (noir, qualité brouillon)"/><Name ID="526595" langid="12" Value="打印质量(黑,草稿品质)"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850954" Local_ID="0" Value="600 x 600" CategoryFeature_ID="5405" CategoryFeatureGroup_ID="47" No="0" Presentation_Value="600 x 600" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="1532">
+	    <Measure ID="35" Sign="">
+	      <Signs><Sign ID="19" langid="1"><![CDATA[DPI]]></Sign><Sign ID="8750" langid="3"><![CDATA[DPI]]></Sign><Sign ID="7764" langid="12"><![CDATA[每英寸点数]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="4783" langid="1" Value="Print quality (black, best quality)"/><Name ID="476081" langid="2" Value="Printkwaliteit (zwart, beste kwaliteit)"/><Name ID="251714" langid="3" Value="Qualité d'impression (noir, qualité supérieure)"/><Name ID="526703" langid="12" Value="打印质量（黑色，最高质量）"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850930" Local_ID="0" Value="0.5" CategoryFeature_ID="1407" CategoryFeatureGroup_ID="46" No="14300" Presentation_Value="0.5" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="782">
+	    <Measure ID="59" Sign="">
+	      <Signs><Sign ID="42" langid="1"><![CDATA[ppm]]></Sign><Sign ID="8763" langid="3"><![CDATA[ppm]]></Sign><Sign ID="7787" langid="12"><![CDATA[每分钟的打印速度]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="3095" langid="1" Value="Print speed (colour photo, normal quality)"/><Name ID="476043" langid="2" Value="Printsnelheid (kleurenfoto, standaard)"/><Name ID="451713" langid="3" Value="Vitesse d'impression (photo couleur, qualité normale)"/><Name ID="526665" langid="12" Value="打印速度(彩色相片,正常的质量)"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850929" Local_ID="0" Value="0.4" CategoryFeature_ID="1406" CategoryFeatureGroup_ID="46" No="14299" Presentation_Value="0.4" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="509">
+	    <Measure ID="59" Sign="">
+	      <Signs><Sign ID="42" langid="1"><![CDATA[ppm]]></Sign><Sign ID="8763" langid="3"><![CDATA[ppm]]></Sign><Sign ID="7787" langid="12"><![CDATA[每分钟的打印速度]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="2549" langid="1" Value="Print speed (colour photo, best quality)"/><Name ID="475955" langid="2" Value="Printsnelheid (kleurenfoto, presentatie)"/><Name ID="354466" langid="3" Value="Vitesse d'impression (photo couleur, qualité supèrieure)"/><Name ID="526578" langid="12" Value="打印速度（彩色照片，最高质量）"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850928" Local_ID="0" Value="0.5" CategoryFeature_ID="1405" CategoryFeatureGroup_ID="46" No="14298" Presentation_Value="0.5" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="556">
+	    <Measure ID="59" Sign="">
+	      <Signs><Sign ID="42" langid="1"><![CDATA[ppm]]></Sign><Sign ID="8763" langid="3"><![CDATA[ppm]]></Sign><Sign ID="7787" langid="12"><![CDATA[每分钟的打印速度]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="2643" langid="1" Value="Print speed (colour, full page colour, normal quality, A4)"/><Name ID="475967" langid="2" Value="Printsnelheid (kleur, paginagrote kleurenafbeelding, standaard, A4)"/><Name ID="354511" langid="3" Value="Vitesse d'impression (couleur, couleur pleine page, qualité normale, A4)"/><Name ID="526590" langid="12" Value="打印速度（彩色，全页彩色，一般质量，A4）"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850926" Local_ID="0" Value="1.4" CategoryFeature_ID="1403" CategoryFeatureGroup_ID="46" No="14296" Presentation_Value="1.4" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="522">
+	    <Measure ID="59" Sign="">
+	      <Signs><Sign ID="42" langid="1"><![CDATA[ppm]]></Sign><Sign ID="8763" langid="3"><![CDATA[ppm]]></Sign><Sign ID="7787" langid="12"><![CDATA[每分钟的打印速度]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="2575" langid="1" Value="Print speed (colour, full page colour, draft quality, A4)"/><Name ID="475957" langid="2" Value="Printsnelheid (kleur, paginagrote kleurenafbeelding, concept, A4)"/><Name ID="354479" langid="3" Value="Vitesse d'impression (couleur, couleur pleine page, qualité brouillon, A4)"/><Name ID="526580" langid="12" Value="打印速度（彩色，全页彩色，粗糙质量，A4）"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850924" Local_ID="0" Value="0.2" CategoryFeature_ID="1401" CategoryFeatureGroup_ID="46" No="14294" Presentation_Value="0.2" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="720">
+	    <Measure ID="59" Sign="">
+	      <Signs><Sign ID="42" langid="1"><![CDATA[ppm]]></Sign><Sign ID="8763" langid="3"><![CDATA[ppm]]></Sign><Sign ID="7787" langid="12"><![CDATA[每分钟的打印速度]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="2971" langid="1" Value="Print speed (colour, full page colour, best quality, A4)"/><Name ID="476022" langid="2" Value="Printsnelheid (kleur, paginagrote kleurenafbeelding, presentatie, A4)"/><Name ID="451652" langid="3" Value="Vitesse d'impression (couleur, pleine page couleur, qualité supérieure, A4)"/><Name ID="526644" langid="12" Value="打印速度(彩色全页彩色,最好的质量,A4)"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850923" Local_ID="0" Value="0.9" CategoryFeature_ID="1400" CategoryFeatureGroup_ID="46" No="14293" Presentation_Value="0.9" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="527">
+	    <Measure ID="59" Sign="">
+	      <Signs><Sign ID="42" langid="1"><![CDATA[ppm]]></Sign><Sign ID="8763" langid="3"><![CDATA[ppm]]></Sign><Sign ID="7787" langid="12"><![CDATA[每分钟的打印速度]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="2585" langid="1" Value="Print speed (colour, best quality, A4)"/><Name ID="475959" langid="2" Value="Printsnelheid (kleur, presentatie, A4)"/><Name ID="354484" langid="3" Value="Vitesse d'impression (colour, qualité supérieure, A4)"/><Name ID="526582" langid="12" Value="打印速度（彩色，最好质量，A4）"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850920" Local_ID="0" Value="3.9" CategoryFeature_ID="1397" CategoryFeatureGroup_ID="46" No="14290" Presentation_Value="3.9" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="755">
+	    <Measure ID="59" Sign="">
+	      <Signs><Sign ID="42" langid="1"><![CDATA[ppm]]></Sign><Sign ID="8763" langid="3"><![CDATA[ppm]]></Sign><Sign ID="7787" langid="12"><![CDATA[每分钟的打印速度]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="3041" langid="1" Value="Print speed (black, best quality, A4)"/><Name ID="476035" langid="2" Value="Printsnelheid (zwart, presentatiekwaliteit, A4)"/><Name ID="451686" langid="3" Value="Vitesse d'impression (noir, qualité supérieure, A4)"/><Name ID="526657" langid="12" Value="打印速度(黑,最好的质量,A4)"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850940" Local_ID="0" Value="cg times, cg times italic, univers, univers italic, courier, courier italic, letter gothic, letter gothic italic" CategoryFeature_ID="1417" CategoryFeatureGroup_ID="54" No="14319" Presentation_Value="cg times, cg times italic, univers, univers italic, courier, courier italic, letter gothic, letter gothic italic" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="680">
+	    <Measure ID="29" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="2891" langid="1" Value="Typefaces"/><Name ID="476005" langid="2" Value="Lettertypen"/><Name ID="451610" langid="3" Value="Polices de caractères"/><Name ID="526628" langid="12" Value="铅字字样"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850933" Local_ID="0" Value="HP Photoret II, HP Colorsmart III" CategoryFeature_ID="1409" CategoryFeatureGroup_ID="54" No="14302" Presentation_Value="HP Photoret II, HP Colorsmart III" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="547">
+	    <Measure ID="29" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="2625" langid="1" Value="Colour printing technology"/><Name ID="475965" langid="2" Value="Kleurenprinttechnologie"/><Name ID="354502" langid="3" Value="Technologie d'impression couleur"/><Name ID="526588" langid="12" Value="彩色印刷技术"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850914" Local_ID="0" Value="300 / 192" CategoryFeature_ID="1391" CategoryFeatureGroup_ID="54" No="14284" Presentation_Value="300 / 192" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="453">
+	    <Measure ID="29" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="2437" langid="1" Value="Print head nozzles"/><Name ID="474850" langid="2" Value="Spuitmondjes"/><Name ID="630128" langid="3" Value="Embouts de tête d'impression"/><Name ID="525470" langid="12" Value="打印机喷嘴"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850901" Local_ID="0" Value="25" CategoryFeature_ID="1380" CategoryFeatureGroup_ID="49" No="14271" Presentation_Value="25" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="540">
+	    <Measure ID="62" Sign="">
+	      <Signs><Sign ID="45" langid="1"><![CDATA[sheets]]></Sign><Sign ID="550" langid="2"><![CDATA[vel]]></Sign><Sign ID="5755" langid="3"><![CDATA[feuilles]]></Sign><Sign ID="7790" langid="12"><![CDATA[页]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="2611" langid="1" Value="Maximum input capacity for transparencies"/><Name ID="475963" langid="2" Value="Maximum invoercapaciteit voor transparanten"/><Name ID="354496" langid="3" Value="Capacité d'entrée maximale pour transparents"/><Name ID="526586" langid="12" Value="幻灯片最大输入能力"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850900" Local_ID="0" Value="20" CategoryFeature_ID="1379" CategoryFeatureGroup_ID="49" No="14270" Presentation_Value="20" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="724">
+	    <Measure ID="29" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="2979" langid="1" Value="Maximum input capacity for labels"/><Name ID="476026" langid="2" Value="Maximum invoercapaciteit voor etiketten"/><Name ID="451656" langid="3" Value="Capacité d'entrée maximale pour étiquettes"/><Name ID="526648" langid="12" Value="标签的最大输入能力"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850899" Local_ID="0" Value="15" CategoryFeature_ID="1378" CategoryFeatureGroup_ID="49" No="14269" Presentation_Value="15" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="736">
+	    <Measure ID="29" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="3003" langid="1" Value="Maximum input capacity for envelopes"/><Name ID="476029" langid="2" Value="Maximum invoercapaciteit voor enveloppen"/><Name ID="451668" langid="3" Value="Capacité maximale d'entrée pour enveloppes"/><Name ID="526651" langid="12" Value="封套最小输出能力"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850898" Local_ID="0" Value="30" CategoryFeature_ID="1377" CategoryFeatureGroup_ID="49" No="14268" Presentation_Value="30" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="516">
+	    <Measure ID="29" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="2563" langid="1" Value="Maximum input capacity for cards"/><Name ID="473747" langid="2" Value="Maximum invoercapaciteit voor kaarten"/><Name ID="354473" langid="3" Value="Capacité d'entrée maximale pour cartes"/><Name ID="524372" langid="12" Value="最大卡片输入能力"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850897" Local_ID="0" Value="20" CategoryFeature_ID="1376" CategoryFeatureGroup_ID="49" No="14267" Presentation_Value="20" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="618">
+	    <Measure ID="29" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="2767" langid="1" Value="Maximum input capacity for banners"/><Name ID="474928" langid="2" Value="Maximum invoercapaciteit voor banners"/><Name ID="451460" langid="3" Value="Capacité d'entrée maximale pour bannières"/><Name ID="525548" langid="12" Value="横幅广告的最大输入能力"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850934" Local_ID="0" Value="1000" CategoryFeature_ID="1411" CategoryFeatureGroup_ID="48" No="14305" Presentation_Value="1000" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="590">
+	    <Measure ID="77" Sign="">
+	      <Signs><Sign ID="60" langid="1"><![CDATA[pages per month]]></Sign><Sign ID="692" langid="2"><![CDATA[pagina's per maand]]></Sign><Sign ID="5760" langid="3"><![CDATA[pages par mois]]></Sign><Sign ID="7805" langid="12"><![CDATA[页每月]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="2711" langid="1" Value="Duty cycle letter size (maximum)"/><Name ID="475973" langid="2" Value="Max. printvolume voor A4-formaat pagina's"/><Name ID="354546" langid="3" Value="Cycle d'utilisation (maximum)"/><Name ID="526596" langid="12" Value="占空比字符大小(最高)"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850902" Local_ID="0" Value="USB" CategoryFeature_ID="1381" CategoryFeatureGroup_ID="52" No="14272" Presentation_Value="USB" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="470">
+	    <Measure ID="29" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="2471" langid="1" Value="I/O ports"/><Name ID="476564" langid="2" Value="Aansluitingen"/><Name ID="354429" langid="3" Value="Ports E/S"/><Name ID="527186" langid="12" Value="输入输出端口"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850935" Local_ID="0" Value="5.5 b(a)" CategoryFeature_ID="1412" CategoryFeatureGroup_ID="825" No="14307" Presentation_Value="5.5 b(a)" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="647">
+	    <Measure ID="29" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="2825" langid="1" Value="Acoustic power emissions"/><Name ID="473150" langid="2" Value="Geluidskracht"/><Name ID="451488" langid="3" Value="Puissance sonore émise"/><Name ID="523778" langid="12" Value="声功率排放量"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850903" Local_ID="0" Value="B5-JIS" CategoryFeature_ID="1383" CategoryFeatureGroup_ID="51" No="14274" Presentation_Value="B5-JIS" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="769">
+	    <Measure ID="29" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="3069" langid="1" Value="Standard media sizes"/><Name ID="473767" langid="2" Value="Standaard mediaformaten"/><Name ID="451700" langid="3" Value="Formats moyens standards"/><Name ID="524392" langid="12" Value="标准纸张尺寸"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850909" Local_ID="0" Value="75 - 90, 60 - 90, 75 to 90" CategoryFeature_ID="1385" CategoryFeatureGroup_ID="3430" No="14277" Presentation_Value="75 - 90, 60 - 90, 75 to 90" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="842">
+	    <Measure ID="156" Sign="">
+	      <Signs><Sign ID="2898" langid="1"><![CDATA[g/m²]]></Sign><Sign ID="8816" langid="3"><![CDATA[g/m²]]></Sign><Sign ID="7875" langid="12"><![CDATA[克/平方米]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="3215" langid="1" Value="Recommended media weight"/><Name ID="473770" langid="2" Value="Aanbevolen mediagewicht"/><Name ID="451769" langid="3" Value="Poids recommandés"/><Name ID="524395" langid="12" Value="推荐纸张重量"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="23850942" Local_ID="0" Value="42" CategoryFeature_ID="1420" CategoryFeatureGroup_ID="352" No="0" Presentation_Value="42" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="585">
+	    <Measure ID="76" Sign="">
+	      <Signs><Sign ID="59" langid="1"><![CDATA[dB]]></Sign><Sign ID="8774" langid="3"><![CDATA[dB]]></Sign><Sign ID="7804" langid="12"><![CDATA[分贝]]></Sign></Signs>
+	    </Measure>
+	    <Name ID="2701" langid="1" Value="Acoustic pressure emissions"/><Name ID="473145" langid="2" Value="Geluidsdruk"/><Name ID="626090" langid="3" Value="Émissions de pression acoustique"/><Name ID="523773" langid="12" Value="声压排放"/>
+	  </Feature>
+	</ProductFeature>
+
+	<ProductFeature Localized="0" ID="45967728" Local_ID="0" Value="Icecat.biz" CategoryFeature_ID="33656" CategoryFeatureGroup_ID="352" No="0" Presentation_Value="Icecat.biz" Translated="0" Mandatory="0" Searchable="0">
+	  <Feature ID="6617">
+	    <Measure ID="29" Sign="">
+	      <Signs/>
+	    </Measure>
+	    <Name ID="241024" langid="1" Value="Source data-sheet"/><Name ID="477009" langid="2" Value="Source data-sheet"/><Name ID="564220" langid="3" Value="Source de données"/><Name ID="527626" langid="12" Value="源数据表"/>
+	  </Feature>
+	</ProductFeature>
+
+   <ProductGallery/>
+   <ProductMultimediaObject/>
+   	  <ProductRelated ID="8383128" Category_ID="788" Reversed="0" Preferred="0">
+	    <Product ID="26836" Prod_id="H5461A" ThumbPic="" Name="Supportpack - next day replacement, 3 year">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383129" Category_ID="788" Reversed="0" Preferred="0">
+	    <Product ID="26905" Prod_id="H7710PA" ThumbPic="" Name="Supportpack - post warranty service, next day onsite, 1 year">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383130" Category_ID="788" Reversed="0" Preferred="0">
+	    <Product ID="33125" Prod_id="H7710PE" ThumbPic="" Name="Supportpack - post warranty service, next day onsite, 1 year">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383131" Category_ID="788" Reversed="0" Preferred="0">
+	    <Product ID="33127" Prod_id="H5461E" ThumbPic="" Name="Supportpack - next day replacement, 3 year">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383112" Category_ID="714" Reversed="0" Preferred="0">
+	    <Product ID="2117" Prod_id="CHP210" ThumbPic="http://images.icecat.biz/thumbs/2117.jpg" Name="Printing Paper-500 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="27820382" Category_ID="932" Reversed="0" Preferred="0">
+	    <Product ID="1312290" Prod_id="N4100+" ThumbPic="http://images.icecat.biz/thumbs/1312290.jpg" Name="N4100+ The original 4-bay NAS">
+	      <Supplier ID="1894" Name="Thecus"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24540686" Category_ID="714" Reversed="0" Preferred="0">
+	    <Product ID="127830" Prod_id="Q6593A" ThumbPic="http://images.icecat.biz/thumbs/127830.jpg" Name="Q6593A">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383115" Category_ID="714" Reversed="0" Preferred="0">
+	    <Product ID="2245" Prod_id="C6818A" ThumbPic="http://images.icecat.biz/thumbs/2245.jpg" Name="C6818A">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24603719" Category_ID="853" Reversed="0" Preferred="0">
+	    <Product ID="33281" Prod_id="C3835A" ThumbPic="http://images.icecat.biz/thumbs/33281.jpg" Name="Premium Inkjet 50 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24599935" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="328017" Prod_id="Q8027A" ThumbPic="http://images.icecat.biz/thumbs/328017.jpg" Name="Q8027A">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24923378" Category_ID="714" Reversed="0" Preferred="0">
+	    <Product ID="127834" Prod_id="Q6592A" ThumbPic="http://images.icecat.biz/thumbs/127834.jpg" Name="Q6592A">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383114" Category_ID="1131" Reversed="0" Preferred="0">
+	    <Product ID="2120" Prod_id="C6050A" ThumbPic="http://images.icecat.biz/thumbs/2120.jpg" Name="C6050A">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383125" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="24619" Prod_id="Q1992A" ThumbPic="http://images.icecat.biz/thumbs/24619.jpg" Name="Q1992A">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="27820370" Category_ID="243" Reversed="0" Preferred="0">
+	    <Product ID="1257903" Prod_id="F5L009EA" ThumbPic="http://images.icecat.biz/thumbs/1257903.jpg" Name="Network USB Hub">
+	      <Supplier ID="32" Name="Belkin"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24567569" Category_ID="714" Reversed="0" Preferred="0">
+	    <Product ID="97449" Prod_id="CHP710" ThumbPic="http://images.icecat.biz/thumbs/97449.jpg" Name="CHP710">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24605002" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="52974" Prod_id="Q2510A" ThumbPic="http://images.icecat.biz/thumbs/52974.jpg" Name="Q2510A">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24207297" Category_ID="714" Reversed="0" Preferred="0">
+	    <Product ID="324872" Prod_id="CHP910" ThumbPic="http://images.icecat.biz/thumbs/324872.jpg" Name="Copy Paper 80 gsm-500 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383107" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="1836" Prod_id="C6615NE" ThumbPic="http://images.icecat.biz/thumbs/1836.jpg" Name="C6615NE">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383127" Category_ID="714" Reversed="0" Preferred="0">
+	    <Product ID="25263" Prod_id="C1825A" ThumbPic="http://images.icecat.biz/thumbs/25263.jpg" Name="Bright White Inkjet Paper-500 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24572595" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="24038" Prod_id="Q1786A" ThumbPic="http://images.icecat.biz/thumbs/24038.jpg" Name="Q1786A">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383109" Category_ID="714" Reversed="0" Preferred="0">
+	    <Product ID="1981" Prod_id="CHP110" ThumbPic="http://images.icecat.biz/thumbs/1981.jpg" Name="Office Paper-500 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24605755" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="99001" Prod_id="Q5451A" ThumbPic="http://images.icecat.biz/thumbs/99001.jpg" Name="Q5451A">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="27820379" Category_ID="925" Reversed="0" Preferred="0">
+	    <Product ID="451679" Prod_id="PR110" ThumbPic="http://images.icecat.biz/thumbs/451679.jpg" Name="Wireless USB 2.0 Print Server 54 Mbps">
+	      <Supplier ID="702" Name="Sweex"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="27820375" Category_ID="925" Reversed="0" Preferred="0">
+	    <Product ID="253807" Prod_id="DP-301U/E" ThumbPic="http://images.icecat.biz/thumbs/253807.jpg" Name="Multi-Protocol Print Server with Single USB Port">
+	      <Supplier ID="63" Name="D-Link"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383110" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="1982" Prod_id="C7040A" ThumbPic="http://images.icecat.biz/thumbs/1982.jpg" Name="C7040A">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24572286" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="24942" Prod_id="C6625AE" ThumbPic="http://images.icecat.biz/thumbs/1974.jpg" Name="17 Tri-color Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24542641" Category_ID="714" Reversed="0" Preferred="0">
+	    <Product ID="1430" Prod_id="CHP120" ThumbPic="http://images.icecat.biz/thumbs/1430.jpg" Name="Office Paper-500 sht/A3/297 x 420 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24926891" Category_ID="714" Reversed="0" Preferred="0">
+	    <Product ID="44795" Prod_id="Q2525A" ThumbPic="http://images.icecat.biz/thumbs/44795.jpg" Name="Q2525A">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24597207" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="67257" Prod_id="Q2519A" ThumbPic="http://images.icecat.biz/thumbs/67257.jpg" Name="Q2519A">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383119" Category_ID="1158" Reversed="0" Preferred="0">
+	    <Product ID="18355" Prod_id="C6518A" ThumbPic="http://images.icecat.biz/thumbs/18355.jpg" Name="USB Cable, 2m">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383118" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="2252" Prod_id="C6832A" ThumbPic="http://images.icecat.biz/thumbs/2252.jpg" Name="C6832A">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24598128" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="327982" Prod_id="Q8032A" ThumbPic="http://images.icecat.biz/thumbs/327982.jpg" Name="Q8032A">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="64909088" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="4151359" Prod_id="C6615DE#301" ThumbPic="http://images.icecat.biz/thumbs/1413.jpg" Name="15 Large Black Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24543841" Category_ID="714" Reversed="0" Preferred="0">
+	    <Product ID="1431" Prod_id="CHP113" ThumbPic="http://images.icecat.biz/thumbs/1431.jpg" Name="Office Paper-2500 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24547222" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="791673" Prod_id="C6615DE" ThumbPic="http://images.icecat.biz/thumbs/1413.jpg" Name="15 Large Black Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24603364" Category_ID="853" Reversed="0" Preferred="0">
+	    <Product ID="33280" Prod_id="C3832A" ThumbPic="http://images.icecat.biz/thumbs/33280.jpg" Name="Premium Inkjet Transparency Film-20 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383133" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="46957" Prod_id="Q2507A" ThumbPic="http://images.icecat.biz/thumbs/46957.jpg" Name="Premium Plus Satin-matt Photo Paper 280 g/m²-10 x 15 cm plus tab/20 sht">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24577465" Category_ID="1072" Reversed="0" Preferred="0">
+	    <Product ID="1427" Prod_id="C3837A" ThumbPic="http://images.icecat.biz/thumbs/1427.jpg" Name="Premium High-gloss White Film 230 g/m²-A4/210 x 297 mm/50 sht">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383102" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="1434" Prod_id="C6951A" ThumbPic="http://images.icecat.biz/thumbs/1434.jpg" Name="C6951A">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24191905" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="99002" Prod_id="Q5441A" ThumbPic="http://images.icecat.biz/thumbs/99002.jpg" Name="Q5441A">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24924286" Category_ID="714" Reversed="0" Preferred="0">
+	    <Product ID="127827" Prod_id="Q6590A" ThumbPic="http://images.icecat.biz/thumbs/127827.jpg" Name="Superior Tri-fold Matt Inkjet Paper-100 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24572276" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="22953" Prod_id="C6625AE#ABB" ThumbPic="http://images.icecat.biz/thumbs/1974.jpg" Name="17 Tri-color Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="76523608" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="5102343" Prod_id="C6615NE#301" ThumbPic="http://images.icecat.biz/thumbs/1836.jpg" Name="15 Light-use Black Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383111" Category_ID="718" Reversed="0" Preferred="0">
+	    <Product ID="1983" Prod_id="C6829A" ThumbPic="http://images.icecat.biz/thumbs/1983.jpg" Name="Textured Cream Half-fold Greeting Cards 175 g/m²-A4/210 x 297 mm/20 cards">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383113" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="2119" Prod_id="C6945A" ThumbPic="http://images.icecat.biz/thumbs/2119.jpg" Name="Premium Plus Glossy Photo Paper-20 sht/10 x 15 cm plus tab">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383100" Category_ID="714" Reversed="0" Preferred="0">
+	    <Product ID="1428" Prod_id="51634Z" ThumbPic="http://images.icecat.biz/thumbs/1428.jpg" Name="Premium Papier A4">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24547103" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="22952" Prod_id="C6615DE#ABB" ThumbPic="http://images.icecat.biz/thumbs/1413.jpg" Name="15 Large Black Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24577181" Category_ID="1072" Reversed="0" Preferred="0">
+	    <Product ID="24629" Prod_id="Q1981A" ThumbPic="http://images.icecat.biz/thumbs/24629.jpg" Name="Premium High-gloss White Film 230 g/m²-A4/210 x 297 mm/20 sht">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="27820369" Category_ID="925" Reversed="0" Preferred="0">
+	    <Product ID="798283" Prod_id="F1UP0002DF" ThumbPic="http://images.icecat.biz/thumbs/798283.jpg" Name="Wireless G All-In-One Print Server">
+	      <Supplier ID="32" Name="Belkin"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24609368" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="328008" Prod_id="Q8031A" ThumbPic="http://images.icecat.biz/thumbs/328008.jpg" Name="Premium Plus Satin-matt Photo Paper-100 sht/10 x 15 cm plus tab">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383124" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="24618" Prod_id="Q1991A" ThumbPic="http://images.icecat.biz/thumbs/24618.jpg" Name="Q1991A">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383123" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="24617" Prod_id="Q1980A" ThumbPic="http://images.icecat.biz/thumbs/24617.jpg" Name="Premium Plus High-gloss Photo Paper 280 g/m²-10 x 15 cm plus tab/60 sht">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383120" Category_ID="869" Reversed="0" Preferred="0">
+	    <Product ID="20057" Prod_id="C2951A" ThumbPic="http://images.icecat.biz/thumbs/20057.jpg" Name="IEEE 1284 Cable (a-b) 3 meter">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="88457585" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="118154" Prod_id="339294" ThumbPic="http://images.icecat.biz/thumbs/118154.jpg" Name="Inkjet Cartridge H10 replaces HP 15, black, 42 ml">
+	      <Supplier ID="383" Name="Pelikan"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24484278" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="327976" Prod_id="Q8028A" ThumbPic="http://images.icecat.biz/thumbs/327976.jpg" Name="Premium Plus High-gloss Photo Paper-25 sht/10 x 15 cm borderless">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24607271" Category_ID="714" Reversed="0" Preferred="0">
+	    <Product ID="61953" Prod_id="CHP150" ThumbPic="http://images.icecat.biz/thumbs/61953.jpg" Name="500 sht, A4, 210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383104" Category_ID="692" Reversed="0" Preferred="0">
+	    <Product ID="1708" Prod_id="C1847A" ThumbPic="http://images.icecat.biz/thumbs/1708.jpg" Name="photo paper, glossy, A4 (20 sheets)">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24544536" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="328009" Prod_id="Q8030A" ThumbPic="http://images.icecat.biz/thumbs/328009.jpg" Name="Premium Plus Satin-matt Photo Paper-25 sht/10 x 15 cm plus tab">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24192733" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="1461204" Prod_id="Q5441A#" ThumbPic="http://images.icecat.biz/thumbs/1461204.jpg" Name="Q5441A">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="27820373" Category_ID="925" Reversed="0" Preferred="0">
+	    <Product ID="341073" Prod_id="C07-026" ThumbPic="http://images.icecat.biz/thumbs/341073.jpg" Name="USB 2.0 Print Server">
+	      <Supplier ID="186" Name="Conceptronic"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24579394" Category_ID="1010" Reversed="0" Preferred="0">
+	    <Product ID="101860" Prod_id="Q6552A" ThumbPic="http://images.icecat.biz/thumbs/101860.jpg" Name="Labels 148 x 105 mm-A4/210 x 297 mm/100 sht">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383117" Category_ID="692" Reversed="0" Preferred="0">
+	    <Product ID="2251" Prod_id="C6040A" ThumbPic="http://images.icecat.biz/thumbs/2251.jpg" Name="premium photo paper, glossy, A4 (15 sheets)">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24596734" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="52973" Prod_id="Q5433A" ThumbPic="http://images.icecat.biz/thumbs/52973.jpg" Name="Premium Satin-matt Photo Paper-20 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383106" Category_ID="718" Reversed="0" Preferred="0">
+	    <Product ID="1710" Prod_id="C6042A" ThumbPic="http://images.icecat.biz/thumbs/1710.jpg" Name="Matte Greeting Card-20 cards/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383132" Category_ID="714" Reversed="0" Preferred="0">
+	    <Product ID="35666" Prod_id="C5977B" ThumbPic="http://images.icecat.biz/thumbs/35666.jpg" Name="Bright White Inkjet Paper-250 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24578890" Category_ID="1010" Reversed="0" Preferred="0">
+	    <Product ID="101818" Prod_id="Q6553A" ThumbPic="http://images.icecat.biz/thumbs/101818.jpg" Name="Labels 105 x 74 mm-A4/210 x 297 mm/100 sht">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24566926" Category_ID="1010" Reversed="0" Preferred="0">
+	    <Product ID="101863" Prod_id="Q6557A" ThumbPic="http://images.icecat.biz/thumbs/101863.jpg" Name="Labels 70 x 42.3 mm-A4/210 x 297 mm/100 sht">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="84440432" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="359527" Prod_id="345677" ThumbPic="http://images.icecat.biz/thumbs/359527.jpg" Name="Ink Cartridge HP C6625AE 3-colours">
+	      <Supplier ID="383" Name="Pelikan"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24346536" Category_ID="714" Reversed="0" Preferred="0">
+	    <Product ID="1844" Prod_id="CHP220" ThumbPic="http://images.icecat.biz/thumbs/1844.jpg" Name="500 sht, A3 / 297 x 420 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="84445475" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="1515836" Prod_id="359520" ThumbPic="http://images.icecat.biz/thumbs/1515836.jpg" Name="Hewlett Packard DeskJet 840C Serie Double Pack">
+	      <Supplier ID="383" Name="Pelikan"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383121" Category_ID="869" Reversed="0" Preferred="0">
+	    <Product ID="21582" Prod_id="C2950A" ThumbPic="http://images.icecat.biz/thumbs/21582.jpg" Name="IEEE 1284 Cable (a-b) 2 meter">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24578386" Category_ID="1010" Reversed="0" Preferred="0">
+	    <Product ID="101827" Prod_id="Q6556A" ThumbPic="http://images.icecat.biz/thumbs/101827.jpg" Name="Labels 105 x 37 mm-A4/210 x 297 mm/100 sht">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24580422" Category_ID="1010" Reversed="0" Preferred="0">
+	    <Product ID="101803" Prod_id="Q6555A" ThumbPic="http://images.icecat.biz/thumbs/101803.jpg" Name="Labels 97 x 42.3 mm-A4/210 x 297 mm/100 sht">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383105" Category_ID="718" Reversed="0" Preferred="0">
+	    <Product ID="1709" Prod_id="C6045A" ThumbPic="http://images.icecat.biz/thumbs/1709.jpg" Name="Glossy Half-fold Photo Greeting Cards 220 g/m²-A4/210 x 297 mm/10 cards">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24579898" Category_ID="1010" Reversed="0" Preferred="0">
+	    <Product ID="101834" Prod_id="Q6559A" ThumbPic="http://images.icecat.biz/thumbs/101834.jpg" Name="Labels 70 x 36 mm-A4/210 x 297 mm/100 sht">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="27820374" Category_ID="243" Reversed="0" Preferred="0">
+	    <Product ID="253820" Prod_id="C05-103" ThumbPic="http://images.icecat.biz/thumbs/253820.jpg" Name="4-ports USB 2.0 Hub">
+	      <Supplier ID="186" Name="Conceptronic"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24547086" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="22908" Prod_id="C6615DE#ABF" ThumbPic="http://images.icecat.biz/thumbs/1413.jpg" Name="15 Large Black Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="107106511" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="14571682" Prod_id="Q8032A#BGX" ThumbPic="http://images.icecat.biz/thumbs/14571682.jpg" Name="Premium Glossy Photo Paper-100 sht/10 x 15 cm plus tab">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383103" Category_ID="971" Reversed="0" Preferred="0">
+	    <Product ID="1435" Prod_id="C1821A" ThumbPic="http://images.icecat.biz/thumbs/1435.jpg" Name="Banner Paper-100 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24674036" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="24445" Prod_id="C7897A" ThumbPic="http://images.icecat.biz/thumbs/24445.jpg" Name="Glossy Photo Paper-50 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24570552" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="52990" Prod_id="Q5434A" ThumbPic="http://images.icecat.biz/thumbs/52990.jpg" Name="Premium Satin-matt Photo Paper 240 g/m²-A4/210 x 297 mm/50 sht">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="27820378" Category_ID="858" Reversed="0" Preferred="0">
+	    <Product ID="1750595" Prod_id="CR006V3" ThumbPic="http://images.icecat.biz/thumbs/1750595.jpg" Name="External Card Reader All-in-1 USB 2.0">
+	      <Supplier ID="702" Name="Sweex"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="27820380" Category_ID="243" Reversed="0" Preferred="0">
+	    <Product ID="1223557" Prod_id="US007" ThumbPic="http://images.icecat.biz/thumbs/1223557.jpg" Name="External 4-Port USB 2.0 Hub, Silver">
+	      <Supplier ID="702" Name="Sweex"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24674270" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="23619" Prod_id="C7891A" ThumbPic="http://images.icecat.biz/thumbs/23619.jpg" Name="Glossy Photo Paper 210 g/m²-10 x 15 cm plus tab/20 sht">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="75058321" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="5101960" Prod_id="C6625AE#301" ThumbPic="http://images.icecat.biz/thumbs/1974.jpg" Name="17 Tri-color Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383122" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="24614" Prod_id="Q1979A" ThumbPic="http://images.icecat.biz/thumbs/24614.jpg" Name="Premium Plus High-gloss Photo Paper 280 g/m²-10 x 15 cm plus tab/20 sht">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24173146" Category_ID="714" Reversed="0" Preferred="0">
+	    <Product ID="97450" Prod_id="CHP712" ThumbPic="http://images.icecat.biz/thumbs/97450.jpg" Name="All-in-One Printing Paper-250 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24572236" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="24661" Prod_id="C6615NE#231" ThumbPic="http://images.icecat.biz/thumbs/1836.jpg" Name="15 Light-use Black Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24572284" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="23881" Prod_id="C6625AE#241" ThumbPic="http://images.icecat.biz/thumbs/1974.jpg" Name="17 Tri-color Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24572253" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="102125" Prod_id="C6615NE#ABB" ThumbPic="http://images.icecat.biz/thumbs/102125.jpg" Name="15 Light-use Black">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24572270" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="716876" Prod_id="C6615NE#241" ThumbPic="http://images.icecat.biz/thumbs/1836.jpg" Name="15 Light-use Black Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24547137" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="23473" Prod_id="C6615DE#231" ThumbPic="http://images.icecat.biz/thumbs/1413.jpg" Name="15 Large Black Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="57078396" Category_ID="714" Reversed="0" Preferred="0">
+	    <Product ID="324870" Prod_id="CHP810" ThumbPic="http://images.icecat.biz/thumbs/324870.jpg" Name="Premium Choice Paper-250 sht/A4/210 X 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24572274" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="22909" Prod_id="C6625AE#ABF" ThumbPic="http://images.icecat.biz/thumbs/1974.jpg" Name="17 Tri-color Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24572280" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="23474" Prod_id="C6625AE#231" ThumbPic="http://images.icecat.biz/thumbs/1974.jpg" Name="17 Tri-color Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="27820371" Category_ID="1158" Reversed="0" Preferred="0">
+	    <Product ID="342233" Prod_id="CU1000AED06" ThumbPic="http://images.icecat.biz/thumbs/342233.jpg" Name="Pro Series Hi-Speed USB 2.0 Device Cable - 1.8m">
+	      <Supplier ID="32" Name="Belkin"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="71543776" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="4765790" Prod_id="C6625AE#UUS" ThumbPic="http://images.icecat.biz/thumbs/1974.jpg" Name="17 Tri-color Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24572290" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="740688" Prod_id="C6625AE#445" ThumbPic="http://images.icecat.biz/thumbs/1974.jpg" Name="17 Tri-color Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24572278" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="23427" Prod_id="C6625AE#252" ThumbPic="http://images.icecat.biz/thumbs/1974.jpg" Name="17 Tri-color Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24547120" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="23440" Prod_id="C6615DE#252" ThumbPic="http://images.icecat.biz/thumbs/1413.jpg" Name="15 Large Black Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24547171" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="23879" Prod_id="C6615DE#241" ThumbPic="http://images.icecat.biz/thumbs/1413.jpg" Name="15 Large Black Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="1064368" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="276026" Prod_id="FFGIH020" ThumbPic="http://images.icecat.biz/thumbs/276026.jpg" Name="C6625A Color Ink Cartridge">
+	      <Supplier ID="524" Name="Future Green"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="27820376" Category_ID="1158" Reversed="0" Preferred="0">
+	    <Product ID="297334" Prod_id="LP-USB" ThumbPic="http://images.icecat.biz/thumbs/297334.jpg" Name="Retractable USB 1.1/2.0 cable">
+	      <Supplier ID="274" Name="Macally"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="27820377" Category_ID="1158" Reversed="0" Preferred="0">
+	    <Product ID="297380" Prod_id="LP-COMBO-EU" ThumbPic="http://images.icecat.biz/thumbs/297380.jpg" Name="Retractable cable combo kit">
+	      <Supplier ID="274" Name="Macally"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="27820381" Category_ID="932" Reversed="0" Preferred="0">
+	    <Product ID="685610" Prod_id="N5200" ThumbPic="http://images.icecat.biz/thumbs/685610.jpg" Name="High Performance NAS Server 5 Bays">
+	      <Supplier ID="1894" Name="Thecus"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24547205" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="770577" Prod_id="C6615DE#445" ThumbPic="http://images.icecat.biz/thumbs/1413.jpg" Name="15 Large Black Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24547256" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="937583" Prod_id="C6615DE#BA5" ThumbPic="http://images.icecat.biz/thumbs/1413.jpg" Name="15 Large Black Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24572292" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="937586" Prod_id="C6625AE#BA5" ThumbPic="http://images.icecat.biz/thumbs/1974.jpg" Name="17 Tri-color Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="27820383" Category_ID="932" Reversed="0" Preferred="0">
+	    <Product ID="1312997" Prod_id="N5200B PRO" ThumbPic="http://images.icecat.biz/thumbs/1312997.jpg" Name="N5200B PRO">
+	      <Supplier ID="1894" Name="Thecus"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383101" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="1433" Prod_id="C6984A" ThumbPic="http://images.icecat.biz/thumbs/1433.jpg" Name="photo-quality paper, semi-glossy, two-sided, A4 (25 sheets)">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383116" Category_ID="714" Reversed="0" Preferred="0">
+	    <Product ID="2246" Prod_id="C1853A" ThumbPic="http://images.icecat.biz/thumbs/2246.jpg" Name="Premium Heavyweight Matt Paper 135 g/m²-A4/210 x 297 mm/100 sht">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24674499" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="23618" Prod_id="C7894A" ThumbPic="http://images.icecat.biz/thumbs/23618.jpg" Name="Glossy Photo Paper 210 g/m²-10 x 15 cm plus tab/60 sht">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24604056" Category_ID="853" Reversed="0" Preferred="0">
+	    <Product ID="33279" Prod_id="C7031A" ThumbPic="http://images.icecat.biz/thumbs/33279.jpg" Name="Premium Plus Inkjet Transparency Film-20 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24604387" Category_ID="853" Reversed="0" Preferred="0">
+	    <Product ID="33282" Prod_id="C7029A" ThumbPic="http://images.icecat.biz/thumbs/33282.jpg" Name="Premium Plus Inkjet Transparency Film-50 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="8383134" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="46967" Prod_id="Q2508A" ThumbPic="http://images.icecat.biz/thumbs/46967.jpg" Name="Premium Plus Satin-matt Photo Paper 280 g/m²-10 x 15 cm plus tab/60 sht">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24547993" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="507157" Prod_id="C6832A#BA8" ThumbPic="http://images.icecat.biz/thumbs/2252.jpg" Name="Premium Plus High-gloss Photo Paper-20 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24145695" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="508665" Prod_id="Q1991A#X2" ThumbPic="http://images.icecat.biz/thumbs/508665.jpg" Name="Premium Glossy Photo Paper-20 sht/10 x 15 cm plus tab">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24548457" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="512281" Prod_id="C6832A#*KIT" ThumbPic="http://images.icecat.biz/thumbs/512281.jpg" Name="Premium Plus High-gloss Photo Paper-20 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24674717" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="512282" Prod_id="C7894A#*KIT" ThumbPic="http://images.icecat.biz/thumbs/512282.jpg" Name="Glossy Photo Paper-60 sht/10 x 15 cm plus tab">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24146074" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="821329" Prod_id="Q1991A#*BDL" ThumbPic="http://images.icecat.biz/thumbs/821329.jpg" Name="Premium Glossy Photo Paper-20 sht/10 x 15 cm plus tab">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24146453" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="830996" Prod_id="Q1991A#BDL1#" ThumbPic="http://images.icecat.biz/thumbs/830996.jpg" Name="Premium Glossy Photo Paper-20 sht/10 x 15 cm plus tab">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24146832" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="831640" Prod_id="Q1991A#SINGLE#" ThumbPic="http://images.icecat.biz/thumbs/831640.jpg" Name="Premium Glossy Photo Paper-20 sht/10 x 15 cm plus tab">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24600436" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="875549" Prod_id="Q8027A#BUNDLE#CRC" ThumbPic="http://images.icecat.biz/thumbs/328017.jpg" Name="Premium Plus High-gloss Photo Paper-25 sht/10 x 15 cm plus tab">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24600937" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="875550" Prod_id="Q8027A#CRC" ThumbPic="http://images.icecat.biz/thumbs/328017.jpg" Name="Premium Plus High-gloss Photo Paper-25 sht/10 x 15 cm plus tab">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24601438" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="917616" Prod_id="Q8027A#*BUNDLE#CRC" ThumbPic="http://images.icecat.biz/thumbs/917616.jpg" Name="Premium Plus High-gloss Photo Paper-25 sht/10 x 15 cm plus tab">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24601939" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="917633" Prod_id="Q8027A#*CRC" ThumbPic="http://images.icecat.biz/thumbs/917633.jpg" Name="Premium Plus High-gloss Photo Paper-25 sht/10 x 15 cm plus tab">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24147211" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="917636" Prod_id="Q1991A#*BDL1" ThumbPic="http://images.icecat.biz/thumbs/917636.jpg" Name="Premium Glossy Photo Paper-20 sht/10 x 15 cm plus tab">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24147590" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="917687" Prod_id="Q1991A#*SINGLE" ThumbPic="http://images.icecat.biz/thumbs/917687.jpg" Name="Premium Glossy Photo Paper-20 sht/10 x 15 cm plus tab">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24547273" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="938332" Prod_id="C6615DE#*BUNDLECRC" ThumbPic="http://images.icecat.biz/thumbs/938332.jpg" Name="15 Large Black Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24192319" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="938333" Prod_id="Q5441A#*BUNDLE#CRC" ThumbPic="http://images.icecat.biz/thumbs/938333.jpg" Name="Everyday Semi-gloss Photo Paper-100 sht/10 x 15 cm plus tab">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24548921" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="938353" Prod_id="C6832A#*BUNDLE#CRC" ThumbPic="http://images.icecat.biz/thumbs/938353.jpg" Name="Premium Plus High-gloss Photo Paper-20 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24549385" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="1322241" Prod_id="C6832A#*SP" ThumbPic="http://images.icecat.biz/thumbs/1322241.jpg" Name="Premium Plus High-gloss Photo Paper-20 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24570801" Category_ID="714" Reversed="0" Preferred="0">
+	    <Product ID="1322282" Prod_id="Q5434A#*OPG" ThumbPic="http://images.icecat.biz/thumbs/1322282.jpg" Name="Premium Satin-matt Photo Paper-50 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24602440" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="1457403" Prod_id="Q8027A#*BNDL" ThumbPic="http://images.icecat.biz/thumbs/1457403.jpg" Name="Premium Plus High-gloss Photo Paper-25 sht/10 x 15 cm plus tab">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24549849" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="1460295" Prod_id="C6832A#*PR" ThumbPic="http://images.icecat.biz/thumbs/1460295.jpg" Name="Premium Plus High-gloss Photo Paper-20 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24605378" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="1460312" Prod_id="Q2510A#*BUNDLECONSO" ThumbPic="http://images.icecat.biz/thumbs/1460312.jpg" Name="Everyday Semi-gloss Photo Paper-100 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24674935" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="1460489" Prod_id="C7894A#*BOULANGER" ThumbPic="http://images.icecat.biz/thumbs/1460489.jpg" Name="Glossy Photo Paper-60 sht/10 x 15 cm plus tab">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="25080738" Category_ID="692" Reversed="0" Preferred="0">
+	    <Product ID="1559100" Prod_id="CHP920" ThumbPic="http://images.icecat.biz/thumbs/1559100.jpg" Name="Copy Paper 80 gsm-500 sht/A3/297 x 420 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="24595084" Category_ID="714" Reversed="0" Preferred="0">
+	    <Product ID="1638155" Prod_id="CHP215" ThumbPic="http://images.icecat.biz/thumbs/1638155.jpg" Name="Printing Paper-2500 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="26549035" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="1722291" Prod_id="C7891A#*PR2" ThumbPic="http://images.icecat.biz/thumbs/1722291.jpg" Name="Glossy Photo Paper-20 sht/10 x 15 cm plus tab">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="26759864" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="1746646" Prod_id="C6615DE#231?MM" ThumbPic="http://images.icecat.biz/thumbs/1746646.jpg" Name="15 Large Black Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="27703143" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="1779234" Prod_id="Q2510A#*SP" ThumbPic="http://images.icecat.biz/thumbs/1779234.jpg" Name="Everyday Semi-gloss Photo Paper-100 sht/A4/210 x 297 mm">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="28405469" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="1897895" Prod_id="C6625AE#231X5" ThumbPic="http://images.icecat.biz/thumbs/1897895.jpg" Name="17 Tri-color Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="29409173" Category_ID="847" Reversed="0" Preferred="0">
+	    <Product ID="2047600" Prod_id="Q1991A#*BNDL" ThumbPic="http://images.icecat.biz/thumbs/2047600.jpg" Name="Premium Glossy Photo Paper-20 sht/10 x 15 cm plus tab">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="89861180" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="8870251" Prod_id="C6615DE#TES" ThumbPic="http://images.icecat.biz/thumbs/8870251.jpg" Name="15 Large Black">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="89861213" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="8870253" Prod_id="C6625AE#TES" ThumbPic="http://images.icecat.biz/thumbs/8870253.jpg" Name="17 Tri-color">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="112036998" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="15746957" Prod_id="H15MP" ThumbPic="http://images.icecat.biz/thumbs/15746957.jpg" Name="H15MP">
+	      <Supplier ID="2207" Name="Greenman"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="112053954" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="15744422" Prod_id="H15" ThumbPic="http://images.icecat.biz/thumbs/15744422.jpg" Name="H15">
+	      <Supplier ID="2207" Name="Greenman"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="57720560" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="3607869" Prod_id="C6625AE#ACB" ThumbPic="http://images.icecat.biz/thumbs/1974.jpg" Name="17 Tri-color Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="57722151" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="3608215" Prod_id="C6615DE#ACB" ThumbPic="http://images.icecat.biz/thumbs/1413.jpg" Name="15 Large Black Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="75093935" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="5123208" Prod_id="C6615DE#UUS" ThumbPic="http://images.icecat.biz/thumbs/1413.jpg" Name="15 Large Black Inkjet Print Cartridge">
+	      <Supplier ID="1" Name="HP"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="84451285" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="4198763" Prod_id="339652" ThumbPic="http://images.icecat.biz/thumbs/4198763.jpg" Name="1 Refilled Head High Capacity">
+	      <Supplier ID="383" Name="Pelikan"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="84451302" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="4198764" Prod_id="360379" ThumbPic="http://images.icecat.biz/thumbs/4198764.jpg" Name="2 Refilled Heads">
+	      <Supplier ID="383" Name="Pelikan"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="84451319" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="4198765" Prod_id="342270" ThumbPic="http://images.icecat.biz/thumbs/4198765.jpg" Name="1 Refilled Head High Capacity">
+	      <Supplier ID="383" Name="Pelikan"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="84451336" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="4198766" Prod_id="360403" ThumbPic="http://images.icecat.biz/thumbs/4198766.jpg" Name="2 Refilled Heads">
+	      <Supplier ID="383" Name="Pelikan"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="84451353" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="4198767" Prod_id="343802" ThumbPic="http://images.icecat.biz/thumbs/4198767.jpg" Name="1 Refilled Head High Capacity">
+	      <Supplier ID="383" Name="Pelikan"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="84451370" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="4198768" Prod_id="341310" ThumbPic="http://images.icecat.biz/thumbs/4198768.jpg" Name="1 Refilled Head High Capacity">
+	      <Supplier ID="383" Name="Pelikan"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="84451552" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="4198776" Prod_id="347046" ThumbPic="http://images.icecat.biz/thumbs/4198776.jpg" Name="1 Refilled Head">
+	      <Supplier ID="383" Name="Pelikan"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="84451559" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="4198777" Prod_id="347091" ThumbPic="http://images.icecat.biz/thumbs/4198777.jpg" Name="1 Refilled Head">
+	      <Supplier ID="383" Name="Pelikan"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="84451566" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="4198778" Prod_id="347084" ThumbPic="http://images.icecat.biz/thumbs/4198778.jpg" Name="1 Refilled Head">
+	      <Supplier ID="383" Name="Pelikan"/>
+	    </Product>
+	  </ProductRelated>
+	  <ProductRelated ID="84451573" Category_ID="377" Reversed="0" Preferred="0">
+	    <Product ID="4198779" Prod_id="347053" ThumbPic="http://images.icecat.biz/thumbs/4198779.jpg" Name="1 Refilled Head">
+	      <Supplier ID="383" Name="Pelikan"/>
+	    </Product>
+	  </ProductRelated>
+
+   
+	  <SummaryDescription>
+	    <ShortSummaryDescription >HP deskjet 845c printer, 600 x 600, 4.7, 3.6, hp pcl level 3, A4, A5, A6, C6 &amp; DL</ShortSummaryDescription>
+	    <LongSummaryDescription >HP deskjet 845c printer. Maximum resolution: 600 x 600. Print speed (black, normal quality, A4/US Letter): 4.7, Print speed (colour, normal quality, A4/US Letter): 3.6. Standard printer languages: hp pcl level 3. ISO A-series sizes (A0...A9): A4, A5, A6, Envelopes sizes: C6 &amp; DL. Package dimensions (WxDxH): 484 x 232 x 414</LongSummaryDescription>
+	  </SummaryDescription>
+
+    <Supplier ID="1" Name="HP"/>
+   </Product>
+</ICECAT-interface>

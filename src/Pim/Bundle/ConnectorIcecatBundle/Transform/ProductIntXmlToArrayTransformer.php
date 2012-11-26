@@ -13,11 +13,6 @@ use \SimpleXMLElement;
 class ProductIntXmlToArrayTransformer implements TransformInterface
 {
     /**
-     * @staticvar string
-     */
-    const PREFIX = 'icecat';
-
-    /**
      * Xml element to parse
      * @var SimpleXMLElement
      */
@@ -91,7 +86,7 @@ class ProductIntXmlToArrayTransformer implements TransformInterface
         $this->productBaseData['id']       = (string) $productTag['Prod_id'];
         $this->productBaseData['name']     = (string) $productTag['Name'];
         $this->productBaseData['HighPic']  = (string) $productTag['HighPic'];
-        $this->productBaseData['LowPic']   = (string) $productTag['HighPic'];
+        $this->productBaseData['LowPic']   = (string) $productTag['LowPic'];
         $this->productBaseData['ThumbPic'] = (string) $productTag['ThumbPic'];
 
         // get vendor data
@@ -153,15 +148,16 @@ class ProductIntXmlToArrayTransformer implements TransformInterface
     {
         $this->productFeatures = array();
 
-        foreach ($simpleDoc->ProductFeature as $featureTag) {
+        foreach ($simpleDoc->Product->ProductFeature as $featureTag) {
             $featureId = (integer) $featureTag['ID'];
             $groupId   = (integer) $featureTag['CategoryFeatureGroup_ID'];
-            $this->productFeatures[$featureId] = array('CategoryFeatureGroup' => $groupId);
+            $this->productFeatures[$featureId] = array('CategoryFeatureGroup_ID' => $groupId);
+            $this->productFeatures[$featureId]['Value'] = array();
 
-            foreach ($featureTag->Name as $featureName) {
+            foreach ($featureTag->Feature->Name as $featureName) {
                 $langId = (integer) $featureName['langid'];
                 if (in_array($langId, self::$langs)) {
-                    $this->productFeatures[$featureId][$langId] = (string) $featureName['Value'];
+                    $this->productFeatures[$featureId]['Value'][$langId] = (string) $featureName['Value'];
                 }
             }
         }
