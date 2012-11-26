@@ -46,7 +46,7 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
      * Max counter for inserting loop. When batch size achieve this value, manager make a flush/clean
      * @staticvar integer
      */
-    protected static $maxBatchSize = 100;
+    protected static $maxBatchSize = 1000;
 
     /**
      * {@inheritdoc}
@@ -92,7 +92,7 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
 
         // get products
         $products = $this->getProductsDataSheet();
-        $this->writeln(count($products) .'products found'.PHP_EOL);
+        $this->writeln(count($products) .' products found'.PHP_EOL);
 
         // loop on products
         $this->batchSize = 0;
