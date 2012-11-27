@@ -16,9 +16,11 @@ class Helper
     /**
      * Return relevant grid source for APY grid
      *
-     * @param  \Doctrine\Common\Persistence\ObjectManager $objectManager
-     * @param  string                                     $objectShortname
+     * @param \Doctrine\Common\Persistence\ObjectManager $objectManager   object manager
+     * @param string                                     $objectShortname object short name
+     *
      * @throws \Exception
+     *
      * @return APY\DataGridBundle\Grid\Source\Entity
      */
     public static function getGridSource(\Doctrine\Common\Persistence\ObjectManager $objectManager, $objectShortname)
