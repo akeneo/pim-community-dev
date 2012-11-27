@@ -55,6 +55,34 @@ class LocaleController extends Controller
     }
 
     /**
+     * Disable old default locale
+     */
+    protected function disableOldDefaultLocale()
+    {
+        $manager = $this->get($this->getObjectManagerService());
+        $locales = $manager->getRepository('PimCatalogTaxinomyBundle:Locale')
+            ->findBy(array('isDefault' => 1));
+        foreach ($locales as $locale) {
+            $locale->setIsDefault(false);
+            $manager->persist($locale);
+        }
+    }
+
+    /**
+     * Disable old default locale
+     *
+     * @return boolean
+     */
+    protected function hasDefaultLocale()
+    {
+        $manager = $this->get($this->getObjectManagerService());
+        $locales = $manager->getRepository('PimCatalogTaxinomyBundle:Locale')
+            ->findBy(array('isDefault' => 1));
+
+        return (count($locales) > 0);
+    }
+
+    /**
      * Return new instance of object
      * @return unknown
      */
@@ -136,10 +164,13 @@ class LocaleController extends Controller
             $manager = $this->get($this->getObjectManagerService());
             $manager->persist($entity);
 
-            // has default locale
-/*            if (!$this->hasDefaultLocale($entity)) {
-                return $this->redirect($this->generateUrl('pim_catalogtaxinomy_locale_new'));
-            }*/
+            // change old default locale
+            if ($entity->getIsDefault()) {
+                $this->disableOldDefaultLocale();
+            // force if there is no default locale
+            } else if (!$this->hasDefaultLocale()) {
+                $entity->setIsDefault(true);
+            }
 
             $manager->flush();
             $this->get('session')->setFlash('success', 'Locale has been created');
@@ -211,22 +242,16 @@ class LocaleController extends Controller
         if ($form->isValid()) {
             $manager->persist($entity);
 
-            /*
             // change old default locale
             if ($entity->getIsDefault()) {
-                $this->disableOldDefaultChannel();
-                // check there is a default locale
-            } elseif (!$this->hasDefaultChannel()) {
-                $this->get('session')->setFlash('error', 'There is no default locale');
-
-                return $this->redirect($this->generateUrl('pim_catalogtaxinomy_locale_edit', array('id' => $id)));
-            } elseif (!$this->hasDefaultLocale($entity)) {
-                return $this->redirect($this->generateUrl('pim_catalogtaxinomy_locale_edit', array('id' => $id)));
+                $this->disableOldDefaultLocale();
+            // force if there is no default locale
+            } else if (!$this->hasDefaultLocale()) {
+                $entity->setIsDefault(true);
             }
-            */
 
             $manager->flush();
-            $this->get('session')->setFlash('success', 'Channel has been updated');
+            $this->get('session')->setFlash('success', 'Locale has been updated');
 
             return $this->redirect($this->generateUrl('pim_catalogtaxinomy_locale_edit', array('id' => $id)));
         }
@@ -251,6 +276,17 @@ class LocaleController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find locale.');
         }
+
+        // if it's default locale, force another one
+        if ($entity->getIsDefault()) {
+            $locale = $manager->getRepository('PimCatalogTaxinomyBundle:Locale')
+                ->findOneBy(array());
+            if ($locale) {
+                $locale->setIsDefault(true);
+                $manager->persist($locale);
+            }
+        }
+
         // delete
         $manager->remove($entity);
         $manager->flush();

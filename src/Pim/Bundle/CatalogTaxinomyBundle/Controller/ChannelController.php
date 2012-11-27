@@ -113,32 +113,6 @@ class ChannelController extends Controller
     }
 
     /**
-     * TODO : refactor
-     *
-     * Check if there is one default locale
-     * @param Channel $entity
-     *
-     * @return boolean
-     */
-    protected function hasDefaultLocale($entity)
-    {
-        $hasDefault = 0;
-        // check there is only one default locale
-        foreach ($entity->getLocales() as $locale) {
-            if ($locale->getIsDefault()) {
-                $hasDefault++;
-            }
-        }
-        if ($hasDefault != 1) {
-            $this->get('session')->setFlash('error', 'A channel needs only one default locale');
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Creates a new channel
      *
      * @param Request $request

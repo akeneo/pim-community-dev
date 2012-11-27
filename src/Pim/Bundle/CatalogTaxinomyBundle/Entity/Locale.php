@@ -28,7 +28,7 @@ class Locale
      * The ISO639-1 language code, an underscore (_), then the ISO3166 Alpha-2 country code (e.g. fr_FR for
      * French/France) is recommended.
      * @var string $code
-     * @ORM\Column(name="code", type="string", length=5)
+     * @ORM\Column(name="code", type="string", length=5, unique=true)
      */
     protected $code;
 
