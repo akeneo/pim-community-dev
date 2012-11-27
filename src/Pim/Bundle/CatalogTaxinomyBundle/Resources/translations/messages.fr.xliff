@@ -2,52 +2,60 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="fr" datatype="plaintext" original="file.ext">
         <body>
-            <trans-unit id="1">
-                <source>pim.catalogtaxinomy.channel.title.create</source>
+            <!-- Titles -->
+            <trans-unit id="1101">
+                <source>pim.catalogtaxinomy.channel.title.new</source>
                 <target>Création d'un canal</target>
             </trans-unit>
-            <trans-unit id="2">
+            <trans-unit id="1102">
                 <source>pim.catalogtaxinomy.channel.title.edit</source>
-                <target>Modification d'un canal</target>
+                <target>Edition d'un canal</target>
             </trans-unit>
-            <trans-unit id="3">
+            <trans-unit id="1103">
                 <source>pim.catalogtaxinomy.channel.title.list</source>
-                <target>Liste des canaux</target>
+                <target>Canaux</target>
+            </trans-unit>
+            <trans-unit id="1111">
+                <source>pim.catalogtaxinomy.locale.title.new</source>
+                <target>Edition d'une langue</target>
+            </trans-unit>
+            <trans-unit id="1112">
+                <source>pim.catalogtaxinomy.locale.title.edit</source>
+                <target>Modification d'une langue</target>
+            </trans-unit>
+            <trans-unit id="1113">
+                <source>pim.catalogtaxinomy.locale.title.list</source>
+                <target>Langues</target>
             </trans-unit>
 
             <!-- Buttons -->
-            <trans-unit id="1001">
+            <trans-unit id="1110">
                 <source>pim.catalogtaxinomy.channels</source>
                 <target>Canaux</target>
             </trans-unit>
-            <trans-unit id="1002">
+            <trans-unit id="1104">
                 <source>pim.catalogtaxinomy.locales</source>
                 <target>Langues</target>
             </trans-unit>
-            <trans-unit id="12">
+            <trans-unit id="1105">
                 <source>pim.catalogtaxinomy.channel.button.new</source>
                 <target>Créer un canal</target>
             </trans-unit>
+            <trans-unit id="1108">
+                <source>pim.catalogtaxinomy.locale.button.new</source>
+                <target>Créer une langue</target>
+            </trans-unit>
 
             <!-- Fieldsets -->
-            <trans-unit id="16">
+            <trans-unit id="1106">
                 <source>pim.catalogtaxinomy.channel.fieldset.general</source>
                 <target>Général</target>
             </trans-unit>
-            <trans-unit id="17">
-                <source>pim.catalogtaxinomy.channel.fieldset.locale</source>
-                <target>Traductions</target>
+            <trans-unit id="1107">
+                <source>pim.catalogtaxinomy.locale.fieldset.general</source>
+                <target>Général</target>
             </trans-unit>
 
-            <!-- Texts -->
-            <trans-unit id="25">
-                <source>pim.catalogtaxinomy.channel.text.add-locale</source>
-                <target>Ajouter une nouvelle traduction</target>
-            </trans-unit>
-            <trans-unit id="26">
-                <source>pim.catalogtaxinomy.channel.text.delete-locale</source>
-                <target>Supprimer une traduction</target>
-            </trans-unit>
         </body>
     </file>
 </xliff>

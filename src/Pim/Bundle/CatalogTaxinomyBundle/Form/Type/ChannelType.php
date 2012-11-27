@@ -23,9 +23,8 @@ class ChannelType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // TODO drive from type and not add if in twig template ?
         $builder->add('id', 'hidden');
-        $builder->add('code', 'text');
+        $builder->add('code', 'text', array('required' => true));
     }
 
     /**

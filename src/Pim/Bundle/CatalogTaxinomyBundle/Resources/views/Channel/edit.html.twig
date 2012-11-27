@@ -1,6 +1,6 @@
 {% extends 'PimUIBundle::layout.html.twig' %}
 
-{% block title %}Akeneo - {{ "pim.catalogtaxinomy.channel.title.edit" | trans }}{% endblock %}
+{% block title %}Akeneo - {% if entity.id > 0 %} {{ "pim.catalogtaxinomy.channel.title.edit" | trans }} {% else %} {{ "pim.catalogtaxinomy.channel.title.new" | trans }} {% endif %} {% endblock %}
 
 {% block content_menu_more %}
     {{ parent() }}
@@ -20,7 +20,7 @@
 
 {% block content %}
 
-    <h1>{{ "pim.catalogtaxinomy.channel.title.edit" | trans }}</h1>
+    <h1>{% if entity.id > 0 %} {{ "pim.catalogtaxinomy.channel.title.edit" | trans }} {% else %} {{ "pim.catalogtaxinomy.channel.title.new" | trans }} {% endif %}</h1>
 
     <div class="form-panel ui-corner-all">
         <h2>{{ "pim.catalogtaxinomy.channel.fieldset.general" | trans }}</h2>
