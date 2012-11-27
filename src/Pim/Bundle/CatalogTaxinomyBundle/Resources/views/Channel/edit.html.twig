@@ -1,6 +1,6 @@
 {% extends 'PimUIBundle::layout.html.twig' %}
 
-{% block title %}Akeneo - {{ "pim.catalog.channel.title.edit" | trans }}{% endblock %}
+{% block title %}Akeneo - {{ "pim.catalogtaxinomy.channel.title.edit" | trans }}{% endblock %}
 
 {% block content_menu_more %}
     {{ parent() }}
@@ -14,21 +14,21 @@
 
 {% block content %}
 
-    <h1>{{ "pim.catalog.channel.title.edit" | trans }}</h1>
+    <h1>{{ "pim.catalogtaxinomy.channel.title.edit" | trans }}</h1>
 
     {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
     <form action="{{ formAction }}" method="post" {{ form_enctype(form) }}>
         {{ form_errors(form) }}
 
         <div class="form-panel ui-corner-all">
-            <h2>{{ "pim.catalog.channel.fieldset.general" | trans }}</h2>
+            <h2>{{ "pim.catalogtaxinomy.channel.fieldset.general" | trans }}</h2>
             {{ form_row(form.id) }}
             {{ form_row(form.code) }}
             {{ form_row(form.isDefault) }}
         </div>
 
         <div class="form-panel ui-corner-all">
-                <h2>{{ "pim.catalog.channel.fieldset.locale" | trans }}</h2>
+                <h2>{{ "pim.catalogtaxinomy.channel.fieldset.locale" | trans }}</h2>
                 <div>
                     <ul class="options" data-prototype="{{ form_widget(form.locales.vars.prototype)|e }}" >
                         {% for locale in form.locales %}
@@ -49,7 +49,7 @@
     var collectionHolder = $('ul.options');
 
     // setup an "add an option" link
-    var $addOptionLink = $('<a href="#" class="add_option_link">{{ "pim.catalog.channel.text.add-locale" | trans }}</a>');
+    var $addOptionLink = $('<a href="#" class="add_option_link">{{ "pim.catalogtaxinomy.channel.text.add-locale" | trans }}</a>');
     var $newLinkLi = $('<li></li>').append($addOptionLink);
 
     jQuery(document).ready(function() {
@@ -87,7 +87,7 @@
     }
 
     function addOptionFormDeleteLink($optFormLi) {
-        var $removeFormA = $('<a class="action-delete-inline" href="#">{{ "pim.catalog.text.delete-locale" | trans }} ^</a>');
+        var $removeFormA = $('<a class="action-delete-inline" href="#">{{ "pim.catalogtaxinomy.text.delete-locale" | trans }} ^</a>');
 
         $optFormLi.append($removeFormA);
 

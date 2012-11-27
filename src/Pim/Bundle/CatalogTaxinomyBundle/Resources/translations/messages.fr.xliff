@@ -3,41 +3,49 @@
     <file source-language="fr" datatype="plaintext" original="file.ext">
         <body>
             <trans-unit id="1">
-                <source>pim.catalog.channel.title.create</source>
+                <source>pim.catalogtaxinomy.channel.title.create</source>
                 <target>Création d'un canal</target>
             </trans-unit>
             <trans-unit id="2">
-                <source>pim.catalog.channel.title.edit</source>
+                <source>pim.catalogtaxinomy.channel.title.edit</source>
                 <target>Modification d'un canal</target>
             </trans-unit>
             <trans-unit id="3">
-                <source>pim.catalog.channel.title.list</source>
+                <source>pim.catalogtaxinomy.channel.title.list</source>
                 <target>Liste des canaux</target>
             </trans-unit>
 
             <!-- Buttons -->
+            <trans-unit id="1001">
+                <source>pim.catalogtaxinomy.channels</source>
+                <target>Canaux</target>
+            </trans-unit>
+            <trans-unit id="1002">
+                <source>pim.catalogtaxinomy.locales</source>
+                <target>Langues</target>
+            </trans-unit>
             <trans-unit id="12">
-                <source>pim.catalog.channel.button.new</source>
+                <source>pim.catalogtaxinomy.channel.button.new</source>
                 <target>Créer un canal</target>
             </trans-unit>
 
             <!-- Fieldsets -->
             <trans-unit id="16">
-                <source>pim.catalog.channel.fieldset.general</source>
+                <source>pim.catalogtaxinomy.channel.fieldset.general</source>
                 <target>Général</target>
             </trans-unit>
             <trans-unit id="17">
-                <source>pim.catalog.channel.fieldset.locale</source>
+                <source>pim.catalogtaxinomy.channel.fieldset.locale</source>
                 <target>Traductions</target>
             </trans-unit>
 
             <!-- Texts -->
             <trans-unit id="25">
-                <source>pim.catalog.channel.text.add-locale</source>
+                <source>pim.catalogtaxinomy.channel.text.add-locale</source>
                 <target>Ajouter une nouvelle traduction</target>
             </trans-unit>
             <trans-unit id="26">
-                <source>pim.catalog.channel.text.delete-locale</source>
+                <source>pim.catalogtaxinomy.channel.text.delete-locale</source>
                 <target>Supprimer une traduction</target>
             </trans-unit>
         </body>

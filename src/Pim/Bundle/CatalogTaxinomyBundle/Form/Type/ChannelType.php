@@ -101,6 +101,6 @@ class ChannelType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_CatalogTaxinomyBundle_channel';
+        return 'pim_catalogtaxinomy_channel';
     }
 }
