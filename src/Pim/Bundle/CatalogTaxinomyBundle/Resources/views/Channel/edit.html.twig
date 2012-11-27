@@ -10,96 +10,26 @@
             <span class="ui-button-text">{{ "bap.navigation.back-list" | trans }}</span>
         </a>
     </li>
+    <li>
+        <a href="#" onclick="$('#edit-form-submit').click(); return false;" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
+            <span class="ui-button-icon-primary ui-icon ui-icon-fugue-disk"></span>
+            <span class="ui-button-text">{{ "bap.button.save" | trans }}</span>
+        </a>
+    </li>
 {% endblock %}
 
 {% block content %}
 
     <h1>{{ "pim.catalogtaxinomy.channel.title.edit" | trans }}</h1>
 
-    {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
-    <form action="{{ formAction }}" method="post" {{ form_enctype(form) }}>
-        {{ form_errors(form) }}
+    <div class="form-panel ui-corner-all">
+        <h2>{{ "pim.catalogtaxinomy.channel.fieldset.general" | trans }}</h2>
 
-        <div class="form-panel ui-corner-all">
-            <h2>{{ "pim.catalogtaxinomy.channel.fieldset.general" | trans }}</h2>
-            {{ form_row(form.id) }}
-            {{ form_row(form.code) }}
-            {{ form_row(form.isDefault) }}
-        </div>
-
-        <div class="form-panel ui-corner-all">
-                <h2>{{ "pim.catalogtaxinomy.channel.fieldset.locale" | trans }}</h2>
-                <div>
-                    <ul class="options" data-prototype="{{ form_widget(form.locales.vars.prototype)|e }}" >
-                        {% for locale in form.locales %}
-                            <li>{{ form_row(locale.code) }} {{ form_row(locale.isDefault) }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-        </div>
-
-        {{ form_widget(form._token) }}
-
-        <input type="submit" value="{{ "bap.button.save" | trans }}" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" aria-disabled="false">
-
-    </form>
-
-    <script type="text/javascript">
-    // Get the div that holds the collection of options
-    var collectionHolder = $('ul.options');
-
-    // setup an "add an option" link
-    var $addOptionLink = $('<a href="#" class="add_option_link">{{ "pim.catalogtaxinomy.channel.text.add-locale" | trans }}</a>');
-    var $newLinkLi = $('<li></li>').append($addOptionLink);
-
-    jQuery(document).ready(function() {
-        // add a delete link to all of the existing option form li elements
-        collectionHolder.find('li').each(function() {
-            addOptionFormDeleteLink($(this));
-        });
-
-        // add the "add a option" anchor and li to the options ul
-        collectionHolder.append($newLinkLi);
-
-        $addOptionLink.on('click', function(e) {
-            // prevent the link from creating a "#" on the URL
-            e.preventDefault();
-
-            // add a new tag form (see next code block)
-            addOptionForm(collectionHolder, $newLinkLi);
-        });
-    });
-
-    function addOptionForm(collectionHolder, $newLinkLi) {
-        // Get the data-prototype we explained earlier
-        var prototype = collectionHolder.attr('data-prototype');
-
-        // Replace '__name__' in the prototype's HTML to
-        // instead be a number based on the current collection's length.
-        var newForm = prototype.replace(/__name__/g, collectionHolder.children().length);
-
-        // Display the form in the page in an li, before the "Add an option" link li
-        var $newFormLi = $('<li></li>').append(newForm);
-        $newLinkLi.before($newFormLi);
-
-        // add a delete link to the new form
-        addOptionFormDeleteLink($newFormLi);
-    }
-
-    function addOptionFormDeleteLink($optFormLi) {
-        var $removeFormA = $('<a class="action-delete-inline" href="#">{{ "pim.catalogtaxinomy.text.delete-locale" | trans }} ^</a>');
-
-        $optFormLi.append($removeFormA);
-
-        $removeFormA.on('click', function(e) {
-            // prevent the link from creating a "#" on the URL
-            e.preventDefault();
-
-            // remove the li for the tag form
-            $optFormLi.remove();
-        });
-    }
-
-    </script>
+        {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
+        <form action="{{ formAction }}" method="post" {{ form_enctype(form) }}>
+            {{ form_widget(form) }}
+            <input id="edit-form-submit" type="submit" value="{{ "bap.button.save" | trans }}" class="ui-helper-hidden" role="button" aria-disabled="false">
+        </form>
+    </div>
 
 {% endblock %}

@@ -25,30 +25,10 @@ class Channel
     protected $id;
 
     /**
-     * @var string $localeCode
+     * @var string $code
      * @ORM\Column(name="code", type="string", length=255, unique=true)
      */
     protected $code;
-
-    /**
-     * @var $locales
-     *
-     * @ORM\OneToMany(targetEntity="ChannelLocale", mappedBy="channel", cascade={"persist", "remove"})
-     */
-    protected $locales;
-
-    /**
-     * @ORM\Column(name="is_default", type="boolean")
-     */
-    protected $isDefault;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->locales = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Get id
@@ -63,7 +43,7 @@ class Channel
     /**
      * Set id
      * @param integer $id
-     * 
+     *
      * @return Channel
      */
     public function setId($id)
@@ -77,7 +57,7 @@ class Channel
      * Set code
      *
      * @param string $code
-     * 
+     *
      * @return Channel
      */
     public function setCode($code)
@@ -97,62 +77,4 @@ class Channel
         return $this->code;
     }
 
-    /**
-     * Set as default channel
-     *
-     * @param boolean $default
-     * 
-     * @return Channel
-     */
-    public function setIsDefault($default)
-    {
-        $this->isDefault = $default;
-
-        return $this;
-    }
-
-    /**
-     * Get is default
-     *
-     * @return boolean
-     */
-    public function getIsDefault()
-    {
-        return $this->isDefault;
-    }
-
-    /**
-     * Add locales
-     *
-     * @param Pim\Bundle\CatalogTaxinomyBundle\Entity\ChannelLocale $locale
-     * 
-     * @return Channel
-     */
-    public function addLocale(\Pim\Bundle\CatalogTaxinomyBundle\Entity\ChannelLocale $locale)
-    {
-        $locale->setChannel($this);
-        $this->locales[] = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Remove locales
-     *
-     * @param Pim\Bundle\CatalogTaxinomyBundle\Entity\ChannelLocale $locale
-     */
-    public function removeLocale(\Pim\Bundle\CatalogTaxinomyBundle\Entity\ChannelLocale $locale)
-    {
-        $this->locales->removeElement($locale);
-    }
-
-    /**
-     * Get locales
-     *
-     * @return Doctrine\Common\Collections\Collection
-     */
-    public function getLocales()
-    {
-        return $this->locales;
-    }
 }

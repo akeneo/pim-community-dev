@@ -6,7 +6,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Type for channel form (independant of concrete impl)
+ * Type for channel form
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
@@ -17,69 +17,15 @@ class ChannelType extends AbstractType
 {
 
     /**
-     * @var string
-     */
-    protected $channelClass;
-
-    /**
-     * @var string
-     */
-    protected $channelLocaleClass;
-
-    /**
-     * Construct with full name of concrete impl of channel and locale classes
-     *
-     * @param string $channelClass       channel class
-     * @param string $channelLocaleClass channel locale class
-     */
-    public function __construct($channelClass, $channelLocaleClass)
-    {
-        $this->channelClass = $channelClass;
-        $this->channelLocaleClass = $channelLocaleClass;
-    }
-
-    /**
      * Build form
      * @param FormBuilderInterface $builder
      * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $entity = $options['data'];
-
         // TODO drive from type and not add if in twig template ?
         $builder->add('id', 'hidden');
-
-        $builder->add(
-            'code', 'text', array(
-                'disabled'  => ($entity->getId())? true : false
-            )
-        );
-
-        $builder->add(
-            'isDefault', 'checkbox', array('label' => 'Is default', 'required' => false)
-        );
-
-        /*
-        // TODO:provides exhaustive or configured list
-        $localeOptions = array('fr_FR' => 'fr_FR', 'en_US' => 'en_US');
-
-        $builder->add(
-            'defaultLocale', 'choice', array(
-                'choices'   => $localeOptions,
-                'required'  => true,
-                'label'     => 'Locale'
-            )
-        );*/
-
-        $builder->add(
-            'locales', 'collection', array(
-                'type' => new ChannelLocaleType($this->channelLocaleClass),
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-            )
-        );
+        $builder->add('code', 'text');
     }
 
     /**
@@ -90,7 +36,7 @@ class ChannelType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => $this->channelClass
+                'data_class' => 'Pim\Bundle\CatalogTaxinomyBundle\Entity\Channel',
             )
         );
     }

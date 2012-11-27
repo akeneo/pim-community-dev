@@ -25,15 +25,15 @@ class LoadChannels extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        // add channel
+        // add channels
         $channel = new Channel();
-        $channel->setCode('Magento');
-        $channel->setIsDefault(true);
-        // add locale
-        $locale = new ChannelLocale();
-        $locale->setCode('fr_FR');
-        $locale->setIsDefault(true);
-        $channel->addLocale($locale);
+        $channel->setCode('E-commerce Magento');
+        $manager->persist($channel);
+
+        $channel = new Channel();
+        $channel->setCode('Mobile catalog');
+        $manager->persist($channel);
+
         // persist
         $manager->persist($channel);
         $manager->flush();
