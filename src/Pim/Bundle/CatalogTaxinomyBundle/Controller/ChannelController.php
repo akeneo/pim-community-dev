@@ -108,7 +108,8 @@ class ChannelController extends Controller
         $formAction = $this->generateUrl('pim_catalogtaxinomy_channel_create');
         // render form
         return $this->render(
-            'PimCatalogTaxinomyBundle:Channel:edit.html.twig', array('entity' => $entity, 'form' => $form->createView(), 'formAction' => $formAction)
+            'PimCatalogTaxinomyBundle:Channel:edit.html.twig',
+            array('entity' => $entity, 'form' => $form->createView(), 'formAction' => $formAction)
         );
     }
 
@@ -130,18 +131,29 @@ class ChannelController extends Controller
 
         if ($form->isValid()) {
 
-            $manager = $this->get($this->getObjectManagerService());
-            $manager->persist($entity);
-            $manager->flush();
+            try {
+                $manager = $this->get($this->getObjectManagerService());
+                $manager->persist($entity);
+                $manager->flush();
 
-            $this->get('session')->setFlash('success', 'Channel has been created');
+                $this->get('session')->setFlash('success', 'Channel has been created');
 
-            return $this->redirect($this->generateUrl('pim_catalogtaxinomy_channel_edit', array('id' => $entity->getId())));
+                return $this->redirect(
+                    $this->generateUrl('pim_catalogtaxinomy_channel_edit', array('id' => $entity->getId()))
+                );
+
+            } catch (\Exception $e) {
+                $this->get('session')->setFlash('error', $e->getMessage());
+            }
+
         }
 
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+        // render form with error
+        $formAction = $this->generateUrl('pim_catalogtaxinomy_channel_create');
+
+        return $this->render(
+            'PimCatalogTaxinomyBundle:Channel:edit.html.twig',
+            array('entity' => $entity, 'form' => $form->createView(), 'formAction' => $formAction)
         );
     }
 
@@ -199,14 +211,25 @@ class ChannelController extends Controller
         $form->bind($request);
 
         if ($form->isValid()) {
-            $manager->persist($entity);
-            $manager->flush();
-            $this->get('session')->setFlash('success', 'Channel has been updated');
 
-            return $this->redirect($this->generateUrl('pim_catalogtaxinomy_channel_edit', array('id' => $id)));
+            try {
+                $manager->persist($entity);
+                $manager->flush();
+                $this->get('session')->setFlash('success', 'Channel has been updated');
+
+                return $this->redirect($this->generateUrl('pim_catalogtaxinomy_channel_edit', array('id' => $id)));
+            } catch (\Exception $e) {
+                $this->get('session')->setFlash('error', $e->getMessage());
+            }
         }
 
-        return array('entity' => $entity, 'edit_form' => $form->createView());
+        // render form with error
+        $formAction = $this->generateUrl('pim_catalogtaxinomy_channel_update', array('id' => $entity->getId()));
+
+        return $this->render(
+            'PimCatalogTaxinomyBundle:Channel:edit.html.twig',
+            array('entity' => $entity, 'form' => $form->createView(), 'formAction' => $formAction)
+        );
     }
 
     /**

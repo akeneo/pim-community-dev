@@ -161,24 +161,34 @@ class LocaleController extends Controller
 
         if ($form->isValid()) {
 
-            $manager = $this->get($this->getObjectManagerService());
-            $manager->persist($entity);
+            try {
+                $manager = $this->get($this->getObjectManagerService());
+                $manager->persist($entity);
 
-            // change old default locale
-            if ($entity->getIsDefault()) {
-                $this->disableOldDefaultLocale();
-            // force if there is no default locale
-            } else if (!$this->hasDefaultLocale()) {
-                $entity->setIsDefault(true);
+                // change old default locale
+                if ($entity->getIsDefault()) {
+                    $this->disableOldDefaultLocale();
+                // force if there is no default locale
+                } else if (!$this->hasDefaultLocale()) {
+                    $entity->setIsDefault(true);
+                }
+
+                $manager->flush();
+                $this->get('session')->setFlash('success', 'Locale has been created');
+
+                return $this->redirect($this->generateUrl('pim_catalogtaxinomy_locale_edit', array('id' => $entity->getId())));
+            } catch (\Exception $e) {
+                $this->get('session')->setFlash('error', $e->getMessage());
             }
-
-            $manager->flush();
-            $this->get('session')->setFlash('success', 'Locale has been created');
-
-            return $this->redirect($this->generateUrl('pim_catalogtaxinomy_locale_edit', array('id' => $entity->getId())));
         }
 
-        return array('entity' => $entity, 'form' => $form->createView());
+        // render form with error
+        $formAction = $this->generateUrl('pim_catalogtaxinomy_locale_create');
+
+        return $this->render(
+            'PimCatalogTaxinomyBundle:Channel:edit.html.twig',
+            array('entity' => $entity, 'form' => $form->createView(), 'formAction' => $formAction)
+        );
     }
 
     /**
@@ -240,23 +250,33 @@ class LocaleController extends Controller
         $form->bind($request);
 
         if ($form->isValid()) {
-            $manager->persist($entity);
+            try {
+                $manager->persist($entity);
 
-            // change old default locale
-            if ($entity->getIsDefault()) {
-                $this->disableOldDefaultLocale();
-            // force if there is no default locale
-            } else if (!$this->hasDefaultLocale()) {
-                $entity->setIsDefault(true);
+                // change old default locale
+                if ($entity->getIsDefault()) {
+                    $this->disableOldDefaultLocale();
+                // force if there is no default locale
+                } else if (!$this->hasDefaultLocale()) {
+                    $entity->setIsDefault(true);
+                }
+
+                $manager->flush();
+                $this->get('session')->setFlash('success', 'Locale has been updated');
+
+                return $this->redirect($this->generateUrl('pim_catalogtaxinomy_locale_edit', array('id' => $id)));
+            } catch (\Exception $e) {
+                $this->get('session')->setFlash('error', $e->getMessage());
             }
-
-            $manager->flush();
-            $this->get('session')->setFlash('success', 'Locale has been updated');
-
-            return $this->redirect($this->generateUrl('pim_catalogtaxinomy_locale_edit', array('id' => $id)));
         }
 
-        return array('entity' => $entity, 'edit_form' => $form->createView());
+        // render form with error
+        $formAction = $this->generateUrl('pim_catalogtaxinomy_locale_update', array('id' => $entity->getId()));
+
+        return $this->render(
+            'PimCatalogTaxinomyBundle:Locale:edit.html.twig',
+            array('entity' => $entity, 'form' => $form->createView(), 'formAction' => $formAction)
+        );
     }
 
     /**
