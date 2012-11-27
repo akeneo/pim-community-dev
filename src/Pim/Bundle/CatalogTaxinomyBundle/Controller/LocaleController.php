@@ -82,13 +82,13 @@ class LocaleController extends Controller
 
         // add an action column
         $grid->setActionsColumnSeparator('&nbsp;');
-        $rowAction = new RowAction('bap.action.edit', 'pim_catalogtaxinomy_locale_edit', false, '_self', array('class' => 'grid_action ui-icon-fugue-tag--pencil'));
+        $rowAction = new RowAction('bap.action.edit', 'pim_catalogtaxinomy_locale_edit', false, '_self', array('class' => 'grid_action ui-icon-fugue-pencil'));
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
 
-/*        $rowAction = new RowAction('bap.action.delete', 'pim_catalogtaxinomy_locale_delete', true, '_self', array('class' => 'grid_action ui-icon-fugue-tag--minus'));
+        $rowAction = new RowAction('bap.action.delete', 'pim_catalogtaxinomy_locale_delete', true, '_self', array('class' => 'grid_action ui-icon-fugue-minus'));
         $rowAction->setRouteParameters(array('id'));
-        $grid->addRowAction($rowAction);*/
+        $grid->addRowAction($rowAction);
 
         return $grid->getGridResponse('PimCatalogTaxinomyBundle:Locale:index.html.twig');
     }
@@ -232,6 +232,31 @@ class LocaleController extends Controller
         }
 
         return array('entity' => $entity, 'edit_form' => $form->createView());
+    }
+
+    /**
+     * Delete an existing locale entity.
+     *
+     * @param integer $id
+     *
+     * @Route("/{id}/delete")
+     * @Template()
+     *
+     * @return multitype
+     */
+    public function deleteAction($id)
+    {
+        $manager = $this->get($this->getObjectManagerService());
+        $entity = $manager->getRepository($this->getObjectShortName())->find($id);
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find locale.');
+        }
+        // delete
+        $manager->remove($entity);
+        $manager->flush();
+        $this->get('session')->setFlash('success', "Locale '{$entity->getCode()}' has been deleted");
+
+        return $this->redirect($this->generateUrl('pim_catalogtaxinomy_locale_index'));
     }
 
 }

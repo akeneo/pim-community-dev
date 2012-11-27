@@ -24,7 +24,7 @@ class LocaleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // TODO:provides exhaustive or configured list
-        $localeOptions = array('fr_FR' => 'fr_FR', 'en_US' => 'en_US', 'de_DE' => 'de_DE');
+        $localeOptions = array('fr_FR' => 'fr_FR', 'en_US' => 'en_US', 'de_DE' => 'de_DE', 'it_IT' => 'it_IT');
 
         $builder->add(
             'code', 'choice', array(
