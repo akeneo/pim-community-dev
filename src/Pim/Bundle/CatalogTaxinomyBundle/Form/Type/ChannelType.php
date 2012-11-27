@@ -1,5 +1,5 @@
 <?php
-namespace Pim\Bundle\CatalogBundle\Form\Type;
+namespace Pim\Bundle\CatalogTaxinomyBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -101,6 +101,6 @@ class ChannelType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_catalogbundle_channel';
+        return 'pim_CatalogTaxinomyBundle_channel';
     }
 }

@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\ChannelLocale;
+use Pim\Bundle\CatalogTaxinomyBundle\Entity\Channel;
+use Pim\Bundle\CatalogTaxinomyBundle\Entity\ChannelLocale;
 
 /**
  * Load channels

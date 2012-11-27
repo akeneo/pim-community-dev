@@ -1,12 +1,12 @@
 <?php
-namespace Pim\Bundle\CatalogBundle\Controller;
+namespace Pim\Bundle\CatalogTaxinomyBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Pim\Bundle\CatalogBundle\Form\Type\ChannelType;
+use Pim\Bundle\CatalogTaxinomyBundle\Form\Type\ChannelType;
 use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
 use APY\DataGridBundle\Grid\Action\RowAction;
 
@@ -29,7 +29,7 @@ class ChannelController extends Controller
      */
     public function getObjectShortName()
     {
-        return 'PimCatalogBundle:Channel';
+        return 'PimCatalogTaxinomyBundle:Channel';
     }
 
     /**
@@ -71,7 +71,7 @@ class ChannelController extends Controller
      *
      * @Route("/index")
      * @Template()
-     * 
+     *
      * @return multitype
      */
     public function indexAction()
@@ -81,16 +81,16 @@ class ChannelController extends Controller
         $grid->setSource($source);
 
         // add an action column
-        $rowAction = new RowAction('Edit', 'pim_catalog_channel_edit');
+        $rowAction = new RowAction('Edit', 'pim_catalogtaxinomy_channel_edit');
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
 
         // add an action column
-        $rowAction = new RowAction('Delete', 'pim_catalog_channel_delete');
+        $rowAction = new RowAction('Delete', 'pim_catalogtaxinomy_channel_delete');
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
 
-        return $grid->getGridResponse('PimCatalogBundle:Channel:index.html.twig');
+        return $grid->getGridResponse('PimCatalogTaxinomyBundle:Channel:index.html.twig');
     }
 
     /**
@@ -98,19 +98,19 @@ class ChannelController extends Controller
      *
      * @Route("/new")
      * @Template()
-     * 
+     *
      * @return multitype
      */
     public function newAction()
     {
         $entity = $this->getNewObject();
         $classFullName = $this->getObjectClassFullName();
-        $localeClassFullName = 'Pim\Bundle\CatalogBundle\Entity\ChannelLocale';
+        $localeClassFullName = 'Pim\Bundle\CatalogTaxinomyBundle\Entity\ChannelLocale';
         $form = $this->createForm(new ChannelType($classFullName, $localeClassFullName), $entity);
-        $formAction = $this->generateUrl('pim_catalog_channel_create');
+        $formAction = $this->generateUrl('pim_catalogtaxinomy_channel_create');
         // render form
         return $this->render(
-            'PimCatalogBundle:Channel:edit.html.twig', array('entity' => $entity, 'form' => $form->createView(), 'formAction' => $formAction)
+            'PimCatalogTaxinomyBundle:Channel:edit.html.twig', array('entity' => $entity, 'form' => $form->createView(), 'formAction' => $formAction)
         );
     }
 
@@ -120,7 +120,7 @@ class ChannelController extends Controller
     protected function disableOldDefaultChannel()
     {
         $manager = $this->get($this->getObjectManagerService());
-        $channels = $manager->getRepository('PimCatalogBundle:Channel')
+        $channels = $manager->getRepository('PimCatalogTaxinomyBundle:Channel')
             ->findBy(array('isDefault' => 1));
         foreach ($channels as $channel) {
             $channel->setIsDefault(false);
@@ -130,13 +130,13 @@ class ChannelController extends Controller
 
     /**
     * Disable old default channel
-    * 
+    *
     * @return boolean
     */
     protected function hasDefaultChannel()
     {
         $manager = $this->get($this->getObjectManagerService());
-        $channels = $manager->getRepository('PimCatalogBundle:Channel')
+        $channels = $manager->getRepository('PimCatalogTaxinomyBundle:Channel')
             ->findBy(array('isDefault' => 1));
 
         return (count($channels) > 0);
@@ -145,7 +145,7 @@ class ChannelController extends Controller
     /**
      * Check if there is one default locale
      * @param Channel $entity
-     * 
+     *
      * @return boolean
      */
     protected function hasDefaultLocale($entity)
@@ -170,17 +170,17 @@ class ChannelController extends Controller
      * Creates a new channel
      *
      * @param Request $request
-     * 
+     *
      * @Route("/create")
      * @Method("POST")
-     * 
+     *
      * @return multitype
      */
     public function createAction(Request $request)
     {
         $entity  = $this->getNewObject();
         $classFullName = $this->getObjectClassFullName();
-        $localeClassFullName = 'Pim\Bundle\CatalogBundle\Entity\ChannelLocale';
+        $localeClassFullName = 'Pim\Bundle\CatalogTaxinomyBundle\Entity\ChannelLocale';
         $form = $this->createForm(new ChannelType($classFullName, $localeClassFullName), $entity);
         $form->bind($request);
 
@@ -195,14 +195,14 @@ class ChannelController extends Controller
             }
             // has default locale
             if (!$this->hasDefaultLocale($entity)) {
-                return $this->redirect($this->generateUrl('pim_catalog_channel_new'));
+                return $this->redirect($this->generateUrl('pim_catalogtaxinomy_channel_new'));
             }
 
             $manager->flush();
 
             $this->get('session')->setFlash('success', 'Channel has been created');
 
-            return $this->redirect($this->generateUrl('pim_catalog_channel_edit', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('pim_catalogtaxinomy_channel_edit', array('id' => $entity->getId())));
         }
 
         return array(
@@ -218,7 +218,7 @@ class ChannelController extends Controller
      *
      * @Route("/{id}/edit")
      * @Template()
-     * 
+     *
      * @return multitype
      */
     public function editAction($id)
@@ -232,9 +232,9 @@ class ChannelController extends Controller
         }
 
         $classFullName = $this->getObjectClassFullName();
-        $localeClassFullName = 'Pim\Bundle\CatalogBundle\Entity\ChannelLocale';
+        $localeClassFullName = 'Pim\Bundle\CatalogTaxinomyBundle\Entity\ChannelLocale';
         $editForm = $this->createForm(new ChannelType($classFullName, $localeClassFullName), $entity);
-        $formAction = $this->generateUrl('pim_catalog_channel_update', array('id' => $entity->getId()));
+        $formAction = $this->generateUrl('pim_catalogtaxinomy_channel_update', array('id' => $entity->getId()));
 
         $params = array(
             'entity'     => $entity,
@@ -243,18 +243,18 @@ class ChannelController extends Controller
         );
 
         // render form
-        return $this->render('PimCatalogBundle:Channel:edit.html.twig', $params);
+        return $this->render('PimCatalogTaxinomyBundle:Channel:edit.html.twig', $params);
     }
 
     /**
      * Edits an existing channel entity.
-     * 
+     *
      * @param Request $request request
      * @param integer $id      channel id
-     * 
+     *
      * @Route("/{id}/update")
      * @Method("POST")
-     * 
+     *
      * @return multitype
      */
     public function updateAction(Request $request, $id)
@@ -268,7 +268,7 @@ class ChannelController extends Controller
         }
 
         $classFullName = $this->getObjectClassFullName();
-        $localeClassFullName = 'Pim\Bundle\CatalogBundle\Entity\ChannelLocale';
+        $localeClassFullName = 'Pim\Bundle\CatalogTaxinomyBundle\Entity\ChannelLocale';
         $editForm = $this->createForm(new ChannelType($classFullName, $localeClassFullName), $entity);
         $editForm->bind($request);
 
@@ -282,15 +282,15 @@ class ChannelController extends Controller
             } elseif (!$this->hasDefaultChannel()) {
                 $this->get('session')->setFlash('error', 'There is no default channel');
 
-                return $this->redirect($this->generateUrl('pim_catalog_channel_edit', array('id' => $id)));
+                return $this->redirect($this->generateUrl('pim_catalogtaxinomy_channel_edit', array('id' => $id)));
             } elseif (!$this->hasDefaultLocale($entity)) {
-                return $this->redirect($this->generateUrl('pim_catalog_channel_edit', array('id' => $id)));
+                return $this->redirect($this->generateUrl('pim_catalogtaxinomy_channel_edit', array('id' => $id)));
             }
 
             $manager->flush();
             $this->get('session')->setFlash('success', 'Channel has been updated');
 
-            return $this->redirect($this->generateUrl('pim_catalog_channel_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('pim_catalogtaxinomy_channel_edit', array('id' => $id)));
         }
 
         return array(
@@ -306,7 +306,7 @@ class ChannelController extends Controller
      *
      * @Route("/{id}/delete")
      * @Template()
-     * 
+     *
      * @return multitype
      */
     public function deleteAction($id)
@@ -321,7 +321,7 @@ class ChannelController extends Controller
         $manager->flush();
         $this->get('session')->setFlash('success', "Channel '{$entity->getCode()}' has been delete");
 
-        return $this->redirect($this->generateUrl('pim_catalog_channel_index'));
+        return $this->redirect($this->generateUrl('pim_catalogtaxinomy_channel_index'));
     }
 
 }

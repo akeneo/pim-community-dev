@@ -1,19 +1,19 @@
 <?php
-namespace Pim\Bundle\CatalogBundle\Entity;
+namespace Pim\Bundle\CatalogTaxinomyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Catalog channel locale, aims to define scopes
+ * Catalog channel, aims to define scopes
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="Akeneo_PimCatalog_ChannelLocale")
+ * @ORM\Table(name="Akeneo_PimCatalogTaxinomy_Channel")
  * @ORM\Entity
  */
-class ChannelLocale
+class Channel
 {
     /**
      * @var integer $id
@@ -26,22 +26,29 @@ class ChannelLocale
 
     /**
      * @var string $localeCode
-     * @ORM\Column(name="code", type="string", length=5)
+     * @ORM\Column(name="code", type="string", length=255, unique=true)
      */
     protected $code;
 
     /**
-     * @var Entity $channel
+     * @var $locales
      *
-     * @ORM\ManyToOne(targetEntity="Channel", inversedBy="locales")
-     * @ORM\JoinColumn(name="channel_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="ChannelLocale", mappedBy="channel", cascade={"persist", "remove"})
      */
-    protected $channel;
+    protected $locales;
 
     /**
      * @ORM\Column(name="is_default", type="boolean")
      */
     protected $isDefault;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->locales = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -54,11 +61,24 @@ class ChannelLocale
     }
 
     /**
+     * Set id
+     * @param integer $id
+     * 
+     * @return Channel
+     */
+    public function setId($id)
+    {
+        return $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * Set code
      *
      * @param string $code
      * 
-     * @return ChannelLocale
+     * @return Channel
      */
     public function setCode($code)
     {
@@ -102,26 +122,37 @@ class ChannelLocale
     }
 
     /**
-     * Set channel
+     * Add locales
      *
-     * @param Pim\Bundle\CatalogBundle\Entity\Channel $channel
+     * @param Pim\Bundle\CatalogTaxinomyBundle\Entity\ChannelLocale $locale
      * 
-     * @return ChannelLocale
+     * @return Channel
      */
-    public function setChannel(\Pim\Bundle\CatalogBundle\Entity\Channel $channel = null)
+    public function addLocale(\Pim\Bundle\CatalogTaxinomyBundle\Entity\ChannelLocale $locale)
     {
-        $this->channel = $channel;
+        $locale->setChannel($this);
+        $this->locales[] = $locale;
 
         return $this;
     }
 
     /**
-     * Get channel
+     * Remove locales
      *
-     * @return Pim\Bundle\CatalogBundle\Entity\Channel
+     * @param Pim\Bundle\CatalogTaxinomyBundle\Entity\ChannelLocale $locale
      */
-    public function getChannel()
+    public function removeLocale(\Pim\Bundle\CatalogTaxinomyBundle\Entity\ChannelLocale $locale)
     {
-        return $this->channel;
+        $this->locales->removeElement($locale);
+    }
+
+    /**
+     * Get locales
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getLocales()
+    {
+        return $this->locales;
     }
 }

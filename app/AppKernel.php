@@ -35,11 +35,11 @@ class AppKernel extends Kernel
             new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
             new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
             new Pim\Bundle\DataFlowBundle\PimDataFlowBundle(),
+            new Pim\Bundle\DemoDataBundle\PimDemoDataBundle(),
+            new Pim\Bundle\CatalogTaxinomyBundle\PimCatalogTaxinomyBundle(),
 
             // community bundles
             new APY\DataGridBundle\APYDataGridBundle(),
-            new Pim\Bundle\DemoDataBundle\PimDemoDataBundle(),
-            new Pim\Bundle\CatalogTaxinomyBundle\CatalogTaxinomyBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

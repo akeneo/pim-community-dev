@@ -2,18 +2,6 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
-            <trans-unit id="1">
-                <source>pim.catalog.channel.title.create</source>
-                <target>Create channel</target>
-            </trans-unit>
-            <trans-unit id="2">
-                <source>pim.catalog.channel.title.edit</source>
-                <target>Edit channel</target>
-            </trans-unit>
-            <trans-unit id="3">
-                <source>pim.catalog.channel.title.list</source>
-                <target>List channels</target>
-            </trans-unit>
             <trans-unit id="4">
                 <source>pim.catalog.product.title.edit</source>
                 <target>Edit product</target>
@@ -52,10 +40,6 @@
             </trans-unit>
 
             <!-- Buttons -->
-            <trans-unit id="12">
-                <source>pim.catalog.channel.button.new</source>
-                <target>New channel</target>
-            </trans-unit>
             <trans-unit id="13">
                 <source>pim.catalog.attribute.button.delete</source>
                 <target>Delete attribute</target>
@@ -74,14 +58,6 @@
             </trans-unit>
 
             <!-- Fieldsets -->
-            <trans-unit id="16">
-                <source>pim.catalog.channel.fieldset.general</source>
-                <target>General</target>
-            </trans-unit>
-            <trans-unit id="17">
-                <source>pim.catalog.channel.fieldset.locale</source>
-                <target>Locales</target>
-            </trans-unit>
             <trans-unit id="18">
                 <source>pim.catalog.product.fieldset.general</source>
                 <target>General</target>
@@ -112,14 +88,6 @@
             </trans-unit>
             
             <!-- Texts -->
-            <trans-unit id="25">
-                <source>pim.catalog.channel.text.add-locale</source>
-                <target>Add locale</target>
-            </trans-unit>
-            <trans-unit id="26">
-                <source>pim.catalog.channel.text.delete-locale</source>
-                <target>Delete locale</target>
-            </trans-unit>
             <trans-unit id="27">
                 <source>pim.catalog.product.text.group-tab</source>
                 <target>Group tab</target>
