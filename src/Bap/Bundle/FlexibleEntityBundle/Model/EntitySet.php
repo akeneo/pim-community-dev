@@ -28,6 +28,16 @@ abstract class EntitySet
     protected $title;
 
     /**
+     * @var datetime $created
+     */
+    protected $created;
+
+    /**
+     * @var datetime $created
+     */
+    protected $updated;
+
+    /**
      * Get id
      *
      * @return integer
@@ -51,7 +61,7 @@ abstract class EntitySet
      * Set code
      *
      * @param string $code
-     * 
+     *
      * @return EntitySet
      */
     public function setCode($code)
@@ -65,7 +75,7 @@ abstract class EntitySet
      * Set title
      *
      * @param string $title
-     * 
+     *
      * @return EntitySet
      */
     public function setTitle($title)
@@ -86,10 +96,30 @@ abstract class EntitySet
     }
 
     /**
+     * Get created datetime
+     *
+     * @return datetime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Get updated datetime
+     *
+     * @return datetime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
      * Add group
      *
      * @param EntityGroup $group
-     * 
+     *
      * @return EntitySet
      */
     public function addGroup(EntityGroup $group)
@@ -123,7 +153,7 @@ abstract class EntitySet
      * Get group
      *
      * @param string $code
-     * 
+     *
      * @return EntityGroup
      */
     public function getGroup($code)

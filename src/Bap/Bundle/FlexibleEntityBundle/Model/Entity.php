@@ -23,6 +23,16 @@ abstract class Entity
     protected $set;
 
     /**
+     * @var datetime $created
+     */
+    protected $created;
+
+    /**
+     * @var datetime $created
+     */
+    protected $updated;
+
+    /**
      * Get id
      *
      * @return integer
@@ -46,7 +56,7 @@ abstract class Entity
      * Set set
      *
      * @param EntitySet $set
-     * 
+     *
      * @return Entity
      */
     public function setSet(EntitySet $set = null)
@@ -57,10 +67,30 @@ abstract class Entity
     }
 
     /**
+     * Get created datetime
+     *
+     * @return datetime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Get updated datetime
+     *
+     * @return datetime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
      * Add value
      *
      * @param EntityAttributeValue $value
-     * 
+     *
      * @return Entity
      */
     public function addValue(EntityAttributeValue $value)

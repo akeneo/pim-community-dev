@@ -26,6 +26,16 @@ abstract class EntityAttribute
     protected $title;
 
     /**
+     * @var datetime $created
+     */
+    protected $created;
+
+    /**
+     * @var datetime $created
+     */
+    protected $updated;
+
+    /**
      * @var string $type
      */
     protected $type;
@@ -69,7 +79,7 @@ abstract class EntityAttribute
      * Set id
      *
      * @param integer $id
-     * 
+     *
      * @return EntityAttribute
      */
     public function setId($id)
@@ -83,7 +93,7 @@ abstract class EntityAttribute
      * Set code
      *
      * @param string $code
-     * 
+     *
      * @return EntityAttribute
      */
     public function setCode($code)
@@ -107,7 +117,7 @@ abstract class EntityAttribute
      * Set title
      *
      * @param string $title
-     * 
+     *
      * @return EntityAttribute
      */
     public function setTitle($title)
@@ -127,11 +137,33 @@ abstract class EntityAttribute
         return $this->title;
     }
 
+
+    /**
+     * Get created datetime
+     *
+     * @return datetime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Get updated datetime
+     *
+     * @return datetime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+
     /**
      * Set type
      *
      * @param string $type
-     * 
+     *
      * @return EntityAttribute
      */
     public function setType($type)
@@ -155,7 +187,7 @@ abstract class EntityAttribute
      * Set uniqueValue
      *
      * @param boolean $uniqueValue
-     * 
+     *
      * @return EntityAttribute
      */
     public function setUniqueValue($uniqueValue)
@@ -179,7 +211,7 @@ abstract class EntityAttribute
      * Set valueRequired
      *
      * @param string $valueRequired
-     * 
+     *
      * @return EntityAttribute
      */
     public function setValueRequired($valueRequired)
@@ -203,7 +235,7 @@ abstract class EntityAttribute
      * Set searchable
      *
      * @param boolean $searchable
-     * 
+     *
      * @return EntityAttribute
      */
     public function setSearchable($searchable)
@@ -227,7 +259,7 @@ abstract class EntityAttribute
      * Set translatable
      *
      * @param boolean $translatable
-     * 
+     *
      * @return EntityAttribute
      */
     public function setTranslatable($translatable)
@@ -251,7 +283,7 @@ abstract class EntityAttribute
      * Set scope
      *
      * @param integer $scope
-     * 
+     *
      * @return EntityAttribute
      */
     public function setScope($scope)
@@ -275,7 +307,7 @@ abstract class EntityAttribute
      * Add option
      *
      * @param EntityAttributeOption $option
-     * 
+     *
      * @return EntityAttribute
      */
     public function addOption(EntityAttributeOption $option)

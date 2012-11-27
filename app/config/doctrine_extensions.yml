@@ -10,7 +10,6 @@ services:
             # loggable hooks user username if one is in security context
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
 
-
     # Doctrine Extension listeners to handle behaviors
     gedmo.listener.tree:
         class: Gedmo\Tree\TreeListener
@@ -27,3 +26,11 @@ services:
             - [ setAnnotationReader, [ @annotation_reader ] ]
             - [ setDefaultLocale, [ %locale% ] ]
             - [ setTranslationFallback, [ false ] ]
+
+    gedmo.listener.timestampable:
+        class: Gedmo\Timestampable\TimestampableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+            - { name: doctrine_mongodb.odm.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ @annotation_reader ] ]

@@ -6,10 +6,11 @@ use Bap\Bundle\FlexibleEntityBundle\Model\EntityGroup as AbstractEntityGroup;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Base Doctrine ORM entity set
- * 
+ *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -41,6 +42,22 @@ abstract class EntitySet extends AbstractEntitySet
     protected $title;
 
     /**
+     * @var datetime $created
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+
+    /**
+     * @var datetime $updated
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    protected $updated;
+
+    /**
      * @var ArrayCollection $groups
      *
      * @ORM\OneToMany(targetEntity="EntityGroup", mappedBy="set", cascade={"persist", "remove"})
@@ -59,7 +76,7 @@ abstract class EntitySet extends AbstractEntitySet
      * Custom add group method to ensure group is added in type without explicit call (due to oneToMany)
      *
      * @param AbstractEntityGroup $group
-     * 
+     *
      * @return AbstractEntitySet
      */
     public function addGroup(AbstractEntityGroup $group)

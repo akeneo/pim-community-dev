@@ -4,6 +4,7 @@ namespace Bap\Bundle\FlexibleEntityBundle\Entity;
 use Bap\Bundle\FlexibleEntityBundle\Model\Entity as AbstractEntity;
 use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttributeValue as AbstractEntityAttributeValue;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Base Doctrine ORM entity
@@ -32,6 +33,22 @@ abstract class Entity extends AbstractEntity
     protected $set;
 
     /**
+     * @var datetime $created
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+
+    /**
+     * @var datetime $updated
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    protected $updated;
+
+    /**
      * @var Value
      *
      * @ORM\OneToMany(targetEntity="EntityAttributeValue", mappedBy="entity", cascade={"persist", "remove"})
@@ -50,7 +67,7 @@ abstract class Entity extends AbstractEntity
      * Add value
      *
      * @param AbstractEntityAttributeValue $value
-     * 
+     *
      * @return AbstractEntity
      */
     public function addValue(AbstractEntityAttributeValue $value)

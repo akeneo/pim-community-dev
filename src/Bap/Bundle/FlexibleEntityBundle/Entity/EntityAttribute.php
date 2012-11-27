@@ -4,6 +4,7 @@ namespace Bap\Bundle\FlexibleEntityBundle\Entity;
 use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttribute as AbstractEntityAttribute;
 use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttributeOption as AbstractEntityAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Base Doctrine ORM entity attribute
@@ -36,6 +37,22 @@ abstract class EntityAttribute extends AbstractEntityAttribute
      * @ORM\Column(name="title", type="string", length=255)
      */
     protected $title;
+
+    /**
+     * @var datetime $created
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+
+    /**
+     * @var datetime $updated
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    protected $updated;
 
     /**
      * @var string $type
@@ -89,7 +106,7 @@ abstract class EntityAttribute extends AbstractEntityAttribute
      * Add option
      *
      * @param AbstractEntityAttributeOption $option
-     * 
+     *
      * @return AbstractEntityAttribute
      */
     public function addOption(AbstractEntityAttributeOption $option)
