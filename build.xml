@@ -187,6 +187,7 @@
         </exec>
         <exec executable="app/console">
           <arg value="doctrine:mongodb:fixtures:load" />
+          <arg value="--append" />
         </exec>
     </target>
 
@@ -228,6 +229,7 @@
         <exec executable="app/console">
           <arg value="doctrine:mongodb:fixtures:load" />
           <arg value="--env=test" />
+          <arg value="--append" />
         </exec>
     </target>
 
