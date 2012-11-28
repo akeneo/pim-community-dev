@@ -60,12 +60,12 @@ class ImportBaseProductsCommand extends AbstractPimCommand
         $this->unpackFile($archivedFilePath, $filePath);
 
         // import products
+        TimeHelper::addValue('import-base');
         $this->importData($filePath);
 
         // persist documents with constraint validation
-        $this->getDocumentManager()->flush();
-
-        $this->writeln('command executed successfully');
+        $this->flush();
+        $this->writeln('command executed successfully : '. TimeHelper::writeGap('import-base'));
     }
 
     /**
@@ -80,7 +80,7 @@ class ImportBaseProductsCommand extends AbstractPimCommand
             // not parse header
             fgetcsv($handle, 1000, "\t");
             while (($data = fgetcsv($handle, 1000, "\t")) !== false) {
-                $this->createProduct($data);
+                $this->createProduct((integer) $data[0]);
             }
 
             fclose($handle);
@@ -120,16 +120,14 @@ class ImportBaseProductsCommand extends AbstractPimCommand
     }
 
     /**
-     * Create a product document data sheet from an array representing a line of the source file
-     * @param array $data
+     * Create a product document data sheet from icecat product id
+     * @param integer $productId
      */
-    protected function createProduct($data)
+    protected function createProduct($productId)
     {
-        // get already exists product or instanciate new object
-        if ($product = $this->findProductDataSheet($data[0])) {
-            $product = new ProductDataSheet();
-            $product->setProductId($data[0]);
-        }
+        // instanciate a new object
+        $product = new ProductDataSheet();
+        $product->setProductId($productId);
         $product->setIsImported(0);
 
         // persist object and flush if necessary
@@ -141,25 +139,20 @@ class ImportBaseProductsCommand extends AbstractPimCommand
     }
 
     /**
-     * Get product data sheet document by a product id
-     * @param integer $productId
-     *
-     * @return ProductDataSheet
-     */
-    protected function findProductDataSheet($productId)
-    {
-        return $this->getDocumentManager()
-                    ->getRepository('PimConnectorIcecatBundle:ProductDataSheet')
-                    ->findBy(array('productId' => $productId));
-    }
-
-    /**
      * Call document manager to flush data
      */
     protected function flush()
     {
-        $this->getDocumentManager()->flush();
         $this->writeln('Before clear -> '. MemoryHelper::writeValue('memory'));
+        // TODO : Change try/catch by removing document from unit of work
+//         try {
+            $this->getDocumentManager()->flush();
+//         } catch (\MongoCursorException $e) {
+//             $this->writeln('MongoCursorException');
+//             $this->writeln($e->getCode() .' : '. $e->getMessage());
+//         } catch (\Exception $e) {
+//             throw $e;
+//         }
         $this->getDocumentManager()->clear();
         $this->writeln('After clear   -> '. MemoryHelper::writeGap('memory'));
     }

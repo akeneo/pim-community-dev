@@ -71,9 +71,12 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
         // get arguments
         $this->limit = $input->getArgument('limit');
 
-        // initialize base file path
-        $baseUrl    = $this->getConfigManager()->getValue(Config::BASE_URL);
-        $productUrl = $this->getConfigManager()->getValue(Config::BASE_PRODUCTS_URL);
+        // get config and initialize base file path
+        $configManager = $this->getConfigManager();
+        $login         = $configManager->getValue(Config::LOGIN);
+        $password      = $configManager->getValue(Config::PASSWORD);
+        $baseUrl       = $configManager->getValue(Config::BASE_URL);
+        $productUrl    = $configManager->getValue(Config::BASE_PRODUCTS_URL);
         $this->baseFilePath = $baseUrl . $productUrl;
 
         // initialize reader
@@ -87,8 +90,8 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
     {
         // get config
         $configManager = $this->getConfigManager();
-        $login       = $configManager->getValue(Config::LOGIN);
-        $password    = $configManager->getValue(Config::PASSWORD);
+        $login         = $configManager->getValue(Config::LOGIN);
+        $password      = $configManager->getValue(Config::PASSWORD);
 
         // get products
         $products = $this->getProductsDataSheet();
@@ -97,13 +100,12 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
         // loop on products
         $this->batchSize = 0;
 
-        TimeHelper::addValue('load-product');
-        MemoryHelper::addValue('load-product');
+        TimeHelper::addValue('start-import');
         foreach ($products as $product) {
             try {
                 // get xml content
                 $file = $product->getProductId() .'.xml';
-                $content = $this->reader->process($this->baseFilePath . $file, $login, $password, false);
+                $content = $this->reader->process($this->baseFilePath . $file, $login, $password);
                 $content = simplexml_load_string($content);
 
                 // keep only used data, convert to array and encode ton json format
@@ -130,8 +132,11 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
                 }
             } catch (\Exception $e) {
                 $this->writeln('Exception -> '. $e->getMessage());
+                $product->setIsImported(-1);
+                $this->getDocumentManager()->persist($product);
             }
         }
+        $this->writeln('total time elapsed : '. TimeHelper::writeGap('start-import'));
     }
 
     /**
@@ -141,8 +146,8 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
     protected function getProductsDataSheet()
     {
         return $this->getDocumentManager()
-                         ->getRepository('PimConnectorIcecatBundle:ProductDataSheet')
-                         ->findBy(array('isImported' => 0));
+                    ->getRepository('PimConnectorIcecatBundle:ProductDataSheet')
+                    ->findBy(array('isImported' => 0));
     }
 
     /**
@@ -151,9 +156,6 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
     protected function flush()
     {
         $this->getDocumentManager()->flush();
-        $this->writeln('Batch size : '. $this->batchSize);
-        $this->writeln('memory usage -> '. MemoryHelper::writeGap('load-product'));
         $this->getDocumentManager()->clear();
-        $this->writeln('after clear memory usage -> '. MemoryHelper::writeGap('load-product'));
     }
 }

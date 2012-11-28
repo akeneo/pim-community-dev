@@ -1,6 +1,7 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Command;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
