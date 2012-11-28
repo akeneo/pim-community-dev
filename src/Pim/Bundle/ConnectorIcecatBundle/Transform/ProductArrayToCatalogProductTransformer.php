@@ -77,7 +77,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
         }
 
         // 2) add all attributes of prodData as general attributes
-        $ProductAttributeCodeToValues = array();
+        $productAttributeCodeToValues = array();
         $productValues = array();
 
         // 2a) create general group if not exists
@@ -113,7 +113,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
             }
 
             // prepare attribute code to value for next step
-            $ProductAttributeCodeToValues[$attributeCode]= $valueData;
+            $productAttributeCodeToValues[$attributeCode]= $valueData;
 
             // TODO : deal with existing values
             $value = $this->productManager->getNewAttributeValueInstance();
@@ -159,7 +159,7 @@ class ProductArrayToCatalogProductTransformer implements TransformInterface
                         $group->addAttribute($attribute);
                     }
 
-                    $ProductAttributeCodeToValues[$attributeCode]= $valueData;
+                    $productAttributeCodeToValues[$attributeCode]= $valueData;
 
                     // TODO : deal with existing values
                     $value = $this->productManager->getNewAttributeValueInstance();
