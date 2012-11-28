@@ -15,16 +15,6 @@ use Pim\Bundle\CatalogBundle\Tests\KernelAwareTest;
 class ProductIntXmlToArrayTransformerTest extends KernelAwareTest
 {
     /**
-     * @staticvar string
-     */
-    const FILEPATH = 'DataFixtures/Tests/Files/';
-
-    /**
-     * @staticvar string
-     */
-    const FILENAME = 'detailled-product.xml';
-
-    /**
      * @staticvar integer
      */
     const LANGS_COUNT = 2;
