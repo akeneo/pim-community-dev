@@ -1,6 +1,7 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Command;
 
+
 use Pim\Bundle\CatalogTaxinomyBundle\Entity\Category;
 
 use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
@@ -9,6 +10,7 @@ use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
 
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpDownload;
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileUnzip;
+use Pim\Bundle\ConnectorIcecatBundle\Transform\XmlToCategoriesTransformer;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,11 +30,6 @@ class ImportCategoriesCommand extends AbstractPimCommand
     protected $categories = array();
 
     /**
-     * @staticvar array
-     */
-    protected static $langs = array('en_US' => 1);
-
-    /**
      * {@inheritdoc}
      */
     protected function configure()
@@ -48,13 +45,10 @@ class ImportCategoriesCommand extends AbstractPimCommand
     {
         // get config
         $configManager    = $this->getConfigManager();
-//         $downloadUrl      = $this->getConfigManager()->getValue(Config::PRODUCTS_URL);
-        $downloadUrl      = 'http://data.icecat.biz/export/freexml/refs/CategoriesList.xml.gz';
+        $downloadUrl      = $this->getConfigManager()->getValue(Config::CATEGORIES_URL);
         $baseDir          = $configManager->getValue(Config::BASE_DIR);
-//         $archivedFilePath = $baseDir . $configManager->getValue(Config::PRODUCTS_ARCHIVED_FILE);
-//         $filePath         = $baseDir . $configManager->getValue(Config::PRODUCTS_FILE);
-        $archivedFilePath = $baseDir . 'categories-list.xml.gz';
-        $filePath         = $baseDir . 'categories-list.xml';
+        $archivedFilePath = $baseDir . $configManager->getValue(Config::CATEGORIES_ARCHIVED_FILE);
+        $filePath         = $baseDir . $configManager->getValue(Config::CATEGORIES_FILE);
 
         // download source
         $this->downloadFile($downloadUrl, $archivedFilePath);
@@ -68,56 +62,16 @@ class ImportCategoriesCommand extends AbstractPimCommand
         // import categories
         TimeHelper::addValue('import-base');
 
-        $count = 0;
-        foreach ($xmlContent->Response->CategoriesList->Category as $xmlCategory) {
-            // create category entity
-            $category  = $this->createCategory((string) $xmlCategory['ID'], $xmlCategory);
+        // transform xml to category entities
+        $categories = $this->transformXmlToCategories($xmlContent);
 
-            // create parent category entity
-            $xmlParent = $xmlCategory->ParentCategory;
-            $parent    = $this->createCategory((string) $xmlParent['ID'], $xmlParent->Names);
-            $category->setParent($parent);
-
-            // persist category
+        // persist entities with constraint validation
+        foreach ($categories as $category) {
             $this->getEntityManager()->persist($category);
-
-            $count++;
         }
-
-        // persist documents with constraint validation
         $this->flush();
-        $this->writeln('command executed successfully : '. $count .' categories inserted');
+        $this->writeln('command executed successfully : '. count($categories) .' categories inserted');
         $this->writeln(TimeHelper::writeGap('import-base'));
-    }
-
-    /**
-     * Create a category entity
-     * @param string           $icecatId        icecat id
-     * @param SimpleXMLElement $xmlElementNames title of the category
-     *
-     * @return Category
-     */
-    protected function createCategory($icecatId, $xmlElementNames)
-    {
-        // get category if already exists else instanciate new
-        if (isset($this->categories[$icecatId])) {
-            $category = $this->categories[$icecatId];
-        } else {
-            $category = new Category();
-        }
-
-        // set translatable title
-        foreach ($xmlElementNames as $name) {
-            if (in_array((integer) $name['langid'], self::$langs)) {
-                $title = isset($name['Value']) ? $name['Value'] : $name;
-                $category->setTitle($title);
-            }
-        }
-
-        // add category to list
-        $this->categories[$icecatId] = $category;
-
-        return $category;
     }
 
     /**
@@ -156,7 +110,7 @@ class ImportCategoriesCommand extends AbstractPimCommand
      * Read downloaded and unpacked file
      * @param string $filePath
      *
-     * @return SimpleXMLElement
+     * @return \SimpleXMLElement
      */
     protected function readFile($filePath)
     {
@@ -166,7 +120,20 @@ class ImportCategoriesCommand extends AbstractPimCommand
     }
 
     /**
-     * Call document manager to flush data
+     * Transform XML content to category entities
+     * @param \SimpleXMLElement $xmlContent
+     *
+     * @return array
+     */
+    protected function transformXmlToCategories(\SimpleXMLElement $xmlContent)
+    {
+        $transformer = new XmlToCategoriesTransformer($xmlContent);
+
+        return $transformer->transform();
+    }
+
+    /**
+     * Call entity manager to flush data
      */
     protected function flush()
     {

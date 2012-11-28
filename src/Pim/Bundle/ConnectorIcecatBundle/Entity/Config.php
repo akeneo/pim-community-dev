@@ -17,27 +17,31 @@ class Config
     /**
      * @staticvar string
      */
-    const LANGUAGES_URL  = 'languages-url';
-    const LANGUAGES_FILE = 'languages-file';
+    const CATEGORIES_URL  = 'categories-url';
+    const CATEGORIES_FILE = 'categories-file';
+    const CATEGORIES_ARCHIVED_FILE = 'categories-archived-file';
+
+    const LANGUAGES_URL   = 'languages-url';
+    const LANGUAGES_FILE  = 'languages-file';
     const LANGUAGES_ARCHIVED_FILE = 'languages-archived-file';
 
-    const PRODUCTS_URL   = 'products-url';
-    const PRODUCTS_FILE  = 'products-file';
+    const PRODUCTS_URL    = 'products-url';
+    const PRODUCTS_FILE   = 'products-file';
     const PRODUCTS_ARCHIVED_FILE = 'products-archived-file';
 
-    const PRODUCT_URL    = 'product-url';
-    const PRODUCT_FILE   = 'product-file';
+    const PRODUCT_URL     = 'product-url';
+    const PRODUCT_FILE    = 'product-file';
     const PRODUCT_ARCHIVED_FILE = 'product-archived-file';
 
-    const SUPPLIERS_URL  = 'suppliers-url';
-    const SUPPLIERS_FILE = 'suppliers-file';
+    const SUPPLIERS_URL   = 'suppliers-url';
+    const SUPPLIERS_FILE  = 'suppliers-file';
 
-    const LOGIN          = 'login';
-    const PASSWORD       = 'password';
-    const BASE_DIR       = 'base-dir';
-    const BASE_URL       = 'base-url';
+    const LOGIN           = 'login';
+    const PASSWORD        = 'password';
+    const BASE_DIR        = 'base-dir';
+    const BASE_URL        = 'base-url';
 
-    const BASE_PRODUCTS_URL  = 'base-products-url';
+    const BASE_PRODUCTS_URL = 'base-products-url';
 
    /**
      * @var integer $id
@@ -76,7 +80,7 @@ class Config
      * Set id
      *
      * @param integer $id
-     * 
+     *
      * @return Config
      */
     public function setId($id)
@@ -114,7 +118,7 @@ class Config
      * Set value
      *
      * @param string $value
-     * 
+     *
      * @return Config
      */
     public function setValue($value)
