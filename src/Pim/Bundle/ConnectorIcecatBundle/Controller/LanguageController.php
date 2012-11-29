@@ -32,7 +32,7 @@ class LanguageController extends Controller
     {
         try {
             $srvConnector = $this->container->get('akeneo.connector.icecat_service');
-            $srvConnector->importLanguages();
+            $srvConnector->importIcecatLanguages();
             $this->get('session')->setFlash('notice', 'Base languages has been imported from Icecat');
         } catch (DBALException $e) {
             $this->container->get('logger')->err($e->getCode() .' : '. $e->getMessage());

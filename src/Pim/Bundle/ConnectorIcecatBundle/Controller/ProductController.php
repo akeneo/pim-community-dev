@@ -32,7 +32,7 @@ class ProductController extends Controller
     {
         try {
             $srvConnector = $this->container->get('akeneo.connector.icecat_service');
-            $srvConnector->importProducts();
+            $srvConnector->importIcecatBaseProducts();
             $this->get('session')->setFlash('notice', 'Base products has been imported from Icecat');
         } catch (DBALException $e) {
             $this->container->get('logger')->err($e->getCode() .' : '. $e->getMessage());

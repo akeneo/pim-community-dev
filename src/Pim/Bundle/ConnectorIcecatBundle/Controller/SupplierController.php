@@ -34,7 +34,7 @@ class SupplierController extends Controller
     {
         try {
             $srvConnector = $this->container->get('akeneo.connector.icecat_service');
-            $srvConnector->importSuppliers();
+            $srvConnector->importIcecatSuppliers();
             $this->get('session')->setFlash('notice', 'Base suppliers has been imported from Icecat');
         } catch (DBALException $e) {
             $this->container->get('logger')->err($e->getCode() .' : '. $e->getMessage());

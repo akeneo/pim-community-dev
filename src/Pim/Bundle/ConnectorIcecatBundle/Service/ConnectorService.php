@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Service;
 
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\InsertBaseIcecatProductsFromCsv;
+
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpReader;
 
 use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
@@ -19,6 +21,9 @@ use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductsTransform;
 use Pim\Bundle\ConnectorIcecatBundle\Transform\SuppliersTransform;
 use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductXmlToArrayTransformer;
 use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductArrayToCatalogProductTransformer;
+
+use Pim\Bundle\ConnectorIcecatBundle\Helper\MemoryHelper;
+use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
 
 use Pim\Bundle\ConnectorIcecatBundle\Load\BatchLoader;
 /**
@@ -55,7 +60,7 @@ class ConnectorService
     /**
      * Import suppliers from icecat database
      */
-    public function importSuppliers()
+    public function importIcecatSuppliers()
     {
         // Get config
         $login    = $this->configManager->getValue(Config::LOGIN);
@@ -77,7 +82,7 @@ class ConnectorService
     /**
      * Import languages from icecat database
      */
-    public function importLanguages()
+    public function importIcecatLanguages()
     {
         // Get config
         $login    = $this->configManager->getValue(Config::LOGIN);
@@ -101,23 +106,29 @@ class ConnectorService
     /**
      * Import products from icecat database
      */
-    public function importProducts()
+    public function importIcecatBaseProducts()
     {
         // Get config
-        $login    = $this->configManager->getValue(Config::LOGIN);
-        $password = $this->configManager->getValue(Config::PASSWORD);
-        $baseDir  = $this->configManager->getValue(Config::BASE_DIR);
-        $url      = $this->configManager->getValue(Config::PRODUCTS_URL);
-        $filePath = $baseDir . $this->configManager->getValue(Config::PRODUCTS_FILE);
+        $login       = $this->configManager->getValue(Config::LOGIN);
+        $password    = $this->configManager->getValue(Config::PASSWORD);
+        $baseDir     = $this->configManager->getValue(Config::BASE_DIR);
+        $url         = $this->configManager->getValue(Config::PRODUCTS_URL);
+        $filePath    = $baseDir . $this->configManager->getValue(Config::PRODUCTS_FILE);
         $archivePath = $baseDir . $this->configManager->getValue(Config::PRODUCTS_ARCHIVED_FILE);
-        $forceDownloadFile = false;
+        $forceDLFile = false;
 
-        // Call extractor
-        $extractor = new DownloadAndUnpackFromUrl($url, $login, $password, $archivePath, $filePath, $forceDownloadFile);
+        // 1. get data
+        TimeHelper::addValue('download-file');
+        $extractor = new DownloadAndUnpackFromUrl($url, $login, $password, $archivePath, $filePath, $forceDLFile);
         $extractor->extract();
+        echo /*$this->writeln(*/ 'Download File -> '. TimeHelper::writeGap('download-file').PHP_EOL; //);
 
-        $transformer = new ProductsTransform($this->container->get('doctrine.orm.entity_manager'), $filePath);
-        $transformer->transform();
+        // 2. import base products
+        TimeHelper::addValue('import-base-product');
+        $manager = $this->container->get('doctrine.odm.mongodb.document_manager');
+        $writer = new InsertBaseIcecatProductsFromCsv();
+        $writer->import($filePath, $manager);
+        echo /*$this->writeln(*/'Insert base product -> '. TimeHelper::writeGap('import-base-product')/*);*/;
     }
 
     /**
