@@ -45,43 +45,28 @@ class LoadCategories extends AbstractFixture implements OrderedFixtureInterface,
     {
         $this->manager = $manager;
 
-//         $food = new Category();
-//         $food->setTitle('food');
+        $food = new Category();
+        $food->setTitle('food');
 
-//         $fruits = new Category();
-//         $fruits->setTitle('fruits');
-//         $fruits->setParent($food);
-
-
-//         $vegetables = new Category();
-//         $vegetables->setTitle('vegetables');
-//         $vegetables->setParent($food);
-
-//         $carrots = new Category();
-//         $carrots->setTitle('carrots');
-//         $carrots->setParent($vegetables);
+        $fruits = new Category();
+        $fruits->setTitle('fruits');
+        $fruits->setParent($food);
 
 
-//         $food->setLeft(1);
-//         $food->setRight(8);
+        $vegetables = new Category();
+        $vegetables->setTitle('vegetables');
+        $vegetables->setParent($food);
 
-//         $fruits->setLeft(2);
-//         $fruits->setRight(3);
+        $carrots = new Category();
+        $carrots->setTitle('carrots');
+        $carrots->setParent($vegetables);
 
-//         $vegetables->setLeft(4);
-//         $vegetables->setRight(7);
+        $this->manager->persist($food);
+        $this->manager->persist($fruits);
+        $this->manager->persist($vegetables);
+        $this->manager->persist($carrots);
 
-//         $carrots->setLeft(5);
-//         $carrots->setRight(6);
-
-
-
-//         $this->manager->persist($food);
-//         $this->manager->persist($fruits);
-//         $this->manager->persist($vegetables);
-//         $this->manager->persist($carrots);
-
-//         $this->manager->flush();
+        $this->manager->flush();
     }
 
     /**
