@@ -23,14 +23,14 @@ class Category
      * @ORM\Id
      * @ORM\GeneratedValue
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string $title
      *
      * @ORM\Column(name="title", type="string", length=64)
      */
-    private $title;
+    protected $title;
 
     /**
      * @var integer $left
@@ -38,7 +38,7 @@ class Category
      * @Gedmo\TreeLeft
      * @ORM\Column(name="lft", type="integer")
      */
-    private $left;
+    protected $left;
 
     /**
      * @var integer $level
@@ -46,7 +46,7 @@ class Category
      * @Gedmo\TreeLevel
      * @ORM\Column(name="lvl", type="integer")
      */
-    private $level;
+    protected $level;
 
     /**
      * @var integer $right
@@ -54,7 +54,7 @@ class Category
      * @Gedmo\TreeRight
      * @ORM\Column(name="rgt", type="integer")
      */
-    private $right;
+    protected $right;
 
     /**
      * @var integer $root
@@ -62,7 +62,7 @@ class Category
      * @Gedmo\TreeRoot
      * @ORM\Column(name="root", type="integer", nullable=true)
      */
-    private $root;
+    protected $root;
 
     /**
      * @var Category $parent
@@ -77,7 +77,7 @@ class Category
      * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
      * @ORM\OrderBy({"left" = "ASC"})
      */
-    private $children;
+    protected $children;
 
     /**
      * Constructor
