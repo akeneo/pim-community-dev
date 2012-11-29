@@ -17,7 +17,7 @@ abstract class KernelAwareTest extends \PHPUnit_Framework_TestCase
     protected $kernel;
 
     /**
-     * @var Doctrine\ORM\EntityManager
+     * @var \Doctrine\ORM\EntityManager
      */
     protected $entityManager;
 
