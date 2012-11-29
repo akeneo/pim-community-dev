@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Command;
 
-use Pim\Bundle\ConnectorIcecatBundle\Document\ProductDataSheet;
+use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
 use Pim\Bundle\ConnectorIcecatBundle\Helper\MemoryHelper;
 use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
@@ -89,10 +89,12 @@ class ImportBaseProductsCommand extends AbstractPimCommand
             TimeHelper::addValue('loop-import');
             while (($data = fgetcsv($handle, 1000, "\t")) !== false) {
                 $productId = (integer) $data[0];
+                $supplierId = (integer) $data[4];
 
-                $product = new ProductDataSheet();
+                $product = new IcecatProductDataSheet();
                 $product->setProductId($productId);
-                $product->setIsImported(0);
+                $product->setSupplierId($supplierId);
+                $product->setStatus(IcecatProductDataSheet::STATUS_INIT);
 
                 // persist object and flush if necessary
                 $this->getDocumentManager()->persist($product);

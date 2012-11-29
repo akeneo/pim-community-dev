@@ -1,8 +1,7 @@
 <?php
-namespace Pim\Bundle\ConnectorIcecatBundle\Transform;
+namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Transform;
 
 /**
- *
  * Interface transform
  * TODO: should be moved in dataflow ?
  *

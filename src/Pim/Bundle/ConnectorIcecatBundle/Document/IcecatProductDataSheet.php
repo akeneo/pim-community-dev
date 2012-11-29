@@ -6,21 +6,28 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations\Boolean;
 use Doctrine\ODM\MongoDB\Mapping\Annotations\String;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use APY\DataGridBundle\Grid\Mapping as GRID;
 /**
- * Enter description here ...
+ * Icecat product datasheet
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @MongoDB\Document
+ * @GRID\Source(columns="id, productId, supplierId, status")
  */
-class ProductDataSheet
+class IcecatProductDataSheet
 {
+    const STATUS_INIT   = 1;
+    const STATUS_IMPORT = 2;
+    const STATUS_ERROR  = 3;
+
     /**
      * @var integer
      *
      * @MongoDB\Id
+     * @GRID\Column()
      */
     protected $id;
 
@@ -29,16 +36,27 @@ class ProductDataSheet
      * @var integer
      *
      * @MongoDB\Int
+     * @GRID\Column()
      */
     protected $productId;
+
+    /**
+     * Reference to icecat supplier id
+     * @var integer
+     *
+     * @MongoDB\Int
+     * @GRID\Column()
+     */
+    protected $supplierId;
 
     /**
      * Detailled data is imported
      * @var integer
      *
      * @MongoDB\Int
+     * @GRID\Column()
      */
-    protected $isImported;
+    protected $status;
 
     /**
      * Detailed data for product
@@ -46,7 +64,7 @@ class ProductDataSheet
      *
      * @MongoDB\String
      */
-    protected $xmlDetailledData;
+    protected $data;
 
     /**
      * Get id
@@ -83,50 +101,74 @@ class ProductDataSheet
     }
 
     /**
-     * Set isImported
+     * Set supplier id
      *
-     * @param integer $isImported
+     * @param integer $supplierId
      *
      * @return ProductDataSheet
      */
-    public function setIsImported($isImported)
+    public function setSupplierId($supplierId)
     {
-        $this->isImported = $isImported;
+        $this->supplierId = $supplierId;
 
         return $this;
     }
 
     /**
-     * Get isImported
+     * Get supplier id
      *
-     * @return integer $isImported
+     * @return integer
      */
-    public function getIsImported()
+    public function getSupplierId()
     {
-        return $this->isImported;
+        return $this->supplierId;
     }
 
     /**
-     * Set xmlDetailledData
+     * Set status
      *
-     * @param string $xmlDetailledData
+     * @param integer $status
      *
      * @return ProductDataSheet
      */
-    public function setXmlDetailledData($xmlDetailledData)
+    public function setStatus($status)
     {
-        $this->xmlDetailledData = $xmlDetailledData;
+        $this->status = $status;
 
         return $this;
     }
 
     /**
-     * Get xmlDetailledData
+     * Get status
      *
-     * @return string $xmlDetailledData
+     * @return integer
      */
-    public function getXmlDetailledData()
+    public function getStatus()
     {
-        return $this->xmlDetailledData;
+        return $this->status;
+    }
+
+    /**
+     * Set data
+     *
+     * @param string $data
+     *
+     * @return ProductDataSheet
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * Get data
+     *
+     * @return string $data
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 }

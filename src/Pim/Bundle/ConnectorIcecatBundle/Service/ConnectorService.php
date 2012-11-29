@@ -1,13 +1,18 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Service;
 
+use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpReader;
+
 use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\ConfigManager;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\SourceSupplier;
 
 use Pim\Bundle\ConnectorIcecatBundle\Extract\ProductXmlExtractor;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\SuppliersXmlUrl;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\ProductXmlUrl;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\DownloadAndUnpackFromUrl;
+
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\ProductIntXmlToArrayTransformer;
 
 use Pim\Bundle\ConnectorIcecatBundle\Transform\LanguagesTransform;
 use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductsTransform;
@@ -117,12 +122,63 @@ class ConnectorService
 
     /**
      * Import a product by its icecat id
-     * @param string $productId
+     *
+     * @param string  $datasheetId datasheet id
+     * @param boolean $toFlush     true to flush
      */
-    public function importProductFromIcecatXml($productId)
+    public function importProductFromIcecatXml($datasheetId, $toFlush = false)
     {
+        // get conf and product url
+        $login       = $this->configManager->getValue(Config::LOGIN);
+        $password    = $this->configManager->getValue(Config::PASSWORD);
+        $baseUrl     = $this->configManager->getValue(Config::BASE_URL);
+        $baseProdUrl = $this->configManager->getValue(Config::BASE_PRODUCTS_URL);
+
+        // get related datasheet
+        $docManager = $this->container->get('doctrine.odm.mongodb.document_manager');
+        $datasheet = $docManager->getRepository('PimConnectorIcecatBundle:IcecatProductDataSheet')->find($datasheetId);
+        $datasheetUrl  = $baseUrl.$baseProdUrl.$datasheet->getProductId().'.xml';
+
+        // TODO depends on status !
+
+        // 2. extract product xml from icecat
+        $reader = new ProductXmlUrl($datasheetUrl, $login, $password);
+        $reader->extract();
+        $simpleXml = $reader->getXmlContent();
+
+        // 3. transform product xml to lines (associative array)
+        $transformer = new ProductIntXmlToArrayTransformer($simpleXml);
+        $productData = $transformer->transform();
+
+        // 4. set
+
+        // TODO 4. add other lang !
+
+
+        /*
+        // 5. transform array to pim product
+        $productManager = $this->container->get('pim.catalog.product_manager');
+        $transformer = new ProductArrayToCatalogProductTransformer($productManager, $productBaseData, $productFeatures, $pimLocale);
+        $transformer->transform();
+*/
+/*
+
+        // 6. Update icecat product imported
+        $baseProduct->setIsImported(true);
+        $em->persist($baseProduct);
+        $em->flush();
+*/
+
+/*
+        if ($datasheet->isImported()) {
+            // transform
+
+            // insert
+        }
+*/
+        /*
         // TODO by configuration, for now en_US first is important
-        $localeIceToPim = array('US' => 'en_US'/*, 'FR' => 'fr_FR'*/); // no translate for now
+        $localeIceToPim = array('US' => 'en_US'/); // no translate for now
 
         // 1. get base product from icecat referential
         $em = $this->container->get('doctrine.orm.entity_manager');
@@ -148,18 +204,14 @@ class ConnectorService
             $transformer = new ProductArrayToCatalogProductTransformer($productManager, $productBaseData, $productFeatures, $pimLocale);
             $transformer->transform();
 
-        // 5. load product (move persist / flush from transform to allow batch using for supplier import)
-       /*
-        foreach ($locales as $locale) {
-            $fp = $extract->process($prodId, $supplierName, $locale);
-            $transform->process($fp);
-        }*/
         }
-
+*/
         // 6. Update icecat product imported
-        $baseProduct->setIsImported(true);
+ //       $baseProduct->setIsImported(true);
         $em->persist($baseProduct);
-        $em->flush();
+        if ($toFlush) {
+            $em->flush();
+        }
     }
 
     /**

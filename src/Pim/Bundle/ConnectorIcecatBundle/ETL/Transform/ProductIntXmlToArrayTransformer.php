@@ -1,5 +1,5 @@
 <?php
-namespace Pim\Bundle\ConnectorIcecatBundle\Transform;
+namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Transform;
 
 use Pim\Bundle\ConnectorIcecatBundle\Exception\TransformException;
 
@@ -161,12 +161,17 @@ class ProductIntXmlToArrayTransformer implements TransformInterface
             $featureId = (integer) $featureTag['ID'];
             $groupId   = (integer) $featureTag['CategoryFeatureGroup_ID'];
             $this->productFeatures[$featureId] = array('CategoryFeatureGroup_ID' => $groupId);
+            $this->productFeatures[$featureId]['Name'] = array();
+            // TODO : not translated !
             $this->productFeatures[$featureId]['Value'] = array();
+            $this->productFeatures[$featureId]['Value'][1]= (string) $featureTag['Value'];
+            $this->productFeatures[$featureId]['Presentation_Value'] = array();
+            $this->productFeatures[$featureId]['Presentation_Value'][1]= (string) $featureTag['Presentation_Value'];
 
             foreach ($featureTag->Feature->Name as $featureName) {
                 $langId = (integer) $featureName['langid'];
                 if (in_array($langId, self::$langs)) {
-                    $this->productFeatures[$featureId]['Value'][$langId] = (string) $featureName['Value'];
+                    $this->productFeatures[$featureId]['Name'][$langId] = (string) $featureName['Value'];
                 }
             }
         }

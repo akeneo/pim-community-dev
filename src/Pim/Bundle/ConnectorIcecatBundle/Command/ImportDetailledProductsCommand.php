@@ -7,7 +7,7 @@ use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
 
 use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductArrayToCatalogProductTransformer;
 
-use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductIntXmlToArrayTransformer;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\ProductIntXmlToArrayTransformer;
 
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpReader;
 

@@ -5,7 +5,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use APY\DataGridBundle\Grid\Source\Entity as GridEntity;
+use APY\DataGridBundle\Grid\Source\Document as GridSource;
 use APY\DataGridBundle\Grid\Action\RowAction;
 
 use \Exception;
@@ -55,7 +55,7 @@ class ProductController extends Controller
     public function listAction()
     {
         // creates simple grid based on entity (ORM)
-        $source = new GridEntity('PimConnectorIcecatBundle:SourceProduct');
+        $source = new GridSource('PimConnectorIcecatBundle:IcecatProductDataSheet');
         $grid = $this->get('grid');
         $grid->setSource($source);
         // add an action column to load import of all datas of the product
@@ -81,13 +81,7 @@ class ProductController extends Controller
         try {
             $srvConnector = $this->container->get('akeneo.connector.icecat_service');
             $srvConnector->importProductFromIcecatXml($id);
-            $product = $this->getDoctrine()->getRepository('PimConnectorIcecatBundle:SourceProduct')->find($id);
-
-            // Prepare notice message
-            $viewRenderer = $this->render('PimConnectorIcecatBundle:Product:loadProduct.html.twig',
-                array('product' => $product)
-            );
-            $this->get('session')->setFlash('notice', $viewRenderer->getContent());
+            $this->get('session')->setFlash('notice', 'Icecat datasheet has been imported as product');
         } catch (Exception $e) {
             $this->get('session')->setFlash('exception', $e->getMessage());
         }
