@@ -15,16 +15,12 @@ use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
 
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpDownload;
 
-// use Pim\Bundle\ConnectorIcecatBundle\PimConnectorIcecatBundle;
-
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Pim\Bundle\ConnectorIcecatBundle\Document\ProductDataSheet;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
-
-// use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 /**
@@ -46,7 +42,7 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
      * Max counter for inserting loop. When batch size achieve this value, manager make a flush/clean
      * @staticvar integer
      */
-    protected static $maxBatchSize = 1000;
+    protected static $maxBatchSize = 100;
 
     /**
      * {@inheritdoc}
@@ -101,6 +97,9 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
         $this->batchSize = 0;
 
         TimeHelper::addValue('start-import');
+        TimeHelper::addValue('loop-import');
+        MemoryHelper::addValue('memory');
+
         foreach ($products as $product) {
             try {
                 // get xml content
@@ -116,11 +115,13 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
                 $product->setXmlDetailledData(json_encode($data));
                 $product->setIsImported(1);
                 $this->getDocumentManager()->persist($product);
-                $this->writeln('insert '. $product->getProductId());
+                //$this->writeln('insert '. $product->getProductId());
 
                 // save by batch of x product details
                 if (++$this->batchSize === self::$maxBatchSize) {
                     $this->flush();
+
+                    $this->writeln('After flush range of '.self::$maxBatchSize.' '. MemoryHelper::writeGap('memory').' '. TimeHelper::writeGap('loop-import'));
                     $this->batchSize = 0;
                 }
 
