@@ -107,29 +107,36 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
                 $content = $this->reader->process($this->baseFilePath . $file, $login, $password);
                 $content = simplexml_load_string($content);
 
-                // keep only used data, convert to array and encode ton json format
-                $xmlToArray = new ProductIntXmlToArrayTransformer($content);
-                $data = $xmlToArray->transform();
+                if (!$content) {
+                    $this->writeln('Exception -> '. $file . ' is not well formed');
+                    $product->setIsImported(-1);
+                    $this->getDocumentManager()->persist($product);
 
-                // persist details
-                $product->setXmlDetailledData(json_encode($data));
-                $product->setIsImported(1);
-                $this->getDocumentManager()->persist($product);
-                //$this->writeln('insert '. $product->getProductId());
+                } else {
+                    // keep only used data, convert to array and encode ton json format
+                    $xmlToArray = new ProductIntXmlToArrayTransformer($content);
+                    $data = $xmlToArray->transform();
 
-                // save by batch of x product details
-                if (++$this->batchSize === self::$maxBatchSize) {
-                    $this->flush();
+                    // persist details
+                    $product->setXmlDetailledData(json_encode($data));
+                    $product->setIsImported(1);
+                    $this->getDocumentManager()->persist($product);
+                    //$this->writeln('insert '. $product->getProductId());
 
-                    $this->writeln('After flush range of '.self::$maxBatchSize.' '. MemoryHelper::writeGap('memory').' '. TimeHelper::writeGap('loop-import'));
-                    $this->batchSize = 0;
-                }
+                    // save by batch of x product details
+                    if (++$this->batchSize === self::$maxBatchSize) {
+                        $this->flush();
 
-                // stop when limit is attempted
-                // TODO : must be remove when query with where clause and limit work
-                if (--$this->limit === 0) {
-                    $this->flush();
-                    break;
+                        $this->writeln('After flush range of '.self::$maxBatchSize.' '. MemoryHelper::writeGap('memory').' '. TimeHelper::writeGap('loop-import'));
+                        $this->batchSize = 0;
+                    }
+
+                    // stop when limit is attempted
+                    // TODO : must be remove when query with where clause and limit work
+                    if (--$this->limit === 0) {
+                        $this->flush();
+                        break;
+                    }
                 }
             } catch (\Exception $e) {
                 $this->writeln('Exception -> '. $e->getMessage());
