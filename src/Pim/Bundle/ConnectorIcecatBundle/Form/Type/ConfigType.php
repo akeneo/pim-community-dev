@@ -4,6 +4,7 @@ namespace Pim\Bundle\ConnectorIcecatBundle\Form\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 /**
+ * Config form type
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
@@ -13,8 +14,7 @@ use Symfony\Component\Form\AbstractType;
 class ConfigType extends AbstractType
 {
     /**
-     * (non-PHPdoc)
-     * @see \Symfony\Component\Form\AbstractType::buildForm()
+     * {@inheritDoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -24,8 +24,7 @@ class ConfigType extends AbstractType
     }
 
     /**
-     * (non-PHPdoc)
-     * @see \Symfony\Component\Form\AbstractType::getDefaultOptions()
+     * {@inheritDoc}
      */
     public function getDefaultOptions(array $options)
     {
@@ -35,8 +34,7 @@ class ConfigType extends AbstractType
     }
 
     /**
-     * (non-PHPdoc)
-     * @see \Symfony\Component\Form\FormTypeInterface::getName()
+     * {@inheritDoc}
      */
     public function getName()
     {
