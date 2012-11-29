@@ -5,6 +5,7 @@ use Pim\Bundle\ConnectorIcecatBundle\Document\ProductDataSheet;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
 use Pim\Bundle\ConnectorIcecatBundle\Helper\MemoryHelper;
 use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
+use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductCsvClean;
 
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpDownload;
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileUnzip;
@@ -20,6 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ImportBaseProductsCommand extends AbstractPimCommand
 {
+
     /**
      * Actual counter for inserting loop
      * @var integer
@@ -30,7 +32,7 @@ class ImportBaseProductsCommand extends AbstractPimCommand
      * Max counter for inserting loop. When batch size achieve this value, manager make a flush/clean
      * @staticvar integer
      */
-    protected static $maxBatchSize = 20000;
+    protected static $maxBatchSize = 2000;
 
     /**
      * {@inheritdoc}
@@ -64,7 +66,6 @@ class ImportBaseProductsCommand extends AbstractPimCommand
         $this->importData($filePath);
 
         // persist documents with constraint validation
-        $this->flush();
         $this->writeln('command executed successfully : '. TimeHelper::writeGap('import-base'));
     }
 
@@ -74,17 +75,49 @@ class ImportBaseProductsCommand extends AbstractPimCommand
      */
     public function importData($filePath)
     {
+        TimeHelper::addValue('full-import');
+        MemoryHelper::addValue('memory');
+
         if (($handle = fopen($filePath, 'r')) !== false) {
             $this->batchSize = 0;
 
             // not parse header
             fgetcsv($handle, 1000, "\t");
+
+            // parse rows
+            $indBatch = 1;
+            TimeHelper::addValue('loop-import');
             while (($data = fgetcsv($handle, 1000, "\t")) !== false) {
-                $this->createProduct((integer) $data[0]);
+                $productId = (integer) $data[0];
+
+                $product = new ProductDataSheet();
+                $product->setProductId($productId);
+                $product->setIsImported(0);
+
+                // persist object and flush if necessary
+                $this->getDocumentManager()->persist($product);
+
+                if (++$this->batchSize === self::$maxBatchSize) {
+
+                    $this->getDocumentManager()->flush(/*null, array('safe' => false)*/); // not respect index constraint
+                    $this->getDocumentManager()->clear();
+                    $this->writeln('After flush range '.($indBatch++).' -> '. MemoryHelper::writeGap('memory').' '. TimeHelper::writeGap('loop-import'));
+                    $this->batchSize = 0;
+
+                    // TODO for test
+                   // break;
+                }
             }
+
+            // last range flush
+            $this->getDocumentManager()->flush();
 
             fclose($handle);
         }
+
+        $this->removeDuplicate();
+
+        $this->writeln('Import -> '. TimeHelper::writeGap('full-import'));
     }
 
     /**
@@ -120,40 +153,32 @@ class ImportBaseProductsCommand extends AbstractPimCommand
     }
 
     /**
-     * Create a product document data sheet from icecat product id
-     * @param integer $productId
+     * Remove duplicate product data sheets
+     *
+     * > db.ProductDataSheet.find().count()
+     * 848000
+     * > db.ProductDataSheet.distinct('productId').length;
+     * 767099
+     *
+     * To remove duplicate :
+     * > db.ProductDataSheet.dropIndex({"productId":1})
+     * > db.ProductDataSheet.ensureIndex({productId:1}, {"unique":true, "dropDups":true})
+     * @see http://docs.mongodb.org/manual/administration/indexes/#create-an-index
      */
-    protected function createProduct($productId)
+    protected function removeDuplicate()
     {
-        // instanciate a new object
-        $product = new ProductDataSheet();
-        $product->setProductId($productId);
-        $product->setIsImported(0);
+        //        $schemaManager = $this->getDocumentManager()->getSchemaManager();
 
-        // persist object and flush if necessary
-        $this->getDocumentManager()->persist($product);
-        if (++$this->batchSize === self::$maxBatchSize) {
-            $this->flush();
-            $this->batchSize = 0;
-        }
+        /*
+         [2012-11-28 22:16:02] doctrine.INFO: MongoDB query: {"ensureIndex":true,"keys":{"code":1},"options":{"unique":true,"sparse":false,"safe":true},"db":"akeneo_pim","collection":"ProductSet"} [] []
+        [2012-11-28 22:16:07] doctrine.INFO: MongoDB query: {"command":true,"data":{"ensureIndex":"ProductDataSheet"},"options":[{"productId":1},{"unique":true,"dropDups":true}],"db":"akeneo_pim"} [] []
+
+
+        $documentName = $this->getDocumentManager()->getClassMetadata('PimConnectorIcecatBundle:ProductDataSheet')->getName();
+        $collection = $this->getDocumentManager()->getDocumentCollection($documentName);
+        $collection->getDatabase()->command(array('ensureIndex' => $collection->getName()), array(array('productId' => 1), array('unique' => true, 'dropDups' => true)));
+        */
+
     }
 
-    /**
-     * Call document manager to flush data
-     */
-    protected function flush()
-    {
-        $this->writeln('Before clear -> '. MemoryHelper::writeValue('memory'));
-        // TODO : Change try/catch by removing document from unit of work
-//         try {
-            $this->getDocumentManager()->flush();
-//         } catch (\MongoCursorException $e) {
-//             $this->writeln('MongoCursorException');
-//             $this->writeln($e->getCode() .' : '. $e->getMessage());
-//         } catch (\Exception $e) {
-//             throw $e;
-//         }
-        $this->getDocumentManager()->clear();
-        $this->writeln('After clear   -> '. MemoryHelper::writeGap('memory'));
-    }
 }

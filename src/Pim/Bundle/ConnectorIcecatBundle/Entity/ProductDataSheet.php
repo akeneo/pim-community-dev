@@ -1,26 +1,26 @@
 <?php
-namespace Pim\Bundle\ConnectorIcecatBundle\Document;
+namespace Pim\Bundle\ConnectorIcecatBundle\Entity;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations\Boolean;
+use Doctrine\ORM\Mapping as ORM;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations\String;
-
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 /**
- * Enter description here ...
+ * Icecat product data sheet
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @MongoDB\Document
+ * @ORM\Table(name="Akeneo_PimConnectorIcecat_ProductDataSheet")
+ * @ORM\Entity
  */
 class ProductDataSheet
 {
     /**
      * @var integer
      *
-     * @MongoDB\Id
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
@@ -28,7 +28,7 @@ class ProductDataSheet
      * Reference to icecat product id
      * @var integer
      *
-     * @MongoDB\Int
+     * @ORM\Column(name="product_id", type="integer", unique=true)
      */
     protected $productId;
 
@@ -36,7 +36,7 @@ class ProductDataSheet
      * Detailled data is imported
      * @var integer
      *
-     * @MongoDB\Int
+     * @ORM\Column(name="is_imported", type="boolean")
      */
     protected $isImported;
 
@@ -44,7 +44,7 @@ class ProductDataSheet
      * Detailed data for product
      * @var string
      *
-     * @MongoDB\String
+     * @ORM\Column(name="xml_detailled_data", type="text", nullable=true)
      */
     protected $xmlDetailledData;
 
