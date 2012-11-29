@@ -7,8 +7,16 @@
                 <target>Enrich</target>
             </trans-unit>
             <trans-unit id="2">
-                <source>pim.dashboard.title.import-export</source>
-                <target>Import / Export</target>
+                <source>pim.dashboard.title.import</source>
+                <target>Import</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>pim.dashboard.title.export</source>
+                <target>Export</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>pim.dashboard.title.configure</source>
+                <target>Configure</target>
             </trans-unit>
             <trans-unit id="3">
                 <source>pim.dashboard.products</source>

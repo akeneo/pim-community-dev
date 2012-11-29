@@ -20,6 +20,8 @@ class DefaultController extends Controller
      * Home view for PIM
      * @Route("/")
      * @Template()
+     *
+     * @return multitype
      */
     public function indexAction()
     {

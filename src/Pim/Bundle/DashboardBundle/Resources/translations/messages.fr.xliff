@@ -4,11 +4,19 @@
         <body>
             <trans-unit id="1">
                 <source>pim.dashboard.title.enrich</source>
-                <target>Enrichissement</target>
+                <target>Enrichir</target>
             </trans-unit>
             <trans-unit id="2">
-                <source>pim.dashboard.title.import-export</source>
-                <target>Import / Export</target>
+                <source>pim.dashboard.title.import</source>
+                <target>Importer</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>pim.dashboard.title.export</source>
+                <target>Exporter</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>pim.dashboard.title.configure</source>
+                <target>Configurer</target>
             </trans-unit>
             <trans-unit id="3">
                 <source>pim.dashboard.products</source>

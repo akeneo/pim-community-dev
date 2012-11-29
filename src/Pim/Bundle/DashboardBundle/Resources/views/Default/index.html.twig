@@ -8,6 +8,27 @@
 
     <div class="blocks-dashboard">
 
+
+        <div class="block-dashboard ui-corner-all">
+            <h2>{{ "pim.dashboard.title.import" | trans }}</h2>
+            <ul>
+                <li>
+                    <a href="{{ path('pim_connectoricecat_supplier_list') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
+                        <span class="ui-button-icon-primary ui-icon ui-icon-connector-icecat"></span>
+                        <span class="ui-button-text">{{ "pim.dashboard.connector-icecat" | trans }}</span>
+                    </a>
+                </li>
+                <!--
+                <li>
+                    <a href="{{ path('pim_connectoricecat_supplier_list') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
+                        <span class="ui-button-icon-primary ui-icon ui-icon-connector-magento"></span>
+                        <span class="ui-button-text">{{ "pim.dashboard.connector-magento" | trans }}</span>
+                    </a>
+                </li>
+                -->
+            </ul>
+        </div>
+
         <div class="block-dashboard ui-corner-all">
             <h2>{{ "pim.dashboard.title.enrich" | trans }}</h2>
             <ul>
@@ -33,7 +54,7 @@
         </div>
 
         <div class="block-dashboard ui-corner-all">
-            <h2>{{ "pim.dashboard.title.import-export" | trans }}</h2>
+            <h2>{{ "pim.dashboard.title.export" | trans }}</h2>
             <ul>
                 <li>
                     <a href="{{ path('pim_catalogtaxinomy_channel_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
@@ -41,26 +62,18 @@
                         <span class="ui-button-text">{{ "pim.catalogtaxinomy.channels" | trans }}</span>
                     </a>
                 </li>
+            </ul>
+        </div>
+
+        <div class="block-dashboard ui-corner-all">
+            <h2>{{ "pim.dashboard.title.configure" | trans }}</h2>
+            <ul>
                 <li>
                     <a href="{{ path('pim_catalogtaxinomy_locale_index') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
                         <span class="ui-button-icon-primary ui-icon ui-icon-fugue-locale-alternate"></span>
                         <span class="ui-button-text">{{ "pim.catalogtaxinomy.locales" | trans }}</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ path('pim_connectoricecat_supplier_list') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
-                        <span class="ui-button-icon-primary ui-icon ui-icon-connector-icecat"></span>
-                        <span class="ui-button-text">{{ "pim.dashboard.connector-icecat" | trans }}</span>
-                    </a>
-                </li>
-                <!--
-                <li>
-                    <a href="{{ path('pim_connectoricecat_supplier_list') }}" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button">
-                        <span class="ui-button-icon-primary ui-icon ui-icon-connector-magento"></span>
-                        <span class="ui-button-text">{{ "pim.dashboard.connector-magento" | trans }}</span>
-                    </a>
-                </li>
-                -->
             </ul>
         </div>
 
