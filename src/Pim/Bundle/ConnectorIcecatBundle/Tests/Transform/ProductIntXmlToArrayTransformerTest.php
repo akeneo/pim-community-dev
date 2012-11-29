@@ -60,7 +60,7 @@ class ProductIntXmlToArrayTransformerTest extends KernelAwareTest
      * Load a file in SimpleXmlElement format
      * @param string $filename
      *
-     * @return SimpleXMLElement
+     * @return \SimpleXMLElement
      */
     protected function loadFile($filename)
     {
