@@ -46,12 +46,20 @@ class CategoriesXmlToCategoriesTransformer implements TransformInterface
     {
         foreach ($this->simpleDoc->Response->CategoriesList->Category as $xmlCategory) {
             // create category entity
-            $category  = $this->createCategory((string) $xmlCategory['ID'], $xmlCategory);
+            $icecatId = (string) $xmlCategory['ID'];
+            $category = $this->createCategory($icecatId, $xmlCategory);
 
             // create parent category entity
-            $xmlParent = $xmlCategory->ParentCategory;
-            $parent    = $this->createCategory((string) $xmlParent['ID'], $xmlParent->Names);
+            $xmlParent      = $xmlCategory->ParentCategory;
+            $icecatParentId = (string) $xmlParent['ID'];
+            $parent         = $this->createCategory($icecatParentId, $xmlParent->Names);
+
+            // add parent
             $category->setParent($parent);
+
+            // add category to list
+            $this->categories[$icecatId]       = $category;
+            $this->categories[$icecatParentId] = $parent;
         }
 
         return $this->categories;
@@ -80,9 +88,6 @@ class CategoriesXmlToCategoriesTransformer implements TransformInterface
                 $category->setTitle($title);
             }
         }
-
-        // add category to list
-        $this->categories[$icecatId] = $category;
 
         return $category;
     }
