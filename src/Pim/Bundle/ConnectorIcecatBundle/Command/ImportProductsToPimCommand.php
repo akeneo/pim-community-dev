@@ -18,7 +18,6 @@ use Pim\Bundle\ConnectorIcecatBundle\Transform\DataSheetArrayToProductTransforme
 use Doctrine\ODM\MongoDB\Query\Builder;
 
 /**
- *
  * Mass import from icecat product to pim
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>

@@ -18,9 +18,10 @@ class FileHttpReader
      *
      * TODO : replace login / password by option array
      *
-     * @param  string    $url
-     * @param  string    $login
-     * @param  string    $password
+     * @param string $url      url
+     * @param string $login    login
+     * @param string $password password
+     *
      * @return string
      * @throws Exception
      */

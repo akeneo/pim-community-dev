@@ -6,7 +6,7 @@ use Pim\Bundle\ConnectorIcecatBundle\Entity\ConfigManager;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\SourceSupplier;
 
 use Pim\Bundle\ConnectorIcecatBundle\Extract\ProductXmlExtractor;
-use Pim\Bundle\ConnectorIcecatBundle\Extract\SuppliersXmlExtractor;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\SuppliersXmlUrl;
 use Pim\Bundle\ConnectorIcecatBundle\Extract\DownloadAndUnpackSource;
 
 use Pim\Bundle\ConnectorIcecatBundle\Transform\LanguagesTransform;
@@ -61,9 +61,9 @@ class ConnectorService
         $forceDownloadFile = true;
 
         // Call extractor
-        $extractor = new SuppliersXmlExtractor($url, $login, $password);
+        $extractor = new SuppliersXmlUrl($url, $login, $password);
         $extractor->extract();
-        $xmlContent = $extractor->getReadContent();
+        $xmlContent = $extractor->getXmlContent();
 
         $transformer = new SuppliersTransform($this->container->get('doctrine.orm.entity_manager'), $xmlContent);
         $transformer->transform();

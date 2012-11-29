@@ -1,17 +1,18 @@
 <?php
-namespace Pim\Bundle\ConnectorIcecatBundle\Extract;
+namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Read;
 
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpReader;
+use Pim\Bundle\ConnectorIcecatBundle\Extract\ExtractInterface;
 
 /**
- * Download a source archive (product, supplier, language base data) and unpack to a destination file
+ * Read supplier xml content
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class SuppliersXmlExtractor implements ExtractInterface, ReadInterface
+class SuppliersXmlUrl implements ExtractInterface
 {
     /**
      * Archive url
@@ -39,9 +40,10 @@ class SuppliersXmlExtractor implements ExtractInterface, ReadInterface
 
     /**
      * Download the archive to the given url then extract it in file path
-     * @param string $url
-     * @param string $login
-     * @param string $password
+     *
+     * @param string $url      file url
+     * @param string $login    login
+     * @param string $password password
      */
     public function __construct($url, $login, $password)
     {
@@ -56,24 +58,15 @@ class SuppliersXmlExtractor implements ExtractInterface, ReadInterface
      */
     public function extract()
     {
-        $this->read($this->url);
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see Pim\Bundle\ConnectorIcecatBundle\Extract.ReadInterface::read()
-     */
-    public function read($url)
-    {
         $fileReader = new FileHttpReader();
-        $this->xmlContent = $fileReader->process($url, $this->login, $this->password);
+        $this->xmlContent = $fileReader->process($this->url, $this->login, $this->password);
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Pim\Bundle\ConnectorIcecatBundle\Extract.ReadInterface::getReadContent()
+     * Get xml content
+     * @return string
      */
-    public function getReadContent()
+    public function getXmlContent()
     {
         return $this->xmlContent;
     }

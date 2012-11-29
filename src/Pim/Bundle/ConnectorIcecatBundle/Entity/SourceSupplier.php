@@ -4,6 +4,8 @@ namespace Pim\Bundle\ConnectorIcecatBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * Icecat supplier
+ *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -49,7 +51,8 @@ class SourceSupplier
     /**
      * Set name
      *
-     * @param  string   $name
+     * @param string $name
+     *
      * @return Supplier
      */
     public function setName($name)
@@ -72,7 +75,8 @@ class SourceSupplier
     /**
      * Set icecatId
      *
-     * @param  integer  $icecatId
+     * @param integer $icecatId
+     *
      * @return Supplier
      */
     public function setIcecatId($icecatId)
