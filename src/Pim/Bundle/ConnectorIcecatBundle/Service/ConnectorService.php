@@ -7,7 +7,7 @@ use Pim\Bundle\ConnectorIcecatBundle\Entity\SourceSupplier;
 
 use Pim\Bundle\ConnectorIcecatBundle\Extract\ProductXmlExtractor;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\SuppliersXmlUrl;
-use Pim\Bundle\ConnectorIcecatBundle\Extract\DownloadAndUnpackSource;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\DownloadAndUnpackFromUrl;
 
 use Pim\Bundle\ConnectorIcecatBundle\Transform\LanguagesTransform;
 use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductsTransform;
@@ -84,7 +84,7 @@ class ConnectorService
         $forceDownloadFile = true;
 
         // Call extractor
-        $extractor = new DownloadAndUnpackSource($url, $login, $password, $archivePath, $filePath, $forceDownloadFile);
+        $extractor = new DownloadAndUnpackFromUrl($url, $login, $password, $archivePath, $filePath, $forceDownloadFile);
         $extractor->extract();
         $xmlContent = $extractor->getReadContent();
 
@@ -108,7 +108,7 @@ class ConnectorService
         $forceDownloadFile = false;
 
         // Call extractor
-        $extractor = new DownloadAndUnpackSource($url, $login, $password, $archivePath, $filePath, $forceDownloadFile);
+        $extractor = new DownloadAndUnpackFromUrl($url, $login, $password, $archivePath, $filePath, $forceDownloadFile);
         $extractor->extract();
 
         $transformer = new ProductsTransform($this->container->get('doctrine.orm.entity_manager'), $filePath);

@@ -1,5 +1,5 @@
 <?php
-namespace Pim\Bundle\ConnectorIcecatBundle\Extract;
+namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Read;
 
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileUnzip;
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpDownload;
@@ -12,7 +12,7 @@ use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpDownload;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class DownloadAndUnpackSource implements ExtractInterface, DownloadInterface, UnpackInterface, ReadInterface
+class DownloadAndUnpackFromUrl implements ExtractInterface, DownloadInterface, UnpackInterface
 {
     /**
      * Archive url
@@ -51,19 +51,14 @@ class DownloadAndUnpackSource implements ExtractInterface, DownloadInterface, Un
     protected $force;
 
     /**
-     * Read content from file downloaded
-     * @var string
-     */
-    protected $content;
-
-    /**
      * Download the archive to the given url then extract it in file path
-     * @param string  $url
-     * @param string  $login
-     * @param string  $password
-     * @param string  $archivePath
-     * @param string  $filePath
-     * @param boolean $force
+     *
+     * @param string  $url         archive url
+     * @param string  $login       login
+     * @param string  $password    password
+     * @param string  $archivePath download path
+     * @param string  $filePath    extract path
+     * @param boolean $force       force to download
      */
     public function __construct($url, $login, $password, $archivePath, $filePath, $force = false)
     {
@@ -76,8 +71,7 @@ class DownloadAndUnpackSource implements ExtractInterface, DownloadInterface, Un
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Pim\Bundle\ConnectorIcecatBundle\Extract.ExtractInterface::extract()
+     * {@inheritDoc}
      */
     public function extract()
     {
@@ -86,8 +80,7 @@ class DownloadAndUnpackSource implements ExtractInterface, DownloadInterface, Un
     }
 
     /**
-     * (non-PHPdoc)
-     * @see \Pim\Bundle\ConnectorIcecatBundle\Extract\DownloadInterface::download()
+     * {@inheritDoc}
      */
     public function download($url, $file)
     {
@@ -96,8 +89,7 @@ class DownloadAndUnpackSource implements ExtractInterface, DownloadInterface, Un
     }
 
     /**
-     * (non-PHPdoc)
-     * @see \Pim\Bundle\ConnectorIcecatBundle\Extract\UnpackInterface::unpack()
+     * {@inheritDoc}
      */
     public function unpack($archivedFile, $file)
     {
@@ -105,25 +97,4 @@ class DownloadAndUnpackSource implements ExtractInterface, DownloadInterface, Un
         $unpacker->process($archivedFile, $file, $this->force);
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see Pim\Bundle\ConnectorIcecatBundle\Extract.ReadInterface::read()
-     */
-    public function read($file)
-    {
-        if (!$this->content) {
-                $this->content = file_get_contents($file);
-        }
-
-        return $this->content;
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see Pim\Bundle\ConnectorIcecatBundle\Extract.ReadInterface::getReadContent()
-     */
-    public function getReadContent()
-    {
-        return $this->read($this->filePath);
-    }
 }

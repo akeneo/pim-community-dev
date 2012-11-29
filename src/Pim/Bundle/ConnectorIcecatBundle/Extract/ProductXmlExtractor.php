@@ -6,6 +6,8 @@ use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpReader;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\ConfigManager;
 
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Read;
+
 /**
  * Get product xml details from icecat
  *
@@ -13,7 +15,7 @@ use Pim\Bundle\ConnectorIcecatBundle\Entity\ConfigManager;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductXmlExtractor implements ExtractInterface, ReadInterface
+class ProductXmlExtractor implements ExtractInterface
 {
     /**
      * Get xml product content

@@ -1,9 +1,7 @@
 <?php
-namespace Pim\Bundle\ConnectorIcecatBundle\Extract;
-
+namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Read;
 /**
- *
- * Interface to unpack a file.
+ * Interface extractable
  * TODO: should be moved in dataflow ?
  *
  * @author    Romain Monceau <romain@akeneo.com>
@@ -11,12 +9,10 @@ namespace Pim\Bundle\ConnectorIcecatBundle\Extract;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-interface UnpackInterface
+interface ExtractInterface
 {
     /**
-     * Unpack file archived to file
-     * @param string $url
-     * @param string $file
+     * Extract data from source (database tables, url, csv file, xml file, archive, ftp, etc)
      */
-    public function unpack($archivedFile, $file);
+    public function extract();
 }
