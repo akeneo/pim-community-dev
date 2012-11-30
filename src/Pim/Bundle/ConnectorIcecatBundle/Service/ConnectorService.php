@@ -12,8 +12,8 @@ use Pim\Bundle\ConnectorIcecatBundle\Entity\SourceSupplier;
 use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
 
 use Pim\Bundle\ConnectorIcecatBundle\Extract\ProductXmlExtractor;
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\SuppliersXmlUrl;
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\ProductXmlUrl;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\SuppliersXmlFromUrl;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\ProductDataSheetXmlFromUrl;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\DownloadAndUnpackFromUrl;
 
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\ProductIntXmlToArrayTransformer;
@@ -74,7 +74,7 @@ class ConnectorService
         $forceDownloadFile = true;
 
         // Call extractor
-        $extractor = new SuppliersXmlUrl($url, $login, $password);
+        $extractor = new SuppliersXmlFromUrl($url, $login, $password);
         $extractor->extract();
         $xmlContent = $extractor->getXmlContent();
 
@@ -179,7 +179,7 @@ class ConnectorService
         if (!$datasheet->isImported()) {
 
             // 2. extract product xml from icecat
-            $reader = new ProductXmlUrl($datasheetUrl, $login, $password);
+            $reader = new ProductDataSheetXmlFromUrl($datasheetUrl, $login, $password);
             $reader->extract();
             $simpleXml = simplexml_load_string($reader->getXmlContent());
 

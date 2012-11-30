@@ -30,7 +30,7 @@ use Doctrine\ODM\MongoDB\Query\Builder;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ImportDetailledProductsCommand extends AbstractPimCommand
+class ImportDataSheetDetailCommand extends AbstractPimCommand
 {
 
     /**
@@ -38,7 +38,7 @@ class ImportDetailledProductsCommand extends AbstractPimCommand
      */
     protected function configure()
     {
-        $this->setName('connectoricecat:importDetailledProducts')
+        $this->setName('connectoricecat:importDataSheetDetail')
             ->setDescription('Import detailled data for a set of products')
             ->addArgument(
                 'limit',

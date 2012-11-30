@@ -4,7 +4,7 @@ namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Write;
 use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
 use Pim\Bundle\ConnectorIcecatBundle\Helper\MemoryHelper;
 use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\ProductXmlUrl;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\ProductDataSheetXmlFromUrl;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\ProductIntXmlToArrayTransformer;
 
 /**
@@ -46,7 +46,7 @@ class InsertDetailledIcecatProductsFromUrl
             try {
                 // get xml content
                 $datasheetUrl = $baseProductUrl.$product->getProductId() .'.xml';
-                $reader = new ProductXmlUrl($datasheetUrl, $login, $password);
+                $reader = new ProductDataSheetXmlFromUrl($datasheetUrl, $login, $password);
                 $reader->extract();
                 $content = simplexml_load_string($reader->getXmlContent());
 
