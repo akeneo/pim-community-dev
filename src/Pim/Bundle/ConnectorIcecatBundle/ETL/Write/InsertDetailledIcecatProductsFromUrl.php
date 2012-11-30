@@ -42,6 +42,7 @@ class InsertDetailledIcecatProductsFromUrl
         MemoryHelper::addValue('memory');
 
         foreach ($products as $product) {
+
             try {
                 // get xml content
                 $datasheetUrl = $baseProductUrl.$product->getProductId() .'.xml';
@@ -50,7 +51,7 @@ class InsertDetailledIcecatProductsFromUrl
                 $content = simplexml_load_string($reader->getXmlContent());
 
                 if (!$content) {
-                    $this->writeln('Exception -> '. $file . ' is not well formed');
+                    echo 'Exception -> '. $file . ' is not well formed';
                     $product->setIsImported(-1);
                     $objectManager->persist($product);
 

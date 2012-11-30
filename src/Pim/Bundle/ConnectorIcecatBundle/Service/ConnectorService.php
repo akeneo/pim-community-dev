@@ -156,6 +156,7 @@ class ConnectorService
     }
 
     /**
+     * TODO: refactor
      * Import a product by its icecat id
      *
      * @param string  $datasheetId datasheet id
@@ -193,10 +194,23 @@ class ConnectorService
             $docManager->flush(); // TODO : toflush param only for product manager
         }
 
-        // 5. transform datasheet to pim product
+        // 5. create / update attributes
+        /*
         $productManager = $this->container->get('pim.catalog.product_manager');
         $transformer = new DataSheetArrayToProductTransformer($productManager, $datasheet);
         $set = $transformer->transform();
+*/
+        // 6. create / update sets
+
+        // 7. create / update products
+
+
+        // transform datasheet to pim product
+        /*
+        $productManager = $this->container->get('pim.catalog.product_manager');
+        $transformer = new DataSheetArrayToProductTransformer($productManager, $datasheet);
+        $set = $transformer->transform();
+*/
 
         // 6. flush if not in batch mode
         $productManager->getPersistenceManager()->persist($set);
@@ -206,6 +220,7 @@ class ConnectorService
     }
 
     /**
+     *      * TODO: refactor
      * Import all products from a supplier
      * @param SourceSupplier $supplier
      */
