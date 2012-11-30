@@ -85,8 +85,8 @@ class Tree
 
     /**
      * Set title
-     *
      * @param string $title
+     *
      * @return Tree
      */
     public function setTitle($title)
@@ -108,8 +108,8 @@ class Tree
 
     /**
      * Set left
-     *
      * @param integer $left
+     *
      * @return Tree
      */
     public function setLeft($left)
@@ -131,8 +131,8 @@ class Tree
 
     /**
      * Set level
-     *
      * @param integer $level
+     *
      * @return Tree
      */
     public function setLevel($level)
@@ -154,8 +154,8 @@ class Tree
 
     /**
      * Set right
-     *
      * @param integer $right
+     *
      * @return Tree
      */
     public function setRight($right)
@@ -177,8 +177,8 @@ class Tree
 
     /**
      * Set position
-     *
      * @param integer $position
+     *
      * @return Tree
      */
     public function setPosition($position)
@@ -200,8 +200,8 @@ class Tree
 
     /**
      * Set type
-     *
      * @param string $type
+     *
      * @return Tree
      */
     public function setType($type)
@@ -223,8 +223,8 @@ class Tree
 
     /**
      * Set parent
-     *
      * @param Pim\Bundle\CatalogTaxinomyBundle\Entity\Tree $parent
+     *
      * @return Tree
      */
     public function setParent(\Pim\Bundle\CatalogTaxinomyBundle\Entity\Tree $parent = null)

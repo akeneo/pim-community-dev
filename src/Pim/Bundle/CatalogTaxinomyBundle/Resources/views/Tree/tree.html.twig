@@ -20,16 +20,16 @@
 <div id="description">
 <p>Here is a PHP &amp; mySQL enabled demo. You can use the classes/DB structure included, but those are not thoroughly tested and not officially a part of jstree. In the log window you can also see all function calls as they happen on the instance.</p>
 <div id="mmenu" style="height:30px; overflow:auto;">
-<input type="button" id="add_folder" value="add folder" style="display:block; float:left;"/>
-<input type="button" id="add_default" value="add file" style="display:block; float:left;"/>
-<input type="button" id="rename" value="rename" style="display:block; float:left;"/>
-<input type="button" id="remove" value="remove" style="display:block; float:left;"/>
-<input type="button" id="cut" value="cut" style="display:block; float:left;"/>
-<input type="button" id="copy" value="copy" style="display:block; float:left;"/>
-<input type="button" id="paste" value="paste" style="display:block; float:left;"/>
-<input type="button" id="clear_search" value="clear" style="display:block; float:right;"/>
-<input type="button" id="search" value="search" style="display:block; float:right;"/>
-<input type="text" id="text" value="" style="display:block; float:right;" />
+    <input type="button" id="add_folder" value="add folder" style="display:block; float:left;"/>
+    <input type="button" id="add_default" value="add file" style="display:block; float:left;"/>
+    <input type="button" id="rename" value="rename" style="display:block; float:left;"/>
+    <input type="button" id="remove" value="remove" style="display:block; float:left;"/>
+    <input type="button" id="cut" value="cut" style="display:block; float:left;"/>
+    <input type="button" id="copy" value="copy" style="display:block; float:left;"/>
+    <input type="button" id="paste" value="paste" style="display:block; float:left;"/>
+    <input type="button" id="clear_search" value="clear" style="display:block; float:right;"/>
+    <input type="button" id="search" value="search" style="display:block; float:right;"/>
+    <input type="text" id="text" value="" style="display:block; float:right;" />
 </div>
 
 <!-- the tree container (notice NOT an UL node) -->
@@ -81,7 +81,6 @@ $("#demo")
                 "data" : function (n) {
                     // the result is fed to the AJAX request `data` option
                     return {
-                        
                         "id" : n.attr ? n.attr("id").replace("node_","") : 1 
                     }; 
                 }
@@ -92,11 +91,10 @@ $("#demo")
             // As this has been a common question - async search
             // Same as above - the `ajax` config option is actually jQuery's AJAX object
             "ajax" : {
-                "url" : "http://www.strixos.local/server.php",
+                "url" : "search",
                 // You get the search string as a parameter
                 "data" : function (str) {
-                    return { 
-                        "operation" : "search", 
+                    return {
                         "search_str" : str 
                     }; 
                 }
@@ -163,15 +161,15 @@ $("#demo")
     })
     .bind("create.jstree", function (e, data) {
         $.post(
-            "http://www.strixos.local/server.php", 
-            { 
-                "operation" : "create_node", 
+            "createNode", 
+            {  
                 "id" : data.rslt.parent.attr("id").replace("node_",""), 
                 "position" : data.rslt.position,
                 "title" : data.rslt.name,
                 "type" : data.rslt.obj.attr("rel")
             }, 
             function (r) {
+                console.log(r);
                 if(r.status) {
                     $(data.rslt.obj).attr("id", "node_" + r.id);
                 }
@@ -186,7 +184,7 @@ $("#demo")
             $.ajax({
                 async : false,
                 type: 'POST',
-                url: "http://www.strixos.local/server.php",
+                url: "removeNode",
                 data : { 
                     "operation" : "remove_node", 
                     "id" : this.id.replace("node_","")
@@ -201,13 +199,13 @@ $("#demo")
     })
     .bind("rename.jstree", function (e, data) {
         $.post(
-            "http://www.strixos.local/server.php", 
-            { 
-                "operation" : "rename_node", 
+            "renameNode", 
+            {  
                 "id" : data.rslt.obj.attr("id").replace("node_",""),
                 "title" : data.rslt.new_name
             }, 
             function (r) {
+                console.log(r);
                 if(!r.status) {
                     $.jstree.rollback(data.rlbk);
                 }
