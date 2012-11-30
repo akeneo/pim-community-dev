@@ -312,10 +312,9 @@ class Category
         if ($this->getLevel() === 1) {
             return 'drive';
         } else if ($this->hasChildren()) {
-            return 'default';
-        } else {
             return 'folder';
+        } else {
+            return 'default';
         }
-//         return $this->type;
     }
 }
