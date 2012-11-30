@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Service;
 
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\InsertSuppliersFromXml;
+
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpReader;
 
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\InsertBaseIcecatProductsFromCsv;
@@ -75,13 +77,15 @@ class ConnectorService
         $filePath    = $baseDir . $this->configManager->getValue(Config::SUPPLIERS_FILE);
         $forceDownloadFile = true;
 
-        // Call extractor
+        // Extract
         $extractor = new SuppliersXmlFromUrl($url, $login, $password);
         $extractor->extract();
         $xmlContent = $extractor->getXmlContent();
 
-        $transformer = new SuppliersTransform($this->container->get('doctrine.orm.entity_manager'), $xmlContent);
-        $transformer->transform();
+        // Import
+        $entityManager = $this->container->get('doctrine.orm.entity_manager');
+        $writer = new InsertSuppliersFromXml();
+        $writer->import($xmlContent, $entityManager);
     }
 
     /**
