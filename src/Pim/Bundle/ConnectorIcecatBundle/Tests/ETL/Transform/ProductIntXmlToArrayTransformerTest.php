@@ -1,7 +1,8 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Tests\Transform;
 
-use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductSetXmlToDataSheetTransformer;
+use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\ProductSetXmlToDataSheetTransformer;
 
 use Pim\Bundle\CatalogBundle\Tests\KernelAwareTest;
 /**
@@ -64,13 +65,16 @@ class ProductSetXmlToDataSheetTransformerTest extends KernelAwareTest
      */
     protected function loadFile($filename)
     {
-        $filepath = dirname(__FILE__) .'/../Files/'. $filename;
+        $filepath = dirname(__FILE__) .'/../../Files/'. $filename;
         $content = simplexml_load_file($filepath);
 
-        // call transformer
-        $transformer = new ProductSetXmlToDataSheetTransformer($content);
+        $datasheet = new IcecatProductDataSheet();
 
-        return $transformer->transform();
+        // call transformer
+        $transformer = new ProductSetXmlToDataSheetTransformer($content, $datasheet);
+        $transformer->enrich();
+
+        return json_decode($datasheet->getData(), true);
     }
 
     /**
@@ -143,8 +147,8 @@ class ProductSetXmlToDataSheetTransformerTest extends KernelAwareTest
         $this->assertCount($count, $features);
         foreach ($features as $feature) {
             $this->assertArrayHasKey('CategoryFeatureGroup_ID', $feature);
-            $this->assertArrayHasKey('Value', $feature);
-            $this->assertI18N($feature['Value']);
+            $this->assertArrayHasKey('Name', $feature);
+            $this->assertI18N($feature['Name']);
         }
     }
 
