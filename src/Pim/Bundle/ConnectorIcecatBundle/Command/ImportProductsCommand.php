@@ -29,24 +29,12 @@ class ImportProductsCommand extends AbstractPimCommand
 {
 
     /**
-     * Actual counter for inserting loop
-     * @var integer
-     */
-    protected $batchSize;
-
-    /**
-     * Max counter for inserting loop. When batch size achieve this value, manager make a flush/clean
-     * @staticvar integer
-     */
-    protected static $maxBatchSize = 5;
-
-    /**
      * {@inheritdoc}
      */
     protected function configure()
     {
-        $this->setName('connectoricecat:importProducts')
-        ->setDescription('Import detailled data to product pim')
+        $this->setName('connectoricecat:importProductsFromDataSheet')
+        ->setDescription('Import detailled data for a set of products')
         ->addArgument(
             'limit',
             InputArgument::REQUIRED,
@@ -69,70 +57,13 @@ class ImportProductsCommand extends AbstractPimCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // get products
-        $sheets = $this->getProductsDataSheet();
-        $this->writeln($sheets->count() .' products found'.PHP_EOL);
-
-        // loop on products
-        $this->batchSize = 0;
-
         TimeHelper::addValue('start-import');
-        TimeHelper::addValue('loop-import');
         MemoryHelper::addValue('memory');
 
-        $productManager = $this->getContainer()->get('pim.catalog.product_manager');
+        // run detailled product import
+        $srvConnector = $this->getContainer()->get('akeneo.connector.icecat_service');
+        $srvConnector->importProductsFromDataSheet($this->limit);
 
-        foreach ($sheets as $sheet) {
-
-            $transformer = new DataSheetArrayToProductTransformer($productManager, $sheet);
-
-            $product = $transformer->transform();
-            /*
-            $data = json_decode($sheet->getXmlDetailledData());
-
-            var_dump($data);*/
-            exit();
-
-
-
-            // save by batch of x product details
-            if (++$this->batchSize === self::$maxBatchSize) {
-                $this->flush();
-
-                $this->writeln('After flush range of '.self::$maxBatchSize.' '. MemoryHelper::writeGap('memory').' '. TimeHelper::writeGap('loop-import'));
-                $this->batchSize = 0;
-            }
-
-            // stop when limit is attempted
-            // TODO : must be remove when query with where clause and limit work
-            if (--$this->limit === 0) {
-                $this->flush();
-                break;
-            }
-
-        }
         $this->writeln('total time elapsed : '. TimeHelper::writeGap('start-import'));
-    }
-
-    /**
-     * Get all product data sheet
-     * @return ProductDataSheet
-     */
-    protected function getProductsDataSheet()
-    {
-        $products = $this->getDocumentManager()
-            ->getRepository('PimConnectorIcecatBundle:ProductDataSheet')
-            ->findBy(array('isImported' => 2));
-
-        return $products;
-    }
-
-    /**
-     * Call document manager to flush data
-     */
-    protected function flush()
-    {
-        $this->getDocumentManager()->flush();
-        $this->getDocumentManager()->clear();
     }
 }

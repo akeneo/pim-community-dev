@@ -51,7 +51,9 @@ class DataSheetArrayToAttributesTransformer implements TransformInterface
     public function transform()
     {
 
+        $data = json_decode($this->datasheet->getData(), true);
 
-
+        var_dump($data['productfeatures']);
+        exit();
     }
 }

@@ -17,7 +17,9 @@ use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\ProductSetXmlFromUrl;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\DownloadAndUnpackFromUrl;
 
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\ProductSetXmlToDataSheetTransformer;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\ProductValuesXmlToDataSheetTransformer;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\DataSheetArrayToProductTransformer;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\InsertProductFromDataSheet;
 
 use Pim\Bundle\ConnectorIcecatBundle\Transform\LanguagesTransform;
 use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductsTransform;
@@ -156,6 +158,16 @@ class ConnectorService
     }
 
     /**
+     * Import products from icecat datasheet
+     *
+     * @param integer $limit nb product to import
+     */
+    public function importProductsFromDataSheet($limit)
+    {
+
+    }
+
+    /**
      * TODO: refactor
      * Import a product by its icecat id
      *
@@ -183,40 +195,27 @@ class ConnectorService
             $reader->extract();
             $simpleXml = simplexml_load_string($reader->getXmlContent());
 
-            // 3. transform product xml to lines (associative array)
-            $transformer = new ProductSetXmlToDataSheetTransformer($simpleXml);
-            $productData = $transformer->transform();
+            // 3 A. enrich datasheet with set data
+            $transformer = new ProductSetXmlToDataSheetTransformer($simpleXml, $datasheet);
+            $transformer->enrich();
 
-            // 4. persist details
-            $datasheet->setData(json_encode($productData));
-            $datasheet->setStatus(IcecatProductDataSheet::STATUS_IMPORT);
-            $docManager->persist($datasheet);
+            // 3 B. enrich datasheet with product data
+            $transformer = new ProductValuesXmlToDataSheetTransformer($simpleXml, $datasheet, 1);// TODO force english locale
+            $transformer->enrich();
+
+            // 4. flush details
             $docManager->flush(); // TODO : toflush param only for product manager
         }
 
-        // 5. create / update attributes
-        /*
+        // 5. create / update attributes, set, product
         $productManager = $this->container->get('pim.catalog.product_manager');
-        $transformer = new DataSheetArrayToProductTransformer($productManager, $datasheet);
-        $set = $transformer->transform();
-*/
-        // 6. create / update sets
-
-        // 7. create / update products
-
-
-        // transform datasheet to pim product
-        /*
-        $productManager = $this->container->get('pim.catalog.product_manager');
-        $transformer = new DataSheetArrayToProductTransformer($productManager, $datasheet);
-        $set = $transformer->transform();
-*/
+        $writer = new InsertProductFromDataSheet();
+        $writer->import($productManager, $datasheet, $toFlush);
 
         // 6. flush if not in batch mode
-        $productManager->getPersistenceManager()->persist($set);
-      //  if ($toFlush) {
+        if ($toFlush) {
             $productManager->getPersistenceManager()->flush();
-       // }
+        }
     }
 
     /**

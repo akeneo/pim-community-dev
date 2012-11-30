@@ -59,9 +59,9 @@ class ProductController extends Controller
         $grid = $this->get('grid');
         $grid->setSource($source);
         // add an action column to load import of all datas of the product
-        $rowAction = new RowAction('Import product to PIM', 'pim_connectoricecat_product_loadproduct');
-        $rowAction->setRouteParameters(array('id'));
-        $grid->addRowAction($rowAction);
+        //$rowAction = new RowAction('Import product to PIM', 'pim_connectoricecat_product_loadproduct');
+        //$rowAction->setRouteParameters(array('id'));
+        //$grid->addRowAction($rowAction);
         // manage the grid redirection, exports response of the controller
         return $grid->getGridResponse('PimConnectorIcecatBundle:Product:grid.html.twig');
     }
