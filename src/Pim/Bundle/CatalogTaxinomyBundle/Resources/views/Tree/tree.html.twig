@@ -11,11 +11,6 @@
 
 {% block content %}
     {{ parent() }}
-<div id="container">
-
-<h1 id="dhead">jsTree v.1.0</h1>
-<h1>DEMO</h1>
-
 <h2>PHP &amp; mySQL demo + event order</h2>
 <div id="description">
 <p>Here is a PHP &amp; mySQL enabled demo. You can use the classes/DB structure included, but those are not thoroughly tested and not officially a part of jstree. In the log window you can also see all function calls as they happen on the instance.</p>
@@ -33,17 +28,13 @@
 </div>
 
 <!-- the tree container (notice NOT an UL node) -->
-<div id="demo" class="demo" style="height:200px;"></div>
+<div id="demo" class="demo" style="height:300px;"></div>
 <div style="height:30px; text-align:center;">
-    <input type="button" style='width:170px; height:24px; margin:5px auto;' value="reconstruct" onclick="$.get('http://www.strixos.local/server.php?reconstruct', function () { $('#demo').jstree('refresh',-1); });" />
-    <input type="button" style='width:170px; height:24px; margin:5px auto;' id="analyze" value="analyze" onclick="$('#alog').load('http://www.strixos.local/server.php?analyze');" />
     <input type="button" style='width:170px; height:24px; margin:5px auto;' value="refresh" onclick="$('#demo').jstree('refresh',-1);" />
 </div>
 <div id='alog' style="border:1px solid gray; padding:5px; height:100px; margin-top:15px; overflow:auto; font-family:Monospace;"></div>
 
 {% endblock %}
-
-
 
 {% block js %}
     {{ parent() }}
@@ -81,7 +72,7 @@ $("#demo")
                 "data" : function (n) {
                     // the result is fed to the AJAX request `data` option
                     return {
-                        "id" : n.attr ? n.attr("id").replace("node_","") : 1 
+                        "id" : n.attr ? n.attr("id").replace("node_","") : 92 
                     }; 
                 }
             }
@@ -144,19 +135,6 @@ $("#demo")
                     "remove" : false
                 }
             }
-        },
-        // UI & core - the nodes to initially select and open will be overwritten by the cookie plugin
-
-        // the UI plugin - it handles selecting/deselecting/hovering nodes
-        "ui" : {
-            // this makes the node with ID node_4 selected onload
-            "initially_select" : [ "node_4" ]
-        },
-        // the core plugin - not many options here
-        "core" : { 
-            // just open those two nodes up
-            // as this is an AJAX enabled tree, both will be downloaded from the server
-            "initially_open" : [ "node_2" , "node_3" ] 
         }
     })
     .bind("create.jstree", function (e, data) {

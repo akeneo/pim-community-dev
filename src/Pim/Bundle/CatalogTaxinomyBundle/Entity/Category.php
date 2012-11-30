@@ -92,6 +92,8 @@ class Category
     public function __construct()
     {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->title    = '';
+        $this->type     = 'default';
     }
 
     /**
@@ -266,6 +268,16 @@ class Category
     }
 
     /**
+     * Has children
+     *
+     * @return boolean
+     */
+    public function hasChildren()
+    {
+        return count($this->getChildren()) > 0;
+    }
+
+    /**
      * Get children
      *
      * @return Doctrine\Common\Collections\Collection
@@ -292,9 +304,18 @@ class Category
      * Get type
      *
      * @return string
+     *
+     * TODO : Must be cleaned in pre-persist or otherwise
      */
     public function getType()
     {
-        return $this->type;
+        if ($this->getLevel() === 1) {
+            return 'drive';
+        } else if ($this->hasChildren()) {
+            return 'default';
+        } else {
+            return 'folder';
+        }
+//         return $this->type;
     }
 }
