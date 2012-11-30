@@ -1,6 +1,7 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Transform;
 
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Interfaces\TransformInterface;
 use Pim\Bundle\CatalogTaxinomyBundle\Entity\Category;
 
 /**
@@ -56,6 +57,7 @@ class CategoriesXmlToCategoriesTransformer implements TransformInterface
 
             // add parent
             $category->setParent($parent);
+            $category->setType('folder');
 
             // add category to list
             $this->categories[$icecatId]       = $category;
