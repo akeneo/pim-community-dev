@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Service;
 
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\InsertLanguagesFromXml;
+
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\InsertSuppliersFromXml;
 
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpReader;
@@ -32,7 +34,6 @@ use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductArrayToCatalogProductTrans
 use Pim\Bundle\ConnectorIcecatBundle\Helper\MemoryHelper;
 use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
 
-use Pim\Bundle\ConnectorIcecatBundle\Load\BatchLoader;
 /**
  * Connector service, accessibble from anywhere in application
  *
@@ -102,14 +103,15 @@ class ConnectorService
         $archivePath = $baseDir . $this->configManager->getValue(Config::LANGUAGES_ARCHIVED_FILE);
         $forceDownloadFile = true;
 
-        // Call extractor
+        // Extractor
         $extractor = new DownloadAndUnpackFromUrl($url, $login, $password, $archivePath, $filePath, $forceDownloadFile);
         $extractor->extract();
-        $xmlContent = $extractor->getReadContent();
+        $xmlContent = file_get_contents($filePath);
 
-        $loader = new BatchLoader($this->container->get('doctrine.orm.entity_manager'));
-        $transformer = new LanguagesTransform($loader, $xmlContent);
-        $transformer->transform();
+        // Import
+        $entityManager = $this->container->get('doctrine.orm.entity_manager');
+        $writer= new InsertLanguagesFromXml();
+        $writer->import($xmlContent, $entityManager);
     }
 
     /**

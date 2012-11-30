@@ -1,55 +1,35 @@
 <?php
-namespace Pim\Bundle\ConnectorIcecatBundle\Transform;
+namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Write;
 
-use Pim\Bundle\ConnectorIcecatBundle\Load\LoadInterface;
-
+use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
+use Pim\Bundle\ConnectorIcecatBundle\Helper\MemoryHelper;
+use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
+use \XMLReader;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\SourceLanguage;
 
-use \XMLReader;
-use \Exception;
-
 /**
- * Aims to transform suppliers xml file to csv file
+ * Aims to insert icecat languages
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * TODO : MAKE interfaces to implements xml to csv, xml to php, csv to php, etc.
  */
-class LanguagesTransform implements TransformInterface
+class InsertLanguagesFromXml
 {
-    /**
-     * @var LoadInterface
-     */
-    protected $loader;
 
     /**
-     * @var string
+     * Import data from file to local database
+     *
+     * @param string        $xmlContent    xml content
+     * @param ObjectManager $objectManager manager
+     * @param integer       $batchSize     batch size
      */
-    protected $xmlContent;
-
-    /**
-     * Constructor
-     * @param LoadInterface $loader
-     * @param string        $xmlContent
-     */
-    public function __construct(LoadInterface $loader, $xmlContent)
+    public function import($xmlContent, $objectManager, $batchSize = 200)
     {
-        $this->loader = $loader;
-        $this->xmlContent = $xmlContent;
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see Pim\Bundle\ConnectorIcecatBundle\Transform.LanguagesTransform::transform()
-     */
-    public function transform()
-    {
-        // read xml document and parse to suppliers entities
         $xml = new XMLReader();
-        $xml->XML($this->xmlContent);
+        $xml->XML($xmlContent);
 
+        $nbRow = 0;
         while ($xml->read()) {
             if ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'Language') {
                 $shortCode = $this->formatShortCode($xml->getAttribute('ShortCode'));
@@ -60,19 +40,28 @@ class LanguagesTransform implements TransformInterface
                 $lang->setIcecatShortCode($xml->getAttribute('ShortCode'));
                 $lang->setIcecatId($xml->getAttribute('ID'));
 
-                $this->loader->add($lang);
+                $objectManager->persist($lang);
+
+                if (++$nbRow === $batchSize) {
+                    $objectManager->flush();
+                    $objectManager->clear();
+                    $nbRow = 0;
+                }
+
             } elseif ($xml->nodeType === XMLREADER::ELEMENT && $xml->name === 'Response') {
                 $date = $xml->getAttribute('Date');
             }
         }
-
-        $this->loader->load();
+        $objectManager->flush();
     }
 
     /**
      * Formatter for short code language
      *
-     * @param  string $shortCode
+     * TODO :refactor !
+     *
+     * @param string $shortCode
+     *
      * @return string
      */
     private function formatShortCode($shortCode)
@@ -89,4 +78,5 @@ class LanguagesTransform implements TransformInterface
 
         return $shortCode;
     }
+
 }
