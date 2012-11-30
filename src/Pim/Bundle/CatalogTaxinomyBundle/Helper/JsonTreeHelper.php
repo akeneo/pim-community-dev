@@ -24,7 +24,7 @@ class JsonTreeHelper
 
     /**
      * Format in array content category for JSON response
-     * @param unknown_type $categories
+     * @param ArrayCollection $categories
      *
      * @return array
      * @static
@@ -39,6 +39,24 @@ class JsonTreeHelper
                 'data' => $category->getTitle(),
                 'state'=> 'closed'
             );
+        }
+
+        return $return;
+    }
+
+    /**
+     * Format in array content for JSON search response
+     * @param ArrayCollection $categories
+     *
+     * @return array
+     * @static
+     */
+    public static function searchResponse($categories)
+    {
+        $return = array();
+
+        foreach ($categories as $category) {
+            $return[] = '#node_'. $category->getId();
         }
 
         return $return;

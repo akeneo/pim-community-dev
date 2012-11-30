@@ -31,10 +31,15 @@ class CategoryManager
     /**
      * Get all categories
      * @return ArrayCollection
+     *
+     * TODO : must be set in repository class
      */
     public function getCategories()
     {
-        return $this->getRepository()->findAll();
+        $qb = $this->getRepository()->createQueryBuilder('c');
+        $qb->orderBy('c.title');
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -42,10 +47,36 @@ class CategoryManager
      * @param integer $parentId
      *
      * @return ArrayCollection
+     *
+     * TODO : must be set in Repository class
      */
     public function getChildren($parentId)
     {
-        return $this->getRepository()->findBy(array('parent' => $parentId));
+        $qb = $this->getRepository()->createQueryBuilder('c');
+        $qb->where('c.parent = :parent')->setParameter('parent', $parentId)
+           ->orderBy('c.title');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Search categories by criterias
+     * @param array $criterias
+     *
+     * @return ArrayCollection
+     *
+     * TODO : must be moved in repository class
+     */
+    public function search($criterias)
+    {
+        // TODO : must be cleaned
+        $title = $criterias['title'];
+
+        $qb = $this->getRepository()->createQueryBuilder('c');
+        $qb->where('c.title LIKE :title')->setParameter('title', $title)
+           ->orderBy('c.title');
+
+        return $qb->getQuery()->getResult();
     }
 
     /**

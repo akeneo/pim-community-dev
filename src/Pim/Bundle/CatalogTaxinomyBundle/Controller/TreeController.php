@@ -98,33 +98,14 @@ class TreeController extends Controller
         // get search data
         $search = $request->get('search');
 
-        // TODO : Use request
-//         SELECT left, right
-//         FROM tree
-//         WHERE title LIKE '%name%'
-        $categories = $this->getManager()->getCategories();
+        // find categories by title searching
+        $categories = $this->getManager()->search(array('title' => $search));
+        echo count($categories);
 
         // formate in json content
-        $json = '';
-        foreach ($categories as $category) {
-            $json .= '"#node_'. $category->getId() .'",';
-        }
-        $json = substr($json, 0, -1);
-        $json = '['. $json .']';
+        $data = JsonTreeHelper::searchResponse($categories);
 
-        return $this->render('PimCatalogTaxinomyBundle:Tree:children.html.twig', array('json_categories' => $json));
-
-
-//         $this->db->query("SELECT `".$this->fields["left"]."`, `".$this->fields["right"]."` FROM `".$this->table."` WHERE `".$this->fields["title"]."` LIKE '%".$this->db->escape($data["search_str"])."%'");
-//         if($this->db->nf() === 0) return "[]";
-//         $q = "SELECT DISTINCT `".$this->fields["id"]."` FROM `".$this->table."` WHERE 0 ";
-//         while($this->db->nextr()) {
-//             $q .= " OR (`".$this->fields["left"]."` < ".(int)$this->db->f(0)." AND `".$this->fields["right"]."` > ".(int)$this->db->f(1).") ";
-//         }
-//         $result = array();
-//         $this->db->query($q);
-//         while($this->db->nextr()) { $result[] = "#node_".$this->db->f(0); }
-//         return json_encode($result);
+        return $this->prepareJsonResponse($data);
     }
 
     /**
