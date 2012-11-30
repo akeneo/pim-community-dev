@@ -80,6 +80,13 @@ class Category
     protected $children;
 
     /**
+     * @var string $type
+     *
+     * @ORM\Column(name="type", type="string", length=64)
+     */
+    protected $type;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -266,5 +273,28 @@ class Category
     public function getChildren()
     {
         return $this->children;
+    }
+
+    /**
+     * Set type
+     * @param string $type
+     *
+     * @return Category
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }

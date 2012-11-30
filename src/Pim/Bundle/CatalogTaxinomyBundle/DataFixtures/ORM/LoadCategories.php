@@ -45,22 +45,31 @@ class LoadCategories extends AbstractFixture implements OrderedFixtureInterface,
     {
         $this->manager = $manager;
 
+        $root = new Category();
+        $root->setTitle('');
+        $root->setType('');
+
         $food = new Category();
         $food->setTitle('food');
+        $food->setType('drive');
+        $food->setParent($root);
 
         $fruits = new Category();
         $fruits->setTitle('fruits');
+        $fruits->setType('folder');
         $fruits->setParent($food);
-
 
         $vegetables = new Category();
         $vegetables->setTitle('vegetables');
+        $vegetables->setType('folder');
         $vegetables->setParent($food);
 
         $carrots = new Category();
         $carrots->setTitle('carrots');
+        $carrots->setType('default');
         $carrots->setParent($vegetables);
 
+        $this->manager->persist($root);
         $this->manager->persist($food);
         $this->manager->persist($fruits);
         $this->manager->persist($vegetables);
