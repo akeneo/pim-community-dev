@@ -53,14 +53,16 @@ class CategoriesXmlToCategoriesTransformer implements TransformInterface
             // create parent category entity
             $xmlParent      = $xmlCategory->ParentCategory;
             $icecatParentId = (string) $xmlParent['ID'];
-            $parent         = $this->createCategory($icecatParentId, $xmlParent->Names);
+            if ($icecatId !== $icecatParentId) {
+                $parent         = $this->createCategory($icecatParentId, $xmlParent->Names);
 
-            // add parent
-            $category->setParent($parent);
+                // add parent
+                $category->setParent($parent);
 
+                $this->categories[$icecatParentId] = $parent;
+            }
             // add category to list
             $this->categories[$icecatId]       = $category;
-            $this->categories[$icecatParentId] = $parent;
         }
 
         return $this->categories;
