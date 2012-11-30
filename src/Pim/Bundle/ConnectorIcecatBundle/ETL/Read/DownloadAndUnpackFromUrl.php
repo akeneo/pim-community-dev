@@ -1,8 +1,12 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Read;
 
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Interfaces\ExtractInterface;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Interfaces\DownloadInterface;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Interfaces\UnpackInterface;
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileUnzip;
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpDownload;
+
 
 /**
  * Download a source archive (product, supplier, language base data) and unpack to a destination file

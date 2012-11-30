@@ -1,8 +1,7 @@
 <?php
-namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Read;
-
+namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Interfaces;
 /**
- * Interface downloadable
+ * Interface extractable
  * TODO: should be moved in dataflow ?
  *
  * @author    Romain Monceau <romain@akeneo.com>
@@ -10,13 +9,10 @@ namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Read;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-interface DownloadInterface
+interface ExtractInterface
 {
     /**
-     * Download file to defined path
-     *
-     * @param string $url  the url
-     * @param string $path the path
+     * Extract data from source (database tables, url, csv file, xml file, archive, ftp, etc)
      */
-    public function download($url, $path);
+    public function extract();
 }

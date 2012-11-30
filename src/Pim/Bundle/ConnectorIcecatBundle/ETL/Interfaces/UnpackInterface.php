@@ -1,5 +1,5 @@
 <?php
-namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Read;
+namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Interfaces;
 
 /**
  * Interface to unpack a file.

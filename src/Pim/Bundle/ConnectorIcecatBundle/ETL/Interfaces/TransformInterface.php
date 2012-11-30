@@ -1,5 +1,5 @@
 <?php
-namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Transform;
+namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Interfaces;
 
 /**
  * Interface transform

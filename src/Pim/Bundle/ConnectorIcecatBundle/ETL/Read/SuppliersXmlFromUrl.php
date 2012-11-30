@@ -2,6 +2,7 @@
 namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Read;
 
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpReader;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Interfaces\ExtractInterface;
 
 /**
  * Read supplier xml content

@@ -1,6 +1,7 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Transform;
 
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Interfaces\TransformInterface;
 use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
 use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
 
