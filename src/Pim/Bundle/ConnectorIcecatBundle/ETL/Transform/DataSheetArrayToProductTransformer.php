@@ -2,7 +2,7 @@
 namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Transform;
 
 use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
-use Pim\Bundle\ConnectorIcecatBundle\Document\ProductDataSheet;
+use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
 
 /**
  * Aims to transform product data sheet data to catalog product instance
@@ -36,7 +36,7 @@ class DataSheetArrayToProductTransformer implements TransformInterface
      * @param ProductManager   $productManager product manager
      * @param ProductDataSheet $datasheet      product datasheet
      */
-    public function __construct(\Pim\Bundle\CatalogBundle\Doctrine\ProductManager $productManager, ProductDataSheet $datasheet)
+    public function __construct(\Pim\Bundle\CatalogBundle\Doctrine\ProductManager $productManager, IcecatProductDataSheet $datasheet)
     {
         $this->productManager = $productManager;
         $this->datasheet = $datasheet;
@@ -52,7 +52,7 @@ class DataSheetArrayToProductTransformer implements TransformInterface
 
         // TODO : directly use $this->var instead of copy var
         $persistanceManager = $this->productManager->getPersistenceManager();
-        $allData = json_decode($this->datasheet->getXmlDetailledData(), true);
+        $allData = json_decode($this->datasheet->getData(), true);
 
         $prodData = $allData['basedata'];
         $catData = $allData['category'];
@@ -82,35 +82,35 @@ class DataSheetArrayToProductTransformer implements TransformInterface
 
         // 3) add attributes if not exists
         foreach ($prodFeatureData as $prodFeatId => $prodFeatData) {
-
-                $attributeName = $attributeData['name'];
-                $valueData = $attributeData['value'];
-                $attributeCode = self::PREFIX.'-'.$prodData['vendorId'].'-'.$featId.'-'.$attributeId;
-
                 // get group
                 $group = $set->getGroup($prodFeatData['CategoryFeatureGroup_ID']);
 
                 // get attribute or create
-                $attribute = $group->getAttribute($prodFeatId);
-                if (!$attribute) {
+                //TODO : update !
+             /*   $attribute = $group->getAttribute($prodFeatId);
+                if (!$attribute) {*/
                     $classField = $this->productManager->getAttributeClass();
                     $attribute = new $classField();
                     $attribute->setCode($prodFeatId);
-                    $attribute->setTitle($prodFeatData['Value'][$localeIcecat]);
+                    $attribute->setTitle($prodFeatData['Name'][$localeIcecat]);
                     $attribute->setType(BaseFieldFactory::FIELD_STRING);
                     $persistanceManager->persist($attribute);
                     $group->addAttribute($attribute);
-                }
-/*
-                $productAttributeCodeToValues[$attributeCode]= $valueData;
-
-                // TODO : deal with existing values
-                $value = $this->productManager->getNewAttributeValueInstance();
-                $value->setAttribute($attribute);
-                $value->setData($valueData);
-                $productValues[]= $value;*/
+               // }
         }
 
+        // 4) get / create product
+//        $product = $this->productManager->getproductRepository()->findOneByCode($setCode);
+// TODO update
+
+return $set;
+
+
+        // TODO use pivotal transformer
+/*
+        $transformer = new ProductToArrayTransformer($this->getProductManager());
+        $instance = $transformer->reverseTransform($productData);
+*/
 
 /*
         // 2) add all attributes of prodData as general attributes
@@ -208,8 +208,8 @@ class DataSheetArrayToProductTransformer implements TransformInterface
         }
 */
         // 4) save set
-        $persistanceManager->persist($set);
-        $persistanceManager->flush();
+/*        $persistanceManager->persist($set);
+        $persistanceManager->flush();*/
 /*
         // 5) if not exists create a product
         $productSourceId = null;

@@ -171,4 +171,24 @@ class IcecatProductDataSheet
     {
         return $this->data;
     }
+
+    /**
+     * Check status
+     *
+     * @return boolean
+     */
+    public function isImported()
+    {
+        return $this->status == self::STATUS_IMPORT;
+    }
+
+    /**
+     * Check status
+     *
+     * @return boolean
+     */
+    public function isInitialized()
+    {
+        return $this->status == self::STATUS_INIT;
+    }
 }

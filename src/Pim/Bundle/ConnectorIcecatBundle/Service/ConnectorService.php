@@ -9,6 +9,7 @@ use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\InsertDetailledIcecatProductsFrom
 use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\ConfigManager;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\SourceSupplier;
+use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
 
 use Pim\Bundle\ConnectorIcecatBundle\Extract\ProductXmlExtractor;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\SuppliersXmlUrl;
@@ -16,6 +17,7 @@ use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\ProductXmlUrl;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\DownloadAndUnpackFromUrl;
 
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\ProductIntXmlToArrayTransformer;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\DataSheetArrayToProductTransformer;
 
 use Pim\Bundle\ConnectorIcecatBundle\Transform\LanguagesTransform;
 use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductsTransform;
@@ -167,84 +169,40 @@ class ConnectorService
         $baseUrl     = $this->configManager->getValue(Config::BASE_URL);
         $baseProdUrl = $this->configManager->getValue(Config::BASE_PRODUCTS_URL);
 
-        // get related datasheet
+        // 1. get related datasheet
         $docManager = $this->container->get('doctrine.odm.mongodb.document_manager');
         $datasheet = $docManager->getRepository('PimConnectorIcecatBundle:IcecatProductDataSheet')->find($datasheetId);
         $datasheetUrl = $baseUrl.$baseProdUrl.$datasheet->getProductId().'.xml';
 
-        // TODO depends on status !
-
-        // 2. extract product xml from icecat
-        $reader = new ProductXmlUrl($datasheetUrl, $login, $password);
-        $reader->extract();
-        $simpleXml = $reader->getXmlContent();
-
-        // 3. transform product xml to lines (associative array)
-        $transformer = new ProductIntXmlToArrayTransformer($simpleXml);
-        $productData = $transformer->transform();
-
-        // 4. set
-
-        // TODO 4. add other lang !
-
-
-        /*
-        // 5. transform array to pim product
-        $productManager = $this->container->get('pim.catalog.product_manager');
-        $transformer = new ProductArrayToCatalogProductTransformer($productManager, $productBaseData, $productFeatures, $pimLocale);
-        $transformer->transform();
-*/
-/*
-
-        // 6. Update icecat product imported
-        $baseProduct->setIsImported(true);
-        $em->persist($baseProduct);
-        $em->flush();
-*/
-
-/*
-        if ($datasheet->isImported()) {
-            // transform
-
-            // insert
-        }
-*/
-        /*
-        // TODO by configuration, for now en_US first is important
-        $localeIceToPim = array('US' => 'en_US'/); // no translate for now
-
-        // 1. get base product from icecat referential
-        $em = $this->container->get('doctrine.orm.entity_manager');
-        $baseProduct = $em->getRepository('PimConnectorIcecatBundle:SourceProduct')->find($productId);
-        $prodId = $baseProduct->getProdId();
-        $supplierName = $baseProduct->getSupplier()->getName();
-
-        foreach ($localeIceToPim as $icecatLocale => $pimLocale) {
+        // retrieve details if not already done
+        if (!$datasheet->isImported()) {
 
             // 2. extract product xml from icecat
-            $extractor = new ProductXmlExtractor($prodId, $supplierName, $icecatLocale, $this->configManager);
-            $extractor->extract();
-            $simpleXml = $extractor->getReadContent();
+            $reader = new ProductXmlUrl($datasheetUrl, $login, $password);
+            $reader->extract();
+            $simpleXml = simplexml_load_string($reader->getXmlContent());
 
             // 3. transform product xml to lines (associative array)
-            $transformer = new ProductXmlToArrayTransformer($simpleXml);
-            $transformer->transform();
-            $productBaseData = $transformer->getProductBaseData();
-            $productFeatures = $transformer->getProductFeatures();
+            $transformer = new ProductIntXmlToArrayTransformer($simpleXml);
+            $productData = $transformer->transform();
 
-            // 4. transform array to pim product
-            $productManager = $this->container->get('pim.catalog.product_manager');
-            $transformer = new ProductArrayToCatalogProductTransformer($productManager, $productBaseData, $productFeatures, $pimLocale);
-            $transformer->transform();
+            // 4. persist details
+            $datasheet->setData(json_encode($productData));
+            $datasheet->setStatus(IcecatProductDataSheet::STATUS_IMPORT);
+            $docManager->persist($datasheet);
+            $docManager->flush(); // TODO : toflush param only for product manager
+        }
 
-        }
-*/
-        // 6. Update icecat product imported
- //       $baseProduct->setIsImported(true);
-        $em->persist($baseProduct);
-        if ($toFlush) {
-            $em->flush();
-        }
+        // 5. transform datasheet to pim product
+        $productManager = $this->container->get('pim.catalog.product_manager');
+        $transformer = new DataSheetArrayToProductTransformer($productManager, $datasheet);
+        $set = $transformer->transform();
+
+        // 6. flush if not in batch mode
+        $productManager->getPersistenceManager()->persist($set);
+      //  if ($toFlush) {
+            $productManager->getPersistenceManager()->flush();
+       // }
     }
 
     /**
