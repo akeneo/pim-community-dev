@@ -118,7 +118,7 @@ $("#demo")
                     "valid_children" : "none",
                     // If we specify an icon for the default type it WILL OVERRIDE the theme icons
                     "icon" : {
-                        "image" : "http://www.strixos.local/file.png"
+                        "image" : "/bundles/pimui/images/icons/tree/file.png"
                     }
                 },
                 // The `folder` type
@@ -126,7 +126,7 @@ $("#demo")
                     // can have files and other folders inside of it, but NOT `drive` nodes
                     "valid_children" : [ "default", "folder" ],
                     "icon" : {
-                        "image" : "http://www.strixos.local/folder.png"
+                        "image" : "/bundles/pimui/images/icons/tree/folder.png"
                     }
                 },
                 // The `drive` nodes 
@@ -134,7 +134,7 @@ $("#demo")
                     // can have files and folders inside, but NOT other `drive` nodes
                     "valid_children" : [ "default", "folder" ],
                     "icon" : {
-                        "image" : "http://www.strixos.local/root.png"
+                        "image" : "/bundles/pimui/images/icons/tree/root.png"
                     },
                     // those prevent the functions with the same name to be used on `drive` nodes
                     // internally the `before` event is used
@@ -205,7 +205,6 @@ $("#demo")
                 "title" : data.rslt.new_name
             }, 
             function (r) {
-                console.log(r);
                 if(!r.status) {
                     $.jstree.rollback(data.rlbk);
                 }
