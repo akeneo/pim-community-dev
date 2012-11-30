@@ -1,5 +1,5 @@
 <?php
-require_once("config-tree.php");
+require_once("_inc/config-tree.php");
 $jstree = new json_tree();
 
 //$jstree->_create_default();
