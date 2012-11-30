@@ -36,13 +36,6 @@ class ImportBaseProductsCommand extends AbstractPimCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // get config
-        $configManager    = $this->getConfigManager();
-        $downloadUrl      = $this->getConfigManager()->getValue(Config::PRODUCTS_URL);
-        $baseDir          = $configManager->getValue(Config::BASE_DIR);
-        $archivedFilePath = $baseDir . $configManager->getValue(Config::PRODUCTS_ARCHIVED_FILE);
-        $filePath         = $baseDir . $configManager->getValue(Config::PRODUCTS_FILE);
-
         // run base product import
         $srvConnector = $this->getContainer()->get('akeneo.connector.icecat_service');
         $srvConnector->importIcecatBaseProducts();

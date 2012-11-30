@@ -1,9 +1,10 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Service;
 
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\InsertBaseIcecatProductsFromCsv;
-
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpReader;
+
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\InsertBaseIcecatProductsFromCsv;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\InsertDetailledIcecatProductsFromUrl;
 
 use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\ConfigManager;
@@ -104,7 +105,7 @@ class ConnectorService
     }
 
     /**
-     * Import products from icecat database
+     * Import base products from icecat database
      */
     public function importIcecatBaseProducts()
     {
@@ -132,6 +133,27 @@ class ConnectorService
     }
 
     /**
+     * Import details for base products from icecat database
+     *
+     * @param integer $limit nb product to import
+     */
+    public function importIcecatDetailledProducts($limit)
+    {
+        // Get config
+        $login       = $this->configManager->getValue(Config::LOGIN);
+        $password    = $this->configManager->getValue(Config::PASSWORD);
+        $baseUrl     = $this->configManager->getValue(Config::BASE_URL);
+        $baseProdUrl = $baseUrl.$this->configManager->getValue(Config::BASE_PRODUCTS_URL);
+
+        // import detailled products
+        TimeHelper::addValue('import-detailled-product');
+        $manager = $this->container->get('doctrine.odm.mongodb.document_manager');
+        $writer = new InsertDetailledIcecatProductsFromUrl();
+        $writer->import($manager, $baseProdUrl, $login, $password, $limit);
+        echo /*$this->writeln(*/'Insert base product -> '. TimeHelper::writeGap('import-detailled-product')/*);*/;
+    }
+
+    /**
      * Import a product by its icecat id
      *
      * @param string  $datasheetId datasheet id
@@ -148,7 +170,7 @@ class ConnectorService
         // get related datasheet
         $docManager = $this->container->get('doctrine.odm.mongodb.document_manager');
         $datasheet = $docManager->getRepository('PimConnectorIcecatBundle:IcecatProductDataSheet')->find($datasheetId);
-        $datasheetUrl  = $baseUrl.$baseProdUrl.$datasheet->getProductId().'.xml';
+        $datasheetUrl = $baseUrl.$baseProdUrl.$datasheet->getProductId().'.xml';
 
         // TODO depends on status !
 

@@ -58,7 +58,7 @@ class ProductXmlUrl implements ExtractInterface
     public function extract()
     {
         $fileReader = new FileHttpReader();
-        $this->xmlContent = simplexml_load_string($fileReader->process($this->url, $this->login, $this->password));
+        $this->xmlContent = $fileReader->process($this->url, $this->login, $this->password);
     }
 
     /**

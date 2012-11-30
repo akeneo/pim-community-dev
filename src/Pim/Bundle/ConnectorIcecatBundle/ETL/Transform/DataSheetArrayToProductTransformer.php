@@ -33,8 +33,8 @@ class DataSheetArrayToProductTransformer implements TransformInterface
     /**
      * Constructor
      *
-     * @param ProductManager   $productManager
-     * @param ProductDataSheet $datasheet
+     * @param ProductManager   $productManager product manager
+     * @param ProductDataSheet $datasheet      product datasheet
      */
     public function __construct(\Pim\Bundle\CatalogBundle\Doctrine\ProductManager $productManager, ProductDataSheet $datasheet)
     {

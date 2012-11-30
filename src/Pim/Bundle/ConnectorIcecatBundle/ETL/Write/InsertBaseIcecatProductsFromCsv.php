@@ -65,8 +65,6 @@ class InsertBaseIcecatProductsFromCsv
 
         //TODO $this->removeDuplicate();
 
-        echo /*$this->writeln(*/'Import -> '. TimeHelper::writeGap('full-import').PHP_EOL;//);
-
     }
 
     /**

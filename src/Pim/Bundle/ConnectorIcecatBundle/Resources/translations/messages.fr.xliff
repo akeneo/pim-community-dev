@@ -32,7 +32,7 @@
             </trans-unit>
             <trans-unit id="8">
                 <source>pim.connector.icecat.menu.initialize-product</source>
-                <target>Initialisation des produits IceCat (Seulement 5k)</target>
+                <target>Initialisation des produits IceCat</target>
             </trans-unit>
             <trans-unit id="9">
                 <source>pim.connector.icecat.menu.initialize-supplier</source>
