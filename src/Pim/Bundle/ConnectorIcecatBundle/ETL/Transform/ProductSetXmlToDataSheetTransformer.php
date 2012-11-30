@@ -1,8 +1,9 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Transform;
 
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Interfaces\TransformInterface;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Interfaces\EnrichInterface;
 use Pim\Bundle\ConnectorIcecatBundle\Exception\TransformException;
+use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
 
 use \SimpleXMLElement;
 /**
@@ -13,8 +14,14 @@ use \SimpleXMLElement;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ProductIntXmlToArrayTransformer implements TransformInterface
+class ProductSetXmlToDataSheetTransformer implements EnrichInterface
 {
+    /**
+     * Datasheet to enrich
+     * @var IcecatProductDataSheet
+     */
+    protected $datasheet;
+
     /**
      * Xml element to parse
      * @var SimpleXMLElement
@@ -53,17 +60,20 @@ class ProductIntXmlToArrayTransformer implements TransformInterface
 
     /**
      * Constructor
-     * @param SimpleXMLElement $simpleDoc
+     *
+     * @param SimpleXMLElement       $simpleDoc simple element
+     * @param IcecatProductDataSheet $datasheet the datasheet to enrich
      */
-    public function __construct(SimpleXMLElement $simpleDoc)
+    public function __construct(SimpleXMLElement $simpleDoc, IcecatProductDataSheet $datasheet)
     {
         $this->simpleDoc = $simpleDoc;
+        $this->datasheet = $datasheet;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function transform()
+    public function enrich()
     {
         // verify if product id really exists
         if (isset($this->simpleDoc->Product['Code']) && $this->simpleDoc->Product['Code'] == -1) {
@@ -77,12 +87,16 @@ class ProductIntXmlToArrayTransformer implements TransformInterface
         $this->parseGroups($this->simpleDoc);
         $this->parseFeatures($this->simpleDoc);
 
-        return array(
+        $data = array(
             'basedata'              => $this->productBaseData,
             'category'              => $this->productCategory,
             'categoryfeaturegroups' => $this->productGroups,
             'productfeatures'       => $this->productFeatures
         );
+
+        // persist details
+        $this->datasheet->setData(json_encode($data));
+        $this->datasheet->setStatus(IcecatProductDataSheet::STATUS_IMPORT);
     }
 
     /**

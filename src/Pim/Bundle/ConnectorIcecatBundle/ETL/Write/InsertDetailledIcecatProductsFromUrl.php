@@ -4,8 +4,8 @@ namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Write;
 use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
 use Pim\Bundle\ConnectorIcecatBundle\Helper\MemoryHelper;
 use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\ProductDataSheetXmlFromUrl;
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\ProductIntXmlToArrayTransformer;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\ProductSetXmlFromUrl;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\ProductSetXmlToDataSheetTransformer;
 
 /**
  * Aims to insert detailled icecat product
@@ -30,9 +30,9 @@ class InsertDetailledIcecatProductsFromUrl
     public function import($objectManager, $baseProductUrl, $login, $password, $limit, $batchSize = 100)
     {
         // get products
-        $products = $objectManager->getRepository('PimConnectorIcecatBundle:IcecatProductDataSheet')
+        $datasheets = $objectManager->getRepository('PimConnectorIcecatBundle:IcecatProductDataSheet')
             ->findBy(array('status' => IcecatProductDataSheet::STATUS_INIT));
-        echo $products->count() .' products found'.PHP_EOL;
+        echo $datasheets->count() .' products found'.PHP_EOL;
 
         // loop on products
         $nbProd = 0;
@@ -41,29 +41,29 @@ class InsertDetailledIcecatProductsFromUrl
         TimeHelper::addValue('loop-import');
         MemoryHelper::addValue('memory');
 
-        foreach ($products as $product) {
+        foreach ($datasheets as $datasheet) {
 
             try {
                 // get xml content
-                $datasheetUrl = $baseProductUrl.$product->getProductId() .'.xml';
-                $reader = new ProductDataSheetXmlFromUrl($datasheetUrl, $login, $password);
+                $datasheetUrl = $baseProductUrl.$datasheet->getProductId() .'.xml';
+                $reader = new ProductSetXmlFromUrl($datasheetUrl, $login, $password);
                 $reader->extract();
                 $content = simplexml_load_string($reader->getXmlContent());
 
                 if (!$content) {
                     echo 'Exception -> '. $file . ' is not well formed';
-                    $product->setIsImported(-1);
-                    $objectManager->persist($product);
+                    $datasheet->setIsImported(-1);
+                    $objectManager->persist($datasheet);
 
                 } else {
                     // keep only used data, convert to array and encode ton json format
-                    $xmlToArray = new ProductIntXmlToArrayTransformer($content);
-                    $data = $xmlToArray->transform();
+                    $xmlToArray = new ProductSetXmlToDataSheetTransformer($content, $datasheet);
+                    $xmlToArray->enrich();
 
                     // persist details
-                    $product->setData(json_encode($data));
-                    $product->setStatus(IcecatProductDataSheet::STATUS_IMPORT);
-                    $objectManager->persist($product);
+                    //$product->setData(json_encode($data));
+                    //$product->setStatus(IcecatProductDataSheet::STATUS_IMPORT);
+                    $objectManager->persist($datasheet);
                     //$this->writeln('insert '. $product->getProductId());
 
                     // save by batch of x product details
@@ -85,8 +85,8 @@ class InsertDetailledIcecatProductsFromUrl
                 }
             } catch (\Exception $e) {
                 echo 'Exception -> '. $e->getMessage().PHP_EOL;
-                $product->setStatus(IcecatProductDataSheet::STATUS_ERROR);
-                $objectManager->persist($product);
+                $datasheet->setStatus(IcecatProductDataSheet::STATUS_ERROR);
+                $objectManager->persist($datasheet);
             }
         }
         echo 'total time elapsed : '. TimeHelper::writeGap('start-import').PHP_EOL;

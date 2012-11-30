@@ -13,10 +13,10 @@ use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
 
 use Pim\Bundle\ConnectorIcecatBundle\Extract\ProductXmlExtractor;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\SuppliersXmlFromUrl;
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\ProductDataSheetXmlFromUrl;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\ProductSetXmlFromUrl;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\DownloadAndUnpackFromUrl;
 
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\ProductIntXmlToArrayTransformer;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\ProductSetXmlToDataSheetTransformer;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\DataSheetArrayToProductTransformer;
 
 use Pim\Bundle\ConnectorIcecatBundle\Transform\LanguagesTransform;
@@ -179,12 +179,12 @@ class ConnectorService
         if (!$datasheet->isImported()) {
 
             // 2. extract product xml from icecat
-            $reader = new ProductDataSheetXmlFromUrl($datasheetUrl, $login, $password);
+            $reader = new ProductSetXmlFromUrl($datasheetUrl, $login, $password);
             $reader->extract();
             $simpleXml = simplexml_load_string($reader->getXmlContent());
 
             // 3. transform product xml to lines (associative array)
-            $transformer = new ProductIntXmlToArrayTransformer($simpleXml);
+            $transformer = new ProductSetXmlToDataSheetTransformer($simpleXml);
             $productData = $transformer->transform();
 
             // 4. persist details
