@@ -7,7 +7,7 @@ use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
 
 use \SimpleXMLElement;
 /**
- * Aims to transform xml product data to array
+ * Aims to enrich datasheet with xml product set data (set, groups, attributes)
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
@@ -177,11 +177,10 @@ class ProductSetXmlToDataSheetTransformer implements EnrichInterface
             $groupId   = (integer) $featureTag['CategoryFeatureGroup_ID'];
             $this->productFeatures[$featureId] = array('CategoryFeatureGroup_ID' => $groupId);
             $this->productFeatures[$featureId]['Name'] = array();
-            // TODO : not translated !
+
+            // prepare product values
             $this->productFeatures[$featureId]['Value'] = array();
-            $this->productFeatures[$featureId]['Value'][1]= (string) $featureTag['Value'];
             $this->productFeatures[$featureId]['Presentation_Value'] = array();
-            $this->productFeatures[$featureId]['Presentation_Value'][1]= (string) $featureTag['Presentation_Value'];
 
             foreach ($featureTag->Feature->Name as $featureName) {
                 $langId = (integer) $featureName['langid'];

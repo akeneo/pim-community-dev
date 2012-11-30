@@ -6,6 +6,7 @@ use Pim\Bundle\ConnectorIcecatBundle\Helper\MemoryHelper;
 use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\ProductSetXmlFromUrl;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\ProductSetXmlToDataSheetTransformer;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\ProductValuesXmlToDataSheetTransformer;
 
 /**
  * Aims to insert detailled icecat product
@@ -29,23 +30,25 @@ class InsertDetailledIcecatProductsFromUrl
      */
     public function import($objectManager, $baseProductUrl, $login, $password, $limit, $batchSize = 100)
     {
-        // get products
+        // get datasheets
         $datasheets = $objectManager->getRepository('PimConnectorIcecatBundle:IcecatProductDataSheet')
             ->findBy(array('status' => IcecatProductDataSheet::STATUS_INIT));
         echo $datasheets->count() .' products found'.PHP_EOL;
 
-        // loop on products
+        // loop on datasheets
         $nbProd = 0;
 
         TimeHelper::addValue('start-import');
         TimeHelper::addValue('loop-import');
         MemoryHelper::addValue('memory');
 
+        $locales = array('US' => 1, 'FR' => 3);
+
         foreach ($datasheets as $datasheet) {
 
             try {
-                // get xml content
-                $datasheetUrl = $baseProductUrl.$datasheet->getProductId() .'.xml';
+                // get xml content (set)
+                $datasheetUrl = $baseProductUrl.'INT/'.$datasheet->getProductId() .'.xml';
                 $reader = new ProductSetXmlFromUrl($datasheetUrl, $login, $password);
                 $reader->extract();
                 $content = simplexml_load_string($reader->getXmlContent());
@@ -56,15 +59,34 @@ class InsertDetailledIcecatProductsFromUrl
                     $objectManager->persist($datasheet);
 
                 } else {
-                    // keep only used data, convert to array and encode ton json format
+
+                    // enrich with set data
                     $xmlToArray = new ProductSetXmlToDataSheetTransformer($content, $datasheet);
                     $xmlToArray->enrich();
 
+                    // enrich with product values in any locales
+                    foreach ($locales as $localeCode => $localeId) {
+
+                        // get xml content (set)
+                        $datasheetUrl = $baseProductUrl.'/'.$localeCode.'/'.$datasheet->getProductId() .'.xml';
+                        $reader = new ProductSetXmlFromUrl($datasheetUrl, $login, $password);
+                        $reader->extract();
+                        $content = simplexml_load_string($reader->getXmlContent());
+
+                        if (!$content) {
+                            echo 'Exception -> '. $file . ' is not well formed';
+                            $datasheet->setIsImported(-1);
+                            $objectManager->persist($datasheet);
+
+                        } else {
+                            // enrich with product values
+                            $xmlToArray = new ProductValuesXmlToDataSheetTransformer($content, $datasheet, $localeId);
+                            $xmlToArray->enrich();
+                        }
+                    }
+
                     // persist details
-                    //$product->setData(json_encode($data));
-                    //$product->setStatus(IcecatProductDataSheet::STATUS_IMPORT);
                     $objectManager->persist($datasheet);
-                    //$this->writeln('insert '. $product->getProductId());
 
                     // save by batch of x product details
                     if (++$nbProd === $batchSize) {

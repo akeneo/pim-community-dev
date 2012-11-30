@@ -55,7 +55,7 @@ class LoadConfig extends AbstractFixture implements OrderedFixtureInterface, Con
         $this->loadConfig(Config::BASE_DIR, '/tmp/');
         $this->loadConfig(Config::BASE_URL, 'http://data.icecat.biz/');
 
-        $this->loadConfig(Config::BASE_PRODUCTS_URL, 'export/freexml.int/INT/');
+        $this->loadConfig(Config::BASE_PRODUCTS_URL, 'export/freexml.int/');
 
         $this->loadConfig(Config::CATEGORIES_FILE, 'categories-list.xml');
         $this->loadConfig(Config::CATEGORIES_ARCHIVED_FILE, 'categories-list.xml.gz');
