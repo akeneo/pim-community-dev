@@ -72,7 +72,7 @@ $("#demo")
                 "data" : function (n) {
                     // the result is fed to the AJAX request `data` option
                     return {
-                        "id" : n.attr ? n.attr("id").replace("node_","") : 92 
+                        "id" : n.attr ? n.attr("id").replace("node_","") : 1 
                     }; 
                 }
             }
@@ -194,7 +194,7 @@ $("#demo")
             $.ajax({
                 async : false,
                 type: 'POST',
-                url: "http://www.strixos.local/server.php",
+                url: "moveNode",
                 data : { 
                     "operation" : "move_node", 
                     "id" : $(this).attr("id").replace("node_",""), 
@@ -213,7 +213,6 @@ $("#demo")
                             data.inst.refresh(data.inst._get_parent(data.rslt.oc));
                         }
                     }
-                    $("#analyze").click();
                 }
             });
         });

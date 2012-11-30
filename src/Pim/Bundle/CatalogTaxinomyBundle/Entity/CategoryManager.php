@@ -29,6 +29,15 @@ class CategoryManager
     }
 
     /**
+     * Get all categories
+     * @return ArrayCollection
+     */
+    public function getCategories()
+    {
+        return $this->getRepository()->findAll();
+    }
+
+    /**
      * Get all children for a parent category id
      * @param integer $parentId
      *
@@ -107,5 +116,40 @@ class CategoryManager
         $category = $this->getCategory($categoryId);
         $category->setTitle($title);
         $this->persist($category);
+    }
+
+    /**
+     * Move a category to another parent
+     * @param integer $categoryId  category to move
+     * @param integer $referenceId parent category
+     */
+    public function move($categoryId, $referenceId)
+    {
+        // get categories
+        $category  = $this->getCategory($categoryId);
+        $reference = $this->getCategory($referenceId);
+
+        $category->setParent($reference);
+
+        $this->persist($category);
+    }
+
+    /**
+     * Copy a category and link it to a parent category
+     * @param integer $categoryId  category to copy
+     * @param integer $referenceId parent category
+     */
+    public function copy($categoryId, $referenceId)
+    {
+        // get categories
+        $category  = $this->getCategory($categoryId);
+        $reference = $this->getCategory($referenceId);
+
+        // copy all values
+        $newCategory = $this->createNewInstance();
+        $newCategory->setTitle($category->getTitle());
+        $newCategory->setParent($reference);
+
+        $this->persist($newCategory);
     }
 }

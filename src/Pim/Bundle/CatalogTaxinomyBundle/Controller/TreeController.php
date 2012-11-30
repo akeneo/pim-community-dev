@@ -30,23 +30,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class TreeController extends Controller
 {
     /**
-     * @return EntityManager
-     */
-    protected function getEntityManager()
-    {
-        return $this->get('doctrine.orm.entity_manager');
-    }
-
-    /**
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    protected function getRepository()
-    {
-        return $this->getEntityManager()
-                    ->getRepository('PimCatalogTaxinomyBundle:Tree');
-    }
-
-    /**
      * @return Response
      *
      * @Route("/index")
@@ -54,7 +37,7 @@ class TreeController extends Controller
      */
     public function indexAction()
     {
-        $res = $this->getRepository()->findAll();
+        $res = $this->getManager()->getCategories();
 
         return $this->render(
             'PimCatalogTaxinomyBundle:Tree:index.html.twig',
@@ -119,7 +102,7 @@ class TreeController extends Controller
 //         SELECT left, right
 //         FROM tree
 //         WHERE title LIKE '%name%'
-        $categories = $this->getRepository()->findAll();
+        $categories = $this->getManager()->getCategories();
 
         // formate in json content
         $json = '';
@@ -223,7 +206,7 @@ class TreeController extends Controller
      */
     public function removeAction(Request $request)
     {
-        // find category and remove it
+        // remove category
         $this->getManager()->removeFromId($request->get('id'));
 
         // format response to json content
@@ -241,53 +224,23 @@ class TreeController extends Controller
      * @Method("POST")
      * @Route("/moveNode")
      * @Template()
-     *
-     * TODO : Manage cut/paste and copy/paste (clone then paste)
      */
     public function moveNodeAction(Request $request)
     {
+        $categoryId  = $request->get('id');
+        $referenceId = $request->get('ref');
 
-    }
+        // copy or move category
+        if ($request->get('copy') == 1) {
+            $this->getManager()->copy($categoryId, $referenceId);
+        } else {
+            $this->getManager()->move($categoryId, $referenceId);
+        }
 
-    /**
-     * Analyse tree
-     * @param Request $request
-     *
-     * @return Response
-     *
-     * @Method("POST")
-     * @Route("/analyse")
-     * @Template()
-     */
-    public function analyseAction(Request $request)
-    {
+        // format response to json content
+        $data = JsonTreeHelper::statusOKResponse();
 
-    }
-
-    /**
-     * Reconstruct tree
-     * @param Request $request
-     *
-     * @return Response
-     *
-     * @Method("POST")
-     * @Route("/reconstruct")
-     * @Template()
-     */
-    public function reconstructAction(Request $request)
-    {
-
-    }
-
-    /**
-     * Get a category entity from an id
-     * @param integer $categoryId
-     *
-     * @return boolean
-     */
-    protected function getCategory($categoryId)
-    {
-        return $this->getRepository()->findOneBy(array('id' => $categoryId));
+        return $this->prepareJsonResponse($data);
     }
 
     /**
