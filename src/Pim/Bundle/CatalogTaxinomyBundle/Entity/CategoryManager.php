@@ -40,11 +40,72 @@ class CategoryManager
     }
 
     /**
+     * Get category by his id
+     * @param integer $categoryId
+     *
+     * @return \Pim\Bundle\CatalogTaxinomyBundle\Entity\Category
+     */
+    public function getCategory($categoryId)
+    {
+        return $this->getRepository()->findOneBy(array('id' => $categoryId));
+    }
+
+    /**
+     * Persist a category entity
+     * @param \Pim\Bundle\CatalogTaxinomyBundle\Entity\Category $category
+     */
+    public function persist($category)
+    {
+        $this->objectManager->persist($category);
+        $this->objectManager->flush();
+    }
+
+    /**
      * Get repository
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
     protected function getRepository()
     {
         return $this->objectManager->getRepository('PimCatalogTaxinomyBundle:Category');
+    }
+
+    /**
+     * @return \Pim\Bundle\CatalogTaxinomyBundle\Entity\Category
+     */
+    public function createNewInstance()
+    {
+        return new Category();
+    }
+
+    /**
+     * Remove a category from his id
+     * @param integer $categoryId
+     */
+    public function removeFromId($categoryId)
+    {
+        $category = $this->getCategory($categoryId);
+        $this->remove($category);
+    }
+
+    /**
+     * Remove a category object
+     * @param \Pim\Bundle\CatalogTaxinomyBundle\Entity\Category $category
+     */
+    public function remove($category)
+    {
+        $this->objectManager->remove($category);
+        $this->objectManager->flush();
+    }
+
+    /**
+     * Rename a category
+     * @param integer $categoryId category id
+     * @param string  $title      new title for category
+     */
+    public function rename($categoryId, $title)
+    {
+        $category = $this->getCategory($categoryId);
+        $category->setTitle($title);
+        $this->persist($category);
     }
 }
