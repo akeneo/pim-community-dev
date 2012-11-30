@@ -57,7 +57,6 @@ class CategoriesXmlToCategoriesTransformer implements TransformInterface
 
             // add parent
             $category->setParent($parent);
-            $category->setType('folder');
 
             // add category to list
             $this->categories[$icecatId]       = $category;
@@ -81,6 +80,7 @@ class CategoriesXmlToCategoriesTransformer implements TransformInterface
             $category = $this->categories[$icecatId];
         } else {
             $category = new Category();
+            $category->setType('folder');
         }
 
         // set translatable title
