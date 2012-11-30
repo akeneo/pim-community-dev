@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Tests\Transform;
 
-use Pim\Bundle\ConnectorIcecatBundle\Transform\CategoriesXmlToCategoriesTransformer;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\CategoriesXmlToCategoriesTransformer;
 
 use Pim\Bundle\CatalogBundle\Tests\KernelAwareTest;
 /**

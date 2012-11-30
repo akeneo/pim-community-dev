@@ -1,5 +1,5 @@
 <?php
-namespace Pim\Bundle\ConnectorIcecatBundle\Transform;
+namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Transform;
 
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Interfaces\TransformInterface;
 use Pim\Bundle\CatalogTaxinomyBundle\Entity\Category;

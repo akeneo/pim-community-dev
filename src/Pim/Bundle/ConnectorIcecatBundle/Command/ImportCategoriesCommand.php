@@ -6,7 +6,7 @@ use Pim\Bundle\CatalogTaxinomyBundle\Entity\Category;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
 use Pim\Bundle\ConnectorIcecatBundle\Helper\MemoryHelper;
 use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
-use Pim\Bundle\ConnectorIcecatBundle\Transform\CategoriesXmlToCategoriesTransformer;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\CategoriesXmlToCategoriesTransformer;
 
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpDownload;
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileUnzip;
