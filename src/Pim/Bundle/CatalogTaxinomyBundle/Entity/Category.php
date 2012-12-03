@@ -93,7 +93,7 @@ class Category
     {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->title    = '';
-        $this->type     = 'default';
+        $this->type     = 'folder';
     }
 
     /**
@@ -304,17 +304,9 @@ class Category
      * Get type
      *
      * @return string
-     *
-     * TODO : Must be cleaned in pre-persist or otherwise
      */
     public function getType()
     {
-        if ($this->getLevel() === 1) {
-            return 'drive';
-        } else if ($this->hasChildren()) {
-            return 'folder';
-        } else {
-            return 'default';
-        }
+        return $this->type;
     }
 }

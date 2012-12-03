@@ -37,12 +37,7 @@ class TreeController extends Controller
      */
     public function indexAction()
     {
-        $res = $this->getManager()->getCategories();
-
-        return $this->render(
-            'PimCatalogTaxinomyBundle:Tree:index.html.twig',
-            array('tree' => $repo->childrenHierarchy())
-        );
+        return $this->redirect($this->generateUrl('pim_catalogtaxinomy_tree_tree'));
     }
 
     /**
@@ -61,28 +56,29 @@ class TreeController extends Controller
      *
      * @return Response
      *
+     * @Method("GET")
      * @Route("/children")
      * @Template()
      *
-     * TODO : Must be XmlHttpRequest
      * TODO : Value must be posted ?!
-     *
-     * TODO : must return with 1 parameter
-     * [{"attr":{"id":"node_2","rel":"drive"},"data":"C:","state":"closed"},{"attr":{"id":"node_6","rel":"drive"},"data":"D:","state":""}]
      */
     public function childrenAction(Request $request)
     {
-        // initialize variables
-        $parentId = $request->get('id');
-        $recursive = false;
+        if ($request->isXmlHttpRequest()) {
+            // initialize variables
+            $parentId = $request->get('id');
+            $recursive = false;
 
-        // Get nodes from parent
-        $categories = $this->getManager()->getChildren($parentId);
+            // Get nodes from parent
+            $categories = $this->getManager()->getChildren($parentId);
 
-        // formate in json content
-        $data = JsonTreeHelper::childrenResponse($categories);
+            // formate in json content
+            $data = JsonTreeHelper::childrenResponse($categories);
 
-        return $this->prepareJsonResponse($data);
+            return $this->prepareJsonResponse($data);
+        } else {
+            return $this->redirect($this->generateUrl('pim_catalogtaxinomy_tree_tree'));
+        }
     }
 
     /**
@@ -95,16 +91,20 @@ class TreeController extends Controller
      */
     public function searchAction(Request $request)
     {
-        // get search data
-        $search = $request->get('search_str');
+        if ($request->isXmlHttpRequest()) {
+            // get search data
+            $search = $request->get('search_str');
 
-        // find categories by title searching
-        $categories = $this->getManager()->search(array('title' => $search));
+            // find categories by title searching
+            $categories = $this->getManager()->search(array('title' => $search));
 
-        // formate in json content
-        $data = JsonTreeHelper::searchResponse($categories);
+            // formate in json content
+            $data = JsonTreeHelper::searchResponse($categories);
 
-        return $this->prepareJsonResponse($data);
+            return $this->prepareJsonResponse($data);
+        } else {
+            return $this->redirect($this->generateUrl('pim_catalogtaxinomy_tree_tree'));
+        }
     }
 
     /**
@@ -121,22 +121,25 @@ class TreeController extends Controller
      */
     public function createNodeAction(Request $request)
     {
-        // create new object
-        $category = $this->getManager()->createNewInstance();
-        $category->setTitle($request->get('title'));
-        $category->setType($request->get('type'));
+        if ($request->isXmlHttpRequest()) {
+            // create new object
+            $category = $this->getManager()->createNewInstance();
+            $category->setTitle($request->get('title'));
 
-        // find parent
-        $parent = $this->getManager()->getCategory($request->get('id'));
-        $category->setParent($parent);
+            // find parent
+            $parent = $this->getManager()->getCategory($request->get('id'));
+            $category->setParent($parent);
 
-        // persist object
-        $this->getManager()->persist($category);
+            // persist object
+            $this->getManager()->persist($category);
 
-        // format response to json content
-        $data = JsonTreeHelper::createNodeResponse(1, $category->getId());
+            // format response to json content
+            $data = JsonTreeHelper::createNodeResponse(1, $category->getId());
 
-        return $this->prepareJsonResponse($data);
+            return $this->prepareJsonResponse($data);
+        } else {
+            return $this->redirect($this->generateUrl('pim_catalogtaxinomy_tree_tree'));
+        }
     }
 
     /**
@@ -151,27 +154,17 @@ class TreeController extends Controller
      */
     public function renameNodeAction(Request $request)
     {
-        // update object
-        $this->getManager()->rename($request->get('id'), $request->get('title'));
+        if ($request->isXmlHttpRequest()) {
+            // update object
+            $this->getManager()->rename($request->get('id'), $request->get('title'));
 
-        // format response to json content
-        $data = JsonTreeHelper::statusOKResponse();
+            // format response to json content
+            $data = JsonTreeHelper::statusOKResponse();
 
-        return $this->prepareJsonResponse($data);
-    }
-
-    /**
-     * Return a response in json content type with well formated data
-     * @param mixed $data
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    protected function prepareJsonResponse($data)
-    {
-        $response = new Response(json_encode($data));
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
+            return $this->prepareJsonResponse($data);
+        } else {
+            return $this->redirect($this->generateUrl('pim_catalogtaxinomy_tree_tree'));
+        }
     }
 
     /**
@@ -186,13 +179,17 @@ class TreeController extends Controller
      */
     public function removeAction(Request $request)
     {
-        // remove category
-        $this->getManager()->removeFromId($request->get('id'));
+        if ($request->isXmlHttpRequest()) {
+            // remove category
+            $this->getManager()->removeFromId($request->get('id'));
 
-        // format response to json content
-        $data = JsonTreeHelper::statusOKResponse();
+            // format response to json content
+            $data = JsonTreeHelper::statusOKResponse();
 
-        return $this->prepareJsonResponse($data);
+            return $this->prepareJsonResponse($data);
+        } else {
+            return $this->redirect($this->generateUrl('pim_catalogtaxinomy_tree_tree'));
+        }
     }
 
     /**
@@ -207,20 +204,38 @@ class TreeController extends Controller
      */
     public function moveNodeAction(Request $request)
     {
-        $categoryId  = $request->get('id');
-        $referenceId = $request->get('ref');
+        if ($request->isXmlHttpRequest()) {
+            $categoryId  = $request->get('id');
+            $referenceId = $request->get('ref');
 
-        // copy or move category
-        if ($request->get('copy') == 1) {
-            $this->getManager()->copy($categoryId, $referenceId);
+            // copy or move category
+            if ($request->get('copy') == 1) {
+                $this->getManager()->copy($categoryId, $referenceId);
+            } else {
+                $this->getManager()->move($categoryId, $referenceId);
+            }
+
+            // format response to json content
+            $data = JsonTreeHelper::statusOKResponse();
+
+            return $this->prepareJsonResponse($data);
         } else {
-            $this->getManager()->move($categoryId, $referenceId);
+            return $this->redirect($this->generateUrl('pim_catalogtaxinomy_tree_tree'));
         }
+    }
 
-        // format response to json content
-        $data = JsonTreeHelper::statusOKResponse();
+    /**
+     * Return a response in json content type with well formated data
+     * @param mixed $data
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function prepareJsonResponse($data)
+    {
+        $response = new Response(json_encode($data));
+        $response->headers->set('Content-Type', 'application/json');
 
-        return $this->prepareJsonResponse($data);
+        return $response;
     }
 
     /**
