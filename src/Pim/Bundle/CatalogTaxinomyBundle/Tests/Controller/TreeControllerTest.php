@@ -33,7 +33,7 @@ class TreeControllerTest extends WebTestCase
      */
     public function tearDown()
     {
-
+        parent::tearDown();
     }
 
     /**
