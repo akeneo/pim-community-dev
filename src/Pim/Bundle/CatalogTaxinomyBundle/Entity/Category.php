@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Gedmo\Tree(type="nested")
  * @ORM\Table(name="Akeneo_PimCatalogTaxinomy_Category")
- * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
+ * @ORM\Entity(repositoryClass="CategoryRepository")
  */
 class Category
 {

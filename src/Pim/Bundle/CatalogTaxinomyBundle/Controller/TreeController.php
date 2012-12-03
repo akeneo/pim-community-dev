@@ -96,11 +96,10 @@ class TreeController extends Controller
     public function searchAction(Request $request)
     {
         // get search data
-        $search = $request->get('search');
+        $search = $request->get('search_str');
 
         // find categories by title searching
         $categories = $this->getManager()->search(array('title' => $search));
-        echo count($categories);
 
         // formate in json content
         $data = JsonTreeHelper::searchResponse($categories);
