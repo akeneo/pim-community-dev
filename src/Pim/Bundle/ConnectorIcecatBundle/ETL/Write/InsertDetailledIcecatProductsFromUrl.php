@@ -55,7 +55,7 @@ class InsertDetailledIcecatProductsFromUrl
 
                 if (!$content) {
                     echo 'Exception -> '. $file . ' is not well formed';
-                    $datasheet->setIsImported(-1);
+                    $datasheet->setStatus(IcecatProductDataSheet::STATUS_ERROR);
                     $objectManager->persist($datasheet);
 
                 } else {
@@ -75,7 +75,7 @@ class InsertDetailledIcecatProductsFromUrl
 
                         if (!$content) {
                             echo 'Exception -> '. $file . ' is not well formed';
-                            $datasheet->setIsImported(-1);
+                            $datasheet->setStatus(IcecatProductDataSheet::STATUS_ERROR);
                             $objectManager->persist($datasheet);
 
                         } else {
