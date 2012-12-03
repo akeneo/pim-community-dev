@@ -1,5 +1,7 @@
 <?php
-namespace Pim\Bundle\CatalogTaxinomyBundle\Entity;
+namespace Pim\Bundle\CatalogTaxinomyBundle\Model;
+
+use Pim\Bundle\CatalogTaxinomyBundle\Entity\Category;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
