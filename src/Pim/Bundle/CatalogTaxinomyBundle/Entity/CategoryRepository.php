@@ -37,7 +37,7 @@ class CategoryRepository extends NestedTreeRepository
     {
         $qb = $this->createQueryBuilder('c');
         foreach ($criterias as $key => $value) {
-            $qb->where('c.'. $key .' LIKE :'. $key)->setParameter($key, '%'. $value .'%');
+            $qb->andWhere('c.'. $key .' LIKE :'. $key)->setParameter($key, '%'. $value .'%');
         }
 
         return $qb->getQuery()->getResult();
