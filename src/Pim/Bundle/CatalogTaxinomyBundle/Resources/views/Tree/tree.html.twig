@@ -164,7 +164,6 @@ $("#demo")
                 type: 'POST',
                 url: "removeNode",
                 data : { 
-                    "operation" : "remove_node", 
                     "id" : this.id.replace("node_","")
                 }, 
                 success : function (r) {
@@ -196,7 +195,6 @@ $("#demo")
                 type: 'POST',
                 url: "moveNode",
                 data : { 
-                    "operation" : "move_node", 
                     "id" : $(this).attr("id").replace("node_",""), 
                     "ref" : data.rslt.cr === -1 ? 1 : data.rslt.np.attr("id").replace("node_",""), 
                     "position" : data.rslt.cp + i,
