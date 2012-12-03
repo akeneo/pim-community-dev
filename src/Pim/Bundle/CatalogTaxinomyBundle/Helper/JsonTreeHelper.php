@@ -19,7 +19,7 @@ class JsonTreeHelper
      */
     public static function createNodeResponse($status, $categoryId)
     {
-        return array('status' => 1, 'id' => $categoryId);
+        return array('status' => $status, 'id' => $categoryId);
     }
 
     /**

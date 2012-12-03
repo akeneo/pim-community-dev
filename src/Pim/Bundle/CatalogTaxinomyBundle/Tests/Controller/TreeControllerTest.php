@@ -59,7 +59,7 @@ class TreeControllerTest extends WebTestCase
     public function testIndex()
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/en_US/catalogtaxinomy/tree/index');
+        $client->request('GET', '/en_US/catalogtaxinomy/tree/index');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         // TODO : Assert redirect to tree/tree
     }
@@ -70,7 +70,7 @@ class TreeControllerTest extends WebTestCase
     public function testTree()
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/en_US/catalogtaxinomy/tree/tree');
+        $client->request('GET', '/en_US/catalogtaxinomy/tree/tree');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
@@ -84,7 +84,7 @@ class TreeControllerTest extends WebTestCase
         $this->setContentType('application/json');
 
         $client = static::createClient();
-        $crawler = $client->request('GET', '/en_US/catalogtaxinomy/tree/children?id=1', array(), array(), $this->server);
+        $client->request('GET', '/en_US/catalogtaxinomy/tree/children?id=1', array(), array(), $this->server);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // TODO : Assert content type
@@ -104,7 +104,7 @@ class TreeControllerTest extends WebTestCase
             'title' => 'test'
         );
         $client = static::createClient();
-        $crawler = $client->request('POST', '/en_US/catalogtaxinomy/tree/createNode', $postData, array(), $this->server);
+        $client->request('POST', '/en_US/catalogtaxinomy/tree/createNode', $postData, array(), $this->server);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // TODO : Assert if category is created
@@ -129,7 +129,7 @@ class TreeControllerTest extends WebTestCase
 //         );
 
 //         $client = static::createClient();
-//         $crawler = $client->request('POST', '/en_US/catalogtaxinomy/tree/moveNode', $postData, array(), $this->server);
+//         $client->request('POST', '/en_US/catalogtaxinomy/tree/moveNode', $postData, array(), $this->server);
 //         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // TODO : assert if category is moved
@@ -154,7 +154,7 @@ class TreeControllerTest extends WebTestCase
 //         );
 
 //         $client = static::createClient();
-//         $crawler = $client->request('POST', '/en_US/catalogtaxinomy/tree/moveNode', $postData, array(), $this->server);
+//         $client->request('POST', '/en_US/catalogtaxinomy/tree/moveNode', $postData, array(), $this->server);
 //         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // TODO : assert if category is copied
@@ -177,7 +177,7 @@ class TreeControllerTest extends WebTestCase
 //         );
 
 //         $client = static::createClient();
-//         $crawler = $client->request('POST', '/en_US/catalogtaxinomy/tree/removeNode', $postData, array(), $this->server);
+//         $client->request('POST', '/en_US/catalogtaxinomy/tree/removeNode', $postData, array(), $this->server);
 //         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // TODO : assert if category is removed
@@ -201,7 +201,7 @@ class TreeControllerTest extends WebTestCase
 //         );
 
 //         $client = static::createClient();
-//         $crawler = $client->request('POST', '/en_US/catalogtaxinomy/tree/renameNode', $postData, array(), $this->server);
+//         $client->request('POST', '/en_US/catalogtaxinomy/tree/renameNode', $postData, array(), $this->server);
 //         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // TODO : assert if category is renamed
@@ -224,7 +224,7 @@ class TreeControllerTest extends WebTestCase
         );
 
         $client = static::createClient();
-        $crawler = $client->request('POST', '/en_US/catalogtaxinomy/tree/search', $postData, array(), $this->server);
+        $client->request('POST', '/en_US/catalogtaxinomy/tree/search', $postData, array(), $this->server);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // TODO : assert categories searched

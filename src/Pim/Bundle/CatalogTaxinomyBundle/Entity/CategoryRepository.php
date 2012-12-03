@@ -35,12 +35,12 @@ class CategoryRepository extends NestedTreeRepository
      */
     public function search($criterias)
     {
-        $qb = $this->createQueryBuilder('c');
+        $queryBuilder = $this->createQueryBuilder('c');
         foreach ($criterias as $key => $value) {
-            $qb->andWhere('c.'. $key .' LIKE :'. $key)->setParameter($key, '%'. $value .'%');
+            $queryBuilder->andWhere('c.'. $key .' LIKE :'. $key)->setParameter($key, '%'. $value .'%');
         }
 
-        return $qb->getQuery()->getResult();
+        return $queryBuilder->getQuery()->getResult();
     }
 
     /**
@@ -48,9 +48,9 @@ class CategoryRepository extends NestedTreeRepository
      */
     public function findAll()
     {
-        $qb = $this->createQueryBuilder('c');
-        $qb->orderBy('title');
+        $queryBuilder = $this->createQueryBuilder('c');
+        $queryBuilder->orderBy('title');
 
-        return $qb->getQuery()->getResult();
+        return $queryBuilder->getQuery()->getResult();
     }
 }

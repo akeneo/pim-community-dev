@@ -67,7 +67,6 @@ class TreeController extends Controller
         if ($request->isXmlHttpRequest()) {
             // initialize variables
             $parentId = $request->get('id');
-            $recursive = false;
 
             // Get nodes from parent
             $categories = $this->getManager()->getChildren($parentId);
