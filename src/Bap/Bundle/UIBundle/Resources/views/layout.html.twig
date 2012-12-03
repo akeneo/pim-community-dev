@@ -74,9 +74,12 @@
         </div>
         {% block afterfooter %}{% endblock %}
 
-        {% block js %}
+        {% block js_libs %}
         <script type="text/javascript" src="{{ asset('bundles/bapui/js/jquery-1.8.2.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('bundles/bapui/js/jquery-ui-1.9.1.custom.min.js') }}"></script>
         {% endblock %}
+        
+        {% block js_scripts %}{% endblock %}
+
     </body>
 </html>

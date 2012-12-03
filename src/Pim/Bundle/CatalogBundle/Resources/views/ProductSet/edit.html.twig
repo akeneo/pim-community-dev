@@ -121,6 +121,11 @@
         </p>
     </div>
 
+{% endblock %}
+
+
+{% block js_scripts %}
+    {{parent()}}
 <script>
 
 /* Move an attribute from a group to another */
@@ -280,5 +285,4 @@ $(function() {
 
 });
 </script>
-
 {% endblock %}
