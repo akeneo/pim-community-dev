@@ -2,7 +2,6 @@
 
 {% block head_css %}
     {{ parent() }}
-    
     <link type="text/css" rel="stylesheet" href="/bundles/bapui/_docs/syntax/!style.css"/>
     <link type="text/css" rel="stylesheet" href="/bundles/bapui/_docs/!style.css"/>
 {% endblock %}
@@ -36,14 +35,16 @@
 
 {% endblock %}
 
-{% block js %}
+{% block js_libs %}
     {{ parent() }}
     <script type="text/javascript" src="/bundles/bapui/js/jquery-1.8.2.js"></script>
     <script type="text/javascript" src="/bundles/bapui/js/tree/jquery.cookie.js"></script>
     <script type="text/javascript" src="/bundles/bapui/js/tree/jquery.hotkeys.js"></script>
     <script type="text/javascript" src="/bundles/bapui/js/tree/jquery.jstree.js"></script>
     <script type="text/javascript" src="/bundles/bapui/_docs/syntax/!script.js"></script>
+{% endblock %}
 
+{% block js_scripts %}
 <!-- JavaScript neccessary for the tree -->
 <script type="text/javascript" class="source below">
 $(function () {
@@ -147,7 +148,6 @@ $("#demo")
                 "type" : data.rslt.obj.attr("rel")
             }, 
             function (r) {
-                console.log(r);
                 if(r.status) {
                     $(data.rslt.obj).attr("id", "node_" + r.id);
                 }
@@ -238,6 +238,4 @@ $(function () {
     });
 });
 </script>
-
-
 {% endblock %}
