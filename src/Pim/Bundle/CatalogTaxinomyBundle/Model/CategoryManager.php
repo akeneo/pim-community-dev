@@ -113,7 +113,7 @@ class CategoryManager
      * Remove a category object
      * @param \Pim\Bundle\CatalogTaxinomyBundle\Entity\Category $category
      */
-    public function remove($category)
+    protected function remove($category)
     {
         $this->objectManager->remove($category);
         $this->objectManager->flush();

@@ -104,8 +104,6 @@ class CategoryController extends Controller
      * @Method("POST")
      * @Route("/createNode")
      * @Template()
-     *
-     * TODO : LEFT / RIGHT will be implemented with Category feature
      */
     public function createNodeAction(Request $request)
     {

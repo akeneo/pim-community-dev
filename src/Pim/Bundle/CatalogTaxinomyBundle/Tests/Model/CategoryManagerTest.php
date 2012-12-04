@@ -104,27 +104,30 @@ class CategoryManagerTest extends KernelAwareTest
     }
 
     /**
-     * test related method
+     * test persist and removeFromId methods
      */
-    public function testPersist()
+    public function testPersistAndRemoveFromId()
     {
+        // count number of categories at start
+        $startCategories = $this->getManager()->getCategories();
+        $startCount      = count($startCategories);
 
-    }
+        // add a category and count categories
+        $category = $this->getManager()->createNewInstance();
+        $this->getManager()->persist($category);
+        $categories = $this->getManager()->getCategories();
 
-    /**
-     * test related method
-     */
-    public function testRemove()
-    {
+        $this->assertCount($startCount+1, $categories);
 
-    }
+        // remove the last category inserted and assert count values
+        $newId = $category->getId();
+        $this->getManager()->removeFromId($newId);
+        $endCategories = $this->getManager()->getCategories();
+        $this->assertCount($startCount, $endCategories);
 
-    /**
-     * test related method
-     */
-    public function testRemoveFromId()
-    {
-
+        foreach ($endCategories as $category) {
+            $this->assertNotEquals($newId, $category->getId());
+        }
     }
 
     /**

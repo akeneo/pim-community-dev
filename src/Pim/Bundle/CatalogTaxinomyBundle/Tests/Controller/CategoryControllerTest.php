@@ -5,20 +5,26 @@ use Pim\Bundle\CatalogTaxinomyBundle\Entity\CategoryRepository;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 /**
- * Test rekated class
+ * Test related class
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class TreeControllerTest extends WebTestCase
+class CategoryControllerTest extends WebTestCase
 {
     /**
      * server values for HTTP request (XMLHttp, Content-Type, etc.)
      * @var array
      */
     protected $server = array();
+
+    /**
+     * Base url used for testing
+     * @staticvar string
+     */
+    protected static $baseUrl = '/en_US/catalogtaxinomy/category/';
 
     /**
      * {@inheritdoc}
@@ -59,19 +65,9 @@ class TreeControllerTest extends WebTestCase
     public function testIndex()
     {
         $client = static::createClient();
-        $client->request('GET', '/en_US/catalogtaxinomy/tree/index');
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        // TODO : Assert redirect to tree/tree
-    }
-
-    /**
-     * test related action
-     */
-    public function testTree()
-    {
-        $client = static::createClient();
-        $client->request('GET', '/en_US/catalogtaxinomy/tree/tree');
+        $client->request('GET', self::$baseUrl .'index');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        // TODO : Assert redirect to tree/tree
     }
 
     /**
@@ -84,7 +80,7 @@ class TreeControllerTest extends WebTestCase
         $this->setContentType('application/json');
 
         $client = static::createClient();
-        $client->request('GET', '/en_US/catalogtaxinomy/tree/children?id=1', array(), array(), $this->server);
+        $client->request('GET', self::$baseUrl .'children?id=1', array(), array(), $this->server);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // TODO : Assert content type
@@ -103,8 +99,9 @@ class TreeControllerTest extends WebTestCase
             'id'    => 3,
             'title' => 'test'
         );
+
         $client = static::createClient();
-        $client->request('POST', '/en_US/catalogtaxinomy/tree/createNode', $postData, array(), $this->server);
+        $client->request('POST', self::$baseUrl .'createNode', $postData, array(), $this->server);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // TODO : Assert if category is created
@@ -118,19 +115,19 @@ class TreeControllerTest extends WebTestCase
     public function testMoveNode()
     {
         // define request
-//         $this->defineAsXmlHttpRequest();
-//         $this->setContentType('application/json');
+        $this->defineAsXmlHttpRequest();
+        $this->setContentType('application/json');
 
-//         // prepare move data
-//         $postData = array(
-//             'id'   => 4,
-//             'ref'  => 3,
-//             'copy' => 0
-//         );
+        // prepare move data
+        $postData = array(
+            'id'   => 4,
+            'ref'  => 3,
+            'copy' => 0
+        );
 
-//         $client = static::createClient();
-//         $client->request('POST', '/en_US/catalogtaxinomy/tree/moveNode', $postData, array(), $this->server);
-//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $client = static::createClient();
+        $client->request('POST', self::$baseUrl .'moveNode', $postData, array(), $this->server);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // TODO : assert if category is moved
         // TODO : assert content type
@@ -143,19 +140,19 @@ class TreeControllerTest extends WebTestCase
     public function testCopyNode()
     {
         // define request
-//         $this->defineAsXmlHttpRequest();
-//         $this->setContentType('application/json');
+        $this->defineAsXmlHttpRequest();
+        $this->setContentType('application/json');
 
-//         // prepare copy data
-//         $postData = array(
-//             'id'   => 3,
-//             'ref'  => 2,
-//             'copy' => 1
-//         );
+        // prepare copy data
+        $postData = array(
+            'id'   => 3,
+            'ref'  => 2,
+            'copy' => 1
+        );
 
-//         $client = static::createClient();
-//         $client->request('POST', '/en_US/catalogtaxinomy/tree/moveNode', $postData, array(), $this->server);
-//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $client = static::createClient();
+        $client->request('POST', self::$baseUrl .'moveNode', $postData, array(), $this->server);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // TODO : assert if category is copied
         // TODO : assert content type
@@ -177,7 +174,7 @@ class TreeControllerTest extends WebTestCase
 //         );
 
 //         $client = static::createClient();
-//         $client->request('POST', '/en_US/catalogtaxinomy/tree/removeNode', $postData, array(), $this->server);
+//         $client->request('POST', self::$baseUrl .'removeNode', $postData, array(), $this->server);
 //         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // TODO : assert if category is removed
@@ -201,7 +198,7 @@ class TreeControllerTest extends WebTestCase
 //         );
 
 //         $client = static::createClient();
-//         $client->request('POST', '/en_US/catalogtaxinomy/tree/renameNode', $postData, array(), $this->server);
+//         $client->request('POST', self::$baseUrl .'renameNode', $postData, array(), $this->server);
 //         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // TODO : assert if category is renamed
@@ -224,7 +221,7 @@ class TreeControllerTest extends WebTestCase
         );
 
         $client = static::createClient();
-        $client->request('POST', '/en_US/catalogtaxinomy/tree/search', $postData, array(), $this->server);
+        $client->request('POST', self::$baseUrl .'search', $postData, array(), $this->server);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // TODO : assert categories searched
