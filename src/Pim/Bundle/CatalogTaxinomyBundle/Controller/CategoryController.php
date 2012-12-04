@@ -37,7 +37,7 @@ class CategoryController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('PimCatalogTaxinomyBundle:Tree:index.html.twig');
+        return $this->render('PimCatalogTaxinomyBundle:Category:index.html.twig');
     }
 
     /**
