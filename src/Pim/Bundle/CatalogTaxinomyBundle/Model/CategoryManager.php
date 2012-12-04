@@ -84,7 +84,7 @@ class CategoryManager
 
     /**
      * Get repository
-     * @return \Doctrine\Common\Persistence\ObjectRepository
+     * @return \Pim\Bundle\CatalogTaxinomyBundle\Entity\CategoryRepository
      */
     protected function getRepository()
     {
@@ -158,11 +158,34 @@ class CategoryManager
         $category  = $this->getCategory($categoryId);
         $reference = $this->getCategory($referenceId);
 
-        // copy all values
-        $newCategory = $this->createNewInstance();
-        $newCategory->setTitle($category->getTitle());
-        $newCategory->setParent($reference);
+        // copy all values and create child elements
+        $newCategory = $this->copyInstance($category, $reference);
 
         $this->persist($newCategory);
+    }
+
+    /**
+     * Recursive copy
+     * @param \Pim\Bundle\CatalogTaxinomyBundle\Entity\Category $category category copied
+     * @param \Pim\Bundle\CatalogTaxinomyBundle\Entity\Category $parent   parent category
+     *
+     * @return \Pim\Bundle\CatalogTaxinomyBundle\Entity\Category
+     */
+    protected function copyInstance($category, $parent)
+    {
+        // create a new category instance and copy values
+        $newCategory = $this->createNewInstance();
+        $newCategory->setTitle($category->getTitle());
+        $newCategory->setParent($parent);
+
+        // copy children by recursion
+        foreach ($category->getChildren() as $child) {
+            $newChild = $this->copyInstance($child, $newCategory);
+            $newCategory->addChildren($newChild);
+
+            $this->persist($newCategory);
+        }
+
+        return $newCategory;
     }
 }

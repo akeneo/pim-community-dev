@@ -74,7 +74,7 @@ class Category
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="Category", mappedBy="parent", cascade={"persist"})
      * @ORM\OrderBy({"left" = "ASC"})
      */
     protected $children;
