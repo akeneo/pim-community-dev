@@ -49,7 +49,7 @@ class CategoryRepository extends NestedTreeRepository
     public function findAll()
     {
         $queryBuilder = $this->createQueryBuilder('c');
-        $queryBuilder->orderBy('title');
+        $queryBuilder->orderBy('c.title');
 
         return $queryBuilder->getQuery()->getResult();
     }
