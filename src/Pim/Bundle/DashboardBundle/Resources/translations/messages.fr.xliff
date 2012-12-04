@@ -18,6 +18,10 @@
                 <source>pim.dashboard.title.configure</source>
                 <target>Configurer</target>
             </trans-unit>
+            <trans-unit id="11">
+                <source>pim.dashboard.categories</source>
+                <target>Catégories</target>
+            </trans-unit>
             <trans-unit id="3">
                 <source>pim.dashboard.products</source>
                 <target>Produits</target>
