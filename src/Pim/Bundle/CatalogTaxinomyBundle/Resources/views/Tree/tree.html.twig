@@ -1,11 +1,5 @@
 {% extends 'PimUIBundle::layout.html.twig' %}
 
-{% block head_css %}
-    {{ parent() }}
-    <link type="text/css" rel="stylesheet" href="/bundles/bapui/_docs/syntax/!style.css"/>
-    <link type="text/css" rel="stylesheet" href="/bundles/bapui/_docs/!style.css"/>
-{% endblock %}
-
 {% block title %}Akeneo - List of categories {% endblock %}
 
 {% block content %}
@@ -15,7 +9,6 @@
 <p>Here is a PHP &amp; mySQL enabled demo. You can use the classes/DB structure included, but those are not thoroughly tested and not officially a part of jstree. In the log window you can also see all function calls as they happen on the instance.</p>
 <div id="mmenu" style="height:30px; overflow:auto;">
     <input type="button" id="add_folder" value="add folder" style="display:block; float:left;"/>
-    <input type="button" id="add_default" value="add file" style="display:block; float:left;"/>
     <input type="button" id="rename" value="rename" style="display:block; float:left;"/>
     <input type="button" id="remove" value="remove" style="display:block; float:left;"/>
     <input type="button" id="cut" value="cut" style="display:block; float:left;"/>
@@ -24,24 +17,19 @@
     <input type="button" id="clear_search" value="clear" style="display:block; float:right;"/>
     <input type="button" id="search" value="search" style="display:block; float:right;"/>
     <input type="text" id="text" value="" style="display:block; float:right;" />
+    <input type="button" style='width:170px; height:24px; margin:5px auto;' value="refresh" onclick="$('#demo').jstree('refresh',-1);" />
 </div>
 
 <!-- the tree container (notice NOT an UL node) -->
 <div id="demo" class="demo" style="height:300px;"></div>
-<div style="height:30px; text-align:center;">
-    <input type="button" style='width:170px; height:24px; margin:5px auto;' value="refresh" onclick="$('#demo').jstree('refresh',-1);" />
-</div>
-<div id='alog' style="border:1px solid gray; padding:5px; height:100px; margin-top:15px; overflow:auto; font-family:Monospace;"></div>
 
 {% endblock %}
 
 {% block js_libs %}
     {{ parent() }}
-    <script type="text/javascript" src="/bundles/bapui/js/jquery-1.8.2.js"></script>
     <script type="text/javascript" src="/bundles/bapui/js/tree/jquery.cookie.js"></script>
     <script type="text/javascript" src="/bundles/bapui/js/tree/jquery.hotkeys.js"></script>
     <script type="text/javascript" src="/bundles/bapui/js/tree/jquery.jstree.js"></script>
-    <script type="text/javascript" src="/bundles/bapui/_docs/syntax/!script.js"></script>
 {% endblock %}
 
 {% block js_scripts %}
@@ -50,9 +38,6 @@
 $(function () {
 
 $("#demo")
-    .bind("before.jstree", function (e, data) {
-        $("#alog").append(data.func + "<br />");
-    })
     .jstree({ 
         // List of active plugins
         "plugins" : [ 
@@ -101,39 +86,13 @@ $("#demo")
             "max_children" : -2,
             // I want only `drive` nodes to be root nodes 
             // This will prevent moving or creating any other type as a root node
-            "valid_children" : [ "drive" ],
+            "valid_children" : [ "folder" ],
             "types" : {
-                // The default type
-                "default" : {
-                    // I want this type to have no children (so only leaf nodes)
-                    // In my case - those are files
-                    "valid_children" : "none",
-                    // If we specify an icon for the default type it WILL OVERRIDE the theme icons
-                    "icon" : {
-                        "image" : "/bundles/pimui/images/icons/tree/file.png"
-                    }
-                },
                 // The `folder` type
                 "folder" : {
-                    // can have files and other folders inside of it, but NOT `drive` nodes
-                    "valid_children" : [ "default", "folder" ],
                     "icon" : {
                         "image" : "/bundles/pimui/images/icons/tree/folder.png"
                     }
-                },
-                // The `drive` nodes 
-                "drive" : {
-                    // can have files and folders inside, but NOT other `drive` nodes
-                    "valid_children" : [ "default", "folder" ],
-                    "icon" : {
-                        "image" : "/bundles/pimui/images/icons/tree/root.png"
-                    },
-                    // those prevent the functions with the same name to be used on `drive` nodes
-                    // internally the `before` event is used
-                    "start_drag" : false,
-                    "move_node" : false,
-                    "delete_node" : false,
-                    "remove" : false
                 }
             }
         }
@@ -223,7 +182,6 @@ $("#demo")
 $(function () { 
     $("#mmenu input").click(function () {
         switch(this.id) {
-            case "add_default":
             case "add_folder":
                 $("#demo").jstree("create", null, "last", { "attr" : { "rel" : this.id.toString().replace("add_", "") } });
                 break;
