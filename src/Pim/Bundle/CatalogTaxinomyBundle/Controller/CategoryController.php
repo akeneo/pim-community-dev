@@ -18,16 +18,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 /**
- * Enter description here ...
+ * Category controller
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @Route("/tree")
+ * @Route("/category")
  *
  */
-class TreeController extends Controller
+class CategoryController extends Controller
 {
     /**
      * @return Response
@@ -37,18 +37,7 @@ class TreeController extends Controller
      */
     public function indexAction()
     {
-        return $this->redirect($this->generateUrl('pim_catalogtaxinomy_tree_tree'));
-    }
-
-    /**
-     * @return Response
-     *
-     * @Route("/tree")
-     * @Template()
-     */
-    public function treeAction()
-    {
-        return $this->render('PimCatalogTaxinomyBundle:Tree:tree.html.twig');
+        return $this->render('PimCatalogTaxinomyBundle:Tree:index.html.twig');
     }
 
     /**
