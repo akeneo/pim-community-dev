@@ -44,8 +44,7 @@ class DataSheetArrayToProductTransformer implements TransformInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Pim\Bundle\ConnectorIcecatBundle\Transform.LanguagesTransform::transform()
+     * {@inheritdoc}
      */
     public function transform()
     {
