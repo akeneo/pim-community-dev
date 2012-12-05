@@ -46,6 +46,45 @@
                 <target>Créer une langue</target>
             </trans-unit>
 
+
+            <trans-unit id="1120">
+                <source>pim.catalogtaxinomy.category.button.add-folder</source>
+                <target>Ajouter dossier</target>
+            </trans-unit>
+            <trans-unit id="1121">
+                <source>pim.catalogtaxinomy.category.button.rename</source>
+                <target>Renommer</target>
+            </trans-unit>
+            <trans-unit id="1122">
+                <source>pim.catalogtaxinomy.category.button.remove</source>
+                <target>Supprimer</target>
+            </trans-unit>
+            <trans-unit id="1123">
+                <source>pim.catalogtaxinomy.category.button.cut</source>
+                <target>Couper</target>
+            </trans-unit>
+            <trans-unit id="1124">
+                <source>pim.catalogtaxinomy.category.button.copy</source>
+                <target>Copier</target>
+            </trans-unit>
+            <trans-unit id="1125">
+                <source>pim.catalogtaxinomy.category.button.paste</source>
+                <target>Coller</target>
+            </trans-unit>
+            <trans-unit id="1126">
+                <source>pim.catalogtaxinomy.category.button.refresh</source>
+                <target>Rafraîchir</target>
+            </trans-unit>
+            <trans-unit id="1127">
+                <source>pim.catalogtaxinomy.category.button.search</source>
+                <target>Rechercher</target>
+            </trans-unit>
+            <trans-unit id="1128">
+                <source>pim.catalogtaxinomy.category.button.cancel</source>
+                <target>Effacer</target>
+            </trans-unit>
+
+
             <!-- Fieldsets -->
             <trans-unit id="1106">
                 <source>pim.catalogtaxinomy.channel.fieldset.general</source>

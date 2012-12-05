@@ -45,6 +45,44 @@
                 <source>pim.catalogtaxinomy.locale.button.new</source>
                 <target>New locale</target>
             </trans-unit>
+            
+            
+            <trans-unit id="1120">
+                <source>pim.catalogtaxinomy.category.button.add-folder</source>
+                <target>Add folder</target>
+            </trans-unit>
+            <trans-unit id="1121">
+                <source>pim.catalogtaxinomy.category.button.rename</source>
+                <target>Rename</target>
+            </trans-unit>
+            <trans-unit id="1122">
+                <source>pim.catalogtaxinomy.category.button.remove</source>
+                <target>Remove</target>
+            </trans-unit>
+            <trans-unit id="1123">
+                <source>pim.catalogtaxinomy.category.button.cut</source>
+                <target>Cut</target>
+            </trans-unit>
+            <trans-unit id="1124">
+                <source>pim.catalogtaxinomy.category.button.copy</source>
+                <target>Copy</target>
+            </trans-unit>
+            <trans-unit id="1125">
+                <source>pim.catalogtaxinomy.category.button.paste</source>
+                <target>Paste</target>
+            </trans-unit>
+            <trans-unit id="1126">
+                <source>pim.catalogtaxinomy.category.button.refresh</source>
+                <target>Refresh</target>
+            </trans-unit>
+            <trans-unit id="1127">
+                <source>pim.catalogtaxinomy.category.button.search</source>
+                <target>Search</target>
+            </trans-unit>
+            <trans-unit id="1128">
+                <source>pim.catalogtaxinomy.category.button.cancel</source>
+                <target>Clear</target>
+            </trans-unit>
 
             <!-- Fieldsets -->
             <trans-unit id="1106">
