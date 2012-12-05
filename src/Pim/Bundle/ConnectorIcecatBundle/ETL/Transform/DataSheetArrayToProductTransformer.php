@@ -21,7 +21,7 @@ class DataSheetArrayToProductTransformer implements TransformInterface
 
     /**
      * Get product manager service
-     * @var Service
+     * @var \Pim\Bundle\CatalogBundle\Doctrine\ProductManager
      */
     protected $productManager;
 

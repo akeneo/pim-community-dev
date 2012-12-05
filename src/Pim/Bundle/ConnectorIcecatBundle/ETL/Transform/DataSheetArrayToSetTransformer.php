@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Transform;
 
+use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
+
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Interfaces\TransformInterface;
 use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
 use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
@@ -12,7 +14,7 @@ use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DataSheetArrayToProductTransformer implements TransformInterface
+class DataSheetArrayToSetTransformer implements TransformInterface
 {
     /**
      * @staticvar string
@@ -21,7 +23,7 @@ class DataSheetArrayToProductTransformer implements TransformInterface
 
     /**
      * Get product manager service
-     * @var Service
+     * @var \Pim\Bundle\CatalogBundle\Doctrine\ProductManager
      */
     protected $productManager;
 
@@ -49,6 +51,29 @@ class DataSheetArrayToProductTransformer implements TransformInterface
      */
     public function transform()
     {
+        echo "\nDataSheet array to set transformer\n";
+        $localeIcecat = 1; // en_US
 
+        // TODO : directly use $this->var instead of copy var
+        $persistanceManager = $this->productManager->getPersistenceManager();
+        $allData = json_decode($this->datasheet->getData(), true);
+
+        $catData = $allData['category'];
+        $catFeatureData = $allData['categoryfeaturegroups'];
+
+        // Transform features
+        foreach ($prodFeatureData as $icecatId => $attribute) {
+            $attCode = self::PREFIX .'-'. $icecatId;
+
+            $att = $this->productManager->getAttributeRepository()->findOneByCode($attCode);
+            if (!$att) {
+                $att = $this->productManager->getNewAttributeInstance();
+                $att->setCode($attCode);
+                $att->setTitle($attribute['Name'][$localeIcecat]);
+
+                // persists attribute
+                $this->productManager->getPersistenceManager()->persist($att);
+            }
+        }
     }
 }

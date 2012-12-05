@@ -50,10 +50,25 @@ class DataSheetArrayToAttributesTransformer implements TransformInterface
      */
     public function transform()
     {
+        $localeIcecat = 1; // en_US
 
-        $data = json_decode($this->datasheet->getData(), true);
+        $allData = json_decode($this->datasheet->getData(), true);
 
-        var_dump($data['productfeatures']);
-        exit();
+        $prodFeatureData = $allData['productfeatures'];
+
+        // Transform features
+        foreach ($prodFeatureData as $icecatId => $attribute) {
+            $attCode = self::PREFIX .'-'. $icecatId;
+
+            $att = $this->productManager->getAttributeRepository()->findOneByCode($attCode);
+            if (!$att) {
+                $att = $this->productManager->getNewAttributeInstance();
+                $att->setCode($attCode);
+                $att->setTitle($attribute['Name'][$localeIcecat]);
+
+                // persists attribute
+                $this->productManager->getPersistenceManager()->persist($att);
+            }
+        }
     }
 }

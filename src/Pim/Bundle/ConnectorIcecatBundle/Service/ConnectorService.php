@@ -170,7 +170,19 @@ class ConnectorService
      */
     public function importProductsFromDataSheet($limit)
     {
+        echo "import products from data sheet...";
+        $docManager = $this->container->get('doctrine.odm.mongodb.document_manager');
+        $datasheets = $docManager->getRepository('PimConnectorIcecatBundle:IcecatProductDataSheet')->findAll();
 
+        foreach ($datasheets as $datasheet) {
+            $productManager = $this->container->get('pim.catalog.product_manager');
+            $writer = new InsertProductFromDataSheet();
+            $writer->import($productManager, $datasheet, false);
+
+            if (--$limit === 0) {
+                break;
+            }
+        }
     }
 
     /**
