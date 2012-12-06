@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Document;
 
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityGroup as AbstractEntityGroup;
+use Oro\Bundle\FlexibleEntityBundle\Model\EntityGroup as AbstractEntityGroup;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Doctrine\Common\Collections\ArrayCollection;
 

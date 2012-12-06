@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Form\Type;
 
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttribute;
+use Oro\Bundle\FlexibleEntityBundle\Model\EntityAttribute;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

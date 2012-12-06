@@ -1,8 +1,8 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Bap\Bundle\FlexibleEntityBundle\Entity\Entity as AbstractEntity;
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttributeValue as AbstractEntityAttributeValue;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Entity as AbstractEntity;
+use Oro\Bundle\FlexibleEntityBundle\Model\EntityAttributeValue as AbstractEntityAttributeValue;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

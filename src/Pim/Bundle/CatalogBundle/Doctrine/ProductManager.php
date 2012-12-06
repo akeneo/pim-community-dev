@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
-use Bap\Bundle\FlexibleEntityBundle\Doctrine\FlexibleEntityManager;
+use Oro\Bundle\FlexibleEntityBundle\Doctrine\FlexibleEntityManager;
 
 /**
  * Manager of flexible product stored with doctrine

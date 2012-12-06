@@ -19,14 +19,16 @@ class AppKernel extends Kernel
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
+
             // MongoDB storage
             new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
             // To set up basic data
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
-            // translatable, timestampable, etc
 
             // BAP modules
-            new Bap\Bundle\FlexibleEntityBundle\BapFlexibleEntityBundle(),
+            new Oro\Bundle\FlexibleEntityBundle\OroFlexibleEntityBundle(),
+            //new Bap\Bundle\FlexibleEntityBundle\BapFlexibleEntityBundle(),
+
             new Bap\Bundle\UIBundle\BapUIBundle(),
 
             // PIM modules
@@ -39,7 +41,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\CatalogTaxinomyBundle\PimCatalogTaxinomyBundle(),
 
             // community bundles
-            new APY\DataGridBundle\APYDataGridBundle(),
+            new APY\DataGridBundle\APYDataGridBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

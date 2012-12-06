@@ -1,8 +1,8 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Bap\Bundle\FlexibleEntityBundle\Model\Entity as AbstractEntity;
-use Bap\Bundle\FlexibleEntityBundle\Entity\EntityAttributeValue as AbstractEntityAttributeValue;
+use Oro\Bundle\FlexibleEntityBundle\Model\Entity as AbstractEntity;
+use Oro\Bundle\FlexibleEntityBundle\Entity\EntityAttributeValue as AbstractEntityAttributeValue;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;

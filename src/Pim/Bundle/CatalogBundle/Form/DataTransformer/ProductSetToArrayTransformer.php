@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Form\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
-use Bap\Bundle\FlexibleEntityBundle\Model\EntitySet as ProductSet;
+use Oro\Bundle\FlexibleEntityBundle\Model\EntitySet as ProductSet;
 
 /**
  * Aims to transform array to product set and reverse operation

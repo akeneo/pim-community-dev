@@ -15,10 +15,12 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": "2.1.*",
+
+        "laboro/bap": "dev-master",
+
         "doctrine/orm": ">=2.2.3,<2.4-dev",
         "doctrine/doctrine-bundle": "1.0.*",
-        "twig/extensions": "1.0.*",
+        "twig/extensions": "1.0.*@dev",
         "symfony/assetic-bundle": "2.1.*",
         "symfony/swiftmailer-bundle": "2.1.*",
         "symfony/monolog-bundle": "2.1.*",
@@ -27,14 +29,25 @@
         "sensio/generator-bundle": "2.1.*",
         "jms/security-extra-bundle": "1.2.*",
         "jms/di-extra-bundle": "1.1.*",
-        
+        "kriswallsmith/assetic": "1.1.*@dev",
+
         "doctrine/mongodb-odm-bundle" : "v3.0.0-BETA1",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "gedmo/doctrine-extensions": "*",
 
-        "apy/datagrid-bundle": "dev-master"
-    },
+        "twig/twig": ">=1.9.1,<=1.11",
 
+        "apy/datagrid-bundle": "dev-master"
+        
+        
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/laboro/bap.git",
+            "branch": "master"
+        }
+    ],
     "scripts": {
         "post-install-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",

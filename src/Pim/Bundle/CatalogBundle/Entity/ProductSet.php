@@ -1,8 +1,8 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Bap\Bundle\FlexibleEntityBundle\Entity\EntitySet as AbstractEntitySet;
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityGroup as AbstractEntityGroup;
+use Oro\Bundle\FlexibleEntityBundle\Entity\EntitySet as AbstractEntitySet;
+use Oro\Bundle\FlexibleEntityBundle\Model\EntityGroup as AbstractEntityGroup;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Doctrine\ORM\Mapping as ORM;

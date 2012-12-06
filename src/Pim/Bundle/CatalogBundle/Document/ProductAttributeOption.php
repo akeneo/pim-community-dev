@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Document;
 
-use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttributeOption as AbstractEntityAttributeOption;
+use Oro\Bundle\FlexibleEntityBundle\Model\EntityAttributeOption as AbstractEntityAttributeOption;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
