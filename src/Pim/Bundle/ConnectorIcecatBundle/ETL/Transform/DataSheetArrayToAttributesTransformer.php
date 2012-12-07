@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Transform;
 
+use Pim\Bundle\CatalogBundle\Form\DataTransformer\ProductAttributeToArrayTransformer;
+
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Interfaces\TransformInterface;
 use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
 use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
@@ -27,15 +29,15 @@ class DataSheetArrayToAttributesTransformer implements TransformInterface
 
     /**
      * Product data sheet to transform
-     * @var ProductDataSheet
+     * @var IcecatProductDataSheet
      */
     protected $datasheet;
 
     /**
      * Constructor
      *
-     * @param ProductManager   $productManager product manager
-     * @param ProductDataSheet $datasheet      product datasheet
+     * @param ProductManager         $productManager product manager
+     * @param IcecatProductDataSheet $datasheet      product datasheet
      */
     public function __construct(\Pim\Bundle\CatalogBundle\Doctrine\ProductManager $productManager, IcecatProductDataSheet $datasheet)
     {
@@ -52,23 +54,27 @@ class DataSheetArrayToAttributesTransformer implements TransformInterface
     {
         $localeIcecat = 1; // en_US
 
+        // get datas
         $allData = json_decode($this->datasheet->getData(), true);
-
         $prodFeatureData = $allData['productfeatures'];
 
-        // Transform features
-        foreach ($prodFeatureData as $icecatId => $attribute) {
-            $attCode = self::PREFIX .'-'. $icecatId;
+        // initialize data transformer
+        $dataTransformer = new ProductAttributeToArrayTransformer($this->productManager);
 
-            $att = $this->productManager->getAttributeRepository()->findOneByCode($attCode);
-            if (!$att) {
-                $att = $this->productManager->getNewAttributeInstance();
-                $att->setCode($attCode);
-                $att->setTitle($attribute['Name'][$localeIcecat]);
+        // Transform product features datas to attributes
+        foreach ($prodFeatureData as $icecatAttId => $attribute) {
+            // prepare array for transformer
+            $attData = array(
+                'id'    => null,
+                'code'  => self::PREFIX .'-'. $icecatAttId,
+                'title' => $attribute['Name'][$localeIcecat]
+            );
 
-                // persists attribute
-                $this->productManager->getPersistenceManager()->persist($att);
-            }
+            // transform data to attribute entity
+            $attribute = $dataTransformer->reverseTransform($attData);
+
+            // persist object
+            $this->productManager->getPersistenceManager()->persist($attribute);
         }
     }
 }

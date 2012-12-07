@@ -19,9 +19,11 @@ use APY\DataGridBundle\Grid\Mapping as GRID;
  */
 class IcecatProductDataSheet
 {
-    const STATUS_INIT   = 1;
-    const STATUS_IMPORT = 2;
-    const STATUS_ERROR  = 3;
+    // TODO : MUST BE REORDERED
+    const STATUS_INIT     = 1;
+    const STATUS_IMPORT   = 2;
+    const STATUS_ERROR    = 3;
+    const STATUS_FINISHED = 4;
 
     /**
      * @var integer

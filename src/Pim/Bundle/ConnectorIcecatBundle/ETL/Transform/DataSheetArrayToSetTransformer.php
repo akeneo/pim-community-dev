@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Transform;
 
+use Pim\Bundle\CatalogBundle\Form\DataTransformer\ProductSetToArrayTransformer;
+
 use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
 
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Interfaces\TransformInterface;
@@ -29,15 +31,15 @@ class DataSheetArrayToSetTransformer implements TransformInterface
 
     /**
      * Product data sheet to transform
-     * @var ProductDataSheet
+     * @var IcecatProductDataSheet
      */
     protected $datasheet;
 
     /**
      * Constructor
      *
-     * @param ProductManager   $productManager product manager
-     * @param ProductDataSheet $datasheet      product datasheet
+     * @param ProductManager         $productManager product manager
+     * @param IcecatProductDataSheet $datasheet      product datasheet
      */
     public function __construct(\Pim\Bundle\CatalogBundle\Doctrine\ProductManager $productManager, IcecatProductDataSheet $datasheet)
     {
@@ -46,34 +48,69 @@ class DataSheetArrayToSetTransformer implements TransformInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Pim\Bundle\ConnectorIcecatBundle\Transform.LanguagesTransform::transform()
+     * {@inheritdoc}
      */
     public function transform()
     {
-        echo "\nDataSheet array to set transformer\n";
         $localeIcecat = 1; // en_US
 
-        // TODO : directly use $this->var instead of copy var
-        $persistanceManager = $this->productManager->getPersistenceManager();
+        // get datas
         $allData = json_decode($this->datasheet->getData(), true);
+        $categoryData    = $allData['category'];
+        $catFeatureData  = $allData['categoryfeaturegroups'];
+        $prodFeatureData = $allData['productfeatures'];
 
-        $catData = $allData['category'];
-        $catFeatureData = $allData['categoryfeaturegroups'];
+        // prepare category data
+        $setData = array(
+            'id'     => null,
+            'code'   => self::PREFIX .'-'. $categoryData['id'],
+            'title'  => $categoryData['name'][$localeIcecat],
+            'groups' => array()
+        );
 
-        // Transform features
-        foreach ($prodFeatureData as $icecatId => $attribute) {
-            $attCode = self::PREFIX .'-'. $icecatId;
+        // add groups
+        foreach ($catFeatureData as $icecatGroupId => $feature) {
+            $groupCode = self::PREFIX .'-'. $icecatGroupId;
 
-            $att = $this->productManager->getAttributeRepository()->findOneByCode($attCode);
-            if (!$att) {
-                $att = $this->productManager->getNewAttributeInstance();
-                $att->setCode($attCode);
-                $att->setTitle($attribute['Name'][$localeIcecat]);
+            $groupData = array(
+                'id'    => null,
+                'code'  => $groupCode,
+                'title' => $feature[$localeIcecat],
+                'attributes' => array()
+            );
 
-                // persists attribute
-                $this->productManager->getPersistenceManager()->persist($att);
-            }
+            $setData['groups'][$groupCode] = $groupData;
         }
+
+        // add attributes
+        foreach ($prodFeatureData as $icecatAttId => $attribute) {
+            // get attribute
+            $attCode = self::PREFIX .'-'. $icecatAttId;
+            $att = $this->productManager->getAttributeRepository()->findOneByCode($attCode);
+
+            // add attribute to group
+            $groupCode = self::PREFIX .'-'. $attribute['CategoryFeatureGroup_ID'];
+            $setData['groups'][$groupCode]['attributes'][] = $att->getId();
+        }
+
+        // initialize data transformer and transform data to set entity
+        $dataTransformer = new ProductSetToArrayTransformer($this->productManager);
+        $set = $dataTransformer->reverseTransform($setData);
+
+        return $set;
+        // persist set
+//         echo "\n$set->getCode();
+//         $this->productManager->getPersistenceManager()->persist($set);
+//         $this->productManager->getPersistenceManager()->flush();
+    }
+
+    protected function transformToGroups()
+    {
+
+    }
+
+    protected function addAttributesToGroup()
+    {
+
     }
 }

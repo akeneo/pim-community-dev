@@ -1,6 +1,10 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Service;
 
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\SetsFromDataSheetsWriter;
+
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\AttributesFromDataSheetsWriter;
+
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\InsertLanguagesFromXml;
 
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\InsertSuppliersFromXml;
@@ -23,7 +27,7 @@ use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\DownloadAndUnpackFromUrl;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\ProductSetXmlToDataSheetTransformer;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\ProductValuesXmlToDataSheetTransformer;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\DataSheetArrayToProductTransformer;
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\InsertProductFromDataSheet;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\ProductsFromDataSheetsWriter;
 
 use Pim\Bundle\ConnectorIcecatBundle\Transform\LanguagesTransform;
 use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductsTransform;
@@ -167,21 +171,53 @@ class ConnectorService
      * Import products from icecat datasheet
      *
      * @param integer $limit nb product to import
+     *
+     * TODO : Set a limit when recovering datasheet
+     * TODO : Request only IcecatProductDataSheet where status = 2
      */
     public function importProductsFromDataSheet($limit)
     {
-        echo "import products from data sheet...";
-        $docManager = $this->container->get('doctrine.odm.mongodb.document_manager');
-        $datasheets = $docManager->getRepository('PimConnectorIcecatBundle:IcecatProductDataSheet')->findAll();
+        // TODO : must be removed. just for not flush values
+        $flush = true;
+        echo "import products from data sheet...\n";
 
-        foreach ($datasheets as $datasheet) {
-            $productManager = $this->container->get('pim.catalog.product_manager');
-            $writer = new InsertProductFromDataSheet();
-            $writer->import($productManager, $datasheet, false);
+        $productManager = $this->container->get('pim.catalog.product_manager');
+        $docManager     = $this->container->get('doctrine.odm.mongodb.document_manager');
+        $dataSheets     = $docManager->getRepository('PimConnectorIcecatBundle:IcecatProductDataSheet')->findAll();
 
+        // TODO : Hook to get limited data sheet.. Must be removed.
+        $limitedDataSheets = array();
+        foreach ($dataSheets as $dataSheet) {
+            $limitedDataSheets[] = $dataSheet;
             if (--$limit === 0) {
                 break;
             }
+        }
+
+        // call writers
+        echo "call attributes writer\n";
+        $attributeWriter = new AttributesFromDataSheetsWriter();
+        $attributeWriter->import($productManager, $limitedDataSheets, $flush);
+        echo "write attributes OK\n";
+
+        echo "call sets writer\n";
+        $setWriter = new SetsFromDataSheetsWriter();
+        $setWriter->import($productManager, $limitedDataSheets, $flush);
+        echo "write sets OK\n";
+
+        echo "call products writer\n";
+        $productWriter = new ProductsFromDataSheetsWriter();
+        $productWriter->import($productManager, $limitedDataSheets, $flush);
+        echo "write products OK\n";
+
+        // update IcecatProductDataSheet status
+        foreach ($limitedDataSheets as $dataSheet) {
+            $dataSheet->setStatus(IcecatProductDataSheet::STATUS_FINISHED);
+//             $productManager->getPersistenceManager()->persist($dataSheet);
+        }
+
+        if ($flush) {
+//             $productManager->getPersistenceManager()->flush();
         }
     }
 
@@ -227,7 +263,7 @@ class ConnectorService
 
         // 5. create / update attributes, set, product
         $productManager = $this->container->get('pim.catalog.product_manager');
-        $writer = new InsertProductFromDataSheet();
+        $writer = new ProductsFromDataSheetsWriter();
         $writer->import($productManager, $datasheet, $toFlush);
 
         // 6. flush if not in batch mode
