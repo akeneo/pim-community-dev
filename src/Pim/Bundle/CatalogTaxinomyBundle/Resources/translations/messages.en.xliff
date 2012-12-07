@@ -45,7 +45,10 @@
                 <source>pim.catalogtaxinomy.locale.button.new</source>
                 <target>New locale</target>
             </trans-unit>
-            
+            <trans-unit id="1129">
+                <source>pim.catalogtaxinomy.sources</source>
+                <target>Sources</target>
+            </trans-unit>
             
             <trans-unit id="1120">
                 <source>pim.catalogtaxinomy.category.button.add-folder</source>
