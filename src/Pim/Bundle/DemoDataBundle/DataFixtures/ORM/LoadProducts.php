@@ -4,6 +4,8 @@ namespace Pim\Bundle\DemoDataBundle\DataFixtures\ORM;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\DemoDataBundle\DataFixtures\Base\AbstractLoadProducts;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
+use Pim\Bundle\CatalogBundle\Doctrine\ProductSetManager;
+use Pim\Bundle\CatalogBundle\Doctrine\ProductGroupManager;
 
 /**
  * Load ORM products samples
@@ -23,6 +25,8 @@ class LoadProducts extends AbstractLoadProducts
     public function load(ObjectManager $manager)
     {
         $this->productManager = new ProductManager($manager);
+        $this->productSetManager = new ProductSetManager($manager);
+        $this->productGroupManager = new ProductGroupManager($manager);
         parent::load($manager);
     }
 

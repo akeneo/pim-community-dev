@@ -26,24 +26,6 @@ class ProductManager extends FlexibleEntityManager
      * Return shortname that can be used to get the repository or instance
      * @return string
      */
-    public function getSetShortname()
-    {
-        return 'PimCatalogBundle:ProductSet';
-    }
-
-    /**
-     * Return shortname that can be used to get the repository or instance
-     * @return string
-     */
-    public function getGroupShortname()
-    {
-        return 'PimCatalogBundle:ProductGroup';
-    }
-
-    /**
-     * Return shortname that can be used to get the repository or instance
-     * @return string
-     */
     public function getAttributeShortname()
     {
         return 'PimCatalogBundle:ProductAttribute';

@@ -6,6 +6,8 @@
 
     <parameters>
         <parameter key="pim.catalog.product_manager.class">Pim\Bundle\CatalogBundle\Doctrine\ProductManager</parameter>
+        <parameter key="pim.catalog.product_setmanager.class">Pim\Bundle\CatalogBundle\Doctrine\ProductSetManager</parameter>
+        <parameter key="pim.catalog.product_groupmanager.class">Pim\Bundle\CatalogBundle\Doctrine\ProductGroupManager</parameter>
     </parameters>
 
     <services>
@@ -13,6 +15,12 @@
             <!-- to switch to orm impl -->
              <argument type="service" id="doctrine.orm.entity_manager" />
 <!--             <argument type="service" id="doctrine.odm.mongodb.document_manager" />-->
+        </service>
+        <service id="pim.catalog.product_setmanager" class="%pim.catalog.product_setmanager.class%">
+             <argument type="service" id="doctrine.orm.entity_manager" />
+        </service>
+        <service id="pim.catalog.product_groupmanager" class="%pim.catalog.product_groupmanager.class%">
+             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
     </services>
 
