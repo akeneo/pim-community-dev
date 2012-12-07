@@ -82,11 +82,11 @@ class ChannelController extends Controller
 
         // add an action columns
         $grid->setActionsColumnSeparator('&nbsp;');
-        $rowAction = new RowAction('bap.action.edit', 'pim_catalogtaxinomy_channel_edit', false, '_self', array('class' => 'grid_action ui-icon-fugue-book--pencil'));
+        $rowAction = new RowAction('bap.action.edit', 'pim_catalogtaxinomy_channel_edit', false, '_self', array('class' => 'grid_action ui-icon-fugue-pencil'));
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
 
-        $rowAction = new RowAction('bap.action.delete', 'pim_catalogtaxinomy_channel_delete', true, '_self', array('class' => 'grid_action ui-icon-fugue-book--minus'));
+        $rowAction = new RowAction('bap.action.delete', 'pim_catalogtaxinomy_channel_delete', true, '_self', array('class' => 'grid_action ui-icon-fugue-minus'));
         $rowAction->setRouteParameters(array('id'));
         $grid->addRowAction($rowAction);
 
