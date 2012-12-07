@@ -44,8 +44,8 @@ class CategoryManagerTest extends KernelAwareTest
         $this->category2->setTitle('Category2');
         $this->category2->setParent($this->category1);
 
-        $this->entityManager->getRepository('PimCatalogTaxinomyBundle:Category')->persist($this->category1);
-        $this->entityManager->getRepository('PimCatalogTaxinomyBundle:Category')->persist($this->category2);
+        $this->entityManager->persist($this->category1);
+        $this->entityManager->persist($this->category2);
     }
 
     /**
@@ -53,8 +53,8 @@ class CategoryManagerTest extends KernelAwareTest
      */
     public function tearDown()
     {
-        $this->entityManager->getRepository('PimCatalogTaxinomyBundle:Category')->remove($this->category1);
-        $this->entityManager->getRepository('PimCatalogTaxinomyBundle:Category')->remove($this->category2);
+        $this->entityManager->remove($this->category1);
+        $this->entityManager->remove($this->category2);
     }
 
     /**
