@@ -4,9 +4,8 @@
 
 {% block content %}
     {{ parent() }}
-<h2>PHP &amp; mySQL demo + event order</h2>
+<h2>Master catalog</h2>
 <div id="description">
-<p>Here is a PHP &amp; mySQL enabled demo. You can use the classes/DB structure included, but those are not thoroughly tested and not officially a part of jstree. In the log window you can also see all function calls as they happen on the instance.</p>
 <div id="mmenu" style="overflow:auto;">
     <a href="#" id="refresh" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" value="refresh" style="display:block; float:left;" onclick="$('#demo').jstree('refresh',-1);">
         <span class="ui-button-icon-primary ui-icon ui-icon-fugue-refresh"></span>
@@ -49,7 +48,7 @@
 </div>
 
 <!-- the tree container (notice NOT an UL node) -->
-<div id="demo" class="demo" style="height:400px;"></div>
+<div id="demo" class="demo" style="min-height:400px;"></div>
 
 </div>
 
