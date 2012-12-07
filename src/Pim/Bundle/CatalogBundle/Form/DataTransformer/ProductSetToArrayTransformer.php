@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Form\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
-use Oro\Bundle\FlexibleEntityBundle\Model\EntitySet as ProductSet;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntitySet as ProductSet;
 
 /**
  * Aims to transform array to product set and reverse operation
@@ -19,14 +19,14 @@ class ProductSetToArrayTransformer implements DataTransformerInterface
     /**
      * @var ProductManager
      */
-    private $pm;
+    private $productManager;
 
     /**
-     * @param ProductManager $pm
+     * @param ProductManager $productManager
      */
-    public function __construct(ProductManager $pm)
+    public function __construct(ProductManager $productManager)
     {
-        $this->pm = $pm;
+        $this->productManager = $productManager;
     }
 
     /**
@@ -40,8 +40,8 @@ class ProductSetToArrayTransformer implements DataTransformerInterface
     {
         $data = array();
         // base data
-        $data['id']=    $set->getId();
-        $data['code']=  $set->getCode();
+        $data['id']   = $set->getId();
+        $data['code'] = $set->getCode();
         $data['title']= $set->getTitle();
         // groups
         $data['groups']= array();
@@ -79,10 +79,12 @@ class ProductSetToArrayTransformer implements DataTransformerInterface
         $setId = $data['id'];
         $entity = null;
         if ($setId) {
-            $entity = $this->pm->getSetRepository()->find($setId);
+            $entity = $this->productManager->getSetRepository()->find($setId);
+        } else if ($data['code']) {
+            $entity = $this->productManager->getSetRepository()->findOneByCode($data['code']);
         }
         if (!$entity) {
-            $entity = $this->pm->getNewSetInstance();
+            $entity = $this->productManager->getNewSetInstance();
         }
 
         // set general set information
@@ -98,7 +100,7 @@ class ProductSetToArrayTransformer implements DataTransformerInterface
             if ($groupData['id'] == '') {
                 // add group
                 $groupsNew[]= $groupData;
-                $newGroup = $this->pm->getNewGroupInstance();
+                $newGroup = $this->productManager->getNewGroupInstance();
                 $newGroup->setCode($groupData['code']);
                 $grpTitle = isset($groupData['title']) ? $groupData['title'] : $groupData['code'];
                 $newGroup->setTitle($grpTitle);
@@ -107,7 +109,7 @@ class ProductSetToArrayTransformer implements DataTransformerInterface
                 // add attributes in new group
                 if (isset($groupData['attributes'])) {
                     foreach ($groupData['attributes'] as $attId) {
-                        $attribute = $this->pm->getAttributeRepository()->find($attId);
+                        $attribute = $this->productManager->getAttributeRepository()->find($attId);
                         $newGroup->addAttribute($attribute);
                     }
                 }
@@ -138,7 +140,7 @@ class ProductSetToArrayTransformer implements DataTransformerInterface
                 }
                 // add new attributes
                 foreach ($attributesUpdate as $attId) {
-                    $attribute = $this->pm->getAttributeRepository()->find($attId);
+                    $attribute = $this->productManager->getAttributeRepository()->find($attId);
                     if (!$group->getAttributes()->contains($attribute)) {
                         $group->addAttribute($attribute);
                     }

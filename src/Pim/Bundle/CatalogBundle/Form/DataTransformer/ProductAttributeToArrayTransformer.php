@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Form\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
-use Oro\Bundle\FlexibleEntityBundle\Model\EntityAttribute as ProductAttribute;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntityAttribute as ProductAttribute;
 
 /**
  * Aims to transform array to attribute and reverse operation
@@ -19,14 +19,14 @@ class ProductAttributeToArrayTransformer implements DataTransformerInterface
     /**
      * @var ProductManager
      */
-    private $pm;
+    private $productManager;
 
     /**
-     * @param ProductManager $pm
+     * @param ProductManager $productManager
      */
-    public function __construct(ProductManager $pm)
+    public function __construct(ProductManager $productManager)
     {
-        $this->pm = $pm;
+        $this->productManager = $productManager;
     }
 
     /**
@@ -40,15 +40,15 @@ class ProductAttributeToArrayTransformer implements DataTransformerInterface
     {
         $data = array();
         // base data
-        $data['id']            =    $attribute->getId();
-        $data['code']          =  $attribute->getCode();
+        $data['id']            = $attribute->getId();
+        $data['code']          = $attribute->getCode();
         $data['title']         = $attribute->getTitle();
         $data['type']          = $attribute->getType();
         $data['scope']         = $attribute->getScope();
         $data['uniqueValue']   = $attribute->getUniqueValue();
         $data['valueRequired'] = $attribute->getValueRequired();
         $data['searchable']    = $attribute->getSearchable();
-        $data['translatable']  = $attribute->getTranslatable;
+        $data['translatable']  = $attribute->getTranslatable();
         // options
         $data['options']= array();
         foreach ($attribute->getOptions() as $option) {
@@ -73,16 +73,22 @@ class ProductAttributeToArrayTransformer implements DataTransformerInterface
         // get or create set
         $attId = $data['id'];
         $entity = null;
-        if ($setId) {
-            $entity = $this->pm->getAttributeRepository()->find($attId);
+        if ($attId) {
+            $entity = $this->productManager->getAttributeRepository()->find($attId);
         }
         if (!$entity) {
-            $entity = $this->pm->getNewAttributeInstance();
+            $entity = $this->productManager->getNewAttributeInstance();
         }
 
         // set general set information
         $entity->setCode($data['code']);
         $entity->setTitle($data['title']);
+        $entity->setScope(1);
+        $entity->setSearchable(false);
+        $entity->setTranslatable(false);
+        $entity->setUniqueValue(false);
+        $entity->setType('');
+        $entity->setValueRequired(false);
 
         // TODO other params
         // TODO : deal with optiohs

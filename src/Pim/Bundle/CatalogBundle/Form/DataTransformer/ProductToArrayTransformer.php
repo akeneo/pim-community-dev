@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Form\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
-use Oro\Bundle\FlexibleEntityBundle\Model\EntitySet as ProductSet;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntitySet as ProductSet;
 
 /**
  * Aims to transform array of values to product and reverse operation
@@ -19,14 +19,14 @@ class ProductToArrayTransformer implements DataTransformerInterface
     /**
      * @var ProductManager
      */
-    private $pm;
+    private $productManager;
 
     /**
-     * @param ProductManager $pm
+     * @param ProductManager $productManager
      */
-    public function __construct(ProductManager $pm)
+    public function __construct(ProductManager $productManager)
     {
-        $this->pm = $pm;
+        $this->productManager = $productManager;
     }
 
     /**
@@ -40,7 +40,7 @@ class ProductToArrayTransformer implements DataTransformerInterface
     {
         $data = array();
         // base data
-        $data['id']=  $product->getId();
+        $data['id'] = $product->getId();
         // values
         $data['values']= array();
         foreach ($product->getValues() as $value) {
@@ -64,9 +64,9 @@ class ProductToArrayTransformer implements DataTransformerInterface
         // get or create set
         $productId = $data['id'];
         if ($productId) {
-            $product = $this->pm->getEntityRepository()->find($productId);
+            $product = $this->productManager->getEntityRepository()->find($productId);
         } else {
-            throw new TransformationFailedException('This product has no id');
+            $product = $this->productManager->getNewEntityInstance();
         }
 
         // change values
@@ -81,8 +81,8 @@ class ProductToArrayTransformer implements DataTransformerInterface
         // add values
         foreach ($data['values'] as $code => $data) {
             if (!in_array($code, $updated)) {
-                $attribute = $this->pm->getAttributeRepository()->findOneByCode($code);
-                $newValue = $this->pm->getNewAttributeValueInstance();
+                $attribute = $this->productManager->getAttributeRepository()->findOneByCode($code);
+                $newValue = $this->productManager->getNewAttributeValueInstance();
                 $newValue->setAttribute($attribute);
                 $newValue->setData($data);
                 $product->addValue($newValue);
