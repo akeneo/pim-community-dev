@@ -199,16 +199,23 @@ class ConnectorService
         $attributeWriter->import($productManager, $limitedDataSheets, $flush);
 
         $productWriter = new ProductsFromDataSheetsWriter();
-        $productWriter->import($productManager, $limitedDataSheets, $flush);
+        $productsError = $productWriter->import($productManager, $limitedDataSheets, $flush);
 
         // update IcecatProductDataSheet status
         foreach ($limitedDataSheets as $dataSheet) {
             $dataSheet->setStatus(IcecatProductDataSheet::STATUS_FINISHED);
-//             $productManager->getPersistenceManager()->persist($dataSheet);
+            $docManager->persist($dataSheet);
+        }
+
+        // update IcecatProductDataSheet error status
+        foreach ($productsError as $dataSheetId => $message) {
+            $dataSheet = $docManager->getRepository('PimConnectorIcecatBundle:IcecatProductDataSheet')->find($dataSheetId);
+            $dataSheet->setStatus(IcecatProductDataSheet::STATUS_ERROR);
+            $docManager->persist($dataSheet);
         }
 
         if ($flush) {
-//             $productManager->getPersistenceManager()->flush();
+            $productManager->getPersistenceManager()->flush();
         }
     }
 

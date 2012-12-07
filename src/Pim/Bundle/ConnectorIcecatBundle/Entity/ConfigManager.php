@@ -40,9 +40,9 @@ class ConfigManager
      * Get configuration from code
      *
      * @param string $code
-     * 
+     *
      * @throws Exception
-     * 
+     *
      * @return Config
      */
     public function get($code)
@@ -57,12 +57,10 @@ class ConfigManager
 
     /**
      * Get configuration value from code
+     * @param string $code
      *
-     * @param  string    $code
-     * 
-     * @throws Exception
-     * 
      * @return string
+     * @throws Exception
      */
     public function getValue($code)
     {

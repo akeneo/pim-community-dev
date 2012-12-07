@@ -28,10 +28,19 @@ class AttributesFromDataSheetsWriter
      */
     public function import(ProductManager $productManager, $dataSheets, $flush)
     {
+        $attributesCode = array();
+
         // Call transformer for each datasheet
         foreach ($dataSheets as $dataSheet) {
             $transformer = new DataSheetArrayToAttributesTransformer($productManager, $dataSheet);
-            $transformer->transform();
+            $attributes = $transformer->transform();
+
+            foreach ($attributes as $attribute) {
+                if (!in_array($attribute->getCode(), $attributesCode)) {
+                    $productManager->getPersistenceManager()->persist($attribute);
+                    $attributesCode[] = $attribute->getCode();
+                }
+            }
         }
 
         if ($flush) {

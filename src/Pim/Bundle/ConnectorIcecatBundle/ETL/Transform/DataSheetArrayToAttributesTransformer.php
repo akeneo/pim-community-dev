@@ -52,6 +52,7 @@ class DataSheetArrayToAttributesTransformer implements TransformInterface
      */
     public function transform()
     {
+        $attributes = array();
         $localeIcecat = 1; // en_US
 
         // get datas
@@ -72,9 +73,12 @@ class DataSheetArrayToAttributesTransformer implements TransformInterface
 
             // transform data to attribute entity
             $attribute = $dataTransformer->reverseTransform($attData);
+            $attributes[] = $attribute;
 
             // persist object
-            $this->productManager->getPersistenceManager()->persist($attribute);
+//             $this->productManager->getPersistenceManager()->persist($attribute);
         }
+
+        return $attributes;
     }
 }

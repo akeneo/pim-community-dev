@@ -67,14 +67,17 @@ class DataSheetArrayToProductTransformer implements TransformInterface
         // add attributes values to product
         foreach ($prodFeatureData as $icecatAttId => $feature) {
             $attCode = self::PREFIX .'-'. $icecatAttId;
-            $productData['values'][$attCode] = $feature['Value'][$localeIcecat];
+            if (isset($feature['Value'][$localeIcecat])) {
+                $productData['values'][$attCode] = $feature['Value'][$localeIcecat];
+            } else {
+                throw new \Exception('Locale not defined');
+            }
         }
 
         // initialize data transformer and transform data to product entity
         $dataTransformer = new ProductToArrayTransformer($this->productManager);
         $product = $dataTransformer->reverseTransform($productData);
 
-        // persist product
-        $this->productManager->getPersistenceManager()->persist($product);
+        return $product;
     }
 }

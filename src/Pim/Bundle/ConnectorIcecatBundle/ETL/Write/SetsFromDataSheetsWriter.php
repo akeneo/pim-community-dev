@@ -34,7 +34,7 @@ class SetsFromDataSheetsWriter
         foreach ($dataSheets as $dataSheet) {
             // verify if set code already in datasheet
             $allData = json_decode($dataSheet->getData(), true);
-            $categoryData    = $allData['category'];
+            $categoryData = $allData['category'];
             $setCode = 'icecat-'. $categoryData['id'];
 
             // call transformer if not already transformed

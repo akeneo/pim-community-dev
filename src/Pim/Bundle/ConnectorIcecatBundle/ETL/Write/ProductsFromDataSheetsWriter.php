@@ -28,16 +28,32 @@ class ProductsFromDataSheetsWriter
      */
     public function import(ProductManager $productManager, $dataSheets, $flush)
     {
+        $productsCode = array();
+        $productsError = array();
+
         // Call transformer for each datasheet
         foreach ($dataSheets as $dataSheet) {
-            $transformer = new DataSheetArrayToProductTransformer($productManager, $dataSheet);
-            $transformer->transform();
+
+            try {
+                // verify if product code already in datasheet
+                $allData = json_decode($dataSheet->getData(), true);
+                $baseData = $allData['basedata'];
+                $productCode = $baseData['id'];
+
+                // call transformer if product not already transformed
+                if (!in_array($productCode, $productsCode)) {
+                    $transformer = new DataSheetArrayToProductTransformer($productManager, $dataSheet);
+                    $product = $transformer->transform();
+
+                    $productManager->getPersistenceManager()->persist($product);
+                    $productsCode[] = $product->getSku();
+                }
+            } catch (\Exception $e) {
+                $productsError[$dataSheet->getId()] = $e->getMessage();
+            }
         }
 
-        if ($flush) {
-            // flush content
-            $productManager->getPersistenceManager()->flush();
-        }
+        return $productsError;
     }
 
 }

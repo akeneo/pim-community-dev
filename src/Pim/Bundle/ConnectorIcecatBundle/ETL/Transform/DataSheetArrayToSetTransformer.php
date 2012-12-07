@@ -98,10 +98,6 @@ class DataSheetArrayToSetTransformer implements TransformInterface
         $set = $dataTransformer->reverseTransform($setData);
 
         return $set;
-        // persist set
-//         echo "\n$set->getCode();
-//         $this->productManager->getPersistenceManager()->persist($set);
-//         $this->productManager->getPersistenceManager()->flush();
     }
 
     protected function transformToGroups()
