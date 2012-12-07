@@ -111,6 +111,7 @@ class InsertDetailledIcecatProductsFromUrl
                 $objectManager->persist($datasheet);
             }
         }
+        $objectManager->flush();
         echo 'total time elapsed : '. TimeHelper::writeGap('start-import').PHP_EOL;
     }
 
