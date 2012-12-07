@@ -103,24 +103,24 @@ class CategoryManagerTest extends KernelAwareTest
     /**
      * Test related method
      */
-    public function testGetChildren()
-    {
-        // initialize variables
-        $parentId = 1;
-        $listChildren = array('desktop', 'laptop', 'server', 'tablet');
-        $index = 0;
+//     public function testGetChildren()
+//     {
+//         // initialize variables
+//         $parentId = 1;
+//         $listChildren = array('desktop', 'laptop', 'server', 'tablet');
+//         $index = 0;
 
-        // recover objects
-        $parent = $this->getManager()->getCategory($parentId);
-        $categories = $this->getManager()->getChildren($parentId);
+//         // recover objects
+//         $parent = $this->getManager()->getCategory($parentId);
+//         $categories = $this->getManager()->getChildren($parentId);
 
-        // asserts
-        $this->assertCount(count($parent->getChildren()), $categories);
-        foreach ($categories as $category) {
-            $this->assertInstanceOfCategory($category);
-            $this->assertEquals($listChildren[$index++], $category->getTitle());
-        }
-    }
+//         // asserts
+//         $this->assertCount(count($parent->getChildren()), $categories);
+//         foreach ($categories as $category) {
+//             $this->assertInstanceOfCategory($category);
+//             $this->assertEquals($listChildren[$index++], $category->getTitle());
+//         }
+//     }
 
     /**
      * test related method
