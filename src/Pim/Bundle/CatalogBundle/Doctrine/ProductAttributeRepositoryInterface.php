@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\EntitySet as AbstractEntitySet;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntitySet as AbstractEntitySet;
 /**
  * Interface to implement
  *

@@ -27,7 +27,6 @@ class AppKernel extends Kernel
 
             // BAP modules
             new Oro\Bundle\FlexibleEntityBundle\OroFlexibleEntityBundle(),
-            //new Bap\Bundle\FlexibleEntityBundle\BapFlexibleEntityBundle(),
 
             new Bap\Bundle\UIBundle\BapUIBundle(),
 

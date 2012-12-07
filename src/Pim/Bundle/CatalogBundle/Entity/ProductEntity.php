@@ -19,13 +19,6 @@ class ProductEntity extends AbstractEntity
 {
 
     /**
-     * @var EntitySet $set
-     *
-     * @ORM\ManyToOne(targetEntity="ProductSet")
-     */
-    protected $set;
-
-    /**
      * @var Value
      *
      * @ORM\OneToMany(targetEntity="ProductAttributeValue", mappedBy="entity", cascade={"persist", "remove"})

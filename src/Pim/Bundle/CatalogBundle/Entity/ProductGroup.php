@@ -2,7 +2,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\FlexibleEntityBundle\Entity\EntityGroup as AbstractEntityGroup;
+use Bap\Bundle\FlexibleEntityBundle\Entity\EntityGroup as AbstractEntityGroup;
 
 /**
  * Product attribute group (general, media, seo, etc)

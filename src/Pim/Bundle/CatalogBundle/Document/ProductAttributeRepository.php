@@ -3,7 +3,7 @@ namespace Pim\Bundle\CatalogBundle\Document;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductAttributeRepositoryInterface;
-use Oro\Bundle\FlexibleEntityBundle\Model\EntitySet as AbstractEntitySet;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntitySet as AbstractEntitySet;
 
 /**
  * Custom repository for product attribute

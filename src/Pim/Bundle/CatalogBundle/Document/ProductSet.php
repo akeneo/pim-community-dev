@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Document;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\EntitySet as AbstractEntitySet;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntitySet as AbstractEntitySet;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Doctrine\Common\Collections\ArrayCollection;
 use APY\DataGridBundle\Grid\Mapping as GRID;

@@ -3,7 +3,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductAttributeRepositoryInterface;
-use Oro\Bundle\FlexibleEntityBundle\Model\EntitySet as AbstractEntitySet;
+use Bap\Bundle\FlexibleEntityBundle\Model\EntitySet as AbstractEntitySet;
 
 /**
  * Custom repository for product attribute
