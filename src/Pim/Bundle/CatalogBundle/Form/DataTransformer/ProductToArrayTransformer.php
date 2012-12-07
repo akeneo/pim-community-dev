@@ -41,6 +41,7 @@ class ProductToArrayTransformer implements DataTransformerInterface
         $data = array();
         // base data
         $data['id'] = $product->getId();
+        $data['sku'] = $product->getSku();
         // values
         $data['values']= array();
         foreach ($product->getValues() as $value) {
@@ -68,6 +69,7 @@ class ProductToArrayTransformer implements DataTransformerInterface
         } else {
             $product = $this->productManager->getNewEntityInstance();
         }
+        $product->setSku($data['sku']);
 
         // change values
         $updated = array();

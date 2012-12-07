@@ -195,20 +195,11 @@ class ConnectorService
         }
 
         // call writers
-        echo "call attributes writer\n";
         $attributeWriter = new AttributesFromDataSheetsWriter();
         $attributeWriter->import($productManager, $limitedDataSheets, $flush);
-        echo "write attributes OK\n";
 
-        echo "call sets writer\n";
-        $setWriter = new SetsFromDataSheetsWriter();
-        $setWriter->import($productManager, $limitedDataSheets, $flush);
-        echo "write sets OK\n";
-
-        echo "call products writer\n";
         $productWriter = new ProductsFromDataSheetsWriter();
         $productWriter->import($productManager, $limitedDataSheets, $flush);
-        echo "write products OK\n";
 
         // update IcecatProductDataSheet status
         foreach ($limitedDataSheets as $dataSheet) {

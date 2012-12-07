@@ -60,6 +60,7 @@ class DataSheetArrayToProductTransformer implements TransformInterface
         // prepare product data
         $productData = array(
             'id'     => null,
+            'sku'    => $prodData['id'],
             'values' => array()
         );
 
