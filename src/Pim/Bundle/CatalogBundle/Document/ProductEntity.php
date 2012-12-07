@@ -27,6 +27,13 @@ class ProductEntity extends AbstractEntity
     protected $id;
 
     /**
+     * @MongoDB\String
+     * @MongoDB\Index(unique=true)
+     * @GRID\Column()
+     */
+    protected $sku;
+
+    /**
      * @MongoDB\EmbedMany(targetDocument="ProductAttributeValue")
      */
     protected $values = array();
@@ -39,4 +46,27 @@ class ProductEntity extends AbstractEntity
         $this->values = new ArrayCollection();
     }
 
+    /**
+     * Get sku
+     *
+     * @return string
+     */
+    public function getSku()
+    {
+        return $this->sku;
+    }
+
+    /**
+     * Set sku
+     *
+     * @param string $sku
+     *
+     * @return EntityAttribute
+     */
+    public function setSku($sku)
+    {
+        $this->sku = $sku;
+
+        return $this;
+    }
 }

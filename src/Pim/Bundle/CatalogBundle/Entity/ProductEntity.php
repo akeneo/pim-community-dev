@@ -17,6 +17,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ProductEntity extends AbstractEntity
 {
+    /**
+     * @var string $sku
+     *
+     * @ORM\Column(name="sku", type="string", length=255, unique=true)
+     */
+    protected $sku;
 
     /**
      * @var Value
@@ -24,5 +30,29 @@ class ProductEntity extends AbstractEntity
      * @ORM\OneToMany(targetEntity="ProductAttributeValue", mappedBy="entity", cascade={"persist", "remove"})
      */
     protected $values;
+
+    /**
+     * Get sku
+     *
+     * @return string
+     */
+    public function getSku()
+    {
+        return $this->sku;
+    }
+
+    /**
+     * Set sku
+     *
+     * @param string $sku
+     *
+     * @return EntityAttribute
+     */
+    public function setSku($sku)
+    {
+        $this->sku = $sku;
+
+        return $this;
+    }
 
 }

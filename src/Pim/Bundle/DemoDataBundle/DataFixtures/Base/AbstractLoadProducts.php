@@ -237,13 +237,7 @@ abstract class AbstractLoadProducts extends AbstractFixture implements OrderedFi
     protected function createTshirtProducts()
     {
         $product = $this->productManager->getNewEntityInstance();
-
-        // create values
-        $attSku = $this->productManager->getAttributeRepository()->findOneByCode(self::SET_ATT_SKU);
-        $value = $this->productManager->getNewAttributeValueInstance();
-        $value->setAttribute($attSku);
-        $value->setData('my-sku-1');
-        $product->addValue($value);
+        $product->setSku('my-sku-1');
 
         $attName = $this->productManager->getAttributeRepository()->findOneByCode(self::SET_ATT_NAME);
         $value = $this->productManager->getNewAttributeValueInstance();
