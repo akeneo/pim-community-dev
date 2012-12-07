@@ -230,7 +230,7 @@ class ProductSetController extends Controller
         }
 
         // array to set
-        $transformer = new ProductSetToArrayTransformer($this->getProductManager());
+        $transformer = new ProductSetToArrayTransformer($this->getProductManager(), $this->getProductTemplateManager());
         $entity = $transformer->reverseTransform($setData);
 
         // persist
@@ -269,7 +269,7 @@ class ProductSetController extends Controller
      */
     public function deleteAction($id)
     {
-        $entity = $this->getProductManager()->getSetRepository()->find($id);
+        $entity = $this->getProductTemplateManager()->getEntityRepository()->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('No product set found for id '. $id);

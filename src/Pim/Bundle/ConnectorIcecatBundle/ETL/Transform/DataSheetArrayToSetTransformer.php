@@ -30,6 +30,12 @@ class DataSheetArrayToSetTransformer implements TransformInterface
     protected $productManager;
 
     /**
+     * Get product template manager service
+     * @var \Pim\Bundle\CatalogBundle\Doctrine\$productTemplateManager
+     */
+    protected $productTemplateManager;
+
+    /**
      * Product data sheet to transform
      * @var IcecatProductDataSheet
      */
@@ -38,12 +44,15 @@ class DataSheetArrayToSetTransformer implements TransformInterface
     /**
      * Constructor
      *
-     * @param ProductManager         $productManager product manager
-     * @param IcecatProductDataSheet $datasheet      product datasheet
+     * @param ProductManager         $productManager     product manager
+     * @param ProductTemplateManager $productTmplManager product template manager
+     * @param IcecatProductDataSheet $datasheet          product datasheet
      */
-    public function __construct(\Pim\Bundle\CatalogBundle\Doctrine\ProductManager $productManager, IcecatProductDataSheet $datasheet)
+    public function __construct(ProductManager $productManager, ProductTemplateManager $productTmplManager,
+        IcecatProductDataSheet $datasheet)
     {
         $this->productManager = $productManager;
+        $this->productTemplateManager = $productTemplateManager;
         $this->datasheet = $datasheet;
     }
 
@@ -94,7 +103,7 @@ class DataSheetArrayToSetTransformer implements TransformInterface
         }
 
         // initialize data transformer and transform data to set entity
-        $dataTransformer = new ProductSetToArrayTransformer($this->productManager);
+        $dataTransformer = new ProductSetToArrayTransformer($this->productManager, $this->productTemplateManager);
         $set = $dataTransformer->reverseTransform($setData);
 
         return $set;

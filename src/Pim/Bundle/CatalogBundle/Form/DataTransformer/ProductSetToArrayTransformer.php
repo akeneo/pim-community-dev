@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Form\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
+use Pim\Bundle\CatalogBundle\Doctrine\ProductTemplateManager;
 use Bap\Bundle\FlexibleEntityBundle\Model\EntitySet as ProductSet;
 
 /**
@@ -22,11 +23,18 @@ class ProductSetToArrayTransformer implements DataTransformerInterface
     private $productManager;
 
     /**
-     * @param ProductManager $productManager
+     * @var ProductTemplateManager
      */
-    public function __construct(ProductManager $productManager)
+    private $productTemplateManager;
+
+    /**
+     * @param ProductManager         $productManager
+     * @param ProductTemplateManager $productTemplateManager
+     */
+    public function __construct(ProductManager $productManager, ProductTemplateManager $productTemplateManager)
     {
         $this->productManager = $productManager;
+        $this->productTemplateManager = $productTemplateManager;
     }
 
     /**
@@ -79,12 +87,12 @@ class ProductSetToArrayTransformer implements DataTransformerInterface
         $setId = $data['id'];
         $entity = null;
         if ($setId) {
-            $entity = $this->productManager->getSetRepository()->find($setId);
+            $entity = $this->productTemplateManager->getEntityRepository()->find($setId);
         } else if ($data['code']) {
-            $entity = $this->productManager->getSetRepository()->findOneByCode($data['code']);
+            $entity = $this->productTemplateManager->getEntityRepository()->findOneByCode($data['code']);
         }
         if (!$entity) {
-            $entity = $this->productManager->getNewSetInstance();
+            $entity = $this->productTemplateManager->getEntityRepository();
         }
 
         // set general set information
@@ -100,7 +108,7 @@ class ProductSetToArrayTransformer implements DataTransformerInterface
             if ($groupData['id'] == '') {
                 // add group
                 $groupsNew[]= $groupData;
-                $newGroup = $this->productManager->getNewGroupInstance();
+                $newGroup = $this->productTemplateManager->getNewGroupInstance();
                 $newGroup->setCode($groupData['code']);
                 $grpTitle = isset($groupData['title']) ? $groupData['title'] : $groupData['code'];
                 $newGroup->setTitle($grpTitle);
