@@ -42,7 +42,7 @@ class ProductSetControllerTest extends WebTestCase
         // get first set
         $client = static::createClient();
         $container = $client->getContainer();
-        $set = $container->get('pim.catalog.product_manager')->getSetRepository()->findOneBy(array());
+        $set = $container->get('pim.catalog.product_template_manager')->getEntityRepository()->findOneBy(array());
         $this->assertNotNull($set);
         // get page
         $crawler = $client->request('GET', "/fr/catalog/productset/{$set->getId()}/edit");

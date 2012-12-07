@@ -22,8 +22,8 @@ class ProductSetToArrayTransformerTest extends KernelAwareTest
     {
         // get first set
         $productManager = $this->container->get('pim.catalog.product_manager');
-        $productTemplateManager = $this->get('pim.catalog.product_template_manager');
-        $set = $productManager->getSetRepository()->findOneByCode('base');
+        $productTemplateManager = $this->container->get('pim.catalog.product_template_manager');
+        $set = $productTemplateManager->getEntityRepository()->findOneByCode('base');
         $this->assertNotNull($set);
 
         // transform to array
@@ -74,7 +74,7 @@ class ProductSetToArrayTransformerTest extends KernelAwareTest
     public function testReverseTransform()
     {
         $productManager = $this->container->get('pim.catalog.product_manager');
-        $productTemplateManager = $this->get('pim.catalog.product_template_manager');
+        $productTemplateManager = $this->container->get('pim.catalog.product_template_manager');
 
         // transform array to new set
         $transformer = new ProductSetToArrayTransformer($productManager, $productTemplateManager);

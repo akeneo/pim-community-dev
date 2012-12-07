@@ -21,10 +21,11 @@ class ProductSetTypeTest extends KernelAwareTest
     public function testBuildForm()
     {
         $productManager = $this->container->get('pim.catalog.product_manager');
-        $setClass = $productManager->getSetClass();
-        $grpClass = $productManager->getGroupClass();
+        $productTemplateManager = $this->container->get('pim.catalog.product_template_manager');
+        $setClass = $productTemplateManager->getEntityClass();
+        $grpClass = $productTemplateManager->getGroupClass();
         $attClass = $productManager->getAttributeClass();
-        $entity = $productManager->getNewSetInstance();
+        $entity = $productTemplateManager->getNewEntityInstance();
         $this->container->get('form.factory')->create(new ProductSetType($setClass, $grpClass, $attClass, array(), array()), $entity);
     }
 

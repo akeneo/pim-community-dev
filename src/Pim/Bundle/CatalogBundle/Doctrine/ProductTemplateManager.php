@@ -93,4 +93,17 @@ class ProductTemplateManager extends BaseEntityManager
         return $cloneSet;
     }
 
+    /**
+     * @return array
+     */
+    public function getCopySetOptions()
+    {
+        $sets = $this->getEntityRepository()->findAll();
+        $setIdToName = array();
+        foreach ($sets as $set) {
+            $setIdToName[$set->getId()]= $set->getCode();
+        }
+
+        return $setIdToName;
+    }
 }

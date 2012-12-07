@@ -2,21 +2,13 @@
 namespace Pim\Bundle\ConnectorIcecatBundle\Command;
 
 use Pim\Bundle\ConnectorIcecatBundle\Helper\MemoryHelper;
-
 use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
-
-use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductArrayToCatalogProductTransformer;
-
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpReader;
-
 use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
-
 use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpDownload;
-
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
 use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
 

@@ -33,7 +33,6 @@ use Pim\Bundle\ConnectorIcecatBundle\Transform\LanguagesTransform;
 use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductsTransform;
 use Pim\Bundle\ConnectorIcecatBundle\Transform\SuppliersTransform;
 use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductXmlToArrayTransformer;
-use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductArrayToCatalogProductTransformer;
 
 use Pim\Bundle\ConnectorIcecatBundle\Helper\MemoryHelper;
 use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;

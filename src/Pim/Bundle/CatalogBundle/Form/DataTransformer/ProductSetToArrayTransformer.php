@@ -28,8 +28,8 @@ class ProductSetToArrayTransformer implements DataTransformerInterface
     private $productTemplateManager;
 
     /**
-     * @param ProductManager         $productManager
-     * @param ProductTemplateManager $productTemplateManager
+     * @param ProductManager         $productManager         the product manager
+     * @param ProductTemplateManager $productTemplateManager the product template manager
      */
     public function __construct(ProductManager $productManager, ProductTemplateManager $productTemplateManager)
     {
@@ -92,7 +92,7 @@ class ProductSetToArrayTransformer implements DataTransformerInterface
             $entity = $this->productTemplateManager->getEntityRepository()->findOneByCode($data['code']);
         }
         if (!$entity) {
-            $entity = $this->productTemplateManager->getEntityRepository();
+            $entity = $this->productTemplateManager->getNewEntityInstance();
         }
 
         // set general set information

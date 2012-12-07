@@ -3,6 +3,7 @@ namespace Pim\Bundle\CatalogBundle\Tests\Doctrine;
 
 use \PHPUnit_Framework_TestCase;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
+use Pim\Bundle\CatalogBundle\Doctrine\ProductTemplateManager;
 use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
 use Pim\Bundle\CatalogBundle\Tests\KernelAwareTest;
 
@@ -22,8 +23,9 @@ abstract class AbtractProductTest extends KernelAwareTest
     const SET_GROUP_TECHNIC = 'technical';
 
     protected $objectManagerName = null;
-    protected $productManager = null;
-    protected $codeSet      = null;
+    protected $productManager    = null;
+    protected $productTemplateManager = null;
+    protected $codeSet           = null;
     protected $codeAttributeSku  = null;
     protected $codeAttributeName = null;
     protected $codeAttributeSize = null;
@@ -38,6 +40,7 @@ abstract class AbtractProductTest extends KernelAwareTest
         parent::setUp();
         $objectManager = $this->container->get($this->objectManagerName);
         $this->productManager = new ProductManager($objectManager);
+        $this->productTemplateManager = new ProductTemplateManager($objectManager);
 
         $timestamp = str_replace('.', '', microtime(true));
         $this->codeSet      = 'set_'.$timestamp;
@@ -71,7 +74,7 @@ abstract class AbtractProductTest extends KernelAwareTest
     public function createProductSet()
     {
         // create product type
-        $set = $this->productManager->getNewSetInstance();
+        $set = $this->productTemplateManager->getNewEntityInstance();
         $set->setCode($this->codeSet);
         $set->setTitle('My type title');
         $this->assertEquals($set->getCode(), $this->codeSet);
@@ -80,7 +83,7 @@ abstract class AbtractProductTest extends KernelAwareTest
         $groups = array();
         $groupCodes = array(self::SET_GROUP_INFO, self::SET_GROUP_MEDIA, self::SET_GROUP_SEO, self::SET_GROUP_TECHNIC);
         foreach ($groupCodes as $code) {
-            $group = $this->productManager->getNewGroupInstance();
+            $group = $this->productTemplateManager->getNewGroupInstance();
             $group->setCode($code);
             $group->setTitle('Group '.$code);
             $set->addGroup($group);
@@ -172,8 +175,8 @@ abstract class AbtractProductTest extends KernelAwareTest
      */
     public function findProductSet()
     {
-        $set = $this->productManager->getSetRepository()->findOneByCode($this->codeSet);
-        $class = $this->productManager->getSetClass();
+        $set = $this->productTemplateManager->getEntityRepository()->findOneByCode($this->codeSet);
+        $class = $this->productTemplateManager->getEntityClass();
         $this->assertTrue($set instanceof $class);
         $this->assertEquals($set->getCode(), $this->codeSet);
         $this->assertEquals($set->getGroups()->count(), 4);
@@ -204,11 +207,12 @@ abstract class AbtractProductTest extends KernelAwareTest
     public function createProduct()
     {
         // get product type
-        $set = $this->productManager->getSetRepository()->findOneByCode($this->codeSet);
+        $set = $this->productTemplateManager->getEntityRepository()->findOneByCode($this->codeSet);
 
         // create product
         $product = $this->productManager->getNewEntityInstance();
-        $product->setSet($set);
+        $sku = str_replace('.', '', microtime(true));
+        $product->setSku($sku);
 
         // create value
         $attribute = $this->productManager->getAttributeRepository()->findOneByCode($this->codeAttributeSku);
@@ -228,13 +232,14 @@ abstract class AbtractProductTest extends KernelAwareTest
     public function cloneSet()
     {
         // get product type
-        $set = $this->productManager->getSetRepository()->findOneByCode($this->codeSet);
+        $set = $this->productTemplateManager->getEntityRepository()->findOneByCode($this->codeSet);
 
         // clone
-        $clonedType = $this->productManager->cloneSet($set);
+        $cloned = $this->productTemplateManager->cloneSet($set);
+
         // check
-        $this->assertEquals($set->getCode(), $clonedType->getCode());
-        $this->assertEquals($set->getGroups()->count(), $clonedType->getGroups()->count());
+        $this->assertEquals($set->getCode(), $cloned->getCode());
+        $this->assertEquals($set->getGroups()->count(), $cloned->getGroups()->count());
     }
 
 }

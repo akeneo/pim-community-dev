@@ -49,4 +49,15 @@ class ProductManager extends FlexibleEntityManager
         return 'PimCatalogBundle:ProductAttributeValue';
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function cloneEntity($entity)
+    {
+        $cloned = parent::cloneEntity($entity);
+        $cloned->setSku($entity->getSku().str_replace('.', '', microtime(true)));
+
+        return $cloned;
+    }
+
 }

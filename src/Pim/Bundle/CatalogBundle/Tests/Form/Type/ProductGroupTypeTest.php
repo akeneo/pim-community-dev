@@ -21,9 +21,10 @@ class ProductGroupTypeTest extends KernelAwareTest
     public function testBuildForm()
     {
         $productManager = $this->container->get('pim.catalog.product_manager');
-        $entity = $productManager->getNewGroupInstance();
-        $grpClass = $productManager->getGroupClass();
-        $attClass = $productManager->getGroupClass();
+        $productTemplateManager = $this->container->get('pim.catalog.product_template_manager');
+        $entity = $productTemplateManager->getNewGroupInstance();
+        $grpClass = $productTemplateManager->getGroupClass();
+        $attClass = $productManager->getAttributeClass();
         $this->container->get('form.factory')->create(new ProductGroupType($grpClass, $attClass), $entity);
     }
 

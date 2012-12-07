@@ -33,6 +33,14 @@ class ProductController extends Controller
     }
 
     /**
+     * @return ProductTemplateManager
+     */
+    protected function getProductTemplateManager()
+    {
+        return $this->get('pim.catalog.product_template_manager');
+    }
+
+    /**
      * @return DocumentManager
      */
     protected function getPersistenceManager()
@@ -85,7 +93,6 @@ class ProductController extends Controller
         return $form;
     }
 
-
     /**
      * Displays a form to create a new attribute
      *
@@ -97,7 +104,7 @@ class ProductController extends Controller
     public function newAction()
     {
         $instance = $this->getProductManager()->getNewEntityInstance();
-        $fromSets = $this->getCopySetOptions();
+        $fromSets = $this->getProductTemplateManager()->getCopySetOptions();
         $form = $this->createProductForm($instance, $fromSets);
 
         // render form
@@ -105,7 +112,6 @@ class ProductController extends Controller
             'PimCatalogBundle:Product:new.html.twig', array('entity' => $instance, 'form' => $form->createView())
         );
     }
-
 
     /**
      * Creates a new attribute
@@ -123,26 +129,25 @@ class ProductController extends Controller
         // preapre new product
         $instance = $this->getProductManager()->getNewEntityInstance();
         $postData = $request->get('pim_catalogbundle_product');
-        $setId = $postData['set'];
-        $set = $this->getProductManager()->getSetRepository()->find($setId);
-        $instance->setSet($set);
+        $sku = $postData['sku'];
+        $instance->setSku($sku);
+        // $setId = $postData['set'];
+        // $set = $this->getProductTemplateManager()->getEntityRepository()->find($setId);
+        // TODO : setup with default values ?
 
         // persist it
         try {
             $manager = $this->getPersistenceManager();
             $manager->persist($instance);
             $manager->flush();
-            $this->get('session')->setFlash('success', "Product {$instance->getId()} has been created from set {$set->getCode()}");
+            $this->get('session')->setFlash('success', "Product {$instance->getId()} has been created");
 
             return $this->redirect($this->generateUrl('pim_catalog_product_edit', array('id' => $instance->getId())));
         } catch (\Exception $e) {
             $this->get('session')->setFlash('error', $e->getMessage());
         }
 
-        // render form with errors
-        return $this->render(
-            'PimCatalogBundle:Product:new.html.twig', array('entity' => $instance, 'form' => $form->createView())
-        );
+        return $this->redirect($this->generateUrl('pim_catalog_product_new', array()));
     }
 
     /**
@@ -215,6 +220,7 @@ class ProductController extends Controller
             $productData = array();
             $productData['id']= $postData['id'];
             unset($postData['id']);
+            $productData['sku']= $postData['sku'];
             unset($postData['_token']);
             $productData['values']= array();
             $productData['values'] = $postData;
@@ -234,24 +240,7 @@ class ProductController extends Controller
             $this->get('session')->setFlash('error', $e->getMessage());
         }
 
-        // render form
-        return $this->render(
-            'PimCatalogBundle:Product:edit.html.twig', array('entity' => $instance, 'form' => $form->createView())
-        );
-    }
-
-    /**
-     * @return array
-     */
-    private function getCopySetOptions()
-    {
-        $sets = $this->getProductManager()->getSetRepository()->findAll();
-        $setIdToName = array();
-        foreach ($sets as $set) {
-            $setIdToName[$set->getId()]= $set->getCode();
-        }
-
-        return $setIdToName;
+        return $this->redirect($this->generateUrl('pim_catalog_product_edit', array('id' => $instance->getId())));
     }
 
 }

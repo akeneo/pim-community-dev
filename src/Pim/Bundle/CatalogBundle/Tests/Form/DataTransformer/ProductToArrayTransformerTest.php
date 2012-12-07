@@ -49,7 +49,7 @@ class ProductToArrayTransformerTest extends KernelAwareTest
         $data = $transformer->transform($product);
 
         // add a value for attribute
-        $othersAttributes = $productManager->getAttributeRepository()->findAllExcept($product->getSet());
+        $othersAttributes = $productManager->getAttributeRepository()->findAll();
         foreach ($othersAttributes as $att) {
             // add only one
             $data['values'][$att->getCode()]= 'my value';

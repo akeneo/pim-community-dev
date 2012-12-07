@@ -68,7 +68,7 @@ class ProductSetController extends Controller
         $groupClass = $this->getProductTemplateManager()->getGroupClass();
         $attClass = $this->getProductManager()->getAttributeClass();
         $formType = new ProductSetType(
-            $setClass, $groupClass, $attClass, $this->getCopySetOptions(), $this->getAvailableAttributes($set)
+            $setClass, $groupClass, $attClass, $this->getProductTemplateManager()->getCopySetOptions(), $this->getAvailableAttributes($set)
         );
         $form = $this->createForm($formType, $set);
 
@@ -297,17 +297,4 @@ class ProductSetController extends Controller
         return $repo->findAllExcept($set);
     }
 
-    /**
-     * @return array
-     */
-    private function getCopySetOptions()
-    {
-        $sets = $this->getProductTemplateManager()->getEntityRepository()->findAll();
-        $setIdToName = array();
-        foreach ($sets as $set) {
-            $setIdToName[$set->getId()]= $set->getCode();
-        }
-
-        return $setIdToName;
-    }
 }

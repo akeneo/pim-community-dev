@@ -46,19 +46,22 @@ class ProductType extends AbstractType
         // TODO drive from type and not add if in twig template ?
         $builder->add('id', 'hidden');
 
+        $builder->add('sku', 'text', array('required' => true));
+
         // add product
-        if (!$entity->getSet()) {
+        if (!$entity->getId()) {
 
             $builder->add(
                 'set', 'choice', array(
                     'choices'   => $this->setOptions,
-                    'required'  => true
+                    'required'  => true,
+                    'property_path' => false,
                 )
             );
 
         // update product
         } else {
-
+/*
             $builder->add(
                 'set', 'text', array(
                     'data'          => $entity->getSet()->getTitle().' ('.$entity->getSet()->getCode().')',
@@ -68,15 +71,19 @@ class ProductType extends AbstractType
             );
 
             foreach ($entity->getSet()->getGroups() as $group) {
-                foreach ($group->getAttributes() as $attribute) {
-
+                foreach ($group->getAttributes() as $attribute) {*/
+            foreach ($entity->getValues() as $value) {
                     // TODO required, scope etc
 
+                    $attribute = $value->getAttribute();
+
                     // TODO filter values not efficient
+                    /*
                     $values = $entity->getValues()->filter(function($value) use ($attribute) {
                         return $value->getAttribute()->getId() == $attribute->getId();
                     });
                     $value = $values->first();
+                    */
 
                     // prepare common attributes options
                     $customOptions = array(
@@ -102,12 +109,14 @@ class ProductType extends AbstractType
                         }
                         $customOptions['choices']= $choices;
                         $customOptions['data']= ($value) ? $value->getData() : '';
+                    } else {
+                        $attributeType = 'text';
                     }
 
                     // add attribute
                     $builder->add($attribute->getCode(), $attributeType, $customOptions);
                 }
-            }
+           // }
         }
 
     }

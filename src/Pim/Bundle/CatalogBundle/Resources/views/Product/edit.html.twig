@@ -35,29 +35,14 @@
         <div class="form-panel ui-corner-all">
             <h2>{{ "pim.catalog.product.fieldset.general" | trans }}</h2>
             {{ form_row(form.id) }}
-            {{ form_row(form.set) }}
 
-            <div id="tabs">
-                <!-- one tab by group -->
-                <ul>
-                    {% for group in entity.set.groups %}
-                        <li>
-                            <span class="ui-icon">{{ "pim.catalog.product.text.group-tab" | trans }}</span>
-                            <a href="#tabs-{{ group.id }}">{{ group.title }}</a>
-                        </li>
-                    {% endfor %}
-                </ul>
-                <!-- tabs content -->
-                {% for group in entity.set.groups %}
-                <div id="tabs-{{ group.id }}">
-                    <ul>
-                        {% for attribute in group.attributes %}
-                            <li>{{ form_row(attribute(form, attribute.code)) }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% endfor %}
-            </div>
+            <ul>
+                <li>{{ form_row(form.sku) }}</li>
+            {% for value in entity.values %}
+                <li>{{ form_row(attribute(form, value.attribute.code)) }}</li>
+            {% endfor %}
+            </ul>
+
         </div>
         {{ form_widget(form._token) }}
 
