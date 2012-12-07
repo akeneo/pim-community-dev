@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\CatalogTaxinomyBundle\Tests\Controller;
 
-use Pim\Bundle\CatalogTaxinomyBundle\Entity\CategoryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 /**
@@ -27,11 +27,36 @@ class CategoryControllerTest extends WebTestCase
     protected static $baseUrl = '/en_US/catalogtaxinomy/category/';
 
     /**
+     * Actual inserted category
+     * @var Pim\Bundle\CatalogTaxinomyBundle\Entity\Category
+     */
+    protected $categoryInserted;
+
+    /**
+     *
+     * @var ArrayCollection
+     */
+    protected $startCategories;
+
+    /**
+     *
+     * @var ArrayCollection
+     */
+    protected $endCategories;
+
+    /**
      * {@inheritdoc}
      */
     public function setUp()
     {
-        $this->server = array();
+        parent::setUp();
+//         $this->server = array();
+
+//         static::$kernel = new \AppKernel('test', true);
+//         static::$kernel->boot();
+
+//         $this->container = static::$kernel->getContainer();
+//         $this->entityManager = $this->container->get('doctrine')->getEntityManager();
     }
 
     /**
@@ -40,6 +65,42 @@ class CategoryControllerTest extends WebTestCase
     public function tearDown()
     {
         parent::tearDown();
+
+//         $endCategories = $this->getCategoryManager()->getCategories();
+
+//         $diff = array_diff($this->startCategories, $endCategories);
+
+//         echo count($diff);
+//         $this->getCategoryManager()->findAll();
+    }
+
+    /**
+     * Get container
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+     */
+    protected function getContainer()
+    {
+        return $this->client->getKernel()->getContainer();
+    }
+
+    /**
+     * Get a service from the container
+     * @param string $service The service identifier
+     *
+     * @return object The associated service
+     */
+    protected function get($service)
+    {
+        return $this->getContainer()->get($service);
+    }
+
+    /**
+     * Get category manager
+     * @return \Pim\Bundle\CatalogTaxinomyBundle\Model\CategoryManager
+     */
+    protected function getCategoryManager()
+    {
+        return $this->getContainer()->get('pim.catalog_taxinomy.category_manager');
     }
 
     /**
@@ -67,7 +128,6 @@ class CategoryControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request('GET', self::$baseUrl .'index');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        // TODO : Assert redirect to tree/tree
     }
 
     /**
@@ -79,92 +139,92 @@ class CategoryControllerTest extends WebTestCase
         $this->defineAsXmlHttpRequest();
         $this->setContentType('application/json');
 
-        $client = static::createClient();
-        $client->request('GET', self::$baseUrl .'children?id=1', array(), array(), $this->server);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->client = static::createClient();
+        $this->client->request('GET', self::$baseUrl .'children?id=1', array(), array(), $this->server);
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         // TODO : Assert content type
     }
 
-    /**
-     * test related action
-     */
-    public function testCreateNode()
-    {
-        // define request
-        $this->defineAsXmlHttpRequest();
-        $this->setContentType('application/json');
+//     /**
+//      * test related action
+//      */
+//     public function testCreateNode()
+//     {
+//         // define request
+//         $this->defineAsXmlHttpRequest();
+//         $this->setContentType('application/json');
 
-        $postData = array(
-            'id'    => 3,
-            'title' => 'test'
-        );
+//         $postData = array(
+//             'id'    => 3,
+//             'title' => 'test'
+//         );
 
-        $client = static::createClient();
-        $client->request('POST', self::$baseUrl .'createNode', $postData, array(), $this->server);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+//         $client = static::createClient();
+//         $client->request('POST', self::$baseUrl .'createNode', $postData, array(), $this->server);
+//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-        // TODO : Assert if category is created
-        // TODO : assert content type
-        // TODO : assert failed call
-    }
+//         // TODO : Assert if category is created
+//         // TODO : assert content type
+//         // TODO : assert failed call
+//     }
 
-    /**
-     * test related action
-     */
-    public function testMoveNode()
-    {
-        // define request
-        $this->defineAsXmlHttpRequest();
-        $this->setContentType('application/json');
+//     /**
+//      * test related action
+//      */
+//     public function testMoveNode()
+//     {
+//         // define request
+//         $this->defineAsXmlHttpRequest();
+//         $this->setContentType('application/json');
 
-        // prepare move data
-        $postData = array(
-            'id'   => 4,
-            'ref'  => 3,
-            'copy' => 0
-        );
+//         // prepare move data
+//         $postData = array(
+//             'id'   => 4,
+//             'ref'  => 3,
+//             'copy' => 0
+//         );
 
-        $client = static::createClient();
-        $client->request('POST', self::$baseUrl .'moveNode', $postData, array(), $this->server);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+//         $client = static::createClient();
+//         $client->request('POST', self::$baseUrl .'moveNode', $postData, array(), $this->server);
+//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-        // TODO : assert if category is moved
-        // TODO : assert content type
-        // TODO : assert failed call
-    }
+//         // TODO : assert if category is moved
+//         // TODO : assert content type
+//         // TODO : assert failed call
+//     }
 
-    /**
-     * test move node action with copy value
-     */
-    public function testCopyNode()
-    {
-        // define request
-        $this->defineAsXmlHttpRequest();
-        $this->setContentType('application/json');
+//     /**
+//      * test move node action with copy value
+//      */
+//     public function testCopyNode()
+//     {
+//         // define request
+//         $this->defineAsXmlHttpRequest();
+//         $this->setContentType('application/json');
 
-        // prepare copy data
-        $postData = array(
-            'id'   => 3,
-            'ref'  => 2,
-            'copy' => 1
-        );
+//         // prepare copy data
+//         $postData = array(
+//             'id'   => 3,
+//             'ref'  => 2,
+//             'copy' => 1
+//         );
 
-        $client = static::createClient();
-        $client->request('POST', self::$baseUrl .'moveNode', $postData, array(), $this->server);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+//         $client = static::createClient();
+//         $client->request('POST', self::$baseUrl .'moveNode', $postData, array(), $this->server);
+//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-        // TODO : assert if category is copied
-        // TODO : assert content type
-        // TODO : assert failed call
-    }
+//         // TODO : assert if category is copied
+//         // TODO : assert content type
+//         // TODO : assert failed call
+//     }
 
-    /**
-     * test related action
-     */
-    public function testRemove()
-    {
-        // define request
+//     /**
+//      * test related action
+//      */
+//     public function testRemove()
+//     {
+//         // define request
 //         $this->defineAsXmlHttpRequest();
 //         $this->setContentType('application/json');
 
@@ -177,10 +237,10 @@ class CategoryControllerTest extends WebTestCase
 //         $client->request('POST', self::$baseUrl .'removeNode', $postData, array(), $this->server);
 //         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-        // TODO : assert if category is removed
-        // TODO : assert content type
-        // TODO : assert failed call
-    }
+//         // TODO : assert if category is removed
+//         // TODO : assert content type
+//         // TODO : assert failed call
+//     }
 
     /**
      * test related action
@@ -188,18 +248,18 @@ class CategoryControllerTest extends WebTestCase
     public function testRenameNode()
     {
         // define request
-//         $this->defineAsXmlHttpRequest();
-//         $this->setContentType('application/json');
+        $this->defineAsXmlHttpRequest();
+        $this->setContentType('application/json');
 
-//         // prepare rename data
-//         $postData = array(
-//             'id'    => 3,
-//             'title' => 'test'
-//         );
+        // prepare rename data
+        $postData = array(
+            'id'    => 4,
+            'title' => 'test'
+        );
 
-//         $client = static::createClient();
-//         $client->request('POST', self::$baseUrl .'renameNode', $postData, array(), $this->server);
-//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $client = static::createClient();
+        $client->request('POST', self::$baseUrl .'renameNode', $postData, array(), $this->server);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // TODO : assert if category is renamed
         // TODO : assert content type

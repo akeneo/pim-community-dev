@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\CatalogTaxinomyBundle\Tests\Model;
 
+use Pim\Bundle\CatalogTaxinomyBundle\Entity\Category;
+
 use Pim\Bundle\CatalogBundle\Tests\KernelAwareTest;
 /**
  * Test related class
@@ -30,11 +32,36 @@ class CategoryManagerTest extends KernelAwareTest
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function setUp()
+    {
+        // Create two categories
+        $this->category1 = new Category();
+        $this->category1->setTitle('Category1');
+
+        $this->category2 = new Category();
+        $this->category2->setTitle('Category2');
+        $this->category2->setParent($this->category1);
+
+        $this->entityManager->getRepository('PimCatalogTaxinomyBundle:Category')->persist($this->category1);
+        $this->entityManager->getRepository('PimCatalogTaxinomyBundle:Category')->persist($this->category2);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function tearDown()
+    {
+        $this->entityManager->getRepository('PimCatalogTaxinomyBundle:Category')->remove($this->category1);
+        $this->entityManager->getRepository('PimCatalogTaxinomyBundle:Category')->remove($this->category2);
+    }
+
+    /**
      * test related method
      */
     public function testCopy()
     {
-
         $this->assertTrue(true);
     }
 
@@ -53,13 +80,10 @@ class CategoryManagerTest extends KernelAwareTest
     public function testGetCategories()
     {
         $categories = $this->getManager()->getCategories();
-        // TODO : fix !
-        /*
         $this->assertCount(20, $categories);
         foreach ($categories as $category) {
             $this->assertInstanceOfCategory($category);
         }
-        */
         // TODO : Assert ordering by title
     }
 
