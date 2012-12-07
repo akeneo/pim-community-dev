@@ -40,7 +40,15 @@ class ProductSetController extends Controller
     }
 
     /**
-     * @return DocumentManager
+     * @return ProductTemplateManager
+     */
+    protected function getProductTemplateManager()
+    {
+        return $this->get('pim.catalog.product_template_manager');
+    }
+
+    /**
+     * @return ObjectManager
      */
     protected function getPersistenceManager()
     {
@@ -56,8 +64,8 @@ class ProductSetController extends Controller
      */
     protected function createSetForm($set)
     {
-        $setClass = $this->getProductManager()->getSetClass();
-        $groupClass = $this->getProductManager()->getGroupClass();
+        $setClass = $this->getProductTemplateManager()->getEntityClass();
+        $groupClass = $this->getProductTemplateManager()->getGroupClass();
         $attClass = $this->getProductManager()->getAttributeClass();
         $formType = new ProductSetType(
             $setClass, $groupClass, $attClass, $this->getCopySetOptions(), $this->getAvailableAttributes($set)
@@ -77,10 +85,8 @@ class ProductSetController extends Controller
      */
     public function indexAction()
     {
-        $productManager = $this->getProductManager();
-
         // creates simple grid based on entity or document (ORM or ODM)
-        $source = GridHelper::getGridSource($this->getPersistenceManager(), $this->getProductManager()->getSetShortname());
+        $source = GridHelper::getGridSource($this->getPersistenceManager(), $this->getProductTemplateManager()->getEntityShortname());
 
         $grid = $this->get('grid');
         $grid->setSource($source);
@@ -110,8 +116,7 @@ class ProductSetController extends Controller
     public function newAction(Request $request)
     {
         // create new product set
-        $productManager = $this->getProductManager();
-        $entity = $productManager->getNewSetInstance();
+        $entity = $this->getProductTemplateManager()->getNewEntityInstance();
 
         // prepare form
         $form = $this->createSetForm($entity);
@@ -130,19 +135,16 @@ class ProductSetController extends Controller
      */
     public function createAction(Request $request)
     {
-        // create new product set
-        $productManager = $this->getProductManager();
-
         // clone product set
         $postData = $request->get('pim_catalogbundle_productattributeset');
         $copy = $postData['copyfromset'];
         if ($copy !== '') {
-            $productType = $this->getProductManager()->getSetRepository()->find($copy);
-            $entity = $this->getProductManager()->cloneSet($productType);
+            $productType = $this->getProductTemplateManager()->getEntityRepository()->find($copy);
+            $entity = $this->getProductTemplateManager()->cloneSet($productType);
             $entity->setCode($postData['code']);
             $entity->setTitle($postData['title']);
         } else {
-            $entity = $this->getProductManager()->getNewSetInstance();
+            $entity = $this->getProductTemplateManager()->getNewEntityInstance();
             $entity->setCode($postData['code']);
             $entity->setTitle($postData['title']);
         }
@@ -175,7 +177,7 @@ class ProductSetController extends Controller
      */
     public function editAction($id)
     {
-        $entity = $this->getProductManager()->getSetRepository()->find($id);
+        $entity = $this->getProductTemplateManager()->getEntityRepository()->find($id);
         if (!$entity) {
             throw $this->createNotFoundException('No product set found for id '. $id);
         }
@@ -201,7 +203,7 @@ class ProductSetController extends Controller
     public function updateAction(Request $request, $id)
     {
         // TODO avoid to load twice !
-        $entity = $this->getProductManager()->getSetRepository()->find($id);
+        $entity = $this->getProductTemplateManager()->getEntityRepository()->find($id);
         if (!$entity) {
             throw $this->createNotFoundException('No product set found for id '. $id);
         }
@@ -300,7 +302,7 @@ class ProductSetController extends Controller
      */
     private function getCopySetOptions()
     {
-        $sets = $this->getProductManager()->getSetRepository()->findAll();
+        $sets = $this->getProductTemplateManager()->getEntityRepository()->findAll();
         $setIdToName = array();
         foreach ($sets as $set) {
             $setIdToName[$set->getId()]= $set->getCode();

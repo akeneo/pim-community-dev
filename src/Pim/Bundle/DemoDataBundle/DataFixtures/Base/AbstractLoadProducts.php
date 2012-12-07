@@ -48,16 +48,10 @@ abstract class AbstractLoadProducts extends AbstractFixture implements OrderedFi
     protected $productManager;
 
     /**
-     * ProductSetManager
-     * @var ProductSetManager
+     * ProductTemplateManager
+     * @var ProductTemplateManager
      */
-    protected $productSetManager;
-
-    /**
-     * ProductGroupManager
-     * @var ProductGroupManager
-     */
-    protected $productGroupManager;
+    protected $productTemplateManager;
 
     /**
      * {@inheritDoc}
@@ -74,11 +68,9 @@ abstract class AbstractLoadProducts extends AbstractFixture implements OrderedFi
     {
         // have to define product manager
         $baseSet = $this->createBaseSet();
-        /*
         $tshirtSet = $this->createTshirtSet($baseSet);
         $laptopSet = $this->createLaptopSet($baseSet);
         $this->createTshirtProducts($tshirtSet);
-        */
     }
 
     /**
@@ -97,7 +89,7 @@ abstract class AbstractLoadProducts extends AbstractFixture implements OrderedFi
     protected function createBaseSet()
     {
         // create product type
-        $set = $this->productSetManager->getNewEntityInstance();
+        $set = $this->productTemplateManager->getNewEntityInstance();
         $set->setCode(self::SET_BASE);
         $set->setTitle('Default');
 
@@ -105,7 +97,7 @@ abstract class AbstractLoadProducts extends AbstractFixture implements OrderedFi
         $groups = array();
         $groupCodes = array(self::SET_GROUP_INFO, self::SET_GROUP_TECHNIC);
         foreach ($groupCodes as $code) {
-            $group = $this->productGroupManager->getNewEntityInstance();
+            $group = $this->productTemplateManager->getNewGroupInstance();
             $group->setCode($code);
             $group->setTitle('Group '.$code);
             $set->addGroup($group);
@@ -157,7 +149,7 @@ abstract class AbstractLoadProducts extends AbstractFixture implements OrderedFi
     protected function createTshirtSet($baseSet)
     {
         // clone base product type
-        $set = $this->productSetManager->cloneSet($baseSet);
+        $set = $this->productTemplateManager->cloneSet($baseSet);
         $set->setCode(self::SET_TSHIRT);
         $set->setTitle('T-shirt');
 
@@ -203,7 +195,7 @@ abstract class AbstractLoadProducts extends AbstractFixture implements OrderedFi
     protected function createLaptopSet($baseSet)
     {
         // clone base product type
-        $set = $this->productSetManager->cloneSet($baseSet);
+        $set = $this->productTemplateManager->cloneSet($baseSet);
         $set->setCode(self::SET_LAPTOP);
         $set->setTitle('Laptop');
 
@@ -244,9 +236,7 @@ abstract class AbstractLoadProducts extends AbstractFixture implements OrderedFi
      */
     protected function createTshirtProducts()
     {
-        $set = $this->productSetManager->getEntityRepository()->findOneByCode(self::SET_TSHIRT);
         $product = $this->productManager->getNewEntityInstance();
-        $product->setSet($set);
 
         // create values
         $attSku = $this->productManager->getAttributeRepository()->findOneByCode(self::SET_ATT_SKU);
