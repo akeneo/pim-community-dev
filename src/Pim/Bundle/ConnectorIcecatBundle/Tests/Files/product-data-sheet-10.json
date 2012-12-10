@@ -1,1 +1,337 @@
-{"basedata":{"id":"C8934A#A2L","name":"deskjet 845c printer","HighPic":"http:\/\/images.icecat.biz\/img\/norm\/high\/1317.jpg","LowPic":"http:\/\/images.icecat.biz\/img\/norm\/low\/1317.jpg","ThumbPic":"http:\/\/images.icecat.biz\/thumbs\/1317.jpg","vendorId":"1","vendorName":"HP","ShortDescription":"HP deskjet 845c printer, 600 x 600, 4.7, 3.6, hp pcl level 3, A4, A5, A6, C6 & DL","LongDescription":"HP deskjet 845c printer. Maximum resolution: 600 x 600. Print speed (black, normal quality, A4\/US Letter): 4.7, Print speed (colour, normal quality, A4\/US Letter): 3.6. Standard printer languages: hp pcl level 3. ISO A-series sizes (A0...A9): A4, A5, A6, Envelopes sizes: C6 & DL. Package dimensions (WxDxH): 484 x 232 x 414"},"category":{"id":"234","name":{"1":"inkjet printers","3":"imprimantes jets d'encres"}},"categoryfeaturegroups":{"352":{"1":"Technical details","3":"D\u00e9tails techniques"},"2783":{"1":"Processor","3":"Processeur"},"782":{"1":"Memory","3":"M\u00e9moire vive"},"2153":{"1":"Display","3":"\u00c9cran"},"50":{"1":"System requirements","3":"Configuration minimale du syst\u00e8me"},"52":{"1":"Ports & interfaces","3":"Connectivit\u00e9"},"53":{"1":"Weight & dimensions","3":"Poids et dimensions"},"46":{"1":"Printing","3":"Vitesse d'impression"},"47":{"1":"Print quality","3":"Qualit\u00e9 d'impression"},"48":{"1":"Output capacity","3":"Capacit\u00e9 de sortie"},"49":{"1":"Input capacity","3":"Capacit\u00e9 d'entr\u00e9e"},"51":{"1":"Media formats","3":"Formats des supports"},"54":{"1":"Print technology","3":"Technologie d'impression"},"2081":{"1":"Scanning","3":"Num\u00e9risation"},"2779":{"1":"Copying","3":"Copieur"},"2781":{"1":"Fax","3":"Fax"},"1518":{"1":"Energy management","3":"Gestion d'\u00e9nergie"},"1519":{"1":"Operational conditions","3":"Conditions environnementales"},"2780":{"1":"Networking","3":"R\u00e9seau"},"2782":{"1":"Colour","3":"Couleur"},"825":{"1":"Sound emission","3":"\u00c9mission sonore"},"823":{"1":"Consumables","3":"Consommables"},"2778":{"1":"Paper handling","3":"Gestion du papier"},"2784":{"1":"Packaging data","3":"Emballage"},"2785":{"1":"Security","3":"S\u00e9curit\u00e9"},"2777":{"1":"Certificates","3":"Certificat"},"3458":{"1":"Illumination\/Alarms","3":"Illuminations\/Alarmes"},"6106":{"1":"Operating system\/software","3":"Syst\u00e8me d'exploitation\/logiciel"},"3425":{"1":"Media types","3":"Types de supports"},"3430":{"1":"Media weight","3":"Poids des supports"},"9054":{"1":"Other features","3":"Autres caract\u00e9ristiques"}},"productfeatures":{"23850946":{"CategoryFeatureGroup_ID":47,"Name":{"1":"Colour","3":"Couleur"},"Value":{"1":"Y","3":"Y"},"Presentation_Value":{"1":"Y","3":"Oui"}},"23850915":{"CategoryFeatureGroup_ID":47,"Name":{"1":"Maximum resolution","3":"R\u00e9solution maximale"},"Value":{"1":"600 x 600","3":"600 x 600"},"Presentation_Value":{"1":"600 x 600 DPI","3":"600 x 600 DPI"}},"23850922":{"CategoryFeatureGroup_ID":46,"Name":{"1":"Print speed (black, normal quality, A4\/US Letter)","3":"Vitesse d'impression (noir, qualit\u00e9 normale, A4\/US Letter)"},"Value":{"1":"4.7","3":"4.7"},"Presentation_Value":{"1":"4.7 ppm","3":"4.7 ppm"}},"23850925":{"CategoryFeatureGroup_ID":46,"Name":{"1":"Print speed (colour, draft quality, A4\/US Letter)","3":"Vitesse d'impression (couleur, qualit\u00e9 brouillon, A4\/US Letter)"},"Value":{"1":"5","3":"5"},"Presentation_Value":{"1":"5 ppm","3":"5 ppm"}},"23850921":{"CategoryFeatureGroup_ID":46,"Name":{"1":"Print speed (black, draft quality, A4\/US Letter)","3":"Vitesse d'impression (noir, qualit\u00e9 brouillon, A4\/US Letter)"},"Value":{"1":"8","3":"8"},"Presentation_Value":{"1":"8 ppm","3":"8 ppm"}},"23850927":{"CategoryFeatureGroup_ID":46,"Name":{"1":"Print speed (colour, normal quality, A4\/US Letter)","3":"Vitesse d'impression (couleur, qualit\u00e9 normale, A4\/US Letter)"},"Value":{"1":"3.6","3":"3.6"},"Presentation_Value":{"1":"3.6 ppm","3":"3.6 ppm"}},"23850945":{"CategoryFeatureGroup_ID":54,"Name":{"1":"Number of print cartridges","3":"Nombre de cartouches d'impression"},"Value":{"1":"2","3":"2"},"Presentation_Value":{"1":"2","3":"2"}},"23850943":{"CategoryFeatureGroup_ID":54,"Name":{"1":"Standard printer languages","3":"Langues standards de l'imprimante"},"Value":{"1":"hp pcl level 3","3":"hp pcl level 3"},"Presentation_Value":{"1":"hp pcl level 3","3":"hp pcl level 3"}},"23850939":{"CategoryFeatureGroup_ID":782,"Name":{"1":"Internal memory","3":"M\u00e9moire interne"},"Value":{"1":"2","3":"2"},"Presentation_Value":{"1":"2 MB","3":"2 Mo"}},"23850910":{"CategoryFeatureGroup_ID":782,"Name":{"1":"Buffer size","3":"Taille du buffer"},"Value":{"1":"48","3":"48"},"Presentation_Value":{"1":"48 KB","3":"48 Ko"}},"23850938":{"CategoryFeatureGroup_ID":49,"Name":{"1":"Maximum input capacity","3":"Capacit\u00e9 maximale d'entr\u00e9e"},"Value":{"1":"100","3":"100"},"Presentation_Value":{"1":"100 sheets","3":"100 feuilles"}},"23850941":{"CategoryFeatureGroup_ID":48,"Name":{"1":"Standard output capacity","3":"Capacit\u00e9 de sortie standard"},"Value":{"1":"50","3":"50"},"Presentation_Value":{"1":"50 sheets","3":"50 feuilles"}},"23850937":{"CategoryFeatureGroup_ID":48,"Name":{"1":"Maximum output capacity","3":"Capacit\u00e9 maximale de sortie"},"Value":{"1":"50","3":"50"},"Presentation_Value":{"1":"50 sheets","3":"50 feuilles"}},"90768509":{"CategoryFeatureGroup_ID":2778,"Name":{"1":"Standard tray media types","3":"Types de support\/m\u00e9dia d'impression"},"Value":{"1":"Card stock, Coated paper, Envelopes, Labels, Plain paper, Transparencies, Iron-On Transfers, Photo paper","3":"Card stock, Coated paper, Envelopes, Labels, Plain paper, Transparencies, Iron-On Transfers, Photo paper"},"Presentation_Value":{"1":"Card stock, Coated paper, Envelopes, Labels, Plain paper, Transparencies, Iron-On Transfers, Photo paper","3":"Card stock, Papier enduit, Enveloppes, \u00c9tiquettes, Papier ordinaire, Transparences, Transferts sur tissu, Papier photo"}},"23850988":{"CategoryFeatureGroup_ID":2778,"Name":{"1":"ISO A-series sizes (A0...A9)","3":"ISO, Format Series A (A0...A9)"},"Value":{"1":"A4, A5, A6","3":"A4, A5, A6"},"Presentation_Value":{"1":"A4, A5, A6","3":"A4, A5, A6"}},"23850991":{"CategoryFeatureGroup_ID":2778,"Name":{"1":"Envelopes sizes","3":"Tailles enveloppes"},"Value":{"1":"C6 & DL","3":"C6 & DL"},"Presentation_Value":{"1":"C6 & DL","3":"C6 & DL"}},"23850955":{"CategoryFeatureGroup_ID":53,"Name":{"1":"Width","3":"Largeur"},"Value":{"1":"446","3":"446"},"Presentation_Value":{"1":"17.6 \" (446 mm)","3":"446 mm"}},"23850956":{"CategoryFeatureGroup_ID":53,"Name":{"1":"Depth","3":"Profondeur"},"Value":{"1":"351","3":"351"},"Presentation_Value":{"1":"13.8 \" (351 mm)","3":"351 mm"}},"23850957":{"CategoryFeatureGroup_ID":53,"Name":{"1":"Height","3":"Hauteur"},"Value":{"1":"183","3":"183"},"Presentation_Value":{"1":"7.2 \" (183 mm)","3":"183 mm"}},"23850947":{"CategoryFeatureGroup_ID":53,"Name":{"1":"Package dimensions (WxDxH)","3":"Dimensions du colis (LxPxH)"},"Value":{"1":"484 x 232 x 414","3":"484 x 232 x 414"},"Presentation_Value":{"1":"19.1 x 9.13 x 16.3 inch (484 x 232 x 414 mm)","3":"484 x 232 x 414 mm"}},"23850950":{"CategoryFeatureGroup_ID":53,"Name":{"1":"Package weight","3":"Poids du paquet"},"Value":{"1":"7260","3":"7260"},"Presentation_Value":{"1":"256.1 oz (7.26 kg)","3":"7.26 kg"}},"23850912":{"CategoryFeatureGroup_ID":1518,"Name":{"1":"Power consumption (typical)","3":"Consommation \u00e9lectrique"},"Value":{"1":"4","3":"4"},"Presentation_Value":{"1":"4 W","3":"4 W"}},"23850953":{"CategoryFeatureGroup_ID":1519,"Name":{"1":"Operating temperature range (T-T)","3":"Fourchette de temp\u00e9rature de fonctionnement"},"Value":{"1":"5 - 40","3":"5 - 40"},"Presentation_Value":{"1":"5 - 40 \u00b0C","3":"5 - 40 \u00b0C"}},"23850951":{"CategoryFeatureGroup_ID":1519,"Name":{"1":"Operating relative humidity range","3":"Taux d'humidit\u00e9 de fonctionnement"},"Value":{"1":"15 - 80","3":"15 - 80"},"Presentation_Value":{"1":"15 - 80 %","3":"15 - 80 %"}},"23850936":{"CategoryFeatureGroup_ID":2777,"Name":{"1":"Energy Star certified","3":"Certifi\u00e9 Energy Star"},"Value":{"1":"Y","3":"Y"},"Presentation_Value":{"1":"Y","3":"Oui"}},"23850931":{"CategoryFeatureGroup_ID":50,"Name":{"1":"Minimum RAM","3":"M\u00e9moire vive (RAM) minimale"},"Value":{"1":"128","3":"128"},"Presentation_Value":{"1":"128 MB","3":"128 Mo"}},"23850932":{"CategoryFeatureGroup_ID":50,"Name":{"1":"Minimum processor","3":"Processeur minimal"},"Value":{"1":"Pentium 233 MHz","3":"Pentium 233 MHz"},"Presentation_Value":{"1":"Pentium 233 MHz","3":"Pentium 233 MHz"}},"23850911":{"CategoryFeatureGroup_ID":50,"Name":{"1":"Compatible operating systems","3":"Syst\u00e8mes d'exploitation compatibles"},"Value":{"1":"Windows 98, Me, 2000, XP Home & Professional, Mac OS 8.6. +","3":"Windows 98, Me, 2000, XP Home & Professional, Mac OS 8.6. +"},"Presentation_Value":{"1":"Windows 98, Me, 2000, XP Home & Professional, Mac OS 8.6. +","3":"Windows 98, Me, 2000, XP Home & Professional, Mac OS 8.6. +"}},"23850948":{"CategoryFeatureGroup_ID":352,"Name":{"1":"Dimensions (WxDxH)","3":"Dimensions (LxPxH)"},"Value":{"1":"446 x 351 x 183","3":"446 x 351 x 183"},"Presentation_Value":{"1":"17.6 x 13.8 x 7.2 inch (446 x 351 x 183 mm)","3":"446 x 351 x 183 mm"}},"23850944":{"CategoryFeatureGroup_ID":352,"Name":{"1":"Print technology","3":"Technologie d'impression"},"Value":{"1":"Inkjet","3":"Inkjet"},"Presentation_Value":{"1":"Inkjet","3":"Jet d'encre"}},"23850913":{"CategoryFeatureGroup_ID":352,"Name":{"1":"Power requirements","3":"Exigences d'alimentation"},"Value":{"1":"100 - 240 VAC (+\/- 10%), 50\/60 Hz (+\/- 3 Hz)","3":"100 - 240 VAC (+\/- 10%), 50\/60 Hz (+\/- 3 Hz)"},"Presentation_Value":{"1":"100 - 240 VAC (+\/- 10%), 50\/60 Hz (+\/- 3 Hz)","3":"100 - 240 VAC (+\/- 10%), 50\/60 Hz (+\/- 3 Hz)"}},"23850918":{"CategoryFeatureGroup_ID":47,"Name":{"1":"Print quality (colour, best quality)","3":"Qualit\u00e9 d'impression (couleur, qualit\u00e9 sup\u00e8rieure)"},"Value":{"1":"600","3":"600"},"Presentation_Value":{"1":"600 DPI","3":"600 DPI"}},"23850917":{"CategoryFeatureGroup_ID":47,"Name":{"1":"Print quality (black, normal quality)","3":"Qualit\u00e9 d'impression (noir, qualit\u00e9 normale)"},"Value":{"1":"600","3":"600"},"Presentation_Value":{"1":"600 DPI","3":"600 DPI"}},"23850916":{"CategoryFeatureGroup_ID":47,"Name":{"1":"Print quality (black, draft quality)","3":"Qualit\u00e9 d'impression (noir, qualit\u00e9 brouillon)"},"Value":{"1":"300","3":"300"},"Presentation_Value":{"1":"300 DPI","3":"300 DPI"}},"23850954":{"CategoryFeatureGroup_ID":47,"Name":{"1":"Print quality (black, best quality)","3":"Qualit\u00e9 d'impression (noir, qualit\u00e9 sup\u00e9rieure)"},"Value":{"1":"600 x 600","3":"600 x 600"},"Presentation_Value":{"1":"600 x 600 DPI","3":"600 x 600 DPI"}},"23850930":{"CategoryFeatureGroup_ID":46,"Name":{"1":"Print speed (colour photo, normal quality)","3":"Vitesse d'impression (photo couleur, qualit\u00e9 normale)"},"Value":{"1":"0.5","3":"0.5"},"Presentation_Value":{"1":"0.5 ppm","3":"0.5 ppm"}},"23850929":{"CategoryFeatureGroup_ID":46,"Name":{"1":"Print speed (colour photo, best quality)","3":"Vitesse d'impression (photo couleur, qualit\u00e9 sup\u00e8rieure)"},"Value":{"1":"0.4","3":"0.4"},"Presentation_Value":{"1":"0.4 ppm","3":"0.4 ppm"}},"23850928":{"CategoryFeatureGroup_ID":46,"Name":{"1":"Print speed (colour, full page colour, normal quality, A4)","3":"Vitesse d'impression (couleur, couleur pleine page, qualit\u00e9 normale, A4)"},"Value":{"1":"0.5","3":"0.5"},"Presentation_Value":{"1":"0.5 ppm","3":"0.5 ppm"}},"23850926":{"CategoryFeatureGroup_ID":46,"Name":{"1":"Print speed (colour, full page colour, draft quality, A4)","3":"Vitesse d'impression (couleur, couleur pleine page, qualit\u00e9 brouillon, A4)"},"Value":{"1":"1.4","3":"1.4"},"Presentation_Value":{"1":"1.4 ppm","3":"1.4 ppm"}},"23850924":{"CategoryFeatureGroup_ID":46,"Name":{"1":"Print speed (colour, full page colour, best quality, A4)","3":"Vitesse d'impression (couleur, pleine page couleur, qualit\u00e9 sup\u00e9rieure, A4)"},"Value":{"1":"0.2","3":"0.2"},"Presentation_Value":{"1":"0.2 ppm","3":"0.2 ppm"}},"23850923":{"CategoryFeatureGroup_ID":46,"Name":{"1":"Print speed (colour, best quality, A4)","3":"Vitesse d'impression (colour, qualit\u00e9 sup\u00e9rieure, A4)"},"Value":{"1":"0.9","3":"0.9"},"Presentation_Value":{"1":"0.9 ppm","3":"0.9 ppm"}},"23850920":{"CategoryFeatureGroup_ID":46,"Name":{"1":"Print speed (black, best quality, A4)","3":"Vitesse d'impression (noir, qualit\u00e9 sup\u00e9rieure, A4)"},"Value":{"1":"3.9","3":"3.9"},"Presentation_Value":{"1":"3.9 ppm","3":"3.9 ppm"}},"23850940":{"CategoryFeatureGroup_ID":54,"Name":{"1":"Typefaces","3":"Polices de caract\u00e8res"},"Value":{"1":"cg times, cg times italic, univers, univers italic, courier, courier italic, letter gothic, letter gothic italic","3":"cg times, cg times italic, univers, univers italic, courier, courier italic, letter gothic, letter gothic italic"},"Presentation_Value":{"1":"cg times, cg times italic, univers, univers italic, courier, courier italic, letter gothic, letter gothic italic","3":"cg times, cg times italic, univers, univers italic, courier, courier italic, letter gothic, letter gothic italic"}},"23850933":{"CategoryFeatureGroup_ID":54,"Name":{"1":"Colour printing technology","3":"Technologie d'impression couleur"},"Value":{"1":"HP Photoret II, HP Colorsmart III","3":"HP Photoret II, HP Colorsmart III"},"Presentation_Value":{"1":"HP Photoret II, HP Colorsmart III","3":"HP Photoret II, HP Colorsmart III"}},"23850914":{"CategoryFeatureGroup_ID":54,"Name":{"1":"Print head nozzles","3":"Embouts de t\u00eate d'impression"},"Value":{"1":"300 \/ 192","3":"300 \/ 192"},"Presentation_Value":{"1":"300 \/ 192","3":"300 \/ 192"}},"23850901":{"CategoryFeatureGroup_ID":49,"Name":{"1":"Maximum input capacity for transparencies","3":"Capacit\u00e9 d'entr\u00e9e maximale pour transparents"},"Value":{"1":"25","3":"25"},"Presentation_Value":{"1":"25 sheets","3":"25 feuilles"}},"23850900":{"CategoryFeatureGroup_ID":49,"Name":{"1":"Maximum input capacity for labels","3":"Capacit\u00e9 d'entr\u00e9e maximale pour \u00e9tiquettes"},"Value":{"1":"20","3":"20"},"Presentation_Value":{"1":"20","3":"20"}},"23850899":{"CategoryFeatureGroup_ID":49,"Name":{"1":"Maximum input capacity for envelopes","3":"Capacit\u00e9 maximale d'entr\u00e9e pour enveloppes"},"Value":{"1":"15","3":"15"},"Presentation_Value":{"1":"15","3":"15"}},"23850898":{"CategoryFeatureGroup_ID":49,"Name":{"1":"Maximum input capacity for cards","3":"Capacit\u00e9 d'entr\u00e9e maximale pour cartes"},"Value":{"1":"30","3":"30"},"Presentation_Value":{"1":"30","3":"30"}},"23850897":{"CategoryFeatureGroup_ID":49,"Name":{"1":"Maximum input capacity for banners","3":"Capacit\u00e9 d'entr\u00e9e maximale pour banni\u00e8res"},"Value":{"1":"20","3":"20"},"Presentation_Value":{"1":"20","3":"20"}},"23850934":{"CategoryFeatureGroup_ID":48,"Name":{"1":"Duty cycle letter size (maximum)","3":"Cycle d'utilisation (maximum)"},"Value":{"1":"1000","3":"1000"},"Presentation_Value":{"1":"1000 pages per month","3":"1000 pages par mois"}},"23850902":{"CategoryFeatureGroup_ID":52,"Name":{"1":"I\/O ports","3":"PortsE\/S"},"Value":{"1":"USB","3":"USB"},"Presentation_Value":{"1":"USB","3":"USB"}},"23850935":{"CategoryFeatureGroup_ID":825,"Name":{"1":"Acoustic power emissions","3":"Puissance sonore \u00e9mise"},"Value":{"1":"5.5 b(a)","3":"5.5 b(a)"},"Presentation_Value":{"1":"5.5 b(a)","3":"5.5 b(a)"}},"23850903":{"CategoryFeatureGroup_ID":51,"Name":{"1":"Standard media sizes","3":"Formats moyens standards"},"Value":{"1":"B5-JIS","3":"B5-JIS"},"Presentation_Value":{"1":"B5-JIS","3":"B5-JIS"}},"23850909":{"CategoryFeatureGroup_ID":3430,"Name":{"1":"Recommended media weight","3":"Poids recommand\u00e9s"},"Value":{"1":"75 - 90, 60 - 90, 75 to 90","3":"75 - 90, 60 - 90, 75 to 90"},"Presentation_Value":{"1":"75 - 90, 60 - 90, 75 to 90 g\/m\u00b2","3":"75 - 90, 60 - 90, 75 to 90g\/m\u00b2"}},"23850942":{"CategoryFeatureGroup_ID":352,"Name":{"1":"Acoustic pressure emissions","3":"\u00c9missions de pression acoustique"},"Value":{"1":"42","3":"42"},"Presentation_Value":{"1":"42 dB","3":"42 dB"}},"45967728":{"CategoryFeatureGroup_ID":352,"Name":{"1":"Sourcedata-sheet","3":"Source de donn\u00e9es"},"Value":{"1":"Icecat.biz","3":"Icecat.biz"},"Presentation_Value":{"1":"Icecat.biz","3":"Icecat.biz"}}}}
+{
+    "basedata":{
+        "id":"C8934A#A2L",
+        "name":"deskjet 845c printer",
+        "HighPic":"http:\/\/images.icecat.biz\/img\/norm\/high\/1317.jpg",
+        "LowPic":"http:\/\/images.icecat.biz\/img\/norm\/low\/1317.jpg",
+        "ThumbPic":"http:\/\/images.icecat.biz\/thumbs\/1317.jpg",
+        "vendorId":"1",
+        "vendorName":"HP",
+        "ShortDescription":"HP deskjet 845c printer, 600 x 600, 4.7, 3.6, hp pcl level 3, A4, A5, A6, C6 & DL",
+        "LongDescription":"HP deskjet 845c printer. Maximum resolution: 600 x 600. Print speed (black, normal quality, A4\/US Letter): 4.7, Print speed (colour, normal quality, A4\/US Letter): 3.6. Standard printer languages: hp pcl level 3. ISO A-series sizes (A0...A9): A4, A5, A6, Envelopes sizes: C6 & DL. Package dimensions (WxDxH): 484 x 232 x 414"
+    },"category":{
+        "id":"234",
+        "name":{"1":"inkjet printers","3":"imprimantes jets d'encres"}
+    },"categoryfeaturegroups":{
+        "352":{"1":"Technical details","3":"D\u00e9tails techniques"},
+        "2783":{"1":"Processor","3":"Processeur"},
+        "782":{"1":"Memory","3":"M\u00e9moire vive"},
+        "2153":{"1":"Display","3":"\u00c9cran"},
+        "50":{"1":"System requirements","3":"Configuration minimale du syst\u00e8me"},
+        "52":{"1":"Ports & interfaces","3":"Connectivit\u00e9"},
+        "53":{"1":"Weight & dimensions","3":"Poids et dimensions"},
+        "46":{"1":"Printing","3":"Vitesse d'impression"},
+        "47":{"1":"Print quality","3":"Qualit\u00e9 d'impression"},
+        "48":{"1":"Output capacity","3":"Capacit\u00e9 de sortie"},
+        "49":{"1":"Input capacity","3":"Capacit\u00e9 d'entr\u00e9e"},
+        "51":{"1":"Media formats","3":"Formats des supports"},
+        "54":{"1":"Print technology","3":"Technologie d'impression"},
+        "2081":{"1":"Scanning","3":"Num\u00e9risation"},
+        "2779":{"1":"Copying","3":"Copieur"},
+        "2781":{"1":"Fax","3":"Fax"},
+        "1518":{"1":"Energy management","3":"Gestion d'\u00e9nergie"},
+        "1519":{"1":"Operational conditions","3":"Conditions environnementales"},
+        "2780":{"1":"Networking","3":"R\u00e9seau"},
+        "2782":{"1":"Colour","3":"Couleur"},
+        "825":{"1":"Sound emission","3":"\u00c9mission sonore"},
+        "823":{"1":"Consumables","3":"Consommables"},
+        "2778":{"1":"Paper handling","3":"Gestion du papier"},
+        "2784":{"1":"Packaging data","3":"Emballage"},
+        "2785":{"1":"Security","3":"S\u00e9curit\u00e9"},
+        "2777":{"1":"Certificates","3":"Certificat"},
+        "3458":{"1":"Illumination\/Alarms","3":"Illuminations\/Alarmes"},
+        "6106":{"1":"Operating system\/software","3":"Syst\u00e8me d'exploitation\/logiciel"},
+        "3425":{"1":"Media types","3":"Types de supports"},
+        "3430":{"1":"Media weight","3":"Poids des supports"},
+        "9054":{"1":"Other features","3":"Autres caract\u00e9ristiques"}
+    },"productfeatures":{
+        "23850946":{
+            "CategoryFeatureGroup_ID":47,
+            "Name":{"1":"Colour","3":"Couleur"},
+            "Value":{"1":"Y","3":"Y"},
+            "Presentation_Value":{"1":"Y","3":"Oui"}
+        },
+        "23850915":{
+            "CategoryFeatureGroup_ID":47,
+            "Name":{"1":"Maximum resolution","3":"R\u00e9solution maximale"},
+            "Value":{"1":"600 x 600","3":"600 x 600"},
+            "Presentation_Value":{"1":"600 x 600 DPI","3":"600 x 600 DPI"}
+        },
+        "23850922":{
+            "CategoryFeatureGroup_ID":46,
+            "Name":{"1":"Print speed (black, normal quality, A4\/US Letter)","3":"Vitesse d'impression (noir, qualit\u00e9 normale, A4\/US Letter)"},
+            "Value":{"1":"4.7","3":"4.7"},
+            "Presentation_Value":{"1":"4.7 ppm","3":"4.7 ppm"}
+        },"23850925":{
+            "CategoryFeatureGroup_ID":46,
+            "Name":{"1":"Print speed (colour, draft quality, A4\/US Letter)","3":"Vitesse d'impression (couleur, qualit\u00e9 brouillon, A4\/US Letter)"},
+            "Value":{"1":"5","3":"5"},
+            "Presentation_Value":{"1":"5 ppm","3":"5 ppm"}
+        },"23850921":{
+            "CategoryFeatureGroup_ID":46,
+            "Name":{"1":"Print speed (black, draft quality, A4\/US Letter)","3":"Vitesse d'impression (noir, qualit\u00e9 brouillon, A4\/US Letter)"},
+            "Value":{"1":"8","3":"8"},
+            "Presentation_Value":{"1":"8 ppm","3":"8 ppm"}
+        },"23850927":{
+            "CategoryFeatureGroup_ID":46,
+            "Name":{"1":"Print speed (colour, normal quality, A4\/US Letter)","3":"Vitesse d'impression (couleur, qualit\u00e9 normale, A4\/US Letter)"},
+            "Value":{"1":"3.6","3":"3.6"},
+            "Presentation_Value":{"1":"3.6 ppm","3":"3.6 ppm"}
+        },"23850945":{
+            "CategoryFeatureGroup_ID":54,
+            "Name":{"1":"Number of print cartridges","3":"Nombre de cartouches d'impression"},
+            "Value":{"1":"2","3":"2"},
+            "Presentation_Value":{"1":"2","3":"2"}
+        },"23850943":{
+            "CategoryFeatureGroup_ID":54,
+            "Name":{"1":"Standard printer languages","3":"Langues standards de l'imprimante"},
+            "Value":{"1":"hp pcl level 3","3":"hp pcl level 3"},
+            "Presentation_Value":{"1":"hp pcl level 3","3":"hp pcl level 3"}
+        },"23850939":{
+            "CategoryFeatureGroup_ID":782,
+            "Name":{"1":"Internal memory","3":"M\u00e9moire interne"},
+            "Value":{"1":"2","3":"2"},
+            "Presentation_Value":{"1":"2 MB","3":"2 Mo"}
+        },"23850910":{
+            "CategoryFeatureGroup_ID":782,
+            "Name":{"1":"Buffer size","3":"Taille du buffer"},
+            "Value":{"1":"48","3":"48"},
+            "Presentation_Value":{"1":"48 KB","3":"48 Ko"}
+        },"23850938":{
+            "CategoryFeatureGroup_ID":49,
+            "Name":{"1":"Maximum input capacity","3":"Capacit\u00e9 maximale d'entr\u00e9e"},
+            "Value":{"1":"100","3":"100"},
+            "Presentation_Value":{"1":"100 sheets","3":"100 feuilles"}
+        },"23850941":{
+            "CategoryFeatureGroup_ID":48,
+            "Name":{"1":"Standard output capacity","3":"Capacit\u00e9 de sortie standard"},
+            "Value":{"1":"50","3":"50"},
+            "Presentation_Value":{"1":"50 sheets","3":"50 feuilles"}
+        },"23850937":{
+            "CategoryFeatureGroup_ID":48,
+            "Name":{"1":"Maximum output capacity","3":"Capacit\u00e9 maximale de sortie"},
+            "Value":{"1":"50","3":"50"},
+            "Presentation_Value":{"1":"50 sheets","3":"50 feuilles"}
+        },"90768509":{
+            "CategoryFeatureGroup_ID":2778,
+            "Name":{"1":"Standard tray media types","3":"Types de support\/m\u00e9dia d'impression"},
+            "Value":{"1":"Card stock, Coated paper, Envelopes, Labels, Plain paper, Transparencies, Iron-On Transfers, Photo paper","3":"Card stock, Coated paper, Envelopes, Labels, Plain paper, Transparencies, Iron-On Transfers, Photo paper"},
+            "Presentation_Value":{"1":"Card stock, Coated paper, Envelopes, Labels, Plain paper, Transparencies, Iron-On Transfers, Photo paper","3":"Card stock, Papier enduit, Enveloppes, \u00c9tiquettes, Papier ordinaire, Transparences, Transferts sur tissu, Papier photo"}
+        },"23850988":{
+            "CategoryFeatureGroup_ID":2778,
+            "Name":{"1":"ISO A-series sizes (A0...A9)","3":"ISO, Format Series A (A0...A9)"},
+            "Value":{"1":"A4, A5, A6","3":"A4, A5, A6"},
+            "Presentation_Value":{"1":"A4, A5, A6","3":"A4, A5, A6"}
+        },"23850991":{
+            "CategoryFeatureGroup_ID":2778,
+            "Name":{"1":"Envelopes sizes","3":"Tailles enveloppes"},
+            "Value":{"1":"C6 & DL","3":"C6 & DL"},
+            "Presentation_Value":{"1":"C6 & DL","3":"C6 & DL"}
+        },"23850955":{
+            "CategoryFeatureGroup_ID":53,
+            "Name":{"1":"Width","3":"Largeur"},
+            "Value":{"1":"446","3":"446"},
+            "Presentation_Value":{"1":"17.6 \" (446 mm)","3":"446 mm"}
+        },"23850956":{
+            "CategoryFeatureGroup_ID":53,
+            "Name":{"1":"Depth","3":"Profondeur"},
+            "Value":{"1":"351","3":"351"},
+            "Presentation_Value":{"1":"13.8 \" (351 mm)","3":"351 mm"}
+        },"23850957":{
+            "CategoryFeatureGroup_ID":53,
+            "Name":{"1":"Height","3":"Hauteur"},
+            "Value":{"1":"183","3":"183"},
+            "Presentation_Value":{"1":"7.2 \" (183 mm)","3":"183 mm"}
+        },"23850947":{
+            "CategoryFeatureGroup_ID":53,
+            "Name":{"1":"Package dimensions (WxDxH)","3":"Dimensions du colis (LxPxH)"},
+            "Value":{"1":"484 x 232 x 414","3":"484 x 232 x 414"},
+            "Presentation_Value":{"1":"19.1 x 9.13 x 16.3 inch (484 x 232 x 414 mm)","3":"484 x 232 x 414 mm"}
+        },"23850950":{
+            "CategoryFeatureGroup_ID":53,
+            "Name":{"1":"Package weight","3":"Poids du paquet"},
+            "Value":{"1":"7260","3":"7260"},
+            "Presentation_Value":{"1":"256.1 oz (7.26 kg)","3":"7.26 kg"}
+        },"23850912":{
+            "CategoryFeatureGroup_ID":1518,
+            "Name":{"1":"Power consumption (typical)","3":"Consommation \u00e9lectrique"},
+            "Value":{"1":"4","3":"4"},
+            "Presentation_Value":{"1":"4 W","3":"4 W"}
+        },"23850953":{
+            "CategoryFeatureGroup_ID":1519,
+            "Name":{"1":"Operating temperature range (T-T)","3":"Fourchette de temp\u00e9rature de fonctionnement"},
+            "Value":{"1":"5 - 40","3":"5 - 40"},
+            "Presentation_Value":{"1":"5 - 40 \u00b0C","3":"5 - 40 \u00b0C"}
+        },"23850951":{
+            "CategoryFeatureGroup_ID":1519,
+            "Name":{"1":"Operating relative humidity range","3":"Taux d'humidit\u00e9 de fonctionnement"},
+            "Value":{"1":"15 - 80","3":"15 - 80"},
+            "Presentation_Value":{"1":"15 - 80 %","3":"15 - 80 %"}
+        },"23850936":{
+            "CategoryFeatureGroup_ID":2777,
+            "Name":{"1":"Energy Star certified","3":"Certifi\u00e9 Energy Star"},
+            "Value":{"1":"Y","3":"Y"},
+            "Presentation_Value":{"1":"Y","3":"Oui"}
+        },"23850931":{
+            "CategoryFeatureGroup_ID":50,
+            "Name":{"1":"Minimum RAM","3":"M\u00e9moire vive (RAM) minimale"},
+            "Value":{"1":"128","3":"128"},
+            "Presentation_Value":{"1":"128 MB","3":"128 Mo"}
+        },"23850932":{
+            "CategoryFeatureGroup_ID":50,
+            "Name":{"1":"Minimum processor","3":"Processeur minimal"},
+            "Value":{"1":"Pentium 233 MHz","3":"Pentium 233 MHz"},
+            "Presentation_Value":{"1":"Pentium 233 MHz","3":"Pentium 233 MHz"}
+        },"23850911":{
+            "CategoryFeatureGroup_ID":50,
+            "Name":{"1":"Compatible operating systems","3":"Syst\u00e8mes d'exploitation compatibles"},
+            "Value":{"1":"Windows 98, Me, 2000, XP Home & Professional, Mac OS 8.6. +","3":"Windows 98, Me, 2000, XP Home & Professional, Mac OS 8.6. +"},
+            "Presentation_Value":{"1":"Windows 98, Me, 2000, XP Home & Professional, Mac OS 8.6. +","3":"Windows 98, Me, 2000, XP Home & Professional, Mac OS 8.6. +"}
+        },"23850948":{
+            "CategoryFeatureGroup_ID":352,
+            "Name":{"1":"Dimensions (WxDxH)","3":"Dimensions (LxPxH)"},
+            "Value":{"1":"446 x 351 x 183","3":"446 x 351 x 183"},
+            "Presentation_Value":{"1":"17.6 x 13.8 x 7.2 inch (446 x 351 x 183 mm)","3":"446 x 351 x 183 mm"}
+        },"23850944":{
+            "CategoryFeatureGroup_ID":352,
+            "Name":{"1":"Print technology","3":"Technologie d'impression"},
+            "Value":{"1":"Inkjet","3":"Inkjet"},
+            "Presentation_Value":{"1":"Inkjet","3":"Jet d'encre"}
+        },"23850913":{
+            "CategoryFeatureGroup_ID":352,
+            "Name":{"1":"Power requirements","3":"Exigences d'alimentation"},
+            "Value":{"1":"100 - 240 VAC (+\/- 10%), 50\/60 Hz (+\/- 3 Hz)","3":"100 - 240 VAC (+\/- 10%), 50\/60 Hz (+\/- 3 Hz)"},
+            "Presentation_Value":{"1":"100 - 240 VAC (+\/- 10%), 50\/60 Hz (+\/- 3 Hz)","3":"100 - 240 VAC (+\/- 10%), 50\/60 Hz (+\/- 3 Hz)"}
+        },"23850918":{
+            "CategoryFeatureGroup_ID":47,
+            "Name":{"1":"Print quality (colour, best quality)","3":"Qualit\u00e9 d'impression (couleur, qualit\u00e9 sup\u00e8rieure)"},
+            "Value":{"1":"600","3":"600"},
+            "Presentation_Value":{"1":"600 DPI","3":"600 DPI"}
+        },"23850917":{
+            "CategoryFeatureGroup_ID":47,
+            "Name":{"1":"Print quality (black, normal quality)","3":"Qualit\u00e9 d'impression (noir, qualit\u00e9 normale)"},
+            "Value":{"1":"600","3":"600"},
+            "Presentation_Value":{"1":"600 DPI","3":"600 DPI"}
+        },"23850916":{
+            "CategoryFeatureGroup_ID":47,
+            "Name":{"1":"Print quality (black, draft quality)","3":"Qualit\u00e9 d'impression (noir, qualit\u00e9 brouillon)"},
+            "Value":{"1":"300","3":"300"},
+            "Presentation_Value":{"1":"300 DPI","3":"300 DPI"}
+        },"23850954":{
+            "CategoryFeatureGroup_ID":47,
+            "Name":{"1":"Print quality (black, best quality)","3":"Qualit\u00e9 d'impression (noir, qualit\u00e9 sup\u00e9rieure)"},
+            "Value":{"1":"600 x 600","3":"600 x 600"},
+            "Presentation_Value":{"1":"600 x 600 DPI","3":"600 x 600 DPI"}
+        },"23850930":{
+            "CategoryFeatureGroup_ID":46,
+            "Name":{"1":"Print speed (colour photo, normal quality)","3":"Vitesse d'impression (photo couleur, qualit\u00e9 normale)"},
+            "Value":{"1":"0.5","3":"0.5"},
+            "Presentation_Value":{"1":"0.5 ppm","3":"0.5 ppm"}
+        },"23850929":{
+            "CategoryFeatureGroup_ID":46,
+            "Name":{"1":"Print speed (colour photo, best quality)","3":"Vitesse d'impression (photo couleur, qualit\u00e9 sup\u00e8rieure)"},
+            "Value":{"1":"0.4","3":"0.4"},
+            "Presentation_Value":{"1":"0.4 ppm","3":"0.4 ppm"}
+        },"23850928":{
+            "CategoryFeatureGroup_ID":46,
+            "Name":{"1":"Print speed (colour, full page colour, normal quality, A4)","3":"Vitesse d'impression (couleur, couleur pleine page, qualit\u00e9 normale, A4)"},
+            "Value":{"1":"0.5","3":"0.5"},
+            "Presentation_Value":{"1":"0.5 ppm","3":"0.5 ppm"}
+        },"23850926":{
+            "CategoryFeatureGroup_ID":46,
+            "Name":{"1":"Print speed (colour, full page colour, draft quality, A4)","3":"Vitesse d'impression (couleur, couleur pleine page, qualit\u00e9 brouillon, A4)"},
+            "Value":{"1":"1.4","3":"1.4"},
+            "Presentation_Value":{"1":"1.4 ppm","3":"1.4 ppm"}
+        },"23850924":{
+            "CategoryFeatureGroup_ID":46,
+            "Name":{"1":"Print speed (colour, full page colour, best quality, A4)","3":"Vitesse d'impression (couleur, pleine page couleur, qualit\u00e9 sup\u00e9rieure, A4)"},
+            "Value":{"1":"0.2","3":"0.2"},
+            "Presentation_Value":{"1":"0.2 ppm","3":"0.2 ppm"}
+        },"23850923":{
+            "CategoryFeatureGroup_ID":46,
+            "Name":{"1":"Print speed (colour, best quality, A4)","3":"Vitesse d'impression (colour, qualit\u00e9 sup\u00e9rieure, A4)"},
+            "Value":{"1":"0.9","3":"0.9"},
+            "Presentation_Value":{"1":"0.9 ppm","3":"0.9 ppm"}
+        },"23850920":{
+            "CategoryFeatureGroup_ID":46,
+            "Name":{"1":"Print speed (black, best quality, A4)","3":"Vitesse d'impression (noir, qualit\u00e9 sup\u00e9rieure, A4)"},
+            "Value":{"1":"3.9","3":"3.9"},
+            "Presentation_Value":{"1":"3.9 ppm","3":"3.9 ppm"}
+        },"23850940":{
+            "CategoryFeatureGroup_ID":54,
+            "Name":{"1":"Typefaces","3":"Polices de caract\u00e8res"},
+            "Value":{"1":"cg times, cg times italic, univers, univers italic, courier, courier italic, letter gothic, letter gothic italic","3":"cg times, cg times italic, univers, univers italic, courier, courier italic, letter gothic, letter gothic italic"},
+            "Presentation_Value":{"1":"cg times, cg times italic, univers, univers italic, courier, courier italic, letter gothic, letter gothic italic","3":"cg times, cg times italic, univers, univers italic, courier, courier italic, letter gothic, letter gothic italic"}
+        },"23850933":{
+            "CategoryFeatureGroup_ID":54,
+            "Name":{"1":"Colour printing technology","3":"Technologie d'impression couleur"},
+            "Value":{"1":"HP Photoret II, HP Colorsmart III","3":"HP Photoret II, HP Colorsmart III"},
+            "Presentation_Value":{"1":"HP Photoret II, HP Colorsmart III","3":"HP Photoret II, HP Colorsmart III"}
+        },"23850914":{
+            "CategoryFeatureGroup_ID":54,
+            "Name":{"1":"Print head nozzles","3":"Embouts de t\u00eate d'impression"},
+            "Value":{"1":"300 \/ 192","3":"300 \/ 192"},
+            "Presentation_Value":{"1":"300 \/ 192","3":"300 \/ 192"}
+        },"23850901":{
+            "CategoryFeatureGroup_ID":49,
+            "Name":{"1":"Maximum input capacity for transparencies","3":"Capacit\u00e9 d'entr\u00e9e maximale pour transparents"},
+            "Value":{"1":"25","3":"25"},
+            "Presentation_Value":{"1":"25 sheets","3":"25 feuilles"}
+        },"23850900":{
+            "CategoryFeatureGroup_ID":49,
+            "Name":{"1":"Maximum input capacity for labels","3":"Capacit\u00e9 d'entr\u00e9e maximale pour \u00e9tiquettes"},
+            "Value":{"1":"20","3":"20"},
+            "Presentation_Value":{"1":"20","3":"20"}
+        },"23850899":{
+            "CategoryFeatureGroup_ID":49,
+            "Name":{"1":"Maximum input capacity for envelopes","3":"Capacit\u00e9 maximale d'entr\u00e9e pour enveloppes"},
+            "Value":{"1":"15","3":"15"},
+            "Presentation_Value":{"1":"15","3":"15"}
+        },"23850898":{
+            "CategoryFeatureGroup_ID":49,
+            "Name":{"1":"Maximum input capacity for cards","3":"Capacit\u00e9 d'entr\u00e9e maximale pour cartes"},
+            "Value":{"1":"30","3":"30"},
+            "Presentation_Value":{"1":"30","3":"30"}
+        },"23850897":{
+            "CategoryFeatureGroup_ID":49,
+            "Name":{"1":"Maximum input capacity for banners","3":"Capacit\u00e9 d'entr\u00e9e maximale pour banni\u00e8res"},
+            "Value":{"1":"20","3":"20"},
+            "Presentation_Value":{"1":"20","3":"20"}
+        },"23850934":{
+            "CategoryFeatureGroup_ID":48,
+            "Name":{"1":"Duty cycle letter size (maximum)","3":"Cycle d'utilisation (maximum)"},
+            "Value":{"1":"1000","3":"1000"},
+            "Presentation_Value":{"1":"1000 pages per month","3":"1000 pages par mois"}
+        },"23850902":{
+            "CategoryFeatureGroup_ID":52,
+            "Name":{"1":"I\/O ports","3":"PortsE\/S"},
+            "Value":{"1":"USB","3":"USB"},
+            "Presentation_Value":{"1":"USB","3":"USB"}
+        },"23850935":{
+            "CategoryFeatureGroup_ID":825,
+            "Name":{"1":"Acoustic power emissions","3":"Puissance sonore \u00e9mise"},
+            "Value":{"1":"5.5 b(a)","3":"5.5 b(a)"},
+            "Presentation_Value":{"1":"5.5 b(a)","3":"5.5 b(a)"}
+        },"23850903":{
+            "CategoryFeatureGroup_ID":51,
+            "Name":{"1":"Standard media sizes","3":"Formats moyens standards"},
+            "Value":{"1":"B5-JIS","3":"B5-JIS"},
+            "Presentation_Value":{"1":"B5-JIS","3":"B5-JIS"}
+        },"23850909":{
+            "CategoryFeatureGroup_ID":3430,
+            "Name":{"1":"Recommended media weight","3":"Poids recommand\u00e9s"},
+            "Value":{"1":"75 - 90, 60 - 90, 75 to 90","3":"75 - 90, 60 - 90, 75 to 90"},
+            "Presentation_Value":{"1":"75 - 90, 60 - 90, 75 to 90 g\/m\u00b2","3":"75 - 90, 60 - 90, 75 to 90g\/m\u00b2"}
+        },"23850942":{
+            "CategoryFeatureGroup_ID":352,
+            "Name":{"1":"Acoustic pressure emissions","3":"\u00c9missions de pression acoustique"},
+            "Value":{"1":"42","3":"42"},
+            "Presentation_Value":{"1":"42 dB","3":"42 dB"}
+        },"45967728":{
+            "CategoryFeatureGroup_ID":352,
+            "Name":{"1":"Sourcedata-sheet","3":"Source de donn\u00e9es"},
+            "Value":{"1":"Icecat.biz","3":"Icecat.biz"},
+            "Presentation_Value":{"1":"Icecat.biz","3":"Icecat.biz"}
+        }
+    }
+}
