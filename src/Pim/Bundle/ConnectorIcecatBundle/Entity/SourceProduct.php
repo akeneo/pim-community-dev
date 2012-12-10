@@ -4,6 +4,8 @@ namespace Pim\Bundle\ConnectorIcecatBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * Icecat product
+ *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -52,11 +54,11 @@ class SourceProduct
     protected $mProdId;
 
     /**
-     * @var boolean $is_imported
+     * @var boolean $isImported
      *
-     * @ORM\Column(name="imported", type="boolean")
+     * @ORM\Column(name="is_imported", type="boolean")
      */
-    protected $is_imported;
+    protected $isImported;
 
     /**
      * Constructor for product
@@ -64,7 +66,7 @@ class SourceProduct
      */
     public function __construct()
     {
-        $this->is_imported = false;
+        $this->isImported = false;
     }
 
     /**
@@ -79,8 +81,8 @@ class SourceProduct
 
     /**
      * Set productId
+     * @param integer $productId
      *
-     * @param  integer $productId
      * @return Product
      */
     public function setProductId($productId)
@@ -102,8 +104,8 @@ class SourceProduct
 
     /**
      * Set prodId
+     * @param string $prodId
      *
-     * @param  string  $prodId
      * @return Product
      */
     public function setProdId($prodId)
@@ -125,8 +127,8 @@ class SourceProduct
 
     /**
      * Set mProdId
+     * @param string $mProdId
      *
-     * @param  string  $mProdId
      * @return Product
      */
     public function setMProdId($mProdId)
@@ -148,8 +150,8 @@ class SourceProduct
 
     /**
      * Set supplier
+     * @param Pim\Bundle\ConnectorIcecatBundle\Entity\SourceSupplier $supplier
      *
-     * @param  Pim\Bundle\ConnectorIcecatBundle\Entity\SourceSupplier $supplier
      * @return Product
      */
     public function setSupplier(\Pim\Bundle\ConnectorIcecatBundle\Entity\SourceSupplier $supplier = null)
@@ -171,13 +173,13 @@ class SourceProduct
 
     /**
      * Set is_imported
+     * @param bool $isImported
      *
-     * @param  bool    $isImported
      * @return Product
      */
     public function setIsImported($isImported)
     {
-        $this->is_imported = $isImported;
+        $this->isImported = $isImported;
 
         return $this;
     }
@@ -189,6 +191,6 @@ class SourceProduct
      */
     public function getIsImported()
     {
-        return $this->is_imported;
+        return $this->isImported;
     }
 }

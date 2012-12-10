@@ -4,6 +4,8 @@ namespace Pim\Bundle\ConnectorIcecatBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * Icecat language
+ *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -62,8 +64,8 @@ class SourceLanguage
 
     /**
      * Set code
+     * @param string $code
      *
-     * @param  string   $code
      * @return Language
      */
     public function setCode($code)
@@ -85,8 +87,8 @@ class SourceLanguage
 
     /**
      * Set shortCode
+     * @param string $shortCode
      *
-     * @param  string   $shortCode
      * @return Language
      */
     public function setShortCode($shortCode)
@@ -108,8 +110,8 @@ class SourceLanguage
 
     /**
      * Set icecatId
+     * @param integer $icecatId
      *
-     * @param  integer  $icecatId
      * @return Language
      */
     public function setIcecatId($icecatId)
@@ -131,8 +133,8 @@ class SourceLanguage
 
     /**
      * Set icecatShortCode
+     * @param string $icecatShortCode
      *
-     * @param  string   $icecatShortCode
      * @return Language
      */
     public function setIcecatShortCode($icecatShortCode)
