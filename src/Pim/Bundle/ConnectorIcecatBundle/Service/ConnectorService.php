@@ -20,11 +20,6 @@ use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\ProductSetXmlToDataSheetTrans
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\ProductValuesXmlToDataSheetTransformer;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\DataSheetArrayToProductTransformer;
 
-use Pim\Bundle\ConnectorIcecatBundle\Transform\LanguagesTransform;
-use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductsTransform;
-use Pim\Bundle\ConnectorIcecatBundle\Transform\SuppliersTransform;
-use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductXmlToArrayTransformer;
-
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\AttributesFromDataSheetsWriter;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\BaseIcecatProductsFromCsvWriter;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\DetailledIcecatProductsFromUrlWriter;
