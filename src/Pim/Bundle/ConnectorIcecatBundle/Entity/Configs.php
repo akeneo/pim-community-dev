@@ -3,6 +3,7 @@ namespace Pim\Bundle\ConnectorIcecatBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 /**
+ * Configs entities use for ConfigsType
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
