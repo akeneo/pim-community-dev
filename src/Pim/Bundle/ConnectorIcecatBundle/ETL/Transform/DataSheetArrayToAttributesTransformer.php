@@ -59,7 +59,6 @@ class DataSheetArrayToAttributesTransformer implements TransformInterface
         $allData = json_decode($this->datasheet->getData(), true);
 
         $prodFeatureData = $allData['productfeatures'];
-        var_dump($allData); exit();
 
         // initialize data transformer
         $dataTransformer = new ProductAttributeToArrayTransformer($this->productManager);
