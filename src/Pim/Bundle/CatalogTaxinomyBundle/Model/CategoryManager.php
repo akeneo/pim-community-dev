@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\CatalogTaxinomyBundle\Model;
 
+use Oro\Bundle\FlexibleEntityBundle\Doctrine\BaseEntityManager;
+
 use Pim\Bundle\CatalogTaxinomyBundle\Entity\Category;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,20 +16,14 @@ use Doctrine\Common\Persistence\ObjectManager;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class CategoryManager
+class CategoryManager extends BaseEntityManager
 {
     /**
-     * @var ObjectManager
+     * {@inheritdoc}
      */
-    protected $objectManager;
-
-    /**
-     * Constructor
-     * @param ObjectManager $objectManager
-     */
-    public function __construct($objectManager)
+    public function getEntityShortname()
     {
-        $this->objectManager = $objectManager;
+        return 'PimCatalogTaxinomyBundle:Category';
     }
 
     /**
@@ -36,7 +32,7 @@ class CategoryManager
      */
     public function getCategories()
     {
-        return $this->getRepository()->findAll();
+        return $this->getEntityRepository()->findAll();
     }
 
     /**
@@ -47,7 +43,7 @@ class CategoryManager
      */
     public function getChildren($parentId)
     {
-        return $this->getRepository()->getChildrenFromParentId($parentId);
+        return $this->getEntityRepository()->getChildrenFromParentId($parentId);
     }
 
     /**
@@ -58,7 +54,7 @@ class CategoryManager
      */
     public function search($criterias)
     {
-        return $this->getRepository()->search($criterias);
+        return $this->getEntityRepository()->search($criterias);
     }
 
     /**
@@ -69,7 +65,7 @@ class CategoryManager
      */
     public function getCategory($categoryId)
     {
-        return $this->getRepository()->findOneBy(array('id' => $categoryId));
+        return $this->getEntityRepository()->findOneBy(array('id' => $categoryId));
     }
 
     /**
@@ -78,25 +74,8 @@ class CategoryManager
      */
     public function persist($category)
     {
-        $this->objectManager->persist($category);
-        $this->objectManager->flush();
-    }
-
-    /**
-     * Get repository
-     * @return \Pim\Bundle\CatalogTaxinomyBundle\Entity\CategoryRepository
-     */
-    protected function getRepository()
-    {
-        return $this->objectManager->getRepository('PimCatalogTaxinomyBundle:Category');
-    }
-
-    /**
-     * @return \Pim\Bundle\CatalogTaxinomyBundle\Entity\Category
-     */
-    public function createNewInstance()
-    {
-        return new Category();
+        $this->manager->persist($category);
+        $this->manager->flush();
     }
 
     /**
@@ -115,8 +94,8 @@ class CategoryManager
      */
     protected function remove($category)
     {
-        $this->objectManager->remove($category);
-        $this->objectManager->flush();
+        $this->manager->remove($category);
+        $this->manager->flush();
     }
 
     /**

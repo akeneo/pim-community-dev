@@ -70,9 +70,9 @@ class CategoryManagerTest extends KernelAwareTest
     /**
      * test related method
      */
-    public function testCreateNewInstance()
+    public function testGetNewEntityInstance()
     {
-        $category = $this->getManager()->createNewInstance();
+        $category = $this->getManager()->getNewEntityInstance();
         $this->assertInstanceOfCategory($category);
     }
 
@@ -140,7 +140,7 @@ class CategoryManagerTest extends KernelAwareTest
         $startCount      = count($startCategories);
 
         // add a category and count categories
-        $category = $this->getManager()->createNewInstance();
+        $category = $this->getManager()->getNewEntityInstance();
         $this->getManager()->persist($category);
         $categories = $this->getManager()->getCategories();
 
