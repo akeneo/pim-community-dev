@@ -12,10 +12,8 @@ use Oro\Bundle\FlexibleEntityBundle\Doctrine\BaseEntityManager;
  */
 class ChannelManager extends BaseEntityManager
 {
-
     /**
-     * Return shortname that can be used to get the repository or instance
-     * @return string
+     * {@inheritdoc}
      */
     public function getEntityShortname()
     {
