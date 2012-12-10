@@ -27,17 +27,15 @@ class ConfigController extends Controller
 {
     /**
      * Edit configuration of icecat connector
-     * @param Request $request
      *
      * @return Response
      *
      * @Route("/edit")
      * @Template()
      */
-    public function editAction(Request $request)
+    public function editAction()
     {
         // get configuration values from database
-        $manager = $this->get($this->getObjectManagerService());
         $configManager = $this->get('pim.connector_icecat.config_manager');
         $listConfigs = $configManager->getConfig();
 

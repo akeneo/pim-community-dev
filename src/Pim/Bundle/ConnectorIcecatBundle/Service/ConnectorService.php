@@ -93,8 +93,6 @@ class ConnectorService
         $password = $this->configManager->getValue(Config::PASSWORD);
         $baseDir  = $this->configManager->getValue(Config::BASE_DIR);
         $url      = $this->configManager->getValue(Config::SUPPLIERS_URL);
-        $filePath    = $baseDir . $this->configManager->getValue(Config::SUPPLIERS_FILE);
-        $forceDownloadFile = true;
 
         // Extract
         $extractor = new SuppliersXmlFromUrl($url, $login, $password);

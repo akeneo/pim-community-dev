@@ -32,7 +32,7 @@ class ProductController extends Controller
     public function loadFromIcecatAction()
     {
         try {
-            $srvConnector = $this->container->get('pim.connector_icecat.icecat_service');
+            $srvConnector = $this->getConnectorService();
             $srvConnector->importIcecatBaseProducts();
             $this->get('session')->setFlash('success', 'Base products has been imported from Icecat');
         } catch (DBALException $e) {
@@ -70,18 +70,18 @@ class ProductController extends Controller
     /**
      * Load all icecat product data to local database
      *
-     * @param id $id
+     * @param integer $productId
      *
      * @return Response
      *
-     * @Route("/{id}/load-product")
+     * @Route("/{productId}/load-product")
      * @Template()
      */
-    public function loadProductAction($id)
+    public function loadProductAction($productId)
     {
         try {
-            $srvConnector = $this->container->get('pim.connector_icecat.icecat_service');
-            $srvConnector->importProductFromIcecatXml($id);
+            $srvConnector = $this->getConnectorService();
+            $srvConnector->importProductFromIcecatXml($productId);
             $this->get('session')->setFlash('success', 'Icecat datasheet has been imported as product');
         } catch (Exception $e) {
             $this->get('session')->setFlash('error', $e->getMessage());
@@ -89,5 +89,13 @@ class ProductController extends Controller
 
         // Redirect to products list
         return $this->redirect($this->generateUrl('pim_connectoricecat_product_list'));
+    }
+
+    /**
+     * @return ConnectorService
+     */
+    protected function getConnectorService()
+    {
+        return $this->container->get('pim.connector_icecat.icecat_service');
     }
 }

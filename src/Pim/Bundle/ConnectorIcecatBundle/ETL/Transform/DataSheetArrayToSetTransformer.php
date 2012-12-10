@@ -4,10 +4,11 @@ namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Transform;
 use Pim\Bundle\CatalogBundle\Form\DataTransformer\ProductSetToArrayTransformer;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
-
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Interfaces\TransformInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ProductTemplateManager;
 use Pim\Bundle\CatalogBundle\Model\BaseFieldFactory;
+
 use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Interfaces\TransformInterface;
 
 /**
  * Aims to transform product data sheet data to catalog product instance
@@ -31,7 +32,7 @@ class DataSheetArrayToSetTransformer implements TransformInterface
 
     /**
      * Get product template manager service
-     * @var \Pim\Bundle\CatalogBundle\Doctrine\$productTemplateManager
+     * @var \Pim\Bundle\CatalogBundle\Doctrine\ProductTemplateManager
      */
     protected $productTemplateManager;
 
@@ -44,15 +45,15 @@ class DataSheetArrayToSetTransformer implements TransformInterface
     /**
      * Constructor
      *
-     * @param ProductManager         $productManager     product manager
-     * @param ProductTemplateManager $productTmplManager product template manager
-     * @param IcecatProductDataSheet $datasheet          product datasheet
+     * @param ProductManager         $productManager    product manager
+     * @param ProductTemplateManager $productTplManager product template manager
+     * @param IcecatProductDataSheet $datasheet         product datasheet
      */
-    public function __construct(ProductManager $productManager, ProductTemplateManager $productTmplManager,
+    public function __construct(ProductManager $productManager, ProductTemplateManager $productTplManager,
         IcecatProductDataSheet $datasheet)
     {
         $this->productManager = $productManager;
-        $this->productTemplateManager = $productTemplateManager;
+        $this->productTemplateManager = $productTplManager;
         $this->datasheet = $datasheet;
     }
 

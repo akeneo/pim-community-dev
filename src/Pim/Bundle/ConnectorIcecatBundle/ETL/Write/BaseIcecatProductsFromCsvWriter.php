@@ -20,10 +20,10 @@ class BaseIcecatProductsFromCsvWriter
      *
      * @param string        $filePath      file path
      * @param ObjectManager $objectManager manager
-     * @param boolean       $debug         true to display output
      * @param integer       $batchSize     batch size
+     * @param boolean       $debug         true to display output
      */
-    public function import($filePath, $objectManager, $debug = false, $batchSize = 2000)
+    public function import($filePath, $objectManager, $batchSize = 2000, $debug = false)
     {
         MemoryHelper::addValue('memory');
 
