@@ -2,28 +2,16 @@
 namespace Pim\Bundle\ConnectorIcecatBundle\Service;
 
 use Doctrine\ORM\EntityManager;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
 
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\SetsFromDataSheetsWriter;
-
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\AttributesFromDataSheetsWriter;
-
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\InsertLanguagesFromXml;
-
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\InsertSuppliersFromXml;
-
-use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpReader;
-
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\InsertBaseIcecatProductsFromCsv;
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\InsertDetailledIcecatProductsFromUrl;
-
+use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\ConfigManager;
 use Pim\Bundle\ConnectorIcecatBundle\Entity\SourceSupplier;
-use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
 
+use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpReader;
 use Pim\Bundle\ConnectorIcecatBundle\Extract\ProductXmlExtractor;
+
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\SuppliersXmlFromUrl;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\ProductSetXmlFromUrl;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\DownloadAndUnpackFromUrl;
@@ -31,12 +19,19 @@ use Pim\Bundle\ConnectorIcecatBundle\ETL\Read\DownloadAndUnpackFromUrl;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\ProductSetXmlToDataSheetTransformer;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\ProductValuesXmlToDataSheetTransformer;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\DataSheetArrayToProductTransformer;
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\ProductsFromDataSheetsWriter;
 
 use Pim\Bundle\ConnectorIcecatBundle\Transform\LanguagesTransform;
 use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductsTransform;
 use Pim\Bundle\ConnectorIcecatBundle\Transform\SuppliersTransform;
 use Pim\Bundle\ConnectorIcecatBundle\Transform\ProductXmlToArrayTransformer;
+
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\AttributesFromDataSheetsWriter;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\BaseIcecatProductsFromCsvWriter;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\DetailledIcecatProductsFromUrlWriter;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\SuppliersFromXmlWriter;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\LanguagesFromXmlWriter;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\ProductsFromDataSheetsWriter;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\SetsFromDataSheetsWriter;
 
 use Pim\Bundle\ConnectorIcecatBundle\Helper\MemoryHelper;
 use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
@@ -107,7 +102,7 @@ class ConnectorService
         $xmlContent = $extractor->getXmlContent();
 
         // Import
-        $writer = new InsertSuppliersFromXml();
+        $writer = new SuppliersFromXmlWriter();
         $writer->import($xmlContent, $this->getEntityManager());
     }
 
@@ -131,7 +126,7 @@ class ConnectorService
         $xmlContent = file_get_contents($filePath);
 
         // Import
-        $writer= new InsertLanguagesFromXml();
+        $writer= new LanguagesFromXmlWriter();
         $writer->import($xmlContent, $this->getEntityManager());
     }
 
@@ -157,7 +152,7 @@ class ConnectorService
 
         // 2. import base products
         TimeHelper::addValue('import-base-product');
-        $writer = new InsertBaseIcecatProductsFromCsv();
+        $writer = new BaseIcecatProductsFromCsvWriter();
         $writer->import($filePath, $this->getDocumentManager());
         echo 'Insert base product -> '. TimeHelper::writeGap('import-base-product');
     }
@@ -177,7 +172,7 @@ class ConnectorService
 
         // import detailled products
         TimeHelper::addValue('import-detailled-product');
-        $writer = new InsertDetailledIcecatProductsFromUrl();
+        $writer = new DetailledIcecatProductsFromUrlWriter();
         $writer->import($this->getDocumentManager(), $baseProdUrl, $login, $password, $limit);
         echo 'Insert detailled product -> '. TimeHelper::writeGap('import-detailled-product');
     }

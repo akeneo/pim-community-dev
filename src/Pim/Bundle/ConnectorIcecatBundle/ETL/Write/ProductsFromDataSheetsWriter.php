@@ -25,6 +25,8 @@ class ProductsFromDataSheetsWriter
      * @param ProductManager $productManager product manager
      * @param array          $dataSheets     array of product datasheet
      * @param boolean        $flush          true to flush
+     *
+     * @return array
      */
     public function import(ProductManager $productManager, $dataSheets, $flush)
     {
