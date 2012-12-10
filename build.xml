@@ -81,6 +81,7 @@
             <arg path="${basedir}/src" />
             <arg value="text" />
             <arg value="${basedir}/app/Resources/jenkins/phpmd.xml" />
+            <arg value="--ignore=${basedir}/src/*/Tests/*.php,${basedir}/src/*Tests/Files/*" />
         </exec>
     </target>
 
@@ -91,6 +92,7 @@
             <arg value="${basedir}/app/Resources/jenkins/phpmd.xml" />
             <arg value="--reportfile" />
             <arg value="${basedir}/app/build/logs/pmd.xml" />
+            <arg value="--ignore=${basedir}/src/*/Tests/*.php,${basedir}/src/*Tests/Files/*" />
         </exec>
     </target>
 
@@ -98,6 +100,7 @@
         <exec executable="phpcs">
             <arg value="--standard=Symfony2" />
             <arg path="${basedir}/src" />
+            <arg value="--ignore=${basedir}/src/*/Tests/*.php,${basedir}/src/*Tests/Files/*" />
         </exec>
     </target>
 
@@ -107,6 +110,7 @@
             <arg value="--report-file=${basedir}/app/build/logs/checkstyle.xml" />
             <arg value="--standard=Symfony2" />
             <arg path="${basedir}/src" />
+            <arg value="--ignore=${basedir}/src/*/Tests/*.php,${basedir}/src/*Tests/Files/*" />
         </exec>
     </target>
 
