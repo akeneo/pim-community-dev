@@ -98,6 +98,7 @@
         <exec executable="phpcs">
             <arg value="--standard=Symfony2" />
             <arg path="${basedir}/src" />
+            <exclude name="${baseDir}/src/*/Tests/*.php" />
         </exec>
     </target>
 
