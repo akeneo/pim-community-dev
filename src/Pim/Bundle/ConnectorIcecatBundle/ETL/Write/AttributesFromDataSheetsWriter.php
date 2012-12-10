@@ -6,9 +6,6 @@ use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
 use Pim\Bundle\ConnectorIcecatBundle\Helper\MemoryHelper;
 use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\DataSheetArrayToAttributesTransformer;
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\DataSheetArrayToSetTransformer;
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\DataSheetArrayToProductTransformer;
-
 /**
  * Aims to insert a collection of attributes from a collection of IcecatProductDataSheet
  *

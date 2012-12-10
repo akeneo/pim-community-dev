@@ -6,7 +6,6 @@ use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
 use Pim\Bundle\ConnectorIcecatBundle\Helper\MemoryHelper;
 use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\DataSheetArrayToSetTransformer;
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\DataSheetArrayToProductTransformer;
 
 /**
  * Aims to insert a collection of sets from a collection of IcecatProductDataSheet
@@ -21,11 +20,12 @@ class SetsFromDataSheetsWriter
     /**
      * Import a collection of sets from datasheets
      *
-     * @param ProductManager $productManager product manager
-     * @param array          $dataSheets     array of product datasheet
-     * @param boolean        $flush          true to flush
+     * @param ProductManager         $productManager    product manager
+     * @param ProductTemplateManager $productTplManager product template manager
+     * @param array                  $dataSheets        array of product datasheet
+     * @param boolean                $flush             true to flush
      */
-    public function import(ProductManager $productManager, $dataSheets, $flush)
+    public function import(ProductManager $productManager, ProductTemplateManager $productTplManager, $dataSheets, $flush)
     {
         $setsCode = array();
 

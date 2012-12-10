@@ -175,7 +175,6 @@ class ConnectorService
      *
      * @param integer $limit nb product to import
      *
-     * TODO : Set a limit when recovering datasheet
      * TODO : Request only IcecatProductDataSheet where status = 2
      */
     public function importProductsFromDataSheet($limit)
@@ -185,6 +184,61 @@ class ConnectorService
         echo "import products from data sheet...\n";
 
         $productManager = $this->container->get('pim.catalog.product_manager');
+        $dataSheets = $this->getLimitedDataSheets($limit);
+
+        // call writers
+        $attributeWriter = new AttributesFromDataSheetsWriter();
+        $attributeWriter->import($productManager, $dataSheets, $flush);
+
+        $productWriter = new ProductsFromDataSheetsWriter();
+        $productsError = $productWriter->import($productManager, $dataSheets, $flush);
+
+        // update IcecatProductDataSheet status
+        foreach ($dataSheets as $dataSheet) {
+            $dataSheet->setStatus(IcecatProductDataSheet::STATUS_FINISHED);
+            $this->getDocumentManager()->persist($dataSheet);
+        }
+
+        // update IcecatProductDataSheet error status
+        foreach ($productsError as $dataSheetId => $message) {
+            $dataSheet = $docManager->getRepository('PimConnectorIcecatBundle:IcecatProductDataSheet')->find($dataSheetId);
+            $dataSheet->setStatus(IcecatProductDataSheet::STATUS_ERROR);
+            $this->getDocumentManager()->persist($dataSheet);
+        }
+
+        if ($flush) {
+            $productManager->getPersistenceManager()->flush();
+        }
+    }
+
+    /**
+     * Import product templates from icecat datasheet
+     * @param integer $limit
+     *
+     * TODO : GET A NEW STATUS FOR PRODUCT DATA SHEET WHERE SET IS IMPORTED
+     */
+    public function importIcecatSetProducts($limit)
+    {
+        // TODO : must be removed
+        $flush = false;
+
+        $productManager    = $this->container->get('pim.catalog.product_manager');
+        $productTplManager = $this->container->get('pim.catalog.product_template_manager');
+        $dataSheets        = $this->getLimitedDataSheets($limit);
+
+        // call writer
+        $writer = new SetsFromDataSheetsWriter();
+        $writer->import($productManager, $productTplManager, $dataSheets, $flush);
+    }
+
+    /**
+     * Get a collection of datasheet with an hook for result limit
+     * @param integer $limit
+     *
+     * @return array
+     */
+    protected function getLimitedDataSheets($limit)
+    {
         $docManager     = $this->getDocumentManager();
         $dataSheets     = $docManager->getRepository('PimConnectorIcecatBundle:IcecatProductDataSheet')->findAll();
 
@@ -197,29 +251,7 @@ class ConnectorService
             }
         }
 
-        // call writers
-        $attributeWriter = new AttributesFromDataSheetsWriter();
-        $attributeWriter->import($productManager, $limitedDataSheets, $flush);
-
-        $productWriter = new ProductsFromDataSheetsWriter();
-        $productsError = $productWriter->import($productManager, $limitedDataSheets, $flush);
-
-        // update IcecatProductDataSheet status
-        foreach ($limitedDataSheets as $dataSheet) {
-            $dataSheet->setStatus(IcecatProductDataSheet::STATUS_FINISHED);
-            $docManager->persist($dataSheet);
-        }
-
-        // update IcecatProductDataSheet error status
-        foreach ($productsError as $dataSheetId => $message) {
-            $dataSheet = $docManager->getRepository('PimConnectorIcecatBundle:IcecatProductDataSheet')->find($dataSheetId);
-            $dataSheet->setStatus(IcecatProductDataSheet::STATUS_ERROR);
-            $docManager->persist($dataSheet);
-        }
-
-        if ($flush) {
-            $productManager->getPersistenceManager()->flush();
-        }
+        return $limitedDataSheets;
     }
 
     /**

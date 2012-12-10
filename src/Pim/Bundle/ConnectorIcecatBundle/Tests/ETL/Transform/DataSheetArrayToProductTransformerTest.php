@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Tests\Transform;
 
-use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\DataSheetArrayToAttributesTransformer;
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\DataSheetArrayToProductTransformer;
 
 use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
 
@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Tests\KernelAwareTest;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class DataSheetArrayToAttributesTransformerTest extends KernelAwareTest
+class DataSheetArrayToProductTransformerTest extends KernelAwareTest
 {
     /**
      * Test related method
@@ -33,14 +33,12 @@ class DataSheetArrayToAttributesTransformerTest extends KernelAwareTest
         $productManager = $this->container->get('pim.catalog.product_manager');
 
         // call transformer
-        $transformer = new DataSheetArrayToAttributesTransformer($productManager, $datasheet);
-        $attributes = $transformer->transform();
+        $transformer = new DataSheetArrayToProductTransformer($productManager, $datasheet);
+        $product = $transformer->transform();
 
         // assertions
-        $this->assertCount(57, $attributes);
-        foreach ($attributes as $attribute) {
-            $this->assertInstanceOfProductAttribute($attribute);
-        }
+        $this->assertInstanceOfProduct($product);
+        $this->assertEquals('C8934A#A2L', $product->getSku());
     }
 
     /**
@@ -57,11 +55,11 @@ class DataSheetArrayToAttributesTransformerTest extends KernelAwareTest
     }
 
     /**
-     * Assert entity is a ProductAttribute entity
+     * Assert entity is a Product entity
      * @param object $entity
      */
-    protected function assertInstanceOfProductAttribute($entity)
+    protected function assertInstanceOfProduct($entity)
     {
-        $this->assertInstanceOf('\Pim\Bundle\CatalogBundle\Entity\ProductAttribute', $entity);
+        $this->assertInstanceOf('\Oro\Bundle\FlexibleEntityBundle\Entity\Entity', $entity);
     }
 }
