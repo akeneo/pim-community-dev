@@ -43,10 +43,10 @@ class IcecatController extends Controller
             $connection->commit();
         } catch (Exception $e) {
             $connection->rollback();
-            $this->get('session')->setFlash('exception', $e->getMessage());
+            $this->get('session')->setFlash('error', $e->getMessage());
         }
 
-        return $this->redirect($this->generateUrl('pim_connectoricecat_default_index'));
+        return $this->redirectToIndex();
     }
 
     /**
@@ -84,9 +84,18 @@ class IcecatController extends Controller
             $connection->commit();
         } catch (Exception $e) {
             $connection->rollback();
-            $this->get('session')->setFlash('exception', $e->getMessage());
+            $this->get('session')->setFlash('error', $e->getMessage());
         }
 
+        return $this->redirectToIndex();
+    }
+
+    /**
+     * Redirect to index action of default controller
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    protected function redirectToIndex()
+    {
         return $this->redirect($this->generateUrl('pim_connectoricecat_default_index'));
     }
 }

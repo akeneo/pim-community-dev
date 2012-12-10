@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Command;
 
+use Pim\Bundle\ConnectorIcecatBundle\Service\ConnectorService;
+
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
 
@@ -78,7 +80,7 @@ abstract class AbstractPimCommand extends ContainerAwareCommand
      */
     protected function getConfigManager()
     {
-        return $this->getContainer()->get('pim.connector.icecat.configmanager');
+        return $this->getContainer()->get('pim.connector_icecat.config_manager');
     }
 
     /**
@@ -88,5 +90,13 @@ abstract class AbstractPimCommand extends ContainerAwareCommand
     protected function writeln($string = '')
     {
         $this->output->writeln($string);
+    }
+
+    /**
+     * @return ConnectorService
+     */
+    protected function getConnectorService()
+    {
+        return $this->getContainer()->get('pim.connector_icecat.icecat_service');
     }
 }

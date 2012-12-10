@@ -30,6 +30,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class CategoryController extends Controller
 {
     /**
+     * Redirect to index action
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    protected function redirectToIndex()
+    {
+        return $this->redirect($this->generateUrl('pim_catalogtaxinomy_tree_index'));
+    }
+
+    /**
      * @return Response
      *
      * @Route("/index")
@@ -65,7 +74,7 @@ class CategoryController extends Controller
 
             return $this->prepareJsonResponse($data);
         } else {
-            return $this->redirect($this->generateUrl('pim_catalogtaxinomy_tree_tree'));
+            return $this->redirectToIndex();
         }
     }
 
@@ -91,7 +100,7 @@ class CategoryController extends Controller
 
             return $this->prepareJsonResponse($data);
         } else {
-            return $this->redirect($this->generateUrl('pim_catalogtaxinomy_tree_tree'));
+            return $this->redirectToIndex();
         }
     }
 
@@ -124,7 +133,7 @@ class CategoryController extends Controller
 
             return $this->prepareJsonResponse($data);
         } else {
-            return $this->redirect($this->generateUrl('pim_catalogtaxinomy_tree_tree'));
+            return $this->redirectToIndex();
         }
     }
 
@@ -149,7 +158,7 @@ class CategoryController extends Controller
 
             return $this->prepareJsonResponse($data);
         } else {
-            return $this->redirect($this->generateUrl('pim_catalogtaxinomy_tree_tree'));
+            return $this->redirectToIndex();
         }
     }
 
@@ -174,7 +183,7 @@ class CategoryController extends Controller
 
             return $this->prepareJsonResponse($data);
         } else {
-            return $this->redirect($this->generateUrl('pim_catalogtaxinomy_tree_tree'));
+            return $this->redirectToIndex();
         }
     }
 
@@ -206,7 +215,7 @@ class CategoryController extends Controller
 
             return $this->prepareJsonResponse($data);
         } else {
-            return $this->redirect($this->generateUrl('pim_catalogtaxinomy_tree_tree'));
+            return $this->redirectToIndex();
         }
     }
 

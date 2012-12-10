@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Controller;
 
+use Pim\Bundle\ConnectorIcecatBundle\Service\ConnectorService;
+
 use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -19,6 +21,7 @@ use Doctrine\DBAL\DBALException;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
+ * @Route("/supplier")
  */
 class SupplierController extends Controller
 {
@@ -27,15 +30,15 @@ class SupplierController extends Controller
      *
      * @return Response
      *
-     * @Route("/supplier/load-from-icecat")
+     * @Route("/load-from-icecat")
      * @Template()
      */
     public function loadFromIcecatAction()
     {
         try {
-            $srvConnector = $this->container->get('akeneo.connector.icecat_service');
+            $srvConnector = $this->getConnectorService();
             $srvConnector->importIcecatSuppliers();
-            $this->get('session')->setFlash('notice', 'Base suppliers has been imported from Icecat');
+            $this->get('session')->setFlash('success', 'Base suppliers has been imported from Icecat');
         } catch (DBALException $e) {
             $this->container->get('logger')->err($e->getCode() .' : '. $e->getMessage());
             $this->get('session')->setFlash('exception', 'Erreur en base de données lors de l\'import');
@@ -51,7 +54,7 @@ class SupplierController extends Controller
      *
      * @return Response
      *
-     * @Route("/supplier/list")
+     * @Route("/list")
      * @Template()
      */
     public function listAction()
@@ -75,31 +78,41 @@ class SupplierController extends Controller
      *
      * @return Response
      *
-     * @Route("/supplier/{icecatId}/load-products")
+     * @Route("/{icecatId}/load-products")
      * @Template()
      */
     public function loadProductsAction($icecatId)
     {
         try {
-            $supplier = $this->getDoctrine()->getRepository('PimConnectorIcecatBundle:SourceSupplier')
-                    ->findOneByIcecatId($icecatId);
-            $srvConnector = $this->container->get('akeneo.connector.icecat_service');
+            // get supplier from icecat id
+            $supplier = $this->getDoctrine()
+                             ->getRepository('PimConnectorIcecatBundle:SourceSupplier')
+                             ->findOneByIcecatId($icecatId);
+            $srvConnector = $this->getConnectorService();
             $srvConnector->importProductsFromSupplier($supplier);
 
             // Get supplier products
             $products = $this->getDoctrine()->getRepository('PimConnectorIcecatBundle:SourceProduct')
                     ->findBySupplier($supplier);
 
-            // Prepare notice message
+            // Prepare success message
             $viewRenderer = $this->render('PimConnectorIcecatBundle:Supplier:loadProducts.html.twig',
                 array('supplier' => $supplier, 'products' => $products)
             );
-            $this->get('session')->setFlash('notice', $viewRenderer->getContent());
+            $this->get('session')->setFlash('success', $viewRenderer->getContent());
         } catch (Exception $e) {
-            $this->get('session')->setFlash('exception', $e->getMessage());
+            $this->get('session')->setFlash('error', $e->getMessage());
         }
 
         // Redirect to suppliers list
         return $this->redirect($this->generateUrl('pim_connectoricecat_supplier_list'));
+    }
+
+    /**
+     * @return ConnectorService
+     */
+    protected function getConnectorService()
+    {
+        return $this->container->get('pim.connector_icecat.icecat_service');
     }
 }

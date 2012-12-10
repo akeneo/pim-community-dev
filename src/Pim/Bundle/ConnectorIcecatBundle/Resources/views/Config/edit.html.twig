@@ -8,7 +8,7 @@
 
     {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
 
-    <form action="{{ path('pim_connectoricecat_config_edit') }}" method="post" {{ form_enctype(form) }} class="form-config">
+    <form action="{{ path('pim_connectoricecat_config_update') }}" method="post" {{ form_enctype(form) }} class="form-config">
 
         <div class="error">{{ form_errors(form) }}</div><br />
 

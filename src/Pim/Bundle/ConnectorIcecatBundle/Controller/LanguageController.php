@@ -17,6 +17,8 @@ use Doctrine\DBAL\DBALException;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @Route("/language")
  */
 class LanguageController extends Controller
 {
@@ -25,20 +27,20 @@ class LanguageController extends Controller
      *
      * @return Response
      *
-     * @Route("/language/load-from-icecat")
+     * @Route("/load-from-icecat")
      * @Template()
      */
     public function loadFromIcecatAction()
     {
         try {
-            $srvConnector = $this->container->get('akeneo.connector.icecat_service');
+            $srvConnector = $this->container->get('pim.connector_icecat.icecat_service');
             $srvConnector->importIcecatLanguages();
-            $this->get('session')->setFlash('notice', 'Base languages has been imported from Icecat');
+            $this->get('session')->setFlash('success', 'Base languages has been imported from Icecat');
         } catch (DBALException $e) {
             $this->container->get('logger')->err($e->getCode() .' : '. $e->getMessage());
-            $this->get('session')->setFlash('exception', 'Erreur en base de données lors de l\'import');
+            $this->get('session')->setFlash('error', 'Erreur en base de données lors de l\'import');
         } catch (Exception $e) {
-            $this->get('session')->setFlash('exception', $e->getMessage());
+            $this->get('session')->setFlash('error', $e->getMessage());
         }
 
         return $this->redirect($this->generateUrl('pim_connectoricecat_language_list'));
@@ -49,7 +51,7 @@ class LanguageController extends Controller
      *
      * @return Response
      *
-     * @Route("/language/list")
+     * @Route("/list")
      * @Template()
      */
     public function listAction()

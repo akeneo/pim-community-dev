@@ -1,6 +1,10 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Service;
 
+use Doctrine\ORM\EntityManager;
+
+use Doctrine\ODM\MongoDB\DocumentManager;
+
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\SetsFromDataSheetsWriter;
 
 use Pim\Bundle\ConnectorIcecatBundle\ETL\Write\AttributesFromDataSheetsWriter;
@@ -65,7 +69,23 @@ class ConnectorService
     public function __construct($container)
     {
         $this->container = $container;
-        $this->configManager = new ConfigManager($this->container->get('doctrine.orm.entity_manager'));
+        $this->configManager = $this->container->get('pim.connector_icecat.config_manager');
+    }
+
+    /**
+     * @return DocumentManager
+     */
+    protected function getDocumentManager()
+    {
+        return $this->container->get('doctrine.odm.mongodb.document_manager');
+    }
+
+    /**
+     * @return EntityManager
+     */
+    protected function getEntityManager()
+    {
+        return $this->container->get('doctrine.orm.entity_manager');
     }
 
     /**
@@ -87,9 +107,8 @@ class ConnectorService
         $xmlContent = $extractor->getXmlContent();
 
         // Import
-        $entityManager = $this->container->get('doctrine.orm.entity_manager');
         $writer = new InsertSuppliersFromXml();
-        $writer->import($xmlContent, $entityManager);
+        $writer->import($xmlContent, $this->getEntityManager());
     }
 
     /**
@@ -112,9 +131,8 @@ class ConnectorService
         $xmlContent = file_get_contents($filePath);
 
         // Import
-        $entityManager = $this->container->get('doctrine.orm.entity_manager');
         $writer= new InsertLanguagesFromXml();
-        $writer->import($xmlContent, $entityManager);
+        $writer->import($xmlContent, $this->getEntityManager());
     }
 
     /**
@@ -135,14 +153,13 @@ class ConnectorService
         TimeHelper::addValue('download-file');
         $extractor = new DownloadAndUnpackFromUrl($url, $login, $password, $archivePath, $filePath, $forceDLFile);
         $extractor->extract();
-        echo /*$this->writeln(*/ 'Download File -> '. TimeHelper::writeGap('download-file').PHP_EOL; //);
+        echo 'Download File -> '. TimeHelper::writeGap('download-file').PHP_EOL;
 
         // 2. import base products
         TimeHelper::addValue('import-base-product');
-        $manager = $this->container->get('doctrine.odm.mongodb.document_manager');
         $writer = new InsertBaseIcecatProductsFromCsv();
-        $writer->import($filePath, $manager);
-        echo /*$this->writeln(*/'Insert base product -> '. TimeHelper::writeGap('import-base-product')/*);*/;
+        $writer->import($filePath, $this->getDocumentManager());
+        echo 'Insert base product -> '. TimeHelper::writeGap('import-base-product');
     }
 
     /**
@@ -160,10 +177,9 @@ class ConnectorService
 
         // import detailled products
         TimeHelper::addValue('import-detailled-product');
-        $manager = $this->container->get('doctrine.odm.mongodb.document_manager');
         $writer = new InsertDetailledIcecatProductsFromUrl();
-        $writer->import($manager, $baseProdUrl, $login, $password, $limit);
-        echo /*$this->writeln(*/'Insert base product -> '. TimeHelper::writeGap('import-detailled-product')/*);*/;
+        $writer->import($this->getDocumentManager(), $baseProdUrl, $login, $password, $limit);
+        echo 'Insert detailled product -> '. TimeHelper::writeGap('import-detailled-product');
     }
 
     /**
@@ -181,7 +197,7 @@ class ConnectorService
         echo "import products from data sheet...\n";
 
         $productManager = $this->container->get('pim.catalog.product_manager');
-        $docManager     = $this->container->get('doctrine.odm.mongodb.document_manager');
+        $docManager     = $this->getDocumentManager();
         $dataSheets     = $docManager->getRepository('PimConnectorIcecatBundle:IcecatProductDataSheet')->findAll();
 
         // TODO : Hook to get limited data sheet.. Must be removed.
@@ -276,8 +292,9 @@ class ConnectorService
      */
     public function importProductsFromSupplier(SourceSupplier $supplier)
     {
-        $em = $this->container->get('doctrine.orm.entity_manager');
-        $products = $em->getRepository('PimConnectorIcecatBundle:SourceProduct')->findBySupplier($supplier);
+        $products = $this->getEntityManager()
+                         ->getRepository('PimConnectorIcecatBundle:SourceProduct')
+                         ->findBySupplier($supplier);
 
         foreach ($products as $product) {
             $this->importProductFromIcecatXml($product->getId());

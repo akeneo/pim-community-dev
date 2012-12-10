@@ -17,6 +17,7 @@ use Doctrine\DBAL\DBALException;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
+ * @Route("/product")
  */
 class ProductController extends Controller
 {
@@ -25,20 +26,20 @@ class ProductController extends Controller
      *
      * @return Response
      *
-     * @Route("/product/load-from-icecat")
+     * @Route("/load-from-icecat")
      * @Template()
      */
     public function loadFromIcecatAction()
     {
         try {
-            $srvConnector = $this->container->get('akeneo.connector.icecat_service');
+            $srvConnector = $this->container->get('pim.connector_icecat.icecat_service');
             $srvConnector->importIcecatBaseProducts();
-            $this->get('session')->setFlash('notice', 'Base products has been imported from Icecat');
+            $this->get('session')->setFlash('success', 'Base products has been imported from Icecat');
         } catch (DBALException $e) {
             $this->container->get('logger')->err($e->getCode() .' : '. $e->getMessage());
-            $this->get('session')->setFlash('exception', 'Erreur en base de données lors de l\'import');
+            $this->get('session')->setFlash('error', 'Erreur en base de données lors de l\'import');
         } catch (Exception $e) {
-            $this->get('session')->setFlash('exception', $e->getMessage());
+            $this->get('session')->setFlash('error', $e->getMessage());
         }
 
         return $this->redirect($this->generateUrl('pim_connectoricecat_product_list'));
@@ -49,7 +50,7 @@ class ProductController extends Controller
      *
      * @return Response
      *
-     * @Route("/product/list")
+     * @Route("/list")
      * @Template()
      */
     public function listAction()
@@ -73,17 +74,17 @@ class ProductController extends Controller
      *
      * @return Response
      *
-     * @Route("/product/{id}/load-product")
+     * @Route("/{id}/load-product")
      * @Template()
      */
     public function loadProductAction($id)
     {
         try {
-            $srvConnector = $this->container->get('akeneo.connector.icecat_service');
+            $srvConnector = $this->container->get('pim.connector_icecat.icecat_service');
             $srvConnector->importProductFromIcecatXml($id);
-            $this->get('session')->setFlash('notice', 'Icecat datasheet has been imported as product');
+            $this->get('session')->setFlash('success', 'Icecat datasheet has been imported as product');
         } catch (Exception $e) {
-            $this->get('session')->setFlash('exception', $e->getMessage());
+            $this->get('session')->setFlash('error', $e->getMessage());
         }
 
         // Redirect to products list

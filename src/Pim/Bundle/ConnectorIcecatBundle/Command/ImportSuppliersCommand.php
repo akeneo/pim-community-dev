@@ -28,7 +28,7 @@ class ImportSuppliersCommand extends AbstractPimCommand
     protected function configure()
     {
         $this->setName('connectoricecat:importSuppliers')
-            ->setDescription('Import suppliers from icecat to localhost database');
+             ->setDescription('Import suppliers from icecat to localhost database');
     }
 
     /**
@@ -40,7 +40,7 @@ class ImportSuppliersCommand extends AbstractPimCommand
         MemoryHelper::addValue('memory');
 
         // run detailled product import
-        $srvConnector = $this->getContainer()->get('akeneo.connector.icecat_service');
+        $srvConnector = $this->getConnectorService();
         $srvConnector->importIcecatSuppliers();
 
         $this->writeln('total time elapsed : '. TimeHelper::writeGap('start-import'));

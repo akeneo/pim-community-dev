@@ -61,7 +61,7 @@ class ImportProductsCommand extends AbstractPimCommand
         MemoryHelper::addValue('memory');
 
         // run detailled product import
-        $srvConnector = $this->getContainer()->get('akeneo.connector.icecat_service');
+        $srvConnector = $this->getConnectorService();
         $srvConnector->importProductsFromDataSheet($this->limit);
 
         $this->writeln('total time elapsed : '. TimeHelper::writeGap('start-import'));

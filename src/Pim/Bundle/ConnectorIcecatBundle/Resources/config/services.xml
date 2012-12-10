@@ -5,16 +5,16 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="pim_icecat_connector.connectorservice.class">Pim\Bundle\ConnectorIcecatBundle\Service\ConnectorService</parameter>
-        <parameter key="pim_icecat_connector.configmanager.class">Pim\Bundle\ConnectorIcecatBundle\Entity\ConfigManager</parameter>
+        <parameter key="pim.connector_icecat.connector_service.class">Pim\Bundle\ConnectorIcecatBundle\Service\ConnectorService</parameter>
+        <parameter key="pim.connector_icecat.config_manager.class">Pim\Bundle\ConnectorIcecatBundle\Model\ConfigManager</parameter>
     </parameters>
 
     <services>
-        <service id="akeneo.connector.icecat_service" class="%pim_icecat_connector.connectorservice.class%">
+        <service id="pim.connector_icecat.icecat_service" class="%pim.connector_icecat.connector_service.class%">
             <argument type="service" id="service_container" />
             <tag name="akeneo.connector" />
         </service>
-        <service id="pim.connector.icecat.configmanager" class="%pim_icecat_connector.configmanager.class%">
+        <service id="pim.connector_icecat.config_manager" class="%pim.connector_icecat.config_manager.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
     </services>

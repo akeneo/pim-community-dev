@@ -1,10 +1,13 @@
 <?php
-namespace Pim\Bundle\ConnectorIcecatBundle\Entity;
+namespace Pim\Bundle\ConnectorIcecatBundle\Model;
+
+use Pim\Bundle\ConnectorIcecatBundle\Exception\ConfigException;
+
+use Oro\Bundle\FlexibleEntityBundle\Doctrine\BaseEntityManager;
 
 use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use \Exception;
 /**
  * Service class to get bundle configuration
  * An object manager must be set before use static methods
@@ -14,7 +17,7 @@ use \Exception;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ConfigManager
+class ConfigManager extends BaseEntityManager
 {
     /**
      * Associative array to get Config entities (code => Config)
@@ -22,19 +25,6 @@ class ConfigManager
      * @var array
      */
     protected static $configs = array();
-
-    /**
-     * @var ObjectManager
-     */
-    protected $objectManager;
-
-    /**
-     * @param ObjectManager $om
-     */
-    public function __construct($om)
-    {
-        $this->objectManager = $om;
-    }
 
     /**
      * Get configuration from code
@@ -49,7 +39,7 @@ class ConfigManager
     {
         $config = self::getConfig();
         if (!isset($config[$code])) {
-            throw new Exception('nonexistent config code');
+            throw new ConfigException('nonexistent config code');
         } else {
             return $config[$code];
         }
@@ -76,7 +66,7 @@ class ConfigManager
     public function getConfig()
     {
         if (!self::$configs) {
-            $configs =     $this->findAll();
+            $configs = $this->findAll();
             // formating to an associative array (code => Config)
             foreach ($configs as $config) {
                 self::$configs[$config->getCode()] = $config;
@@ -94,6 +84,14 @@ class ConfigManager
      */
     protected function findAll()
     {
-        return $this->objectManager->getRepository('PimConnectorIcecatBundle:Config')->findAll();
+        return $this->getEntityRepository()->findAll();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEntityShortname()
+    {
+        return 'PimConnectorIcecatBundle:Config';
     }
 }

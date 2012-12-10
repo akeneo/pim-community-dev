@@ -37,7 +37,7 @@ class ImportDataSheetBaseCommand extends AbstractPimCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // run base product import
-        $srvConnector = $this->getContainer()->get('akeneo.connector.icecat_service');
+        $srvConnector = $this->getConnectorService();
         $srvConnector->importIcecatBaseProducts();
     }
 
