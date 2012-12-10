@@ -46,9 +46,9 @@ class DataSheetArrayToAttributesTransformer implements TransformInterface
     }
 
     /**
-     * {@ineritedDoc}
+     * {@inheritdoc}
      *
-     * @return
+     * @return array
      */
     public function transform()
     {
