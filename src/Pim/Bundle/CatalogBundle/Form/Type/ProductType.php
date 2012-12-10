@@ -75,48 +75,47 @@ class ProductType extends AbstractType
             foreach ($entity->getValues() as $value) {
                     // TODO required, scope etc
 
-                    $attribute = $value->getAttribute();
+                $attribute = $value->getAttribute();
 
-                    // TODO filter values not efficient
-                    /*
-                    $values = $entity->getValues()->filter(function($value) use ($attribute) {
-                        return $value->getAttribute()->getId() == $attribute->getId();
-                    });
-                    $value = $values->first();
-                    */
+                // TODO filter values not efficient
+                /*
+                $values = $entity->getValues()->filter(function($value) use ($attribute) {
+                    return $value->getAttribute()->getId() == $attribute->getId();
+                });
+                $value = $values->first();
+                */
 
-                    // prepare common attributes options
-                    $customOptions = array(
-                        'label'         => $attribute->getTitle(),
-                        'data'          => ($value) ? $value->getData() : '',
-                        'by_reference'  => false,
-                        'property_path' => false,
-                        'required'      => ($attribute->getValueRequired() == 1)
-                    );
+                // prepare common attributes options
+                $customOptions = array(
+                    'label'         => $attribute->getTitle(),
+                    'data'          => ($value) ? $value->getData() : '',
+                    'by_reference'  => false,
+                    'property_path' => false,
+                    'required'      => ($attribute->getValueRequired() == 1)
+                );
 
-                    // add text attributes options
-                    if ($attribute->getType() == BaseFieldFactory::FIELD_STRING) {
-                        $attributeType = 'text';
+                // add text attributes options
+                if ($attribute->getType() == BaseFieldFactory::FIELD_STRING) {
+                    $attributeType = 'text';
 
-                    // add select attribute options
-                    } elseif ($attribute->getType() == BaseFieldFactory::FIELD_SELECT) {
-                        $attributeType = 'choice';
-                        $options = $attribute->getOptions();
-                        $choices = array();
-                        // TODO option order
-                        foreach ($options as $option) {
-                            $choices[$option->getId()]= $option->getValue();
-                        }
-                        $customOptions['choices']= $choices;
-                        $customOptions['data']= ($value) ? $value->getData() : '';
-                    } else {
-                        $attributeType = 'text';
+                // add select attribute options
+                } elseif ($attribute->getType() == BaseFieldFactory::FIELD_SELECT) {
+                    $attributeType = 'choice';
+                    $options = $attribute->getOptions();
+                    $choices = array();
+                    // TODO option order
+                    foreach ($options as $option) {
+                        $choices[$option->getId()]= $option->getValue();
                     }
-
-                    // add attribute
-                    $builder->add($attribute->getCode(), $attributeType, $customOptions);
+                    $customOptions['choices']= $choices;
+                    $customOptions['data']= ($value) ? $value->getData() : '';
+                } else {
+                    $attributeType = 'text';
                 }
-           // }
+
+                // add attribute
+                $builder->add($attribute->getCode(), $attributeType, $customOptions);
+            }
         }
 
     }

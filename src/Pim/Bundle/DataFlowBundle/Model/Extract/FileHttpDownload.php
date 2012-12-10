@@ -2,6 +2,7 @@
 namespace Pim\Bundle\DataFlowBundle\Model\Extract;
 
 /**
+ * Download a file in HTTP protocol with curl library
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
@@ -18,11 +19,13 @@ class FileHttpDownload
      * TODO : replace login / password by option array
      * TODO : throw exception on fopen function
      *
-     * @param  string    $url
-     * @param  string    $path
-     * @param  string    $login
-     * @param  string    $password
-     * @throws Exception
+     * @param string  $url      download url
+     * @param string  $path     local path
+     * @param string  $login    login
+     * @param string  $password password
+     * @param boolean $forced   force download
+     *
+     * @throws \Exception
      */
     public function process($url, $path, $login = null, $password = null, $forced = true)
     {
@@ -32,7 +35,7 @@ class FileHttpDownload
             $fp = fopen($path, 'w+');
             $ch = curl_init($url);
             if (!$ch) {
-                throw new Exception('Curl not initialized');
+                throw new \Exception('Curl not initialized');
             }
 
             if ($login and $password) {
