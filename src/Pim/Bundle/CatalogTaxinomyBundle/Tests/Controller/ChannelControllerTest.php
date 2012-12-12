@@ -16,7 +16,7 @@ class ChannelControllerTest extends WebTestCase
      * Base url of controller
      * @staticvar string
      */
-    protected static $baseUrl = '/fr/catalogtaxinomy/locale/';
+    protected static $baseUrl = '/fr/catalogtaxinomy/channel/';
 
     /**
      * test related action
