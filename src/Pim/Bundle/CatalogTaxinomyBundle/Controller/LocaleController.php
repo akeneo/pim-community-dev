@@ -1,6 +1,12 @@
 <?php
 namespace Pim\Bundle\CatalogTaxinomyBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+use Symfony\Component\HttpFoundation\Response;
+
+use Pim\Bundle\CatalogTaxinomyBundle\Entity\Locale;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -23,11 +29,10 @@ class LocaleController extends Controller
 {
 
     /**
-     * (non-PHPdoc)
-     * @see Parent
+     * Get object name and repository name
      * @return string
      */
-    public function getObjectShortName()
+    protected function getObjectShortName()
     {
         return 'PimCatalogTaxinomyBundle:Locale';
     }
@@ -36,16 +41,16 @@ class LocaleController extends Controller
      * Get used object manager
      * @return string
      */
-    public function getObjectManagerService()
+    protected function getObjectManagerService()
     {
         return 'doctrine.orm.entity_manager';
     }
 
     /**
      * Return full name of object class
-     * @return unknown
+     * @return string
      */
-    public function getObjectClassFullName()
+    protected function getObjectClassFullName()
     {
         $om = $this->get($this->getObjectManagerService());
         $metadata = $om->getClassMetadata($this->getObjectShortName());
@@ -84,9 +89,9 @@ class LocaleController extends Controller
 
     /**
      * Return new instance of object
-     * @return unknown
+     * @return Locale
      */
-    public function getNewObject()
+    protected function getNewObject()
     {
          $classFullName = $this->getObjectClassFullName();
         $entity = new $classFullName();
@@ -100,7 +105,7 @@ class LocaleController extends Controller
      * @Route("/index")
      * @Template()
      *
-     * @return multitype
+     * @return Response
      */
     public function indexAction()
     {
@@ -128,7 +133,7 @@ class LocaleController extends Controller
      * @Route("/new")
      * @Template()
      *
-     * @return multitype
+     * @return Response
      */
     public function newAction()
     {
@@ -151,7 +156,8 @@ class LocaleController extends Controller
      * @Route("/create")
      * @Method("POST")
      *
-     * @return multitype
+     * @return Response
+     * @throws \Exception
      */
     public function createAction(Request $request)
     {
@@ -199,7 +205,8 @@ class LocaleController extends Controller
      * @Route("/{id}/edit")
      * @Template()
      *
-     * @return multitype
+     * @return Response
+     * @throws NotFoundHttpException
      */
     public function editAction($id)
     {
@@ -233,7 +240,9 @@ class LocaleController extends Controller
      * @Route("/{id}/update")
      * @Method("POST")
      *
-     * @return multitype
+     * @return Response
+     * @throws NotFoundHttpException
+     * @throws \Exception
      */
     public function updateAction(Request $request, $id)
     {
@@ -287,7 +296,8 @@ class LocaleController extends Controller
      * @Route("/{id}/delete")
      * @Template()
      *
-     * @return multitype
+     * @return Response
+     * @throws NotFoundHttpException
      */
     public function deleteAction($id)
     {

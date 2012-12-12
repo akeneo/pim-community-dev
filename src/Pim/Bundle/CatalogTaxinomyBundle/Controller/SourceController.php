@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\CatalogTaxinomyBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
