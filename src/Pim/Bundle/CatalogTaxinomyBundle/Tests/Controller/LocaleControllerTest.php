@@ -13,12 +13,18 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class LocaleControllerTest extends WebTestCase
 {
     /**
+     * Base url of controller
+     * @staticvar string
+     */
+    protected static $baseUrl = '/fr/catalogtaxinomy/locale/';
+
+    /**
      * test related action
      */
     public function testIndex()
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/fr/catalogtaxinomy/locale/index');
+        $crawler = $client->request('GET', self::$baseUrl .'index');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertCount(1, $crawler->filter('div.grid'));
     }
@@ -29,7 +35,7 @@ class LocaleControllerTest extends WebTestCase
     public function testNew()
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/fr/catalogtaxinomy/locale/new');
+        $crawler = $client->request('GET', self::$baseUrl .'new');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertCount(1, $crawler->filter('form'));
     }
@@ -41,7 +47,7 @@ class LocaleControllerTest extends WebTestCase
     {
         // get page
         $client = static::createClient();
-        $crawler = $client->request('GET', '/fr/catalogtaxinomy/locale/new');
+        $crawler = $client->request('GET', self::$baseUrl .'new');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertCount(1, $crawler->filter('form'));
         // get form
@@ -64,7 +70,7 @@ class LocaleControllerTest extends WebTestCase
         $attribute = $container->get('doctrine.orm.entity_manager')->getRepository('PimCatalogTaxinomyBundle:Locale')->findOneBy(array());
         $this->assertNotNull($attribute);
         // get page
-        $crawler = $client->request('GET', "/fr/catalogtaxinomy/locale/{$attribute->getId()}/edit");
+        $crawler = $client->request('GET', self::$baseUrl ."{$attribute->getId()}/edit");
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertCount(1, $crawler->filter('form'));
         // get form

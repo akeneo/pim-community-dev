@@ -5,18 +5,18 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 /**
  * Test related class
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ChannelControllerTest extends WebTestCase
+class SourceControllerTest extends WebTestCase
 {
     /**
      * Base url of controller
      * @staticvar string
      */
-    protected static $baseUrl = '/fr/catalogtaxinomy/locale/';
+    protected static $baseUrl = '/fr/catalogtaxinomy/source/';
 
     /**
      * test related action
@@ -54,7 +54,7 @@ class ChannelControllerTest extends WebTestCase
         $form = $crawler->selectButton('edit-form-submit')->form();
         // set some values
         $timestamp = str_replace('.', '', microtime(true));
-        $form['pim_catalogtaxinomy_channel[code]'] = 'My code '.$timestamp;
+        $form['pim_catalogtaxinomy_source[code]'] = 'My code '.$timestamp;
         // submit the form
         $crawler = $client->submit($form);
     }
@@ -67,7 +67,7 @@ class ChannelControllerTest extends WebTestCase
         // get first attribute
         $client = static::createClient();
         $container = $client->getContainer();
-        $attribute = $container->get('doctrine.orm.entity_manager')->getRepository('PimCatalogTaxinomyBundle:Channel')->findOneBy(array());
+        $attribute = $container->get('doctrine.orm.entity_manager')->getRepository('PimCatalogTaxinomyBundle:Source')->findOneBy(array());
         $this->assertNotNull($attribute);
         // get page
         $crawler = $client->request('GET', self::$baseUrl ."{$attribute->getId()}/edit");
@@ -77,7 +77,7 @@ class ChannelControllerTest extends WebTestCase
         $form = $crawler->selectButton('edit-form-submit')->form();
         // set some values
         $timestamp = str_replace('.', '', microtime(true));
-        $form['pim_catalogtaxinomy_channel[code]'] = 'New code '.$timestamp;
+        $form['pim_catalogtaxinomy_source[code]'] = 'New code '.$timestamp;
         // submit the form
         $crawler = $client->submit($form);
     }

@@ -3,97 +3,117 @@
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
             <!-- Titles -->
-            <trans-unit id="1101">
+            <trans-unit id="1001">
                 <source>pim.catalogtaxinomy.channel.title.new</source>
                 <target>Channel creation</target>
             </trans-unit>
-            <trans-unit id="1102">
+            <trans-unit id="1002">
                 <source>pim.catalogtaxinomy.channel.title.edit</source>
                 <target>Channel edition</target>
             </trans-unit>
-            <trans-unit id="1103">
+            <trans-unit id="1003">
                 <source>pim.catalogtaxinomy.channel.title.list</source>
                 <target>Channels</target>
             </trans-unit>
-            <trans-unit id="1111">
+            <trans-unit id="1101">
                 <source>pim.catalogtaxinomy.locale.title.new</source>
                 <target>Locale creation</target>
             </trans-unit>
-            <trans-unit id="1112">
+            <trans-unit id="1102">
                 <source>pim.catalogtaxinomy.locale.title.edit</source>
                 <target>Locale edition</target>
             </trans-unit>
-            <trans-unit id="1113">
+            <trans-unit id="1103">
                 <source>pim.catalogtaxinomy.locale.title.list</source>
                 <target>Locales</target>
             </trans-unit>
+            <trans-unit id="1201">
+                <source>pim.catalogtaxinomy.source.title.new</source>
+                <target>Source creation</target>
+            </trans-unit>
+            <trans-unit id="1202">
+                <source>pim.catalogtaxinomy.source.title.edit</source>
+                <target>Source edition</target>
+            </trans-unit>
+            <trans-unit id="1203">
+                <source>pim.catalogtaxinomy.source.title.list</source>
+                <target>Sources</target>
+            </trans-unit>
 
             <!-- Buttons -->
-            <trans-unit id="1110">
+            <trans-unit id="1011">
                 <source>pim.catalogtaxinomy.channels</source>
                 <target>Channels</target>
             </trans-unit>
-            <trans-unit id="1004">
-                <source>pim.catalogtaxinomy.locales</source>
-                <target>Locales</target>
-            </trans-unit>
-            <trans-unit id="1105">
+            <trans-unit id="1012">
                 <source>pim.catalogtaxinomy.channel.button.new</source>
                 <target>New channel</target>
             </trans-unit>
-            <trans-unit id="1108">
+            <trans-unit id="1111">
+                <source>pim.catalogtaxinomy.locales</source>
+                <target>Locales</target>
+            </trans-unit>
+            <trans-unit id="1112">
                 <source>pim.catalogtaxinomy.locale.button.new</source>
                 <target>New locale</target>
             </trans-unit>
-            <trans-unit id="1129">
+            <trans-unit id="1211">
                 <source>pim.catalogtaxinomy.sources</source>
                 <target>Sources</target>
             </trans-unit>
+            <trans-unit id="1212">
+                <source>pim.catalogtaxinomy.source.button.new</source>
+                <target>New source</target>
+            </trans-unit>
             
-            <trans-unit id="1120">
+            <trans-unit id="1301">
                 <source>pim.catalogtaxinomy.category.button.add-folder</source>
                 <target>Add folder</target>
             </trans-unit>
-            <trans-unit id="1121">
+            <trans-unit id="1302">
                 <source>pim.catalogtaxinomy.category.button.rename</source>
                 <target>Rename</target>
             </trans-unit>
-            <trans-unit id="1122">
+            <trans-unit id="1303">
                 <source>pim.catalogtaxinomy.category.button.remove</source>
                 <target>Remove</target>
             </trans-unit>
-            <trans-unit id="1123">
+            <trans-unit id="1304">
                 <source>pim.catalogtaxinomy.category.button.cut</source>
                 <target>Cut</target>
             </trans-unit>
-            <trans-unit id="1124">
+            <trans-unit id="1305">
                 <source>pim.catalogtaxinomy.category.button.copy</source>
                 <target>Copy</target>
             </trans-unit>
-            <trans-unit id="1125">
+            <trans-unit id="1306">
                 <source>pim.catalogtaxinomy.category.button.paste</source>
                 <target>Paste</target>
             </trans-unit>
-            <trans-unit id="1126">
+            <trans-unit id="1307">
                 <source>pim.catalogtaxinomy.category.button.refresh</source>
                 <target>Refresh</target>
             </trans-unit>
-            <trans-unit id="1127">
+            <trans-unit id="1308">
                 <source>pim.catalogtaxinomy.category.button.search</source>
                 <target>Search</target>
             </trans-unit>
-            <trans-unit id="1128">
+            <trans-unit id="1309">
                 <source>pim.catalogtaxinomy.category.button.cancel</source>
                 <target>Clear</target>
             </trans-unit>
 
             <!-- Fieldsets -->
-            <trans-unit id="1106">
+            <trans-unit id="1021">
                 <source>pim.catalogtaxinomy.channel.fieldset.general</source>
                 <target>General</target>
             </trans-unit>
-            <trans-unit id="1107">
+            <trans-unit id="1121">
                 <source>pim.catalogtaxinomy.locale.fieldset.general</source>
+                <target>General</target>
+            </trans-unit>
+            <trans-unit id="1221">
+                <source>pim.catalogtaxinomy.source.fieldset.general</source>
                 <target>General</target>
             </trans-unit>
 
