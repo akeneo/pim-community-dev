@@ -83,6 +83,7 @@ class CategoryController extends Controller
      *
      * @return Response
      *
+     * @Method("POST")
      * @Route("/search")
      * @Template()
      */
@@ -118,7 +119,7 @@ class CategoryController extends Controller
     {
         if ($request->isXmlHttpRequest()) {
             // create new object
-            $category = $this->getManager()->createNewInstance();
+            $category = $this->getManager()->getNewEntityInstance();
             $category->setTitle($request->get('title'));
 
             // find parent
@@ -234,7 +235,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * @return CategoryManager
+     * @return \Pim\Bundle\CatalogTaxinomyBundle\Model\CategoryManager
      */
     protected function getManager()
     {

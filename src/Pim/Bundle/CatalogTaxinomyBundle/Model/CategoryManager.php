@@ -153,7 +153,7 @@ class CategoryManager extends BaseEntityManager
     protected function copyInstance($category, $parent)
     {
         // create a new category instance and copy values
-        $newCategory = $this->createNewInstance();
+        $newCategory = $this->getNewEntityInstance();
         $newCategory->setTitle($category->getTitle());
         $newCategory->setParent($parent);
 

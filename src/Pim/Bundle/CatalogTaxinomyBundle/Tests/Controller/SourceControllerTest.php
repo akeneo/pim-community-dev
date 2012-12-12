@@ -1,5 +1,7 @@
 <?php
 namespace Pim\Bundle\CatalogTaxinomyBundle\Tests\Controller;
+use Pim\Bundle\CatalogTaxinomyBundle\Entity\Source;
+
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
@@ -18,14 +20,22 @@ class SourceControllerTest extends WebTestCase
      */
     protected static $baseUrl = '/fr/catalogtaxinomy/source/';
 
+
+    protected function getSourceRepository()
+    {
+//         $container->get('doctrine.orm.entity_manager')
+//         ->getRepository('PimCatalogTaxinomyBundle:Source')
+    }
+
     /**
      * test related action
      */
     public function testIndex()
     {
-        $client = static::createClient();
-        $crawler = $client->request('GET', self::$baseUrl .'index');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        echo "\nTestIndex\n";
+        $this->client = static::createClient();
+        $crawler = $this->client->request('GET', self::$baseUrl .'index');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertCount(1, $crawler->filter('div.grid'));
     }
 
@@ -50,13 +60,30 @@ class SourceControllerTest extends WebTestCase
         $crawler = $client->request('GET', self::$baseUrl .'new');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertCount(1, $crawler->filter('form'));
+
         // get form
         $form = $crawler->selectButton('edit-form-submit')->form();
+
         // set some values
         $timestamp = str_replace('.', '', microtime(true));
         $form['pim_catalogtaxinomy_source[code]'] = 'My code '.$timestamp;
         // submit the form
         $crawler = $client->submit($form);
+    }
+
+    public function testEdit()
+    {
+        // get first attribute
+        $client = static::createClient();
+        $container = $client->getContainer();
+        $attribute = $container->get('doctrine.orm.entity_manager')
+                               ->getRepository('PimCatalogTaxinomyBundle:Source')
+                               ->findOneBy(array());
+        $this->assertNotNull($attribute);
+        // get page
+        $crawler = $client->request('GET', self::$baseUrl ."{$attribute->getId()}/edit");
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
     }
 
     /**
