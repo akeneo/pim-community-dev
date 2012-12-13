@@ -176,11 +176,11 @@ class ProductSetXmlToDataSheetTransformer implements EnrichInterface
             $featureId = (integer) $featureTag['ID'];
             $groupId   = (integer) $featureTag['CategoryFeatureGroup_ID'];
             $this->productFeatures[$featureId] = array('CategoryFeatureGroup_ID' => $groupId);
-            $this->productFeatures[$featureId]['Name'] = array();
 
             // prepare product values
             $this->productFeatures[$featureId]['Value'] = array();
             $this->productFeatures[$featureId]['Presentation_Value'] = array();
+            $this->productFeatures[$featureId]['Name'] = array();
 
             foreach ($featureTag->Feature->Name as $featureName) {
                 $langId = (integer) $featureName['langid'];

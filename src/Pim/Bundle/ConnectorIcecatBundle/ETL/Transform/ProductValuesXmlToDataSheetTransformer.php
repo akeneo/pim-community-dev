@@ -62,6 +62,7 @@ class ProductValuesXmlToDataSheetTransformer implements EnrichInterface
         // enrich data
         foreach ($this->simpleDoc->Product->ProductFeature as $featureTag) {
             $featureId = (integer) $featureTag['ID'];
+            $existingData['productfeatures'][$featureId]['Name'] = array();
             $existingData['productfeatures'][$featureId]['Value'][$this->localeId]= (string) $featureTag['Value'];
             $existingData['productfeatures'][$featureId]['Presentation_Value'][$this->localeId]= (string) $featureTag['Presentation_Value'];
         }
