@@ -15,7 +15,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * TODO : assert return message when status code = 500
  * TODO : assert with wrong post data
- * TODO : assert with no XML Http Request
  */
 class CategoryControllerTest extends AbstractControllerTest
 {
@@ -93,13 +92,30 @@ class CategoryControllerTest extends AbstractControllerTest
     }
 
     /**
+     * Assert index content
+     * @param Symfony\Component\DomCrawler\Crawler $crawler
+     */
+    protected function assertIndexContent($crawler)
+    {
+        $this->assertCount(1, $crawler->filter('div.demo'));
+    }
+
+    /**
+     * Assert redirect to index
+     */
+    protected function assertRedirectToIndex()
+    {
+        $this->assertRedirectTo(self::$baseUrl .'index');
+    }
+
+    /**
      * test related action
      */
     public function testIndex()
     {
         $crawler = $this->client->request('GET', self::$baseUrl .'index');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertCount(1, $crawler->filter('div.demo'));
+        $this->assertIndexContent($crawler);
     }
 
     /**
@@ -110,10 +126,15 @@ class CategoryControllerTest extends AbstractControllerTest
         // define request
         $this->defineAsXmlHttpRequest();
         $this->setContentType('application/json');
+        $categoryId = $this->category1->getId();
+
+        // prepare data
+        $getData = array(
+            'id' => $categoryId
+        );
 
         // call children view
-        $categoryId = $this->category1->getId();
-        $this->client->request('GET', self::$baseUrl .'children?id='. $categoryId, array(), array(), $this->server);
+        $this->client->request('GET', self::$baseUrl .'children', $getData, array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         // get content
@@ -133,12 +154,18 @@ class CategoryControllerTest extends AbstractControllerTest
             $this->assertEquals('folder', $category->attr->rel);
         }
 
-        // call children with POST method -> must return 452 status code
+        // call children with POST method -> must return 405 status code
         $postData = array(
             'id' => $categoryId
         );
         $this->client->request('POST', self::$baseUrl .'children', $postData, array(), $this->server);
         $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+
+        // assert call without XmlHttpRequest redirect to index
+        $this->server = array();
+        $this->setContentType('application/json');
+        $this->client->request('GET', self::$baseUrl .'children', $getData, array(), $this->server);
+        $this->assertRedirectToIndex();
     }
 
     /**
@@ -184,6 +211,12 @@ class CategoryControllerTest extends AbstractControllerTest
         // assert wrong method (with GET parameters)
         $this->client->request('GET', self::$baseUrl .'createNode', $postData, array(), $this->server);
         $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+
+        // assert call without XmlHttpRequest redirect to index
+        $this->server = array();
+        $this->setContentType('application/json');
+        $this->client->request('POST', self::$baseUrl .'createNode', $postData, array(), $this->server);
+        $this->assertRedirectToIndex();
     }
 
     /**
@@ -230,6 +263,12 @@ class CategoryControllerTest extends AbstractControllerTest
         );
         $this->client->request('GET', self::$baseUrl .'moveNode', $getData, array(), $this->server);
         $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+
+        // assert call without XmlHttpRequest redirect to index
+        $this->server = array();
+        $this->setContentType('application/json');
+        $this->client->request('POST', self::$baseUrl .'moveNode', $postData, array(), $this->server);
+        $this->assertRedirectToIndex();
     }
 
     /**
@@ -266,6 +305,12 @@ class CategoryControllerTest extends AbstractControllerTest
         );
         $this->client->request('GET', self::$baseUrl .'moveNode', $getData, array(), $this->server);
         $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+
+        // assert call without XmlHttpRequest redirect to index
+        $this->server = array();
+        $this->setContentType('application/json');
+        $this->client->request('POST', self::$baseUrl .'moveNode', $postData, array(), $this->server);
+        $this->assertRedirectToIndex();
     }
 
     /**
@@ -306,6 +351,12 @@ class CategoryControllerTest extends AbstractControllerTest
         );
         $this->client->request('GET', self::$baseUrl .'removeNode', $getData, array(), $this->server);
         $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+
+        // assert call without XmlHttpRequest redirect to index
+        $this->server = array();
+        $this->setContentType('application/json');
+        $this->client->request('POST', self::$baseUrl .'removeNode', $postData, array(), $this->server);
+        $this->assertRedirectToIndex();
     }
 
     /**
@@ -352,6 +403,12 @@ class CategoryControllerTest extends AbstractControllerTest
         );
         $this->client->request('GET', self::$baseUrl .'renameNode', $getData, array(), $this->server);
         $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+
+        // assert call without XmlHttpRequest redirect to index
+        $this->server = array();
+        $this->setContentType('application/json');
+        $this->client->request('POST', self::$baseUrl .'renameNode', $postData, array(), $this->server);
+        $this->assertRedirectToIndex();
     }
 
     /**
@@ -384,5 +441,11 @@ class CategoryControllerTest extends AbstractControllerTest
         );
         $this->client->request('GET', self::$baseUrl .'search', $getData, array(), $this->server);
         $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+
+        // assert call without XmlHttpRequest redirect to index
+        $this->server = array();
+        $this->setContentType('application/json');
+        $this->client->request('POST', self::$baseUrl .'search', $postData, array(), $this->server);
+        $this->assertRedirectToIndex();
     }
 }

@@ -35,7 +35,7 @@ class CategoryController extends Controller
      */
     protected function redirectToIndex()
     {
-        return $this->redirect($this->generateUrl('pim_catalogtaxinomy_tree_index'));
+        return $this->redirect($this->generateUrl('pim_catalogtaxinomy_category_index'));
     }
 
     /**

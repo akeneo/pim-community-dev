@@ -1,9 +1,10 @@
 <?php
 namespace Pim\Bundle\CatalogTaxinomyBundle\Tests\Controller;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
+use Symfony\Component\DomCrawler\Crawler;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -19,7 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 abstract class AbstractControllerTest extends WebTestCase
 {
     /**
-     * server values for HTTP request (XMLHttp, Content-Type, etc.)
+     * server values for HTTP request (XmlHttpRequest, Content-Type, etc.)
      * @var array
      */
     protected $server = array();
@@ -33,6 +34,23 @@ abstract class AbstractControllerTest extends WebTestCase
      * @var \Symfony\Bundle\FrameworkBundle\Client
      */
     protected $client;
+
+    /**
+     * Redirect content
+     * @staticvar string
+     */
+    protected static $redirectContent = '<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="refresh" content="1;url=%%REDIRECT_URL%%" />
+
+        <title>Redirecting to %%REDIRECT_URL%%</title>
+    </head>
+    <body>
+        Redirecting to <a href="%%REDIRECT_URL%%">%%REDIRECT_URL%%</a>.
+    </body>
+</html>';
 
     /**
      * {@inheritdoc}
@@ -109,5 +127,18 @@ abstract class AbstractControllerTest extends WebTestCase
     protected function setContentType($contentType)
     {
         $this->server['CONTENT_TYPE'] = $contentType;
+    }
+
+    /**
+     * Assert a
+     * @param unknown_type $url
+     */
+    protected function assertRedirectTo($url)
+    {
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+        $content = $this->client->getResponse()->getContent();
+        $expectedContent = str_replace('%%REDIRECT_URL%%', $url, self::$redirectContent);
+        $this->assertEquals($expectedContent, $content);
     }
 }
