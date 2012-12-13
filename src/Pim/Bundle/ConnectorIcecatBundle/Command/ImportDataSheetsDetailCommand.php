@@ -1,40 +1,39 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Command;
 
-use Pim\Bundle\ConnectorIcecatBundle\Helper\MemoryHelper;
-use Pim\Bundle\ConnectorIcecatBundle\Helper\TimeHelper;
-use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpReader;
-use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
-use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpDownload;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Pim\Bundle\ConnectorIcecatBundle\Document\IcecatProductDataSheet;
-use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
-
-use Doctrine\ODM\MongoDB\Query\Builder;
 /**
  * Import detailled data for asked products
+ *
+ * Launch with command :
+ *     php app/console connectoricecat:importDataSheetsDetail [limit]
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ImportDataSheetDetailCommand extends AbstractPimCommand
+class ImportDataSheetsDetailCommand extends AbstractPimCommand
 {
+    /**
+     * Limit of detailled products imported with this command
+     * @var integer
+     */
+    protected $limit;
 
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
-        $this->setName('connectoricecat:importDataSheetDetail')
-            ->setDescription('Import detailled data for a set of products')
-            ->addArgument(
-                'limit',
-                InputArgument::REQUIRED,
-                'Number of products to be imported'
-            );
+        $this->setName('connectoricecat:importDataSheetsDetail')
+             ->setDescription('Import detailled data for a set of products')
+             ->addArgument(
+                 'limit',
+                 InputArgument::REQUIRED,
+                 'Number of products to be imported'
+             );
     }
 
     /**
@@ -52,14 +51,9 @@ class ImportDataSheetDetailCommand extends AbstractPimCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        TimeHelper::addValue('start-import');
-        MemoryHelper::addValue('memory');
-
         // run detailled product import
         $srvConnector = $this->getConnectorService();
         $srvConnector->importIcecatDetailledProducts($this->limit);
-
-        $this->writeln('total time elapsed : '. TimeHelper::writeGap('start-import'));
     }
 
 }

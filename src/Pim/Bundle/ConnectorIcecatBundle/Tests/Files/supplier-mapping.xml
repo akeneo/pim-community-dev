@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ICECAT-interface SYSTEM "http://data.icecat.biz/dtd/ICECAT-supplier_mapping.dtd">
+<!-- source: Icecat.biz 2012 -->
+<ICECAT-interface xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://data.icecat.biz/xsd/ICECAT-supplier_mapping.xsd">
+	<SupplierMappings Generated="20121211001754">
+		<SupplierMapping supplier_id="1" name="HP">
+			<Symbol>COMPAQ</Symbol>
+			<Symbol>HEWLETT PACKARD</Symbol>
+		</SupplierMapping>
+		<SupplierMapping supplier_id="2" name="Toshiba">
+			<Symbol>TOSHIBA</Symbol>
+		</SupplierMapping>
+		<SupplierMapping supplier_id="3527" name="PROLINK">
+			<Symbol>PROLINK</Symbol>
+			<Symbol distributor_id="197">PROLINK MICROSYSTEMS</Symbol>
+			<Symbol distributor_id="346">PIXELVIEW</Symbol>
+		</SupplierMapping>
+		<SupplierMapping supplier_id="3528" name="Peplink">
+			<Symbol>PEPLINK</Symbol>
+		</SupplierMapping>
+		<SupplierMapping supplier_id="3555" name="SmudgeGuard">
+			<Symbol>SMUDGE GUARD GLOVES</Symbol>
+			<Symbol distributor_id="16">SMUDGEGUARD</Symbol>
+		</SupplierMapping>
+	</SupplierMappings>
+</ICECAT-interface>

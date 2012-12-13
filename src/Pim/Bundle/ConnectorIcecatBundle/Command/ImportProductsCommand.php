@@ -18,7 +18,10 @@ use Pim\Bundle\ConnectorIcecatBundle\Transform\DataSheetArrayToProductTransforme
 use Doctrine\ODM\MongoDB\Query\Builder;
 
 /**
- * Import catalog product from detailled icecat datasheet
+ * Command which import icecat product data
+ *
+ * Launch with command :
+ *     php app/console connectoricecat:importProducts
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
@@ -33,23 +36,8 @@ class ImportProductsCommand extends AbstractPimCommand
      */
     protected function configure()
     {
-        $this->setName('connectoricecat:importProductsFromDataSheet')
-        ->setDescription('Import detailled data for a set of products')
-        ->addArgument(
-            'limit',
-            InputArgument::REQUIRED,
-            'Number of products to be imported'
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-        parent::initialize($input, $output);
-        // get arguments
-        $this->limit = $input->getArgument('limit');
+        $this->setName('connectoricecat:importProducts')
+             ->setDescription('Import products from data sheets');
     }
 
     /**
@@ -57,13 +45,59 @@ class ImportProductsCommand extends AbstractPimCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        TimeHelper::addValue('start-import');
-        MemoryHelper::addValue('memory');
+        // launch base product data importing
+        $this->executeDataSheetsBaseCommand();
 
-        // run detailled product import
-        $srvConnector = $this->getConnectorService();
-        $srvConnector->importProductsFromDataSheet($this->limit);
+        // launch detailled product data importing
+        $this->executeDataSheetsDetailCommand();
 
-        $this->writeln('total time elapsed : '. TimeHelper::writeGap('start-import'));
+        // launch detailled data sheet to product importing
+        $this->executeProductsFromDataSheetsCommand();
+    }
+
+    /**
+     * Launch base product data sheet command importing
+     * @throws \Exception
+     */
+    protected function executeDataSheetsBaseCommand()
+    {
+        $command = $this->getApplication()->find('connectoricecat:importDataSheetsBase');
+        $returnCode = $command->run($this->input, $this->output);
+
+        if ($returnCode !== 0) {
+            throw new \Exception('error during base data sheets importing');
+        }
+    }
+
+    /**
+     * Launch detailled product data sheet command importing
+     * @throws \Exception
+     */
+    protected function executeDataSheetsDetailCommand()
+    {
+//         $inputArgs = array('limit' => self::$detailledImport);
+//         $returnCode = $detailledCommand->run(new ArrayInput($inputArgs), $output);
+
+
+        $command = $this->getApplication()->find('connectoricecat:importDataSheetsDetail');
+        $returnCode = $command->run($this->input, $this->output);
+
+        if ($returnCode !== 0) {
+            throw new \Exception('error during detailled data sheets importing');
+        }
+    }
+
+    /**
+     * Launch products from data sheet importing
+     * @throws \Exception
+     */
+    protected function executeProductsFromDataSheetsCommand()
+    {
+        $command = $this->getApplication()->find('connectoricecat:importProductsFromDataSheets');
+        $returnCode = $command->run($this->input, $this->output);
+
+        if ($returnCode !== 0) {
+            throw new \Exception('error during data sheets to products importing');
+        }
     }
 }

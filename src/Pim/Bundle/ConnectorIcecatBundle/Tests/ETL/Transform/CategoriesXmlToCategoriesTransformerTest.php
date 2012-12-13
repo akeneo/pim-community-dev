@@ -20,7 +20,12 @@ class CategoriesXmlToCategoriesTransformerTest extends KernelAwareTest
     public function testXmlToCategories()
     {
         $filename = 'categories-list.xml';
-        $categories = $this->loadFile($filename);
+        $content = $this->loadFile($filename);
+
+        // call transformer
+        $transformer = new CategoriesXmlToCategoriesTransformer($content);
+        $categories = $transformer->transform();
+
         $this->assertCount(18, $categories);
     }
 
@@ -28,16 +33,12 @@ class CategoriesXmlToCategoriesTransformerTest extends KernelAwareTest
      * Load a file in SimpleXmlElement
      * @param string $filename
      *
-     * @return \SimpleXMLElement
+     * @return string
      */
     protected function loadfile($filename)
     {
         $filepath = dirname(__FILE__) .'/../Files/'. $filename;
-        $content = simplexml_load_file($filepath);
 
-        // call transformer
-        $transformer = new CategoriesXmlToCategoriesTransformer($content);
-
-        return $transformer->transform();
+        return file_get_contents($filepath);
     }
 }

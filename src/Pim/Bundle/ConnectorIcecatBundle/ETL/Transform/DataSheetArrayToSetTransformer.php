@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\ETL\Transform;
 
+use Pim\Bundle\CatalogBundle\Form\DataTransformer\ProductAttributeToArrayTransformer;
+
 use Pim\Bundle\CatalogBundle\Form\DataTransformer\ProductSetToArrayTransformer;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ProductManager;
@@ -43,6 +45,11 @@ class DataSheetArrayToSetTransformer implements TransformInterface
     protected $datasheet;
 
     /**
+     * @var integer
+     */
+    protected $localeIcecat;
+
+    /**
      * Constructor
      *
      * @param ProductManager         $productManager    product manager
@@ -55,6 +62,8 @@ class DataSheetArrayToSetTransformer implements TransformInterface
         $this->productManager = $productManager;
         $this->productTemplateManager = $productTplManager;
         $this->datasheet = $datasheet;
+
+        $this->localeIcecat = 1; // en_US
     }
 
     /**
@@ -62,46 +71,34 @@ class DataSheetArrayToSetTransformer implements TransformInterface
      */
     public function transform()
     {
-        $localeIcecat = 1; // en_US
-
         // get datas
         $allData = json_decode($this->datasheet->getData(), true);
         $categoryData    = $allData['category'];
         $catFeatureData  = $allData['categoryfeaturegroups'];
         $prodFeatureData = $allData['productfeatures'];
 
+        $groups = $this->transformToGroups($catFeatureData);
+
+        $groups = $this->addAttributesToGroup($prodFeatureData, $groups);
+
         // prepare category data
         $setData = array(
             'id'     => null,
             'code'   => self::PREFIX .'-'. $categoryData['id'],
-            'title'  => $categoryData['name'][$localeIcecat],
-            'groups' => array()
+            'title'  => $categoryData['name'][$this->localeIcecat],
+            'groups' => $groups
         );
 
-        // add groups
-        foreach ($catFeatureData as $icecatGroupId => $feature) {
-            $groupCode = self::PREFIX .'-'. $icecatGroupId;
-
-            $groupData = array(
-                'id'    => null,
-                'code'  => $groupCode,
-                'title' => $feature[$localeIcecat],
-                'attributes' => array()
-            );
-
-            $setData['groups'][$groupCode] = $groupData;
-        }
-
         // add attributes
-        foreach ($prodFeatureData as $icecatAttId => $attribute) {
-            // get attribute
-            $attCode = self::PREFIX .'-'. $icecatAttId;
-            $att = $this->productManager->getAttributeRepository()->findOneByCode($attCode);
+//         foreach ($prodFeatureData as $icecatAttId => $attribute) {
+//             // get attribute
+//             $attCode = self::PREFIX .'-'. $icecatAttId;
+//             $att = $this->productManager->getAttributeRepository()->findOneByCode($attCode);
 
-            // add attribute to group
-            $groupCode = self::PREFIX .'-'. $attribute['CategoryFeatureGroup_ID'];
-            $setData['groups'][$groupCode]['attributes'][] = $att->getId();
-        }
+//             // add attribute to group
+//             $groupCode = self::PREFIX .'-'. $attribute['CategoryFeatureGroup_ID'];
+//             $setData['groups'][$groupCode]['attributes'][] = $att->getId();
+//         }
 
         // initialize data transformer and transform data to set entity
         $dataTransformer = new ProductSetToArrayTransformer($this->productManager, $this->productTemplateManager);
@@ -110,13 +107,49 @@ class DataSheetArrayToSetTransformer implements TransformInterface
         return $set;
     }
 
-    protected function transformToGroups()
+    protected function transformToGroups($catFeatureData)
     {
+        $groups = array();
 
+        foreach ($catFeatureData as $icecatGroupId => $feature) {
+            $groupCode = self::PREFIX .'-'. $icecatGroupId;
+
+            $groupData = array(
+                'id'    => null,
+                'code'  => $groupCode,
+                'title' => $feature[$this->localeIcecat],
+                'attributes' => array()
+            );
+
+            $groups[$groupCode] = $groupData;
+        }
+
+        return $groups;
     }
 
-    protected function addAttributesToGroup()
+    protected function addAttributesToGroup($prodFeatureData, $groups)
     {
+        $dataTransformer = new ProductAttributeToArrayTransformer($this->productManager);
 
+        // add attributes
+        foreach ($prodFeatureData as $icecatAttId => $attribute) {
+            // get attribute
+            $attCode = self::PREFIX .'-'. $icecatAttId;
+            $att = $this->productManager->getAttributeRepository()->findOneByCode($attCode);
+            $attId = ($att) ? $att->getId() : null;
+
+            // prepare array for transformer
+            $attData = array(
+                'id'    => $attId,
+                'code'  => $attCode,
+                'title' => $attribute['Name'][$this->localeIcecat]
+            );
+
+            // add attribute to group
+            $groupCode = self::PREFIX .'-'. $attribute['CategoryFeatureGroup_ID'];
+            $groups[$groupCode]['attributes'][] = $dataTransformer->reverseTransform($attData);
+        }
+
+        return $groups;
     }
 }

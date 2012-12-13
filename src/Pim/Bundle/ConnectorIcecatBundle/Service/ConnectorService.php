@@ -1,6 +1,12 @@
 <?php
 namespace Pim\Bundle\ConnectorIcecatBundle\Service;
 
+use Pim\Bundle\ConnectorIcecatBundle\ETL\Transform\CategoriesXmlToCategoriesTransformer;
+
+use Pim\Bundle\DataFlowBundle\Model\Extract\FileUnzip;
+
+use Pim\Bundle\DataFlowBundle\Model\Extract\FileHttpDownload;
+
 use Doctrine\ORM\EntityManager;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
@@ -95,8 +101,8 @@ class ConnectorService
         $xmlContent = $extractor->getXmlContent();
 
         // Import
-        $writer = new SuppliersFromXmlWriter();
-        $writer->import($xmlContent, $this->getEntityManager());
+        $writer = new SuppliersFromXmlWriter($this->getEntityManager());
+        $writer->write($xmlContent);
     }
 
     /**
@@ -119,8 +125,8 @@ class ConnectorService
         $xmlContent = file_get_contents($filePath);
 
         // Import
-        $writer= new LanguagesFromXmlWriter();
-        $writer->import($xmlContent, $this->getEntityManager());
+        $writer= new LanguagesFromXmlWriter($this->getEntityManager());
+        $writer->write($xmlContent);
     }
 
     /**
@@ -319,5 +325,44 @@ class ConnectorService
         foreach ($products as $product) {
             $this->importProductFromIcecatXml($product->getId());
         }
+    }
+
+    /**
+     * Import all categories from icecat
+     *
+     * TODO : Add writer
+     */
+    public function importIcecatCategories()
+    {
+        // get config
+        $downloadUrl      = $this->configManager->getValue(Config::CATEGORIES_URL);
+        $login            = $this->configManager->getValue(Config::LOGIN);
+        $password         = $this->configManager->getValue(Config::PASSWORD);
+        $baseDir          = $this->configManager->getValue(Config::BASE_DIR);
+        $archivedFilePath = $baseDir . $this->configManager->getValue(Config::CATEGORIES_ARCHIVED_FILE);
+        $filePath         = $baseDir . $this->configManager->getValue(Config::CATEGORIES_FILE);
+
+        // download source
+        $downloader = new FileHttpDownload();
+        $downloader->process($downloadUrl, $archivedFilePath, $login, $password, false);
+
+        // unpack source
+        $unpacker = new FileUnzip();
+        $unpacker->process($archivedFilePath, $filePath, false);
+
+        // read source
+        $content = file_get_contents($filePath);
+        $xmlContent = simplexml_load_string($content);
+
+        // transform xml to category entities
+        $transformer = new CategoriesXmlToCategoriesTransformer($xmlContent);
+        $categories = $transformer->transform();
+
+        // persist entities with constraint validation
+        foreach ($categories as $category) {
+            $this->getEntityManager()->persist($category);
+        }
+        $this->getEntityManager()->flush();
+        $this->getEntityManager()->clear();
     }
 }

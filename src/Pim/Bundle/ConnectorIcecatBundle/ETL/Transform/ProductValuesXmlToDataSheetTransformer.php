@@ -14,7 +14,7 @@ use \SimpleXMLElement;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ProductSetXmlToDataSheetTransformer implements EnrichInterface
+class ProductValuesXmlToDataSheetTransformer implements EnrichInterface
 {
     /**
      * Datasheet to enrich
@@ -55,8 +55,6 @@ class ProductSetXmlToDataSheetTransformer implements EnrichInterface
     {
         // verify if product id really exists
         if (isset($this->simpleDoc->Product['Code']) && $this->simpleDoc->Product['Code'] == -1) {
-            file_put_contents('/tmp/productFailed.xml', $this->simpleDoc->asXML());
-
             throw new TransformException('unexistent product id');
         }
         // get existing data
