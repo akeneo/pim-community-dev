@@ -147,7 +147,7 @@ class ChannelControllerTest extends AbstractControllerTest
         $form = $crawler->selectButton('edit-form-submit')->form();
         // set some values
         $timestamp = str_replace('.', '', microtime(true));
-        $form['pim_catalogtaxinomy_channel[code]'] = 'My code '.$timestamp;
+        $form['pim_catalogtaxinomy_channel[code]'] = 'channel-'.$timestamp;
         // submit the form
         $crawler = $this->client->submit($form);
     }
@@ -197,7 +197,7 @@ class ChannelControllerTest extends AbstractControllerTest
         $form = $crawler->selectButton('edit-form-submit')->form();
         // set some values
         $timestamp = str_replace('.', '', microtime(true));
-        $form['pim_catalogtaxinomy_channel[code]'] = 'New code '.$timestamp;
+        $form['pim_catalogtaxinomy_channel[code]'] = 'channel-'.$timestamp;
         // submit the form
         $crawler = $this->client->submit($form);
     }
@@ -213,6 +213,8 @@ class ChannelControllerTest extends AbstractControllerTest
         );
         $this->client->request('GET', self::$baseUrl ."{$this->channel2->getId()}/delete", $getData);
         $this->assertRedirectTo(self::$baseUrl .'index');
+
+        // TODO : test if object not found
     }
 
 }

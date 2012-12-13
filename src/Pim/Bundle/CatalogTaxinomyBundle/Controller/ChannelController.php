@@ -181,6 +181,7 @@ class ChannelController extends Controller
         $entity = $manager->getRepository($this->getObjectShortName())->find($id);
 
         if (!$entity) {
+            // TODO : must be another exception. This exception is only for Http request
             throw $this->createNotFoundException('Unable to find channel.');
         }
 
@@ -213,6 +214,7 @@ class ChannelController extends Controller
         $entity = $manager->getRepository($this->getObjectShortName())->find($id);
 
         if (!$entity) {
+            // TODO : must be another exception. This exception is only for Http request
             throw $this->createNotFoundException('Unable to find channel.');
         }
 
@@ -257,6 +259,7 @@ class ChannelController extends Controller
         $manager = $this->get($this->getObjectManagerService());
         $entity = $manager->getRepository($this->getObjectShortName())->find($id);
         if (!$entity) {
+            // TODO : must be another exception. This exception is only for Http request
             throw $this->createNotFoundException('Unable to find channel.');
         }
         // delete

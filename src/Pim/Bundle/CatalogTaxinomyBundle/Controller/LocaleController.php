@@ -52,8 +52,8 @@ class LocaleController extends Controller
      */
     protected function getObjectClassFullName()
     {
-        $om = $this->get($this->getObjectManagerService());
-        $metadata = $om->getClassMetadata($this->getObjectShortName());
+        $manager = $this->get($this->getObjectManagerService());
+        $metadata = $manager->getClassMetadata($this->getObjectShortName());
         $classFullName = $metadata->getName();
 
         return $classFullName;
@@ -215,6 +215,7 @@ class LocaleController extends Controller
         $entity = $manager->getRepository($this->getObjectShortName())->find($id);
 
         if (!$entity) {
+            // TODO : must be another exception. This exception is only for Http request
             throw $this->createNotFoundException('Unable to find locale.');
         }
 
@@ -251,6 +252,7 @@ class LocaleController extends Controller
         $entity = $manager->getRepository($this->getObjectShortName())->find($id);
 
         if (!$entity) {
+            // TODO : must be another exception. This exception is only for Http request
             throw $this->createNotFoundException('Unable to find locale.');
         }
 
@@ -304,6 +306,7 @@ class LocaleController extends Controller
         $manager = $this->get($this->getObjectManagerService());
         $entity = $manager->getRepository($this->getObjectShortName())->find($id);
         if (!$entity) {
+            // TODO : must be another exception. This exception is only for Http request
             throw $this->createNotFoundException('Unable to find locale.');
         }
 

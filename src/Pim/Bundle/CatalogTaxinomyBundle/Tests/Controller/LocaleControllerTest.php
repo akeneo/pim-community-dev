@@ -137,6 +137,19 @@ class LocaleControllerTest extends AbstractControllerTest
         );
         $this->client->request('GET', self::$baseUrl .'create', $getData);
         $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+
+        // assert form call
+        $crawler = $this->client->request('GET', self::$baseUrl .'new');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertCount(1, $crawler->filter('form'));
+        // get form
+        $form = $crawler->selectButton('edit-form-submit')->form();
+        // set some values
+        $timestamp = str_replace('.', '', microtime(true));
+        $form['pim_catalogtaxinomy_locale[code]'] = 'test-5';
+        $form['pim_catalogtaxinomy_locale[isDefault]'] = '1';
+        // submit the form
+        $crawler = $this->client->submit($form);
     }
 
     /**
@@ -175,6 +188,19 @@ class LocaleControllerTest extends AbstractControllerTest
         );
         $this->client->request('GET', self::$baseUrl .'create', $getData);
         $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+
+        // assert form call
+        $crawler = $this->client->request('GET', self::$baseUrl ."{$this->locale2->getId()}/edit");
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertCount(1, $crawler->filter('form'));
+        // get form
+        $form = $crawler->selectButton('edit-form-submit')->form();
+        // set some values
+        $timestamp = str_replace('.', '', microtime(true));
+        $form['pim_catalogtaxinomy_locale[code]'] = 'test-6';
+        $form['pim_catalogtaxinomy_locale[isDefault]'] = '0';
+        // submit the form
+        $crawler = $this->client->submit($form);
     }
 
     /**
