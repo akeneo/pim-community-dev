@@ -146,7 +146,7 @@ class LocaleControllerTest extends AbstractControllerTest
         $form = $crawler->selectButton('edit-form-submit')->form();
         // set some values
         $timestamp = str_replace('.', '', microtime(true));
-        $form['pim_catalogtaxinomy_locale[code]'] = 'test-5';
+        $form['pim_catalogtaxinomy_locale[code]'] = 'test5';
         $form['pim_catalogtaxinomy_locale[isDefault]'] = '1';
         // submit the form
         $crawler = $this->client->submit($form);
@@ -197,7 +197,7 @@ class LocaleControllerTest extends AbstractControllerTest
         $form = $crawler->selectButton('edit-form-submit')->form();
         // set some values
         $timestamp = str_replace('.', '', microtime(true));
-        $form['pim_catalogtaxinomy_locale[code]'] = 'test-6';
+        $form['pim_catalogtaxinomy_locale[code]'] = 'test6';
         $form['pim_catalogtaxinomy_locale[isDefault]'] = '0';
         // submit the form
         $crawler = $this->client->submit($form);
