@@ -446,7 +446,7 @@ class CategoryControllerTest extends AbstractControllerTest
 
         // prepare search data
         $postData = array(
-            'search_str' => 'test'
+            'search_str' => 'category'
         );
 
         // call search view
