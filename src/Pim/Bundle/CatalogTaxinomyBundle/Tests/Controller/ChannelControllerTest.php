@@ -1,5 +1,8 @@
 <?php
 namespace Pim\Bundle\CatalogTaxinomyBundle\Tests\Controller;
+
+use Pim\Bundle\CatalogTaxinomyBundle\Entity\Channel;
+
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
@@ -10,8 +13,21 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ChannelControllerTest extends WebTestCase
+class ChannelControllerTest extends AbstractControllerTest
 {
+
+    /**
+     * channel entity test
+     * @var Channel
+     */
+    protected $channel1;
+
+    /**
+     * channel entity test
+     * @var Channel
+     */
+    protected $channel2;
+
     /**
      * Base url of controller
      * @staticvar string
@@ -19,14 +35,74 @@ class ChannelControllerTest extends WebTestCase
     protected static $baseUrl = '/fr/catalogtaxinomy/channel/';
 
     /**
+     * {@inheritdoc}
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->channel1 = $this->createChannel('channel1');
+        $this->channel2 = $this->createChannel('channel2');
+
+        $this->getEntityManager()->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function tearDown()
+    {
+        $this->getEntityManager()->remove($this->channel1);
+        $this->getEntityManager()->remove($this->channel2);
+
+        $this->getEntityManager()->flush();
+
+        parent::tearDown();
+    }
+
+    /**
+     * Create a channel entity
+     * @param string $code
+     *
+     * @return \Pim\Bundle\CatalogTaxinomyBundle\Entity\Channel
+     */
+    protected function createChannel($code)
+    {
+        $channel = $this->getChannelManager()->getNewEntityInstance();
+        $channel->setCode($code);
+
+        $this->getEntityManager()->persist($channel);
+
+        return $channel;
+    }
+
+    /**
+     * Get channel manager
+     *
+     * @return \Pim\Bundle\CatalogTaxinomyBundle\Model\ChannelManager
+     */
+    protected function getChannelManager()
+    {
+        return $this->getContainer()->get('pim.catalog_taxinomy.channel_manager');
+    }
+
+    /**
+     * assert index content
+     * @param \Symfony\Component\DomCrawler\Crawler $crawler
+     */
+    protected function assertIndexContent($crawler)
+    {
+        $this->assertCount(1, $crawler->filter('div.grid'));
+    }
+
+    /**
      * test related action
      */
     public function testIndex()
     {
-        $client = static::createClient();
-        $crawler = $client->request('GET', self::$baseUrl .'index');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertCount(1, $crawler->filter('div.grid'));
+        $crawler = $this->client->request('GET', self::$baseUrl .'index');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertIndexContent($crawler);
     }
 
     /**
@@ -34,9 +110,8 @@ class ChannelControllerTest extends WebTestCase
      */
     public function testNew()
     {
-        $client = static::createClient();
-        $crawler = $client->request('GET', self::$baseUrl .'new');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', self::$baseUrl .'new');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertCount(1, $crawler->filter('form'));
     }
 
@@ -45,18 +120,35 @@ class ChannelControllerTest extends WebTestCase
      */
     public function testCreate()
     {
-        // get page
-        $client = static::createClient();
-        $crawler = $client->request('GET', self::$baseUrl .'new');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        // prepare data
+        $postData = array(
+            'code' => 'channel-code'
+        );
+
+        // call create view and assert values
+        $crawler = $this->client->request('POST', self::$baseUrl .'create', $postData);
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertCount(1, $crawler->filter('form'));
-        // get form
-        $form = $crawler->selectButton('edit-form-submit')->form();
-        // set some values
-        $timestamp = str_replace('.', '', microtime(true));
-        $form['pim_catalogtaxinomy_channel[code]'] = 'My code '.$timestamp;
-        // submit the form
-        $crawler = $client->submit($form);
+
+        // TODO : assert success message
+
+        // assert wrong method (with GET parameters)
+        $getData = array(
+            'code' => 'channel-code-get'
+        );
+        $this->client->request('GET', self::$baseUrl .'create', $getData);
+        $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * test related class
+     */
+    public function testEdit()
+    {
+        // call edit view and assert values
+        $crawler = $this->client->request('GET', self::$baseUrl ."{$this->channel2->getId()}/edit");
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertCount(1, $crawler->filter('form'));
     }
 
     /**
@@ -64,22 +156,39 @@ class ChannelControllerTest extends WebTestCase
      */
     public function testUpdate()
     {
-        // get first attribute
-        $client = static::createClient();
-        $container = $client->getContainer();
-        $attribute = $container->get('doctrine.orm.entity_manager')->getRepository('PimCatalogTaxinomyBundle:Channel')->findOneBy(array());
-        $this->assertNotNull($attribute);
-        // get page
-        $crawler = $client->request('GET', self::$baseUrl ."{$attribute->getId()}/edit");
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        // prepare data
+        $postData = array(
+            'id'   => $this->channel2->getId(),
+            'code' => 'channel-code'
+        );
+
+        // call update view and assert values
+        $crawler = $this->client->request('POST', self::$baseUrl ."{$this->channel2->getId()}/update", $postData);
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertCount(1, $crawler->filter('form'));
-        // get form
-        $form = $crawler->selectButton('edit-form-submit')->form();
-        // set some values
-        $timestamp = str_replace('.', '', microtime(true));
-        $form['pim_catalogtaxinomy_channel[code]'] = 'New code '.$timestamp;
-        // submit the form
-        $crawler = $client->submit($form);
+
+        // TODO : assert message success
+
+        // assert wrong method (with GET parameters)
+        $getData = array(
+            'id'   => $this->channel2->getId(),
+            'code' => 'channel-code-get'
+        );
+        $this->client->request('GET', self::$baseUrl .'create', $getData);
+        $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * test related action
+     */
+    public function testDelete()
+    {
+        // call delete view and assert values
+        $getData = array(
+            'id' => $this->channel2->getId()
+        );
+        $this->client->request('GET', self::$baseUrl ."{$this->channel2->getId()}/delete", $getData);
+        $this->assertRedirectTo(self::$baseUrl .'index');
     }
 
 }

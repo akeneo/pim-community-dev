@@ -20,6 +20,30 @@ class CategoryControllerTest extends AbstractControllerTest
 {
 
     /**
+     * category entity test
+     * @var Category
+     */
+    protected $category1;
+
+    /**
+     * category entity test
+     * @var Category
+     */
+    protected $category2;
+
+    /**
+     * category entity test
+     * @var Category
+     */
+    protected $category3;
+
+    /**
+     * category entity test
+     * @var Category
+     */
+    protected $category4;
+
+    /**
      * Base url used for testing
      * @staticvar string
      */
@@ -32,10 +56,10 @@ class CategoryControllerTest extends AbstractControllerTest
     {
         parent::setUp();
 
-        $this->category1 = $this->createCategory('test1');
-        $this->category2 = $this->createCategory('test2', $this->category1);
-        $this->category3 = $this->createCategory('test3', $this->category1);
-        $this->category4 = $this->createCategory('test4', $this->category3);
+        $this->category1 = $this->createCategory('category1');
+        $this->category2 = $this->createCategory('category2', $this->category1);
+        $this->category3 = $this->createCategory('category3', $this->category1);
+        $this->category4 = $this->createCategory('category4', $this->category3);
 
         $this->getEntityManager()->flush();
     }
@@ -187,7 +211,7 @@ class CategoryControllerTest extends AbstractControllerTest
             'title' => 'test'
         );
 
-        // call create view and  assert values
+        // call create view and assert values
         $this->client->request('POST', self::$baseUrl .'createNode', $postData, array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 

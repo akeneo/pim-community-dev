@@ -38,6 +38,14 @@ class Locale
     protected $isDefault;
 
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->isDefault = false;
+    }
+
+    /**
      * Get id
      *
      * @return integer

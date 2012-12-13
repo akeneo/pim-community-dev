@@ -1,5 +1,7 @@
 <?php
 namespace Pim\Bundle\CatalogTaxinomyBundle\Tests\Controller;
+use Pim\Bundle\CatalogTaxinomyBundle\Entity\Locale;
+
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
@@ -10,8 +12,21 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class LocaleControllerTest extends WebTestCase
+class LocaleControllerTest extends AbstractControllerTest
 {
+
+    /**
+     * locale entity test
+     * @var Locale
+     */
+    protected $locale1;
+
+    /**
+     * locale entity test
+     * @var Locale
+     */
+    protected $locale2;
+
     /**
      * Base url of controller
      * @staticvar string
@@ -19,14 +34,74 @@ class LocaleControllerTest extends WebTestCase
     protected static $baseUrl = '/fr/catalogtaxinomy/locale/';
 
     /**
+     * {@inheritdoc}
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->locale1 = $this->createLocale('test1');
+        $this->locale2 = $this->createLocale('test2');
+
+        $this->getEntityManager()->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function tearDown()
+    {
+        $this->getEntityManager()->remove($this->locale1);
+        $this->getEntityManager()->remove($this->locale2);
+
+        $this->getEntityManager()->flush();
+
+        parent::tearDown();
+    }
+
+    /**
+     * Create a locale entity
+     * @param string $code
+     *
+     * @return \Pim\Bundle\CatalogTaxinomyBundle\Entity\Locale
+     */
+    protected function createLocale($code)
+    {
+        $locale = $this->getLocaleManager()->getNewEntityInstance();
+        $locale->setCode($code);
+
+        $this->getEntityManager()->persist($locale);
+
+        return $locale;
+    }
+
+    /**
+     * Get locale manager
+     *
+     * @return \Pim\Bundle\CatalogTaxinomyBundle\Model\LocaleManager
+     */
+    protected function getLocaleManager()
+    {
+        return $this->getContainer()->get('pim.catalog_taxinomy.locale_manager');
+    }
+
+    /**
+     * assert index content
+     * @param \Symfony\Component\DomCrawler\Crawler $crawler
+     */
+    protected function assertIndexContent($crawler)
+    {
+        $this->assertCount(1, $crawler->filter('div.grid'));
+    }
+
+    /**
      * test related action
      */
     public function testIndex()
     {
-        $client = static::createClient();
-        $crawler = $client->request('GET', self::$baseUrl .'index');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertCount(1, $crawler->filter('div.grid'));
+        $crawler = $this->client->request('GET', self::$baseUrl .'index');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertIndexContent($crawler);
     }
 
     /**
@@ -34,9 +109,8 @@ class LocaleControllerTest extends WebTestCase
      */
     public function testNew()
     {
-        $client = static::createClient();
-        $crawler = $client->request('GET', self::$baseUrl .'new');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', self::$baseUrl .'new');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertCount(1, $crawler->filter('form'));
     }
 
@@ -45,18 +119,35 @@ class LocaleControllerTest extends WebTestCase
      */
     public function testCreate()
     {
-        // get page
-        $client = static::createClient();
-        $crawler = $client->request('GET', self::$baseUrl .'new');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        // prepare data
+        $postData = array(
+            'code' => 'locale-code'
+        );
+
+        // call create view and assert values
+        $crawler = $this->client->request('POST', self::$baseUrl .'create', $postData);
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertCount(1, $crawler->filter('form'));
-        // get form
-        $form = $crawler->selectButton('edit-form-submit')->form();
-        // set some values
-        $timestamp = str_replace('.', '', microtime(true));
-        $form['pim_catalogtaxinomy_locale[code]'] = 'it_IT';
-        // submit the form
-        $crawler = $client->submit($form);
+
+        // TODO : assert success message
+
+        // assert wrong method (with GET parameters)
+        $getData = array(
+            'code' => 'locale-code-get'
+        );
+        $this->client->request('GET', self::$baseUrl .'create', $getData);
+        $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * test related class
+     */
+    public function testEdit()
+    {
+        // call edit view and assert values
+        $crawler = $this->client->request('GET', self::$baseUrl ."{$this->locale2->getId()}/edit");
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertCount(1, $crawler->filter('form'));
     }
 
     /**
@@ -64,22 +155,39 @@ class LocaleControllerTest extends WebTestCase
      */
     public function testUpdate()
     {
-        // get first attribute
-        $client = static::createClient();
-        $container = $client->getContainer();
-        $attribute = $container->get('doctrine.orm.entity_manager')->getRepository('PimCatalogTaxinomyBundle:Locale')->findOneBy(array());
-        $this->assertNotNull($attribute);
-        // get page
-        $crawler = $client->request('GET', self::$baseUrl ."{$attribute->getId()}/edit");
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        // prepare data
+        $postData = array(
+            'id'   => $this->locale2->getId(),
+            'code' => 'locale-code'
+        );
+
+        // call update view and assert values
+        $crawler = $this->client->request('POST', self::$baseUrl ."{$this->locale2->getId()}/update", $postData);
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertCount(1, $crawler->filter('form'));
-        // get form
-        $form = $crawler->selectButton('edit-form-submit')->form();
-        // set some values
-        $timestamp = str_replace('.', '', microtime(true));
-        $form['pim_catalogtaxinomy_locale[code]'] = 'en_US';
-        // submit the form
-        $crawler = $client->submit($form);
+
+        // TODO : assert message success
+
+        // assert wrong method (with GET parameters)
+        $getData = array(
+            'id'   => $this->locale2->getId(),
+            'code' => 'locale-code-get'
+        );
+        $this->client->request('GET', self::$baseUrl .'create', $getData);
+        $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * test related action
+     */
+    public function testDelete()
+    {
+        // call delete view and assert values
+        $getData = array(
+            'id' => $this->locale2->getId()
+        );
+        $this->client->request('GET', self::$baseUrl ."{$this->locale2->getId()}/delete", $getData);
+        $this->assertRedirectTo(self::$baseUrl .'index');
     }
 
 }
