@@ -37,7 +37,7 @@ class CategoriesXmlToCategoriesTransformerTest extends KernelAwareTest
      */
     protected function loadfile($filename)
     {
-        $filepath = dirname(__FILE__) .'/../Files/'. $filename;
+        $filepath = dirname(__FILE__) .'/../../Files/'. $filename;
 
         return file_get_contents($filepath);
     }
