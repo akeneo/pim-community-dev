@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * TODO : Must be set in lower level to be used by all connectors
  *
- * @ORM\Table(name="Akeneo_PimConnectorIcecat_Import")
+ * @ORM\Table(name="akeneo_connectoricecat_import")
  * @ORM\Entity
  */
 class Import

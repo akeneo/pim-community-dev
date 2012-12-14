@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="Akeneo_PimCatalog_Product_Attribute")
+ * @ORM\Table(name="akeneo_catalog_product_attribute")
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\ProductAttributeRepository")
  */
 class ProductAttribute extends AbstractEntityAttribute
@@ -20,7 +20,7 @@ class ProductAttribute extends AbstractEntityAttribute
 
     /**
      * Overrided to change target entity name
-     * 
+     *
      * @var ArrayCollection $options
      *
      * @ORM\OneToMany(targetEntity="ProductAttributeOption", mappedBy="attribute", cascade={"persist", "remove"}, orphanRemoval=true)

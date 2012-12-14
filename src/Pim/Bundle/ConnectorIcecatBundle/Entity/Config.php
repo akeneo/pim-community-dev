@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="Akeneo_PimConnectorIcecat_Config")
+ * @ORM\Table(name="akeneo_connectoricecat_config")
  * @ORM\Entity
  */
 class Config

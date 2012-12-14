@@ -47,7 +47,7 @@ abstract class EntityGroup extends AbstractEntityGroup
     /**
      * @var ArrayCollection $attributes
      * @ORM\ManyToMany(targetEntity="EntityAttribute")
-     * @ORM\JoinTable(name="Entity_Group_Attribute")
+     * @ORM\JoinTable(name="entity_group_attribute")
      */
     protected $attributes = array();
 
@@ -63,7 +63,7 @@ abstract class EntityGroup extends AbstractEntityGroup
      * Set Set
      *
      * @param EntitySet $set
-     * 
+     *
      * @return EntityGroup
      */
     public function setSet(EntitySet $set = null)
