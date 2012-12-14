@@ -1,8 +1,6 @@
 <?php
 namespace Pim\Bundle\DataFlowBundle\Model\Extract;
 
-use \Exception as Exception;
-
 /**
  * Reading HTTP file with curl
  *
@@ -28,24 +26,24 @@ class FileHttpReader
     public function process($url, $login = null, $password = null)
     {
         // use curl to get xml product content with basic authentication
-        $c = curl_init();
-        if (!$c) {
+        $curl = curl_init();
+        if (!$curl) {
                 throw new Exception('Curl not initialized');
         }
 
-        curl_setopt($c, CURLOPT_URL, $url);
-        curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($c, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HEADER, false);
         if ($login and $password) {
-            curl_setopt($c, CURLOPT_USERPWD, $login.':'.$password);
+            curl_setopt($curl, CURLOPT_USERPWD, $login.':'.$password);
         }
-        $output = curl_exec($c);
+        $output = curl_exec($curl);
 
         // deal with curl exception
         if ($output === false) {
-                throw new Exception('Curl Error : '.curl_error($c));
+                throw new \Exception('Curl Error : '.curl_error($curl));
         }
-        curl_close($c);
+        curl_close($curl);
 
         return $output;
     }

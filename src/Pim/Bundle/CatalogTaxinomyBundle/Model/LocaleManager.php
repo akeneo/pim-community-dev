@@ -22,4 +22,16 @@ class LocaleManager extends BaseEntityManager
         return 'PimCatalogTaxinomyBundle:Locale';
     }
 
+    /**
+     * Disable old default locale
+     */
+    public function disableOldDefaultLocale()
+    {
+        $locales = $this->getEntityRepository()->findBy(array('isDefault' => 1));
+        foreach ($locales as $locale) {
+            $locale->setIsDefault(false);
+            $manager->persist($locale);
+        }
+    }
+
 }

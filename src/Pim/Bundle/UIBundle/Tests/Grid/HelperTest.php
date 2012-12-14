@@ -24,13 +24,13 @@ class HelperTest extends KernelAwareTest
         $productManager = $this->container->get('pim.catalog.product_manager');
 
         // test ORM
-        $om = $this->container->get('doctrine.orm.entity_manager');
-        $source = GridHelper::getGridSource($om, $productManager->getEntityShortName());
+        $objectManager = $this->container->get('doctrine.orm.entity_manager');
+        $source = GridHelper::getGridSource($objectManager, $productManager->getEntityShortName());
         $this->assertTrue($source instanceof GridEntity);
 
         // test ODM
-        $om = $this->container->get('doctrine.odm.mongodb.document_manager');
-        $source = GridHelper::getGridSource($om, $productManager->getEntityShortName());
+        $objectManager = $this->container->get('doctrine.odm.mongodb.document_manager');
+        $source = GridHelper::getGridSource($objectManager, $productManager->getEntityShortName());
         $this->assertTrue($source instanceof GridDocument);
     }
 

@@ -69,8 +69,8 @@ class LoadCategories extends AbstractFixture implements OrderedFixtureInterface,
         $this->createCategory('usb keys', $dataStore);
         $disks = $this->createCategory('Disks', $dataStore);
 
-        $dvd = $this->createCategory('DVD', $disks);
-        $cd  = $this->createCategory('CD', $disks);
+        $dvds = $this->createCategory('DVD', $disks);
+        $cds  = $this->createCategory('CD', $disks);
 
         $this->manager->flush();
     }
