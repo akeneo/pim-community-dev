@@ -40,7 +40,8 @@ class AppKernel extends Kernel
             new Pim\Bundle\CatalogTaxinomyBundle\PimCatalogTaxinomyBundle(),
 
             // community bundles
-            new APY\DataGridBundle\APYDataGridBundle()
+            new APY\DataGridBundle\APYDataGridBundle(),
+            new Bap\Bundle\ToolsBundle\BapToolsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
