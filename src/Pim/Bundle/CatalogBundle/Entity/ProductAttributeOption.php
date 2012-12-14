@@ -3,6 +3,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\EntityAttributeOption as AbstractEntityAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Attribute options
@@ -13,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="akeneo_catalog_product_attributeoption")
  * @ORM\Entity
+ * @Gedmo\TranslationEntity(class="Pim\Bundle\CatalogBundle\Entity\ProductTranslation")
  */
 class ProductAttributeOption extends AbstractEntityAttributeOption
 {

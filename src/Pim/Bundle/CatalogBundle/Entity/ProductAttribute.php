@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Oro\Bundle\FlexibleEntityBundle\Entity\EntityAttribute as AbstractEntityAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Model\EntityAttributeOption as AbstractEntityAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Product attribute as sku, name, etc
@@ -14,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="akeneo_catalog_product_attribute")
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\ProductAttributeRepository")
+ * @Gedmo\TranslationEntity(class="Pim\Bundle\CatalogBundle\Entity\ProductTranslation")
  */
 class ProductAttribute extends AbstractEntityAttribute
 {
