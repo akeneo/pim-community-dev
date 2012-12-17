@@ -16,7 +16,7 @@ class ConfigControllerTest extends WebTestCase
      * Base url used for testing
      * @staticvar string
      */
-    protected static $baseUrl = '/en_US/icecatconnector/config/';
+    protected static $baseUrl = '/en/icecatconnector/config/';
 
     /**
      * test related action

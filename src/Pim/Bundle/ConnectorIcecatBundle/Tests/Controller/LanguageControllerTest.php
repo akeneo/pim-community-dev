@@ -16,7 +16,7 @@ class LanguageControllerTest extends WebTestCase
      * Base url used for testing
      * @staticvar string
      */
-    protected static $baseUrl = '/en_US/icecatconnector/language/';
+    protected static $baseUrl = '/en/icecatconnector/language/';
 
     /**
      * test related action

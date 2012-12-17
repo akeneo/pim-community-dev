@@ -16,7 +16,7 @@ class ProductControllerTest extends WebTestCase
      * Base url used for testing
      * @staticvar string
      */
-    protected static $baseUrl = '/en_US/icecatconnector/product/';
+    protected static $baseUrl = '/en/icecatconnector/product/';
 
     /**
      * test related action

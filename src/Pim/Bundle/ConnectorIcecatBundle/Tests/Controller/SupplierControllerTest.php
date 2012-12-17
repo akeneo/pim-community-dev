@@ -16,7 +16,7 @@ class SupplierControllerTest extends WebTestCase
      * Base url used for testing
      * @staticvar string
      */
-    protected static $baseUrl = '/en_US/icecatconnector/supplier/';
+    protected static $baseUrl = '/en/icecatconnector/supplier/';
 
     /**
      * test related action

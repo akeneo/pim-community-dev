@@ -47,7 +47,7 @@ class CategoryControllerTest extends AbstractControllerTest
      * Base url used for testing
      * @staticvar string
      */
-    protected static $baseUrl = '/en_US/catalogtaxinomy/category/';
+    protected static $baseUrl = '/en/catalogtaxinomy/category/';
 
     /**
      * {@inheritdoc}
