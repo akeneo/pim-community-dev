@@ -1,6 +1,16 @@
 <?php
 namespace Bap\Bundle\ToolsBundle\Command;
 
+use Symfony\Component\DependencyInjection\Dumper\YamlDumper;
+
+use Symfony\Component\Translation\MessageCatalogue;
+
+use Symfony\Component\Yaml\Dumper;
+
+use Symfony\Component\Yaml\Yaml;
+
+use Symfony\Component\Translation\Dumper\YamlFileDumper;
+
 use Symfony\Component\Filesystem\Filesystem;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -162,6 +172,10 @@ class ExtractStringsToLocalizeCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+
+        // TODO : must be somewhere else
+        $defaultLocale = $this->getContainer()->getParameter('locale');
+
         $fileSystem = new Filesystem();
 
         // 1. extract locales
@@ -189,6 +203,8 @@ class ExtractStringsToLocalizeCommand extends ContainerAwareCommand
             $filenames = $this->extractFilenames($bundle);
 //             var_dump($filenames);
 
+//             $i18nContent = $this->extractI18nContent($locales, $filenames, $i18nStrings);
+
             $i18nContent = array();
 
             foreach ($locales as $locale) {
@@ -197,114 +213,88 @@ class ExtractStringsToLocalizeCommand extends ContainerAwareCommand
                 $this->getContainer()->get('translator')->setLocale($locale);
                 foreach ($filenames as $filename) {
                     // 5. create unexistent files
-                    $i18nFile = $i18nPath . $filename .'.'. $locale .'.yml';
+                    $i18nFile = $i18nPath . $filename .'.'. $locale .'.yml'; // TODO : extension must be a parameter
                     if (!file_exists($i18nFile)) {
 //                         $fileSystem->touch($i18nFile);
                         echo "\t\t--> create file ". $i18nFile ."\n";
                     }
                 }
 
-                $filename = $i18nPath .'messages.'. $locale .'.yml';
+                $filename = $i18nPath .'messages.'. $locale .'.yml'; // TODO : extension must be a parameter
 
                 // 6. prepare array data [key][locale] = value
                 foreach ($i18nStrings as $i18nKey) {
                     $i18nValue = $this->getContainer()->get('translator')->trans($i18nKey);
+                    if ($locale !== $defaultLocale && $i18nKey === $i18nValue) {
+                        $i18nValue = '##'. $i18nValue .'##';
+                    }
                     echo "\t\t\t". $i18nKey ." -> ". $i18nValue ."\n";
 
                     $i18nContent[$i18nKey][$locale] = $i18nValue;
                 }
 
-                // 7. dump contents in files
+                // 7. dump content in files
+
+                $dumper = new \Symfony\Component\Translation\Dumper\YamlFileDumper();
+
+
+
+//                 $dumper = new YamlFileDumper();
+//                 $ymlContent = new MessageCatalogue($locale);
+                $ymlContent = array('ma cle' => 'ma valeur');
+
+
+
+
+
+
+//                 new MessageCatalogue();
+
+
+//                 new YamlDumper($container)
+
+//                 $dumper = new Dumper();
+//                 $yaml = $dumper->dump($ymlContent);
+//                 foreach ($i18nContent as $key => $value) {
+//                     $ymlContent[$key] = $value[$locale];
+//                 }
+
+//                 $yaml = $dumper->dump($ymlContent);
+//                 $yaml = Yaml::dump($ymlContent);
+//                 $yaml = $dumper->dump($ymlContent);
+//                 var_dump($yaml);
+//                 file_put_contents($i18nPath .'content.'. $locale .'.yml', $yaml);
+
+
+
+//                 $array = array(
+//                         'foo' => 'bar',
+//                         'bar' => array('foo' => 'bar', 'bar' => 'baz')
+//                 );
+
+//                 $dumper = new Dumper();
+
+//                 $yaml = $dumper->dump($array);
+
+//                 file_put_contents('/tmp/file.yml', $yaml);
 
             }
-            //die;
 
+            // 7. dump contents in files
+//             $this->dumpContent($i18nContent, $i18nPath);
 
 
         }
+    }
 
-//             $filenames = $this->extractFilenames($directory->getRealPath());
+    /**
+     * Dump content in a file
+     * @param multitype:array $content  associative array with all i18n content
+     * @param string          $i18nPath path to translation files
+     */
+    protected function dumpContent($content, $i18nPath)
+    {
 
-            // create files if not exists
-//             foreach ($filenames as $filename) {
-//                 foreach ($locales as $locale) {
-
-//                     $i18nFile = $i18nPath . $filename .'.'. $locale .'.yml';
-
-//                     if (!file_exists($i18nFile)) {
-// //                         $fileSystem->touch($i18nFile);
-//                         echo "CREATE FILE : ". $i18nFile ."\n";
-//                     }
-
-//                     // TODO : Get translation strings if filename === message
-
-//                     // TODO : Call dumper to append translation string
-
-
-
-//                 }
-//             }
-
-            /*$filenames = array();
-
-            $finderFiles = Finder::create();
-            $finderFiles->files()->name(self::$i18nFilesPattern)->in($directory->getRealpath());
-            foreach ($finderFiles as $file) {
-
-
-                echo $file->getFilename();
-
-                if (preg_match(self::$i18nFilesPattern, $file->getFileName(), $matches)) {
-                    if (!empty($matches[1])) {
-                        echo " -> ". $matches[1];
-                    }
-                }
-
-                echo "\n";
-
-                $bundlesDirectories[$directory->getRelativePathname()][] = $file->getFilename();
-
-                // TODO : extraire juste le nom du fichier
-            }*/
-
-//         }
-
-
-
-
-        // 2. get locales
-//         $locales = array();
-//         $pattern = '/\.(\w{2}|\w{2}_\w{2})\.(xliff|yml|php)$/';
-
-//         // get all translate files
-//         $finder = Finder::create();
-//         $finder->files()->name($pattern)->in($this->getSourceDirectory());
-
-//         foreach ($finder as $file) {
-
-//             echo $file->getRelativePathname() ."\n";
-
-//             if (preg_match($pattern, $file->getFileName(), $matches)) {
-//                 if (!empty($matches[1]) && !in_array($matches[1], $locales)) {
-//                     $locales[] = $matches[1];
-//                 }
-//             }
-//         }
-
-
-
-        // 3. build the same file tree
-//         $baseDir = '/tmp'; // TODO : must be get from configuration
-
-//         $baseDir .= '/src';
-//         $fileSystem = new Filesystem();
-//         foreach ($bundlesDirectories as $bundleDirectory) {
-//             $dirPath = $baseDir .'/'. $bundleDirectory .'/Resources/translations';
-//             $fileSystem->mkdir($dirPath);
-//             foreach ($locales as $locale) {
-//                 $fileSystem->touch($dirPath .'/messages.'. $locale .'.yml');
-//             }
-//         }
     }
 
     protected function getRootDirectory()
