@@ -103,7 +103,11 @@ abstract class EntityAttribute extends AbstractEntityAttribute
      */
     public function __construct()
     {
-        $this->options = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->options       = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->uniqueValue   = false;
+        $this->valueRequired = false;
+        $this->searchable    = false;
+        $this->translatable  = false;
     }
 
     /**

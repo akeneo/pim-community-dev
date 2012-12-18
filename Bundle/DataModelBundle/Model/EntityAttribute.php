@@ -10,6 +10,11 @@ namespace Oro\Bundle\DataModelBundle\Model;
  */
 abstract class EntityAttribute
 {
+
+    const TYPE_STRING = 'string';
+    const TYPE_TEXT   = 'text';
+    const TYPE_NUMBER = 'number';
+
     /**
      * @var integer $id
      */

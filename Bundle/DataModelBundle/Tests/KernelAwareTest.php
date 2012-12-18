@@ -43,11 +43,4 @@ abstract class KernelAwareTest extends \PHPUnit_Framework_TestCase
         parent::tearDown();
     }
 
-    /**
-     * @return array
-     */
-    protected function getMetadatas()
-    {
-        return $this->entityManager->getMetadataFactory()->getAllMetadata();
-    }
 }

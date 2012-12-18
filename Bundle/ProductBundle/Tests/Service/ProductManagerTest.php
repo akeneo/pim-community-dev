@@ -39,9 +39,66 @@ class ProductManagerTest extends KernelAwareTest
         $this->assertTrue($newProduct instanceof ProductEntity);
 
         $sku = 'my sku '.str_replace('.', '', microtime(true));
-        $newProduct->setSku('my sku');
+        $newProduct->setSku($sku);
 
         $this->manager->getPersistenceManager()->persist($newProduct);
         $this->manager->getPersistenceManager()->flush();
+    }
+
+    /**
+     * Test related method
+     */
+    public function testGetNewValueInstance()
+    {
+        $timestamp = str_replace('.', '', microtime(true));
+
+        // entity
+        $newProduct = $this->manager->getNewEntityInstance();
+        $this->assertTrue($newProduct instanceof ProductEntity);
+        $sku = 'my sku '.$timestamp;
+        $newProduct->setSku($sku);
+
+        // attribute name
+        $attName = $this->manager->getNewAttributeInstance();
+        $attNameCode= 'name'.$timestamp;
+        $attName->setCode($attNameCode);
+        $attName->setTitle('Name');
+        $attName->setType('string');
+        $attName->setTranslatable(true);
+        $this->manager->getPersistenceManager()->persist($attName);
+
+        // attribute size
+        $attSize = $this->manager->getNewAttributeInstance();
+        $attSizeCode= 'size'.$timestamp;
+        $attSize->setCode($attSizeCode);
+        $attSize->setTitle('Size');
+        $attSize->setType('number');
+        $this->manager->getPersistenceManager()->persist($attSize);
+
+        // name value
+        $valueName = $this->manager->getNewAttributeValueInstance();
+        $valueName->setAttribute($attName);
+        $valueName->setData('my name');
+        $newProduct->addValue($valueName);
+
+        // size value
+        $valueSize = $this->manager->getNewAttributeValueInstance();
+        $valueSize->setAttribute($attSize);
+        $valueSize->setData(125);
+        $newProduct->addValue($valueSize);
+
+        // persist
+        $this->manager->getPersistenceManager()->persist($newProduct);
+        $this->manager->getPersistenceManager()->flush();
+
+        // localized
+//        $this->manager->getAttributeValueRepository()->findByCode('name');
+//        $valueName
+
+        $valueName->setTranslatableLocale('fr_FR');
+        $valueName->setData('mon nom');
+        $this->manager->getPersistenceManager()->persist($valueName);
+        $this->manager->getPersistenceManager()->flush();
+
     }
 }
