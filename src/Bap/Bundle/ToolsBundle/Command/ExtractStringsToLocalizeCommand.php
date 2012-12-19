@@ -1,6 +1,10 @@
 <?php
 namespace Bap\Bundle\ToolsBundle\Command;
 
+use Bap\Bundle\ToolsBundle\Service\StringsToLocalizeExtractorService;
+
+use Symfony\Component\Translation\Loader\YamlFileLoader;
+
 use Symfony\Component\DependencyInjection\Dumper\YamlDumper;
 
 use Symfony\Component\Translation\MessageCatalogue;
@@ -45,7 +49,7 @@ class ExtractStringsToLocalizeCommand extends ContainerAwareCommand
      * bundle directories pattern
      * @staticvar string
      */
-    protected static $bundleNamePattern = '/^(.+)Bundle$/';
+    protected static $bundleNamePattern = '/^(Catalog)Bundle$/';
 
     // TODO : add sauts de lignes + récupération key saut de ligne pattern : (?:\n?.*)
     // TODO : voir si les espaces sont obligatoires en twig
@@ -117,6 +121,8 @@ class ExtractStringsToLocalizeCommand extends ContainerAwareCommand
      */
     protected function extractI18nStrings($bundlePath)
     {
+        echo "\t\t\textract i18n strings : ". $bundlePath ."\n";
+
         $i18nKeys = array();
         $i18nPattern = '/('. implode('|', self::$transPatterns) .')/'; // TODO : must be define only one time
 
@@ -176,38 +182,87 @@ class ExtractStringsToLocalizeCommand extends ContainerAwareCommand
         // TODO : must be somewhere else
         $defaultLocale = $this->getContainer()->getParameter('locale');
 
-        $fileSystem = new Filesystem();
+        $sourcePath = $this->getSourceDirectory();
 
-        // 1. extract locales
-        $locales = $this->extractLocales();
 
-        // 2. get all bundles directories
-        $bundles = $this->extractBundles();
+        $service = new StringsToLocalizeExtractorService();
+        $service->extractStringsToLocalize($sourcePath);
 
-        foreach ($bundles as $bundle) {
-            echo "\n-------------------------------------\n";
-            echo $bundle ."\n";
-            $i18nPath = $bundle .'/Resources/translations/';
+//         $fileSystem = new Filesystem();
 
-            // if directory not exists, no translation files to copy TODO : make a forced copy ?
-            if (!is_dir($i18nPath)) {
-                continue;
-            }
+//         // 1. extract locales
+//         $locales = $this->extractLocales();
 
-            // 3. get all strings to translate by bundles then exchanges keys and associated values
-            $i18nStrings = $this->extractI18nStrings($bundle);
-            var_dump($i18nStrings);
-//             $i18nKeys = array_flip($i18nStrings);
+//         // 2. get all bundles directories
+//         $bundles = $this->extractBundles();
 
-            // 4. get all files
-            $filenames = $this->extractFilenames($bundle);
-//             var_dump($filenames);
+//         foreach ($bundles as $bundle) {
+//             echo "\n-------------------------------------\n";
+//             echo $bundle ."\n";
+//             $i18nPath = $bundle .'/Resources/translations/';
 
-//             $i18nContent = $this->extractI18nContent($locales, $filenames, $i18nStrings);
+//             // if directory not exists, no translation files to copy TODO : make a forced copy ?
+//             if (!is_dir($i18nPath)) {
+//                 continue;
+//             }
 
-            $i18nContent = array();
+//             // 3. get all strings to translate by bundles then exchanges keys and associated values
+//             $i18nStrings = $this->extractI18nStrings($bundle);
 
-            foreach ($locales as $locale) {
+//             // 4. get all files
+//             $filenames = $this->extractFilenames($bundle);
+
+
+//             // load content for each file
+
+//             foreach ($filenames as $filename) {
+
+// //                 $masterCatalogue = new MessageCatalogue();
+//                 $masterCatalogue = null;
+//                 $yamlLoader = $this->loaderFactory('yml');
+
+//                 foreach ($locales as $locale) {
+//                     // 5. create unexistent files
+//                     $i18nFile = $i18nPath . $filename .'.'. $locale .'.yml'; // TODO : extension must be a parameter
+//                     if (!file_exists($i18nFile)) {
+//                         $fileSystem->touch($i18nFile);
+//                         echo "\t\t--> create file ". $i18nFile ."\n";
+//                     } else {
+//                         // create master catalog by domain
+//                         if ($masterCatalogue === null) {
+//     //                         $masterCatalogue = $this->loaderFactory('yml');
+//                             $masterCatalogue = $yamlLoader->load($i18nFile, $locales);
+//                         } else {
+//     //                         $messageCatalogue = $this->loaderFactory('yml');
+//                             $messageCatalogue = $yamlLoader->load($i18nFile, $locales);
+//                             $masterCatalogue->addCatalogue($messageCatalogue);
+//                         }
+//                     }
+//                 }
+
+//                 $i18nByFile = array();
+
+//                 var_dump($masterCatalogue);
+//                 echo "_______\n";
+
+
+
+
+
+//             }
+
+
+// //             echo "\t\t\tCall Yaml Loader...". $i18nPath ."\n";
+// //             $ymlLoader = new YamlFileLoader();
+// //             $messageCatalogue = $ymlLoader->load($i18nPath .'messages.fr.yml', $locales);
+
+// //             var_dump($messageCatalogue);
+
+//             die;
+
+
+
+            /*foreach ($locales as $locale) {
                 echo "\tLocale : ". $locale ."\n";
                 // change locale in session to get translated value
                 $this->getContainer()->get('translator')->setLocale($locale);
@@ -215,33 +270,45 @@ class ExtractStringsToLocalizeCommand extends ContainerAwareCommand
                     // 5. create unexistent files
                     $i18nFile = $i18nPath . $filename .'.'. $locale .'.yml'; // TODO : extension must be a parameter
                     if (!file_exists($i18nFile)) {
-//                         $fileSystem->touch($i18nFile);
+                        $fileSystem->touch($i18nFile);
                         echo "\t\t--> create file ". $i18nFile ."\n";
                     }
+
+
+
+
                 }
 
-                $filename = $i18nPath .'messages.'. $locale .'.yml'; // TODO : extension must be a parameter
+
+
+
+                $filename = 'messages';
+                $i18nFile = $i18nPath . $filename .'.'. $locale .'.yml'; // TODO : extension must be a parameter
+                $messageCatalogue = new MessageCatalogue($locale);
+                $domains = $messageCatalogue->getDomains();
+                var_dump($domains);
 
                 // 6. prepare array data [key][locale] = value
                 foreach ($i18nStrings as $i18nKey) {
                     $i18nValue = $this->getContainer()->get('translator')->trans($i18nKey);
                     if ($locale !== $defaultLocale && $i18nKey === $i18nValue) {
+
                         $i18nValue = '##'. $i18nValue .'##';
                     }
                     echo "\t\t\t". $i18nKey ." -> ". $i18nValue ."\n";
 
                     $i18nContent[$i18nKey][$locale] = $i18nValue;
-                }
+                }*/
 
                 // 7. dump content in files
 
-                $dumper = new \Symfony\Component\Translation\Dumper\YamlFileDumper();
+//                 $dumper = new \Symfony\Component\Translation\Dumper\YamlFileDumper();
 
 
 
 //                 $dumper = new YamlFileDumper();
 //                 $ymlContent = new MessageCatalogue($locale);
-                $ymlContent = array('ma cle' => 'ma valeur');
+//                 $ymlContent = array('ma cle' => 'ma valeur');
 
 
 
@@ -278,12 +345,30 @@ class ExtractStringsToLocalizeCommand extends ContainerAwareCommand
 
 //                 file_put_contents('/tmp/file.yml', $yaml);
 
-            }
+//             }
 
             // 7. dump contents in files
 //             $this->dumpContent($i18nContent, $i18nPath);
 
 
+//         }
+    }
+
+    protected function loaderFactory($format)
+    {
+        if ($format === 'yml') {
+            return new YamlFileLoader();
+        } else {
+            throw new \Exception('not yet implemented');
+        }
+    }
+
+    protected function dumperFactory($format)
+    {
+        if ($format === 'yml') {
+            return new YamlFileDumper();
+        } else {
+            throw new \Exception('not yet implemented');
         }
     }
 

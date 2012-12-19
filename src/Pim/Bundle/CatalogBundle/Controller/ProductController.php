@@ -30,6 +30,9 @@ class ProductController extends Controller
     protected function getProductManager()
     {
         return $this->get('pim.catalog.product_manager');
+        $this->get('translator')->trans('pim.catalog.attribute.title.list');
+
+        $this->get('translator')->trans('unexistent translation');
     }
 
     /**
