@@ -71,6 +71,15 @@ abstract class Entity extends AbstractEntity
         return $this;
     }
 
+    public function __get($attCode)
+    {
+        $values = $this->getValues()->filter(function($value) use ($attCode) {
+            return $value->getAttribute()->getCode() == $attCode;
+        });
+        $value = $values->first();
+        return ($value) ? $value->getData() : null;
+    }
+
     /**
      * Define "magic" getter / setter to set values
      *

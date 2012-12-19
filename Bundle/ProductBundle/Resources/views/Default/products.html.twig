@@ -4,11 +4,11 @@
 
     <table class="mytable">
         <tr>
-            <td>Id</td><td>Sku</td><td>Name</td><td>Size</td>
+            <td>Id</td><td>Sku</td><td>Name</td><td>Description</td><td>Size</td>
         </tr>
     {% for product in products %}
         <tr>
-            <td>{{ product.id }}</td><td>{{ product.sku }}</td><td>{{ product.name }}</td><td>{{ product.size }}</td>
+            <td>{{ product.id }}</td><td>{{ product.sku }}</td><td>{{ product.name }}</td><td>{{ product.description }}</td><td>{{ product.size }}</td>
         </tr>
     {% endfor %}
     </table>

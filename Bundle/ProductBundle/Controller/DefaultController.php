@@ -73,6 +73,21 @@ class DefaultController extends Controller
             $messages[]= "Attribute ".$attNameCode." has been created";
         }
 
+        // attribute description (if not exists)
+        $attDescCode = 'description';
+        $attDesc = $this->getProductManager()->getAttributeRepository()->findOneByCode($attDescCode);
+        if ($attDesc) {
+            $messages[]= "Attribute ".$attDescCode." already exists";
+        } else {
+            $attDesc = $this->getProductManager()->getNewAttributeInstance();
+            $attDesc->setCode($attDescCode);
+            $attDesc->setTitle('Description');
+            $attDesc->setType(AbstractEntityAttribute::TYPE_TEXT);
+            $attDesc->setTranslatable(true);
+            $this->getProductManager()->getPersistenceManager()->persist($attDesc);
+            $messages[]= "Attribute ".$attDescCode." has been created";
+        }
+
         // attribute size (if not exists)
         $attSizeCode= 'size';
         $attSize = $this->getProductManager()->getAttributeRepository()->findOneByCode($attSizeCode);
@@ -123,60 +138,70 @@ class DefaultController extends Controller
 
         // get attributes
         $attName = $this->getProductManager()->getAttributeRepository()->findOneByCode('name');
+        $attDescription = $this->getProductManager()->getAttributeRepository()->findOneByCode('description');
         $attSize = $this->getProductManager()->getAttributeRepository()->findOneByCode('size');
 
-        // add product with only sku
-        $prodSku = 'sku-1';
-        $newProduct = $this->getProductManager()->getEntityRepository()->findOneBySku($prodSku);
-        if ($newProduct) {
-            $messages[]= "Product ".$prodSku." already exists";
-        } else {
-            $newProduct = $this->getProductManager()->getNewEntityInstance();
-            $newProduct->setSku($prodSku);
-            $messages[]= "Product ".$prodSku." has been created";
-            $this->getProductManager()->getPersistenceManager()->persist($newProduct);
-        }
+        for ($ind= 1; $ind < 100; $ind++) {
 
-        // add product with sku and name
-        $prodSku = 'sku-2';
-        $newProduct = $this->getProductManager()->getEntityRepository()->findOneBySku($prodSku);
-        if ($newProduct) {
-            $messages[]= "Product ".$prodSku." already exists";
-        } else {
-            $newProduct = $this->getProductManager()->getNewEntityInstance();
-            $newProduct->setSku($prodSku);
-            if ($attName) {
-                $valueName = $this->getProductManager()->getNewAttributeValueInstance();
-                $valueName->setAttribute($attName);
-                $valueName->setData('my name 2');
-                $newProduct->addValue($valueName);
+            // add product with only sku
+            $prodSku = 'sku-'.$ind++;
+            $newProduct = $this->getProductManager()->getEntityRepository()->findOneBySku($prodSku);
+            if ($newProduct) {
+                $messages[]= "Product ".$prodSku." already exists";
+            } else {
+                $newProduct = $this->getProductManager()->getNewEntityInstance();
+                $newProduct->setSku($prodSku);
+                $messages[]= "Product ".$prodSku." has been created";
+                $this->getProductManager()->getPersistenceManager()->persist($newProduct);
             }
-            $this->getProductManager()->getPersistenceManager()->persist($newProduct);
-            $messages[]= "Product ".$prodSku." has been created";
-        }
 
-        // add product with sku, name and size
-        $prodSku = 'sku-3';
-        $newProduct = $this->getProductManager()->getEntityRepository()->findOneBySku($prodSku);
-        if ($newProduct) {
-            $messages[]= "Product ".$prodSku." already exists";
-        } else {
-            $newProduct = $this->getProductManager()->getNewEntityInstance();
-            $newProduct->setSku($prodSku);
-            if ($attName) {
-                $valueName = $this->getProductManager()->getNewAttributeValueInstance();
-                $valueName->setAttribute($attName);
-                $valueName->setData('my name 3');
-                $newProduct->addValue($valueName);
+            // add product with sku and name
+            $prodSku = 'sku-'.$ind++;
+            $newProduct = $this->getProductManager()->getEntityRepository()->findOneBySku($prodSku);
+            if ($newProduct) {
+                $messages[]= "Product ".$prodSku." already exists";
+            } else {
+                $newProduct = $this->getProductManager()->getNewEntityInstance();
+                $newProduct->setSku($prodSku);
+                if ($attName) {
+                    $valueName = $this->getProductManager()->getNewAttributeValueInstance();
+                    $valueName->setAttribute($attName);
+                    $valueName->setData('my name '.$ind);
+                    $newProduct->addValue($valueName);
+                }
+                if ($attDescription) {
+                    $value = $this->getProductManager()->getNewAttributeValueInstance();
+                    $value->setAttribute($attDescription);
+                    $value->setData('my long description '.$ind);
+                    $newProduct->addValue($value);
+                }
+                $this->getProductManager()->getPersistenceManager()->persist($newProduct);
+                $messages[]= "Product ".$prodSku." has been created";
             }
-            if ($attSize) {
-                $valueSize = $this->getProductManager()->getNewAttributeValueInstance();
-                $valueSize->setAttribute($attSize);
-                $valueSize->setData(175);
-                $newProduct->addValue($valueSize);
+
+            // add product with sku, name and size
+            $prodSku = 'sku-'.$ind++;
+            $newProduct = $this->getProductManager()->getEntityRepository()->findOneBySku($prodSku);
+            if ($newProduct) {
+                $messages[]= "Product ".$prodSku." already exists";
+            } else {
+                $newProduct = $this->getProductManager()->getNewEntityInstance();
+                $newProduct->setSku($prodSku);
+                if ($attName) {
+                    $valueName = $this->getProductManager()->getNewAttributeValueInstance();
+                    $valueName->setAttribute($attName);
+                    $valueName->setData('my name '.$ind);
+                    $newProduct->addValue($valueName);
+                }
+                if ($attSize) {
+                    $valueSize = $this->getProductManager()->getNewAttributeValueInstance();
+                    $valueSize->setAttribute($attSize);
+                    $valueSize->setData(175);
+                    $newProduct->addValue($valueSize);
+                }
+                $this->getProductManager()->getPersistenceManager()->persist($newProduct);
+                $messages[]= "Product ".$prodSku." has been created";
             }
-            $this->getProductManager()->getPersistenceManager()->persist($newProduct);
-            $messages[]= "Product ".$prodSku." has been created";
         }
 
         $this->getProductManager()->getPersistenceManager()->flush();
@@ -187,12 +212,23 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/listproducts")
+     * @Route("/listproductsobjects")
      * @Template("OroProductBundle:Default:products.html.twig")
      */
-    public function listProductsAction()
+    public function listProductsObjectsAction()
     {
         $products = $this->getProductManager()->getEntityRepository()->findAll();
+
+        return array('products' => $products);
+    }
+
+    /**
+     * @Route("/listproductsarray")
+     * @Template("OroProductBundle:Default:products.html.twig")
+     */
+    public function listProductsResultsAction()
+    {
+        $products = $this->getProductManager()->getEntityRepository()->findAllAsResults(array('name', 'size', 'description'));
 
         return array('products' => $products);
     }
