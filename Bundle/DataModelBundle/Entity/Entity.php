@@ -71,4 +71,41 @@ abstract class Entity extends AbstractEntity
         return $this;
     }
 
+    /**
+     * Define "magic" getter / setter to set values
+     *
+     * @param string $name
+     * @param array $arguments
+     */
+    public function __call($method, $arguments)
+    {
+        $command = substr($method, 0, 3);
+        $attCode = lcfirst(substr($method, 3));
+/*        if ($command == "set") {
+            $this->set($field, $args);
+        } else*/ if ($command == "get") {
+
+            $values = $this->getValues()->filter(function($value) use ($attCode) {
+
+                return $value->getAttribute()->getCode() == $attCode;
+            });
+            $value = $values->first();
+            return ($value) ? $value->getData() : null;
+        } else {
+
+            // twig pass here !
+
+            $values = $this->getValues()->filter(function($value) use ($method) {
+                return $value->getAttribute()->getCode() == $method;
+            });
+            $value = $values->first();
+            return ($value) ? $value->getData() : null;
+
+//            echo $method;
+
+            return null;
+//            throw new \BadMethodCallException("There is no method ".$method);
+        }
+    }
+
 }

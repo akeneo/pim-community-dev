@@ -14,7 +14,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ORM\Table(name="product_attribute")
- * @ORM\Entity(repositoryClass="Oro\Bundle\ProductBundle\Entity\ProductAttributeRepository")
+ * @ORM\Entity()
  * @Gedmo\TranslationEntity(class="Oro\Bundle\ProductBundle\Entity\ProductTranslation")
  */
 class ProductAttribute extends AbstractEntityAttribute

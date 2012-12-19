@@ -1,0 +1,16 @@
+{% extends 'OroDataModelBundle::layout.html.twig' %}
+
+{% block content %}
+
+    <table class="mytable">
+        <tr>
+            <td>Id</td><td>Sku</td><td>Name</td><td>Size</td>
+        </tr>
+    {% for product in products %}
+        <tr>
+            <td>{{ product.id }}</td><td>{{ product.sku }}</td><td>{{ product.name }}</td><td>{{ product.size }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+
+{% endblock %}

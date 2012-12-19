@@ -75,6 +75,13 @@ class ProductManagerTest extends KernelAwareTest
         $attSize->setType('number');
         $this->manager->getPersistenceManager()->persist($attSize);
 
+        // translate title in many locales in one time (saved when flush on entity manager)
+        $repository = $this->manager->getPersistenceManager()->getRepository('Gedmo\\Translatable\\Entity\\Translation');
+        $repository
+            ->translate($attSize, 'title', 'de_De', 'title DE')
+            ->translate($attSize, 'title', 'it_IT', 'title IT')
+            ->translate($attSize, 'title', 'es_ES', 'title ES');
+
         // name value
         $valueName = $this->manager->getNewAttributeValueInstance();
         $valueName->setAttribute($attName);
