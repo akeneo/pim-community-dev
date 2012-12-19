@@ -32,6 +32,18 @@ class ExtractorService
      */
     protected static $backupFilesPattern = '/~$/';
 
+    // TODO : add sauts de lignes + récupération key saut de ligne pattern : (?:\n?.*)
+    // TODO : voir si les espaces sont obligatoires en twig
+    protected static $transPatterns = array(
+        '?:->trans\((?:\n?.*)(?:\'|\")(.+)(?:\'|\")',
+//         '->transChoice\(',
+//         '{% trans %}(\w+){% endtrans %}', //TODO : must be deleted
+//         '{% trans with (\w+)%}(\w+){% endtrans %}',
+//         '{% transchoice (\w+)%}(\w+){% endtranschoice %}',
+//         '{{ (\w+) | trans(.*) }}',
+//         '{{ (\w+) | transchoice(.*) }}'
+    );
+
     /**
      * Return new Finder instance
      * @return Finder
@@ -119,5 +131,26 @@ class ExtractorService
         }
 
         return array_unique($files);
+    }
+
+    /**
+     * Extract strings to translate
+     * @param string $path
+     *
+     * @return multiple:string
+     */
+    public function extractI18nKeys($path)
+    {
+        $i18nKeys = array();
+        $i18nPattern = '/('. implode('|', self::$transPatterns) .')/'; // TODO : must be define only one time
+
+        $finder = $this->getFinder()->files()->contains($i18nPattern)->in($path);
+        foreach ($finder as $file) {
+            if (preg_match_all($i18nPattern, $file->getContents(), $matches)) {
+                $i18nKeys = array_merge($i18nKeys, $matches[1]);
+            }
+        }
+
+        return array_unique($i18nKeys);
     }
 }

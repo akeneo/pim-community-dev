@@ -44,13 +44,7 @@ class StringsToLocalizeExtractorService
     {
         $this->sourcePath = $sourcePath;
 
-        // 1. Extract locales
-        $this->locales = $this->extractLocales();
-
-        // 2. Extract bundles
-        $this->bundles = $this->extractBundles();
-
-        foreach ($this->bundles as $bundle) {
+        foreach ($this->getBundles() as $bundle) {
             // 3. Add missing files
             $i18nPath = $bundle . self::$i18nPath;
             // if directory not exists, no translation files to copy //TODO : Make a forced copy
@@ -64,6 +58,7 @@ class StringsToLocalizeExtractorService
 
 
             // 5. Add undefined i18n keys in message file
+            $this->fillUpUndefinedKeys($bundle);
 
 
             // 6. Detect useless keys
@@ -81,17 +76,19 @@ class StringsToLocalizeExtractorService
      */
     public function createMissingFiles($i18nPath)
     {
-        // TODO : must be get differently
-        $locales = $this->locales;
-
         // get i18n filenames
         $i18nFilenames = $this->extractI18nFilenames($i18nPath);
+
+        // create messages file if not exists (default file)
+        if (!in_array('messages', $i18nFilenames)) {
+            $i18nFilenames[] = 'messages';
+        }
 
         // create filesystem object
         $filesystem = new Filesystem();
 
         foreach ($i18nFilenames as $filename) {
-            foreach ($locales as $locale) {
+            foreach ($this->getLocales() as $locale) {
                 $i18nFile = $i18nPath . $filename .'.'. $locale .'.yml'; // TODO : extension must be a parameter ? get default locale ?
 
                 // if file not exists, create it
@@ -101,15 +98,18 @@ class StringsToLocalizeExtractorService
                 }
             }
         }
+
+        // create messages files if not exists
+//         if (!in_array('message', $filenames)) {
+//         }
     }
 
     /**
-     *
-     * @param unknown_type $i18nPath
+     * Fill up i18n keys for each locale/file
+     * @param string $i18nPath
      */
     public function fillUp($i18nPath)
     {
-        $locales = $this->locales;
         // get i18n filenames
         $filenames = $this->extractI18nFilenames($i18nPath);
 
@@ -123,7 +123,7 @@ class StringsToLocalizeExtractorService
             $loader = $this->loaderFactory('yml');
             $dumper = $this->dumperFactory('yml');
 
-            foreach ($locales as $locale) {
+            foreach ($this->getLocales() as $locale) {
                 $i18nFile = $i18nPath . $filename .'.'. $locale .'.yml'; // TODO : extension must be a parameter
 
                 $messageCatalogue = $loader->load($i18nFile, $locale, $filename);
@@ -139,13 +139,6 @@ class StringsToLocalizeExtractorService
                 $dumper->dump($messageCatalogue, array('path' => $i18nPath));
             }
         }
-
-        // extract all keys existing in source code
-
-
-
-        // append existing keys in messages.locale.yml
-
     }
 
     /**
@@ -173,6 +166,52 @@ class StringsToLocalizeExtractorService
         }
 
         return $masterCatalogue;
+    }
+
+    /**
+     * Add keys used in a bundle (but not defined in translation files) to messages file
+     * @param string $bundlePath
+     */
+    public function fillUpUndefinedKeys($bundlePath)
+    {
+        // get all keys used in a bundle
+        $i18nKeys = $this->extractI18nKeys($bundlePath);
+
+        // get loader
+        $loader = $this->loaderFactory('yml');
+//         $loader->load($resource, $this->locales);
+        $i18nDefinedKeys = array();
+    }
+
+    /**
+     * Extract all i18n keys used in a bundle
+     * @param string $bundlePath
+     *
+     * @return Ambigous <\Bap\Bundle\ToolsBundle\Service\multiple:string, multitype:>
+     */
+    protected function extractI18nKeys($bundlePath)
+    {
+        $extractor = new ExtractorService();
+        $i18nKeys = $extractor->extractI18nKeys($bundlePath);
+
+        return $i18nKeys;
+    }
+
+    public function detectUselessKeys()
+    {
+
+    }
+
+    /**
+     * Remove backup files
+     * @param string $path
+     */
+    public function removeBackupFiles($path)
+    {
+        $files = $this->extractI18nBackupFiles($path);
+
+        $filesystem = new Filesystem();
+        $filesystem->remove($files);
     }
 
     /**
@@ -205,33 +244,6 @@ class StringsToLocalizeExtractorService
         } else {
             throw new \Exception('not yet implemented');
         }
-    }
-
-//     protected function parserFactory($format)
-//     {
-//         return new Yaml
-//     }
-
-    public function fillUpUndefinedKeys()
-    {
-
-    }
-
-    public function detectUselessKeys()
-    {
-
-    }
-
-    /**
-     * Remove backup files
-     * @param string $path
-     */
-    public function removeBackupFiles($path)
-    {
-        $files = $this->extractI18nBackupFiles($path);
-
-        $filesystem = new Filesystem();
-        $filesystem->remove($files);
     }
 
     /**
@@ -298,5 +310,33 @@ class StringsToLocalizeExtractorService
     protected function getSourceDirectory()
     {
         return $this->sourcePath;
+    }
+
+    /**
+     * Get extracted locales
+     *
+     * @return multitype:string
+     */
+    protected function getLocales()
+    {
+        if (!$this->locales) {
+            $this->locales = $this->extractLocales();
+        }
+
+        return $this->locales;
+    }
+
+    /**
+     * Get extracted bundles
+     *
+     * @return multitype:string
+     */
+    protected function getBundles()
+    {
+        if (!$this->bundles) {
+            $this->bundles = $this->extractBundles();
+        }
+
+        return $this->bundles;
     }
 }
