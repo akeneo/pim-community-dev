@@ -318,10 +318,10 @@ class StringsToLocalizeExtractorService
     }
 
     /**
-     * Factory method ?! to get File Loader object in corresponding format
+     * Call factory method to create loader in corresponding format
      * @param string $format
      *
-     * @return \Bap\Bundle\ToolsBundle\Service\YamlFileLoader
+     * @return \Symfony\Component\Translation\Loader\LoaderInterface
      * @throws \Exception
      */
     protected function loaderFactory($format)
@@ -330,15 +330,15 @@ class StringsToLocalizeExtractorService
     }
 
     /**
-     * Factory method ?! to get file dumper object in corresponding format
+     * Call factory method to create dumper in corresponding format
      * @param string $format
      *
-     * @return \Bap\Bundle\ToolsBundle\Service\YamlFileDumper
+     * @return \Symfony\Component\Translation\Dumper\DumperInterface
      * @throws \Exception
      */
     protected function dumperFactory($format)
     {
-        return TranslatorFactory::createDumper('yml');
+        return TranslatorFactory::createDumper($format);
     }
 
     /**
