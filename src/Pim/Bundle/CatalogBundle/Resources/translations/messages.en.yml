@@ -1,6 +1,26 @@
-pim.catalog.product.title.edit: Edit product
-pim.catalog.product.title.list: List products
-pim.catalog.attribute.title.create: Create product attribute
-pim.catalog.attribute.title.edit: Edit product attribute
-pim.catalog.attribute.title.list: List product attributes
-pim.test.translation.variable: first test
+pim.catalog.product.title.edit: 'Edit product'
+pim.catalog.product.title.list: 'List products'
+pim.catalog.attribute.title.create: 'Create product attribute'
+pim.catalog.attribute.title.edit: 'Edit product attribute'
+pim.catalog.attribute.title.list: 'List product attributes'
+pim.catalog.set.title.create: 'Create product set'
+pim.catalog.set.title.edit: 'Edit product set'
+pim.catalog.set.title.list: 'List product sets'
+pim.catalog.product.title.create: 'Create product'
+pim.catalog.attribute.button.delete: 'Delete attribute'
+pim.catalog.attribute.button.new: 'New attribute'
+pim.catalog.set.button.new: 'New set'
+pim.catalog.product.button.new: 'New Product'
+pim.catalog.product.fieldset.general: General
+pim.catalog.attribute.fieldset.general: General
+pim.catalog.attribute.fieldset.option: Options
+pim.catalog.set.fieldset.general: General
+pim.catalog.set.fieldset.available-attribute: 'Available attributes'
+pim.catalog.set.fieldset.group-attribute: 'Groups and attributes'
+pim.catalog.set.fieldset.copy: 'Copy from another set'
+pim.catalog.product.text.group-tab: 'Group tab'
+pim.catalog.set.text.add-group: 'Add group'
+pim.catalog.set.text.delete-group: 'Delete group'
+pim.catalog.set.message.group-not-delete: 'This group cant be deleted'
+pim.catalog.set.message.demo-view: 'It''s a demo view, we have to define mockup and interactions together.You can drag attributes from available list to set groups, you can create new group'
+pim.test.translation.variable: 'first test'
