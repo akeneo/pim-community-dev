@@ -1,0 +1,11 @@
+parameters:
+    product_manager.class:       Oro\Bundle\DataModelBundle\Service\FlexibleEntityManager
+    product_entity.shortname:    OroProductBundle:ProductEntity
+    product_attribute.shortname: OroProductBundle:ProductAttribute
+    product_option.shortname:    OroProductBundle:ProductAttributeOption
+    product_value.shortname:     OroProductBundle:ProductAttributeValue
+
+services:
+    product_manager:
+        class:        "%product_manager.class%"
+        arguments:    [@doctrine.orm.entity_manager, %product_entity.shortname%, %product_attribute.shortname%, %product_option.shortname%, %product_value.shortname%]

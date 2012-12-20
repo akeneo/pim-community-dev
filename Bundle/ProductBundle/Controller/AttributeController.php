@@ -33,7 +33,7 @@ class AttributeController extends Controller
 
     /**
      * @Route("/index")
-     * @Template("OroProductBundle:Attribute:index.html.twig")
+     * @Template()
      */
     public function indexAction()
     {
@@ -44,7 +44,6 @@ class AttributeController extends Controller
 
     /**
      * @Route("/insert")
-     * @Template("OroProductBundle:Attribute:index.html.twig")
      */
     public function insertAction()
     {

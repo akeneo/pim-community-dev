@@ -13,9 +13,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @Route("/default")
+ * @Route("/manufacturer")
  */
-class DefaultController extends Controller
+class ManufacturerController extends Controller
 {
     /**
      * @Route("/index")
@@ -24,9 +24,27 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $mm = $this->container->get('manufacturer_manager');
+        $manufacturers = $mm->getEntityRepository()->findAll();
+
+        return array('manufacturers' => $manufacturers);
+    }
+
+    /**
+     * @Route("/insert")
+     */
+    public function insertAction()
+    {
+        // new instance
+        $mm = $this->container->get('manufacturer_manager');
         $manufacturer = $mm->getNewEntityInstance();
         $manufacturer->setName('Dell');
 
-        return array('name' => $manufacturer->getName());
+        // save
+        $mm->getPersistenceManager()->persist($manufacturer);
+        $mm->getPersistenceManager()->flush();
+
+        $this->get('session')->setFlash('notice', 'Manufacturer has been inserted');
+
+        return $this->redirect($this->generateUrl('oro_manufacturer_manufacturer_index'));
     }
 }

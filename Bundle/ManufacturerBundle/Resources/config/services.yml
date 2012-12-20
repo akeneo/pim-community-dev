@@ -1,0 +1,8 @@
+parameters:
+    manufacturer_manager.class:       Oro\Bundle\DataModelBundle\Service\SimpleEntityManager
+    manufacturer_entity.shortname:    OroManufacturerBundle:Manufacturer
+
+services:
+    manufacturer_manager:
+        class:        "%manufacturer_manager.class%"
+        arguments:    [@doctrine.orm.entity_manager, %manufacturer_entity.shortname%]

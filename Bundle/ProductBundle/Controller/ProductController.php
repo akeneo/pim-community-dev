@@ -31,7 +31,7 @@ class ProductController extends Controller
 
     /**
      * @Route("/index")
-     * @Template("OroProductBundle:Product:index.html.twig")
+     * @Template()
      */
     public function indexAction()
     {
@@ -41,8 +41,18 @@ class ProductController extends Controller
     }
 
     /**
+     * @Route("/view/{id}")
+     * @Template("OroProductBundle:Product:view.html.twig")
+     */
+    public function viewAction($id)
+    {
+        $product = $this->getProductManager()->getEntityRepository()->find($id);
+
+        return array('product' => $product);
+    }
+
+    /**
      * @Route("/insert")
-     * @Template("OroProductBundle:Product:index.html.twig")
      */
     public function insertAction()
     {
@@ -128,17 +138,6 @@ class ProductController extends Controller
         $this->get('session')->setFlash('notice', implode(', ', $messages));
 
         return $this->redirect($this->generateUrl('oro_product_product_index'));
-    }
-
-    /**
-     * @Route("/view/{id}")
-     * @Template("OroProductBundle:Product:view.html.twig")
-     */
-    public function viewAction($id)
-    {
-        $product = $this->getProductManager()->getEntityRepository()->find($id);
-
-        return array('product' => $product);
     }
 
 

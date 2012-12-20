@@ -1,0 +1,16 @@
+{% extends 'OroProductBundle::layout.html.twig' %}
+
+{% block content %}
+
+    <table class="mytable">
+        <tr>
+            <td>Id</td><td>Name</td>
+        </tr>
+    {% for manufacturer in manufacturers %}
+        <tr>
+            <td>{{ manufacturer.id }}</td><td>{{ manufacturer.name }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+
+{% endblock %}
