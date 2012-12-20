@@ -11,7 +11,7 @@ use Symfony\Component\Finder\Finder;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ExtractorService
+class FinderExtractorService
 {
 
     /**
@@ -24,7 +24,7 @@ class ExtractorService
      * bundle directories pattern
      * @staticvar string
      */
-    protected static $bundleNamePattern = '/^(Catalog)Bundle$/';
+    protected static $bundleNamePattern = '/^(.+)Bundle$/';
 
     /**
      * backup files pattern
@@ -43,6 +43,12 @@ class ExtractorService
 //         '{{ (\w+) | trans(.*) }}',
 //         '{{ (\w+) | transchoice(.*) }}'
     );
+
+    /**
+     * Pattern to recognize translator calls
+     * @staticvar string
+     */
+    protected static $transPattern = null;
 
     /**
      * Return new Finder instance
@@ -142,15 +148,29 @@ class ExtractorService
     public function extractI18nKeys($path)
     {
         $i18nKeys = array();
-        $i18nPattern = '/('. implode('|', self::$transPatterns) .')/'; // TODO : must be define only one time
 
-        $finder = $this->getFinder()->files()->contains($i18nPattern)->in($path);
+        $finder = $this->getFinder()->files()->contains(self::getTranslatorPattern())->in($path);
         foreach ($finder as $file) {
-            if (preg_match_all($i18nPattern, $file->getContents(), $matches)) {
+            if (preg_match_all(self::getTranslatorPattern(), $file->getContents(), $matches)) {
                 $i18nKeys = array_merge($i18nKeys, $matches[1]);
             }
         }
 
         return array_unique($i18nKeys);
+    }
+
+    /**
+     * Create and return pattern for translate method calls
+     *
+     * @return string
+     * @static
+     */
+    protected static function getTranslatorPattern()
+    {
+        if (self::$transPattern === null) {
+            self::$transPattern = '/('. implode('|', self::$transPatterns) .')/';
+        }
+
+        return self::$transPattern;
     }
 }

@@ -1,6 +1,8 @@
 <?php
 namespace Bap\Bundle\ToolsBundle\Service;
 
+use Bap\Bundle\ToolsBundle\Factory\TranslatorFactory;
+
 use Symfony\Component\Translation\Dumper\YamlFileDumper;
 
 use Symfony\Component\Translation\Loader\YamlFileLoader;
@@ -10,8 +12,8 @@ use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- *
- * Enter description here ...
+ * Create i18n missing files and fill up with existing keys
+ * Return a list of unused keys in the source code
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
@@ -34,40 +36,78 @@ class StringsToLocalizeExtractorService
      */
     protected $sourcePath;
 
+    /**
+     * List of bundles
+     * @var multitype:string
+     */
     protected $bundles;
 
+    /**
+     * List of used locales
+     * @var multitype:string
+     */
     protected $locales;
 
-    protected $i18nKeys;
-
-    public function extractStringsToLocalize($sourcePath)
+    /**
+     * Create all missing i18n files and append keys used
+     * @param string  $sourcePath Source path to extract strings
+     * @param string  $format     files format for i18n (yml, xliff, php, ...)
+     * @param boolean $forcedCopy forced copy for unexisting translation directories
+     *
+     * @return multitype:string
+     */
+    public function extractStringsToLocalize($sourcePath, $format = 'yml', $forcedCopy = false)
     {
+        // initialize instance variables
         $this->sourcePath = $sourcePath;
+        $this->format     = $format;
+        $this->forcedCopy = $forcedCopy;
+
+        $uselessKeys = array();
 
         foreach ($this->getBundles() as $bundle) {
-            // 3. Add missing files
-            $i18nPath = $bundle . self::$i18nPath;
-            // if directory not exists, no translation files to copy //TODO : Make a forced copy
+            $i18nPath = self::getI18nPath($bundle);
+
+            // if directory not exists, no translation files to copy
             if (!is_dir($i18nPath)) {
-                continue;
+                if ($this->forcedCopy) {
+                    $filesystem = new Filesystem();
+                    $filesystem->mkdir($i18nPath);
+                } else {
+                    continue;
+                }
             }
+
+            // 3. Add missing files
             $this->createMissingFiles($i18nPath);
 
             // 4. Fill up i18n key for each files
-            $this->fillUp($i18nPath);
+            $this->fillUpKeys($i18nPath);
 
-
-            // 5. Add undefined i18n keys in message file
+            // 6. Add undefined i18n keys in message file
             $this->fillUpUndefinedKeys($bundle);
 
-
-            // 6. Detect useless keys
-
+            // 5. Detect useless keys
+            $bundleUselessKeys = $this->detectUselessKeys($bundle);
+            $uselessKeys = array_merge($uselessKeys, $bundleUselessKeys);
 
             // 7. remove ~ files is asked
             $this->removeBackupFiles($i18nPath);
-
         }
+
+        return $uselessKeys;
+    }
+
+    /**
+     * Return i18n directory from bundle path
+     * @param string $bundlePath
+     *
+     * @return string
+     * @static
+     */
+    protected static function getI18nPath($bundlePath)
+    {
+        return $bundlePath . self::$i18nPath;
     }
 
     /**
@@ -89,7 +129,7 @@ class StringsToLocalizeExtractorService
 
         foreach ($i18nFilenames as $filename) {
             foreach ($this->getLocales() as $locale) {
-                $i18nFile = $i18nPath . $filename .'.'. $locale .'.yml'; // TODO : extension must be a parameter ? get default locale ?
+                $i18nFile = $i18nPath . $filename .'.'. $locale .'.yml'; // TODO : extension must be a parameter ?
 
                 // if file not exists, create it
                 if (!file_exists($i18nFile)) {
@@ -98,39 +138,32 @@ class StringsToLocalizeExtractorService
                 }
             }
         }
-
-        // create messages files if not exists
-//         if (!in_array('message', $filenames)) {
-//         }
     }
 
     /**
      * Fill up i18n keys for each locale/file
      * @param string $i18nPath
      */
-    public function fillUp($i18nPath)
+    public function fillUpKeys($i18nPath)
     {
         // get i18n filenames
         $filenames = $this->extractI18nFilenames($i18nPath);
+        $loader = $this->loaderFactory('yml');
+        $dumper = $this->dumperFactory('yml');
 
         foreach ($filenames as $filename) {
             // all keys for a domain (filename)
-            $masterCatalogue = $this->getMasterCatalogue($i18nPath, $filename);
-            $i18nMaster = $masterCatalogue->all($filename);
-            $i18nKeys = array_keys($i18nMaster);
+            $i18nMasterKeys = $this->getMasterKeys($i18nPath, $filename);
 
             // for each file, set i18n domain strings to translate with or not translated values
-            $loader = $this->loaderFactory('yml');
-            $dumper = $this->dumperFactory('yml');
-
             foreach ($this->getLocales() as $locale) {
                 $i18nFile = $i18nPath . $filename .'.'. $locale .'.yml'; // TODO : extension must be a parameter
 
                 $messageCatalogue = $loader->load($i18nFile, $locale, $filename);
-                foreach ($i18nKeys as $i18nKey) {
+                foreach ($i18nMasterKeys as $i18nKey) {
                     // create unexistent values
                     if (!$messageCatalogue->has($i18nKey, $filename)) {
-                        $defaultValue = self::$untranslatedChar . $i18nKey . self::$untranslatedChar;
+                        $defaultValue = self::formatI18nDefaultValue($i18nKey); // TODO : move in helper or formatter
                         $messageCatalogue->set($i18nKey, $defaultValue, $filename);
                     }
                 }
@@ -139,6 +172,32 @@ class StringsToLocalizeExtractorService
                 $dumper->dump($messageCatalogue, array('path' => $i18nPath));
             }
         }
+    }
+
+    /**
+     * format an untranslated key
+     * @param string $i18nKey
+     *
+     * @return string
+     */
+    protected static function formatI18nDefaultValue($i18nKey)
+    {
+        return self::$untranslatedChar . $i18nKey . self::$untranslatedChar;
+    }
+
+    /**
+     * Get all keys translated for a domain
+     * @param string $i18nPath the path for translation files
+     * @param string $domain   the translation content domain
+     *
+     * @return multitype:string
+     */
+    protected function getMasterKeys($i18nPath, $domain)
+    {
+        $masterCatalogue = $this->getMasterCatalogue($i18nPath, $domain);
+        $i18nMaster = $masterCatalogue->all($domain);
+
+        return array_keys($i18nMaster);
     }
 
     /**
@@ -169,7 +228,7 @@ class StringsToLocalizeExtractorService
     }
 
     /**
-     * Add keys used in a bundle (but not defined in translation files) to messages file
+     * Add keys used in a bundle (but not defined in translation files) to i18n message file
      * @param string $bundlePath
      */
     public function fillUpUndefinedKeys($bundlePath)
@@ -177,10 +236,34 @@ class StringsToLocalizeExtractorService
         // get all keys used in a bundle
         $i18nKeys = $this->extractI18nKeys($bundlePath);
 
-        // get loader
-        $loader = $this->loaderFactory('yml');
-//         $loader->load($resource, $this->locales);
+        // get all translated keys in a bundle
+        $i18nPath = self::getI18nPath($bundlePath);
         $i18nDefinedKeys = array();
+        foreach ($this->extractI18nFilenames($i18nPath) as $domain) {
+            $domainKeys = $this->getMasterKeys($i18nPath, $domain);
+            $i18nDefinedKeys = array_merge($i18nDefinedKeys, $domainKeys);
+        }
+
+        // get all undefined keys
+        $undefinedKeys = array_diff($i18nKeys, $i18nDefinedKeys);
+
+        // add keys in i18n message file
+        $loader = $this->loaderFactory('yml');    // TODO : extension must be a parameter
+        $dumper = $this->dumperFactory('yml');    // TODO : extension must be a parameter
+
+        foreach ($this->getLocales() as $locale) {
+            $i18nFile = $i18nPath .'messages.'. $locale .'.yml';
+
+            // complete catalogue with undefined keys
+            $messageCatalogue = $loader->load($i18nFile, $locale, $domain);
+            foreach ($undefinedKeys as $undefinedKey) {
+                $defaultValue = self::formatI18nDefaultValue($undefinedKey);
+                $messageCatalogue->set($undefinedKey, $defaultValue, 'messages');
+            }
+
+            // dump messages file
+            $dumper->dump($messageCatalogue, array('path' => $i18nPath));
+        }
     }
 
     /**
@@ -191,15 +274,35 @@ class StringsToLocalizeExtractorService
      */
     protected function extractI18nKeys($bundlePath)
     {
-        $extractor = new ExtractorService();
+        $extractor = new FinderExtractorService();
         $i18nKeys = $extractor->extractI18nKeys($bundlePath);
 
         return $i18nKeys;
     }
 
-    public function detectUselessKeys()
+    /**
+     * Detect useless keys in bundle code
+     * @param string $bundlePath
+     *
+     * @return multitype:string
+     */
+    public function detectUselessKeys($bundlePath)
     {
+        // get all keys used in a bundle
+        $i18nKeys = $this->extractI18nKeys($bundlePath);
 
+        // get all translated keys in a bundle
+        $i18nPath = self::getI18nPath($bundlePath);
+        $i18nDefinedKeys = array();
+        foreach ($this->extractI18nFilenames($i18nPath) as $domain) {
+            $domainKeys = $this->getMasterKeys($i18nPath, $domain);
+            $i18nDefinedKeys = array_merge($i18nDefinedKeys, $domainKeys);
+        }
+
+        // get all useless keys
+        $uselessKeys = array_diff($i18nDefinedKeys, $i18nKeys);
+
+        return $uselessKeys;
     }
 
     /**
@@ -223,11 +326,7 @@ class StringsToLocalizeExtractorService
      */
     protected function loaderFactory($format)
     {
-        if ($format === 'yml') {
-            return new YamlFileLoader();
-        } else {
-            throw new \Exception('not yet implemented');
-        }
+        return TranslatorFactory::createLoader('yml');
     }
 
     /**
@@ -239,11 +338,7 @@ class StringsToLocalizeExtractorService
      */
     protected function dumperFactory($format)
     {
-        if ($format === 'yml') {
-            return new YamlFileDumper();
-        } else {
-            throw new \Exception('not yet implemented');
-        }
+        return TranslatorFactory::createDumper('yml');
     }
 
     /**
@@ -253,7 +348,7 @@ class StringsToLocalizeExtractorService
      */
     protected function extractBundles()
     {
-        $extractor = new ExtractorService();
+        $extractor = new FinderExtractorService();
         $bundles = $extractor->extractBundles($this->sourcePath);
 
         return $bundles;
@@ -266,7 +361,7 @@ class StringsToLocalizeExtractorService
      */
     protected function extractLocales()
     {
-        $extractor = new ExtractorService();
+        $extractor = new FinderExtractorService();
         $locales = $extractor->extractLocales($this->sourcePath);
 
         return $locales;
@@ -283,7 +378,7 @@ class StringsToLocalizeExtractorService
      */
     protected function extractI18nFilenames($path)
     {
-        $extractor = new ExtractorService();
+        $extractor = new FinderExtractorService();
         $filenames = $extractor->extractI18nFilenames($path);
 
         return $filenames;
@@ -297,7 +392,7 @@ class StringsToLocalizeExtractorService
      */
     protected function extractI18nBackupFiles($path)
     {
-        $extractor = new ExtractorService();
+        $extractor = new FinderExtractorService();
         $files = $extractor->extractBackupFiles($path);
 
         return $files;
