@@ -1,0 +1,16 @@
+{% extends 'OroProductBundle::layout.html.twig' %}
+
+{% block content %}
+
+    <table class="mytable">
+        <tr>
+            <td>Id</td><td>Code</td><td>Title</td><td>Type</td>
+        </tr>
+    {% for attribute in attributes %}
+        <tr>
+            <td>{{ attribute.id }}</td><td>{{ attribute.code }}</td><td>{{ attribute.title }}</td><td>{{ attribute.type }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+
+{% endblock %}

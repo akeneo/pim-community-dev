@@ -24,11 +24,10 @@
                 <ul id="menu">
                     {% block content_header_more %}
                         <li><a href="{{ path('oro_product_default_truncatedb') }}">Reset DB</a></li>
-                        <li><a href="{{ path('oro_product_default_createattributes') }}">Create attributes</a></li>
-                        <li><a href="{{ path('oro_product_default_listattributes') }}">List attributes</a></li>
-                        <li><a href="{{ path('oro_product_default_createproducts') }}">Create products</a></li>
-                        <li><a href="{{ path('oro_product_default_listproductsobjects') }}">List products (as entities)</a></li>
-                        <li><a href="{{ path('oro_product_default_listproductsresults') }}">List products (as results)</a></li>
+                        <li><a href="{{ path('oro_product_attribute_insert') }}">Insert attributes</a></li>
+                        <li><a href="{{ path('oro_product_attribute_index') }}">List attributes</a></li>
+                        <li><a href="{{ path('oro_product_product_insert') }}">Insert products</a></li>
+                        <li><a href="{{ path('oro_product_product_index') }}">List products</a></li>
                     {% endblock %}
                 </ul>
 

@@ -1,0 +1,19 @@
+{% extends 'OroProductBundle::layout.html.twig' %}
+
+{% block content %}
+
+    <p><strong>Lazy load on each value</strong></p>
+
+    <ul>
+        <li>id: {{product.id}}</li>
+        <li>sku: {{product.sku}}</li>
+        <li>created: {{product.created|date('Y-m-d h:i:s')}}</li>
+        <li>updated: {{product.updated|date('Y-m-d h:i:s')}}</li>
+        {% for value in product.values %}
+            <li>{{value.attribute.code}} : {{value.data}}</li>
+        {% endfor %}
+    </ul>
+    
+    <td><a href="{{ path('oro_product_product_index') }}">Back to list</a></td>
+
+{% endblock %}
