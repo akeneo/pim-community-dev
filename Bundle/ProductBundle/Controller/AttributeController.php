@@ -60,7 +60,7 @@ class AttributeController extends Controller
             $attName->setTitle('Name');
             $attName->setType(AbstractEntityAttribute::TYPE_STRING);
             $attName->setTranslatable(true);
-            $this->getProductManager()->getPersistenceManager()->persist($attName);
+            $this->getProductManager()->getStorageManager()->persist($attName);
             $messages[]= "Attribute ".$attNameCode." has been created";
         }
 
@@ -75,7 +75,7 @@ class AttributeController extends Controller
             $attDesc->setTitle('Description');
             $attDesc->setType(AbstractEntityAttribute::TYPE_TEXT);
             $attDesc->setTranslatable(true);
-            $this->getProductManager()->getPersistenceManager()->persist($attDesc);
+            $this->getProductManager()->getStorageManager()->persist($attDesc);
             $messages[]= "Attribute ".$attDescCode." has been created";
         }
 
@@ -89,14 +89,14 @@ class AttributeController extends Controller
             $attSize->setCode($attSizeCode);
             $attSize->setTitle('Size');
             $attSize->setType(AbstractEntityAttribute::TYPE_NUMBER);
-            $this->getProductManager()->getPersistenceManager()->persist($attSize);
+            $this->getProductManager()->getStorageManager()->persist($attSize);
             $messages[]= "Attribute ".$attSizeCode." has been created";
         }
 
         // translate attribute title in many locales in one time (saved when flush on entity manager)
-        $repository = $this->getProductManager()->getPersistenceManager()->getRepository('Gedmo\\Translatable\\Entity\\Translation');
+        $repository = $this->getProductManager()->getStorageManager()->getRepository('Gedmo\\Translatable\\Entity\\Translation');
         $repository
-            ->translate($attSize, 'title', 'de_De', 'size DE')
+            ->translate($attSize, 'title', 'de_DE', 'size DE')
             ->translate($attSize, 'title', 'fr_FR', 'size FR')
             ->translate($attSize, 'title', 'es_ES', 'size ES');
         $messages[]= "Title of attribute ".$attSizeCode." has been translated in fr, de, es";
@@ -111,11 +111,11 @@ class AttributeController extends Controller
             $attColor->setCode($attColorCode);
             $attColor->setTitle('Color');
             $attColor->setType(AbstractEntityAttribute::TYPE_NUMBER);
-            $this->getProductManager()->getPersistenceManager()->persist($attColor);
+            $this->getProductManager()->getStorageManager()->persist($attColor);
             $messages[]= "Attribute ".$attColorCode." has been created";
         }
 
-        $this->getProductManager()->getPersistenceManager()->flush();
+        $this->getProductManager()->getStorageManager()->flush();
 
         $this->get('session')->setFlash('notice', implode(', ', $messages));
 

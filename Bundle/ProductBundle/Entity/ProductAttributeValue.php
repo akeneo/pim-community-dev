@@ -14,7 +14,7 @@ use Gedmo\Translatable\Translatable;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="product_value")
+ * @ORM\Table(name="product_attribute_value")
  * @ORM\Entity
  * @Gedmo\TranslationEntity(class="Oro\Bundle\ProductBundle\Entity\ProductTranslation")
  */
@@ -30,7 +30,7 @@ class ProductAttributeValue extends AbstractEntityAttributeValue
     /**
      * @var Entity $entity
      *
-     * @ORM\ManyToOne(targetEntity="ProductEntity", inversedBy="values")
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="values")
      */
     protected $entity;
 

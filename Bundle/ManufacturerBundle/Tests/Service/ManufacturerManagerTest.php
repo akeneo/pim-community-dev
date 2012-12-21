@@ -40,7 +40,7 @@ class ManufacturerManagerTest extends KernelAwareTest
         $this->assertTrue($newManufacturer instanceof Manufacturer);
         $newManufacturer->setName('Lenovo');
 
-        $this->manager->getPersistenceManager()->persist($newManufacturer);
-        $this->manager->getPersistenceManager()->flush();
+        $this->manager->getStorageManager()->persist($newManufacturer);
+        $this->manager->getStorageManager()->flush();
     }
 }

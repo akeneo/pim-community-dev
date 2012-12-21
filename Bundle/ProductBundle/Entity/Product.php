@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="product_entity")
  * @ORM\Entity(repositoryClass="Oro\Bundle\ProductBundle\Entity\ProductEntityRepository")
  */
-class ProductEntity extends AbstractEntity
+class Product extends AbstractEntity
 {
     /**
      * @var string $sku

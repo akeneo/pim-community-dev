@@ -41,7 +41,7 @@ class SimpleEntityManager
      * Get object manager
      * @return ObjectManager
      */
-    public function getPersistenceManager()
+    public function getStorageManager()
     {
         return $this->manager;
     }

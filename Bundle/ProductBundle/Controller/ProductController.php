@@ -75,7 +75,7 @@ class ProductController extends Controller
                 $newProduct = $this->getProductManager()->getNewEntityInstance();
                 $newProduct->setSku($prodSku);
                 $messages[]= "Product ".$prodSku." has been created";
-                $this->getProductManager()->getPersistenceManager()->persist($newProduct);
+                $this->getProductManager()->getStorageManager()->persist($newProduct);
             }
 
             // add product with sku and name and color
@@ -104,7 +104,7 @@ class ProductController extends Controller
                     $value->setData(1);
                     $newProduct->addValue($value);
                 }
-                $this->getProductManager()->getPersistenceManager()->persist($newProduct);
+                $this->getProductManager()->getStorageManager()->persist($newProduct);
                 $messages[]= "Product ".$prodSku." has been created";
             }
 
@@ -128,12 +128,12 @@ class ProductController extends Controller
                     $valueSize->setData(175);
                     $newProduct->addValue($valueSize);
                 }
-                $this->getProductManager()->getPersistenceManager()->persist($newProduct);
+                $this->getProductManager()->getStorageManager()->persist($newProduct);
                 $messages[]= "Product ".$prodSku." has been created";
             }
         }
 
-        $this->getProductManager()->getPersistenceManager()->flush();
+        $this->getProductManager()->getStorageManager()->flush();
 
         $this->get('session')->setFlash('notice', implode(', ', $messages));
 
@@ -169,7 +169,7 @@ class ProductController extends Controller
         // get french value
         foreach ($product->getValues() as $value) {
             $value->setTranslatableLocale('fr_FR');
-            $pm->getPersistenceManager()->refresh($value);
+            $pm->getStorageManager()->refresh($value);
         }
         echo $product->getSku().' - '.$product->getname13558539042014().'<br/>';
 */
@@ -177,7 +177,7 @@ class ProductController extends Controller
 
         /*
         // query on default locale
-        $em = $pm->getPersistenceManager();
+        $em = $pm->getStorageManager();
         $em->clear();
 
         $query = $em->createQuery(
@@ -195,7 +195,7 @@ class ProductController extends Controller
         echo '<br/><br/>';
 
         // query on french locale
-        $em = $pm->getPersistenceManager();
+        $em = $pm->getStorageManager();
         $em->clear();
 
          $query = $em->createQuery(

@@ -40,8 +40,8 @@ class ManufacturerController extends Controller
         $manufacturer->setName('Dell');
 
         // save
-        $mm->getPersistenceManager()->persist($manufacturer);
-        $mm->getPersistenceManager()->flush();
+        $mm->getStorageManager()->persist($manufacturer);
+        $mm->getStorageManager()->flush();
 
         $this->get('session')->setFlash('notice', 'Manufacturer has been inserted');
 

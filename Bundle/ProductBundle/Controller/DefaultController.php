@@ -37,7 +37,7 @@ class DefaultController extends Controller
     public function truncatedbAction()
     {
         // update schema / truncate db
-        $em = $this->getProductManager()->getPersistenceManager();
+        $em = $this->getProductManager()->getStorageManager();
         $metadatas = $em->getMetadataFactory()->getAllMetadata();
         if (!empty($metadatas)) {
             $tool = new \Doctrine\ORM\Tools\SchemaTool($em);

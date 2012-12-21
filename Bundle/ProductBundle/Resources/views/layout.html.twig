@@ -14,6 +14,27 @@
                 </a>
             </div>
 
+            {% block header %}
+                <ul class="switch-language">
+                    {% set route_params = app.request.attributes.get('_route_params') %}
+                    {% if route_params == "" %}
+                        {% set route_params = [] %}
+                    {% endif %}
+                    <li>
+                        <a href="{{ path(
+                            app.request.attributes.get('_route'),
+                            route_params | merge({"_locale": "en"})
+                        ) }}" class="ui-icon-flag-us">EN</a>
+                    </li>&nbsp;&nbsp;
+                    <li>
+                        <a href="{{ path(
+                            app.request.attributes.get('_route'),
+                            route_params | merge({"_locale": "fr"})
+                        ) }}" data-role="button" class="ui-icon-flag-fr">FR</a>
+                    </li>
+                </ul>
+            {% endblock %}
+
             {% for flashMessage in app.session.flashbag.get('notice') %}
                 <div class="flash-message">
                     <em>Notice</em>: {{ flashMessage }}

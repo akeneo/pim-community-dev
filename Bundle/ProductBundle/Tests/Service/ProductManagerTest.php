@@ -41,8 +41,8 @@ class ProductManagerTest extends KernelAwareTest
         $sku = 'my sku '.str_replace('.', '', microtime(true));
         $newProduct->setSku($sku);
 
-        $this->manager->getPersistenceManager()->persist($newProduct);
-        $this->manager->getPersistenceManager()->flush();
+        $this->manager->getStorageManager()->persist($newProduct);
+        $this->manager->getStorageManager()->flush();
     }
 
     /**
@@ -65,7 +65,7 @@ class ProductManagerTest extends KernelAwareTest
         $attName->setTitle('Name');
         $attName->setType('string');
         $attName->setTranslatable(true);
-        $this->manager->getPersistenceManager()->persist($attName);
+        $this->manager->getStorageManager()->persist($attName);
 
         // attribute size
         $attSize = $this->manager->getNewAttributeInstance();
@@ -73,10 +73,10 @@ class ProductManagerTest extends KernelAwareTest
         $attSize->setCode($attSizeCode);
         $attSize->setTitle('Size');
         $attSize->setType('number');
-        $this->manager->getPersistenceManager()->persist($attSize);
+        $this->manager->getStorageManager()->persist($attSize);
 
         // translate title in many locales in one time (saved when flush on entity manager)
-        $repository = $this->manager->getPersistenceManager()->getRepository('Gedmo\\Translatable\\Entity\\Translation');
+        $repository = $this->manager->getStorageManager()->getRepository('Gedmo\\Translatable\\Entity\\Translation');
         $repository
             ->translate($attSize, 'title', 'de_De', 'title DE')
             ->translate($attSize, 'title', 'it_IT', 'title IT')
@@ -95,8 +95,8 @@ class ProductManagerTest extends KernelAwareTest
         $newProduct->addValue($valueSize);
 
         // persist
-        $this->manager->getPersistenceManager()->persist($newProduct);
-        $this->manager->getPersistenceManager()->flush();
+        $this->manager->getStorageManager()->persist($newProduct);
+        $this->manager->getStorageManager()->flush();
 
         // localized
 //        $this->manager->getAttributeValueRepository()->findByCode('name');
@@ -104,8 +104,8 @@ class ProductManagerTest extends KernelAwareTest
 
         $valueName->setTranslatableLocale('fr_FR');
         $valueName->setData('mon nom');
-        $this->manager->getPersistenceManager()->persist($valueName);
-        $this->manager->getPersistenceManager()->flush();
+        $this->manager->getStorageManager()->persist($valueName);
+        $this->manager->getStorageManager()->flush();
 
     }
 }
