@@ -1,10 +1,9 @@
 <?php
 namespace Oro\Bundle\ProductBundle\Test\Service;
 
-use Oro\Bundle\ManufacturerBundle\Entity\Manufacturer;
-
 use Oro\Bundle\DataModelBundle\Tests\KernelAwareTest;
 
+use Oro\Bundle\ManufacturerBundle\Entity\Manufacturer;
 
 /**
  * Test related class
@@ -18,7 +17,7 @@ class ManufacturerManagerTest extends KernelAwareTest
 {
 
     /**
-     * @var FlexibleEntityManager
+     * @var SimpleEntityManager
      */
     protected $manager;
 
@@ -34,13 +33,10 @@ class ManufacturerManagerTest extends KernelAwareTest
     /**
      * Test related method
      */
-    public function testGetNewEntityInstance()
+    public function testInsert()
     {
         $newManufacturer = $this->manager->getNewEntityInstance();
         $this->assertTrue($newManufacturer instanceof Manufacturer);
         $newManufacturer->setName('Lenovo');
-
-        $this->manager->getStorageManager()->persist($newManufacturer);
-        $this->manager->getStorageManager()->flush();
     }
 }

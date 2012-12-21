@@ -18,29 +18,51 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class ManufacturerController extends Controller
 {
     /**
+     * Get manager
+     *
+     * @return SimpleEntityManager
+     */
+    public function getManufacturerManager()
+    {
+        $mm = $this->container->get('manufacturer_manager');
+
+        return $mm;
+    }
+
+    /**
      * @Route("/index")
      * @Template()
+     *
+     * @return multitype
      */
     public function indexAction()
     {
-        $mm = $this->container->get('manufacturer_manager');
-        $manufacturers = $mm->getEntityRepository()->findAll();
+        $manufacturers = $this->getManufacturerManager()->getEntityRepository()->findAll();
 
         return array('manufacturers' => $manufacturers);
     }
 
     /**
      * @Route("/insert")
+     *
+     * @return multitype
      */
     public function insertAction()
     {
-        // new instance
-        $mm = $this->container->get('manufacturer_manager');
-        $manufacturer = $mm->getNewEntityInstance();
-        $manufacturer->setName('Dell');
+        $names = array('Dell', 'Lenovo', 'Acer', 'Asus', 'HP');
+        $mm = $this->getManufacturerManager();
+
+        // new instances if not exist
+        foreach ($names as $name) {
+            $manufacturer = $mm->getEntityRepository()->findByName($name);
+            if (!$manufacturer) {
+                $manufacturer = $mm->getNewEntityInstance();
+                $manufacturer->setName($name);
+                $mm->getStorageManager()->persist($manufacturer);
+            }
+        }
 
         // save
-        $mm->getStorageManager()->persist($manufacturer);
         $mm->getStorageManager()->flush();
 
         $this->get('session')->setFlash('notice', 'Manufacturer has been inserted');
