@@ -1,7 +1,7 @@
 <?php
 namespace Oro\Bundle\DataModelBundle\Entity;
 
-use Oro\Bundle\DataModelBundle\Model\EntityAttributeOption as AbstractEntityAttributeOption;
+use Oro\Bundle\DataModelBundle\Model\AbstractEntityAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -10,10 +10,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT
+ * @license   http://opensource.org/licenses/MIT  MIT
  *
  */
-abstract class EntityAttributeOption extends AbstractEntityAttributeOption
+abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeOption
 {
     /**
      * @var integer $id

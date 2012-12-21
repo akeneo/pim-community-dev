@@ -6,10 +6,10 @@ namespace Oro\Bundle\DataModelBundle\Model;
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT
+ * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-abstract class EntityAttributeValue
+abstract class AbstractEntityAttributeValue
 {
 
     /**
@@ -73,7 +73,7 @@ abstract class EntityAttributeValue
      *
      * @return EntityAttributeValue
      */
-    public function setAttribute(EntityAttribute $attribute = null)
+    public function setAttribute(AbstractEntityAttribute $attribute = null)
     {
         $this->attribute = $attribute;
 

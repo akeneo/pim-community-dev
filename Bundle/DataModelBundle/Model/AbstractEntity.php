@@ -6,10 +6,10 @@ namespace Oro\Bundle\DataModelBundle\Model;
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT
+ * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-abstract class Entity
+abstract class AbstractEntity
 {
 
     /**
@@ -64,7 +64,7 @@ abstract class Entity
      *
      * @return Entity
      */
-    public function addValue(EntityAttributeValue $value)
+    public function addValue(AbstractEntityAttributeValue $value)
     {
         $this->values[] = $value;
 
@@ -76,7 +76,7 @@ abstract class Entity
      *
      * @param EntityAttributeValue $value
      */
-    public function removeValue(EntityAttributeValue $value)
+    public function removeValue(AbstractEntityAttributeValue $value)
     {
         $this->values->removeElement($value);
     }

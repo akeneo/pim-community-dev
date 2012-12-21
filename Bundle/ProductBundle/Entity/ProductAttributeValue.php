@@ -1,8 +1,8 @@
 <?php
 namespace Oro\Bundle\ProductBundle\Entity;
 
-use Oro\Bundle\DataModelBundle\Model\Entity as AbstractEntity;
-use Oro\Bundle\DataModelBundle\Entity\EntityAttributeValue as AbstractEntityAttributeValue;
+use Oro\Bundle\DataModelBundle\Model\AbstractOrmEntity;
+use Oro\Bundle\DataModelBundle\Entity\AbstractOrmEntityAttributeValue;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
@@ -12,13 +12,13 @@ use Gedmo\Translatable\Translatable;
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/MIT MIT
  *
  * @ORM\Table(name="product_attribute_value")
  * @ORM\Entity
  * @Gedmo\TranslationEntity(class="Oro\Bundle\ProductBundle\Entity\ProductTranslation")
  */
-class ProductAttributeValue extends AbstractEntityAttributeValue
+class ProductAttributeValue extends AbstractOrmEntityAttributeValue
 {
     /**
      * @var Attribute $attribute

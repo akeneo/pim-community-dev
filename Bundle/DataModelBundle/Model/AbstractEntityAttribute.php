@@ -6,9 +6,9 @@ namespace Oro\Bundle\DataModelBundle\Model;
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT
+ * @license   http://opensource.org/licenses/MIT MIT
  */
-abstract class EntityAttribute
+abstract class AbstractEntityAttribute
 {
 
     const TYPE_STRING = 'string';
@@ -316,11 +316,11 @@ abstract class EntityAttribute
     /**
      * Add option
      *
-     * @param EntityAttributeOption $option
+     * @param AbstractEntityAttributeOption $option
      *
-     * @return EntityAttribute
+     * @return AbstractEntityAttribute
      */
-    public function addOption(EntityAttributeOption $option)
+    public function addOption(AbstractEntityAttributeOption $option)
     {
         $this->options[] = $option;
 
@@ -330,9 +330,9 @@ abstract class EntityAttribute
     /**
      * Remove option
      *
-     * @param EntityAttributeOption $option
+     * @param AbstractEntityAttributeOption $option
      */
-    public function removeOption(EntityAttributeOption $option)
+    public function removeOption(AbstractEntityAttributeOption $option)
     {
         $this->options->removeElement($option);
     }

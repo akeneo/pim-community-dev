@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityRepository;
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/MIT MIT
  *
  */
 class ProductEntityRepository extends EntityRepository
@@ -17,11 +17,11 @@ class ProductEntityRepository extends EntityRepository
     /**
      * Find all products and return as results
      *
-     * @param array $attributeCodes
-     * @param array $criteria
+     * @param array      $attributeCodes
+     * @param array      $criteria
      * @param array|null $orderBy
-     * @param int|null $limit
-     * @param int|null $offset
+     * @param int|null   $limit
+     * @param int|null   $offset
      *
      * @return array The objects.
      */

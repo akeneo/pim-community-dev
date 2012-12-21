@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\ProductBundle\Entity;
+namespace Oro\Bundle\DataModelBundle\Entity;
 
 use Oro\Bundle\DataModelBundle\Entity\AbstractOrmEntityAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,11 +12,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  *
- * @ORM\Table(name="product_attribute_option")
+ * @ORM\Table(name="entity_attribute_option")
  * @ORM\Entity
- * @Gedmo\TranslationEntity(class="Oro\Bundle\ProductBundle\Entity\ProductTranslation")
  */
-class ProductAttributeOption extends AbstractOrmEntityAttributeOption
+class OrmEntityAttributeOption extends AbstractOrmEntityAttributeOption
 {
 
     /**
@@ -24,7 +23,7 @@ class ProductAttributeOption extends AbstractOrmEntityAttributeOption
      *
      * @var Attribute $attribute
      *
-     * @ORM\ManyToOne(targetEntity="ProductAttribute")
+     * @ORM\ManyToOne(targetEntity="OrmEntityAttribute")
      * @ORM\JoinColumn(name="attribute_id", nullable=false, onDelete="CASCADE", referencedColumnName="id")
      */
     protected $attribute;

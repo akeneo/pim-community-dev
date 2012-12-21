@@ -6,9 +6,9 @@ namespace Oro\Bundle\DataModelBundle\Model;
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT
+ * @license   http://opensource.org/licenses/MIT MIT
  */
-abstract class EntityAttributeOption
+abstract class AbstractEntityAttributeOption
 {
     /**
      * @var integer $id

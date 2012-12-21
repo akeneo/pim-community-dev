@@ -1,9 +1,9 @@
 <?php
 namespace Oro\Bundle\DataModelBundle\Entity;
 
-use Oro\Bundle\DataModelBundle\Model\Entity as AbstractEntity;
-use Oro\Bundle\DataModelBundle\Model\EntityAttribute as AbstractEntityAttribute;
-use Oro\Bundle\DataModelBundle\Model\EntityAttributeValue as AbstractEntityAttributeValue;
+use Oro\Bundle\DataModelBundle\Model\AbstractEntity;
+use Oro\Bundle\DataModelBundle\Model\AbstractEntityAttribute;
+use Oro\Bundle\DataModelBundle\Model\AbstractEntityAttributeValue;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -12,10 +12,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT
+ * @license   http://opensource.org/licenses/MIT  MIT
  *
  */
-abstract class EntityAttributeValue extends AbstractEntityAttributeValue
+abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeValue
 {
     /**
      * @var integer $id
@@ -99,10 +99,14 @@ abstract class EntityAttributeValue extends AbstractEntityAttributeValue
     {
         // TODO how to dynamically add our own type and backend
         switch ($type) {
-            case AbstractEntityAttribute::TYPE_STRING: return 'stringValue';
-            case AbstractEntityAttribute::TYPE_TEXT:   return 'textValue';
-            case AbstractEntityAttribute::TYPE_NUMBER: return 'numberValue';
-            default: throw new \Exception(sprintf('This attribute type %s is unknown', $type));
+            case AbstractEntityAttribute::TYPE_STRING:
+                return 'stringValue';
+            case AbstractEntityAttribute::TYPE_TEXT:
+                return 'textValue';
+            case AbstractEntityAttribute::TYPE_NUMBER:
+                return 'numberValue';
+            default:
+                throw new \Exception(sprintf('This attribute type %s is unknown', $type));
         }
     }
 

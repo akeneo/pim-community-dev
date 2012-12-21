@@ -3,7 +3,7 @@
 namespace Oro\Bundle\ProductBundle\Controller;
 
 use Oro\Bundle\ProductBundle\Entity\ProductEntity;
-use Oro\Bundle\DataModelBundle\Model\EntityAttribute as AbstractEntityAttribute;
+use Oro\Bundle\DataModelBundle\Model\AbstractEntityAttribute;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/MIT MIT
  *
  * @Route("/attribute")
  */

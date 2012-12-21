@@ -1,8 +1,8 @@
 <?php
 namespace Oro\Bundle\ProductBundle\Entity;
 
-use Oro\Bundle\DataModelBundle\Entity\Entity as AbstractEntity;
-use Oro\Bundle\DataModelBundle\Model\EntityAttributeValue as AbstractEntityAttributeValue;
+use Oro\Bundle\DataModelBundle\Entity\AbstractOrmEntity;
+use Oro\Bundle\DataModelBundle\Model\AbstractEntityAttributeValue;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,12 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/MIT MIT
  *
  * @ORM\Table(name="product_entity")
  * @ORM\Entity(repositoryClass="Oro\Bundle\ProductBundle\Entity\ProductEntityRepository")
  */
-class Product extends AbstractEntity
+class Product extends AbstractOrmEntity
 {
     /**
      * @var string $sku

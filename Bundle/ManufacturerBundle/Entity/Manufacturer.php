@@ -42,6 +42,7 @@ class Manufacturer
      * Set name
      *
      * @param string $name
+     *
      * @return Manufacturer
      */
     public function setName($name)
@@ -61,6 +62,9 @@ class Manufacturer
         return $this->name;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->name;

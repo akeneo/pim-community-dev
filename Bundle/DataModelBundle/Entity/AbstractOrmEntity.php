@@ -1,8 +1,8 @@
 <?php
 namespace Oro\Bundle\DataModelBundle\Entity;
 
-use Oro\Bundle\DataModelBundle\Model\Entity as AbstractEntity;
-use Oro\Bundle\DataModelBundle\Model\EntityAttributeValue as AbstractEntityAttributeValue;
+use Oro\Bundle\DataModelBundle\Model\AbstractEntity;
+use Oro\Bundle\DataModelBundle\Model\AbstractEntityAttributeValue;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -11,10 +11,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT
+ * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-abstract class Entity extends AbstractEntity
+abstract class AbstractOrmEntity extends AbstractEntity
 {
     /**
      * @var integer $id
@@ -71,12 +71,20 @@ abstract class Entity extends AbstractEntity
         return $this;
     }
 
+    /**
+     * Get value data by attribute code
+     *
+     * @param string $attCode
+     *
+     * @return boolean|NULL
+     */
     public function __get($attCode)
     {
         $values = $this->getValues()->filter(function($value) use ($attCode) {
             return $value->getAttribute()->getCode() == $attCode;
         });
         $value = $values->first();
+
         return ($value) ? $value->getData() : null;
     }
 
