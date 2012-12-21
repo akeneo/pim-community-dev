@@ -45,6 +45,8 @@ class CustomerController extends Controller
     /**
      * @Route("/view/{id}")
      * @Template()
+     *
+     * @return multitype
      */
     public function viewAction($id)
     {

@@ -33,6 +33,8 @@ class DefaultController extends Controller
     /**
      * @Route("/truncatedb")
      * @Template("OroProductBundle:Default:index.html.twig")
+     *
+     * @return multitype
      */
     public function truncatedbAction()
     {

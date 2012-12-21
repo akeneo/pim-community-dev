@@ -27,27 +27,16 @@ class ProductEntityRepository extends EntityRepository
      */
     public function findByAttributes(array $attributeCodes, array $criteria = null, array $orderBy = null, $limit = null, $offset = null)
     {
-        // TODO : we should customize findBy or create a custom orm/doctrine/persister see BasicEntityPersister::loadAll
+        $qb = $this->_em->createQueryBuilder();
 
-        // get base fields
-        $qb = $this->createQueryBuilder('p')
-            ->addSelect('p.id, p.sku, p.created, p.updated');
-        // get attributes and backend type
-        if (count($attributeCodes)) {
-            $qbAtt = $this->_em->createQueryBuilder()
-                ->select('att.code,att.id,att.type')
-                ->from('Oro\Bundle\ProductBundle\Entity\ProductAttribute', 'att')
-                ->where('att.code IN (\''.implode('\',\'', $attributeCodes).'\')');
-            $attributes = $qbAtt->getQuery()->getArrayResult();
-            // get any attributes values
-            foreach ($attributes as $attribute) {
-                $tableAlias = 'v'.$attribute['code'];
-                $backendField = $attribute['type'].'Value';
-                $qb
-                    ->addSelect($tableAlias.'.'.$backendField.' as '.$attribute['code'])
-                    ->leftJoin('p.values', $tableAlias, \Doctrine\ORM\Query\Expr\Join::WITH, $tableAlias.'.attribute = '.$attribute['id']);
-            }
-        }
+        // TODO : load only selected attribute values (have to refactor AbstractOrmEntity::__call and __get
+        // too to avoid lazy loading on others attribtes)
+        // TODO refactor in basic datamodel repository
+        $qb
+            ->select('Product', 'Value')
+            ->from('Oro\Bundle\ProductBundle\Entity\Product', 'Product')
+            ->leftJoin('Product.values', 'Value')
+            ->innerJoin('Value.attribute', 'Attribute');
 
         return $qb->getQuery()->getResult();
     }

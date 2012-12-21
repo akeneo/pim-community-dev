@@ -23,6 +23,7 @@ class AttributeController extends Controller
 
     /**
      * Get product manager
+     *
      * @return FlexibleEntityManager
      */
     protected function getProductManager()
@@ -34,6 +35,8 @@ class AttributeController extends Controller
     /**
      * @Route("/index")
      * @Template()
+     *
+     * @return multitype
      */
     public function indexAction()
     {
@@ -44,6 +47,8 @@ class AttributeController extends Controller
 
     /**
      * @Route("/insert")
+     *
+     * @return multitype
      */
     public function insertAction()
     {
@@ -82,7 +87,7 @@ class AttributeController extends Controller
         // attribute size (if not exists)
         $attSizeCode= 'size';
         $attSize = $this->getProductManager()->getAttributeRepository()->findOneByCode($attSizeCode);
-        if ($attSize)  {
+        if ($attSize) {
             $messages[]= "Attribute ".$attSizeCode." already exists";
         } else {
             $attSize = $this->getProductManager()->getNewAttributeInstance();
@@ -104,7 +109,7 @@ class AttributeController extends Controller
         // attribute color (if not exists)
         $attColorCode= 'color';
         $attColor = $this->getProductManager()->getAttributeRepository()->findOneByCode($attColorCode);
-        if ($attColor)  {
+        if ($attColor) {
             $messages[]= "Attribute ".$attColorCode." already exists";
         } else {
             $attColor = $this->getProductManager()->getNewAttributeInstance();

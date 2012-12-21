@@ -136,4 +136,5 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
 
         return $this->$backend;
     }
+
 }

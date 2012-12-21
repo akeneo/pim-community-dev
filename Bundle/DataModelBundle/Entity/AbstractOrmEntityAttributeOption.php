@@ -53,11 +53,11 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
     /**
      * Set attribute
      *
-     * @param EntityAttribute $attribute
+     * @param AbstractOrmEntityAttribute $attribute
      *
      * @return EntityAttributeOption
      */
-    public function setAttribute(EntityAttribute $attribute = null)
+    public function setAttribute(AbstractOrmEntityAttribute $attribute = null)
     {
         $this->attribute = $attribute;
 

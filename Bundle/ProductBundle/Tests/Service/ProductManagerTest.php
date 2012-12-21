@@ -1,7 +1,7 @@
 <?php
 namespace Oro\Bundle\ProductBundle\Test\Service;
 
-use Oro\Bundle\ProductBundle\Entity\ProductEntity;
+use Oro\Bundle\ProductBundle\Entity\Product;
 
 use Oro\Bundle\DataModelBundle\Tests\KernelAwareTest;
 
@@ -36,7 +36,7 @@ class ProductManagerTest extends KernelAwareTest
     public function testGetNewEntityInstance()
     {
         $newProduct = $this->manager->getNewEntityInstance();
-        $this->assertTrue($newProduct instanceof ProductEntity);
+        $this->assertTrue($newProduct instanceof Product);
 
         $sku = 'my sku '.str_replace('.', '', microtime(true));
         $newProduct->setSku($sku);
@@ -54,7 +54,7 @@ class ProductManagerTest extends KernelAwareTest
 
         // entity
         $newProduct = $this->manager->getNewEntityInstance();
-        $this->assertTrue($newProduct instanceof ProductEntity);
+        $this->assertTrue($newProduct instanceof Product);
         $sku = 'my sku '.$timestamp;
         $newProduct->setSku($sku);
 

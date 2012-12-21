@@ -8,12 +8,16 @@
         </tr>
     {% for product in products %}
         <tr>
+            <!-- fields -->
             <td>{{ product.id }}</td>
             <td>{{ product.sku }}</td>
+            
+            <!-- attributes -->
             <td>{{ product.name }}</td>
             <td>{{ product.description }}</td>
             <td>{{ product.size }}</td>
             <td>{{ product.color }}</td>
+
             <td><a href="{{ path('oro_product_product_view', {'id': product.id}) }}">Load details</a></td>
         </tr>
     {% endfor %}

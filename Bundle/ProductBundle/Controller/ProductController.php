@@ -32,17 +32,36 @@ class ProductController extends Controller
     /**
      * @Route("/index")
      * @Template()
+     *
+     * @return multitype
      */
     public function indexAction()
     {
+        // TODO : with lazy load
+//        $products = $this->getProductManager()->getEntityRepository()->findAll();
+
         $products = $this->getProductManager()->getEntityRepository()->findByAttributes(array('name', 'size', 'description', 'color'));
+
+
+
+
+/*
+        $cnt = 0;
+foreach ($products as $product) {
+    var_dump($product->getValues());
+exit();
+}*/
 
         return array('products' => $products);
     }
 
     /**
+     * @param integer $id
+     *
      * @Route("/view/{id}")
      * @Template()
+     *
+     * @return multitype
      */
     public function viewAction($id)
     {
@@ -53,6 +72,8 @@ class ProductController extends Controller
 
     /**
      * @Route("/insert")
+     *
+     * @return multitype
      */
     public function insertAction()
     {
@@ -144,6 +165,8 @@ class ProductController extends Controller
     /**
      * @Route("/draft")
      * @Template()
+     *
+     * @return multitype
      */
     public function draftAction()
     {
