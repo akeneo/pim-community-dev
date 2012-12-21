@@ -1,0 +1,21 @@
+{% extends 'OroProductBundle::layout.html.twig' %}
+
+{% block content %}
+
+    <p><strong>Lazy load on each value</strong></p>
+
+    <ul>
+        <li>id: {{customer.id}}</li>
+        <li>email: {{customer.email}}</li>
+        <li>firstname: {{customer.firstname}}</li>
+        <li>lastname: {{customer.lastname}}</li>
+        <li>created: {{customer.created|date('Y-m-d h:i:s')}}</li>
+        <li>updated: {{customer.updated|date('Y-m-d h:i:s')}}</li>
+        {% for value in customer.values %}
+            <li>{{value.attribute.code}} : {{value.data}}</li>
+        {% endfor %}
+    </ul>
+    
+    <td><a href="{{ path('oro_customer_customer_index') }}">Back to list</a></td>
+
+{% endblock %}

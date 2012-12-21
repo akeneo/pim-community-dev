@@ -18,14 +18,16 @@ class FlexibleEntityManager extends SimpleEntityManager
 {
 
     /**
+     * Default value
      * @var string
      */
-    protected $attributeShortname;
+    protected $attributeShortname = 'OroDataModelBundle:OrmEntityAttribute';
 
     /**
+     * Default value
      * @var string
      */
-    protected $attributeOptionShortname;
+    protected $attributeOptionShortname = 'OroProductBundle:OrmEntityAttributeOption';
 
     /**
      * @var string
@@ -35,17 +37,13 @@ class FlexibleEntityManager extends SimpleEntityManager
     /**
      * Constructor.
      *
-     * @param ObjectManager $om
-     * @param string        $entitySN
-     * @param string        $attributeSN
-     * @param string        $optionSN
-     * @param string        $valueSN
+     * @param ObjectManager $om       object manager
+     * @param string        $entitySN entity short name
+     * @param string        $valueSN  value short name
      */
-    public function __construct(ObjectManager $om, $entitySN, $attributeSN, $optionSN, $valueSN)
+    public function __construct(ObjectManager $om, $entitySN, $valueSN)
     {
         parent::__construct($om, $entitySN);
-        $this->attributeShortname = $attributeSN;
-        $this->attributeOptionShortname = $optionSN;
         $this->attributeValueShortname = $valueSN;
     }
 
@@ -65,6 +63,34 @@ class FlexibleEntityManager extends SimpleEntityManager
     public function getAttributeOptionShortname()
     {
         return $this->attributeOptionShortname;
+    }
+
+    /**
+     * Set shortname that can be used to get the repository or instance
+     *
+     * @param string $attributeSN
+     *
+     * @return FlexibleEntityManager
+     */
+    public function setAttributeShortname($attributeSN)
+    {
+        $this->attributeShortname = $attributeSN;
+
+        return $this;
+    }
+
+    /**
+     * Set shortname that can be used to get the repository or instance
+     *
+     * @param string $attributeOptionSN
+     *
+     * @return FlexibleEntityManager
+     */
+    public function setAttributeOptionShortname($attributeOptionSN)
+    {
+        $this->attributeOptionShortname = $attributeOptionSN;
+
+        return $this;
     }
 
     /**

@@ -8,4 +8,7 @@ parameters:
 services:
     product_manager:
         class:        "%product_manager.class%"
-        arguments:    [@doctrine.orm.entity_manager, %product_entity.shortname%, %product_attribute.shortname%, %product_option.shortname%, %product_value.shortname%]
+        arguments:    [@doctrine.orm.entity_manager, %product_entity.shortname%, , %product_value.shortname%]
+        calls:
+                    - [ setAttributeShortname, [ %product_attribute.shortname% ] ]
+                    - [ setAttributeOptionShortname, [ %product_option.shortname% ] ]

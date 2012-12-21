@@ -1,0 +1,9 @@
+parameters:
+    customer_manager.class:       Oro\Bundle\DataModelBundle\Service\FlexibleEntityManager
+    customer_entity.shortname:    OroCustomerBundle:Customer
+    customer_value.shortname:     OroCustomerBundle:CustomerAttributeValue
+
+services:
+    customer_manager:
+        class:        "%customer_manager.class%"
+        arguments:    [@doctrine.orm.entity_manager, %customer_entity.shortname%, %customer_value.shortname%]

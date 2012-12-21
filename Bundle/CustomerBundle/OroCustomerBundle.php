@@ -1,18 +1,18 @@
 <?php
 
-namespace Oro\Bundle\DataModelBundle;
+namespace Oro\Bundle\CustomerBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Data model bundle
+ * Customer bundle
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-class OroDataModelBundle extends Bundle
+class OroCustomerBundle extends Bundle
 {
 
 }

@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-class DefaultControllerTest extends WebTestCase
+class CustomerControllerTest extends WebTestCase
 {
     /**
      * Test related method
@@ -21,8 +21,20 @@ class DefaultControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/product/default/index');
+        $crawler = $client->request('GET', '/en/customer/attribute/index');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * Test related method
+     */
+    public function testInsert()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/en/customer/attribute/insert');
+
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
     }
 }

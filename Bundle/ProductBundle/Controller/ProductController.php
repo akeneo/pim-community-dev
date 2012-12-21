@@ -42,7 +42,7 @@ class ProductController extends Controller
 
     /**
      * @Route("/view/{id}")
-     * @Template("OroProductBundle:Product:view.html.twig")
+     * @Template()
      */
     public function viewAction($id)
     {
