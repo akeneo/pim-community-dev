@@ -39,18 +39,8 @@ class ProductController extends Controller
     {
         // TODO : with lazy load
 //        $products = $this->getProductManager()->getEntityRepository()->findAll();
-
-        $products = $this->getProductManager()->getEntityRepository()->findByAttributes(array('name', 'size', 'description', 'color'));
-
-
-
-
-/*
-        $cnt = 0;
-foreach ($products as $product) {
-    var_dump($product->getValues());
-exit();
-}*/
+    	// TODO : without lazy load
+        $products = $this->getProductManager()->getEntityRepository()->findAllEntities();
 
         return array('products' => $products);
     }

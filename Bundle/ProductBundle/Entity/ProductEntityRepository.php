@@ -1,7 +1,7 @@
 <?php
 namespace Oro\Bundle\ProductBundle\Entity;
 
-use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\DataModelBundle\Entity\OrmEntityRepository;
 
 /**
  * Custom repository for product
@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityRepository;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-class ProductEntityRepository extends EntityRepository
+class ProductEntityRepository extends OrmEntityRepository
 {
 
     /**
@@ -33,10 +33,11 @@ class ProductEntityRepository extends EntityRepository
         // too to avoid lazy loading on others attribtes)
         // TODO refactor in basic datamodel repository
         $qb
-            ->select('Product', 'Value')
+            ->select('Product', 'Value', 'Attribute')
             ->from('Oro\Bundle\ProductBundle\Entity\Product', 'Product')
             ->leftJoin('Product.values', 'Value')
             ->innerJoin('Value.attribute', 'Attribute');
+        // inner failed if 0 values
 
         return $qb->getQuery()->getResult();
     }

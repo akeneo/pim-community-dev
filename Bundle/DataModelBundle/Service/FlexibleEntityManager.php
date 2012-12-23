@@ -203,6 +203,8 @@ class FlexibleEntityManager extends SimpleEntityManager
     /**
      * Clone an entity
      *
+     * TODO: see copy() in entitymanager
+     *
      * @param Entity $entity to clone
      *
      * @return Entity

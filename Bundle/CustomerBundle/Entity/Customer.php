@@ -13,7 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  * @ORM\Table(name="customer_entity")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Oro\Bundle\DataModelBundle\Entity\OrmEntityRepository")
+ *
  */
 class Customer extends AbstractOrmEntity
 {
