@@ -5,8 +5,6 @@ use Oro\Bundle\DataModelBundle\Model\AbstractOrmEntity;
 use Oro\Bundle\DataModelBundle\Entity\AbstractOrmEntityAttributeValue;
 use Oro\Bundle\DataModelBundle\Entity\OrmEntityAttribute;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Translatable\Translatable;
 
 /**
  * Value for a customer attribute

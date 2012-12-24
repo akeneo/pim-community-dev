@@ -3,7 +3,6 @@ namespace Oro\Bundle\ProductBundle\Entity;
 
 use Oro\Bundle\DataModelBundle\Entity\AbstractOrmEntityAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Attribute options
@@ -14,7 +13,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @ORM\Table(name="product_attribute_option")
  * @ORM\Entity
- * @Gedmo\TranslationEntity(class="Oro\Bundle\ProductBundle\Entity\ProductTranslation")
  */
 class ProductAttributeOption extends AbstractOrmEntityAttributeOption
 {

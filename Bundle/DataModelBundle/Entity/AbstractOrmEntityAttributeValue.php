@@ -5,7 +5,6 @@ use Oro\Bundle\DataModelBundle\Model\AbstractEntity;
 use Oro\Bundle\DataModelBundle\Model\AbstractEntityAttribute;
 use Oro\Bundle\DataModelBundle\Model\AbstractEntityAttributeValue;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Base Doctrine ORM entity attribute value
@@ -41,11 +40,18 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
     protected $entity;
 
     /**
+     * Locale scope TODO on 2 chars or 5 ?
+     * @var string $localeCode
+     *
+     * @ORM\Column(name="locale", type="string", length=5, nullable=false)
+     */
+    protected $localeCode;
+
+    /**
      * Store varchar value
      * @var string $stringvalue
      *
      * @ORM\Column(name="string_value", type="string", length=255, nullable=true)
-     * @Gedmo\Translatable
      */
     protected $stringValue;
 
@@ -57,22 +63,13 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
      */
     protected $numberValue;
 
-
     /**
      * Store text value
-     * @var integer $numbervalue
+     * @var string $numbervalue
      *
      * @ORM\Column(name="text_value", type="text", nullable=true)
-     * @Gedmo\Translatable
      */
     protected $textValue;
-
-    /**
-     * @Gedmo\Locale
-     * Used locale to override Translation listener`s locale
-     * this is not a mapped attribute of entity metadata, just a simple property
-     */
-    protected $locale;
 
     /**
      * Set entity

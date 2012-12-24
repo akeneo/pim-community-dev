@@ -3,7 +3,6 @@ namespace Oro\Bundle\DataModelBundle\Entity;
 
 use Oro\Bundle\DataModelBundle\Entity\AbstractOrmEntityAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Attribute options

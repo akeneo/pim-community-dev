@@ -98,14 +98,6 @@ class AttributeController extends Controller
             $messages[]= "Attribute ".$attSizeCode." has been created";
         }
 
-        // translate attribute title in many locales in one time (saved when flush on entity manager)
-        $repository = $this->getProductManager()->getStorageManager()->getRepository('Gedmo\\Translatable\\Entity\\Translation');
-        $repository
-            ->translate($attSize, 'title', 'de_DE', 'size DE')
-            ->translate($attSize, 'title', 'fr_FR', 'size FR')
-            ->translate($attSize, 'title', 'es_ES', 'size ES');
-        $messages[]= "Title of attribute ".$attSizeCode." has been translated in fr, de, es";
-
         // attribute color (if not exists)
         $attColorCode= 'color';
         $attColor = $this->getProductManager()->getAttributeRepository()->findOneByCode($attColorCode);

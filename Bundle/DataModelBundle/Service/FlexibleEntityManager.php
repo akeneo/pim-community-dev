@@ -37,13 +37,13 @@ class FlexibleEntityManager extends SimpleEntityManager
     /**
      * Constructor.
      *
-     * @param ObjectManager $om       object manager
-     * @param string        $entitySN entity short name
-     * @param string        $valueSN  value short name
+     * @param ContainerInterface $container service container
+     * @param string             $entitySN  entity short name
+     * @param string             $valueSN   value short name
      */
-    public function __construct(ObjectManager $om, $entitySN, $valueSN)
+    public function __construct($container, $entitySN, $valueSN)
     {
-        parent::__construct($om, $entitySN);
+        parent::__construct($container, $entitySN);
         $this->attributeValueShortname = $valueSN;
     }
 
@@ -196,8 +196,13 @@ class FlexibleEntityManager extends SimpleEntityManager
     public function getNewAttributeValueInstance()
     {
         $class = $this->getAttributeValueClass();
+        $object = new $class();
 
-        return new $class();
+        // TODO get from requested url ?
+        $object->setLocaleCode($this->container->parameters['locale']);
+        //        $repo->setLocaleCode($this->container->parameters['locale']);
+
+        return $object;
     }
 
     /**

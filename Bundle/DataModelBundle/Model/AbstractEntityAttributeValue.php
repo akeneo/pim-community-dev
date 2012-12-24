@@ -28,9 +28,9 @@ abstract class AbstractEntityAttributeValue
     protected $data;
 
     /**
-     * @var string $locale
+     * @var string $localeCode
      */
-    protected $locale;
+    protected $localeCode;
 
     /**
      * Get id
@@ -91,11 +91,20 @@ abstract class AbstractEntityAttributeValue
     }
 
     /**
+     * Get used locale
+     * @return string $locale
+     */
+    public function getLocaleCode()
+    {
+        return $this->localeCode;
+    }
+
+    /**
      * Set used locale
      * @param string $locale
      */
-    public function setTranslatableLocale($locale)
+    public function setLocaleCode($locale)
     {
-        $this->locale = $locale;
+        $this->localeCode = $locale;
     }
 }

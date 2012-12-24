@@ -36,7 +36,6 @@ abstract class AbstractOrmEntityAttribute extends AbstractEntityAttribute
      * @var string $title
      *
      * @ORM\Column(name="title", type="string", length=255)
-     * @Gedmo\Translatable
      */
     protected $title;
 
@@ -92,8 +91,7 @@ abstract class AbstractOrmEntityAttribute extends AbstractEntityAttribute
     protected $options;
 
     /**
-     * @Gedmo\Locale
-     * Used locale to override Translation listener`s locale
+     * Used locale to override Translation listener's locale
      * this is not a mapped attribute of entity metadata, just a simple property
      */
     protected $locale;

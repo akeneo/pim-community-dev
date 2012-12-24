@@ -4,8 +4,6 @@ namespace Oro\Bundle\ProductBundle\Entity;
 use Oro\Bundle\DataModelBundle\Model\AbstractOrmEntity;
 use Oro\Bundle\DataModelBundle\Entity\AbstractOrmEntityAttributeValue;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Translatable\Translatable;
 
 /**
  * Value for a product attribute
@@ -16,7 +14,6 @@ use Gedmo\Translatable\Translatable;
  *
  * @ORM\Table(name="product_attribute_value")
  * @ORM\Entity
- * @Gedmo\TranslationEntity(class="Oro\Bundle\ProductBundle\Entity\ProductTranslation")
  */
 class ProductAttributeValue extends AbstractOrmEntityAttributeValue
 {

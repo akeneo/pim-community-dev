@@ -4,7 +4,6 @@ namespace Oro\Bundle\ProductBundle\Entity;
 use Oro\Bundle\DataModelBundle\Entity\AbstractOrmEntityAttribute;
 use Oro\Bundle\DataModelBundle\Model\AbstractEntityAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Product attribute as sku, name, etc
@@ -15,7 +14,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @ORM\Table(name="product_attribute", indexes={@ORM\Index(name="searchcode_idx", columns={"code"})} )
  * @ORM\Entity()
- * @Gedmo\TranslationEntity(class="Oro\Bundle\ProductBundle\Entity\ProductTranslation")
  */
 class ProductAttribute extends AbstractOrmEntityAttribute
 {

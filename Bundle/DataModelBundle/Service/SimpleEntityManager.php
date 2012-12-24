@@ -16,6 +16,11 @@ use Doctrine\Common\Persistence\ObjectManager;
 class SimpleEntityManager
 {
     /**
+     * @var ContainerInterface $container
+     */
+    protected $container;
+
+    /**
      * @var ObjectManager $manager
      */
     protected $manager;
@@ -28,12 +33,13 @@ class SimpleEntityManager
     /**
      * Constructor
      *
-     * @param ObjectManager $om
-     * @param string        $entitySN
+     * @param ContainerInterface $container
+     * @param string             $entitySN
      */
-    public function __construct(ObjectManager $om, $entitySN)
+    public function __construct($container, $entitySN)
     {
-        $this->manager = $om;
+        $this->container = $container;
+        $this->manager   = $container->get('doctrine.orm.entity_manager');
         $this->entityShortname = $entitySN;
     }
 
@@ -70,7 +76,9 @@ class SimpleEntityManager
      */
     public function getEntityRepository()
     {
-        return $this->manager->getRepository($this->getEntityShortname());
+        $repo = $this->manager->getRepository($this->getEntityShortname());
+
+        return $repo;
     }
 
     /**

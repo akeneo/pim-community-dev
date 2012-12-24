@@ -4,7 +4,6 @@ namespace Oro\Bundle\DataModelBundle\Entity;
 use Oro\Bundle\DataModelBundle\Entity\AbstractOrmEntityAttribute;
 use Oro\Bundle\DataModelBundle\Model\AbstractEntityAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Base entity attribute

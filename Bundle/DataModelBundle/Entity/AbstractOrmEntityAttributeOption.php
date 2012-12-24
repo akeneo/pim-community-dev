@@ -3,7 +3,6 @@ namespace Oro\Bundle\DataModelBundle\Entity;
 
 use Oro\Bundle\DataModelBundle\Model\AbstractEntityAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Base Doctrine ORM entity attribute option
@@ -34,7 +33,6 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
 
     /**
      * @ORM\Column(name="data", type="string", length=255)
-     * @Gedmo\Translatable
      */
     protected $value;
 
@@ -44,8 +42,7 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
     protected $sortOrder;
 
     /**
-     * @Gedmo\Locale
-     * Used locale to override Translation listener`s locale
+     * Used locale to override Translation listener(s locale
      * this is not a mapped attribute of entity metadata, just a simple property
      */
     protected $locale;
