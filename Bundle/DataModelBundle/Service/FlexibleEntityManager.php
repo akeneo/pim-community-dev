@@ -174,8 +174,10 @@ class FlexibleEntityManager extends SimpleEntityManager
     public function getNewAttributeInstance()
     {
         $class = $this->getAttributeClass();
+        $object = new $class();
+        $object->setEntityType($this->getEntityShortname());
 
-        return new $class();
+        return $object;
     }
 
     /**

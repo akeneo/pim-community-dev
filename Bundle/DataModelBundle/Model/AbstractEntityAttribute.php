@@ -31,6 +31,11 @@ abstract class AbstractEntityAttribute
     protected $title;
 
     /**
+     * @var string $entityType
+     */
+    protected $entityType;
+
+    /**
      * @var datetime $created
      */
     protected $created;
@@ -64,16 +69,6 @@ abstract class AbstractEntityAttribute
     * @var boolean $translatable
     */
     protected $translatable;
-
-    /**
-     * @var integer $scope
-     */
-    protected $scope;
-
-    /**
-     * @var string $locale
-     */
-    protected $locale;
 
     /**
      * Get id
@@ -124,6 +119,30 @@ abstract class AbstractEntityAttribute
     }
 
     /**
+     * Set entity type
+     *
+     * @param string $entityType
+     *
+     * @return EntityAttribute
+     */
+    public function setEntityType($entityType)
+    {
+        $this->entityType = $entityType;
+
+        return $this;
+    }
+
+    /**
+     * Get entity type
+     *
+     * @return string
+     */
+    public function getEntityType()
+    {
+        return $this->entityType;
+    }
+
+    /**
      * Set title
      *
      * @param string $title
@@ -146,7 +165,6 @@ abstract class AbstractEntityAttribute
     {
         return $this->title;
     }
-
 
     /**
      * Get created datetime
@@ -290,30 +308,6 @@ abstract class AbstractEntityAttribute
     }
 
     /**
-     * Set scope
-     *
-     * @param integer $scope
-     *
-     * @return EntityAttribute
-     */
-    public function setScope($scope)
-    {
-        $this->scope = $scope;
-
-        return $this;
-    }
-
-    /**
-     * Get scope
-     *
-     * @return integer $scope
-     */
-    public function getScope()
-    {
-        return $this->scope;
-    }
-
-    /**
      * Add option
      *
      * @param AbstractEntityAttributeOption $option
@@ -347,12 +341,4 @@ abstract class AbstractEntityAttribute
         return $this->options;
     }
 
-    /**
-     * Set used locale
-     * @param string $locale
-     */
-    public function setTranslatableLocale($locale)
-    {
-        $this->locale = $locale;
-    }
 }

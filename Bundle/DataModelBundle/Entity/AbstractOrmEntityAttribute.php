@@ -33,6 +33,13 @@ abstract class AbstractOrmEntityAttribute extends AbstractEntityAttribute
     protected $code;
 
     /**
+     * @var string $entityType
+     *
+     * @ORM\Column(name="entity_type", type="string", length=255)
+     */
+    protected $entityType;
+
+    /**
      * @var string $title
      *
      * @ORM\Column(name="title", type="string", length=255)
