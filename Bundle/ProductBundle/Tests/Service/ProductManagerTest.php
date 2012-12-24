@@ -90,15 +90,5 @@ class ProductManagerTest extends KernelAwareTest
         // persist
         $this->manager->getStorageManager()->persist($newProduct);
         $this->manager->getStorageManager()->flush();
-
-        // localized
-//        $this->manager->getAttributeValueRepository()->findByCode('name');
-//        $valueName
-
-        $valueName->setTranslatableLocale('fr_FR');
-        $valueName->setData('mon nom');
-        $this->manager->getStorageManager()->persist($valueName);
-        $this->manager->getStorageManager()->flush();
-
     }
 }
