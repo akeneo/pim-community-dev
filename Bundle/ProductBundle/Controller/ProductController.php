@@ -89,7 +89,7 @@ class ProductController extends Controller
                 $this->getProductManager()->getStorageManager()->persist($newProduct);
             }
 
-            // add product with sku and name (translated) and color
+            // add product with sku, name, description, color and size
             $prodSku = 'sku-'.$ind++;
             $newProduct = $this->getProductManager()->getEntityRepository()->findOneBySku($prodSku);
             if ($newProduct) {
@@ -108,6 +108,12 @@ class ProductController extends Controller
                     $value->setAttribute($attDescription);
                     $value->setData('my long description '.$ind);
                     $newProduct->addValue($value);
+                }
+                if ($attSize) {
+                    $valueSize = $this->getProductManager()->getNewAttributeValueInstance();
+                    $valueSize->setAttribute($attSize);
+                    $valueSize->setData(175);
+                    $newProduct->addValue($valueSize);
                 }
                 if ($attColor) {
                     $value = $this->getProductManager()->getNewAttributeValueInstance();
@@ -168,16 +174,47 @@ class ProductController extends Controller
         $products = $this->getProductManager()->getEntityRepository()->findAll();
         $ind = 1;
         foreach ($products as $product) {
-            // translate value
+            // translate name value
             if ($attName) {
-                $valueName = $this->getProductManager()->getNewAttributeValueInstance();
-                $valueName->setAttribute($attName);
-                $valueName->setLocaleCode('fr');
-                $valueName->setData('mon nom '.$ind++);
-                $product->addValue($valueName);
+                if ($product->name != null) {
+                    $value = $this->getProductManager()->getNewAttributeValueInstance();
+                    $value->setAttribute($attName);
+                    $value->setLocaleCode('fr');
+                    $value->setData('mon nom FR '.$ind++);
+                    $product->addValue($value);
+                    $this->getProductManager()->getStorageManager()->persist($value);
+                }
             }
-            $this->getProductManager()->getStorageManager()->persist($valueName);
+            // translate description value
+            if ($attDescription) {
+                if ($product->description != null) {
+                    $value = $this->getProductManager()->getNewAttributeValueInstance();
+                    $value->setAttribute($attDescription);
+                    $value->setLocaleCode('fr');
+                    $value->setData('ma super description FR '.$ind++);
+                    $product->addValue($value);
+                    $this->getProductManager()->getStorageManager()->persist($value);
+                }
+            }
+
             $messages[]= "Value has been translated";
+        }
+
+        // get color attribute options
+        $attColor = $this->getProductManager()->getAttributeRepository()->findOneByCode('color');
+        $colors = array("Red" => "Rouge", "Blue" => "Bleu", "Green" => "Vert");
+        // translate
+        foreach ($colors as $colorEn => $colorFr) {
+            $optValueEn = $this->getProductManager()->getAttributeOptionValueRepository()->findOneBy(array('value' => $colorEn));
+            $optValueFr = $this->getProductManager()->getAttributeOptionValueRepository()->findOneBy(array('value' => $colorFr));
+            if ($optValueEn and !$optValueFr) {
+                $option = $optValueEn->getOption();
+                $optValueFr = $this->getProductManager()->getNewAttributeOptionValueInstance();
+                $optValueFr->setValue($colorFr);
+                $optValueFr->setLocaleCode('fr');
+                $option->addValue($optValueFr);
+                $this->getProductManager()->getStorageManager()->persist($optValueFr);
+            }
         }
 
         $this->getProductManager()->getStorageManager()->flush();

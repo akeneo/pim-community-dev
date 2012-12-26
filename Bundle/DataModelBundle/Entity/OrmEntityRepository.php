@@ -14,8 +14,22 @@ use Doctrine\ORM\EntityRepository;
 class OrmEntityRepository extends EntityRepository
 {
 
+    /**
+     * Locale code
+     * @var string
+     */
+    protected $defaultLocaleCode;
+
+    /**
+     * Locale code
+     * @var string
+     */
     protected $localeCode;
 
+    /**
+     * Use lazy loading ? TODO: delete ?
+     * @var boolean
+     */
     protected $useLazyLoading;
 
     /**
@@ -31,6 +45,30 @@ class OrmEntityRepository extends EntityRepository
         parent::__construct($em, $class);
 
         $this->useLazyLoading = false;
+    }
+
+    /**
+     * Get default locale code
+     *
+     * @return string
+     */
+    public function getDefaultLocaleCode()
+    {
+        return $this->defaultlocaleCode;
+    }
+
+    /**
+     * Set locale code
+     *
+     * @param string $code
+     *
+     * @return \Oro\Bundle\DataModelBundle\Entity\OrmEntityRepository
+     */
+    public function setDefaultLocaleCode($code)
+    {
+        $this->defaultlocaleCode = $code;
+
+        return $this;
     }
 
     /**
@@ -70,15 +108,21 @@ class OrmEntityRepository extends EntityRepository
             $qb = parent::createQueryBuilder($alias);
         } else {
             // if no lazy loading directly join with values and attribute
-            $qb = $this->_em->createQueryBuilder()
-                ->select($alias, 'Value', 'Attribute')
+            $qb = $this->_em->createQueryBuilder();
+            $qb->select($alias, 'Value', 'Attribute')
                 ->from($this->_entityName, $alias)
                 ->leftJoin($alias.'.values', 'Value')
                 ->leftJoin('Value.attribute', 'Attribute')
-                ->andWhere('Value.localeCode = :locale OR Value.localeCode IS NULL')
+                // if no translatable, get default locale value
+                // if translatable, get asked locale value
+                // there is no fallback defined
+                ->andWhere(
+                    '(Attribute.translatable = 1 AND Value.localeCode = :locale) '
+                    .'OR (Attribute.translatable = 0 and Value.localeCode = :defaultLocale) '
+                    .'OR (Value.localeCode IS NULL)'
+                )
+                ->setParameter('defaultLocale', $this->getDefaultLocaleCode())
                 ->setParameter('locale', $this->getLocaleCode());
-
-            // TODO : if not translatable ?
         }
 
         return $qb;

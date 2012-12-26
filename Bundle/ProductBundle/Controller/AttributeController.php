@@ -55,61 +55,71 @@ class AttributeController extends Controller
         $messages = array();
 
         // attribute name (if not exists)
-        $attNameCode = 'name';
-        $attName = $this->getProductManager()->getAttributeRepository()->findOneByCode($attNameCode);
-        if ($attName) {
-            $messages[]= "Attribute ".$attNameCode." already exists";
+        $attributeCode = 'name';
+        $attribute = $this->getProductManager()->getAttributeRepository()->findOneByCode($attributeCode);
+        if ($attribute) {
+            $messages[]= "Attribute ".$attributeCode." already exists";
         } else {
-            $attName = $this->getProductManager()->getNewAttributeInstance();
-            $attName->setCode($attNameCode);
-            $attName->setTitle('Name');
-            $attName->setType(AbstractEntityAttribute::TYPE_STRING);
-            $attName->setTranslatable(true);
-            $this->getProductManager()->getStorageManager()->persist($attName);
-            $messages[]= "Attribute ".$attNameCode." has been created";
+            $attribute = $this->getProductManager()->getNewAttributeInstance();
+            $attribute->setCode($attributeCode);
+            $attribute->setTitle('Name');
+            $attribute->setType(AbstractEntityAttribute::TYPE_STRING);
+            $attribute->setTranslatable(true);
+            $this->getProductManager()->getStorageManager()->persist($attribute);
+            $messages[]= "Attribute ".$attributeCode." has been created";
         }
 
         // attribute description (if not exists)
-        $attDescCode = 'description';
-        $attDesc = $this->getProductManager()->getAttributeRepository()->findOneByCode($attDescCode);
-        if ($attDesc) {
-            $messages[]= "Attribute ".$attDescCode." already exists";
+        $attributeCode = 'description';
+        $attribute = $this->getProductManager()->getAttributeRepository()->findOneByCode($attributeCode);
+        if ($attribute) {
+            $messages[]= "Attribute ".$attributeCode." already exists";
         } else {
-            $attDesc = $this->getProductManager()->getNewAttributeInstance();
-            $attDesc->setCode($attDescCode);
-            $attDesc->setTitle('Description');
-            $attDesc->setType(AbstractEntityAttribute::TYPE_TEXT);
-            $attDesc->setTranslatable(true);
-            $this->getProductManager()->getStorageManager()->persist($attDesc);
-            $messages[]= "Attribute ".$attDescCode." has been created";
+            $attribute = $this->getProductManager()->getNewAttributeInstance();
+            $attribute->setCode($attributeCode);
+            $attribute->setTitle('Description');
+            $attribute->setType(AbstractEntityAttribute::TYPE_TEXT);
+            $attribute->setTranslatable(true);
+            $this->getProductManager()->getStorageManager()->persist($attribute);
+            $messages[]= "Attribute ".$attributeCode." has been created";
         }
 
         // attribute size (if not exists)
-        $attSizeCode= 'size';
-        $attSize = $this->getProductManager()->getAttributeRepository()->findOneByCode($attSizeCode);
-        if ($attSize) {
-            $messages[]= "Attribute ".$attSizeCode." already exists";
+        $attributeCode= 'size';
+        $attribute = $this->getProductManager()->getAttributeRepository()->findOneByCode($attributeCode);
+        if ($attribute) {
+            $messages[]= "Attribute ".$attributeCode." already exists";
         } else {
-            $attSize = $this->getProductManager()->getNewAttributeInstance();
-            $attSize->setCode($attSizeCode);
-            $attSize->setTitle('Size');
-            $attSize->setType(AbstractEntityAttribute::TYPE_NUMBER);
-            $this->getProductManager()->getStorageManager()->persist($attSize);
-            $messages[]= "Attribute ".$attSizeCode." has been created";
+            $attribute = $this->getProductManager()->getNewAttributeInstance();
+            $attribute->setCode($attributeCode);
+            $attribute->setTitle('Size');
+            $attribute->setType(AbstractEntityAttribute::TYPE_NUMBER);
+            $this->getProductManager()->getStorageManager()->persist($attribute);
+            $messages[]= "Attribute ".$attributeCode." has been created";
         }
 
         // attribute color (if not exists)
-        $attColorCode= 'color';
-        $attColor = $this->getProductManager()->getAttributeRepository()->findOneByCode($attColorCode);
-        if ($attColor) {
-            $messages[]= "Attribute ".$attColorCode." already exists";
+        $attributeCode= 'color';
+        $attribute = $this->getProductManager()->getAttributeRepository()->findOneByCode($attributeCode);
+        if ($attribute) {
+            $messages[]= "Attribute ".$attributeCode." already exists";
         } else {
-            $attColor = $this->getProductManager()->getNewAttributeInstance();
-            $attColor->setCode($attColorCode);
-            $attColor->setTitle('Color');
-            $attColor->setType(AbstractEntityAttribute::TYPE_NUMBER);
-            $this->getProductManager()->getStorageManager()->persist($attColor);
-            $messages[]= "Attribute ".$attColorCode." has been created";
+            $attribute = $this->getProductManager()->getNewAttributeInstance();
+            $attribute->setCode($attributeCode);
+            $attribute->setTitle('Color');
+            $attribute->setType(AbstractEntityAttribute::TYPE_LIST);
+            $attribute->setTranslatable(false); // only one value but option can be translated in option values
+            // add option and related value "Red", "Blue", "Green"
+            $colors = array("Red", "Blue", "Green");
+            foreach ($colors as $color) {
+                $option = $this->getProductManager()->getNewAttributeOptionInstance();
+                $optionValue = $this->getProductManager()->getNewAttributeOptionValueInstance();
+                $optionValue->setValue($color);
+                $option->addValue($optionValue);
+                $attribute->addOption($option);
+            }
+            $this->getProductManager()->getStorageManager()->persist($attribute);
+            $messages[]= "Attribute ".$attributeCode." has been created";
         }
 
         $this->getProductManager()->getStorageManager()->flush();

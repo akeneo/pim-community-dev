@@ -2,18 +2,28 @@
 
 {% block content %}
 
-    <p><strong>Lazy load on each value</strong></p>
-
+    <h2>base fields</h2>
     <ul>
         <li>id: {{product.id}}</li>
         <li>sku: {{product.sku}}</li>
         <li>created: {{product.created|date('Y-m-d h:i:s')}}</li>
         <li>updated: {{product.updated|date('Y-m-d h:i:s')}}</li>
+    </ul>
+    
+    <h2>explicit fields</h2>
+    <ul>
+        <li>Name : {{product.name}}</li>
+        <li>Color : {{product.color}}</li>
+    </ul>
+
+    <h2>all attributes values</h2>
+    <p><strong>Lazy load on each value</strong></p>
+    <ul>
         {% for value in product.values %}
             <li>{{value.attribute.code}} : {{value.data}}</li>
         {% endfor %}
     </ul>
-    
+
     <td><a href="{{ path('oro_product_product_index') }}">Back to list</a></td>
 
 {% endblock %}

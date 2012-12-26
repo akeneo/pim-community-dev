@@ -21,6 +21,12 @@ class FlexibleEntityManager extends SimpleEntityManager
      * Locale code
      * @var string
      */
+    protected $defaultLocaleCode;
+
+    /**
+     * Locale code
+     * @var string
+     */
     protected $localeCode;
 
     /**
@@ -60,6 +66,21 @@ class FlexibleEntityManager extends SimpleEntityManager
     }
 
     /**
+     * Return locale code from rapplication config
+     * TODO: custom config ?
+     *
+     * @return string
+     */
+    public function getDefaultLocaleCode()
+    {
+        if (!$this->defaultLocaleCode) {
+            $this->defaultLocaleCode = $this->container->parameters['locale'];
+        }
+
+        return $this->defaultLocaleCode;
+    }
+
+    /**
      * Return locale code from request or default
      * TODO: custom config ?
      *
@@ -71,7 +92,7 @@ class FlexibleEntityManager extends SimpleEntityManager
             $this->localeCode = $this->container->initialized('request') ?
                 $this->container->get('request')->getLocale() : false;
             if (!$this->localeCode) {
-                $localeCode = $this->container->parameters['locale'];
+                $this->localeCode = $this->getDefaultLocaleCode();
             }
         }
 
@@ -85,6 +106,7 @@ class FlexibleEntityManager extends SimpleEntityManager
     public function getEntityRepository()
     {
         $repo = $this->manager->getRepository($this->getEntityShortname());
+        $repo->setDefaultLocaleCode($this->getDefaultLocaleCode());
         $repo->setLocaleCode($this->getLocaleCode());
 
         return $repo;
