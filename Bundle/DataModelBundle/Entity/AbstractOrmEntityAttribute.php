@@ -92,7 +92,7 @@ abstract class AbstractOrmEntityAttribute extends AbstractEntityAttribute
     /**
      * @var ArrayCollection $options
      *
-     * @ORM\OneToMany(targetEntity="EntityAttributeOption", mappedBy="attribute", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="AbstractOrmEntityAttributeOption", mappedBy="attribute", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $options;

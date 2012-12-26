@@ -33,8 +33,8 @@ class SimpleEntityManager
     /**
      * Constructor
      *
-     * @param ContainerInterface $container
-     * @param string             $entitySN
+     * @param ContainerInterface $container service container
+     * @param string             $entitySN  entity short name
      */
     public function __construct($container, $entitySN)
     {

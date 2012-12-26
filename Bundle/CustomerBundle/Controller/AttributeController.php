@@ -74,9 +74,20 @@ class AttributeController extends Controller
         } else {
             $att = $this->getCustomerManager()->getNewAttributeInstance();
             $att->setCode($attCode);
-            $att->setTitle('Company');
-            $att->setType(AbstractEntityAttribute::TYPE_STRING);
-            $att->setTranslatable(false);
+            $att->setTitle('Gender');
+            $att->setType(AbstractEntityAttribute::TYPE_LIST);
+            $att->setTranslatable(true);
+            // add option and related value
+            $opt = $this->getCustomerManager()->getNewAttributeOptionInstance();
+            $valMr = $this->getCustomerManager()->getNewAttributeOptionValueInstance();
+            $valMr->setValue('Masculine');
+            $opt->addValue($valMr);
+            $att->addOption($opt);
+            // add another option
+            $valMrs = $this->getCustomerManager()->getNewAttributeOptionValueInstance();
+            $valMrs->setValue('Feminine');
+            $opt->addValue($valMrs);
+            $att->addOption($opt);
             $this->getCustomerManager()->getStorageManager()->persist($att);
             $messages[]= "Attribute ".$attCode." has been created";
         }

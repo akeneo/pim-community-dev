@@ -28,7 +28,7 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
     /**
      * @var Attribute $attribute
      *
-     * @ORM\ManyToOne(targetEntity="EntityAttribute")
+     * @ORM\ManyToOne(targetEntity="AbstractOrmEntityAttribute")
      */
     protected $attribute;
 
@@ -113,6 +113,8 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
                 return 'textValue';
             case AbstractEntityAttribute::TYPE_NUMBER:
                 return 'numberValue';
+            case AbstractEntityAttribute::TYPE_LIST:
+                return 'optionValue';
             default:
                 throw new \Exception(sprintf('This attribute type %s is unknown', $type));
         }

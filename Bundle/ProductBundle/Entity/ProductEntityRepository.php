@@ -17,11 +17,11 @@ class ProductEntityRepository extends OrmEntityRepository
     /**
      * Find all products and return as results
      *
-     * @param array      $attributeCodes
-     * @param array      $criteria
-     * @param array|null $orderBy
-     * @param int|null   $limit
-     * @param int|null   $offset
+     * @param array      $attributeCodes attributes codes
+     * @param array      $criteria       criteria
+     * @param array|null $orderBy        order
+     * @param int|null   $limit          limit
+     * @param int|null   $offset         offset
      *
      * @return array The objects.
      */

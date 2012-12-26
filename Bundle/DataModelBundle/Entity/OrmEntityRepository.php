@@ -23,8 +23,8 @@ class OrmEntityRepository extends EntityRepository
      * TODO : use default locale from app conf
      * TODO : single table inheritance for flatten mode ?
      *
-     * @param EntityManager $em The EntityManager to use.
-     * @param ClassMetadata $classMetadata The class descriptor.
+     * @param EntityManager $em    The EntityManager to use.
+     * @param ClassMetadata $class The class descriptor.
      */
     public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
     {
@@ -36,7 +36,7 @@ class OrmEntityRepository extends EntityRepository
     /**
      * Get locale code
      *
-     * @param string
+     * @return string
      */
     public function getLocaleCode()
     {
@@ -47,6 +47,7 @@ class OrmEntityRepository extends EntityRepository
      * Set locale code
      *
      * @param string $code
+     *
      * @return \Oro\Bundle\DataModelBundle\Entity\OrmEntityRepository
      */
     public function setLocaleCode($code)
@@ -60,6 +61,7 @@ class OrmEntityRepository extends EntityRepository
      * Create a new QueryBuilder instance that is prepopulated for this entity name
      *
      * @param string $alias
+     *
      * @return QueryBuilder $qb
      */
     public function createQueryBuilder($alias)
@@ -82,6 +84,11 @@ class OrmEntityRepository extends EntityRepository
         return $qb;
     }
 
+    /**
+     * Find all entities
+     *
+     * @return multitype:
+     */
     public function findAllEntities()
     {
         $qb = $this->createQueryBuilder('Entity');

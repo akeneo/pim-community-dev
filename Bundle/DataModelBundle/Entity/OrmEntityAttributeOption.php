@@ -27,4 +27,11 @@ class OrmEntityAttributeOption extends AbstractOrmEntityAttributeOption
      */
     protected $attribute;
 
+    /**
+     * @var ArrayCollection $values
+     *
+     * @ORM\OneToMany(targetEntity="OrmEntityAttributeOptionValue", mappedBy="option", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"sortOrder" = "ASC"})
+     */
+    protected $values;
 }

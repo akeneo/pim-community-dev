@@ -2,6 +2,7 @@
 namespace Oro\Bundle\DataModelBundle\Entity;
 
 use Oro\Bundle\DataModelBundle\Model\AbstractEntityAttributeOption;
+use Oro\Bundle\DataModelBundle\Model\AbstractEntityAttributeOptionValue;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,15 +27,10 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
     /**
      * @var Attribute $attribute
      *
-     * @ORM\ManyToOne(targetEntity="EntityAttribute")
+     * @ORM\ManyToOne(targetEntity="AbstractOrmEntityAttribute")
      * @ORM\JoinColumn(name="attribute_id", nullable=false, onDelete="CASCADE", referencedColumnName="id")
      */
     protected $attribute;
-
-    /**
-     * @ORM\Column(name="data", type="string", length=255)
-     */
-    protected $value;
 
     /**
      * @ORM\Column(name="sort_order", type="integer")
@@ -42,10 +38,21 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
     protected $sortOrder;
 
     /**
-     * Used locale to override Translation listener(s locale
-     * this is not a mapped attribute of entity metadata, just a simple property
+     * @var ArrayCollection $values
+     *
+     * @ORM\OneToMany(targetEntity="AbstractOrmEntityAttributeOptionValue", mappedBy="option", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
-    protected $locale;
+    protected $values;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->values    = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->sortOrder = 1;
+    }
 
     /**
      * Set attribute
@@ -57,6 +64,21 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
     public function setAttribute(AbstractOrmEntityAttribute $attribute = null)
     {
         $this->attribute = $attribute;
+
+        return $this;
+    }
+
+    /**
+     * Add option value
+     *
+     * @param AbstractEntityAttributeOptionValue $value
+     *
+     * @return AbstractEntityAttribute
+     */
+    public function addValue(AbstractEntityAttributeOptionValue $value)
+    {
+        $this->values[] = $value;
+        $value->setOption($this);
 
         return $this;
     }

@@ -27,4 +27,12 @@ class ProductAttributeOption extends AbstractOrmEntityAttributeOption
      */
     protected $attribute;
 
+    /**
+     * @var ArrayCollection $values
+     *
+     * @ORM\OneToMany(targetEntity="ProductAttributeOptionValue", mappedBy="option", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"sortOrder" = "ASC"})
+     */
+    protected $values;
+
 }

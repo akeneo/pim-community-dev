@@ -43,6 +43,8 @@ class CustomerController extends Controller
     }
 
     /**
+     * @param integer $id
+     *
      * @Route("/view/{id}")
      * @Template()
      *
@@ -67,6 +69,8 @@ class CustomerController extends Controller
         // get attributes
         $attCompany = $this->getCustomerManager()->getAttributeRepository()->findOneByCode('company');
         $attGender = $this->getCustomerManager()->getAttributeRepository()->findOneByCode('gender');
+        // get first attribute option
+        $optGender = $this->getCustomerManager()->getAttributeOptionRepository()->findOneBy(array('attribute' => $attGender));
 
         for ($ind= 1; $ind < 100; $ind++) {
 
@@ -105,7 +109,7 @@ class CustomerController extends Controller
                 if ($attGender) {
                     $value = $this->getCustomerManager()->getNewAttributeValueInstance();
                     $value->setAttribute($attGender);
-                    $value->setData('Mr.');
+                    $value->setData($optGender->getId());
                     $customer->addValue($value);
                 }
                 $messages[]= "Customer ".$custEmail." has been created";

@@ -44,7 +44,7 @@ abstract class AbstractOrmEntity extends AbstractEntity
     /**
      * @var Value
      *
-     * @ORM\OneToMany(targetEntity="EntityAttributeValue", mappedBy="entity", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="AbstractOrmEntityAttributeValue", mappedBy="entity", cascade={"persist", "remove"})
      */
     protected $values;
 
@@ -81,6 +81,9 @@ abstract class AbstractOrmEntity extends AbstractEntity
     public function __get($attCode)
     {
         // TODO : refactor
+
+        // TODO : getDataText(), getData()
+
         $values = $this->getValues()->filter(function($value) use ($attCode) {
             return $value->getAttribute()->getCode() == $attCode;
         });
@@ -93,8 +96,10 @@ abstract class AbstractOrmEntity extends AbstractEntity
     /**
      * Define "magic" getter / setter to set values
      *
-     * @param string $name
-     * @param array  $arguments
+     * @param string $method    called method
+     * @param array  $arguments arguments
+     *
+     * @return mixed
      */
     public function __call($method, $arguments)
     {

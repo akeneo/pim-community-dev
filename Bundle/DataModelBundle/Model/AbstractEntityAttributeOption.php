@@ -16,19 +16,14 @@ abstract class AbstractEntityAttributeOption
     protected $id;
 
     /**
-     * @var string $value
-     */
-    protected $value;
-
-    /**
      * @var integer $sortOrder
      */
     protected $sortOrder;
 
     /**
-     * @var string $locale
+     * @var ArrayCollection $values
      */
-    protected $locale;
+    protected $values;
 
     /**
      * Get id
@@ -45,7 +40,7 @@ abstract class AbstractEntityAttributeOption
      *
      * @param integer $id
      *
-     * @return EntityAttributeValue
+     * @return AbstractEntityAttributeOption
      */
     public function setId($id)
     {
@@ -55,35 +50,11 @@ abstract class AbstractEntityAttributeOption
     }
 
     /**
-     * Set value
-     *
-     * @param string $value
-     *
-     * @return EntityAttributeValue
-     */
-    public function setValue($value)
-    {
-        $this->value = $value;
-
-        return $this;
-    }
-
-    /**
-     * Get value
-     *
-     * @return string
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
      * Set sort order
      *
      * @param string $sortOrder
      *
-     * @return EntityAttributeValue
+     * @return AbstractEntityAttributeOption
      */
     public function setSortOrder($sortOrder)
     {
@@ -103,11 +74,37 @@ abstract class AbstractEntityAttributeOption
     }
 
     /**
-     * Set used locale
-     * @param string $locale
+     * Add value
+     *
+     * @param AbstractEntityAttributeOptionValue $value
+     *
+     * @return Entity
      */
-    public function setTranslatableLocale($locale)
+    public function addValue(AbstractEntityAttributeOptionValue $value)
     {
-        $this->locale = $locale;
+        $this->values[] = $value;
+
+        return $this;
     }
+
+    /**
+     * Remove value
+     *
+     * @param AbstractEntityAttributeOptionValue $value
+     */
+    public function removeValue(AbstractEntityAttributeOptionValue $value)
+    {
+        $this->values->removeElement($value);
+    }
+
+    /**
+     * Get values
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getValues()
+    {
+        return $this->values;
+    }
+
 }

@@ -86,7 +86,7 @@ abstract class AbstractEntityAttribute
      *
      * @param integer $id
      *
-     * @return EntityAttribute
+     * @return AbstractEntityAttribute
      */
     public function setId($id)
     {
@@ -100,7 +100,7 @@ abstract class AbstractEntityAttribute
      *
      * @param string $code
      *
-     * @return EntityAttribute
+     * @return AbstractEntityAttribute
      */
     public function setCode($code)
     {
@@ -124,7 +124,7 @@ abstract class AbstractEntityAttribute
      *
      * @param string $entityType
      *
-     * @return EntityAttribute
+     * @return AbstractEntityAttribute
      */
     public function setEntityType($entityType)
     {
@@ -148,7 +148,7 @@ abstract class AbstractEntityAttribute
      *
      * @param string $title
      *
-     * @return EntityAttribute
+     * @return AbstractEntityAttribute
      */
     public function setTitle($title)
     {
@@ -193,7 +193,7 @@ abstract class AbstractEntityAttribute
      *
      * @param string $type
      *
-     * @return EntityAttribute
+     * @return AbstractEntityAttribute
      */
     public function setType($type)
     {
@@ -217,7 +217,7 @@ abstract class AbstractEntityAttribute
      *
      * @param boolean $uniqueValue
      *
-     * @return EntityAttribute
+     * @return AbstractEntityAttribute
      */
     public function setUniqueValue($uniqueValue)
     {
@@ -241,7 +241,7 @@ abstract class AbstractEntityAttribute
      *
      * @param string $valueRequired
      *
-     * @return EntityAttribute
+     * @return AbstractEntityAttribute
      */
     public function setValueRequired($valueRequired)
     {
@@ -265,7 +265,7 @@ abstract class AbstractEntityAttribute
      *
      * @param boolean $searchable
      *
-     * @return EntityAttribute
+     * @return AbstractEntityAttribute
      */
     public function setSearchable($searchable)
     {
@@ -289,7 +289,7 @@ abstract class AbstractEntityAttribute
      *
      * @param boolean $translatable
      *
-     * @return EntityAttribute
+     * @return AbstractEntityAttribute
      */
     public function setTranslatable($translatable)
     {

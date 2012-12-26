@@ -47,7 +47,7 @@ abstract class AbstractEntityAttributeValue
      *
      * @param string $data
      *
-     * @return EntityAttributeValue
+     * @return AbstractEntityAttributeValue
      */
      public function setData($data)
      {
@@ -71,7 +71,7 @@ abstract class AbstractEntityAttributeValue
      *
      * @param EntityAttribute $attribute
      *
-     * @return EntityAttributeValue
+     * @return AbstractEntityAttributeValue
      */
     public function setAttribute(AbstractEntityAttribute $attribute = null)
     {
@@ -83,7 +83,7 @@ abstract class AbstractEntityAttributeValue
     /**
      * Get attribute
      *
-     * @return EntityAttribute
+     * @return AbstractEntityAttributeValue
      */
     public function getAttribute()
     {
