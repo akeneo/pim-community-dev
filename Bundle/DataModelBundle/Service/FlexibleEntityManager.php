@@ -18,6 +18,12 @@ class FlexibleEntityManager extends SimpleEntityManager
 {
 
     /**
+     * Locale code
+     * @var string
+     */
+    protected $localeCode;
+
+    /**
      * Default value
      * @var string
      */
@@ -45,6 +51,36 @@ class FlexibleEntityManager extends SimpleEntityManager
     {
         parent::__construct($container, $entitySN);
         $this->attributeValueShortname = $valueSN;
+    }
+
+    /**
+     * Return locale code from request or default
+     * TODO: custom config ?
+     *
+     * @return string
+     */
+    public function getLocaleCode()
+    {
+        if (!$this->localeCode) {
+            $this->localeCode = $this->container->get('request')->getLocale();
+            if (!$this->localeCode) {
+                $localeCode = $this->container->parameters['locale'];
+            }
+        }
+
+        return $this->localeCode;
+    }
+
+    /**
+     * Return related repository
+     * @return Doctrine\Common\Persistence\ObjectRepository
+     */
+    public function getEntityRepository()
+    {
+        $repo = $this->manager->getRepository($this->getEntityShortname());
+        $repo->setLocaleCode($this->getLocaleCode());
+
+        return $repo;
     }
 
     /**

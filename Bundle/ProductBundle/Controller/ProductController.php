@@ -89,7 +89,7 @@ class ProductController extends Controller
                 $this->getProductManager()->getStorageManager()->persist($newProduct);
             }
 
-            // add product with sku and name and color
+            // add product with sku and name (translated) and color
             $prodSku = 'sku-'.$ind++;
             $newProduct = $this->getProductManager()->getEntityRepository()->findOneBySku($prodSku);
             if ($newProduct) {
@@ -151,6 +151,41 @@ class ProductController extends Controller
         return $this->redirect($this->generateUrl('oro_product_product_index'));
     }
 
+    /**
+     * @Route("/translate")
+     *
+     * @return multitype
+     */
+    public function translateAction()
+    {
+        $messages = array();
+
+        // get attributes
+        $attName = $this->getProductManager()->getAttributeRepository()->findOneByCode('name');
+        $attDescription = $this->getProductManager()->getAttributeRepository()->findOneByCode('description');
+
+        // get products
+        $products = $this->getProductManager()->getEntityRepository()->findAll();
+        $ind = 1;
+        foreach ($products as $product) {
+            // translate value
+            if ($attName) {
+                $valueName = $this->getProductManager()->getNewAttributeValueInstance();
+                $valueName->setAttribute($attName);
+                $valueName->setLocaleCode('fr');
+                $valueName->setData('mon nom '.$ind++);
+                $product->addValue($valueName);
+            }
+            $this->getProductManager()->getStorageManager()->persist($valueName);
+            $messages[]= "Value has been translated";
+        }
+
+        $this->getProductManager()->getStorageManager()->flush();
+
+        $this->get('session')->setFlash('notice', implode(', ', $messages));
+
+        return $this->redirect($this->generateUrl('oro_product_product_index'));
+    }
 
     /**
      * @Route("/draft")

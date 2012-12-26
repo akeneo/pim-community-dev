@@ -14,6 +14,7 @@ abstract class AbstractEntityAttribute
     const TYPE_STRING = 'string';
     const TYPE_TEXT   = 'text';
     const TYPE_NUMBER = 'number';
+    const TYPE_LIST   = 'option';
 
     /**
      * @var integer $id

@@ -30,16 +30,25 @@ class OrmEntityRepository extends EntityRepository
     {
         parent::__construct($em, $class);
 
-        // TODO en or en_US
-        $this->localeCode = 'en_US';
         $this->useLazyLoading = false;
     }
 
+    /**
+     * Get locale code
+     *
+     * @param string
+     */
     public function getLocaleCode()
     {
         return $this->localeCode;
     }
 
+    /**
+     * Set locale code
+     *
+     * @param string $code
+     * @return \Oro\Bundle\DataModelBundle\Entity\OrmEntityRepository
+     */
     public function setLocaleCode($code)
     {
         $this->localeCode = $code;
@@ -63,8 +72,13 @@ class OrmEntityRepository extends EntityRepository
                 ->select($alias, 'Value', 'Attribute')
                 ->from($this->_entityName, $alias)
                 ->leftJoin($alias.'.values', 'Value')
-                ->leftJoin('Value.attribute', 'Attribute');
+                ->leftJoin('Value.attribute', 'Attribute')
+                ->andWhere('Value.localeCode = :locale OR Value.localeCode IS NULL')
+                ->setParameter('locale', $this->getLocaleCode());
+
+            // TODO : if not translatable ?
         }
+
         return $qb;
     }
 

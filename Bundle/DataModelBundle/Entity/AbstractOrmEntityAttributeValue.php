@@ -72,6 +72,17 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
     protected $textValue;
 
     /**
+     * Store option value
+     *
+     * TODO : add foreign key
+     *
+     * @var string $optionvalue
+     *
+     * @ORM\Column(name="option_value", type="integer", nullable=true)
+     */
+    protected $optionValue;
+
+    /**
      * Set entity
      *
      * @param AbstractEntity $entity
