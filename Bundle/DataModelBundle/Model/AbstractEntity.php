@@ -28,6 +28,16 @@ abstract class AbstractEntity
     protected $updated;
 
     /**
+     * @var string $defaultLocaleCode
+     */
+    protected $defaultlocaleCode;
+
+    /**
+     * @var string $localeCode
+     */
+    protected $localeCode;
+
+    /**
      * Get id
      *
      * @return integer
@@ -62,7 +72,7 @@ abstract class AbstractEntity
      *
      * @param EntityAttributeValue $value
      *
-     * @return Entity
+     * @return AbstractEntity
      */
     public function addValue(AbstractEntityAttributeValue $value)
     {
@@ -91,4 +101,45 @@ abstract class AbstractEntity
         return $this->values;
     }
 
+    /**
+     * Get used locale
+     * @return string $locale
+     */
+    public function getLocaleCode()
+    {
+        return $this->localeCode;
+    }
+
+    /**
+     * Set used locale
+     * @param string $locale
+     */
+    public function setLocaleCode($locale)
+    {
+        $this->localeCode = $locale;
+    }
+
+    /**
+     * Get default locale code
+     *
+     * @return string
+     */
+    public function getDefaultLocaleCode()
+    {
+        return $this->defaultlocaleCode;
+    }
+
+    /**
+     * Set locale code
+     *
+     * @param string $code
+     *
+     * @return AbstractEntity
+     */
+    public function setDefaultLocaleCode($code)
+    {
+        $this->defaultlocaleCode = $code;
+
+        return $this;
+    }
 }

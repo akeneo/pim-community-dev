@@ -1,0 +1,8 @@
+# add listener to add locale and default locale on entity
+services:
+    oro_data_model.translatable_listener:
+        class: Oro\Bundle\DataModelBundle\EventListener\TranslatableListener
+        calls:
+            - [ setContainer, [ @service_container ] ]
+        tags:
+            - { name: doctrine.event_listener, event: postLoad }

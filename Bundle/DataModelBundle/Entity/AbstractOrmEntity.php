@@ -57,7 +57,7 @@ abstract class AbstractOrmEntity extends AbstractEntity
     }
 
     /**
-     * Add value
+     * Add value, override to deal with relation owner side
      *
      * @param AbstractEntityAttributeValue $value
      *
@@ -72,6 +72,93 @@ abstract class AbstractOrmEntity extends AbstractEntity
     }
 
     /**
+     * Get value related to attribute code
+     *
+     * @param string $attributeCode
+     *
+     * @return mixed|NULL
+     */
+    public function getValue($attributeCode)
+    {
+        $locale = $this->getLocaleCode();
+        $defaultLocale = $this->getDefaultLocaleCode();
+        $values = $this->getValues()->filter(function($value) use ($attributeCode, $locale, $defaultLocale) {
+            // related value to asked attribute
+            if ($value->getAttribute()->getCode() == $attributeCode) {
+                // return relevant translated locale
+                if ($value->getAttribute()->getTranslatable() and $value->getLocaleCode() == $locale) {
+                    return true;
+                }
+                // default value if not translatable
+                if (!$value->getAttribute()->getTranslatable() and $value->getLocaleCode() == $defaultLocale) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
+        $value = $values->first();
+
+        return $value;
+    }
+
+    /**
+     * Get value data (string, number, etc) related to attribute code
+     *
+     * @param string $attributeCode
+     *
+     * @return mixed|NULL
+     */
+    public function getValueData($attributeCode)
+    {
+        $value = $this->getValue($attributeCode);
+
+        return ($value) ? $value->getData() : null;
+    }
+
+    /**
+     * Get option value related to attribute code
+     *
+     * @param string $attributeCode
+     *
+     * @return mixed|NULL
+     */
+    public function getOptionValue($attributeCode)
+    {
+        $value = $this->getValue($attributeCode);
+
+        return ($value) ? $value->getData() : null;
+    }
+
+    /**
+     * Get option value data related to attribute code
+     *
+     * @param string $attributeCode
+     *
+     * @return mixed|NULL
+     */
+    public function getOptionValueData($attributeCode)
+    {
+        $value = $this->getValue($attributeCode);
+
+        return ($value) ? $value->getData() : null;
+    }
+
+    /**
+     * Check if a field or attribute exists
+     *
+     * @param string $name
+     *
+     * @return boolean
+     */
+    public function __isset($name)
+    {
+        // TODO authorize call to dynamic __get by twig, should be filter on existing attributes
+        // cf http://twig.sensiolabs.org/doc/recipes.html#using-dynamic-object-properties
+        return true;
+    }
+
+    /**
      * Get value data by attribute code
      *
      * @param string $attCode
@@ -80,33 +167,14 @@ abstract class AbstractOrmEntity extends AbstractEntity
      */
     public function __get($attCode)
     {
-        // TODO : refactor
-
-        // TODO : getDataText(), getData()
-
-        $values = $this->getValues()->filter(function($value) use ($attCode) {
-            return $value->getAttribute()->getCode() == $attCode;
-        });
-        $value = $values->first();
-
-        return ($value) ? $value->getData() : null;
+        // call existing getAttCode method
+        $methodName = "get{$attCode}";
+        if (method_exists($this, $methodName)) {
+            return $this->$methodName();
+        // dynamic call to get value data
+        } else {
+            return $this->getValueData($attCode);
+        }
     }
-
-
-    /**
-     * Define "magic" getter / setter to set values
-     *
-     * @param string $method    called method
-     * @param array  $arguments arguments
-     *
-     * @return mixed
-     */
-    public function __call($method, $arguments)
-    {
-        // TODO : refactor
-
-        return $this->__get($method);
-    }
-
 
 }
