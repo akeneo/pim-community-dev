@@ -35,7 +35,7 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
     /**
      * @var Entity $entity
      *
-     * @ORM\ManyToOne(targetEntity="Entity", inversedBy="values")
+     * @ORM\ManyToOne(targetEntity="AbstractOrmEntity", inversedBy="values")
      */
     protected $entity;
 
@@ -72,15 +72,13 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
     protected $textValue;
 
     /**
-     * Store option value
+     * Store option
      *
-     * TODO : add foreign key
+     * @var AbstractOrmEntityAttributeOption $option
      *
-     * @var string $optionvalue
-     *
-     * @ORM\Column(name="option_value", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="AbstractOrmEntityAttributeOption", inversedBy="attributeValues")
      */
-    protected $optionValue;
+    protected $option;
 
     /**
      * Set entity
@@ -114,7 +112,7 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
             case AbstractEntityAttribute::TYPE_NUMBER:
                 return 'numberValue';
             case AbstractEntityAttribute::TYPE_LIST:
-                return 'optionValue';
+                return 'option';
             default:
                 throw new \Exception(sprintf('This attribute type %s is unknown', $type));
         }
@@ -145,6 +143,26 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
         $backend = $this->getAttributeTypeToBackend($this->attribute->getType());
 
         return $this->$backend;
+    }
+
+    /**
+     * Set related option
+     *
+     * @param OrmEntityAttributeOption $option
+     */
+    public function setOption(OrmEntityAttributeOption $option)
+    {
+        $this->option = $option;
+    }
+
+    /**
+     * Get related option
+     *
+     * @return OrmEntityAttributeOption
+     */
+    public function getOption()
+    {
+        return $this->option;
     }
 
 }

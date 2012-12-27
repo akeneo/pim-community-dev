@@ -22,7 +22,7 @@ class OrmEntityAttributeOptionValue extends AbstractOrmEntityAttributeOptionValu
      *
      * @var OrmEntityAttributeOption $option
      *
-     * @ORM\ManyToOne(targetEntity="OrmEntityAttributeOption")
+     * @ORM\ManyToOne(targetEntity="OrmEntityAttributeOption", inversedBy="optionValues")
      * @ORM\JoinColumn(name="option_id", nullable=false, onDelete="CASCADE", referencedColumnName="id")
      */
     protected $option;

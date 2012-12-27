@@ -54,6 +54,9 @@ class AttributeController extends Controller
     {
         $messages = array();
 
+        // force in english
+        $this->getProductManager()->setLocaleCode('en');
+
         // attribute name (if not exists)
         $attributeCode = 'name';
         $attribute = $this->getProductManager()->getAttributeRepository()->findOneByCode($attributeCode);
@@ -115,7 +118,7 @@ class AttributeController extends Controller
                 $option = $this->getProductManager()->getNewAttributeOptionInstance();
                 $optionValue = $this->getProductManager()->getNewAttributeOptionValueInstance();
                 $optionValue->setValue($color);
-                $option->addValue($optionValue);
+                $option->addOptionValue($optionValue);
                 $attribute->addOption($option);
             }
             $this->getProductManager()->getStorageManager()->persist($attribute);

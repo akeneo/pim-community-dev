@@ -81,12 +81,12 @@ class AttributeController extends Controller
             $opt = $this->getCustomerManager()->getNewAttributeOptionInstance();
             $valMr = $this->getCustomerManager()->getNewAttributeOptionValueInstance();
             $valMr->setValue('Masculine');
-            $opt->addValue($valMr);
+            $opt->addOptionValue($valMr);
             $att->addOption($opt);
             // add another option
             $valMrs = $this->getCustomerManager()->getNewAttributeOptionValueInstance();
             $valMrs->setValue('Feminine');
-            $opt->addValue($valMrs);
+            $opt->addOptionValue($valMrs);
             $att->addOption($opt);
             $this->getCustomerManager()->getStorageManager()->persist($att);
             $messages[]= "Attribute ".$attCode." has been created";

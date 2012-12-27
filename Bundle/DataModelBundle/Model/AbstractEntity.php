@@ -113,10 +113,14 @@ abstract class AbstractEntity
     /**
      * Set used locale
      * @param string $locale
+     *
+     * @return AbstractEntity
      */
     public function setLocaleCode($locale)
     {
         $this->localeCode = $locale;
+
+        return $this;
     }
 
     /**

@@ -100,6 +100,34 @@ class FlexibleEntityManager extends SimpleEntityManager
     }
 
     /**
+     * Set locale code
+     *
+     * @param string $code
+     *
+     * @return FlexibleEntityManager
+     */
+    public function setDefaultLocaleCode($code)
+    {
+        $this->defaultlocaleCode = $code;
+
+        return $this;
+    }
+
+    /**
+     * Set locale code
+     *
+     * @param string $code
+     *
+     * @return FlexibleEntityManager
+     */
+    public function setLocaleCode($code)
+    {
+        $this->localeCode = $code;
+
+        return $this;
+    }
+
+    /**
      * Return related repository
      * @return Doctrine\Common\Persistence\ObjectRepository
      */

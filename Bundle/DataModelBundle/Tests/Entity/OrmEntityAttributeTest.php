@@ -1,9 +1,9 @@
 <?php
-namespace Oro\Bundle\ProductBundle\Test\Entity;
+namespace Oro\Bundle\DataModelBundle\Test\Entity;
 
-use Oro\Bundle\ProductBundle\Entity\ProductAttributeOption;
-
-use Oro\Bundle\ProductBundle\Entity\ProductAttribute;
+use Oro\Bundle\DataModelBundle\Entity\OrmEntityAttribute;
+use Oro\Bundle\DataModelBundle\Entity\OrmEntityAttributeOption;
+use Oro\Bundle\DataModelBundle\Entity\OrmEntityAttributeOptionValue;
 
 /**
  * Test related class
@@ -13,42 +13,45 @@ use Oro\Bundle\ProductBundle\Entity\ProductAttribute;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-class ProductAttributeTest extends \PHPUnit_Framework_TestCase
+class OrmEntityAttributeTest extends \PHPUnit_Framework_TestCase
 {
-    protected $attributeCode  = 'sku';
+    protected $attributeCode = 'sku';
     protected $attributeTitle = 'My sku';
 
     /**
-     * Test related method
-     */
+* Test related method
+*/
     public function testGetCode()
     {
-        $attribute = new ProductAttribute();
+        $attribute = new OrmEntityAttribute();
         $attribute->setCode($this->attributeCode);
         $this->assertEquals($attribute->getCode(), $this->attributeCode);
     }
 
     /**
-     * Test related method
-     */
+* Test related method
+*/
     public function testGetTitle()
     {
-        $attribute = new ProductAttribute();
+        $attribute = new OrmEntityAttribute();
         $attribute->setTitle($this->attributeTitle);
         $this->assertEquals($attribute->getTitle(), $this->attributeTitle);
     }
 
 
     /**
-     * Test related method
-     */
+* Test related method
+*/
     public function testGetOptions()
     {
         // attribute
-        $attribute = new ProductAttribute();
+        $attribute = new OrmEntityAttribute();
         $attribute->setCode($this->attributeCode);
         // option
-        $option = new ProductAttributeOption();
+        $option = new OrmEntityAttributeOption();
+        // option value
+        $optionValue = new OrmEntityAttributeOptionValue();
+        $option->addOptionValue($optionValue);
         $attribute->addOption($option);
 
         $this->assertEquals($attribute->getOptions()->count(), 1);

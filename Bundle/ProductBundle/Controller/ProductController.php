@@ -38,8 +38,8 @@ class ProductController extends Controller
     public function indexAction()
     {
         // TODO : with lazy load
-//        $products = $this->getProductManager()->getEntityRepository()->findAll();
-    	// TODO : without lazy load
+        // $products = $this->getProductManager()->getEntityRepository()->findAll();
+        // TODO : without lazy load
         $products = $this->getProductManager()->getEntityRepository()->findAllEntities();
 
         return array('products' => $products);
@@ -69,11 +69,16 @@ class ProductController extends Controller
     {
         $messages = array();
 
+        // force in english
+        $this->getProductManager()->setLocaleCode('en');
+
         // get attributes
         $attName = $this->getProductManager()->getAttributeRepository()->findOneByCode('name');
         $attDescription = $this->getProductManager()->getAttributeRepository()->findOneByCode('description');
         $attSize = $this->getProductManager()->getAttributeRepository()->findOneByCode('size');
         $attColor = $this->getProductManager()->getAttributeRepository()->findOneByCode('color');
+        // get first attribute option
+        $optColor = $this->getProductManager()->getAttributeOptionRepository()->findOneBy(array('attribute' => $attColor));
 
         for ($ind= 1; $ind < 100; $ind++) {
 
@@ -118,7 +123,7 @@ class ProductController extends Controller
                 if ($attColor) {
                     $value = $this->getProductManager()->getNewAttributeValueInstance();
                     $value->setAttribute($attColor);
-                    $value->setData(1);
+                    $value->setData($optColor); // we set option as data, you can use $value->setOption($optColor) too
                     $newProduct->addValue($value);
                 }
                 $this->getProductManager()->getStorageManager()->persist($newProduct);
@@ -166,38 +171,41 @@ class ProductController extends Controller
     {
         $messages = array();
 
+        // force in english
+        $this->getProductManager()->setLocaleCode('en');
+
         // get attributes
         $attName = $this->getProductManager()->getAttributeRepository()->findOneByCode('name');
         $attDescription = $this->getProductManager()->getAttributeRepository()->findOneByCode('description');
 
         // get products
-        $products = $this->getProductManager()->getEntityRepository()->findAll();
+        $products = $this->getProductManager()->getEntityRepository()->findAllEntities();
         $ind = 1;
         foreach ($products as $product) {
             // translate name value
             if ($attName) {
-                if ($product->name != null) {
+                if ($product->setLocaleCode('en')->getValue('name') != null) {
                     $value = $this->getProductManager()->getNewAttributeValueInstance();
                     $value->setAttribute($attName);
                     $value->setLocaleCode('fr');
                     $value->setData('mon nom FR '.$ind++);
                     $product->addValue($value);
                     $this->getProductManager()->getStorageManager()->persist($value);
+                    $messages[]= "Value 'name' has been translated";
                 }
             }
             // translate description value
             if ($attDescription) {
-                if ($product->description != null) {
+                if ($product->getValue('description') != null) {
                     $value = $this->getProductManager()->getNewAttributeValueInstance();
                     $value->setAttribute($attDescription);
                     $value->setLocaleCode('fr');
-                    $value->setData('ma super description FR '.$ind++);
+                    $value->setData('ma description FR '.$ind++);
                     $product->addValue($value);
                     $this->getProductManager()->getStorageManager()->persist($value);
+                    $messages[]= "Value 'description' has been translated";
                 }
             }
-
-            $messages[]= "Value has been translated";
         }
 
         // get color attribute options
@@ -212,8 +220,9 @@ class ProductController extends Controller
                 $optValueFr = $this->getProductManager()->getNewAttributeOptionValueInstance();
                 $optValueFr->setValue($colorFr);
                 $optValueFr->setLocaleCode('fr');
-                $option->addValue($optValueFr);
+                $option->addOptionValue($optValueFr);
                 $this->getProductManager()->getStorageManager()->persist($optValueFr);
+                $messages[]= "Option '".$colorEn."' has been translated";
             }
         }
 
@@ -224,95 +233,4 @@ class ProductController extends Controller
         return $this->redirect($this->generateUrl('oro_product_product_index'));
     }
 
-    /**
-     * @Route("/draft")
-     * @Template()
-     *
-     * @return multitype
-     */
-    public function draftAction()
-    {
-
-        /*
-        $product = new ProductEntity();
-        $product->setSku('my-sku');
-
-        $pm = $this->container->get('product_manager');
-        $product = $pm->getNewEntityInstance();
-        //var_dump($product);
-
-        $products = $this->container->get('product_manager')->getEntityRepository()->findAll();
-        foreach ($products as $product) {
-            echo $product->getSku().' - '.$product->getname13558539042014().'<br/>';
-        }
-        echo '<br/>';
-
-       // get default locale value
-        $product = $pm->getEntityRepository()->find(2);
-        echo $product->getSku().' - '.$product->getname13558539042014().'<br/>';
-
-        // get french value
-        foreach ($product->getValues() as $value) {
-            $value->setTranslatableLocale('fr_FR');
-            $pm->getStorageManager()->refresh($value);
-        }
-        echo $product->getSku().' - '.$product->getname13558539042014().'<br/>';
-*/
-  //      echo '<br/>';
-
-        /*
-        // query on default locale
-        $em = $pm->getStorageManager();
-        $em->clear();
-
-        $query = $em->createQuery(
-            'SELECT p FROM OroProductBundle:ProductEntity p WHERE p.sku = :sku '
-        )->setParameter('sku', 'my sku 13558539042014');
-
-//        $query = $em->createQuery('SELECT v FROM OroProductBundle:ProductAttributeValue v');
-        $query->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, 'fr');
-
-
-        $products = $query->getResult();
-        foreach ($products as $product) {
-            var_dump($product->getname13558539042014());
-        }
-        echo '<br/><br/>';
-
-        // query on french locale
-        $em = $pm->getStorageManager();
-        $em->clear();
-
-         $query = $em->createQuery(
-                 'SELECT p FROM OroProductBundle:ProductEntity p WHERE p.sku = :sku '
-         )->setParameter('sku', 'my sku 13558539042014');
-
-        $query = $em->createQuery('SELECT v FROM OroProductBundle:ProductAttributeValue v');
-        $query->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, 'en');
-
-        // clear cache ??? see http://gediminasm.org/article/translatable-behavior-extension-for-doctrine-2
-        $query->useResultCache(false);
-        $query->expireQueryCache(true);
-
-
-//        var_dump($query);
-
-        //$query->useResultCache(false); // clear cache
-
-        $values = $query->getArrayResult(); // array hydration$query->getResult();
-        foreach ($values as $value) {
-            var_dump($value);
-        }
-        echo '<br/>';
-
-/*
-        // fallback
-        $query->setHint(
-                \Gedmo\Translatable\TranslatableListener::HINT_FALLBACK,
-                1, // fallback to default values in case if record is not translated
-        );
-*/
-
-        return array(/*'name' => $product->getSku()*/);
-    }
 }

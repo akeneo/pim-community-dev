@@ -37,4 +37,16 @@ class ProductControllerTest extends WebTestCase
 
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
     }
+
+    /**
+     * Test related method
+     */
+    public function testTranslate()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/en/product/product/translate');
+
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+    }
 }

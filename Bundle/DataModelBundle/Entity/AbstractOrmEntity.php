@@ -117,34 +117,6 @@ abstract class AbstractOrmEntity extends AbstractEntity
     }
 
     /**
-     * Get option value related to attribute code
-     *
-     * @param string $attributeCode
-     *
-     * @return mixed|NULL
-     */
-    public function getOptionValue($attributeCode)
-    {
-        $value = $this->getValue($attributeCode);
-
-        return ($value) ? $value->getData() : null;
-    }
-
-    /**
-     * Get option value data related to attribute code
-     *
-     * @param string $attributeCode
-     *
-     * @return mixed|NULL
-     */
-    public function getOptionValueData($attributeCode)
-    {
-        $value = $this->getValue($attributeCode);
-
-        return ($value) ? $value->getData() : null;
-    }
-
-    /**
      * Check if a field or attribute exists
      *
      * @param string $name

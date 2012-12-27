@@ -21,9 +21,14 @@ abstract class AbstractEntityAttributeOption
     protected $sortOrder;
 
     /**
-     * @var ArrayCollection $values
+     * @var ArrayCollection $optionValues
      */
-    protected $values;
+    protected $optionValues;
+
+    /**
+     * @var string $localeCode
+     */
+    protected $localeCode;
 
     /**
      * Get id
@@ -80,9 +85,9 @@ abstract class AbstractEntityAttributeOption
      *
      * @return Entity
      */
-    public function addValue(AbstractEntityAttributeOptionValue $value)
+    public function addOptionValue(AbstractEntityAttributeOptionValue $value)
     {
-        $this->values[] = $value;
+        $this->optionValues[] = $value;
 
         return $this;
     }
@@ -92,9 +97,9 @@ abstract class AbstractEntityAttributeOption
      *
      * @param AbstractEntityAttributeOptionValue $value
      */
-    public function removeValue(AbstractEntityAttributeOptionValue $value)
+    public function removeOptionValue(AbstractEntityAttributeOptionValue $value)
     {
-        $this->values->removeElement($value);
+        $this->optionValues->removeElement($value);
     }
 
     /**
@@ -102,9 +107,26 @@ abstract class AbstractEntityAttributeOption
      *
      * @return Doctrine\Common\Collections\Collection
      */
-    public function getValues()
+    public function getOptionValues()
     {
-        return $this->values;
+        return $this->optionValues;
     }
 
+    /**
+     * Get used locale
+     * @return string $locale
+     */
+    public function getLocaleCode()
+    {
+        return $this->localeCode;
+    }
+
+    /**
+     * Set used locale
+     * @param string $locale
+     */
+    public function setLocaleCode($locale)
+    {
+        $this->localeCode = $locale;
+    }
 }

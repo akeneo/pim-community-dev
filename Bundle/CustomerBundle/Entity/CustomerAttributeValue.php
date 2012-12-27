@@ -32,4 +32,12 @@ class CustomerAttributeValue extends AbstractOrmEntityAttributeValue
      */
     protected $entity;
 
+    /**
+     * Store option value, if backend is an option
+     *
+     * @var AbstractOrmEntityAttributeOption $optionvalue
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\DataModelBundle\Entity\OrmEntityAttributeOption", inversedBy="attributeValues")
+     */
+    protected $option;
 }

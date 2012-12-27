@@ -34,8 +34,10 @@ class CustomerManagerTest extends KernelAwareTest
      */
     public function testGetNewEntityInstance()
     {
-        $newManufacturer = $this->manager->getNewEntityInstance();
-        $this->assertTrue($newManufacturer instanceof Customer);
-        $newManufacturer->setName('Lenovo');
+        $newCustomer = $this->manager->getNewEntityInstance();
+        $this->assertTrue($newCustomer instanceof Customer);
+        $newCustomer->setFirstname('Nicolas');
+        $newCustomer->setLastname('Dupont');
+        $this->assertEquals($newCustomer->getFirstname(), 'Nicolas');
     }
 }

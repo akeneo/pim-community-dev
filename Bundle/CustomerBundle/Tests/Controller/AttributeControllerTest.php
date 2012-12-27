@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\ProductBundle\Tests\Controller;
+namespace Oro\Bundle\CustomerBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-class CustomerControllerTest extends WebTestCase
+class AttributeControllerTest extends WebTestCase
 {
     /**
      * Test related method

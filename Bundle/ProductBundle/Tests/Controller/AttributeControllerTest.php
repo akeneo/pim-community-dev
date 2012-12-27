@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\CustomerBundle\Tests\Controller;
+namespace Oro\Bundle\ProductBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-class CustomerControllerTest extends WebTestCase
+class AttributeControllerTest extends WebTestCase
 {
     /**
      * Test related method
@@ -21,7 +21,7 @@ class CustomerControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/en/customer/customer/index');
+        $crawler = $client->request('GET', '/en/product/attribute/index');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
@@ -33,8 +33,9 @@ class CustomerControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/en/customer/customer/insert');
+        $crawler = $client->request('GET', '/en/product/attribute/insert');
 
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
     }
+
 }

@@ -31,7 +31,37 @@ class OrmEntityAttributeOption extends AbstractOrmEntityAttributeOption
      * @var ArrayCollection $values
      *
      * @ORM\OneToMany(targetEntity="OrmEntityAttributeOptionValue", mappedBy="option", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
-    protected $values;
+    protected $optionValues;
+
+    /**
+     * Get localized value
+     *
+     * @return OrmEntityAttributeOptionValue
+     */
+    public function getOptionValue()
+    {
+        $locale = $this->getLocaleCode();
+        $values = $this->getOptionValues()->filter(function($value) use ($locale) {
+            // return relevant translated locale
+            if ($value->getLocaleCode() == $locale) {
+                return true;
+            }
+        });
+        $value = $values->first();
+
+        return $value;
+    }
+
+    /**
+     * To string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        $value = $this->getOptionValue();
+
+        return ($value) ? $value->getValue() : '';
+    }
 }

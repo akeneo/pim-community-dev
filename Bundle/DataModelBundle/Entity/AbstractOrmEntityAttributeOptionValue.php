@@ -27,7 +27,7 @@ abstract class AbstractOrmEntityAttributeOptionValue extends AbstractEntityAttri
     /**
      * @var AbstractOrmEntityAttributeOption $option
      *
-     * @ORM\ManyToOne(targetEntity="Option", inversedBy="values")
+     * @ORM\ManyToOne(targetEntity="AbstractOrmEntityAttributeOption", inversedBy="optionValues")
      */
     protected $option;
 
@@ -40,6 +40,8 @@ abstract class AbstractOrmEntityAttributeOptionValue extends AbstractEntityAttri
     protected $localeCode;
 
     /**
+     * @var string $value
+     *
      * @ORM\Column(name="value", type="string", length=255)
      */
     protected $value;

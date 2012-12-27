@@ -21,7 +21,7 @@ abstract class AbstractEntityAttributeOptionValue
     protected $option;
 
     /**
-     * @var string $data
+     * @var string $value
      */
     protected $value;
 

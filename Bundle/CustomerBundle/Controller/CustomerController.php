@@ -109,7 +109,7 @@ class CustomerController extends Controller
                 if ($attGender) {
                     $value = $this->getCustomerManager()->getNewAttributeValueInstance();
                     $value->setAttribute($attGender);
-                    $value->setData($optGender->getId());
+                    $value->setData($optGender);  // we set option as data, you can use $value->setOption($optGender) too
                     $customer->addValue($value);
                 }
                 $messages[]= "Customer ".$custEmail." has been created";

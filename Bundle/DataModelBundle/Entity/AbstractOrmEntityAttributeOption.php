@@ -38,19 +38,18 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
     protected $sortOrder;
 
     /**
-     * @var ArrayCollection $values
+     * @var ArrayCollection $optionValues
      *
      * @ORM\OneToMany(targetEntity="AbstractOrmEntityAttributeOptionValue", mappedBy="option", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
-    protected $values;
+    protected $optionValues;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->values    = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->optionValues    = new \Doctrine\Common\Collections\ArrayCollection();
         $this->sortOrder = 1;
     }
 
@@ -75,9 +74,9 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
      *
      * @return AbstractEntityAttribute
      */
-    public function addValue(AbstractEntityAttributeOptionValue $value)
+    public function addOptionValue(AbstractEntityAttributeOptionValue $value)
     {
-        $this->values[] = $value;
+        $this->optionValues[] = $value;
         $value->setOption($this);
 
         return $this;
