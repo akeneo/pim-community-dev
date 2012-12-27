@@ -49,7 +49,7 @@ class DefaultController extends Controller
 
         $this->get('session')->setFlash('notice', "DB has been truncated with success (schema re-generation)");
 
-        return array();
+        return $this->redirect($this->generateUrl('oro_product_product_index'));
     }
 
 }

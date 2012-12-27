@@ -51,6 +51,9 @@ class AttributeController extends Controller
     {
         $messages = array();
 
+        // force in english
+        $this->getCustomerManager()->setLocaleCode('en');
+
         // attribute company (if not exists)
         $attCode = 'company';
         $att = $this->getCustomerManager()->getAttributeRepository()->findOneByCode($attCode);
@@ -76,16 +79,29 @@ class AttributeController extends Controller
             $att->setCode($attCode);
             $att->setTitle('Gender');
             $att->setType(AbstractEntityAttribute::TYPE_LIST);
-            $att->setTranslatable(true);
-            // add option and related value
+            $att->setTranslatable(false);
+            // add option and related values
             $opt = $this->getCustomerManager()->getNewAttributeOptionInstance();
+            // En
             $valMr = $this->getCustomerManager()->getNewAttributeOptionValueInstance();
             $valMr->setValue('Masculine');
             $opt->addOptionValue($valMr);
+            // Fr
+            $valMr = $this->getCustomerManager()->getNewAttributeOptionValueInstance();
+            $valMr->setLocaleCode('fr');
+            $valMr->setValue('Masculin');
+            $opt->addOptionValue($valMr);
             $att->addOption($opt);
             // add another option
+            $opt = $this->getCustomerManager()->getNewAttributeOptionInstance();
+            // En
             $valMrs = $this->getCustomerManager()->getNewAttributeOptionValueInstance();
             $valMrs->setValue('Feminine');
+            $opt->addOptionValue($valMrs);
+            // Fr
+            $valMrs = $this->getCustomerManager()->getNewAttributeOptionValueInstance();
+            $valMrs->setLocaleCode('fr');
+            $valMrs->setValue('Féminin');
             $opt->addOptionValue($valMrs);
             $att->addOption($opt);
             $this->getCustomerManager()->getStorageManager()->persist($att);

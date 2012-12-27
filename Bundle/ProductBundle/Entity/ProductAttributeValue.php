@@ -36,7 +36,7 @@ class ProductAttributeValue extends AbstractOrmEntityAttributeValue
      *
      * @var AbstractOrmEntityAttributeOption $optionvalue
      *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\DataModelBundle\Entity\OrmEntityAttributeOption", inversedBy="attributeValues")
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\DataModelBundle\Entity\OrmEntityAttributeOption")
      */
     protected $option;
 }
