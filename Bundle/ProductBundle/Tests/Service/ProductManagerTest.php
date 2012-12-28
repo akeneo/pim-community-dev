@@ -2,6 +2,8 @@
 namespace Oro\Bundle\ProductBundle\Test\Service;
 
 use Oro\Bundle\ProductBundle\Entity\Product;
+use Oro\Bundle\DataModelBundle\Model\Attribute\AttributeTypeString;
+use Oro\Bundle\DataModelBundle\Model\Attribute\AttributeTypeInteger;
 
 use Oro\Bundle\DataModelBundle\Tests\KernelAwareTest;
 
@@ -58,12 +60,16 @@ class ProductManagerTest extends KernelAwareTest
         $sku = 'my sku '.$timestamp;
         $newProduct->setSku($sku);
 
+        // attribute type
+        $attTypeString = new AttributeTypeString();
+        $attTypeInteger = new AttributeTypeInteger();
+
         // attribute name
         $attName = $this->manager->getNewAttributeInstance();
         $attNameCode= 'name'.$timestamp;
         $attName->setCode($attNameCode);
         $attName->setTitle('Name');
-        $attName->setType('string');
+        $attName->setAttributeType($attTypeString);
         $attName->setTranslatable(true);
         $this->manager->getStorageManager()->persist($attName);
 
@@ -72,7 +78,7 @@ class ProductManagerTest extends KernelAwareTest
         $attSizeCode= 'size'.$timestamp;
         $attSize->setCode($attSizeCode);
         $attSize->setTitle('Size');
-        $attSize->setType('number');
+        $attSize->setAttributeType($attTypeInteger);
         $this->manager->getStorageManager()->persist($attSize);
 
         // name value

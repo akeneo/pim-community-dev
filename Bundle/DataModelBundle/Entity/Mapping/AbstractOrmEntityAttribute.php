@@ -63,11 +63,11 @@ abstract class AbstractOrmEntityAttribute extends AbstractEntityAttribute
     protected $updated;
 
     /**
-     * @var string $type
+     * @var AbstractAttributeType $attributeType
      *
-     * @ORM\Column(name="type", type="string", length=255)
+     * @ORM\Column(name="attribute_type", type="string", length=255)
      */
-    protected $type;
+    protected $attributeType;
 
     /**
      * @ORM\Column(name="uniqueValue", type="boolean")
@@ -128,6 +128,32 @@ abstract class AbstractOrmEntityAttribute extends AbstractEntityAttribute
         $option->setAttribute($this);
 
         return $this;
+    }
+
+    /**
+     * Override to set attribute type class name
+     *
+     * @param AbstractAttributeType $type
+     *
+     * @return AbstractEntityAttribute
+     */
+    public function setAttributeType($type)
+    {
+        $this->attributeType = get_class($type);
+
+        return $this;
+    }
+
+    /**
+     * Override to get attribute type instance
+     *
+     * @return string
+     */
+    public function getAttributeType()
+    {
+        $class = $this->attributeType;
+
+        return new $class();
     }
 
 }

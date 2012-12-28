@@ -49,27 +49,51 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
 
     /**
      * Store varchar value
-     * @var string $stringvalue
+     * @var string $varchar
      *
-     * @ORM\Column(name="string_value", type="string", length=255, nullable=true)
+     * @ORM\Column(name="value_string", type="string", length=255, nullable=true)
      */
-    protected $stringValue;
+    protected $varchar;
 
     /**
      * Store int value
-     * @var integer $numbervalue
+     * @var integer $integer
      *
-     * @ORM\Column(name="number_value", type="integer", nullable=true)
+     * @ORM\Column(name="value_integer", type="integer", nullable=true)
      */
-    protected $numberValue;
+    protected $integer;
+
+    /**
+     * Store decimal value
+     * @var double $decimal
+     *
+     * @ORM\Column(name="value_decimal", type="decimal", nullable=true)
+     */
+    protected $decimal;
 
     /**
      * Store text value
-     * @var string $numbervalue
+     * @var string $text
      *
-     * @ORM\Column(name="text_value", type="text", nullable=true)
+     * @ORM\Column(name="value_text", type="text", nullable=true)
      */
-    protected $textValue;
+    protected $text;
+
+    /**
+     * Store date value
+     * @var date $date
+     *
+     * @ORM\Column(name="value_date", type="date", nullable=true)
+     */
+    protected $date;
+
+    /**
+     * Store datetime value
+     * @var string $datetime
+     *
+     * @ORM\Column(name="value_datetime", type="datetime", nullable=true)
+     */
+    protected $datetime;
 
     /**
      * Store option
@@ -95,30 +119,6 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
     }
 
     /**
-     * Return relevant backend value
-     *
-     * @param string $type
-     *
-     * @return string
-     */
-    public function getAttributeTypeToBackend($type)
-    {
-        // TODO how to dynamically add our own type and backend
-        switch ($type) {
-            case AbstractEntityAttribute::TYPE_STRING:
-                return 'stringValue';
-            case AbstractEntityAttribute::TYPE_TEXT:
-                return 'textValue';
-            case AbstractEntityAttribute::TYPE_NUMBER:
-                return 'numberValue';
-            case AbstractEntityAttribute::TYPE_LIST:
-                return 'option';
-            default:
-                throw new \Exception(sprintf('This attribute type %s is unknown', $type));
-        }
-    }
-
-    /**
      * Set data
      *
      * @param mixed $data
@@ -127,7 +127,7 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
      */
     public function setData($data)
     {
-        $backend = $this->getAttributeTypeToBackend($this->attribute->getType());
+        $backend = $this->attribute->getAttributeType()->getBackendType();
         $this->$backend = $data;
 
         return $this;
@@ -140,7 +140,7 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
      */
     public function getData()
     {
-        $backend = $this->getAttributeTypeToBackend($this->attribute->getType());
+        $backend = $this->attribute->getAttributeType()->getBackendType();
 
         return $this->$backend;
     }

@@ -4,7 +4,7 @@
 
     <table class="mytable">
         <tr>
-            <td>Id</td><td>Email</td><td>FirstName</td><td>LastName</td><td>Gender</td><td>Company</td>
+            <td>Id</td><td>Email</td><td>FirstName</td><td>LastName</td><td>Birth</td><td>Gender</td><td>Company</td>
         </tr>
     {% for customer in customers %}
         <tr>
@@ -12,6 +12,7 @@
             <td>{{ customer.email }}</td>
             <td>{{ customer.firstname }}</td>
             <td>{{ customer.lastname }}</td>
+            <td>{{ customer.dob|date('Y-m-d')}}</td>
             <td>{{ customer.gender }}</td>
             <td>{{ customer.company }}</td>
 

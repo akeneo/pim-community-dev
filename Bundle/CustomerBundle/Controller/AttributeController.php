@@ -5,7 +5,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\DataModelBundle\Model\Entity\AbstractEntityAttribute;
+use Oro\Bundle\DataModelBundle\Model\Attribute\AttributeTypeString;
+use Oro\Bundle\DataModelBundle\Model\Attribute\AttributeTypeList;
+use Oro\Bundle\DataModelBundle\Model\Attribute\AttributeTypeDate;
 
 /**
  * Customer attribute controller
@@ -54,6 +56,11 @@ class AttributeController extends Controller
         // force in english
         $this->getCustomerManager()->setLocaleCode('en');
 
+        // prepare attribute types
+        $attTypeString = new AttributeTypeString();
+        $attTypeList = new AttributeTypeList();
+        $attTypeDate = new AttributeTypeDate();
+
         // attribute company (if not exists)
         $attCode = 'company';
         $att = $this->getCustomerManager()->getAttributeRepository()->findOneByCode($attCode);
@@ -63,8 +70,22 @@ class AttributeController extends Controller
             $att = $this->getCustomerManager()->getNewAttributeInstance();
             $att->setCode($attCode);
             $att->setTitle('Company');
-            $att->setType(AbstractEntityAttribute::TYPE_STRING);
-            $att->setTranslatable(false);
+            $att->setAttributeType($attTypeString);
+            $att->setTranslatable(false); // false by default
+            $this->getCustomerManager()->getStorageManager()->persist($att);
+            $messages[]= "Attribute ".$attCode." has been created";
+        }
+
+        // attribute date of birth (if not exists)
+        $attCode = 'dob';
+        $att = $this->getCustomerManager()->getAttributeRepository()->findOneByCode($attCode);
+        if ($att) {
+            $messages[]= "Attribute ".$attCode." already exists";
+        } else {
+            $att = $this->getCustomerManager()->getNewAttributeInstance();
+            $att->setCode($attCode);
+            $att->setTitle('Date of birth');
+            $att->setAttributeType($attTypeDate);
             $this->getCustomerManager()->getStorageManager()->persist($att);
             $messages[]= "Attribute ".$attCode." has been created";
         }
@@ -78,8 +99,7 @@ class AttributeController extends Controller
             $att = $this->getCustomerManager()->getNewAttributeInstance();
             $att->setCode($attCode);
             $att->setTitle('Gender');
-            $att->setType(AbstractEntityAttribute::TYPE_LIST);
-            $att->setTranslatable(false);
+            $att->setAttributeType($attTypeList);
             // add option and related values
             $opt = $this->getCustomerManager()->getNewAttributeOptionInstance();
             // En

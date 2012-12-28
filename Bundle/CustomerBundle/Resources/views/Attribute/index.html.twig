@@ -4,11 +4,11 @@
 
     <table class="mytable">
         <tr>
-            <td>Id</td><td>Code</td><td>Title</td><td>Type</td>
+            <td>Id</td><td>Code</td><td>Title</td><td>Type</td><td>Translatable</td>
         </tr>
     {% for attribute in attributes %}
         <tr>
-            <td>{{ attribute.id }}</td><td>{{ attribute.code }}</td><td>{{ attribute.title }}</td><td>{{ attribute.type }}</td>
+            <td>{{ attribute.id }}</td><td>{{ attribute.code }}</td><td>{{ attribute.title }}</td><td>{{ attribute.attributeType }}</td><td>{{ attribute.translatable }}</td>
         </tr>
     {% endfor %}
     </table>

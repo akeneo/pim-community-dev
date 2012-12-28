@@ -1,6 +1,8 @@
 <?php
 namespace Oro\Bundle\DataModelBundle\Model\Entity;
 
+use Oro\Bundle\DataModelBundle\Model\Attribute\AbstractAttributeType;
+
 /**
  * Abstract entity attribute, independent of storage
  *
@@ -10,11 +12,6 @@ namespace Oro\Bundle\DataModelBundle\Model\Entity;
  */
 abstract class AbstractEntityAttribute
 {
-
-    const TYPE_STRING = 'string';
-    const TYPE_TEXT   = 'text';
-    const TYPE_NUMBER = 'number';
-    const TYPE_LIST   = 'option';
 
     /**
      * @var integer $id
@@ -47,9 +44,9 @@ abstract class AbstractEntityAttribute
     protected $updated;
 
     /**
-     * @var string $type
+     * @var AbstractAttributeType $attributeType
      */
-    protected $type;
+    protected $attributeType;
 
     /**
      * @var boolean $uniqueValue
@@ -187,17 +184,16 @@ abstract class AbstractEntityAttribute
         return $this->updated;
     }
 
-
     /**
      * Set type
      *
-     * @param string $type
+     * @param AbstractAttributeType $type
      *
      * @return AbstractEntityAttribute
      */
-    public function setType($type)
+    public function setAttributeType($type)
     {
-        $this->type = $type;
+        $this->attributeType = $type;
 
         return $this;
     }
@@ -207,9 +203,9 @@ abstract class AbstractEntityAttribute
      *
      * @return string
      */
-    public function getType()
+    public function getAttributeType()
     {
-        return $this->type;
+        return $this->attributeType;
     }
 
     /**

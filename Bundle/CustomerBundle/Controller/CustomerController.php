@@ -69,13 +69,14 @@ class CustomerController extends Controller
 
         // get attributes
         $attCompany = $this->getCustomerManager()->getAttributeRepository()->findOneByCode('company');
+        $attDob = $this->getCustomerManager()->getAttributeRepository()->findOneByCode('dob');
         $attGender = $this->getCustomerManager()->getAttributeRepository()->findOneByCode('gender');
         // get first attribute option
         $optGender = $this->getCustomerManager()->getAttributeOptionRepository()->findOneBy(array('attribute' => $attGender));
 
         for ($ind= 1; $ind < 100; $ind++) {
 
-            // add customer with email, firstname, lastname
+            // add customer with email, firstname, lastname, dob
             $custEmail = 'email-'.($ind++).'@mail.com';
             $customer = $this->getCustomerManager()->getEntityRepository()->findOneByEmail($custEmail);
             if ($customer) {
@@ -85,6 +86,13 @@ class CustomerController extends Controller
                 $customer->setEmail($custEmail);
                 $customer->setFirstname('Nicolas');
                 $customer->setLastname('Dupont');
+                // add dob value
+                if ($attCompany) {
+                    $value = $this->getCustomerManager()->getNewAttributeValueInstance();
+                    $value->setAttribute($attDob);
+                    $value->setData(new \DateTime('19-08-1984'));
+                    $customer->addValue($value);
+                }
                 $messages[]= "Customer ".$custEmail." has been created";
                 $this->getCustomerManager()->getStorageManager()->persist($customer);
             }

@@ -2,12 +2,15 @@
 
 namespace Oro\Bundle\ProductBundle\Controller;
 
-use Oro\Bundle\ProductBundle\Entity\ProductEntity;
-use Oro\Bundle\DataModelBundle\Model\Entity\AbstractEntityAttribute;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
+use Oro\Bundle\ProductBundle\Entity\ProductEntity;
+use Oro\Bundle\DataModelBundle\Model\Attribute\AttributeTypeString;
+use Oro\Bundle\DataModelBundle\Model\Attribute\AttributeTypeList;
+use Oro\Bundle\DataModelBundle\Model\Attribute\AttributeTypeInteger;
+use Oro\Bundle\DataModelBundle\Model\Attribute\AttributeTypeText;
 
 /**
  * Default controller
@@ -30,7 +33,6 @@ class AttributeController extends Controller
     {
         return $this->container->get('product_manager');
     }
-
 
     /**
      * @Route("/index")
@@ -58,6 +60,12 @@ class AttributeController extends Controller
         // force in english
         $this->getProductManager()->setLocaleCode('en');
 
+        // prepare attribute types
+        $attTypeString = new AttributeTypeString();
+        $attTypeText = new AttributeTypeText();
+        $attTypeInteger = new AttributeTypeInteger();
+        $attTypeList = new AttributeTypeList();
+
         // attribute name (if not exists)
         $attributeCode = 'name';
         $attribute = $this->getProductManager()->getAttributeRepository()->findOneByCode($attributeCode);
@@ -67,7 +75,7 @@ class AttributeController extends Controller
             $attribute = $this->getProductManager()->getNewAttributeInstance();
             $attribute->setCode($attributeCode);
             $attribute->setTitle('Name');
-            $attribute->setType(AbstractEntityAttribute::TYPE_STRING);
+            $attribute->setAttributeType($attTypeString);
             $attribute->setTranslatable(true);
             $this->getProductManager()->getStorageManager()->persist($attribute);
             $messages[]= "Attribute ".$attributeCode." has been created";
@@ -82,7 +90,7 @@ class AttributeController extends Controller
             $attribute = $this->getProductManager()->getNewAttributeInstance();
             $attribute->setCode($attributeCode);
             $attribute->setTitle('Description');
-            $attribute->setType(AbstractEntityAttribute::TYPE_TEXT);
+            $attribute->setAttributeType($attTypeText);
             $attribute->setTranslatable(true);
             $this->getProductManager()->getStorageManager()->persist($attribute);
             $messages[]= "Attribute ".$attributeCode." has been created";
@@ -97,7 +105,7 @@ class AttributeController extends Controller
             $attribute = $this->getProductManager()->getNewAttributeInstance();
             $attribute->setCode($attributeCode);
             $attribute->setTitle('Size');
-            $attribute->setType(AbstractEntityAttribute::TYPE_NUMBER);
+            $attribute->setAttributeType($attTypeInteger);
             $this->getProductManager()->getStorageManager()->persist($attribute);
             $messages[]= "Attribute ".$attributeCode." has been created";
         }
@@ -111,7 +119,7 @@ class AttributeController extends Controller
             $attribute = $this->getProductManager()->getNewAttributeInstance();
             $attribute->setCode($attributeCode);
             $attribute->setTitle('Color');
-            $attribute->setType(AbstractEntityAttribute::TYPE_LIST);
+            $attribute->setAttributeType($attTypeList);
             $attribute->setTranslatable(false); // only one value but option can be translated in option values
             // add option and related value "Red", "Blue", "Green"
             $colors = array("Red", "Blue", "Green");
