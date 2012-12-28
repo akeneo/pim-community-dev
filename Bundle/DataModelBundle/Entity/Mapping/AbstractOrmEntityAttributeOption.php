@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\DataModelBundle\Entity;
+namespace Oro\Bundle\DataModelBundle\Entity\Mapping;
 
 use Oro\Bundle\DataModelBundle\Model\AbstractEntityAttributeOption;
 use Oro\Bundle\DataModelBundle\Model\AbstractEntityAttributeOptionValue;

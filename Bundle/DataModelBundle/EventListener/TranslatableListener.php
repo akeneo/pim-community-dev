@@ -4,7 +4,6 @@ namespace Oro\Bundle\DataModelBundle\EventListener;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Oro\Bundle\DataModelBundle\Entity\AbstractOrmEntity;
 
 /**
  * Aims to add translatable behaviour on flexible entity
@@ -52,12 +51,12 @@ class TranslatableListener implements ContainerAwareInterface
         // TODO : should be enhanced for perfs (cache) ?
 
         // add locale and default locale codes on "AbstractOrmEntity"
-        if (is_subclass_of($entity, 'Oro\Bundle\DataModelBundle\Entity\AbstractOrmEntity')) {
+        if (is_subclass_of($entity, 'Oro\Bundle\DataModelBundle\Entity\Mapping\AbstractOrmEntity')) {
             $entity->setDefaultLocaleCode($this->getDefaultLocaleCode());
             $entity->setLocaleCode($this->getLocaleCode());
 
         // add locale on "AbstractEntityAttributeOption"
-        } else if (is_subclass_of($entity, 'Oro\Bundle\DataModelBundle\Entity\AbstractOrmEntityAttributeOption')) {
+        } else if (is_subclass_of($entity, 'Oro\Bundle\DataModelBundle\Entity\Mapping\AbstractOrmEntityAttributeOption')) {
             $entity->setLocaleCode($this->getLocaleCode());
         }
     }

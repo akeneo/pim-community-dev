@@ -1,7 +1,7 @@
 <?php
 namespace Oro\Bundle\DataModelBundle\Entity;
 
-use Oro\Bundle\DataModelBundle\Entity\AbstractOrmEntityAttributeOption;
+use Oro\Bundle\DataModelBundle\Entity\Mapping\AbstractOrmEntityAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

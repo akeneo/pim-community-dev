@@ -1,8 +1,7 @@
 <?php
 namespace Oro\Bundle\CustomerBundle\Entity;
 
-use Oro\Bundle\DataModelBundle\Model\AbstractOrmEntity;
-use Oro\Bundle\DataModelBundle\Entity\AbstractOrmEntityAttributeValue;
+use Oro\Bundle\DataModelBundle\Entity\Mapping\AbstractOrmEntityAttributeValue;
 use Oro\Bundle\DataModelBundle\Entity\OrmEntityAttribute;
 use Doctrine\ORM\Mapping as ORM;
 

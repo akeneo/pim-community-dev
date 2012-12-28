@@ -1,8 +1,7 @@
 <?php
 namespace Oro\Bundle\ProductBundle\Entity;
 
-use Oro\Bundle\DataModelBundle\Model\AbstractOrmEntity;
-use Oro\Bundle\DataModelBundle\Entity\AbstractOrmEntityAttributeValue;
+use Oro\Bundle\DataModelBundle\Entity\Mapping\AbstractOrmEntityAttributeValue;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,14 +17,14 @@ use Doctrine\ORM\Mapping as ORM;
 class ProductAttributeValue extends AbstractOrmEntityAttributeValue
 {
     /**
-     * @var Attribute $attribute
+     * @var Oro\Bundle\DataModelBundle\Model\AbstractEntityAttribute $attribute
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\DataModelBundle\Entity\OrmEntityAttribute")
      */
     protected $attribute;
 
     /**
-     * @var Entity $entity
+     * @var Oro\Bundle\DataModelBundle\Model\AbstractEntity $entity
      *
      * @ORM\ManyToOne(targetEntity="Product", inversedBy="values")
      */
@@ -34,7 +33,7 @@ class ProductAttributeValue extends AbstractOrmEntityAttributeValue
     /**
      * Store option value, if backend is an option
      *
-     * @var AbstractOrmEntityAttributeOption $optionvalue
+     * @var Oro\Bundle\DataModelBundle\Model\AbstractEntityAttributeOption $optionvalue
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\DataModelBundle\Entity\OrmEntityAttributeOption")
      */
