@@ -3,7 +3,7 @@
 namespace Oro\Bundle\ProductBundle\Controller;
 
 use Oro\Bundle\ProductBundle\Entity\ProductEntity;
-use Oro\Bundle\DataModelBundle\Model\AbstractEntityAttribute;
+use Oro\Bundle\DataModelBundle\Model\Entity\AbstractEntityAttribute;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

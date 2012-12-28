@@ -1,8 +1,8 @@
 <?php
 namespace Oro\Bundle\DataModelBundle\Entity\Mapping;
 
-use Oro\Bundle\DataModelBundle\Model\AbstractEntityAttribute;
-use Oro\Bundle\DataModelBundle\Model\AbstractEntityAttributeOption;
+use Oro\Bundle\DataModelBundle\Model\Entity\AbstractEntityAttribute;
+use Oro\Bundle\DataModelBundle\Model\Entity\AbstractEntityAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 

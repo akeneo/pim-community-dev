@@ -1,9 +1,9 @@
 <?php
 namespace Oro\Bundle\DataModelBundle\Entity\Mapping;
 
-use Oro\Bundle\DataModelBundle\Model\AbstractEntity;
-use Oro\Bundle\DataModelBundle\Model\AbstractEntityAttribute;
-use Oro\Bundle\DataModelBundle\Model\AbstractEntityAttributeValue;
+use Oro\Bundle\DataModelBundle\Model\Entity\AbstractEntity;
+use Oro\Bundle\DataModelBundle\Model\Entity\AbstractEntityAttribute;
+use Oro\Bundle\DataModelBundle\Model\Entity\AbstractEntityAttributeValue;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

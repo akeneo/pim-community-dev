@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\DataModelBundle\Model;
+namespace Oro\Bundle\DataModelBundle\Model\Entity;
 
 /**
  * Abstract entity, independent of storage

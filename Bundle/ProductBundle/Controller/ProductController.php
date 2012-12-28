@@ -1,9 +1,6 @@
 <?php
 namespace Oro\Bundle\ProductBundle\Controller;
 
-use Oro\Bundle\ProductBundle\Entity\ProductEntity;
-use Oro\Bundle\DataModelBundle\Model\EntityAttribute as AbstractEntityAttribute;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
