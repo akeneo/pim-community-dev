@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  * @ORM\Table(name="product_entity")
- * @ORM\Entity(repositoryClass="Oro\Bundle\ProductBundle\Entity\ProductEntityRepository")
+ * @ORM\Entity(repositoryClass="Oro\Bundle\ProductBundle\Entity\Repository\ProductRepository")
  */
 class Product extends AbstractOrmEntity
 {

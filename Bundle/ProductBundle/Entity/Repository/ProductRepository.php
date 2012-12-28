@@ -1,7 +1,7 @@
 <?php
-namespace Oro\Bundle\ProductBundle\Entity;
+namespace Oro\Bundle\ProductBundle\Entity\Repository;
 
-use Oro\Bundle\DataModelBundle\Entity\OrmEntityRepository;
+use Oro\Bundle\DataModelBundle\Entity\Repository\OrmEntityRepository;
 
 /**
  * Custom repository for product
@@ -11,7 +11,7 @@ use Oro\Bundle\DataModelBundle\Entity\OrmEntityRepository;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-class ProductEntityRepository extends OrmEntityRepository
+class ProductRepository extends OrmEntityRepository
 {
 
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\DataModelBundle\Entity;
+namespace Oro\Bundle\DataModelBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 

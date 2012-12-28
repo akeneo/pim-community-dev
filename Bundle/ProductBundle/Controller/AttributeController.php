@@ -40,7 +40,8 @@ class AttributeController extends Controller
      */
     public function indexAction()
     {
-        $attributes = $this->getProductManager()->getAttributeRepository()->findAll();
+        $attributes = $this->getProductManager()->getAttributeRepository()
+            ->findBy(array('entityType' => $this->getProductManager()->getEntityShortname()));
 
         return array('attributes' => $attributes);
     }
