@@ -7,10 +7,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\ProductBundle\Entity\ProductEntity;
-use Oro\Bundle\DataModelBundle\Model\Attribute\AttributeTypeString;
-use Oro\Bundle\DataModelBundle\Model\Attribute\AttributeTypeList;
-use Oro\Bundle\DataModelBundle\Model\Attribute\AttributeTypeInteger;
-use Oro\Bundle\DataModelBundle\Model\Attribute\AttributeTypeText;
+use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AttributeTypeString;
+use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AttributeTypeList;
+use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AttributeTypeInteger;
+use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AttributeTypeText;
 
 /**
  * Default controller

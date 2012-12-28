@@ -5,9 +5,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\DataModelBundle\Model\Attribute\AttributeTypeString;
-use Oro\Bundle\DataModelBundle\Model\Attribute\AttributeTypeList;
-use Oro\Bundle\DataModelBundle\Model\Attribute\AttributeTypeDate;
+use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AttributeTypeString;
+use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AttributeTypeList;
+use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AttributeTypeDate;
 
 /**
  * Customer attribute controller

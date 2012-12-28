@@ -1,7 +1,7 @@
 <?php
 namespace Oro\Bundle\DataModelBundle\Model\Entity;
 
-use Oro\Bundle\DataModelBundle\Model\Attribute\AbstractAttributeType;
+use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AbstractAttributeType;
 
 /**
  * Abstract entity attribute, independent of storage

@@ -2,8 +2,8 @@
 namespace Oro\Bundle\ProductBundle\Test\Service;
 
 use Oro\Bundle\ProductBundle\Entity\Product;
-use Oro\Bundle\DataModelBundle\Model\Attribute\AttributeTypeString;
-use Oro\Bundle\DataModelBundle\Model\Attribute\AttributeTypeInteger;
+use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AttributeTypeString;
+use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AttributeTypeInteger;
 
 use Oro\Bundle\DataModelBundle\Tests\KernelAwareTest;
 

@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\DataModelBundle\Model\Attribute;
+namespace Oro\Bundle\DataModelBundle\Model\Attribute\Type;
 
 /**
  * Abstract attribute type

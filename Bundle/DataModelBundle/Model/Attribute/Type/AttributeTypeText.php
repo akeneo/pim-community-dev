@@ -1,15 +1,15 @@
 <?php
-namespace Oro\Bundle\DataModelBundle\Model\Attribute;
+namespace Oro\Bundle\DataModelBundle\Model\Attribute\Type;
 
 /**
- * Attribute type decimal
+ * Attribute type text
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-class AttributeTypeDecimal extends AbstractAttributeType
+class AttributeTypeText extends AbstractAttributeType
 {
 
     /**
@@ -17,6 +17,6 @@ class AttributeTypeDecimal extends AbstractAttributeType
      */
     public function __construct()
     {
-        parent::__construct(self::BACKEND_TYPE_DECIMAL);
+        parent::__construct(self::BACKEND_TYPE_TEXT);
     }
 }
