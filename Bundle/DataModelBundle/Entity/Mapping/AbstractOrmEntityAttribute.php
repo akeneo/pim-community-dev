@@ -4,7 +4,6 @@ namespace Oro\Bundle\DataModelBundle\Entity\Mapping;
 use Oro\Bundle\DataModelBundle\Model\Entity\AbstractEntityAttribute;
 use Oro\Bundle\DataModelBundle\Model\Entity\AbstractEntityAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Base Doctrine ORM entity attribute
@@ -49,7 +48,6 @@ abstract class AbstractOrmEntityAttribute extends AbstractEntityAttribute
     /**
      * @var datetime $created
      *
-     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
     protected $created;
@@ -57,7 +55,6 @@ abstract class AbstractOrmEntityAttribute extends AbstractEntityAttribute
     /**
      * @var datetime $updated
      *
-     * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
     protected $updated;

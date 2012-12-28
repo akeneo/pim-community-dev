@@ -2,6 +2,7 @@
 namespace Oro\Bundle\DataModelBundle\Model\Entity;
 
 use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AbstractAttributeType;
+use Oro\Bundle\DataModelBundle\Model\Behavior\TimestampableInterface;
 
 /**
  * Abstract entity attribute, independent of storage
@@ -10,7 +11,7 @@ use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AbstractAttributeType;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-abstract class AbstractEntityAttribute
+abstract class AbstractEntityAttribute implements TimestampableInterface
 {
 
     /**
@@ -175,6 +176,20 @@ abstract class AbstractEntityAttribute
     }
 
     /**
+     * Set created datetime
+     *
+     * @param datetime $created
+     *
+     * @return TimestampableInterface
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
      * Get updated datetime
      *
      * @return datetime
@@ -182,6 +197,20 @@ abstract class AbstractEntityAttribute
     public function getUpdated()
     {
         return $this->updated;
+    }
+
+    /**
+     * Set updated datetime
+     *
+     * @param datetime $updated
+     *
+     * @return TimestampableInterface
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
     }
 
     /**

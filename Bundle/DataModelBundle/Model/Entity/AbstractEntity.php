@@ -1,6 +1,9 @@
 <?php
 namespace Oro\Bundle\DataModelBundle\Model\Entity;
 
+use Oro\Bundle\DataModelBundle\Model\Behavior\TimestampableInterface;
+use Oro\Bundle\DataModelBundle\Model\Behavior\TranslatableInterface;
+
 /**
  * Abstract entity, independent of storage
  *
@@ -9,7 +12,7 @@ namespace Oro\Bundle\DataModelBundle\Model\Entity;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-abstract class AbstractEntity
+abstract class AbstractEntity implements TranslatableInterface, TimestampableInterface
 {
 
     /**
@@ -58,6 +61,20 @@ abstract class AbstractEntity
     }
 
     /**
+     * Set created datetime
+     *
+     * @param datetime $created
+     *
+     * @return TimestampableInterface
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
      * Get updated datetime
      *
      * @return datetime
@@ -65,6 +82,52 @@ abstract class AbstractEntity
     public function getUpdated()
     {
         return $this->updated;
+    }
+
+    /**
+     * Set updated datetime
+     *
+     * @param datetime $updated
+     *
+     * @return TimestampableInterface
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get used locale
+     * @return string $locale
+     */
+    public function getLocaleCode()
+    {
+        return $this->localeCode;
+    }
+
+    /**
+     * Set used locale
+     * @param string $locale
+     *
+     * @return AbstractEntity
+     */
+    public function setLocaleCode($locale)
+    {
+        $this->localeCode = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get default locale code
+     *
+     * @return string
+     */
+    public function getDefaultLocaleCode()
+    {
+        return $this->defaultlocaleCode;
     }
 
     /**
@@ -99,38 +162,6 @@ abstract class AbstractEntity
     public function getValues()
     {
         return $this->values;
-    }
-
-    /**
-     * Get used locale
-     * @return string $locale
-     */
-    public function getLocaleCode()
-    {
-        return $this->localeCode;
-    }
-
-    /**
-     * Set used locale
-     * @param string $locale
-     *
-     * @return AbstractEntity
-     */
-    public function setLocaleCode($locale)
-    {
-        $this->localeCode = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get default locale code
-     *
-     * @return string
-     */
-    public function getDefaultLocaleCode()
-    {
-        return $this->defaultlocaleCode;
     }
 
     /**
