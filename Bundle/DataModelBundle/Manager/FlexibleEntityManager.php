@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\DataModelBundle\Service;
+namespace Oro\Bundle\DataModelBundle\Manager;
 
 use Oro\Bundle\DataModelBundle\Model\Entity;
 use Oro\Bundle\DataModelBundle\Model\EntityAttribute;
@@ -66,15 +66,23 @@ class FlexibleEntityManager extends SimpleEntityManager
     }
 
     /**
+     * Get locale helper
+     * @return LocaleHelper
+     */
+    public function getLocaleHelper()
+    {
+        return $this->container->get('oro_datamodel.locale_helper');
+    }
+
+    /**
      * Return locale code from rapplication config
-     * TODO: custom config ?
      *
      * @return string
      */
     public function getDefaultLocaleCode()
     {
         if (!$this->defaultLocaleCode) {
-            $this->defaultLocaleCode = $this->container->parameters['locale'];
+            $this->defaultLocaleCode = $this->getLocaleHelper()->getDefaultLocaleCode();
         }
 
         return $this->defaultLocaleCode;
@@ -82,25 +90,20 @@ class FlexibleEntityManager extends SimpleEntityManager
 
     /**
      * Return locale code from request or default
-     * TODO: custom config ?
      *
      * @return string
      */
     public function getLocaleCode()
     {
         if (!$this->localeCode) {
-            $this->localeCode = $this->container->initialized('request') ?
-                $this->container->get('request')->getLocale() : false;
-            if (!$this->localeCode) {
-                $this->localeCode = $this->getDefaultLocaleCode();
-            }
+            $this->localeCode = $this->getLocaleHelper()->getCurrentLocaleCode();
         }
 
         return $this->localeCode;
     }
 
     /**
-     * Set locale code
+     * Set locale code, to force it
      *
      * @param string $code
      *
@@ -114,7 +117,7 @@ class FlexibleEntityManager extends SimpleEntityManager
     }
 
     /**
-     * Set locale code
+     * Set locale code, to force it
      *
      * @param string $code
      *

@@ -1,6 +1,8 @@
 <?php
 namespace Oro\Bundle\DataModelBundle\Model\Entity;
 
+use Oro\Bundle\DataModelBundle\Model\Behavior\TranslatableContainerInterface;
+
 /**
  * Abstract entity attribute option, independent of storage
  *
@@ -8,7 +10,7 @@ namespace Oro\Bundle\DataModelBundle\Model\Entity;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-abstract class AbstractEntityAttributeOption
+abstract class AbstractEntityAttributeOption implements TranslatableContainerInterface
 {
     /**
      * @var integer $id
@@ -24,6 +26,11 @@ abstract class AbstractEntityAttributeOption
      * @var ArrayCollection $optionValues
      */
     protected $optionValues;
+
+    /**
+     * @var string $defaultLocaleCode
+     */
+    protected $defaultlocaleCode;
 
     /**
      * @var string $localeCode
@@ -114,6 +121,7 @@ abstract class AbstractEntityAttributeOption
 
     /**
      * Get used locale
+     *
      * @return string $locale
      */
     public function getLocaleCode()
@@ -123,10 +131,38 @@ abstract class AbstractEntityAttributeOption
 
     /**
      * Set used locale
+     *
      * @param string $locale
+     *
+     * @return AbstractEntityAttributeOption
      */
     public function setLocaleCode($locale)
     {
         $this->localeCode = $locale;
     }
+
+    /**
+     * Get default locale code
+     *
+     * @return string
+     */
+    public function getDefaultLocaleCode()
+    {
+        return $this->defaultlocaleCode;
+    }
+
+    /**
+     * Set locale code
+     *
+     * @param string $code
+     *
+     * @return AbstractEntityAttributeOption
+     */
+    public function setDefaultLocaleCode($code)
+    {
+        $this->defaultlocaleCode = $code;
+
+        return $this;
+    }
+
 }

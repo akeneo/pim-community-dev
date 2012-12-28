@@ -1,5 +1,5 @@
 parameters:
-    customer_manager.class:       Oro\Bundle\DataModelBundle\Service\FlexibleEntityManager
+    customer_manager.class:       Oro\Bundle\DataModelBundle\Manager\FlexibleEntityManager
     customer_entity.shortname:    OroCustomerBundle:Customer
     customer_value.shortname:     OroCustomerBundle:CustomerAttributeValue
 

@@ -1,15 +1,23 @@
-# add listener to add locale and default locale on entity
+parameters:
+    oro_datamodel.locale_helper.class: Oro\Bundle\DataModelBundle\Helper\LocaleHelper
+    
 services:
 
+    # provide some utility methods to manage locale (TODO should be move in "core")
+    oro_datamodel.locale_helper:
+        class:        "%oro_datamodel.locale_helper.class%"
+        arguments:    [@service_container]
+
+    # deal with translatable behaviour
     oro_datamodel.translatable_listener:
-        class: Oro\Bundle\DataModelBundle\EventListener\TranslatableListener
+        class: Oro\Bundle\DataModelBundle\Listener\TranslatableListener
         calls:
             - [ setContainer, [ @service_container ] ]
         tags:
             - { name: doctrine.event_listener, event: postLoad }
-            
 
+    # deal with timestampable behaviour
     oro_datamodel.timestampable_listener:
-        class: Oro\Bundle\DataModelBundle\EventListener\TimestampableListener
+        class: Oro\Bundle\DataModelBundle\Listener\TimestampableListener
         tags:
             - { name: doctrine.event_subscriber }

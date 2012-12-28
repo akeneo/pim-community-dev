@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\DataModelBundle\Service;
+namespace Oro\Bundle\DataModelBundle\Manager;
 
 use Oro\Bundle\DataModelBundle\Model\Entity;
 

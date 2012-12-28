@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\DataModelBundle\EventListener;
+namespace Oro\Bundle\DataModelBundle\Listener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;

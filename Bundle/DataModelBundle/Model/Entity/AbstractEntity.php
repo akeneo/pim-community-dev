@@ -2,7 +2,7 @@
 namespace Oro\Bundle\DataModelBundle\Model\Entity;
 
 use Oro\Bundle\DataModelBundle\Model\Behavior\TimestampableInterface;
-use Oro\Bundle\DataModelBundle\Model\Behavior\TranslatableInterface;
+use Oro\Bundle\DataModelBundle\Model\Behavior\TranslatableContainerInterface;
 
 /**
  * Abstract entity, independent of storage
@@ -12,7 +12,7 @@ use Oro\Bundle\DataModelBundle\Model\Behavior\TranslatableInterface;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-abstract class AbstractEntity implements TranslatableInterface, TimestampableInterface
+abstract class AbstractEntity implements TranslatableContainerInterface, TimestampableInterface
 {
 
     /**
@@ -109,6 +109,7 @@ abstract class AbstractEntity implements TranslatableInterface, TimestampableInt
 
     /**
      * Set used locale
+     *
      * @param string $locale
      *
      * @return AbstractEntity
@@ -128,6 +129,20 @@ abstract class AbstractEntity implements TranslatableInterface, TimestampableInt
     public function getDefaultLocaleCode()
     {
         return $this->defaultlocaleCode;
+    }
+
+    /**
+     * Set locale code
+     *
+     * @param string $code
+     *
+     * @return AbstractEntity
+     */
+    public function setDefaultLocaleCode($code)
+    {
+        $this->defaultlocaleCode = $code;
+
+        return $this;
     }
 
     /**
@@ -164,17 +179,4 @@ abstract class AbstractEntity implements TranslatableInterface, TimestampableInt
         return $this->values;
     }
 
-    /**
-     * Set locale code
-     *
-     * @param string $code
-     *
-     * @return AbstractEntity
-     */
-    public function setDefaultLocaleCode($code)
-    {
-        $this->defaultlocaleCode = $code;
-
-        return $this;
-    }
 }

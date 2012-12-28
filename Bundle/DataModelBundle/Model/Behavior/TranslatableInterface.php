@@ -2,7 +2,7 @@
 namespace Oro\Bundle\DataModelBundle\Model\Behavior;
 
 /**
- * Translatable interface
+ * Translatable interface, implemented by class which can be translated
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
@@ -26,19 +26,4 @@ interface TranslatableInterface
      */
     public function setLocaleCode($locale);
 
-    /**
-     * Get default locale code
-     *
-     * @return string
-     */
-    public function getDefaultLocaleCode();
-
-    /**
-     * Set locale code
-     *
-     * @param string $code
-     *
-     * @return TranslatableInterface
-     */
-    public function setDefaultLocaleCode($code);
 }
