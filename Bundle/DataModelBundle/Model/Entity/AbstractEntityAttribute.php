@@ -360,7 +360,7 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
     /**
      * Get options
      *
-     * @return Doctrine\Common\Collections\Collection
+     * @return \ArrayAccess
      */
     public function getOptions()
     {

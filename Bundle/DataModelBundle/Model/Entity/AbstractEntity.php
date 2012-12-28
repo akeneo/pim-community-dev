@@ -157,7 +157,7 @@ abstract class AbstractEntity implements TranslatableInterface, TimestampableInt
     /**
      * Get values
      *
-     * @return Doctrine\Common\Collections\Collection
+     * @return \ArrayAccess
      */
     public function getValues()
     {
