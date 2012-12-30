@@ -11,7 +11,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  *
- * @ORM\Table(name="entity_attribute", indexes={@ORM\Index(name="searchcode_idx", columns={"code"})} )
+ * @ORM\Table(
+ *     name="entity_attribute", indexes={@ORM\Index(name="searchcode_idx", columns={"code"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="searchunique_idx", columns={"code", "entity_type"})}
+ * )
  * @ORM\Entity
  */
 class OrmEntityAttribute extends AbstractOrmEntityAttribute

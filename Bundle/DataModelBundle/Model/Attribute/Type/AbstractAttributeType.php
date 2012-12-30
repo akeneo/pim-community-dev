@@ -13,6 +13,13 @@ abstract class AbstractAttributeType
 {
 
     /**
+     * Available backend model
+     * @var string
+     */
+    const BACKEND_MODEL_ATTRIBUTE_VALUE = 'attributeValues';
+    const BACKEND_MODEL_FLAT_VALUE      = 'flatValues';
+
+    /**
      * Available backend types
      * @var string
      */

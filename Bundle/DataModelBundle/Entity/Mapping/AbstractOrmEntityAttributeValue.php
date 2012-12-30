@@ -127,7 +127,7 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
      */
     public function setData($data)
     {
-        $backend = $this->attribute->getAttributeType()->getBackendType();
+        $backend = $this->attribute->getBackendType();
         $this->$backend = $data;
 
         return $this;
@@ -140,7 +140,7 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
      */
     public function getData()
     {
-        $backend = $this->attribute->getAttributeType()->getBackendType();
+        $backend = $this->attribute->getBackendType();
 
         return $this->$backend;
     }

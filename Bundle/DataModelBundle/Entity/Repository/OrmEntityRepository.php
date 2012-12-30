@@ -174,7 +174,7 @@ class OrmEntityRepository extends EntityRepository
                 // attribute criteria
                 if (in_array($fieldCode, $attributes)) {
                     $attribute = $codeToAttribute[$fieldCode];
-                    $backend = $attribute->getAttributeType()->getBackendType();
+                    $backend = $attribute->getBackendType();
                     $qb->andWhere('Value.attribute = :att'.$fieldCode.' AND Value.'.$backend.' = :value'.$fieldCode)
                         ->setParameter('att'.$fieldCode, $attribute->getId())
                         ->setParameter('value'.$fieldCode, $fieldValue);

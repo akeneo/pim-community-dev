@@ -27,7 +27,7 @@ abstract class AbstractOrmEntityAttribute extends AbstractEntityAttribute
     /**
      * @var string $code
      *
-     * @ORM\Column(name="code", type="string", length=255, unique=true)
+     * @ORM\Column(name="code", type="string", length=255)
      */
     protected $code;
 
@@ -37,6 +37,20 @@ abstract class AbstractOrmEntityAttribute extends AbstractEntityAttribute
      * @ORM\Column(name="entity_type", type="string", length=255)
      */
     protected $entityType;
+
+    /**
+     * @var string $backendType
+     *
+     * @ORM\Column(name="backend_type", type="string", length=255)
+     */
+    protected $backendType;
+
+    /**
+     * @var string $backendModel
+     *
+     * @ORM\Column(name="backend_model", type="string", length=255)
+     */
+    protected $backendModel;
 
     /**
      * @var string $title
@@ -58,13 +72,6 @@ abstract class AbstractOrmEntityAttribute extends AbstractEntityAttribute
      * @ORM\Column(type="datetime")
      */
     protected $updated;
-
-    /**
-     * @var AbstractAttributeType $attributeType
-     *
-     * @ORM\Column(name="attribute_type", type="string", length=255)
-     */
-    protected $attributeType;
 
     /**
      * @ORM\Column(name="uniqueValue", type="boolean")
@@ -125,32 +132,6 @@ abstract class AbstractOrmEntityAttribute extends AbstractEntityAttribute
         $option->setAttribute($this);
 
         return $this;
-    }
-
-    /**
-     * Override to set attribute type class name
-     *
-     * @param AbstractAttributeType $type
-     *
-     * @return AbstractEntityAttribute
-     */
-    public function setAttributeType($type)
-    {
-        $this->attributeType = get_class($type);
-
-        return $this;
-    }
-
-    /**
-     * Override to get attribute type instance
-     *
-     * @return string
-     */
-    public function getAttributeType()
-    {
-        $class = $this->attributeType;
-
-        return new $class();
     }
 
 }

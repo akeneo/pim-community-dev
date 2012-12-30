@@ -5,9 +5,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AttributeTypeString;
-use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AttributeTypeList;
-use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AttributeTypeDate;
+use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AbstractAttributeType;
 
 /**
  * Customer attribute controller
@@ -56,11 +54,6 @@ class AttributeController extends Controller
         // force in english
         $this->getCustomerManager()->setLocaleCode('en');
 
-        // prepare attribute types
-        $attTypeString = new AttributeTypeString();
-        $attTypeList = new AttributeTypeList();
-        $attTypeDate = new AttributeTypeDate();
-
         // attribute company (if not exists)
         $attCode = 'company';
         $att = $this->getCustomerManager()->getAttributeRepository()->findOneByCode($attCode);
@@ -70,7 +63,8 @@ class AttributeController extends Controller
             $att = $this->getCustomerManager()->getNewAttributeInstance();
             $att->setCode($attCode);
             $att->setTitle('Company');
-            $att->setAttributeType($attTypeString);
+            $att->setBackendModel(AbstractAttributeType::BACKEND_MODEL_ATTRIBUTE_VALUE);
+            $att->setBackendType(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
             $att->setTranslatable(false); // false by default
             $this->getCustomerManager()->getStorageManager()->persist($att);
             $messages[]= "Attribute ".$attCode." has been created";
@@ -85,7 +79,8 @@ class AttributeController extends Controller
             $att = $this->getCustomerManager()->getNewAttributeInstance();
             $att->setCode($attCode);
             $att->setTitle('Date of birth');
-            $att->setAttributeType($attTypeDate);
+            $att->setBackendModel(AbstractAttributeType::BACKEND_MODEL_ATTRIBUTE_VALUE);
+            $att->setBackendType(AbstractAttributeType::BACKEND_TYPE_DATE);
             $this->getCustomerManager()->getStorageManager()->persist($att);
             $messages[]= "Attribute ".$attCode." has been created";
         }
@@ -99,7 +94,8 @@ class AttributeController extends Controller
             $att = $this->getCustomerManager()->getNewAttributeInstance();
             $att->setCode($attCode);
             $att->setTitle('Gender');
-            $att->setAttributeType($attTypeList);
+            $att->setBackendModel(AbstractAttributeType::BACKEND_MODEL_ATTRIBUTE_VALUE);
+            $att->setBackendType(AbstractAttributeType::BACKEND_TYPE_OPTION);
             // add option and related values
             $opt = $this->getCustomerManager()->getNewAttributeOptionInstance();
             // En

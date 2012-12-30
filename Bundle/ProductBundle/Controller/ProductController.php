@@ -247,7 +247,7 @@ class ProductController extends Controller
         $attDescription = $this->getProductManager()->getAttributeRepository()->findOneByCode('description');
 
         // get products
-        $products = $this->getProductManager()->getEntityRepository()->findAllEntities();
+        $products = $this->getProductManager()->getEntityRepository()->findByWithAttributes();
         $ind = 1;
         foreach ($products as $product) {
             // translate name value

@@ -35,6 +35,18 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
     protected $entityType;
 
     /**
+     * Kind of model to store values
+     * @var string $backendModel
+     */
+    protected $backendModel;
+
+    /**
+     * Kind of field to store values
+     * @var string $backendType
+     */
+    protected $backendType;
+
+    /**
      * @var datetime $created
      */
     protected $created;
@@ -43,11 +55,6 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
      * @var datetime $created
      */
     protected $updated;
-
-    /**
-     * @var AbstractAttributeType $attributeType
-     */
-    protected $attributeType;
 
     /**
      * @var boolean $uniqueValue
@@ -214,15 +221,39 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
     }
 
     /**
-     * Set type
+     * Set backend model
      *
-     * @param AbstractAttributeType $type
+     * @param string $model
      *
      * @return AbstractEntityAttribute
      */
-    public function setAttributeType($type)
+    public function setBackendModel($model)
     {
-        $this->attributeType = $type;
+        $this->backendModel = $model;
+
+        return $this;
+    }
+
+    /**
+     * Get backend model
+     *
+     * @return string
+     */
+    public function getBackendModel()
+    {
+        return $this->backendModel;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     *
+     * @return AbstractEntityAttribute
+     */
+    public function setBackendType($type)
+    {
+        $this->backendType = $type;
 
         return $this;
     }
@@ -232,9 +263,9 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
      *
      * @return string
      */
-    public function getAttributeType()
+    public function getBackendType()
     {
-        return $this->attributeType;
+        return $this->backendType;
     }
 
     /**

@@ -2,8 +2,7 @@
 namespace Oro\Bundle\ProductBundle\Test\Service;
 
 use Oro\Bundle\ProductBundle\Entity\Product;
-use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AttributeTypeString;
-use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AttributeTypeInteger;
+use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AbstractAttributeType;
 
 use Oro\Bundle\DataModelBundle\Tests\KernelAwareTest;
 
@@ -60,16 +59,13 @@ class ProductManagerTest extends KernelAwareTest
         $sku = 'my sku '.$timestamp;
         $newProduct->setSku($sku);
 
-        // attribute type
-        $attTypeString = new AttributeTypeString();
-        $attTypeInteger = new AttributeTypeInteger();
-
         // attribute name
         $attName = $this->manager->getNewAttributeInstance();
         $attNameCode= 'name'.$timestamp;
         $attName->setCode($attNameCode);
         $attName->setTitle('Name');
-        $attName->setAttributeType($attTypeString);
+        $attName->setBackendModel(AbstractAttributeType::BACKEND_MODEL_ATTRIBUTE_VALUE);
+        $attName->setBackendType(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
         $attName->setTranslatable(true);
         $this->manager->getStorageManager()->persist($attName);
 
@@ -78,7 +74,8 @@ class ProductManagerTest extends KernelAwareTest
         $attSizeCode= 'size'.$timestamp;
         $attSize->setCode($attSizeCode);
         $attSize->setTitle('Size');
-        $attSize->setAttributeType($attTypeInteger);
+        $attSize->setBackendModel(AbstractAttributeType::BACKEND_MODEL_ATTRIBUTE_VALUE);
+        $attSize->setBackendType(AbstractAttributeType::BACKEND_TYPE_INTEGER);
         $this->manager->getStorageManager()->persist($attSize);
 
         // name value
