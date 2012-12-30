@@ -27,6 +27,15 @@ class ProductController extends Controller
     }
 
     /**
+     * Get attribute codes
+     * @return array
+     */
+    protected function getAttributeCodesToDisplay()
+    {
+        return array('name', 'description', 'size', 'color');
+    }
+
+    /**
      * @Route("/index")
      * @Template()
      *
@@ -36,7 +45,7 @@ class ProductController extends Controller
     {
         $products = $this->getProductManager()->getEntityRepository()->findByWithAttributes();
 
-        return array('products' => $products);
+        return array('products' => $products, 'attributes' => $this->getAttributeCodesToDisplay());
     }
 
     /**
@@ -51,21 +60,35 @@ class ProductController extends Controller
         // you can use any criteria, order you want it's a classic doctrine query
         $products = $this->getProductManager()->getEntityRepository()->findBy(array());
 
-        return array('products' => $products);
+        return array('products' => $products, 'attributes' => $this->getAttributeCodesToDisplay());
     }
 
     /**
-     * @Route("/queryonlynameandsku")
+     * @Route("/queryonlyname")
      * @Template("OroProductBundle:Product:index.html.twig")
      *
      * @return multitype
      */
-    public function queryonlynameandskuAction()
+    public function queryonlynameAction()
     {
         // get all entity fields and directly get attributes values
-        $products = $this->getProductManager()->getEntityRepository()->findByWithAttributes(array('sku', 'name'));
+        $products = $this->getProductManager()->getEntityRepository()->findByWithAttributes(array('name'));
 
-        return array('products' => $products);
+        return array('products' => $products, 'attributes' => array('name'));
+    }
+
+    /**
+     * @Route("/querynameanddesc")
+     * @Template("OroProductBundle:Product:index.html.twig")
+     *
+     * @return multitype
+     */
+    public function querynameanddescAction()
+    {
+        // get all entity fields and directly get attributes values
+        $products = $this->getProductManager()->getEntityRepository()->findByWithAttributes(array('name', 'description'));
+
+        return array('products' => $products, 'attributes' => array('name', 'description'));
     }
 
     /**
@@ -77,9 +100,23 @@ class ProductController extends Controller
     public function queryfilterskufieldAction()
     {
         // get all entity fields, directly get attributes values, filter on entity field value
-        $products = $this->getProductManager()->getEntityRepository()->findByWithAttributes(array(), array('sku' => 'sku-1'));
+        $products = $this->getProductManager()->getEntityRepository()->findByWithAttributes(array(), array('sku' => 'sku-2'));
 
-        return array('products' => $products);
+        return array('products' => $products, 'attributes' => array());
+    }
+
+    /**
+     * @Route("/querynamefilterskufield")
+     * @Template("OroProductBundle:Product:index.html.twig")
+     *
+     * @return multitype
+     */
+    public function querynamefilterskufieldAction()
+    {
+        // get all entity fields, directly get attributes values, filter on entity field value
+        $products = $this->getProductManager()->getEntityRepository()->findByWithAttributes(array('name'), array('sku' => 'sku-2'));
+
+        return array('products' => $products, 'attributes' => array('name'));
     }
 
     /**
@@ -91,9 +128,9 @@ class ProductController extends Controller
     public function queryfiltersizeattributeAction()
     {
         // get all entity fields, directly get attributes values, filter on attribute value
-        $products = $this->getProductManager()->getEntityRepository()->findByWithAttributes(array('size'), array('size' => 175));
+        $products = $this->getProductManager()->getEntityRepository()->findByWithAttributes(array('description', 'size'), array('size' => 175));
 
-        return array('products' => $products);
+        return array('products' => $products, 'attributes' => array('description', 'size'));
     }
 
     /**
@@ -107,10 +144,40 @@ class ProductController extends Controller
         // get all entity fields, directly get attributes values, filter on attribute value
         $products = $this->getProductManager()->getEntityRepository()->findByWithAttributes(
             array('size', 'description'),
-            array('size' => 175, 'description' => 'my long description 3')
+            array('size' => 175, 'description' => 'my other description')
         );
 
-        return array('products' => $products);
+        return array('products' => $products, 'attributes' => array('description', 'size'));
+    }
+
+    /**
+     * @Route("/querynameanddesclimit")
+     * @Template("OroProductBundle:Product:index.html.twig")
+     *
+     * @return multitype
+     */
+    public function querynameanddesclimitAction()
+    {
+        // get all entity fields and directly get attributes values
+        $products = $this->getProductManager()->getEntityRepository()->findByWithAttributes(array('name', 'description'), null, null, 10, 1);
+
+        return array('products' => $products, 'attributes' => array('name', 'description'));
+    }
+
+    /**
+     * @Route("/querynameanddescorderby")
+     * @Template("OroProductBundle:Product:index.html.twig")
+     *
+     * @return multitype
+     */
+    public function querynameanddescorderbyAction()
+    {
+        // get all entity fields and directly get attributes values
+        $products = $this->getProductManager()->getEntityRepository()->findByWithAttributes(
+            array('name', 'description'), null, array('description' => 'desc', 'sku' => 'asc')
+        );
+
+        return array('products' => $products, 'attributes' => array('name', 'description'));
     }
 
     /**
@@ -148,10 +215,12 @@ class ProductController extends Controller
         // get first attribute option
         $optColor = $this->getProductManager()->getAttributeOptionRepository()->findOneBy(array('attribute' => $attColor));
 
-        for ($ind= 1; $ind < 100; $ind++) {
+        $indSku = 1;
+        $descriptions = array('my long descrition', 'my other description');
+        for ($ind= 1; $ind <= 100; $ind++) {
 
             // add product with only sku
-            $prodSku = 'sku-'.$ind++;
+            $prodSku = 'sku-'.$indSku;
             $newProduct = $this->getProductManager()->getEntityRepository()->findOneBySku($prodSku);
             if ($newProduct) {
                 $messages[]= "Product ".$prodSku." already exists";
@@ -160,10 +229,11 @@ class ProductController extends Controller
                 $newProduct->setSku($prodSku);
                 $messages[]= "Product ".$prodSku." has been created";
                 $this->getProductManager()->getStorageManager()->persist($newProduct);
+                $indSku++;
             }
 
             // add product with sku, name, description, color and size
-            $prodSku = 'sku-'.$ind++;
+            $prodSku = 'sku-'.$indSku;
             $newProduct = $this->getProductManager()->getEntityRepository()->findOneBySku($prodSku);
             if ($newProduct) {
                 $messages[]= "Product ".$prodSku." already exists";
@@ -173,13 +243,13 @@ class ProductController extends Controller
                 if ($attName) {
                     $valueName = $this->getProductManager()->getNewAttributeValueInstance();
                     $valueName->setAttribute($attName);
-                    $valueName->setData('my name '.$ind);
+                    $valueName->setData('my name '.$indSku);
                     $newProduct->addValue($valueName);
                 }
                 if ($attDescription) {
                     $value = $this->getProductManager()->getNewAttributeValueInstance();
                     $value->setAttribute($attDescription);
-                    $value->setData('my long description '.$ind);
+                    $value->setData($descriptions[$ind%2]);
                     $newProduct->addValue($value);
                 }
                 if ($attSize) {
@@ -196,10 +266,11 @@ class ProductController extends Controller
                 }
                 $this->getProductManager()->getStorageManager()->persist($newProduct);
                 $messages[]= "Product ".$prodSku." has been created";
+                $indSku++;
             }
 
             // add product with sku, name and size
-            $prodSku = 'sku-'.$ind;
+            $prodSku = 'sku-'.$indSku;
             $newProduct = $this->getProductManager()->getEntityRepository()->findOneBySku($prodSku);
             if ($newProduct) {
                 $messages[]= "Product ".$prodSku." already exists";
@@ -209,7 +280,7 @@ class ProductController extends Controller
                 if ($attName) {
                     $valueName = $this->getProductManager()->getNewAttributeValueInstance();
                     $valueName->setAttribute($attName);
-                    $valueName->setData('my name '.$ind);
+                    $valueName->setData('my name '.$indSku);
                     $newProduct->addValue($valueName);
                 }
                 if ($attSize) {
@@ -220,6 +291,7 @@ class ProductController extends Controller
                 }
                 $this->getProductManager()->getStorageManager()->persist($newProduct);
                 $messages[]= "Product ".$prodSku." has been created";
+                $indSku++;
             }
         }
 

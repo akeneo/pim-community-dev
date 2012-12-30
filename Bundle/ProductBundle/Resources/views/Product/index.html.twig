@@ -3,17 +3,44 @@
 {% block content %}
 
     <ul class="menu">
-        <li><a href="{{ path('oro_product_product_querylazyload') }}">Products with lazy load</a></li>
-        <li><a href="{{ path('oro_product_product_index') }}">Products no lazy load</a></li>
-        <li><a href="{{ path('oro_product_product_queryonlynameandsku') }}">products no lazy load, only sku and name</a></li>
-        <li><a href="{{ path('oro_product_product_queryfilterskufield') }}">Products no lazy load filter on field sku = 'sku-1'</a></li>
-        <li><a href="{{ path('oro_product_product_queryfiltersizeattribute') }}">Products no lazy load filter on attribute size = 175</a></li>
-        <li><a href="{{ path('oro_product_product_queryfiltersizeanddescattributes') }}">Products no lazy load filter on attribute size = 175 and description = 'my long description'</a></li>
+        <li><a href="{{ path('oro_product_product_index') }}">Select entities and all attribute values</a></li>
+        <li><a href="{{ path('oro_product_product_querylazyload') }}">Select just entities, attributes and values are lazy loaded</a></li>
+        
+        <li><a href="{{ path('oro_product_product_queryonlyname') }}">Select with only attribute name</a></li>
+        <li><a href="{{ path('oro_product_product_querynameanddesc') }}">Select with attribute name and description</a></li>
+        
+        <li><a href="{{ path('oro_product_product_queryfilterskufield') }}">Select filtered on field sku = 'sku-2'</a></li>
+        <li><a href="{{ path('oro_product_product_querynamefilterskufield') }}">Select with attribute name and filtered on field sku = 'sku-2'</a></li>
+        
+        <li><a href="{{ path('oro_product_product_queryfiltersizeattribute') }}">Select with attribute description, size filtered on attribute size = 175</a></li>
+        <li><a href="{{ path('oro_product_product_queryfiltersizeanddescattributes') }}">Select with attribute description, size filtered on attribute size = 175 and description = 'my other description'</a></li>
+
+        <li><a href="{{ path('oro_product_product_querynameanddesclimit') }}">Select with attribute name and description limit 1, 10</a></li>
+        <li><a href="{{ path('oro_product_product_querynameanddescorderby') }}">Select with attribute name and description order by description DESC and sku ASC</a></li>
     </ul>
+
+    <p>Nb results : {{ products|length }}</p>
 
     <table class="mytable">
         <tr>
-            <td>Id</td><td>Sku</td><td>Name</td><td>Description</td><td>Size</td><td>Color</td>
+            <td>Id</td>
+            <td>Sku</td>
+            
+            {% if 'name' in attributes %}
+                <td>Name</td>
+            {% endif %}
+            
+            {% if 'description' in attributes %}
+                <td>Description</td>
+            {% endif %}
+            
+            {% if 'size' in attributes %}
+                <td>Size</td>
+            {% endif %}
+            
+            {% if 'color' in attributes %}
+                <td>Color</td>
+            {% endif %}
         </tr>
     {% for product in products %}
         <tr>
@@ -22,11 +49,21 @@
             <td>{{ product.sku }}</td>
             
             <!-- attributes -->
-            <td>{{ product.name }}</td>
-            <td>{{ product.description }}</td>
-            <td>{{ product.size }}</td>
-            <td>{{ product.color }}</td>
-
+            {% if 'name' in attributes %}
+                <td>{{ product.name }}</td>
+            {% endif %}
+            
+            {% if 'description' in attributes %}
+                <td>{{ product.description }}</td>
+            {% endif %}
+            
+            {% if 'size' in attributes %}
+                <td>{{ product.size }}</td>
+            {% endif %}
+            
+            {% if 'color' in attributes %}
+                <td>{{ product.color }}</td>
+            {% endif %}
             <td><a href="{{ path('oro_product_product_view', {'id': product.id}) }}">Load details</a></td>
         </tr>
     {% endfor %}

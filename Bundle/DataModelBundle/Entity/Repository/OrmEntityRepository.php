@@ -92,17 +92,7 @@ class OrmEntityRepository extends EntityRepository
             $qb->select($alias, 'Value', 'Attribute')
                 ->from($this->_entityName, $alias)
                 ->leftJoin($alias.'.values', 'Value')
-                ->leftJoin('Value.attribute', 'Attribute')
-                // if no translatable, get default locale value
-                // if translatable, get asked locale value
-                // there is no fallback defined
-                ->andWhere(
-                    '(Attribute.translatable = 1 AND Value.localeCode = :locale) '
-                    .'OR (Attribute.translatable = 0 and Value.localeCode = :defaultLocale) '
-                    .'OR (Value.localeCode IS NULL)'
-                )
-                ->setParameter('defaultLocale', $this->getDefaultLocaleCode())
-                ->setParameter('locale', $this->getLocaleCode());
+                ->leftJoin('Value.attribute', 'Attribute');
         }
 
         return $qb;
@@ -158,35 +148,76 @@ class OrmEntityRepository extends EntityRepository
      */
     public function findByWithAttributes(array $attributes = null, array $criteria = null, array $orderBy = null, $limit = null, $offset = null)
     {
-        // get base query builder (join to attribute and value)
-        $qb = $this->createQueryBuilder('Entity');
-
-        // get only asked attributes
-        if ($attributes and !empty($attributes)) {
-            $qb->andWhere($qb->expr()->in('Attribute.code', $attributes));
+        // identify kind of query
+        $hasSelectedAttributes = (!is_null($attributes) and !empty($attributes));
+        $hasCriterias = (!is_null($criteria) and !empty($criteria));
+        if ($hasCriterias) {
+            $attributeCriterias = array_intersect($attributes, array_keys($criteria));
+            $fieldCriterias     = array_diff(array_keys($criteria), $attributes);
+            $attributesToSelect = array_diff($attributes, $attributeCriterias);
+        } else {
+            $attributesToSelect = $attributes;
         }
-
-        // add criteria
-        if ($criteria and !empty($criteria)) {
-            // load attributes
+        if ($hasCriterias or $hasSelectedAttributes) {
             $codeToAttribute = $this->getAttributes($attributes);
+        }
+        // get base query builder (direct join to attribute and value if no attribute selection)
+        if (!$hasSelectedAttributes) {
+            $qb = $this->createQueryBuilder('Entity');
+        } else {
+            $qb = $this->createQueryBuilder('Entity', true); // lazy load
+        }
+        // add criterias
+        $attributeCodeToAlias = array();
+        if ($criteria and !empty($criteria)) {
             foreach ($criteria as $fieldCode => $fieldValue) {
-                // attribute criteria
+                // add attribute criteria
                 if (in_array($fieldCode, $attributes)) {
-                    $attribute = $codeToAttribute[$fieldCode];
-                    $backend = $attribute->getBackendType();
-                    $qb->andWhere('Value.attribute = :att'.$fieldCode.' AND Value.'.$backend.' = :value'.$fieldCode)
-                        ->setParameter('att'.$fieldCode, $attribute->getId())
-                        ->setParameter('value'.$fieldCode, $fieldValue);
-                // field criteria
+                    // prepare condition
+                    $attribute    = $codeToAttribute[$fieldCode];
+                    $joinAlias    = 'Value'.$fieldCode;
+                    $joinValue    = 'value'.$fieldCode;
+                    $condition = $joinAlias.'.attribute = '.$attribute->getId().' AND '.$joinAlias.'.'.$attribute->getBackendType().' = :'.$joinValue;
+                    // add select join and filter
+                    $qb->addSelect($joinAlias);
+                    $qb->innerJoin('Entity.'.$attribute->getBackendModel(), $joinAlias, 'WITH', $condition)->setParameter($joinValue, $fieldValue);
+                    $attributeCodeToAlias[$fieldCode]= $joinAlias.'.'.$attribute->getBackendType();
+                // add field criteria
                 } else {
                     $qb->andWhere('Entity.'.$fieldCode.' = :'.$fieldCode)->setParameter($fieldCode, $fieldValue);
                 }
             }
         }
-
-        // TODO use leftjoin with to do where cond1 and cond2 on join
-
+        // get selected attributes values (but not used as criteria)
+        if (!empty($attributesToSelect)) {
+            foreach ($attributesToSelect as $attributeCode) {
+                // preare join condition
+                $attribute    = $codeToAttribute[$attributeCode];
+                $joinAlias    = 'Value'.$attributeCode;
+                $joinValue    = 'value'.$attributeCode;
+                $condition = $joinAlias.'.attribute = '.$attribute->getId();
+                // add select attribute value
+                $qb->addSelect($joinAlias);
+                $qb->leftJoin('Entity.'.$attribute->getBackendModel(), $joinAlias, 'WITH', $condition);
+                $attributeCodeToAlias[$attributeCode]= $joinAlias.'.'.$attribute->getBackendType();
+            }
+        }
+        // add order by
+        if ($orderBy) {
+            foreach ($orderBy as $fieldCode => $direction) {
+                // on attribute value
+                if (isset($attributeCodeToAlias[$fieldCode])) {
+                    $qb->addOrderBy($attributeCodeToAlias[$fieldCode], $direction);
+                // on entity field
+                } else {
+                    $qb->addOrderBy('Entity.'.$fieldCode, $direction);
+                }
+            }
+        }
+        // add limit
+        if (!is_null($offset) and !is_null($limit)) {
+            $qb->setFirstResult($offset)->setMaxResults($limit);
+        }
 
         return $qb->getQuery()->getResult();
     }

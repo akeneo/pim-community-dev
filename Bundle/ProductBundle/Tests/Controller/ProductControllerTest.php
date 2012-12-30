@@ -49,4 +49,28 @@ class ProductControllerTest extends WebTestCase
 
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
     }
+
+    /**
+     * Test related method
+     */
+    public function testQueries()
+    {
+        $client = static::createClient();
+        $actions = array(
+            '/en/product/product/querylazyload',
+            '/en/product/product/queryonlyname',
+            '/en/product/product/querynameanddesc',
+            '/en/product/product/queryfilterskufield',
+            '/en/product/product/querynamefilterskufield',
+            '/en/product/product/queryfiltersizeattribute',
+            '/en/product/product/queryfiltersizeanddescattributes',
+            '/en/product/product/querynameanddesclimit',
+            '/en/product/product/querynameanddescorderby',
+        );
+        foreach ($actions as $action) {
+            $crawler = $client->request('GET', $action);
+            $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        }
+    }
+
 }
