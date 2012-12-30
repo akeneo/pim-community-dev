@@ -35,7 +35,7 @@ class CustomerController extends Controller
      */
     public function indexAction()
     {
-        $customers = $this->getCustomerManager()->getEntityRepository()->findAllEntities();
+        $customers = $this->getCustomerManager()->getEntityRepository()->findByWithAttributes();
 
         return array('customers' => $customers);
     }

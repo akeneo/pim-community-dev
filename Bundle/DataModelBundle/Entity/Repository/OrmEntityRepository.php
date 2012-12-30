@@ -27,27 +27,6 @@ class OrmEntityRepository extends EntityRepository
     protected $localeCode;
 
     /**
-     * Use lazy loading ? TODO: delete ?
-     * @var boolean
-     */
-    protected $useLazyLoading;
-
-    /**
-     * Override to deal with default locale and lazy loading
-     * TODO : use default locale from app conf
-     * TODO : single table inheritance for flatten mode ?
-     *
-     * @param EntityManager $em    The EntityManager to use.
-     * @param ClassMetadata $class The class descriptor.
-     */
-    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
-    {
-        parent::__construct($em, $class);
-
-        $this->useLazyLoading = false;
-    }
-
-    /**
      * Get default locale code
      *
      * @return string
@@ -98,13 +77,14 @@ class OrmEntityRepository extends EntityRepository
     /**
      * Create a new QueryBuilder instance that is prepopulated for this entity name
      *
-     * @param string $alias
+     * @param string  $alias    alias for entity
+     * @param boolean $lazyload use lazy loading
      *
      * @return QueryBuilder $qb
      */
-    public function createQueryBuilder($alias)
+    public function createQueryBuilder($alias, $lazyload = false)
     {
-        if ($this->useLazyLoading) {
+        if ($lazyload) {
             $qb = parent::createQueryBuilder($alias);
         } else {
             // if no lazy loading directly join with values and attribute
@@ -129,13 +109,84 @@ class OrmEntityRepository extends EntityRepository
     }
 
     /**
-     * Find all entities
+     * Finds attributes
      *
-     * @return multitype:
+     * @param array $attributes attribute codes
+     *
+     * @return array The objects.
      */
-    public function findAllEntities()
+    public function getAttributes(array $attributes)
     {
+        // TODO to refactor, take a look on getFqcnFromAlias
+        $parts = explode("\\", $this->_entityName);
+        $entityShortName = $parts[0].$parts[2].':'.$parts[4];
+        $attributeSN = 'OroDataModelBundle:OrmEntityAttribute';
+
+        // retrieve attributes
+        $alias = 'Attribute';
+        $qb = $this->_em->createQueryBuilder()
+            ->select($alias)
+            ->from($attributeSN, $alias)
+            ->andWhere('Attribute.entityType = :type')
+            ->setParameter('type', $entityShortName);
+
+        // filter by code
+        if (!empty($attributes)) {
+            $qb->andWhere($qb->expr()->in('Attribute.code', $attributes));
+        }
+
+        // prepare associative array
+        $attributes = $qb->getQuery()->getResult();
+        $codeToAttribute = array();
+        foreach ($attributes as $attribute) {
+            $codeToAttribute[$attribute->getCode()]= $attribute;
+        }
+
+        return $codeToAttribute;
+    }
+
+    /**
+     * Finds entities and attributes values by a set of criteria.
+     *
+     * @param array      $attributes attribute codes
+     * @param array      $criteria   criterias
+     * @param array|null $orderBy    order by
+     * @param int|null   $limit      limit
+     * @param int|null   $offset     offset
+     *
+     * @return array The objects.
+     */
+    public function findByWithAttributes(array $attributes = null, array $criteria = null, array $orderBy = null, $limit = null, $offset = null)
+    {
+        // get base query builder (join to attribute and value)
         $qb = $this->createQueryBuilder('Entity');
+
+        // get only asked attributes
+        if ($attributes and !empty($attributes)) {
+            $qb->andWhere($qb->expr()->in('Attribute.code', $attributes));
+        }
+
+        // add criteria
+        if ($criteria and !empty($criteria)) {
+            // load attributes
+            $codeToAttribute = $this->getAttributes($attributes);
+            foreach ($criteria as $fieldCode => $fieldValue) {
+                // attribute criteria
+                if (in_array($fieldCode, $attributes)) {
+                    $attribute = $codeToAttribute[$fieldCode];
+                    $backend = $attribute->getAttributeType()->getBackendType();
+                    $qb->andWhere('Value.attribute = :att'.$fieldCode.' AND Value.'.$backend.' = :value'.$fieldCode)
+                        ->setParameter('att'.$fieldCode, $attribute->getId())
+                        ->setParameter('value'.$fieldCode, $fieldValue);
+                // field criteria
+                } else {
+                    $qb->andWhere('Entity.'.$fieldCode.' = :'.$fieldCode)->setParameter($fieldCode, $fieldValue);
+                }
+            }
+        }
+
+        // TODO use leftjoin with to do where cond1 and cond2 on join
+
 
         return $qb->getQuery()->getResult();
     }

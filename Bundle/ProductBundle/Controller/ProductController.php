@@ -34,10 +34,81 @@ class ProductController extends Controller
      */
     public function indexAction()
     {
-        // TODO : with lazy load
-        // $products = $this->getProductManager()->getEntityRepository()->findAll();
-        // TODO : without lazy load
-        $products = $this->getProductManager()->getEntityRepository()->findAllEntities();
+        $products = $this->getProductManager()->getEntityRepository()->findByWithAttributes();
+
+        return array('products' => $products);
+    }
+
+    /**
+     * @Route("/querylazyload")
+     * @Template("OroProductBundle:Product:index.html.twig")
+     *
+     * @return multitype
+     */
+    public function querylazyloadAction()
+    {
+        // get only entities, values and attributes are lazy loaded
+        // you can use any criteria, order you want it's a classic doctrine query
+        $products = $this->getProductManager()->getEntityRepository()->findBy(array());
+
+        return array('products' => $products);
+    }
+
+    /**
+     * @Route("/queryonlynameandsku")
+     * @Template("OroProductBundle:Product:index.html.twig")
+     *
+     * @return multitype
+     */
+    public function queryonlynameandskuAction()
+    {
+        // get all entity fields and directly get attributes values
+        $products = $this->getProductManager()->getEntityRepository()->findByWithAttributes(array('sku', 'name'));
+
+        return array('products' => $products);
+    }
+
+    /**
+     * @Route("/queryfilterskufield")
+     * @Template("OroProductBundle:Product:index.html.twig")
+     *
+     * @return multitype
+     */
+    public function queryfilterskufieldAction()
+    {
+        // get all entity fields, directly get attributes values, filter on entity field value
+        $products = $this->getProductManager()->getEntityRepository()->findByWithAttributes(array(), array('sku' => 'sku-1'));
+
+        return array('products' => $products);
+    }
+
+    /**
+     * @Route("/queryfiltersizeattribute")
+     * @Template("OroProductBundle:Product:index.html.twig")
+     *
+     * @return multitype
+     */
+    public function queryfiltersizeattributeAction()
+    {
+        // get all entity fields, directly get attributes values, filter on attribute value
+        $products = $this->getProductManager()->getEntityRepository()->findByWithAttributes(array('size'), array('size' => 175));
+
+        return array('products' => $products);
+    }
+
+    /**
+     * @Route("/queryfiltersizeanddescattributes")
+     * @Template("OroProductBundle:Product:index.html.twig")
+     *
+     * @return multitype
+     */
+    public function queryfiltersizeanddescattributesAction()
+    {
+        // get all entity fields, directly get attributes values, filter on attribute value
+        $products = $this->getProductManager()->getEntityRepository()->findByWithAttributes(
+            array('size', 'description'),
+            array('size' => 175, 'description' => 'my long description 3')
+        );
 
         return array('products' => $products);
     }
