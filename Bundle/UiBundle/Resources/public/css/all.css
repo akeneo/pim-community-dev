@@ -1,0 +1,164 @@
+/* footer at bottom*/
+html, body{
+    height: 100%;
+}
+#page{
+    display: table;
+    height: 100%;
+    width: 100%;
+}
+#top-page{
+    display: table-row;
+    width: 100%;
+}
+#footer{
+    display: table-footer-group;
+    width: 100%;
+}
+#footer-frame{
+    display: table-row;
+    height: 1%;
+}
+/* other style */
+.checkbox{
+    margin: 0;
+}
+.new-row input{
+    clear: both;
+    display: block;
+}
+.simple-page{
+    padding: 75px 0 0;
+}
+.test-box{
+    min-height: 500px;
+}
+.example{
+    border: 1px solid #000;
+    width: 12px;
+    height: 12px;
+    float: left;
+    margin: 3px 0 0 10px;
+}
+.ui-dialog{
+    position: absolute;
+}
+.ui-widget-content{
+    overflow: auto;
+}
+.ui-dialog .ui-dialog-titlebar{
+    position: relative;
+    padding-right: 30px;
+}
+.ui-dialog .ui-dialog-titlebar-close{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+/*
+.ui-dialog-titlebar-maximize{
+    display: none !important;
+}*/
+header{
+    background: #ededed;
+    overflow: hidden;
+}
+.bar-tools{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.bar-tools > li{
+    display: block;
+    border-top: 1px solid #000;
+    position: relative;
+}
+.bar-tools > li:first-child{
+    border: 0;
+}
+.maximaze-bar,
+.bar-tools a{
+    background: url("../img/temp-sprite.png") no-repeat;
+    text-indent: -9999px;
+    font-size: 0;
+    line-height: 0;
+    width: 25px;
+    height: 25px;
+    display: block;
+}
+.bar-tools .test1{
+    background-position: 0 0;
+}
+.bar-tools .test2{
+    background-position: 0 -27px;
+}
+.bar-tools .test3{
+    background-position: 0 -54px;
+}
+.bar-tools .test4{
+    background-position: 0 -80px;
+}
+.bar-tools .test5{
+    background-position: 0 -107px;
+}
+.bar-tools .test6{
+    background-position: 0 -133px;
+}
+.bar-tools .test7{
+    background-position: 0 -159px;
+}
+.maximaze-bar,
+.bar-tools .maximaze-bar{
+    background-position: 0 -185px;
+    height: 10px;
+    float: left;
+    cursor: pointer;
+    border-bottom: 1px solid #000;
+}
+.side-nav-locked,
+.page-container{
+    background: #dee0e2;
+}
+.lock-bar{
+    text-indent: -9999px;
+    cursor: pointer;
+    font-size: 0;
+    line-height: 0;
+    float:right;
+    width: 17px;
+    height: 17px;
+    background: url("../img/temp-sprite.png") no-repeat 0 -195px;
+    display: none;
+}
+.side-nav-locked .lock-bar{
+    display: block;
+    background-position: 0 -222px;
+}
+.side-nav-open .lock-bar{
+    display: block;
+}
+.side-nav-locked .maximaze-bar,
+.side-nav-open .maximaze-bar{
+    background-position: 0 -212px;
+}
+.nav-box{
+    background: #f7f7f7;
+}
+.side-nav-open .bar-tools > li,
+.side-nav-locked .bar-tools > li{
+    border: 0;
+    margin-bottom: 15px;
+}
+.side-nav-open .maximaze-bar,
+.side-nav-locked .maximaze-bar{
+    border: 0;
+}
+.fr{
+    float:right;
+}
+/* visual for modal bar popup
+#bar-drop-overlay{
+    background: #000;
+    opacity: 0.6;
+}
+*/
