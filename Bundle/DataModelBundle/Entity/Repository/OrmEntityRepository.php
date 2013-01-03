@@ -222,4 +222,18 @@ class OrmEntityRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * Find entity with attributes values
+     *
+     * @param int $id entity id
+     *
+     * @return Entity the entity
+     */
+    public function findWithAttributes($id)
+    {
+        $products = $this->findByWithAttributes(array(), array('id' => $id));
+
+        return current($products);
+    }
+
 }

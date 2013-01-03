@@ -50,7 +50,11 @@ class CustomerController extends Controller
      */
     public function viewAction($id)
     {
-        $customer = $this->getCustomerManager()->getEntityRepository()->find($id);
+        // with lazy loading
+        // $customer = $this->getCustomerManager()->getEntityRepository()->find($id);
+
+        // with any values
+        $customer = $this->getCustomerManager()->getEntityRepository()->findWithAttributes($id);
 
         return array('customer' => $customer);
     }

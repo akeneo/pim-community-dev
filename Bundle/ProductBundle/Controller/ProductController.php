@@ -190,7 +190,10 @@ class ProductController extends Controller
      */
     public function viewAction($id)
     {
-        $product = $this->getProductManager()->getEntityRepository()->find($id);
+        // with lazy loading
+        //$product = $this->getProductManager()->getEntityRepository()->find($id);
+        // with any values
+        $product = $this->getProductManager()->getEntityRepository()->findWithAttributes($id);
 
         return array('product' => $product);
     }
