@@ -74,30 +74,34 @@ abstract class AbstractOrmEntityAttribute extends AbstractEntityAttribute
     protected $updated;
 
     /**
-     * @ORM\Column(name="uniqueValue", type="boolean")
+     * @ORM\Column(name="is_unique", type="boolean")
      */
-    protected $uniqueValue;
+    protected $unique;
 
     /**
-     * @ORM\Column(name="valueRequired", type="boolean")
+     * @ORM\Column(name="is_required", type="boolean")
      */
-    protected $valueRequired;
+    protected $required;
 
     /**
-     * @ORM\Column(name="searchable", type="boolean")
+     * @ORM\Column(name="is_searchable", type="boolean")
      */
     protected $searchable;
 
     /**
-     * @ORM\Column(name="translatable", type="boolean")
+     * @ORM\Column(name="is_translatable", type="boolean")
      */
     protected $translatable;
+
+    /**
+     * @ORM\Column(name="is_scopable", type="boolean")
+     */
+    protected $scopable;
 
     /**
      * @var ArrayCollection $options
      *
      * @ORM\OneToMany(targetEntity="AbstractOrmEntityAttributeOption", mappedBy="attribute", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $options;
 
@@ -112,11 +116,12 @@ abstract class AbstractOrmEntityAttribute extends AbstractEntityAttribute
      */
     public function __construct()
     {
-        $this->options       = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->uniqueValue   = false;
-        $this->valueRequired = false;
-        $this->searchable    = false;
-        $this->translatable  = false;
+        $this->options      = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->unique       = false;
+        $this->required     = false;
+        $this->searchable   = false;
+        $this->translatable = false;
+        $this->scopable     = false;
     }
 
     /**

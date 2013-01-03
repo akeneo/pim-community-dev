@@ -220,7 +220,7 @@ class ProductController extends Controller
 
         $indSku = 1;
         $descriptions = array('my long descrition', 'my other description');
-        for ($ind= 1; $ind <= 100; $ind++) {
+        for ($ind= 1; $ind <= 33; $ind++) {
 
             // add product with only sku
             $prodSku = 'sku-'.$indSku;

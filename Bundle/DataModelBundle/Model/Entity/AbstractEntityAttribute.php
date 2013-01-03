@@ -1,7 +1,6 @@
 <?php
 namespace Oro\Bundle\DataModelBundle\Model\Entity;
 
-use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AbstractAttributeType;
 use Oro\Bundle\DataModelBundle\Model\Behavior\TimestampableInterface;
 
 /**
@@ -57,14 +56,14 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
     protected $updated;
 
     /**
-     * @var boolean $uniqueValue
+     * @var boolean $unique
      */
-    protected $uniqueValue;
+    protected $unique;
 
     /**
-    * @var boolean $valueRequired
+    * @var boolean $required
     */
-    protected $valueRequired;
+    protected $required;
 
     /**
      * @var boolean $searchable
@@ -75,6 +74,11 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
     * @var boolean $translatable
     */
     protected $translatable;
+
+    /**
+     * @var boolean $scopable
+     */
+    protected $scopable;
 
     /**
      * Get id
@@ -269,51 +273,51 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
     }
 
     /**
-     * Set uniqueValue
+     * Set unique
      *
-     * @param boolean $uniqueValue
+     * @param boolean $unique
      *
      * @return AbstractEntityAttribute
      */
-    public function setUniqueValue($uniqueValue)
+    public function setUnique($unique)
     {
-        $this->uniqueValue = $uniqueValue;
+        $this->unique = $unique;
 
         return $this;
     }
 
     /**
-     * Get uniqueValue
+     * Get unique
      *
-     * @return boolean $uniqueValue
+     * @return boolean $unique
      */
-    public function getUniqueValue()
+    public function getUnique()
     {
-        return $this->uniqueValue;
+        return $this->unique;
     }
 
     /**
-     * Set valueRequired
+     * Set required
      *
-     * @param string $valueRequired
+     * @param string $required
      *
      * @return AbstractEntityAttribute
      */
-    public function setValueRequired($valueRequired)
+    public function setRequired($required)
     {
-        $this->valueRequired = $valueRequired;
+        $this->required = $required;
 
         return $this;
     }
 
     /**
-     * Get valueRequired
+     * Get required
      *
-     * @return string $valueRequired
+     * @return string $Required
      */
-    public function getValueRequired()
+    public function getRequired()
     {
-        return $this->valueRequired;
+        return $this->required;
     }
 
     /**
@@ -362,6 +366,31 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
     public function getTranslatable()
     {
         return $this->translatable;
+    }
+
+
+    /**
+     * Set scopable
+     *
+     * @param boolean $scopable
+     *
+     * @return AbstractEntityAttribute
+     */
+    public function setScopable($scopable)
+    {
+        $this->scopable = $scopable;
+
+        return $this;
+    }
+
+    /**
+     * Get scopable
+     *
+     * @return boolean $scopable
+     */
+    public function getScopable()
+    {
+        return $this->scopable;
     }
 
     /**

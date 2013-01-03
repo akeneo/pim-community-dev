@@ -216,7 +216,7 @@ class OrmEntityRepository extends EntityRepository
                 }
             }
         }
-        // add limit
+        // add limit TODO : problem with left join
         if (!is_null($offset) and !is_null($limit)) {
             $qb->setFirstResult($offset)->setMaxResults($limit);
         }
