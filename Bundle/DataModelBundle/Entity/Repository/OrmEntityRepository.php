@@ -167,61 +167,110 @@ class OrmEntityRepository extends EntityRepository
         // add criterias
         $attributeCodeToAlias = array();
         if ($criteria and !empty($criteria)) {
-            foreach ($criteria as $fieldCode => $fieldValue) {
-                // add attribute criteria
-                if (in_array($fieldCode, $attributes)) {
-                    // prepare condition
-                    $attribute       = $codeToAttribute[$fieldCode];
-                    $joinAlias       = 'cValue'.$fieldCode;
-                    $joinValue       = 'cvalue'.$fieldCode;
-                    $joinValueLocale = 'clocale'.$fieldCode;
-                    $condition = $joinAlias.'.attribute = '.$attribute->getId()
-                        .' AND '.$joinAlias.'.'.$attribute->getBackendType().' = :'.$joinValue
-                        .' AND '.$joinAlias.'.localeCode = :'.$joinValueLocale;
-                    $condLocale = ($attribute->getTranslatable()) ? $this->getLocaleCode() : $this->getDefaultLocaleCode();
-                    // add inner join to filter lines
-                    $qb->innerJoin('Entity.'.$attribute->getBackendModel(), $joinAlias, 'WITH', $condition)
-                        ->setParameter($joinValue, $fieldValue)
-                        ->setParameter($joinValueLocale, $condLocale);
-                    $attributeCodeToAlias[$fieldCode]= $joinAlias.'.'.$attribute->getBackendType();
-                // add field criteria
-                } else {
-                    $qb->andWhere('Entity.'.$fieldCode.' = :'.$fieldCode)->setParameter($fieldCode, $fieldValue);
-                }
-            }
+            $attributeCodeToAlias = $this->addFieldOrAttributeCriterias($qb, $attributes, $criteria, $codeToAttribute, $attributeCodeToAlias);
         }
         // get selected attributes values (but not used as criteria)
         if (!empty($attributes)) {
-            foreach ($attributes as $attributeCode) {
-                // preare join condition
-                $attribute    = $codeToAttribute[$attributeCode];
-                $joinAlias    = 'sValue'.$attributeCode;
-                $joinValue    = 'svalue'.$attributeCode;
-                $condition = $joinAlias.'.attribute = '.$attribute->getId();
-                // add select attribute value
-                $qb->addSelect($joinAlias);
-                $qb->leftJoin('Entity.'.$attribute->getBackendModel(), $joinAlias, 'WITH', $condition);
-                $attributeCodeToAlias[$attributeCode]= $joinAlias.'.'.$attribute->getBackendType();
-            }
+            $attributeCodeToAlias = $this->addAttributeToSelect($qb, $attributes, $codeToAttribute, $attributeCodeToAlias);
         }
         // add order by
         if ($orderBy) {
-            foreach ($orderBy as $fieldCode => $direction) {
-                // on attribute value
-                if (isset($attributeCodeToAlias[$fieldCode])) {
-                    $qb->addOrderBy($attributeCodeToAlias[$fieldCode], $direction);
-                // on entity field
-                } else {
-                    $qb->addOrderBy('Entity.'.$fieldCode, $direction);
-                }
-            }
+            $this->addFieldOrAttributeOrderBy($qb, $orderBy, $attributeCodeToAlias);
         }
-        // add limit TODO : problem with left join
+        // add limit TODO : problem with left join and limit on entities, see paginator
         if (!is_null($offset) and !is_null($limit)) {
             $qb->setFirstResult($offset)->setMaxResults($limit);
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Add attributes to select
+     *
+     * @param QueryBuilder $qb            query builder to update
+     * @param array $attributes           attributes to select
+     * @param array $codeToAttribute      attribute code to attribute
+     * @param array $attributeCodeToAlias attribute code to query alias
+     *
+     * @return array $attributeCodeToAlias
+     */
+    protected function addAttributeToSelect($qb, $attributes, $codeToAttribute, $attributeCodeToAlias)
+    {
+        foreach ($attributes as $attributeCode) {
+            // preare join condition
+            $attribute    = $codeToAttribute[$attributeCode];
+            $joinAlias    = 'sValue'.$attributeCode;
+            $joinValue    = 'svalue'.$attributeCode;
+            $condition = $joinAlias.'.attribute = '.$attribute->getId();
+            // add select attribute value
+            $qb->addSelect($joinAlias);
+            $qb->leftJoin('Entity.'.$attribute->getBackendModel(), $joinAlias, 'WITH', $condition);
+            $attributeCodeToAlias[$attributeCode]= $joinAlias.'.'.$attribute->getBackendType();
+        }
+
+        return $attributeCodeToAlias;
+    }
+
+    /**
+     * Add fields and/or attributes criterias
+     *
+     * @param QueryBuilder $qb            query builder to update
+     * @param array $attributes           attributes to select
+     * @param array criterias             criterias on field or attribute
+     * @param array $codeToAttribute      attribute code to attribute
+     * @param array $attributeCodeToAlias attribute code to query alias
+     *
+     * @return array $attributeCodeToAlias
+     */
+    protected function addFieldOrAttributeCriterias($qb, $attributes, $criteria, $codeToAttribute, $attributeCodeToAlias)
+    {
+        foreach ($criteria as $fieldCode => $fieldValue) {
+            // add attribute criteria
+            if (in_array($fieldCode, $attributes)) {
+                // prepare condition
+                $attribute       = $codeToAttribute[$fieldCode];
+                $joinAlias       = 'cValue'.$fieldCode;
+                $joinValue       = 'cvalue'.$fieldCode;
+                $joinValueLocale = 'clocale'.$fieldCode;
+                $condition = $joinAlias.'.attribute = '.$attribute->getId()
+                    .' AND '.$joinAlias.'.'.$attribute->getBackendType().' = :'.$joinValue
+                    .' AND '.$joinAlias.'.localeCode = :'.$joinValueLocale;
+                $condLocale = ($attribute->getTranslatable()) ? $this->getLocaleCode() : $this->getDefaultLocaleCode();
+                // add inner join to filter lines
+                $qb->innerJoin('Entity.'.$attribute->getBackendModel(), $joinAlias, 'WITH', $condition)
+                    ->setParameter($joinValue, $fieldValue)
+                    ->setParameter($joinValueLocale, $condLocale);
+                $attributeCodeToAlias[$fieldCode]= $joinAlias.'.'.$attribute->getBackendType();
+            // add field criteria
+            } else {
+                $qb->andWhere('Entity.'.$fieldCode.' = :'.$fieldCode)->setParameter($fieldCode, $fieldValue);
+            }
+        }
+
+        return $attributeCodeToAlias;
+    }
+
+
+    /**
+     * Add fields and/or attributes order by
+     *
+     * @param QueryBuilder $qb            query builder to update
+     * @param array $orderBy              fields and attributes order by
+     * @param array $attributeCodeToAlias attribute code to query alias
+     *
+     */
+    protected function addFieldOrAttributeOrderBy($qb, $orderBy, $attributeCodeToAlias)
+    {
+        foreach ($orderBy as $fieldCode => $direction) {
+            // on attribute value
+            if (isset($attributeCodeToAlias[$fieldCode])) {
+                $qb->addOrderBy($attributeCodeToAlias[$fieldCode], $direction);
+                // on entity field
+            } else {
+                $qb->addOrderBy('Entity.'.$fieldCode, $direction);
+            }
+        }
     }
 
     /**
