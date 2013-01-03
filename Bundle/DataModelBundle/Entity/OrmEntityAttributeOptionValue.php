@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  *
- * @ORM\Table(name="entity_attribute_option_value")
+ * @ORM\Table(name="datamodel_entity_attribute_option_value")
  * @ORM\Entity
  */
 class OrmEntityAttributeOptionValue extends AbstractOrmEntityAttributeOptionValue
