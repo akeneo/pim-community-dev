@@ -154,9 +154,6 @@ class OrmEntityRepository extends EntityRepository
         if ($hasCriterias) {
             $attributeCriterias = array_intersect($attributes, array_keys($criteria));
             $fieldCriterias     = array_diff(array_keys($criteria), $attributes);
-            $attributesToSelect = array_diff($attributes, $attributeCriterias);
-        } else {
-            $attributesToSelect = $attributes;
         }
         if ($hasCriterias or $hasSelectedAttributes) {
             $codeToAttribute = $this->getAttributes($attributes);
@@ -174,13 +171,18 @@ class OrmEntityRepository extends EntityRepository
                 // add attribute criteria
                 if (in_array($fieldCode, $attributes)) {
                     // prepare condition
-                    $attribute    = $codeToAttribute[$fieldCode];
-                    $joinAlias    = 'Value'.$fieldCode;
-                    $joinValue    = 'value'.$fieldCode;
-                    $condition = $joinAlias.'.attribute = '.$attribute->getId().' AND '.$joinAlias.'.'.$attribute->getBackendType().' = :'.$joinValue;
-                    // add select join and filter
-                    $qb->addSelect($joinAlias);
-                    $qb->innerJoin('Entity.'.$attribute->getBackendModel(), $joinAlias, 'WITH', $condition)->setParameter($joinValue, $fieldValue);
+                    $attribute       = $codeToAttribute[$fieldCode];
+                    $joinAlias       = 'cValue'.$fieldCode;
+                    $joinValue       = 'cvalue'.$fieldCode;
+                    $joinValueLocale = 'clocale'.$fieldCode;
+                    $condition = $joinAlias.'.attribute = '.$attribute->getId()
+                        .' AND '.$joinAlias.'.'.$attribute->getBackendType().' = :'.$joinValue
+                        .' AND '.$joinAlias.'.localeCode = :'.$joinValueLocale;
+                    $condLocale = ($attribute->getTranslatable()) ? $this->getLocaleCode() : $this->getDefaultLocaleCode();
+                    // add inner join to filter lines
+                    $qb->innerJoin('Entity.'.$attribute->getBackendModel(), $joinAlias, 'WITH', $condition)
+                        ->setParameter($joinValue, $fieldValue)
+                        ->setParameter($joinValueLocale, $condLocale);
                     $attributeCodeToAlias[$fieldCode]= $joinAlias.'.'.$attribute->getBackendType();
                 // add field criteria
                 } else {
@@ -189,12 +191,12 @@ class OrmEntityRepository extends EntityRepository
             }
         }
         // get selected attributes values (but not used as criteria)
-        if (!empty($attributesToSelect)) {
-            foreach ($attributesToSelect as $attributeCode) {
+        if (!empty($attributes)) {
+            foreach ($attributes as $attributeCode) {
                 // preare join condition
                 $attribute    = $codeToAttribute[$attributeCode];
-                $joinAlias    = 'Value'.$attributeCode;
-                $joinValue    = 'value'.$attributeCode;
+                $joinAlias    = 'sValue'.$attributeCode;
+                $joinValue    = 'svalue'.$attributeCode;
                 $condition = $joinAlias.'.attribute = '.$attribute->getId();
                 // add select attribute value
                 $qb->addSelect($joinAlias);
