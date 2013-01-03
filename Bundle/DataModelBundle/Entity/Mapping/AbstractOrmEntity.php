@@ -69,6 +69,26 @@ abstract class AbstractOrmEntity extends AbstractEntity
     }
 
     /**
+     * Remove value
+     *
+     * @param EntityAttributeValue $value
+     */
+    public function removeValue(AbstractEntityAttributeValue $value)
+    {
+        $this->values->removeElement($value);
+    }
+
+    /**
+     * Get values
+     *
+     * @return \ArrayAccess
+     */
+    public function getValues()
+    {
+        return $this->values;
+    }
+
+    /**
      * Get value related to attribute code
      *
      * @param string $attributeCode

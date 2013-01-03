@@ -145,38 +145,4 @@ abstract class AbstractEntity implements TranslatableContainerInterface, Timesta
         return $this;
     }
 
-    /**
-     * Add value
-     *
-     * @param EntityAttributeValue $value
-     *
-     * @return AbstractEntity
-     */
-    public function addValue(AbstractEntityAttributeValue $value)
-    {
-        $this->values[] = $value;
-
-        return $this;
-    }
-
-    /**
-     * Remove value
-     *
-     * @param EntityAttributeValue $value
-     */
-    public function removeValue(AbstractEntityAttributeValue $value)
-    {
-        $this->values->removeElement($value);
-    }
-
-    /**
-     * Get values
-     *
-     * @return \ArrayAccess
-     */
-    public function getValues()
-    {
-        return $this->values;
-    }
-
 }

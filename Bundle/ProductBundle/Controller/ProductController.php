@@ -174,7 +174,7 @@ class ProductController extends Controller
     {
         // get all entity fields and directly get attributes values
         $products = $this->getProductManager()->getEntityRepository()->findByWithAttributes(
-            array('name', 'description'), null, array('description' => 'desc', 'sku' => 'asc')
+            array('name', 'description'), null, array('description' => 'desc', 'id' => 'asc')
         );
 
         return array('products' => $products, 'attributes' => array('name', 'description'));
