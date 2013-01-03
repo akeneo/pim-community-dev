@@ -2,6 +2,7 @@
 namespace Oro\Bundle\DataModelBundle\Listener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Common\EventSubscriber;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -12,12 +13,24 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class TranslatableListener implements ContainerAwareInterface
+class TranslatableListener implements EventSubscriber, ContainerAwareInterface
 {
     /**
      * @var ContainerInterface
      */
     protected $container;
+
+    /**
+     * Specifies the list of events to listen
+     *
+     * @return array
+     */
+    public function getSubscribedEvents()
+    {
+        return array(
+            'postLoad'
+        );
+    }
 
     /**
      * @param ContainerInterface $container

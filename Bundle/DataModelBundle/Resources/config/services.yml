@@ -14,7 +14,7 @@ services:
         calls:
             - [ setContainer, [ @service_container ] ]
         tags:
-            - { name: doctrine.event_listener, event: postLoad }
+            - { name: doctrine.event_subscriber }
 
     # deal with timestampable behaviour
     oro_datamodel.timestampable_listener:
