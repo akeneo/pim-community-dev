@@ -1,3 +1,6 @@
-Oro\Bundle\ProductBundle\Entity\Product:
-    has_translatable_values: true
-    has_scopable_values: false
+entities_config:
+    Oro\Bundle\ProductBundle\Entity\Product:
+        flexible_manager_class:      Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleEntityManager
+        flexible_entity_class:       Oro\Bundle\ProductBundle\Entity\Product
+        flexible_entity_value_class: Oro\Bundle\ProductBundle\Entity\ProductAttributeValue
+        has_translatable_value: true

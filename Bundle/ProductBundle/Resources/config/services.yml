@@ -9,7 +9,7 @@ parameters:
 services:
     product_manager:
         class:        "%product_manager.class%"
-        arguments:    [@doctrine.orm.entity_manager, %product_entity.shortname%, , %product_value.shortname%]
+        arguments:    [@doctrine.orm.entity_manager, %product_entity.shortname%, %product_value.shortname%]
         calls:
              - [ setLocaleHelper, [ @oro_flexibleentity.locale_helper ] ]
 #                    - [ setAttributeShortname, [ %product_attribute.shortname% ] ]

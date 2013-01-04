@@ -20,30 +20,30 @@ class OroFlexibleEntityExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-
-        // load flexible entities configuration
-        if (count($config['entities_config'])) {
-            $this->remapParameters(
-                $config,
-                $container,
-                array(
-                    'entities_config' => 'oro_flexibleentity.entities_config'
-                )
-            );
-        } else {
-            $entitiesConfig = array();
-            foreach ($container->getParameter('kernel.bundles') as $bundle) {
-                $reflection = new \ReflectionClass($bundle);
-                if (is_file($file = dirname($reflection->getFilename()).'/Resources/config/flexibleentity.yml')) {
-                    $entitiesConfig += Yaml::parse(realpath($file));
+        // retrieve each flexible entity config from bundles
+        $entitiesConfig = array();
+        foreach ($container->getParameter('kernel.bundles') as $bundle) {
+            $reflection = new \ReflectionClass($bundle);
+            if (is_file($file = dirname($reflection->getFilename()).'/Resources/config/flexibleentity.yml')) {
+                // merge entity configs
+                if (empty($entitiesConfig)) {
+                    $entitiesConfig = Yaml::parse(realpath($file));
+                } else {
+                    $entities = Yaml::parse(realpath($file));
+                    foreach ($entities['entities_config'] as $entity => $entityConfig) {
+                        $entitiesConfig['entities_config'][$entity]= $entityConfig;
+                    }
                 }
-                $container->setParameter('oro_flexibleentity.entities_config', $entitiesConfig);
             }
         }
-
+        $configs[]= $entitiesConfig;
+        // process configurations to validate and merge
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+        // load service
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+        // set entities config
+        $container->setParameter('oro_flexibleentity.entities_config', $config);
     }
 }

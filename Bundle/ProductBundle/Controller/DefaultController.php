@@ -48,4 +48,16 @@ class DefaultController extends Controller
         return $this->redirect($this->generateUrl('oro_product_product_index'));
     }
 
+    /**
+     * @Route("/entityconfig")
+     * @Template("OroProductBundle:Default:index.html.twig")
+     *
+     * @return multitype
+     */
+    public function entityconfigAction()
+    {
+        var_dump($this->container->getParameter('oro_flexibleentity.entities_config'));
+
+        return array();
+    }
 }

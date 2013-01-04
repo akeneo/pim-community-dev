@@ -24,11 +24,47 @@ class Configuration implements ConfigurationInterface
             ->arrayNode('entities_config')
             ->prototype('array')
                 ->children()
-                    ->scalarNode('has_translatable_value')->end()
-                    ->scalarNode('has_scopable_value')->end()
-                ->end()
 
-            ->end();
+                    // required to setup a minimal flexible entity
+                    ->scalarNode('flexible_manager_class')
+                    ->isRequired()->cannotBeEmpty()
+                    ->end()
+
+                    ->scalarNode('flexible_entity_class')
+                    ->isRequired()
+                    ->end()
+
+                    ->scalarNode('flexible_entity_value_class')
+                    ->isRequired()
+                    ->end()
+
+                    // optional, to define to customize attribute and option models
+                    ->scalarNode('flexible_attribute_class')
+                    ->defaultValue('Oro\Bundle\FlexibleEntityBundle\Entity\OrmEntityAttribute')
+                    ->end()
+
+                    ->scalarNode('flexible_attribute_option_class')
+                    ->defaultValue('Oro\Bundle\FlexibleEntityBundle\Entity\OrmEntityAttributeOption')
+                    ->end()
+
+                    ->scalarNode('flexible_attribute_option_value_class')
+                    ->defaultValue('Oro\Bundle\FlexibleEntityBundle\Entity\OrmEntityAttributeOptionValue')
+                    ->end()
+
+                    // optional behaviors
+                    ->booleanNode('has_translatable_value')
+                    ->defaultFalse()
+                    ->end()
+
+                    ->booleanNode('has_scopable_value')
+                    ->defaultFalse()
+                    ->end()
+
+                ->end()
+            ->end()
+
+
+        ;
 
         return $treeBuilder;
     }

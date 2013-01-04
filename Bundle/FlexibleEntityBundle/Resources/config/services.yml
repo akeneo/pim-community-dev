@@ -1,6 +1,7 @@
 parameters:
     oro_flexibleentity.locale_helper.class: Oro\Bundle\FlexibleEntityBundle\Helper\LocaleHelper
-    
+    oro_flexibleentity.entities_config: ~
+
 services:
 
     # provide some utility methods to manage locale (TODO should be move in "core")

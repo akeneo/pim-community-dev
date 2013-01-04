@@ -1,3 +1,5 @@
-Oro\Bundle\CustomerBundle\Entity\Customer:
-    has_translatable_values: false
-    has_scopable_values: false
+entities_config:
+    Oro\Bundle\CustomerBundle\Entity\Customer:
+        flexible_manager_class:      Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleEntityManager
+        flexible_entity_class:       Oro\Bundle\CustomerBundle\Entity\Customer
+        flexible_entity_value_class: Oro\Bundle\CustomerBundle\Entity\CustomerAttributeValue
