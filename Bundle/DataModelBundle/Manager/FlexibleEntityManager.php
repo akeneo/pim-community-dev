@@ -30,6 +30,12 @@ class FlexibleEntityManager extends SimpleEntityManager
     protected $localeCode;
 
     /**
+     * Locale helper
+     * @var LocaleHelper
+     */
+    protected $localeHelper;
+
+    /**
      * Default value
      * @var string
      */
@@ -55,13 +61,13 @@ class FlexibleEntityManager extends SimpleEntityManager
     /**
      * Constructor.
      *
-     * @param ContainerInterface $container service container
-     * @param string             $entitySN  entity short name
-     * @param string             $valueSN   value short name
+     * @param ObjectManager $om        object manager
+     * @param string        $entitySN  entity short name
+     * @param string        $valueSN   value short name
      */
-    public function __construct($container, $entitySN, $valueSN)
+    public function __construct($om, $entitySN, $valueSN)
     {
-        parent::__construct($container, $entitySN);
+        parent::__construct($om, $entitySN);
         $this->attributeValueShortname = $valueSN;
     }
 
@@ -71,7 +77,17 @@ class FlexibleEntityManager extends SimpleEntityManager
      */
     public function getLocaleHelper()
     {
-        return $this->container->get('oro_datamodel.locale_helper');
+        return $this->localeHelper;
+    }
+
+    /**
+     * Set locale helper
+     *
+     * @param LocaleHelper $helper
+     */
+    public function setLocaleHelper($helper)
+    {
+        $this->localeHelper = $helper;
     }
 
     /**
@@ -89,6 +105,20 @@ class FlexibleEntityManager extends SimpleEntityManager
     }
 
     /**
+     * Set locale code, to force it
+     *
+     * @param string $code
+     *
+     * @return FlexibleEntityManager
+     */
+    public function setDefaultLocaleCode($code)
+    {
+        $this->defaultLocaleCode = $code;
+
+        return $this;
+    }
+
+    /**
      * Return locale code from request or default
      *
      * @return string
@@ -100,20 +130,6 @@ class FlexibleEntityManager extends SimpleEntityManager
         }
 
         return $this->localeCode;
-    }
-
-    /**
-     * Set locale code, to force it
-     *
-     * @param string $code
-     *
-     * @return FlexibleEntityManager
-     */
-    public function setDefaultLocaleCode($code)
-    {
-        $this->defaultlocaleCode = $code;
-
-        return $this;
     }
 
     /**

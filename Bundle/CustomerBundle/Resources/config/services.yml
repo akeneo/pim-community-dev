@@ -5,6 +5,7 @@ parameters:
 
 services:
     customer_manager:
-        class:        "%customer_manager.class%"
-        arguments:    [@service_container, %customer_entity.shortname%, %customer_value.shortname%]
-
+        class:     "%customer_manager.class%"
+        arguments: [@doctrine.orm.entity_manager, %customer_entity.shortname%, %customer_value.shortname%]
+        calls:
+             - [ setLocaleHelper, [ @oro_datamodel.locale_helper ] ]

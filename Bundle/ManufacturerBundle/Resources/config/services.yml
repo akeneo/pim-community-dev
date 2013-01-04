@@ -5,4 +5,4 @@ parameters:
 services:
     manufacturer_manager:
         class:        "%manufacturer_manager.class%"
-        arguments:    [@service_container, %manufacturer_entity.shortname%]
+        arguments:    [@doctrine.orm.entity_manager, %manufacturer_entity.shortname%]

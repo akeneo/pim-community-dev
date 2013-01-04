@@ -33,10 +33,12 @@ class LocaleHelper
     /**
      * Constructor
      *
+     * @param string             $defaultCode default locale code
      * @param ContainerInterface $container service container
      */
-    public function __construct($container)
+    public function __construct($defaultCode, $container)
     {
+        $this->defaultLocaleCode = $defaultCode;
         $this->container = $container;
     }
 
@@ -46,10 +48,6 @@ class LocaleHelper
      */
     public function getDefaultLocaleCode()
     {
-        if (!$this->defaultLocaleCode) {
-            $this->defaultLocaleCode = $this->container->parameters['locale'];
-        }
-
         return $this->defaultLocaleCode;
     }
 

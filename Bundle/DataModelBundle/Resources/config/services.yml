@@ -6,13 +6,13 @@ services:
     # provide some utility methods to manage locale (TODO should be move in "core")
     oro_datamodel.locale_helper:
         class:        "%oro_datamodel.locale_helper.class%"
-        arguments:    [@service_container]
+        arguments:    [%locale%, @service_container]
 
     # deal with translatable behaviour
     oro_datamodel.translatable_listener:
         class: Oro\Bundle\DataModelBundle\Listener\TranslatableListener
         calls:
-            - [ setContainer, [ @service_container ] ]
+            - [ setLocaleHelper, [ @oro_datamodel.locale_helper ] ]
         tags:
             - { name: doctrine.event_subscriber }
 

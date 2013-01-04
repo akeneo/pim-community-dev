@@ -5,20 +5,21 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\Common\EventSubscriber;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Oro\Bundle\DataModelBundle\Helper\LocaleHelper;
 
 /**
- * Aims to add translatable behaviour on flexible entity
+ * Aims to inject locale adn default locale code to loaded entity
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class TranslatableListener implements EventSubscriber, ContainerAwareInterface
+class TranslatableListener implements EventSubscriber
 {
     /**
-     * @var ContainerInterface
+     * @var LocaleHelper
      */
-    protected $container;
+    protected $localeHelper;
 
     /**
      * Specifies the list of events to listen
@@ -33,11 +34,12 @@ class TranslatableListener implements EventSubscriber, ContainerAwareInterface
     }
 
     /**
-     * @param ContainerInterface $container
+     * Set locale helper
+     * @param LocaleHelper $localeHelper
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function setLocaleHelper(LocaleHelper $localeHelper = null)
     {
-        $this->container = $container;
+        $this->localeHelper = $localeHelper;
     }
 
     /**
@@ -46,7 +48,7 @@ class TranslatableListener implements EventSubscriber, ContainerAwareInterface
      */
     public function getLocaleHelper()
     {
-        return $this->container->get('oro_datamodel.locale_helper');
+        return $this->localeHelper;
     }
 
     /**
