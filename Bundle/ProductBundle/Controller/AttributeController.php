@@ -100,6 +100,7 @@ class AttributeController extends Controller
             $attribute->setTitle('Size');
             $attribute->setBackendModel(AbstractAttributeType::BACKEND_MODEL_ATTRIBUTE_VALUE);
             $attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_INTEGER);
+//             $attribute->setRequired(true);
             $this->getProductManager()->getStorageManager()->persist($attribute);
             $messages[]= "Attribute ".$attributeCode." has been created";
         }
