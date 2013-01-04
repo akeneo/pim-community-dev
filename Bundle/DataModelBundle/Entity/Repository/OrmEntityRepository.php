@@ -136,6 +136,47 @@ class OrmEntityRepository extends EntityRepository
     }
 
     /**
+     * Find required attributes
+     *
+     * @param array $attributes attribute codes
+     *
+     * @return array The objects.
+     *
+     * TODO : refactoring
+     */
+    public function getRequiredAttributes(array $attributes = array())
+    {
+        // TODO to refactor, take a look on getFqcnFromAlias
+        $parts = explode("\\", $this->_entityName);
+        $entityShortName = $parts[0].$parts[2].':'.$parts[4];
+        $attributeSN = 'OroDataModelBundle:OrmEntityAttribute';
+
+        // retrieve attributes
+        $alias = 'Attribute';
+        $qb = $this->_em->createQueryBuilder()
+            ->select($alias)
+            ->from($attributeSN, $alias)
+            ->andWhere('Attribute.entityType = :type')
+            ->setParameter('type', $entityShortName)
+            ->andWhere('Attribute.required = :required')
+            ->setParameter('required', true);
+
+        // filter by code
+        if (!empty($attributes)) {
+            $qb->andWhere($qb->expr()->in('Attribute.code', $attributes));
+        }
+
+        // prepare associative array
+        $attributes = $qb->getQuery()->getResult();
+        $codeToAttribute = array();
+        foreach ($attributes as $attribute) {
+            $codeToAttribute[$attribute->getCode()]= $attribute;
+        }
+
+        return $codeToAttribute;
+    }
+
+    /**
      * Finds entities and attributes values by a set of criteria.
      *
      * @param array      $attributes attribute codes

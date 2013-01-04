@@ -21,3 +21,9 @@ services:
         class: Oro\Bundle\DataModelBundle\Listener\TimestampableListener
         tags:
             - { name: doctrine.event_subscriber }
+
+    # deal with hasValueRequired behaviour
+    oro_datamodel.has_value_required_listener:
+        class: Oro\Bundle\DataModelBundle\Listener\HasValueRequiredListener
+        tags:
+            - { name: doctrine.event_subscriber }

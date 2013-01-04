@@ -1,6 +1,8 @@
 <?php
 namespace Oro\Bundle\DataModelBundle\Model\Entity;
 
+use Oro\Bundle\DataModelBundle\Model\Behavior\HasValueRequiredInterface;
+
 use Oro\Bundle\DataModelBundle\Model\Behavior\TimestampableInterface;
 use Oro\Bundle\DataModelBundle\Model\Behavior\TranslatableContainerInterface;
 
@@ -12,7 +14,7 @@ use Oro\Bundle\DataModelBundle\Model\Behavior\TranslatableContainerInterface;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-abstract class AbstractEntity implements TranslatableContainerInterface, TimestampableInterface
+abstract class AbstractEntity implements TranslatableContainerInterface, TimestampableInterface, HasValueRequiredInterface
 {
 
     /**
