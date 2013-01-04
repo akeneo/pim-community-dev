@@ -1,7 +1,7 @@
 <?php
 namespace Oro\Bundle\CustomerBundle\Entity;
 
-use Oro\Bundle\DataModelBundle\Entity\Mapping\AbstractOrmEntity;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractOrmEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  * @ORM\Table(name="customer_customer_entity")
- * @ORM\Entity(repositoryClass="Oro\Bundle\DataModelBundle\Entity\Repository\OrmEntityRepository")
+ * @ORM\Entity(repositoryClass="Oro\Bundle\FlexibleEntityBundle\Entity\Repository\OrmEntityRepository")
  *
  */
 class Customer extends AbstractOrmEntity

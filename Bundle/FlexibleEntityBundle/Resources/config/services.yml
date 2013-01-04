@@ -1,0 +1,29 @@
+parameters:
+    oro_flexibleentity.locale_helper.class: Oro\Bundle\FlexibleEntityBundle\Helper\LocaleHelper
+    
+services:
+
+    # provide some utility methods to manage locale (TODO should be move in "core")
+    oro_flexibleentity.locale_helper:
+        class:        "%oro_flexibleentity.locale_helper.class%"
+        arguments:    [%locale%, @service_container]
+
+    # deal with translatable behaviour
+    oro_flexibleentity.translatable_listener:
+        class: Oro\Bundle\FlexibleEntityBundle\Listener\TranslatableListener
+        calls:
+            - [ setLocaleHelper, [ @oro_flexibleentity.locale_helper ] ]
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    # deal with timestampable behaviour
+    oro_flexibleentity.timestampable_listener:
+        class: Oro\Bundle\FlexibleEntityBundle\Listener\TimestampableListener
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    # deal with hasValueRequired behaviour
+    oro_flexibleentity.has_required_value_listener:
+        class: Oro\Bundle\FlexibleEntityBundle\Listener\HasRequiredValueListener
+        tags:
+            - { name: doctrine.event_subscriber }

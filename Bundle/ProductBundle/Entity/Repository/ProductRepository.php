@@ -1,7 +1,7 @@
 <?php
 namespace Oro\Bundle\ProductBundle\Entity\Repository;
 
-use Oro\Bundle\DataModelBundle\Entity\Repository\OrmEntityRepository;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\OrmEntityRepository;
 
 /**
  * Custom repository for product

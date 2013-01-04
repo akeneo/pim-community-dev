@@ -7,7 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\ProductBundle\Entity\ProductEntity;
-use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AbstractAttributeType;
+use Oro\Bundle\FlexibleEntityBundle\Model\Attribute\Type\AbstractAttributeType;
 
 /**
  * Default controller

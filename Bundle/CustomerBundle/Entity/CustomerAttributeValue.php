@@ -1,8 +1,8 @@
 <?php
 namespace Oro\Bundle\CustomerBundle\Entity;
 
-use Oro\Bundle\DataModelBundle\Entity\Mapping\AbstractOrmEntityAttributeValue;
-use Oro\Bundle\DataModelBundle\Entity\OrmEntityAttribute;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractOrmEntityAttributeValue;
+use Oro\Bundle\FlexibleEntityBundle\Entity\OrmEntityAttribute;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,7 +20,7 @@ class CustomerAttributeValue extends AbstractOrmEntityAttributeValue
     /**
      * @var Attribute $attribute
      *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\DataModelBundle\Entity\OrmEntityAttribute")
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\OrmEntityAttribute")
      */
     protected $attribute;
 
@@ -36,7 +36,7 @@ class CustomerAttributeValue extends AbstractOrmEntityAttributeValue
      *
      * @var AbstractOrmEntityAttributeOption $optionvalue
      *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\DataModelBundle\Entity\OrmEntityAttributeOption")
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\OrmEntityAttributeOption")
      */
     protected $option;
 }

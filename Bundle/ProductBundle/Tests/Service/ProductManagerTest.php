@@ -2,9 +2,9 @@
 namespace Oro\Bundle\ProductBundle\Test\Service;
 
 use Oro\Bundle\ProductBundle\Entity\Product;
-use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AbstractAttributeType;
+use Oro\Bundle\FlexibleEntityBundle\Model\Attribute\Type\AbstractAttributeType;
 
-use Oro\Bundle\DataModelBundle\Tests\KernelAwareTest;
+use Oro\Bundle\FlexibleEntityBundle\Tests\KernelAwareTest;
 
 /**
  * Test related class

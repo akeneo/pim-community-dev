@@ -1,7 +1,7 @@
 <?php
 namespace Oro\Bundle\CustomerBundle\Test\Service;
 
-use Oro\Bundle\DataModelBundle\Tests\KernelAwareTest;
+use Oro\Bundle\FlexibleEntityBundle\Tests\KernelAwareTest;
 use Oro\Bundle\CustomerBundle\Entity\Customer;
 
 /**

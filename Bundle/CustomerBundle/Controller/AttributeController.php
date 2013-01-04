@@ -5,7 +5,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\DataModelBundle\Model\Attribute\Type\AbstractAttributeType;
+use Oro\Bundle\FlexibleEntityBundle\Model\Attribute\Type\AbstractAttributeType;
 
 /**
  * Customer attribute controller

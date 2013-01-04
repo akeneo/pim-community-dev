@@ -1,5 +1,5 @@
 parameters:
-    manufacturer_manager.class:       Oro\Bundle\DataModelBundle\Manager\SimpleEntityManager
+    manufacturer_manager.class:       Oro\Bundle\FlexibleEntityBundle\Manager\SimpleEntityManager
     manufacturer_entity.shortname:    OroManufacturerBundle:Manufacturer
 
 services:

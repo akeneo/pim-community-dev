@@ -1,5 +1,5 @@
 parameters:
-    customer_manager.class:       Oro\Bundle\DataModelBundle\Manager\FlexibleEntityManager
+    customer_manager.class:       Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleEntityManager
     customer_entity.shortname:    OroCustomerBundle:Customer
     customer_value.shortname:     OroCustomerBundle:CustomerAttributeValue
 
@@ -8,4 +8,4 @@ services:
         class:     "%customer_manager.class%"
         arguments: [@doctrine.orm.entity_manager, %customer_entity.shortname%, %customer_value.shortname%]
         calls:
-             - [ setLocaleHelper, [ @oro_datamodel.locale_helper ] ]
+             - [ setLocaleHelper, [ @oro_flexibleentity.locale_helper ] ]
