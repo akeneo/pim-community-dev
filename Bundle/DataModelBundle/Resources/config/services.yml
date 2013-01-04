@@ -23,7 +23,7 @@ services:
             - { name: doctrine.event_subscriber }
 
     # deal with hasValueRequired behaviour
-    oro_datamodel.has_value_required_listener:
-        class: Oro\Bundle\DataModelBundle\Listener\HasValueRequiredListener
+    oro_datamodel.has_required_value_listener:
+        class: Oro\Bundle\DataModelBundle\Listener\HasRequiredValueListener
         tags:
             - { name: doctrine.event_subscriber }

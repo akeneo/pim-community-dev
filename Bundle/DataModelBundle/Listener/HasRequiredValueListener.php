@@ -1,7 +1,7 @@
 <?php
 namespace Oro\Bundle\DataModelBundle\Listener;
 
-use Oro\Bundle\DataModelBundle\Exception\HasValueRequiredException;
+use Oro\Bundle\DataModelBundle\Exception\HasRequiredValueException;
 
 use Doctrine\Common\EventSubscriber;
 
@@ -17,7 +17,7 @@ use Doctrine\ORM\Events;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-class HasValueRequiredListener implements EventSubscriber
+class HasRequiredValueListener implements EventSubscriber
 {
 
     /**
@@ -69,7 +69,7 @@ class HasValueRequiredListener implements EventSubscriber
         $entityManager = $args->getEntityManager();
         $entityShortName = 'OroProductBundle:Product';
 
-        if ($entity instanceof \Oro\Bundle\DataModelBundle\Model\Behavior\HasValueRequiredInterface) {
+        if ($entity instanceof \Oro\Bundle\DataModelBundle\Model\Behavior\HasRequiredValueInterface) {
             // 1. Get Required Attributes
             $repo = $entityManager->getRepository($entityShortName);
             $attributes = $repo->getRequiredAttributes();
@@ -77,7 +77,7 @@ class HasValueRequiredListener implements EventSubscriber
             // 2. Verify for each required attributes, value is set
             foreach ($attributes as $attribute) {
                 if (!$entity->getValueData($attribute->getCode())) {
-                    throw new HasValueRequiredException();
+                    throw new HasRequiredValueException();
                 }
             }
         }
