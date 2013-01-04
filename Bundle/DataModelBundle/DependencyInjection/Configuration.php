@@ -18,11 +18,17 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('oro_data_model');
+        $rootNode = $treeBuilder->root('oro_flexibleentity');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode->children()
+            ->arrayNode('entities_config')
+            ->prototype('array')
+                ->children()
+                    ->scalarNode('has_translatable_value')->end()
+                    ->scalarNode('has_scopable_value')->end()
+                ->end()
+
+            ->end();
 
         return $treeBuilder;
     }

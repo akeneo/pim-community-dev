@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Oro\Bundle\DataModelBundle\Helper\LocaleHelper;
 
 /**
- * Aims to inject locale adn default locale code to loaded entity
+ * Aims to inject locale and default locale code to loaded entity
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)

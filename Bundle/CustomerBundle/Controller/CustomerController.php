@@ -35,6 +35,9 @@ class CustomerController extends Controller
      */
     public function indexAction()
     {
+
+        var_dump($this->container->getParameter('oro_flexibleentity.entities_config')); exit();
+
         $customers = $this->getCustomerManager()->getEntityRepository()->findByWithAttributes();
 
         return array('customers' => $customers);

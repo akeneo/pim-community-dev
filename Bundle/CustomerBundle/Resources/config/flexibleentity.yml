@@ -1,0 +1,3 @@
+Oro\Bundle\CustomerBundle\Entity\Customer:
+    has_translatable_values: false
+    has_scopable_values: false

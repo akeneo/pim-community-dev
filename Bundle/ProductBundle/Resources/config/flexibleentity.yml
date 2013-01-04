@@ -1,0 +1,3 @@
+Oro\Bundle\ProductBundle\Entity\Product:
+    has_translatable_values: true
+    has_scopable_values: false
