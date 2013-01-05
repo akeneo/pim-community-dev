@@ -142,7 +142,7 @@ abstract class AbstractOrmEntity extends AbstractEntity
      */
     public function __isset($name)
     {
-        // TODO authorize call to dynamic __get by twig, should be filter on existing attributes
+        // to authorize call to dynamic __get by twig, should be filter on existing attributes
         // cf http://twig.sensiolabs.org/doc/recipes.html#using-dynamic-object-properties
         return true;
     }

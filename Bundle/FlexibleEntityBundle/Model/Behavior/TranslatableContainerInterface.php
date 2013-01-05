@@ -23,7 +23,7 @@ interface TranslatableContainerInterface
      * Set used locale
      * @param string $locale
      *
-     * @return TranslatableInterface
+     * @return TranslatableContainerInterface
      */
     public function setLocaleCode($locale);
 
@@ -39,7 +39,7 @@ interface TranslatableContainerInterface
      *
      * @param string $code
      *
-     * @return TranslatableInterface
+     * @return TranslatableContainerInterface
      */
     public function setDefaultLocaleCode($code);
 }

@@ -40,7 +40,7 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
     protected $entity;
 
     /**
-     * Locale scope TODO on 2 chars or 5 ?
+     * Locale scope
      * @var string $localeCode
      *
      * @ORM\Column(name="locale", type="string", length=5, nullable=false)

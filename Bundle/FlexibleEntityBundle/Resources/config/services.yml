@@ -4,7 +4,7 @@ parameters:
 
 services:
 
-    # provide some utility methods to manage locale (TODO should be move in "core")
+    # provide some utility methods to manage locale
     oro_flexibleentity.locale_helper:
         class:        "%oro_flexibleentity.locale_helper.class%"
         arguments:    [%locale%, @service_container]
