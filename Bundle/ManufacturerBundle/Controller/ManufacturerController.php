@@ -56,7 +56,7 @@ class ManufacturerController extends Controller
         foreach ($names as $name) {
             $manufacturer = $mm->getEntityRepository()->findByName($name);
             if (!$manufacturer) {
-                $manufacturer = $mm->getNewEntityInstance();
+                $manufacturer = $mm->createEntity();
                 $manufacturer->setName($name);
                 $mm->getStorageManager()->persist($manufacturer);
             }

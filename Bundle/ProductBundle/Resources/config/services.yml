@@ -1,17 +1,8 @@
 parameters:
-    product_manager.class:          Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleEntityManager
-    product_entity.shortname:       OroProductBundle:Product
-#    product_attribute.shortname:    OroProductBundle:ProductAttribute
-#    product_option.shortname:       OroProductBundle:ProductAttributeOption
-#    product_option_value.shortname: OroProductBundle:ProductAttributeOptionValue
-    product_value.shortname:        OroProductBundle:ProductAttributeValue
+    product_manager_class: Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleEntityManager
+    product_entity_class:  Oro\Bundle\ProductBundle\Entity\Product
 
 services:
     product_manager:
-        class:        "%product_manager.class%"
-        arguments:    [@doctrine.orm.entity_manager, %product_entity.shortname%, %product_value.shortname%]
-        calls:
-             - [ setLocaleHelper, [ @oro_flexibleentity.locale_helper ] ]
-#                    - [ setAttributeShortname, [ %product_attribute.shortname% ] ]
-#                    - [ setAttributeOptionShortname, [ %product_option.shortname% ] ]
-#                    - [ setAttributeOptionValueShortname, [ %product_option_value.shortname% ] ]
+        class:     "%product_manager_class%"
+        arguments: [@service_container, %product_entity_class%]

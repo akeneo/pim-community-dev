@@ -18,57 +18,64 @@ class FlexibleEntityManager extends SimpleEntityManager
 {
 
     /**
-     * Locale code
+     * Flexible entity config
+     * @var array
+     */
+    protected $flexibleConfig;
+
+    /**
+     * Related class name
+     * @var string
+     */
+    protected $attributeName;
+
+    /**
+     * Related class name
+     * @var string
+     */
+    protected $attributeOptionName;
+
+    /**
+     * Related class name
+     * @var string
+     */
+    protected $attributeOptionValueName;
+
+    /**
+     * Related class name
+     * @var string
+     */
+    protected $entityValueName;
+
+    /**
+     * Default locale code (from config)
      * @var string
      */
     protected $defaultLocaleCode;
 
     /**
-     * Locale code
+     * Locale code (from request or choose by user)
+     * @
      * @var string
      */
     protected $localeCode;
 
     /**
-     * Locale helper
-     * @var LocaleHelper
-     */
-    protected $localeHelper;
-
-    /**
-     * Default value
-     * @var string
-     */
-    protected $attributeShortname = 'OroFlexibleEntityBundle:OrmEntityAttribute';
-
-    /**
-     * Default value
-     * @var string
-     */
-    protected $attributeOptionShortname = 'OroFlexibleEntityBundle:OrmEntityAttributeOption';
-
-    /**
-     * Default value
-     * @var string
-     */
-    protected $attributeOptionValueShortname = 'OroFlexibleEntityBundle:OrmEntityAttributeOptionValue';
-
-    /**
-     * @var string
-     */
-    protected $attributeValueShortname;
-
-    /**
-     * Constructor.
+     * Constructor
      *
-     * @param ObjectManager $om        object manager
-     * @param string        $entitySN  entity short name
-     * @param string        $valueSN   value short name
+     * @param ContainerInterface $container      service container
+     * @param string             $entityName     entity name
      */
-    public function __construct($om, $entitySN, $valueSN)
+    public function __construct($container, $entityName)
     {
-        parent::__construct($om, $entitySN);
-        $this->attributeValueShortname = $valueSN;
+        parent::__construct($container, $entityName);
+        // get flexible entity configuration
+        $allFlexibleConfig = $this->container->getParameter('oro_flexibleentity.entities_config');
+        $this->flexibleConfig            = $allFlexibleConfig['entities_config'][$entityName];
+        $this->attributeName             = $this->flexibleConfig['flexible_attribute_class'];
+        $this->attributeOptionName       = $this->flexibleConfig['flexible_attribute_option_class'];
+        $this->attributeOptionValueName  = $this->flexibleConfig['flexible_attribute_option_value_class'];
+        $this->entityValueName           = $this->flexibleConfig['flexible_entity_value_class'];
     }
 
     /**
@@ -77,17 +84,7 @@ class FlexibleEntityManager extends SimpleEntityManager
      */
     public function getLocaleHelper()
     {
-        return $this->localeHelper;
-    }
-
-    /**
-     * Set locale helper
-     *
-     * @param LocaleHelper $helper
-     */
-    public function setLocaleHelper($helper)
-    {
-        $this->localeHelper = $helper;
+        return $this->container->get('oro_flexibleentity.locale_helper');
     }
 
     /**
@@ -147,130 +144,54 @@ class FlexibleEntityManager extends SimpleEntityManager
     }
 
     /**
+     * Return class name that can be used to get the repository or instance
+     * @return string
+     */
+    public function getAttributeName()
+    {
+        return $this->attributeName;
+    }
+
+    /**
+     * Return class name that can be used to get the repository or instance
+     * @return string
+     */
+    public function getAttributeOptionName()
+    {
+        return $this->attributeOptionName;
+    }
+
+    /**
+     * Return class name that can be used to get the repository or instance
+     * @return string
+     */
+    public function getAttributeOptionValueName()
+    {
+        return $this->attributeOptionValueName;
+    }
+
+    /**
+     * Return class name that can be used to get the repository or instance
+     * @return string
+     */
+    public function getEntityValueName()
+    {
+        return $this->entityValueName;
+    }
+
+    /**
      * Return related repository
      * @return Doctrine\Common\Persistence\ObjectRepository
      */
     public function getEntityRepository()
     {
-        $repo = $this->manager->getRepository($this->getEntityShortname());
+        $repo = $this->storageManager->getRepository($this->entityName);
+        $repo->setFlexibleConfig($this->flexibleConfig);
+
         $repo->setDefaultLocaleCode($this->getDefaultLocaleCode());
         $repo->setLocaleCode($this->getLocaleCode());
 
         return $repo;
-    }
-
-    /**
-     * Return shortname that can be used to get the repository or instance
-     * @return string
-     */
-    public function getAttributeShortname()
-    {
-        return $this->attributeShortname;
-    }
-
-    /**
-     * Set shortname that can be used to get the repository or instance
-     *
-     * @param string $attributeSN
-     *
-     * @return FlexibleEntityManager
-     */
-    public function setAttributeShortname($attributeSN)
-    {
-        $this->attributeShortname = $attributeSN;
-
-        return $this;
-    }
-
-    /**
-     * Return shortname that can be used to get the repository or instance
-     * @return string
-     */
-    public function getAttributeOptionShortname()
-    {
-        return $this->attributeOptionShortname;
-    }
-
-    /**
-     * Set shortname that can be used to get the repository or instance
-     *
-     * @param string $attributeOptionSN
-     *
-     * @return FlexibleEntityManager
-     */
-    public function setAttributeOptionShortname($attributeOptionSN)
-    {
-        $this->attributeOptionShortname = $attributeOptionSN;
-
-        return $this;
-    }
-
-    /**
-     * Return shortname that can be used to get the repository or instance
-     * @return string
-     */
-    public function getAttributeOptionValueShortname()
-    {
-        return $this->attributeOptionValueShortname;
-    }
-
-    /**
-     * Set shortname that can be used to get the repository or instance
-     *
-     * @param string $attributeOptionValueSN
-     *
-     * @return FlexibleEntityManager
-     */
-    public function setAttributeOptionValueShortname($attributeOptionValueSN)
-    {
-        $this->attributeOptionValueShortname = $attributeOptionValueSN;
-
-        return $this;
-    }
-
-    /**
-     * Return shortname that can be used to get the repository or instance
-     * @return string
-     */
-    public function getAttributeValueShortname()
-    {
-        return $this->attributeValueShortname;
-    }
-
-    /**
-     * Return implementation class that can be use to instanciate
-     * @return string
-     */
-    public function getAttributeClass()
-    {
-        return $this->manager->getClassMetadata($this->getAttributeShortname())->getName();
-    }
-
-    /**
-     * Return implementation class that can be use to instanciate
-     * @return string
-     */
-    public function getAttributeOptionClass()
-    {
-        return $this->manager->getClassMetadata($this->getAttributeOptionShortname())->getName();
-    }
-
-    /**
-     * Return implementation class that can be use to instanciate
-     * @return string
-     */
-    public function getAttributeOptionValueClass()
-    {
-        return $this->manager->getClassMetadata($this->getAttributeOptionValueShortname())->getName();
-    }
-
-    /**
-     * Return implementation class that can be use to instanciate
-     * @return string
-     */
-    public function getAttributeValueClass()
-    {
-        return $this->manager->getClassMetadata($this->getAttributeValueShortname())->getName();
     }
 
     /**
@@ -279,7 +200,7 @@ class FlexibleEntityManager extends SimpleEntityManager
      */
     public function getAttributeRepository()
     {
-        return $this->manager->getRepository($this->getAttributeShortname());
+        return $this->storageManager->getRepository($this->attributeName);
     }
 
     /**
@@ -288,7 +209,7 @@ class FlexibleEntityManager extends SimpleEntityManager
      */
     public function getAttributeOptionRepository()
     {
-        return $this->manager->getRepository($this->getAttributeOptionShortname());
+        return $this->storageManager->getRepository($this->attributeOptionName);
     }
 
     /**
@@ -297,25 +218,25 @@ class FlexibleEntityManager extends SimpleEntityManager
      */
     public function getAttributeOptionValueRepository()
     {
-        return $this->manager->getRepository($this->getAttributeOptionValueShortname());
+        return $this->storageManager->getRepository($this->attributeOptionValueName);
     }
 
     /**
      * Return related repository
      * @return Doctrine\Common\Persistence\ObjectRepository
      */
-    public function getAttributeValueRepository()
+    public function getEntityValueRepository()
     {
-        return $this->manager->getRepository($this->getAttributeValueShortname());
+        return $this->storageManager->getRepository($this->entityValueName);
     }
 
     /**
      * Return a new instance
      * @return Entity
      */
-    public function getNewEntityInstance()
+    public function createEntity()
     {
-        $class = $this->getEntityClass();
+        $class = $this->getEntityName();
 
         return new $class();
     }
@@ -324,11 +245,11 @@ class FlexibleEntityManager extends SimpleEntityManager
      * Return a new instance
      * @return EntityAttribute
      */
-    public function getNewAttributeInstance()
+    public function createAttribute()
     {
-        $class = $this->getAttributeClass();
+        $class = $this->getAttributeName();
         $object = new $class();
-        $object->setEntityType($this->getEntityShortname());
+        $object->setEntityType($this->getEntityName());
 
         return $object;
     }
@@ -337,9 +258,9 @@ class FlexibleEntityManager extends SimpleEntityManager
      * Return a new instance
      * @return EntityAttributeOption
      */
-    public function getNewAttributeOptionInstance()
+    public function createNewAttributeOption()
     {
-        $class = $this->getAttributeOptionClass();
+        $class = $this->getAttributeOptionName();
 
         return new $class();
     }
@@ -348,9 +269,9 @@ class FlexibleEntityManager extends SimpleEntityManager
      * Return a new instance
      * @return EntityAttributeOption
      */
-    public function getNewAttributeOptionValueInstance()
+    public function createAttributeOptionValue()
     {
-        $class = $this->getAttributeOptionValueClass();
+        $class = $this->getAttributeOptionValueName();
         $object = new $class();
         $object->setLocaleCode($this->getLocaleCode());
 
@@ -361,38 +282,13 @@ class FlexibleEntityManager extends SimpleEntityManager
      * Return a new instance
      * @return EntityAttributeValue
      */
-    public function getNewAttributeValueInstance()
+    public function createEntityValue()
     {
-        $class = $this->getAttributeValueClass();
+        $class = $this->getEntityValueName();
         $object = new $class();
         $object->setLocaleCode($this->getLocaleCode());
 
         return $object;
     }
 
-    /**
-     * Clone an entity
-     *
-     * TODO: see copy() in entitymanager
-     *
-     * @param Entity $entity to clone
-     *
-     * @return Entity
-     */
-    public function cloneEntity($entity)
-    {
-        // create a new entity
-        $class = $this->getEntityClass();
-        $clone = new $class();
-
-        // clone values
-        foreach ($entity->getValues() as $value) {
-            $cloneValue = $this->getNewAttributeValueInstance();
-            $cloneValue->setAttribute($value->getAttribute());
-            $cloneValue->setData($value->getData());
-            $clone->addValue($cloneValue);
-        }
-
-        return $clone;
-    }
 }

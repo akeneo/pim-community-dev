@@ -34,9 +34,9 @@ class ProductManagerTest extends KernelAwareTest
     /**
      * Test related method
      */
-    public function testGetNewEntityInstance()
+    public function testcreateEntity()
     {
-        $newProduct = $this->manager->getNewEntityInstance();
+        $newProduct = $this->manager->createEntity();
         $this->assertTrue($newProduct instanceof Product);
 
         $sku = 'my sku '.str_replace('.', '', microtime(true));
@@ -54,13 +54,13 @@ class ProductManagerTest extends KernelAwareTest
         $timestamp = str_replace('.', '', microtime(true));
 
         // entity
-        $newProduct = $this->manager->getNewEntityInstance();
+        $newProduct = $this->manager->createEntity();
         $this->assertTrue($newProduct instanceof Product);
         $sku = 'my sku '.$timestamp;
         $newProduct->setSku($sku);
 
         // attribute name
-        $attName = $this->manager->getNewAttributeInstance();
+        $attName = $this->manager->createAttribute();
         $attNameCode= 'name'.$timestamp;
         $attName->setCode($attNameCode);
         $attName->setTitle('Name');
@@ -70,7 +70,7 @@ class ProductManagerTest extends KernelAwareTest
         $this->manager->getStorageManager()->persist($attName);
 
         // attribute size
-        $attSize = $this->manager->getNewAttributeInstance();
+        $attSize = $this->manager->createAttribute();
         $attSizeCode= 'size'.$timestamp;
         $attSize->setCode($attSizeCode);
         $attSize->setTitle('Size');
@@ -79,13 +79,13 @@ class ProductManagerTest extends KernelAwareTest
         $this->manager->getStorageManager()->persist($attSize);
 
         // name value
-        $valueName = $this->manager->getNewAttributeValueInstance();
+        $valueName = $this->manager->createEntityValue();
         $valueName->setAttribute($attName);
         $valueName->setData('my name');
         $newProduct->addValue($valueName);
 
         // size value
-        $valueSize = $this->manager->getNewAttributeValueInstance();
+        $valueSize = $this->manager->createEntityValue();
         $valueSize->setAttribute($attSize);
         $valueSize->setData(125);
         $newProduct->addValue($valueSize);

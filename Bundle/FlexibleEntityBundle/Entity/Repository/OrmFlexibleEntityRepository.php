@@ -11,8 +11,14 @@ use Doctrine\ORM\EntityRepository;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-class OrmEntityRepository extends EntityRepository
+class OrmFlexibleEntityRepository extends EntityRepository
 {
+
+    /**
+     * Flexible entity config
+     * @var array
+     */
+    protected $flexibleConfig;
 
     /**
      * Locale code
@@ -25,6 +31,20 @@ class OrmEntityRepository extends EntityRepository
      * @var string
      */
     protected $localeCode;
+
+    /**
+     * Set flexible entity config
+
+     * @param array $config
+     *
+     * @return OrmFlexibleEntityRepository
+     */
+    public function setFlexibleConfig($config)
+    {
+        $this->flexibleConfig = $config;
+
+        return $this;
+    }
 
     /**
      * Get default locale code
@@ -41,7 +61,7 @@ class OrmEntityRepository extends EntityRepository
      *
      * @param string $code
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\OrmEntityRepository
+     * @return OrmFlexibleEntityRepository
      */
     public function setDefaultLocaleCode($code)
     {
@@ -65,7 +85,7 @@ class OrmEntityRepository extends EntityRepository
      *
      * @param string $code
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\OrmEntityRepository
+     * @return OrmFlexibleEntityRepository
      */
     public function setLocaleCode($code)
     {
@@ -107,18 +127,17 @@ class OrmEntityRepository extends EntityRepository
      */
     public function getAttributes(array $attributes)
     {
-        // TODO to refactor, take a look on getFqcnFromAlias
-        $parts = explode("\\", $this->_entityName);
-        $entityShortName = $parts[0].$parts[2].':'.$parts[4];
-        $attributeSN = 'OroFlexibleEntityBundle:OrmEntityAttribute';
+        // TODO : move in attribute repo
 
         // retrieve attributes
         $alias = 'Attribute';
+        $entityName = $this->_entityName;
+        $attributeName = $this->flexibleConfig['flexible_attribute_class'];
         $qb = $this->_em->createQueryBuilder()
             ->select($alias)
-            ->from($attributeSN, $alias)
+            ->from($attributeName, $alias)
             ->andWhere('Attribute.entityType = :type')
-            ->setParameter('type', $entityShortName);
+            ->setParameter('type', $entityName);
 
         // filter by code
         if (!empty($attributes)) {

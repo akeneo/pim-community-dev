@@ -37,7 +37,7 @@ class AttributeController extends Controller
     public function indexAction()
     {
         $attributes = $this->getCustomerManager()->getAttributeRepository()
-            ->findBy(array('entityType' => $this->getCustomerManager()->getEntityShortname()));
+            ->findBy(array('entityType' => $this->getCustomerManager()->getEntityName()));
 
         return array('attributes' => $attributes);
     }
@@ -60,7 +60,7 @@ class AttributeController extends Controller
         if ($att) {
             $messages[]= "Attribute ".$attCode." already exists";
         } else {
-            $att = $this->getCustomerManager()->getNewAttributeInstance();
+            $att = $this->getCustomerManager()->createAttribute();
             $att->setCode($attCode);
             $att->setTitle('Company');
             $att->setBackendModel(AbstractAttributeType::BACKEND_MODEL_ATTRIBUTE_VALUE);
@@ -76,7 +76,7 @@ class AttributeController extends Controller
         if ($att) {
             $messages[]= "Attribute ".$attCode." already exists";
         } else {
-            $att = $this->getCustomerManager()->getNewAttributeInstance();
+            $att = $this->getCustomerManager()->createAttribute();
             $att->setCode($attCode);
             $att->setTitle('Date of birth');
             $att->setBackendModel(AbstractAttributeType::BACKEND_MODEL_ATTRIBUTE_VALUE);
@@ -91,31 +91,31 @@ class AttributeController extends Controller
         if ($att) {
             $messages[]= "Attribute ".$attCode." already exists";
         } else {
-            $att = $this->getCustomerManager()->getNewAttributeInstance();
+            $att = $this->getCustomerManager()->createAttribute();
             $att->setCode($attCode);
             $att->setTitle('Gender');
             $att->setBackendModel(AbstractAttributeType::BACKEND_MODEL_ATTRIBUTE_VALUE);
             $att->setBackendType(AbstractAttributeType::BACKEND_TYPE_OPTION);
             // add option and related values
-            $opt = $this->getCustomerManager()->getNewAttributeOptionInstance();
+            $opt = $this->getCustomerManager()->createNewAttributeOption();
             // En
-            $valMr = $this->getCustomerManager()->getNewAttributeOptionValueInstance();
+            $valMr = $this->getCustomerManager()->createAttributeOptionValue();
             $valMr->setValue('Masculine');
             $opt->addOptionValue($valMr);
             // Fr
-            $valMr = $this->getCustomerManager()->getNewAttributeOptionValueInstance();
+            $valMr = $this->getCustomerManager()->createAttributeOptionValue();
             $valMr->setLocaleCode('fr');
             $valMr->setValue('Masculin');
             $opt->addOptionValue($valMr);
             $att->addOption($opt);
             // add another option
-            $opt = $this->getCustomerManager()->getNewAttributeOptionInstance();
+            $opt = $this->getCustomerManager()->createNewAttributeOption();
             // En
-            $valMrs = $this->getCustomerManager()->getNewAttributeOptionValueInstance();
+            $valMrs = $this->getCustomerManager()->createAttributeOptionValue();
             $valMrs->setValue('Feminine');
             $opt->addOptionValue($valMrs);
             // Fr
-            $valMrs = $this->getCustomerManager()->getNewAttributeOptionValueInstance();
+            $valMrs = $this->getCustomerManager()->createAttributeOptionValue();
             $valMrs->setLocaleCode('fr');
             $valMrs->setValue('Féminin');
             $opt->addOptionValue($valMrs);

@@ -17,25 +17,31 @@ class SimpleEntityManager
 {
 
     /**
-     * @var ObjectManager $manager
+     * @var ContainerInterface $container
      */
-    protected $manager;
+    protected $container;
+
+    /**
+     * @var ObjectManager $storageManager
+     */
+    protected $storageManager;
 
     /**
      * @var string
      */
-    protected $entityShortname;
+    protected $entityName;
 
     /**
      * Constructor
      *
-     * @param ObjectManager $om        object manager (entity, document)
-     * @param string        $entitySN  entity short name
+     * @param ContainerInterface $container  service container
+     * @param string             $entityName entity name
      */
-    public function __construct($om, $entitySN)
+    public function __construct($container, $entityName)
     {
-        $this->manager   = $om;
-        $this->entityShortname = $entitySN;
+        $this->container  = $container;
+        $this->entityName = $entityName;
+        $this->storageManager = $container->get('doctrine.orm.entity_manager');
     }
 
     /**
@@ -44,25 +50,16 @@ class SimpleEntityManager
      */
     public function getStorageManager()
     {
-        return $this->manager;
-    }
-
-    /**
-     * Return shortname that can be used to get the repository or instance
-     * @return string
-     */
-    public function getEntityShortname()
-    {
-        return $this->entityShortname;
+        return $this->storageManager;
     }
 
     /**
      * Return implementation class that can be use to instanciate
      * @return string
      */
-    public function getEntityClass()
+    public function getEntityName()
     {
-        return $this->manager->getClassMetadata($this->getEntityShortname())->getName();
+        return $this->entityName;
     }
 
     /**
@@ -71,7 +68,7 @@ class SimpleEntityManager
      */
     public function getEntityRepository()
     {
-        $repo = $this->manager->getRepository($this->getEntityShortname());
+        $repo = $this->storageManager->getRepository($this->entityName);
 
         return $repo;
     }
@@ -80,9 +77,9 @@ class SimpleEntityManager
      * Return a new instance
      * @return Entity
      */
-    public function getNewEntityInstance()
+    public function createEntity()
     {
-        $class = $this->getEntityClass();
+        $class = $this->getEntityName();
 
         return new $class();
     }

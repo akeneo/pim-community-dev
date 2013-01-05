@@ -40,7 +40,7 @@ class AttributeController extends Controller
     public function indexAction()
     {
         $attributes = $this->getProductManager()->getAttributeRepository()
-            ->findBy(array('entityType' => $this->getProductManager()->getEntityShortname()));
+            ->findBy(array('entityType' => $this->getProductManager()->getEntityName()));
 
         return array('attributes' => $attributes);
     }
@@ -63,7 +63,7 @@ class AttributeController extends Controller
         if ($attribute) {
             $messages[]= "Attribute ".$attributeCode." already exists";
         } else {
-            $attribute = $this->getProductManager()->getNewAttributeInstance();
+            $attribute = $this->getProductManager()->createAttribute();
             $attribute->setCode($attributeCode);
             $attribute->setTitle('Name');
             $attribute->setBackendModel(AbstractAttributeType::BACKEND_MODEL_ATTRIBUTE_VALUE);
@@ -79,7 +79,7 @@ class AttributeController extends Controller
         if ($attribute) {
             $messages[]= "Attribute ".$attributeCode." already exists";
         } else {
-            $attribute = $this->getProductManager()->getNewAttributeInstance();
+            $attribute = $this->getProductManager()->createAttribute();
             $attribute->setCode($attributeCode);
             $attribute->setTitle('Description');
             $attribute->setBackendModel(AbstractAttributeType::BACKEND_MODEL_ATTRIBUTE_VALUE);
@@ -95,7 +95,7 @@ class AttributeController extends Controller
         if ($attribute) {
             $messages[]= "Attribute ".$attributeCode." already exists";
         } else {
-            $attribute = $this->getProductManager()->getNewAttributeInstance();
+            $attribute = $this->getProductManager()->createAttribute();
             $attribute->setCode($attributeCode);
             $attribute->setTitle('Size');
             $attribute->setBackendModel(AbstractAttributeType::BACKEND_MODEL_ATTRIBUTE_VALUE);
@@ -111,7 +111,7 @@ class AttributeController extends Controller
         if ($attribute) {
             $messages[]= "Attribute ".$attributeCode." already exists";
         } else {
-            $attribute = $this->getProductManager()->getNewAttributeInstance();
+            $attribute = $this->getProductManager()->createAttribute();
             $attribute->setCode($attributeCode);
             $attribute->setTitle('Color');
             $attribute->setBackendModel(AbstractAttributeType::BACKEND_MODEL_ATTRIBUTE_VALUE);
@@ -120,8 +120,8 @@ class AttributeController extends Controller
             // add option and related value "Red", "Blue", "Green"
             $colors = array("Red", "Blue", "Green");
             foreach ($colors as $color) {
-                $option = $this->getProductManager()->getNewAttributeOptionInstance();
-                $optionValue = $this->getProductManager()->getNewAttributeOptionValueInstance();
+                $option = $this->getProductManager()->createNewAttributeOption();
+                $optionValue = $this->getProductManager()->createAttributeOptionValue();
                 $optionValue->setValue($color);
                 $option->addOptionValue($optionValue);
                 $attribute->addOption($option);

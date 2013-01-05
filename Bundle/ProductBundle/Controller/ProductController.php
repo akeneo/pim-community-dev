@@ -228,7 +228,7 @@ class ProductController extends Controller
             if ($newProduct) {
                 $messages[]= "Product ".$prodSku." already exists";
             } else {
-                $newProduct = $this->getProductManager()->getNewEntityInstance();
+                $newProduct = $this->getProductManager()->createEntity();
                 $newProduct->setSku($prodSku);
                 $messages[]= "Product ".$prodSku." has been created";
                 $this->getProductManager()->getStorageManager()->persist($newProduct);
@@ -241,28 +241,28 @@ class ProductController extends Controller
             if ($newProduct) {
                 $messages[]= "Product ".$prodSku." already exists";
             } else {
-                $newProduct = $this->getProductManager()->getNewEntityInstance();
+                $newProduct = $this->getProductManager()->createEntity();
                 $newProduct->setSku($prodSku);
                 if ($attName) {
-                    $valueName = $this->getProductManager()->getNewAttributeValueInstance();
+                    $valueName = $this->getProductManager()->createEntityValue();
                     $valueName->setAttribute($attName);
                     $valueName->setData('my name '.$indSku);
                     $newProduct->addValue($valueName);
                 }
                 if ($attDescription) {
-                    $value = $this->getProductManager()->getNewAttributeValueInstance();
+                    $value = $this->getProductManager()->createEntityValue();
                     $value->setAttribute($attDescription);
                     $value->setData($descriptions[$ind%2]);
                     $newProduct->addValue($value);
                 }
                 if ($attSize) {
-                    $valueSize = $this->getProductManager()->getNewAttributeValueInstance();
+                    $valueSize = $this->getProductManager()->createEntityValue();
                     $valueSize->setAttribute($attSize);
                     $valueSize->setData(175);
                     $newProduct->addValue($valueSize);
                 }
                 if ($attColor) {
-                    $value = $this->getProductManager()->getNewAttributeValueInstance();
+                    $value = $this->getProductManager()->createEntityValue();
                     $value->setAttribute($attColor);
                     $value->setData($optColor); // we set option as data, you can use $value->setOption($optColor) too
                     $newProduct->addValue($value);
@@ -278,16 +278,16 @@ class ProductController extends Controller
             if ($newProduct) {
                 $messages[]= "Product ".$prodSku." already exists";
             } else {
-                $newProduct = $this->getProductManager()->getNewEntityInstance();
+                $newProduct = $this->getProductManager()->createEntity();
                 $newProduct->setSku($prodSku);
                 if ($attName) {
-                    $valueName = $this->getProductManager()->getNewAttributeValueInstance();
+                    $valueName = $this->getProductManager()->createEntityValue();
                     $valueName->setAttribute($attName);
                     $valueName->setData('my name '.$indSku);
                     $newProduct->addValue($valueName);
                 }
                 if ($attSize) {
-                    $valueSize = $this->getProductManager()->getNewAttributeValueInstance();
+                    $valueSize = $this->getProductManager()->createEntityValue();
                     $valueSize->setAttribute($attSize);
                     $valueSize->setData(175);
                     $newProduct->addValue($valueSize);
@@ -328,7 +328,7 @@ class ProductController extends Controller
             // translate name value
             if ($attName) {
                 if ($product->setLocaleCode('en')->getValue('name') != null) {
-                    $value = $this->getProductManager()->getNewAttributeValueInstance();
+                    $value = $this->getProductManager()->createEntityValue();
                     $value->setAttribute($attName);
                     $value->setLocaleCode('fr');
                     $value->setData('mon nom FR '.$ind++);
@@ -340,7 +340,7 @@ class ProductController extends Controller
             // translate description value
             if ($attDescription) {
                 if ($product->getValue('description') != null) {
-                    $value = $this->getProductManager()->getNewAttributeValueInstance();
+                    $value = $this->getProductManager()->createEntityValue();
                     $value->setAttribute($attDescription);
                     $value->setLocaleCode('fr');
                     $value->setData('ma description FR '.$ind++);
@@ -360,7 +360,7 @@ class ProductController extends Controller
             $optValueFr = $this->getProductManager()->getAttributeOptionValueRepository()->findOneBy(array('value' => $colorFr));
             if ($optValueEn and !$optValueFr) {
                 $option = $optValueEn->getOption();
-                $optValueFr = $this->getProductManager()->getNewAttributeOptionValueInstance();
+                $optValueFr = $this->getProductManager()->createAttributeOptionValue();
                 $optValueFr->setValue($colorFr);
                 $optValueFr->setLocaleCode('fr');
                 $option->addOptionValue($optValueFr);

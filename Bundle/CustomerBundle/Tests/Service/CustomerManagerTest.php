@@ -32,9 +32,9 @@ class CustomerManagerTest extends KernelAwareTest
     /**
      * Test related method
      */
-    public function testGetNewEntityInstance()
+    public function testcreateEntity()
     {
-        $newCustomer = $this->manager->getNewEntityInstance();
+        $newCustomer = $this->manager->createEntity();
         $this->assertTrue($newCustomer instanceof Customer);
         $newCustomer->setFirstname('Nicolas');
         $newCustomer->setLastname('Dupont');

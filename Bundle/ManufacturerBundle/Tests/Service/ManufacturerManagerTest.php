@@ -35,7 +35,7 @@ class ManufacturerManagerTest extends KernelAwareTest
      */
     public function testInsert()
     {
-        $newManufacturer = $this->manager->getNewEntityInstance();
+        $newManufacturer = $this->manager->createEntity();
         $this->assertTrue($newManufacturer instanceof Manufacturer);
         $newManufacturer->setName('Lenovo');
     }

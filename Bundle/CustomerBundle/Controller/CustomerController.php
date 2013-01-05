@@ -86,13 +86,13 @@ class CustomerController extends Controller
             if ($customer) {
                 $messages[]= "Customer ".$custEmail." already exists";
             } else {
-                $customer = $this->getCustomerManager()->getNewEntityInstance();
+                $customer = $this->getCustomerManager()->createEntity();
                 $customer->setEmail($custEmail);
                 $customer->setFirstname('Nicolas');
                 $customer->setLastname('Dupont');
                 // add dob value
                 if ($attCompany) {
-                    $value = $this->getCustomerManager()->getNewAttributeValueInstance();
+                    $value = $this->getCustomerManager()->createEntityValue();
                     $value->setAttribute($attDob);
                     $value->setData(new \DateTime('19-08-1984'));
                     $customer->addValue($value);
@@ -107,20 +107,20 @@ class CustomerController extends Controller
             if ($customer) {
                 $messages[]= "Customer ".$custEmail." already exists";
             } else {
-                $customer = $this->getCustomerManager()->getNewEntityInstance();
+                $customer = $this->getCustomerManager()->createEntity();
                 $customer->setEmail($custEmail);
                 $customer->setFirstname('Romain');
                 $customer->setLastname('Monceau');
                 // add company value
                 if ($attCompany) {
-                    $value = $this->getCustomerManager()->getNewAttributeValueInstance();
+                    $value = $this->getCustomerManager()->createEntityValue();
                     $value->setAttribute($attCompany);
                     $value->setData('Akeneo');
                     $customer->addValue($value);
                 }
                 // add gender
                 if ($attGender) {
-                    $value = $this->getCustomerManager()->getNewAttributeValueInstance();
+                    $value = $this->getCustomerManager()->createEntityValue();
                     $value->setAttribute($attGender);
                     $value->setData($optGender);  // we set option as data, you can use $value->setOption($optGender) too
                     $customer->addValue($value);
