@@ -24,12 +24,6 @@ class OrmFlexibleEntityRepository extends EntityRepository
      * Locale code
      * @var string
      */
-    protected $defaultLocaleCode;
-
-    /**
-     * Locale code
-     * @var string
-     */
     protected $localeCode;
 
     /**
@@ -42,30 +36,6 @@ class OrmFlexibleEntityRepository extends EntityRepository
     public function setFlexibleConfig($config)
     {
         $this->flexibleConfig = $config;
-
-        return $this;
-    }
-
-    /**
-     * Get default locale code
-     *
-     * @return string
-     */
-    public function getDefaultLocaleCode()
-    {
-        return $this->defaultlocaleCode;
-    }
-
-    /**
-     * Set locale code
-     *
-     * @param string $code
-     *
-     * @return OrmFlexibleEntityRepository
-     */
-    public function setDefaultLocaleCode($code)
-    {
-        $this->defaultlocaleCode = $code;
 
         return $this;
     }
@@ -294,13 +264,18 @@ class OrmFlexibleEntityRepository extends EntityRepository
                 $joinValue       = 'cvalue'.$fieldCode;
                 $joinValueLocale = 'clocale'.$fieldCode;
                 $condition = $joinAlias.'.attribute = '.$attribute->getId()
-                    .' AND '.$joinAlias.'.'.$attribute->getBackendType().' = :'.$joinValue
-                    .' AND '.$joinAlias.'.localeCode = :'.$joinValueLocale;
-                $condLocale = ($attribute->getTranslatable()) ? $this->getLocaleCode() : $this->getDefaultLocaleCode();
+                    .' AND '.$joinAlias.'.'.$attribute->getBackendType().' = :'.$joinValue;
+                // add condition on locale if attribute is translatable
+                if ($attribute->getTranslatable()) {
+                    $condition .= ' AND '.$joinAlias.'.localeCode = :'.$joinValueLocale;
+                }
                 // add inner join to filter lines
                 $qb->innerJoin('Entity.'.$attribute->getBackendModel(), $joinAlias, 'WITH', $condition)
-                    ->setParameter($joinValue, $fieldValue)
-                    ->setParameter($joinValueLocale, $condLocale);
+                    ->setParameter($joinValue, $fieldValue);
+                // add condition on locale if attribute is translatable
+                if ($attribute->getTranslatable()) {
+                    $qb->setParameter($joinValueLocale, $this->getLocaleCode());
+                }
                 $attributeCodeToAlias[$fieldCode]= $joinAlias.'.'.$attribute->getBackendType();
             // add field criteria
             } else {

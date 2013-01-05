@@ -68,9 +68,6 @@ class CustomerController extends Controller
     {
         $messages = array();
 
-        // force in english
-        $this->getCustomerManager()->setLocaleCode('en');
-
         // get attributes
         $attCompany = $this->getCustomerManager()->getAttributeRepository()->findOneByCode('company');
         $attDob = $this->getCustomerManager()->getAttributeRepository()->findOneByCode('dob');

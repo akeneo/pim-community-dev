@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Oro\Bundle\FlexibleEntityBundle\Helper\LocaleHelper;
 
 /**
- * Aims to inject locale and default locale code to loaded entity
+ * Aims to inject current locale and default locale code to loaded entity
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
@@ -61,7 +61,6 @@ class TranslatableListener implements EventSubscriber
         $entityManager = $args->getEntityManager();
         // add locale and default locale codes on translatable containers
         if ($entity instanceof \Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableContainerInterface) {
-            $entity->setDefaultLocaleCode($this->getLocaleHelper()->getDefaultLocaleCode());
             $entity->setLocaleCode($this->getLocaleHelper()->getCurrentLocaleCode());
         }
     }

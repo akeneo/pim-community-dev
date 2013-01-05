@@ -1,9 +1,10 @@
 <?php
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
+use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractEntityAttributeOption;
 use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractEntityAttributeOptionValue;
-use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableContainerInterface;
 
 /**
  * Base Doctrine ORM entity attribute option
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @license   http://opensource.org/licenses/MIT  MIT
  *
  */
-abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeOption
+abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeOption implements TranslatableContainerInterface
 {
     /**
      * @var integer $id
@@ -31,6 +32,12 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
      * @ORM\JoinColumn(name="attribute_id", nullable=false, onDelete="CASCADE", referencedColumnName="id")
      */
     protected $attribute;
+
+    /**
+     * Not persisted, allowe to define the value locale
+     * @var string $localeCode
+     */
+    protected $localeCode;
 
     /**
      * @ORM\Column(name="sort_order", type="integer")
@@ -54,6 +61,16 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
     }
 
     /**
+     * Get attribute
+     *
+     * @return AbstractOrmEntityAttribute
+     */
+    public function getAttribute()
+    {
+        return $this->attribute;
+    }
+
+    /**
      * Set attribute
      *
      * @param AbstractOrmEntityAttribute $attribute
@@ -65,6 +82,28 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
         $this->attribute = $attribute;
 
         return $this;
+    }
+
+    /**
+     * Get used locale
+     *
+     * @return string $locale
+     */
+    public function getLocaleCode()
+    {
+        return $this->localeCode;
+    }
+
+    /**
+     * Set used locale
+     *
+     * @param string $locale
+     *
+     * @return AbstractEntityAttributeOption
+     */
+    public function setLocaleCode($locale)
+    {
+        $this->localeCode = $locale;
     }
 
     /**
@@ -80,5 +119,59 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
         $value->setOption($this);
 
         return $this;
+    }
+
+    /**
+     * Remove value
+     *
+     * @param AbstractEntityAttributeOptionValue $value
+     */
+    public function removeOptionValue(AbstractEntityAttributeOptionValue $value)
+    {
+        $this->optionValues->removeElement($value);
+    }
+
+    /**
+     * Get values
+     *
+     * @return \ArrayAccess
+     */
+    public function getOptionValues()
+    {
+        return $this->optionValues;
+    }
+
+    /**
+     * Get localized value
+     *
+     * @return OrmEntityAttributeOptionValue
+     */
+    public function getOptionValue()
+    {
+        $attribute = $this->getAttribute();
+        $locale = $this->getLocaleCode();
+        $values = $this->getOptionValues()->filter(function($value) use ($attribute, $locale) {
+            // return relevant translated value
+            if ($attribute->getTranslatable() and $value->getLocaleCode() == $locale) {
+                return true;
+            } else {
+                return true;
+            }
+        });
+        $value = $values->first();
+
+        return $value;
+    }
+
+    /**
+     * To string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        $value = $this->getOptionValue();
+
+        return ($value) ? $value->getValue() : '';
     }
 }

@@ -16,7 +16,7 @@
         <li><a href="{{ path('oro_product_product_queryfiltersizeanddescattributes') }}">Select with attribute description, size filtered on attribute size = 175 and description = 'my other description'</a></li>
 
         <li><a href="{{ path('oro_product_product_querynameanddesclimit') }}">Select with attribute name and description limit 1, 10 (TODO : still a problem here, see paginator to limit on entity)</a></li>
-        <li><a href="{{ path('oro_product_product_querynameanddescorderby') }}">Select with attribute name and description order by description DESC and id ASC</a></li>
+        <li><a href="{{ path('oro_product_product_querynameanddescorderby') }}">Select with attribute name and description order by description DESC and id ASC (TODO : don't use localized value)</a></li>
     </ul>
 
     <p>Nb results : {{ products|length }}</p>

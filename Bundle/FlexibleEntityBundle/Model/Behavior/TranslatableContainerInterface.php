@@ -2,8 +2,9 @@
 namespace Oro\Bundle\FlexibleEntityBundle\Model\Behavior;
 
 /**
- * Translatable container interface, implemented by class which can't be translate but contains some other translatable
- * content, for instance, a flexible entity is not translatable itself but its values can
+ * Translatable container interface, implemented by class which can't be translate but contains
+ * some other translatable content, for instance, a flexible entity is not translatable itself
+ * but its values should be
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
@@ -27,19 +28,4 @@ interface TranslatableContainerInterface
      */
     public function setLocaleCode($locale);
 
-    /**
-     * Get default locale code
-     *
-     * @return string
-     */
-    public function getDefaultLocaleCode();
-
-    /**
-     * Set locale code
-     *
-     * @param string $code
-     *
-     * @return TranslatableContainerInterface
-     */
-    public function setDefaultLocaleCode($code);
 }

@@ -56,11 +56,6 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
     protected $updated;
 
     /**
-     * @var boolean $unique
-     */
-    protected $unique;
-
-    /**
     * @var boolean $required
     */
     protected $required;
@@ -270,30 +265,6 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
     public function getBackendType()
     {
         return $this->backendType;
-    }
-
-    /**
-     * Set unique
-     *
-     * @param boolean $unique
-     *
-     * @return AbstractEntityAttribute
-     */
-    public function setUnique($unique)
-    {
-        $this->unique = $unique;
-
-        return $this;
-    }
-
-    /**
-     * Get unique
-     *
-     * @return boolean $unique
-     */
-    public function getUnique()
-    {
-        return $this->unique;
     }
 
     /**

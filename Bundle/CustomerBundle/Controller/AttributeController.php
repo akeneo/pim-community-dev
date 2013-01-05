@@ -65,7 +65,6 @@ class AttributeController extends Controller
             $att->setTitle('Company');
             $att->setBackendModel(AbstractAttributeType::BACKEND_MODEL_ATTRIBUTE_VALUE);
             $att->setBackendType(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
-            $att->setTranslatable(false); // false by default
             $this->getCustomerManager()->getStorageManager()->persist($att);
             $messages[]= "Attribute ".$attCode." has been created";
         }
@@ -96,29 +95,17 @@ class AttributeController extends Controller
             $att->setTitle('Gender');
             $att->setBackendModel(AbstractAttributeType::BACKEND_MODEL_ATTRIBUTE_VALUE);
             $att->setBackendType(AbstractAttributeType::BACKEND_TYPE_OPTION);
-            // add option and related values
+            // add option and related value
             $opt = $this->getCustomerManager()->createNewAttributeOption();
-            // En
-            $valMr = $this->getCustomerManager()->createAttributeOptionValue();
-            $valMr->setValue('Masculine');
-            $opt->addOptionValue($valMr);
-            // Fr
-            $valMr = $this->getCustomerManager()->createAttributeOptionValue();
-            $valMr->setLocaleCode('fr');
-            $valMr->setValue('Masculin');
-            $opt->addOptionValue($valMr);
+            $optVal = $this->getCustomerManager()->createAttributeOptionValue();
+            $optVal->setValue('Mr');
+            $opt->addOptionValue($optVal);
             $att->addOption($opt);
             // add another option
             $opt = $this->getCustomerManager()->createNewAttributeOption();
-            // En
-            $valMrs = $this->getCustomerManager()->createAttributeOptionValue();
-            $valMrs->setValue('Feminine');
-            $opt->addOptionValue($valMrs);
-            // Fr
-            $valMrs = $this->getCustomerManager()->createAttributeOptionValue();
-            $valMrs->setLocaleCode('fr');
-            $valMrs->setValue('Féminin');
-            $opt->addOptionValue($valMrs);
+            $optVal = $this->getCustomerManager()->createAttributeOptionValue();
+            $optVal->setValue('Mrs');
+            $opt->addOptionValue($optVal);
             $att->addOption($opt);
             $this->getCustomerManager()->getStorageManager()->persist($att);
             $messages[]= "Attribute ".$attCode." has been created";

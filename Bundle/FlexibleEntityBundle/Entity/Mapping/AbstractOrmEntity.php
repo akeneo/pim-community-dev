@@ -1,9 +1,10 @@
 <?php
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
+use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractEntity;
 use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractEntityAttributeValue;
-use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableContainerInterface;
 
 /**
  * Base Doctrine ORM entity
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-abstract class AbstractOrmEntity extends AbstractEntity
+abstract class AbstractOrmEntity extends AbstractEntity implements TranslatableContainerInterface
 {
     /**
      * @var integer $id
@@ -39,6 +40,12 @@ abstract class AbstractOrmEntity extends AbstractEntity
     protected $updated;
 
     /**
+     * Not persisted but allow to force locale for values
+     * @var string $localeCode
+     */
+    protected $localeCode;
+
+    /**
      * @var Value
      *
      * @ORM\OneToMany(targetEntity="AbstractOrmEntityAttributeValue", mappedBy="entity", cascade={"persist", "remove"})
@@ -51,6 +58,29 @@ abstract class AbstractOrmEntity extends AbstractEntity
     public function __construct()
     {
         $this->values = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Get used locale
+     * @return string $locale
+     */
+    public function getLocaleCode()
+    {
+        return $this->localeCode;
+    }
+
+    /**
+     * Set used locale
+     *
+     * @param string $locale
+     *
+     * @return AbstractEntity
+     */
+    public function setLocaleCode($locale)
+    {
+        $this->localeCode = $locale;
+
+        return $this;
     }
 
     /**
@@ -98,16 +128,14 @@ abstract class AbstractOrmEntity extends AbstractEntity
     public function getValue($attributeCode)
     {
         $locale = $this->getLocaleCode();
-        $defaultLocale = $this->getDefaultLocaleCode();
-        $values = $this->getValues()->filter(function($value) use ($attributeCode, $locale, $defaultLocale) {
+        $values = $this->getValues()->filter(function($value) use ($attributeCode, $locale) {
             // related value to asked attribute
             if ($value->getAttribute()->getCode() == $attributeCode) {
-                // return relevant translated locale
+                // return relevant translated value if translatable
                 if ($value->getAttribute()->getTranslatable() and $value->getLocaleCode() == $locale) {
                     return true;
-                }
-                // default value if not translatable
-                if (!$value->getAttribute()->getTranslatable() and $value->getLocaleCode() == $defaultLocale) {
+                // return the value if not translatable
+                } else if (!$value->getAttribute()->getTranslatable()) {
                     return true;
                 }
             }

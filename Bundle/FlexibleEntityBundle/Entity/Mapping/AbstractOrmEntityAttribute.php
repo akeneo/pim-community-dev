@@ -74,11 +74,6 @@ abstract class AbstractOrmEntityAttribute extends AbstractEntityAttribute
     protected $updated;
 
     /**
-     * @ORM\Column(name="is_unique", type="boolean")
-     */
-    protected $unique;
-
-    /**
      * @ORM\Column(name="is_required", type="boolean")
      */
     protected $required;
@@ -117,7 +112,6 @@ abstract class AbstractOrmEntityAttribute extends AbstractEntityAttribute
     public function __construct()
     {
         $this->options      = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->unique       = false;
         $this->required     = false;
         $this->searchable   = false;
         $this->translatable = false;

@@ -2,9 +2,7 @@
 namespace Oro\Bundle\FlexibleEntityBundle\Model\Entity;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\HasRequiredValueInterface;
-
 use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
-use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableContainerInterface;
 
 /**
  * Abstract entity, independent of storage
@@ -14,7 +12,7 @@ use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableContainerInterfac
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-abstract class AbstractEntity implements TranslatableContainerInterface, TimestampableInterface, HasRequiredValueInterface
+abstract class AbstractEntity implements TimestampableInterface, HasRequiredValueInterface
 {
 
     /**
@@ -31,16 +29,6 @@ abstract class AbstractEntity implements TranslatableContainerInterface, Timesta
      * @var datetime $created
      */
     protected $updated;
-
-    /**
-     * @var string $defaultLocaleCode
-     */
-    protected $defaultlocaleCode;
-
-    /**
-     * @var string $localeCode
-     */
-    protected $localeCode;
 
     /**
      * Get id
@@ -96,53 +84,6 @@ abstract class AbstractEntity implements TranslatableContainerInterface, Timesta
     public function setUpdated($updated)
     {
         $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * Get used locale
-     * @return string $locale
-     */
-    public function getLocaleCode()
-    {
-        return $this->localeCode;
-    }
-
-    /**
-     * Set used locale
-     *
-     * @param string $locale
-     *
-     * @return AbstractEntity
-     */
-    public function setLocaleCode($locale)
-    {
-        $this->localeCode = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get default locale code
-     *
-     * @return string
-     */
-    public function getDefaultLocaleCode()
-    {
-        return $this->defaultlocaleCode;
-    }
-
-    /**
-     * Set locale code
-     *
-     * @param string $code
-     *
-     * @return AbstractEntity
-     */
-    public function setDefaultLocaleCode($code)
-    {
-        $this->defaultlocaleCode = $code;
 
         return $this;
     }
