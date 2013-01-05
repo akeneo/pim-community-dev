@@ -16,6 +16,11 @@ abstract class AbstractEntityAttributeOption
     protected $id;
 
     /**
+     * @var boolean $translatable
+     */
+    protected $translatable;
+
+    /**
      * @var integer $sortOrder
      */
     protected $sortOrder;
@@ -42,6 +47,30 @@ abstract class AbstractEntityAttributeOption
         $this->id = $id;
 
         return $this;
+    }
+
+    /**
+     * Set translatable
+     *
+     * @param boolean $translatable
+     *
+     * @return AbstractEntityAttributeOption
+     */
+    public function setTranslatable($translatable)
+    {
+        $this->translatable = $translatable;
+
+        return $this;
+    }
+
+    /**
+     * Get translatable
+     *
+     * @return boolean $translatable
+     */
+    public function getTranslatable()
+    {
+        return $this->translatable;
     }
 
     /**

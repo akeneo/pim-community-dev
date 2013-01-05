@@ -24,30 +24,6 @@ class FlexibleEntityManager extends SimpleEntityManager
     protected $flexibleConfig;
 
     /**
-     * Related class name
-     * @var string
-     */
-    protected $attributeName;
-
-    /**
-     * Related class name
-     * @var string
-     */
-    protected $attributeOptionName;
-
-    /**
-     * Related class name
-     * @var string
-     */
-    protected $attributeOptionValueName;
-
-    /**
-     * Related class name
-     * @var string
-     */
-    protected $entityValueName;
-
-    /**
      * Locale code (from request or choose by user)
      * @
      * @var string
@@ -65,11 +41,16 @@ class FlexibleEntityManager extends SimpleEntityManager
         parent::__construct($container, $entityName);
         // get flexible entity configuration
         $allFlexibleConfig = $this->container->getParameter('oro_flexibleentity.entities_config');
-        $this->flexibleConfig            = $allFlexibleConfig['entities_config'][$entityName];
-        $this->attributeName             = $this->flexibleConfig['flexible_attribute_class'];
-        $this->attributeOptionName       = $this->flexibleConfig['flexible_attribute_option_class'];
-        $this->attributeOptionValueName  = $this->flexibleConfig['flexible_attribute_option_value_class'];
-        $this->entityValueName           = $this->flexibleConfig['flexible_entity_value_class'];
+        $this->flexibleConfig = $allFlexibleConfig['entities_config'][$entityName];
+    }
+
+    /**
+     * Get flexible entity config
+     * @return array
+     */
+    public function getFlexibleConfig()
+    {
+        return $this->flexibleConfig;
     }
 
     /**
@@ -82,6 +63,26 @@ class FlexibleEntityManager extends SimpleEntityManager
     }
 
     /**
+     * Is translatable flexible entity
+     *
+     * @return boolean
+     */
+    public function isTranslatableEntity()
+    {
+        return $this->flexibleConfig['has_translatable_value'];
+    }
+
+    /**
+     * Is scopable flexible entity
+     *
+     * @return boolean
+     */
+    public function isScopableEntity()
+    {
+        return $this->flexibleConfig['has_scopable_value'];
+    }
+
+    /**
      * Return locale code from request or default
      *
      * @return string
@@ -89,7 +90,13 @@ class FlexibleEntityManager extends SimpleEntityManager
     public function getLocaleCode()
     {
         if (!$this->localeCode) {
-            $this->localeCode = $this->getLocaleHelper()->getCurrentLocaleCode();
+            // get current locale by default if translatable
+            if ($this->isTranslatableEntity()) {
+                $this->localeCode = $this->getLocaleHelper()->getCurrentLocaleCode();
+                // if not get application default locale
+            } else {
+                $this->localeCode = $this->getLocaleHelper()->getDefaultLocaleCode();
+            }
         }
 
         return $this->localeCode;
@@ -115,7 +122,7 @@ class FlexibleEntityManager extends SimpleEntityManager
      */
     public function getAttributeName()
     {
-        return $this->attributeName;
+        return $this->flexibleConfig['flexible_attribute_class'];
     }
 
     /**
@@ -124,7 +131,7 @@ class FlexibleEntityManager extends SimpleEntityManager
      */
     public function getAttributeOptionName()
     {
-        return $this->attributeOptionName;
+        return $this->flexibleConfig['flexible_attribute_option_class'];
     }
 
     /**
@@ -133,7 +140,7 @@ class FlexibleEntityManager extends SimpleEntityManager
      */
     public function getAttributeOptionValueName()
     {
-        return $this->attributeOptionValueName;
+        return $this->flexibleConfig['flexible_attribute_option_value_class'];
     }
 
     /**
@@ -142,7 +149,7 @@ class FlexibleEntityManager extends SimpleEntityManager
      */
     public function getEntityValueName()
     {
-        return $this->entityValueName;
+        return $this->flexibleConfig['flexible_entity_value_class'];
     }
 
     /**
@@ -151,7 +158,7 @@ class FlexibleEntityManager extends SimpleEntityManager
      */
     public function getEntityRepository()
     {
-        $repo = $this->storageManager->getRepository($this->entityName);
+        $repo = $this->storageManager->getRepository($this->getEntityName());
         $repo->setFlexibleConfig($this->flexibleConfig);
         $repo->setLocaleCode($this->getLocaleCode());
 
@@ -164,7 +171,7 @@ class FlexibleEntityManager extends SimpleEntityManager
      */
     public function getAttributeRepository()
     {
-        return $this->storageManager->getRepository($this->attributeName);
+        return $this->storageManager->getRepository($this->getAttributeName());
     }
 
     /**
@@ -173,7 +180,7 @@ class FlexibleEntityManager extends SimpleEntityManager
      */
     public function getAttributeOptionRepository()
     {
-        return $this->storageManager->getRepository($this->attributeOptionName);
+        return $this->storageManager->getRepository($this->getAttributeOptionName());
     }
 
     /**
@@ -182,7 +189,7 @@ class FlexibleEntityManager extends SimpleEntityManager
      */
     public function getAttributeOptionValueRepository()
     {
-        return $this->storageManager->getRepository($this->attributeOptionValueName);
+        return $this->storageManager->getRepository($this->getAttributeOptionValueName());
     }
 
     /**
@@ -191,7 +198,7 @@ class FlexibleEntityManager extends SimpleEntityManager
      */
     public function getEntityValueRepository()
     {
-        return $this->storageManager->getRepository($this->entityValueName);
+        return $this->storageManager->getRepository($this->getEntityValueName());
     }
 
     /**

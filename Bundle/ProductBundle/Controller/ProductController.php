@@ -207,7 +207,7 @@ class ProductController extends Controller
     {
         $messages = array();
 
-        // force in english
+        // force in english because product is translatable
         $this->getProductManager()->setLocaleCode('en');
 
         // get attributes

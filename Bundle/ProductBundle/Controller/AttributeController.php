@@ -116,10 +116,11 @@ class AttributeController extends Controller
             $attribute->setBackendModel(AbstractAttributeType::BACKEND_MODEL_ATTRIBUTE_VALUE);
             $attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_OPTION);
             $attribute->setTranslatable(false); // only one value but option can be translated in option values
-            // add option and related value "Red", "Blue", "Green"
+            // add translatable option and related value "Red", "Blue", "Green"
             $colors = array("Red", "Blue", "Green");
             foreach ($colors as $color) {
                 $option = $this->getProductManager()->createNewAttributeOption();
+                $option->setTranslatable(true);
                 $optionValue = $this->getProductManager()->createAttributeOptionValue();
                 $optionValue->setValue($color);
                 $option->addOptionValue($optionValue);

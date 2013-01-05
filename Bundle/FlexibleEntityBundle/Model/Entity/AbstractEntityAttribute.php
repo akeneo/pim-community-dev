@@ -339,7 +339,6 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
         return $this->translatable;
     }
 
-
     /**
      * Set scopable
      *

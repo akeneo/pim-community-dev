@@ -34,6 +34,11 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
     protected $attribute;
 
     /**
+     * @ORM\Column(name="is_translatable", type="boolean")
+     */
+    protected $translatable;
+
+    /**
      * Not persisted, allowe to define the value locale
      * @var string $localeCode
      */
@@ -56,8 +61,9 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
      */
     public function __construct()
     {
-        $this->optionValues    = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->sortOrder = 1;
+        $this->optionValues = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->translatable = false;
+        $this->sortOrder    = 1;
     }
 
     /**
@@ -148,13 +154,13 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
      */
     public function getOptionValue()
     {
-        $attribute = $this->getAttribute();
+        $translatable = $this->translatable;
         $locale = $this->getLocaleCode();
-        $values = $this->getOptionValues()->filter(function($value) use ($attribute, $locale) {
+        $values = $this->getOptionValues()->filter(function($value) use ($translatable, $locale) {
             // return relevant translated value
-            if ($attribute->getTranslatable() and $value->getLocaleCode() == $locale) {
+            if ($translatable and $value->getLocaleCode() == $locale) {
                 return true;
-            } else {
+            } else if (!$translatable) {
                 return true;
             }
         });
