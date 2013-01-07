@@ -41,6 +41,126 @@ class CustomerController extends Controller
     }
 
     /**
+     * @Route("/querylazyload")
+     * @Template("OroCustomerBundle:Customer:index.html.twig")
+     *
+     * @return multitype
+     */
+    public function querylazyloadAction()
+    {
+        $customers = $this->getCustomerManager()->getEntityRepository()->findBy(array());
+
+        return array('customers' => $customers);
+    }
+
+    /**
+     * @Route("/queryonlydob")
+     * @Template("OroCustomerBundle:Customer:index.html.twig")
+     *
+     * @return multitype
+     */
+    public function queryonlydobAction()
+    {
+        $customers = $this->getCustomerManager()->getEntityRepository()->findByWithAttributes(array('dob'));
+
+        return array('customers' => $customers);
+    }
+
+    /**
+     * @Route("/queryonlydobandgender")
+     * @Template("OroCustomerBundle:Customer:index.html.twig")
+     *
+     * @return multitype
+     */
+    public function queryonlydobandgenderAction()
+    {
+        $customers = $this->getCustomerManager()->getEntityRepository()->findByWithAttributes(array('dob', 'gender'));
+
+        return array('customers' => $customers);
+    }
+
+    /**
+     * @Route("/queryfilterfirstname")
+     * @Template("OroCustomerBundle:Customer:index.html.twig")
+     *
+     * @return multitype
+     */
+    public function queryfilterfirstnameAction()
+    {
+        $customers = $this->getCustomerManager()
+                          ->getEntityRepository()
+                          ->findByWithAttributes(
+                              array(),
+                              array('firstname' => 'Nicolas')
+                          );
+
+        return array('customers' => $customers);
+    }
+
+    /**
+     * @Route("/queryfilterfirstnameandcompany")
+     * @Template("OroCustomerBundle:Customer:index.html.twig")
+     *
+     * @return multitype
+     */
+    public function queryfilterfirstnameandcompanyAction()
+    {
+        $customers = $this->getCustomerManager()
+                          ->getEntityRepository()
+                          ->findByWithAttributes(
+                              array(),
+                              array('firstname' => 'Nicolas', 'company' => 'Akeneo')
+                          );
+
+        return array('customers' => $customers);
+    }
+
+    /**
+     * @Route("/queryfilterfirstnameandlimit")
+     * @Template("OroCustomerBundle:Customer:index.html.twig")
+     *
+     * @return multitype
+     */
+    public function queryfilterfirstnameandlimit()
+    {
+        // initialize vars
+        $limit = 10;
+        $start = 0;
+
+        // get customers filtered by firstname = "Nicolas" and limited
+        $customers = $this->getCustomerManager()
+                          ->getEntityRepository()
+                          ->findByWithAttributes(
+                              array(),
+                              array('firstname' => 'Nicolas'),
+                              null,
+                              $limit,
+                              $start
+                          );
+
+        return array('customers' => $customers);
+    }
+
+    /**
+     * @Route("/queryfilterfirstnameandorderbirthdatedesc")
+     * @Template("OroCustomerBundle:Customer:index.html.twig")
+     *
+     * @return multitype
+     */
+    public function queryfilterfirstnameandorderbirthdatedescAction()
+    {
+        $customers = $this->getCustomerManager()
+                          ->getEntityRepository()
+                          ->findByWithAttributes(
+                              array(),
+                              array('firstname' => 'Nicolas'),
+                              array('dob' => 'desc')
+                          );
+
+        return array('customers' => $customers);
+    }
+
+    /**
      * @param integer $id
      *
      * @Route("/view/{id}")
@@ -85,13 +205,13 @@ class CustomerController extends Controller
             } else {
                 $customer = $this->getCustomerManager()->createEntity();
                 $customer->setEmail($custEmail);
-                $customer->setFirstname('Nicolas');
-                $customer->setLastname('Dupont');
+                $customer->setFirstname($this->generateFirstname());
+                $customer->setLastname($this->generateLastname());
                 // add dob value
                 if ($attCompany) {
                     $value = $this->getCustomerManager()->createEntityValue();
                     $value->setAttribute($attDob);
-                    $value->setData(new \DateTime('19-08-1984'));
+                    $value->setData(new \DateTime($this->generateBirthDate()));
                     $customer->addValue($value);
                 }
                 $messages[]= "Customer ".$custEmail." has been created";
@@ -106,13 +226,17 @@ class CustomerController extends Controller
             } else {
                 $customer = $this->getCustomerManager()->createEntity();
                 $customer->setEmail($custEmail);
-                $customer->setFirstname('Romain');
-                $customer->setLastname('Monceau');
+                $customer->setFirstname($this->generateFirstname());
+                $customer->setLastname($this->generateLastname());
                 // add company value
                 if ($attCompany) {
                     $value = $this->getCustomerManager()->createEntityValue();
                     $value->setAttribute($attCompany);
                     $value->setData('Akeneo');
+                    $customer->addValue($value);
+                    $value = $this->getCustomerManager()->createEntityValue();
+                    $value->setAttribute($attDob);
+                    $value->setData(new \DateTime($this->generateBirthDate()));
                     $customer->addValue($value);
                 }
                 // add gender
@@ -132,6 +256,43 @@ class CustomerController extends Controller
         $this->get('session')->setFlash('notice', implode(', ', $messages));
 
         return $this->redirect($this->generateUrl('oro_customer_customer_index'));
+    }
+
+    /**
+     * Generate firstname
+     * @return string
+     */
+    protected function generateFirstname()
+    {
+        $listFirstname = array('Nicolas', 'Romain');
+        $random = rand(0, count($listFirstname)-1);
+
+        return $listFirstname[$random];
+    }
+
+    /**
+     * Generate lastname
+     * @return string
+     */
+    protected function generateLastname()
+    {
+        $listLastname = array('Dupont', 'Monceau');
+        $random = rand(0, count($listLastname)-1);
+
+        return $listLastname[$random];
+    }
+
+    /**
+     * Generate birthdate
+     * @return string
+     */
+    protected function generateBirthDate()
+    {
+        $year  = rand(1980, 2000);
+        $month = rand(1, 12);
+        $day   = rand(1, 28);
+
+        return $year .'-'. $month .'-'. $day;
     }
 
 }

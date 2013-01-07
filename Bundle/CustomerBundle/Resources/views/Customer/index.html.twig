@@ -2,9 +2,32 @@
 
 {% block content %}
 
+    <ul class="menu">
+        <li><a href="{{ path('oro_customer_customer_index') }}">Select entities and all attribute values</a></li>
+        <li><a href="{{ path('oro_customer_customer_querylazyload') }}">Select just entities, attributes and values are lazy load</a></li>
+        
+        <li><a href="{{ path('oro_customer_customer_queryonlydob') }}">Select only date of birth</a></li>
+        <li><a href="{{ path('oro_customer_customer_queryonlydobandgender') }}">Select only date of birth and gender</a></li>
+        
+        <li><a href="{{ path('oro_customer_customer_queryfilterfirstname') }}">Select filtered by firstname (firstname = "Nicolas")</a></li>
+        <li><a href="{{ path('oro_customer_customer_queryfilterfirstnameandcompany') }}">Select filtered by firstname and company (firstname = "Nicolas" and company = "Akeneo")</a></li>
+        
+        <li><a href="{{ path('oro_customer_customer_queryfilterfirstnameandlimit') }}">Select filter by firstname (Nicolas) and limit (10)</a></li>
+        <li><a href="{{ path('oro_customer_customer_queryfilterfirstnameandorderbirthdatedesc') }}">Select filter by firstname and order by birthdate desc</a></li>
+    </ul>
+    
+    <p>Nb results : {{ customers|length }}</p>
+
     <table class="mytable">
         <tr>
-            <td>Id</td><td>Email</td><td>FirstName</td><td>LastName</td><td>Birth</td><td>Gender</td><td>Company</td>
+            <td>Id</td>
+            <td>Email</td>
+            <td>FirstName</td>
+            <td>LastName</td>
+            <td>Birth</td>
+            <td>Gender</td>
+            <td>Company</td>
+            <td>Action</td>
         </tr>
     {% for customer in customers %}
         <tr>
