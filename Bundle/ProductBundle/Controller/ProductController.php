@@ -222,7 +222,7 @@ class ProductController extends Controller
         $descriptions = array('my long descrition', 'my other description');
         for ($ind= 1; $ind <= 33; $ind++) {
 
-            // add product with only sku
+            // add product with only sku and name
             $prodSku = 'sku-'.$indSku;
             $newProduct = $this->getProductManager()->getEntityRepository()->findOneBySku($prodSku);
             if ($newProduct) {
@@ -230,6 +230,12 @@ class ProductController extends Controller
             } else {
                 $newProduct = $this->getProductManager()->createEntity();
                 $newProduct->setSku($prodSku);
+                if ($attName) {
+                    $valueName = $this->getProductManager()->createEntityValue();
+                    $valueName->setAttribute($attName);
+                    $valueName->setData('my name '.$indSku);
+                    $newProduct->addValue($valueName);
+                }
                 $messages[]= "Product ".$prodSku." has been created";
                 $this->getProductManager()->getStorageManager()->persist($newProduct);
                 $indSku++;

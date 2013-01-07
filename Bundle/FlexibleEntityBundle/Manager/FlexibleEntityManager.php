@@ -208,8 +208,10 @@ class FlexibleEntityManager extends SimpleEntityManager
     public function createEntity()
     {
         $class = $this->getEntityName();
+        $entity = new $class();
+        $entity->setLocaleCode($this->getLocaleCode());
 
-        return new $class();
+        return $entity;
     }
 
     /**

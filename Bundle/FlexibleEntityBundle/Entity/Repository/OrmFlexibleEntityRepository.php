@@ -95,10 +95,8 @@ class OrmFlexibleEntityRepository extends EntityRepository
      *
      * @return array The objects.
      */
-    public function getAttributes(array $attributes)
+    public function getCodeToAttributes(array $attributes)
     {
-        // TODO : move in attribute repo
-
         // retrieve attributes
         $alias = 'Attribute';
         $entityName = $this->_entityName;
@@ -108,47 +106,6 @@ class OrmFlexibleEntityRepository extends EntityRepository
             ->from($attributeName, $alias)
             ->andWhere('Attribute.entityType = :type')
             ->setParameter('type', $entityName);
-
-        // filter by code
-        if (!empty($attributes)) {
-            $qb->andWhere($qb->expr()->in('Attribute.code', $attributes));
-        }
-
-        // prepare associative array
-        $attributes = $qb->getQuery()->getResult();
-        $codeToAttribute = array();
-        foreach ($attributes as $attribute) {
-            $codeToAttribute[$attribute->getCode()]= $attribute;
-        }
-
-        return $codeToAttribute;
-    }
-
-    /**
-     * Find required attributes
-     *
-     * @param array $attributes attribute codes
-     *
-     * @return array The objects.
-     *
-     * TODO : refactoring
-     */
-    public function getRequiredAttributes(array $attributes = array())
-    {
-        // TODO to refactor, take a look on getFqcnFromAlias
-        $parts = explode("\\", $this->_entityName);
-        $entityShortName = $parts[0].$parts[2].':'.$parts[4];
-        $attributeSN = 'OroFlexibleEntityBundle:OrmEntityAttribute';
-
-        // retrieve attributes
-        $alias = 'Attribute';
-        $qb = $this->_em->createQueryBuilder()
-            ->select($alias)
-            ->from($attributeSN, $alias)
-            ->andWhere('Attribute.entityType = :type')
-            ->setParameter('type', $entityShortName)
-            ->andWhere('Attribute.required = :required')
-            ->setParameter('required', true);
 
         // filter by code
         if (!empty($attributes)) {
@@ -186,7 +143,7 @@ class OrmFlexibleEntityRepository extends EntityRepository
             $fieldCriterias     = array_diff(array_keys($criteria), $attributes);
         }
         if ($hasCriterias or $hasSelectedAttributes) {
-            $codeToAttribute = $this->getAttributes($attributes);
+            $codeToAttribute = $this->getCodeToAttributes($attributes);
         }
         // get base query builder (direct join to attribute and value if no attribute selection)
         if (!$hasSelectedAttributes) {

@@ -66,6 +66,7 @@ class AttributeController extends Controller
             $attribute = $this->getProductManager()->createAttribute();
             $attribute->setCode($attributeCode);
             $attribute->setTitle('Name');
+            $attribute->setRequired(true);
             $attribute->setBackendModel(AbstractAttributeType::BACKEND_MODEL_ATTRIBUTE_VALUE);
             $attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
             $attribute->setTranslatable(true);

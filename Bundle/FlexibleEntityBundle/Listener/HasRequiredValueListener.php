@@ -1,12 +1,10 @@
 <?php
 namespace Oro\Bundle\FlexibleEntityBundle\Listener;
 
+use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\FlexibleEntityInterface;
 use Oro\Bundle\FlexibleEntityBundle\Exception\HasRequiredValueException;
-
 use Doctrine\Common\EventSubscriber;
-
 use Doctrine\ORM\Event\LifecycleEventArgs;
-
 use Doctrine\ORM\Events;
 
 /**
@@ -19,6 +17,25 @@ use Doctrine\ORM\Events;
  */
 class HasRequiredValueListener implements EventSubscriber
 {
+
+    /**
+     * @var ContainerInterface $container
+     */
+    protected $container;
+
+    /**
+     * Inject service container
+     *
+     * @param ContainerInterface $container
+     *
+     * @return HasRequiredValueListener
+     */
+    public function setContainer($container)
+    {
+        $this->container = $container;
+
+        return $this;
+    }
 
     /**
      * Specifies the list of events to listen
@@ -66,18 +83,31 @@ class HasRequiredValueListener implements EventSubscriber
     protected function checkRequired(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        $entityManager = $args->getEntityManager();
-        $entityShortName = 'OroProductBundle:Product';
 
-        if ($entity instanceof \Oro\Bundle\FlexibleEntityBundle\Model\Behavior\HasRequiredValueInterface) {
-            // 1. Get Required Attributes
-            $repo = $entityManager->getRepository($entityShortName);
-            $attributes = $repo->getRequiredAttributes();
+        // check entity is flexible
+        if ($entity instanceof FlexibleEntityInterface) {
 
-            // 2. Verify for each required attributes, value is set
+            // get flexible config
+            $entityClass = get_class($entity);
+            $flexibleConfig = $this->container->getParameter('oro_flexibleentity.entities_config');
+            $flexibleManagerName = $flexibleConfig['entities_config'][$entityClass]['flexible_manager'];
+            $flexibleManager = $this->container->get($flexibleManagerName);
+
+            // 1. get required attributes
+            $repo = $flexibleManager->getAttributeRepository();
+            $attributes = $repo->findBy(
+                array('entityType' => $entityClass, 'required' => true)
+            );
+
+            // 2. Check that value is set for any required attributes
             foreach ($attributes as $attribute) {
                 if (!$entity->getValueData($attribute->getCode())) {
-                    throw new HasRequiredValueException();
+
+                    var_dump($entity->getLocaleCode());
+                    var_dump($entity->getValueData($attribute->getCode()));
+                    var_dump($entity->getValues());
+
+                    throw new HasRequiredValueException('attribute '.$attribute->getCode().' is required');
                 }
             }
         }

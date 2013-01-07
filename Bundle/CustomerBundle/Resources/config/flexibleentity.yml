@@ -1,4 +1,5 @@
 entities_config:
     Oro\Bundle\CustomerBundle\Entity\Customer:
+        flexible_manager:            customer_manager
         flexible_entity_class:       Oro\Bundle\CustomerBundle\Entity\Customer
         flexible_entity_value_class: Oro\Bundle\CustomerBundle\Entity\CustomerAttributeValue

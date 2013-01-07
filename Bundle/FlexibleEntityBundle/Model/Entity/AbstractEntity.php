@@ -1,7 +1,7 @@
 <?php
 namespace Oro\Bundle\FlexibleEntityBundle\Model\Entity;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\HasRequiredValueInterface;
+use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\FlexibleEntityInterface;
 use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
 
 /**
@@ -12,7 +12,7 @@ use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-abstract class AbstractEntity implements TimestampableInterface, HasRequiredValueInterface
+abstract class AbstractEntity implements FlexibleEntityInterface, TimestampableInterface
 {
 
     /**

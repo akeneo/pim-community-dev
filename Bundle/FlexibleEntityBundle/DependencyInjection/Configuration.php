@@ -26,6 +26,10 @@ class Configuration implements ConfigurationInterface
                 ->children()
 
                     // required to setup a minimal flexible entity
+                    ->scalarNode('flexible_manager')
+                    ->isRequired()
+                    ->end()
+
                     ->scalarNode('flexible_entity_class')
                     ->isRequired()
                     ->end()

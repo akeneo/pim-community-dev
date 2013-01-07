@@ -26,5 +26,7 @@ services:
     # deal with hasValueRequired behaviour
     oro_flexibleentity.has_required_value_listener:
         class: Oro\Bundle\FlexibleEntityBundle\Listener\HasRequiredValueListener
+        calls:
+            - [ setContainer, [ @service_container ] ]
         tags:
             - { name: doctrine.event_subscriber }

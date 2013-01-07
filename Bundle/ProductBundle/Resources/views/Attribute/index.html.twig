@@ -4,13 +4,14 @@
 
     <table class="mytable">
         <tr>
-            <td>Id</td><td>Code</td><td>Title</td><td>Backend model</td><td>Backend type</td><td>Translatable</td><td>Created</td>
+            <td>Id</td><td>Code</td><td>Title</td><td>Backend model</td><td>Backend type</td><td>Translatable</td><td>Required</td><td>Created</td>
         </tr>
     {% for attribute in attributes %}
         <tr>
             <td>{{ attribute.id }}</td><td>{{ attribute.code }}</td><td>{{ attribute.title }}</td>
             <td>{{ attribute.backendModel }}</td><td>{{ attribute.backendType }}</td>
-            <td>{{ attribute.translatable }}</td><td>{{ attribute.created|date('Y-m-d h:i:s') }}</td>
+            <td>{{ attribute.translatable }}</td><td>{{ attribute.required }}</td>
+            <td>{{ attribute.created|date('Y-m-d h:i:s') }}</td>
         </tr>
     {% endfor %}
     </table>
