@@ -5,10 +5,11 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\Common\EventSubscriber;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Oro\Bundle\FlexibleEntityBundle\Helper\LocaleHelper;
+use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableContainerInterface;
+use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\FlexibleEntityInterface;
 
 /**
- * Aims to inject current locale and default locale code to loaded entity
+ * Aims to inject selected locale into loaded entity
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
@@ -16,10 +17,25 @@ use Oro\Bundle\FlexibleEntityBundle\Helper\LocaleHelper;
  */
 class TranslatableListener implements EventSubscriber
 {
+
     /**
-     * @var LocaleHelper
+     * @var ContainerInterface $container
      */
-    protected $localeHelper;
+    protected $container;
+
+    /**
+     * Inject service container
+     *
+     * @param ContainerInterface $container
+     *
+     * @return HasRequiredValueListener
+     */
+    public function setContainer($container)
+    {
+        $this->container = $container;
+
+        return $this;
+    }
 
     /**
      * Specifies the list of events to listen
@@ -34,34 +50,32 @@ class TranslatableListener implements EventSubscriber
     }
 
     /**
-     * Set locale helper
-     * @param LocaleHelper $localeHelper
-     */
-    public function setLocaleHelper(LocaleHelper $localeHelper = null)
-    {
-        $this->localeHelper = $localeHelper;
-    }
-
-    /**
-     * Get locale helper
-     * @return LocaleHelper
-     */
-    public function getLocaleHelper()
-    {
-        return $this->localeHelper;
-    }
-
-    /**
      * After load
      * @param LifecycleEventArgs $args
      */
     public function postLoad(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        $entityManager = $args->getEntityManager();
-        // add locale and default locale codes on translatable containers
-        if ($entity instanceof \Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableContainerInterface) {
-            $entity->setLocaleCode($this->getLocaleHelper()->getCurrentLocaleCode());
+
+        // inject selected locale on translatable containers
+        if ($entity instanceof TranslatableContainerInterface) {
+
+            // get flexible entity class
+            $flexibleEntityClass = false;
+            if ($entity instanceof FlexibleEntityInterface) {
+                $flexibleEntityClass = get_class($entity);
+            } else if ($entity instanceof \Oro\Bundle\FlexibleEntityBundle\Entity\OrmEntityAttributeOption) {
+                $flexibleEntityClass = $entity->getAttribute()->getEntityType();
+            }
+
+            if ($flexibleEntityClass) {
+                // get flexible config and manager
+                $flexibleConfig = $this->container->getParameter('oro_flexibleentity.entities_config');
+                $flexibleManagerName = $flexibleConfig['entities_config'][$flexibleEntityClass]['flexible_manager'];
+                $flexibleManager = $this->container->get($flexibleManagerName);
+                // set locale setted in manager (if not defined, retrieved from http or config)
+                $entity->setLocaleCode($flexibleManager->getLocaleCode());
+            }
         }
     }
 

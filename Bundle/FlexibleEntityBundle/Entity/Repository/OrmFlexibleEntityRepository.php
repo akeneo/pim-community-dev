@@ -175,10 +175,10 @@ class OrmFlexibleEntityRepository extends EntityRepository
     /**
      * Add attributes to select
      *
-     * @param QueryBuilder $qb            query builder to update
-     * @param array $attributes           attributes to select
-     * @param array $codeToAttribute      attribute code to attribute
-     * @param array $attributeCodeToAlias attribute code to query alias
+     * @param QueryBuilder $qb                   query builder to update
+     * @param array        $attributes           attributes to select
+     * @param array        $codeToAttribute      attribute code to attribute
+     * @param array        $attributeCodeToAlias attribute code to query alias
      *
      * @return array $attributeCodeToAlias
      */
@@ -202,11 +202,11 @@ class OrmFlexibleEntityRepository extends EntityRepository
     /**
      * Add fields and/or attributes criterias
      *
-     * @param QueryBuilder $qb            query builder to update
-     * @param array $attributes           attributes to select
-     * @param array criterias             criterias on field or attribute
-     * @param array $codeToAttribute      attribute code to attribute
-     * @param array $attributeCodeToAlias attribute code to query alias
+     * @param QueryBuilder $qb                   query builder to update
+     * @param array        $attributes           attributes to select
+     * @param array        $criteria             criterias on field or attribute
+     * @param array        $codeToAttribute      attribute code to attribute
+     * @param array        $attributeCodeToAlias attribute code to query alias
      *
      * @return array $attributeCodeToAlias
      */
@@ -247,10 +247,9 @@ class OrmFlexibleEntityRepository extends EntityRepository
     /**
      * Add fields and/or attributes order by
      *
-     * @param QueryBuilder $qb            query builder to update
-     * @param array $orderBy              fields and attributes order by
-     * @param array $attributeCodeToAlias attribute code to query alias
-     *
+     * @param QueryBuilder $qb                   query builder to update
+     * @param array        $orderBy              fields and attributes order by
+     * @param array        $attributeCodeToAlias attribute code to query alias
      */
     protected function addFieldOrAttributeOrderBy($qb, $orderBy, $attributeCodeToAlias)
     {

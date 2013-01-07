@@ -9,21 +9,21 @@ services:
         class:        "%oro_flexibleentity.locale_helper.class%"
         arguments:    [%locale%, @service_container]
 
-    # deal with translatable behaviour
+    # deal with translatable behavior
     oro_flexibleentity.translatable_listener:
         class: Oro\Bundle\FlexibleEntityBundle\Listener\TranslatableListener
         calls:
-            - [ setLocaleHelper, [ @oro_flexibleentity.locale_helper ] ]
+            - [ setContainer, [ @service_container ] ]
         tags:
             - { name: doctrine.event_subscriber }
 
-    # deal with timestampable behaviour
+    # deal with timestampable behavior
     oro_flexibleentity.timestampable_listener:
         class: Oro\Bundle\FlexibleEntityBundle\Listener\TimestampableListener
         tags:
             - { name: doctrine.event_subscriber }
 
-    # deal with hasValueRequired behaviour
+    # deal with has value required behavior
     oro_flexibleentity.has_required_value_listener:
         class: Oro\Bundle\FlexibleEntityBundle\Listener\HasRequiredValueListener
         calls:

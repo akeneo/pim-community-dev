@@ -32,7 +32,7 @@ class LocaleHelper
      * Constructor
      *
      * @param string             $defaultCode default locale code
-     * @param ContainerInterface $container service container
+     * @param ContainerInterface $container   service container
      */
     public function __construct($defaultCode, $container)
     {

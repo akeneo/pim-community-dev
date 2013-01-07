@@ -92,6 +92,23 @@ class ProductController extends Controller
     }
 
     /**
+     * @Route("/querynameanddescforcelocale")
+     * @Template("OroProductBundle:Product:index.html.twig")
+     *
+     * @return multitype
+     */
+    public function querynameanddescforcelocaleAction()
+    {
+        // get all entity fields and directly get attributes values
+        $pm = $this->getProductManager();
+        // force, always in french
+        $pm->setLocaleCode('fr');
+        $products = $pm->getEntityRepository()->findByWithAttributes(array('name', 'description'));
+
+        return array('products' => $products, 'attributes' => array('name', 'description'));
+    }
+
+    /**
      * @Route("/queryfilterskufield")
      * @Template("OroProductBundle:Product:index.html.twig")
      *

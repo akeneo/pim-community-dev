@@ -33,8 +33,8 @@ class FlexibleEntityManager extends SimpleEntityManager
     /**
      * Constructor
      *
-     * @param ContainerInterface $container      service container
-     * @param string             $entityName     entity name
+     * @param ContainerInterface $container  service container
+     * @param string             $entityName entity name
      */
     public function __construct($container, $entityName)
     {
@@ -208,10 +208,10 @@ class FlexibleEntityManager extends SimpleEntityManager
     public function createEntity()
     {
         $class = $this->getEntityName();
-        $entity = new $class();
-        $entity->setLocaleCode($this->getLocaleCode());
+        $object = new $class();
+        $object->setLocaleCode($this->getLocaleCode());
 
-        return $entity;
+        return $object;
     }
 
     /**
@@ -234,8 +234,10 @@ class FlexibleEntityManager extends SimpleEntityManager
     public function createNewAttributeOption()
     {
         $class = $this->getAttributeOptionName();
+        $object = new $class();
+        $object->setLocaleCode($this->getLocaleCode());
 
-        return new $class();
+        return $object;
     }
 
     /**
