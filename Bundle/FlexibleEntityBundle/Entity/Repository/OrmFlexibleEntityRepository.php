@@ -1,6 +1,7 @@
 <?php
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Repository;
 
+use Oro\Bundle\FlexibleEntityBundle\Exception\UnknownAttributeException;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -91,11 +92,13 @@ class OrmFlexibleEntityRepository extends EntityRepository
     /**
      * Finds attributes
      *
-     * @param array $attributes attribute codes
+     * @param array $attributeCodes attribute codes
+     *
+     * @throws UnknownAttributeException
      *
      * @return array The objects.
      */
-    public function getCodeToAttributes(array $attributes)
+    public function getCodeToAttributes(array $attributeCodes)
     {
         // retrieve attributes
         $alias = 'Attribute';
@@ -108,8 +111,8 @@ class OrmFlexibleEntityRepository extends EntityRepository
             ->setParameter('type', $entityName);
 
         // filter by code
-        if (!empty($attributes)) {
-            $qb->andWhere($qb->expr()->in('Attribute.code', $attributes));
+        if (!empty($attributeCodes)) {
+            $qb->andWhere($qb->expr()->in('Attribute.code', $attributeCodes));
         }
 
         // prepare associative array
@@ -117,6 +120,12 @@ class OrmFlexibleEntityRepository extends EntityRepository
         $codeToAttribute = array();
         foreach ($attributes as $attribute) {
             $codeToAttribute[$attribute->getCode()]= $attribute;
+        }
+
+        // raise exception
+        if (!empty($attributeCodes) and count($attributeCodes) != count($codeToAttribute)) {
+            $missings = array_diff($attributeCodes, array_keys($codeToAttribute));
+            throw new UnknownAttributeException('Attribute(s) with code '.implode(', ', $missings).' not exists for entity '.$this->_entityName);
         }
 
         return $codeToAttribute;
@@ -127,14 +136,20 @@ class OrmFlexibleEntityRepository extends EntityRepository
      *
      * @param string $code
      *
-     * @return mixed
+     * @throws UnknownAttributeException
+     *
+     * @return AbstractOrmEntityAttribute
      */
     public function findAttributeByCode($code)
     {
         $attributeName = $this->flexibleConfig['flexible_attribute_class'];
         $attributeRepo = $this->_em->getRepository($attributeName);
+        $attribute = $attributeRepo->findOneBy(array('entityType' => $this->_entityName, 'code' => $code));
+        if (!$attribute) {
+            throw new UnknownAttributeException('Attribute with code '.$code.' not exists for entity '.$this->_entityName);
+        }
 
-        return $attributeRepo->findOneBy(array('entityType' => $this->_entityName, 'code' => $code));
+        return $attribute;
     }
 
     /**
