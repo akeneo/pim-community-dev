@@ -1,8 +1,0 @@
-parameters:
-    manufacturer_manager_class: Oro\Bundle\FlexibleEntityBundle\Manager\SimpleEntityManager
-    manufacturer_entity_class:  Oro\Bundle\ManufacturerBundle\Entity\Manufacturer
-
-services:
-    manufacturer_manager:
-        class:        "%manufacturer_manager_class%"
-        arguments:    [@service_container, %manufacturer_entity_class%]

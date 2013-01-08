@@ -1,6 +1,0 @@
-entities_config:
-    Oro\Bundle\ProductBundle\Entity\Product:
-        flexible_manager:            product_manager
-        flexible_entity_class:       Oro\Bundle\ProductBundle\Entity\Product
-        flexible_entity_value_class: Oro\Bundle\ProductBundle\Entity\ProductAttributeValue
-        has_translatable_value:      true
