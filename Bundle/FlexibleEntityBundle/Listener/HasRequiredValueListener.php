@@ -99,7 +99,7 @@ class HasRequiredValueListener implements EventSubscriber
                 array('entityType' => $entityClass, 'required' => true)
             );
 
-            // 2. Check that value is set for any required attributes
+            // 2. check that value is set for any required attributes
             foreach ($attributes as $attribute) {
                 if (!$entity->getValueData($attribute->getCode())) {
 

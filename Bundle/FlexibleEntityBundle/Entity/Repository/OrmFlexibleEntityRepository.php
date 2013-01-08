@@ -123,6 +123,21 @@ class OrmFlexibleEntityRepository extends EntityRepository
     }
 
     /**
+     * Find flexible attribute by code
+     *
+     * @param string $code
+     *
+     * @return miwed
+     */
+    public function findAttributeByCode($code)
+    {
+        $attributeName = $this->flexibleConfig['flexible_attribute_class'];
+        $attributeRepo = $this->_em->getRepository($attributeName);
+
+        return $attributeRepo->findOneBy(array('entityType' => $this->_entityName, 'code' => $code));
+    }
+
+    /**
      * Finds entities and attributes values by a set of criteria.
      *
      * @param array      $attributes attribute codes
