@@ -1,7 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+        <title>{% block title %}Dashboard{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript"> localStorage.clear();</script>
+        <link rel="stylesheet/less" href="{{ asset('bundles/oroui/css/less/main.less') }}" media="all" />
+        <script src="{{ asset('bundles/oroui/lib/less-1.3.1.min.js') }}"></script>
+        <link href="{{ asset('bundles/oroui/css/all.css') }}" rel="stylesheet" media="all">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ asset('bundles/oroui/lib/bootstrap.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/oroui/js/layout.js') }}"></script>
+    {% endblock %}
+</head>
 
 <body>
+
 <div id="page">
     <div id="top-page">
+        {% block header %}
+        <header>
+            <h1>Header</h1>
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <a class="brand" href="#">Title</a>
+                    <ul class="nav">
+                        <li class="active"><a href="#">Home</a></li>
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        {% endblock header %}
+        {% block content %}
+
         <div class="container">
             <div class="row">
                 <div class="span4">
@@ -9,37 +42,39 @@
                     <h3>Layout pages</h3>
                     <ul>
                         <li><a href="1column">1column </a></li>
-                        <li><a href="2columns-left.php">2columns-left</a></li>
-                        <li><a href="2columns-right.php">2columns-right</a></li>
-                        <li><a href="3column.php">3column</a></li>
-                        <li><a href="1column-with-toolbar.php">1column with toolbar</a></li>
+                        <li><a href="2columns-left">2columns-left</a></li>
+                        <li><a href="2columns-right">2columns-right</a></li>
+                        <li><a href="3column">3column</a></li>
+                        <li><a href="1column-with-toolbar">1column with toolbar</a></li>
                     </ul>
                     <h3>Static pages</h3>
                     <ul>
-                        <li><a href="forgot-password.php">forgot-password</a></li>
-                        <li><a href="login-page.php">login-page</a></li>
-                        <li><a href="registration-page.php">registration-page</a></li>
-                        <li><a href="404.php">404</a></li>
-                        <li><a href="503.php">503</a></li>
+                        <li><a href="forgot-password">forgot-password</a></li>
+                        <li><a href="login-page">login-page</a></li>
+                        <li><a href="registration-page">registration-page</a></li>
+                        <li><a href="404">404</a></li>
+                        <li><a href="503">503</a></li>
                     </ul>
                     <h3>Example pages</h3>
                     <ul>
-                        <li><a href="form-elements.php">form-elements</a></li>
-                        <li><a href="system-messages.php">system-messages</a></li>
-                        <li><a href="buttons.php">buttons</a></li>
-                        <li><a href="print-page.php">print-page</a></li>
-                        <li><a href="tables.php">tables</a></li>
-                        <li><a href="general-elements.php">general-elements</a></li>
+                        <li><a href="form-elements">form-elements</a></li>
+                        <li><a href="system-messages">system-messages</a></li>
+                        <li><a href="buttons-page">buttons</a></li>
+                        <li><a href="print-page">print-page</a></li>
+                        <li><a href="tables-pege">tables</a></li>
+                        <li><a href="general-elements">general-elements</a></li>
                     </ul>
                     <h3>Js use page</h3>
                     <ul>
-                        <li><a href="dialog.php">jQuery DialogExtend</a></li>
-                        <li><a href="dialog-styled.php">jQuery DialogExtend styled</a></li>
+                        <li><a href="dialog-page">jQuery DialogExtend</a></li>
+                        <li><a href="dialog-styled-page">jQuery DialogExtend styled</a></li>
                     </ul>
                 </div>
             </div>
         </div>
+        {% endblock content %}
     </div>
 </div>
+
 </body>
 </html>

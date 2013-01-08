@@ -1,0 +1,286 @@
+//oro variables
+@horizontalPadding:               20px;
+@verticalPadding:                 20px;
+@topPading:                       20px;
+@bottomPadding:                   20px;
+@marginBottomBox:                 20px;
+@generalBorderColor:              #ddd;
+@widthPage:                       960px;
+@widthPopup:                      @widthPage/2;
+@widthPanel:                       25px;
+@widthLeftPanel:                   210px;
+@widthLeftPanel2:                   210;
+// style
+header{
+  padding: @topPading @horizontalPadding 0;
+}
+footer{
+  text-align: center;
+}
+#aside{
+  padding: 0 @horizontalPadding;
+}
+#sidebar{
+  padding: 0 @horizontalPadding;
+}
+#content{
+  padding: 0 @horizontalPadding;
+}
+.one-column{
+  padding: @horizontalPadding;
+  -webkit-border-radius: @baseBorderRadius;
+  border-radius: @baseBorderRadius;
+  border: 1px solid @generalBorderColor;
+  margin:0 0 @marginBottomBox;
+}
+.page-container{
+  padding: 0 @widthPanel;
+  height: 1%;
+  position: relative;
+}
+.page-container.left-locked{
+  padding-left: @widthLeftPanel;
+}
+.page-container.right-locked{
+  padding-right: @widthLeftPanel;
+}
+.page-container:after{
+  content: "";
+  clear: both;
+  display: block;
+}
+.row-fluid.one-column{
+  padding: 0;
+}
+.left-panel{
+  float: left;
+  width: @widthPanel;
+  margin: 0 0 0 -@widthPanel;
+  display: inline;
+}
+.left-panel.side-nav-open{
+  position:  absolute;
+  top: 0;
+  left: 0;
+  width: (@widthLeftPanel)-20;
+  padding: 10px;
+  margin: 0;
+  background: url("../../img/test-transpatent.png") repeat;
+}
+.left-panel.side-nav-locked{
+  position: relative;
+  width: (@widthLeftPanel)-20;
+  padding: 10px;
+  margin: 0 0 0 -@widthLeftPanel;
+}
+.nav-box{
+  position: absolute;
+  top: 0;
+  left: 25px;
+  width: 475px;
+  z-index: 9999;
+  .nav-title{
+    overflow: hidden;
+    height: 1%;
+    padding: 10px 15px;
+    background: #000;
+    color: #fff;
+    h3 {
+      float: left;
+      margin: 0;
+      font-size: 16px;
+      line-height: 18px;
+      text-transform: uppercase;
+    }
+    .action{
+      float: right;
+      margin: 0 0 0 10px;
+      text-indent: -9999px;
+      font-size: 0;
+      line-height: 0;
+      background-image: url("../../img/glyphicons-halflings-white.png");
+      cursor: pointer;
+    }
+    .close{
+      opacity: 1;
+    }
+    .settings{
+
+    }
+  }
+  .nav-content{
+    padding: 5px;
+  }
+}
+.right-panel .nav-box{
+  right: 25px;
+  left: auto !important;
+}
+.side-nav-open .nav-box,
+.side-nav-locked .nav-box{
+  display: block !important;
+  position: static;
+  width: 100%;
+}
+.side-nav-open .sn-opener,
+.side-nav-locked .sn-opener{
+  display: none;
+}
+#bar-drop-overlay{
+  display: none;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 15;
+}
+#bar-drop-overlay.bar-open-overlay{
+  display: block;
+}
+.layout-content{
+  margin: 0 !important;
+}
+.right-panel{
+  display: inline;
+  float: right;
+  width: @widthPanel;
+  margin: 0 -@widthPanel 0 0;
+}
+.right-panel.side-nav-open{
+  position:  absolute;
+  top: 0;
+  right: 0;
+  width: (@widthLeftPanel)-20;
+  padding: 10px;
+  margin: 0;
+  background: url("../../img/test-transpatent.png") repeat;
+}
+.right-panel.side-nav-locked{
+  position: relative;
+  width: (@widthLeftPanel)-20;
+  padding: 10px;
+  margin: 0 -@widthLeftPanel 0 0;
+}
+#wrapper{
+  -webkit-border-radius: @baseBorderRadius;
+  border-radius: @baseBorderRadius;
+  border: 1px solid @generalBorderColor;
+  margin:0 0 @marginBottomBox;
+}
+.form-signin{
+  margin: 0 auto 20px;
+  max-width: 300px;
+  padding: 19px 29px 29px;
+  #gradient > .vertical(@navbarBackgroundHighlight, @navbarBackground);
+  border: 1px solid @navbarBorder;
+  .border-radius(@baseBorderRadius);
+  .box-shadow(0 1px 4px rgba(0,0,0,.065));
+}
+.form-pass-reset{
+  margin: 0 auto 20px;
+  max-width: 400px;
+  padding: 19px 29px 29px;
+  #gradient > .vertical(@navbarBackgroundHighlight, @navbarBackground);
+  border: 1px solid @navbarBorder;
+  .border-radius(@baseBorderRadius);
+  .box-shadow(0 1px 4px rgba(0,0,0,.065));
+}
+.form-row{
+  padding: 0 0 @marginBottomBox/2;
+}
+.small-text{
+  font-size: @fontSizeSmall;
+}
+.small-text.checkbox{
+  margin-top: 0 !important;
+}
+.top-frame{
+  padding-top: @topPading/2;
+}
+.popup-box{
+  width: @widthPopup;
+  margin: 0 auto;
+}
+/* dialog jQuery ui  start */
+.ui-dialog{
+  border: 1px solid @navbarBorder;
+  background: @bodyBackground;
+  .border-radius(@baseBorderRadius);
+  .box-shadow(0 1px 4px rgba(0,0,0,.065));
+}
+.ui-dialog-titlebar{
+  .border-radius(@baseBorderRadius @baseBorderRadius 0 0);
+  cursor: move;
+  #gradient > .vertical(@navbarBackgroundHighlight, @navbarBackground);
+  padding: @verticalPadding/2 @horizontalPadding;
+}
+.ui-dialog-titlebar-min{
+  .border-radius(@baseBorderRadius);
+  .box-shadow(0 1px 4px rgba(0,0,0,.065));
+  cursor: auto;
+}
+.ui-dialog-content{
+  padding: @verticalPadding @horizontalPadding;
+  position: relative;
+
+  .ui-resizable-handle{
+    cursor: move;
+  }
+}
+.ui-dialog .ui-resizable-se{
+  height: 14px;
+  width: 14px;
+  margin: 2px;
+  float:right;
+  background: url("../../img/glyphicons-halflings.png") no-repeat -167px -73px;
+  cursor: se-resize;
+}
+.ui-dialog .ui-dialog-titlebar-restore,
+.ui-dialog .ui-dialog-titlebar-close,
+.ui-dialog .ui-dialog-titlebar-maximize,
+.ui-dialog .ui-dialog-titlebar-minimize,
+.ui-dialog .ui-dialog .minimized{
+  float:right;
+  width: 19px;
+  height: 18px;
+  margin: 0 0 0 7px;
+  padding: 0;
+  text-indent: -9999px;
+  font-size: 0;
+  line-height: 0;
+  background: url("../../img/glyphicons-halflings.png") no-repeat -432px -92px;
+  cursor: pointer;
+}
+.ui-dialog .ui-dialog-titlebar-close{
+  background-position: -311px 0;
+  margin: 0 0 0 7px !important;
+}
+.ui-dialog .ui-dialog-titlebar-restore {
+  background-position: -213px 0;
+}
+.ui-dialog .ui-dialog-titlebar-maximize{
+  background-position: -357px -95px;
+
+}
+.ui-dialog  .ui-dialog-titlebar-buttonpane > a{
+  padding: 0;
+}
+.fixed-window .ui-resizable-handle,
+.min-window .ui-resizable-handle{
+  display: none !important;
+}
+.min-window{
+  width: 300px !important;
+}
+#window-holder{
+  position: absolute;
+  min-height: 42px;
+ // height: 42px;
+  bottom: 0;
+  left:0;
+  background: #e3e3e3;
+}
+/* dialog jQuery DialogExtend without jQuery ui css start */
+
+/* dialog jQuery ui end */
