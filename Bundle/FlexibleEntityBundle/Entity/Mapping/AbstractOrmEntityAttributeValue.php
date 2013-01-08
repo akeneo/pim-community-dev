@@ -2,7 +2,7 @@
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractEntity;
-use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractEntityAttribute;
+use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractEntityAttributeValue;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -28,7 +28,7 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
     /**
      * @var Attribute $attribute
      *
-     * @ORM\ManyToOne(targetEntity="AbstractOrmEntityAttribute")
+     * @ORM\ManyToOne(targetEntity="AbstractOrmAttribute")
      */
     protected $attribute;
 
@@ -98,9 +98,9 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
     /**
      * Store option
      *
-     * @var AbstractOrmEntityAttributeOption $option
+     * @var AbstractOrmAttributeOption $option
      *
-     * @ORM\ManyToOne(targetEntity="AbstractOrmEntityAttributeOption", inversedBy="attributeValues")
+     * @ORM\ManyToOne(targetEntity="AbstractOrmAttributeOption", inversedBy="attributeValues")
      */
     protected $option;
 
@@ -148,9 +148,9 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
     /**
      * Set related option
      *
-     * @param OrmEntityAttributeOption $option
+     * @param OrmAttributeOption $option
      */
-    public function setOption(OrmEntityAttributeOption $option)
+    public function setOption(OrmAttributeOption $option)
     {
         $this->option = $option;
     }
@@ -158,7 +158,7 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
     /**
      * Get related option
      *
-     * @return OrmEntityAttributeOption
+     * @return OrmAttributeOption
      */
     public function getOption()
     {

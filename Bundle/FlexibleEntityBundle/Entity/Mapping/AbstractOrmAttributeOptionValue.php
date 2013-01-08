@@ -1,8 +1,8 @@
 <?php
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractEntityAttributeOptionValue;
-use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractEntityAttributeOption;
+use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractAttributeOptionValue;
+use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @license   http://opensource.org/licenses/MIT  MIT
  *
  */
-abstract class AbstractOrmEntityAttributeOptionValue extends AbstractEntityAttributeOptionValue
+abstract class AbstractOrmAttributeOptionValue extends AbstractAttributeOptionValue
 {
     /**
      * @var integer $id
@@ -25,9 +25,9 @@ abstract class AbstractOrmEntityAttributeOptionValue extends AbstractEntityAttri
     protected $id;
 
     /**
-     * @var AbstractOrmEntityAttributeOption $option
+     * @var AbstractOrmAttributeOption $option
      *
-     * @ORM\ManyToOne(targetEntity="AbstractOrmEntityAttributeOption", inversedBy="optionValues")
+     * @ORM\ManyToOne(targetEntity="AbstractOrmAttributeOption", inversedBy="optionValues")
      */
     protected $option;
 

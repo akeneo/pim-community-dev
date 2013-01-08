@@ -10,7 +10,7 @@ use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-abstract class AbstractEntityAttribute implements TimestampableInterface
+abstract class AbstractAttribute implements TimestampableInterface
 {
 
     /**
@@ -90,7 +90,7 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
      *
      * @param integer $id
      *
-     * @return AbstractEntityAttribute
+     * @return AbstractAttribute
      */
     public function setId($id)
     {
@@ -104,7 +104,7 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
      *
      * @param string $code
      *
-     * @return AbstractEntityAttribute
+     * @return AbstractAttribute
      */
     public function setCode($code)
     {
@@ -128,7 +128,7 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
      *
      * @param string $entityType
      *
-     * @return AbstractEntityAttribute
+     * @return AbstractAttribute
      */
     public function setEntityType($entityType)
     {
@@ -152,7 +152,7 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
      *
      * @param string $title
      *
-     * @return AbstractEntityAttribute
+     * @return AbstractAttribute
      */
     public function setTitle($title)
     {
@@ -224,7 +224,7 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
      *
      * @param string $model
      *
-     * @return AbstractEntityAttribute
+     * @return AbstractAttribute
      */
     public function setBackendModel($model)
     {
@@ -248,7 +248,7 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
      *
      * @param string $type
      *
-     * @return AbstractEntityAttribute
+     * @return AbstractAttribute
      */
     public function setBackendType($type)
     {
@@ -272,7 +272,7 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
      *
      * @param string $required
      *
-     * @return AbstractEntityAttribute
+     * @return AbstractAttribute
      */
     public function setRequired($required)
     {
@@ -296,7 +296,7 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
      *
      * @param boolean $searchable
      *
-     * @return AbstractEntityAttribute
+     * @return AbstractAttribute
      */
     public function setSearchable($searchable)
     {
@@ -320,7 +320,7 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
      *
      * @param boolean $translatable
      *
-     * @return AbstractEntityAttribute
+     * @return AbstractAttribute
      */
     public function setTranslatable($translatable)
     {
@@ -344,7 +344,7 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
      *
      * @param boolean $scopable
      *
-     * @return AbstractEntityAttribute
+     * @return AbstractAttribute
      */
     public function setScopable($scopable)
     {
@@ -366,11 +366,11 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
     /**
      * Add option
      *
-     * @param AbstractEntityAttributeOption $option
+     * @param AbstractAttributeOption $option
      *
-     * @return AbstractEntityAttribute
+     * @return AbstractAttribute
      */
-    public function addOption(AbstractEntityAttributeOption $option)
+    public function addOption(AbstractAttributeOption $option)
     {
         $this->options[] = $option;
 
@@ -380,9 +380,9 @@ abstract class AbstractEntityAttribute implements TimestampableInterface
     /**
      * Remove option
      *
-     * @param AbstractEntityAttributeOption $option
+     * @param AbstractAttributeOption $option
      */
-    public function removeOption(AbstractEntityAttributeOption $option)
+    public function removeOption(AbstractAttributeOption $option)
     {
         $this->options->removeElement($option);
     }

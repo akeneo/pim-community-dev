@@ -8,7 +8,7 @@ namespace Oro\Bundle\FlexibleEntityBundle\Model\Entity;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-abstract class AbstractEntityAttributeOption
+abstract class AbstractAttributeOption
 {
     /**
      * @var integer $id
@@ -40,7 +40,7 @@ abstract class AbstractEntityAttributeOption
      *
      * @param integer $id
      *
-     * @return AbstractEntityAttributeOption
+     * @return AbstractAttributeOption
      */
     public function setId($id)
     {
@@ -54,7 +54,7 @@ abstract class AbstractEntityAttributeOption
      *
      * @param boolean $translatable
      *
-     * @return AbstractEntityAttributeOption
+     * @return AbstractAttributeOption
      */
     public function setTranslatable($translatable)
     {
@@ -78,7 +78,7 @@ abstract class AbstractEntityAttributeOption
      *
      * @param string $sortOrder
      *
-     * @return AbstractEntityAttributeOption
+     * @return AbstractAttributeOption
      */
     public function setSortOrder($sortOrder)
     {

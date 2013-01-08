@@ -136,7 +136,7 @@ class OrmFlexibleEntityRepository extends EntityRepository
      *
      * @throws UnknownAttributeException
      *
-     * @return AbstractOrmEntityAttribute
+     * @return AbstractOrmAttribute
      */
     public function findAttributeByCode($code)
     {

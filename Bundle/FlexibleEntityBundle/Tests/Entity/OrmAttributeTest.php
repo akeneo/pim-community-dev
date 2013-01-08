@@ -1,9 +1,9 @@
 <?php
 namespace Oro\Bundle\FlexibleEntityBundle\Test\Entity;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\OrmEntityAttribute;
-use Oro\Bundle\FlexibleEntityBundle\Entity\OrmEntityAttributeOption;
-use Oro\Bundle\FlexibleEntityBundle\Entity\OrmEntityAttributeOptionValue;
+use Oro\Bundle\FlexibleEntityBundle\Entity\OrmAttribute;
+use Oro\Bundle\FlexibleEntityBundle\Entity\OrmAttributeOption;
+use Oro\Bundle\FlexibleEntityBundle\Entity\OrmAttributeOptionValue;
 
 /**
  * Test related class
@@ -13,7 +13,7 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\OrmEntityAttributeOptionValue;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-class OrmEntityAttributeTest extends \PHPUnit_Framework_TestCase
+class OrmAttributeTest extends \PHPUnit_Framework_TestCase
 {
     protected $attributeCode = 'sku';
     protected $attributeTitle = 'My sku';
@@ -23,7 +23,7 @@ class OrmEntityAttributeTest extends \PHPUnit_Framework_TestCase
 */
     public function testGetCode()
     {
-        $attribute = new OrmEntityAttribute();
+        $attribute = new OrmAttribute();
         $attribute->setCode($this->attributeCode);
         $this->assertEquals($attribute->getCode(), $this->attributeCode);
     }
@@ -33,7 +33,7 @@ class OrmEntityAttributeTest extends \PHPUnit_Framework_TestCase
 */
     public function testGetTitle()
     {
-        $attribute = new OrmEntityAttribute();
+        $attribute = new OrmAttribute();
         $attribute->setTitle($this->attributeTitle);
         $this->assertEquals($attribute->getTitle(), $this->attributeTitle);
     }
@@ -45,12 +45,12 @@ class OrmEntityAttributeTest extends \PHPUnit_Framework_TestCase
     public function testGetOptions()
     {
         // attribute
-        $attribute = new OrmEntityAttribute();
+        $attribute = new OrmAttribute();
         $attribute->setCode($this->attributeCode);
         // option
-        $option = new OrmEntityAttributeOption();
+        $option = new OrmAttributeOption();
         // option value
-        $optionValue = new OrmEntityAttributeOptionValue();
+        $optionValue = new OrmAttributeOptionValue();
         $option->addOptionValue($optionValue);
         $attribute->addOption($option);
 

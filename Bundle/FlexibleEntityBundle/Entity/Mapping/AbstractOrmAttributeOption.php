@@ -2,8 +2,8 @@
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractEntityAttributeOption;
-use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractEntityAttributeOptionValue;
+use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractAttributeOption;
+use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractAttributeOptionValue;
 use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableContainerInterface;
 
 /**
@@ -14,7 +14,7 @@ use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableContainerInterfac
  * @license   http://opensource.org/licenses/MIT  MIT
  *
  */
-abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeOption implements TranslatableContainerInterface
+abstract class AbstractOrmAttributeOption extends AbstractAttributeOption implements TranslatableContainerInterface
 {
     /**
      * @var integer $id
@@ -28,7 +28,7 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
     /**
      * @var Attribute $attribute
      *
-     * @ORM\ManyToOne(targetEntity="AbstractOrmEntityAttribute")
+     * @ORM\ManyToOne(targetEntity="AbstractOrmAttribute")
      * @ORM\JoinColumn(name="attribute_id", nullable=false, onDelete="CASCADE", referencedColumnName="id")
      */
     protected $attribute;
@@ -52,7 +52,7 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
     /**
      * @var ArrayCollection $optionValues
      *
-     * @ORM\OneToMany(targetEntity="AbstractOrmEntityAttributeOptionValue", mappedBy="option", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="AbstractOrmAttributeOptionValue", mappedBy="option", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $optionValues;
 
@@ -69,7 +69,7 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
     /**
      * Get attribute
      *
-     * @return AbstractOrmEntityAttribute
+     * @return AbstractOrmAttribute
      */
     public function getAttribute()
     {
@@ -79,11 +79,11 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
     /**
      * Set attribute
      *
-     * @param AbstractOrmEntityAttribute $attribute
+     * @param AbstractOrmAttribute $attribute
      *
      * @return EntityAttributeOption
      */
-    public function setAttribute(AbstractOrmEntityAttribute $attribute = null)
+    public function setAttribute(AbstractOrmAttribute $attribute = null)
     {
         $this->attribute = $attribute;
 
@@ -105,7 +105,7 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
      *
      * @param string $locale
      *
-     * @return AbstractEntityAttributeOption
+     * @return AbstractAttributeOption
      */
     public function setLocaleCode($locale)
     {
@@ -115,11 +115,11 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
     /**
      * Add option value
      *
-     * @param AbstractEntityAttributeOptionValue $value
+     * @param AbstractAttributeOptionValue $value
      *
-     * @return AbstractEntityAttribute
+     * @return AbstractAttribute
      */
-    public function addOptionValue(AbstractEntityAttributeOptionValue $value)
+    public function addOptionValue(AbstractAttributeOptionValue $value)
     {
         $this->optionValues[] = $value;
         $value->setOption($this);
@@ -130,9 +130,9 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
     /**
      * Remove value
      *
-     * @param AbstractEntityAttributeOptionValue $value
+     * @param AbstractAttributeOptionValue $value
      */
-    public function removeOptionValue(AbstractEntityAttributeOptionValue $value)
+    public function removeOptionValue(AbstractAttributeOptionValue $value)
     {
         $this->optionValues->removeElement($value);
     }
@@ -150,7 +150,7 @@ abstract class AbstractOrmEntityAttributeOption extends AbstractEntityAttributeO
     /**
      * Get localized value
      *
-     * @return OrmEntityAttributeOptionValue
+     * @return OrmAttributeOptionValue
      */
     public function getOptionValue()
     {

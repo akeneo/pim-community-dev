@@ -1,8 +1,8 @@
 <?php
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractEntityAttribute;
-use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractEntityAttributeOption;
+use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractAttribute;
+use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @license   http://opensource.org/licenses/MIT  MIT
  *
  */
-abstract class AbstractOrmEntityAttribute extends AbstractEntityAttribute
+abstract class AbstractOrmAttribute extends AbstractAttribute
 {
     /**
      * @var integer $id
@@ -96,7 +96,7 @@ abstract class AbstractOrmEntityAttribute extends AbstractEntityAttribute
     /**
      * @var ArrayCollection $options
      *
-     * @ORM\OneToMany(targetEntity="AbstractOrmEntityAttributeOption", mappedBy="attribute", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="AbstractOrmAttributeOption", mappedBy="attribute", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $options;
 
@@ -121,11 +121,11 @@ abstract class AbstractOrmEntityAttribute extends AbstractEntityAttribute
     /**
      * Add option
      *
-     * @param AbstractEntityAttributeOption $option
+     * @param AbstractAttributeOption $option
      *
-     * @return AbstractEntityAttribute
+     * @return AbstractAttribute
      */
-    public function addOption(AbstractEntityAttributeOption $option)
+    public function addOption(AbstractAttributeOption $option)
     {
         $this->options[] = $option;
         $option->setAttribute($this);

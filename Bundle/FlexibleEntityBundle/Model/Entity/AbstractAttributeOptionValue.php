@@ -8,7 +8,7 @@ namespace Oro\Bundle\FlexibleEntityBundle\Model\Entity;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-abstract class AbstractEntityAttributeOptionValue
+abstract class AbstractAttributeOptionValue
 {
     /**
      * @var integer $id
@@ -45,7 +45,7 @@ abstract class AbstractEntityAttributeOptionValue
      *
      * @param integer $id
      *
-     * @return AbstractEntityAttributeOptionValue
+     * @return AbstractAttributeOptionValue
      */
     public function setId($id)
     {
@@ -57,11 +57,11 @@ abstract class AbstractEntityAttributeOptionValue
     /**
      * Set option
      *
-     * @param AbstractEntityAttributeOption $option
+     * @param AbstractAttributeOption $option
      *
-     * @return AbstractEntityAttributeOptionValue
+     * @return AbstractAttributeOptionValue
      */
-    public function setOption(AbstractEntityAttributeOption $option)
+    public function setOption(AbstractAttributeOption $option)
     {
         $this->option = $option;
 
@@ -71,7 +71,7 @@ abstract class AbstractEntityAttributeOptionValue
     /**
      * Get option
      *
-     * @return AbstractEntityAttributeOption
+     * @return AbstractAttributeOption
      */
     public function getOption()
     {

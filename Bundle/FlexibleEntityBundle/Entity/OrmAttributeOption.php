@@ -1,7 +1,7 @@
 <?php
 namespace Oro\Bundle\FlexibleEntityBundle\Entity;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractOrmEntityAttributeOption;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractOrmAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,10 +11,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  *
- * @ORM\Table(name="oroflexibleentity_entity_attribute_option")
+ * @ORM\Table(name="oroflexibleentity_attribute_option")
  * @ORM\Entity
  */
-class OrmEntityAttributeOption extends AbstractOrmEntityAttributeOption
+class OrmAttributeOption extends AbstractOrmAttributeOption
 {
 
     /**
@@ -22,7 +22,7 @@ class OrmEntityAttributeOption extends AbstractOrmEntityAttributeOption
      *
      * @var Attribute $attribute
      *
-     * @ORM\ManyToOne(targetEntity="OrmEntityAttribute")
+     * @ORM\ManyToOne(targetEntity="OrmAttribute")
      * @ORM\JoinColumn(name="attribute_id", nullable=false, onDelete="CASCADE", referencedColumnName="id")
      */
     protected $attribute;
@@ -30,7 +30,7 @@ class OrmEntityAttributeOption extends AbstractOrmEntityAttributeOption
     /**
      * @var ArrayCollection $values
      *
-     * @ORM\OneToMany(targetEntity="OrmEntityAttributeOptionValue", mappedBy="option", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="OrmAttributeOptionValue", mappedBy="option", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $optionValues;
 

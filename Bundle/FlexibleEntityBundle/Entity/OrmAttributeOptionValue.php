@@ -1,7 +1,7 @@
 <?php
 namespace Oro\Bundle\FlexibleEntityBundle\Entity;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractOrmEntityAttributeOptionValue;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractOrmAttributeOptionValue;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,18 +11,18 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  *
- * @ORM\Table(name="oroflexibleentity_entity_attribute_option_value")
+ * @ORM\Table(name="oroflexibleentity_attribute_option_value")
  * @ORM\Entity
  */
-class OrmEntityAttributeOptionValue extends AbstractOrmEntityAttributeOptionValue
+class OrmAttributeOptionValue extends AbstractOrmAttributeOptionValue
 {
 
     /**
      * Overrided to change target option name
      *
-     * @var OrmEntityAttributeOption $option
+     * @var OrmAttributeOption $option
      *
-     * @ORM\ManyToOne(targetEntity="OrmEntityAttributeOption", inversedBy="optionValues")
+     * @ORM\ManyToOne(targetEntity="OrmAttributeOption", inversedBy="optionValues")
      * @ORM\JoinColumn(name="option_id", nullable=false, onDelete="CASCADE", referencedColumnName="id")
      */
     protected $option;

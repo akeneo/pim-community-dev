@@ -73,7 +73,7 @@ abstract class AbstractEntityAttributeValue
      *
      * @return AbstractEntityAttributeValue
      */
-    public function setAttribute(AbstractEntityAttribute $attribute = null)
+    public function setAttribute(AbstractAttribute $attribute = null)
     {
         $this->attribute = $attribute;
 
