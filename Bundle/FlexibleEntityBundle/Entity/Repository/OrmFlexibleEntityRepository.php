@@ -97,21 +97,16 @@ class OrmFlexibleEntityRepository extends EntityRepository
      */
     public function getCodeToAttributes(array $attributes)
     {
-        // retrieve attributes
-        $alias = 'Attribute';
-        $entityName = $this->_entityName;
+        // prepare entity attributes query
+        $attributeAlias = 'Attribute';
         $attributeName = $this->flexibleConfig['flexible_attribute_class'];
-        $qb = $this->_em->createQueryBuilder()
-            ->select($alias)
-            ->from($attributeName, $alias)
-            ->andWhere('Attribute.entityType = :type')
-            ->setParameter('type', $entityName);
-
+        $attributeRepo = $this->_em->getRepository($attributeName);
+        $qb = $attributeRepo->createQueryBuilder($attributeAlias);
+        $qb->andWhere('Attribute.entityType = :type')->setParameter('type', $this->_entityName);
         // filter by code
         if (!empty($attributes)) {
             $qb->andWhere($qb->expr()->in('Attribute.code', $attributes));
         }
-
         // prepare associative array
         $attributes = $qb->getQuery()->getResult();
         $codeToAttribute = array();
@@ -173,7 +168,7 @@ class OrmFlexibleEntityRepository extends EntityRepository
         }
         // get selected attributes values (but not used as criteria)
         if (!empty($attributes)) {
-            $attributeCodeToAlias = $this->addAttributeToSelect($qb, $attributes, $codeToAttribute, $attributeCodeToAlias);
+            $attributeCodeToAlias = $this->addAttributeToSelect($qb, $attributes, $codeToAttribute, $attributeCodeToAlias, $orderBy);
         }
         // add order by
         if ($orderBy) {
@@ -194,19 +189,27 @@ class OrmFlexibleEntityRepository extends EntityRepository
      * @param array        $attributes           attributes to select
      * @param array        $codeToAttribute      attribute code to attribute
      * @param array        $attributeCodeToAlias attribute code to query alias
+     * @param array        $orderBy              attribute to order by, aims to determine if we get a localized value
      *
      * @return array $attributeCodeToAlias
      */
-    protected function addAttributeToSelect($qb, $attributes, $codeToAttribute, $attributeCodeToAlias)
+    protected function addAttributeToSelect($qb, $attributes, $codeToAttribute, $attributeCodeToAlias, $orderBy = array())
     {
         foreach ($attributes as $attributeCode) {
-            // preare join condition
-            $attribute    = $codeToAttribute[$attributeCode];
-            $joinAlias    = 'sValue'.$attributeCode;
-            $joinValue    = 'svalue'.$attributeCode;
-            $condition = $joinAlias.'.attribute = '.$attribute->getId();
             // add select attribute value
+            $joinAlias = 'selectValue'.$attributeCode;
             $qb->addSelect($joinAlias);
+            // prepare join condition
+            $attribute = $codeToAttribute[$attributeCode];
+            $joinValue = 'selectvalue'.$attributeCode;
+            $condition = $joinAlias.'.attribute = '.$attribute->getId();
+            // add condition to get only translated value if we use this attribute to order
+            if ($attribute->getTranslatable() and isset($orderBy[$attributeCode])) {
+                $joinValueLocale = 'selectlocale'.$attributeCode;
+                $condition .= ' AND '.$joinAlias.'.localeCode = :'.$joinValueLocale;
+                $qb->setParameter($joinValueLocale, $this->getLocaleCode());
+            }
+            // add the join with condition and store alias for next uses
             $qb->leftJoin('Entity.'.$attribute->getBackendModel(), $joinAlias, 'WITH', $condition);
             $attributeCodeToAlias[$attributeCode]= $joinAlias.'.'.$attribute->getBackendType();
         }
@@ -231,24 +234,22 @@ class OrmFlexibleEntityRepository extends EntityRepository
             // add attribute criteria
             if (in_array($fieldCode, $attributes)) {
                 // prepare condition
-                $attribute       = $codeToAttribute[$fieldCode];
-                $joinAlias       = 'cValue'.$fieldCode;
-                $joinValue       = 'cvalue'.$fieldCode;
-                $joinValueLocale = 'clocale'.$fieldCode;
+                $attribute = $codeToAttribute[$fieldCode];
+                $joinAlias = 'filterValue'.$fieldCode;
+                $joinValue = 'filtervalue'.$fieldCode;
                 $condition = $joinAlias.'.attribute = '.$attribute->getId()
                     .' AND '.$joinAlias.'.'.$attribute->getBackendType().' = :'.$joinValue;
                 // add condition on locale if attribute is translatable
                 if ($attribute->getTranslatable()) {
+                    $joinValueLocale = 'filterlocale'.$fieldCode;
                     $condition .= ' AND '.$joinAlias.'.localeCode = :'.$joinValueLocale;
-                }
-                // add inner join to filter lines
-                $qb->innerJoin('Entity.'.$attribute->getBackendModel(), $joinAlias, 'WITH', $condition)
-                    ->setParameter($joinValue, $fieldValue);
-                // add condition on locale if attribute is translatable
-                if ($attribute->getTranslatable()) {
                     $qb->setParameter($joinValueLocale, $this->getLocaleCode());
                 }
+                // add inner join to filter lines and store value alias for next uses
+                $qb->innerJoin('Entity.'.$attribute->getBackendModel(), $joinAlias, 'WITH', $condition)
+                    ->setParameter($joinValue, $fieldValue);
                 $attributeCodeToAlias[$fieldCode]= $joinAlias.'.'.$attribute->getBackendType();
+
             // add field criteria
             } else {
                 $qb->andWhere('Entity.'.$fieldCode.' = :'.$fieldCode)->setParameter($fieldCode, $fieldValue);
