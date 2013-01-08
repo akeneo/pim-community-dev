@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  * @ORM\Table(
- *     name="flexibleentity_entity_attribute", indexes={@ORM\Index(name="searchcode_idx", columns={"code"})},
+ *     name="oroflexibleentity_entity_attribute", indexes={@ORM\Index(name="searchcode_idx", columns={"code"})},
  *     uniqueConstraints={@ORM\UniqueConstraint(name="searchunique_idx", columns={"code", "entity_type"})}
  * )
  * @ORM\Entity
