@@ -3,6 +3,7 @@ namespace Oro\Bundle\FlexibleEntityBundle\Entity\Repository;
 
 use Oro\Bundle\FlexibleEntityBundle\Exception\UnknownAttributeException;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * Base repository for flexible entity
@@ -145,9 +146,6 @@ class OrmFlexibleEntityRepository extends EntityRepository
         $attributeName = $this->flexibleConfig['flexible_attribute_class'];
         $attributeRepo = $this->_em->getRepository($attributeName);
         $attribute = $attributeRepo->findOneBy(array('entityType' => $this->_entityName, 'code' => $code));
-        if (!$attribute) {
-            throw new UnknownAttributeException('Attribute with code '.$code.' not exists for entity '.$this->_entityName);
-        }
 
         return $attribute;
     }
@@ -194,9 +192,13 @@ class OrmFlexibleEntityRepository extends EntityRepository
         if ($orderBy) {
             $this->addFieldOrAttributeOrderBy($qb, $orderBy, $attributeCodeToAlias);
         }
-        // add limit TODO : problem with left join and limit on entities, see paginator
+        // add limit
         if (!is_null($offset) and !is_null($limit)) {
             $qb->setFirstResult($offset)->setMaxResults($limit);
+            // use doctrine paginator to avoid count problem with left join of values
+            $paginator = new Paginator($qb->getQuery(), $fetchJoinCollection = true);
+
+            return $paginator;
         }
 
         return $qb->getQuery()->getResult();
