@@ -35,9 +35,9 @@ abstract class AbstractAttribute implements TimestampableInterface
 
     /**
      * Kind of model to store values
-     * @var string $backendModel
+     * @var string $backendStorage
      */
-    protected $backendModel;
+    protected $backendStorage;
 
     /**
      * Kind of field to store values
@@ -220,27 +220,27 @@ abstract class AbstractAttribute implements TimestampableInterface
     }
 
     /**
-     * Set backend model
+     * Set backend storage
      *
-     * @param string $model
+     * @param string $storage
      *
      * @return AbstractAttribute
      */
-    public function setBackendModel($model)
+    public function setBackendStorage($storage)
     {
-        $this->backendModel = $model;
+        $this->backendStorage = $storage;
 
         return $this;
     }
 
     /**
-     * Get backend model
+     * Get backend storage
      *
      * @return string
      */
-    public function getBackendModel()
+    public function getBackendStorage()
     {
-        return $this->backendModel;
+        return $this->backendStorage;
     }
 
     /**

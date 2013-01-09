@@ -16,8 +16,8 @@ abstract class AbstractAttributeType
      * Available backend model
      * @var string
      */
-    const BACKEND_MODEL_ATTRIBUTE_VALUE = 'values'; // TODO rename in 'attributeValues';
-    const BACKEND_MODEL_FLAT_VALUE      = 'flatValues';
+    const BACKEND_STORAGE_ATTRIBUTE_VALUE = 'values'; // TODO rename in 'attributeValues';
+    const BACKEND_STORAGE_FLAT_VALUE      = 'flatValues';
 
     /**
      * Available backend types

@@ -229,7 +229,7 @@ class FlexibleEntityRepository extends EntityRepository
                 $qb->setParameter($joinValueLocale, $this->getLocaleCode());
             }
             // add the join with condition and store alias for next uses
-            $qb->leftJoin('Entity.'.$attribute->getBackendModel(), $joinAlias, 'WITH', $condition);
+            $qb->leftJoin('Entity.'.$attribute->getBackendStorage(), $joinAlias, 'WITH', $condition);
             $attributeCodeToAlias[$attributeCode]= $joinAlias.'.'.$attribute->getBackendType();
         }
 
@@ -265,7 +265,7 @@ class FlexibleEntityRepository extends EntityRepository
                     $qb->setParameter($joinValueLocale, $this->getLocaleCode());
                 }
                 // add inner join to filter lines and store value alias for next uses
-                $qb->innerJoin('Entity.'.$attribute->getBackendModel(), $joinAlias, 'WITH', $condition)
+                $qb->innerJoin('Entity.'.$attribute->getBackendStorage(), $joinAlias, 'WITH', $condition)
                     ->setParameter($joinValue, $fieldValue);
                 $attributeCodeToAlias[$fieldCode]= $joinAlias.'.'.$attribute->getBackendType();
 

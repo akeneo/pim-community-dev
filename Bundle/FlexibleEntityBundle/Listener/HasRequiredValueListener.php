@@ -102,11 +102,6 @@ class HasRequiredValueListener implements EventSubscriber
             // 2. check that value is set for any required attributes
             foreach ($attributes as $attribute) {
                 if (!$entity->getValueData($attribute->getCode())) {
-
-                    var_dump($entity->getLocaleCode());
-                    var_dump($entity->getValueData($attribute->getCode()));
-                    var_dump($entity->getValues());
-
                     throw new HasRequiredValueException('attribute '.$attribute->getCode().' is required');
                 }
             }

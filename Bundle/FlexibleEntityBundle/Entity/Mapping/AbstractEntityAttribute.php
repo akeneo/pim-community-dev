@@ -46,11 +46,11 @@ abstract class AbstractEntityAttribute extends AbstractAttribute
     protected $backendType;
 
     /**
-     * @var string $backendModel
+     * @var string $backendStorage
      *
-     * @ORM\Column(name="backend_model", type="string", length=255)
+     * @ORM\Column(name="backend_storage", type="string", length=255)
      */
-    protected $backendModel;
+    protected $backendStorage;
 
     /**
      * @var string $title
