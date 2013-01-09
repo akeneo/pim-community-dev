@@ -148,9 +148,9 @@ abstract class AbstractEntityFlexibleAttributeValue extends AbstractFlexibleAttr
     /**
      * Set related option
      *
-     * @param OrmAttributeOption $option
+     * @param AbstractEntityAttributeOption $option
      */
-    public function setOption(OrmAttributeOption $option)
+    public function setOption(AbstractEntityAttributeOption $option)
     {
         $this->option = $option;
     }
@@ -158,7 +158,7 @@ abstract class AbstractEntityFlexibleAttributeValue extends AbstractFlexibleAttr
     /**
      * Get related option
      *
-     * @return OrmAttributeOption
+     * @return AbstractEntityAttributeOption
      */
     public function getOption()
     {

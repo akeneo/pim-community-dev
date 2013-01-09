@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="oroflexibleentity_attribute_option")
  * @ORM\Entity
  */
-class OrmAttributeOption extends AbstractEntityAttributeOption
+class AttributeOption extends AbstractEntityAttributeOption
 {
 
     /**
@@ -22,7 +22,7 @@ class OrmAttributeOption extends AbstractEntityAttributeOption
      *
      * @var Attribute $attribute
      *
-     * @ORM\ManyToOne(targetEntity="OrmAttribute")
+     * @ORM\ManyToOne(targetEntity="Attribute")
      * @ORM\JoinColumn(name="attribute_id", nullable=false, onDelete="CASCADE", referencedColumnName="id")
      */
     protected $attribute;
@@ -30,7 +30,7 @@ class OrmAttributeOption extends AbstractEntityAttributeOption
     /**
      * @var ArrayCollection $values
      *
-     * @ORM\OneToMany(targetEntity="OrmAttributeOptionValue", mappedBy="option", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="AttributeOptionValue", mappedBy="option", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $optionValues;
 

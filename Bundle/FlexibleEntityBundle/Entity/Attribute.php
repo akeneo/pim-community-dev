@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  * )
  * @ORM\Entity
  */
-class OrmAttribute extends AbstractEntityAttribute
+class Attribute extends AbstractEntityAttribute
 {
 
     /**
@@ -25,7 +25,7 @@ class OrmAttribute extends AbstractEntityAttribute
      *
      * @var ArrayCollection $options
      *
-     * @ORM\OneToMany(targetEntity="OrmAttributeOption", mappedBy="attribute", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="AttributeOption", mappedBy="attribute", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $options;

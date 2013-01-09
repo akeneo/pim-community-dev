@@ -64,7 +64,7 @@ class TranslatableListener implements EventSubscriber
             $flexibleEntityClass = false;
             if ($entity instanceof FlexibleEntityInterface) {
                 $flexibleEntityClass = get_class($entity);
-            } else if ($entity instanceof \Oro\Bundle\FlexibleEntityBundle\Entity\OrmAttributeOption) {
+            } else if ($entity instanceof \Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption) {
                 $flexibleEntityClass = $entity->getAttribute()->getEntityType();
             }
 

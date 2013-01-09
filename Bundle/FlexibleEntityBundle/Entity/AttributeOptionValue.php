@@ -14,15 +14,15 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="oroflexibleentity_attribute_option_value")
  * @ORM\Entity
  */
-class OrmAttributeOptionValue extends AbstractEntityAttributeOptionValue
+class AttributeOptionValue extends AbstractEntityAttributeOptionValue
 {
 
     /**
      * Overrided to change target option name
      *
-     * @var OrmAttributeOption $option
+     * @var AttributeOption $option
      *
-     * @ORM\ManyToOne(targetEntity="OrmAttributeOption", inversedBy="optionValues")
+     * @ORM\ManyToOne(targetEntity="AttributeOption", inversedBy="optionValues")
      * @ORM\JoinColumn(name="option_id", nullable=false, onDelete="CASCADE", referencedColumnName="id")
      */
     protected $option;

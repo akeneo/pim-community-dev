@@ -150,7 +150,7 @@ abstract class AbstractEntityAttributeOption extends AbstractAttributeOption imp
     /**
      * Get localized value
      *
-     * @return OrmAttributeOptionValue
+     * @return AbstractEntityAttributeOptionValue
      */
     public function getOptionValue()
     {

@@ -40,15 +40,15 @@ class Configuration implements ConfigurationInterface
 
                     // optional, to define to customize attribute and option models
                     ->scalarNode('flexible_attribute_class')
-                    ->defaultValue('Oro\Bundle\FlexibleEntityBundle\Entity\OrmAttribute')
+                    ->defaultValue('Oro\Bundle\FlexibleEntityBundle\Entity\Attribute')
                     ->end()
 
                     ->scalarNode('flexible_attribute_option_class')
-                    ->defaultValue('Oro\Bundle\FlexibleEntityBundle\Entity\OrmAttributeOption')
+                    ->defaultValue('Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption')
                     ->end()
 
                     ->scalarNode('flexible_attribute_option_value_class')
-                    ->defaultValue('Oro\Bundle\FlexibleEntityBundle\Entity\OrmAttributeOptionValue')
+                    ->defaultValue('Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOptionValue')
                     ->end()
 
                     // optional behaviors

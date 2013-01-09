@@ -1,9 +1,9 @@
 <?php
 namespace Oro\Bundle\FlexibleEntityBundle\Test\Entity;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\OrmAttribute;
-use Oro\Bundle\FlexibleEntityBundle\Entity\OrmAttributeOption;
-use Oro\Bundle\FlexibleEntityBundle\Entity\OrmAttributeOptionValue;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
+use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
+use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOptionValue;
 
 /**
  * Test related class
@@ -13,7 +13,7 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\OrmAttributeOptionValue;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-class OrmAttributeTest extends \PHPUnit_Framework_TestCase
+class AttributeTest extends \PHPUnit_Framework_TestCase
 {
     protected $attributeCode = 'sku';
     protected $attributeTitle = 'My sku';
@@ -23,7 +23,7 @@ class OrmAttributeTest extends \PHPUnit_Framework_TestCase
 */
     public function testGetCode()
     {
-        $attribute = new OrmAttribute();
+        $attribute = new Attribute();
         $attribute->setCode($this->attributeCode);
         $this->assertEquals($attribute->getCode(), $this->attributeCode);
     }
@@ -33,7 +33,7 @@ class OrmAttributeTest extends \PHPUnit_Framework_TestCase
 */
     public function testGetTitle()
     {
-        $attribute = new OrmAttribute();
+        $attribute = new Attribute();
         $attribute->setTitle($this->attributeTitle);
         $this->assertEquals($attribute->getTitle(), $this->attributeTitle);
     }
@@ -45,12 +45,12 @@ class OrmAttributeTest extends \PHPUnit_Framework_TestCase
     public function testGetOptions()
     {
         // attribute
-        $attribute = new OrmAttribute();
+        $attribute = new Attribute();
         $attribute->setCode($this->attributeCode);
         // option
-        $option = new OrmAttributeOption();
+        $option = new AttributeOption();
         // option value
-        $optionValue = new OrmAttributeOptionValue();
+        $optionValue = new AttributeOptionValue();
         $option->addOptionValue($optionValue);
         $attribute->addOption($option);
 
