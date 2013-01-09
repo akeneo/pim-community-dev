@@ -2,8 +2,8 @@
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractEntity;
-use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractEntityAttributeValue;
+use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractFlexible;
+use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractFlexibleAttributeValue;
 use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableContainerInterface;
 
 /**
@@ -14,7 +14,7 @@ use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableContainerInterfac
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-abstract class AbstractOrmEntity extends AbstractEntity implements TranslatableContainerInterface
+abstract class AbstractOrmEntity extends AbstractFlexible implements TranslatableContainerInterface
 {
     /**
      * @var integer $id
@@ -74,7 +74,7 @@ abstract class AbstractOrmEntity extends AbstractEntity implements TranslatableC
      *
      * @param string $locale
      *
-     * @return AbstractEntity
+     * @return AbstractFlexible
      */
     public function setLocaleCode($locale)
     {
@@ -86,11 +86,11 @@ abstract class AbstractOrmEntity extends AbstractEntity implements TranslatableC
     /**
      * Add value, override to deal with relation owner side
      *
-     * @param AbstractEntityAttributeValue $value
+     * @param AbstractFlexibleAttributeValue $value
      *
-     * @return AbstractEntity
+     * @return AbstractFlexible
      */
-    public function addValue(AbstractEntityAttributeValue $value)
+    public function addValue(AbstractFlexibleAttributeValue $value)
     {
         $this->values[] = $value;
         $value->setEntity($this);
@@ -103,7 +103,7 @@ abstract class AbstractOrmEntity extends AbstractEntity implements TranslatableC
      *
      * @param EntityAttributeValue $value
      */
-    public function removeValue(AbstractEntityAttributeValue $value)
+    public function removeValue(AbstractFlexibleAttributeValue $value)
     {
         $this->values->removeElement($value);
     }

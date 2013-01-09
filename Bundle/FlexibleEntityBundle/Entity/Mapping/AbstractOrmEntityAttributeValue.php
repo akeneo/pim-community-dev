@@ -1,9 +1,9 @@
 <?php
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractEntity;
+use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractFlexible;
 use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractAttribute;
-use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractEntityAttributeValue;
+use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractFlexibleAttributeValue;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @license   http://opensource.org/licenses/MIT  MIT
  *
  */
-abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeValue
+abstract class AbstractOrmEntityAttributeValue extends AbstractFlexibleAttributeValue
 {
     /**
      * @var integer $id
@@ -107,11 +107,11 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractEntityAttributeVa
     /**
      * Set entity
      *
-     * @param AbstractEntity $entity
+     * @param AbstractFlexible $entity
      *
      * @return EntityAttributeValue
      */
-    public function setEntity(AbstractEntity $entity = null)
+    public function setEntity(AbstractFlexible $entity = null)
     {
         $this->entity = $entity;
 

@@ -12,7 +12,7 @@ use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-abstract class AbstractEntity implements FlexibleEntityInterface, TimestampableInterface
+abstract class AbstractFlexible implements FlexibleEntityInterface, TimestampableInterface
 {
 
     /**

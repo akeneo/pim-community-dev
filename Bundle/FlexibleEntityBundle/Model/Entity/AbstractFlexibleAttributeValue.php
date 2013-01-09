@@ -9,7 +9,7 @@ namespace Oro\Bundle\FlexibleEntityBundle\Model\Entity;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-abstract class AbstractEntityAttributeValue
+abstract class AbstractFlexibleAttributeValue
 {
 
     /**
@@ -47,7 +47,7 @@ abstract class AbstractEntityAttributeValue
      *
      * @param string $data
      *
-     * @return AbstractEntityAttributeValue
+     * @return AbstractFlexibleAttributeValue
      */
      public function setData($data)
      {
@@ -71,7 +71,7 @@ abstract class AbstractEntityAttributeValue
      *
      * @param EntityAttribute $attribute
      *
-     * @return AbstractEntityAttributeValue
+     * @return AbstractFlexibleAttributeValue
      */
     public function setAttribute(AbstractAttribute $attribute = null)
     {
@@ -83,7 +83,7 @@ abstract class AbstractEntityAttributeValue
     /**
      * Get attribute
      *
-     * @return AbstractEntityAttributeValue
+     * @return AbstractFlexibleAttributeValue
      */
     public function getAttribute()
     {
