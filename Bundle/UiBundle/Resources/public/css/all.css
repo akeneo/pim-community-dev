@@ -156,9 +156,40 @@ header{
 .fr{
     float:right;
 }
-/* visual for modal bar popup
-#bar-drop-overlay{
-    background: #000;
-    opacity: 0.6;
+.layout-content{
+    background: #fff;
 }
-*/
+.menu-row .tab-content{
+    float: left;
+}
+.menu-row .nav-tabs{
+    float: left;
+    margin: 0;
+    border: 0;
+}
+.menu-row .left-nav{
+    float: left;
+}
+.menu-row .right-nav > *{
+    float: left;
+    margin: 0 0 0 10px;
+}
+.menu-row .right-nav{
+    float:right;
+}
+.menu-row a.home{
+    float: left;
+    margin: 0 10px 0 0;
+    padding: 8px 12px;
+    font-size: 14px;
+}
+.menu-row.navbar{
+    width: 100%;
+    float: left;
+    height: 44px;
+}
+.clearfix-my:after{
+    content: "";
+    display: block;
+    clear: both;
+}

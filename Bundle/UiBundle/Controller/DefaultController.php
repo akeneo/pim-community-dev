@@ -153,4 +153,12 @@ class DefaultController extends Controller
     {
         return array();
     }
+    /**
+     * @Route("/1column-with-menu")
+     * @Template()
+     */
+    public function oneColumnMenuAction()
+    {
+        return array();
+    }
 }
