@@ -13,7 +13,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-class OrmFlexibleEntityRepository extends EntityRepository
+class FlexibleEntityRepository extends EntityRepository
 {
 
     /**
@@ -33,7 +33,7 @@ class OrmFlexibleEntityRepository extends EntityRepository
 
      * @param array $config
      *
-     * @return OrmFlexibleEntityRepository
+     * @return FlexibleEntityRepository
      */
     public function setFlexibleConfig($config)
     {
@@ -57,7 +57,7 @@ class OrmFlexibleEntityRepository extends EntityRepository
      *
      * @param string $code
      *
-     * @return OrmFlexibleEntityRepository
+     * @return FlexibleEntityRepository
      */
     public function setLocaleCode($code)
     {

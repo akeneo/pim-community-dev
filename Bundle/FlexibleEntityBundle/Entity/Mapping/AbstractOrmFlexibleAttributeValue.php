@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @license   http://opensource.org/licenses/MIT  MIT
  *
  */
-abstract class AbstractOrmEntityAttributeValue extends AbstractFlexibleAttributeValue
+abstract class AbstractOrmFlexibleAttributeValue extends AbstractFlexibleAttributeValue
 {
     /**
      * @var integer $id
@@ -35,7 +35,7 @@ abstract class AbstractOrmEntityAttributeValue extends AbstractFlexibleAttribute
     /**
      * @var Entity $entity
      *
-     * @ORM\ManyToOne(targetEntity="AbstractOrmEntity", inversedBy="values")
+     * @ORM\ManyToOne(targetEntity="AbstractOrmFlexible", inversedBy="values")
      */
     protected $entity;
 
