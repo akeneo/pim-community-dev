@@ -1,9 +1,9 @@
 <?php
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractFlexible;
-use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractAttribute;
-use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractFlexibleAttributeValue;
+use Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
+use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexibleAttributeValue;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

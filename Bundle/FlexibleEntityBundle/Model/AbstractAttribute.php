@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\FlexibleEntityBundle\Model\Entity;
+namespace Oro\Bundle\FlexibleEntityBundle\Model;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
 

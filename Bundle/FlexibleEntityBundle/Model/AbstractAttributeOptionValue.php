@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\FlexibleEntityBundle\Model\Entity;
+namespace Oro\Bundle\FlexibleEntityBundle\Model;
 
 /**
  * Abstract entity attribute option value, independent of storage

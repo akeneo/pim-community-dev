@@ -2,8 +2,8 @@
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractFlexible;
-use Oro\Bundle\FlexibleEntityBundle\Model\Entity\AbstractFlexibleAttributeValue;
+use Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
+use Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexibleAttributeValue;
 use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableContainerInterface;
 
 /**
