@@ -14,7 +14,7 @@ use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableContainerInterfac
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-abstract class AbstractOrmFlexible extends AbstractFlexible implements TranslatableContainerInterface
+abstract class AbstractEntityFlexible extends AbstractFlexible implements TranslatableContainerInterface
 {
     /**
      * @var integer $id
@@ -48,7 +48,7 @@ abstract class AbstractOrmFlexible extends AbstractFlexible implements Translata
     /**
      * @var Value
      *
-     * @ORM\OneToMany(targetEntity="AbstractOrmFlexibleAttributeValue", mappedBy="entity", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="AbstractEntityFlexibleAttributeValue", mappedBy="entity", cascade={"persist", "remove"})
      */
     protected $values;
 

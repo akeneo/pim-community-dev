@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @license   http://opensource.org/licenses/MIT  MIT
  *
  */
-abstract class AbstractOrmAttributeOptionValue extends AbstractAttributeOptionValue
+abstract class AbstractEntityAttributeOptionValue extends AbstractAttributeOptionValue
 {
     /**
      * @var integer $id
@@ -25,9 +25,9 @@ abstract class AbstractOrmAttributeOptionValue extends AbstractAttributeOptionVa
     protected $id;
 
     /**
-     * @var AbstractOrmAttributeOption $option
+     * @var AbstractEntityAttributeOption $option
      *
-     * @ORM\ManyToOne(targetEntity="AbstractOrmAttributeOption", inversedBy="optionValues")
+     * @ORM\ManyToOne(targetEntity="AbstractEntityAttributeOption", inversedBy="optionValues")
      */
     protected $option;
 

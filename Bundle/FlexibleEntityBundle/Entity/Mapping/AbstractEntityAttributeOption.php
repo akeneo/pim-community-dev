@@ -14,7 +14,7 @@ use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableContainerInterfac
  * @license   http://opensource.org/licenses/MIT  MIT
  *
  */
-abstract class AbstractOrmAttributeOption extends AbstractAttributeOption implements TranslatableContainerInterface
+abstract class AbstractEntityAttributeOption extends AbstractAttributeOption implements TranslatableContainerInterface
 {
     /**
      * @var integer $id
@@ -28,7 +28,7 @@ abstract class AbstractOrmAttributeOption extends AbstractAttributeOption implem
     /**
      * @var Attribute $attribute
      *
-     * @ORM\ManyToOne(targetEntity="AbstractOrmAttribute")
+     * @ORM\ManyToOne(targetEntity="AbstractEntityAttribute")
      * @ORM\JoinColumn(name="attribute_id", nullable=false, onDelete="CASCADE", referencedColumnName="id")
      */
     protected $attribute;
@@ -52,7 +52,7 @@ abstract class AbstractOrmAttributeOption extends AbstractAttributeOption implem
     /**
      * @var ArrayCollection $optionValues
      *
-     * @ORM\OneToMany(targetEntity="AbstractOrmAttributeOptionValue", mappedBy="option", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="AbstractEntityAttributeOptionValue", mappedBy="option", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $optionValues;
 
@@ -69,7 +69,7 @@ abstract class AbstractOrmAttributeOption extends AbstractAttributeOption implem
     /**
      * Get attribute
      *
-     * @return AbstractOrmAttribute
+     * @return AbstractEntityAttribute
      */
     public function getAttribute()
     {
@@ -79,11 +79,11 @@ abstract class AbstractOrmAttributeOption extends AbstractAttributeOption implem
     /**
      * Set attribute
      *
-     * @param AbstractOrmAttribute $attribute
+     * @param AbstractEntityAttribute $attribute
      *
      * @return EntityAttributeOption
      */
-    public function setAttribute(AbstractOrmAttribute $attribute = null)
+    public function setAttribute(AbstractEntityAttribute $attribute = null)
     {
         $this->attribute = $attribute;
 

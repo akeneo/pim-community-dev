@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @license   http://opensource.org/licenses/MIT  MIT
  *
  */
-abstract class AbstractOrmAttribute extends AbstractAttribute
+abstract class AbstractEntityAttribute extends AbstractAttribute
 {
     /**
      * @var integer $id
@@ -96,7 +96,7 @@ abstract class AbstractOrmAttribute extends AbstractAttribute
     /**
      * @var ArrayCollection $options
      *
-     * @ORM\OneToMany(targetEntity="AbstractOrmAttributeOption", mappedBy="attribute", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="AbstractEntityAttributeOption", mappedBy="attribute", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $options;
 

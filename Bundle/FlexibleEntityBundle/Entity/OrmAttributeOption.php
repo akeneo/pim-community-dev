@@ -1,7 +1,7 @@
 <?php
 namespace Oro\Bundle\FlexibleEntityBundle\Entity;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractOrmAttributeOption;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="oroflexibleentity_attribute_option")
  * @ORM\Entity
  */
-class OrmAttributeOption extends AbstractOrmAttributeOption
+class OrmAttributeOption extends AbstractEntityAttributeOption
 {
 
     /**

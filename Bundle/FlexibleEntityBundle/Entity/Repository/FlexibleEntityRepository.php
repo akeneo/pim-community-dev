@@ -136,7 +136,7 @@ class FlexibleEntityRepository extends EntityRepository
      *
      * @throws UnknownAttributeException
      *
-     * @return AbstractOrmAttribute
+     * @return AbstractEntityAttribute
      */
     public function findAttributeByCode($code)
     {
