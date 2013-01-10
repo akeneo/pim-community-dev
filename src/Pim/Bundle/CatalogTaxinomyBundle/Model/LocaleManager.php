@@ -12,6 +12,53 @@ namespace Pim\Bundle\CatalogTaxinomyBundle\Model;
 class LocaleManager
 {
 
+
+    /**
+     * @var ObjectManager $manager
+     */
+    protected $manager;
+
+    /**
+     * Constructor
+     *
+     * @param ObjectManager $objectManager
+     */
+    public function __construct($objectManager)
+    {
+        $this->manager = $objectManager;
+    }
+
+    /**
+     * Get entity repository
+     *
+     * @return EntityRepository
+     */
+    public function getEntityRepository()
+    {
+        return $this->manager->getRepository($this->getEntityShortname());
+    }
+
+    /**
+     * Return implementation class that can be use to instanciate
+     * @return string
+     */
+    public function getEntityClass()
+    {
+        return $this->manager->getClassMetadata($this->getEntityShortname())->getName();
+    }
+
+    /**
+     * Return a new instance
+     * @return Entity
+     */
+    public function getNewEntityInstance()
+    {
+        $class = $this->getEntityClass();
+
+        return new $class();
+    }
+
+
     /**
      * {@inheritdoc}
      */

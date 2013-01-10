@@ -60,6 +60,6 @@ class DataSheetArrayToProductTransformerTest extends KernelAwareTest
      */
     protected function assertInstanceOfProduct($entity)
     {
-        $this->assertInstanceOf('\Oro\Bundle\FlexibleEntityBundle\Entity\Entity', $entity);
+        $this->assertInstanceOf('\Oro\Bundle\CatalogBundle\Entity\Product', $entity);
     }
 }

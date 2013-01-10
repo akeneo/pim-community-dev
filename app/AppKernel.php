@@ -33,10 +33,10 @@ class AppKernel extends Kernel
 
             // PIM modules
             new Pim\Bundle\UIBundle\PimUIBundle(),
-            new Pim\Bundle\ConnectorIcecatBundle\PimConnectorIcecatBundle(),
+//            new Pim\Bundle\ConnectorIcecatBundle\PimConnectorIcecatBundle(),
             new Pim\Bundle\CatalogTaxinomyBundle\PimCatalogTaxinomyBundle(),
             new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
-            new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
+//            new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
             new Pim\Bundle\DataFlowBundle\PimDataFlowBundle(),
             new Pim\Bundle\DemoDataBundle\PimDemoDataBundle(),
 

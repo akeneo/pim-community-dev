@@ -8,18 +8,6 @@ pim_dashboard:
     prefix:   /{_locale}/dashboard/
     defaults: { _locale: %locale% }
 
-pim_connectoricecat:
-    resource: "@PimConnectorIcecatBundle/Controller/"
-    type:     annotation
-    prefix:   /{_locale}/icecatconnector/
-    defaults: { _locale: %locale% }
-
-pim_catalog:
-    resource: "@PimCatalogBundle/Controller/"
-    type:     annotation
-    prefix:   /{_locale}/catalog/
-    defaults: { _locale: %locale% }
-
 pim_catalogtaxinomy:
     resource: "@PimCatalogTaxinomyBundle/Controller/"
     type:     annotation

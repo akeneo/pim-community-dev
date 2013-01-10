@@ -13,9 +13,9 @@ class ChannelManager
 {
 
     /**
-     * @var ObjectManager $objectManager
+     * @var ObjectManager $manager
      */
-    protected $objectManager;
+    protected $manager;
 
     /**
      * Constructor
@@ -24,7 +24,7 @@ class ChannelManager
      */
     public function __construct($objectManager)
     {
-        $this->objectManager = $objectManager;
+        $this->manager = $objectManager;
     }
 
     /**
@@ -34,7 +34,27 @@ class ChannelManager
      */
     public function getEntityRepository()
     {
-        return $this->objectManager->getRepository($this->getEntityShortname());
+        return $this->manager->getRepository($this->getEntityShortname());
+    }
+
+    /**
+     * Return implementation class that can be use to instanciate
+     * @return string
+     */
+    public function getEntityClass()
+    {
+        return $this->manager->getClassMetadata($this->getEntityShortname())->getName();
+    }
+
+    /**
+     * Return a new instance
+     * @return Entity
+     */
+    public function getNewEntityInstance()
+    {
+        $class = $this->getEntityClass();
+
+        return new $class();
     }
 
     /**
