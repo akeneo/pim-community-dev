@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  *
- * @ORM\Table(name="flexibleproduct_product")
+ * @ORM\Table(name="akeneo_flexibleproduct_product")
  * @ORM\Entity(repositoryClass="Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository")
  */
 class Product extends AbstractEntityFlexible
