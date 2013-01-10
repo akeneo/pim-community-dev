@@ -13,3 +13,9 @@ pim_catalogtaxinomy:
     type:     annotation
     prefix:   /{_locale}/catalogtaxinomy/
     defaults: { _locale: %locale% }
+
+pim_flexible_product:
+    resource: "@PimFlexibleProductBundle/Controller/"
+    type:     annotation
+    prefix:   /{_locale}/flexibleproduct/
+    defaults: { _locale: %locale% }

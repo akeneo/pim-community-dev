@@ -39,10 +39,10 @@ class AppKernel extends Kernel
 //            new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
             new Pim\Bundle\DataFlowBundle\PimDataFlowBundle(),
             new Pim\Bundle\DemoDataBundle\PimDemoDataBundle(),
+            new Pim\Bundle\FlexibleProductBundle\PimFlexibleProductBundle(),
 
             // community bundles
-            new APY\DataGridBundle\APYDataGridBundle()
-
+            new APY\DataGridBundle\APYDataGridBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
