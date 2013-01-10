@@ -1,8 +1,6 @@
 <?php
 namespace Pim\Bundle\CatalogTaxinomyBundle\Model;
 
-use Oro\Bundle\FlexibleEntityBundle\Doctrine\BaseEntityManager;
-
 /**
  * Manage sources
  *
@@ -10,8 +8,32 @@ use Oro\Bundle\FlexibleEntityBundle\Doctrine\BaseEntityManager;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SourceManager extends BaseEntityManager
+class SourceManager
 {
+    /**
+     * @var ObjectManager $objectManager
+     */
+    protected $objectManager;
+
+    /**
+     * Constructor
+     *
+     * @param ObjectManager $objectManager
+     */
+    public function __construct($objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
+
+    /**
+     * Get entity repository
+     *
+     * @return EntityRepository
+     */
+    public function getEntityRepository()
+    {
+        return $this->objectManager->getRepository($this->getEntityShortname());
+    }
 
     /**
      * {@inheritdoc}

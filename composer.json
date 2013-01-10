@@ -4,7 +4,7 @@
     "license": "OSL-3.0",
     "authors": [
         {
-            "name": "Ajeneo",
+            "name": "Akeneo",
             "homepage": "http://akeneo.com"
         }
     ],
@@ -15,9 +15,7 @@
     },
     "require": {
         "php": ">=5.3.3",
-
-        "laboro/bap": "dev-master",
-
+        "symfony/symfony": "2.1.*",
         "doctrine/orm": ">=2.2.3,<2.4-dev",
         "doctrine/doctrine-bundle": "1.0.*",
         "twig/extensions": "1.0.*@dev",
@@ -31,20 +29,24 @@
         "jms/di-extra-bundle": "1.1.*",
         "kriswallsmith/assetic": "1.1.*@dev",
 
+        "laboro/OroFlexibleEntityBundle": "dev-master",
+        "laboro/bap": "dev-master",
+
         "doctrine/mongodb-odm-bundle" : "v3.0.0-BETA1",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "gedmo/doctrine-extensions": "*",
-
         "twig/twig": ">=1.9.1,<=1.11",
-
         "apy/datagrid-bundle": "dev-master"
-        
-        
     },
     "repositories": [
         {
             "type": "vcs",
             "url": "https://github.com/laboro/bap.git",
+            "branch": "master"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/laboro/OroFlexibleEntityBundle.git",
             "branch": "master"
         }
     ],

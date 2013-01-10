@@ -1,8 +1,6 @@
 <?php
 namespace Pim\Bundle\CatalogTaxinomyBundle\Model;
 
-use Oro\Bundle\FlexibleEntityBundle\Doctrine\BaseEntityManager;
-
 use Pim\Bundle\CatalogTaxinomyBundle\Entity\Category;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,7 +14,7 @@ use Doctrine\Common\Persistence\ObjectManager;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class CategoryManager extends BaseEntityManager
+class CategoryManager
 {
     /**
      * {@inheritdoc}
@@ -24,6 +22,31 @@ class CategoryManager extends BaseEntityManager
     public function getEntityShortname()
     {
         return 'PimCatalogTaxinomyBundle:Category';
+    }
+
+    /**
+     * @var ObjectManager $objectManager
+     */
+    protected $objectManager;
+
+    /**
+     * Constructor
+     *
+     * @param ObjectManager $objectManager
+     */
+    public function __construct($objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
+
+    /**
+     * Get entity repository
+     *
+     * @return EntityRepository
+     */
+    public function getEntityRepository()
+    {
+        return $this->objectManager->getRepository($this->getEntityShortname());
     }
 
     /**

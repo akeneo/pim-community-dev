@@ -28,20 +28,21 @@ class AppKernel extends Kernel
             // BAP modules
             new Oro\Bundle\FlexibleEntityBundle\OroFlexibleEntityBundle(),
 
+            new Bap\Bundle\ToolsBundle\BapToolsBundle(),
             new Bap\Bundle\UIBundle\BapUIBundle(),
 
             // PIM modules
             new Pim\Bundle\UIBundle\PimUIBundle(),
             new Pim\Bundle\ConnectorIcecatBundle\PimConnectorIcecatBundle(),
+            new Pim\Bundle\CatalogTaxinomyBundle\PimCatalogTaxinomyBundle(),
             new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
             new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
             new Pim\Bundle\DataFlowBundle\PimDataFlowBundle(),
             new Pim\Bundle\DemoDataBundle\PimDemoDataBundle(),
-            new Pim\Bundle\CatalogTaxinomyBundle\PimCatalogTaxinomyBundle(),
 
             // community bundles
-            new APY\DataGridBundle\APYDataGridBundle(),
-            new Bap\Bundle\ToolsBundle\BapToolsBundle(),
+            new APY\DataGridBundle\APYDataGridBundle()
+
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

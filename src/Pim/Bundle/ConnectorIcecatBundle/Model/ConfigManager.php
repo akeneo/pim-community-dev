@@ -3,8 +3,6 @@ namespace Pim\Bundle\ConnectorIcecatBundle\Model;
 
 use Pim\Bundle\ConnectorIcecatBundle\Exception\ConfigException;
 
-use Oro\Bundle\FlexibleEntityBundle\Doctrine\BaseEntityManager;
-
 use Pim\Bundle\ConnectorIcecatBundle\Entity\Config;
 
 use Doctrine\Common\Persistence\ObjectManager;
@@ -17,7 +15,7 @@ use Doctrine\Common\Persistence\ObjectManager;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ConfigManager extends BaseEntityManager
+class ConfigManager
 {
     /**
      * Associative array to get Config entities (code => Config)
@@ -25,6 +23,31 @@ class ConfigManager extends BaseEntityManager
      * @var array
      */
     protected static $configs = array();
+
+    /**
+     * @var ObjectManager $objectManager
+     */
+    protected $objectManager;
+
+    /**
+     * Constructor
+     *
+     * @param ObjectManager $objectManager
+     */
+    public function __construct($objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
+
+    /**
+     * Get entity repository
+     *
+     * @return EntityRepository
+     */
+    public function getEntityRepository()
+    {
+        return $this->objectManager->getRepository($this->getEntityShortname());
+    }
 
     /**
      * Get configuration from code
