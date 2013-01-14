@@ -22,6 +22,7 @@ class AppKernel extends Kernel
 
             // MongoDB storage
             new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
+
             // To set up basic data
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
 
@@ -29,18 +30,12 @@ class AppKernel extends Kernel
             new Oro\Bundle\FlexibleEntityBundle\OroFlexibleEntityBundle(),
             new Oro\Bundle\UIBundle\OroUIBundle(),
 
-            // Old BAP bundle
-            new Bap\Bundle\UIBundle\BapUIBundle(),
-
             // PIM modules
             new Pim\Bundle\UIBundle\PimUIBundle(),
-            new Pim\Bundle\CatalogTaxinomyBundle\PimCatalogTaxinomyBundle(),
             new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
-            new Pim\Bundle\DataFlowBundle\PimDataFlowBundle(),
-            new Pim\Bundle\DemoDataBundle\PimDemoDataBundle(),
             new Pim\Bundle\FlexibleProductBundle\PimFlexibleProductBundle(),
 
-            // community bundles
+            // Community bundles
             new APY\DataGridBundle\APYDataGridBundle(),
         );
 
@@ -48,8 +43,6 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
-            // BAP bundle only for dev
-            $bundles[] = new Oro\Bundle\ToolsBundle\OroToolsBundle();
         }
 
         return $bundles;

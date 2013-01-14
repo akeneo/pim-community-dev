@@ -1,8 +1,0 @@
-Pim\Bundle\ConnectorIcecatBundle\Entity\Config:
-    properties:
-        code:
-            - NotBlank: ~
-            - MinLength: 5
-            - MaxLength: 30
-        value:
-            - NotBlank: ~

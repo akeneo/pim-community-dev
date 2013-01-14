@@ -31,7 +31,6 @@
 
         "oro/FlexibleEntityBundle": "dev-master",
         "oro/UIBundle": "dev-master",
-        "oro/ToolsBundle": "dev-master",
 
         "doctrine/mongodb-odm-bundle" : "v3.0.0-BETA1",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
@@ -48,11 +47,6 @@
         {
             "type": "vcs",
             "url": "git@github.com:laboro/UIBundle.git",
-            "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:laboro/ToolsBundle.git",
             "branch": "master"
         }
     ],

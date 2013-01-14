@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE ICECAT-interface SYSTEM "dtd/ICECAT-interface_response.dtd">
-<!-- source: Icecat.biz 2012 -->
-<ICECAT-interface xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://data.icecat.biz/xsd/ICECAT-interface_response.xsd">
-    <Product Code="-1" ID="?0?" ErrorMessage="The requested XML data-sheet is not present in the Icecat database.">
-        &lt;?xml version="1.0" encoding="UTF-8"?&gt;\n&lt;!DOCTYPE ICECAT-interface SYSTEM "dtd/ICECAT-interface_response.dtd"&gt;&lt;!-- source: Icecat.biz 2012 --&gt;&lt;ICECAT-interface xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://data.icecat.biz/xsd/ICECAT-interface_response.xsd"&gt;&lt;Product Code="-1" ID="?0?" ErrorMessage="The requested XML data-sheet is not present in the Icecat database."  /&gt;&lt;/ICECAT-interface&gt;
-    </Product>
-</ICECAT-interface>
