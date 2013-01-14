@@ -30,15 +30,9 @@ class AppKernel extends Kernel
             new Oro\Bundle\FlexibleEntityBundle\OroFlexibleEntityBundle(),
             new Oro\Bundle\UIBundle\OroUIBundle(),
 
-            // Old BAP bundle
-            new Bap\Bundle\UIBundle\BapUIBundle(),
-
             // PIM modules
             new Pim\Bundle\UIBundle\PimUIBundle(),
-            new Pim\Bundle\CatalogTaxinomyBundle\PimCatalogTaxinomyBundle(),
             new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
-            new Pim\Bundle\DataFlowBundle\PimDataFlowBundle(),
-            new Pim\Bundle\DemoDataBundle\PimDemoDataBundle(),
             new Pim\Bundle\FlexibleProductBundle\PimFlexibleProductBundle(),
 
             // Community bundles

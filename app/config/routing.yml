@@ -8,12 +8,6 @@ pim_dashboard:
     prefix:   /{_locale}/dashboard/
     defaults: { _locale: %locale% }
 
-pim_catalogtaxinomy:
-    resource: "@PimCatalogTaxinomyBundle/Controller/"
-    type:     annotation
-    prefix:   /{_locale}/catalogtaxinomy/
-    defaults: { _locale: %locale% }
-
 pim_flexible_product:
     resource: "@PimFlexibleProductBundle/Controller/"
     type:     annotation
