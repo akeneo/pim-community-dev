@@ -1,5 +1,5 @@
 {
-    "hash": "b1be9511a7b264130d23e1649eb30fe4",
+    "hash": "1fcf9d3187bd5fe218ee1d6bb29b7c05",
     "packages": [
         {
             "name": "apy/datagrid-bundle",
@@ -1107,50 +1107,6 @@
             }
         },
         {
-            "name": "oro/ToolsBundle",
-            "version": "dev-master",
-            "target-dir": "Oro/Bundle/ToolsBundle",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:laboro/ToolsBundle.git",
-                "reference": "75966e578b046c6d7c77455fdc3d559ae20115e9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laboro/ToolsBundle/zipball/75966e578b046c6d7c77455fdc3d559ae20115e9",
-                "reference": "75966e578b046c6d7c77455fdc3d559ae20115e9",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3",
-                "symfony/symfony": "2.1.6"
-            },
-            "time": "2013-01-14 10:27:12",
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Oro\\Bundle\\ToolsBundle": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "BAP Tools Bundle",
-            "homepage": "https://github.com/laboro/ToolsBundle",
-            "keywords": [
-                "BAP"
-            ],
-            "support": {
-                "source": "https://github.com/laboro/ToolsBundle/tree/master",
-                "issues": "https://github.com/laboro/ToolsBundle/issues"
-            }
-        },
-        {
             "name": "oro/UIBundle",
             "version": "dev-master",
             "target-dir": "Oro/Bundle/UIBundle",
@@ -1758,7 +1714,6 @@
         "kriswallsmith/assetic": 20,
         "oro/flexibleentitybundle": 20,
         "oro/uibundle": 20,
-        "oro/toolsbundle": 20,
         "doctrine/mongodb-odm-bundle": 10,
         "doctrine/doctrine-fixtures-bundle": 20,
         "apy/datagrid-bundle": 20
