@@ -25,7 +25,7 @@
     <div class="form-panel ui-corner-all">
         <h2>{{ "pim.catalogtaxinomy.channel.fieldset.general" | trans }}</h2>
 
-        {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
+        {% form_theme form 'PimUIBundle:Form:fields.html.twig' %}
         <form action="{{ formAction }}" method="post" {{ form_enctype(form) }}>
             {{ form_widget(form) }}
             <input id="edit-form-submit" type="submit" value="{{ "bap.button.save" | trans }}" class="ui-helper-hidden" role="button" aria-disabled="false">

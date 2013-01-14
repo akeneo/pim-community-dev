@@ -6,7 +6,7 @@
 
     <h2>{{ "pim.connector.icecat.config.title.edit" | trans }}</h2>
 
-    {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
+    {% form_theme form 'PimUIBundle:Form:fields.html.twig' %}
 
     <form action="{{ path('pim_connectoricecat_config_update') }}" method="post" {{ form_enctype(form) }} class="form-config">
 

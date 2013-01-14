@@ -22,7 +22,7 @@
 
     <h1>{{ "pim.catalog.set.title.create" | trans }}</h1>
 
-    {% form_theme form 'BapUIBundle:Form:fields.html.twig' %}
+    {% form_theme form 'PimUIBundle:Form:fields.html.twig' %}
     <form action="{{ path('pim_catalog_productset_create') }}" method="post" {{ form_enctype(form) }}>
 
         {{ form_errors(form) }}
