@@ -27,16 +27,15 @@ class AppKernel extends Kernel
 
             // BAP modules
             new Oro\Bundle\FlexibleEntityBundle\OroFlexibleEntityBundle(),
+            new Oro\Bundle\UIBundle\OroUIBundle(),
 
-            new Bap\Bundle\ToolsBundle\BapToolsBundle(),
+            // Old BAP bundle
             new Bap\Bundle\UIBundle\BapUIBundle(),
 
             // PIM modules
             new Pim\Bundle\UIBundle\PimUIBundle(),
-//            new Pim\Bundle\ConnectorIcecatBundle\PimConnectorIcecatBundle(),
             new Pim\Bundle\CatalogTaxinomyBundle\PimCatalogTaxinomyBundle(),
             new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
-//            new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
             new Pim\Bundle\DataFlowBundle\PimDataFlowBundle(),
             new Pim\Bundle\DemoDataBundle\PimDemoDataBundle(),
             new Pim\Bundle\FlexibleProductBundle\PimFlexibleProductBundle(),
@@ -49,6 +48,8 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+            // BAP bundle only for dev
+            $bundles[] = new Oro\Bundle\ToolsBundle\OroToolsBundle();
         }
 
         return $bundles;

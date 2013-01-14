@@ -29,8 +29,9 @@
         "jms/di-extra-bundle": "1.1.*",
         "kriswallsmith/assetic": "1.1.*@dev",
 
-        "laboro/OroFlexibleEntityBundle": "dev-master",
-        "laboro/bap": "dev-master",
+        "oro/FlexibleEntityBundle": "dev-master",
+        "oro/UIBundle": "dev-master",
+        "oro/ToolsBundle": "dev-master",
 
         "doctrine/mongodb-odm-bundle" : "v3.0.0-BETA1",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
@@ -41,12 +42,17 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/laboro/bap.git",
+            "url": "git@github.com:laboro/FlexibleEntityBundle.git",
             "branch": "master"
         },
         {
             "type": "vcs",
-            "url": "https://github.com/laboro/OroFlexibleEntityBundle.git",
+            "url": "git@github.com:laboro/UIBundle.git",
+            "branch": "master"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:laboro/ToolsBundle.git",
             "branch": "master"
         }
     ],

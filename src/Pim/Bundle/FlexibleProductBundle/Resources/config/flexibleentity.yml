@@ -1,6 +1,7 @@
 entities_config:
     Pim\Bundle\FlexibleProductBundle\Entity\Product:
-        flexible_manager:            product_manager
-        flexible_entity_class:       Pim\Bundle\FlexibleProductBundle\Entity\Product
-        flexible_entity_value_class: Pim\Bundle\FlexibleProductBundle\Entity\ProductAttributeValue
-        has_translatable_value:      true
+        flexible_manager:                  pim_flexibleproduct.product_manager
+        flexible_entity_class:             Pim\Bundle\FlexibleProductBundle\Entity\Product
+        flexible_attribute_extended_class: Pim\Bundle\FlexibleProductBundle\Entity\ProductAttribute
+        flexible_entity_value_class:       Pim\Bundle\FlexibleProductBundle\Entity\ProductAttributeValue
+        has_translatable_value:            true

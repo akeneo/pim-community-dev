@@ -1,5 +1,5 @@
 {
-    "hash": "aa6e3a0f116d5938db636abc35e47205",
+    "hash": "b1be9511a7b264130d23e1649eb30fe4",
     "packages": [
         {
             "name": "apy/datagrid-bundle",
@@ -77,6 +77,7 @@
             "require": {
                 "php": ">=5.3.2"
             },
+            "time": "2012-09-20 05:55:18",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -88,6 +89,7 @@
                     "Doctrine\\Common": "lib/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -113,7 +115,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -125,8 +127,7 @@
                 "eventmanager",
                 "annotations",
                 "persistence"
-            ],
-            "time": "2012-09-20 05:55:18"
+            ]
         },
         {
             "name": "doctrine/data-fixtures",
@@ -248,35 +249,34 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "dev-master",
+            "version": "v1.0.0",
             "target-dir": "Doctrine/Bundle/DoctrineBundle",
             "source": {
                 "type": "git",
                 "url": "git://github.com/doctrine/DoctrineBundle.git",
-                "reference": "8fe9d1b69c6dd4b1c8e7a289d7a8fd6e70081ede"
+                "reference": "v1.0.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/doctrine/DoctrineBundle/archive/8fe9d1b69c6dd4b1c8e7a289d7a8fd6e70081ede.zip",
-                "reference": "8fe9d1b69c6dd4b1c8e7a289d7a8fd6e70081ede",
+                "url": "https://github.com/doctrine/DoctrineBundle/zipball/v1.0.0",
+                "reference": "v1.0.0",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2",
-                "symfony/framework-bundle": ">=2.1,<2.3-dev",
-                "symfony/doctrine-bridge": ">=2.1,<2.3-dev",
-                "jdorn/sql-formatter": ">=1.1,<2.0",
-                "doctrine/dbal": ">=2.2,<2.5-dev"
+                "symfony/framework-bundle": "2.1.*",
+                "symfony/doctrine-bridge": "2.1.*",
+                "doctrine/dbal": ">=2.2,<2.4-dev"
             },
             "require-dev": {
-                "symfony/yaml": ">=2.1,<2.3-dev",
-                "symfony/validator": ">=2.1,<2.3-dev",
-                "doctrine/orm": ">=2.2,<2.5-dev"
+                "doctrine/orm": ">=2.2,<2.4-dev",
+                "symfony/yaml": "2.1.*",
+                "symfony/validator": "2.1.*"
             },
             "suggest": {
                 "doctrine/orm": "The Doctrine ORM integration is optional in the bundle."
             },
-            "time": "2013-01-09 09:28:48",
+            "time": "2012-09-07 14:18:21",
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
@@ -322,26 +322,28 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineFixturesBundle.git",
-                "reference": "9edc67af16e736a31605e7fa9c9e3edbd9db6427"
+                "reference": "95d1e0291878f64d376c878d9578239760cbaf73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/doctrine/DoctrineFixturesBundle/archive/9edc67af16e736a31605e7fa9c9e3edbd9db6427.zip",
-                "reference": "9edc67af16e736a31605e7fa9c9e3edbd9db6427",
+                "url": "https://github.com/doctrine/DoctrineFixturesBundle/archive/95d1e0291878f64d376c878d9578239760cbaf73.zip",
+                "reference": "95d1e0291878f64d376c878d9578239760cbaf73",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2",
                 "doctrine/data-fixtures": "*",
-                "doctrine/doctrine-bundle": "1.0.*",
-                "symfony/doctrine-bridge": ">=2.1.0,<2.3-dev"
+                "symfony/doctrine-bridge": ">=2.1.0,<2.3-dev",
+                "doctrine/doctrine-bundle": ">=1.0,<2.0"
             },
+            "time": "2013-01-13 12:20:51",
             "type": "symfony-bundle",
             "autoload": {
                 "psr-0": {
                     "Doctrine\\Bundle\\FixturesBundle": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -364,8 +366,7 @@
             "keywords": [
                 "persistence",
                 "Fixture"
-            ],
-            "time": "2012-10-22 13:57:52"
+            ]
         },
         {
             "name": "doctrine/mongodb",
@@ -395,6 +396,7 @@
                     "Doctrine\\MongoDB": "lib/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -450,6 +452,7 @@
                     "Doctrine\\ODM\\MongoDB": "lib/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -460,7 +463,7 @@
                     "homepage": "http://avalanche123.com"
                 },
                 {
-                    "name": "Jonathan Wage",
+                    "name": "Jonathan H. Wage",
                     "email": "jonwage@gmail.com",
                     "homepage": "http://www.jwage.com/"
                 },
@@ -511,6 +514,7 @@
                     "Doctrine\\Bundle\\MongoDBBundle": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -521,7 +525,7 @@
                     "homepage": "http://avalanche123.com"
                 },
                 {
-                    "name": "Jonathan Wage",
+                    "name": "Jonathan H. Wage",
                     "email": "jonwage@gmail.com",
                     "homepage": "http://www.jwage.com/"
                 },
@@ -544,12 +548,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/doctrine/doctrine2.git",
-                "reference": "f5bb8be884fab26f1bf72e7c55f97d226028b9d9"
+                "reference": "6829c464e88cccd7a2a0714e42e95f3930b38e37"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/doctrine/doctrine2/archive/f5bb8be884fab26f1bf72e7c55f97d226028b9d9.zip",
-                "reference": "f5bb8be884fab26f1bf72e7c55f97d226028b9d9",
+                "url": "https://github.com/doctrine/doctrine2/archive/6829c464e88cccd7a2a0714e42e95f3930b38e37.zip",
+                "reference": "6829c464e88cccd7a2a0714e42e95f3930b38e37",
                 "shasum": ""
             },
             "require": {
@@ -561,7 +565,7 @@
             "suggest": {
                 "symfony/yaml": "If you want to use YAML Metadata Mapping Driver"
             },
-            "time": "2013-01-07 20:05:04",
+            "time": "2013-01-12 09:32:44",
             "bin": [
                 "bin/doctrine",
                 "bin/doctrine.php"
@@ -614,12 +618,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/l3pp4rd/DoctrineExtensions.git",
-                "reference": "8e004cf25a68f0812efbce9b7c349fe0c750c691"
+                "reference": "0d4393d25a0ff6074b5163311e058d7f3cbccf35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/l3pp4rd/DoctrineExtensions/archive/8e004cf25a68f0812efbce9b7c349fe0c750c691.zip",
-                "reference": "8e004cf25a68f0812efbce9b7c349fe0c750c691",
+                "url": "https://github.com/l3pp4rd/DoctrineExtensions/archive/0d4393d25a0ff6074b5163311e058d7f3cbccf35.zip",
+                "reference": "0d4393d25a0ff6074b5163311e058d7f3cbccf35",
                 "shasum": ""
             },
             "require": {
@@ -639,7 +643,7 @@
                 "doctrine/mongodb": ">=1.0.0",
                 "doctrine/mongodb-odm": ">=1.0.0-BETA7"
             },
-            "time": "2013-01-09 08:33:47",
+            "time": "2013-01-11 05:15:19",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -678,53 +682,6 @@
             ]
         },
         {
-            "name": "jdorn/sql-formatter",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "git://github.com/jdorn/sql-formatter.git",
-                "reference": "a31cb6ffd64a8f7efa8e92f46b99fe9f990f9299"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/jdorn/sql-formatter/archive/a31cb6ffd64a8f7efa8e92f46b99fe9f990f9299.zip",
-                "reference": "a31cb6ffd64a8f7efa8e92f46b99fe9f990f9299",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.2.4"
-            },
-            "time": "2013-01-08 17:30:08",
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.3.x-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "lib"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL"
-            ],
-            "authors": [
-                {
-                    "name": "Jeremy Dorn",
-                    "email": "jeremy@jeremydorn.com",
-                    "homepage": "http://jeremydorn.com/"
-                }
-            ],
-            "description": "a PHP SQL highlighting library",
-            "homepage": "https://github.com/jdorn/sql-formatter/",
-            "keywords": [
-                "sql",
-                "highlight"
-            ]
-        },
-        {
             "name": "jms/aop-bundle",
             "version": "1.0.0",
             "target-dir": "JMS/AopBundle",
@@ -750,6 +707,7 @@
                     "JMS\\AopBundle": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache"
             ],
@@ -791,6 +749,7 @@
                     "CG\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache"
             ],
@@ -798,7 +757,7 @@
                 {
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -842,12 +801,14 @@
                 "doctrine/doctrine-bundle": "*",
                 "doctrine/orm": "*"
             },
+            "time": "2012-09-21 08:56:32",
             "type": "symfony-bundle",
             "autoload": {
                 "psr-0": {
                     "JMS\\DiExtraBundle": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache"
             ],
@@ -864,8 +825,7 @@
             "keywords": [
                 "dependency injection",
                 "annotations"
-            ],
-            "time": "2012-09-21 08:56:32"
+            ]
         },
         {
             "name": "jms/metadata",
@@ -891,6 +851,7 @@
                     "Metadata\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache"
             ],
@@ -946,12 +907,14 @@
                 "symfony/form": "*",
                 "symfony/validator": "*"
             },
+            "time": "2012-09-06 16:12:23",
             "type": "symfony-bundle",
             "autoload": {
                 "psr-0": {
                     "JMS\\SecurityExtraBundle": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache2"
             ],
@@ -971,8 +934,7 @@
                 "security",
                 "secure",
                 "expression"
-            ],
-            "time": "2012-09-06 16:12:23"
+            ]
         },
         {
             "name": "kriswallsmith/assetic",
@@ -980,12 +942,12 @@
             "source": {
                 "type": "git",
                 "url": "http://github.com/kriswallsmith/assetic.git",
-                "reference": "7ce61fb305d4f9128ab671f095123c5db5cffe7d"
+                "reference": "5591252faa1c7f3299660daebffd63dee2746b7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/kriswallsmith/assetic/archive/7ce61fb305d4f9128ab671f095123c5db5cffe7d.zip",
-                "reference": "7ce61fb305d4f9128ab671f095123c5db5cffe7d",
+                "url": "https://github.com/kriswallsmith/assetic/archive/5591252faa1c7f3299660daebffd63dee2746b7e.zip",
+                "reference": "5591252faa1c7f3299660daebffd63dee2746b7e",
                 "shasum": ""
             },
             "require": {
@@ -997,7 +959,11 @@
                 "leafo/lessphp": "*",
                 "leafo/scssphp": "*",
                 "ptachoire/cssembed": "*",
-                "leafo/scssphp-compass": "*"
+                "leafo/scssphp-compass": "*",
+                "cssmin/cssmin": "*",
+                "mrclay/minify": "*",
+                "kamicane/packager": "*",
+                "joliclic/javascript-packer": "*"
             },
             "suggest": {
                 "twig/twig": "Assetic provides the integration with the Twig templating engine",
@@ -1006,7 +972,7 @@
                 "ptachoire/cssembed": "Assetic provides the integration with phpcssembed to embed data uris",
                 "leafo/scssphp-compass": "Assetic provides the integration with the SCSS compass plugin"
             },
-            "time": "2013-01-10 18:55:59",
+            "time": "2013-01-12 22:20:24",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1039,91 +1005,6 @@
                 "compression",
                 "minification"
             ]
-        },
-        {
-            "name": "laboro/OroFlexibleEntityBundle",
-            "version": "dev-master",
-            "target-dir": "Oro/Bundle/FlexibleEntityBundle",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:laboro/OroFlexibleEntityBundle.git",
-                "reference": "28601330d6117628e18fceb00da5eafdb859190b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laboro/OroFlexibleEntityBundle/zipball/28601330d6117628e18fceb00da5eafdb859190b",
-                "reference": "28601330d6117628e18fceb00da5eafdb859190b",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3",
-                "symfony/symfony": "2.1.6"
-            },
-            "time": "2013-01-10 17:45:05",
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Oro\\Bundle\\FlexibleEntityBundle": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "BAP Flexible Entity Bundle",
-            "homepage": "https://github.com/laboro/OroFlexibleEntityBundle",
-            "keywords": [
-                "BAP"
-            ],
-            "support": {
-                "source": "https://github.com/laboro/OroFlexibleEntityBundle/tree/master",
-                "issues": "https://github.com/laboro/OroFlexibleEntityBundle/issues"
-            }
-        },
-        {
-            "name": "laboro/bap",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:laboro/bap.git",
-                "reference": "0d23414561f49505ea908ba6c5a89d7c3d011896"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laboro/bap/zipball/0d23414561f49505ea908ba6c5a89d7c3d011896",
-                "reference": "0d23414561f49505ea908ba6c5a89d7c3d011896",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3",
-                "symfony/symfony": "2.1.6",
-                "laboro/oroflexibleentitybundle": "dev-master"
-            },
-            "time": "2013-01-09 16:09:40",
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Oro\\Bundle": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "BAP base bundles",
-            "homepage": "https://github.com/laboro/bap.git",
-            "support": {
-                "source": "https://github.com/laboro/bap/tree/master",
-                "issues": "https://github.com/laboro/bap/issues"
-            }
         },
         {
             "name": "monolog/monolog",
@@ -1180,6 +1061,140 @@
                 "log",
                 "logging"
             ]
+        },
+        {
+            "name": "oro/FlexibleEntityBundle",
+            "version": "dev-master",
+            "target-dir": "Oro/Bundle/FlexibleEntityBundle",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:laboro/FlexibleEntityBundle.git",
+                "reference": "a0f514cd6ddc6d4be67d90c386759ad002f938f3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/a0f514cd6ddc6d4be67d90c386759ad002f938f3",
+                "reference": "a0f514cd6ddc6d4be67d90c386759ad002f938f3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "symfony/symfony": "2.1.6"
+            },
+            "time": "2013-01-14 14:30:19",
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Oro\\Bundle\\FlexibleEntityBundle": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "BAP Flexible Entity Bundle",
+            "homepage": "https://github.com/laboro/FlexibleEntityBundle",
+            "keywords": [
+                "BAP"
+            ],
+            "support": {
+                "source": "https://github.com/laboro/FlexibleEntityBundle/tree/master",
+                "issues": "https://github.com/laboro/FlexibleEntityBundle/issues"
+            }
+        },
+        {
+            "name": "oro/ToolsBundle",
+            "version": "dev-master",
+            "target-dir": "Oro/Bundle/ToolsBundle",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:laboro/ToolsBundle.git",
+                "reference": "75966e578b046c6d7c77455fdc3d559ae20115e9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laboro/ToolsBundle/zipball/75966e578b046c6d7c77455fdc3d559ae20115e9",
+                "reference": "75966e578b046c6d7c77455fdc3d559ae20115e9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "symfony/symfony": "2.1.6"
+            },
+            "time": "2013-01-14 10:27:12",
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Oro\\Bundle\\ToolsBundle": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "BAP Tools Bundle",
+            "homepage": "https://github.com/laboro/ToolsBundle",
+            "keywords": [
+                "BAP"
+            ],
+            "support": {
+                "source": "https://github.com/laboro/ToolsBundle/tree/master",
+                "issues": "https://github.com/laboro/ToolsBundle/issues"
+            }
+        },
+        {
+            "name": "oro/UIBundle",
+            "version": "dev-master",
+            "target-dir": "Oro/Bundle/UIBundle",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:laboro/UIBundle.git",
+                "reference": "99c086026b0834f4fe18fb0de5ab400fa1afa806"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laboro/UIBundle/zipball/99c086026b0834f4fe18fb0de5ab400fa1afa806",
+                "reference": "99c086026b0834f4fe18fb0de5ab400fa1afa806",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "symfony/symfony": "2.1.6"
+            },
+            "time": "2013-01-14 15:05:10",
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Oro\\Bundle\\UIBundle": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "BAP User Interface Bundle",
+            "homepage": "https://github.com/laboro/UIBundle",
+            "keywords": [
+                "BAP",
+                "UI",
+                "User Interface"
+            ],
+            "support": {
+                "source": "https://github.com/laboro/UIBundle/tree/master",
+                "issues": "https://github.com/laboro/UIBundle/issues"
+            }
         },
         {
             "name": "sensio/distribution-bundle",
@@ -1351,6 +1366,7 @@
                     "lib/swift_required.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "LGPL"
             ],
@@ -1440,12 +1456,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/MonologBundle",
-                "reference": "v2.1.7"
+                "reference": "v2.2.0-BETA1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/MonologBundle/archive/v2.1.7.zip",
-                "reference": "v2.1.7",
+                "url": "https://github.com/symfony/MonologBundle/archive/v2.2.0-BETA1.zip",
+                "reference": "v2.2.0-BETA1",
                 "shasum": ""
             },
             "require": {
@@ -1711,6 +1727,7 @@
                     "Twig_": "lib/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3"
             ],
@@ -1739,8 +1756,9 @@
     "stability-flags": {
         "twig/extensions": 20,
         "kriswallsmith/assetic": 20,
-        "laboro/oroflexibleentitybundle": 20,
-        "laboro/bap": 20,
+        "oro/flexibleentitybundle": 20,
+        "oro/uibundle": 20,
+        "oro/toolsbundle": 20,
         "doctrine/mongodb-odm-bundle": 10,
         "doctrine/doctrine-fixtures-bundle": 20,
         "apy/datagrid-bundle": 20
