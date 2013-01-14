@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="akeneo_flexibleproduct_product_attribute")
  * @ORM\Entity
+ *
  */
 class ProductAttribute extends AbstractEntityFlexibleAttribute
 {
