@@ -1,6 +1,10 @@
 <?php
 namespace Pim\Bundle\FlexibleProductBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
+use Doctrine\ORM\EntityNotFoundException;
+
 use Pim\Bundle\FlexibleProductBundle\Form\Type\ProductAttributeType;
 
 use Pim\Bundle\FlexibleProductBundle\Entity\ProductAttribute;
@@ -44,6 +48,7 @@ class ProductAttributeController extends Controller
     /**
      * Lists all attributes
      *
+     * @Method("GET")
      * @Route("/index")
      * @Template()
      *
@@ -59,6 +64,7 @@ class ProductAttributeController extends Controller
     /**
      * Displays a form to create a new attribute
      *
+     * @Method("GET")
      * @Route("/new")
      * @Template()
      *
@@ -81,7 +87,7 @@ class ProductAttributeController extends Controller
      * @Route("/create")
      * @Method("POST")
      *
-     * @return multitype
+     * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
@@ -92,13 +98,17 @@ class ProductAttributeController extends Controller
 
         // validation
         if ($form->isValid()) {
-            $manager = $this->getProductManager()->getStorageManager();
-
             try {
+                // persists object
+                $manager = $this->getProductManager()->getStorageManager();
                 $manager->persist($attribute);
                 $manager->flush();
 
                 $this->get('session')->setFlash('success', 'attribute %code% has been created');
+
+                return $this->redirect(
+                    $this->generateUrl('pim_flexibleproduct_productattribute_edit', array('id' => $attribute->getId()))
+                );
 
             } catch (\Exception $e) {
                 $this->get('session')->setFlash('error', $e->getMessage());
@@ -112,6 +122,106 @@ class ProductAttributeController extends Controller
                 'entity' => $attribute,
                 'form'   => $form->createView()
             )
+        );
+    }
+
+    /**
+     * Displays a form to edit an existing product attribute
+     *
+     * @param integer $id
+     *
+     * @Method("GET")
+     * @Route("/{id}/edit")
+     * @Template()
+     *
+     * @return multitype
+     */
+    public function editAction($id)
+    {
+        $attribute = $this->getProductManager()->getFlexibleAttributeRepository()->find($id);
+
+//         if (!$attribute) {
+//             throw new EntityNotFoundException('Unable to find product attribute');
+//         }
+
+        $form = $this->createAttributeForm($attribute);
+
+        // render form
+        return $this->render(
+            'PimFlexibleProductBundle:ProductAttribute:edit.html.twig',
+            array(
+                'entity' => $attribute,
+                'form'   => $form->createView()
+            )
+        );
+    }
+
+    /**
+     * Update an existing attribute
+     * @param Request $request the request
+     * @param integer $id      product attribute id
+     *
+     * @Method("POST")
+     * @Route("/{id}/update")
+     *
+     * @return multitype
+     */
+    public function updateAction(Request $request, $id)
+    {
+        $attribute = $this->getProductManager()->getFlexibleAttributeRepository()->find($id);
+
+        $form = $this->createAttributeForm($attribute);
+        $form->bind($request);
+
+        if ($form->isValid()) {
+
+            try {
+                // persists object
+                $manager = $this->getProductManager()->getStorageManager();
+                $manager->persist($attribute);
+                $manager->flush();
+
+                $this->get('session')->setFlash('success', 'Attribute %code% has been updated');
+
+                return $this->redirect($this->generateUrl('pim_flexibleproduct_productattribute_edit', array('id' => $id)));
+            } catch (\Exception $e) {
+                $this->get('session')->setFlash('error', $e->getMessage());
+            }
+        }
+
+        // render form with error
+        return $this->render(
+            'PimFlexibleProductBundle:ProductAttribute:edit.html.twig',
+            array(
+                'entity' => $attribute,
+                'form' => $form->createView()
+            )
+        );
+    }
+
+    /**
+     * Deletes a product attribute entity
+     * @param integer $id
+     *
+     * @Method("GET")
+     * @Route("/{id}/delete")
+     * @Template()
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteAction($id)
+    {
+        $attribute = $this->getProductManager()->getFlexibleAttributeRepository()->find($id);
+
+        // delete object from database
+        $manager = $this->getProductManager()->getStorageManager();
+        $manager->remove($attribute);
+        $manager->flush();
+
+        $this->get('session')->setFlash('success', 'Attribute $attribute->getCode() has been deleted');
+
+        return $this->redirect(
+            $this->generateUrl('pim_flexibleproduct_productattribute_index')
         );
     }
 

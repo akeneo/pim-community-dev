@@ -3,6 +3,12 @@
 {% block content %}
 
     <div class="popup-box">
+        <h2>{{ "Create attribute" | trans }}</h2>
+        
+        {% for key, flashMessage in app.session.flashes %}
+            <div class="alert alert-{{ key }}">{{ flashMessage }}</div>
+        {% endfor %}
+        
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -14,6 +20,7 @@
                     <th>Unique</th>
                     <th>Translatable</th>
                     <th>Created</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,6 +34,10 @@
                     <td>{{ productAttribute.attribute.unique }}</td>
                     <td>{{ productAttribute.attribute.translatable }}</td>
                     <td>{{ productAttribute.attribute.created|date('Y-m-d h:i:s') }}</td>
+                    <td>
+                        <a href="{{ path('pim_flexibleproduct_productattribute_edit', { 'id': productAttribute.id }) }}">Edit</a>
+                        <a href="{{ path('pim_flexibleproduct_productattribute_delete', { 'id': productAttribute.id }) }}">Delete</a>
+                    </td>
                 </tr>
              {% endfor %}
             </tbody>
