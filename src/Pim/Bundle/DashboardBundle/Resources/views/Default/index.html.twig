@@ -6,25 +6,7 @@
 
 {% block content %}
 
-    <div class="blocks-dashboard">
-
-
-        <div class="block-dashboard ui-corner-all">
-            <h2>{{ "pim.dashboard.title.import" | trans }}</h2>
-        </div>
-
-        <div class="block-dashboard ui-corner-all">
-            <h2>{{ "pim.dashboard.title.enrich" | trans }}</h2>
-        </div>
-
-        <div class="block-dashboard ui-corner-all">
-            <h2>{{ "pim.dashboard.title.export" | trans }}</h2>
-        </div>
-
-        <div class="block-dashboard ui-corner-all">
-            <h2>{{ "pim.dashboard.title.configure" | trans }}</h2>
-        </div>
-
-    </div>
+    <br/>
+    <a class="btn btn-large btn-primary disabled" href="{{ path('pim_dashboard_default_index') }}">Dashboard</a>
 
 {% endblock %}
