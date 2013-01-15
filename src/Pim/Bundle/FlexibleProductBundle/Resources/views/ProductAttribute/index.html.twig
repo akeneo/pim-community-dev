@@ -1,0 +1,37 @@
+{% extends 'PimUIBundle::layout.html.twig' %}
+
+{% block content %}
+
+    <div class="popup-box">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Required</th>
+                    <th>Unique</th>
+                    <th>Translatable</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for productAttribute in productAttributes %}
+                <tr>
+                    <td>{{ productAttribute.id }}</td>
+                    <td>{{ productAttribute.attribute.code }}</td>
+                    <td>{{ productAttribute.name }}</td>
+                    <td>{{ productAttribute.description }}</td>
+                    <td>{{ productAttribute.attribute.required }}</td>
+                    <td>{{ productAttribute.attribute.unique }}</td>
+                    <td>{{ productAttribute.attribute.translatable }}</td>
+                    <td>{{ productAttribute.attribute.created|date('Y-m-d h:i:s') }}</td>
+                </tr>
+             {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <hr />
+
+{% endblock %}
