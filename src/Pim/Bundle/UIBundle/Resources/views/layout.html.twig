@@ -11,6 +11,7 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script type="text/javascript" src="{{ asset('bundles/oroui/lib/bootstrap.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('bundles/oroui/js/layout.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/bapui/js/jquery-ui-1.9.1.custom.min.js') }}"></script>
     {% endblock %}
 </head>
 
@@ -21,21 +22,24 @@
 
         {% block header %}
         <header>
+
+            <div class="switch-language" style="float:right;">
+                {% set route_params = app.request.attributes.get('_route_params') %}
+                {% if route_params == "" %}
+                    {% set route_params = [] %}
+                {% endif %}
+                <a href="{{ path(app.request.attributes.get('_route'), route_params | merge({"_locale": "en"})) }}">EN</a>
+                &nbsp;-&nbsp;
+                <a href="{{ path(app.request.attributes.get('_route'), route_params | merge({"_locale": "fr"})) }}">FR</a>
+            </div>
+
             <h1>Akeneo</h1>
-            
-            {% set route_params = app.request.attributes.get('_route_params') %}
-            {% if route_params == "" %}
-                {% set route_params = [] %}
-            {% endif %}
-            <a href="{{ path(app.request.attributes.get('_route'), route_params | merge({"_locale": "en"})) }}">EN</a>
-            &nbsp;-&nbsp;
-            <a href="{{ path(app.request.attributes.get('_route'), route_params | merge({"_locale": "fr"})) }}">FR</a>
 
             <div class="navbar">
                 <div class="navbar-inner">
-                    <a class="brand" href="#">Title</a>
+                    <a class="brand" href="{{ path('pim_dashboard_default_index') }}">Dashboard</a>
                     <ul class="nav">
-                        <li class="active"><a href="#">Home</a></li>
+                        <li class="active"><a href="#">Active link</a></li>
                         <li><a href="#">Link</a></li>
                         <li><a href="#">Link</a></li>
                     </ul>
