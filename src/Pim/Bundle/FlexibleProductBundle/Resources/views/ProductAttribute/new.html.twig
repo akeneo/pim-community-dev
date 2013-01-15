@@ -1,0 +1,33 @@
+{% extends 'PimUIBundle::layout.html.twig' %}
+
+{% block content %}
+
+    <div class="popup-box">
+        <h2>{{ "Create attribute" | trans }}</h2>
+        
+        {% for key, flashMessage in app.session.flashes %}
+            <div class="alert alert-{{ key }}">{{ flashMessage }}</div>
+        {% endfor %}
+        
+        <form action="{{ path('pim_flexibleproduct_productattribute_create') }}" method="post" {{ form_enctype(form) }}>
+            
+            {% if form.get('errors') is not empty %}
+                <div class="alert alert-error">{{ form_errors(form) }}</div>
+            {% endif %}
+            
+            <div class="form-panel ui-corner-all">
+                {{ form_widget(form) }}
+            </div>
+            
+            <input id="form-submit" type="submit" value="{{ "Save" | trans }}" class="ui-helper-hidden" role="button" aria-disabled="false" />
+            
+            {{ form_widget(form._token) }}
+            
+        </form>
+        
+    </div>
+    <hr />
+    <a class="btn btn-small btn-primary disabled" href="{{ path('pim_flexibleproduct_productattribute_index') }}">List attributes</a>
+    <a class="btn btn-small btn-primary disabled" href="{{ path('pim_flexibleproduct_productattribute_new') }}">Create attribute</a>
+
+{% endblock %}
