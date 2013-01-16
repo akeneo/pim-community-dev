@@ -6,7 +6,11 @@
         <h2>{{ "Edit attribute" | trans }}</h2>
         
         {% for key, flashMessage in app.session.flashes %}
-            <div class="alert alert-{{ key }}">{{ flashMessage }}</div>
+            <div class="alert alert-{{ key }}">
+                <button data-dismiss="alert" class="close" type="button">x</button>
+                <strong>{{ key }}</strong>&nbsp;
+                {{ flashMessage }}
+            </div>
         {% endfor %}
         
         <form action="{{ path('pim_flexibleproduct_productattribute_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(form) }}>

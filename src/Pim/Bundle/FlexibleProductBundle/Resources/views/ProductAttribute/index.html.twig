@@ -6,7 +6,11 @@
         <h2>{{ "List attributes" | trans }}</h2>
         
         {% for key, flashMessage in app.session.flashes %}
-            <div class="alert alert-{{ key }}">{{ flashMessage }}</div>
+            <div class="alert alert-{{ key }}">
+                <button data-dismiss="alert" class="close" type="button">x</button>
+                <strong>{{ key }}</strong>&nbsp;
+                {{ flashMessage }}
+            </div>
         {% endfor %}
         
         <table class="table table-striped">
