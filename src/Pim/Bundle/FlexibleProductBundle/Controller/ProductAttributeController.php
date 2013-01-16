@@ -140,10 +140,6 @@ class ProductAttributeController extends Controller
     {
         $attribute = $this->getProductManager()->getFlexibleAttributeRepository()->find($id);
 
-//         if (!$attribute) {
-//             throw new EntityNotFoundException('Unable to find product attribute');
-//         }
-
         $form = $this->createAttributeForm($attribute);
 
         // render form
@@ -189,7 +185,7 @@ class ProductAttributeController extends Controller
             }
         }
 
-        // render form with error
+        // render form
         return $this->render(
             'PimFlexibleProductBundle:ProductAttribute:edit.html.twig',
             array(
