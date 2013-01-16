@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\TestBundle\Tests;
 
+use Symfony\Component\DependencyInjection\Container;
+
 require_once dirname(__DIR__).'/../../../../app/AppKernel.php';
 
 /**
