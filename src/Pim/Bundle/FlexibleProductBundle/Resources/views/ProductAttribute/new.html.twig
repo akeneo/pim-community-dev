@@ -27,7 +27,12 @@
         
     </div>
     <hr />
-    <a class="btn btn-small btn-primary disabled" href="{{ path('pim_flexibleproduct_productattribute_index') }}">List attributes</a>
-    <a class="btn btn-small btn-primary disabled" href="{{ path('pim_flexibleproduct_productattribute_new') }}">Create attribute</a>
+    
+    <a class="btn btn-small btn-primary disabled" href="{{ path('pim_flexibleproduct_productattribute_index') }}">
+        {{ "List attributes" | trans }}
+    </a>
+    <a class="btn btn-small btn-primary disabled" href="{{ path('pim_flexibleproduct_productattribute_new') }}">
+        {{ "Create attribute" | trans }}
+    </a>
 
 {% endblock %}
