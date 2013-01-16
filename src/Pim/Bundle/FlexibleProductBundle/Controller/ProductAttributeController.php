@@ -34,7 +34,7 @@ class ProductAttributeController extends Controller
      */
     protected function getProductManager()
     {
-        return $this->get('pim_flexibleproduct.product_manager');
+        return $this->get('pim.flexible_product.product_manager');
     }
 
     /**
