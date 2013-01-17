@@ -20,7 +20,6 @@ class DefaultControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertCount(1, $crawler->filter('div.blocks-dashboard'));
     }
 
 }
