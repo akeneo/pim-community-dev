@@ -38,14 +38,6 @@ class ProductAttributeController extends Controller
     }
 
     /**
-     * @return Doctrine\ODM\MongoDB\DocumentManager
-     */
-    protected function getStorageManager()
-    {
-        return $this->getProductManager()->getStorageManager();
-    }
-
-    /**
      * Lists all attributes
      *
      * @Method("GET")
