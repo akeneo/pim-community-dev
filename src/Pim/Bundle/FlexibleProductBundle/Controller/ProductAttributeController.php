@@ -92,8 +92,8 @@ class ProductAttributeController extends Controller
     public function createAction(Request $request)
     {
         $attribute = $this->getProductManager()->createFlexibleAttribute();
-        $form = $this->createAttributeForm($attribute);
 
+        $form = $this->createAttributeForm($attribute);
         $form->bind($request);
 
         // validation
