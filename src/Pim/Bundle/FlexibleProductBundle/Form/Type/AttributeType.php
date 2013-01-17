@@ -19,11 +19,6 @@ use Symfony\Component\Form\AbstractType;
  */
 class AttributeType extends AbstractType
 {
-    /**
-     * Attribute class full name
-     * @var string
-     */
-    protected $attributeClass;
 
     const FRONTEND_TYPE_TEXTFIELD = 'Text Field';
     const FRONTEND_TYPE_TEXTAREA  = 'Text Area';
@@ -32,15 +27,6 @@ class AttributeType extends AbstractType
     const FRONTEND_TYPE_LIST      = 'List';
     const FRONTEND_TYPE_IMAGE     = 'Image';
     const FRONTEND_TYPE_FILE      = 'File';
-
-    /**
-     * Construct with full name of concrete impl of attribute and option classes
-     * @param string $attributeClass
-     */
-    public function __construct($attributeClass)
-    {
-        $this->attributeClass = $attributeClass;
-    }
 
     /**
      * {@inheritdoc}
@@ -68,6 +54,9 @@ class AttributeType extends AbstractType
         $this->addFieldTranslatable($builder);
 
         $this->addFieldScopable($builder);
+
+        // only on edit
+        $this->addFieldOptions($builder);
     }
 
     /**
@@ -171,13 +160,29 @@ class AttributeType extends AbstractType
     }
 
     /**
+     * Add option fields to form builder
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldOptions(FormBuilderInterface $builder)
+    {
+        $builder->add(
+            'options', 'collection', array(
+                'type'         => new AttributeOptionType(),
+                'allow_add'    => true,
+                'allow_delete' => true,
+                'by_reference' => false
+            )
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
             array(
-                'data_class' => $this->attributeClass
+                'data_class' => 'Oro\Bundle\FlexibleEntityBundle\Entity\Attribute'
             )
         );
     }

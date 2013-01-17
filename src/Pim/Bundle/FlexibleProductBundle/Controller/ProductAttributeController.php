@@ -222,11 +222,13 @@ class ProductAttributeController extends Controller
     protected function createAttributeForm($attribute)
     {
         // get classes fullname
-        $attClassFullname = $this->getProductManager()->getAttributeName();
         $prodAttClassFullname = $this->getProductManager()->getFlexibleAttributeName();
 
         // create form
-        $form = $this->createForm(new ProductAttributeType($prodAttClassFullname, $attClassFullname), $attribute);
+        $form = $this->createForm(
+            new ProductAttributeType($prodAttClassFullname),
+            $attribute
+        );
 
         return $form;
     }

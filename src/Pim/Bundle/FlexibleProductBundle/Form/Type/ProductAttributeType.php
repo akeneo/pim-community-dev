@@ -17,11 +17,6 @@ use Symfony\Component\Form\AbstractType;
  */
 class ProductAttributeType extends AbstractType
 {
-    /**
-     * Attribute class full name
-     * @var string
-     */
-    protected $attributeClass;
 
     /**
      * Product attribute class full name
@@ -32,12 +27,10 @@ class ProductAttributeType extends AbstractType
     /**
      * Construct with full name of concrete impl of attribute and option classes
      * @param string $productAttClass Product attribute full classname
-     * @param string $attClass        Attribute full classname
      */
-    public function __construct($productAttClass, $attClass)
+    public function __construct($productAttClass)
     {
         $this->productAttClass = $productAttClass;
-        $this->attributeClass = $attClass;
     }
 
     /**
@@ -53,7 +46,7 @@ class ProductAttributeType extends AbstractType
 
         $builder->add('smart', 'checkbox', array('required' => false));
 
-        $builder->add('attribute', new AttributeType($this->attributeClass));
+        $builder->add('attribute', new AttributeType());
     }
 
     /**
