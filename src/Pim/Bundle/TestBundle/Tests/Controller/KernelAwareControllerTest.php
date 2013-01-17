@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\TestBundle\Tests\Controller;
 
+use Doctrine\ODM\MongoDB\Mapping\Annotations\String;
+
 use Symfony\Component\DomCrawler\Crawler;
 
 use Doctrine\ORM\EntityManager;
@@ -36,6 +38,12 @@ abstract class KernelAwareControllerTest extends WebTestCase
     protected $client;
 
     /**
+     * Tested url pattern
+     * @staticvar string
+     */
+    static protected $testedUrl = '/%%lang%%/%%bundle%%/%%controller%%/%%action%%';
+
+    /**
      * Redirect content
      * @staticvar string
      */
@@ -52,6 +60,33 @@ abstract class KernelAwareControllerTest extends WebTestCase
     </body>
 </html>';
 
+
+    /**
+     * Generate url for testing
+     * @param string $locale     the locale tested
+     * @param string $action     the action tested
+     * @param string $controller the controller tested
+     * @param string $bundleName the bundle tested
+     *
+     * @return string
+     */
+    protected static function prepareUrl($locale, $action, $controller = null, $bundleName = null)
+    {
+        $controller = ($controller === null) ? static::$controller : $controller;
+        $bundleName = ($bundleName === null) ? static::$bundleName : $bundleName;
+
+        $url = self::$testedUrl;
+
+        $url = str_replace('%%lang%%', $locale, $url);
+        $url = str_replace('%%bundle%%', $bundleName, $url);
+        $url = str_replace('%%controller%%', $controller, $url);
+        $url = str_replace('%%action%%', $action, $url);
+
+        echo $url ."\n";
+
+        return $url;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -66,11 +101,47 @@ abstract class KernelAwareControllerTest extends WebTestCase
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function tearDown()
+    {
+        // get connection
+        $connection = $this->getEntityManager()->getConnection();
+
+        // get tables list
+        $tables = $this->getEntityManager()->getConnection()->getSchemaManager()->listTables();
+
+        // truncate tables
+        try {
+            // start transaction
+            $this->getEntityManager()->getConnection()->beginTransaction();
+
+            // disable foreign keys check
+            $connection->query('SET FOREIGN_KEY_CHECKS = 0');
+
+            foreach ($tables as $table) {
+                $query = $connection->getDatabasePlatform()->getTruncateTableSQL($table->getName());
+                $connection->executeUpdate($query);
+            }
+
+            // enable foreign key check
+            $connection->query('SET FOREIGN_KEY_CHECKS = 0');
+
+            $this->getEntityManager()->getConnection()->commit();
+        } catch (\Exception $e) {
+            // rollback if an exception is caught
+            $connection->rollBack();
+        }
+
+        parent::tearDown();
+    }
+
+    /**
      * @return EntityManager
      */
     protected function getEntityManager()
     {
-        return $this->getcontainer()->get('doctrine.orm.entity_manager');
+        return $this->getContainer()->get('doctrine.orm.entity_manager');
     }
 
     /**
