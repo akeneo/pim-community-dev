@@ -2,55 +2,53 @@
 
 {% block content %}
 
-    <div class="popup-box">
-        <h2>{{ "List attributes" | trans }}</h2>
-        
-        {% for key, flashMessage in app.session.flashes %}
-            <div class="alert alert-{{ key }}">
-                <button data-dismiss="alert" class="close" type="button">x</button>
-                <strong>{{ key }}</strong>&nbsp;
-                {{ flashMessage }}
-            </div>
-        {% endfor %}
-        
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>{{ "Id" | trans }}</th>
-                    <th>{{ "Code" | trans }}</th>
-                    <th>{{ "Name" | trans }}</th>
-                    <th>{{ "Description" | trans }}</th>
-                    <th>{{ "Required" | trans }}</th>
-                    <th>{{ "Unique" | trans }}</th>
-                    <th>{{ "Translatable" | trans }}</th>
-                    <th>{{ "Created" | trans }}</th>
-                    <th>{{ "Action" | trans }}</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for productAttribute in productAttributes %}
-                <tr>
-                    <td>{{ productAttribute.id }}</td>
-                    <td>{{ productAttribute.attribute.code }}</td>
-                    <td>{{ productAttribute.name }}</td>
-                    <td>{{ productAttribute.description }}</td>
-                    <td>{{ productAttribute.attribute.required }}</td>
-                    <td>{{ productAttribute.attribute.unique }}</td>
-                    <td>{{ productAttribute.attribute.translatable }}</td>
-                    <td>{{ productAttribute.attribute.created|date('Y-m-d h:i:s') }}</td>
-                    <td>
-                        <a href="{{ path('pim_flexibleproduct_productattribute_edit', { 'id': productAttribute.id }) }}">
-                            {{ "Edit" | trans }}
-                        </a>
-                        <a href="{{ path('pim_flexibleproduct_productattribute_delete', { 'id': productAttribute.id }) }}">
-                            {{ "Delete" | trans }}
-                        </a>
-                    </td>
-                </tr>
-             {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    <h2>{{ "List attributes" | trans }}</h2>
+    
+    {% for key, flashMessage in app.session.flashes %}
+        <div class="alert alert-{{ key }}">
+            <button data-dismiss="alert" class="close" type="button">x</button>
+            <strong>{{ key }}</strong>&nbsp;
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{{ "Id" | trans }}</th>
+                <th>{{ "Code" | trans }}</th>
+                <th>{{ "Name" | trans }}</th>
+                <th>{{ "Description" | trans }}</th>
+                <th>{{ "Required" | trans }}</th>
+                <th>{{ "Unique" | trans }}</th>
+                <th>{{ "Translatable" | trans }}</th>
+                <th>{{ "Created" | trans }}</th>
+                <th>{{ "Action" | trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for productAttribute in productAttributes %}
+            <tr>
+                <td>{{ productAttribute.id }}</td>
+                <td>{{ productAttribute.attribute.code }}</td>
+                <td>{{ productAttribute.name }}</td>
+                <td>{{ productAttribute.description }}</td>
+                <td>{{ productAttribute.attribute.required }}</td>
+                <td>{{ productAttribute.attribute.unique }}</td>
+                <td>{{ productAttribute.attribute.translatable }}</td>
+                <td>{{ productAttribute.attribute.created|date('Y-m-d h:i:s') }}</td>
+                <td>
+                    <a href="{{ path('pim_flexibleproduct_productattribute_edit', { 'id': productAttribute.id }) }}">
+                        {{ "Edit" | trans }}
+                    </a>
+                    <a href="{{ path('pim_flexibleproduct_productattribute_delete', { 'id': productAttribute.id }) }}">
+                        {{ "Delete" | trans }}
+                    </a>
+                </td>
+            </tr>
+         {% endfor %}
+        </tbody>
+    </table>
     <hr />
     <a class="btn btn-small btn-primary disabled" href="{{ path('pim_flexibleproduct_productattribute_index') }}">
         {{ "List attributes" | trans }}
