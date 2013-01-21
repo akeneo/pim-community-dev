@@ -26,8 +26,50 @@
         {% endif %}
         
         <div class="form-panel ui-corner-all">
-            {{ form_widget(form) }}
+            <h2>General</h2>
+            
+            {{ form_row(form.id) }}
+            {{ form_row(form.attribute.code) }}
+            
+            {{ form_row(form.name) }}
+            {{ form_row(form.description) }}
+            {{ form_row(form.smart) }}
+            
+            {{ form_row(form.attribute.backend_type) }}
+            {{ form_row(form.attribute.backend_storage) }}
+            {{ form_row(form.attribute.required) }}
+            {{ form_row(form.attribute.unique) }}
+            {{ form_row(form.attribute.default_value) }}
+            {{ form_row(form.attribute.searchable) }}
+            {{ form_row(form.attribute.translatable) }}
+            {{ form_row(form.attribute.scopable) }}
+            
+            <h2>Options</h2>
+            <div>
+                <ul id="sortable-options" class="options" data-prototype="{{ form_widget(form.attribute.options.vars.prototype)|e }}" >
+                    {% for option in form.attribute.options %}
+                        <li class="att-option">
+                            {{ form_row(option.id) }}
+                            {{ form_row(option.sort_order) }}
+                            {{ form_row(option.translatable) }}
+                            
+                            <ul id="option-values" class="option-values">
+                                {% for value in option.optionValues %}
+                                <li class="att-option-value">
+                                    {{ form_row(value.id) }}
+                                    {{ form_row(value.locale_code) }}
+                                    {{ form_row(value.value) }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            
         </div>
+        
+        {{ form_widget(form._token) }}
         
         <input id="form-submit" type="submit" value="{{ "Save" | trans }}" class="ui-helper-hidden" role="button" aria-disabled="false" />
         
@@ -35,4 +77,120 @@
         
     <hr />
 
+    <script type="text/javascript">
+    // Get the div that holds the collection of options
+    var collectionHolder = $('ul.options');
+    //var collectionValueHolder = $('ul.option-values');
+
+    // setup an "add an option" link
+    var $addOptionLink = $('<a href="#" class="add_option_link">Add an option</a>');
+    var $newOptionLinkLi = $('<li class="not-sortable"></li>').append($addOptionLink);
+    
+    //var $addOptionValueLink = $('<a href="#" class="add_option_value_link">Add an option value</a>');
+    //var $newOptionValueLinkLi = $('<li class="not-sortable"></li>').append($addOptionValueLink);
+
+    jQuery(document).ready(function() {
+        console.info('jquery is ready');
+        // add a delete link to all of the existing option form li elements
+        collectionHolder.find('li.att-option').each(function() {
+            addOptionFormDeleteLink($(this));
+        });
+
+        // add the "add a option" anchor and li to the options ul
+        collectionHolder.append($newOptionLinkLi);
+
+        $addOptionLink.on('click', function(e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
+
+            // add a new tag form (see next code block)
+            addOptionForm(collectionHolder, $newOptionLinkLi);
+        });
+        
+    });
+
+    function addOptionForm(collectionHolder, $newOptionLinkLi) {
+        console.info('add option form function');
+        // Get the data-prototype we explained earlier
+        var prototype = collectionHolder.attr('data-prototype');
+
+        // Replace '__name__' in the prototype's HTML to
+        // instead be a number based on the current collection's length.
+        
+        // replace [options][__name__]
+        var optionsLength = collectionHolder.children().length;
+        prototype = prototype.replace(/\[options\]\[__name__\]/g, "[options]["+optionsLength+"]");
+        prototype = prototype.replace(/_options___name__/g, "_options_"+ optionsLength);
+        
+        
+        var newForm = prototype;
+        //console.info('-----------------------------------------------------------');
+        //console.info(newForm);
+
+        // Display the form in the page in an li, before the "Add an option" link li
+        var $newFormLi = $('<li class="att-option"></li>').append(newForm);
+        $newOptionLinkLi.before($newFormLi);
+
+        // define option order for new one
+        resetOptionsOrder();
+
+        // add a delete link to the new form
+        addOptionFormDeleteLink($newFormLi);
+        
+        
+        
+        /***************************************/
+        // Add option value form
+        //console.info('add option value form');
+        //console.info(collectionHolder);
+        //var optionValuesHolder = $("pim_flexibleproduct_productattributetype_attribute_options_"+optionsLength+"_optionValues");
+        
+        //console.info(optionValuesHolder);
+        //var prototype = optionValuesHolder.attr('data-prototype');
+        
+        //console.info(prototype);
+        
+        
+        /***************************************/
+        
+        
+        console.info('end of add option form function');
+    }
+
+    function addOptionFormDeleteLink($optFormLi) {
+        console.info('add option form delete link function');
+        
+        var $moveFormA = $('<span class="action-drag-inline"></span>');
+        $optFormLi.append($moveFormA);
+
+        var $removeFormA = $('<a class="action-delete-inline" href="#">Delete option</a>');
+        $optFormLi.append($removeFormA);
+        $removeFormA.on('click', function(e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
+
+            // remove the li for the tag form
+            $optFormLi.remove();
+        });
+        
+        console.info('end of add option form delete link function');
+    }
+
+    // make options sortable
+    $("#sortable-options").sortable({
+        cancel: ":input, button, a, .not-sortable",
+        update: function () { resetOptionsOrder(); }
+    });
+    $( "#sortable" ).disableSelection();
+
+    // add sort order each time we add or move an option
+    function resetOptionsOrder() {
+        var indOpt = 1;
+        $("#sortable-options input.sort-order").each(function(index) {
+            var input = $(this);
+            input.val(index);
+        });
+    }
+</script>
 {% endblock %}
+
