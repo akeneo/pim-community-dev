@@ -1,12 +1,17 @@
 {% extends 'PimUIBundle::layout.html.twig' %}
 
-{% block title %}{{ parent() }} {{ "pim.dashboard.title.home" | trans }}{% endblock %}
+{% block title %}{{ parent() }} {{ "Dashboard" | trans }}{% endblock %}
 
 {% block content_menu '' %}
 
 {% block content %}
 
     <br/>
-    <a class="btn btn-large btn-primary disabled" href="{{ path('pim_dashboard_default_index') }}">Dashboard</a>
+    <a class="btn btn-large btn-primary disabled" href="{{ path('pim_dashboard_default_index') }}">
+        {{ 'Dashboard' | trans }}
+    </a>
+    <a class="btn btn-large btn-primary disabled" href="{{ path('pim_flexibleproduct_productattribute_index') }}">
+        {{ 'Manage attributes' | trans }}
+    </a>
 
 {% endblock %}
