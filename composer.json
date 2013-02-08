@@ -25,31 +25,24 @@
         "sensio/distribution-bundle": "2.1.*",
         "sensio/framework-extra-bundle": "2.1.*",
         "sensio/generator-bundle": "2.1.*",
-        "jms/security-extra-bundle": "1.2.*",
-        "jms/di-extra-bundle": "1.1.*",
+        "jms/security-extra-bundle": "1.4.*@dev",
+        "jms/di-extra-bundle": "1.3.*@dev",
         "kriswallsmith/assetic": "1.1.*@dev",
-
-        "oro/FlexibleEntityBundle": "dev-master",
-        "oro/UIBundle": "dev-master",
-
-        "doctrine/mongodb-odm-bundle" : "v3.0.0-BETA1",
-        "doctrine/doctrine-fixtures-bundle": "dev-master",
-        "gedmo/doctrine-extensions": "*",
-        "twig/twig": ">=1.9.1,<=1.11",
-        "apy/datagrid-bundle": "dev-master"
+        "doctrine/data-fixtures": "@dev",
+        "doctrine/doctrine-fixtures-bundle": "@dev",
+        "knplabs/knp-paginator-bundle": "dev-master",
+        "friendsofsymfony/rest-bundle": "dev-master",
+        "jms/serializer": "dev-master",
+        "jms/serializer-bundle": "dev-master",
+        "nelmio/api-doc-bundle": "dev-master",
+        "burti/zend-mime": "dev-master",
+        "burti/zend-soap": "dev-master",
+        "burti/vfsstream": "dev-master",
+        "burti/ass-xmlsecurity": "dev-master",
+        "burti/besimple-soap-common": "dev-master",
+        "burti/besimple-soap-bundle": "dev-master",
+        "burti/besimple-soap-server": "dev-master"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:laboro/FlexibleEntityBundle.git",
-            "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:laboro/UIBundle.git",
-            "branch": "master"
-        }
-    ],
     "scripts": {
         "post-install-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",

@@ -1,15 +1,21 @@
 _welcome:
     pattern:  /{_locale}
-    defaults: { _controller: PimDashboardBundle:Default:index, _locale: %locale% }
+    defaults: { _controller: PimUIBundle:Default:index, _locale: %locale% }
 
-pim_dashboard:
-    resource: "@PimDashboardBundle/Controller/"
-    type:     annotation
-    prefix:   /{_locale}/dashboard/
-    defaults: { _locale: %locale% }
+pim_default:
+    pattern:  /{_locale}
+    defaults:
+        template:    PimUIBundle:Default:index.html.twig
+        _locale:     %locale%
+        _controller: FrameworkBundle:Template:template
+    requirements:
+        _locale:  en|fr|de
 
-pim_flexible_product:
-    resource: "@PimFlexibleProductBundle/Controller/"
+oro_user:
+    resource: "@OroUserBundle/Resources/config/routing.yml"
+    prefix: /user
+
+pim_product:
+    resource: "@PimProductBundle/Controller/"
     type:     annotation
-    prefix:   /{_locale}/flexibleproduct/
-    defaults: { _locale: %locale% }
+    prefix:   /product
