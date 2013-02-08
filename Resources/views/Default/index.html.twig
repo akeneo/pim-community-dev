@@ -1,0 +1,8 @@
+{% extends bap.layout is defined ? bap.layout : 'PimUIBundle::layout.bootstrap.html.twig' %}
+
+{% block content %}
+    <div class="span2">
+        <h2>User</h2>
+        <a class="btn" href="{{ path('oro_user_index') }}">Run demo</a>
+    </div>
+{% endblock %}

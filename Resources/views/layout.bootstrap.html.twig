@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}PIM Dev{% endblock %}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript"> localStorage.clear();</script>
+        <link rel="stylesheet/less" href="{{ asset('bundles/oroui/css/less/main.less') }}" media="all" />
+        {% stylesheets
+            'bundles/pimui/css/jquery-ui-1.10.0.min.css'
+            'bundles/oroui/css/all.css'
+
+            output='css/acme.all.css'
+            filter='cssrewrite'
+        %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
+        {% endstylesheets %}
+
+        {% block stylesheets %}{% endblock %}
+
+        {% javascripts
+            '//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'
+            '@OroUIBundle/Resources/public/lib/less-1.3.1.min.js'
+            '@OroUIBundle/Resources/public/lib/bootstrap.min.js'
+            '@OroUIBundle/Resources/public/js/layout.js'
+            '@PimUIBundle/Resources/public/js/jquery-ui-1.10.0.min.js'
+            '@PimUIBundle/Resources/public/js/main.js'
+
+            output='js/acme.all.js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        <header>
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <a class="brand" href="{{ path('_welcome') }}">PIM Dev</a>
+                    <ul class="nav">
+                        <li class="dropdown">
+                            <a href="{{ path('oro_user_index') }}" class="dropdown-toggle" data-toggle="dropdown">User <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path('oro_user_index') }}">Users</a></li>
+                                <li><a href="{{ path('oro_user_role_index') }}">Roles</a></li>
+                                <li><a href="{{ path('oro_user_group_index') }}">Groups</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    {% set route_params = app.request.attributes.get('_route_params') %}
+                    {% if route_params == "" %}
+                        {% set route_params = [] %}
+                    {% endif %}
+
+                    <ul class="nav nav-pills pull-right">
+                        {% for locale in ['fr', 'en', 'de'] %}
+                        <li{% if locale == app.request.get('_locale') %} class="active"{% endif %}>
+                            <a href="{{ path(
+                                        app.request.attributes.get('_route'),
+                                        route_params | merge({ _locale: locale })
+                                    ) }}" data-role="button">{{ locale }}</a>
+                        </li>
+                        {% endfor %}
+                        <li class="divider-vertical"></li>
+                        {% if app.user %}
+                        <li><p class="navbar-text">Logged in as <strong>{{ app.user.username }}</strong></p></li>
+                        <li class="divider-vertical"></li>
+                        <li><a href="{{ path('oro_user_security_logout') }}">Logout</a></li>
+                        {% else %}
+                        <li><a href="{{ path('oro_user_security_login') }}">Login</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="row">
+                {% set sidebar = block('sidebar') %}
+                {% if sidebar %}
+                <div class="span3">
+                    <div class="well sidebar-nav">
+                        {{ sidebar|raw }}
+                    </div>
+                </div>
+                <div class="span9">
+                {% else %}
+                <div>
+                {% endif %}
+                    {% for type, messages in app.session.flashbag.all %}
+                    <div class="alert alert-{{ type }}">
+                        <button data-dismiss="alert" class="close" type="button">×</button>
+                        {% for message in messages %}
+                        <div>{{ message|trans|raw }}</div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+
+            <hr />
+
+            <footer>
+                <p style="text-align: left;">&copy; Oro</p>
+            </footer>
+        </div>
+
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
