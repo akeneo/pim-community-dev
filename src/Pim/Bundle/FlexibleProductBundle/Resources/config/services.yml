@@ -1,8 +1,0 @@
-parameters:
-    pim_flexibleproduct_product_manager_class: Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleEntityManager
-    pim_flexibleproduct_product_entity_class:  Pim\Bundle\FlexibleProductBundle\Entity\Product
-
-services:
-    pim_flexibleproduct.product_manager:
-        class:     "%pim_flexibleproduct_product_manager_class%"
-        arguments: [@service_container, %pim_flexibleproduct_product_entity_class%]

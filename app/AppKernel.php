@@ -20,23 +20,25 @@ class AppKernel extends Kernel
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
 
-            // MongoDB storage
-            new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
+            // BAP third party dependencies
+            //new JMS\JobQueueBundle\JMSJobQueueBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle($this),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new FOS\RestBundle\FOSRestBundle(),
+            new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
+            new BeSimple\SoapBundle\BeSimpleSoapBundle(),
 
-            // To set up basic data
-            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
-
-            // BAP modules
+            // BAP bundles
             new Oro\Bundle\FlexibleEntityBundle\OroFlexibleEntityBundle(),
             new Oro\Bundle\UIBundle\OroUIBundle(),
+            new Oro\Bundle\SoapBundle\OroSoapBundle(),
+            //new Oro\Bundle\SearchBundle\OroSearchBundle(),
+            new Oro\Bundle\UserBundle\OroUserBundle(),
+            new Oro\Bundle\MeasureBundle\OroMeasureBundle(),
 
-            // PIM modules
+            // PIM bundles
             new Pim\Bundle\UIBundle\PimUIBundle(),
-            new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
-            new Pim\Bundle\FlexibleProductBundle\PimFlexibleProductBundle(),
-
-            // Community bundles
-            new APY\DataGridBundle\APYDataGridBundle(),
+            new Pim\Bundle\ProductBundle\PimProductBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
