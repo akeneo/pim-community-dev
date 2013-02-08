@@ -1,0 +1,21 @@
+[submodule "src/Oro/Bundle/DataFlowBundle"]
+	path = src/Oro/Bundle/DataFlowBundle
+	url = git@github.com:laboro/DataFlowBundle.git
+[submodule "src/Oro/Bundle/FlexibleEntityBundle"]
+	path = src/Oro/Bundle/FlexibleEntityBundle
+	url = git@github.com:laboro/FlexibleEntityBundle.git
+[submodule "src/Oro/Bundle/UIBundle"]
+	path = src/Oro/Bundle/UIBundle
+	url = git@github.com:laboro/UIBundle.git
+[submodule "src/Oro/Bundle/MeasureBundle"]
+	path = src/Oro/Bundle/MeasureBundle
+	url = git@github.com:laboro/MeasureBundle.git
+[submodule "src/Oro/Bundle/UserBundle"]
+	path = src/Oro/Bundle/UserBundle
+	url = git@github.com:laboro/UserBundle.git
+[submodule "src/Oro/Bundle/SoapBundle"]
+	path = src/Oro/Bundle/SoapBundle
+	url = git@github.com:laboro/SoapBundle.git
+[submodule "src/Oro/Bundle/SearchBundle"]
+	path = src/Oro/Bundle/SearchBundle
+	url = git@github.com:laboro/SearchBundle.git

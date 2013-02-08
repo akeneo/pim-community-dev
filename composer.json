@@ -29,7 +29,19 @@
         "jms/di-extra-bundle": "1.3.*@dev",
         "kriswallsmith/assetic": "1.1.*@dev",
         "doctrine/data-fixtures": "@dev",
-        "doctrine/doctrine-fixtures-bundle": "@dev"
+        "doctrine/doctrine-fixtures-bundle": "@dev",
+        "knplabs/knp-paginator-bundle": "dev-master",
+        "friendsofsymfony/rest-bundle": "dev-master",
+        "jms/serializer": "dev-master",
+        "jms/serializer-bundle": "dev-master",
+        "nelmio/api-doc-bundle": "dev-master",
+        "burti/zend-mime": "dev-master",
+        "burti/zend-soap": "dev-master",
+        "burti/vfsstream": "dev-master",
+        "burti/ass-xmlsecurity": "dev-master",
+        "burti/besimple-soap-common": "dev-master",
+        "burti/besimple-soap-bundle": "dev-master",
+        "burti/besimple-soap-server": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
