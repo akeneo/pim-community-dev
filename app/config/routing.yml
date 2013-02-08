@@ -14,3 +14,8 @@ pim_default:
 oro_user:
     resource: "@OroUserBundle/Resources/config/routing.yml"
     prefix: /user
+
+pim_product:
+    resource: "@PimProductBundle/Controller/"
+    type:     annotation
+    prefix:   /product
