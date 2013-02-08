@@ -1,4 +1,4 @@
-pim-bundles
-===========
+UI bundle
+=========
 
-PIM Bundles
+PIM UI Bundle
