@@ -15,18 +15,22 @@ framework:
     templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
     default_locale:  %locale%
     trust_proxy_headers: false # Should Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
+    trusted_proxies: ~
     session:         ~
 
 # Twig Configuration
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    globals:
+        bap:
+            layout:           PimUIBundle::layout.bootstrap.html.twig  # default layout across all Oro bundles
 
 # Assetic Configuration
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ ]
+    bundles:        ["PimUIBundle", "OroUserBundle"]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -58,3 +62,52 @@ swiftmailer:
     password:  %mailer_password%
     spool:     { type: memory }
 
+# following conf comes from BAP
+
+knp_paginator:
+    page_range:               5         # default page range used in pagination control
+    default_options:
+        page_name:            page      # page query parameter name
+        sort_field_name:      sort      # sort field query parameter name
+        sort_direction_name:  direction # sort direction query parameter name
+        distinct:             true      # ensure distinct results, useful when ORM queries are using GROUP BY statements
+    template:
+        pagination:           PimUIBundle::pager.bootstrap.html.twig
+
+fos_rest:
+    view:
+        failed_validation: HTTP_BAD_REQUEST
+        default_engine: php
+        formats:
+            json: true
+            xml: true
+    format_listener:
+        prefer_extension: true
+    body_listener:
+        decoders:
+            json: fos_rest.decoder.json
+            xml: fos_rest.decoder.xml
+    routing_loader:
+        default_format: json
+    param_fetcher_listener: force
+
+#oro_search:
+#    engine:                   orm
+#    realtime_update:          true
+
+be_simple_soap:
+    cache:
+        type:                 disk
+        lifetime:             86400
+        limit:                5
+    services:
+        soap:
+            namespace:        http://symfony.loc/Api/1.0/
+            binding:          rpc-literal
+            resource:         "%kernel.root_dir%/../app/config/soap.yml"
+            resource_type:    yml
+        demo:
+            namespace:        http://symfony.loc/Api/1.0/
+            binding:          rpc-literal
+            resource:         "%kernel.root_dir%/../src/Pim/Bundle/UIBundle/Resources/config/soap.yml"
+            resource_type:    yml

@@ -19,3 +19,6 @@
 [submodule "src/Oro/Bundle/SearchBundle"]
 	path = src/Oro/Bundle/SearchBundle
 	url = git@github.com:laboro/SearchBundle.git
+[submodule "src/Pim/Bundle/UIBundle"]
+	path = src/Pim/Bundle/UIBundle
+	url = git@github.com:akeneo/UIBundle.git

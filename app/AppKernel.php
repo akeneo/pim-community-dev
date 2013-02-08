@@ -20,6 +20,14 @@ class AppKernel extends Kernel
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
 
+            // BAP third party dependencies
+            //new JMS\JobQueueBundle\JMSJobQueueBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle($this),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new FOS\RestBundle\FOSRestBundle(),
+            new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
+            new BeSimple\SoapBundle\BeSimpleSoapBundle(),
+
             // BAP bundles
             new Oro\Bundle\FlexibleEntityBundle\OroFlexibleEntityBundle(),
             new Oro\Bundle\UIBundle\OroUIBundle(),
@@ -28,6 +36,8 @@ class AppKernel extends Kernel
             new Oro\Bundle\UserBundle\OroUserBundle(),
             new Oro\Bundle\MeasureBundle\OroMeasureBundle(),
 
+            // PIM bundles
+            new Pim\Bundle\UIBundle\PimUIBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
