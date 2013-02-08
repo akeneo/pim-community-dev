@@ -1,2 +1,2 @@
-poc-product-flat
-================
+Product Bundle
+==============
