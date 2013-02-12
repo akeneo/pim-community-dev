@@ -93,4 +93,12 @@ class ProductAttributeType extends AttributeType
             )
         );
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'pim_product_attribute_form';
+    }
 }

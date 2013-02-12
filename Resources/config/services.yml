@@ -1,8 +1,27 @@
 parameters:
-    product_manager_class:      Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
-    product_entity_class:       Acme\Bundle\DemoFlexibleEntityBundle\Entity\Product
+    product_manager_class:         Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
+    product_entity_class:          Pim\Bundle\ProductBundle\Entity\Product
+    
+    product_attribute_form_class:  Pim\Bundle\ProductBundle\Form\Type\ProductAttributeType
+    
+    product_attribute_class:       Pim\Bundle\ProductBundle\Entity\ProductAttribute
+    product_attribute_value_class: Pim\Bundle\ProductBundle\Entity\ProductValue
 
 services:
+    # Managers
     product_manager:
         class:     "%product_manager_class%"
         arguments: [@service_container, %product_entity_class%]
+        
+    
+    # Form
+    pim_product.form.attribute:
+        class: %product_attribute_form_class%
+        arguments: [%product_attribute_class%, %product_attribute_value_class%]
+        tags:
+            - { name: form.type, alias: pim_product_attribute_form }
+    
+    
+    # Handlers
+    
+    

@@ -1,5 +1,5 @@
 entities_config:
-    Acme\Bundle\DemoFlexibleEntityBundle\Entity\Product:
+    Pim\Bundle\ProductBundle\Entity\Product:
         flexible_manager:         product_manager
         flexible_class:           Pim\Bundle\ProductBundle\Entity\Product
         flexible_value_class:     Pim\Bundle\ProductBundle\Entity\ProductValue
