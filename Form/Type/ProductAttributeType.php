@@ -23,12 +23,16 @@ class ProductAttributeType extends AttributeType
     protected function addFieldScopable(FormBuilderInterface $builder)
     {
         // use custom scope notion pofor product
-        $builder->add('scopable', 'choice', array(
-            'choices' => array(
-                0 => 'Global',
-                1 =>'Channel'
+        $builder->add(
+            'scopable',
+            'choice',
+            array(
+                'choices' => array(
+                    0 => 'Global',
+                    1 =>'Channel'
+                )
             )
-        ));
+        );
     }
 
     /**
@@ -65,13 +69,17 @@ class ProductAttributeType extends AttributeType
      */
     protected function addFieldVariantBehavior(FormBuilderInterface $builder)
     {
-        $builder->add('variant', 'choice', array(
-            'choices' => array(
-                0 => 'Always override',
-                1 => 'A selection of variants',
-                2 => 'Ask'
+        $builder->add(
+            'variant',
+            'choice',
+            array(
+                'choices' => array(
+                    0 => 'Always override',
+                    1 => 'A selection of variants',
+                    2 => 'Ask'
+                )
             )
-        ));
+        );
     }
 
     /**
@@ -85,5 +93,4 @@ class ProductAttributeType extends AttributeType
             )
         );
     }
-
 }

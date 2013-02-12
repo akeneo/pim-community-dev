@@ -97,7 +97,9 @@ class ProductController extends Controller
      * @param int    $offset     offset
      *
      * @Route("/query/{dataLocale}/{dataScope}/{attributes}/{criteria}/{orderBy}/{limit}/{offset}",
-     *         defaults={"dataLocale" = null, "dataScope" = null, "attributes" = null, "criteria" = null, "orderBy" = null, "limit" = null, "offset" = null})
+     *         defaults={"dataLocale" = null, "dataScope" = null, "attributes" = null, "criteria" = null,
+     *             "orderBy" = null, "limit" = null, "offset" = null}
+     * )
      *
      * @Template("AcmeDemoFlexibleEntityBundle:Product:index.html.twig")
      *
@@ -124,7 +126,11 @@ class ProductController extends Controller
 
         // get entities
         $products = $this->getProductManager()->getFlexibleRepository()->findByWithAttributes(
-            $attributes, $criteria, $orderBy, $limit, $offset
+            $attributes,
+            $criteria,
+            $orderBy,
+            $limit,
+            $offset
         );
 
         return array('products' => $products, 'attributes' => $this->getAttributeCodesToDisplay());
@@ -175,7 +181,11 @@ class ProductController extends Controller
      * @param string  $dataLocale data locale
      * @param string  $dataScope  data scope
      *
-     * @Route("/edit/{id}/{dataLocale}/{dataScope}", requirements={"id"="\d+"}, defaults={"id"=0, "dataLocale" = null, "dataScope" = null})
+     * @Route(
+     *     "/edit/{id}/{dataLocale}/{dataScope}",
+     *     requirements={"id"="\d+"},
+     *     defaults={"id"=0, "dataLocale" = null, "dataScope" = null}
+     * )
      * @Template
      *
      * @return array
@@ -227,5 +237,4 @@ class ProductController extends Controller
 
         return $this->redirect($this->generateUrl('acme_demoflexibleentity_product_index'));
     }
-
 }
