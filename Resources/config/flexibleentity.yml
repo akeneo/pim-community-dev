@@ -1,7 +1,7 @@
 entities_config:
     Acme\Bundle\DemoFlexibleEntityBundle\Entity\Product:
         flexible_manager:         product_manager
-        flexible_class:           Acme\Bundle\DemoFlexibleEntityBundle\Entity\Product
-        flexible_value_class:     Acme\Bundle\DemoFlexibleEntityBundle\Entity\ProductValue
-        attribute_extended_class: Acme\Bundle\DemoFlexibleEntityBundle\Entity\ProductAttribute
+        flexible_class:           Pim\Bundle\ProductBundle\Entity\Product
+        flexible_value_class:     Pim\Bundle\ProductBundle\Entity\ProductValue
+        attribute_extended_class: Pim\Bundle\ProductBundle\Entity\ProductAttribute
         flexible_init_mode:       required_attributes
