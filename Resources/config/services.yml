@@ -1,0 +1,8 @@
+parameters:
+    product_manager_class:      Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
+    product_entity_class:       Acme\Bundle\DemoFlexibleEntityBundle\Entity\Product
+
+services:
+    product_manager:
+        class:     "%product_manager_class%"
+        arguments: [@service_container, %product_entity_class%]
