@@ -122,7 +122,7 @@ class ProductAttributeController extends Controller
      *
      * @return array
      */
-    public function removeAction(Attribute $entity)
+    public function removeAction(ProductAttribute $entity)
     {
         $em = $this->getProductManager()->getStorageManager();
         $em->remove($entity);
