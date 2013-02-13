@@ -48,12 +48,12 @@
             {% for option in form.options %}
                 <li class="att-option">
                     {{ form_row(option.id) }}
-                    {{ form_row(option.sort_order) }}
                     {% for value in option.optionValues %}
                         {{ form_row(value.id) }}
                         {{ form_row(value.value) }}
                         {{ form_row(value.locale) }}
                     {% endfor %}
+                    {{ form_row(option.sort_order) }}
                 </li>
             {% endfor %}
             </ul>
