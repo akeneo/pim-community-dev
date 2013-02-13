@@ -57,10 +57,10 @@ class ProductAttributeType extends AttributeType
         /** End redefine parent method **/
 
         // Add a subscriber
-//         $factory = $builder->getFormFactory();
-//         $subscriber = new ProductAttributeSubscriber($factory);
-//         $builder->addEventSubscriber($subscriber);
-        $this->addFieldOptions($builder);
+        $factory = $builder->getFormFactory();
+        $subscriber = new ProductAttributeSubscriber($factory);
+        $builder->addEventSubscriber($subscriber);
+//         $this->addFieldOptions($builder);
     }
 
     /**
