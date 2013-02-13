@@ -74,7 +74,7 @@ class ProductAttributeController extends Controller
     /**
      * Edit attribute form
      *
-     * @param Attribute $entity
+     * @param ProductAttribute $entity
      *
      * @Route("/edit/{id}", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Template
@@ -83,32 +83,20 @@ class ProductAttributeController extends Controller
      */
     public function editAction(ProductAttribute $entity)
     {
-        $request = $this->getRequest();
 
-        // create form
-        $form = $this->createForm('pim_product_attribute_form', $entity);
+//         $form = $this->get('pim_product.form.attribute');
+//         $form->setData($entity);
 
-        if ($request->getMethod() == 'POST') {
-            $form->bind($request);
+        if ($this->get('pim_product.form.handler.attribute')->process($entity)) {
+            $this->get('session')->getFlashBag()->add('success', 'Attribute successfully saved');
 
-            if ($form->isValid()) {
-                $em = $this->getProductManager()->getStorageManager();
-                $em->persist($entity);
-                $em->flush();
-
-                $this->get('session')->getFlashBag()->add('success', 'Attribute successfully saved');
-
-                return $this->redirect(
-                    $this->generateUrl(
-                        'pim_product_productattribute_edit',
-                        array('id' => $entity->getId())
-                    )
-                );
-            }
+            return $this->redirect(
+                $this->generateUrl('pim_product_productattribute_edit', array('id' => $entity->getId()))
+            );
         }
 
         return array(
-            'form' => $form->createView(),
+            'form' => $this->get('pim_product.form.attribute')->createView()
         );
     }
 

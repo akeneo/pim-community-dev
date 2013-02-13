@@ -39,6 +39,26 @@
         
         {{ form_row(form.variant) }}
         
+        {% if form.options is defined %}
+            <legend>Options</legend>
+            
+            <ul id="sortable_options" class="options" data-prototype="{% filter escape %}
+                {% include 'PimProductBundle:ProductAttribute:_prototype-option.html.twig' with {'form': form.options.get('prototype')} %}
+            {% endfilter %}">
+            {% for option in form.options %}
+                <li class="att-option">
+                    {{ form_row(option.id) }}
+                    {{ form_row(option.sort_order) }}
+                    {% for value in option.optionValues %}
+                        {{ form_row(value.id) }}
+                        {{ form_row(value.value) }}
+                        {{ form_row(value.locale) }}
+                    {% endfor %}
+                </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        
         {{ form_row(form._token) }}
 
         <br />
@@ -64,4 +84,82 @@
         </div>
     </fieldset>
 </form>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }} 
+    {% if form.options is defined %}
+<script type="text/javascript">
+    // Get the div that holds the collection of options
+    var collectionHolder = $('ul.options');
+
+    // setup an "add an option" link
+    var $addOptionLink = $('<a href="#" class="add_option_link">Add an option</a>');
+    var $newOptionLinkLi = $('<li class="not-sortable"></li>').append($addOptionLink);
+
+    jQuery(document).ready(function() {
+        console.info('jquery is ready');
+        // add a delete link to all of the existing option form li elements
+        collectionHolder.find('li.att-option').each(function() {
+            addOptionFormDeleteLink($(this));
+        });
+
+        // add the "add a option" anchor and li to the options ul
+        collectionHolder.append($newOptionLinkLi);
+
+        $addOptionLink.on('click', function(e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
+
+            // add a new tag form (see next code block)
+            addOptionForm(collectionHolder, $newOptionLinkLi);
+        });
+        console.log('end of jquery is ready');
+    });
+
+    function addOptionForm(collectionHolder, $newOptionLinkLi) {
+        console.info('add option form function');
+        // Get the data-prototype we explained earlier
+        var prototype = collectionHolder.attr('data-prototype');
+
+        // Replace '__name__' in the prototype's HTML to
+        // instead be a number based on the current collection's length.
+        // the second '__name__' must be replace by 0 because we worked without locales
+        // and so only one value each time
+        var optionsLength = collectionHolder.children().length;
+        prototype = prototype.replace(/\[options\]\[__name__\]/g, "[options]["+optionsLength+"]");
+        prototype = prototype.replace(/_options___name__/g, "_options_"+ optionsLength);
+        prototype = prototype.replace(/__name__/g, 0);
+        var newForm = prototype;
+
+        // Display the form in the page in an li, before the "Add an option" link li
+        var $newFormLi = $('<li class="att-option"></li>').append(newForm);
+        $newOptionLinkLi.before($newFormLi);
+
+        // add a delete link to the new form
+        addOptionFormDeleteLink($newFormLi);
+        
+        console.info('end of add option form function');
+    }
+
+    function addOptionFormDeleteLink($optFormLi) {
+        console.info('add option form delete link function');
+        
+        var $moveFormA = $('<span class="action-drag-inline"></span>');
+        $optFormLi.append($moveFormA);
+
+        var $removeFormA = $('<a class="action-delete-inline" href="#">Delete option</a>');
+        $optFormLi.append($removeFormA);
+        $removeFormA.on('click', function(e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
+
+            // remove the li for the tag form
+            $optFormLi.remove();
+        });
+        
+        console.info('end of add option form delete link function');
+    }
+</script>
+{% endif %}
 {% endblock %}

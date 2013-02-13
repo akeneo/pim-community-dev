@@ -1,6 +1,12 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Form\Type;
 
+use Pim\Bundle\ProductBundle\Form\Subscriber\ProductAttributeSubscriber;
+
+use Symfony\Component\Form\FormEvent;
+
+use Symfony\Component\Form\FormEvents;
+
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -16,6 +22,46 @@ use Symfony\Component\Form\AbstractType;
  */
 class ProductAttributeType extends AttributeType
 {
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+//         parent::buildForm($builder, $options);
+
+        $this->addFieldName($builder);
+
+        $this->addFieldDescription($builder);
+
+        $this->addFieldVariantBehavior($builder);
+
+        /** Redefine parent method **/
+        $this->addFieldId($builder);
+
+        $this->addFieldCode($builder);
+
+        $this->addFieldAttributeType($builder);
+
+        $this->addFieldRequired($builder);
+
+        $this->addFieldUnique($builder);
+
+        $this->addFieldTranslatable($builder);
+
+        $this->addFieldScopable($builder);
+
+        $this->addFieldSearchable($builder);
+
+        $this->addFieldDefaultValue($builder);
+        /** End redefine parent method **/
+
+        // Add a subscriber
+//         $factory = $builder->getFormFactory();
+//         $subscriber = new ProductAttributeSubscriber($factory);
+//         $builder->addEventSubscriber($subscriber);
+        $this->addFieldOptions($builder);
+    }
 
     /**
      * {@inheritdoc}
@@ -36,19 +82,9 @@ class ProductAttributeType extends AttributeType
     }
 
     /**
-     * {@inheritdoc}
+     * Add a field for name
+     * @param FormBuilderInterface $builder
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        parent::buildForm($builder, $options);
-
-        $this->addFieldName($builder);
-
-        $this->addFieldDescription($builder);
-
-        $this->addFieldVariantBehavior($builder);
-    }
-
     protected function addFieldName(FormBuilderInterface $builder)
     {
         $builder->add('name');
@@ -99,6 +135,6 @@ class ProductAttributeType extends AttributeType
      */
     public function getName()
     {
-        return 'pim_product_attribute_form';
+        return 'pim_product_attribute';
     }
 }
