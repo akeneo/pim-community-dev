@@ -98,7 +98,6 @@
     var $newOptionLinkLi = $('<li class="not-sortable"></li>').append($addOptionLink);
 
     jQuery(document).ready(function() {
-        console.info('jquery is ready');
         // add a delete link to all of the existing option form li elements
         collectionHolder.find('li.att-option').each(function() {
             addOptionFormDeleteLink($(this));
@@ -114,11 +113,9 @@
             // add a new tag form (see next code block)
             addOptionForm(collectionHolder, $newOptionLinkLi);
         });
-        console.log('end of jquery is ready');
     });
 
     function addOptionForm(collectionHolder, $newOptionLinkLi) {
-        console.info('add option form function');
         // Get the data-prototype we explained earlier
         var prototype = collectionHolder.attr('data-prototype');
 
@@ -138,13 +135,9 @@
 
         // add a delete link to the new form
         addOptionFormDeleteLink($newFormLi);
-        
-        console.info('end of add option form function');
     }
 
     function addOptionFormDeleteLink($optFormLi) {
-        console.info('add option form delete link function');
-        
         var $moveFormA = $('<span class="action-drag-inline"></span>');
         $optFormLi.append($moveFormA);
 
@@ -157,8 +150,6 @@
             // remove the li for the tag form
             $optFormLi.remove();
         });
-        
-        console.info('end of add option form delete link function');
     }
 </script>
 {% endif %}
