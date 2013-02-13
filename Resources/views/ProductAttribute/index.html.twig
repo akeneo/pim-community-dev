@@ -3,14 +3,14 @@
 {% block content %}
 
     <h1>Attributes overview
-        <a class="btn btn-primary pull-right" style="margin-left:10px;" href="{{ path('pim_product_productattribute_create') }}">New attribute</a>
+        <a class="btn btn-primary pull-right" style="margin-left:10px;" 
+            href="{{ path('pim_product_productattribute_create') }}">New attribute</a>
         <a class="btn btn-primary pull-right" href="{{ path('pim_product_product_index') }}">Manage products</a>
     </h1>
 
     <table class="table table-bordered table-striped table-condensed">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Code</th>
                 <th>Type</th>
                 <th>Required</th>
@@ -26,8 +26,11 @@
         <tbody>
         {% for attribute in attributes %}
             <tr>
-                <td>{{ attribute.id }}</td>
-                <td>{{ attribute.code }}</td>
+                <td>
+                    <a href="{{ path('pim_product_productattribute_edit', { id: attribute.id }) }}">
+                        {{ attribute.code }}
+                    </a>
+                </td>
                 <td>{{ attribute.attributeType }}</td>
                 <td>{{ attribute.required }}</td>
                 <td>{{ attribute.unique }}</td>
@@ -35,8 +38,16 @@
                 <td>{{ attribute.scopable }}</td>
                 <td>{{ attribute.created|date('Y-m-d h:i:s') }}</td>
                 <td>{{ attribute.updated|date('Y-m-d h:i:s') }}</td>
-                <td><a href="{{ path('pim_product_productattribute_edit', { id: attribute.id }) }}"><i class="icon-edit"></i></a></td>
-                <td><a href="{{ path('pim_product_productattribute_remove', { id: attribute.id }) }}"><i class="icon-remove"></i></a></td>
+                <td>
+                    <a href="{{ path('pim_product_productattribute_edit', { id: attribute.id }) }}">
+                        <i class="icon-edit"></i>
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('pim_product_productattribute_remove', { id: attribute.id }) }}">
+                        <i class="icon-remove"></i>
+                    </a>
+                </td>
             </tr>
         {% endfor %}
         </tbody>
