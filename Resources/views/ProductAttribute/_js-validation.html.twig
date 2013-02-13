@@ -1,0 +1,73 @@
+
+// Define constants
+var TYPE_DATE              = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\DateType';
+var TYPE_INTEGER           = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\IntegerType';
+var TYPE_MONEY             = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\MoneyType';
+var TYPE_NUMBER            = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\NumberType';
+var TYPE_OPT_MULTI_CB      = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\OptionMultiCheckboxType';
+var TYPE_OPT_MULTI_SELECT  = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\OptionMultiSelectType';
+var TYPE_OPT_SINGLE_RADIO  = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\OptionSimpleRadioType';
+var TYPE_OPT_SINGLE_SELECT = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\OptionSimpleSelectType';
+var TYPE_TEXTAREA          = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\TextAreaType';
+
+
+// TODO
+var TYPE_METRIC            = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\MetricType';
+
+var TYPE_FILE              = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\FileType';
+var TYPE_IMAGE             = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\ImageType';
+
+
+
+// PAS BESOIN
+var TYPE_TEXT              = "Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\TextType";
+var TYPE_MAIL              = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\MailType';
+var TYPE_URL               = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\UrlType';
+
+var formName = 'pim_product_attribute_form';
+$('#'+ formName +'_attributeType').on('change', updateFieldsFromAttributeType);
+
+function updateFieldsFromAttributeType() {
+    // enable all fields
+    enableField('translatable');
+    enableField('searchable');
+    enableField('unique');
+    enableField('smart');
+    
+    // disable field and check
+    switch ($('#pim_product_attribute_form_attributeType').val()) {
+        case TYPE_INTEGER:
+        case TYPE_NUMBER:
+        case TYPE_MONEY:
+        case TYPE_OPT_MULTI_CB:
+        case TYPE_OPT_MULTI_SELECT:
+        case TYPE_OPT_SINGLE_RADIO:
+        case TYPE_OPT_SINGLE_SELECT:
+            disableField('translatable');
+            disableField('unique');
+            break;
+        case TYPE_TEXTAREA:
+            disableField('unique');
+            break;
+        case TYPE_DATE:
+            disableField('translatable');
+            break;
+        case TYPE_IMAGE:
+        case TYPE_FILE:
+            disableField('searchable');
+            //disableField('smart');
+            break;
+        case TYPE_METRIC:
+            disableField('unique');
+            break;
+    }
+}
+
+function enableField(fieldName) {
+    $('#'+ formName +'_'+ fieldName).removeAttr('disabled');
+}
+
+function disableField(fieldName) {
+    $('#'+ formName +'_'+ fieldName).attr('checked', false);
+    $('#'+ formName +'_'+ fieldName).attr('disabled', true);
+}

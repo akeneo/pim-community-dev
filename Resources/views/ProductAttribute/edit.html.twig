@@ -88,9 +88,10 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {% if form.options is defined %}
 <script type="text/javascript">
-    {% include 'PimProductBundle:ProductAttribute:_js-option.html.twig' %}    
-</script>
+    {% if form.options is defined %}
+        {% include 'PimProductBundle:ProductAttribute:_js-option.html.twig' %}
     {% endif %}
+    {% include 'PimProductBundle:ProductAttribute:_js-validation.html.twig' %}
+</script>
 {% endblock %}
