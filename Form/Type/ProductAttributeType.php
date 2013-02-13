@@ -28,7 +28,7 @@ class ProductAttributeType extends AttributeType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-//         parent::buildForm($builder, $options);
+        //parent::buildForm($builder, $options);
 
         $this->addFieldName($builder);
 
