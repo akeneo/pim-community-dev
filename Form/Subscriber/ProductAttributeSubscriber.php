@@ -13,20 +13,48 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Form subscriber for ProductAttribute
+ * Allow to change field behavior like disable when editing
+ *
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ */
 class ProductAttributeSubscriber implements EventSubscriberInterface
 {
+
+    /**
+     * Form factory
+     * @var FormFactoryInterface
+     */
     protected $factory;
 
+    /**
+     * Constructor
+     * @param FormFactoryInterface $factory
+     */
     public function __construct(FormFactoryInterface $factory = null)
     {
         $this->factory = $factory;
     }
 
+    /**
+     * List of subscribed events
+     * @return multitype:string
+     */
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::PRE_SET_DATA => 'preSetData');
+        return array(
+            FormEvents::PRE_SET_DATA => 'preSetData'
+        );
     }
 
+    /**
+     * Method called before set data
+     * @param DataEvent $event
+     */
     public function preSetData(DataEvent $event)
     {
         $data = $event->getData();
@@ -35,10 +63,12 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
             return;
         }
 
+        // only when editing
         if ($data->getId()) {
             // get form
             $form = $event->getForm();
 
+            // Add attribute option type before editing
             if ($data->getBackendType() === AbstractAttributeType::BACKEND_TYPE_OPTION) {
                 $form->add(
                     $this->factory->createNamed(

@@ -36,10 +36,10 @@ class ProductAttributeHandler
     protected $manager;
 
     /**
-     *
-     * @param FormInterface $form
-     * @param Request $request
-     * @param ObjectManager $manager
+     * Constructor for handler
+     * @param FormInterface $form    Form called
+     * @param Request       $request Web request
+     * @param ObjectManager $manager Storage manager
      */
     public function __construct(FormInterface $form, Request $request, ObjectManager $manager)
     {
@@ -48,11 +48,17 @@ class ProductAttributeHandler
         $this->manager = $manager;
     }
 
+    /**
+     * Process method for handler
+     * @param ProductAttribute $entity
+     *
+     * @return boolean
+     */
     public function process(ProductAttribute $entity)
     {
         $this->form->setData($entity);
 
-        if (in_array($this->request->getMethod(), array('POST'))) {
+        if ($this->request->getMethod() === 'POST') {
             $this->form->bind($this->request);
 
             if ($this->form->isValid()) {
@@ -65,10 +71,13 @@ class ProductAttributeHandler
         return false;
     }
 
+    /**
+     * Call when form is valid
+     * @param ProductAttribute $entity
+     */
     protected function onSuccess(ProductAttribute $entity)
     {
         $this->manager->persist($entity);
         $this->manager->flush();
     }
-
 }

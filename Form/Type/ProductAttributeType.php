@@ -60,7 +60,6 @@ class ProductAttributeType extends AttributeType
         $factory = $builder->getFormFactory();
         $subscriber = new ProductAttributeSubscriber($factory);
         $builder->addEventSubscriber($subscriber);
-//         $this->addFieldOptions($builder);
     }
 
     /**

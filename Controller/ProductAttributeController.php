@@ -83,10 +83,6 @@ class ProductAttributeController extends Controller
      */
     public function editAction(ProductAttribute $entity)
     {
-
-//         $form = $this->get('pim_product.form.attribute');
-//         $form->setData($entity);
-
         if ($this->get('pim_product.form.handler.attribute')->process($entity)) {
             $this->get('session')->getFlashBag()->add('success', 'Attribute successfully saved');
 
