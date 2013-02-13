@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Form\Type;
 
+use Symfony\Component\Form\FormInterface;
+
 use Pim\Bundle\ProductBundle\Form\Subscriber\ProductAttributeSubscriber;
 
 use Symfony\Component\Form\FormEvent;
@@ -35,6 +37,8 @@ class ProductAttributeType extends AttributeType
         $this->addFieldDescription($builder);
 
         $this->addFieldVariantBehavior($builder);
+
+        $this->addFieldSmart($builder);
 
         /** Redefine parent method **/
         $this->addFieldId($builder);
@@ -99,7 +103,7 @@ class ProductAttributeType extends AttributeType
     }
 
     /**
-     * Add a field variant behavior
+     * Add a field for variant behavior
      * @param FormBuilderInterface $builder
      */
     protected function addFieldVariantBehavior(FormBuilderInterface $builder)
@@ -115,6 +119,15 @@ class ProductAttributeType extends AttributeType
                 )
             )
         );
+    }
+
+    /**
+     * Add a field for smart
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldSmart(FormBuilderInterface $builder)
+    {
+        $builder->add('smart', 'checkbox', array('required' => false));
     }
 
     /**

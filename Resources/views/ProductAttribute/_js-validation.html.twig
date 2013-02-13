@@ -9,21 +9,11 @@ var TYPE_OPT_MULTI_SELECT  = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\Attribut
 var TYPE_OPT_SINGLE_RADIO  = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\OptionSimpleRadioType';
 var TYPE_OPT_SINGLE_SELECT = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\OptionSimpleSelectType';
 var TYPE_TEXTAREA          = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\TextAreaType';
-
-
-// TODO
 var TYPE_METRIC            = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\MetricType';
-
 var TYPE_FILE              = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\FileType';
 var TYPE_IMAGE             = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\ImageType';
 
-
-
-// PAS BESOIN
-var TYPE_TEXT              = "Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\TextType";
-var TYPE_MAIL              = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\MailType';
-var TYPE_URL               = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\UrlType';
-
+// Get form name
 var formName = 'pim_product_attribute_form';
 $('#'+ formName +'_attributeType').on('change', updateFieldsFromAttributeType);
 
@@ -55,7 +45,7 @@ function updateFieldsFromAttributeType() {
         case TYPE_IMAGE:
         case TYPE_FILE:
             disableField('searchable');
-            //disableField('smart');
+            disableField('smart');
             break;
         case TYPE_METRIC:
             disableField('unique');
