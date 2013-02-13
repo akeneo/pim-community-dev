@@ -39,20 +39,21 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
             // get form
             $form = $event->getForm();
 
-//             if ($data->getBackendType() === AbstractAttributeType::BACKEND_TYPE_OPTION) {
-//                 $form->add(
-//                     $this->factory->createNamed(
-//                         'options',
-//                         'collection',
-//                         array(
-//                             'type'         => new AttributeOptionType(),
-//                             'allow_add'    => true,
-//                             'allow_delete' => true,
-//                             'by_reference' => false
-//                         )
-//                     )
-//                 );
-//             }
+            if ($data->getBackendType() === AbstractAttributeType::BACKEND_TYPE_OPTION) {
+                $form->add(
+                    $this->factory->createNamed(
+                        'options',
+                        'collection',
+                        null,
+                        array(
+                            'type'         => new AttributeOptionType(),
+                            'allow_add'    => true,
+                            'allow_delete' => true,
+                            'by_reference' => false
+                        )
+                    )
+                );
+            }
         }
     }
 }
