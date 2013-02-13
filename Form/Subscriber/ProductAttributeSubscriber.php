@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Form\Subscriber;
 
+use Symfony\Component\Form\Form;
+
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeOptionType;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
@@ -84,6 +86,32 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
                     )
                 );
             }
+
+            // Disabled fields editing
+            $this->disableField($form, 'code');
+            $this->disableField($form, 'attributeType');
         }
+    }
+
+    /**
+     * Disable a field from its name
+     * @param Form   $form Form
+     * @param string $name Field name
+     */
+    protected function disableField(Form $form, $name)
+    {
+        // get form field and field properties
+        $formField = $form->get($name);
+
+        $type = $formField->getConfig()->getType();
+        $options = $formField->getConfig()->getOptions();
+
+        // set disabled and read-only
+        $options['disabled'] = true;
+        $options['read_only'] = true;
+
+        // replace field in form
+        $formField = $this->factory->createNamed($name, $type, null, $options);
+        $form->add($formField);
     }
 }
