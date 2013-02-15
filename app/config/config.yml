@@ -112,11 +112,6 @@ be_simple_soap:
             resource:         "%kernel.root_dir%/../src/Pim/Bundle/UIBundle/Resources/config/soap.yml"
             resource_type:    yml
 
-stof_doctrine_extensions:
-    orm:
-        default:
-            tree: true
-
 services:
     cache:
         class: Doctrine\Common\Cache\PhpFileCache
