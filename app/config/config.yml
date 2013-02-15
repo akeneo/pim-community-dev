@@ -90,7 +90,6 @@ fos_rest:
             xml: fos_rest.decoder.xml
     routing_loader:
         default_format: json
-    param_fetcher_listener: force
 
 #oro_search:
 #    engine:                   orm
@@ -112,6 +111,11 @@ be_simple_soap:
             binding:          rpc-literal
             resource:         "%kernel.root_dir%/../src/Pim/Bundle/UIBundle/Resources/config/soap.yml"
             resource_type:    yml
+
+stof_doctrine_extensions:
+    orm:
+        default:
+            tree: true
 
 services:
     cache:
