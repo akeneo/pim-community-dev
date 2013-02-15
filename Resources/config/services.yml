@@ -12,7 +12,7 @@ services:
     # Managers
     product_manager:
         class:     "%product_manager_class%"
-        arguments: [@service_container, %product_entity_class%]
+        arguments: [%product_entity_class%, %oro_flexibleentity.flexible_config%, "@doctrine.orm.entity_manager", "@event_dispatcher"]
         
     
     # Form
