@@ -160,4 +160,76 @@ class ProductAttribute extends AbstractEntityAttributeExtended
 
         return $this;
     }
+
+    /**
+     * Get attribute type
+     *
+     * @return string
+     */
+    public function getAttributeType()
+    {
+        return $this->attribute->getAttributeType();
+    }
+
+    /**
+     * Set attribute type
+     *
+     * @param string $type
+     *
+     * @return ProductAttribute
+     */
+    public function setAttributeType($type)
+    {
+        $this->attribute->setAttributeType($type);
+
+        return $this;
+    }
+
+    /**
+     * Get created datetime
+     *
+     * @return datetime
+     */
+    public function getCreated()
+    {
+        return $this->attribute->getCreated();
+    }
+
+    /**
+     * Set created datetime
+     *
+     * @param datetime $created
+     *
+     * @return TimestampableInterface
+     */
+    public function setCreated($created)
+    {
+        $this->attribute->setCreated($created);
+
+        return $this;
+    }
+
+    /**
+     * Get updated datetime
+     *
+     * @return datetime
+     */
+    public function getUpdated()
+    {
+        return $this->attribute->getUpdated();
+    }
+
+    /**
+     * Set updated datetime
+     *
+     * @param datetime $updated
+     *
+     * @return TimestampableInterface
+     */
+    public function setUpdated($updated)
+    {
+        $this->attribute->setUpdated($updated);
+
+        return $this;
+    }
 }
