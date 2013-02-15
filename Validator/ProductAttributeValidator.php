@@ -57,12 +57,8 @@ class ProductAttributeValidator
      */
     public static function isValid(ProductAttribute $productAttribute, ExecutionContext $context)
     {
-        try {
-            self::isAttributeTypeMatrixValid($productAttribute, $context);
-            self::isUniqueConstraintValid($productAttribute, $context);
-        } catch (\Exception $e) {
-            $context->addViolation($e->getMessage());
-        }
+        self::isAttributeTypeMatrixValid($productAttribute, $context);
+        self::isUniqueConstraintValid($productAttribute, $context);
     }
 
     /**
@@ -72,7 +68,6 @@ class ProductAttributeValidator
      * @param ExecutionContext $context          Execution context
      *
      * @static
-     * @throws \Exception
      */
     protected static function isAttributeTypeMatrixValid(ProductAttribute $productAttribute, ExecutionContext $context)
     {
