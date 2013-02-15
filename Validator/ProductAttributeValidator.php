@@ -24,7 +24,7 @@ class ProductAttributeValidator
 
     /**
      * Classes for AttributeType
-     * @var unknown_type
+     * @staticvar string
      */
     const TYPE_DATE              = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\DateType';
     const TYPE_INTEGER           = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\IntegerType';
@@ -39,6 +39,15 @@ class ProductAttributeValidator
     const TYPE_FILE              = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\FileType';
     const TYPE_IMAGE             = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\ImageType';
 
+    const TYPE_TEXT              = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextType';
+
+
+    /**
+     * Violation messages for unique attribute
+     * @staticvar string
+     */
+    const VIOLATION_UNIQUE = 'Unique attribute results in used of Global scope and no translations';
+
     /**
      * Validate ProductAttribute entity
      * @param ProductAttribute $productAttribute ProductAttirbute entity
@@ -49,8 +58,8 @@ class ProductAttributeValidator
     public static function isValid(ProductAttribute $productAttribute, ExecutionContext $context)
     {
         try {
-            self::isAttributeTypeMatrixValid($productAttribute);
-            self::isUniqueConstraintValid($productAttribute);
+            self::isAttributeTypeMatrixValid($productAttribute, $context);
+            self::isUniqueConstraintValid($productAttribute, $context);
         } catch (\Exception $e) {
             $context->addViolation($e->getMessage());
         }
@@ -59,12 +68,13 @@ class ProductAttributeValidator
     /**
      * Validation rules for attribute type value
      *
-     * @param ProductAttribute $productAttribute
+     * @param ProductAttribute $productAttribute ProductAttirbute entity
+     * @param ExecutionContext $context          Execution context
      *
      * @static
      * @throws \Exception
      */
-    protected static function isAttributeTypeMatrixValid(ProductAttribute $productAttribute)
+    protected static function isAttributeTypeMatrixValid(ProductAttribute $productAttribute, ExecutionContext $context)
     {
         switch ($productAttribute->getAttributeType()) {
             case self::TYPE_INTEGER:
@@ -76,34 +86,36 @@ class ProductAttributeValidator
             case self::TYPE_OPT_SINGLE_SELECT:
                 // translatable and unique must be disabled
                 if ($productAttribute->getTranslatable() === true || $productAttribute->getUnique() === true) {
-                    throw new \Exception('For this attribute type value, translatable and unique values must be false');
+                    $context->addViolation(
+                        'For this attribute type value, translatable and unique values must be false'
+                    );
                 }
                 break;
             case self::TYPE_TEXTAREA:
                 // unique must be disabled
                 if ($productAttribute->getUnique() === true) {
-                    throw new \Exception('For this attribute type value, unique value must be false');
+                    $context->addViolation('For this attribute type value, unique value must be false');
                 }
                 break;
             case self::TYPE_DATE:
                 // translatable must be disabled
                 if ($productAttribute->getTranslatable() === true) {
-                    throw new \Exception('For this attribute type value, translatable value must be false');
+                    $context->addViolation('For this attribute type value, translatable value must be false');
                 }
                 break;
             case self::TYPE_IMAGE:
             case self::TYPE_FILE:
                 // searchable and smart must be disabled
                 if ($productAttribute->getSearchable() === true || $productAttribute->getSmart() === true) {
-                    throw new \Exception('For this attribute type value, searchable and smart values must be false');
+                    $context->addViolation('For this attribute type value, searchable and smart values must be false');
                 }
                 break;
             case self::TYPE_METRIC:
                 // unique must be disabled
                 if ($productAttribute->getUnique() === true
                     || $productAttribute->getTranslatable() === true
-                    || $productAttribute->getScopable() !== self::GLOBAL_SCOPE_VALUE) {
-                    throw new \Exception(
+                    || $productAttribute->getScopable() != false) {
+                    $context->addViolation(
                         'For this attribute type, unique and translatable values must be false. Scope must be global'
                     );
                 }
@@ -115,17 +127,17 @@ class ProductAttributeValidator
      * Validation rule for unique attribute
      * If a product attribute is unique, scope value must be Global and product attribute mustn't be translatable
      *
-     * @param ProductAttribute $productAttribute
+     * @param ProductAttribute $productAttribute ProductAttirbute entity
+     * @param ExecutionContext $context          Execution context
      *
      * @static
-     * @throws \Exception
      */
-    protected static function isUniqueConstraintValid(ProductAttribute $productAttribute)
+    protected static function isUniqueConstraintValid(ProductAttribute $productAttribute, ExecutionContext $context)
     {
         if ($productAttribute->getUnique() === true) {
-            if ($productAttribute->getScopable() !== self::GLOBAL_SCOPE_VALUE
+            if ($productAttribute->getScopable() != false
                 || $productAttribute->getTranslatable() === true) {
-                throw new \Exception('Unique attribute results in used of Global scope and no translations');
+                $context->addViolation(self::VIOLATION_UNIQUE);
             }
         }
     }
