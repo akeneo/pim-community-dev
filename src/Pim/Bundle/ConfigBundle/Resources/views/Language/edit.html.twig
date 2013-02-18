@@ -1,0 +1,11 @@
+{% extends bap.layout is defined ? bap.layout : 'ProductBundle::layout.bootstrap.html.twig' %}
+
+{% set title = form.vars.value.id ? 'Edit language' : 'Add language' %}
+
+{% block title %}{{ parent() }} - {{ title }}{% endblock %}
+
+{% block content %}
+
+    {{ form_widget(form) }}
+
+{% endblock %}

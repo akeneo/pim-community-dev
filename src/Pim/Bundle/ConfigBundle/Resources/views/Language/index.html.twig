@@ -2,6 +2,44 @@
 
 {% block content %}
 
-Hello !
+    <h1>Configuration overview
+        <a class="btn btn-primary pull-right" 
+            href="{{ path('pim_config_language_create') }}">New Language</a>
+    </h1>
+    
+    <table class="table table-bordered table-striped table-condensed">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Label</th>
+                <th>Activated</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th style="width: 50px">Edit</th>
+                <th style="width: 50px">Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for language in languages %}
+            <tr>
+                <td>{{ language.code }}</td>
+                <td>{{ language.label }}</td>
+                <td>{{ language.activated }}</td>
+                <td></td>
+                <td></td>
+                <td>
+                    <a href="{{ path('pim_config_language_remove', { id: attribute.id }) }}">
+                        <i class="icon-edit"></i>
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('pim_config_language_remove', { id: attribute.id }) }}">
+                        <i class="icon-remove"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}

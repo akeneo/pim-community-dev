@@ -1,0 +1,358 @@
+currencies:
+    EUR:
+        label: Euro
+        symbol: €
+    USD:
+        label: US Dollar
+        symbol: $
+    GBP:
+        label: British Pound
+        symbol: £
+    INR:
+        label: Indian Rupee
+    AUD:
+        label: Australian Dollar
+        symbol: $
+    CAD:
+        label: Canadian Dollar
+        symbol: $
+    AED:
+        label: Emirati Dirham
+    CHF:
+        label: Swiss Franc
+        symbol: CHF
+    JPY:
+        label: Japanese Yen
+        symbol: ¥
+    THB:
+        label: Thai Baht
+    MYR:
+        label: Malaysian Ringgit
+        Symbol: RM
+    NZD:
+        label: New Zealand Dollar
+        symbol: $
+    CNY:
+        label: Chinese Yuan Renminbi
+        symbol: ¥
+    SAR:
+        label: Saudi Arabian Riyal
+    PHP:
+        label: Philippine Peso
+    MXN:
+        label: Mexican Peso
+        symbol: $
+    ZAR:
+        label: South African Rand
+        symbol: R
+    TRY:
+        label: Turkish Lira
+    SEK:
+        label: Swedish Krona
+        symbol: kr
+    SGD:
+        label: Singapore Dollar
+        symbol: $
+    HUF:
+        label: Hungarian Forint
+        symbol: Ft
+    HKD:
+        label: Hong Kong Dollar
+        symbol: HK$
+    EGP:
+        label: Egyptian Pound
+        symbol: £
+    BRL:
+        label: Brazilian Real
+        symbol: R$
+    NOK:
+        label: Norwegian Krone
+        symbol: kr
+    IDR:
+        label: Indonesian Rupiah
+    PKR:
+        label: Pakistani Rupee
+    DKK:
+        label: Danish Krone
+    OMR:
+        label: Omani Rial
+    QAR:
+        label: Qatari Riyal
+    KWD:
+        label: Kuwaiti Dinar
+    COP:
+        label: Colombian Peso
+    KRW:
+        label: South Korean Won
+    ARS:
+        label: Argentine Peso
+    PLN:
+        label: Polish Zloty
+    CZK:
+        label: Czech Koruna
+    RUB:
+        label: Russian Ruble
+    CLP:
+        label: Chilean Peso
+    ILS:
+        label: Israeli Shekel
+    MAD:
+        label: Moroccan Dirham
+    LKR:
+        label: Sri Lankan Rupee
+    NGN:
+        label: Nigerian Naira
+    BDT:
+        label: Bangladeshi Taka
+    BHD:
+        label: Bahraini Dinar
+    IQD:
+        label: Iraqi Dinar
+    TWD:
+        label: Taiwan New Dollar
+    KES:
+        label: Kenyan Shilling
+    VND:
+        label: Vietnamese Dong
+    XOF:
+        label: CFA Franc
+    JOD:
+        label: Jordanian Dinar
+    TND:
+        label: Tunisian Dinar
+    BGN:
+        label: Bulgarian Lev
+    PEN:
+        label: Peruvian Nuevo Sol
+    GHS:
+        label: Ghanaian Cedi
+    RON:
+        label: Romanian New Leu
+    XAF:
+        label: Central African CFA Franc BEAC
+    ISK:
+        label: Icelandic Krona
+    HRK:
+        label: Croatian Kuna
+    FJD:
+        label: Fijian Dollar
+    DOP:
+        label: Dominican Peso
+    DZD:
+        label: Algerian Dinar
+    UAH:
+        label: Ukrainian Hryvna
+    XPF:
+        label: CFP Franc
+    MUR:
+        label: Mauritian Rupee
+    NPR:
+        label: Nepalese Rupee
+    JMD:
+        label: Jamaican Dollar
+    CRC:
+        label: Costa Rican Colon
+    AZN:
+        label: Azerbaijani New Manat
+    BAM:
+        label: Bosnian Convertible Marka
+    IRR:
+        label: Iranian Rial
+    XAU:
+        label: Gold Ounce
+    LTL:
+        label: Lithuanian Litas
+    UGX:
+        label: Ugandan Shilling
+    RSD:
+        label: Serbian Dinar
+    AFN:
+        label: Afghan Afghani
+    BND:
+        label: Bruneian Dollar
+    TZS:
+        label: Tanzanian Shilling
+    LVL:
+        label: Latvian Lat
+    ETB:
+        label: Ethiopian Birr
+    CUC:
+        label: Cuban Convertible Peso
+    VEF:
+        label: Venezuelan Bolivar
+    XCD:
+        label: East Caribbean Dollar
+    TTD:
+        label: Trinidadian Dollar
+    BWP:
+        label: Botswana Pula
+    GEL:
+        label: Georgian Lari
+    GTQ:
+        label: Guatemalan Quetzal
+    BBD:
+        label: Barbadian or Bajan Dollar
+    ALL:
+        label: Albanian Lek
+    ZWD:
+        label: Zimbabwean Dollar
+    MKD:
+        label: Macedonian Denar
+    ZMK:
+        label: Zambian Kwacha
+    KZT:
+        label: Kazakhstani Tenge
+    KHR:
+        label: Cambodian Riel
+    XAG:
+        label: Silver Ounce
+    LBP:
+        label: Lebanese Pound
+    LAK:
+        label: Lao or Laotian Kip
+    NAD:
+        label: Namibian Dollar
+    MMK:
+        label: Burmese Kyat
+    LYD:
+        label: Libyan Dinar
+    MZN:
+        label: Mozambican Metical
+    BOB:
+        label: Bolivian Boliviano
+    MOP:
+        label: Macau Pataca
+    UYU:
+        label: Uruguayan Peso
+    AMD:
+        label: Armenian Dram
+    PGK:
+        label: Papua New Guinean Kina
+    ANG:
+        label: Dutch Guilder
+    AOA:
+        label: Angolan Kwanza
+    ZMW:
+        label: Zambian Kwacha
+    BYR:
+        label: Belarusian Ruble
+    MGA:
+        label: Malagasy Ariary
+    SYP:
+        label: Syrian Pound
+    VUV:
+        label: Ni-Vanuatu Vatu
+    GMD:
+        label: Gambian Dalasi
+    MWK:
+        label: Malawian Kwacha
+    KPW:
+        label: North Korean Won
+    SDG:
+        label: Sudanese Pound
+    MVR:
+        label: Maldivian Rufiyaa
+    CUP:
+        label: Cuban Peso
+    RWF:
+        label: Rwandan Franc
+    HNL:
+        label: Honduran Lempira
+    SCR:
+        label: Seychellois Rupee
+    MNT:
+        label: Mongolian Tughrik
+    BZD:
+        label: Belizean Dollar
+    BSD:
+        label: Bahamian Dollar
+    NIO:
+        label: Nicaraguan Cordoba
+    KYD:
+        label: Caymanian Dollar
+    PYG:
+        label: Paraguayan Guarani
+    HTG:
+        label: Haitian Gourde
+    GYD:
+        label: Guyanese Dollar
+    AWG:
+        label: Aruban or Dutch Guilder
+    YER:
+        label: Yemeni Rial
+    CDF:
+        label: Congolese Franc
+    CVE:
+        label: Cape Verdean Escudo
+    WST:
+        label: Samoan Tala
+    DJF:
+        label: Djiboutian Franc
+    BIF:
+        label: Burundian Franc
+    MDL:
+        label: Moldovan Leu
+    GNF:
+        label: Guinean Franc
+    SLL:
+        label: Sierra Leonean Leone
+    TOP:
+        label: Tongan Pa'anga
+    BTN:
+        label: Bhutanese Ngultrum
+    KGS:
+        label: Kyrgyzstani Som
+    BMD:
+        label: Bermudian Dollar
+    UZS:
+        label: Uzbekistani Som
+    SBD:
+        label: Solomon Islander Dollar
+    MRO:
+        label: Mauritanian Ouguiya
+    SRD:
+        label: Surinamese Dollar
+    PAB:
+        label: Panamanian Balboa
+    SZL:
+        label: Swazi Lilangeni
+    SOS:
+        label: Somali Shilling
+    ERN:
+        label: Eritrean Nakfa
+    LRD:
+        label: Liberian Dollar
+    XDR:
+        label: IMF Special Drawing Rights
+    TJS:
+        label: Tajikistani Somoni
+    TMT:
+        label: Turkmenistani Manat
+    LSL:
+        label: Basotho Loti
+    GIP:
+        label: Gibraltar Pound
+    XPT:
+        label: Platinum Ounce
+    GGP:
+        label: Guernsey Pound
+    KMF:
+        label: Comoran Franc
+    FKP:
+        label: Falkland Island Pound
+    JEP:
+        label: Jersey Pound
+    SVC:
+        label: Salvadoran Colon
+    STD:
+        label: Sao Tomean Dobra
+    IMP:
+        label: Isle of Man Pound
+    XPD:
+        label: Palladium Ounce
+    TVD:
+        label: Tuvaluan Dollar
+    SHP:
+        label: Saint Helenian Pound
+    SPL:
+        label: Seborgan Luigino

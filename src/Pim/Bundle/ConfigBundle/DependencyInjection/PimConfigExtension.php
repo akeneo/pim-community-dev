@@ -19,10 +19,17 @@ class PimConfigExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        // process validation to validate and merge
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.xml');
+        // load services
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.yml');
+
+        // load locales and currencies
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/datas'));
+//         $loader->load('currencies.yml');
+        $loader->load('locales.yml');
     }
 }

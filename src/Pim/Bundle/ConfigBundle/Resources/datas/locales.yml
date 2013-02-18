@@ -1,0 +1,253 @@
+locales:
+    sq_AL:
+        label: Albanian (Albania)
+    sq_SQ:
+        label: Albanian
+    ar_DZ:
+        label: Arabic (Algeria)
+    ar_BH:
+        label: Arabic (Bahrain)
+    ar_EG:
+        label: Arabic (Egypt)
+    ar_IQ:
+        label: Arabic (Iraq)
+    ar_JO:
+        label: Arabic (Jordan)
+    ar_KW:
+        label: Arabic (Kuwait)
+    ar_LB:
+        label: Arabic (Lebanon)
+    ar_LY:
+        label: Arabic (Libya)
+    ar_MA:
+        label: Arabic (Morocco)
+    ar_OM:
+        label: Arabic (Oman)
+    ar_QA:
+        label: Arabic (Qatar)
+    ar_SA:
+        label: Arabic (Saudi Arabia)
+    ar_SD:
+        label: Arabic (Sudan)
+    ar_SY:
+        label: Arabic (Syria)
+    ar_TN:
+        label: Arabic (Tunisia)
+    ar_AE:
+        label: Arabic (United Arab Emirates)
+    ar_YE:
+        label: Arabic (Yemen)
+    ar_AR:
+        label: Arabic
+    be_BY:
+        label: Belarusian (Belarus)
+    be_BE:
+        label: Belarusian
+    bg_BG:
+        label: Bulgarian (Bulgaria)
+    ca_ES:
+        label: Catalan (Spain)
+    zh_CN:
+        label: Chinese (China)
+    zh_HK:
+        label: Chinese (Hong Kong)
+    zh_SG:
+        label: Chinese (Singapore)
+    zh_TW:
+        label: Chinese (Taiwan)
+    zh_ZH:
+        label: Chinese
+    hr_HR:
+        label: Croatian (Croatia)
+    cs_CZ:
+        label: Czech (Czech Republic)
+    cs_CS:
+        label: Czech
+    da_DK:
+        label: Danish (Denmark)
+    da_DA:
+        label: Danish
+    nl_BE:
+        label: Dutch (Belgium)
+    nl_NL:
+        label: Dutch (Netherlands)
+    en_AU:
+        label: English (Australia)
+    en_CA:
+        label: English (Canada)
+    en_IN:
+        label: English (India)
+    en_IE:
+        label: English (Ireland)
+    en_MT:
+        label: English (Malta)
+    en_NZ:
+        label: English (New Zealand)
+    en_PH:
+        label: English (Philippines)
+    en_SG:
+        label: English (Singapore)
+    en_ZA:
+        label: English (South Africa)
+    en_UK:
+        label: English (United Kingdom)
+    en_US:
+        label: English (United States)
+    en_EN:
+        label: English
+    et_EE:
+        label: Estonian (Estonia)
+    et_ET:
+        label: Estonian
+    fi_FI:
+        label: Finnish (Finland)
+    fr_BE:
+        label: French (Belgium)
+    fr_CA:
+        label: French (Canada)
+    fr_FR:
+        label: French (France)
+    fr_LU:
+        label: French (Luxembourg)
+    fr_CH:
+        label: French (Switzerland)
+    de_AT:
+        label: German (Austria)
+    de_DE:
+        label: German (Germany)
+    de_LU:
+        label: German (Luxembourg)
+    de_CH:
+        label: German (Switzerland)
+    el_CY:
+        label: Greek (Cyprus)
+    el_GR:
+        label: Greek (Greece)
+    el_EL:
+        label: Greek
+    iw_IL:
+        label: Hebrew (Israel)
+    iw_IW:
+        label: Hebrew
+    hi_IN:
+        label: Hindi (India)
+    hu_HU:
+        label: Hungarian (Hungary)
+    is_IS:
+        label: Icelandic (Iceland)
+    in_ID:
+        label: Indonesian (Indonesia)
+    in_IN:
+        label: in_Indonesian
+    ga_IE:
+        label: Irish (Ireland)
+    ga_GA:
+        label: Irish
+    it_IT:
+        label: Italian (Italy)
+    it_CH:
+        label: Italian (Switzerland)
+    ja_JP:
+        label: Japanese (Japan)
+    ja_JA:
+        label: Japanese
+    ko_KR:
+        label: Korean (South Korea)
+    ko_KO:
+        label: Korean
+    lv_LV:
+        label: Latvian (Latvia)
+    lt_LT:
+        label: Lithuanian (Lithuania)
+    mk_MK:
+        label: Macedonian (Macedonia)
+    ms_MY:
+        label: Malay (Malaysia)
+    ms_Ms:
+        label: Malay
+    mt_MT:
+        label: Maltese (Malta)
+    no_NO:
+        label: Norwegian (Norway)
+    pl_PL:
+        label: Polish (Poland)
+    pt_BR:
+        label: Portuguese (Brazil)
+    pt_PT:
+        label: Portuguese (Portugal)
+    ro_RO:
+        label: Romanian (Romania)
+    ru_RU:
+        label: Russian (Russia)
+    sr_BA:
+        label: Serbian (Bosnia and Herzegovina)
+    sr_Me:
+        label: Serbian (Montenegro)
+    sr_CS:
+        label: Serbian (Serbia and Montenegro)
+    sr_RS:
+        label: Serbian (Serbia)
+    sr_SR:
+        label: Serbian
+    sk_SK:
+        label: Slovak (Slovakia)
+    sl_SI:
+        label: Slovenian (Slovenia)
+    sl_SL:
+        label: Slovenian
+    es_AR:
+        label: Spanish (Argentina)
+    es_BO:
+        label: Spanish (Bolivia)
+    es_CL:
+        label: Spanish (Chile)
+    es_CO:
+        label: Spanish (Colombia)
+    es_CR:
+        label: Spanish (Costa Rica)
+    es_DO:
+        label: Spanish (Dominican Republic)
+    es_EC:
+        label: Spanish (Ecuador)
+    es_SV:
+        label: Spanish (El Salvador)
+    es_GT:
+        label: Spanish (Guatemala)
+    es_HN:
+        label: Spanish (Honduras)
+    es_MX:
+        label: Spanish (Mexico)
+    es_NI:
+        label: Spanish (Nicaragua)
+    es_PA:
+        label: Spanish (Panama)
+    es_PY:
+        label: Spanish (Paraguay)
+    es_PE:
+        label: Spanish (Peru)
+    es_Pr:
+        label: Spanish (Puerto Rico)
+    es_ES:
+        label: Spanish (Spain)
+    es_US:
+        label: Spanish (United States)
+    es_UY:
+        label: Spanish (Uruguay)
+    es_VE:
+        label: Spanish (Venezuela)
+    sv_SE:
+        label: Swedish (Sweden)
+    sv_SV:
+        label: Swedish
+    th_TH:
+        label: Thai (Thailand)
+    tr_TR:
+        label: Turkish (Turkey)
+    uk_UA:
+        label: Ukrainian (Ukraine)
+    uk_UK:
+        label: Ukrainian
+    vi_VN:
+        label: Vietnamese (Vietnam)
+    vi_VI:
+        label: Vietnamese
