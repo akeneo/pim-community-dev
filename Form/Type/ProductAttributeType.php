@@ -30,7 +30,7 @@ class ProductAttributeType extends AttributeType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        //parent::buildForm($builder, $options);
+        parent::buildForm($builder, $options);
 
         $this->addFieldName($builder);
 
@@ -39,26 +39,6 @@ class ProductAttributeType extends AttributeType
         $this->addFieldVariantBehavior($builder);
 
         $this->addFieldSmart($builder);
-
-        /** Redefine parent method **/
-        $this->addFieldId($builder);
-
-        $this->addFieldCode($builder);
-
-        $this->addFieldAttributeType($builder);
-
-        $this->addFieldRequired($builder);
-
-        $this->addFieldUnique($builder);
-
-        $this->addFieldTranslatable($builder);
-
-        $this->addFieldScopable($builder);
-
-        $this->addFieldSearchable($builder);
-
-        $this->addFieldDefaultValue($builder);
-        /** End redefine parent method **/
 
         // Add a subscriber
         $factory = $builder->getFormFactory();
