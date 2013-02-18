@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Validator;
 
+use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
+
 use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
@@ -127,9 +129,9 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     public static function providerUniqueConstraintInvalid()
     {
         return array(
-            array(ProductAttributeValidator::TYPE_TEXT, true, true, false, false, true),
-            array(ProductAttributeValidator::TYPE_TEXT, true, false, false, false, true),
-            array(ProductAttributeValidator::TYPE_TEXT, true, true, false, false, false),
+            array(AbstractAttributeType::TYPE_TEXT_CLASS, true, true, false, false, true),
+            array(AbstractAttributeType::TYPE_TEXT_CLASS, true, false, false, false, true),
+            array(AbstractAttributeType::TYPE_TEXT_CLASS, true, true, false, false, false),
         );
     }
 
@@ -165,17 +167,17 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     public static function providerMatrixConstraintInvalid()
     {
         return array(
-            array(ProductAttributeValidator::TYPE_INTEGER, true, false, false, false, false),
-            array(ProductAttributeValidator::TYPE_INTEGER, false, true, false, false, false),
-            array(ProductAttributeValidator::TYPE_TEXTAREA, true, false, false, false, false),
-            array(ProductAttributeValidator::TYPE_DATE, false, true, false, false, false),
-            //array(ProductAttributeValidator::TYPE_IMAGE, false, false, true, false, false),
-            //array(ProductAttributeValidator::TYPE_IMAGE, false, false, false, true, false),
-            //array(ProductAttributeValidator::TYPE_FILE, false, false, true, true, false),
-            array(ProductAttributeValidator::TYPE_METRIC, true, false, false, false, false),
-            array(ProductAttributeValidator::TYPE_METRIC, false, true, false, false, false),
-            array(ProductAttributeValidator::TYPE_METRIC, false, false, false, false, true),
-            array(ProductAttributeValidator::TYPE_METRIC, false, true, false, false, true),
+            array(AbstractAttributeType::TYPE_INTEGER_CLASS, true, false, false, false, false),
+            array(AbstractAttributeType::TYPE_INTEGER_CLASS, false, true, false, false, false),
+            array(AbstractAttributeType::TYPE_TEXTAREA_CLASS, true, false, false, false, false),
+            array(AbstractAttributeType::TYPE_DATE_CLASS, false, true, false, false, false),
+            //array(AbstractAttributeType::TYPE_IMAGE_CLASS, false, false, true, false, false),
+            //array(AbstractAttributeType::TYPE_IMAGE_CLASS, false, false, false, true, false),
+            //array(AbstractAttributeType::TYPE_FILE_CLASS, false, false, true, true, false),
+            array(AbstractAttributeType::TYPE_METRIC_CLASS, true, false, false, false, false),
+            array(AbstractAttributeType::TYPE_METRIC_CLASS, false, true, false, false, false),
+            array(AbstractAttributeType::TYPE_METRIC_CLASS, false, false, false, false, true),
+            array(AbstractAttributeType::TYPE_METRIC_CLASS, false, true, false, false, true),
         );
     }
 
@@ -188,10 +190,10 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     public static function providerManyViolations()
     {
         return array(
-            array(ProductAttributeValidator::TYPE_MONEY, true, true, false, false, false),
-            array(ProductAttributeValidator::TYPE_METRIC, true, true, false, false, false),
-            array(ProductAttributeValidator::TYPE_METRIC, true, false, false, false, true),
-            array(ProductAttributeValidator::TYPE_METRIC, true, true, false, false, true),
+            array(AbstractAttributeType::TYPE_MONEY_CLASS, true, true, false, false, false),
+            array(AbstractAttributeType::TYPE_METRIC_CLASS, true, true, false, false, false),
+            array(AbstractAttributeType::TYPE_METRIC_CLASS, true, false, false, false, true),
+            array(AbstractAttributeType::TYPE_METRIC_CLASS, true, true, false, false, true),
         );
     }
 
@@ -227,11 +229,11 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     public static function providerNoViolation()
     {
         return array(
-            array(ProductAttributeValidator::TYPE_MONEY, false, false, false, false, false),
-            array(ProductAttributeValidator::TYPE_TEXT, true, false, false, false, false),
-            array(ProductAttributeValidator::TYPE_TEXT, true, false, false, true, false),
-            array(ProductAttributeValidator::TYPE_TEXT, true, false, true, false, false),
-            array(ProductAttributeValidator::TYPE_TEXT, true, false, true, true, false),
+            array(AbstractAttributeType::TYPE_MONEY_CLASS, false, false, false, false, false),
+            array(AbstractAttributeType::TYPE_TEXT_CLASS, true, false, false, false, false),
+            array(AbstractAttributeType::TYPE_TEXT_CLASS, true, false, false, true, false),
+            array(AbstractAttributeType::TYPE_TEXT_CLASS, true, false, true, false, false),
+            array(AbstractAttributeType::TYPE_TEXT_CLASS, true, false, true, true, false),
         );
     }
 

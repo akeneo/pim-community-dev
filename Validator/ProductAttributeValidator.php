@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Validator;
 
+use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
+
 use Symfony\Component\Validator\ExecutionContext;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
@@ -21,25 +23,6 @@ class ProductAttributeValidator
      * @staticvar integer
      */
     const GLOBAL_SCOPE_VALUE = 0;
-
-    /**
-     * Classes for AttributeType
-     * @staticvar string
-     */
-    const TYPE_DATE              = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\DateType';
-    const TYPE_INTEGER           = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\IntegerType';
-    const TYPE_MONEY             = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MoneyType';
-    const TYPE_NUMBER            = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\NumberType';
-    const TYPE_OPT_MULTI_CB      = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionMultiCheckboxType';
-    const TYPE_OPT_MULTI_SELECT  = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionMultiSelectType';
-    const TYPE_OPT_SINGLE_RADIO  = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionSimpleRadioType';
-    const TYPE_OPT_SINGLE_SELECT = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionSimpleSelectType';
-    const TYPE_TEXTAREA          = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextAreaType';
-    const TYPE_METRIC            = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MetricType';
-    const TYPE_FILE              = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\FileType';
-    const TYPE_IMAGE             = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\ImageType';
-
-    const TYPE_TEXT              = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextType';
 
 
     /**
@@ -72,13 +55,13 @@ class ProductAttributeValidator
     protected static function isAttributeTypeMatrixValid(ProductAttribute $productAttribute, ExecutionContext $context)
     {
         switch ($productAttribute->getAttributeType()) {
-            case self::TYPE_INTEGER:
-            case self::TYPE_NUMBER:
-            case self::TYPE_MONEY:
-            case self::TYPE_OPT_MULTI_CB:
-            case self::TYPE_OPT_MULTI_SELECT:
-            case self::TYPE_OPT_SINGLE_RADIO:
-            case self::TYPE_OPT_SINGLE_SELECT:
+            case AbstractAttributeType::TYPE_INTEGER_CLASS:
+            case AbstractAttributeType::TYPE_NUMBER_CLASS:
+            case AbstractAttributeType::TYPE_MONEY_CLASS:
+            case AbstractAttributeType::TYPE_OPT_MULTI_CB_CLASS:
+            case AbstractAttributeType::TYPE_OPT_MULTI_SELECT_CLASS:
+            case AbstractAttributeType::TYPE_OPT_SINGLE_RADIO_CLASS:
+            case AbstractAttributeType::TYPE_OPT_SINGLE_SELECT_CLASS:
                 // translatable and unique must be disabled
                 if ($productAttribute->getTranslatable() === true || $productAttribute->getUnique() === true) {
                     $context->addViolation(
@@ -86,26 +69,26 @@ class ProductAttributeValidator
                     );
                 }
                 break;
-            case self::TYPE_TEXTAREA:
+            case AbstractAttributeType::TYPE_TEXTAREA_CLASS:
                 // unique must be disabled
                 if ($productAttribute->getUnique() === true) {
                     $context->addViolation('For this attribute type value, unique value must be false');
                 }
                 break;
-            case self::TYPE_DATE:
+            case AbstractAttributeType::TYPE_DATE_CLASS:
                 // translatable must be disabled
                 if ($productAttribute->getTranslatable() === true) {
                     $context->addViolation('For this attribute type value, translatable value must be false');
                 }
                 break;
-            case self::TYPE_IMAGE:
-            case self::TYPE_FILE:
+            case AbstractAttributeType::TYPE_IMAGE_CLASS:
+            case AbstractAttributeType::TYPE_FILE_CLASS:
                 // searchable and smart must be disabled
                 if ($productAttribute->getSearchable() === true || $productAttribute->getSmart() === true) {
                     $context->addViolation('For this attribute type value, searchable and smart values must be false');
                 }
                 break;
-            case self::TYPE_METRIC:
+            case AbstractAttributeType::TYPE_METRIC_CLASS:
                 // unique must be disabled
                 if ($productAttribute->getUnique() === true
                     || $productAttribute->getTranslatable() === true

@@ -1,17 +1,3 @@
-// Define constants
-var TYPE_DATE              = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\DateType';
-var TYPE_INTEGER           = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\IntegerType';
-var TYPE_MONEY             = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\MoneyType';
-var TYPE_NUMBER            = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\NumberType';
-var TYPE_OPT_MULTI_CB      = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\OptionMultiCheckboxType';
-var TYPE_OPT_MULTI_SELECT  = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\OptionMultiSelectType';
-var TYPE_OPT_SINGLE_RADIO  = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\OptionSimpleRadioType';
-var TYPE_OPT_SINGLE_SELECT = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\OptionSimpleSelectType';
-var TYPE_TEXTAREA          = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\TextAreaType';
-var TYPE_METRIC            = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\MetricType';
-var TYPE_FILE              = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\FileType';
-var TYPE_IMAGE             = 'Oro\\Bundle\\FlexibleEntityBundle\\Model\\AttributeType\\ImageType';
-
 // Get form name
 var formName = 'pim_product_attribute_form';
 $('#'+ formName +'_attributeType').on('change', updateFieldsFromAttributeType);
@@ -26,28 +12,28 @@ function updateFieldsFromAttributeType() {
     
     // disable field and check
     switch ($('#pim_product_attribute_form_attributeType').val()) {
-        case TYPE_INTEGER:
-        case TYPE_NUMBER:
-        case TYPE_MONEY:
-        case TYPE_OPT_MULTI_CB:
-        case TYPE_OPT_MULTI_SELECT:
-        case TYPE_OPT_SINGLE_RADIO:
-        case TYPE_OPT_SINGLE_SELECT:
+        case {{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_INTEGER_CLASS') }}:
+        case {{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_NUMBER_CLASS') }}:
+        case {{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_MONEY_CLASS') }}:
+        case {{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_OPT_MULTI_CB_CLASS') }}:
+        case {{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_OPT_MULTI_SELECT_CLASS') }}:
+        case {{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_OPT_SINGLE_RADIO_CLASS') }}:
+        case {{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_OPT_SINGLE_SELECT_CLASS') }}:
             disableField('translatable');
             disableField('unique');
             break;
-        case TYPE_TEXTAREA:
+        case {{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_TEXTAREA_CLASS') }}:
             disableField('unique');
             break;
-        case TYPE_DATE:
+        case {{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_DATE_CLASS') }}:
             disableField('translatable');
             break;
-        case TYPE_IMAGE:
-        case TYPE_FILE:
+        case {{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_FILE_CLASS') }}:
+        case {{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_IMAGE_CLASS') }}:
             disableField('searchable');
             disableField('smart');
             break;
-        case TYPE_METRIC:
+        case {{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_METRIC_CLASS') }}:
             disableField('unique');
             disableField('translatable');
             break;
