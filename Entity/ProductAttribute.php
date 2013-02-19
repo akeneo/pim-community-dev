@@ -64,6 +64,13 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     protected $smart;
 
     /**
+     * @var AttributeGroup
+     *
+     * @ORM\ManyToOne(targetEntity="AttributeGroup", inversedBy="attribtutes")
+     */
+    protected $group;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -166,5 +173,29 @@ class ProductAttribute extends AbstractEntityAttributeExtended
         $this->variant = $variant;
 
         return $this;
+    }
+
+    /**
+     * Set group
+     *
+     * @param AttributeGroup $group
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttribute
+     */
+    public function setGroup(AttributeGroup $group)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get group
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
+     */
+    public function getGroup()
+    {
+        return $this->group;
     }
 }
