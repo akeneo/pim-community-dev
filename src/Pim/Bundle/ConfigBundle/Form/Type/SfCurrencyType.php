@@ -23,9 +23,9 @@ class SfCurrencyType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'choices' => StubLocale::getDisplayCurrencies(\Locale::getDefault()),
-        ));
+        $resolver->setDefaults(
+            array('choices' => StubLocale::getDisplayCurrencies(\Locale::getDefault()))
+        );
     }
 
     /**

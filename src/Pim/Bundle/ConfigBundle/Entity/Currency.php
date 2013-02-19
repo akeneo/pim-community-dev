@@ -28,7 +28,7 @@ class Currency
     /**
      * @var string $code
      *
-     * @ORM\Column(name="code", type="string", length=3)
+     * @ORM\Column(name="code", type="string", length=3, unique=true)
      */
     protected $code;
 
