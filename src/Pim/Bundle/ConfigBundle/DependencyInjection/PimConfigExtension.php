@@ -26,10 +26,5 @@ class PimConfigExtension extends Extension
         // load services
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
-
-        // load locales and currencies
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/datas'));
-        //$loader->load('currencies.yml');
-        //$loader->load('locales.yml');
     }
 }
