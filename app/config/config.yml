@@ -91,9 +91,9 @@ fos_rest:
     routing_loader:
         default_format: json
 
-#oro_search:
-#    engine:                   orm
-#    realtime_update:          true
+oro_search:
+    engine:                   orm
+    realtime_update:          true
 
 be_simple_soap:
     cache:
