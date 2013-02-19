@@ -36,6 +36,8 @@ class LanguageType extends AbstractType
 
     protected static function prepareLocales()
     {
+        return Locale::getCurrencies();
+
         $choices = array('en_US', 'en_GB', 'fr_FR');
 
         return $choices;

@@ -29,7 +29,7 @@ class PimConfigExtension extends Extension
 
         // load locales and currencies
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/datas'));
-//         $loader->load('currencies.yml');
-        $loader->load('locales.yml');
+        //$loader->load('currencies.yml');
+        //$loader->load('locales.yml');
     }
 }
