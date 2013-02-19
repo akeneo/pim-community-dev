@@ -1,8 +1,6 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Form\Type;
 
-use Symfony\Component\Locale\Locale;
-
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Symfony\Component\Form\FormBuilderInterface;
@@ -29,18 +27,9 @@ class LanguageType extends AbstractType
 
         $builder->add('id', 'hidden');
 
-        $builder->add('code', 'choice', array('choices' => self::prepareLocales()));
+        $builder->add('code', 'locale');
 
-        $builder->add('activated', 'checkbox', array('data' => true));
-    }
-
-    protected static function prepareLocales()
-    {
-        return Locale::getCurrencies();
-
-        $choices = array('en_US', 'en_GB', 'fr_FR');
-
-        return $choices;
+        $builder->add('activated', 'checkbox', array('required' => false, 'data' => true));
     }
 
     /**

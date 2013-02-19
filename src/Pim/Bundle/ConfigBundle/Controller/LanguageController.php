@@ -77,7 +77,7 @@ class LanguageController extends Controller
             $this->get('session')->getFlashBag()->add('success', 'Language successfully saved');
 
             return $this->redirect(
-                $this->generateUrl('pim_config_language_edit', array('id' => $language->getId()))
+                $this->generateUrl('pim_config_language_index')
             );
         }
 

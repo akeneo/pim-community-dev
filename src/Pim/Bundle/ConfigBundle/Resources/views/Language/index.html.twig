@@ -11,7 +11,6 @@
         <thead>
             <tr>
                 <th>Code</th>
-                <th>Label</th>
                 <th>Activated</th>
                 <th>Created</th>
                 <th>Updated</th>
@@ -23,17 +22,16 @@
             {% for language in languages %}
             <tr>
                 <td>{{ language.code }}</td>
-                <td>{{ language.label }}</td>
                 <td>{{ language.activated }}</td>
                 <td></td>
                 <td></td>
                 <td>
-                    <a href="{{ path('pim_config_language_remove', { id: attribute.id }) }}">
+                    <a href="{{ path('pim_config_language_edit', { id: language.id }) }}">
                         <i class="icon-edit"></i>
                     </a>
                 </td>
                 <td>
-                    <a href="{{ path('pim_config_language_remove', { id: attribute.id }) }}">
+                    <a href="{{ path('pim_config_language_remove', { id: language.id }) }}">
                         <i class="icon-remove"></i>
                     </a>
                 </td>
