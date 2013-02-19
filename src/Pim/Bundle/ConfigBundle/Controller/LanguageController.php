@@ -4,8 +4,6 @@ namespace Pim\Bundle\ConfigBundle\Controller;
 
 use Pim\Bundle\ConfigBundle\Entity\Language;
 
-use Symfony\Component\Locale\Locale;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

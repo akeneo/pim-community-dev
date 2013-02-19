@@ -62,7 +62,7 @@ class Language
      *
      * @param integer $id
      *
-     * @return \Pim\Bundle\ConfigBundle\Model\Language
+     * @return \Pim\Bundle\ConfigBundle\Entity\Language
      */
     public function setId($id)
     {
@@ -86,7 +86,7 @@ class Language
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\ConfigBundle\Model\Language
+     * @return \Pim\Bundle\ConfigBundle\Entity\Language
      */
     public function setCode($code)
     {
@@ -110,7 +110,7 @@ class Language
      *
      * @param boolean $activated
      *
-     * @return \Pim\Bundle\ConfigBundle\Model\Language
+     * @return \Pim\Bundle\ConfigBundle\Entity\Language
      */
     public function setActivated($activated)
     {
