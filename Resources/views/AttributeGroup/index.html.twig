@@ -1,0 +1,50 @@
+{% extends bap.layout is defined ? bap.layout : 'ProductBundle::layout.bootstrap.html.twig' %}
+
+{% block content %}
+
+    <h1>Groups overview
+        <a class="btn btn-primary pull-right" style="margin-left:10px;" 
+            href="{{ path('pim_product_attributegroup_create') }}">New group</a>
+    </h1>
+
+    <table class="table table-bordered table-striped table-condensed">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Order</th>
+                <th>Attributes count</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th style="width: 50px">Edit</th>
+                <th style="width: 50px">Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for group in groups %}
+            <tr>
+                <td>
+                    <a href="{{ path('pim_product_attributegroup_edit', { id: group.id }) }}">
+                        {{ group.name }}
+                    </a>
+                </td>
+                <td>{{ group.sortOrder }}</td>
+                <td>{{ group.attributes|length }}</td>
+                <td>{{ group.created|date('Y-m-d h:i:s') }}</td>
+                <td>{{ group.updated|date('Y-m-d h:i:s') }}</td>
+                <td>
+                    <a href="{{ path('pim_product_attributegroup_edit', { id: group.id }) }}">
+                        <i class="icon-edit"></i>
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('pim_product_attributegroup_remove', { id: group.id }) }}">
+                        <i class="icon-remove"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <hr />
+
+{% endblock %}
