@@ -18,7 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @Route("/productattribute")
+ * @Route("/product-attribute")
  */
 class ProductAttributeController extends Controller
 {
@@ -126,7 +126,7 @@ class ProductAttributeController extends Controller
      * @Route("/list/{groupId}", requirements={"groupId"="\d"}, defaults={"groupId"=null})
      * @Template("PimProductBundle:ProductAttribute:index.html.twig")
      *
-     * @return \Doctrine\Common\Persistence\mixed
+     * @return multitype:ProductAttribute
      */
     public function listAction($groupId = null)
     {

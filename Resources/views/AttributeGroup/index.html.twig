@@ -28,7 +28,11 @@
                     </a>
                 </td>
                 <td>{{ group.sortOrder }}</td>
-                <td>{{ group.attributes|length }}</td>
+                <td>
+                    <a href="{{ path('pim_product_productattribute_list', { groupId: group.id }) }}">
+                        {{ group.attributes|length }} - (Show list)
+                    </a>
+                </td>
                 <td>{{ group.created|date('Y-m-d h:i:s') }}</td>
                 <td>{{ group.updated|date('Y-m-d h:i:s') }}</td>
                 <td>
