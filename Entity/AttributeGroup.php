@@ -61,6 +61,10 @@ class AttributeGroup implements TimestampableInterface
      * @var ArrayCollection $attributes
      *
      * @ORM\OneToMany(targetEntity="ProductAttribute", mappedBy="group", cascade={"persist", "remove"})
+     * @ORM\JoinTable(
+     *     name="pim_product_attribute",
+     *     joinColumns={@ORM\JoinColumn(name="id", referencedColumnName="id")}
+     * )
      */
     protected $attributes;
 
