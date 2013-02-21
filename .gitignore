@@ -13,3 +13,4 @@ composer.phar
 /cov
 /bin
 /composer.lock
+/phpunit.xml
