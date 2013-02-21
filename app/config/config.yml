@@ -16,7 +16,8 @@ framework:
     default_locale:  %locale%
     trust_proxy_headers: false # Should Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
     trusted_proxies: ~
-    session:         ~
+    session:
+        name: BAPID
 
 # Twig Configuration
 twig:
@@ -89,11 +90,10 @@ fos_rest:
             xml: fos_rest.decoder.xml
     routing_loader:
         default_format: json
-    param_fetcher_listener: force
 
-#oro_search:
-#    engine:                   orm
-#    realtime_update:          true
+oro_search:
+    engine:                   orm
+    realtime_update:          true
 
 be_simple_soap:
     cache:
@@ -111,3 +111,8 @@ be_simple_soap:
             binding:          rpc-literal
             resource:         "%kernel.root_dir%/../src/Pim/Bundle/UIBundle/Resources/config/soap.yml"
             resource_type:    yml
+
+services:
+    cache:
+        class: Doctrine\Common\Cache\PhpFileCache
+        arguments: [%kernel.cache_dir%]

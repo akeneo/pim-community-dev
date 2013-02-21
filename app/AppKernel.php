@@ -15,30 +15,31 @@ class AppKernel extends Kernel
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
-            new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
-
-            // BAP third party dependencies
-            //new JMS\JobQueueBundle\JMSJobQueueBundle(),
+            //new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
+            new JMS\JobQueueBundle\JMSJobQueueBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle($this),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new FOS\RestBundle\FOSRestBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new BeSimple\SoapBundle\BeSimpleSoapBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
 
             // BAP bundles
             new Oro\Bundle\FlexibleEntityBundle\OroFlexibleEntityBundle(),
             new Oro\Bundle\UIBundle\OroUIBundle(),
             new Oro\Bundle\SoapBundle\OroSoapBundle(),
-            //new Oro\Bundle\SearchBundle\OroSearchBundle(),
+            new Oro\Bundle\SearchBundle\OroSearchBundle(),
             new Oro\Bundle\UserBundle\OroUserBundle(),
             new Oro\Bundle\MeasureBundle\OroMeasureBundle(),
 
             // PIM bundles
             new Pim\Bundle\UIBundle\PimUIBundle(),
             new Pim\Bundle\ProductBundle\PimProductBundle(),
+            new Pim\Bundle\ConfigBundle\PimConfigBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

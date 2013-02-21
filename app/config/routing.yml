@@ -1,11 +1,16 @@
+pim_config:
+    resource: "@PimConfigBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 _welcome:
     pattern:  /{_locale}
-    defaults: { _controller: PimUIBundle:Default:index, _locale: %locale% }
+    defaults: { _controller: PimUIBundle:Welcome:index, _locale: %locale% }
 
 pim_default:
     pattern:  /{_locale}
     defaults:
-        template:    PimUIBundle:Default:index.html.twig
+        template:    PimUIBundle:Welcome:index.html.twig
         _locale:     %locale%
         _controller: FrameworkBundle:Template:template
     requirements:
