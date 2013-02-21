@@ -123,7 +123,7 @@ class ProductAttributeController extends Controller
      *
      * @param integer $groupId
      *
-     * @Route("/list/{groupId}", requirements={"groupId"="\d"}, defaults={"groupId"=null})
+     * @Route("/list/{groupId}", requirements={"groupId"="\d+"}, defaults={"groupId"=null})
      * @Template("PimProductBundle:ProductAttribute:index.html.twig")
      *
      * @return multitype:ProductAttribute
