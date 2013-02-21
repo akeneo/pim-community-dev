@@ -25,3 +25,6 @@
 [submodule "src/Pim/Bundle/ProductBundle"]
 	path = src/Pim/Bundle/ProductBundle
 	url = git@github.com:akeneo/ProductBundle.git
+[submodule "src/Pim/Bundle/DemoBundle"]
+	path = src/Pim/Bundle/DemoBundle
+	url = git@github.com:akeneo/DemoBundle.git
