@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\ConfigBundle\Controller;
 
-use Pim\Bundle\ConfigBundle\Entity\Currency;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -54,7 +52,7 @@ class CurrencyController extends Controller
      */
     public function createAction()
     {
-        $currency = new Currency();
+        $currency = $this->getCurrencyManager()->createEntity();
 
         return $this->editAction($currency);
     }

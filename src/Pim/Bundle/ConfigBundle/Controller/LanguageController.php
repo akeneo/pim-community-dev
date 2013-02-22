@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\ConfigBundle\Controller;
 
-use Pim\Bundle\ConfigBundle\Entity\Language;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -54,7 +52,7 @@ class LanguageController extends Controller
      */
     public function createAction()
     {
-        $language = new Language();
+        $language = $this->getLanguageManager()->createEntity();
 
         return $this->editAction($language);
     }
