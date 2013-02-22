@@ -2,23 +2,27 @@
 <div class="pagination">
     <ul>
         {% if previous is defined %}
-        <li><a href="{{ path(route, query|merge({ (pageParameterName): previous })) }}">← Previous</a></li>
+            <li><a href="{{ path(route, query|merge({ (pageParameterName): previous })) }}">
+                ← {{ 'Previous'|trans }}
+            </a></li>
         {% else %}
-        <li class="disabled"><span>← Previous</span></li>
+            <li class="disabled"><span>← {{ 'Previous'|trans }}</span></li>
         {% endif %}
 
         {% for page in pagesInRange %}
             {% if page != current %}
-            <li><a href="{{ path(route, query|merge({ (pageParameterName): page })) }}">{{ page }}</a></li>
+                <li><a href="{{ path(route, query|merge({ (pageParameterName): page })) }}">{{ page }}</a></li>
             {% else %}
-            <li class="active"><span>{{ page }}</span></li>
+                <li class="active"><span>{{ page }}</span></li>
             {% endif %}
         {% endfor %}
 
         {% if next is defined %}
-        <li><a href="{{ path(route, query|merge({ (pageParameterName): next })) }}">Next →</a></li>
+            <li><a href="{{ path(route, query|merge({ (pageParameterName): next })) }}">
+                {{ 'Next'|trans }} →
+            </a></li>
         {% else %}
-        <li class="disabled"><span>Next →</span></li>
+            <li class="disabled"><span>{{ 'Next'|trans }} →</span></li>
         {% endif %}
     </ul>
 </div>

@@ -37,32 +37,48 @@
         <header>
             <div class="navbar">
                 <div class="navbar-inner">
-                    <a class="brand" href="{{ path('_welcome') }}">PIM Dev</a>
+                    <a class="brand" href="{{ path('_welcome') }}"><span class="icon-home"></span></a>
                     <ul class="nav">
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                Product <b class="caret"></b>
+                                {{ 'Product'|trans }} <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{ path('pim_product_productattribute_index') }}">Attribute list</a></li>
-                                <li><a href="{{ path('pim_product_attributegroup_index') }}">Attribute Group list</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="{{ path('oro_user_index') }}" class="dropdown-toggle" data-toggle="dropdown">User <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ path('oro_user_index') }}">Users</a></li>
-                                <li><a href="{{ path('oro_user_role_index') }}">Roles</a></li>
-                                <li><a href="{{ path('oro_user_group_index') }}">Groups</a></li>
+                                <li><a href="{{ path('pim_product_productattribute_index') }}">
+                                    {{ 'Attribute list'|trans }}
+                                </a></li>
+                                <li><a href="{{ path('pim_product_attributegroup_index') }}">
+                                    {{ 'Attribute Group list'|trans }}
+                                </a></li>
                             </ul>
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                Configuration <b class="caret"></b>
+                                {{ 'User'|trans }} <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{ path('pim_config_currency_index') }}">Currency list</a></li>
-                                <li><a href="{{ path('pim_config_language_index') }}">Language list</a></li>
+                                <li><a href="{{ path('oro_user_index') }}">
+                                    {{ 'Users'|trans }}
+                                </a></li>
+                                <li><a href="{{ path('oro_user_role_index') }}">
+                                    {{ 'Roles'|trans }}
+                                </a></li>
+                                <li><a href="{{ path('oro_user_group_index') }}">
+                                    {{ 'Groups'|trans }}
+                                </a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                {{ 'Configuration'|trans }} <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path('pim_config_currency_index') }}">
+                                    {{ 'Currency list'|trans }}
+                                </a></li>
+                                <li><a href="{{ path('pim_config_language_index') }}">
+                                    {{ 'Language list'|trans }}
+                                </a></li>
                             </ul> 
                         </li>
                     </ul>
@@ -83,11 +99,14 @@
                         {% endfor %}
                         <li class="divider-vertical"></li>
                         {% if app.user %}
-                        <li><p class="navbar-text">Logged in as <strong>{{ app.user.username }}</strong></p></li>
+                        <li><p class="navbar-text">
+                            {{ 'Logged in as'| trans }} 
+                            <strong>{{ app.user.username }}</strong>
+                        </p></li>
                         <li class="divider-vertical"></li>
-                        <li><a href="{{ path('oro_user_security_logout') }}">Logout</a></li>
+                        <li><a href="{{ path('oro_user_security_logout') }}">{{ 'Logout'|trans }}</a></li>
                         {% else %}
-                        <li><a href="{{ path('oro_user_security_login') }}">Login</a></li>
+                        <li><a href="{{ path('oro_user_security_login') }}">{{ 'Login'|trans }}</a></li>
                         {% endif %}
                     </ul>
                 </div>
