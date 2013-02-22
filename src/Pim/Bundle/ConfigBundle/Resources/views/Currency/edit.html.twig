@@ -2,14 +2,16 @@
 
 {% set title = form.vars.value.id ? 'Edit currency' : 'Add currency' %}
 
-{% block title %}{{ parent() }} - {{ title }}{% endblock %}
+{% block title %}{{ parent() }} - {{ title|trans }}{% endblock %}
 
 {% block content %}
-    <form action="{{ form.vars.value.id ? path('pim_config_currency_edit', { id: form.vars.value.id }) : path('pim_config_currency_create') }}" method="POST" class="form-register">
+    <form action="{{ form.vars.value.id ? 
+        path('pim_config_currency_edit', { id: form.vars.value.id }) : 
+        path('pim_config_currency_create') }}" method="POST" class="form-register">
 
         <fieldset>
             <legend>
-                {{ title }} 
+                {{ title|trans }} 
                 <a class="btn btn-primary pull-right" href="{{ path('pim_config_currency_index') }}">
                     {{ "Back to list" | trans }}
                 </a>
@@ -33,7 +35,7 @@
             
             <br />
             <div class="form_row">
-                <button class="btn btn-large btn-primary" type="submit">Save</button>
+                <button class="btn btn-large btn-primary" type="submit">{{ 'Save'|trans }}</button>
             </div>
     
         </fieldset>

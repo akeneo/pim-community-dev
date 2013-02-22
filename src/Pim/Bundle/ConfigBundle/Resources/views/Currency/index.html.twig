@@ -2,21 +2,21 @@
 
 {% block content %}
 
-    <h1>Configuration overview
+    <h1>{{ 'Currencies overview'|trans }}
         <a class="btn btn-primary pull-right" 
-            href="{{ path('pim_config_currency_create') }}">New currency</a>
+            href="{{ path('pim_config_currency_create') }}">{{ 'New currency'|trans }}</a>
     </h1>
     
     <table class="table table-bordered table-striped table-condensed">
         <thead>
             <tr>
-                <th>Code</th>
-                <th>Label</th>
-                <th>Activated</th>
-                <th>Created</th>
-                <th>Updated</th>
-                <th style="width: 50px">Edit</th>
-                <th style="width: 50px">Remove</th>
+                <th>{{ 'Code'|trans }}</th>
+                <th>{{ 'Label'|trans }}</th>
+                <th>{{ 'Activated'|trans }}</th>
+                <th>{{ 'Created'|trans }}</th>
+                <th>{{ 'Updated'|trans }}</th>
+                <th style="width: 50px">{{ 'Edit'|trans }}</th>
+                <th style="width: 50px">{{ 'Remove'|trans }}</th>
             </tr>
         </thead>
         <tbody>

@@ -2,20 +2,18 @@
 
 {% block content %}
 
-    <h1>Configuration overview
+    <h1>{{ 'Languages overview'|trans }}
         <a class="btn btn-primary pull-right" 
-            href="{{ path('pim_config_language_create') }}">New Language</a>
+            href="{{ path('pim_config_language_create') }}">{{ 'New language'|trans }}</a>
     </h1>
     
     <table class="table table-bordered table-striped table-condensed">
         <thead>
             <tr>
-                <th>Code</th>
-                <th>Activated</th>
-                <th>Created</th>
-                <th>Updated</th>
-                <th style="width: 50px">Edit</th>
-                <th style="width: 50px">Remove</th>
+                <th>{{ 'Code'|trans }}</th>
+                <th>{{ 'Activated'|trans }}</th>
+                <th style="width: 50px">{{ 'Edit'|trans }}</th>
+                <th style="width: 50px">{{ 'Remove'|trans }}</th>
             </tr>
         </thead>
         <tbody>
