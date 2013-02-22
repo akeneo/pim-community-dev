@@ -37,7 +37,7 @@
                 <label class="control-label">{{ 'Created at'|trans }}</label>
                 <div class="controls">
                     <span class="label">
-                        {{ form.vars.value.created ? form.vars.value.created|date('Y-m-d h:i:s') : 'N/A'|trans }}
+                        {{ form.vars.value.created ? form.vars.value.created|date('Y-m-d h:i:s'|trans) : 'N/A'|trans }}
                     </span>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                 <label class="control-label">{{ 'Updated at'|trans }}</label>
                 <div class="controls">
                     <span class="label">
-                        {{ form.vars.value.updated ? form.vars.value.updated|date('Y-m-d h:i:s') : 'N/A'|trans }}
+                        {{ form.vars.value.updated ? form.vars.value.updated|date('Y-m-d h:i:s'|trans) : 'N/A'|trans }}
                     </span>
                 </div>
             </div>
