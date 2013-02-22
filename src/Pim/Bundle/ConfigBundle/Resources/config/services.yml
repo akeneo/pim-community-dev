@@ -34,11 +34,6 @@ services:
         arguments: ["pim_config_language_form", "pim_config_language"]
 
     # Types
-    form.type.currency:
-        class: Pim\Bundle\ConfigBundle\Form\Type\SfCurrencyType
-        tags:
-            - { name: form.type, alias: currency }
-        
     pim_config.form.type.currency:
         class: %currency_type_class%
         tags:
@@ -53,10 +48,10 @@ services:
     pim_config.form.handler.currency:
         class: %currency_handler_class%
         scope: request
-        arguments: ["@pim_config.form.currency", "@request", "@doctrine.orm.entity_manager"]
+        arguments: [@pim_config.form.currency, @request, @doctrine.orm.entity_manager]
     
     pim_config.form.handler.language:
-        class:  %language_handler_class%
+        class: %language_handler_class%
         scope: request
-        arguments: ["@pim_config.form.language", "@request", "@doctrine.orm.entity_manager"]
+        arguments: [@pim_config.form.language, @request, @doctrine.orm.entity_manager]
         
