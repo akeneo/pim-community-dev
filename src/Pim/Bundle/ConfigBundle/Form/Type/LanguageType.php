@@ -29,7 +29,7 @@ class LanguageType extends AbstractType
 
         $builder->add('code', 'locale');
 
-        $builder->add('activated', 'checkbox', array('required' => false, 'data' => true));
+        $builder->add('activated', 'checkbox', array('required' => false));
     }
 
     /**
