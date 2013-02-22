@@ -2,25 +2,27 @@
 
 {% block content %}
 
-    <h1>Attributes overview
+    <h1>{{ 'Attributes overview'|trans }}
         <a class="btn btn-primary pull-right" style="margin-left:10px;" 
-            href="{{ path('pim_product_productattribute_create') }}">New attribute</a>
-        <a class="btn btn-primary pull-right" href="{{ path('pim_product_product_index') }}">Manage products</a>
+            href="{{ path('pim_product_productattribute_create') }}">{{ 'New attribute'|trans }}</a>
+        <a class="btn btn-primary pull-right" href="{{ path('pim_product_product_index') }}">
+            {{ 'Manage products'|trans }}
+        </a>
     </h1>
 
     <table class="table table-bordered table-striped table-condensed">
         <thead>
             <tr>
-                <th>Code</th>
-                <th>Type</th>
-                <th>Required</th>
-                <th>Unique</th>
-                <th>Translatable</th>
-                <th>Scopable</th>
-                <th>Created</th>
-                <th>Updated</th>
-                <th style="width: 50px">Edit</th>
-                <th style="width: 50px">Remove</th>
+                <th>{{ 'Code'|trans }}</th>
+                <th>{{ 'Type'|trans }}</th>
+                <th>{{ 'Required'|trans }}</th>
+                <th>{{ 'Unique'|trans }}</th>
+                <th>{{ 'Translatable'|trans }}</th>
+                <th>{{ 'Scopable'|trans }}</th>
+                <th>{{ 'Created'|trans }}</th>
+                <th>{{ 'Updated'|trans }}</th>
+                <th style="width: 50px">{{ 'Edit'|trans }}</th>
+                <th style="width: 50px">{{ 'Remove'|trans }}</th>
             </tr>
         </thead>
         <tbody>

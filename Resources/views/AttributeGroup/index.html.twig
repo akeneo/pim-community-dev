@@ -2,21 +2,21 @@
 
 {% block content %}
 
-    <h1>Groups overview
+    <h1>{{ 'Groups overview'|trans }}
         <a class="btn btn-primary pull-right" style="margin-left:10px;" 
-            href="{{ path('pim_product_attributegroup_create') }}">New group</a>
+            href="{{ path('pim_product_attributegroup_create') }}">{{ 'New group'|trans }}</a>
     </h1>
 
     <table class="table table-bordered table-striped table-condensed">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Order</th>
-                <th>Attributes count</th>
-                <th>Created</th>
-                <th>Updated</th>
-                <th style="width: 50px">Edit</th>
-                <th style="width: 50px">Remove</th>
+                <th>{{ 'Name'|trans }}</th>
+                <th>{{ 'Order'|trans }}</th>
+                <th>{{ 'Attributes count'|trans }}</th>
+                <th>{{ 'Created'|trans }}</th>
+                <th>{{ 'Updated'|trans }}</th>
+                <th style="width: 50px">{{ 'Edit'|trans }}</th>
+                <th style="width: 50px">{{ 'Remove'|trans }}</th>
             </tr>
         </thead>
         <tbody>
@@ -30,7 +30,7 @@
                 <td>{{ group.sortOrder }}</td>
                 <td>
                     <a href="{{ path('pim_product_productattribute_list', { groupId: group.id }) }}">
-                        {{ group.attributes|length }} - (Show list)
+                        {{ group.attributes|length }} - ({{ 'Show list'|trans }})
                     </a>
                 </td>
                 <td>{{ group.created|date('Y-m-d h:i:s') }}</td>

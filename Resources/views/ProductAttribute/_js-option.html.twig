@@ -2,7 +2,7 @@
 var collectionHolder = $('ul.options');
 
 // setup an "add an option" link
-var $addOptionLink = $('<a href="#" class="add_option_link">Add an option</a>');
+var $addOptionLink = $('<a href="#" class="add_option_link">{{ 'Add an option'|trans }}</a>');
 var $newOptionLinkLi = $('<li class="not-sortable"></li>').append($addOptionLink);
 
 jQuery(document).ready(function() {
@@ -49,7 +49,7 @@ function addOptionFormDeleteLink($optFormLi) {
     var $moveFormA = $('<span class="action-drag-inline"></span>');
     $optFormLi.append($moveFormA);
 
-    var $removeFormA = $('<a class="action-delete-inline" href="#">Delete option</a>');
+    var $removeFormA = $('<a class="action-delete-inline" href="#">{{ 'Delete option'|trans }}</a>');
     $optFormLi.append($removeFormA);
     $removeFormA.on('click', function(e) {
         // prevent the link from creating a "#" on the URL

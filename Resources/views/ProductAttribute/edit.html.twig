@@ -2,12 +2,18 @@
 
 {% set title = form.vars.value.id ? 'Edit attribute' : 'Add attribute' %}
 
-{% block title %}{{ parent() }} - {{ title }}{% endblock %}
+{% block title %}{{ parent() }} - {{ title|trans }}{% endblock %}
 
 {% block content %}
-<form action="{{ form.vars.value.id ? path('pim_product_productattribute_edit', { id: form.vars.value.id }) : path('pim_product_productattribute_create') }}" method="POST" class="form-register">
+<form action="{{ form.vars.value.id ? 
+    path('pim_product_productattribute_edit', { id: form.vars.value.id }) : 
+    path('pim_product_productattribute_create') }}" method="POST" class="form-register">
     <fieldset>
-        <legend>{{ title }} <a class="btn btn-primary pull-right" href="{{ path('pim_product_productattribute_index') }}">{{ "Back to list" | trans }}</a></legend>
+        <legend>{{ title|trans }} 
+            <a class="btn btn-primary pull-right" href="{{ path('pim_product_productattribute_index') }}">
+                {{ "Back to list" | trans }}
+            </a>
+        </legend>
 
         {% if form.vars.errors|length %}
             <div class="alert alert-error">
@@ -42,10 +48,11 @@
         {{ form_row(form.smart) }}
         
         {% if form.options is defined %}
-            <legend>Options</legend>
+            <legend>{{ 'Options'|trans }}</legend>
             
             <ul id="sortable_options" class="options" data-prototype="{% filter escape %}
-                {% include 'PimProductBundle:ProductAttribute:_prototype-option.html.twig' with {'form': form.options.get('prototype')} %}
+                {% include 'PimProductBundle:ProductAttribute:_prototype-option.html.twig' 
+                    with {'form': form.options.get('prototype')} %}
             {% endfilter %}">
             {% for option in form.options %}
                 <li class="att-option">
@@ -64,25 +71,29 @@
         {{ form_row(form._token) }}
 
         <br />
-        <legend>Additional information</legend>
+        <legend>{{ 'Additional information'|trans }}</legend>
 
         <div class="form-horizontal">
             <div class="control-group">
-                <label class="control-label">Created at</label>
+                <label class="control-label">{{ 'Created at'|trans }}</label>
                 <div class="controls">
-                    <span class="label">{{ form.vars.value.created ? form.vars.value.created|date('Y-m-d h:i:s') : 'N/A' }}</span>
+                    <span class="label">
+                        {{ form.vars.value.created ? form.vars.value.created|date('Y-m-d h:i:s') : 'N/A'|trans }}
+                    </span>
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label">Updated at</label>
+                <label class="control-label">{{ 'Updated at'|trans }}</label>
                 <div class="controls">
-                    <span class="label">{{ form.vars.value.updated ? form.vars.value.updated|date('Y-m-d h:i:s') : 'N/A' }}</span>
+                    <span class="label">
+                        {{ form.vars.value.updated ? form.vars.value.updated|date('Y-m-d h:i:s') : 'N/A'|trans }}
+                    </span>
                 </div>
             </div>
         </div>
 
         <div class="form-row">
-            <button class="btn btn-large btn-primary" type="submit">Save</button>
+            <button class="btn btn-large btn-primary" type="submit">{{ 'Save'|trans }}</button>
         </div>
     </fieldset>
 </form>
