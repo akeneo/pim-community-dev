@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="pim" default="build">    
-    <target name="build" depends="prepare,composer,vendors,setupdb,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
+    <target name="build" depends="prepare,composer,submodule,vendors,setupdb,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
     
     <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
 
@@ -154,6 +154,15 @@
         </exec>
     </target>
 
+    <target name="submodule" description="Install submodules">
+        <exec executable="bash">
+            <arg value="git submodule init"/>
+        </exec>
+        <exec executable="bash">
+            <arg value="git submodule update"/>
+        </exec>
+    </target>
+
     <target name="vendors" description="Install vendors">
         <exec executable="${basedir}/composer.phar" failonerror="true">
             <arg value="install" />
@@ -177,7 +186,7 @@
           <arg value="--complete" />
           <arg value="--force" />
         </exec>
-        <!-- mongodb -->
+        <!-- mongodb
         <exec executable="app/console">
           <arg value="doctrine:mongodb:schema:drop" />
         </exec>
@@ -185,7 +194,8 @@
           <arg value="doctrine:mongodb:schema:create" />
           <arg value="--index" />
         </exec>
-        <!-- load fixtures -->
+        -->
+        <!-- load fixtures
         <exec executable="app/console">
           <arg value="doctrine:fixtures:load" />
         </exec>
@@ -193,6 +203,7 @@
           <arg value="doctrine:mongodb:fixtures:load" />
           <arg value="--append" />
         </exec>
+         -->
     </target>
 
     <target name="setupdbtest" description="Setup db">
