@@ -155,11 +155,13 @@
     </target>
 
     <target name="submodule" description="Install submodules">
-        <exec executable="bash">
-            <arg value="git submodule init"/>
+        <exec executable="git">
+            <arg value="submodule"/>
+            <arg value="init"/>
         </exec>
-        <exec executable="bash">
-            <arg value="git submodule update"/>
+        <exec executable="git">
+            <arg value="submodule"/>
+            <arg value="update"/>
         </exec>
     </target>
 
