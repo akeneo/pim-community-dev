@@ -186,24 +186,6 @@
           <arg value="--complete" />
           <arg value="--force" />
         </exec>
-        <!-- mongodb
-        <exec executable="app/console">
-          <arg value="doctrine:mongodb:schema:drop" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="doctrine:mongodb:schema:create" />
-          <arg value="--index" />
-        </exec>
-        -->
-        <!-- load fixtures
-        <exec executable="app/console">
-          <arg value="doctrine:fixtures:load" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="doctrine:mongodb:fixtures:load" />
-          <arg value="--append" />
-        </exec>
-         -->
     </target>
 
     <target name="setupdbtest" description="Setup db">
