@@ -25,7 +25,7 @@ twig:
     strict_variables: %kernel.debug%
     globals:
         bap:
-            layout:           PimUIBundle::layout.bootstrap.html.twig  # default layout across all Oro bundles
+            layout:           OroUIBundle:Default:index.html.twig  # default layout across all Oro bundles
 
 # Assetic Configuration
 assetic:
@@ -111,6 +111,11 @@ be_simple_soap:
             binding:          rpc-literal
             resource:         "%kernel.root_dir%/../src/Pim/Bundle/UIBundle/Resources/config/soap.yml"
             resource_type:    yml
+
+stof_doctrine_extensions:
+    orm:
+        default:
+            tree: true
 
 services:
     cache:

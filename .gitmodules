@@ -28,3 +28,9 @@
 [submodule "src/Pim/Bundle/DemoBundle"]
 	path = src/Pim/Bundle/DemoBundle
 	url = git@github.com:akeneo/DemoBundle.git
+[submodule "src/Oro/Bundle/MenuBundle"]
+	path = src/Oro/Bundle/MenuBundle
+	url = git@github.com:laboro/MenuBundle.git
+[submodule "src/Oro/Bundle/ClassificationTreeBundle"]
+	path = src/Oro/Bundle/ClassificationTreeBundle
+	url = git@github.com:laboro/ClassificationTreeBundle.git
