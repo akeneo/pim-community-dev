@@ -5,3 +5,6 @@ parameters:
     database_name:     akeneo_pim_test
     database_user:     root
     database_password: root
+
+    locale: en
+    
