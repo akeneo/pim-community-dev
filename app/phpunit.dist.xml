@@ -20,6 +20,7 @@
     <testsuites>
         <testsuite name="Project Test Suite">
             <directory>../src/Pim/Bundle/*Bundle/Tests</directory>
+            <directory>../src/Oro/Bundle/*Bundle/Tests</directory>
         </testsuite>
     </testsuites>
 
