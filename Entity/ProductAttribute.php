@@ -66,7 +66,7 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     /**
      * @var AttributeGroup
      *
-     * @ORM\ManyToOne(targetEntity="AttributeGroup", inversedBy="attribtutes")
+     * @ORM\ManyToOne(targetEntity="AttributeGroup", inversedBy="attributes")
      */
     protected $group;
 
@@ -182,7 +182,7 @@ class ProductAttribute extends AbstractEntityAttributeExtended
      *
      * @return \Pim\Bundle\ProductBundle\Entity\ProductAttribute
      */
-    public function setGroup(AttributeGroup $group)
+    public function setGroup(AttributeGroup $group = null)
     {
         $this->group = $group;
 

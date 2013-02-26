@@ -40,6 +40,8 @@ class ProductAttributeType extends AttributeType
 
         $this->addFieldSmart($builder);
 
+        $this->addAttributeGroup($builder);
+
         // Add a subscriber
         $factory = $builder->getFormFactory();
         $subscriber = new ProductAttributeSubscriber($factory);
@@ -108,6 +110,15 @@ class ProductAttributeType extends AttributeType
     protected function addFieldSmart(FormBuilderInterface $builder)
     {
         $builder->add('smart', 'checkbox', array('required' => false));
+    }
+
+    /**
+     * Add a field for attribute group
+     * @param FormBuilderInterface $builder
+     */
+    protected function addAttributeGroup(FormBuilderInterface $builder)
+    {
+        $builder->add('group');
     }
 
     /**
