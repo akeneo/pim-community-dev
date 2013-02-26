@@ -72,7 +72,7 @@ class ProductController extends Controller
      * @param string $dataScope  scope
      *
      * @Route("/querylazyload/{dataLocale}/{dataScope}", defaults={"dataLocale" = null, "dataScope" = null})
-     * @Template("PimProductBundleDemoFlexibleEntityBundle:Product:index.html.twig")
+     * @Template("PimProductBundle:Product:index.html.twig")
      *
      * @return array
      */
