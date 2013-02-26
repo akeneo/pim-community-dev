@@ -1,9 +1,15 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Tests\Form\Type;
 
+use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
+
+use Symfony\Component\Form\Forms;
+
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
 
 use Pim\Bundle\ProductBundle\Form\Type\AttributeGroupType;
+
+use Pim\Bundle\ProductBundle\Tests\Entity\AttributeGroupTestEntity;
 
 /**
  * Test related class
@@ -22,6 +28,15 @@ class AttributeGroupTypeTest extends TypeTestCase
     public function setUp()
     {
         parent::setUp();
+
+        // redefine form factory
+        $this->factory = Forms::createFormFactoryBuilder()
+            ->addTypeExtension(
+                new FormTypeValidatorExtension(
+                    $this->getMock('Symfony\Component\Validator\ValidatorInterface')
+                )
+            )
+            ->getFormFactory();
 
         // Create form type
         $this->type = new AttributeGroupType();
@@ -58,5 +73,82 @@ class AttributeGroupTypeTest extends TypeTestCase
         $formType = $this->form->get($name);
         $this->assertInstanceOf('\Symfony\Component\Form\Form', $formType);
         $this->assertEquals($type, $formType->getConfig()->getType()->getInnerType()->getName());
+    }
+
+    /**
+     * Data provider for success validation of form
+     * @return multitype:multitype:multitype:mixed
+     *
+     * @static
+     */
+    public static function successProvider()
+    {
+        return array(
+            array(array('id' => 5, 'name' => 'Test-Group', 'sort_order' => 1)),
+            array(array('id' => null, 'name' => 'Test-Group', 'sort_order' => 5)),
+        );
+    }
+
+    /**
+     * Test bind data
+     * @param array $formData
+     *
+     * @dataProvider successProvider
+     */
+    public function testBindValidData($formData)
+    {
+        // create tested object
+        $object = new AttributeGroupTestEntity('\Pim\Bundle\ProductBundle\Entity\AttributeGroup', $formData);
+
+        // bind data and assert data transformer
+        $this->form->bind($formData);
+        $this->assertTrue($this->form->isSynchronized());
+        $this->assertEquals($object->getTestedEntity(), $this->form->getData());
+
+        // assert view renderer
+        $view = $this->form->createView();
+        $children = $view->getChildren();
+
+        foreach (array_keys($formData) as $key) {
+            $this->assertArrayHasKey($key, $children);
+        }
+    }
+
+    /**
+     * Data provider for success validation of form
+     * @return multitype:multitype:multitype:mixed
+     *
+     * @static
+     */
+    public static function failureProvider()
+    {
+        return array(
+            array(array('id' => 5, 'name' => 'Test-Group', 'sort_order' => 'string'))
+        );
+    }
+
+    /**
+     * Test bind data
+     * @param array $formData
+     *
+     * @dataProvider failureProvider
+     */
+    public function testBindFailedData($formData)
+    {
+        // create tested object
+        $object = new AttributeGroupTestEntity('\Pim\Bundle\ProductBundle\Entity\AttributeGroup', $formData);
+
+        // bind data and assert data transformer
+        $this->form->bind($formData);
+        $this->assertTrue($this->form->isSynchronized());
+        $this->assertNotEquals($object->getTestedEntity(), $this->form->getData());
+
+        // assert view renderer
+        $view = $this->form->createView();
+        $children = $view->getChildren();
+
+        foreach (array_keys($formData) as $key) {
+            $this->assertArrayHasKey($key, $children);
+        }
     }
 }
