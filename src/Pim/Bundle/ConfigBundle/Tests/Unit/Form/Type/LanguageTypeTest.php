@@ -1,11 +1,11 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Tests\Unit\Form\Type;
 
+use Pim\Bundle\ConfigBundle\Tests\Entity\ObjectTestEntity;
+
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 
 use Symfony\Component\Form\Forms;
-
-use Pim\Bundle\ConfigBundle\Tests\Entity\LanguageTestEntity;
 
 use Pim\Bundle\ConfigBundle\Form\Type\LanguageType;
 
@@ -98,7 +98,7 @@ class LanguageTypeTest extends TypeTestCase
     public function testBindValidData($formData)
     {
         // create tested object
-        $object = new LanguageTestEntity($formData);
+        $object = new ObjectTestEntity('\Pim\Bundle\ConfigBundle\Entity\Language', $formData);
 
         // bind data and assert data transformer
         $this->form->bind($formData);

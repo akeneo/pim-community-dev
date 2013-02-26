@@ -1,32 +1,30 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Tests\Entity;
 
-use Pim\Bundle\ConfigBundle\Entity\Language;
-
 /**
- * Language Test entity
+ * Object Test entity
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class LanguageTestEntity
+class ObjectTestEntity
 {
 
     /**
-     * @var \Pim\Bundle\ConfigBundle\Entity\Language
+     * @var mixed
      */
     protected $entity;
 
     /**
      * Constructor
-     *
-     * @param array $datas
+     * @param string $entityClass Class name of entity tested
+     * @param array  $datas       Data values for entity tested
      */
-    public function __construct(array $datas = array())
+    public function __construct($entityClass, array $datas = array())
     {
-        $this->entity = new Language();
+        $this->entity = new $entityClass();
         $this->fromArray($datas);
     }
 
@@ -35,7 +33,7 @@ class LanguageTestEntity
      *
      * @param array $datas
      *
-     * @return \Pim\Bundle\ConfigBundle\Tests\Entity\LanguageEntityTest
+     * @return \Pim\Bundle\ConfigBundle\Tests\Entity\ObjectEntityTest
      */
     public function fromArray($datas)
     {
@@ -52,7 +50,7 @@ class LanguageTestEntity
     /**
      * Get tested entity
      *
-     * @return \Pim\Bundle\ConfigBundle\Entity\Language
+     * @return mixed
      */
     public function getTestedEntity()
     {
