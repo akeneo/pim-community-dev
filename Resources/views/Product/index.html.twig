@@ -1,0 +1,137 @@
+{% extends bap.layout is defined ? bap.layout : 'ProductBundle::layout.bootstrap.html.twig' %}
+
+{% block content %}
+
+    {% set route_params = app.request.attributes.get('_route_params') %}
+    {% if route_params == "" %}
+        {% set route_params = [] %}
+        
+        {% set dataLocale = 'en_US' %}
+        {% set dataScope = 'ecommerce' %}
+        
+    {% else %}
+    
+        {% set dataLocale = route_params['dataLocale'] %}
+        {% if dataLocale is null %}
+            {% set dataLocale = 'en_US' %}
+        {% endif %}
+
+        {% set dataScope = route_params['dataScope'] %}
+        {% if dataScope is null %}
+            {% set dataScope = 'ecommerce' %}
+        {% endif %}
+    {% endif %}
+    
+    <h1>Products overview 
+        <a class="btn btn-primary pull-right" style="margin-left:10px;" href="{{ path('pim_product_product_create', {'dataLocale': dataLocale, 'dataScope': dataScope}) }}">New product</a> 
+        <a class="btn btn-primary pull-right" href="{{ path('pim_product_productattribute_index') }}">Manage attributes</a>
+    </h1>
+    
+    <br/>
+    <p>{{ "Choose data locale : " | trans }}
+    {% for locale in ['en_US', 'fr_FR', 'de_DE'] %}
+        <a class="btn btn-small btn-primary {% if dataLocale == locale %} disabled {% endif %}"
+           href="{{ path(app.request.attributes.get('_route'), route_params | merge({'dataLocale': locale})) }}">{{ locale | trans }}</a>
+    {% endfor %}
+    </p>
+    <p>{{ "Choose data scope : " | trans }}
+    {% for scope in ['ecommerce', 'mobile'] %}
+        <a class="btn btn-small btn-primary {% if dataScope == scope %} disabled {% endif %}"
+           href="{{ path(app.request.attributes.get('_route'), route_params | merge({'dataLocale': dataLocale, 'dataScope': scope})) }}">{{ scope | trans }}</a>
+    {% endfor %}
+    </p>
+    <hr/>
+
+    <ul id="menu-block">
+        <li><a href="{{ path('pim_product_product_index', {'dataLocale': dataLocale, 'dataScope': dataScope}) }}">Select entities and all attribute values</a></li>
+        <li><a href="{{ path('pim_product_product_querylazyload', {'dataLocale': dataLocale, 'dataScope': dataScope}) }}">Select just entities, attributes and values are lazy loaded</a></li>
+        
+        <li><a href="{{ path('pim_product_product_query', {'dataLocale': dataLocale, 'dataScope': dataScope, 'attributes': 'name'}) }}">Select with only attribute name</a></li>
+        <li><a href="{{ path('pim_product_product_query', {'dataLocale': dataLocale, 'dataScope': dataScope, 'attributes': 'name&description'}) }}">Select with only attribute name and description</a></li>
+        <li><a href="{{ path('pim_product_product_query', {'dataLocale': dataLocale, 'dataScope': dataScope, 'attributes': 'null', 'criteria': 'sku=sku-2'}) }}">Select filtered on field sku = 'sku-2'</a></li>
+        <li><a href="{{ path('pim_product_product_query', {'dataLocale': dataLocale, 'dataScope': dataScope, 'attributes': 'name', 'criteria': 'sku=sku-2'}) }}">Select with only attribute name and filtered on field sku = 'sku-2'</a></li>
+        
+        <li><a href="{{ path('pim_product_product_query', {'dataLocale': dataLocale, 'dataScope': dataScope, 'attributes': 'description&size', 'criteria': 'size=175'}) }}">Select with attribute description, size filtered on attribute size = 175</a></li>
+        <li><a href="{{ path('pim_product_product_query', {'dataLocale': dataLocale, 'dataScope': dataScope, 'attributes': 'description&size', 'criteria': 'size=175&description=my other description(ecommerce)'}) }}">Select with attribute description, size filtered on attribute size = 175 and description = 'my other description(ecommerce)'</a></li>
+
+        <li><a href="{{ path('pim_product_product_query', {'dataLocale': dataLocale, 'dataScope': dataScope, 'attributes': 'name&description', 'criteria': 'null', 'orderBy': 'description=desc&id=asc'}) }}">Select with attribute name and description order by description DESC and id ASC</a></li>
+        <li><a href="{{ path('pim_product_product_query', {'dataLocale': dataLocale, 'dataScope': dataScope, 'attributes': 'name&description', 'criteria': 'null', 'orderBy': 'null', 'limit':10, 'offset':0}) }}">Select with attribute name and description limit 0, 10</a></li>
+    </ul>
+
+    <hr/>
+
+    <p>Nb results : {{ products|length }}</p>
+
+    <table class="table table-bordered table-striped table-condensed">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Sku</th>
+
+            {% if 'name' in attributes %}
+                <th>Name</th>
+            {% endif %}
+
+            {% if 'description' in attributes %}
+                <th>Description</th>
+            {% endif %}
+
+            {% if 'size' in attributes %}
+                <th>Size</th>
+            {% endif %}
+
+            {% if 'color' in attributes %}
+               <th>Color</th>
+            {% endif %}
+
+            {% if 'price' in attributes %}
+               <th>Price</th>
+            {% endif %}
+
+            <th>Show</th>
+            <th>Edit</th>
+            <th>Delete</th>
+
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for product in products %}
+        <tr>
+            <!-- fields -->
+            <td>{{ product.id }}</td>
+            <td>{{ product.sku }}</td>
+
+            <!-- attributes -->
+            {% if 'name' in attributes %}
+               <td>{{ product.name }}</td>
+            {% endif %}
+
+            {% if 'description' in attributes %}
+                <td>{{ product.description }}</td>
+            {% endif %}
+
+            {% if 'size' in attributes %}
+                <td>{{product.size}} {% if product.size is not null %} {{ product.getValue('size').getUnit() }} {% endif %}</td>
+            {% endif %}
+
+            {% if 'color' in attributes %}
+                <td>{{ product.color }}</td>
+            {% endif %}
+            
+            {% if 'price' in attributes %}
+                <td>{{product.price}} {% if product.price is not null %} {{ product.getValue('price').getCurrency() }} {% endif %}</td>
+            {% endif %}
+
+            <td><a href="{{ path('pim_product_product_show', { id: product.id, 'dataLocale': dataLocale, 'dataScope': dataScope  }) }}"><i class="icon-zoom-in"></i></a></td>
+            <td><a href="{{ path('pim_product_product_edit', { id: product.id, 'dataLocale': dataLocale, 'dataScope': dataScope  }) }}"><i class="icon-edit"></i></a></td>
+            <td><a href="{{ path('pim_product_product_remove', { id: product.id, 'dataLocale': dataLocale, 'dataScope': dataScope  }) }}"><i class="icon-remove"></i></a></td>
+         </tr>
+         {% endfor %}
+
+        </tbody>
+    </table>
+
+    <hr />
+
+{% endblock %}

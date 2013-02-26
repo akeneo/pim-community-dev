@@ -6,8 +6,8 @@ use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-// use Acme\Bundle\DemoFlexibleEntityBundle\Entity\Product;
-use Acme\Bundle\DemoFlexibleEntityBundle\Form\Type\ProductType;
+use Pim\Bundle\ProductBundle\Entity\Product;
+use Pim\Bundle\ProductBundle\Form\Type\ProductType;
 
 /**
  * Product Controller
@@ -72,7 +72,7 @@ class ProductController extends Controller
      * @param string $dataScope  scope
      *
      * @Route("/querylazyload/{dataLocale}/{dataScope}", defaults={"dataLocale" = null, "dataScope" = null})
-     * @Template("AcmeDemoFlexibleEntityBundle:Product:index.html.twig")
+     * @Template("PimProductBundleDemoFlexibleEntityBundle:Product:index.html.twig")
      *
      * @return array
      */
@@ -101,7 +101,7 @@ class ProductController extends Controller
      *             "orderBy" = null, "limit" = null, "offset" = null}
      * )
      *
-     * @Template("AcmeDemoFlexibleEntityBundle:Product:index.html.twig")
+     * @Template("PimProductBundle:Product:index.html.twig")
      *
      * @return array
      */
@@ -163,7 +163,7 @@ class ProductController extends Controller
      * @param string $dataScope  data scope
      *
      * @Route("/create/{dataLocale}/{dataScope}", defaults={"dataLocale" = null, "dataScope" = null})
-     * @Template("AcmeDemoFlexibleEntityBundle:Product:edit.html.twig")
+     * @Template("PimProductBundle:Product:edit.html.twig")
      *
      * @return array
      */
@@ -209,12 +209,12 @@ class ProductController extends Controller
 
                 $this->get('session')->getFlashBag()->add('success', 'Product successfully saved');
 
-                return $this->redirect($this->generateUrl('acme_demoflexibleentity_product_index'));
+                return $this->redirect($this->generateUrl('pim_product_product_index'));
             }
         }
 
         return array(
-                'form' => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -235,6 +235,6 @@ class ProductController extends Controller
 
         $this->get('session')->getFlashBag()->add('success', 'Product successfully removed');
 
-        return $this->redirect($this->generateUrl('acme_demoflexibleentity_product_index'));
+        return $this->redirect($this->generateUrl('pim_product_product_index'));
     }
 }
