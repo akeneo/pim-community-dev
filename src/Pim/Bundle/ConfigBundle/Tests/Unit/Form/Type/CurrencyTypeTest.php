@@ -79,6 +79,8 @@ class CurrencyTypeTest extends TypeTestCase
     /**
      * Data provider for success validation of form
      * @return multitype:multitype:multitype:mixed
+     *
+     * @static
      */
     public static function successProvider()
     {
