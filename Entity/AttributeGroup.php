@@ -78,8 +78,10 @@ class AttributeGroup implements TimestampableInterface
 
     /**
      * Returns the name of the attribute group
+     * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getName();
     }
 
