@@ -182,7 +182,7 @@ class ProductAttribute extends AbstractEntityAttributeExtended
      *
      * @return \Pim\Bundle\ProductBundle\Entity\ProductAttribute
      */
-    public function setGroup(AttributeGroup $group)
+    public function setGroup(AttributeGroup $group = null)
     {
         $this->group = $group;
 

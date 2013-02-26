@@ -118,12 +118,7 @@ class ProductAttributeType extends AttributeType
      */
     protected function addAttributeGroup(FormBuilderInterface $builder)
     {
-        $builder->add('group', 'entity', array(
-                'class'     => 'PimProductBundle:AttributeGroup',
-                'property'  => 'name',
-                'required'  => false,
-                'multiple'  => false
-            ));
+        $builder->add('group');
     }
 
     /**

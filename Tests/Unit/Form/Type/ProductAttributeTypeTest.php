@@ -39,6 +39,8 @@ class ProductAttributeTypeTest extends TypeTestCase
         $this->assertField('variant', 'choice');
         $this->assertField('smart', 'checkbox');
 
+        $this->assertField('group', 'text');
+
         $this->assertAttributeType();
 
         // Assert option class
