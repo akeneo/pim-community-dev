@@ -1,6 +1,12 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Tests\Unit\Form\Type;
 
+use Symfony\Component\Form\Forms;
+
+use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
+
+use Pim\Bundle\ConfigBundle\Tests\Entity\CurrencyTestEntity;
+
 use Pim\Bundle\ConfigBundle\Form\Type\CurrencyType;
 
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
@@ -23,6 +29,15 @@ class CurrencyTypeTest extends TypeTestCase
     {
         parent::setUp();
 
+        // redefine form factory
+        $this->factory = Forms::createFormFactoryBuilder()
+            ->addTypeExtension(
+                new FormTypeValidatorExtension(
+                    $this->getMock('Symfony\Component\Validator\ValidatorInterface')
+                )
+            )
+            ->getFormFactory();
+
         // Create form type
         $this->type = new CurrencyType();
         $this->form = $this->factory->create($this->type);
@@ -31,7 +46,7 @@ class CurrencyTypeTest extends TypeTestCase
     /**
      * Test build of form with form type
      */
-    public function testFormCreate()
+    public function testFormType()
     {
         // Assert fields
         $this->assertField('id', 'hidden');
@@ -59,5 +74,41 @@ class CurrencyTypeTest extends TypeTestCase
         $formType = $this->form->get($name);
         $this->assertInstanceOf('\Symfony\Component\Form\Form', $formType);
         $this->assertEquals($type, $formType->getConfig()->getType()->getInnerType()->getName());
+    }
+
+    /**
+     * Data provider for success validation of form
+     * @return multitype:multitype:multitype:mixed
+     */
+    public static function successProvider()
+    {
+        return array(
+            array(array('id' => 5, 'code' => 'EUR', 'label' => 'tested label', 'activated' => true))
+        );
+    }
+
+    /**
+     * Test bind data
+     * @param array $formData
+     *
+     * @dataProvider successProvider
+     */
+    public function testBindValidData($formData)
+    {
+        // create tested object
+        $object = new CurrencyTestEntity($formData);
+
+        // bind data and assert data transformer
+        $this->form->bind($formData);
+        $this->assertTrue($this->form->isSynchronized());
+        $this->assertEquals($object->getTestedEntity(), $this->form->getData());
+
+        // assert view renderer
+        $view = $this->form->createView();
+        $children = $view->getChildren();
+
+        foreach (array_keys($formData) as $key) {
+            $this->assertArrayHasKey($key, $children);
+        }
     }
 }
