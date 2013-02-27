@@ -80,11 +80,15 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attribute->setTranslatable(true);
         $attribute->setScopable(true);
         $this->getProductManager()->getStorageManager()->persist($attribute);
+        $this->setReference('product-attribute.short-description', $attribute);
+
 
         $attribute = $this->createAttribute(new TextAreaType(), 'long-description');
         $attribute->setTranslatable(true);
         $attribute->setScopable(true);
         $this->getProductManager()->getStorageManager()->persist($attribute);
+        $this->setReference('product-attribute.long-description', $attribute);
+
 
         $attribute = $this->createAttribute(new OptionMultiCheckboxType(), 'generic-color');
         $attribute->setTranslatable(true);
@@ -96,6 +100,8 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
             $attribute->addOption($option);
         }
         $this->getProductManager()->getStorageManager()->persist($attribute);
+        $this->setReference('product-attribute.generic-color', $attribute);
+
 
         $attribute = $this->createAttribute(new OptionSimpleSelectType(), 'generic-size');
         $attribute->setTranslatable(true);
@@ -107,6 +113,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
             $attribute->addOption($option);
         }
         $this->getProductManager()->getStorageManager()->persist($attribute);
+        $this->setReference('product-attribute.generic-size', $attribute);
 
         // flush
         $this->getProductManager()->getStorageManager()->flush();
