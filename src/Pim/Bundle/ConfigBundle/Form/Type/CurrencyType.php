@@ -33,8 +33,6 @@ class CurrencyType extends AbstractType
 
         $builder->add('code', 'choice', array('choices' => StubLocale::getDisplayCurrencies(\Locale::getDefault())));
 
-        $builder->add('label');
-
         $builder->add('activated', 'checkbox', array('required' => false));
     }
 

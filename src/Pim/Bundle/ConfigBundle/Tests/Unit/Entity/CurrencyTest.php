@@ -52,20 +52,6 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for label property
-     */
-    public function testGetSetLabel()
-    {
-        $currency = new Currency();
-        $this->assertEmpty($currency->getLabel());
-
-        // change value and assert new
-        $newLabel = 'Euro';
-        $currency->setLabel($newLabel);
-        $this->assertEquals($newLabel, $currency->getLabel());
-    }
-
-    /**
      * Test getter/setter for activated property
      */
     public function testGetSetActivated()
