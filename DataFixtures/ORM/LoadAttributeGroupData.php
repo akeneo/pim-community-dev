@@ -72,15 +72,15 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
         $this->getGroupManager()->getStorageManager()->persist($group);
 
         // link attributes with group
-        $attribute = $this->findAttribute('name');
+        $attribute = $this->getReference('product-attribute.name');
         $attribute->setGroup($group);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
-        $attribute = $this->findAttribute('short-description');
+        $attribute = $this->getReference('product-attribute.short-description');
         $attribute->setGroup($group);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
-        $attribute = $this->findAttribute('long-description');
+        $attribute = $this->getReference('product-attribute.long-description');
         $attribute->setGroup($group);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
@@ -95,7 +95,7 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
         $group = $this->createGroup('Sizes');
         $this->getGroupManager()->getStorageManager()->persist($group);
 
-        $attribute = $this->findAttribute('generic-size');
+        $attribute = $this->getReference('product-attribute.generic-size');
         $attribute->setGroup($group);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
@@ -103,7 +103,11 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
         $group = $this->createGroup('Colors');
         $this->getGroupManager()->getStorageManager()->persist($group);
 
-        $attribute = $this->findAttribute('generic-color');
+        $attribute = $this->getReference('product-attribute.generic-color');
+        $attribute->setGroup($group);
+        $this->getProductManager()->getStorageManager()->persist($attribute);
+
+        $attribute = $this->getReference('product-attribute.name');
         $attribute->setGroup($group);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
@@ -118,21 +122,6 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
     protected function getProductManager()
     {
         return $this->container->get('product_manager');
-    }
-
-    /**
-     * Get product attribute
-     * @param string $code
-     *
-     * @return ProductAttribute
-     */
-    protected function findAttribute($code)
-    {
-        $attribute = $this->getProductManager()->getAttributeRepository()->findOneBy(array('code' => $code));
-
-        return $this->getProductManager()->getAttributeExtendedRepository()->findOneBy(
-            array('attribute' => $attribute)
-        );
     }
 
     /**
@@ -155,6 +144,6 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
      */
     public function getOrder()
     {
-        return 3;
+        return 5;
     }
 }
