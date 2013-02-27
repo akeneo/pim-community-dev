@@ -41,8 +41,17 @@ class ProductAttributeType extends AttributeType
         $this->addFieldSmart($builder);
 
         $this->addAttributeGroup($builder);
+    }
 
-        // Add a subscriber
+    /**
+     * Add subscriber
+     * @param FormBuilderInterface $builder
+     */
+    protected function addSubscriber(FormBuilderInterface $builder)
+    {
+        parent::addSubscriber($builder);
+
+        // add our own subscriber for custom features
         $factory = $builder->getFormFactory();
         $subscriber = new ProductAttributeSubscriber($factory);
         $builder->addEventSubscriber($subscriber);

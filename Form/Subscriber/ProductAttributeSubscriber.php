@@ -70,48 +70,11 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
             // get form
             $form = $event->getForm();
 
-            // Add attribute option type before editing
-            if ($data->getBackendType() === AbstractAttributeType::BACKEND_TYPE_OPTION) {
-                $form->add(
-                    $this->factory->createNamed(
-                        'options',
-                        'collection',
-                        null,
-                        array(
-                            'type'         => new AttributeOptionType(),
-                            'allow_add'    => true,
-                            'allow_delete' => true,
-                            'by_reference' => false
-                        )
-                    )
-                );
-            }
+            // NOTICE : now the subscriber used is declared in flexible entity bundle (cf AttributeTypeSubscriber) :
+            // - if you need to add our custom feature you can code it here
+            // - if the feature you develop is common to any flexible you can develop in AttributeTypeSubscriber
 
-            // Disabled fields editing
-            $this->disableField($form, 'code');
-            $this->disableField($form, 'attributeType');
+            // TODO : for now for default value you can code here it's ok
         }
-    }
-
-    /**
-     * Disable a field from its name
-     * @param Form   $form Form
-     * @param string $name Field name
-     */
-    protected function disableField(Form $form, $name)
-    {
-        // get form field and field properties
-        $formField = $form->get($name);
-
-        $type = $formField->getConfig()->getType();
-        $options = $formField->getConfig()->getOptions();
-
-        // set disabled and read-only
-        $options['disabled'] = true;
-        $options['read_only'] = true;
-
-        // replace field in form
-        $formField = $this->factory->createNamed($name, $type, null, $options);
-        $form->add($formField);
     }
 }
