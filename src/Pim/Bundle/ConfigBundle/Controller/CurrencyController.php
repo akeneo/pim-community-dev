@@ -85,21 +85,22 @@ class CurrencyController extends Controller
     }
 
     /**
-     * Remove currency
+     * Disable currency
      *
      * @param Currency $currency
      *
-     * @Route("/remove/{id}", requirements={"id"="\d+"})
+     * @Route("/disable/{id}", requirements={"id"="\d+"})
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function removeAction(Currency $currency)
+    public function disableAction(Currency $currency)
     {
-        $manager = $this->getCurrencyManager()->getStorageManager();
-        $manager->remove($currency);
-        $manager->flush();
+        // change activation
+        $currency->setActivated(false);
+        $this->getCurrencyManager()->getStorageManager()->persist($currency);
+        $this->getCurrencyManager()->getStorageManager()->flush();
 
-        $this->get('session')->getFlashBag()->add('success', 'Currency successfully removed');
+        $this->get('session')->getFlashBag()->add('success', 'Currency successfully unactivated');
 
         return $this->redirect($this->generateUrl('pim_config_currency_index'));
     }

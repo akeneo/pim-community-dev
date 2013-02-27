@@ -11,29 +11,23 @@
         <thead>
             <tr>
                 <th>{{ 'Code'|trans }}</th>
-                <th>{{ 'Label'|trans }}</th>
                 <th>{{ 'Activated'|trans }}</th>
-                <th>{{ 'Created'|trans }}</th>
-                <th>{{ 'Updated'|trans }}</th>
                 <th style="width: 50px">{{ 'Edit'|trans }}</th>
-                <th style="width: 50px">{{ 'Remove'|trans }}</th>
+                <th style="width: 50px">{{ 'Disable'|trans }}</th>
             </tr>
         </thead>
         <tbody>
             {% for currency in currencies %}
             <tr>
                 <td>{{ currency.code }}</td>
-                <td>{{ currency.label }}</td>
                 <td>{{ currency.activated }}</td>
-                <td></td>
-                <td></td>
                 <td>
                     <a href="{{ path('pim_config_currency_edit', { id: currency.id }) }}">
                         <i class="icon-edit"></i>
                     </a>
                 </td>
                 <td>
-                    <a href="{{ path('pim_config_currency_remove', { id: currency.id }) }}">
+                    <a href="{{ path('pim_config_currency_disable', { id: currency.id }) }}">
                         <i class="icon-remove"></i>
                     </a>
                 </td>
