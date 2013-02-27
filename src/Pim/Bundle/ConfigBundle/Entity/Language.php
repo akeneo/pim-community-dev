@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,6 +35,24 @@ class Language
     protected $code;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="fallback", type="string", length=10)
+     */
+    protected $fallback;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Currency")
+     * @ORM\JoinTable(name="pim_language_currency",
+     *     joinColumns={@ORM\JoinColumn(name="language_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="currency_id", referencedColumnName="id")}
+     * )
+     */
+    protected $currencies;
+
+    /**
      * @var boolean $activated
      *
      * @ORM\Column(name="is_activate", type="boolean")
@@ -45,6 +65,7 @@ class Language
     public function __construct()
     {
         $this->activated = true;
+        $this->currencies = new ArrayCollection();
     }
 
     /**
@@ -96,6 +117,30 @@ class Language
     }
 
     /**
+     * Get fallback
+     *
+     * @return string
+     */
+    public function getFallback()
+    {
+        return $this->fallback;
+    }
+
+    /**
+     * Set fallback
+     *
+     * @param string $fallback
+     *
+     * @return \Pim\Bundle\ConfigBundle\Entity\Language
+     */
+    public function setFallback($fallback)
+    {
+        $this->fallback = $fallback;
+
+        return $this;
+    }
+
+    /**
      * Get activated
      *
      * @return boolean
@@ -117,5 +162,15 @@ class Language
         $this->activated = $activated;
 
         return $this;
+    }
+
+    /**
+     * Get currencies
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getCurrencies()
+    {
+        return $this->currencies;
     }
 }
