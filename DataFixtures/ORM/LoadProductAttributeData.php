@@ -76,11 +76,6 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $this->createAttribute(new DateType(), 'date-field', true);
 
         // create specific attributes
-        $attribute = $this->createAttribute(new TextType(), 'name');
-        $attribute->setRequired(true);
-        $attribute->setTranslatable(true);
-        $this->getProductManager()->getStorageManager()->persist($attribute);
-
         $attribute = $this->createAttribute(new TextAreaType(), 'short-description');
         $attribute->setTranslatable(true);
         $attribute->setScopable(true);
@@ -111,9 +106,6 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
             $option = $this->createOption($size);
             $attribute->addOption($option);
         }
-        $this->getProductManager()->getStorageManager()->persist($attribute);
-
-        $attribute = $this->createAttribute(new MoneyType(), 'price');
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
         // flush
