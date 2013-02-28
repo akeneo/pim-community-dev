@@ -173,4 +173,18 @@ class Language
     {
         return $this->currencies;
     }
+
+    /**
+     * Set currencies
+     *
+     * @param array $currencies
+     *
+     * @return \Pim\Bundle\ConfigBundle\Entity\Language
+     */
+    public function setCurrencies($currencies = array())
+    {
+        $this->currencies = $currencies;
+
+        return $this;
+    }
 }

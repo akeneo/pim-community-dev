@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Form\Type;
 
+use Symfony\Component\Locale\Locale;
+
 use Doctrine\ORM\EntityRepository;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -29,14 +31,49 @@ class LanguageType extends AbstractType
 
         $builder->add('id', 'hidden');
 
-        $builder->add('code', 'locale');    // TODO : purge all useless locales
+        // Add locale field and fallback field
+        $this->addLocaleField($builder);
 
-        $builder->add('fallback', 'locale');
+        $this->addFallbackField($builder);
 
-        // add currency field
+        // Add currency field
         $this->addCurrencyField($builder);
 
         $builder->add('activated', 'checkbox', array('required' => false));
+    }
+
+    /**
+     * Add locale field
+     * @param FormBuilderInterface $builder
+     */
+    protected function addLocaleField(FormBuilderInterface $builder)
+    {
+        $builder->add(
+            'code',
+            'choice',
+            array(
+                'choices' => Locale::getDisplayLocales(\Locale::getDefault()),
+                'required' => true,
+                'preferred_choices' => array('en', 'fr', 'en_US')
+            )
+        );
+    }
+
+    /**
+     * Add fallback field
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFallbackField(FormBuilderInterface $builder)
+    {
+        $builder->add(
+            'fallback',
+            'choice',
+            array(
+                'choices' => Locale::getDisplayLocales(\Locale::getDefault()),
+                'required' => true,
+                'preferred_choices' => array('en', 'fr', 'en_US')
+            )
+        );
     }
 
     /**

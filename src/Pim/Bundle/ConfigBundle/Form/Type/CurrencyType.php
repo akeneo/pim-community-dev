@@ -31,11 +31,14 @@ class CurrencyType extends AbstractType
 
         $builder->add('id', 'hidden');
 
+        $currencies = StubLocale::getDisplayCurrencies(\Locale::getDefault());
+        asort($currencies);
+
         $builder->add(
             'code',
             'choice',
             array(
-                'choices' => StubLocale::getDisplayCurrencies(\Locale::getDefault()),
+                'choices' => $currencies,
                 'required' => true,
                 'preferred_choices' => array('USD', 'EUR')
             )
