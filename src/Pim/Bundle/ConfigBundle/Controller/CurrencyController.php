@@ -95,12 +95,12 @@ class CurrencyController extends Controller
      */
     public function disableAction(Currency $currency)
     {
-        // change activation
+        // Disable activated property
         $currency->setActivated(false);
         $this->getCurrencyManager()->getStorageManager()->persist($currency);
         $this->getCurrencyManager()->getStorageManager()->flush();
 
-        $this->get('session')->getFlashBag()->add('success', 'Currency successfully unactivated');
+        $this->get('session')->getFlashBag()->add('success', 'Currency successfully disable');
 
         return $this->redirect($this->generateUrl('pim_config_currency_index'));
     }

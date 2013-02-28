@@ -15,13 +15,15 @@
                 <th>{{ 'Currencies'|trans }}</th>
                 <th>{{ 'Activated'|trans }}</th>
                 <th style="width: 50px">{{ 'Edit'|trans }}</th>
-                <th style="width: 50px">{{ 'Remove'|trans }}</th>
+                <th style="width: 50px">{{ 'Disable'|trans }}</th>
             </tr>
         </thead>
         <tbody>
             {% for language in languages %}
             <tr>
-                <td>{{ language.code }}</td>
+                <td>
+                    <a href="{{ path('pim_config_language_edit', { id: language.id }) }}">{{ language.code }}</a>
+                </td>
                 <td>{{ language.fallback }}</td>
                 <td>
                     {% for currency in language.currencies %}
@@ -35,7 +37,7 @@
                     </a>
                 </td>
                 <td>
-                    <a href="{{ path('pim_config_language_remove', { id: language.id }) }}">
+                    <a href="{{ path('pim_config_language_disable', { id: language.id }) }}">
                         <i class="icon-remove"></i>
                     </a>
                 </td>

@@ -19,7 +19,9 @@
         <tbody>
             {% for currency in currencies %}
             <tr>
-                <td>{{ currency.code }}</td>
+                <td>
+                    <a href="{{ path('pim_config_currency_edit', { id: currency.id }) }}">{{ currency.code }}</a>
+                </td>
                 <td>{{ currency.activated }}</td>
                 <td>
                     <a href="{{ path('pim_config_currency_edit', { id: currency.id }) }}">
