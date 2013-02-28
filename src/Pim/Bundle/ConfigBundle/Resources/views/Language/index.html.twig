@@ -11,6 +11,8 @@
         <thead>
             <tr>
                 <th>{{ 'Code'|trans }}</th>
+                <th>{{ 'Fallback'|trans }}</th>
+                <th>{{ 'Currencies'|trans }}</th>
                 <th>{{ 'Activated'|trans }}</th>
                 <th style="width: 50px">{{ 'Edit'|trans }}</th>
                 <th style="width: 50px">{{ 'Remove'|trans }}</th>
@@ -20,6 +22,12 @@
             {% for language in languages %}
             <tr>
                 <td>{{ language.code }}</td>
+                <td>{{ language.fallback }}</td>
+                <td>
+                    {% for currency in language.currencies %}
+                        {{ currency.code }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
                 <td>{{ language.activated }}</td>
                 <td>
                     <a href="{{ path('pim_config_language_edit', { id: language.id }) }}">
