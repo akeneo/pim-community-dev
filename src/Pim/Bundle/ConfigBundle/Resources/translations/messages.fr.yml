@@ -2,9 +2,10 @@
 'Languages overview': 'Aperçu des langues'
 'New language': 'Nouvelle langue'
 'Code': 'Code'
+'Fallback': 'Repli'
 'Activated': 'Actif'
 'Edit': 'Modifier'
-'Remove': 'Supprimer'
+'Disable': 'Désactiver'
 
 'Edit language': 'Modifier une langue'
 'Add language': 'Ajouter une langue'

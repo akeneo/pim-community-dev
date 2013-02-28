@@ -85,21 +85,22 @@ class LanguageController extends Controller
     }
 
     /**
-     * Remove language
+     * Disable language
      *
      * @param Language $language
      *
-     * @Route("/remove/{id}", requirements={"id"="\d+"})
+     * @Route("/disable/{id}", requirements={"id"="\d+"})
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function removeAction(Language $language)
+    public function disableAction(Language $language)
     {
-        $manager = $this->getLanguageManager()->getStorageManager();
-        $manager->remove($language);
-        $manager->flush();
+        // Disable activated property
+        $language->setActivated(false);
+        $this->getLanguageManager()->getStorageManager()->persist($language);
+        $this->getLanguageManager()->getStorageManager()->flush();
 
-        $this->get('session')->getFlashBag()->add('success', 'Language successfully removed');
+        $this->get('session')->getFlashBag()->add('success', 'Language successfully disable');
 
         return $this->redirect($this->generateUrl('pim_config_language_index'));
     }

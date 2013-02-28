@@ -51,7 +51,6 @@ class CurrencyTypeTest extends TypeTestCase
         // Assert fields
         $this->assertField('id', 'hidden');
         $this->assertField('code', 'choice');
-        $this->assertField('label', 'text');
         $this->assertField('activated', 'checkbox');
 
         // Assert option class
@@ -85,7 +84,7 @@ class CurrencyTypeTest extends TypeTestCase
     public static function successProvider()
     {
         return array(
-            array(array('id' => 5, 'code' => 'EUR', 'label' => 'tested label', 'activated' => true))
+            array(array('id' => 5, 'code' => 'EUR', 'activated' => true))
         );
     }
 
