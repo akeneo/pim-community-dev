@@ -183,7 +183,35 @@ class Language
      */
     public function setCurrencies($currencies = array())
     {
-        $this->currencies = $currencies;
+        $this->currencies = new ArrayCollection($currencies);
+
+        return $this;
+    }
+
+    /**
+     * Add a currency to the collection
+     *
+     * @param Currency $currency
+     *
+     * @return \Pim\Bundle\ConfigBundle\Entity\Language
+     */
+    public function addCurrency(Currency $currency)
+    {
+        $this->currencies->add($currency);
+
+        return $this;
+    }
+
+    /**
+     * Remove a currency from the collection
+     *
+     * @param Currency $currency
+     *
+     * @return \Pim\Bundle\ConfigBundle\Entity\Language
+     */
+    public function removeCurrency(Currency $currency)
+    {
+        $this->currencies->removeElement($currency);
 
         return $this;
     }

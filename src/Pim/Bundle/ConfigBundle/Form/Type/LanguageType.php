@@ -86,7 +86,7 @@ class LanguageType extends AbstractType
             'currencies',
             'entity',
             array(
-                'class' => 'PimConfigBundle:Currency',
+                'class' => 'Pim\Bundle\ConfigBundle\Entity\Currency',
                 'property' => 'code',
                 'multiple' => true,
                 'query_builder' => function (EntityRepository $repository) {
