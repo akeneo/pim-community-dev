@@ -39,7 +39,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 {
 
     /**
-     * @var ContainerInterface
+     * @var \Symfony\Component\DependencyInjection\ContainerInterface
      */
     protected $container;
 

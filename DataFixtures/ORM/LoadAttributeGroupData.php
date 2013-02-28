@@ -7,8 +7,6 @@ use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
-use Oro\Bundle\FlexibleEntityBundle\Manager\SimpleManager;
-
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -29,7 +27,7 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
 {
 
     /**
-     * @var ContainerInterface
+     * @var \Symfony\Component\DependencyInjection\ContainerInterface
      */
     protected $container;
 
@@ -55,7 +53,7 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
 
     /**
      * Get group manager
-     * @return SimpleManager
+     * @return \Oro\Bundle\FlexibleEntityBundle\Manager\SimpleManager
      */
     protected function getGroupManager()
     {
@@ -91,11 +89,21 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
         $group = $this->createGroup('Marketing');
         $this->getGroupManager()->getStorageManager()->persist($group);
 
+        $attribute = $this->getReference('product-attribute.price');
+        $attribute->setGroup($group);
+        $this->getProductManager()->getStorageManager()->persist($attribute);
+
+
+
         // create group and link attribute
         $group = $this->createGroup('Sizes');
         $this->getGroupManager()->getStorageManager()->persist($group);
 
         $attribute = $this->getReference('product-attribute.generic-size');
+        $attribute->setGroup($group);
+        $this->getProductManager()->getStorageManager()->persist($attribute);
+
+        $attribute = $this->getReference('product-attribute.size');
         $attribute->setGroup($group);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
@@ -107,7 +115,7 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
         $attribute->setGroup($group);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
-        $attribute = $this->getReference('product-attribute.name');
+        $attribute = $this->getReference('product-attribute.color');
         $attribute->setGroup($group);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
