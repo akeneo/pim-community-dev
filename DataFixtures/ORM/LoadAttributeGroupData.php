@@ -91,11 +91,21 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
         $group = $this->createGroup('Marketing');
         $this->getGroupManager()->getStorageManager()->persist($group);
 
+        $attribute = $this->getReference('product-attribute.price');
+        $attribute->setGroup($group);
+        $this->getProductManager()->getStorageManager()->persist($attribute);
+
+
+
         // create group and link attribute
         $group = $this->createGroup('Sizes');
         $this->getGroupManager()->getStorageManager()->persist($group);
 
         $attribute = $this->getReference('product-attribute.generic-size');
+        $attribute->setGroup($group);
+        $this->getProductManager()->getStorageManager()->persist($attribute);
+
+        $attribute = $this->getReference('product-attribute.size');
         $attribute->setGroup($group);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
@@ -107,7 +117,7 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
         $attribute->setGroup($group);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
-        $attribute = $this->getReference('product-attribute.name');
+        $attribute = $this->getReference('product-attribute.color');
         $attribute->setGroup($group);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
