@@ -33,13 +33,6 @@ class Currency
     protected $code;
 
     /**
-     * @var string $label
-     *
-     * @ORM\Column(name="label", type="string", length=50)
-     */
-    protected $label;
-
-    /**
      * @var boolean $activated
      *
      * @ORM\Column(name="is_activate", type="boolean")
@@ -98,30 +91,6 @@ class Currency
     public function setCode($code)
     {
         $this->code = $code;
-
-        return $this;
-    }
-
-    /**
-     * Get label
-     *
-     * @return string
-     */
-    public function getLabel()
-    {
-        return $this->label;
-    }
-
-    /**
-     * Set label
-     *
-     * @param string $label
-     *
-     * @return \Pim\Bundle\ConfigBundle\Entity\Currency
-     */
-    public function setLabel($label)
-    {
-        $this->label = $label;
 
         return $this;
     }
