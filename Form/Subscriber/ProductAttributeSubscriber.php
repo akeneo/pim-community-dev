@@ -74,7 +74,15 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
             // - if you need to add our custom feature you can code it here
             // - if the feature you develop is common to any flexible you can develop in AttributeTypeSubscriber
 
-            // TODO : for now for default value you can code here it's ok
+            $attribute = $data->getAttribute();
+            $attTypeClass = $attribute->getAttributeType();
+            $attType = new $attTypeClass();
+
+            $formType = $attType->getFormType();
+
+            if (!in_array($formType, array('file', 'entity', 'option', 'options'))) {
+                $form->add($this->factory->createNamed('default_value', $formType));
+            }
         }
     }
 }

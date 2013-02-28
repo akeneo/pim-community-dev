@@ -130,6 +130,16 @@ class ProductAttributeType extends AttributeType
         $builder->add('group');
     }
 
+     /**
+     * Overwrite the parent's addFieldDefaultValue method to prevent adding
+     * default value regardless of attribute type
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldDefaultValue(FormBuilderInterface $builder)
+    {
+    }
+
     /**
      * {@inheritdoc}
      */
