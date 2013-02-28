@@ -7,8 +7,6 @@ use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
-use Oro\Bundle\FlexibleEntityBundle\Manager\SimpleManager;
-
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -29,7 +27,7 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
 {
 
     /**
-     * @var ContainerInterface
+     * @var \Symfony\Component\DependencyInjection\ContainerInterface
      */
     protected $container;
 
@@ -55,7 +53,7 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
 
     /**
      * Get group manager
-     * @return SimpleManager
+     * @return \Oro\Bundle\FlexibleEntityBundle\Manager\SimpleManager
      */
     protected function getGroupManager()
     {
