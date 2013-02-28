@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_lang")
+ * @ORM\Table(name="pim_language")
  * @ORM\Entity
  */
 class Language
