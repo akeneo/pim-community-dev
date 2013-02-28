@@ -32,6 +32,12 @@ class ProductAttributeValidator
     const VIOLATION_UNIQUE = 'Unique attribute results in used of Global scope and no translations';
 
     /**
+     * Violation message for disabled default value of attribute
+     * @staticvar string
+     */
+    const VIOLATION_DEFAULT_VALUE_DISABLED = 'No default value may be specified for this attribute type';
+
+    /**
      * Validate ProductAttribute entity
      * @param ProductAttribute $productAttribute ProductAttirbute entity
      * @param ExecutionContext $context          Execution context
@@ -42,6 +48,7 @@ class ProductAttributeValidator
     {
         self::isAttributeTypeMatrixValid($productAttribute, $context);
         self::isUniqueConstraintValid($productAttribute, $context);
+        self::isDefaultValueValid($productAttribute, $context);
     }
 
     /**
@@ -116,6 +123,35 @@ class ProductAttributeValidator
             if ($productAttribute->getScopable() != false
                 || $productAttribute->getTranslatable() === true) {
                 $context->addViolation(self::VIOLATION_UNIQUE);
+            }
+        }
+    }
+
+   /**
+     * Validation rule for the default value
+     *
+     * @param ProductAttribute $productAttribute ProductAttirbute entity
+     * @param ExecutionContext $context          Execution context
+     *
+     * @static
+     */
+    protected static function isDefaultValueValid(ProductAttribute $productAttribute, ExecutionContext $context)
+    {
+        if ($productAttribute->getDefaultValue()) {
+            $path = preg_split('/[^[:alnum:]]/', $productAttribute->getAttributeType());
+            $type = end($path);
+
+            $exclusions = array(
+                'OptionMultiCheckboxType',
+                'OptionMultiSelectType',
+                'OptionSimpleRadioType',
+                'OptionSimpleSelectType',
+                'FileType',
+                'ImageType',
+            );
+
+            if (in_array($type, $exclusions)) {
+                $context->addViolation(self::VIOLATION_DEFAULT_VALUE_DISABLED);
             }
         }
     }

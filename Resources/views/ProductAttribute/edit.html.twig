@@ -41,7 +41,9 @@
         
         {{ form_row(form.searchable) }}
         
+        {% if form.default_value is defined %}
         {{ form_row(form.default_value) }}
+        {% endif %}
         
         {{ form_row(form.variant) }}
         

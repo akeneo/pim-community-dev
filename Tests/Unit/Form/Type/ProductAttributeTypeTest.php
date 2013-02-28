@@ -78,6 +78,5 @@ class ProductAttributeTypeTest extends TypeTestCase
         $this->assertField('translatable', 'checkbox');
         $this->assertField('scopable', 'choice');
         $this->assertField('searchable', 'checkbox');
-        $this->assertField('default_value', 'text');
     }
 }
