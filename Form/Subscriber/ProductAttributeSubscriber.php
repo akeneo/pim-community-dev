@@ -80,8 +80,17 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
 
             $formType = $attType->getFormType();
 
-            if (!in_array($formType, array('file', 'entity', 'option', 'options'))) {
-                $form->add($this->factory->createNamed('default_value', $formType));
+            if (!in_array($formType, array('file', 'entity', 'options'))) {
+                $options = array();
+                if (strpos($attribute->getAttributeType(), 'BooleanType') !== false) {
+                    $formType = 'choice';
+                    $options['choices'] = array(
+                        0 => 'No',
+                        1 => 'Yes'
+                    );
+                }
+
+                $form->add($this->factory->createNamed('default_value', $formType, null, $options));
             }
         }
     }
