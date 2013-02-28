@@ -99,10 +99,6 @@
         </div>
     </fieldset>
 </form>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
 <script type="text/javascript">
     {% if form.options is defined %}
         {% include 'PimProductBundle:ProductAttribute:_js-option.html.twig' %}
