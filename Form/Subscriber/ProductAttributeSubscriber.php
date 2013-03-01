@@ -67,13 +67,8 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
 
         // only when editing
         if ($data->getId()) {
-            // get form
+
             $form = $event->getForm();
-
-            // NOTICE : now the subscriber used is declared in flexible entity bundle (cf AttributeTypeSubscriber) :
-            // - if you need to add our custom feature you can code it here
-            // - if the feature you develop is common to any flexible you can develop in AttributeTypeSubscriber
-
             $attribute = $data->getAttribute();
             $attTypeClass = $attribute->getAttributeType();
             $attType = new $attTypeClass();
