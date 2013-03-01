@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\ConfigBundle\DependencyInjection;
 
-use Pim\Bundle\ConfigBundle\Model\Locale;
-
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;

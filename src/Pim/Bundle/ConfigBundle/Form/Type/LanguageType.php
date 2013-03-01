@@ -67,7 +67,7 @@ class LanguageType extends AbstractType
             'code',
             'choice',
             array(
-                'choices' => static::prepareLanguageList($this->languages),
+                'choices' => $this->prepareLanguageList($this->languages),
                 'required' => true,
                 'preferred_choices' => array('en_EN', 'fr_FR', 'en_US')
             )
@@ -84,7 +84,7 @@ class LanguageType extends AbstractType
             'fallback',
             'choice',
             array(
-                'choices' => static::prepareLanguageList($this->languages),
+                'choices' => $this->prepareLanguageList($this->languages),
                 'required' => true,
                 'preferred_choices' => array('en_EN', 'fr_FR', 'en_US')
             )
@@ -96,10 +96,8 @@ class LanguageType extends AbstractType
      * @param array $languages
      *
      * @return multitype:string
-     *
-     * @static
      */
-    protected static function prepareLanguageList($languages = array())
+    protected function prepareLanguageList($languages = array())
     {
         $choices = array();
 
@@ -107,7 +105,7 @@ class LanguageType extends AbstractType
             $choices[$code] = $language['label'];
         }
 
-        // Sort choices by alpĥabetical
+        // Sort choices by alphabetical
         asort($choices);
 
         return $choices;
