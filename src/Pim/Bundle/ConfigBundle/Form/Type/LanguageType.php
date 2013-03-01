@@ -69,7 +69,7 @@ class LanguageType extends AbstractType
             array(
                 'choices' => static::prepareLanguageList($this->languages),
                 'required' => true,
-                'preferred_choices' => array('en', 'fr', 'en_US')
+                'preferred_choices' => array('en_EN', 'fr_FR', 'en_US')
             )
         );
     }
@@ -86,7 +86,7 @@ class LanguageType extends AbstractType
             array(
                 'choices' => static::prepareLanguageList($this->languages),
                 'required' => true,
-                'preferred_choices' => array('en', 'fr', 'en_US')
+                'preferred_choices' => array('en_EN', 'fr_FR', 'en_US')
             )
         );
     }
