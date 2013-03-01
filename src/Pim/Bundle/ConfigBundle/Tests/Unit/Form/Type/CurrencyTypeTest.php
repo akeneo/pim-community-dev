@@ -1,6 +1,10 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Tests\Unit\Form\Type;
 
+use Symfony\Component\Finder\Finder;
+
+use Symfony\Component\Yaml\Yaml;
+
 use Pim\Bundle\ConfigBundle\Tests\Entity\ObjectTestEntity;
 
 use Symfony\Component\Form\Forms;
@@ -38,9 +42,27 @@ class CurrencyTypeTest extends TypeTestCase
             )
             ->getFormFactory();
 
+        // initialize currency configuration
+        $config = $this->initializeConfiguration();
+
         // Create form type
-        $this->type = new CurrencyType();
+        $this->type = new CurrencyType($config);
         $this->form = $this->factory->create($this->type);
+    }
+
+    /**
+     * Initialize currency configuration
+     * @return config
+     */
+    protected function initializeConfiguration()
+    {
+        $filepath = realpath(dirname(__FILE__) .'/../../../../Resources/config') .'/pim_currencies.yml';
+
+        if (!file_exists($filepath)) {
+            throw new \Exception($filepath .' not exists');
+        }
+
+        return Yaml::parse($filepath);
     }
 
     /**

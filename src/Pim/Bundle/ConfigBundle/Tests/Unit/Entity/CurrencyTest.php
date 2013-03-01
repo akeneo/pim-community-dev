@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Tests\Unit\Entity;
 
+use Pim\Bundle\ConfigBundle\Entity\Language;
+
 use Pim\Bundle\ConfigBundle\Entity\Currency;
 
 /**
@@ -63,5 +65,47 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
         $newActivated = false;
         $currency->setActivated($newActivated);
         $this->assertFalse($currency->getActivated());
+    }
+
+    /**
+     * Test getter/setter for languages property
+     */
+    public function testGetSetLanguages()
+    {
+        $currency = new Currency();
+        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $currency->getLanguages());
+        $this->assertCount(0, $currency->getLanguages());
+
+        // create languages
+        $listLanguages = array('fr_FR', 'en_US', 'en_EN');
+
+        $langFr = $this->createLanguage('fr_FR', 'fr_FR');
+        $langUs = $this->createLanguage('en_US', 'en_EN');
+        $langEn = $this->createLanguage('en_EN', 'en_EN');
+
+        // Set languages and assert
+        $newLanguages = array($langFr, $langUs, $langEn);
+        $currency->setLanguages(array($langFr, $langUs, $langEn));
+        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $currency->getLanguages());
+        $this->assertCount(3, $currency->getLanguages());
+        foreach ($currency->getLanguages() as $language) {
+            $this->assertTrue(in_array($language, $newLanguages));
+        }
+    }
+
+    /**
+     * Create a language for testing
+     * @param string $code     Locale code
+     * @param string $fallback Fallback code
+     *
+     * @return \Pim\Bundle\ConfigBundle\Entity\Language
+     */
+    protected function createLanguage($code, $fallback)
+    {
+        $language = new Language();
+        $language->setCode($code);
+        $language->setFallback($fallback);
+
+        return $language;
     }
 }

@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Tests\Unit\Form\Type;
 
+use Symfony\Component\Yaml\Yaml;
+
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 
 use Symfony\Component\Form\Forms;
@@ -36,9 +38,27 @@ class LanguageTypeTest extends TypeTestCase
             )
             ->getFormFactory();
 
+        // initialize language configuration
+        $config = $this->initializeConfiguration();
+
         // Create form type
-//         $this->type = new LanguageType();
+//         $this->type = new LanguageType($config);
 //         $this->form = $this->factory->create($this->type);
+    }
+
+    /**
+     * Initialize language configuration
+     * @return config
+     */
+    protected function initializeConfiguration()
+    {
+        $filepath = realpath(dirname(__FILE__) .'/../../../../Resources/config') .'/pim_languages.yml';
+
+        if (!file_exists($filepath)) {
+            throw new \Exception($filepath .' not exists');
+        }
+
+        return Yaml::parse($filepath);
     }
 
     /**
