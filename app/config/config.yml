@@ -25,7 +25,7 @@ twig:
     strict_variables: %kernel.debug%
     globals:
         bap:
-            layout:           OroUIBundle:Default:index.html.twig  # default layout across all Oro bundles
+            layout:           PimUIBundle::layout.bootstrap.html.twig  # default layout across all Oro bundles
 
 # Assetic Configuration
 assetic:
