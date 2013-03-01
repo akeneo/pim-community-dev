@@ -2,58 +2,6 @@
 
 {% block content %}
 
-    <br/>
-    <br/>
-     <div class="navbar">
-        <div class="navbar-inner">
-            <ul class="nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        {{ 'Product'|trans }} <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ path('pim_product_productattribute_index') }}">
-                            {{ 'Attribute list'|trans }}
-                        </a></li>
-                        <li><a href="{{ path('pim_product_attributegroup_index') }}">
-                            {{ 'Attribute Group list'|trans }}
-                        </a></li>
-                        <li><a href="{{ path('pim_product_product_index') }}">
-                            {{ 'Product list'|trans }}
-                        </a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        {{ 'User'|trans }} <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ path('oro_user_index') }}">
-                            {{ 'Users'|trans }}
-                        </a></li>
-                        <li><a href="{{ path('oro_user_role_index') }}">
-                            {{ 'Roles'|trans }}
-                        </a></li>
-                        <li><a href="{{ path('oro_user_group_index') }}">
-                            {{ 'Groups'|trans }}
-                        </a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        {{ 'Configuration'|trans }} <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ path('pim_config_currency_index') }}">
-                            {{ 'Currency list'|trans }}
-                        </a></li>
-                        <li><a href="{{ path('pim_config_language_index') }}">
-                            {{ 'Language list'|trans }}
-                        </a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
+    <h2>Welcome in PIM</h2>
     
 {% endblock %}
