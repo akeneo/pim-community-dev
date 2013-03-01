@@ -23,6 +23,21 @@ class CurrencyType extends AbstractType
 {
 
     /**
+     * List of existing currencies
+     * @var array
+     */
+    protected $currencies;
+
+    /**
+     * Constructor
+     * @param array $config
+     */
+    public function __construct($config = array())
+    {
+        $this->currencies = $config['currencies'];
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -31,20 +46,39 @@ class CurrencyType extends AbstractType
 
         $builder->add('id', 'hidden');
 
-        $currencies = StubLocale::getDisplayCurrencies(\Locale::getDefault());
-        asort($currencies);
-
         $builder->add(
             'code',
             'choice',
             array(
-                'choices' => $currencies,
+                'choices' => static::prepareCurrencyList($this->currencies),
                 'required' => true,
                 'preferred_choices' => array('USD', 'EUR')
             )
         );
 
         $builder->add('activated', 'checkbox', array('required' => false));
+    }
+
+    /**
+     * Prepare currency list
+     * @param array $currencies
+     *
+     * @return multitype:string
+     *
+     * @static
+     */
+    protected static function prepareCurrencyList($currencies = array())
+    {
+        $choices = array();
+
+        foreach ($currencies as $code => $currency) {
+            $choices[$code] = $currency['label'];
+        }
+
+        // Sort choices by alpĥabetical
+        asort($choices);
+
+        return $choices;
     }
 
     /**

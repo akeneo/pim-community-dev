@@ -44,7 +44,7 @@ class Language
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Currency")
+     * @ORM\ManyToMany(targetEntity="Currency", inversedBy="languages")
      * @ORM\JoinTable(name="pim_language_currency",
      *     joinColumns={@ORM\JoinColumn(name="language_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="currency_id", referencedColumnName="id")}
