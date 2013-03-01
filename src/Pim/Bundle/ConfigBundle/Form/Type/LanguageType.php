@@ -116,6 +116,8 @@ class LanguageType extends AbstractType
     /**
      * Add currency field
      * @param FormBuilderInterface $builder
+     *
+     * @return null
      */
     protected function addCurrencyField(FormBuilderInterface $builder)
     {
