@@ -45,6 +45,15 @@ class CurrencyController extends Controller
     }
 
     /**
+     * Get language manager
+     * @return Oro\Bundle\FlexibleEntityBundle\Manager\SimpleManager
+     */
+    protected function getLanguageManager()
+    {
+        return $this->get('language_manager');
+    }
+
+    /**
      * Create currency
      *
      * @Route("/create")
@@ -95,12 +104,16 @@ class CurrencyController extends Controller
      */
     public function disableAction(Currency $currency)
     {
-        // Disable activated property
-        $currency->setActivated(false);
-        $this->getCurrencyManager()->getStorageManager()->persist($currency);
-        $this->getCurrencyManager()->getStorageManager()->flush();
+        // Disable activated property if no language associated
+        if ($currency->getLanguages()->count() === 0) {
+            $currency->setActivated(false);
+            $this->getCurrencyManager()->getStorageManager()->persist($currency);
+            $this->getCurrencyManager()->getStorageManager()->flush();
 
-        $this->get('session')->getFlashBag()->add('success', 'Currency successfully disable');
+            $this->get('session')->getFlashBag()->add('success', 'Currency successfully disable');
+        } else {
+            $this->get('session')->getFlashBag()->add('info', 'Currency linked to languages... Can\'t be disabled');
+        }
 
         return $this->redirect($this->generateUrl('pim_config_currency_index'));
     }
