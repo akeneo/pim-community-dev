@@ -36,11 +36,13 @@ services:
     # Types
     pim_config.form.type.currency:
         class: %currency_type_class%
+        arguments: [%pim_config.currencies%]
         tags:
             - { name: form.type, alias: pim_config_currency }
     
     pim_config.form.type.language:
         class: %language_type_class%
+        arguments: [%pim_config.languages%]
         tags:
             - { name: form.type, alias: pim_config_language }
     

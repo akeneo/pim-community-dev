@@ -23,6 +23,21 @@ class LanguageType extends AbstractType
 {
 
     /**
+     * List of existing languages
+     * @var array
+     */
+    protected $languages;
+
+    /**
+     * Constructor
+     * @param array $config
+     */
+    public function __construct($config = array())
+    {
+        $this->languages = $config['languages'];
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -52,9 +67,9 @@ class LanguageType extends AbstractType
             'code',
             'choice',
             array(
-                'choices' => Locale::getDisplayLocales(\Locale::getDefault()),
+                'choices' => $this->prepareLanguageList($this->languages),
                 'required' => true,
-                'preferred_choices' => array('en', 'fr', 'en_US')
+                'preferred_choices' => array('en_EN', 'fr_FR', 'en_US')
             )
         );
     }
@@ -69,16 +84,38 @@ class LanguageType extends AbstractType
             'fallback',
             'choice',
             array(
-                'choices' => Locale::getDisplayLocales(\Locale::getDefault()),
+                'choices' => $this->prepareLanguageList($this->languages),
                 'required' => true,
-                'preferred_choices' => array('en', 'fr', 'en_US')
+                'preferred_choices' => array('en_EN', 'fr_FR', 'en_US')
             )
         );
     }
 
     /**
+     * Prepare language list
+     * @param array $languages
+     *
+     * @return multitype:string
+     */
+    protected function prepareLanguageList($languages = array())
+    {
+        $choices = array();
+
+        foreach ($languages as $code => $language) {
+            $choices[$code] = $language['label'];
+        }
+
+        // Sort choices by alphabetical
+        asort($choices);
+
+        return $choices;
+    }
+
+    /**
      * Add currency field
      * @param FormBuilderInterface $builder
+     *
+     * @return null
      */
     protected function addCurrencyField(FormBuilderInterface $builder)
     {

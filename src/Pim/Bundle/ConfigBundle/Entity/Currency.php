@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,11 +42,19 @@ class Currency
     protected $activated;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Language", mappedBy="currencies")
+     */
+    protected $languages;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->activated = true;
+        $this->languages = new ArrayCollection();
     }
 
     /**
@@ -115,6 +125,30 @@ class Currency
     public function setActivated($activated)
     {
         $this->activated = $activated;
+
+        return $this;
+    }
+
+    /**
+     * Get languages
+     *
+     * @return \Pim\Bundle\ConfigBundle\Entity\ArrayCollection
+     */
+    public function getLanguages()
+    {
+        return $this->languages;
+    }
+
+    /**
+     * Set languages
+     *
+     * @param array $languages
+     *
+     * @return \Pim\Bundle\ConfigBundle\Entity\Currency
+     */
+    public function setLanguages($languages = array())
+    {
+        $this->languages = new ArrayCollection($languages);
 
         return $this;
     }
