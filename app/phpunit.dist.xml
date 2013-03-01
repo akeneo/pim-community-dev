@@ -18,15 +18,14 @@
     </php>
 
     <testsuites>
-        <testsuite name="Project Test Suite">
+        <testsuite name="PIM Test Suite">
             <directory>../src/Pim/Bundle/*Bundle/Tests</directory>
-            <directory>../src/Oro/Bundle/*Bundle/Tests</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>../src</directory>
+            <directory>../src/Pim</directory>
             <exclude>
                 <directory>../src/*/*Bundle/Resources</directory>
                 <directory>../src/*/*Bundle/Tests</directory>

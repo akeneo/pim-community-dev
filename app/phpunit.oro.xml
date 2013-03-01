@@ -18,14 +18,14 @@
     </php>
 
     <testsuites>
-        <testsuite name="Project Test Suite">
+        <testsuite name="Oro Bundles Test Suite">
             <directory>../src/Oro/Bundle/*Bundle/Tests</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>../src</directory>
+            <directory>../src/Oro</directory>
             <exclude>
                 <directory>../src/*/*Bundle/Resources</directory>
                 <directory>../src/*/*Bundle/Tests</directory>
