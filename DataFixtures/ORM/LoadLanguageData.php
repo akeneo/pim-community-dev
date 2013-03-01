@@ -55,10 +55,10 @@ class LoadLanguageData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
-        $this->createLanguage('fr', 'fr', array('EUR'));
-        $this->createLanguage('en_US', 'en', array('USD', 'EUR'));
-        $this->createLanguage('en', 'en', array('GBP', 'EUR', 'USD'));
-        $this->createLanguage('fr_CH', 'fr', array('CHF', 'EUR'), false);
+        $this->createLanguage('fr_FR', 'fr_FR', array('EUR'));
+        $this->createLanguage('en_US', 'en_EN', array('USD', 'EUR'));
+        $this->createLanguage('en_EN', 'en_EN', array('GBP', 'EUR', 'USD'));
+        $this->createLanguage('fr_CH', 'fr_FR', array('CHF', 'EUR'), false);
 
         $this->getLanguageManager()->getStorageManager()->flush();
     }
