@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Tests\Unit\Entity;
 
+use Pim\Bundle\ConfigBundle\Entity\Currency;
+
 use Pim\Bundle\ConfigBundle\Entity\Language;
 
 /**
@@ -49,6 +51,76 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $newCode = 'fr_FR';
         $language->setCode($newCode);
         $this->assertEquals($newCode, $language->getCode());
+    }
+
+    /**
+     * Test getter/setter for fallback property
+     */
+    public function testGetSetFallback()
+    {
+        $language = new Language();
+        $this->assertEmpty($language->getFallback());
+
+        // change value and assert new
+        $newFallback = 'fr_FR';
+        $language->setFallback($newFallback);
+        $this->assertEquals($newFallback, $language->getFallback());
+    }
+
+    /**
+     * Test getter/setter for currencies property
+     */
+    public function testGetSetCurrencies()
+    {
+        $language = new Language();
+        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $language->getCurrencies());
+        $this->assertCount(0, $language->getCurrencies());
+
+        // create currencies
+        $listCurrencies = array('USD', 'EUR', 'GPB');
+
+        $currencyUs = $this->createCurrency('USD');
+        $currencyFr = $this->createCurrency('EUR');
+        $currencyEn = $this->createCurrency('GPB');
+
+        // Set currencies and assert
+        $newCurrencies = array($currencyUs, $currencyFr);
+        $language->setCurrencies($newCurrencies);
+        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $language->getCurrencies());
+        $this->assertCount(2, $language->getCurrencies());
+        foreach ($language->getCurrencies() as $currency) {
+            $this->assertTrue(in_array($currency, $newCurrencies));
+        }
+
+        // Add currency and assert
+        $language->addCurrency($currencyEn);
+        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $language->getCurrencies());
+        $this->assertCount(3, $language->getCurrencies());
+        foreach ($language->getCurrencies() as $currency) {
+            $this->assertTrue(in_array($currency, array($currencyUs, $currencyFr, $currencyEn)));
+        }
+
+        // Remove currency and assert
+        $language->removeCurrency($currencyFr);
+        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $language->getCurrencies());
+        $this->assertCount(2, $language->getCurrencies());
+        foreach ($language->getCurrencies() as $currency) {
+            $this->assertTrue(in_array($currency, array($currencyUs, $currencyEn)));
+        }
+    }
+
+    /**
+     * Create a currency for testing
+     * @param string $code
+     *
+     * @return \Pim\Bundle\ConfigBundle\Entity\Currency
+     */
+    protected function createCurrency($code)
+    {
+        $currency = new Currency();
+        $currency->setCode($code);
+
+        return $currency;
     }
 
     /**
