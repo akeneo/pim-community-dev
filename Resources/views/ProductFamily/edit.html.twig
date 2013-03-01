@@ -1,0 +1,39 @@
+{% extends bap.layout is defined ? bap.layout : 'ProductBundle::layout.bootstrap.html.twig' %}
+
+{% set title = form.vars.value.id ? 'Edit product family' : 'Add product family' %}
+
+{% block title %}{{ parent() }} - {{ title|trans }}{% endblock %}
+
+{% block content %}
+<form action="{{ form.vars.value.id ?
+    path('pim_product_productfamily_edit', { id: form.vars.value.id }) :
+    path('pim_product_productfamily_create') }}" method="POST" class="form-register">
+    <fieldset>
+        <legend>{{ title|trans }}
+            <a class="btn btn-primary pull-right" href="{{ path('pim_product_productfamily_index') }}">
+                {{ "Back to list" | trans }}
+            </a>
+        </legend>
+
+        {% if form.vars.errors|length %}
+            <div class="alert alert-error">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+
+        {{ form_row(form.name) }}
+
+        {{ form_row(form.description) }}
+
+        {{ form_row(form.attributes) }}
+
+        {{ form_row(form._token) }}
+
+        <br />
+
+        <div class="form-row">
+            <button class="btn btn-large btn-primary" type="submit">{{ 'Save'|trans }}</button>
+        </div>
+    </fieldset>
+</form>
+{% endblock %}

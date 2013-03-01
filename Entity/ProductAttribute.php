@@ -80,6 +80,16 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     }
 
     /**
+     * To string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+    /**
      * Get name
      *
      * @return string $name
