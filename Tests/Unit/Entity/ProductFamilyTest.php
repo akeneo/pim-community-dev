@@ -61,11 +61,13 @@ class ProductFamilyTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($productFamily->getDescription());
 
         // Change value and assert new
-        $attribute = new ProductAttribute();
-        $productFamily->addAttribute($attribute);
-        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductAttribute', $productFamily->getAttributes()[0]);
+        $newAttribute = new ProductAttribute();
+        $productFamily->addAttribute($newAttribute);
+        $attributes = $productFamily->getAttributes();
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductAttribute', $attributes[0]);
 
-        $productFamily->removeAttribute($attribute);
-        $this->assertNotInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductAttribute', $productFamily->getAttributes()[0]);
+        $productFamily->removeAttribute($newAttribute);
+        $attributes = $productFamily->getAttributes();
+        $this->assertNotInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductAttribute', $attributes[0]);
     }
 }
