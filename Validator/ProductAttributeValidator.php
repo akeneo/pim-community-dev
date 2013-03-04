@@ -144,7 +144,6 @@ class ProductAttributeValidator
             $exclusions = array(
                 'OptionMultiCheckboxType',
                 'OptionMultiSelectType',
-                'OptionSimpleRadioType',
                 'FileType',
                 'ImageType',
             );

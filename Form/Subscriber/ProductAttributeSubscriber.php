@@ -77,13 +77,20 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
 
             if (!in_array($formType, array('file', 'options'))) {
                 $options = array();
+
                 if ($formType === 'entity') {
-                    $formType = 'choice';
-                    $options['choices'] = array();
-                    foreach ($attribute->getOptions() as $option) {
-                        $options['choices'][] = $option->getOptionValue()->getValue();
+                    if (strpos($attTypeClass, 'OptionSimpleRadioType') === false
+                        && strpos($attTypeClass, 'OptionSimpleSelectType') === false) {
+
+                        return;
+                    } else {
+                        $formType = 'choice';
+                        $options['choices'] = array('');
+                        foreach ($attribute->getOptions() as $option) {
+                            $options['choices'][] = $option->getOptionValue()->getValue();
+                        }
                     }
-                } elseif (strpos($attribute->getAttributeType(), 'BooleanType') !== false) {
+                } elseif (strpos($attTypeClass, 'BooleanType') !== false) {
                     $formType = 'choice';
                     $options['choices'] = array(
                         0 => 'No',
