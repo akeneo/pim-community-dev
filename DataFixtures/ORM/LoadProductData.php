@@ -74,7 +74,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         // get attributes by reference
         $attName        = $this->getReference('product-attribute.name');
         $attDate        = $this->getReference('product-attribute.release-date');
-        $attDescription = $this->getReference('product-attribute.short-description');
+        $attDescription = $this->getReference('product-attribute.shortDescription');
         $attSize        = $this->getReference('product-attribute.size');
         $attColor       = $this->getReference('product-attribute.color');
         $attPrice       = $this->getReference('product-attribute.price');
@@ -100,7 +100,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 
 
         $indSku = 0;
-        $descriptions = array('my long description', 'my other description');
+        $descriptions = array('my short description', 'my other description');
         for ($ind= 1; $ind <= 3; $ind++) {
             // add product with only sku and name
             $prodSku = 'sku-'.++$indSku;
@@ -203,7 +203,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
     {
         // get attributes
         $attName        = $this->getReference('product-attribute.name');
-        $attDescription = $this->getReference('product-attribute.short-description');
+        $attDescription = $this->getReference('product-attribute.shortDescription');
 
         // get products
         $products = $this->getProductManager()->getFlexibleRepository()->findByWithAttributes();
