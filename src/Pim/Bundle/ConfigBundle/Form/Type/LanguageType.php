@@ -85,7 +85,7 @@ class LanguageType extends AbstractType
             'choice',
             array(
                 'choices' => $this->prepareLanguageList($this->languages),
-                'required' => true,
+                'required' => false,
                 'preferred_choices' => array('en_EN', 'fr_FR', 'en_US')
             )
         );

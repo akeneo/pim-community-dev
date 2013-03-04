@@ -37,7 +37,7 @@ class Language
     /**
      * @var string
      *
-     * @ORM\Column(name="fallback", type="string", length=10)
+     * @ORM\Column(name="fallback", type="string", length=10, nullable=true)
      */
     protected $fallback;
 
