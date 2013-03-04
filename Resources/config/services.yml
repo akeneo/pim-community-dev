@@ -18,6 +18,8 @@ services:
     product_manager:
         class:     %product_manager_class%
         arguments: [%product_entity_class%, %oro_flexibleentity.flexible_config%, @doctrine.orm.entity_manager, @event_dispatcher]
+        tags:
+            - { name: oro_flexibleentity_manager, entity: %product_entity_class%}
         
     attributegroup_manager:
         class:     %attribute_group_manager_class%
