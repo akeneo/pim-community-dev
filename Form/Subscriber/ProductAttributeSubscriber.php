@@ -76,7 +76,7 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
             $formType = $attType->getFormType();
 
             if (!in_array($formType, array('file', 'options'))) {
-                $options = array();
+                $options = array('required' => false);
 
                 if ($formType === 'entity') {
                     if (strpos($attTypeClass, 'OptionSimpleRadioType') === false

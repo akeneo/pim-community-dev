@@ -57,7 +57,7 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     protected $variant;
 
     /**
-     * @var string $smart
+     * @var boolean $smart
      *
      * @ORM\Column(name="is_smart", type="boolean")
      */
@@ -71,12 +71,20 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     protected $group;
 
     /**
+     * @var boolean $useableAsGridColumn
+     *
+     * @ORM\Column(name="useable_as_grid_column", type="boolean")
+     */
+    protected $useableAsGridColumn;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->description = '';
-        $this->smart       = false;
+        $this->description         = '';
+        $this->smart               = false;
+        $this->useableAsGridColumn = false;
     }
 
     /**
@@ -138,7 +146,7 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     }
 
     /**
-     * Get searchable
+     * Get smart
      *
      * @return boolean $smart
      */
@@ -207,5 +215,29 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     public function getGroup()
     {
         return $this->group;
+    }
+
+    /**
+     * Get useableAsGridColumn
+     *
+     * @return boolean $useableAsGridColumn
+     */
+    public function getUseableAsGridColumn()
+    {
+        return $this->useableAsGridColumn;
+    }
+
+    /**
+     * Set useableAsGridColumn
+     *
+     * @param boolean $useableAsGridColumn
+     *
+     * @return ProductAttribute
+     */
+    public function setUseableAsGridColumn($useableAsGridColumn)
+    {
+        $this->useableAsGridColumn = $useableAsGridColumn;
+
+        return $this;
     }
 }

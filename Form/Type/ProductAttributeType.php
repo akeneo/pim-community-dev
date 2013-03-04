@@ -40,6 +40,8 @@ class ProductAttributeType extends AttributeType
 
         $this->addFieldSmart($builder);
 
+        $this->addFieldUseableAsGridColumn($builder);
+
         $this->addAttributeGroup($builder);
     }
 
@@ -128,6 +130,15 @@ class ProductAttributeType extends AttributeType
     protected function addAttributeGroup(FormBuilderInterface $builder)
     {
         $builder->add('group');
+    }
+
+    /**
+     * Add a field for useableAsGridColumn
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldUseableAsGridColumn(FormBuilderInterface $builder)
+    {
+        $builder->add('useableAsGridColumn', 'checkbox', array('required' => false));
     }
 
      /**
