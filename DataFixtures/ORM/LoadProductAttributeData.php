@@ -17,6 +17,8 @@ use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\DateType;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextType;
 
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MetricType;
+
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -97,6 +99,26 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $sizes = array('XS', 'S', 'M', 'L', 'XL');
         foreach ($sizes as $size) {
             $option = $this->createOption($size);
+            $attribute->addOption($option);
+        }
+        $this->persist($attribute);
+
+
+        // create weight attribute
+        $attribute = $this->createAttribute(new MetricType(), 'weight');
+        $attribute->setUnique(false);
+        $attribute->setTranslatable(false);
+        $attribute->setScopable(false);
+        $this->persist($attribute);
+
+
+        // create manufacturer attribute
+        $attribute = $this->createAttribute(new OptionSimpleSelectType(), 'manufacturer');
+        // create options
+        $attribute->setTranslatable(false);
+        $manufacturers = array('MyMug', 'MugStore');
+        foreach ($manufacturers as $manufacturer) {
+            $option = $this->createOption($manufacturer);
             $attribute->addOption($option);
         }
         $this->persist($attribute);
