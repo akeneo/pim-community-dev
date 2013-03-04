@@ -73,9 +73,16 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     /**
      * @var boolean $useableAsGridColumn
      *
-     * @ORM\Column(name="useable_as_grid_column", type="boolean")
+     * @ORM\Column(name="useable_as_grid_column", type="boolean", options={"default" = false})
      */
     protected $useableAsGridColumn;
+
+    /**
+     * @var boolean $useableAsGridFilter
+     *
+     * @ORM\Column(name="useable_as_grid_filter", type="boolean", options={"default" = false})
+     */
+    protected $useableAsGridFilter;
 
     /**
      * Constructor
@@ -85,6 +92,7 @@ class ProductAttribute extends AbstractEntityAttributeExtended
         $this->description         = '';
         $this->smart               = false;
         $this->useableAsGridColumn = false;
+        $this->useableAsGridFilter = false;
     }
 
     /**
@@ -237,6 +245,30 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     public function setUseableAsGridColumn($useableAsGridColumn)
     {
         $this->useableAsGridColumn = $useableAsGridColumn;
+
+        return $this;
+    }
+
+   /**
+     * Get useableAsGridFilter
+     *
+     * @return boolean $useableAsGridFilter
+     */
+    public function getUseableAsGridFilter()
+    {
+        return $this->useableAsGridFilter;
+    }
+
+    /**
+     * Set useableAsGridFilter
+     *
+     * @param boolean $useableAsGridFilter
+     *
+     * @return ProductAttribute
+     */
+    public function setUseableAsGridFilter($useableAsGridFilter)
+    {
+        $this->useableAsGridFilter = $useableAsGridFilter;
 
         return $this;
     }

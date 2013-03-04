@@ -42,6 +42,8 @@ class ProductAttributeType extends AttributeType
 
         $this->addFieldUseableAsGridColumn($builder);
 
+        $this->addFieldUseableAsGridFilter($builder);
+
         $this->addAttributeGroup($builder);
     }
 
@@ -139,6 +141,15 @@ class ProductAttributeType extends AttributeType
     protected function addFieldUseableAsGridColumn(FormBuilderInterface $builder)
     {
         $builder->add('useableAsGridColumn', 'checkbox', array('required' => false));
+    }
+
+    /**
+     * Add a field for useableAsGridFilter
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldUseableAsGridFilter(FormBuilderInterface $builder)
+    {
+        $builder->add('useableAsGridFilter', 'checkbox', array('required' => false));
     }
 
      /**

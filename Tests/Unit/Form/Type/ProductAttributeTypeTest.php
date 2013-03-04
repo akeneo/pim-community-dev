@@ -39,6 +39,7 @@ class ProductAttributeTypeTest extends TypeTestCase
         $this->assertField('variant', 'choice');
         $this->assertField('smart', 'checkbox');
         $this->assertField('useableAsGridColumn', 'checkbox');
+        $this->assertField('useableAsGridFilter', 'checkbox');
 
         $this->assertField('group', 'text');
 

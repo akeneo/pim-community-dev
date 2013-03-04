@@ -31,6 +31,7 @@
 'Variant': 'Variant'
 'Smart': 'Smart'
 'Useableasgridcolumn': 'Useable as grid column'
+'Useableasgridfilter': 'Useable as grid filter'
 
 # Scopes
 'Global': 'Global'
