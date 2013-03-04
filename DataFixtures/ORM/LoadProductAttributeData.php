@@ -76,7 +76,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
 
         // create attribute
-        $attribute = $this->createAttribute(new DateType(), 'release-date', true);
+        $attribute = $this->createAttribute(new DateType(), 'releaseDate', true);
 
         // create specific attributes
         $attribute = $this->createAttribute(new TextAreaType(), 'shortDescription');
@@ -194,7 +194,6 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attribute->setCode($code);
 
         // set extended attribute values
-        $code = str_replace('-', ' ', $code);
         $attribute->setName(ucfirst($code));
         $attribute->setDescription(ucfirst($code .' description'));
         $attribute->setVariant(0);

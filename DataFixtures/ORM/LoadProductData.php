@@ -73,7 +73,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 
         // get attributes by reference
         $attName        = $this->getReference('product-attribute.name');
-        $attDate        = $this->getReference('product-attribute.release-date');
+        $attDate        = $this->getReference('product-attribute.releaseDate');
         $attDescription = $this->getReference('product-attribute.shortDescription');
         $attSize        = $this->getReference('product-attribute.size');
         $attColor       = $this->getReference('product-attribute.color');
