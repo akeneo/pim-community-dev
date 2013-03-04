@@ -210,36 +210,31 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         $ind = 1;
         foreach ($products as $product) {
             // translate name value
-            if ($product->setLocale('en_US')->getValue('name') != null) {
-                $value = $this->getProductManager()->createFlexibleValue();
-                $value->setAttribute($attName->getAttribute());
-                $value->setLocale('fr_FR');
-                $value->setData('mon nom FR '.$ind);
-                $product->addValue($value);
-                $this->getProductManager()->getStorageManager()->persist($value);
-            }
-
+            $value = $this->getProductManager()->createFlexibleValue();
+            $value->setAttribute($attName->getAttribute());
+            $value->setLocale('fr_FR');
+            $value->setData('mon nom FR '.$ind);
+            $product->addValue($value);
+            $this->getProductManager()->getStorageManager()->persist($value);
+ 
             // translate description value
-            // check if a value en_US + scope ecommerce exists
-            if ($product->setLocale('en_US')->setScope('ecommerce')->getValue('description') != null) {
-                // scope ecommerce
-                $value = $this->getProductManager()->createFlexibleValue();
-                $value->setLocale('fr_FR');
-                $value->setScope(ProductAttribute::SCOPE_ECOMMERCE);
-                $value->setAttribute($attDescription->getAttribute());
-                $value->setData('ma description FR (ecommerce) '.$ind);
-                $product->addValue($value);
-                $this->getProductManager()->getStorageManager()->persist($value);
+            // scope ecommerce
+            $value = $this->getProductManager()->createFlexibleValue();
+            $value->setLocale('fr_FR');
+            $value->setScope(ProductAttribute::SCOPE_ECOMMERCE);
+            $value->setAttribute($attDescription->getAttribute());
+            $value->setData('ma description FR (ecommerce) '.$ind);
+            $product->addValue($value);
+            $this->getProductManager()->getStorageManager()->persist($value);
 
-                // scope mobile
-                $value = $this->getProductManager()->createFlexibleValue();
-                $value->setLocale('fr_FR');
-                $value->setScope(ProductAttribute::SCOPE_MOBILE);
-                $value->setAttribute($attDescription->getAttribute());
-                $value->setData('ma description FR (mobile) '.$ind);
-                $product->addValue($value);
-                $this->getProductManager()->getStorageManager()->persist($value);
-            }
+            // scope mobile
+            $value = $this->getProductManager()->createFlexibleValue();
+            $value->setLocale('fr_FR');
+            $value->setScope(ProductAttribute::SCOPE_MOBILE);
+            $value->setAttribute($attDescription->getAttribute());
+            $value->setData('ma description FR (mobile) '.$ind);
+            $product->addValue($value);
+            $this->getProductManager()->getStorageManager()->persist($value);
 
             $ind++;
         }
