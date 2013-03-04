@@ -76,16 +76,16 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
 
         // create attribute
-        $attribute = $this->createAttribute(new DateType(), 'release-date', true);
+        $attribute = $this->createAttribute(new DateType(), 'releaseDate', true);
 
         // create specific attributes
-        $attribute = $this->createAttribute(new TextAreaType(), 'short-description');
+        $attribute = $this->createAttribute(new TextAreaType(), 'shortDescription');
         $attribute->setTranslatable(true);
         $attribute->setScopable(true);
         $this->persist($attribute);
 
 
-        $attribute = $this->createAttribute(new TextAreaType(), 'long-description');
+        $attribute = $this->createAttribute(new TextAreaType(), 'longDescription');
         $attribute->setTranslatable(true);
         $attribute->setScopable(true);
         $this->persist($attribute);
@@ -194,7 +194,6 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attribute->setCode($code);
 
         // set extended attribute values
-        $code = str_replace('-', ' ', $code);
         $attribute->setName(ucfirst($code));
         $attribute->setDescription(ucfirst($code .' description'));
         $attribute->setVariant(0);

@@ -74,11 +74,11 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
         $attribute->setGroup($group);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
-        $attribute = $this->getReference('product-attribute.short-description');
+        $attribute = $this->getReference('product-attribute.shortDescription');
         $attribute->setGroup($group);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
-        $attribute = $this->getReference('product-attribute.long-description');
+        $attribute = $this->getReference('product-attribute.longDescription');
         $attribute->setGroup($group);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
