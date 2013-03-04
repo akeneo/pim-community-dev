@@ -72,7 +72,7 @@
                 <th>Name</th>
             {% endif %}
 
-            {% if 'description' in attributes %}
+            {% if 'shortDescription' in attributes %}
                 <th>Description</th>
             {% endif %}
 
@@ -106,8 +106,8 @@
                <td>{{ product.name }}</td>
             {% endif %}
 
-            {% if 'description' in attributes %}
-                <td>{{ product.description }}</td>
+            {% if 'shortDescription' in attributes %}
+                <td>{{ product.shortDescription }}</td>
             {% endif %}
 
             {% if 'size' in attributes %}
