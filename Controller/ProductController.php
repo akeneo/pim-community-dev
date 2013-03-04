@@ -137,26 +137,6 @@ class ProductController extends Controller
     }
 
     /**
-     * Show details
-     *
-     * @param integer $id         id
-     * @param string  $dataLocale data locale
-     * @param string  $dataScope  data scope
-     *
-     * @Route("/show/{id}/{dataLocale}/{dataScope}", defaults={"dataLocale" = null, "dataScope" = null})
-     * @Template()
-     *
-     * @return array
-     */
-    public function showAction($id, $dataLocale, $dataScope)
-    {
-        // load with any values
-        $product = $this->getProductManager()->getFlexibleRepository()->findWithAttributes($id);
-
-        return array('product' => $product);
-    }
-
-    /**
      * Create product
      *
      * @param string $dataLocale data locale

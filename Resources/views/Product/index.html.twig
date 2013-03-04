@@ -87,8 +87,7 @@
             {% if 'price' in attributes %}
                <th>Price</th>
             {% endif %}
-
-            <th>Show</th>
+            
             <th>Edit</th>
             <th>Delete</th>
 
@@ -123,7 +122,6 @@
                 <td>{{product.price}} {% if product.price is not null %} {{ product.getValue('price').getCurrency() }} {% endif %}</td>
             {% endif %}
 
-            <td><a href="{{ path('pim_product_product_show', { id: product.id, 'dataLocale': dataLocale, 'dataScope': dataScope  }) }}"><i class="icon-zoom-in"></i></a></td>
             <td><a href="{{ path('pim_product_product_edit', { id: product.id, 'dataLocale': dataLocale, 'dataScope': dataScope  }) }}"><i class="icon-edit"></i></a></td>
             <td><a href="{{ path('pim_product_product_remove', { id: product.id, 'dataLocale': dataLocale, 'dataScope': dataScope  }) }}"><i class="icon-remove"></i></a></td>
          </tr>

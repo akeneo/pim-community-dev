@@ -127,7 +127,7 @@ class ProductAttributeValidator
         }
     }
 
-   /**
+    /**
      * Validation rule for the default value
      *
      * @param ProductAttribute $productAttribute ProductAttirbute entity
