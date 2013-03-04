@@ -1,13 +1,13 @@
 <?php
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
+use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionSimpleSelectType;
+
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MoneyType;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
-
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MetricType;
-
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionSimpleSelectType;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionMultiCheckboxType;
 
@@ -71,131 +71,88 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
      */
     public function load(ObjectManager $manager)
     {
+        // force in english
+        $this->getProductManager()->setLocale('en_US');
+
+
         // create attribute
-        $this->createAttribute(new TextType(), 'text-field', true);
-        $this->createAttribute(new DateType(), 'date-field', true);
+        $attribute = $this->createAttribute(new DateType(), 'release-date', true);
 
         // create specific attributes
         $attribute = $this->createAttribute(new TextAreaType(), 'short-description');
         $attribute->setTranslatable(true);
         $attribute->setScopable(true);
-        $this->getProductManager()->getStorageManager()->persist($attribute);
-        $this->setReference('product-attribute.short-description', $attribute);
+        $this->persist($attribute);
 
 
         $attribute = $this->createAttribute(new TextAreaType(), 'long-description');
         $attribute->setTranslatable(true);
         $attribute->setScopable(true);
-        $this->getProductManager()->getStorageManager()->persist($attribute);
-        $this->setReference('product-attribute.long-description', $attribute);
+        $this->persist($attribute);
 
 
-        $attribute = $this->createAttribute(new OptionMultiCheckboxType(), 'generic-color');
-        $attribute->setTranslatable(true);
-
-        // create options
-        $colors = array('Red', 'Blue', 'Orange', 'Yellow', 'Green', 'Black', 'White');
-        foreach ($colors as $color) {
-            $option = $this->createOption($color);
-            $attribute->addOption($option);
-        }
-        $this->getProductManager()->getStorageManager()->persist($attribute);
-        $this->setReference('product-attribute.generic-color', $attribute);
-
-
-        $attribute = $this->createAttribute(new OptionSimpleSelectType(), 'generic-size');
-        $attribute->setTranslatable(true);
-
+        // create size attribute
+        $attribute = $this->createAttribute(new OptionSimpleSelectType(), 'size');
         // create options
         $sizes = array('XS', 'S', 'M', 'L', 'XL');
         foreach ($sizes as $size) {
             $option = $this->createOption($size);
             $attribute->addOption($option);
         }
-        $this->getProductManager()->getStorageManager()->persist($attribute);
-        $this->setReference('product-attribute.generic-size', $attribute);
+        $this->persist($attribute);
 
-
-        // force in english
-        $this->getProductManager()->setLocale('en_US');
 
         // attribute name (if not exists)
-        $attributeCode = 'name';
-        $productAttribute = $this->getProductManager()->createAttributeExtended(new TextType());
-        $productAttribute->setName('Name');
-        $productAttribute->setCode($attributeCode);
-        $productAttribute->setTranslatable(true);
-        $productAttribute->setRequired(true);
-        $productAttribute->setVariant(0);
-
-        // persists and add to references
-        $this->getProductManager()->getStorageManager()->persist($productAttribute);
-        $this->addReference('product-attribute.'. $attributeCode, $productAttribute);
+        $attribute = $this->createAttribute(new TextType(), 'name');
+        $attribute->setTranslatable(true);
+        $attribute->setRequired(true);
+        $this->persist($attribute);
 
 
         // attribute price (if not exists)
-        $attributeCode = 'price';
-        $productAttribute = $this->getProductManager()->createAttributeExtended(new MoneyType());
-        $productAttribute->setName('Price');
-        $productAttribute->setCode($attributeCode);
-        $productAttribute->setVariant(0);
-
-        // persists and add to references
-        $this->getProductManager()->getStorageManager()->persist($productAttribute);
-        $this->addReference('product-attribute.'. $attributeCode, $productAttribute);
-
-
-        // attribute description (if not exists)
-        $attributeCode = 'description';
-        $productAttribute = $this->getProductManager()->createAttributeExtended(new TextAreaType());
-        $productAttribute->setName('Description');
-        $productAttribute->setCode($attributeCode);
-        $productAttribute->setTranslatable(true);
-        $productAttribute->setScopable(true);
-        $productAttribute->setVariant(0);
-
-        // persists and add to references
-        $this->getProductManager()->getStorageManager()->persist($productAttribute);
-        $this->addReference('product-attribute.'. $attributeCode, $productAttribute);
-
-
-        // attribute size (if not exists)
-        $attributeCode= 'size';
-        $productAttribute = $this->getProductManager()->createAttributeExtended(new MetricType());
-        $productAttribute->setName('Size');
-        $productAttribute->setCode($attributeCode);
-        $productAttribute->setVariant(0);
-
-        // persists and add to references
-        $this->getProductManager()->getStorageManager()->persist($productAttribute);
-        $this->addReference('product-attribute.'. $attributeCode, $productAttribute);
+        $attribute = $this->createAttribute(new MoneyType(), 'price');
+        $this->persist($attribute);
 
 
         // attribute color (if not exists)
-        $attributeCode= 'color';
-        $productAttribute = $this->getProductManager()->createAttributeExtended(new OptionMultiCheckboxType());
-        $productAttribute->setName('Color');
-        $productAttribute->setCode($attributeCode);
-        $productAttribute->setTranslatable(false); // only one value but option can be translated in option values
-        $productAttribute->setVariant(0);
+        $attribute = $this->createAttribute(new OptionMultiCheckboxType(), 'color');
+        $attribute->setTranslatable(false); // only one value but option can be translated in option values
 
         // add translatable option and related value "Red", "Blue", "Green"
-        $colors = array("Red", "Blue", "Green");
+        $colors = array('Red', 'Blue', 'Orange', 'Yellow', 'Green', 'Black', 'White');
         foreach ($colors as $color) {
             $option = $this->getProductManager()->createAttributeOption();
             $option->setTranslatable(true);
             $optionValue = $this->getProductManager()->createAttributeOptionValue();
             $optionValue->setValue($color);
             $option->addOptionValue($optionValue);
-            $productAttribute->addOption($option);
+            $attribute->addOption($option);
         }
-
-        // persists and add to references
-        $this->getProductManager()->getStorageManager()->persist($productAttribute);
-        $this->addReference('product-attribute.'. $attributeCode, $productAttribute);
+        $this->persist($attribute);
 
         // flush
         $this->getProductManager()->getStorageManager()->flush();
+    }
+
+    /**
+     * Persists entity and add it to references
+     * @param ProductAttribute $attribute
+     *
+     * @throws \Exception
+     */
+    protected function persist(ProductAttribute $attribute)
+    {
+        $violationList = $this->container->get('validator')->validate($attribute);
+        if ($violationList->count() === 0) {
+            $this->getProductManager()->getStorageManager()->persist($attribute);
+            $this->addReference('product-attribute.'. $attribute->getCode(), $attribute);
+        } else {
+            $errors = '';
+            foreach ($violationList as $violation) {
+                $errors .= $violation->getMessage() . PHP_EOL;
+            }
+            throw new \Exception('Error validating product attribute : '. $attribute->getCode() . PHP_EOL . $errors);
+        }
     }
 
     /**
@@ -237,13 +194,14 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attribute->setCode($code);
 
         // set extended attribute values
-        $attribute->setName(ucfirst($code .' attribute name'));
-        $attribute->setDescription(ucfirst($code .' attribute description'));
+        $code = str_replace('-', ' ', $code);
+        $attribute->setName(ucfirst($code));
+        $attribute->setDescription(ucfirst($code .' description'));
         $attribute->setVariant(0);
 
         // persist attribute
         if ($persist) {
-            $this->getProductManager()->getStorageManager()->persist($attribute);
+            $this->persist($attribute);
         }
 
         return $attribute;

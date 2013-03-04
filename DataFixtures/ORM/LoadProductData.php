@@ -73,7 +73,8 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 
         // get attributes by reference
         $attName        = $this->getReference('product-attribute.name');
-        $attDescription = $this->getReference('product-attribute.description');
+        $attDate        = $this->getReference('product-attribute.release-date');
+        $attDescription = $this->getReference('product-attribute.short-description');
         $attSize        = $this->getReference('product-attribute.size');
         $attColor       = $this->getReference('product-attribute.color');
         $attPrice       = $this->getReference('product-attribute.price');
@@ -86,6 +87,17 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         foreach ($optColors as $option) {
             $colors[] = $option;
         }
+
+
+        // get attribute size options
+        $optSizes = $this->getProductManager()->getAttributeOptionRepository()->findBy(
+            array('attribute' => $attSize->getAttribute())
+        );
+        $sizes = array();
+        foreach ($optSizes as $option) {
+            $sizes[] = $option;
+        }
+
 
         $indSku = 0;
         $descriptions = array('my long description', 'my other description');
@@ -129,8 +141,9 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             // set attribute size value
             $value = $this->getProductManager()->createFlexibleValue();
             $value->setAttribute($attSize->getAttribute());
-            $value->setData(175);
-            $value->setUnit('mm');
+            // pick a size (single select)
+            $sizeOpt = $sizes[rand(0, count($sizes)-1)];
+            $value->addOption($sizeOpt);
             $product->addValue($value);
 
 
@@ -159,12 +172,15 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $value = $product->getValue($attName->getCode());
             $value->setData('my name '.$indSku);
 
+
             // set attribute size value
             $value = $this->getProductManager()->createFlexibleValue();
             $value->setAttribute($attSize->getAttribute());
-            $value->setData(175);
-            $value->setUnit('mm');
+            // pick a size (single select)
+            $sizeOpt = $sizes[rand(0, count($sizes)-1)];
+            $value->addOption($sizeOpt);
             $product->addValue($value);
+
 
             // set attribute price value
             $value = $this->getProductManager()->createFlexibleValue();
@@ -187,7 +203,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
     {
         // get attributes
         $attName        = $this->getReference('product-attribute.name');
-        $attDescription = $this->getReference('product-attribute.description');
+        $attDescription = $this->getReference('product-attribute.short-description');
 
         // get products
         $products = $this->getProductManager()->getFlexibleRepository()->findByWithAttributes();
@@ -230,7 +246,15 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 
         // get color attribute options
         $attColor = $this->getProductManager()->getFlexibleRepository()->findAttributeByCode('color');
-        $colors = array("Red" => "Rouge", "Blue" => "Bleu", "Green" => "Vert");
+        $colors = array(
+            'Red' => 'Rouge',
+            'Blue' => 'Bleu',
+            'Orange' => 'Orange',
+            'Yellow' => 'Jaune',
+            'Green' => 'Vert',
+            'Black' => 'Noir',
+            'White' => 'Blanc'
+        );
         // translate
         foreach ($colors as $colorEn => $colorFr) {
             $optValueEn = $this->getProductManager()->getAttributeOptionValueRepository()->findOneBy(
