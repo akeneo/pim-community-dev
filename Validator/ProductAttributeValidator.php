@@ -145,7 +145,6 @@ class ProductAttributeValidator
                 'OptionMultiCheckboxType',
                 'OptionMultiSelectType',
                 'OptionSimpleRadioType',
-                'OptionSimpleSelectType',
                 'FileType',
                 'ImageType',
             );
