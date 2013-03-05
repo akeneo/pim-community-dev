@@ -249,7 +249,7 @@ class ProductAttribute extends AbstractEntityAttributeExtended
         return $this;
     }
 
-   /**
+    /**
      * Get useableAsGridFilter
      *
      * @return boolean $useableAsGridFilter
