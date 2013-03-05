@@ -116,7 +116,10 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
         // assertion
         $this->assertCount(1, $this->executionContext->getViolations());
         foreach ($this->executionContext->getViolations() as $violation) {
-            $this->assertEquals(ProductAttributeValidator::VIOLATION_UNIQUE, $violation->getMessageTemplate());
+            $this->assertEquals(
+                ProductAttributeValidator::VIOLATION_UNIQUE_SCOPE_I18N,
+                $violation->getMessageTemplate()
+            );
         }
     }
 
@@ -156,6 +159,12 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
 
         // assertion
         $this->assertCount(1, $this->executionContext->getViolations());
+        foreach ($this->executionContext->getViolations() as $violation) {
+            $this->assertEquals(
+                ProductAttributeValidator::VIOLATION_UNIQUE_ATT_TYPE,
+                $violation->getMessageTemplate()
+            );
+        }
     }
 
     /**
@@ -167,17 +176,16 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     public static function providerMatrixConstraintInvalid()
     {
         return array(
-            array(AbstractAttributeType::TYPE_INTEGER_CLASS, true, false, false, false, false),
-            array(AbstractAttributeType::TYPE_INTEGER_CLASS, false, true, false, false, false),
             array(AbstractAttributeType::TYPE_TEXTAREA_CLASS, true, false, false, false, false),
-            array(AbstractAttributeType::TYPE_DATE_CLASS, false, true, false, false, false),
-            //array(AbstractAttributeType::TYPE_IMAGE_CLASS, false, false, true, false, false),
-            //array(AbstractAttributeType::TYPE_IMAGE_CLASS, false, false, false, true, false),
-            //array(AbstractAttributeType::TYPE_FILE_CLASS, false, false, true, true, false),
+            array(AbstractAttributeType::TYPE_MONEY_CLASS, true, false, false, false, false),
+            array(AbstractAttributeType::TYPE_OPT_MULTI_CB_CLASS, true, false, false, false, false),
+            array(AbstractAttributeType::TYPE_OPT_MULTI_SELECT_CLASS, true, false, false, false, false),
+            array(AbstractAttributeType::TYPE_OPT_SINGLE_RADIO_CLASS, true, false, false, false, false),
+            array(AbstractAttributeType::TYPE_OPT_SINGLE_SELECT_CLASS, true, false, false, false, false),
+            array(AbstractAttributeType::TYPE_IMAGE_CLASS, true, false, false, false, false),
+            array(AbstractAttributeType::TYPE_FILE_CLASS, true, false, false, false, false),
             array(AbstractAttributeType::TYPE_METRIC_CLASS, true, false, false, false, false),
-            array(AbstractAttributeType::TYPE_METRIC_CLASS, false, true, false, false, false),
-            array(AbstractAttributeType::TYPE_METRIC_CLASS, false, false, false, false, true),
-            array(AbstractAttributeType::TYPE_METRIC_CLASS, false, true, false, false, true),
+            array('Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\BooleanType', true, false, false, false, false),
         );
     }
 

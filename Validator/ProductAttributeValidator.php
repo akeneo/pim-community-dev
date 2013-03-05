@@ -26,10 +26,16 @@ class ProductAttributeValidator
 
 
     /**
-     * Violation messages for unique attribute
+     * Violation messages for unique attribute with incorrect scope and accepting translations
      * @staticvar string
      */
-    const VIOLATION_UNIQUE = 'Unique attribute results in used of Global scope and no translations';
+    const VIOLATION_UNIQUE_SCOPE_I18N = 'Unique attribute results in used of Global scope and no translations';
+
+    /**
+     * Violation message for unique attribute with incorrect attribute type
+     * @var unknown_type
+     */
+    const VIOLATION_UNIQUE_ATT_TYPE = 'Unique attribute is forbidden for this attribute type';
 
     /**
      * Violation message for disabled default value of attribute
@@ -61,50 +67,22 @@ class ProductAttributeValidator
      */
     protected static function isAttributeTypeMatrixValid(ProductAttribute $productAttribute, ExecutionContext $context)
     {
-        switch ($productAttribute->getAttributeType()) {
-            case AbstractAttributeType::TYPE_INTEGER_CLASS:
-            case AbstractAttributeType::TYPE_NUMBER_CLASS:
-            case AbstractAttributeType::TYPE_MONEY_CLASS:
-            case AbstractAttributeType::TYPE_OPT_MULTI_CB_CLASS:
-            case AbstractAttributeType::TYPE_OPT_MULTI_SELECT_CLASS:
-            case AbstractAttributeType::TYPE_OPT_SINGLE_RADIO_CLASS:
-            case AbstractAttributeType::TYPE_OPT_SINGLE_SELECT_CLASS:
-                // translatable and unique must be disabled
-                if ($productAttribute->getTranslatable() === true || $productAttribute->getUnique() === true) {
-                    $context->addViolation(
-                        'For this attribute type value, translatable and unique values must be false'
-                    );
-                }
-                break;
-            case AbstractAttributeType::TYPE_TEXTAREA_CLASS:
-                // unique must be disabled
-                if ($productAttribute->getUnique() === true) {
-                    $context->addViolation('For this attribute type value, unique value must be false');
-                }
-                break;
-            case AbstractAttributeType::TYPE_DATE_CLASS:
-                // translatable must be disabled
-                if ($productAttribute->getTranslatable() === true) {
-                    $context->addViolation('For this attribute type value, translatable value must be false');
-                }
-                break;
-            case AbstractAttributeType::TYPE_IMAGE_CLASS:
-            case AbstractAttributeType::TYPE_FILE_CLASS:
-                // searchable and smart must be disabled
-                if ($productAttribute->getSearchable() === true || $productAttribute->getSmart() === true) {
-                    $context->addViolation('For this attribute type value, searchable and smart values must be false');
-                }
-                break;
-            case AbstractAttributeType::TYPE_METRIC_CLASS:
-                // unique must be disabled
-                if ($productAttribute->getUnique() === true
-                    || $productAttribute->getTranslatable() === true
-                    || $productAttribute->getScopable() != false) {
-                    $context->addViolation(
-                        'For this attribute type, unique and translatable values must be false. Scope must be global'
-                    );
-                }
-                break;
+        $attributeType = array(
+            AbstractAttributeType::TYPE_TEXTAREA_CLASS,
+            AbstractAttributeType::TYPE_MONEY_CLASS,
+            AbstractAttributeType::TYPE_OPT_MULTI_CB_CLASS,
+            AbstractAttributeType::TYPE_OPT_MULTI_SELECT_CLASS,
+            AbstractAttributeType::TYPE_OPT_SINGLE_RADIO_CLASS,
+            AbstractAttributeType::TYPE_OPT_SINGLE_SELECT_CLASS,
+            AbstractAttributeType::TYPE_IMAGE_CLASS,
+            AbstractAttributeType::TYPE_FILE_CLASS,
+            AbstractAttributeType::TYPE_METRIC_CLASS,
+            'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\BooleanType'
+        );
+        if (
+            in_array($productAttribute->getAttributeType(), $attributeType)
+            && $productAttribute->getUnique() === true) {
+            $context->addViolation(self::VIOLATION_UNIQUE_ATT_TYPE);
         }
     }
 
@@ -122,7 +100,7 @@ class ProductAttributeValidator
         if ($productAttribute->getUnique() === true) {
             if ($productAttribute->getScopable() != false
                 || $productAttribute->getTranslatable() === true) {
-                $context->addViolation(self::VIOLATION_UNIQUE);
+                $context->addViolation(self::VIOLATION_UNIQUE_SCOPE_I18N);
             }
         }
     }

@@ -5,41 +5,24 @@ $('#'+ formName +'_attributeType').on('change', updateFieldsFromAttributeType);
 // Enable/disable fields according to attribute type value
 function updateFieldsFromAttributeType() {
     // enable all fields
-    enableField('translatable');
-    enableField('searchable');
     enableField('unique');
-    enableField('smart');
     
     // disable field and check
     switch ($('#pim_product_attribute_form_attributeType').val()) {
-        case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_INTEGER_CLASS') }}':
-        case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_NUMBER_CLASS') }}':
+        case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_TEXTAREA_CLASS') }}':
         case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_MONEY_CLASS') }}':
         case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_OPT_MULTI_CB_CLASS') }}':
         case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_OPT_MULTI_SELECT_CLASS') }}':
         case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_OPT_SINGLE_RADIO_CLASS') }}':
         case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_OPT_SINGLE_SELECT_CLASS') }}':
-            disableField('translatable');
-            disableField('unique');
-            break;
-        case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_TEXTAREA_CLASS') }}':
-            disableField('unique');
-            break;
-        case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_DATE_CLASS') }}':
-            disableField('translatable');
-            break;
         case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_FILE_CLASS') }}':
         case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_IMAGE_CLASS') }}':
-            disableField('searchable');
-            disableField('smart');
-            break;
         case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_METRIC_CLASS') }}':
             disableField('unique');
-            disableField('translatable');
             break;
+        default:
+            updateFieldsFromUnique();
     }
-    
-//    updateFieldsFromUnique();
 }
 
 // Enable a field from its name (just enable don't change check state)
@@ -58,16 +41,22 @@ updateFieldsFromAttributeType();
 
 /****************************************************/
 
-/*$('#'+ formName +'_unique').on('change', updateFieldsFromUnique);
+$('#'+ formName +'_unique').on('change', updateFieldsFromUnique);
 // Enable/disable fields according to unique type value
 function updateFieldsFromUnique() {
 	console.info('update fields from unique');
 	if ($('#'+ formName +'_unique').is(':checked')) {
-		// channel => global
-		// translatable => no
+		// update scope
+		$('#'+ formName +'_scopable option').filter(function() {
+		    console.log($(this).val());
+            return $(this).val() == 0;
+		}).attr('selected', 'selected');
+		
 		disableField('translatable');
 		disableField('scopable');
 	} else {
 		// enable two fields (channel + translatable)
+		enableField('translatable');
+		enableField('scopable');
 	}
-}*/
+}

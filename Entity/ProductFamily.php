@@ -65,6 +65,15 @@ class ProductFamily
     }
 
     /**
+     * Returns the name of the product family
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+    /**
      * Get id
      *
      * @return integer

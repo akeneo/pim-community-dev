@@ -2,6 +2,7 @@
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\ProductBundle\Entity\Product;
+use Pim\Bundle\ProductBundle\Entity\ProductFamily;
 
 /**
  * Test related class
@@ -35,5 +36,22 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $newSku = 'test-sku';
         $product->setSku($newSku);
         $this->assertEquals($newSku, $product->getSku());
+    }
+
+    /**
+     * Test getter/setter for productFamily property
+     */
+    public function testGetSetProductFamily()
+    {
+        $product = new Product();
+        $this->assertEmpty($product->getProductFamily());
+
+        // Change value and assert new
+        $newProductFamily = new ProductFamily();
+        $product->setProductFamily($newProductFamily);
+        $this->assertEquals($newProductFamily, $product->getProductFamily());
+
+        $product->setProductFamily(null);
+        $this->assertNull($product->getProductFamily());
     }
 }
