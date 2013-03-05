@@ -30,18 +30,29 @@ class LanguageController extends Controller
      */
     public function indexAction()
     {
-        $languages = $this->getLanguageManager()->getEntityRepository()->findAll();
+        $languages = $this->getLanguageRepository()->findAll();
 
         return array('languages' => $languages);
     }
 
     /**
-     * Get language manager
-     * @return Oro\Bundle\FlexibleEntityBundle\Manager\SimpleManager
+     * Get storage manager
+     *
+     * @return \Doctrine\Common\Persistence\ObjectManager
      */
-    protected function getLanguageManager()
+    protected function getStorageManager()
     {
-        return $this->get('language_manager');
+        return $this->container->get('doctrine.orm.entity_manager');
+    }
+
+    /**
+     * Get Language Repository
+     *
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    protected function getLanguageRepository()
+    {
+        return $this->getStorageManager()->getRepository('PimConfigBundle:Language');
     }
 
     /**
@@ -54,7 +65,7 @@ class LanguageController extends Controller
      */
     public function createAction()
     {
-        $language = $this->getLanguageManager()->createEntity();
+        $language = new Language();
 
         return $this->editAction($language);
     }
@@ -97,8 +108,8 @@ class LanguageController extends Controller
     {
         // Disable activated property
         $language->setActivated(false);
-        $this->getLanguageManager()->getStorageManager()->persist($language);
-        $this->getLanguageManager()->getStorageManager()->flush();
+        $this->getStorageManager()->persist($language);
+        $this->getStorageManager()->flush();
 
         $this->get('session')->getFlashBag()->add('success', 'Language successfully disable');
 

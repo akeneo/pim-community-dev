@@ -30,27 +30,29 @@ class CurrencyController extends Controller
      */
     public function indexAction()
     {
-        $currencies = $this->getCurrencyManager()->getEntityRepository()->findAll();
+        $currencies = $this->getCurrencyRepository()->findAll();
 
         return array('currencies' => $currencies);
     }
 
     /**
-     * Get currency manager
-     * @return Oro\Bundle\FlexibleEntityBundle\Manager\SimpleManager
+     * Get storage manager
+     *
+     * @return \Doctrine\Common\Persistence\ObjectManager
      */
-    protected function getCurrencyManager()
+    protected function getStorageManager()
     {
-        return $this->get('currency_manager');
+        return $this->container->get('doctrine.orm.entity_manager');
     }
 
     /**
-     * Get language manager
-     * @return Oro\Bundle\FlexibleEntityBundle\Manager\SimpleManager
+     * Get Currency Repository
+     *
+     * @return \Doctrine\Common\Persistence\ObjectRepository
      */
-    protected function getLanguageManager()
+    protected function getCurrencyRepository()
     {
-        return $this->get('language_manager');
+        return $this->getStorageManager()->getRepository('PimConfigBundle:Currency');
     }
 
     /**
@@ -63,7 +65,7 @@ class CurrencyController extends Controller
      */
     public function createAction()
     {
-        $currency = $this->getCurrencyManager()->createEntity();
+        $currency = new Currency();
 
         return $this->editAction($currency);
     }
@@ -107,8 +109,8 @@ class CurrencyController extends Controller
         // Disable activated property if no language associated
         if ($currency->getLanguages()->count() === 0) {
             $currency->setActivated(false);
-            $this->getCurrencyManager()->getStorageManager()->persist($currency);
-            $this->getCurrencyManager()->getStorageManager()->flush();
+            $this->getStorageManager()->persist($currency);
+            $this->getStorageManager()->flush();
 
             $this->get('session')->getFlashBag()->add('success', 'Currency successfully disable');
         } else {

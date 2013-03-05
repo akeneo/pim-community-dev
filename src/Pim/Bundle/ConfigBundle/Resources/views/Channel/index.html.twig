@@ -1,0 +1,41 @@
+{% extends bap.layout is defined ? bap.layout : 'ConfigBundle::layout.bootstrap.html.twig' %}
+
+{% block content %}
+
+    <h1>{{ 'Channels overview'|trans }}
+        <a class="btn btn-primary pull-right" 
+            href="{{ path('pim_config_channel_create') }}">{{ 'New channel'|trans }}</a>
+    </h1>
+    
+    <table class="table table-bordered table-striped table-condensed">
+        <thead>
+            <tr>
+                <th>{{ 'Code'|trans }}</th>
+                <th>{{ 'Name'|trans }}</th>
+                <th style="width: 50px">{{ 'Edit'|trans }}</th>
+                <th style="width: 50px">{{ 'Remove'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for channel in channels %}
+            <tr>
+                <td>
+                    <a href="{{ path('pim_config_channel_edit', { id: channel.id }) }}">{{ channel.code }}</a>
+                </td>
+                <td>{{ channel.name }}</td>
+                <td>
+                    <a href="{{ path('pim_config_channel_edit', { id: channel.id }) }}">
+                        <i class="icon-edit"></i>
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('pim_config_channel_remove', { id: channel.id }) }}">
+                        <i class="icon-remove"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
