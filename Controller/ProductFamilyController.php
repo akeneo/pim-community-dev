@@ -30,10 +30,29 @@ class ProductFamilyController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('PimProductBundle:ProductFamily')->findAll();
+        $families = $this->getProductFamilyRepository()->findAll();
 
-        return array('entities' => $entities);
+        return array('families' => $families);
+    }
+
+    /**
+     * Get entity manager
+     *
+     * @return \Doctrine\ORM\EntityManager
+     */
+    protected function getEntityManager()
+    {
+        return $this->getDoctrine()->getEntityManager();
+    }
+
+    /**
+     * Get product family repository
+     *
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    protected function getProductFamilyRepository()
+    {
+        return $this->getEntityManager()->getRepository('PimProductBundle:ProductFamily');
     }
 
     /**
@@ -46,15 +65,15 @@ class ProductFamilyController extends Controller
      */
     public function createAction()
     {
-        $entity = new ProductFamily();
+        $family = new ProductFamily();
 
-        return $this->editAction($entity);
+        return $this->editAction($family);
     }
 
     /**
      * Edit product family
      *
-     * @param ProductFamily $entity
+     * @param ProductFamily $family
      *
      * @Route(
      *     "/edit/{id}",
@@ -65,18 +84,17 @@ class ProductFamilyController extends Controller
      *
      * @return array
      */
-    public function editAction(ProductFamily $entity)
+    public function editAction(ProductFamily $family)
     {
         $request = $this->getRequest();
-        $form = $this->createForm(new ProductFamilyType(), $entity);
+        $form = $this->createForm(new ProductFamilyType(), $family);
 
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
 
             if ($form->isValid()) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($entity);
-                $em->flush();
+                $this->getEntityManager()->persist($family);
+                $this->getEntityManager()->flush();
 
                 $this->get('session')->getFlashBag()->add('success', 'Product family successfully saved');
 
@@ -100,9 +118,8 @@ class ProductFamilyController extends Controller
      */
     public function removeAction(ProductFamily $entity)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($entity);
-        $em->flush();
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->flush();
 
         $this->get('session')->getFlashBag()->add('success', 'Product family successfully removed');
 

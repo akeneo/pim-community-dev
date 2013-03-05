@@ -18,28 +18,28 @@
             </tr>
         </thead>
         <tbody>
-        {% for entity in entities %}
+        {% for family in families %}
             <tr>
                 <td>
-                    <a href="{{ path('pim_product_productfamily_edit', { id: entity.id }) }}">
-                        {{ entity.name }}
+                    <a href="{{ path('pim_product_productfamily_edit', { id: family.id }) }}">
+                        {{ family.name }}
                     </a>
                 </td>
-                <td>{{ entity.description }}</td>
+                <td>{{ family.description }}</td>
                 <td>
                     <ul>
-                    {% for attribute in entity.attributes %}
+                    {% for attribute in family.attributes %}
                         <li>{{ attribute }}</li>
                     {% endfor %}
                     </ul>
                 </td>
                 <td>
-                    <a href="{{ path('pim_product_productfamily_edit', { id: entity.id }) }}">
+                    <a href="{{ path('pim_product_productfamily_edit', { id: family.id }) }}">
                         <i class="icon-edit"></i>
                     </a>
                 </td>
                 <td>
-                    <a href="{{ path('pim_product_productfamily_remove', { id: entity.id }) }}">
+                    <a href="{{ path('pim_product_productfamily_remove', { id: family.id }) }}">
                         <i class="icon-remove"></i>
                     </a>
                 </td>
