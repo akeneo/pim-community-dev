@@ -1,10 +1,6 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Form\Type;
 
-use Symfony\Component\Locale\Locale;
-
-use Symfony\Component\Locale\Stub\StubLocale;
-
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Symfony\Component\Form\FormBuilderInterface;
