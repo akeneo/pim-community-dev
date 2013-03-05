@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
+use Pim\Bundle\ConfigBundle\Entity\Language;
+
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -28,12 +30,6 @@ class LoadLanguageData extends AbstractFixture implements OrderedFixtureInterfac
     protected $container;
 
     /**
-     * Object manager
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected $manager;
-
-    /**
      * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
@@ -42,25 +38,23 @@ class LoadLanguageData extends AbstractFixture implements OrderedFixtureInterfac
     }
 
     /**
-     * Get language manager
-     * @return \Oro\Bundle\FlexibleEntityBundle\Manager\SimpleManager
-     */
-    protected function getLanguageManager()
-    {
-        return $this->container->get('language_manager');
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
-        $this->createLanguage('fr_FR', 'fr_FR', array('EUR'));
-        $this->createLanguage('en_US', 'en_EN', array('USD', 'EUR'));
-        $this->createLanguage('en_EN', 'en_EN', array('GBP', 'EUR', 'USD'));
-        $this->createLanguage('fr_CH', 'fr_FR', array('CHF', 'EUR'), false);
+        $lang = $this->createLanguage('fr_FR', 'fr_FR', array('EUR'));
+        $manager->persist($lang);
 
-        $this->getLanguageManager()->getStorageManager()->flush();
+        $lang = $this->createLanguage('en_US', 'en_EN', array('USD', 'EUR'));
+        $manager->persist($lang);
+
+        $lang = $this->createLanguage('en_EN', 'en_EN', array('GBP', 'EUR', 'USD'));
+        $manager->persist($lang);
+
+        $lang = $this->createLanguage('fr_CH', 'fr_FR', array('CHF', 'EUR'), false);
+        $manager->persist($lang);
+
+        $manager->flush();
     }
 
     /**
@@ -69,10 +63,12 @@ class LoadLanguageData extends AbstractFixture implements OrderedFixtureInterfac
      * @param string  $fallback   Language fallback
      * @param array   $currencies Currencies used
      * @param boolean $activated  Define if language is activated or not
+     *
+     * @return \Pim\Bundle\ConfigBundle\Entity\Language
      */
     protected function createLanguage($code, $fallback, $currencies = array(), $activated = true)
     {
-        $language = $this->getLanguageManager()->createEntity();
+        $language = new Language();
         $language->setCode($code);
         $language->setFallback($fallback);
         $language->setActivated($activated);
@@ -84,8 +80,9 @@ class LoadLanguageData extends AbstractFixture implements OrderedFixtureInterfac
         }
         $language->setCurrencies($langCurrencies);
 
-        $this->getLanguageManager()->getStorageManager()->persist($language);
         $this->setReference('language.'. $code, $language);
+
+        return $language;
     }
 
     /**

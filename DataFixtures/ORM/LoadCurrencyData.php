@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
+use Pim\Bundle\ConfigBundle\Entity\Currency;
+
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -28,12 +30,6 @@ class LoadCurrencyData extends AbstractFixture implements OrderedFixtureInterfac
     protected $container;
 
     /**
-     * Object manager
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected $manager;
-
-    /**
      * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
@@ -42,40 +38,42 @@ class LoadCurrencyData extends AbstractFixture implements OrderedFixtureInterfac
     }
 
     /**
-     * Get currency manager
-     * @return \Oro\Bundle\FlexibleEntityBundle\Manager\SimpleManager
-     */
-    protected function getCurrencyManager()
-    {
-        return $this->container->get('currency_manager');
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
         // create currencies
-        $this->createCurrency('EUR');
-        $this->createCurrency('USD');
-        $this->createCurrency('GBP');
-        $this->createCurrency('CHF', false);
+        $currency = $this->createCurrency('EUR');
+        $manager->persist($currency);
 
-        $this->getCurrencyManager()->getStorageManager()->flush();
+        $currency = $this->createCurrency('USD');
+        $manager->persist($currency);
+
+        $currency = $this->createCurrency('GBP');
+        $manager->persist($currency);
+
+        $currency = $this->createCurrency('CHF', false);
+        $manager->persist($currency);
+
+        $manager->flush();
     }
 
     /**
      * Create currency entity and persist it
      * @param string  $code      Currency code
      * @param boolean $activated Define if currency is activated or not
+     *
+     * @return \Pim\Bundle\ConfigBundle\Entity\Currency
      */
     protected function createCurrency($code, $activated = true)
     {
-        $currency = $this->getCurrencyManager()->createEntity();
+        $currency = new Currency();
         $currency->setCode($code);
         $currency->setActivated($activated);
-        $this->getCurrencyManager()->getStorageManager()->persist($currency);
+
         $this->setReference('currency.'. $code, $currency);
+
+        return $currency;
     }
 
     /**

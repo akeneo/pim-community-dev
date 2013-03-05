@@ -32,12 +32,6 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
     protected $container;
 
     /**
-     * Object manager
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected $manager;
-
-    /**
      * {@inheritDoc}
      */
     public function setContainer(ContainerInterface $container = null)

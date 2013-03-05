@@ -32,12 +32,6 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
     protected $container;
 
     /**
-     * Object manager
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected $manager;
-
-    /**
      * count groups created to order them
      * @staticvar integer
      */
