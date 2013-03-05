@@ -32,12 +32,6 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
     protected $container;
 
     /**
-     * Product manager
-     * @var Oro\Bundle\FlexibleEntityBundle\Manager\SimpleManager;
-     */
-    protected $manager;
-
-    /**
      * count groups created to order them
      * @staticvar integer
      */

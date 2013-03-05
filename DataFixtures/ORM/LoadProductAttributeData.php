@@ -46,12 +46,6 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
     protected $container;
 
     /**
-     * Product manager
-     * @var Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
-     */
-    protected $manager;
-
-    /**
      * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
@@ -74,7 +68,8 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
     public function load(ObjectManager $manager)
     {
         // force in english
-        $this->getProductManager()->setLocale('en_US');
+        $locale = $this->getReference('language.en_US');
+        $this->getProductManager()->setLocale($locale->getCode());
 
 
         // create attribute

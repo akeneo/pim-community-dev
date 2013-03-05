@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
-use Pim\Bundle\ConfigBundle\Entity\Currency;
+use Pim\Bundle\ConfigBundle\Entity\Channel;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -14,14 +14,14 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 
 /**
- * Load fixtures for currencies
+ * Load fixtures for channels
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class LoadCurrencyData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
+class LoadChannelData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
 
     /**
@@ -42,38 +42,32 @@ class LoadCurrencyData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
-        // create currencies
-        $currency = $this->createCurrency('EUR');
-        $manager->persist($currency);
+        // create channels
+        $channel = $this->createChannel('ecommerce', 'E-Commerce');
+        $manager->persist($channel);
 
-        $currency = $this->createCurrency('USD');
-        $manager->persist($currency);
-
-        $currency = $this->createCurrency('GBP');
-        $manager->persist($currency);
-
-        $currency = $this->createCurrency('CHF', false);
-        $manager->persist($currency);
+        $channel = $this->createChannel('mobile', 'Mobile');
+        $manager->persist($channel);
 
         $manager->flush();
     }
 
     /**
-     * Create currency entity and persist it
-     * @param string  $code      Currency code
-     * @param boolean $activated Define if currency is activated or not
+     * Create a channel
+     * @param string $code Channel code
+     * @param string $name Channel name
      *
-     * @return \Pim\Bundle\ConfigBundle\Entity\Currency
+     * @return \Pim\Bundle\ConfigBundle\Entity\Channel
      */
-    protected function createCurrency($code, $activated = true)
+    protected function createChannel($code, $name)
     {
-        $currency = new Currency();
-        $currency->setCode($code);
-        $currency->setActivated($activated);
+        $channel = new Channel();
+        $channel->setCode($code);
+        $channel->setName($name);
 
-        $this->setReference('currency.'. $code, $currency);
+        $this->setReference('channel.'. $code, $channel);
 
-        return $currency;
+        return $channel;
     }
 
     /**
