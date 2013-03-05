@@ -30,9 +30,29 @@ class ChannelController extends Controller
      */
     public function indexAction()
     {
-        $channels = array();
+        $channels = $this->getChannelRepository()->findAll();
 
         return array('channels' => $channels);
+    }
+
+    /**
+     * Get storage manager
+     *
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     */
+    protected function getStorageManager()
+    {
+        return $this->container->get('doctrine.orm.entity_manager');
+    }
+
+    /**
+     * Get Channel Repository
+     *
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    protected function getChannelRepository()
+    {
+        return $this->getStorageManager()->getRepository('PimConfigBundle:Channel');
     }
 
     /**
@@ -73,5 +93,24 @@ class ChannelController extends Controller
         return array(
             'form' => $this->get('pim_config.form.channel')->createView()
         );
+    }
+
+    /**
+     * Remove channel
+     *
+     * @param Channel $channel
+     *
+     * @Route("/remove/{id}", requirements={"id"="\d+"})
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function removeAction(Channel $channel)
+    {
+        $this->getStorageManager()->remove($channel);
+        $this->getStorageManager()->flush();
+
+        $this->get('session')->getFlashBag()->add('success', 'Channel successfully removed');
+
+        return $this->redirect($this->generateUrl('pim_config_channel_index'));
     }
 }
