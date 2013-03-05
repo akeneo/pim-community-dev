@@ -75,8 +75,8 @@ class LoadLanguageData extends AbstractFixture implements OrderedFixtureInterfac
 
         // prepare currencies
         $langCurrencies = array();
-        foreach ($currencies as $code) {
-            $langCurrencies[] = $this->getReference('currency.'. $code);
+        foreach ($currencies as $currencyCode) {
+            $langCurrencies[] = $this->getReference('currency.'. $currencyCode);
         }
         $language->setCurrencies($langCurrencies);
 

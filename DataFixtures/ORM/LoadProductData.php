@@ -62,8 +62,16 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function loadProducts()
     {
+        // get scopes
+        $scopeEcommerce = $this->getReference('channel.ecommerce');
+        $scopeMobile    = $this->getReference('channel.mobile');
+
         // force in english because product is translatable
-        $this->getProductManager()->setLocale('en_US');
+        $locale = $this->getReference('language.en_US');
+        $this->getProductManager()->setLocale($locale->getCode());
+
+        // get currency
+        $currencyUSD = $this->getReference('currency.USD');
 
         // get attributes by reference
         $attName        = $this->getReference('product-attribute.name');
@@ -119,14 +127,14 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             // set description value by scope
             // scope ecommerce
             $value = $this->getProductManager()->createFlexibleValue();
-            $value->setScope(ProductAttribute::SCOPE_ECOMMERCE);
+            $value->setScope($scopeEcommerce->getCode());
             $value->setAttribute($attDescription->getAttribute());
             $myDescription = $descriptions[$ind%2];
             $value->setData($myDescription.'(ecommerce)');
             $product->addValue($value);
             // scope mobile
             $value = $this->getProductManager()->createFlexibleValue();
-            $value->setScope(ProductAttribute::SCOPE_MOBILE);
+            $value->setScope($scopeMobile->getCode());
             $value->setAttribute($attDescription->getAttribute());
             $value->setData($myDescription.'(mobile)');
             $product->addValue($value);
@@ -180,7 +188,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $value = $this->getProductManager()->createFlexibleValue();
             $value->setAttribute($attPrice->getAttribute());
             $value->setData(rand(5, 100));
-            $value->setCurrency('USD');
+            $value->setCurrency($currencyUSD->getCode());
             $product->addValue($value);
 
             // persists
@@ -195,6 +203,13 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function loadTranslations()
     {
+        // get languages
+        $langFr = $this->getReference('language.fr_FR');
+
+        // get scopes
+        $scopeEcommerce = $this->getReference('channel.ecommerce');
+        $scopeMobile    = $this->getReference('channel.mobile');
+
         // get attributes
         $attName        = $this->getReference('product-attribute.name');
         $attDescription = $this->getReference('product-attribute.shortDescription');
@@ -206,7 +221,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             // translate name value
             $value = $this->getProductManager()->createFlexibleValue();
             $value->setAttribute($attName->getAttribute());
-            $value->setLocale('fr_FR');
+            $value->setLocale($langFr->getCode());
             $value->setData('mon nom FR '.$ind);
             $product->addValue($value);
             $this->getProductManager()->getStorageManager()->persist($value);
@@ -214,8 +229,8 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             // translate description value
             // scope ecommerce
             $value = $this->getProductManager()->createFlexibleValue();
-            $value->setLocale('fr_FR');
-            $value->setScope(ProductAttribute::SCOPE_ECOMMERCE);
+            $value->setLocale($langFr->getCode());
+            $value->setScope($scopeEcommerce->getCode());
             $value->setAttribute($attDescription->getAttribute());
             $value->setData('ma description FR (ecommerce) '.$ind);
             $product->addValue($value);
@@ -223,8 +238,8 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 
             // scope mobile
             $value = $this->getProductManager()->createFlexibleValue();
-            $value->setLocale('fr_FR');
-            $value->setScope(ProductAttribute::SCOPE_MOBILE);
+            $value->setLocale($langFr->getCode());
+            $value->setScope($scopeMobile->getCode());
             $value->setAttribute($attDescription->getAttribute());
             $value->setData('ma description FR (mobile) '.$ind);
             $product->addValue($value);
@@ -257,7 +272,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
                 $option = $optValueEn->getOption();
                 $optValueFr = $this->getProductManager()->createAttributeOptionValue();
                 $optValueFr->setValue($colorFr);
-                $optValueFr->setLocale('fr_FR');
+                $optValueFr->setLocale($langFr->getCode());
                 $option->addOptionValue($optValueFr);
                 $this->getProductManager()->getStorageManager()->persist($optValueFr);
             }
