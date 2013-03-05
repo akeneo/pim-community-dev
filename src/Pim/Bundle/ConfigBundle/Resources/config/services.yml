@@ -1,12 +1,10 @@
 parameters:
     currency_entity_class:  Pim\Bundle\ConfigBundle\Entity\Currency
     currency_handler_class: Pim\Bundle\ConfigBundle\Form\Handler\CurrencyHandler
-    currency_manager_class: Oro\Bundle\FlexibleEntityBundle\Manager\SimpleManager
     currency_type_class:    Pim\Bundle\ConfigBundle\Form\Type\CurrencyType
     
     language_entity_class:  Pim\Bundle\ConfigBundle\Entity\Language
     language_handler_class: Pim\Bundle\ConfigBundle\Form\Handler\LanguageHandler
-    language_manager_class: Oro\Bundle\FlexibleEntityBundle\Manager\SimpleManager
     language_type_class:    Pim\Bundle\ConfigBundle\Form\Type\LanguageType
     
     channel_entity_class:   Pim\Bundle\ConfigBundle\Entity\Channel
@@ -14,15 +12,6 @@ parameters:
     channel_type_class:     Pim\Bundle\ConfigBundle\Form\Type\ChannelType
 
 services:
-    # Managers
-    currency_manager:
-        class:     "%currency_manager_class%"
-        arguments: ["%currency_entity_class%", "@doctrine.orm.entity_manager"]
-    
-    language_manager:
-        class:     "%language_manager_class%"
-        arguments: ["%language_entity_class%", "@doctrine.orm.entity_manager"]
-    
     # Form
     pim_config.form.channel:
         class:           Symfony\Component\Form\Form
