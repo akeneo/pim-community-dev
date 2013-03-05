@@ -31,6 +31,13 @@ class Product extends AbstractEntityFlexible
     protected $values;
 
     /**
+     * @var productFamily
+     *
+     * @ORM\ManyToOne(targetEntity="ProductFamily")
+     */
+    protected $productFamily;
+
+    /**
      * Get sku
      *
      * @return string
@@ -50,6 +57,30 @@ class Product extends AbstractEntityFlexible
     public function setSku($sku)
     {
         $this->sku = $sku;
+
+        return $this;
+    }
+
+    /**
+     * Get product family
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductFamily
+     */
+    public function getProductFamily()
+    {
+        return $this->productFamily;
+    }
+
+    /**
+     * Set product family
+     *
+     * @param ProductFamily $productFamily
+     *
+     * @return EntityAttribute
+     */
+    public function setProductFamily($productFamily)
+    {
+        $this->productFamily = $productFamily;
 
         return $this;
     }

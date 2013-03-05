@@ -17,7 +17,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="pim_product_family")
  * @ORM\Entity
  */
-
 class ProductFamily
 {
 
@@ -63,6 +62,15 @@ class ProductFamily
     {
         $this->description = '';
         $this->attributes = new ArrayCollection();
+    }
+
+    /**
+     * Returns the name of the product family
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
     }
 
     /**
@@ -126,7 +134,8 @@ class ProductFamily
     /**
      * Add attribute
      *
-     * @param \Pim\Bundle\ProductBundle\Entity\ProductAttribute $attributes
+     * @param \Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute
+     *
      * @return ProductFamily
      */
     public function addAttribute(\Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute)

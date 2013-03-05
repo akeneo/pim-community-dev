@@ -70,4 +70,15 @@ class ProductFamilyTest extends \PHPUnit_Framework_TestCase
         $attributes = $productFamily->getAttributes();
         $this->assertNotInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductAttribute', $attributes[0]);
     }
+
+    /**
+     * Test for __toString method
+     */
+    public function testToString()
+    {
+        $productFamily = new ProductFamily();
+        $string = 'test-string';
+        $productFamily->setName($string);
+        $this->assertEquals($string, $productFamily->__toString());
+    }
 }

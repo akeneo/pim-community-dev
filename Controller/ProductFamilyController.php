@@ -32,6 +32,7 @@ class ProductFamilyController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $entities = $em->getRepository('PimProductBundle:ProductFamily')->findAll();
+
         return array('entities' => $entities);
     }
 
