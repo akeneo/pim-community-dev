@@ -35,8 +35,13 @@ class LoadProductFamilyData extends AbstractFixture implements OrderedFixtureInt
             $this->getReference('product-attribute.shortDescription'),
             $this->getReference('product-attribute.color')
         );
-        
-        $this->createProductFamily('Mug', 'A large cup, typically cylindrical and with a handle and used without a saucer.', $attributes, $manager);
+
+        $this->createProductFamily(
+            'Mug',
+            'A large cup, typically cylindrical and with a handle and used without a saucer.',
+            $attributes,
+            $manager
+        );
     }
 
     /**

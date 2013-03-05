@@ -216,7 +216,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $value->setData('mon nom FR '.$ind);
             $product->addValue($value);
             $this->getProductManager()->getStorageManager()->persist($value);
- 
+
             // translate description value
             // scope ecommerce
             $value = $this->getProductManager()->createFlexibleValue();
