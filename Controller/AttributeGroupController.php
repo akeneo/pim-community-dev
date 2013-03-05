@@ -36,23 +36,23 @@ class AttributeGroupController extends Controller
     }
 
     /**
-     * Get storage manager
+     * Get entity manager
      *
-     * @return \Doctrine\Common\Persistence\ObjectManager
+     * @return \Doctrine\ORM\EntityManager
      */
-    protected function getStorageManager()
+    protected function getEntityManager()
     {
-        return $this->container->get('doctrine.orm.entity_manager');
+        return $this->getDoctrine()->getEntityManager();
     }
 
     /**
-     * Get AttributeGroup Repository
+     * Get attribute group repository
      *
-     * @return \Doctrine\Common\Persistence\ObjectRepository
+     * @return \Doctrine\ORM\EntityRepository
      */
     protected function getAttributeGroupRepository()
     {
-        return $this->getStorageManager()->getRepository('PimProductBundle:AttributeGroup');
+        return $this->getEntityManager()->getRepository('PimProductBundle:AttributeGroup');
     }
 
     /**
@@ -106,8 +106,8 @@ class AttributeGroupController extends Controller
      */
     public function removeAction(AttributeGroup $group)
     {
-        $this->getStorageManager()->remove($group);
-        $this->getStorageManager()->flush();
+        $this->getEntityManager()->remove($group);
+        $this->getEntityManager()->flush();
 
         $this->get('session')->getFlashBag()->add('success', 'Group successfully removed');
 
