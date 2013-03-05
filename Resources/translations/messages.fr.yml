@@ -24,13 +24,15 @@
 'Edit': 'Modifier'
 'Remove': 'Supprimer'
 
-'Name': 'Nom'
 'Description': 'Description'
 'Attributetype': "Type d'attribut"
 'Searchable': 'Recherchable'
 'Default value': 'Valeur par défaut'
 'Variant': 'Variante'
 'Smart': __Smart
+'Useableasgridcolumn': 'Utilisable comme colonne de grille'
+'Useableasgridfilter': 'Utilisable comme filtre de grille'
+'Productfamily': 'Famille de produit'
 
 # Scopes
 'Global': 'Global'
@@ -49,6 +51,14 @@
 'Show list': 'Afficher la liste'
 
 'Add group': 'Ajouter un groupe'
+'Edit group': 'Edit group'
 'Sort order': 'Ordre'
 
 'Y-m-d h:i:s': 'd/m/Y h:i:s'
+
+# Product family
+'Product families overview': 'Aperçu des familles de produit'
+'New product family': 'Nouvelle famille de produit'
+'Attributes': 'Attributs'
+'Edit product family': 'Modifier une famille de produit'
+'Add product family': 'Ajouter une famille de produit'
