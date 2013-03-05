@@ -49,9 +49,6 @@ class LoadChannelData extends AbstractFixture implements OrderedFixtureInterface
         $channel = $this->createChannel('mobile', 'Mobile');
         $manager->persist($channel);
 
-        $channel = $this->createChannel('catalog', 'Catalog');
-        $manager->persist($channel);
-
         $manager->flush();
     }
 
