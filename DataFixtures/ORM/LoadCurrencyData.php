@@ -28,8 +28,8 @@ class LoadCurrencyData extends AbstractFixture implements OrderedFixtureInterfac
     protected $container;
 
     /**
-     * Currency manager
-     * @var Oro\Bundle\FlexibleEntityBundle\Manager\SimpleManager;
+     * Object manager
+     * @var \Doctrine\Common\Persistence\ObjectManager
      */
     protected $manager;
 

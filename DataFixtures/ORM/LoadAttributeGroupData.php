@@ -32,8 +32,8 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
     protected $container;
 
     /**
-     * Product manager
-     * @var Oro\Bundle\FlexibleEntityBundle\Manager\SimpleManager;
+     * Object manager
+     * @var \Doctrine\Common\Persistence\ObjectManager
      */
     protected $manager;
 

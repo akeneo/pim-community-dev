@@ -32,8 +32,8 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
     protected $container;
 
     /**
-     * Flexible entity manager
-     * @var \Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
+     * Object manager
+     * @var \Doctrine\Common\Persistence\ObjectManager
      */
     protected $manager;
 

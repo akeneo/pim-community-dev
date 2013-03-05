@@ -46,8 +46,8 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
     protected $container;
 
     /**
-     * Product manager
-     * @var Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
+     * Object manager
+     * @var \Doctrine\Common\Persistence\ObjectManager
      */
     protected $manager;
 
