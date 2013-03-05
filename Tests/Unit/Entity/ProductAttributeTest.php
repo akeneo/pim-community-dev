@@ -2,6 +2,7 @@
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 
 /**
  * Test related class
@@ -77,5 +78,62 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
         $newSmart = true;
         $productAttribute->setSmart($newSmart);
         $this->assertTrue($productAttribute->getSmart());
+    }
+
+    /**
+     * Test getter/setter for group property
+     */
+    public function testGetSetGroup()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertEmpty($productAttribute->getGroup());
+
+        // change value and assert new
+        $attributeGroup = new AttributeGroup();
+        $productAttribute->setGroup($attributeGroup);
+        $this->assertEquals($attributeGroup, $productAttribute->getGroup());
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $productAttribute->getGroup());
+
+        $productAttribute->setGroup(null);
+        $this->assertEquals(null, $productAttribute->getGroup());
+    }
+
+    /**
+     * Test for __toString method
+     */
+    public function testToString()
+    {
+        $productAttribute = new ProductAttribute();
+        $string = 'test-string';
+        $productAttribute->setName($string);
+        $this->assertEquals($string, $productAttribute->__toString());
+    }
+
+    /**
+     * Test getter/setter for useableAsGridColumn property
+     */
+    public function testGetSetUseableAsGridColumn()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertFalse($productAttribute->getUseableAsGridColumn());
+
+        // change value and assert new
+        $newUseableAsGridColumn = true;
+        $productAttribute->setUseableAsGridColumn($newUseableAsGridColumn);
+        $this->assertTrue($productAttribute->getUseableAsGridColumn());
+    }
+
+    /**
+     * Test getter/setter for useableAsGridFilter property
+     */
+    public function testGetSetUseableAsGridFilter()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertFalse($productAttribute->getUseableAsGridFilter());
+
+        // change value and assert new
+        $newUseableAsGridFilter = true;
+        $productAttribute->setUseableAsGridFilter($newUseableAsGridFilter);
+        $this->assertTrue($productAttribute->getUseableAsGridFilter());
     }
 }
