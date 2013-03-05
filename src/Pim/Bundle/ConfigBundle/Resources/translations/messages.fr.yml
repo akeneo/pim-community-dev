@@ -18,3 +18,11 @@
 'Label': 'Libellé'
 'Add currency': 'Ajouter une monnaie'
 'Edit currency': 'Modifier une monnaie'
+
+# Channels
+'Channels overview': 'Aperçu des canaux'
+'New channel': 'Nouveau canal'
+'Add channel': 'Ajouter un canal'
+'Name': 'Nom'
+'Edit channel': 'Modifier un canal'
+'Remove': 'Supprimer'

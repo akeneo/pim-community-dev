@@ -1,0 +1,43 @@
+{% extends bap.layout is defined ? bap.layout : 'ConfigBundle::layout.bootstrap.html.twig' %}
+
+{% set title = form.vars.value.id ? 'Edit channel' : 'Add channel' %}
+
+{% block title %}{{ parent() }} - {{ title|trans }}{% endblock %}
+
+{% block content %}
+    <form action="{{ form.vars.value.id ? 
+        path('pim_config_channel_edit', { id: form.vars.value.id }) : 
+        path('pim_config_channel_create') }}" method="POST" class="form-register">
+
+        <fieldset>
+            <legend>
+                {{ title|trans }} 
+                <a class="btn btn-primary pull-right" href="{{ path('pim_config_channel_index') }}">
+                    {{ "Back to list" | trans }}
+                </a>
+            </legend>
+            
+            {% if form.vars.errors|length %}
+                <div class="alert alert-error">
+                    {{ form_errors(form) }}
+                </div>
+            {% endif %}
+            
+            {{ form_row(form.id) }}
+            
+            {{ form_row(form.code) }}
+            
+            {{ form_row(form.name) }}
+            
+            {{ form_row(form._token) }}
+            
+            <br />
+            <div class="form_row">
+                <button class="btn btn-large btn-primary" type="submit">{{ 'Save'|trans }}</button>
+            </div>
+    
+        </fieldset>
+    
+    </form>
+
+{% endblock %}
