@@ -18,3 +18,11 @@
 'Label': 'Label'
 'Add currency': 'Add currency'
 'Edit currency': 'Edit currency'
+
+# Channels
+'Channels overview': 'Channels overview'
+'New channel': 'New channel'
+'Add channel': 'Add channel'
+'Name': 'Name'
+'Edit channel': 'Edit channel'
+'Remove': 'Remove'
