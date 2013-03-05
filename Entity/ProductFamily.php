@@ -125,13 +125,13 @@ class ProductFamily
     /**
      * Add attribute
      *
-     * @param \Pim\Bundle\ProductBundle\Entity\ProductAttribute $attributes
+     * @param \Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute
      *
      * @return ProductFamily
      */
-    public function addAttribute(\Pim\Bundle\ProductBundle\Entity\ProductAttribute $attributes)
+    public function addAttribute(\Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute)
     {
-        $this->attributes[] = $attributes;
+        $this->attributes[] = $attribute;
 
         return $this;
     }
