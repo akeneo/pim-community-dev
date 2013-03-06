@@ -36,23 +36,23 @@ class ChannelController extends Controller
     }
 
     /**
-     * Get storage manager
+     * Get entity manager
      *
-     * @return \Doctrine\Common\Persistence\ObjectManager
+     * @return \Doctrine\ORM\EntityManager
      */
-    protected function getStorageManager()
+    protected function getEntityManager()
     {
-        return $this->container->get('doctrine.orm.entity_manager');
+        return $this->getDoctrine()->getEntityManager();
     }
 
     /**
-     * Get Channel Repository
+     * Get channel repository
      *
-     * @return \Doctrine\Common\Persistence\ObjectRepository
+     * @return \Doctrine\ORM\EntityRepository
      */
     protected function getChannelRepository()
     {
-        return $this->getStorageManager()->getRepository('PimConfigBundle:Channel');
+        return $this->getEntityManager()->getRepository('PimConfigBundle:Channel');
     }
 
     /**
@@ -106,8 +106,8 @@ class ChannelController extends Controller
      */
     public function removeAction(Channel $channel)
     {
-        $this->getStorageManager()->remove($channel);
-        $this->getStorageManager()->flush();
+        $this->getEntityManager()->remove($channel);
+        $this->getEntityManager()->flush();
 
         $this->get('session')->getFlashBag()->add('success', 'Channel successfully removed');
 
