@@ -1,104 +1,27 @@
-{% extends 'OroUIBundle:Default:index.html.twig' %}
+{% extends "OroUIBundle:Default:index.html.twig" %}
 
-    {% block application_menu %}
-        <div class="navbar">
-        <div class="navbar-inner">
-            <a class="brand" href="{{ path('_welcome') }}"><span class="icon-home"></span></a>
-            <ul class="nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        {{ 'Product'|trans }} <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ path('pim_product_product_index') }}">
-                            {{ 'Product list'|trans }}
-                        </a></li>
-                        <li><a href="{{ path('pim_product_productfamily_index') }}">
-                            {{ 'Product family list'|trans }}
-                        </a></li>
+{% block user_menu %}
+    {% if app.user %}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ app.user.username }} <b class="caret"></b></a>
+            {{ oro_menu_render('usermenu') }}
+        </li>
+    {% else %}
+        <li><a href="{{ path('oro_user_security_login') }}">Login</a></li>
+    {% endif %}
+{% endblock user_menu %}
 
-                        <li><a href="{{ path('pim_product_productattribute_index') }}">
-                            {{ 'Attribute list'|trans }}
-                        </a></li>
-                        <li><a href="{{ path('pim_product_attributegroup_index') }}">
-                            {{ 'Attribute Group list'|trans }}
-                        </a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        {{ 'User'|trans }} <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ path('oro_user_index') }}">
-                            {{ 'Users'|trans }}
-                        </a></li>
-                        <li><a href="{{ path('oro_user_role_index') }}">
-                            {{ 'Roles'|trans }}
-                        </a></li>
-                        <li><a href="{{ path('oro_user_group_index') }}">
-                            {{ 'Groups'|trans }}
-                        </a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        {{ 'Configuration'|trans }} <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ path('pim_config_currency_index') }}">
-                            {{ 'Currency list'|trans }}
-                        </a></li>
-                        <li><a href="{{ path('pim_config_language_index') }}">
-                            {{ 'Language list'|trans }}
-                        </a></li>
-                        <li><a href="{{ path('pim_config_channel_index') }}">
-                            {{ 'Channel list'|trans }}
-                        </a></li>
-                    </ul> 
-                </li>
-            </ul>
-
-            {% set route_params = app.request.attributes.get('_route_params') %}
-            {% if route_params == "" %}
-                {% set route_params = [] %}
-            {% endif %}
-
-            <ul class="nav nav-pills pull-right">
-                {% for locale in ['fr', 'en', 'de'] %}
-                <li{% if locale == app.request.get('_locale') %} class="active"{% endif %}>
-                    <a href="{{ path(
-                                app.request.attributes.get('_route'),
-                                route_params | merge({ _locale: locale })
-                            ) }}" data-role="button">{{ locale }}</a>
-                </li>
-                {% endfor %}
-                <li class="divider-vertical"></li>
-                {% if app.user %}
-                <li><p class="navbar-text">
-                    {{ 'Logged in as'| trans }} 
-                    <strong>{{ app.user.username }}</strong>
-                </p></li>
-                <li class="divider-vertical"></li>
-                <li><a href="{{ path('oro_user_security_logout') }}">{{ 'Logout'|trans }}</a></li>
-                {% else %}
-                <li><a href="{{ path('oro_user_security_login') }}">{{ 'Login'|trans }}</a></li>
-                {% endif %}
-            </ul>
-        </div>
-    </div>
-    {% for type, messages in app.session.flashbag.all %}
-    <div class="alert alert-{{ type }}">
-        <button data-dismiss="alert" class="close" type="button">×</button>
-        {% for message in messages %}
-        <div>{{ message|trans|raw }}</div>
-        {% endfor %}
-    </div>
-    {% endfor %}
+{% block application_menu %}
+    {{ oro_menu_render('application_menu') }}
 {% endblock application_menu %}
-
 
 {% block head_script %}
     {{ parent() }}
     {% block javascripts %}{% endblock %}
+    
+    <!-- quick fix until we get pin bar -->
+    <style type="text/css">
+    .pin-bar {display:none;}
+    </style>
+    
 {% endblock %}
