@@ -52,7 +52,7 @@ class LoadCurrencyData extends AbstractFixture implements OrderedFixtureInterfac
         $currency = $this->createCurrency('GBP');
         $manager->persist($currency);
 
-        $currency = $this->createCurrency('CHF', false);
+        $currency = $this->createCurrency('CAD', false);
         $manager->persist($currency);
 
         $manager->flush();

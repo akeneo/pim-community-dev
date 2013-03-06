@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
+use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
@@ -46,75 +48,57 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
     }
 
     /**
-     * Get group manager
-     * @return \Oro\Bundle\FlexibleEntityBundle\Manager\SimpleManager
-     */
-    protected function getGroupManager()
-    {
-        return $this->container->get('attribute_group_manager');
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
         // create group
         $group = $this->createGroup('General');
-        $this->getGroupManager()->getStorageManager()->persist($group);
+        $manager->persist($group);
 
         // link attributes with group
         $attribute = $this->getReference('product-attribute.name');
         $attribute->setGroup($group);
-        $this->getProductManager()->getStorageManager()->persist($attribute);
+        $manager->persist($attribute);
 
         $attribute = $this->getReference('product-attribute.shortDescription');
         $attribute->setGroup($group);
-        $this->getProductManager()->getStorageManager()->persist($attribute);
+        $manager->persist($attribute);
 
         $attribute = $this->getReference('product-attribute.longDescription');
         $attribute->setGroup($group);
-        $this->getProductManager()->getStorageManager()->persist($attribute);
+        $manager->persist($attribute);
 
 
         $group = $this->createGroup('SEO');
-        $this->getGroupManager()->getStorageManager()->persist($group);
+        $manager->persist($group);
 
         $group = $this->createGroup('Marketing');
-        $this->getGroupManager()->getStorageManager()->persist($group);
+        $manager->persist($group);
 
         $attribute = $this->getReference('product-attribute.price');
         $attribute->setGroup($group);
-        $this->getProductManager()->getStorageManager()->persist($attribute);
+        $manager->persist($attribute);
 
 
         // create group and link attribute
         $group = $this->createGroup('Sizes');
-        $this->getGroupManager()->getStorageManager()->persist($group);
+        $manager->persist($group);
 
         $attribute = $this->getReference('product-attribute.size');
         $attribute->setGroup($group);
-        $this->getProductManager()->getStorageManager()->persist($attribute);
+        $manager->persist($attribute);
 
         // create group and link attribute
         $group = $this->createGroup('Colors');
-        $this->getGroupManager()->getStorageManager()->persist($group);
+        $manager->persist($group);
 
         $attribute = $this->getReference('product-attribute.color');
         $attribute->setGroup($group);
-        $this->getProductManager()->getStorageManager()->persist($attribute);
+        $manager->persist($attribute);
 
         // flush
-        $this->getGroupManager()->getStorageManager()->flush();
-    }
-
-    /**
-     * Get product manager
-     * @return FlexibleManager
-     */
-    protected function getProductManager()
-    {
-        return $this->container->get('product_manager');
+        $manager->flush();
     }
 
     /**
@@ -125,7 +109,7 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
      */
     protected function createGroup($name)
     {
-        $group = $this->getGroupManager()->createEntity();
+        $group = new AttributeGroup();
         $group->setName($name);
         $group->setSortOrder(++self::$order);
 
