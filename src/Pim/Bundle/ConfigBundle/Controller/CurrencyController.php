@@ -36,23 +36,23 @@ class CurrencyController extends Controller
     }
 
     /**
-     * Get storage manager
+     * Get entity manager
      *
-     * @return \Doctrine\Common\Persistence\ObjectManager
+     * @return \Doctrine\ORM\EntityManager
      */
-    protected function getStorageManager()
+    protected function getEntityManager()
     {
-        return $this->container->get('doctrine.orm.entity_manager');
+        return $this->getDoctrine()->getEntityManager();
     }
 
     /**
-     * Get Currency Repository
+     * Get currency repository
      *
-     * @return \Doctrine\Common\Persistence\ObjectRepository
+     * @return \Doctrine\ORM\EntityRepository
      */
     protected function getCurrencyRepository()
     {
-        return $this->getStorageManager()->getRepository('PimConfigBundle:Currency');
+        return $this->getEntityManager()->getRepository('PimConfigBundle:Currency');
     }
 
     /**
@@ -109,8 +109,8 @@ class CurrencyController extends Controller
         // Disable activated property if no language associated
         if ($currency->getLanguages()->count() === 0) {
             $currency->setActivated(false);
-            $this->getStorageManager()->persist($currency);
-            $this->getStorageManager()->flush();
+            $this->getEntityManager()->persist($currency);
+            $this->getEntityManager()->flush();
 
             $this->get('session')->getFlashBag()->add('success', 'Currency successfully disable');
         } else {
