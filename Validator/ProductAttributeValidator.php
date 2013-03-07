@@ -24,9 +24,14 @@ class ProductAttributeValidator
      */
     const GLOBAL_SCOPE_VALUE = 0;
 
+    /**
+     * Violation message for missing attribute code
+     * @staticvar string
+     */
+    const VIOLATION_MISSING_CODE = 'Please specify attribute code';
 
     /**
-     * Violation messages for unique attribute with incorrect scope and accepting translations
+     * Violation message for unique attribute with incorrect scope and accepting translations
      * @staticvar string
      */
     const VIOLATION_UNIQUE_SCOPE_I18N = 'Unique attribute results in used of Global scope and no translations';
@@ -44,6 +49,12 @@ class ProductAttributeValidator
     const VIOLATION_DEFAULT_VALUE_DISABLED = 'No default value may be specified for this attribute type';
 
     /**
+     * Violation message for missing default value of attribute option
+     * @staticvar string
+     */
+    const VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED = 'Default label must be specified for all options';
+
+    /**
      * Validate ProductAttribute entity
      * @param ProductAttribute $productAttribute ProductAttirbute entity
      * @param ExecutionContext $context          Execution context
@@ -52,9 +63,26 @@ class ProductAttributeValidator
      */
     public static function isValid(ProductAttribute $productAttribute, ExecutionContext $context)
     {
+        self::isCodeValid($productAttribute, $context);
         self::isAttributeTypeMatrixValid($productAttribute, $context);
         self::isUniqueConstraintValid($productAttribute, $context);
         self::isDefaultValueValid($productAttribute, $context);
+        self::areOptionsValid($productAttribute, $context);
+    }
+
+    /**
+     * Validation rule for attribute code
+     *
+     * @param ProductAttribute $productAttribute ProductAttirbute entity
+     * @param ExecutionContext $context          Execution context
+     *
+     * @static
+     */
+    protected static function isCodeValid(ProductAttribute $productAttribute, ExecutionContext $context)
+    {
+        if (!$productAttribute->getCode()) {
+            $context->addViolation(self::VIOLATION_MISSING_CODE);
+        }
     }
 
     /**
@@ -128,6 +156,33 @@ class ProductAttributeValidator
 
             if (in_array($type, $exclusions)) {
                 $context->addViolation(self::VIOLATION_DEFAULT_VALUE_DISABLED);
+            }
+        }
+    }
+
+    /**
+     * Validation rule for attribute option values
+     *
+     * @param ProductAttribute $productAttribute ProductAttirbute entity
+     * @param ExecutionContext $context          Execution context
+     *
+     * @static
+     */
+    protected static function areOptionsValid(ProductAttribute $productAttribute, ExecutionContext $context)
+    {
+        $optionTypes = array(
+                'OptionSimpleRadioType',
+                'OptionSimpleSelectType',
+        );
+
+        $path = preg_split('/[^[:alnum:]]/', $productAttribute->getAttributeType());
+        $type = end($path);
+
+        if (in_array($type, $optionTypes)) {
+            foreach ($productAttribute->getOptions() as $option) {
+                if ($option->getDefaultValue() === null) {
+                    $context->addViolation(self::VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED);
+                }
             }
         }
     }

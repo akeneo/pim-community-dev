@@ -6,7 +6,7 @@ $('#'+ formName +'_attributeType').on('change', updateFieldsFromAttributeType);
 function updateFieldsFromAttributeType() {
     // enable all fields
     enableField('unique');
-    
+
     // disable field and check
     switch ($('#pim_product_attribute_form_attributeType').val()) {
         case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_TEXTAREA_CLASS') }}':
@@ -51,7 +51,7 @@ function updateFieldsFromUnique() {
 		    console.log($(this).val());
             return $(this).val() == 0;
 		}).attr('selected', 'selected');
-		
+
 		disableField('translatable');
 		disableField('scopable');
 	} else {
@@ -60,3 +60,9 @@ function updateFieldsFromUnique() {
 		enableField('scopable');
 	}
 }
+
+$(function() {
+    $('#tabs').tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
+    $('#tabs li').removeClass('ui-corner-top').addClass('ui-corner-left');
+    $('select').chosen();
+});

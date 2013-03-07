@@ -90,8 +90,14 @@ class ProductAttributeController extends Controller
             );
         }
 
+        $em = $this->container->get('doctrine.orm.entity_manager');
+        $locales = $em->getRepository('PimConfigBundle:Language')->findBy(array('activated' => 1));
+        $disabledLocales = $em->getRepository('PimConfigBundle:Language')->findBy(array('activated' => 0));
+
         return array(
-            'form' => $this->get('pim_product.form.attribute')->createView()
+            'form' => $this->get('pim_product.form.attribute')->createView(),
+            'locales' => $locales,
+            'disabledLocales' => $disabledLocales,
         );
     }
 

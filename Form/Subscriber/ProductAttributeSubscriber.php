@@ -85,9 +85,11 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
                         return;
                     } else {
                         $formType = 'choice';
-                        $options['choices'] = array('');
+                        $options['choices'] = array();
                         foreach ($attribute->getOptions() as $option) {
-                            $options['choices'][] = $option->getOptionValue()->getValue();
+                            if ($option->getOptionValue()) {
+                                $options['choices'][] = $option->getOptionValue()->getValue();
+                            }
                         }
                     }
                 } elseif (strpos($attTypeClass, 'BooleanType') !== false) {

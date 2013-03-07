@@ -5,110 +5,183 @@
 {% block title %}{{ parent() }} - {{ title|trans }}{% endblock %}
 
 {% block content %}
-<form action="{{ form.vars.value.id ? 
-    path('pim_product_productattribute_edit', { id: form.vars.value.id }) : 
+<form action="{{ form.vars.value.id ?
+    path('pim_product_productattribute_edit', { id: form.vars.value.id }) :
     path('pim_product_productattribute_create') }}" method="POST" class="form-register">
-    <fieldset>
-        <legend>{{ title|trans }} 
-            <a class="btn btn-primary pull-right" href="{{ path('pim_product_productattribute_index') }}">
-                {{ "Back to list" | trans }}
-            </a>
-        </legend>
+    <h3>{{ title|trans }}
+        <a class="btn btn-primary pull-right" href="{{ path('pim_product_productattribute_index') }}">
+            {{ "Back to list" | trans }}
+        </a>
+    </h3>
 
-        {% if form.vars.errors|length %}
-            <div class="alert alert-error">
-                {{ form_errors(form) }}
-            </div>
-        {% endif %}
-
-        {{ form_row(form.id) }}
-        
-        {{ form_row(form.code) }}
-        
-        {{ form_row(form.name) }}
-        
-        {{ form_row(form.description) }}
-        
-        {{ form_row(form.attributeType) }}
-        
-        {{ form_row(form.required) }}
-        
-        {{ form_row(form.unique) }}
-        
-        {{ form_row(form.translatable) }}
-        
-        {{ form_row(form.scopable) }}
-        
-        {{ form_row(form.searchable) }}
-        
-        {% if form.default_value is defined %}
-        {{ form_row(form.default_value) }}
-        {% endif %}
-        
-        {{ form_row(form.variant) }}
-        
-        {{ form_row(form.smart) }}
-
-        {{ form_row(form.useableAsGridColumn) }}
-
-        {{ form_row(form.useableAsGridFilter) }}
-
-        {{ form_row(form.group) }}
-        
-        {% if form.options is defined %}
-            <legend>{{ 'Options'|trans }}</legend>
-            
-            <ul id="sortable_options" class="options" data-prototype="{% filter escape %}
-                {% include 'PimProductBundle:ProductAttribute:_prototype-option.html.twig' 
-                    with {'form': form.options.get('prototype')} %}
-            {% endfilter %}">
-            {% for option in form.options %}
-                <li class="att-option">
-                    {{ form_row(option.id) }}
-                    {% for value in option.optionValues %}
-                        {{ form_row(value.id) }}
-                        {{ form_row(value.value) }}
-                        {{ form_row(value.locale) }}
-                    {% endfor %}
-                    {{ form_row(option.sort_order) }}
-                </li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-        
-        {{ form_row(form._token) }}
-
-        <br />
-        <legend>{{ 'Additional information'|trans }}</legend>
-
-        <div class="form-horizontal">
-            <div class="control-group">
-                <label class="control-label">{{ 'Created at'|trans }}</label>
-                <div class="controls">
-                    <span class="label">
-                        {{ form.vars.value.created ? form.vars.value.created|date('Y-m-d h:i:s'|trans) : 'N/A'|trans }}
-                    </span>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label">{{ 'Updated at'|trans }}</label>
-                <div class="controls">
-                    <span class="label">
-                        {{ form.vars.value.updated ? form.vars.value.updated|date('Y-m-d h:i:s'|trans) : 'N/A'|trans }}
-                    </span>
-                </div>
-            </div>
+    {% if form.vars.errors|length %}
+        <div class="alert alert-error">
+            {{ form_errors(form) }}
         </div>
-
-        <div class="form-row">
-            <button class="btn btn-large btn-primary" type="submit">{{ 'Save'|trans }}</button>
-        </div>
-    </fieldset>
-</form>
-<script type="text/javascript">
-    {% if form.options is defined %}
-        {% include 'PimProductBundle:ProductAttribute:_js-option.html.twig' %}
     {% endif %}
-    {% include 'PimProductBundle:ProductAttribute:_js-validation.html.twig' %}
-</script>
+
+    <div id="tabs">
+        <ul>
+            <li><a href="#tabs-1">{{ "Parameters"|trans }}</a></li>
+            <li><a href="#tabs-2">{{ "Values"|trans }}</a></li>
+            <li><a href="#tabs-3">{{ "Rules"|trans }}</a></li>
+        </ul>
+
+        <div id="tabs-1">
+            <h3>{{ "Parameters"|trans }}</h3>
+            <div class="accordion">
+                <legend>{{ "General parameters"|trans }}</legend>
+                <fieldset>
+                    {{ form_row(form.code) }}
+
+                    {{ form_row(form.attributeType) }}
+
+                    {{ form_row(form.scopable) }}
+
+                    {{ form_row(form.translatable) }}
+
+                    {{ form_row(form.unique) }}
+
+                    {% if form.default_value is defined %}
+                        {{ form_row(form.default_value) }}
+                    {% endif %}
+                </fieldset>
+                <legend>{{ "Backend parameters"|trans }}</legend>
+                <fieldset>
+                    {{ form_row(form.group) }}
+
+                    {{ form_row(form.variant) }}
+
+                    {{ form_row(form.searchable) }}
+
+                    {{ form_row(form.useableAsGridColumn) }}
+
+                    {{ form_row(form.useableAsGridFilter) }}
+                </fieldset>
+            </div>
+        </div>
+
+        <div id="tabs-2">
+            <h3>{{ "Values"|trans }}</h3>
+            <fieldset>
+                <legend>{{ "Label"|trans }}</legend>
+                {{ form_row(form.name) }}
+            </fieldset>
+            <fieldset>
+                <legend>{{ "Description"|trans }}</legend>
+                {{ form_row(form.description) }}
+            </fieldset>
+
+            {% if form.options is defined %}
+               {% form_theme form 'PimProductBundle:Form:simple_layout.html.twig' %}
+                <fieldset>
+                    <legend>{{ 'Options'|trans }}</legend>
+                    <table id="sortable_options" class="table table-striped options">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>{{ "Default label"|trans }}</th>
+                                {% for locale in locales %}
+                                    <th>{{ locale.code|trans }}</th>
+                                {% endfor %}
+                                <th>{{ "Default value"|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for option in form.options %}
+                                <tr class="att-option">
+                                    <td class="handle">
+                                        <i class="icon-list"></i>
+                                        {{ form_row(option.sort_order) }}
+                                    </td>
+                                    <td>
+                                        {{ form_row(option.defaultValue) }}
+                                    </td>
+                                    {% for i in 0..locales|length-1 %}
+                                        <td>
+                                            {% for value in option.optionValues %}
+                                                {% if value.locale.vars.value == locales[i].code %}
+                                                    {{ form_row(value.id) }}
+                                                    {{ form_row(value.value) }}
+                                                    {{ form_row(value.locale) }}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                    {% endfor %}
+                                    <td>
+                                        <input type="radio" name="default_option" value="{{ option.vars.name }}">
+                                    </td>
+                                    {% if disabledLocales is not empty %}
+                                        <td style="display:none;">
+                                            {% for i in 0..disabledLocales|length-1 %}
+                                                {% for value in option.optionValues %}
+                                                    {% if value.locale.vars.value == disabledLocales[i].code %}
+                                                        {{ form_row(value.id) }}
+                                                        {{ form_row(value.locale) }}
+                                                        {{ form_row(value.value) }}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endfor %}
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </fieldset>
+                {% form_theme form 'form_div_layout.html.twig' %}
+            {% endif %}
+        </div>
+
+        <div id="tabs-3">
+            <fieldset>
+                <legend>{{ "Rules"|trans }}</legend>
+                {{ form_row(form.required) }}
+
+                {{ form_row(form.smart) }}
+            </fieldset>
+        </div>
+
+    </div>
+    {{ form_row(form.id) }}
+    {{ form_row(form._token) }}
+
+    <br />
+    <h3>{{ 'Additional information'|trans }}</h3>
+
+    <div class="form-horizontal">
+        <div class="control-group">
+            <label class="control-label">{{ 'Created at'|trans }}</label>
+            <div class="controls">
+                <span class="label">
+                    {{ form.vars.value.created ? form.vars.value.created|date('Y-m-d h:i:s'|trans) : 'N/A'|trans }}
+                </span>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">{{ 'Updated at'|trans }}</label>
+            <div class="controls">
+                <span class="label">
+                    {{ form.vars.value.updated ? form.vars.value.updated|date('Y-m-d h:i:s'|trans) : 'N/A'|trans }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <button class="btn btn-large btn-primary" type="submit">{{ 'Save'|trans }}</button>
+    </div>
+</form>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        {% if form.options is defined %}
+            {% include 'PimProductBundle:ProductAttribute:_js-option.html.twig' %}
+        {% endif %}
+        {% include 'PimProductBundle:ProductAttribute:_js-validation.html.twig' %}
+    </script>
+    <link rel="stylesheet" href="{{ asset('bundles/pimui/css/chosen.css') }}">
+    <script type="text/javascript" src="{{ asset('bundles/pimui/js/chosen.jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/pimui/js/jquery-ui-1.10.0.min.js') }}"></script>
 {% endblock %}

@@ -3,6 +3,8 @@ namespace Pim\Bundle\ProductBundle\Form\Handler;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
+use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOptionValue;
+
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -56,6 +58,27 @@ class ProductAttributeHandler
      */
     public function process(ProductAttribute $entity)
     {
+        $languages = $this->manager->getRepository('PimConfigBundle:Language')->findBy(array('activated' => 1));
+        $locales = array();
+        foreach ($languages as $language) {
+            $locales[] = $language->getCode();
+        }
+
+        foreach ($entity->getOptions() as $option) {
+            if ($option->getTranslatable()) {
+                $existingLocales = array();
+                foreach ($option->getOptionValues() as $value) {
+                    $existingLocales[] = $value->getLocale();
+                }
+                foreach ($locales as $locale) {
+                    if (!in_array($locale, $existingLocales)) {
+                        $optionValue = new AttributeOptionValue();
+                        $optionValue->setlocale($locale);
+                        $option->addOptionValue($optionValue);
+                    }
+                }
+            }
+        }
         $this->form->setData($entity);
 
         if ($this->request->getMethod() === 'POST') {
@@ -77,6 +100,19 @@ class ProductAttributeHandler
      */
     protected function onSuccess(ProductAttribute $entity)
     {
+        foreach ($entity->getOptions() as $option) {
+            // Setting translatable to true for now - option not implemented in UI
+            $option->setTranslatable(true);
+            // Validation not implemented yet - this should probably be checked there
+            if (!$option->getSortOrder()) {
+                $option->setSortOrder(1);
+            }
+            foreach ($option->getOptionValues() as $optionValue) {
+                if (!$optionValue->getValue()) {
+                    $option->removeOptionValue($optionValue);
+                }
+            }
+        }
         $this->manager->persist($entity);
         $this->manager->flush();
     }
