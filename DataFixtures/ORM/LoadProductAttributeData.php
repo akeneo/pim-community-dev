@@ -183,6 +183,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         // create attribute option
         $option = $this->getProductManager()->createAttributeOption();
         $option->setTranslatable(true);
+        $option->setDefaultValue($name);
 
         // create option value
         $optionValue = $this->getProductManager()->createAttributeOptionValue();
