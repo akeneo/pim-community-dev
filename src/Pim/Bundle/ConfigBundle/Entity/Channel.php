@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Entity;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="pim_channel")
  * @ORM\Entity
+ * @UniqueEntity("code")
  */
 class Channel
 {

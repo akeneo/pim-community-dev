@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Entity;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -14,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="pim_language")
  * @ORM\Entity
+ * @UniqueEntity("code")
  */
 class Language
 {
