@@ -13,6 +13,14 @@
 
 {% block application_menu %}
     {{ oro_menu_render('application_menu') }}
+    {% for type, messages in app.session.flashbag.all %}
+    <div class="alert alert-{{ type }}">
+        <button data-dismiss="alert" class="close" type="button">×</button>
+        {% for message in messages %}
+        <div>{{ message|trans|raw }}</div>
+        {% endfor %}
+    </div>
+    {% endfor %}
 {% endblock application_menu %}
 
 {% block head_script %}
