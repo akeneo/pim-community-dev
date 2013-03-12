@@ -88,6 +88,11 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $this->persist($attribute);
 
 
+        $attribute = $this->createAttribute(new FileType(), 'fileUpload');
+        $attribute->setRequired(true);
+        $this->persist($attribute);
+
+
         // create size attribute
         $attribute = $this->createAttribute(new OptionSimpleSelectType(), 'size');
         // create options
