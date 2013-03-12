@@ -87,8 +87,8 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
                         $formType = 'choice';
                         $options['choices'] = array();
                         foreach ($attribute->getOptions() as $option) {
-                            if ($option->getOptionValue()) {
-                                $options['choices'][] = $option->getOptionValue()->getValue();
+                            if ($option->getDefaultValue()) {
+                                $options['choices'][$option->getDefaultValue()] = $option->getDefaultValue();
                             }
                         }
                     }
@@ -100,7 +100,7 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
                     );
                 }
 
-                $form->add($this->factory->createNamed('default_value', $formType, null, $options));
+                $form->add($this->factory->createNamed('defaultValue', $formType, null, $options));
             }
         }
     }
