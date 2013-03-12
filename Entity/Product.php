@@ -27,18 +27,6 @@ class Product extends AbstractEntityFlexible
     protected $sku;
 
     /**
-     * @var string $pictureName
-     *
-     * @ORM\Column(name="pictureName", type="string", length=255, nullable=true)
-     */
-    public $pictureName;
-
-    /**
-     * @var string $file
-     */
-    public $file;
-
-    /**
      * @var Value
      *
      * @ORM\OneToMany(targetEntity="ProductValue", mappedBy="entity", cascade={"persist", "remove"})

@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Controller;
 
+use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
+
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -124,14 +126,21 @@ class ProductController extends Controller
 
             if ($form->isValid()) {
                 // get uploaded file content
-                $fileUploaded = $form['file']->getData();
-                $content = file_get_contents($fileUploaded->getPathname());
+                foreach ($entity->getValues() as $value) {
 
-                // Get Gaufrette Filesystem to write uploaded file content
-                $this->getPimFS()->write($fileUploaded->getClientOriginalName(), $content);
+                    if ($value->getAttribute()->getAttributeType() === AbstractAttributeType::TYPE_FILE_CLASS) {
 
-                // define picture name
-                $entity->pictureName = $fileUploaded->getClientOriginalName();
+                        $fileUploaded = $value->getData();
+                        $content = file_get_contents($fileUploaded->getPathname());
+                        $filename = $entity->getSku() .'-'. $value->getAttribute()->getCode() .'-'. $value->getLocale() .'-'. $value->getScope() .'-'. time() .'-'. $fileUploaded->getClientOriginalName();
+
+                        // Get Gaufrette Filesystem to write uploaded file content
+                        $this->getPimFS()->write($filename, $content);
+
+                        // define picture name
+                        $value->setData($fileUploaded->getClientOriginalName());
+                    }
+                }
 
                 $em = $this->getProductManager()->getStorageManager();
                 $em->persist($entity);
