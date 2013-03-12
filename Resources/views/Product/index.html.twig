@@ -81,11 +81,19 @@
         <tr>
             <!-- fields -->
             <td>{{ product.id }}</td>
-            <td>{{ product.sku }}</td>
+            <td>
+                <a href="{{ path('pim_product_product_edit', { id: product.id, 'dataLocale': dataLocale, 'dataScope': dataScope  }) }}">
+                    {{ product.sku }}
+                </a>
+            </td>
 
             <!-- attributes -->
             {% if 'name' in attributes %}
-               <td>{{ product.name }}</td>
+                <td>
+                    <a href="{{ path('pim_product_product_edit', { id: product.id, 'dataLocale': dataLocale, 'dataScope': dataScope  }) }}">
+                        {{ product.name }}
+                    </a>
+                </td>
             {% endif %}
 
             {% if 'shortDescription' in attributes %}
