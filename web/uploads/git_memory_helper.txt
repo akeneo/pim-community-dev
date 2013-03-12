@@ -1,7 +1,0 @@
-BRANCH
-- create locale branch : git branch <branch_name>
-- push branch to repo : git push origin <branch_name>
-- move to a branch : git checkout <branch_name>
-- merge a branch : git merge <branch_name>  -> merge branch_name with actual used branch
-- cancel last commit : git reset HEAD^ -> HEAD^ means 1 commit
-
