@@ -13,6 +13,7 @@
 'New attribute': 'New attribute'
 'Manage products': 'Manage products'
 'Code': 'Code'
+'Name': 'Name'
 'Type': 'Type'
 'Required': 'Required'
 'Unique': 'Unique'
@@ -33,6 +34,8 @@
 'Useableasgridcolumn': 'Useable as grid column'
 'Useableasgridfilter': 'Useable as grid filter'
 'Productfamily': 'Product family'
+'Availablelanguages': 'Available locales'
+'Locale specific': 'Locale specific'
 
 # Scopes
 'Global': 'Global'

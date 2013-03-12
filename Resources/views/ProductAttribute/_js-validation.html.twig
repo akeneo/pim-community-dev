@@ -79,4 +79,18 @@ $(function() {
         });
         $(this).chosen({ allow_single_deselect: allowDeselect });
     });
+
+    if ($('select[id*=availableLanguages]').val()) {
+        $('select[id*=availableLanguages]').parent().parent().show();
+        $('input[name=limitLanguages]').attr('checked', true);
+    }
+
+    $('input[name=limitLanguages]').change(function() {
+        if($(this).attr('checked')) {
+            $(this).parent().parent().next().show();
+        } else {
+            $('select[id*=availableLanguages]').val('').trigger("liszt:updated");
+            $(this).parent().parent().next().hide();
+        }
+    });
 });

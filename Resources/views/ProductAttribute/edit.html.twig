@@ -83,6 +83,20 @@
                                         </div>
                                     </div>
 
+                                    <div class="control-group">
+                                        <label class="control-label" for="limitLanguages">{{ 'Locale specific'|trans }}</label>
+                                        <div class="controls">
+                                            <input type="checkbox" name="limitLanguages" >
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group" style="display: none;">
+                                        {{ form_label(form.availableLanguages, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                        <div class="controls">
+                                            {{ form_widget(form.availableLanguages) }}
+                                        </div>
+                                    </div>
+
                                     {% if form.defaultValue is defined %}
                                         <div class="control-group">
                                             {{ form_label(form.defaultValue, null, { 'label_attr': {'class': 'control-label'} }) }}

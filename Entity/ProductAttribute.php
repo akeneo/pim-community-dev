@@ -3,6 +3,8 @@ namespace Pim\Bundle\ProductBundle\Entity;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeExtended;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
+use Pim\Bundle\ConfigBundle\Entity\Language;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -85,6 +87,14 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     protected $useableAsGridFilter;
 
     /**
+     * @var $availableLanguages ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Language")
+     * @ORM\JoinTable(name="product_attribute_language")
+     */
+    protected $availableLanguages;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -93,6 +103,7 @@ class ProductAttribute extends AbstractEntityAttributeExtended
         $this->smart               = false;
         $this->useableAsGridColumn = false;
         $this->useableAsGridFilter = false;
+        $this->availableLanguages = new ArrayCollection();
     }
 
     /**
@@ -271,5 +282,43 @@ class ProductAttribute extends AbstractEntityAttributeExtended
         $this->useableAsGridFilter = $useableAsGridFilter;
 
         return $this;
+    }
+
+    /**
+     * Add available language
+     *
+     * @param Language $availableLanguage
+     *
+     * @return ProductAttribute
+     */
+    public function addAvailableLanguage(Language $availableLanguage)
+    {
+        $this->availableLanguages[] = $availableLanguage;
+
+        return $this;
+    }
+
+    /**
+     * Remove available language
+     *
+     * @param Language $availableLanguage
+     *
+     * @return ProductAttribute
+     */
+    public function removeAvailableLanguage(Language $availableLanguage)
+    {
+        $this->availableLanguages->removeElement($availableLanguage);
+
+        return $this;
+    }
+
+    /**
+     * Get available languages
+     *
+     * @return ArrayCollection|null
+     */
+    public function getAvailableLanguages()
+    {
+        return $this->availableLanguages->isEmpty() ? null : $this->availableLanguages;
     }
 }
