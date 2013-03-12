@@ -112,6 +112,8 @@
             <arg value="--report=checkstyle" />
             <arg value="--report-file=${basedir}/app/build/logs/checkstyle.xml" />
             <arg value="--standard=Symfony2" />
+            <arg value="--standard=PSR1" />
+            <arg value="--standard=PSR2" />
             <arg path="${basedir}/src/Pim" />
             <arg value="--ignore=${basedir}/src/*/Tests/*.php,${basedir}/src/*Tests/Files/*" />
         </exec>
