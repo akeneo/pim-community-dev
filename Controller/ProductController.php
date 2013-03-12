@@ -129,16 +129,17 @@ class ProductController extends Controller
                 foreach ($entity->getValues() as $value) {
 
                     if ($value->getAttribute()->getAttributeType() === AbstractAttributeType::TYPE_FILE_CLASS) {
-
+                        // prepare upload
                         $fileUploaded = $value->getData();
                         $content = file_get_contents($fileUploaded->getPathname());
-                        $filename = $entity->getSku() .'-'. $value->getAttribute()->getCode() .'-'. $value->getLocale() .'-'. $value->getScope() .'-'. time() .'-'. $fileUploaded->getClientOriginalName();
+                        $filename = $entity->getSku() .'-'. $value->getAttribute()->getCode() .'-'. $value->getLocale()
+                                    .'-'. $value->getScope() .'-'. time() .'-'. $fileUploaded->getClientOriginalName();
 
                         // Get Gaufrette Filesystem to write uploaded file content
                         $this->getPimFS()->write($filename, $content);
 
-                        // define picture name
-                        $value->setData($fileUploaded->getClientOriginalName());
+                        // define name
+                        $value->setData($filename);
                     }
                 }
 
