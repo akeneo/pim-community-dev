@@ -121,3 +121,14 @@ services:
     cache:
         class: Doctrine\Common\Cache\PhpFileCache
         arguments: [%kernel.cache_dir%]
+
+knp_gaufrette:
+    adapters:
+        pim_adapter:
+            local:
+                directory: %kernel.root_dir%/../web/uploads
+                create:    true
+    filesystems:
+        pim:
+            adapter: pim_adapter
+            alias:   pim_filesystem

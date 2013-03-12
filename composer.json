@@ -46,7 +46,9 @@
         "knplabs/knp-menu": "dev-master",
 
         "stof/doctrine-extensions-bundle": "dev-master",
-        "jms/aop-bundle": "dev-master"
+        "jms/aop-bundle": "dev-master",
+        
+        "knplabs/knp-gaufrette-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
