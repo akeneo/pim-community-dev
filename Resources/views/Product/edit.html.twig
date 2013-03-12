@@ -39,7 +39,8 @@
     </p>
     <hr/>
     
-    <form action="{{ form.vars.value.id ? path('pim_product_product_edit', { id: form.vars.value.id }) : path('pim_product_product_create') }}" method="POST" class="form-register">
+    <form action="{{ form.vars.value.id ? path('pim_product_product_edit', { id: form.vars.value.id }) : path('pim_product_product_create') }}" 
+        method="POST" class="form-register" {{ form_enctype(form) }}>
         <fieldset>
             <legend>{{ title }} <a class="btn btn-primary pull-right" href="{{ path('pim_product_product_index') }}">{{ "Back to list" | trans }}</a></legend>
     

@@ -67,6 +67,16 @@ class ProductController extends Controller
     }
 
     /**
+     * Get dedicated PIM filesystem
+     *
+     * @return Gaufrette\Filesystem
+     */
+    protected function getPimFS()
+    {
+        return $this->container->get('knp_gaufrette.filesystem_map')->get('pim');
+    }
+
+    /**
      * Create product
      *
      * @param string $dataLocale data locale
@@ -113,6 +123,16 @@ class ProductController extends Controller
             $form->bind($request);
 
             if ($form->isValid()) {
+                // get uploaded file content
+                $fileUploaded = $form['file']->getData();
+                $content = file_get_contents($fileUploaded->getPathname());
+
+                // Get Gaufrette Filesystem to write uploaded file content
+                $this->getPimFS()->write($fileUploaded->getClientOriginalName(), $content);
+
+                // define picture name
+                $entity->pictureName = $fileUploaded->getClientOriginalName();
+
                 $em = $this->getProductManager()->getStorageManager();
                 $em->persist($entity);
                 $em->flush();
