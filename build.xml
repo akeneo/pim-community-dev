@@ -102,6 +102,7 @@
             <arg value="--standard=Symfony2" />
             <arg value="--standard=PSR1" />
             <arg value="--standard=PSR2" />
+            <arg value="--extensions=php" />
             <arg path="${basedir}/src/Pim" />
             <arg value="--ignore=${basedir}/src/*/Tests/*.php,${basedir}/src/*Tests/Files/*" />
         </exec>
@@ -114,6 +115,7 @@
             <arg value="--standard=Symfony2" />
             <arg value="--standard=PSR1" />
             <arg value="--standard=PSR2" />
+            <arg value="--extensions=php" />
             <arg path="${basedir}/src/Pim" />
             <arg value="--ignore=${basedir}/src/*/Tests/*.php,${basedir}/src/*Tests/Files/*" />
         </exec>
