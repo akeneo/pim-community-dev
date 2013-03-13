@@ -136,4 +136,15 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $language->setActivated($newActivated);
         $this->assertFalse($language->getActivated());
     }
+
+    /**
+     * Test for __toString method
+     */
+    public function testToString()
+    {
+        $language = new Language();
+        $code = 'en_US';
+        $language->setCode($code);
+        $this->assertEquals($code, $language->__toString());
+    }
 }
