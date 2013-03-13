@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Controller;
 
+use Symfony\Component\HttpFoundation\File\File;
+
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
 
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
@@ -130,7 +132,7 @@ class ProductController extends Controller
 
                     if ($value->getAttribute()->getAttributeType() === AbstractAttributeType::TYPE_FILE_CLASS) {
                         // prepare upload
-                        $fileUploaded = $value->getData();
+                        $fileUploaded = $value->fileUpload;
                         $content = file_get_contents($fileUploaded->getPathname());
                         $filename = $entity->getSku() .'-'. $value->getAttribute()->getCode() .'-'. $value->getLocale()
                                     .'-'. $value->getScope() .'-'. time() .'-'. $fileUploaded->getClientOriginalName();
@@ -142,6 +144,8 @@ class ProductController extends Controller
                         $value->setData($filename);
                     }
                 }
+
+
 
                 $em = $this->getProductManager()->getStorageManager();
                 $em->persist($entity);

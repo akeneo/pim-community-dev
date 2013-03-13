@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity;
 
+use Symfony\Component\HttpFoundation\File\File;
+
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -44,4 +46,35 @@ class ProductValue extends AbstractEntityFlexibleValue
      * )
      */
     protected $options;
+
+    /**
+     * Store upload file
+     *
+     * @var File $fileUpload
+     */
+    protected $fileUpload;
+
+    /**
+     * Get file uploaded
+     *
+     * @return \Symfony\Component\HttpFoundation\File\File
+     */
+    public function getFileUpload()
+    {
+        return $this->fileUpload;
+    }
+
+    /**
+     * Set file uploaded
+     *
+     * @param File $fileUpload
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductValue
+     */
+    public function setFileUpload(File $fileUpload)
+    {
+        $this->fileUpload = $fileUpload;
+
+        return $this;
+    }
 }
