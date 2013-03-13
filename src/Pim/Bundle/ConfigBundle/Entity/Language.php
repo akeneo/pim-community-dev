@@ -72,6 +72,16 @@ class Language
     }
 
     /**
+     * To string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->code;
+    }
+
+    /**
      * Get id
      *
      * @return integer
