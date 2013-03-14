@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\FileType;
+
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionSimpleSelectType;
