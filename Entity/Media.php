@@ -6,8 +6,8 @@ use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- *
- * Enter description here ...
+ * Media entity
+ * File is not save here
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
