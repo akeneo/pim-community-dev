@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Manager;
 
-use Pim\Bundle\ProductBundle\Entity\Media;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
 

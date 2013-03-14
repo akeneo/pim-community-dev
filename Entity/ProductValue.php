@@ -1,8 +1,6 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity;
 
-use Symfony\Component\HttpFoundation\File\File;
-
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -46,39 +44,4 @@ class ProductValue extends AbstractEntityFlexibleValue
      * )
      */
     protected $options;
-
-    /**
-     * Store upload values
-     *
-     * @var Media $media
-     *
-     * @ORM\OneToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\Media", cascade="persist")
-     * @ORM\JoinTable(name="pim_media")
-     * @ORM\JoinColumn(name="media_id", referencedColumnName="id")
-     */
-    protected $media;
-
-    /**
-     * Get media
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Media
-     */
-    public function getMedia()
-    {
-        return $this->media;
-    }
-
-    /**
-     * Set media
-     *
-     * @param \Pim\Bundle\ProductBundle\Entity\Media $media
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductValue
-     */
-    public function setMedia($media)
-    {
-        $this->media = $media;
-
-        return $this;
-    }
 }
