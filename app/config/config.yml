@@ -126,7 +126,7 @@ knp_gaufrette:
     adapters:
         pim_adapter:
             local:
-                directory: %kernel.root_dir%/../web/uploads
+                directory: %upload_dir%
                 create:    true
     filesystems:
         pim:
