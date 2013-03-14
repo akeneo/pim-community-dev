@@ -1,5 +1,5 @@
 $(function() {
-    var $optionList = $('table.options');
+    var $optionList = $('table#sortable_options');
 
     $optionList.after($('<a class="btn btn-small add_option_link" href="#"><i class="icon-plus"></i>{{ 'Add another'|trans }}</a>'));
 
@@ -20,7 +20,13 @@ $(function() {
                 $('button.action-delete-inline').hide();
             }
         }
+        updateDefaultValueField();
     });
+
+    $('#pim_product_attribute_form_defaultValue').parent().parent().hide();
+    $(document).on('change', 'input:radio[name="default_option"]', updateDefaultValueField);
+
+    $(document).on('change', 'table#sortable_options input[id*=defaultValue]', updateDefaultValueField);
 
     $optionList.find('.handle input').hide();
 
@@ -57,6 +63,7 @@ $(function() {
 
         $('button.action-delete-inline').show();
         updateSortOrder();
+        updateDefaultValueField();
     }
 
     function updateSortOrder() {
@@ -66,4 +73,44 @@ $(function() {
             num++;
         });
     }
+
+    function updateDefaultValueRadio() {
+        if ($('#pim_product_attribute_form_defaultValue option:selected').html()) {
+            $optionList.find('input[id*=defaultValue]').each(function() {
+                if ($(this).val() == $('#pim_product_attribute_form_defaultValue option:selected').html()) {
+                    $(this).parent().parent().find('input:radio[name="default_option"]').attr('checked', true);
+                    return;
+                }
+            });
+        }
+    }
+
+    function updateDefaultValueField() {
+        $('#pim_product_attribute_form_defaultValue').html('<option value=""></option>');
+
+        var $selected = $optionList.find('input:radio[name="default_option"]:checked');
+
+        if (!$selected) {
+            return;
+        }
+
+        var value = $selected.parent().parent().find('input[id*=defaultValue]').first().val();
+
+        var optionCount = 0;
+        $optionList.find('tr.att-option').each(function() {
+            $(this).find('input[id*=defaultValue]').each(function() {
+                var option = '<option value="' + $(this).val() + '"';
+                if ($(this).val() == value) {
+                    option += ' selected="selected"';
+                }
+                option += ">" + $(this).val() + '</option>';
+                $('#pim_product_attribute_form_defaultValue').append(option);
+                return;
+            });
+            optionCount++;
+        });
+    }
+
+    updateDefaultValueRadio();
+
 });

@@ -62,7 +62,35 @@ function updateFieldsFromUnique() {
 }
 
 $(function() {
-    $('#tabs').tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
-    $('#tabs li').removeClass('ui-corner-top').addClass('ui-corner-left');
-    $('select').chosen();
+    $('#tabs').tabs().delegate("a", "click", function() {
+        $(this).parent().parent().find('li').each(function() {
+            $(this).removeClass('active');
+        });
+        $(this).parent().addClass('active');
+    });
+
+    $('select').each(function() {
+        var allowDeselect = false;
+        $(this).find('option').each(function() {
+            if(!$(this).html()) {
+                allowDeselect = true;
+                return;
+            }
+        });
+        $(this).chosen({ allow_single_deselect: allowDeselect });
+    });
+
+    if ($('select[id*=availableLanguages]').val()) {
+        $('select[id*=availableLanguages]').parent().parent().show();
+        $('input[name=limitLanguages]').attr('checked', true);
+    }
+
+    $('input[name=limitLanguages]').change(function() {
+        if($(this).attr('checked')) {
+            $(this).parent().parent().next().show();
+        } else {
+            $('select[id*=availableLanguages]').val('').trigger("liszt:updated");
+            $(this).parent().parent().next().hide();
+        }
+    });
 });

@@ -171,8 +171,8 @@ class ProductAttributeValidator
     protected static function areOptionsValid(ProductAttribute $productAttribute, ExecutionContext $context)
     {
         $optionTypes = array(
-                'OptionSimpleRadioType',
-                'OptionSimpleSelectType',
+            'OptionSimpleRadioType',
+            'OptionSimpleSelectType',
         );
 
         $path = preg_split('/[^[:alnum:]]/', $productAttribute->getAttributeType());

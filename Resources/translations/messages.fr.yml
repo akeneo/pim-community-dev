@@ -31,6 +31,11 @@
 'Default value': 'Valeur par défaut'
 'Variant': 'Variante'
 'Smart': __Smart
+'Useableasgridcolumn': '__Useable as grid column'
+'Useableasgridfilter': '__Useable as grid filter'
+'Productfamily': '__Product family'
+'Availablelanguages': '__Available locales'
+'Locale specific': '__Locale specific'
 
 # Scopes
 'Global': 'Global'
