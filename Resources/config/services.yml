@@ -59,3 +59,9 @@ services:
         class: %attribute_group_handler_class%
         scope: request
         arguments: [@pim_product.form.attribute_group, @request, @doctrine.orm.entity_manager]
+
+    # Media form type
+    form.type.media:
+        class: Pim\Bundle\ProductBundle\Form\Type\MediaType
+        tags:
+            - { name: form.type, alias: media }

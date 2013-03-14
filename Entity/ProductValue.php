@@ -48,32 +48,36 @@ class ProductValue extends AbstractEntityFlexibleValue
     protected $options;
 
     /**
-     * Store upload file
+     * Store upload values
      *
-     * @var File $fileUpload
+     * @var Media $media
+     *
+     * @ORM\OneToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\Media", cascade="persist")
+     * @ORM\JoinTable(name="pim_media")
+     * @ORM\JoinColumn(name="media_id", referencedColumnName="id")
      */
-    protected $fileUpload;
+    protected $media;
 
     /**
-     * Get file uploaded
+     * Get media
      *
-     * @return \Symfony\Component\HttpFoundation\File\File
+     * @return \Pim\Bundle\ProductBundle\Entity\Media
      */
-    public function getFileUpload()
+    public function getMedia()
     {
-        return $this->fileUpload;
+        return $this->media;
     }
 
     /**
-     * Set file uploaded
+     * Set media
      *
-     * @param File $fileUpload
+     * @param \Pim\Bundle\ProductBundle\Entity\Media $media
      *
      * @return \Pim\Bundle\ProductBundle\Entity\ProductValue
      */
-    public function setFileUpload(File $fileUpload)
+    public function setMedia($media)
     {
-        $this->fileUpload = $fileUpload;
+        $this->media = $media;
 
         return $this;
     }
