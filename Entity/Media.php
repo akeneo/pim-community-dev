@@ -30,17 +30,37 @@ class Media
 
     /**
      * File uploaded in form
+     *
      * @var \Symfony\Component\HttpFoundation\File\File $file
      */
     protected $file;
 
     /**
-     * Filepath where file is located
-     * @var string $filepath
+     * Filename
      *
-     * @ORM\Column(name="filepath", type="string", length=255, unique=true, nullable=true)
+     * @var string $filename
+     *
+     * @ORM\Column(name="filename", type="string", length=255, unique=true)
      */
-    protected $filepath;
+    protected $filename;
+
+    /**
+     * File path
+     *
+     * @var string $filePath
+     *
+     * @ORM\Column(name="filepath", type="string", length=255, unique=true)
+     */
+    protected $filePath;
+
+    /**
+     * Mime type
+     *
+     * @var string $mimeType
+     *
+     * @ORM\Column(name="mimeType", type="string", length=255)
+     */
+    protected $mimeType;
 
     /**
      * Get id
@@ -91,25 +111,73 @@ class Media
     }
 
     /**
-     * Get filepath
+     * Get filename
      *
      * @return string
      */
-    public function getFilepath()
+    public function getFilename()
     {
-        return $this->filepath;
+        return $this->filename;
     }
 
     /**
-     * Set filepath
+     * Set filename
      *
-     * @param string $filepath
+     * @param string $filename
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Media
      */
-    public function setFilepath($filepath)
+    public function setFilename($filename)
     {
-        $this->filepath = $filepath;
+        $this->filename = $filename;
+
+        return $this;
+    }
+
+    /**
+     * Get file path
+     *
+     * @return string
+     */
+    public function getFilePath()
+    {
+        return $this->filePath;
+    }
+
+    /**
+     * Set file path
+     *
+     * @param string $filePath
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Media
+     */
+    public function setFilePath($filePath)
+    {
+        $this->filePath = $filePath;
+
+        return $this;
+    }
+
+    /**
+     * Get mime type
+     *
+     * @return string
+     */
+    public function getMimeType()
+    {
+        return $this->mimeType;
+    }
+
+    /**
+     * Set mime type
+     *
+     * @param string $mimeType
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Media
+     */
+    public function setMimeType($mimeType)
+    {
+        $this->mimeType = $mimeType;
 
         return $this;
     }

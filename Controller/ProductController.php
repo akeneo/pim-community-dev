@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Controller;
 
+use Pim\Bundle\ProductBundle\Manager\MediaManager;
+
 use Symfony\Component\HttpFoundation\File\File;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
@@ -75,9 +77,9 @@ class ProductController extends Controller
      *
      * @return Gaufrette\Filesystem
      */
-    protected function getPimFS()
+    protected function getMediaManager()
     {
-        return $this->container->get('knp_gaufrette.filesystem_map')->get('pim');
+        return $this->container->get('pim_media_manager');
     }
 
     /**
@@ -127,6 +129,23 @@ class ProductController extends Controller
             $form->bind($request);
 
             if ($form->isValid()) {
+                // upload files if exist
+                foreach ($entity->getValues() as $value) {
+                    if ($value->getMedia() !== null) {
+                        // upload file
+                        if ($value->getMedia()->getFile() !== null) {
+                            $filename = $entity->getSku() .'-'. $value->getAttribute()->getCode() .'-'.
+                                        $value->getLocale() .'-'. $value->getScope() .'-'. time() .'-'.
+                                        $value->getMedia()->getFile()->getClientOriginalName();
+
+                            $this->getMediaManager()->upload($value->getMedia(), $filename);
+                        } else {
+                            // remove value if empty file
+                            $value->setMedia(null);
+                        }
+                    }
+                }
+
                 $em = $this->getProductManager()->getStorageManager();
                 $em->persist($entity);
                 $em->flush();

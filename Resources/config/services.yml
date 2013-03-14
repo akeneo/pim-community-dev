@@ -60,8 +60,12 @@ services:
         scope: request
         arguments: [@pim_product.form.attribute_group, @request, @doctrine.orm.entity_manager]
 
-    # Media form type
+    # Media
     form.type.media:
         class: Pim\Bundle\ProductBundle\Form\Type\MediaType
         tags:
             - { name: form.type, alias: media }
+
+    pim_media_manager:
+        class: Pim\Bundle\ProductBundle\Manager\MediaManager
+        arguments: [@knp_gaufrette.filesystem_map, "pim", %upload_dir%]
