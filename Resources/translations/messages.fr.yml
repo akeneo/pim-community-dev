@@ -1,0 +1,59 @@
+'Edit attribute': 'Modifier un attribut'
+'Add attribute': 'Ajouter un attribut'
+'Back to list': 'Retour à la liste'
+'Options': 'Options'
+'Additional information': 'Informations supplémentaires'
+'Created at': 'Créé le'
+'Updated at': 'Mis à jour le'
+'N/A': 'N/A'
+'Save': 'Sauvegarder'
+'Add an option': 'Ajouter une option'
+'Delete option': 'Supprimer une option'
+'Attributes overview': "Aperçu des attributs"
+'New attribute': 'Nouvel attribut'
+'Manage products': 'Gestion des produits'
+'Code': 'Code'
+'Name': 'Nom'
+'Type': 'Type'
+'Required': 'Requis'
+'Unique': 'Unique'
+'Translatable': 'Traduisible'
+'Scopable': 'Scopable'
+'Created': 'Créé'
+'Updated': 'Mis à jour'
+'Edit': 'Modifier'
+'Remove': 'Supprimer'
+
+'Name': 'Nom'
+'Description': 'Description'
+'Attributetype': "Type d'attribut"
+'Searchable': 'Recherchable'
+'Default value': 'Valeur par défaut'
+'Variant': 'Variante'
+'Smart': __Smart
+'Useableasgridcolumn': 'Utilisable comme colonne de grille'
+'Useableasgridfilter': 'Utilisable comme filtre de grille'
+'Productfamily': 'Famille de produit'
+'Availablelanguages': 'Langues disponibles'
+'Locale specific': '__Locale specific'
+
+# Scopes
+'Global': 'Global'
+'Channel': 'Canal'
+
+# Variants
+'Always override': 'Toujours écraser'
+'A selection of variants': 'Une sélection de variantes'
+'Ask': 'Demander'
+
+# Attribute group
+'New group': 'Nouveau groupe'
+'Groups overview': 'Aperçu des groupes'
+'Attributes count': "Nombre d'attributs"
+'Order': 'Ordre'
+'Show list': 'Afficher la liste'
+
+'Add group': 'Ajouter un groupe'
+'Sort order': 'Ordre'
+
+'Y-m-d h:i:s': 'd/m/Y h:i:s'
