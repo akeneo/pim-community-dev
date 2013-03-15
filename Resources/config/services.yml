@@ -10,7 +10,6 @@ parameters:
 
     attribute_group_entity_class:    Pim\Bundle\ProductBundle\Entity\AttributeGroup
     attribute_group_handler_class:   Pim\Bundle\ProductBundle\Form\Handler\AttributeGroupHandler
-    attribute_group_manager_class:   Oro\Bundle\FlexibleEntityBundle\Manager\SimpleManager
     attribute_group_type_class:      Pim\Bundle\ProductBundle\Form\Type\AttributeGroupType
 
 services:
@@ -20,10 +19,6 @@ services:
         arguments: [%product_entity_class%, %oro_flexibleentity.flexible_config%, @doctrine.orm.entity_manager, @event_dispatcher]
         tags:
             - { name: oro_flexibleentity_manager, entity: %product_entity_class%}
-
-    attributegroup_manager:
-        class:     %attribute_group_manager_class%
-        arguments: [%attribute_group_entity_class%, @doctrine.orm.entity_manager]
 
     # Form
     pim_product.form.attribute:

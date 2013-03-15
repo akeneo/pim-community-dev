@@ -24,7 +24,6 @@
 'Edit': 'Edit'
 'Remove': 'Remove'
 
-'Name': 'Name'
 'Description': 'Description'
 'Attributetype': 'Attribute type'
 'Searchable': 'Searchable'
@@ -48,12 +47,20 @@
 
 # Attribute group
 'New group': 'New group'
-'Groups overview': 'Aperçu des groupes'
+'Groups overview': 'Groups overview'
 'Attributes count': 'Attributes count'
 'Order': 'Order'
 'Show list': 'Show list'
 
 'Add group': 'Add group'
+'Edit group': 'Edit group'
 'Sort order': 'Sort order'
 
 'Y-m-d h:i:s': 'Y-m-d h:i:s'
+
+# Product family
+'Product families overview': 'Product families overview'
+'New product family': 'New product family'
+'Attributes': 'Attributes'
+'Edit product family': 'Edit product family'
+'Add product family': 'Add product family'
