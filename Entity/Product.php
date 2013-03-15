@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -13,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="pim_product")
  * @ORM\Entity(repositoryClass="Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository")
+ * @UniqueEntity("sku");
  */
 class Product extends AbstractEntityFlexible
 {

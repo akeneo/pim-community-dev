@@ -85,9 +85,11 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
                         return;
                     } else {
                         $formType = 'choice';
-                        $options['choices'] = array('');
+                        $options['choices'] = array();
                         foreach ($attribute->getOptions() as $option) {
-                            $options['choices'][] = $option->getOptionValue()->getValue();
+                            if ($option->getDefaultValue()) {
+                                $options['choices'][$option->getDefaultValue()] = $option->getDefaultValue();
+                            }
                         }
                     }
                 } elseif (strpos($attTypeClass, 'BooleanType') !== false) {
@@ -98,7 +100,7 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
                     );
                 }
 
-                $form->add($this->factory->createNamed('default_value', $formType, null, $options));
+                $form->add($this->factory->createNamed('defaultValue', $formType, null, $options));
             }
         }
     }

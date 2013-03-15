@@ -1,7 +1,0 @@
-<li class="att-option">
-    {{ form_row(form.id) }}
-    {% include 'PimProductBundle:ProductAttribute:_prototype-option-value.html.twig' 
-        with {'form': form.optionValues.get('prototype')}
-    %}
-    {{ form_row(form.sort_order) }}
-</li>

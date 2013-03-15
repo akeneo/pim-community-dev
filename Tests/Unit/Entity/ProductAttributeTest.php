@@ -3,6 +3,7 @@ namespace Pim\Bundle\ProductBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+use Pim\Bundle\ConfigBundle\Entity\Language;
 
 /**
  * Test related class
@@ -135,5 +136,23 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
         $newUseableAsGridFilter = true;
         $productAttribute->setUseableAsGridFilter($newUseableAsGridFilter);
         $this->assertTrue($productAttribute->getUseableAsGridFilter());
+    }
+
+    /**
+     * Test get/add/remove availableLanguages property
+     */
+    public function testGetAddRemoveAvailableLanguages()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertNull($productAttribute->getAvailableLanguages());
+
+        // Change value and assert new
+        $newLanguage = new Language();
+        $productAttribute->addAvailableLanguage($newLanguage);
+        $this->assertInstanceOf('Pim\Bundle\ConfigBundle\Entity\Language', $productAttribute->getAvailableLanguages()->first());
+        $this->assertCount(1, $productAttribute->getAvailableLanguages());
+
+        $productAttribute->removeAvailableLanguage($newLanguage);
+        $this->assertNull($productAttribute->getAvailableLanguages());
     }
 }

@@ -9,6 +9,8 @@ use Symfony\Component\Form\FormEvent;
 
 use Symfony\Component\Form\FormEvents;
 
+use Doctrine\ORM\EntityRepository;
+
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -44,7 +46,9 @@ class ProductAttributeType extends AttributeType
 
         $this->addFieldUseableAsGridFilter($builder);
 
-        $this->addAttributeGroup($builder);
+        $this->addFieldAttributeGroup($builder);
+
+        $this->addFieldAvailableLanguages($builder);
     }
 
     /**
@@ -122,14 +126,14 @@ class ProductAttributeType extends AttributeType
      */
     protected function addFieldSmart(FormBuilderInterface $builder)
     {
-        $builder->add('smart', 'checkbox', array('required' => false));
+        $builder->add('smart', 'choice', array('choices' => array('No', 'Yes')));
     }
 
     /**
      * Add a field for attribute group
      * @param FormBuilderInterface $builder
      */
-    protected function addAttributeGroup(FormBuilderInterface $builder)
+    protected function addFieldAttributeGroup(FormBuilderInterface $builder)
     {
         $builder->add('group');
     }
@@ -140,7 +144,7 @@ class ProductAttributeType extends AttributeType
      */
     protected function addFieldUseableAsGridColumn(FormBuilderInterface $builder)
     {
-        $builder->add('useableAsGridColumn', 'checkbox', array('required' => false));
+        $builder->add('useableAsGridColumn', 'choice', array('choices' => array('No', 'Yes')));
     }
 
     /**
@@ -149,7 +153,7 @@ class ProductAttributeType extends AttributeType
      */
     protected function addFieldUseableAsGridFilter(FormBuilderInterface $builder)
     {
-        $builder->add('useableAsGridFilter', 'checkbox', array('required' => false));
+        $builder->add('useableAsGridFilter', 'choice', array('choices' => array('No', 'Yes')));
     }
 
      /**
@@ -160,6 +164,24 @@ class ProductAttributeType extends AttributeType
      */
     protected function addFieldDefaultValue(FormBuilderInterface $builder)
     {
+    }
+
+    /**
+     * Add a field for available languages
+     * @param FormBuilderInterface $builder
+     *
+     * @return void
+     */
+    protected function addFieldAvailableLanguages(FormBuilderInterface $builder)
+    {
+        $builder->add('availableLanguages', 'entity', array(
+            'required' => false,
+            'multiple' => true,
+            'class' => 'Pim\Bundle\ConfigBundle\Entity\Language',
+            'query_builder' => function(EntityRepository $repository) {
+                return $repository->createQueryBuilder('l')->where('l.activated = 1')->orderBy('l.code');
+            }
+        ));
     }
 
     /**

@@ -33,6 +33,8 @@
 'Useableasgridcolumn': 'Useable as grid column'
 'Useableasgridfilter': 'Useable as grid filter'
 'Productfamily': 'Product family'
+'Availablelanguages': 'Available locales'
+'Locale specific': 'Locale specific'
 
 # Scopes
 'Global': 'Global'

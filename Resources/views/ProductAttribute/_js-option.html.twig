@@ -1,61 +1,116 @@
-// Get the div that holds the collection of options
-var collectionHolder = $('ul.options');
+$(function() {
+    var $optionList = $('table#sortable_options');
 
-// setup an "add an option" link
-var $addOptionLink = $('<a href="#" class="add_option_link">{{ 'Add an option'|trans }}</a>');
-var $newOptionLinkLi = $('<li class="not-sortable"></li>').append($addOptionLink);
+    $optionList.after($('<a class="btn btn-small add_option_link" href="#"><i class="icon-plus"></i>{{ 'Add another'|trans }}</a>'));
 
-jQuery(document).ready(function() {
-    // add a delete link to all of the existing option form li elements
-    collectionHolder.find('li.att-option').each(function() {
-        addOptionFormDeleteLink($(this));
+    $optionList.find('tr.att-option').each(function() {
+        $(this).append($('<td><button type="button" class="btn btn-small action-delete-inline"><i class="icon-remove"></i></button></td>'));
     });
 
-    // add the "add a option" anchor and li to the options ul
-    collectionHolder.append($newOptionLinkLi);
-
-    $addOptionLink.on('click', function(e) {
-        // prevent the link from creating a "#" on the URL
+    $(document).on('click', 'a.add_option_link', function(e) {
         e.preventDefault();
-
-        // add a new tag form (see next code block)
-        addOptionForm(collectionHolder, $newOptionLinkLi);
+        addOption();
     });
+
+    $(document).on('click', 'button.action-delete-inline', function(e) {
+        var rows = $optionList.find('tr').length;
+        if (rows > 2) {
+            $(this).parent().parent().remove();
+            if (rows == 3) {
+                $('button.action-delete-inline').hide();
+            }
+        }
+        updateDefaultValueField();
+    });
+
+    $('#pim_product_attribute_form_defaultValue').parent().parent().hide();
+    $(document).on('change', 'input:radio[name="default_option"]', updateDefaultValueField);
+
+    $(document).on('change', 'table#sortable_options input[id*=defaultValue]', updateDefaultValueField);
+
+    $optionList.find('.handle input').hide();
+
+    $optionList.find('tbody').sortable({
+        handle: '.handle',
+        containment: 'parent',
+        tolerance: 'pointer',
+        update: updateSortOrder
+    });
+
+    function addOption() {
+        var option = $optionList.find('tr').last().html();
+
+        var optionNumber = $optionList.find('tr.att-option').length + 1;
+
+        option = option.replace(/\[options\]\[([0-9]+)\]/g, "[options][" + optionNumber + "]");
+        option = option.replace(/_options_([0-9]+)_/g, "_options_" + optionNumber + "_");
+        option = option.replace(/\s+/g, ' ');
+
+        var $option = $('<tr class="att-option"></tr>').append($(option));
+
+        // Empty all fields except for locale
+        $option.find('input').each(function() {
+            if ($(this).attr('name').indexOf('locale') == -1) {
+                $(this).removeAttr('value');
+            }
+        });
+
+        $option.find('input[type="radio"]').each(function() {
+            $(this).val(optionNumber-1);
+        });
+
+        $optionList.find('tbody').append($option);
+
+        $('button.action-delete-inline').show();
+        updateSortOrder();
+        updateDefaultValueField();
+    }
+
+    function updateSortOrder() {
+        var num = 0;
+        $optionList.find('tr').each(function() {
+            $(this).find('td.handle input').val(num);
+            num++;
+        });
+    }
+
+    function updateDefaultValueRadio() {
+        if ($('#pim_product_attribute_form_defaultValue option:selected').html()) {
+            $optionList.find('input[id*=defaultValue]').each(function() {
+                if ($(this).val() == $('#pim_product_attribute_form_defaultValue option:selected').html()) {
+                    $(this).parent().parent().find('input:radio[name="default_option"]').attr('checked', true);
+                    return;
+                }
+            });
+        }
+    }
+
+    function updateDefaultValueField() {
+        $('#pim_product_attribute_form_defaultValue').html('<option value=""></option>');
+
+        var $selected = $optionList.find('input:radio[name="default_option"]:checked');
+
+        if (!$selected) {
+            return;
+        }
+
+        var value = $selected.parent().parent().find('input[id*=defaultValue]').first().val();
+
+        var optionCount = 0;
+        $optionList.find('tr.att-option').each(function() {
+            $(this).find('input[id*=defaultValue]').each(function() {
+                var option = '<option value="' + $(this).val() + '"';
+                if ($(this).val() == value) {
+                    option += ' selected="selected"';
+                }
+                option += ">" + $(this).val() + '</option>';
+                $('#pim_product_attribute_form_defaultValue').append(option);
+                return;
+            });
+            optionCount++;
+        });
+    }
+
+    updateDefaultValueRadio();
+
 });
-
-function addOptionForm(collectionHolder, $newOptionLinkLi) {
-    // Get the data-prototype we explained earlier
-    var prototype = collectionHolder.attr('data-prototype');
-
-    // Replace '__name__' in the prototype's HTML to
-    // instead be a number based on the current collection's length.
-    // the second '__name__' must be replace by 0 because we worked without locales
-    // and so only one value each time
-    var optionsLength = collectionHolder.children().length;
-    prototype = prototype.replace(/\[options\]\[__name__\]/g, "[options]["+optionsLength+"]");
-    prototype = prototype.replace(/_options___name__/g, "_options_"+ optionsLength);
-    prototype = prototype.replace(/__name__/g, 0);
-    var newForm = prototype;
-
-    // Display the form in the page in an li, before the "Add an option" link li
-    var $newFormLi = $('<li class="att-option"></li>').append(newForm);
-    $newOptionLinkLi.before($newFormLi);
-
-    // add a delete link to the new form
-    addOptionFormDeleteLink($newFormLi);
-}
-
-function addOptionFormDeleteLink($optFormLi) {
-    var $moveFormA = $('<span class="action-drag-inline"></span>');
-    $optFormLi.append($moveFormA);
-
-    var $removeFormA = $('<a class="action-delete-inline" href="#">{{ 'Delete option'|trans }}</a>');
-    $optFormLi.append($removeFormA);
-    $removeFormA.on('click', function(e) {
-        // prevent the link from creating a "#" on the URL
-        e.preventDefault();
-
-        // remove the li for the tag form
-        $optFormLi.remove();
-    });
-}
