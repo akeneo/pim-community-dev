@@ -30,6 +30,54 @@
 
 {% block head_script %}
     {{ parent() }}
-    {% block javascripts %}{% endblock %}
-    
+    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/underscore.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.js') }}"></script>
+
+
+    {% include 'OroNavigationBundle:Js:dot.menu.js.twig' %}
+    <script type="text/javascript" src="{{ asset('bundles/oronavigation/js/models/navigation.item.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/oronavigation/js/collections/navigation.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/oronavigation/js/views/navigation.abstract.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/oronavigation/js/views/dot.menu.item.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/oronavigation/js/views/dot.menu.js') }}"></script>
+
+    {% include 'OroNavigationBundle:Js:pinbar.js.twig' %}
+    <script type="text/javascript" src="{{ asset('bundles/oronavigation/js/models/pinbar.item.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/oronavigation/js/collections/pinbar.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/oronavigation/js/views/pinbar.item.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/oronavigation/js/views/pinbar.js') }}"></script>
+
+    <script type="text/javascript" src="{{ asset('bundles/oronavigation/js/views/favorites.js') }}"></script>
+
+    <script type="text/javascript">
+        navigation.Item.prototype.urlRoot = {{ path('oro_api_get_navigationitems', {'type': ''})|json_encode|raw }};
+    </script>
+
+    <style type="text/css">
+        .pin-bar .list-bar, .pin-bar .list-bar li a {
+            color: #B2BAC2;
+        }
+    </style>
+{% endblock %}
+
+{% block pin_button %}
+
+{% block top_action_box %}
+<div class="navigation clearfix">
+    <div class="container-fluid">
+        <div class="top-action-box">
+            <div class="btn-group icons-holder icons-small">
+                <button class="btn minimize-button" data-title="{{ block('title') }}"><i class="icon-minimize hide-text">minimaze tab</i></button>
+                {# <button class="btn maximize-button"><i class="icon-fullscreen hide-text">full screen</i></button> #}
+                <button class="btn favorite-button" data-title="{{ block('title') }}"><i class="icon-star icon-white hide-text">favorites</i></button>
+                <button class="btn close-button"><i class="icon-remove hide-text">Close</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock top_action_box %}
+
+{{ oro_menu_render('pinbar', {'maxPinbarItems': 10, 'tabTitle': 'Tabs'|trans(), 'defaultUrl': path('pim_default')}) }}
+{{ oro_menu_render('favorite', {'tabTitle': 'Favorites'|trans()}) }}
+
 {% endblock %}
