@@ -101,6 +101,7 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     {
         $this->description         = '';
         $this->smart               = false;
+        $this->variant             = false;
         $this->useableAsGridColumn = false;
         $this->useableAsGridFilter = false;
         $this->availableLanguages = new ArrayCollection();
