@@ -21,15 +21,15 @@
         {% endfor %}
     </div>
     {% endfor %}
+    {{ block('pin_button') }}
 {% endblock application_menu %}
+
+{% block searchbar %}
+    {% render "OroSearchBundle:Search:searchBar" %}
+{% endblock searchbar %}
 
 {% block head_script %}
     {{ parent() }}
     {% block javascripts %}{% endblock %}
-    
-    <!-- quick fix until we get pin bar -->
-    <style type="text/css">
-    .pin-bar {display:none;}
-    </style>
     
 {% endblock %}
