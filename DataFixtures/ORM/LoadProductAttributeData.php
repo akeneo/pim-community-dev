@@ -10,6 +10,7 @@ use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextAreaType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\DateType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MetricType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\FileType;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -19,9 +20,9 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 /**
  * Load fixtures for Product attributes
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  *
  */
 class LoadProductAttributeData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
@@ -176,6 +177,15 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
             $optionValue->setValue($manufacturer);
             $option->addOptionValue($optionValue);
         }
+        $this->getProductManager()->getStorageManager()->persist($productAttribute);
+        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
+
+        // attribute file upload
+        $attributeCode = 'fileUpload';
+        $productAttribute = $this->getProductManager()->createAttributeExtended(new FileType());
+        $productAttribute->setCode($attributeCode);
+        $productAttribute->setName('File upload');
+        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
         $this->getProductManager()->getStorageManager()->persist($productAttribute);
         $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
