@@ -19,15 +19,15 @@
 [submodule "src/Oro/Bundle/SearchBundle"]
 	path = src/Oro/Bundle/SearchBundle
 	url = git@github.com:laboro/SearchBundle.git
+[submodule "src/Oro/Bundle/NavigationBundle"]
+    path = src/Oro/Bundle/NavigationBundle
+    url = git@github.com:laboro/NavigationBundle.git
 [submodule "src/Oro/Bundle/SegmentationTreeBundle"]
     path = src/Oro/Bundle/SegmentationTreeBundle
     url = git@github.com:laboro/SegmentationTreeBundle.git
 [submodule "src/Oro/Bundle/ConfigBundle"]
     path = src/Oro/Bundle/ConfigBundle
     url = git@github.com:laboro/ConfigBundle.git
-[submodule "src/Oro/Bundle/NavigationBundle"]
-    path = src/Oro/Bundle/NavigationBundle
-    url = git@github.com:laboro/NavigationBundle.git
 [submodule "src/Pim/Bundle/UIBundle"]
 	path = src/Pim/Bundle/UIBundle
 	url = git@github.com:akeneo/UIBundle.git
