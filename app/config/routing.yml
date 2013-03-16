@@ -25,6 +25,8 @@ pim_config:
 
 oro_user:
     resource: "@OroUserBundle/Resources/config/routing.yml"
+    prefix:   /{_locale}/
+    defaults: { _locale: %locale% }
 
 oro_search:
     resource: "@OroSearchBundle/Resources/config/routing.yml"
