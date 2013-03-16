@@ -1,8 +1,7 @@
-{% extends bap.layout is defined ? bap.layout : 'ProductBundle::layout.bootstrap.html.twig' %}
+{% extends 'PimProductBundle::layout.html.twig' %}
 
-{% set title = form.vars.value.id ? 'Edit attribute' : 'Add attribute' %}
-
-{% block title %}{{ parent() }} - {{ title|trans }}{% endblock %}
+{% set title = form.vars.value.id ? 'Edit attribute'|trans : 'Add attribute'|trans %}
+{% block title %}{{ title }} - {{ parent() }}{% endblock %}
 
 {% block content %}
 <form class="form-horizontal" action="{{ form.vars.value.id ?

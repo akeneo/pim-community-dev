@@ -1,8 +1,11 @@
-{% extends bap.layout is defined ? bap.layout : 'ProductBundle::layout.bootstrap.html.twig' %}
+{% extends 'PimProductBundle::layout.html.twig' %}
+
+{% set title = 'Families overview'|trans %}
+{% block title %}{{ title }} - {{ parent() }}{% endblock %}
 
 {% block content %}
 
-    <h1>{{ 'Product families overview'|trans }}
+    <h1>{{ title }} 
         <a class="btn btn-primary pull-right" style="margin-left:10px;"
             href="{{ path('pim_product_productfamily_create') }}">{{ 'New product family'|trans }}</a>
     </h1>
