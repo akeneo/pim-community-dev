@@ -13,6 +13,9 @@
 
 {% block application_menu %}
     {{ oro_menu_render('application_menu') }}
+
+    {{ block('pin_button') }}
+
     {% for type, messages in app.session.flashbag.all %}
     <div class="alert alert-{{ type }}">
         <button data-dismiss="alert" class="close" type="button">×</button>
@@ -21,7 +24,6 @@
         {% endfor %}
     </div>
     {% endfor %}
-    {{ block('pin_button') }}
 {% endblock application_menu %}
 
 {% block searchbar %}
@@ -30,9 +32,11 @@
 
 {% block head_script %}
     {{ parent() }}
+    
+    {% block javascripts %}{% endblock %} 
+    
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/underscore.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.js') }}"></script>
-
 
     {% include 'OroNavigationBundle:Js:dot.menu.js.twig' %}
     <script type="text/javascript" src="{{ asset('bundles/oronavigation/js/models/navigation.item.js') }}"></script>
