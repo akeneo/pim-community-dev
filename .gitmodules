@@ -19,6 +19,15 @@
 [submodule "src/Oro/Bundle/SearchBundle"]
 	path = src/Oro/Bundle/SearchBundle
 	url = git@github.com:laboro/SearchBundle.git
+[submodule "src/Oro/Bundle/NavigationBundle"]
+    path = src/Oro/Bundle/NavigationBundle
+    url = git@github.com:laboro/NavigationBundle.git
+[submodule "src/Oro/Bundle/SegmentationTreeBundle"]
+    path = src/Oro/Bundle/SegmentationTreeBundle
+    url = git@github.com:laboro/SegmentationTreeBundle.git
+[submodule "src/Oro/Bundle/ConfigBundle"]
+    path = src/Oro/Bundle/ConfigBundle
+    url = git@github.com:laboro/ConfigBundle.git
 [submodule "src/Pim/Bundle/UIBundle"]
 	path = src/Pim/Bundle/UIBundle
 	url = git@github.com:akeneo/UIBundle.git
@@ -28,9 +37,6 @@
 [submodule "src/Pim/Bundle/DemoBundle"]
 	path = src/Pim/Bundle/DemoBundle
 	url = git@github.com:akeneo/DemoBundle.git
-[submodule "src/Oro/Bundle/MenuBundle"]
-	path = src/Oro/Bundle/MenuBundle
-	url = git@github.com:laboro/MenuBundle.git
-[submodule "src/Oro/Bundle/ClassificationTreeBundle"]
-	path = src/Oro/Bundle/ClassificationTreeBundle
-	url = git@github.com:laboro/ClassificationTreeBundle.git
+[submodule "src/Oro/Bundle/PinbarBundle"]
+	path = src/Oro/Bundle/PinbarBundle
+	url = git@github.com:laboro/PinbarBundle.git

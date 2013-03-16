@@ -1,8 +1,11 @@
-{% extends bap.layout is defined ? bap.layout : 'ConfigBundle::layout.bootstrap.html.twig' %}
+{% extends 'PimConfigBundle::layout.html.twig' %}
+
+{% set title = 'Languages overview'|trans %}
+{% block title %}{{ title }} - {{ parent() }}{% endblock %}
 
 {% block content %}
 
-    <h1>{{ 'Languages overview'|trans }}
+    <h1>{{ title }}
         <a class="btn btn-primary pull-right" 
             href="{{ path('pim_config_language_create') }}">{{ 'New language'|trans }}</a>
     </h1>
