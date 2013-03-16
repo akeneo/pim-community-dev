@@ -104,6 +104,169 @@
                                             </div>
                                         </div>
                                     {% endif %}
+
+                                    {% if form.dateType is defined %}
+                                        <div class="control-group">
+                                            {{ form_label(form.dateType, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                            <div class="controls">
+                                                {{ form_widget(form.dateType) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.dateMin is defined %}
+                                        <div class="control-group">
+                                            {{ form_label(form.dateMin, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                            <div class="controls">
+                                                {{ form_widget(form.dateMin) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.dateMax is defined %}
+                                        <div class="control-group">
+                                            {{ form_label(form.dateMax, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                            <div class="controls">
+                                                {{ form_widget(form.dateMax) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.negativeAllowed is defined %}
+                                        <div class="control-group">
+                                            {{ form_label(form.negativeAllowed, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                            <div class="controls">
+                                                {{ form_widget(form.negativeAllowed) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.decimalPlaces is defined %}
+                                        <div class="control-group">
+                                            {{ form_label(form.decimalPlaces, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                            <div class="controls">
+                                                {{ form_widget(form.decimalPlaces) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.numberMin is defined %}
+                                        <div class="control-group">
+                                            {{ form_label(form.numberMin, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                            <div class="controls">
+                                                {{ form_widget(form.numberMin) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.numberMax is defined %}
+                                        <div class="control-group">
+                                            {{ form_label(form.numberMax, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                            <div class="controls">
+                                                {{ form_widget(form.numberMax) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.defaultCurrency is defined %}
+                                        <div class="control-group">
+                                            {{ form_label(form.defaultCurrency, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                            <div class="controls">
+                                                {{ form_widget(form.defaultCurrency) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.valueCreationAllowed is defined %}
+                                        <div class="control-group">
+                                            {{ form_label(form.valueCreationAllowed, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                            <div class="controls">
+                                                {{ form_widget(form.valueCreationAllowed) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.maxCharacters is defined %}
+                                        <div class="control-group">
+                                            {{ form_label(form.maxCharacters, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                            <div class="controls">
+                                                {{ form_widget(form.maxCharacters) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.wysiwygEnabled is defined %}
+                                        <div class="control-group">
+                                            {{ form_label(form.wysiwygEnabled, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                            <div class="controls">
+                                                {{ form_widget(form.wysiwygEnabled) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.metricType is defined %}
+                                        <div class="control-group">
+                                            {{ form_label(form.metricType, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                            <div class="controls">
+                                                {{ form_widget(form.metricType) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.defaultMetricUnit is defined %}
+                                        <div class="control-group">
+                                            {{ form_label(form.defaultMetricUnit, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                            <div class="controls">
+                                                {{ form_widget(form.defaultMetricUnit) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.allowedFileSources is defined %}
+                                        <div class="control-group">
+                                            {{ form_label(form.allowedFileSources, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                            <div class="controls">
+                                                {{ form_widget(form.allowedFileSources) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.maxFileSize is defined %}
+                                        <div class="control-group">
+                                            {{ form_label(form.maxFileSize, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                            <div class="controls">
+                                                {{ form_widget(form.maxFileSize) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.allowedFileExtensions is defined %}
+                                        <div class="control-group">
+                                            {{ form_label(form.allowedFileExtensions, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                            <div class="controls">
+                                                {{ form_widget(form.allowedFileExtensions) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.validationRule is defined %}
+                                        <div class="control-group">
+                                            {{ form_label(form.validationRule, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                            <div class="controls">
+                                                {{ form_widget(form.validationRule) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.validationRegexp is defined %}
+                                        <div class="control-group">
+                                            {{ form_label(form.validationRegexp, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                            <div class="controls">
+                                                {{ form_widget(form.validationRegexp) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
                                 </div>
                             </div>
                         </div>
