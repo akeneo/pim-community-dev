@@ -11,10 +11,6 @@ pim_default:
     requirements:
         _locale:  en|fr|de
 
-oro_user:
-    resource: "@OroUserBundle/Resources/config/routing.yml"
-    prefix: /user
-
 pim_product:
     resource: "@PimProductBundle/Controller/"
     type:     annotation
@@ -26,3 +22,15 @@ pim_config:
     type:     annotation
     prefix:   /{_locale}/config/
     defaults: { _locale: %locale% }
+
+oro_user:
+    resource: "@OroUserBundle/Resources/config/routing.yml"
+
+oro_search:
+    resource: "@OroSearchBundle/Resources/config/routing.yml"
+    prefix:   /
+
+oro_navigation:
+    resource: "@OroNavigationBundle/Resources/config/routing.yml"
+    prefix:   /
+

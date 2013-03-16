@@ -1,8 +1,11 @@
-{% extends bap.layout is defined ? bap.layout : 'ConfigBundle::layout.bootstrap.html.twig' %}
+{% extends 'PimConfigBundle::layout.html.twig' %}
+
+{% set title = 'Currencies overview'|trans %}
+{% block title %}{{ title }} - {{ parent() }}{% endblock %}
 
 {% block content %}
 
-    <h1>{{ 'Currencies overview'|trans }}
+    <h1>{{ title }}
         <a class="btn btn-primary pull-right" 
             href="{{ path('pim_config_currency_create') }}">{{ 'New currency'|trans }}</a>
     </h1>
