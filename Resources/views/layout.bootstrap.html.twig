@@ -23,8 +23,11 @@
     {% endfor %}
 {% endblock application_menu %}
 
+
 {% block head_script %}
     {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/pimui/js/bootstrap-fileupload.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('bundles/pimui/css/bootstrap-fileupload.css') }}" media="all" />
     {% block javascripts %}{% endblock %}
     
     <!-- quick fix until we get pin bar -->
