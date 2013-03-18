@@ -1,44 +1,28 @@
 <?php
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\ImageType;
-
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\FileType;
-
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionSimpleSelectType;
-
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MoneyType;
-
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
-
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionMultiCheckboxType;
-
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionMultiSelectType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextAreaType;
-
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\DateType;
-
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextType;
-
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MetricType;
-
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\FileType;
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-
 use Doctrine\Common\DataFixtures\AbstractFixture;
 
 /**
  * Load fixtures for Product attributes
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  *
  */
 class LoadProductAttributeData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
@@ -71,170 +55,141 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
      */
     public function load(ObjectManager $manager)
     {
-        // force in english
-        $locale = $this->getReference('language.en_US');
-        $this->getProductManager()->setLocale($locale->getCode());
+        $referencePrefix = 'product-attribute.';
 
+        // attribute name
+        $attributeCode = 'name';
+        $productAttribute = $this->getProductManager()->createAttributeExtended(new TextType());
+        $productAttribute->setCode($attributeCode);
+        $productAttribute->setName('Name');
+        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $productAttribute->setTranslatable(true);
+        $this->getProductManager()->getStorageManager()->persist($productAttribute);
+        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
-        // create attribute
-        $attribute = $this->createAttribute(new DateType(), 'releaseDate', true);
+        // attribute price
+        $attributeCode = 'price';
+        $productAttribute = $this->getProductManager()->createAttributeExtended(new MoneyType());
+        $productAttribute->setCode($attributeCode);
+        $productAttribute->setName('Price');
+        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $this->getProductManager()->getStorageManager()->persist($productAttribute);
+        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
-        // create specific attributes
-        $attribute = $this->createAttribute(new TextAreaType(), 'shortDescription');
-        $attribute->setTranslatable(true);
-        $attribute->setScopable(true);
-        $this->persist($attribute);
+        // attribute short description
+        $attributeCode = 'shortDescription';
+        $productAttribute = $this->getProductManager()->createAttributeExtended(new TextAreaType());
+        $productAttribute->setCode($attributeCode);
+        $productAttribute->setName('Short Description');
+        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $productAttribute->setTranslatable(true);
+        $productAttribute->setScopable(true);
+        $this->getProductManager()->getStorageManager()->persist($productAttribute);
+        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
+        // attribute short description
+        $attributeCode = 'longDescription';
+        $productAttribute = $this->getProductManager()->createAttributeExtended(new TextAreaType());
+        $productAttribute->setCode($attributeCode);
+        $productAttribute->setName('Long Description');
+        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $productAttribute->setTranslatable(true);
+        $productAttribute->setScopable(true);
+        $this->getProductManager()->getStorageManager()->persist($productAttribute);
+        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
-        $attribute = $this->createAttribute(new TextAreaType(), 'longDescription');
-        $attribute->setTranslatable(true);
-        $attribute->setScopable(true);
-        $this->persist($attribute);
+        // attribute relaease date
+        $attributeCode = 'releaseDate';
+        $productAttribute = $this->getProductManager()->createAttributeExtended(new DateType());
+        $productAttribute->setCode($attributeCode);
+        $productAttribute->setName('Release date');
+        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $this->getProductManager()->getStorageManager()->persist($productAttribute);
+        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
-
-        $attribute = $this->createAttribute(new ImageType(), 'image');
-        $attribute->setRequired(true);
-        $this->persist($attribute);
-
-
-        $attribute = $this->createAttribute(new FileType(), 'file');
-        $this->persist($attribute);
-
-
-        // create size attribute
-        $attribute = $this->createAttribute(new OptionSimpleSelectType(), 'size');
-        // create options
+        // attribute size
+        $attributeCode = 'size';
+        $productAttribute = $this->getProductManager()->createAttributeExtended(new OptionSimpleSelectType());
+        $productAttribute->setCode($attributeCode);
+        $productAttribute->setName('Size');
+        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
         $sizes = array('XS', 'S', 'M', 'L', 'XL');
         foreach ($sizes as $size) {
-            $option = $this->createOption($size);
-            $attribute->addOption($option);
+            $option = $this->getProductManager()->createAttributeOption();
+            $option->setTranslatable(true);
+            $productAttribute->addOption($option);
+            $optionValue = $this->getProductManager()->createAttributeOptionValue();
+            $optionValue->setValue($size);
+            $option->addOptionValue($optionValue);
         }
-        $this->persist($attribute);
+        $this->getProductManager()->getStorageManager()->persist($productAttribute);
+        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
+        // attribute weight
+        $attributeCode = 'weight';
+        $productAttribute = $this->getProductManager()->createAttributeExtended(new MetricType());
+        $productAttribute->setCode($attributeCode);
+        $productAttribute->setName('Weight');
+        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $this->getProductManager()->getStorageManager()->persist($productAttribute);
+        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
-        // create weight attribute
-        $attribute = $this->createAttribute(new MetricType(), 'weight');
-        $attribute->setUnique(false);
-        $attribute->setTranslatable(false);
-        $attribute->setScopable(false);
-        $this->persist($attribute);
-
-
-        // create manufacturer attribute
-        $attribute = $this->createAttribute(new OptionSimpleSelectType(), 'manufacturer');
-        // create options
-        $attribute->setTranslatable(false);
-        $manufacturers = array('MyMug', 'MugStore');
-        foreach ($manufacturers as $manufacturer) {
-            $option = $this->createOption($manufacturer);
-            $attribute->addOption($option);
-        }
-        $this->persist($attribute);
-
-
-        // attribute name (if not exists)
-        $attribute = $this->createAttribute(new TextType(), 'name');
-        $attribute->setTranslatable(true);
-        $attribute->setRequired(true);
-        $this->persist($attribute);
-
-
-        // attribute price (if not exists)
-        $attribute = $this->createAttribute(new MoneyType(), 'price');
-        $this->persist($attribute);
-
-
-        // attribute color (if not exists)
-        $attribute = $this->createAttribute(new OptionMultiCheckboxType(), 'color');
-        $attribute->setTranslatable(false); // only one value but option can be translated in option values
-
-        // add translatable option and related value "Red", "Blue", "Green"
-        $colors = array('Red', 'Blue', 'Orange', 'Yellow', 'Green', 'Black', 'White');
+        // attribute color and translated options
+        $attributeCode = 'color';
+        $productAttribute = $this->getProductManager()->createAttributeExtended(new OptionMultiSelectType());
+        $productAttribute->setCode($attributeCode);
+        $productAttribute->setName('Color');
+        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $productAttribute->setTranslatable(false); // only one value but option can be translated in option values
+        $colors = array(
+                array('en_US' => 'Red', 'fr_FR' => 'Rouge', 'de_DE' => 'Rot'),
+                array('en_US' => 'Blue', 'fr_FR' => 'Bleu', 'de_DE' => 'Blau'),
+                array('en_US' => 'Green', 'fr_FR' => 'Vert', 'de_DE' => 'Grün'),
+                array('en_US' => 'Purple', 'fr_FR' => 'Violet', 'de_DE' => 'Lila'),
+                array('en_US' => 'Orange', 'fr_FR' => 'Orange', 'de_DE' => 'Orange'),
+        );
         foreach ($colors as $color) {
             $option = $this->getProductManager()->createAttributeOption();
             $option->setTranslatable(true);
-            $optionValue = $this->getProductManager()->createAttributeOptionValue();
-            $optionValue->setValue($color);
-            $option->addOptionValue($optionValue);
-            $attribute->addOption($option);
-        }
-        $this->persist($attribute);
-
-        // flush
-        $this->getProductManager()->getStorageManager()->flush();
-    }
-
-    /**
-     * Persists entity and add it to references
-     * @param ProductAttribute $attribute
-     *
-     * @throws \Exception
-     */
-    protected function persist(ProductAttribute $attribute)
-    {
-        $violationList = $this->container->get('validator')->validate($attribute);
-        if ($violationList->count() === 0) {
-            $this->getProductManager()->getStorageManager()->persist($attribute);
-            $this->addReference('product-attribute.'. $attribute->getCode(), $attribute);
-        } else {
-            $errors = '';
-            foreach ($violationList as $violation) {
-                $errors .= $violation->getMessage() . PHP_EOL;
+            $productAttribute->addOption($option);
+            foreach ($color as $locale => $translated) {
+                $optionValue = $this->getProductManager()->createAttributeOptionValue();
+                $optionValue->setValue($translated);
+                $optionValue->setLocale($locale);
+                $option->addOptionValue($optionValue);
             }
-            throw new \Exception('Error validating product attribute : '. $attribute->getCode() . PHP_EOL . $errors);
         }
-    }
+        $this->getProductManager()->getStorageManager()->persist($productAttribute);
+        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
-    /**
-     * Create an option with values
-     * @param string $name
-     *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOption
-     */
-    protected function createOption($name)
-    {
-        // create attribute option
-        $option = $this->getProductManager()->createAttributeOption();
-        $option->setTranslatable(true);
-        $option->setDefaultValue($name);
-
-        // create option value
-        $optionValue = $this->getProductManager()->createAttributeOptionValue();
-        $optionValue->setValue($name);
-
-        // add value to option
-        $option->addOptionValue($optionValue);
-
-        return $option;
-    }
-
-    /**
-     * Create attribute
-     * @param AbstractAttributeType $type    Attribute type
-     * @param string                $code    Attribute code
-     * @param boolean               $persist Direct persist entity ?
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttribute
-     */
-    protected function createAttribute(AbstractAttributeType $type, $code, $persist = false)
-    {
-        // create extended attribute
-        $attribute = $this->getProductManager()->createAttributeExtended($type);
-
-        // set attribute values
-        $attribute->setCode($code);
-
-        // set extended attribute values
-        $attribute->setName(ucfirst($code));
-        $attribute->setDescription(ucfirst($code .' description'));
-        $attribute->setVariant(0);
-
-        // persist attribute
-        if ($persist) {
-            $this->persist($attribute);
+        // attribute manufacturer
+        $attributeCode = 'manufacturer';
+        $productAttribute = $this->getProductManager()->createAttributeExtended(new OptionSimpleSelectType());
+        $productAttribute->setCode($attributeCode);
+        $productAttribute->setName('Manufacturer');
+        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $manufacturers = array('MyMug', 'MugStore');
+        foreach ($manufacturers as $manufacturer) {
+            $option = $this->getProductManager()->createAttributeOption();
+            $option->setTranslatable(true);
+            $productAttribute->addOption($option);
+            $optionValue = $this->getProductManager()->createAttributeOptionValue();
+            $optionValue->setValue($manufacturer);
+            $option->addOptionValue($optionValue);
         }
+        $this->getProductManager()->getStorageManager()->persist($productAttribute);
+        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
-        return $attribute;
+        // attribute file upload
+        $attributeCode = 'fileUpload';
+        $productAttribute = $this->getProductManager()->createAttributeExtended(new FileType());
+        $productAttribute->setCode($attributeCode);
+        $productAttribute->setName('File upload');
+        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $this->getProductManager()->getStorageManager()->persist($productAttribute);
+        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
+
+        $this->getProductManager()->getStorageManager()->flush();
     }
 
     /**

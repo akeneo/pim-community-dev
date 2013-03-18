@@ -53,15 +53,9 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $this->loadProducts();
-        $this->loadTranslations();
-    }
+        $nbProducts = 25;
+        $batchSize = 500;
 
-    /**
-     * Load products
-     */
-    public function loadProducts()
-    {
         // get scopes
         $scopeEcommerce = $this->getReference('channel.ecommerce');
         $scopeMobile    = $this->getReference('channel.mobile');
@@ -87,9 +81,8 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         );
         $colors = array();
         foreach ($optColors as $option) {
-            $colors[] = $option;
+            $colors[]= $option;
         }
-
 
         // get attribute size options
         $optSizes = $this->getProductManager()->getAttributeOptionRepository()->findBy(
@@ -97,62 +90,51 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         );
         $sizes = array();
         foreach ($optSizes as $option) {
-            $sizes[] = $option;
+            $sizes[]= $option;
         }
 
+        $descriptions = array('my long description', 'my other description');
+        for ($ind= 0; $ind < $nbProducts; $ind++) {
 
-        $indSku = 0;
-        $descriptions = array('my short description', 'my other description');
-        for ($ind= 1; $ind <= 3; $ind++) {
-            // add product with only sku and name
-            $prodSku = 'sku-'.++$indSku;
+            // sku
+            $prodSku = 'sku-'.$ind;
             $product = $this->getProductManager()->createFlexible();
             $product->setSku($prodSku);
 
-            // Set attribute name value
-            $value = $product->getValue($attName->getCode());
-            $value->setData('my name '.$indSku);
-            $this->getProductManager()->getStorageManager()->persist($product);
+            // name
+            $names = array('en_US' => 'my product name', 'fr_FR' => 'mon nom de produit', 'de_DE' => 'produkt namen');
+            foreach ($names as $locale => $data) {
+                $value = $this->getProductManager()->createFlexibleValue();
+                $value->setAttribute($attName->getAttribute());
+                $value->setLocale($locale);
+                $value->setData($data.' '.$ind);
+                $product->addValue($value);
+            }
 
+            // description
+            $locales = array('en_US', 'fr_FR', 'de_DE');
+            $scopes = array(ProductAttribute::SCOPE_ECOMMERCE, ProductAttribute::SCOPE_MOBILE);
+            foreach ($locales as $locale) {
+                foreach ($scopes as $scope) {
+                    $value = $this->getProductManager()->createFlexibleValue();
+                    $value->setLocale($locale);
+                    $value->setScope($scope);
+                    $value->setAttribute($attDescription->getAttribute());
+                    $product->addValue($value);
+                    $value->setData('description ('.$locale.') ('.$scope.') '.$ind);
+                }
+            }
 
-            // add product with sku, name, description, color and size
-            $prodSku = 'sku-'.++$indSku;
-            $product = $this->getProductManager()->createFlexible();
-            $product->setSku($prodSku);
-
-            // set name value
-            $value = $product->getValue($attName->getCode());
-            $value->setData('my name '.$indSku);
-
-            // set description value by scope
-            // scope ecommerce
-            $value = $this->getProductManager()->createFlexibleValue();
-            $value->setScope($scopeEcommerce->getCode());
-            $value->setAttribute($attDescription->getAttribute());
-            $myDescription = $descriptions[$ind%2];
-            $value->setData($myDescription.'(ecommerce)');
-            $product->addValue($value);
-            // scope mobile
-            $value = $this->getProductManager()->createFlexibleValue();
-            $value->setScope($scopeMobile->getCode());
-            $value->setAttribute($attDescription->getAttribute());
-            $value->setData($myDescription.'(mobile)');
-            $product->addValue($value);
-
-
-            // set attribute size value
+            // size
             $value = $this->getProductManager()->createFlexibleValue();
             $value->setAttribute($attSize->getAttribute());
-            // pick a size (single select)
-            $sizeOpt = $sizes[rand(0, count($sizes)-1)];
-            $value->addOption($sizeOpt);
+            $firstSizeOpt = $sizes[rand(0, count($sizes)-1)];
+            $value->addOption($firstSizeOpt);
             $product->addValue($value);
 
-
-            // set attribute color value
+            // color
             $value = $this->getProductManager()->createFlexibleValue();
             $value->setAttribute($attColor->getAttribute());
-            // pick many colors (multiselect)
             $firstColorOpt = $colors[rand(0, count($colors)-1)];
             $value->addOption($firstColorOpt);
             $secondColorOpt = $colors[rand(0, count($colors)-1)];
@@ -161,120 +143,20 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             }
             $product->addValue($value);
 
-            // persists
-            $this->getProductManager()->getStorageManager()->persist($product);
-
-
-            // add product with sku, name, size and price
-            $prodSku = 'sku-'.++$indSku;
-            $product = $this->getProductManager()->createFlexible();
-            $product->setSku($prodSku);
-
-            // set attribute name value
-            $value = $product->getValue($attName->getCode());
-            $value->setData('my name '.$indSku);
-
-
-            // set attribute size value
-            $value = $this->getProductManager()->createFlexibleValue();
-            $value->setAttribute($attSize->getAttribute());
-            // pick a size (single select)
-            $sizeOpt = $sizes[rand(0, count($sizes)-1)];
-            $value->addOption($sizeOpt);
-            $product->addValue($value);
-
-
-            // set attribute price value
+            // price
             $value = $this->getProductManager()->createFlexibleValue();
             $value->setAttribute($attPrice->getAttribute());
             $value->setData(rand(5, 100));
-            $value->setCurrency($currencyUSD->getCode());
+            $value->setCurrency('USD');
             $product->addValue($value);
 
-            // persists
             $this->getProductManager()->getStorageManager()->persist($product);
-        }
 
-        $this->getProductManager()->getStorageManager()->flush();
-    }
-
-    /**
-     * Load translated data
-     */
-    public function loadTranslations()
-    {
-        // get languages
-        $langFr = $this->getReference('language.fr_FR');
-
-        // get scopes
-        $scopeEcommerce = $this->getReference('channel.ecommerce');
-        $scopeMobile    = $this->getReference('channel.mobile');
-
-        // get attributes
-        $attName        = $this->getReference('product-attribute.name');
-        $attDescription = $this->getReference('product-attribute.shortDescription');
-
-        // get products
-        $products = $this->getProductManager()->getFlexibleRepository()->findByWithAttributes();
-        $ind = 1;
-        foreach ($products as $product) {
-            // translate name value
-            $value = $this->getProductManager()->createFlexibleValue();
-            $value->setAttribute($attName->getAttribute());
-            $value->setLocale($langFr->getCode());
-            $value->setData('mon nom FR '.$ind);
-            $product->addValue($value);
-            $this->getProductManager()->getStorageManager()->persist($value);
-
-            // translate description value
-            // scope ecommerce
-            $value = $this->getProductManager()->createFlexibleValue();
-            $value->setLocale($langFr->getCode());
-            $value->setScope($scopeEcommerce->getCode());
-            $value->setAttribute($attDescription->getAttribute());
-            $value->setData('ma description FR (ecommerce) '.$ind);
-            $product->addValue($value);
-            $this->getProductManager()->getStorageManager()->persist($value);
-
-            // scope mobile
-            $value = $this->getProductManager()->createFlexibleValue();
-            $value->setLocale($langFr->getCode());
-            $value->setScope($scopeMobile->getCode());
-            $value->setAttribute($attDescription->getAttribute());
-            $value->setData('ma description FR (mobile) '.$ind);
-            $product->addValue($value);
-            $this->getProductManager()->getStorageManager()->persist($value);
-
-            $ind++;
-        }
-
-        // get color attribute options
-        $attColor = $this->getProductManager()->getFlexibleRepository()->findAttributeByCode('color');
-        $colors = array(
-            'Red' => 'Rouge',
-            'Blue' => 'Bleu',
-            'Orange' => 'Orange',
-            'Yellow' => 'Jaune',
-            'Green' => 'Vert',
-            'Black' => 'Noir',
-            'White' => 'Blanc'
-        );
-        // translate
-        foreach ($colors as $colorEn => $colorFr) {
-            $optValueEn = $this->getProductManager()->getAttributeOptionValueRepository()->findOneBy(
-                array('value' => $colorEn)
-            );
-            $optValueFr = $this->getProductManager()->getAttributeOptionValueRepository()->findOneBy(
-                array('value' => $colorFr)
-            );
-
-            if ($optValueEn and !$optValueFr) {
-                $option = $optValueEn->getOption();
-                $optValueFr = $this->getProductManager()->createAttributeOptionValue();
-                $optValueFr->setValue($colorFr);
-                $optValueFr->setLocale($langFr->getCode());
-                $option->addOptionValue($optValueFr);
-                $this->getProductManager()->getStorageManager()->persist($optValueFr);
+            if (($ind % $batchSize) == 0) {
+                $this->getProductManager()->getStorageManager()->flush();
+                // detaches all products and values from doctrine
+                $this->getProductManager()->getStorageManager()->clear('Acme\Bundle\DemoFlexibleEntityBundle\Entity\Product');
+                $this->getProductManager()->getStorageManager()->clear('Acme\Bundle\DemoFlexibleEntityBundle\Entity\ProductValue');
             }
         }
 
