@@ -1,0 +1,13 @@
+oro_menu_config:
+    items:
+        demo_dashboard:
+            label: 'Dashboard'
+            route: 'pim_default'
+
+    tree:
+        application_menu:
+            children:
+                home:
+                    children:
+                        demo_dashboard: ~
+
