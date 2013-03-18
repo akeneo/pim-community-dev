@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\ImageType;
+
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionSimpleSelectType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MoneyType;
@@ -185,6 +187,16 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $productAttribute = $this->getProductManager()->createAttributeExtended(new FileType());
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('File upload');
+        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $this->getProductManager()->getStorageManager()->persist($productAttribute);
+        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
+
+        // attribute image upload
+        $attributeCode = 'imageUpload';
+        $productAttribute = $this->getProductManager()->createAttributeExtended(new ImageType());
+        $productAttribute->setCode($attributeCode);
+        $productAttribute->setName('Image upload');
+        $productAttribute->setRequired(true);
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
         $this->getProductManager()->getStorageManager()->persist($productAttribute);
         $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
