@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\ImageType;
+
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\FileType;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
@@ -90,8 +92,12 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $this->persist($attribute);
 
 
-        $attribute = $this->createAttribute(new FileType(), 'fileUpload');
+        $attribute = $this->createAttribute(new ImageType(), 'image');
         $attribute->setRequired(true);
+        $this->persist($attribute);
+
+
+        $attribute = $this->createAttribute(new FileType(), 'file');
         $this->persist($attribute);
 
 
