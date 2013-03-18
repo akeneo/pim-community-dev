@@ -1,3 +1,4 @@
+# Product
 'Edit attribute': 'Edit attribute'
 'Add attribute': 'Add attribute'
 'Back to list': 'Back to list'
@@ -35,6 +36,9 @@
 'Productfamily': 'Product family'
 'Availablelanguages': 'Available locales'
 'Locale specific': 'Locale specific'
+
+'Choose data locale' : 'Choose data locale'
+'Choose data scope' : 'Choose data scope'
 
 # Scopes
 'Global': 'Global'

@@ -75,7 +75,7 @@ class ProductController extends Controller
     /**
      * Get dedicated PIM filesystem
      *
-     * @return Gaufrette\Filesystem
+     * @return MediaManager
      */
     protected function getMediaManager()
     {
@@ -129,6 +129,7 @@ class ProductController extends Controller
             $form->bind($request);
 
             if ($form->isValid()) {
+                $index = 0;
                 // upload files if exist
                 foreach ($entity->getValues() as $value) {
                     if ($value->getMedia() !== null) {
@@ -139,11 +140,20 @@ class ProductController extends Controller
                                         $value->getMedia()->getFile()->getClientOriginalName();
 
                             $this->getMediaManager()->upload($value->getMedia(), $filename);
-                        } else {
+                        } elseif ($value->getMedia()->getFile() === null &&
+                                (!$value->getMedia()->getId() ||
+                                $form->get('values')->get($index)->get('media')->get('remove')->getData() === true)) {
+                            // unkink media if exists
+                            if ($this->getMediaManager()->fileExists($value->getMedia())) {
+                                var_dump("FILE EXISTS");
+                                var_dump($value->getMedia());
+                                $this->getMediaManager()->delete($value->getMedia());
+                            }
                             // remove value if empty file
                             $value->setMedia(null);
                         }
                     }
+                    $index++;
                 }
 
                 $em = $this->getProductManager()->getStorageManager();

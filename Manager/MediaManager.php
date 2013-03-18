@@ -37,7 +37,7 @@ class MediaManager
     public function __construct(FilesystemMap $fileSystemMap, $fileSystemName, $uploadDirectory)
     {
         $this->fileSystem = $fileSystemMap->get($fileSystemName);
-        $this->uploadDirectory  = realpath($uploadDirectory);
+        $this->uploadDirectory  = $uploadDirectory;
     }
 
     /**
@@ -82,5 +82,21 @@ class MediaManager
         if ($this->fileSystem->has($media->getFilename())) {
             return $this->uploadDirectory .'/'. $media->getFilename();
         }
+    }
+
+    /**
+     * Delete a file
+     * @param Media $media
+     */
+    public function delete(Media $media)
+    {
+        $this->fileSystem->delete($media->getFilename());
+    }
+
+    public function fileExists(Media $media)
+    {
+        $filePath = $this->uploadDirectory .'/'. $media->getFilename();
+
+        return $media->getFilename() !== null && file_exists($filePath);
     }
 }

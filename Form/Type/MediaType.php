@@ -25,6 +25,10 @@ class MediaType extends FlexibleMediaType
 
         $builder->add('file', 'file', array('required' => false));
 
-        $builder->add('filename', 'text', array('required' => false, 'disabled' => false));
+        $builder->add('remove', 'checkbox', array(
+            'required' => false,
+            'property_path' => false,
+            'label' => 'Remove media'
+        ));
     }
 }

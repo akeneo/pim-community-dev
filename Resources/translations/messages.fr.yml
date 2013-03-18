@@ -37,6 +37,9 @@
 'Availablelanguages': 'Langues disponibles'
 'Locale specific': '__Locale specific'
 
+'Choose data locale' : 'Choisir la locale'
+'Choose data scope' : 'Choisir le scope'
+
 # Scopes
 'Global': 'Global'
 'Channel': 'Canal'

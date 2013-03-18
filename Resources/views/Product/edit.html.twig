@@ -25,13 +25,13 @@
         
     {% endif %}
     <br/>
-    <p>{{ "Choose data locale : " | trans }}
+    <p>{{ "Choose data locale" | trans }} :
     {% for locale in ['en_US', 'fr_FR', 'de_DE'] %}
         <a class="btn btn-small btn-primary {% if dataLocale == locale %} disabled {% endif %}"
            href="{{ path(app.request.attributes.get('_route'), route_params | merge({'dataLocale': locale})) }}">{{ locale | trans }}</a>
     {% endfor %}
     </p>
-    <p>{{ "Choose data scope : " | trans }}
+    <p>{{ "Choose data scope" | trans }} :
     {% for scope in ['ecommerce', 'mobile'] %}
         <a class="btn btn-small btn-primary {% if dataScope == scope %} disabled {% endif %}"
            href="{{ path(app.request.attributes.get('_route'), route_params | merge({'dataLocale': dataLocale, 'dataScope': scope})) }}">{{ scope | trans }}</a>
@@ -39,12 +39,24 @@
     </p>
     <hr/>
     
+    {% form_theme form 'PimUIBundle:Form:fields.html.twig' %}
+    
     <form action="{{ form.vars.value.id ? path('pim_product_product_edit', { id: form.vars.value.id }) : path('pim_product_product_create') }}" 
         method="POST" class="form-register" {{ form_enctype(form) }}>
         <fieldset>
             <legend>{{ title }} <a class="btn btn-primary pull-right" href="{{ path('pim_product_product_index') }}">{{ "Back to list" | trans }}</a></legend>
     
-            {{ form_widget(form) }}
+            {{ form_row(form.id) }}
+            
+            {{ form_row(form.sku) }}
+            
+            {{ form_row(form.productFamily) }}
+            
+            {% for formView in form.values %}
+                {{ form_row(formView) }}
+            {% endfor %}
+            
+            {{ form_rest(form) }}
     
             <br />
             <legend>Additional information</legend>
@@ -65,7 +77,7 @@
             </div>
     
             <div class="form-row">
-                <button class="btn btn-large btn-primary" type="submit">Save</button>
+                <button class="btn btn-large btn-primary" type="submit">{{ "Save" | trans }}</button>
             </div>
         </fieldset>
     </form>
