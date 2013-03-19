@@ -37,6 +37,3 @@
 [submodule "src/Pim/Bundle/DemoBundle"]
 	path = src/Pim/Bundle/DemoBundle
 	url = git@github.com:akeneo/DemoBundle.git
-[submodule "src/Oro/Bundle/PinbarBundle"]
-	path = src/Oro/Bundle/PinbarBundle
-	url = git@github.com:laboro/PinbarBundle.git
