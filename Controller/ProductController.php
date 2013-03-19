@@ -145,8 +145,6 @@ class ProductController extends Controller
                                 $form->get('values')->get($index)->get('media')->get('remove')->getData() === true)) {
                             // unkink media if exists
                             if ($this->getMediaManager()->fileExists($value->getMedia())) {
-                                var_dump("FILE EXISTS");
-                                var_dump($value->getMedia());
                                 $this->getMediaManager()->delete($value->getMedia());
                             }
                             // remove value if empty file
