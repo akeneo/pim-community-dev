@@ -1033,7 +1033,7 @@ class ProductAttribute extends AbstractEntityAttributeExtended
      */
     public function getAllowedFileExtensions()
     {
-        return $this->allowedFileExtensions ? explode(',', $this->allowedFileExtensions) : $this->allowedFileExtensions;
+        return $this->allowedFileExtensions ? explode(',', $this->allowedFileExtensions) : array();
     }
 
     /**
