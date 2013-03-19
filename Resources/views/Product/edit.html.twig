@@ -1,8 +1,7 @@
-{% extends bap.layout is defined ? bap.layout : 'ProductBundle::layout.bootstrap.html.twig' %}
+{% extends 'PimProductBundle::layout.html.twig' %}
 
-{% set title = form.vars.value.id ? 'Edit product' : 'Add product' %}
-
-{% block title %}{{ parent() }} - {{ title }}{% endblock %}
+{% set title = form.vars.value.id ? 'Edit product'|trans : 'Add product'|trans %}
+{% block title %}{{ title }} - {{ parent() }}{% endblock %}
 
 {% block content %}
 

@@ -1,15 +1,14 @@
-{% extends bap.layout is defined ? bap.layout : 'ProductBundle::layout.bootstrap.html.twig' %}
+{% extends 'PimProductBundle::layout.html.twig' %}
 
-{% set title = form.vars.value.id ? 'Edit group' : 'Add group' %}
-
-{% block title %}{{ parent() }} - {{ title|trans }}{% endblock %}
+{% set title = form.vars.value.id ? 'Edit group'|trans : 'Add group'|trans %}
+{% block title %}{{ title }} - {{ parent() }}{% endblock %}
 
 {% block content %}
 <form action="{{ form.vars.value.id ? 
     path('pim_product_attributegroup_edit', { id: form.vars.value.id }) : 
     path('pim_product_attributegroup_create') }}" method="POST" class="form-register">
     <fieldset>
-        <legend>{{ title|trans }} 
+        <legend>{{ title }} 
             <a class="btn btn-primary pull-right" href="{{ path('pim_product_attributegroup_index') }}">
                 {{ "Back to list" | trans }}
             </a>

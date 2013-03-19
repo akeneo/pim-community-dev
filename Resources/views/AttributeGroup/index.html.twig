@@ -1,8 +1,11 @@
-{% extends bap.layout is defined ? bap.layout : 'ProductBundle::layout.bootstrap.html.twig' %}
+{% extends 'PimProductBundle::layout.html.twig' %}
+
+{% set title = 'Groups overview'|trans %}
+{% block title %}{{ title }} - {{ parent() }}{% endblock %}
 
 {% block content %}
 
-    <h1>{{ 'Groups overview'|trans }}
+    <h1>{{ title }}
         <a class="btn btn-primary pull-right" style="margin-left:10px;" 
             href="{{ path('pim_product_attributegroup_create') }}">{{ 'New group'|trans }}</a>
     </h1>

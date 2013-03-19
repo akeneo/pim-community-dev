@@ -1,4 +1,7 @@
-{% extends bap.layout is defined ? bap.layout : 'ProductBundle::layout.bootstrap.html.twig' %}
+{% extends 'PimProductBundle::layout.html.twig' %}
+
+{% set title = 'Products overview'|trans %}
+{% block title %}{{ title }} - {{ parent() }}{% endblock %}
 
 {% block content %}
 
@@ -22,7 +25,7 @@
         {% endif %}
     {% endif %}
     
-    <h1>Products overview 
+    <h1>{{ title }} 
         <a class="btn btn-primary pull-right" style="margin-left:10px;" href="{{ path('pim_product_product_create', {'dataLocale': dataLocale, 'dataScope': dataScope}) }}">New product</a> 
         <a class="btn btn-primary pull-right" href="{{ path('pim_product_productattribute_index') }}">Manage attributes</a>
     </h1>
