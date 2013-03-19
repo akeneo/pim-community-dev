@@ -14,4 +14,4 @@ parameters:
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
 
-    upload_dir:        %kernel.root_dir%/../web/bundles/pimproduct/uploads
+    upload_dir:        bundles/pimproduct/uploads
