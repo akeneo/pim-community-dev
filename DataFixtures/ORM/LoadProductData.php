@@ -113,7 +113,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 
             // description
             $locales = array('en_US', 'fr_FR', 'de_DE');
-            $scopes = array(ProductAttribute::SCOPE_ECOMMERCE, ProductAttribute::SCOPE_MOBILE);
+            $scopes = array('ecommerce', 'mobile');
             foreach ($locales as $locale) {
                 foreach ($scopes as $scope) {
                     $value = $this->getProductManager()->createFlexibleValue();
