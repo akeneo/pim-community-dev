@@ -336,7 +336,7 @@ class ProductAttributeValidator
         }
     }
 
-   /**
+    /**
      * Validation rule for maxCharacters
      *
      * @param ProductAttribute $productAttribute ProductAttirbute entity
@@ -354,7 +354,7 @@ class ProductAttributeValidator
         }
     }
 
-   /**
+    /**
      * Validation rule for validationRule
      *
      * @param ProductAttribute $productAttribute ProductAttirbute entity
@@ -375,7 +375,7 @@ class ProductAttributeValidator
         }
     }
 
-   /**
+    /**
      * Validation rule for validationRegexp
      *
      * @param ProductAttribute $productAttribute ProductAttirbute entity
@@ -394,7 +394,7 @@ class ProductAttributeValidator
         }
     }
 
-   /**
+    /**
      * Validation rule for numberMin
      *
      * @param ProductAttribute $productAttribute ProductAttirbute entity
@@ -425,7 +425,7 @@ class ProductAttributeValidator
         }
     }
 
-   /**
+    /**
      * Validation rule for numberMax
      *
      * @param ProductAttribute $productAttribute ProductAttirbute entity
@@ -458,7 +458,7 @@ class ProductAttributeValidator
         }
     }
 
-   /**
+    /**
      * Validation rule for decimalPlaces
      *
      * @param ProductAttribute $productAttribute ProductAttirbute entity
@@ -476,7 +476,7 @@ class ProductAttributeValidator
         }
     }
 
-   /**
+    /**
      * Validation rule for dateType
      *
      * @param ProductAttribute $productAttribute ProductAttirbute entity
@@ -491,7 +491,7 @@ class ProductAttributeValidator
         }
     }
 
-   /**
+    /**
      * Validation rule for dateMin
      *
      * @param ProductAttribute $productAttribute ProductAttirbute entity
@@ -508,7 +508,7 @@ class ProductAttributeValidator
         }
     }
 
-   /**
+    /**
      * Validation rule for dateMax
      *
      * @param ProductAttribute $productAttribute ProductAttirbute entity
@@ -525,7 +525,7 @@ class ProductAttributeValidator
         }
     }
 
-   /**
+    /**
      * Validation rule for allowedFileSources
      *
      * @param ProductAttribute $productAttribute ProductAttirbute entity
@@ -543,7 +543,7 @@ class ProductAttributeValidator
         }
     }
 
-   /**
+    /**
      * Validation rule for maxFileSize
      *
      * @param ProductAttribute $productAttribute ProductAttirbute entity

@@ -326,7 +326,7 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-   /**
+    /**
      * Provider for no property violations
      * @return multitype:multitype:boolean string
      *
@@ -392,7 +392,7 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $this->executionContext->getViolations());
     }
 
-   /**
+    /**
      * Provider for many property violations
      * @return multitype:multitype:boolean string
      *
@@ -481,5 +481,4 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
         // assertion
         $this->assertCount($violations, $this->executionContext->getViolations());
     }
-
 }

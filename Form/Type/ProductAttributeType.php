@@ -174,14 +174,18 @@ class ProductAttributeType extends AttributeType
      */
     protected function addFieldAvailableLanguages(FormBuilderInterface $builder)
     {
-        $builder->add('availableLanguages', 'entity', array(
-            'required' => false,
-            'multiple' => true,
-            'class' => 'Pim\Bundle\ConfigBundle\Entity\Language',
-            'query_builder' => function(EntityRepository $repository) {
-                return $repository->createQueryBuilder('l')->where('l.activated = 1')->orderBy('l.code');
-            }
-        ));
+        $builder->add(
+            'availableLanguages',
+            'entity',
+            array(
+                'required' => false,
+                'multiple' => true,
+                'class' => 'Pim\Bundle\ConfigBundle\Entity\Language',
+                'query_builder' => function (EntityRepository $repository) {
+                    return $repository->createQueryBuilder('l')->where('l.activated = 1')->orderBy('l.code');
+                }
+            )
+        );
     }
 
     /**

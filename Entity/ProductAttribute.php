@@ -21,14 +21,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ProductAttribute extends AbstractEntityAttributeExtended
 {
-
-    /**
-     * Constants for scopes
-     * @staticvar string
-     */
-    const SCOPE_ECOMMERCE = 'ecommerce';
-    const SCOPE_MOBILE    = 'mobile';
-
     /**
      * @var Oro\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute
      *
@@ -661,7 +653,7 @@ class ProductAttribute extends AbstractEntityAttributeExtended
         return $this;
     }
 
-   /**
+    /**
      * Get Validation regexp
      *
      * @return string $validationRegexp

@@ -27,7 +27,8 @@ class ProductAttributeTypeTest extends TypeTestCase
         // and field as they require a custom implementation
         $this->type = $this->getMock(
             'Pim\Bundle\ProductBundle\Form\Type\ProductAttributeType',
-            array('addFieldAvailableLanguages'));
+            array('addFieldAvailableLanguages')
+        );
 
         $this->form = $this->factory->create($this->type);
     }
