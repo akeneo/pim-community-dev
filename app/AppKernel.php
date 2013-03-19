@@ -35,9 +35,12 @@ class AppKernel extends Kernel
             new Oro\Bundle\UIBundle\OroUIBundle(),
             new Oro\Bundle\SoapBundle\OroSoapBundle(),
             new Oro\Bundle\SearchBundle\OroSearchBundle(),
+            new Oro\Bundle\DataFlowBundle\OroDataFlowBundle(),
             new Oro\Bundle\UserBundle\OroUserBundle(),
             new Oro\Bundle\MeasureBundle\OroMeasureBundle(),
-            new Oro\Bundle\MenuBundle\OroMenuBundle(),
+            new Oro\Bundle\SegmentationTreeBundle\OroSegmentationTreeBundle(),
+            new Oro\Bundle\NavigationBundle\OroNavigationBundle(),
+            new Oro\Bundle\ConfigBundle\OroConfigBundle(),
 
             // PIM bundles
             new Pim\Bundle\UIBundle\PimUIBundle(),

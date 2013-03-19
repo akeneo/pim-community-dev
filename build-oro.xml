@@ -100,6 +100,9 @@
     <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="phpcs">
             <arg value="--standard=Symfony2" />
+            <arg value="--standard=PSR1" />
+            <arg value="--standard=PSR2" />
+            <arg value="--extensions=php" />
             <arg path="${basedir}/src/Oro" />
             <arg value="--ignore=${basedir}/src/*/Tests/*.php,${basedir}/src/*Tests/Files/*" />
         </exec>
@@ -110,6 +113,9 @@
             <arg value="--report=checkstyle" />
             <arg value="--report-file=${basedir}/app/build/logs/checkstyle.xml" />
             <arg value="--standard=Symfony2" />
+            <arg value="--standard=PSR1" />
+            <arg value="--standard=PSR2" />
+            <arg value="--extensions=php" />
             <arg path="${basedir}/src/Oro" />
             <arg value="--ignore=${basedir}/src/*/Tests/*.php,${basedir}/src/*Tests/Files/*" />
         </exec>

@@ -1,0 +1,14 @@
+security:
+    firewalls:
+        navigationrest:
+            pattern:                        ^/api/rest/latest/navigationitems
+            provider:                       oro_user
+            api:                            false
+            http_basic:
+                realm: "Secured REST Area"
+        main:
+            http_basic:
+                realm: "Secured REST Area"
+            form_login: false
+            logout: false
+            remember_me: false

@@ -1,66 +1,48 @@
-#jms_security_extra:
-#    secure_all_services: false
-#    expressions: true
-
 security:
+    providers:
+        chain_provider:
+            chain:
+                providers:                  [in_memory, oro_user]
+        oro_user:
+            id:                             oro_user.security.provider
+        in_memory:
+            memory:
+                users:                      []
+
     encoders:
         Oro\Bundle\UserBundle\Entity\User: sha512
         Symfony\Component\Security\Core\User\User: plaintext
 
-    #role_hierarchy:
-        #ROLE_ADMIN:       ROLE_USER
-        #ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
-
-    providers:
-        oro_user:
-            id: oro_user.security.provider
-        chain_provider:
-            chain:
-                providers: [in_memory, oro_user]
-        in_memory:
-            memory:
-                users:
-                    #user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
-
     firewalls:
+        navigationrest:
+            pattern:                        ^/api/rest/(latest|v1)/navigationitems
+            provider:                       chain_provider
+            api:
+                parent_context:             main
+            anonymous:                      false
+
         dev:
-            pattern:  ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-            
+            pattern:                        ^/(_(profiler|wdt)|css|images|js)/
+            security:                       false
+
         main:
             pattern:                        ^/
             provider:                       chain_provider
             form_login:
                 csrf_provider:              form.csrf_provider
-                check_path:                 /user/login-check
-                login_path:                 /user/login
+                check_path:                 /%locale%/user/login-check
+                login_path:                 /%locale%/user/login
             logout:
-                path:                       /user/logout
+                path:                       /%locale%/user/logout
             remember_me:
                 key:                        %secret%
                 name:                       BAPRM
                 lifetime:                   1209600   # stay logged for two weeks
             anonymous:                      true
 
-        #login:
-        #    pattern:  ^/demo/secured/login$
-        #    security: false
-
-        #secured_area:
-        #    pattern:    ^/demo/secured/
-        #    form_login:
-        #        check_path: /demo/secured/login_check
-        #        login_path: /demo/secured/login
-        #    logout:
-        #        path:   /demo/secured/logout
-        #        target: /demo/
-            #anonymous: ~
-            #http_basic:
-            #    realm: "Secured Demo Area"
-
     access_control:
-        - { path: ^/user/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/%locale%/user/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/%locale%/user/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/%locale%/user/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/api/rest/(latest|v1)/pinbars, role: ROLE_USER }
