@@ -65,30 +65,6 @@ class Product extends AbstractEntityFlexible
     }
 
     /**
-     * Get filepath
-     *
-     * @return string
-     */
-    public function getFilepath()
-    {
-        return $this->file;
-    }
-
-    /**
-     * Set filepath
-     *
-     * @param string $pictureName
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Product
-     */
-    public function setFilepath($pictureName)
-    {
-        $this->filepath = $pictureName;
-
-        return $this;
-    }
-
-    /**
      * Get product family
      *
      * @return \Pim\Bundle\ProductBundle\Entity\ProductFamily
