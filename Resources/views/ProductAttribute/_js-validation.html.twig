@@ -76,7 +76,7 @@ $(function() {
                 return;
             }
         });
-        $(this).chosen({ allow_single_deselect: allowDeselect });
+        $(this).select2({ allowClear: allowDeselect });
     });
 
     if ($('select[id*=availableLanguages]').val()) {
