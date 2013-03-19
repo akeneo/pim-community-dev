@@ -77,11 +77,20 @@ $(function() {
         $('input[name=limitLanguages]').attr('checked', true);
     }
 
+    $('select[id*=validationRule]').change(function() {
+        if ($(this).val() == 'regexp') {
+            $('input[id*=validationRegexp]').parent().parent().show();
+        } else {
+            $('input[id*=validationRegexp]').parent().parent().hide();
+        }
+    });
+    $('select[id*=validationRule]').trigger('change');
+
     $('input[name=limitLanguages]').change(function() {
         if($(this).attr('checked')) {
             $(this).parent().parent().next().show();
         } else {
-            $('select[id*=availableLanguages]').val('').trigger("liszt:updated");
+            $('select[id*=availableLanguages]').select2('val', '');
             $(this).parent().parent().next().hide();
         }
     });
