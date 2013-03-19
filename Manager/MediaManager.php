@@ -80,7 +80,7 @@ class MediaManager
     public function getFilePath(Media $media)
     {
         if ($this->fileSystem->has($media->getFilename())) {
-            return $this->uploadDirectory .'/'. $media->getFilename();
+            return $this->uploadDirectory . DIRECTORY_SEPARATOR . $media->getFilename();
         }
     }
 
@@ -102,7 +102,7 @@ class MediaManager
      */
     public function fileExists(Media $media)
     {
-        $filePath = $this->uploadDirectory .'/'. $media->getFilename();
+        $filePath = $this->uploadDirectory . DIRECTORY_SEPARATOR . $media->getFilename();
 
         return $media->getFilename() !== null && file_exists($filePath);
     }
