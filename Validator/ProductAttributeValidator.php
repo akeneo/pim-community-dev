@@ -54,7 +54,7 @@ class ProductAttributeValidator
      */
     const VIOLATION_INVALID_MAX_CHARACTERS = 'The maximum characters property is not valid';
     const VIOLATION_INVALID_VALIDATION_RULE = 'The validation rule property is not valid';
-    const VIOLATION_INVALID_VALIDATION_REGEXP = 'The validaation regular expression is not valid';
+    const VIOLATION_INVALID_VALIDATION_REGEXP = 'The validation regular expression is not valid';
     const VIOLATION_INVALID_NUMBER_MIN = 'The minimum number is not valid';
     const VIOLATION_INVALID_NUMBER_MAX = 'The maximum number is not valid';
     const VIOLATION_INVALID_DECIMAL_PLACES = 'The decimal places property is not valid';
