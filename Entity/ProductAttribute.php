@@ -184,7 +184,7 @@ class ProductAttribute extends AbstractEntityAttributeExtended
      * @var Currency $defaultCurrency
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\ConfigBundle\Entity\Currency")
-     * @ORM\Column(name="default_currency", nullable=true)
+     * @ORM\JoinColumn(name="default_currency_id", nullable=true, referencedColumnName="id")
      */
     protected $defaultCurrency;
 
