@@ -59,9 +59,3 @@ services:
     pim_media_manager:
         class: Pim\Bundle\ProductBundle\Manager\MediaManager
         arguments: [@knp_gaufrette.filesystem_map, "pim", %upload_dir%]
-
-    # Media form type
-    form.type.media:
-        class: Pim\Bundle\ProductBundle\Form\Type\MediaType
-        tags:
-            - { name: form.type, alias: media }
