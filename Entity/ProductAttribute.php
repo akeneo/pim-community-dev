@@ -389,14 +389,9 @@ class ProductAttribute extends AbstractEntityAttributeExtended
                 $params['fieldType'] = 'integer';
                 break;
             case 'allowedFileExtensions':
-                $params['fieldType'] = 'choice';
-                $params['options']['choices'] = array();
-                $extensions = $this->getAllowedFileExtensions();
-                foreach ($extensions as $ext) {
-                    $params['options']['choices'][$ext] = $ext;
-                }
-                $params['options']['multiple'] = true;
-                $params['data'] = $this->getAllowedFileExtensions();
+                $params['fieldType'] = 'text';
+                $params['options']['by_reference'] = false;
+                $params['data'] = $this->allowedFileExtensions;
                 break;
             case 'validationRule':
                 $params['fieldType'] = 'choice';

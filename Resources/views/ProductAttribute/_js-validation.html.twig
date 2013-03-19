@@ -68,16 +68,9 @@ $(function() {
         $(this).parent().addClass('active');
     });
 
-    $('select').each(function() {
-        var allowDeselect = false;
-        $(this).find('option').each(function() {
-            if(!$(this).html()) {
-                allowDeselect = true;
-                return;
-            }
-        });
-        $(this).select2({ allowClear: allowDeselect });
-    });
+    $('select').select2({ allowClear: true });
+
+    $('input.multiselect').select2({ tags: $(this).val() });
 
     if ($('select[id*=availableLanguages]').val()) {
         $('select[id*=availableLanguages]').parent().parent().show();

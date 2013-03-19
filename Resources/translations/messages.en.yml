@@ -46,6 +46,8 @@
 'Productfamily': 'Product family'
 'Availablelanguages': 'Available locales'
 'Locale specific': 'Locale specific'
+'Choose a currency': 'Choose a currency'
+'Choose a group': 'Choose a group'
 
 # Scopes
 'Global': 'Global'
