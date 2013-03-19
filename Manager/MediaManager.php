@@ -93,6 +93,13 @@ class MediaManager
         $this->fileSystem->delete($media->getFilename());
     }
 
+    /**
+     * Predicate to know if file exists physically
+     *
+     * @param Media $media
+     *
+     * @return boolean
+     */
     public function fileExists(Media $media)
     {
         $filePath = $this->uploadDirectory .'/'. $media->getFilename();
