@@ -31,7 +31,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        ["PimUIBundle", "OroUserBundle", "OroSegmentationTreeBundle"]
+    bundles:        ["PimUIBundle", "OroUserBundle", "OroSegmentationTreeBundle", "PimProductBundle"]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -121,3 +121,14 @@ services:
     cache:
         class: Doctrine\Common\Cache\PhpFileCache
         arguments: [%kernel.cache_dir%]
+
+knp_gaufrette:
+    adapters:
+        pim_adapter:
+            local:
+                directory: %upload_dir%
+                create:    true
+    filesystems:
+        pim:
+            adapter: pim_adapter
+            alias:   pim_filesystem
