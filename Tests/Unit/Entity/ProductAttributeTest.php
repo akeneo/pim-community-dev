@@ -4,6 +4,7 @@ namespace Pim\Bundle\ProductBundle\Tests\Unit\Entity;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Pim\Bundle\ConfigBundle\Entity\Language;
+use Pim\Bundle\ConfigBundle\Entity\Currency;
 
 /**
  * Test related class
@@ -154,5 +155,260 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
 
         $productAttribute->removeAvailableLanguage($newLanguage);
         $this->assertNull($productAttribute->getAvailableLanguages());
+    }
+
+    /**
+     * Test getter/setter for maxCharacters property
+     */
+    public function testGetSetMaxCharacters()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertNull($productAttribute->getMaxCharacters());
+
+        // Change value and assert new
+        $characters = 100;
+        $productAttribute->setMaxCharacters($characters);
+        $this->assertEquals($characters, $productAttribute->getMaxCharacters());
+    }
+
+    /**
+     * Test getter/setter for validationRule property
+     */
+    public function testGetSetValidationRule()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertNull($productAttribute->getValidationRule());
+
+        // Change value and assert new
+        $rule = 'email';
+        $productAttribute->setValidationRule($rule);
+        $this->assertEquals($rule, $productAttribute->getValidationRule());
+    }
+
+    /**
+     * Test getter/setter for validationRegexp property
+     */
+    public function testGetSetValidationRegexp()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertNull($productAttribute->getValidationRegexp());
+
+        // Change value and assert new
+        $regexp = '/[^0-9]/';
+        $productAttribute->setValidationRegexp($regexp);
+        $this->assertEquals($regexp, $productAttribute->getValidationRegexp());
+    }
+
+    /**
+     * Test getter/setter for wysiwygEnabled property
+     */
+    public function testGetSetWysiwygEnabled()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertNull($productAttribute->getWysiwygEnabled());
+
+        // Change value and assert new
+        $productAttribute->setWysiwygEnabled(true);
+        $this->assertTrue($productAttribute->getWysiwygEnabled());
+    }
+
+    /**
+     * Test getter/setter for numberMin property
+     */
+    public function testGetSetNumberMin()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertNull($productAttribute->getNumberMin());
+
+        // Change value and assert new
+        $number = 10;
+        $productAttribute->setNumberMin($number);
+        $this->assertEquals($number, $productAttribute->getNumberMin());
+    }
+
+    /**
+     * Test getter/setter for numberMax property
+     */
+    public function testGetSetNumberMax()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertNull($productAttribute->getNumberMax());
+
+        // Change value and assert new
+        $number = 20;
+        $productAttribute->setNumberMax($number);
+        $this->assertEquals($number, $productAttribute->getNumberMax());
+    }
+
+    /**
+     * Test getter/setter for decimalPlaces property
+     */
+    public function testGetSetDecimalPlaces()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertNull($productAttribute->getDecimalPlaces());
+
+        // Change value and assert new
+        $decimals = 2;
+        $productAttribute->setDecimalPlaces($decimals);
+        $this->assertEquals($decimals, $productAttribute->getDecimalPlaces());
+    }
+
+    /**
+     * Test getter/setter for negativeAllowed property
+     */
+    public function testGetSetNegativeAllowed()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertNull($productAttribute->getNegativeAllowed());
+
+        // Change value and assert new
+        $productAttribute->setNegativeAllowed(true);
+        $this->assertTrue($productAttribute->getNegativeAllowed());
+    }
+
+    /**
+     * Test getter/setter for ValueCreationAllowed property
+     */
+    public function testGetSetValueCreationAllowed()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertNull($productAttribute->getValueCreationAllowed());
+
+        // Change value and assert new
+        $productAttribute->setValueCreationAllowed(true);
+        $this->assertTrue($productAttribute->getValueCreationAllowed());
+    }
+
+    /**
+     * Test getter/setter for dateType property
+     */
+    public function testGetSetDateType()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertNull($productAttribute->getDateType());
+
+        // Change value and assert new
+        $dateType = 'datetime';
+        $productAttribute->setDateType($dateType);
+        $this->assertEquals($dateType, $productAttribute->getDateType());
+    }
+
+    /**
+     * Test getter/setter for dateMin property
+     */
+    public function testGetSetDateMin()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertNull($productAttribute->getDateMin());
+
+        // Change value and assert new
+        $date = new \DateTime();
+        $productAttribute->setDateMin($date);
+        $this->assertInstanceOf('DateTime', $productAttribute->getDateMin());
+        $this->assertEquals($date, $productAttribute->getDateMin());
+    }
+
+    /**
+     * Test getter/setter for dateMax property
+     */
+    public function testGetSetDateMax()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertNull($productAttribute->getDateMax());
+
+        // Change value and assert new
+        $date = new \DateTime();
+        $productAttribute->setDateMax($date);
+        $this->assertInstanceOf('DateTime', $productAttribute->getDateMax());
+        $this->assertEquals($date, $productAttribute->getDateMax());
+    }
+
+    /**
+     * Test getter/setter for defaultCurrency property
+     */
+    public function testGetSetDefaultCurrency()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertEmpty($productAttribute->getDefaultCurrency());
+
+        // change value and assert new
+        $currency = new Currency();
+        $productAttribute->setDefaultCurrency($currency);
+        $this->assertEquals($currency, $productAttribute->getDefaultCurrency());
+        $this->assertInstanceOf('Pim\Bundle\ConfigBundle\Entity\Currency', $productAttribute->getDefaultCurrency());
+
+        $productAttribute->setDefaultCurrency(null);
+        $this->assertEquals(null, $productAttribute->getDefaultCurrency());
+    }
+
+    /**
+     * Test getter/setter for metricType property
+     */
+    public function testGetSetMetricType()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertNull($productAttribute->getMetricType());
+
+        // Change value and assert new
+        $type = 'weight';
+        $productAttribute->setMetricType($type);
+        $this->assertEquals($type, $productAttribute->getMetricType());
+    }
+
+    /**
+     * Test getter/setter for defaultMetricUnit property
+     */
+    public function testGetSetDefaultMetricUnit()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertNull($productAttribute->getDefaultMetricUnit());
+
+        // Change value and assert new
+        $unit = 'm';
+        $productAttribute->setDefaultMetricUnit($unit);
+        $this->assertEquals($unit, $productAttribute->getDefaultMetricUnit());
+    }
+
+    /**
+     * Test getter/setter for allowedFileSources property
+     */
+    public function testGetSetAllowedFileSources()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertNull($productAttribute->getAllowedFileSources());
+
+        // Change value and assert new
+        $source = 'upload';
+        $productAttribute->setAllowedFileSources($source);
+        $this->assertEquals($source, $productAttribute->getAllowedFileSources());
+    }
+
+    /**
+     * Test getter/setter for maxFileSize property
+     */
+    public function testGetSetMaxFileSize()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertNull($productAttribute->getMaxFileSize());
+
+        // Change value and assert new
+        $size = 1024;
+        $productAttribute->setMaxFileSize($size);
+        $this->assertEquals($size, $productAttribute->getMaxFileSize());
+    }
+
+    /**
+     * Test getter/setter for allowedFileExtensions property
+     */
+    public function testGetSetAllowedFileExtensions()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertEmpty($productAttribute->getAllowedFileExtensions());
+
+        // Change value and assert new
+        $extensions = array('jpg', 'png', 'gif');
+        $productAttribute->setAllowedFileExtensions($extensions);
+        $this->assertEquals($extensions, $productAttribute->getAllowedFileExtensions());
     }
 }

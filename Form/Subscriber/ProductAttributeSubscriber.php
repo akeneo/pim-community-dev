@@ -67,40 +67,11 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
 
         // only when editing
         if ($data->getId()) {
-
             $form = $event->getForm();
-            $attribute = $data->getAttribute();
-            $attTypeClass = $attribute->getAttributeType();
-            $attType = new $attTypeClass();
-
-            $formType = $attType->getFormType();
-
-            if (!in_array($formType, array('file', 'options'))) {
-                $options = array('required' => false);
-
-                if ($formType === 'entity') {
-                    if (strpos($attTypeClass, 'OptionSimpleRadioType') === false
-                        && strpos($attTypeClass, 'OptionSimpleSelectType') === false) {
-
-                        return;
-                    } else {
-                        $formType = 'choice';
-                        $options['choices'] = array();
-                        foreach ($attribute->getOptions() as $option) {
-                            if ($option->getDefaultValue()) {
-                                $options['choices'][$option->getDefaultValue()] = $option->getDefaultValue();
-                            }
-                        }
-                    }
-                } elseif (strpos($attTypeClass, 'BooleanType') !== false) {
-                    $formType = 'choice';
-                    $options['choices'] = array(
-                        0 => 'No',
-                        1 => 'Yes'
-                    );
+            foreach ($data->getActivatedProperties() as $property) {
+                if ($params = $data->getFieldParams($property)) {
+                    $form->add($this->factory->createNamed($property, $params['fieldType'], $params['data'], $params['options']));
                 }
-
-                $form->add($this->factory->createNamed('defaultValue', $formType, null, $options));
             }
         }
     }

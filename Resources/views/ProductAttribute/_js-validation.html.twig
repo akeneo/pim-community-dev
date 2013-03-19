@@ -11,13 +11,12 @@ function updateFieldsFromAttributeType() {
     switch ($('#pim_product_attribute_form_attributeType').val()) {
         case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_TEXTAREA_CLASS') }}':
         case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_MONEY_CLASS') }}':
-        case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_OPT_MULTI_CB_CLASS') }}':
         case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_OPT_MULTI_SELECT_CLASS') }}':
-        case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_OPT_SINGLE_RADIO_CLASS') }}':
         case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_OPT_SINGLE_SELECT_CLASS') }}':
         case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_FILE_CLASS') }}':
         case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_IMAGE_CLASS') }}':
         case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_METRIC_CLASS') }}':
+        case '{{ constant('Oro\\Bundle\\FlexibleEntityBundle\\Model\\AbstractAttributeType::TYPE_BOOLEAN_CLASS') }}':
             disableField('unique');
             break;
         default:
@@ -69,27 +68,29 @@ $(function() {
         $(this).parent().addClass('active');
     });
 
-    $('select').each(function() {
-        var allowDeselect = false;
-        $(this).find('option').each(function() {
-            if(!$(this).html()) {
-                allowDeselect = true;
-                return;
-            }
-        });
-        $(this).chosen({ allow_single_deselect: allowDeselect });
-    });
+    $('select').select2({ allowClear: true });
+
+    $('input.multiselect').select2({ tags: $(this).val() });
 
     if ($('select[id*=availableLanguages]').val()) {
         $('select[id*=availableLanguages]').parent().parent().show();
         $('input[name=limitLanguages]').attr('checked', true);
     }
 
+    $('select[id*=validationRule]').change(function() {
+        if ($(this).val() == 'regexp') {
+            $('input[id*=validationRegexp]').parent().parent().show();
+        } else {
+            $('input[id*=validationRegexp]').parent().parent().hide();
+        }
+    });
+    $('select[id*=validationRule]').trigger('change');
+
     $('input[name=limitLanguages]').change(function() {
         if($(this).attr('checked')) {
             $(this).parent().parent().next().show();
         } else {
-            $('select[id*=availableLanguages]').val('').trigger("liszt:updated");
+            $('select[id*=availableLanguages]').select2('val', '');
             $(this).parent().parent().next().hide();
         }
     });

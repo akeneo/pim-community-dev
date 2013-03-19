@@ -23,12 +23,22 @@
 'Updated': 'Mis à jour'
 'Edit': 'Modifier'
 'Remove': 'Supprimer'
+'Delete': '__Delete'
+'Parameters': '__Parameters'
+'Values': '__Values'
+'Rules': '__Rules'
+'General parameters': '__General parameters'
+'Backend parameters': '__Backend parameters'
+'Label': '__Label'
+'Description': '__Description'
+'Default label': '__Default label'
+'Default value': '__Default value'
 
 'Name': 'Nom'
 'Description': 'Description'
 'Attributetype': "Type d'attribut"
 'Searchable': 'Recherchable'
-'Default value': 'Valeur par défaut'
+'defaultValue': 'Valeur par défaut'
 'Variant': 'Variante'
 'Smart': __Smart
 'Useableasgridcolumn': 'Utilisable comme colonne de grille'
@@ -36,6 +46,8 @@
 'Productfamily': 'Famille de produit'
 'Availablelanguages': 'Langues disponibles'
 'Locale specific': '__Locale specific'
+'Choose a currency': '__Choose a currency'
+'Choose a group': '__Choose a group'
 
 'Choose data locale' : 'Choisir la locale'
 'Choose data scope' : 'Choisir le scope'
@@ -60,3 +72,30 @@
 'Sort order': 'Ordre'
 
 'Y-m-d h:i:s': 'd/m/Y h:i:s'
+
+# Attribute properties
+'maxCharacters': '__Max characters'
+'validationRule': '__Validation rule'
+'validationRegexp': '__Validation regexp'
+'wysiwygEnabled': '__WYSIWYG enabled'
+'numberMin': '__Min number'
+'numberMax': '__Max number'
+'decimalPlaces': '__Decimal places'
+'negativeAllowed': '__Allow negative values'
+'valueCreationAllowed': '__Allow automatic value creation'
+'dateType': '__Date type'
+'dateMin': '__Min date'
+'dateMax': '__Max date'
+'defaultCurrency': '__Default currency'
+'metricType': '__Metric type'
+'defaultMetricUnit': '__Default metric unit'
+'allowedFileSources': '__Allowed file sources'
+'maxFileSize': '__Max file size'
+'allowedFileExtensions': '__Allowed file extensions'
+
+# Product family
+'Product families overview': '__Product families overview'
+'New product family': '__New product family'
+'Attributes': '__Attributes'
+'Edit product family': '__Edit product family'
+'Add product family': '__Add product family'
