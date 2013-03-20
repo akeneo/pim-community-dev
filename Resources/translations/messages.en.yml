@@ -1,4 +1,4 @@
-# Product
+# Product/Attribute
 'Edit attribute': 'Edit attribute'
 'Add attribute': 'Add attribute'
 'Back to list': 'Back to list'
@@ -16,10 +16,14 @@
 'Code': 'Code'
 'Name': 'Name'
 'Type': 'Type'
+'Scope': 'Scope'
 'Required': 'Required'
 'Unique': 'Unique'
 'Translatable': 'Translatable'
 'Scopable': 'Scopable'
+'Unique value': 'Unique value'
+'Attribute group': 'Attribute group'
+'Variants behavior when edited': 'Variants behavior when edited'
 'Created': 'Created'
 'Updated': 'Updated'
 'Edit': 'Edit'
@@ -42,8 +46,8 @@
 'defaultValue': 'Default value'
 'Variant': 'Variant'
 'Smart': 'Smart'
-'Useableasgridcolumn': 'Useable as grid column'
-'Useableasgridfilter': 'Useable as grid filter'
+'Useableasgridcolumn': 'Usable as grid column'
+'Useableasgridfilter': 'Usable as grid filter'
 'Productfamily': 'Product family'
 'Availablelanguages': 'Available locales'
 'Locale specific': 'Locale specific'
@@ -52,6 +56,7 @@
 
 'Choose data locale' : 'Choose data locale'
 'Choose data scope' : 'Choose data scope'
+'Label translations': 'Label translations'
 
 # Scopes
 'Global': 'Global'
@@ -101,3 +106,9 @@
 'Attributes': 'Attributes'
 'Edit product family': 'Edit product family'
 'Add product family': 'Add product family'
+
+# Locales
+'en_US': 'English (en_us)'
+'en_GB': 'English (en_gb)'
+'fr_FR': 'French (fr_fr)'
+'fr_CA': 'French (fr_ca)'

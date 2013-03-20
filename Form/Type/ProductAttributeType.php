@@ -11,6 +11,19 @@ use Symfony\Component\Form\FormEvents;
 
 use Doctrine\ORM\EntityRepository;
 
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\ImageType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\FileType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\BooleanType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionSimpleSelectType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionMultiSelectType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\DateType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MetricType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MoneyType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextAreaType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\NumberType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\IntegerType;
+
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -186,6 +199,36 @@ class ProductAttributeType extends AttributeType
                 }
             )
         );
+    }
+
+    /**
+     * Return available frontend type
+     *
+     * @return array
+     */
+    public function getAttributeTypeChoices()
+    {
+        $availablesTypes = array(
+            new BooleanType(),
+            new DateType(),
+            new FileType(),
+            new ImageType(),
+            new IntegerType(),
+            new MetricType(),
+            new MoneyType(),
+            new OptionMultiSelectType(),
+            new OptionSimpleSelectType(),
+            new NumberType(),
+            new TextAreaType(),
+            new TextType(),
+        );
+        $types = array();
+        foreach ($availablesTypes as $type) {
+            $types[get_class($type)]= $type->getName();
+        }
+        asort($types);
+
+        return $types;
     }
 
     /**

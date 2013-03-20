@@ -1,7 +1,7 @@
 $(function() {
     var $optionList = $('table#sortable_options');
 
-    $optionList.after($('<a class="btn btn-small add_option_link" href="#"><i class="icon-plus"></i>{{ 'Add another'|trans }}</a>'));
+    $optionList.after($('<a class="btn btn-small add_option_link" href="#"><i class="icon-plus"></i>{{ 'Add an option'|trans }}</a>'));
 
     $optionList.find('tr.att-option').each(function() {
         $(this).append($('<td><button type="button" class="btn btn-small action-delete-inline"><i class="icon-remove"></i></button></td>'));

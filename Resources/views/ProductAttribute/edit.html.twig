@@ -48,7 +48,7 @@
                             <div id="collapseOne" class="accordion-body in">
                                 <div class="accordion-inner">
                                     <div class="control-group">
-                                        {{ form_label(form.code, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                        {{ form_label(form.code, 'Name'|trans, { 'label_attr': {'class': 'control-label'} }) }}
                                         <div class="controls">
                                             {{ form_widget(form.code, {'attr' : { 'class': 'span4' }}) }}
                                         </div>
@@ -62,7 +62,7 @@
                                     </div>
 
                                     <div class="control-group">
-                                        {{ form_label(form.scopable, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                        {{ form_label(form.scopable, 'Scope'|trans, { 'label_attr': {'class': 'control-label'} }) }}
                                         <div class="controls">
                                             {{ form_widget(form.scopable, {'attr' : { 'class': 'span4' }}) }}
                                         </div>
@@ -76,7 +76,7 @@
                                     </div>
 
                                     <div class="control-group">
-                                        {{ form_label(form.unique, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                        {{ form_label(form.unique, 'Unique value'|trans, { 'label_attr': {'class': 'control-label'} }) }}
                                         <div class="controls">
                                             {{ form_widget(form.unique, {'attr' : { 'class': 'span4' }}) }}
                                         </div>
@@ -279,14 +279,14 @@
                             <div id="collapseTwo" class="accordion-body in">
                                 <div class="accordion-inner">
                                     <div class="control-group">
-                                        {{ form_label(form.group, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                        {{ form_label(form.group, 'Attribute group'|trans, { 'label_attr': {'class': 'control-label'} }) }}
                                         <div class="controls">
                                             {{ form_widget(form.group, { 'attr': { 'class': 'span4', 'data-placeholder': 'Choose a group'|trans }}) }}
                                         </div>
                                     </div>
 
                                     <div class="control-group">
-                                        {{ form_label(form.variant, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                        {{ form_label(form.variant, 'Variants behavior when edited'|trans, { 'label_attr': {'class': 'control-label'} }) }}
                                         <div class="controls">
                                             {{ form_widget(form.variant, {'attr' : { 'class': 'span4' }}) }}
                                         </div>
@@ -324,7 +324,7 @@
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" data=parent="#accordion2" href="#collapseThree">
-                                    {{ "Label"|trans }}
+                                    {{ "Label translations"|trans }}
                                 </a>
                             </div>
                             <div id="collapseThree" class="accordion-body in">
@@ -369,7 +369,7 @@
                                             <thead>
                                                 <tr>
                                                     <th></th>
-                                                    <th>{{ "Default label"|trans }}</th>
+                                                    <th>{{ "Default value"|trans }}</th>
                                                     {% for locale in locales %}
                                                         <th>{{ locale.code|trans }}</th>
                                                     {% endfor %}

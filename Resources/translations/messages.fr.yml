@@ -1,3 +1,4 @@
+# Product/Attribute
 'Edit attribute': 'Modifier un attribut'
 'Add attribute': 'Ajouter un attribut'
 'Back to list': 'Retour à la liste'
@@ -15,10 +16,14 @@
 'Code': 'Code'
 'Name': 'Nom'
 'Type': 'Type'
+'Scope': '__Scope'
 'Required': 'Requis'
 'Unique': 'Unique'
 'Translatable': 'Traduisible'
 'Scopable': 'Scopable'
+'Unique value': '__Unique value'
+'Attribute group': '__Attribute group'
+'Variants behavior when edited': '__Variants behavior when edited'
 'Created': 'Créé'
 'Updated': 'Mis à jour'
 'Edit': 'Modifier'
@@ -51,6 +56,7 @@
 
 'Choose data locale' : 'Choisir la locale'
 'Choose data scope' : 'Choisir le scope'
+'Label translations': '__Label translations'
 
 # Scopes
 'Global': 'Global'
@@ -69,6 +75,7 @@
 'Show list': 'Afficher la liste'
 
 'Add group': 'Ajouter un groupe'
+'Edit group': 'Modifier un groupe'
 'Sort order': 'Ordre'
 
 'Y-m-d h:i:s': 'd/m/Y h:i:s'
@@ -99,3 +106,9 @@
 'Attributes': '__Attributes'
 'Edit product family': '__Edit product family'
 'Add product family': '__Add product family'
+
+# Locales
+'en_US': '__English (en_us)'
+'en_GB': '__English (en_gb)'
+'fr_FR': '__French (fr_fr)'
+'fr_CA': '__French (fr_ca)'
