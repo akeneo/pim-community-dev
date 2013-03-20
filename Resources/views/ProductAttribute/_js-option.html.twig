@@ -55,15 +55,11 @@ $(function() {
             }
         });
 
-        $option.find('input[type="radio"]').each(function() {
-            $(this).val(optionNumber-1);
-        });
-
         $optionList.find('tbody').append($option);
 
         $('button.action-delete-inline').show();
         updateSortOrder();
-        updateDefaultValueField();
+        updateDefaultValueRadio();
     }
 
     function updateSortOrder() {
@@ -75,9 +71,10 @@ $(function() {
     }
 
     function updateDefaultValueRadio() {
-        if ($('#pim_product_attribute_form_defaultValue option:selected').html()) {
+        var defaultValue = $('#pim_product_attribute_form_defaultValue').val();
+        if (defaultValue) {
             $optionList.find('input[id*=defaultValue]').each(function() {
-                if ($(this).val() == $('#pim_product_attribute_form_defaultValue option:selected').html()) {
+                if ($(this).val() == defaultValue) {
                     $(this).parent().parent().find('input:radio[name="default_option"]').attr('checked', true);
                     return;
                 }
@@ -86,31 +83,15 @@ $(function() {
     }
 
     function updateDefaultValueField() {
-        $('#pim_product_attribute_form_defaultValue').html('<option value=""></option>');
-
         var $selected = $optionList.find('input:radio[name="default_option"]:checked');
 
         if (!$selected) {
+            $('#pim_product_attribute_form_defaultValue').val('');
             return;
         }
 
         var value = $selected.parent().parent().find('input[id*=defaultValue]').first().val();
-
-        var optionCount = 0;
-        $optionList.find('tr.att-option').each(function() {
-            $(this).find('input[id*=defaultValue]').each(function() {
-                var option = '<option value="' + $(this).val() + '"';
-                if ($(this).val() == value) {
-                    option += ' selected="selected"';
-                }
-                option += ">" + $(this).val() + '</option>';
-                $('#pim_product_attribute_form_defaultValue').append(option);
-                return;
-            });
-            optionCount++;
-        });
+        $('#pim_product_attribute_form_defaultValue').val(value);
     }
-
-    updateDefaultValueRadio();
 
 });

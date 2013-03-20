@@ -373,7 +373,9 @@
                                                     {% for locale in locales %}
                                                         <th>{{ locale.code|trans }}</th>
                                                     {% endfor %}
-                                                    <th>{{ "Default value"|trans }}</th>
+                                                    {% if form.defaultValue is defined %}
+                                                        <th>{{ "Default value"|trans }}</th>
+                                                    {% endif %}
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -397,9 +399,11 @@
                                                                 {% endfor %}
                                                             </td>
                                                         {% endfor %}
-                                                        <td>
-                                                            <input type="radio" name="default_option" value="{{ option.vars.name }}">
-                                                        </td>
+                                                        {% if form.defaultValue is defined %}
+                                                            <td>
+                                                                <input type="radio" name="default_option" {% if form.defaultValue.vars.value == option.vars.value.defaultValue %} checked="checked"{% endif %}>
+                                                            </td>
+                                                        {% endif %}
                                                         {% if disabledLocales is not empty %}
                                                             <td style="display:none;">
                                                                 {% for i in 0..disabledLocales|length-1 %}
