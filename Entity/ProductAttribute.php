@@ -84,7 +84,7 @@ class ProductAttribute extends AbstractEntityAttributeExtended
      * @var $availableLanguages ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Language")
-     * @ORM\JoinTable(name="product_attribute_language")
+     * @ORM\JoinTable(name="pim_product_attribute_language")
      */
     protected $availableLanguages;
 
