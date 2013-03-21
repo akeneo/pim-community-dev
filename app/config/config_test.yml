@@ -1,6 +1,7 @@
 imports:
     - { resource: config_dev.yml }
     - { resource: parameters_test.yml }
+    - { resource: security_test.yml }
 
 framework:
     test: ~
@@ -13,3 +14,6 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
+
+assetic:
+    use_controller: false
