@@ -31,16 +31,16 @@ abstract class ControllerTest extends WebTestCase
      * List of locales to test
      * @staticvar multitype:string
      */
-    protected static $locales = array('en', 'fr');
+    protected static $locales = array('en');
 
     /**
-     * {@inheritdoc}
+     * Get object manager
+     *
+     * @return \Doctrine\Common\Persistence\ObjectManager
      */
-    public function run(\PHPUnit_Framework_TestResult $result = null)
+    protected function getStorageManager()
     {
-        parent::run($result);
-
-        $this->client = static::createClient();
+        return $this->getContainer()->get('doctrine.orm.entity_manager');
     }
 
     /**
@@ -66,6 +66,10 @@ abstract class ControllerTest extends WebTestCase
      */
     protected function getContainer()
     {
+        if (!static::$kernel) {
+            throw new \Exception('Kernel not instanciate ! Please create client before call container');
+        }
+
         return static::$kernel->getContainer();
     }
 

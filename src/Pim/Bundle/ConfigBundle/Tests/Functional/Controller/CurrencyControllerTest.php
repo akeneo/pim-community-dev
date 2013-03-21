@@ -53,4 +53,69 @@ class CurrencyControllerTest extends ControllerTest
         $crawler = $client->request('GET', $uri);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
+
+    /**
+     * Test related action
+     * @param string $locale
+     *
+     * @dataProvider localeProvider
+     */
+    public function testEdit($locale)
+    {
+        // initialize authentication to call container and get currency entity
+        $client = static::createClient();
+        $currency = $this->getRepository()->findOneBy(array());
+        $uri = '/'. $locale .'/config/currency/edit/'. $currency->getId();
+
+        // assert without authentication
+        $crawler = $client->request('GET', $uri);
+        $this->assertEquals(401, $client->getResponse()->getStatusCode());
+
+        // assert with authentication
+        $client = static::createAuthenticatedClient();
+        $crawler = $client->request('GET', $uri);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        // assert with unknown currency id
+        $uri = '/'. $locale .'/config/currency/edit/0';
+        $crawler = $client->request('GET', $uri);
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * Test related action
+     * @param string $locale
+     *
+     * @dataProvider localeProvider
+     */
+//     public function testDisable($locale)
+//     {
+//         // initialize authentication to call container and get currency entity
+//         $client = static::createClient();
+//         $currency = $this->getRepository()->findOneBy(array());
+//         $uri = '/'. $locale .'/config/currency/disable/'. $currency->getId();
+
+//         // assert without authentication
+//         $crawler = $client->request('GET', $uri);
+//         $this->assertEquals(401, $client->getResponse()->getStatusCode());
+
+//         // assert with authentication
+//         $client = static::createAuthenticatedClient();
+//         $crawler = $client->request('GET', $uri);
+//         $this->assertEquals(302, $client->getResponse()->getStatusCode());
+
+//         // assert with unknown currency id (last removed)
+//         $crawler = $client->request('GET', $uri);
+//         $this->assertEquals(404, $client->getResponse()->getStatusCode());
+//     }
+
+    /**
+     * Get tested entity repository
+     *
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    protected function getRepository()
+    {
+        return $this->getStorageManager()->getRepository('PimConfigBundle:Currency');
+    }
 }
