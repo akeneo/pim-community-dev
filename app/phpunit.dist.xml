@@ -18,8 +18,24 @@
     </php>
 
     <testsuites>
+        <testsuite name="Project Test Suite">
+            <directory suffix="Test.php">../src/*/Bundle/*Bundle/Tests</directory>
+            <directory suffix="Test.php">../src/*/*Bundle/Tests</directory>
+        </testsuite>
         <testsuite name="PIM Test Suite">
-            <directory>../src/Pim/Bundle/*Bundle/Tests</directory>
+            <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests</directory>
+        </testsuite>
+        <testsuite name="Oro Test Suite">
+            <directory suffix="Test.php">../src/Oro/Bundle/*Bundle/Tests</directory>
+        </testsuite>
+        <testsuite name="PIM Unit Test">
+            <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Unit</directory>
+        </testsuite>
+        <testsuite name="PIM Functional Test">
+            <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Functional</directory>
+        </testsuite>
+        <testsuite name="PIM Performance Test">
+            <directory suffix="Perf.php">../src/Pim/Bundle/*Bundle/Tests/Performance</directory>
         </testsuite>
     </testsuites>
 
