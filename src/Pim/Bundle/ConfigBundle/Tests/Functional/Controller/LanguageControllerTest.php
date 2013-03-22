@@ -27,9 +27,7 @@ class LanguageControllerTest extends ControllerTest
         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
-        $crawler = $this->client->request(
-            'GET', $uri, array(), array(), $this->server
-        );
+        $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 
@@ -48,9 +46,7 @@ class LanguageControllerTest extends ControllerTest
         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
-        $crawler = $this->client->request(
-            'GET', $uri, array(), array(), $this->server
-        );
+        $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 
@@ -71,16 +67,12 @@ class LanguageControllerTest extends ControllerTest
         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
-        $crawler = $this->client->request(
-            'GET', $uri, array(), array(), $this->server
-        );
+        $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         // assert with unknown language id
         $uri = '/'. $locale .'/config/language/edit/0';
-        $crawler = $this->client->request(
-            'GET', $uri, array(), array(), $this->server
-        );
+        $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 
@@ -101,15 +93,11 @@ class LanguageControllerTest extends ControllerTest
 //         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
 //         // assert with authentication
-//         $crawler = $this->client->request(
-//             'GET', $uri, array(), array(), $this->server
-//         );
+//         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
 //         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
 
 //         // assert with unknown language id (last removed)
-//         $crawler = $this->client->request(
-//             'GET', $uri, array(), array(), $this->server
-//         );
+//         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
 //         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
 //     }
 

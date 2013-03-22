@@ -27,9 +27,7 @@ class CurrencyControllerTest extends ControllerTest
         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
-        $crawler = $this->client->request(
-            'GET', $uri, array(), array(), $this->server
-        );
+        $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 
@@ -48,9 +46,7 @@ class CurrencyControllerTest extends ControllerTest
         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
-        $crawler = $this->client->request(
-            'GET', $uri, array(), array(), $this->server
-        );
+        $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 
@@ -71,16 +67,12 @@ class CurrencyControllerTest extends ControllerTest
         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
-        $crawler = $this->client->request(
-            'GET', $uri, array(), array(), $this->server
-        );
+        $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         // assert with unknown currency id
         $uri = '/'. $locale .'/config/currency/edit/0';
-        $crawler = $this->client->request(
-            'GET', $uri, array(), array(), $this->server
-        );
+        $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 
@@ -102,15 +94,11 @@ class CurrencyControllerTest extends ControllerTest
 //         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
 //         // assert with authentication
-//         $crawler = $this->client->request(
-//             'GET', $uri, array(), array(), $this->server
-//         );
+//         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
 //         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
 
 //         // assert with unknown currency id (last removed)
-//         $crawler = $this->client->request(
-//             'GET', $uri, array(), array(), $this->server
-//         );
+//         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
 //         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
 //     }
 
