@@ -25,9 +25,6 @@
         <testsuite name="PIM Test Suite">
             <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests</directory>
         </testsuite>
-        <testsuite name="Oro Test Suite">
-            <directory suffix="Test.php">../src/Oro/Bundle/*Bundle/Tests</directory>
-        </testsuite>
         <testsuite name="PIM Unit Test">
             <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Unit</directory>
         </testsuite>
@@ -37,6 +34,10 @@
         <testsuite name="PIM Performance Test">
             <directory suffix="Perf.php">../src/Pim/Bundle/*Bundle/Tests/Performance</directory>
         </testsuite>
+        <testsuite name="Jenkins_Test_Suite">
+            <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests</directory>
+        </testsuite>
+
     </testsuites>
 
     <filter>

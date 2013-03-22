@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="pim" default="build">    
-    <target name="build" depends="prepare,composer,submodule,vendors,setupdb,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
+    <target name="build" depends="phpunit,phpcb"/>
     
     <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
 
@@ -139,8 +139,8 @@
     <target name="phpunit" description="Run unit tests with PHPUnit">
         <exec executable="phpunit" failonerror="true">
             <arg value="-c" />
-            <arg value="--testsuite=&quot;PIM Test Suite&quot;" />
             <arg path="${basedir}/app/phpunit.dist.xml" />
+            <arg value="--testsuite=Jenkins_Test_Suite" />
         </exec>
     </target>
 
