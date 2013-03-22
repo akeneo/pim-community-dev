@@ -24,11 +24,10 @@ class ValidMetricAttributeValidator extends ConstraintValidator
     /**
      * Constructor
      *
-     * @param Container $container
+     * @param array $measures
      */
-    public function __construct($container)
+    public function __construct($measures)
     {
-        $measures = $container->getParameter('oro_measure.measures_config');
         $this->measures = $measures['measures_config'];
     }
 

@@ -61,7 +61,7 @@ services:
 
     pim_product.form.validator.metric_attribute:
         class: %metric_attribute_validator_class%
-        arguments: [@service_container]
+        arguments: [%oro_measure.measures_config%]
         tags:
         - { name: validator.constraint_validator, alias: pim_metric_attribute_validator }
 

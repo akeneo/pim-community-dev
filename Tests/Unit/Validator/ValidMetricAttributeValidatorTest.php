@@ -28,11 +28,6 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
     protected $executionContext;
 
     /**
-     * @var Container
-     */
-    protected $container;
-
-    /**
      * @var Pim/Bundle/ProductBundle/Validator/Constraints/ValidMetricAttribute
      */
     protected $constraint;
@@ -59,15 +54,12 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
         static::$kernel = static::createKernel(array('environment' => 'dev'));
         static::$kernel->boot();
 
-        $this->container = static::$kernel->getContainer();
+        $this->measures = static::$kernel->getContainer()->getParameter('oro_measure.measures_config');
 
         $this->constraint = new ValidMetricAttribute();
 
-        $this->validator = new ValidMetricAttributeValidator($this->container);
+        $this->validator = new ValidMetricAttributeValidator($this->measures);
         $this->validator->initialize($this->executionContext);
-
-        $measures = $this->container->getParameter('oro_measure.measures_config');
-        $this->measures = $measures['measures_config'];
     }
 
     /**
@@ -159,7 +151,7 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
      */
     public function testMetricUnitInvalid($metricUnit)
     {
-        $metricType = key($this->measures);
+        $metricType = key($this->measures['measures_config']);
         $productAttribute = $this->createProductAttribute($metricType, $metricUnit);
 
         $this->validator->validate($productAttribute, $this->constraint);
@@ -193,8 +185,8 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
      */
     public function testMetricTypeAndUnitValid()
     {
-        $metricType = key($this->measures);
-        $metricUnit = $this->measures[$metricType]['standard'];
+        $metricType = key($this->measures['measures_config']);
+        $metricUnit = $this->measures['measures_config'][$metricType]['standard'];
         $productAttribute = $this->createProductAttribute($metricType, $metricUnit);
 
         $this->validator->validate($productAttribute, $this->constraint);
