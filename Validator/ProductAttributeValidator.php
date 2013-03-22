@@ -28,7 +28,13 @@ class ProductAttributeValidator
      * Violation message for missing attribute code
      * @staticvar string
      */
-    const VIOLATION_MISSING_CODE = 'Please specify attribute code';
+    const VIOLATION_MISSING_CODE = 'Please specify attribute name';
+
+    /**
+     * Violation message for invalid attribute code
+     * @staticvar string
+     */
+    const VIOLATION_INVALID_CODE = 'Attribute name may contain only letters, numbers and underscores';
 
     /**
      * Violation message for unique attribute with incorrect scope and accepting translations
@@ -101,6 +107,8 @@ class ProductAttributeValidator
     {
         if (!$productAttribute->getCode()) {
             $context->addViolation(self::VIOLATION_MISSING_CODE);
+        } elseif (!preg_match('/^[a-zA-Z0-9_]+$/', $productAttribute->getCode())) {
+            $context->addViolation(self::VIOLATION_INVALID_CODE);
         }
     }
 

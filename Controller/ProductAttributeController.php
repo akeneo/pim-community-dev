@@ -98,6 +98,7 @@ class ProductAttributeController extends Controller
             'form' => $this->get('pim_product.form.attribute')->createView(),
             'locales' => $locales,
             'disabledLocales' => $disabledLocales,
+            'measures' => $this->container->getParameter('oro_measure.measures_config')
         );
     }
 
