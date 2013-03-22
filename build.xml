@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="pim" default="build">    
-    <target name="build" depends="phpunit,phpcb"/>
+<project name="pim" default="build">
+    <target name="build" depends="prepare,composer,submodule,vendors,setupdb,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
     
     <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
 
@@ -195,6 +195,16 @@
           <arg value="-n" />
           <arg value="--complete" />
           <arg value="--force" />
+        </exec>
+        <exec executable="app/console">
+          <arg value="doctrine:fixtures:load" />
+          <arg value="--no-interaction" />
+        </exec>
+        <exec executable="app/console">
+          <arg value="oro:search:create-index" />
+        </exec>
+        <exec executable="app/console">
+          <arg value="oro:search:reindex" />
         </exec>
     </target>
 
