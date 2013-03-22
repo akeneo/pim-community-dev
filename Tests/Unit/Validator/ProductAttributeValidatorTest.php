@@ -285,12 +285,13 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test case with invalid attribute option default values
-     * @param string $attributeType Attribute type value
-     * @param array  $optionValues  Default option values
+     * @param string $attributeType     Attribute type value
+     * @param array  $optionValues      Default option values
+     * @param string $expectedViolation Expected violation message
      *
      * @dataProvider providerAttributeOptionsInvalid
      */
-    public function testAttributeOptionsInvalid($attributeType, $optionValues)
+    public function testAttributeOptionsInvalid($attributeType, $optionValues, $expectedViolation)
     {
         $productAttribute = $this->createProductAttribute($attributeType, 'code', false, true, false, false, false);
         foreach ($optionValues as $value) {
@@ -306,7 +307,7 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $this->executionContext->getViolations());
         foreach ($this->executionContext->getViolations() as $violation) {
             $this->assertEquals(
-                ProductAttributeValidator::VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED,
+                $expectedViolation,
                 $violation->getMessageTemplate()
             );
         }
@@ -321,8 +322,9 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     public static function providerAttributeOptionsInvalid()
     {
         return array(
-            array(AbstractAttributeType::TYPE_OPT_MULTI_SELECT_CLASS, array('a', 'b', null)),
-            array(AbstractAttributeType::TYPE_OPT_SINGLE_SELECT_CLASS, array(1, null, 3)),
+            array(AbstractAttributeType::TYPE_OPT_MULTI_SELECT_CLASS, array('a', 'b', null), ProductAttributeValidator::VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED),
+            array(AbstractAttributeType::TYPE_OPT_SINGLE_SELECT_CLASS, array(1, null, 3), ProductAttributeValidator::VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED),
+            array(AbstractAttributeType::TYPE_OPT_SINGLE_SELECT_CLASS, array('a', 'a', 'b'), ProductAttributeValidator::VIOLATION_DUPLICATE_OPTION_DEFAULT_VALUE),
         );
     }
 

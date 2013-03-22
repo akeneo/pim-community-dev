@@ -84,7 +84,7 @@ class ProductAttribute extends AbstractEntityAttributeExtended
      * @var $availableLanguages ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Language")
-     * @ORM\JoinTable(name="product_attribute_language")
+     * @ORM\JoinTable(name="pim_product_attribute_language")
      */
     protected $availableLanguages;
 
@@ -295,13 +295,7 @@ class ProductAttribute extends AbstractEntityAttributeExtended
                 $fieldType = $attType->getFormType();
 
                 if ($fieldType === 'entity') {
-                    $fieldType = 'choice';
-                    $params['options']['choices'] = array();
-                    foreach ($attribute->getOptions() as $option) {
-                        if ($option->getDefaultValue()) {
-                            $params['options']['choices'][$option->getDefaultValue()] = $option->getDefaultValue();
-                        }
-                    }
+                    $fieldType = 'text';
                 } elseif ($attTypeClass == AbstractAttributeType::TYPE_BOOLEAN_CLASS) {
                     $fieldType = 'choice';
                     $params['options']['choices'] = array(

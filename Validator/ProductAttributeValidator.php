@@ -49,6 +49,12 @@ class ProductAttributeValidator
     const VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED = 'Default label must be specified for all options';
 
     /**
+     * Violation message for duplicate default value of attribute option
+     * @staticvar string
+     */
+    const VIOLATION_DUPLICATE_OPTION_DEFAULT_VALUE = 'The default label must be different for each option';
+
+    /**
      * Violation messages for invalid custom attribute values
      * @staticvar string
      */
@@ -160,9 +166,15 @@ class ProductAttributeValidator
         );
 
         if (in_array($productAttribute->getAttributeType(), $optionTypes)) {
+            $existingDefaultValues = array();
             foreach ($productAttribute->getOptions() as $option) {
+                if (in_array($option->getDefaultValue(), $existingDefaultValues)) {
+                    $context->addViolation(self::VIOLATION_DUPLICATE_OPTION_DEFAULT_VALUE);
+                }
                 if ($option->getDefaultValue() === null) {
                     $context->addViolation(self::VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED);
+                } else {
+                    $existingDefaultValues[] = $option->getDefaultValue();
                 }
             }
         }
