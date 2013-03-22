@@ -214,6 +214,8 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
             array(AbstractAttributeType::TYPE_METRIC_CLASS, 'code2', true, true, false, false, false),
             array(AbstractAttributeType::TYPE_METRIC_CLASS, 'code3', true, false, false, false, true),
             array(AbstractAttributeType::TYPE_METRIC_CLASS, 'code4', true, true, false, false, true),
+            array(AbstractAttributeType::TYPE_METRIC_CLASS, ' ', true, false, false, false, false),
+            array(AbstractAttributeType::TYPE_METRIC_CLASS, '#code', true, false, false, false, false),
             array(AbstractAttributeType::TYPE_METRIC_CLASS, null, true, false, false, false, false),
         );
     }

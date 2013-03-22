@@ -183,14 +183,14 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     /**
      * @var string $metricType
      *
-     * @ORM\Column(name="metric_type", type="string", length=20, nullable=true)
+     * @ORM\Column(name="metric_type", type="string", length=30, nullable=true)
      */
     protected $metricType;
 
     /**
      * @var string $defaultMetricUnit
      *
-     * @ORM\Column(name="default_metric_unit", type="string", length=10, nullable=true)
+     * @ORM\Column(name="default_metric_unit", type="string", length=30, nullable=true)
      */
     protected $defaultMetricUnit;
 
