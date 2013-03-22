@@ -23,14 +23,14 @@ class LanguageControllerTest extends ControllerTest
         $uri = '/'. $locale .'/config/language/index';
 
         // assert without authentication
-        $client = static::createClient();
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(401, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', $uri);
+        $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
-        $client = static::createAuthenticatedClient();
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request(
+            'GET', $uri, array(), array(), $this->server
+        );
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 
     /**
@@ -44,14 +44,14 @@ class LanguageControllerTest extends ControllerTest
         $uri = '/'. $locale .'/config/language/create';
 
         // assert without authentication
-        $client = static::createClient();
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(401, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', $uri);
+        $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
-        $client = static::createAuthenticatedClient();
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request(
+            'GET', $uri, array(), array(), $this->server
+        );
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 
     /**
@@ -63,23 +63,25 @@ class LanguageControllerTest extends ControllerTest
     public function testEdit($locale)
     {
         // initialize authentication to call container and get language entity
-        $client = static::createClient();
         $language = $this->getRepository()->findOneBy(array());
         $uri = '/'. $locale .'/config/language/edit/'. $language->getId();
 
         // assert without authentication
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(401, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', $uri);
+        $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
-        $client = static::createAuthenticatedClient();
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request(
+            'GET', $uri, array(), array(), $this->server
+        );
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         // assert with unknown language id
         $uri = '/'. $locale .'/config/language/edit/0';
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request(
+            'GET', $uri, array(), array(), $this->server
+        );
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 
     /**
@@ -91,22 +93,24 @@ class LanguageControllerTest extends ControllerTest
 //     public function testDisable($locale)
 //     {
 //         // initialize authentication to call container and get language entity
-//         $client = static::createClient();
 //         $language = $this->getRepository()->findOneBy(array());
 //         $uri = '/'. $locale .'/config/language/disable/'. $language->getId();
 
 //         // assert without authentication
-//         $crawler = $client->request('GET', $uri);
-//         $this->assertEquals(401, $client->getResponse()->getStatusCode());
+//         $crawler = $this->client->request('GET', $uri);
+//         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
 //         // assert with authentication
-//         $client = static::createAuthenticatedClient();
-//         $crawler = $client->request('GET', $uri);
-//         $this->assertEquals(302, $client->getResponse()->getStatusCode());
+//         $crawler = $this->client->request(
+//             'GET', $uri, array(), array(), $this->server
+//         );
+//         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
 
 //         // assert with unknown language id (last removed)
-//         $crawler = $client->request('GET', $uri);
-//         $this->assertEquals(404, $client->getResponse()->getStatusCode());
+//         $crawler = $this->client->request(
+//             'GET', $uri, array(), array(), $this->server
+//         );
+//         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
 //     }
 
     /**

@@ -22,14 +22,14 @@ class ChannelControllerTest extends ControllerTest
         $uri = '/'. $locale .'/config/channel/index';
 
         // assert without authentication
-        $client = static::createClient();
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(401, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', $uri);
+        $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
-        $client = static::createAuthenticatedClient();
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request(
+            'GET', $uri, array(), array(), $this->server
+        );
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 
     /**
@@ -43,14 +43,14 @@ class ChannelControllerTest extends ControllerTest
         $uri = '/'. $locale .'/config/channel/create';
 
         // assert without authentication
-        $client = static::createClient();
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(401, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', $uri);
+        $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
-        $client = static::createAuthenticatedClient();
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request(
+            'GET', $uri, array(), array(), $this->server
+        );
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 
     /**
@@ -62,23 +62,23 @@ class ChannelControllerTest extends ControllerTest
     public function testEdit($locale)
     {
         // initialize authentication to call container and get channel entity
-        $client = static::createClient();
         $channel = $this->getRepository()->findOneBy(array());
         $uri = '/'. $locale .'/config/channel/edit/'. $channel->getId();
 
         // assert without authentication
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(401, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', $uri);
+        $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
-        $client = static::createAuthenticatedClient();
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request(
+            'GET', $uri, array(), array(), $this->server
+        );
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         // assert with unknown channel id
         $uri = '/'. $locale .'/config/channel/edit/0';
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', $uri);
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 
     /**
@@ -90,22 +90,24 @@ class ChannelControllerTest extends ControllerTest
     public function testRemove($locale)
     {
         // initialize authentication to call container and get channel entity
-        $client = static::createClient();
         $channel = $this->getRepository()->findOneBy(array());
         $uri = '/'. $locale .'/config/channel/remove/'. $channel->getId();
 
         // assert without authentication
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(401, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', $uri);
+        $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
-        $client = static::createAuthenticatedClient();
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request(
+            'GET', $uri, array(), array(), $this->server
+        );
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
 
         // assert with unknown channel id (last removed)
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request(
+            'GET', $uri, array(), array(), $this->server
+        );
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 
     /**

@@ -34,6 +34,29 @@ abstract class ControllerTest extends WebTestCase
     protected static $locales = array('en');
 
     /**
+     * @var \Symfony\Bundle\FrameworkBundle\Client
+     */
+    protected $client;
+
+    /**
+     * Configuration for client request
+     * @var multitype:string
+     */
+    protected $server = array();
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        // create client in setUp allow to use container then
+        $this->client = static::createClient();
+        $this->prepareServerValues();
+    }
+
+    /**
      * Get object manager
      *
      * @return \Doctrine\Common\Persistence\ObjectManager
@@ -44,19 +67,12 @@ abstract class ControllerTest extends WebTestCase
     }
 
     /**
-     * Creates a Client with authentication
-     *
-     * @param array $options An array of options to pass to the createKernel class
-     * @param array $server  An array of server parameters
-     *
-     * @return \Symfony\Bundle\FrameworkBundle\Client A Client instance
+     * Prepare server values
      */
-    protected static function createAuthenticatedClient(array $options = array(), array $server = array())
+    protected function prepareServerValues()
     {
-        $server['PHP_AUTH_USER'] = self::AUTH_USER;
-        $server['PHP_AUTH_PW']   = self::AUTH_PW;
-
-        return parent::createClient($options, $server);
+        $this->server['PHP_AUTH_USER'] = self::AUTH_USER;
+        $this->server['PHP_AUTH_PW']   = self::AUTH_PW;
     }
 
     /**

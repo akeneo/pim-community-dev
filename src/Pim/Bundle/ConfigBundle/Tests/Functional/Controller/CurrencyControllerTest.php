@@ -23,14 +23,14 @@ class CurrencyControllerTest extends ControllerTest
         $uri = '/'. $locale .'/config/currency/index';
 
         // assert without authentication
-        $client = static::createClient();
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(401, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', $uri);
+        $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
-        $client = static::createAuthenticatedClient();
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request(
+            'GET', $uri, array(), array(), $this->server
+        );
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 
     /**
@@ -44,14 +44,14 @@ class CurrencyControllerTest extends ControllerTest
         $uri = '/'. $locale .'/config/currency/create';
 
         // assert without authentication
-        $client = static::createClient();
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(401, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', $uri);
+        $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
-        $client = static::createAuthenticatedClient();
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request(
+            'GET', $uri, array(), array(), $this->server
+        );
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 
     /**
@@ -63,23 +63,25 @@ class CurrencyControllerTest extends ControllerTest
     public function testEdit($locale)
     {
         // initialize authentication to call container and get currency entity
-        $client = static::createClient();
         $currency = $this->getRepository()->findOneBy(array());
         $uri = '/'. $locale .'/config/currency/edit/'. $currency->getId();
 
         // assert without authentication
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(401, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', $uri);
+        $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
-        $client = static::createAuthenticatedClient();
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request(
+            'GET', $uri, array(), array(), $this->server
+        );
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         // assert with unknown currency id
         $uri = '/'. $locale .'/config/currency/edit/0';
-        $crawler = $client->request('GET', $uri);
-        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request(
+            'GET', $uri, array(), array(), $this->server
+        );
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 
     /**
@@ -91,22 +93,25 @@ class CurrencyControllerTest extends ControllerTest
 //     public function testDisable($locale)
 //     {
 //         // initialize authentication to call container and get currency entity
-//         $client = static::createClient();
+//         $this->client = static::createClient();
 //         $currency = $this->getRepository()->findOneBy(array());
 //         $uri = '/'. $locale .'/config/currency/disable/'. $currency->getId();
 
 //         // assert without authentication
-//         $crawler = $client->request('GET', $uri);
-//         $this->assertEquals(401, $client->getResponse()->getStatusCode());
+//         $crawler = $this->client->request('GET', $uri);
+//         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
 //         // assert with authentication
-//         $client = static::createAuthenticatedClient();
-//         $crawler = $client->request('GET', $uri);
-//         $this->assertEquals(302, $client->getResponse()->getStatusCode());
+//         $crawler = $this->client->request(
+//             'GET', $uri, array(), array(), $this->server
+//         );
+//         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
 
 //         // assert with unknown currency id (last removed)
-//         $crawler = $client->request('GET', $uri);
-//         $this->assertEquals(404, $client->getResponse()->getStatusCode());
+//         $crawler = $this->client->request(
+//             'GET', $uri, array(), array(), $this->server
+//         );
+//         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
 //     }
 
     /**
