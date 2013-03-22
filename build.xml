@@ -140,7 +140,7 @@
         <exec executable="phpunit" failonerror="true">
             <arg value="-c" />
             <arg path="${basedir}/app/phpunit.dist.xml" />
-            <arg value="--testsuite=Jenkins_Test_Suite" />
+            <arg value="--testsuite=PIM_Unit_Test" />
         </exec>
     </target>
 
@@ -180,7 +180,6 @@
     </target>
 
     <target name="setupdb" description="Setup db">
-        <!-- doctrine -->
         <exec executable="app/console">
           <arg value="doctrine:database:drop" />
           <arg value="-n" />
@@ -205,48 +204,6 @@
         </exec>
         <exec executable="app/console">
           <arg value="oro:search:reindex" />
-        </exec>
-    </target>
-
-    <target name="setupdbtest" description="Setup db">
-        <!-- doctrine -->
-        <exec executable="app/console">
-          <arg value="doctrine:database:drop" />
-          <arg value="-n" />
-          <arg value="--force" />
-          <arg value="--env=test" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="doctrine:database:create" />
-          <arg value="-n" />
-          <arg value="--env=test" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="doctrine:schema:update" />
-          <arg value="-n" />
-          <arg value="--complete" />
-          <arg value="--force" />
-          <arg value="--env=test" />
-        </exec>
-        <!-- mongodb -->
-        <exec executable="app/console">
-          <arg value="doctrine:mongodb:schema:drop" />
-          <arg value="--env=test" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="doctrine:mongodb:schema:create" />
-          <arg value="--index" />
-          <arg value="--env=test" />
-        </exec>
-        <!-- load fixtures -->
-        <exec executable="app/console">
-          <arg value="doctrine:fixtures:load" />
-          <arg value="--env=test" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="doctrine:mongodb:fixtures:load" />
-          <arg value="--env=test" />
-          <arg value="--append" />
         </exec>
     </target>
 

@@ -18,24 +18,28 @@
     </php>
 
     <testsuites>
-        <testsuite name="Project Test Suite">
-            <directory suffix="Test.php">../src/*/Bundle/*Bundle/Tests</directory>
-            <directory suffix="Test.php">../src/*/*Bundle/Tests</directory>
+
+        <!-- Project (PIM+Oro) test suites -->
+        <testsuite name="Project_Test">
+            <directory suffix="Test.php">../src/*/Bundle/*Bundle/Tests/Unit</directory>
+            <directory suffix="Test.php">../src/*/Bundle/*Bundle/Tests/Functional</directory>
         </testsuite>
-        <testsuite name="PIM Test Suite">
-            <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests</directory>
-        </testsuite>
-        <testsuite name="PIM Unit Test">
+
+        <!-- PIM test suites -->
+        <testsuite name="PIM_Unit_Test">
             <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Unit</directory>
         </testsuite>
-        <testsuite name="PIM Functional Test">
+        <testsuite name="PIM_Functional_Test">
             <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Functional</directory>
         </testsuite>
-        <testsuite name="PIM Performance Test">
+        <testsuite name="PIM_Performance_Test">
             <directory suffix="Perf.php">../src/Pim/Bundle/*Bundle/Tests/Performance</directory>
         </testsuite>
-        <testsuite name="Jenkins_Test_Suite">
-            <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests</directory>
+
+        <!-- Jenkins test suite -->
+        <testsuite name="Jenkins_PIM_Test">
+            <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Unit</directory>
+            <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Functional</directory>
         </testsuite>
 
     </testsuites>

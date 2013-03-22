@@ -18,9 +18,24 @@
     </php>
 
     <testsuites>
-        <testsuite name="Oro Bundles Test Suite">
-            <directory>../src/Oro/Bundle/*Bundle/Tests</directory>
+
+        <!-- ORO test suites -->
+        <testsuite name="Oro_Unit_Test">
+            <directory suffix="Test.php">../src/Oro/Bundle/*Bundle/Tests/Unit</directory>
         </testsuite>
+        <testsuite name="Oro_Functional_Test">
+            <directory suffix="Test.php">../src/Oro/Bundle/*Bundle/Tests/Functional</directory>
+        </testsuite>
+        <testsuite name="Oro_Performance_Test">
+            <directory suffix="Perf.php">../src/Oro/Bundle/*Bundle/Tests/Performance</directory>
+        </testsuite>
+        
+        <!-- Jenkins test suite -->
+        <testsuite name="Jenkins_Oro_Test">
+            <directory suffix="Test.php">../src/Oro/Bundle/*Bundle/Tests/Unit</directory>
+            <directory suffix="Test.php">../src/Oro/Bundle/*Bundle/Tests/Functional</directory>
+        </testsuite>
+        
     </testsuites>
 
     <filter>
