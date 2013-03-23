@@ -42,8 +42,21 @@
     
     <form action="{{ form.vars.value.id ? path('pim_product_product_edit', { id: form.vars.value.id }) : path('pim_product_product_create') }}" 
         method="POST" class="form-register" {{ form_enctype(form) }}>
+
+        <div class="row-fluid">
+            <div class="form-row">
+                <h3 class="pull-left">{{ title|trans }}</h3>
+                <button class="btn btn-primary pull-right" type="submit">{{ 'Save'|trans }}</button>
+                <a class="btn pull-right" href="{{ path('pim_product_product_remove', { id: form.vars.value.id }) }}">
+                    {{ "Delete" | trans }}
+                </a>
+                <a class="pull-right" href="{{ path('pim_product_product_index') }}">
+                    {{ "Back to list" | trans }}
+                </a>
+            </div>
+        </div>
+
         <fieldset>
-            <legend>{{ title }} <a class="btn btn-primary pull-right" href="{{ path('pim_product_product_index') }}">{{ "Back to list" | trans }}</a></legend>
     
             {{ form_row(form.id) }}
             
@@ -56,28 +69,19 @@
             {% endfor %}
             
             {{ form_rest(form) }}
-    
-            <br />
-            <legend>Additional information</legend>
-    
-            <div class="form-horizontal">
-                <div class="control-group">
-                    <label class="control-label">Created at</label>
-                    <div class="controls">
-                        <span class="label">{{ form.vars.value.created ? form.vars.value.created|date('Y-m-d h:i:s') : 'N/A' }}</span>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">Updated at</label>
-                    <div class="controls">
-                        <span class="label">{{ form.vars.value.updated ? form.vars.value.updated|date('Y-m-d h:i:s') : 'N/A' }}</span>
-                    </div>
-                </div>
-            </div>
-    
-            <div class="form-row">
-                <button class="btn btn-large btn-primary" type="submit">{{ "Save" | trans }}</button>
-            </div>
+
         </fieldset>
     </form>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+    $(function() {
+        $('select').select2({ allowClear: true });
+        $('input.multiselect').select2({ tags: $(this).val() });
+    });
+    </script>
+    <link rel="stylesheet" href="{{ asset('bundles/pimui/css/select2.css') }}">
+    <script type="text/javascript" src="{{ asset('bundles/pimui/js/select2.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/pimui/js/jquery-ui-1.10.0.min.js') }}"></script>
 {% endblock %}
