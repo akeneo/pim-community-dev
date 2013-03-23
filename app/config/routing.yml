@@ -1,32 +1,20 @@
-_welcome:
-    pattern:  /{_locale}
-    defaults: { _controller: PimUIBundle:Welcome:index, _locale: %locale% }
-
 pim_default:
-    pattern:  /{_locale}
-    defaults:
-        template:    PimUIBundle:Welcome:index.html.twig
-        _locale:     %locale%
-        _controller: FrameworkBundle:Template:template
-    requirements:
-        _locale:  en|fr|de
+    pattern:  /
+    defaults: { _controller: PimUIBundle:Welcome:index }
 
 pim_product:
     resource: "@PimProductBundle/Controller/"
     type:     annotation
-    prefix:   /{_locale}/product/
-    defaults: { _locale: %locale% }
+    prefix:   /product/
 
 pim_config:
     resource: "@PimConfigBundle/Controller/"
     type:     annotation
-    prefix:   /{_locale}/config/
-    defaults: { _locale: %locale% }
+    prefix:   /config/
 
 oro_user:
     resource: "@OroUserBundle/Resources/config/routing.yml"
-    prefix:   /{_locale}/
-    defaults: { _locale: %locale% }
+    prefix:   /
 
 oro_search:
     resource: "@OroSearchBundle/Resources/config/routing.yml"
@@ -36,3 +24,6 @@ oro_navigation:
     resource: "@OroNavigationBundle/Resources/config/routing.yml"
     prefix:   /
 
+oro_soap:
+    resource: "@OroSoapBundle/Resources/config/routing.yml"
+    prefix:   /api
