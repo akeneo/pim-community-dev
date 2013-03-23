@@ -37,3 +37,9 @@
 [submodule "src/Pim/Bundle/DemoBundle"]
 	path = src/Pim/Bundle/DemoBundle
 	url = git@github.com:akeneo/DemoBundle.git
+[submodule "src/Oro/Bundle/WindowsBundle"]
+	path = src/Oro/Bundle/WindowsBundle
+	url = git@github.com:laboro/WindowsBundle.git
+[submodule "src/Oro/Bundle/GridBundle"]
+	path = src/Oro/Bundle/GridBundle
+	url = git@github.com:laboro/GridBundle.git
