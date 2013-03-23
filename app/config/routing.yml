@@ -1,24 +1,28 @@
 pim_default:
-    pattern:  /
-    defaults: { _controller: PimUIBundle:Welcome:index }
+    pattern:  /{_locale}
+    defaults: { _controller: PimUIBundle:Welcome:index, _locale: %locale% }
 
 pim_product:
     resource: "@PimProductBundle/Controller/"
     type:     annotation
-    prefix:   /product/
+    prefix:   /{_locale}/product/
+    defaults: { _locale: %locale% }
 
 pim_config:
     resource: "@PimConfigBundle/Controller/"
     type:     annotation
-    prefix:   /config/
+    prefix:   /{_locale}/config/
+    defaults: { _locale: %locale% }
 
 oro_user:
     resource: "@OroUserBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /{_locale}/
+    defaults: { _locale: %locale% }
 
 oro_search:
     resource: "@OroSearchBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /{_locale}/
+    defaults: { _locale: %locale% }
 
 oro_navigation:
     resource: "@OroNavigationBundle/Resources/config/routing.yml"
