@@ -30,10 +30,10 @@ security:
             provider:                       chain_provider
             form_login:
                 csrf_provider:              form.csrf_provider
-                check_path:                 /user/login-check
-                login_path:                 /user/login
+                check_path:                 /%locale%/user/login-check
+                login_path:                 /%locale%/user/login
             logout:
-                path:                       /user/logout
+                path:                       /%locale%/user/logout
             remember_me:
                 key:                        %secret%
                 name:                       BAPRM
@@ -41,8 +41,8 @@ security:
             anonymous:                      true
 
     access_control:
-        - { path: ^/user/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/%locale%/user/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/%locale%/user/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/%locale%/user/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/api/rest/(latest|v1)/pinbars, role: ROLE_USER }

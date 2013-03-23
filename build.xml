@@ -140,7 +140,7 @@
         <exec executable="phpunit" failonerror="true">
             <arg value="-c" />
             <arg path="${basedir}/app/phpunit.dist.xml" />
-            <arg value="--testsuite=PIM_Unit_Test" />
+            <arg value="--testsuite=Jenkins_PIM_Test" />
         </exec>
     </target>
 
