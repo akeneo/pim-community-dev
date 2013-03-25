@@ -63,6 +63,7 @@ class ProductAttribute extends AbstractEntityAttributeExtended
      * @var AttributeGroup
      *
      * @ORM\ManyToOne(targetEntity="AttributeGroup", inversedBy="attributes")
+     * @ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $group;
 
