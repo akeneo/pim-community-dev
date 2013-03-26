@@ -8,13 +8,15 @@ Feature: Switch product locale
       | locale  | attribute | value      |
       | english | name      | computer   |
       | french  | name      | ordinateur |
+      | english | screen    | 15 inches  |
+    And the current locale is english
     And I am logged in as "admin"
 
   Scenario: Successfully display available product locales
     Given I am on the "Computer" product page
     Then I should see that the product is available in french and english
 
-  Scenario: Default locale is english
+  Scenario: Succesfully display product in the current locale
     Given I am on the "Computer" product page
     Then the product name should be "computer"
 
@@ -22,3 +24,8 @@ Feature: Switch product locale
     Given I am on the "Computer" product page
     When I switch the locale to "french"
     Then the product name should be "ordinateur"
+
+  Scenario: Successfully display nothing if no translation was set
+    Given I am on the "Computer" product page
+    When I switch the locale to "french"
+    Then the product screen should be empty
