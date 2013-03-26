@@ -92,7 +92,7 @@ class AttributeGroupControllerTest extends ControllerTest
         )->first()->form();
 
         $values = array(
-            'pim_attribute_group_form[name]'  => self::GROUP_NAME,
+            'pim_attribute_group_form[name]'       => self::GROUP_NAME,
             'pim_attribute_group_form[sort_order]' => self::GROUP_ORDER
         );
 
@@ -143,8 +143,8 @@ class AttributeGroupControllerTest extends ControllerTest
         )->first()->form();
 
         $values = array(
-            'pim_attribute_group_form[id]'  => $attributeGroup->getId(),
-            'pim_attribute_group_form[name]'  => self::GROUP_EDITED_NAME,
+            'pim_attribute_group_form[id]'         => $attributeGroup->getId(),
+            'pim_attribute_group_form[name]'       => self::GROUP_EDITED_NAME,
             'pim_attribute_group_form[sort_order]' => self::GROUP_ORDER
         );
 
@@ -182,9 +182,10 @@ class AttributeGroupControllerTest extends ControllerTest
         // assert with authentication
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertFlashBagMessage($crawler, self::GROUP_REMOVED_MSG);
 
         // assert with unknown attribute group id (last removed) and authentication
-        $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
+        $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 
