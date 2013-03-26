@@ -5,39 +5,6 @@
 
 {% block content %}
 
-    {% set route_params = app.request.attributes.get('_route_params') %}
-    {% if route_params == "" %}
-        {% set route_params = [] %}
-        {% set dataLocale = 'en_US' %}
-        {% set dataScope = 'ecommerce' %}
-    {% else %}
-
-        {% set dataLocale = route_params['dataLocale'] %}
-        {% if dataLocale is null %}
-            {% set dataLocale = 'en_US' %}
-        {% endif %}
-        
-        {% set dataScope = route_params['dataScope'] %}
-        {% if dataScope is null %}
-            {% set dataScope = 'ecommerce' %}
-        {% endif %}
-        
-    {% endif %}
-    <br/>
-    <p>{{ "Choose data locale" | trans }} :
-    {% for locale in ['en_US', 'fr_FR', 'de_DE'] %}
-        <a class="btn btn-small btn-primary {% if dataLocale == locale %} disabled {% endif %}"
-           href="{{ path(app.request.attributes.get('_route'), route_params | merge({'dataLocale': locale})) }}">{{ locale | trans }}</a>
-    {% endfor %}
-    </p>
-    <p>{{ "Choose data scope" | trans }} :
-    {% for scope in ['ecommerce', 'mobile'] %}
-        <a class="btn btn-small btn-primary {% if dataScope == scope %} disabled {% endif %}"
-           href="{{ path(app.request.attributes.get('_route'), route_params | merge({'dataLocale': dataLocale, 'dataScope': scope})) }}">{{ scope | trans }}</a>
-    {% endfor %}
-    </p>
-    <hr/>
-    
     {% form_theme form 'PimUIBundle:Form:fields.html.twig' %}
     
     <form action="{{ form.vars.value.id ? path('pim_product_product_edit', { id: form.vars.value.id }) : path('pim_product_product_create') }}" 
@@ -56,21 +23,46 @@
             </div>
         </div>
 
-        <fieldset>
-    
-            {{ form_row(form.id) }}
-            
-            {{ form_row(form.sku) }}
-            
-            {{ form_row(form.productFamily) }}
-            
-            {% for formView in form.values %}
-                {{ form_row(formView) }}
-            {% endfor %}
-            
-            {{ form_rest(form) }}
+        <div class="row-fluid">
+            <div class="control-group">
+                <div class="controls">
+                    {{ form_label(form.productFamily, 'Family', { 'label_attr': {'class': 'control-label'} }) }}
+                    {{ form_widget(form.productFamily) }}
+                </div>
+            </div>
+        </div>
 
-        </fieldset>
+
+    <div class="row-fluid">
+        {% if form.vars.errors|length %}
+            <div class="alert alert-error">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+        <div id="tabs" style="overflow: inherit;">
+            <div class="span2">
+                <ul class="nav nav-list">
+                    <li class="active"><a href="#tabs-0">General</a></li>
+                </ul>
+            </div>
+            <div class="span10">
+
+                {{ form_row(form.id) }}
+                
+                {{ form_row(form.sku) }}
+
+                {% for formValue in form.values %}
+                    <div class="control-group">
+                        <div class="controls">
+                            {{ form_widget(formValue) }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+        {{ form_row(form.id) }}
+        {{ form_row(form._token) }}
     </form>
 {% endblock %}
 {% block javascripts %}

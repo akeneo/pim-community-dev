@@ -159,8 +159,9 @@ class ProductController extends Controller
                 $em->flush();
 
                 $this->get('session')->getFlashBag()->add('success', 'Product successfully saved');
+                $params = array('id' => $entity->getId(), 'dataLocale' => $dataLocale, 'dataScope' => $dataScope);
 
-                return $this->redirect($this->generateUrl('pim_product_product_index'));
+                return $this->redirect($this->generateUrl('pim_product_product_edit', $params));
             }
         }
 
