@@ -116,7 +116,7 @@ class AttributeGroupControllerTest extends ControllerTest
      */
     public function testEdit($locale)
     {
-        // initialize authentication to call container and get attribute group entity
+        // get attribute group entity
         $attributeGroup = $this->getRepository()->findOneBy(array('name' => self::GROUP_NAME));
         $uri = '/'. $locale .'/product/attribute-group/edit/'. $attributeGroup->getId();
 
@@ -171,7 +171,7 @@ class AttributeGroupControllerTest extends ControllerTest
      */
     public function testRemove($locale)
     {
-        // initialize authentication to call container and get attribute group entity
+        // get attribute group entity
         $attributeGroup = $this->getRepository()->findOneBy(array());
         $uri = '/'. $locale .'/product/attribute-group/remove/'. $attributeGroup->getId();
 

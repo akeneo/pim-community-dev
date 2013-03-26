@@ -116,7 +116,7 @@ class ProductFamilyControllerTest extends ControllerTest
      */
     public function testEdit($locale)
     {
-        // initialize authentication to call container and get product family entity
+        // get product family entity
         $productFamily = $this->getRepository()->findOneBy(array('name' => self::FAMILY_NAME));
         $uri = '/'. $locale .'/product/product-family/edit/'. $productFamily->getId();
 
@@ -171,7 +171,7 @@ class ProductFamilyControllerTest extends ControllerTest
      */
     public function testRemove($locale)
     {
-        // initialize authentication to call container and get product family entity
+        // get product family entity
         $productFamily = $this->getRepository()->findOneBy(array());
         $uri = '/'. $locale .'/product/product-family/remove/'. $productFamily->getId();
 
