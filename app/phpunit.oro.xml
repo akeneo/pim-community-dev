@@ -15,6 +15,7 @@
         <ini name="intl.default_locale" value="en"/>
         <ini name="intl.error_level" value="0"/>
         <ini name="memory_limit" value="-1"/>
+        <ini name="zend.enable_gc" value="0"/>
     </php>
 
     <testsuites>
@@ -57,4 +58,5 @@
         <log type="coverage-clover" target="build/logs/clover.xml"/>
         <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false"/>
     </logging>
+
 </phpunit>
