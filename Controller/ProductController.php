@@ -124,11 +124,13 @@ class ProductController extends Controller
         $entClassName = $this->getProductManager()->getFlexibleName();
         $valueClassName = $this->getProductManager()->getFlexibleValueName();
         $form = $this->createForm(new ProductType($entClassName, $valueClassName), $entity);
+        $groups = $this->getDoctrine()->getRepository('PimProductBundle:AttributeGroup')->findBy();
 
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
 
             if ($form->isValid()) {
+                // TODO: to move to a relevant method in media manager + use listener
                 $index = 0;
                 // upload files if exist
                 foreach ($entity->getValues() as $value) {
@@ -166,7 +168,8 @@ class ProductController extends Controller
         }
 
         return array(
-            'form' => $form->createView(),
+            'form'   => $form->createView(),
+            'groups' => $groups
         );
     }
 
