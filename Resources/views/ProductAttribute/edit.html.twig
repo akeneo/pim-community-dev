@@ -11,9 +11,11 @@
         <div class="form-row">
             <h3 class="pull-left">{{ title|trans }}</h3>
             <button class="btn btn-primary pull-right" type="submit">{{ 'Save'|trans }}</button>
-            <a class="btn pull-right" href="{{ path('pim_product_productattribute_remove', { id: form.vars.value.id }) }}">
-                {{ "Delete" | trans }}
-            </a>
+            {% if form.vars.value.id %}
+                <a class="btn pull-right" href="{{ path('pim_product_productattribute_remove', { id: form.vars.value.id }) }}">
+                    {{ "Delete" | trans }}
+                </a>
+            {% endif %}
             <a class="pull-right" href="{{ path('pim_product_productattribute_index') }}">
                 {{ "Back to list" | trans }}
             </a>
