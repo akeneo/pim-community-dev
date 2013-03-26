@@ -22,9 +22,9 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 /**
  * Load fixtures for Product attributes
  *
- * @author Romain Monceau <romain@akeneo.com>
+ * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  *
  */
 class LoadProductAttributeData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
@@ -187,7 +187,6 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $productAttribute = $this->getProductManager()->createAttributeExtended(new FileType());
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('File upload');
-        $productAttribute->setRequired(true);
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
         $this->getProductManager()->getStorageManager()->persist($productAttribute);
         $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
@@ -197,7 +196,6 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $productAttribute = $this->getProductManager()->createAttributeExtended(new ImageType());
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('Image upload');
-        $productAttribute->setRequired(true);
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
         $this->getProductManager()->getStorageManager()->persist($productAttribute);
         $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
