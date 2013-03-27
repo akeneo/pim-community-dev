@@ -1,5 +1,5 @@
 parameters:
-    product_manager_class:            Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
+    product_manager_class:            Pim\Bundle\ProductBundle\Manager\ProductManager
     product_entity_class:             Pim\Bundle\ProductBundle\Entity\Product
 
     product_attribute_class:          Pim\Bundle\ProductBundle\Entity\ProductAttribute
@@ -69,3 +69,10 @@ services:
     pim_media_manager:
         class: Pim\Bundle\ProductBundle\Manager\MediaManager
         arguments: [@knp_gaufrette.filesystem_map, "pim", %upload_dir%]
+
+    # Product form value type
+    form.type.pim_product_value:
+        class: Pim\Bundle\ProductBundle\Form\Type\ProductValueType
+        arguments: [@product_manager]
+        tags:
+            - { name: form.type, alias: pim_product_value }

@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Controller;
 
+use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+
 use Pim\Bundle\ProductBundle\Manager\MediaManager;
 
 use Symfony\Component\HttpFoundation\File\File;
@@ -124,7 +126,7 @@ class ProductController extends Controller
         $entClassName = $this->getProductManager()->getFlexibleName();
         $valueClassName = $this->getProductManager()->getFlexibleValueName();
         $form = $this->createForm(new ProductType($entClassName, $valueClassName), $entity);
-        $groups = $this->getDoctrine()->getRepository('PimProductBundle:AttributeGroup')->findBy();
+        $groups = $this->getDoctrine()->getRepository('PimProductBundle:AttributeGroup')->findAllWithVirtualGroup();
 
         if ($request->getMethod() == 'POST') {
             $form->bind($request);

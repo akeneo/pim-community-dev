@@ -6,7 +6,7 @@
 {% block content %}
 
     {% form_theme form 'PimProductBundle:Form:simple_layout.html.twig' %}
-    
+
     <form action="{{ form.vars.value.id ? path('pim_product_product_edit', { id: form.vars.value.id }) : path('pim_product_product_create') }}" 
         method="POST" class="form-horizontal" {{ form_enctype(form) }}>
 
@@ -42,9 +42,8 @@
                 <div class="span2">
                     <ul class="nav nav-list">
                         {% for group in groups %}
-                            <li {% if loop.index == 1 %}class="active"{% endif %}><a href="#tabs-{{group.id}}">{{ group.name|trans }}</a></li>
+                            <li class="tab{% if loop.index == 1 %} active{% endif %}"><a href="#tabs-{{group.id}}">{{ group.name|trans }}</a></li>
                         {% endfor %}
-                        <li><a href="#tabs-0">{{ "Others"|trans }}</a></li>
                     </ul>
                 </div>
                 <div class="span10">
@@ -58,13 +57,20 @@
                         </div>
                     </div>
     
-                    {% for formValue in form.values %}
-                    <div class="control-group">
-                        {{ form_label(formValue, formValue.vars.value.attribute.code, { 'label_attr': {'class': 'control-label'} }) }}
-                        <div class="controls">
-                            {{ form_widget(formValue, {'attr' : { 'class': 'span4' } }) }}
+                    {% for group in groups %}
+                        <div id="tabs-{{ group.id }}">
+                            <h3>{{ group.name|trans }}</h3>
+                            {% for formValue in form.values %}
+                                {% if group.id == formValue.group.vars.value %}
+                                <div class="control-group">
+                                    {{ form_label(formValue, formValue.vars.value.attribute.code, { 'label_attr': {'class': 'control-label'} }) }}
+                                    <div class="controls">
+                                        {{ form_widget(formValue, {'attr' : { 'class': 'span4' } }) }}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
                         </div>
-                    </div>
                     {% endfor %}
                 </div>
     
@@ -77,9 +83,26 @@
     {{ parent() }}
     <script type="text/javascript">
     $(function() {
+
         $('select').select2({ allowClear: true });
         $('input.multiselect').select2({ tags: $(this).val() });
+        
+        $('#tabs').tabs().delegate("a", "click", function() {
+            $(this).parent().parent().find('li').each(function() {
+                $(this).removeClass('active');
+            });
+            $(this).parent().addClass('active');
+        });
+        
+        $('#tabs li.tab').each(function() {
+            var tabId = $(this).attr('aria-controls');
+            var nbValues = $('#'+tabId+' .control-group').length;
+            if (nbValues == 0) {
+                $(this).hide();
+            }
+        });
     });
+
     </script>
     <link rel="stylesheet" href="{{ asset('bundles/pimui/css/select2.css') }}">
     <script type="text/javascript" src="{{ asset('bundles/pimui/js/select2.js') }}"></script>
