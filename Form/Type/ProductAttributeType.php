@@ -1,33 +1,19 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Form\Type;
 
-use Symfony\Component\Form\FormInterface;
+use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeType;
 
 use Pim\Bundle\ProductBundle\Form\Subscriber\ProductAttributeSubscriber;
+use Pim\Bundle\ProductBundle\Service\AttributeService;
 
 use Symfony\Component\Form\FormEvent;
-
 use Symfony\Component\Form\FormEvents;
-
-use Doctrine\ORM\EntityRepository;
-
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\ImageType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\FileType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\BooleanType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionSimpleSelectType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionMultiSelectType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\DateType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MetricType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MoneyType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextAreaType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\NumberType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\IntegerType;
-
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
+
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Type for attribute form
@@ -39,6 +25,22 @@ use Symfony\Component\Form\AbstractType;
  */
 class ProductAttributeType extends AttributeType
 {
+
+    /**
+     * Attribute service
+     * @var AttributeService
+     */
+    private $attributeService;
+
+    /**
+     * Constructor
+     *
+     * @param AttributeService $attributeService
+     */
+    public function __construct(AttributeService $attributeService = null)
+    {
+        $this->attributeService = $attributeService;
+    }
 
     /**
      * {@inheritdoc}
@@ -74,7 +76,7 @@ class ProductAttributeType extends AttributeType
 
         // add our own subscriber for custom features
         $factory = $builder->getFormFactory();
-        $subscriber = new ProductAttributeSubscriber($factory);
+        $subscriber = new ProductAttributeSubscriber($factory, $this->attributeService);
         $builder->addEventSubscriber($subscriber);
     }
 
@@ -208,27 +210,7 @@ class ProductAttributeType extends AttributeType
      */
     public function getAttributeTypeChoices()
     {
-        $availablesTypes = array(
-            new BooleanType(),
-            new DateType(),
-            new FileType(),
-            new ImageType(),
-            new IntegerType(),
-            new MetricType(),
-            new MoneyType(),
-            new OptionMultiSelectType(),
-            new OptionSimpleSelectType(),
-            new NumberType(),
-            new TextAreaType(),
-            new TextType(),
-        );
-        $types = array();
-        foreach ($availablesTypes as $type) {
-            $types[get_class($type)]= $type->getName();
-        }
-        asort($types);
-
-        return $types;
+        return $this->attributeService->getAttributeTypes();
     }
 
     /**

@@ -23,11 +23,10 @@ class ProductAttributeTypeTest extends TypeTestCase
     {
         parent::setUp();
 
-        // Create a mock for the form and exclude the availableLanguages method
-        // and field as they require a custom implementation
+        // Create a mock for the form and exclude the availableLanguages and getAttributeTypeChoices methods
         $this->type = $this->getMock(
             'Pim\Bundle\ProductBundle\Form\Type\ProductAttributeType',
-            array('addFieldAvailableLanguages')
+            array('addFieldAvailableLanguages', 'getAttributeTypeChoices')
         );
 
         $this->form = $this->factory->create($this->type);

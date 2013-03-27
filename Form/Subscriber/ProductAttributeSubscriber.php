@@ -1,11 +1,9 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Form\Subscriber;
 
+use Pim\Bundle\ProductBundle\Service\AttributeService;
+
 use Symfony\Component\Form\Form;
-
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeOptionType;
-
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
 
 use Symfony\Component\Form\Event\DataEvent;
 
@@ -28,6 +26,12 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
 {
 
     /**
+     * Attribute service
+     * @var AttributeService
+     */
+    protected $service;
+
+    /**
      * Form factory
      * @var FormFactoryInterface
      */
@@ -35,11 +39,14 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
 
     /**
      * Constructor
+     *
      * @param FormFactoryInterface $factory
+     * @param AttributeService     $service
      */
-    public function __construct(FormFactoryInterface $factory = null)
+    public function __construct(FormFactoryInterface $factory = null, AttributeService $service = null)
     {
         $this->factory = $factory;
+        $this->service = $service;
     }
 
     /**
@@ -68,10 +75,8 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
         // only when editing
         if ($data->getId()) {
             $form = $event->getForm();
-            foreach ($data->getActivatedProperties() as $property) {
-                if ($params = $data->getFieldParams($property)) {
-                    $form->add($this->factory->createNamed($property, $params['fieldType'], $params['data'], $params['options']));
-                }
+            foreach ($this->service->getCustomFields($data) as $field) {
+                $form->add($this->factory->createNamed($field['name'], $field['fieldType'], $field['data'], $field['options']));
             }
         }
     }

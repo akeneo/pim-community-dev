@@ -14,6 +14,8 @@ parameters:
 
     metric_attribute_validator_class: Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricAttributeValidator
 
+    pim_product.attributes_config: ~
+
 services:
     # Managers
     product_manager:
@@ -40,6 +42,7 @@ services:
         class: %product_attribute_type_class%
         tags:
             - { name: form.type, alias: pim_product_attribute }
+        arguments: [@pim_product.attribute_service]
 
     pim_product.form.type.attribute_group:
         class: %attribute_group_type_class%
@@ -58,7 +61,6 @@ services:
         arguments: [@pim_product.form.attribute_group, @request, @doctrine.orm.entity_manager]
 
     # Validators
-
     pim_product.form.validator.metric_attribute:
         class: %metric_attribute_validator_class%
         arguments: [%oro_measure.measures_config%]
@@ -69,3 +71,8 @@ services:
     pim_media_manager:
         class: Pim\Bundle\ProductBundle\Manager\MediaManager
         arguments: [@knp_gaufrette.filesystem_map, "pim", %upload_dir%]
+
+    # Attribute manager
+    pim_product.attribute_service:
+        class: Pim\Bundle\ProductBundle\Service\AttributeService
+        arguments: [%pim_product.attributes_config%]
