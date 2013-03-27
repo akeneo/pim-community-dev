@@ -41,9 +41,51 @@ class AttributeService
     }
 
     /**
+     * Return an array of form field parameters for properties
+     * that can't be changed once the attribute has been created
+     *
+     * @param ProductAttribute $attribute
+     *
+     * @return array $fields
+     */
+    public function getInitialFields($attribute = null)
+    {
+        $properties = array(
+            array('name' => 'scopable', 'choices' => array('Global', 'Channel')),
+            array('name' => 'translatable', 'choices' => array('No', 'Yes')),
+            array('name' => 'unique', 'choices' => array('No', 'Yes'))
+        );
+
+        $disabled = false;
+        if ($attribute !== null) {
+            if ($attribute->getId()) {
+                $disabled = true;
+                if (!in_array('unique', $this->getActivatedProperties($attribute))) {
+                    array_pop($properties);
+                }
+            }
+        }
+
+        $fields = array();
+        foreach ($properties as $property) {
+            $fields[] = array(
+                'name' => $property['name'],
+                'fieldType' => 'choice',
+                'data' => null,
+                'options' => array(
+                    'choices' => $property['choices'],
+                    'disabled' => $disabled
+                )
+            );
+        }
+
+        return $fields;
+    }
+
+    /**
      * Return an array of form field parameters for all custom properties
      *
-     * @param ProductAttrobute $attribute
+     * @param ProductAttribute $attribute
      *
      * @return array|null $params
      */
@@ -53,7 +95,9 @@ class AttributeService
         $fields = array();
 
         foreach ($properties as $property) {
-            $fields[] = $this->getFieldParams($attribute, $property);
+            if ($property != 'unique') {
+                $fields[] = $this->getFieldParams($attribute, $property);
+            }
         }
 
         return $fields;
@@ -62,7 +106,7 @@ class AttributeService
     /**
      * Return an array of available attribute types
      *
-     * @return array|null $params
+     * @return array $types
      */
     public function getAttributeTypes()
     {
@@ -98,10 +142,10 @@ class AttributeService
     /**
      * Return form field parameters for a single property
      *
-     * @param ProductAttrobute $attribute
+     * @param ProductAttribute $attribute
      * @param string           $property
      *
-     * @return array|null $params
+     * @return array $params
      */
     public function getFieldParams($attribute, $property)
     {
@@ -160,10 +204,6 @@ class AttributeService
                     $params['fieldType']            = 'integer';
                 }
                 break;
-            case 'defaultCurrency':
-                $params['fieldType']        = 'entity';
-                $params['options']['class'] = 'Pim\Bundle\ConfigBundle\Entity\Currency';
-                break;
             case 'valueCreationAllowed':
                 $params['fieldType']           = 'choice';
                 $params['options']['required'] = true;
@@ -205,6 +245,8 @@ class AttributeService
                 break;
             case 'unique':
                 $params['fieldType'] = 'checkbox';
+                $params['options']['disabled'] = true;
+                $params['options']['choices']  = array('No', 'Yes');
                 break;
             case 'searchable':
                 $params['fieldType'] = 'checkbox';

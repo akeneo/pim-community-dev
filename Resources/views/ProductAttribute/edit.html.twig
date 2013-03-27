@@ -77,12 +77,14 @@
                                         </div>
                                     </div>
 
-                                    <div class="control-group">
-                                        {{ form_label(form.unique, 'Unique value'|trans, { 'label_attr': {'class': 'control-label'} }) }}
-                                        <div class="controls">
-                                            {{ form_widget(form.unique, {'attr' : { 'class': 'span4' }}) }}
+                                    {% if form.unique is defined %}
+                                        <div class="control-group">
+                                            {{ form_label(form.unique, 'Unique value'|trans, { 'label_attr': {'class': 'control-label'} }) }}
+                                            <div class="controls">
+                                                {{ form_widget(form.unique, {'attr' : { 'class': 'span4' }}) }}
+                                            </div>
                                         </div>
-                                    </div>
+                                    {% endif %}
 
                                     <div class="control-group">
                                         <label class="control-label" for="limitLanguages">{{ 'Locale specific'|trans }}</label>
@@ -97,15 +99,6 @@
                                             {{ form_widget(form.availableLanguages, {'attr' : { 'class': 'span4' }}) }}
                                         </div>
                                     </div>
-
-                                    {% if form.defaultValue is defined %}
-                                        <div class="control-group">
-                                            {{ form_label(form.defaultValue, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                            <div class="controls">
-                                                {{ form_widget(form.defaultValue, {'attr' : { 'class': 'span4' }}) }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
 
                                     {% if form.dateType is defined %}
                                         <div class="control-group">
@@ -166,15 +159,6 @@
                                             {{ form_label(form.numberMax, null, { 'label_attr': {'class': 'control-label'} }) }}
                                             <div class="controls">
                                                 {{ form_widget(form.numberMax, {'attr' : { 'class': 'span4' }}) }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-
-                                    {% if form.defaultCurrency is defined %}
-                                        <div class="control-group">
-                                            {{ form_label(form.defaultCurrency, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                            <div class="controls">
-                                                {{ form_widget(form.defaultCurrency, { 'attr': { 'class': 'span4', 'data-placeholder': 'Choose a currency'|trans }}) }}
                                             </div>
                                         </div>
                                     {% endif %}
@@ -265,6 +249,15 @@
                                             {{ form_label(form.validationRegexp, null, { 'label_attr': {'class': 'control-label'} }) }}
                                             <div class="controls">
                                                 {{ form_widget(form.validationRegexp, {'attr' : { 'class': 'span4' }}) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if form.defaultValue is defined %}
+                                        <div class="control-group">
+                                            {{ form_label(form.defaultValue, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                            <div class="controls">
+                                                {{ form_widget(form.defaultValue, {'attr' : { 'class': 'span4' }}) }}
                                             </div>
                                         </div>
                                     {% endif %}

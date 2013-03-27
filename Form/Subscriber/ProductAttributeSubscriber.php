@@ -72,9 +72,14 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $form = $event->getForm();
+
+        foreach ($this->service->getInitialFields($data) as $field) {
+            $form->add($this->factory->createNamed($field['name'], $field['fieldType'], $field['data'], $field['options']));
+        }
+
         // only when editing
         if ($data->getId()) {
-            $form = $event->getForm();
             foreach ($this->service->getCustomFields($data) as $field) {
                 $form->add($this->factory->createNamed($field['name'], $field['fieldType'], $field['data'], $field['options']));
             }
