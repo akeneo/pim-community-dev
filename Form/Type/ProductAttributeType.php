@@ -81,24 +81,6 @@ class ProductAttributeType extends AttributeType
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function addFieldScopable(FormBuilderInterface $builder)
-    {
-        // use custom scope notion pofor product
-        $builder->add(
-            'scopable',
-            'choice',
-            array(
-                'choices' => array(
-                    0 => 'Global',
-                    1 =>'Channel'
-                )
-            )
-        );
-    }
-
-    /**
      * Add a field for name
      * @param FormBuilderInterface $builder
      */
@@ -172,12 +154,42 @@ class ProductAttributeType extends AttributeType
     }
 
      /**
-     * Overwrite the parent's addFieldDefaultValue method to prevent adding
-     * default value regardless of attribute type
+     * Override the parent's addFieldDefaultValue method to prevent adding
+     * default value field regardless of attribute type
      *
      * @param FormBuilderInterface $builder
      */
     protected function addFieldDefaultValue(FormBuilderInterface $builder)
+    {
+    }
+
+    /**
+     * Override the parent's addFieldUnique method to prevent adding
+     * unique field regardless of attribute type
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldUnique(FormBuilderInterface $builder)
+    {
+    }
+
+    /**
+     * Override the parent's addFieldTranslatable method to prevent adding
+     * translatable field regardless of attribute type
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldTranslatable(FormBuilderInterface $builder)
+    {
+    }
+
+    /**
+     * Override the parent's addFieldScopable method to prevent adding
+     * scopable field regardless of attribute type
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldScopable(FormBuilderInterface $builder)
     {
     }
 

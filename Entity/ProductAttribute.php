@@ -5,7 +5,6 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeExtend
 use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
 use Pim\Bundle\ConfigBundle\Entity\Language;
-use Pim\Bundle\ConfigBundle\Entity\Currency;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -172,14 +171,6 @@ class ProductAttribute extends AbstractEntityAttributeExtended
      * @ORM\Column(name="date_max", type="datetime", nullable=true)
      */
     protected $dateMax;
-
-    /**
-     * @var Currency $defaultCurrency
-     *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ConfigBundle\Entity\Currency")
-     * @ORM\JoinColumn(name="default_currency_id", nullable=true, referencedColumnName="id")
-     */
-    protected $defaultCurrency;
 
     /**
      * @var string $metricType
@@ -729,30 +720,6 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     public function setDateMax($dateMax)
     {
         $this->dateMax = $dateMax;
-
-        return $this;
-    }
-
-    /**
-     * Get defaultCurrency
-     *
-     * @return Currency $defaultCurrency
-     */
-    public function getDefaultCurrency()
-    {
-        return $this->defaultCurrency;
-    }
-
-    /**
-     * Set defaultCurrency
-     *
-     * @param Currency $defaultCurrency
-     *
-     * @return ProductAttribute
-     */
-    public function setDefaultCurrency(Currency $defaultCurrency = null)
-    {
-        $this->defaultCurrency = $defaultCurrency;
 
         return $this;
     }

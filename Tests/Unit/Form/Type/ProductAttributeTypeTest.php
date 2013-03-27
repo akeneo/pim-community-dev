@@ -26,7 +26,7 @@ class ProductAttributeTypeTest extends TypeTestCase
         // Create a mock for the form and exclude the availableLanguages and getAttributeTypeChoices methods
         $this->type = $this->getMock(
             'Pim\Bundle\ProductBundle\Form\Type\ProductAttributeType',
-            array('addFieldAvailableLanguages', 'getAttributeTypeChoices')
+            array('addFieldAvailableLanguages', 'getAttributeTypeChoices', 'addSubscriber')
         );
 
         $this->form = $this->factory->create($this->type);
@@ -80,9 +80,6 @@ class ProductAttributeTypeTest extends TypeTestCase
         $this->assertField('code', 'text');
         $this->assertField('attributeType', 'choice');
         $this->assertField('required', 'choice');
-        $this->assertField('unique', 'choice');
-        $this->assertField('translatable', 'choice');
-        $this->assertField('scopable', 'choice');
         $this->assertField('searchable', 'choice');
     }
 }
