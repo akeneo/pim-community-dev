@@ -46,7 +46,7 @@
                         {% endfor %}
                     </ul>
                 </div>
-                <div class="span10">
+                <div class="span10 tab-pan">
     
                     {{ form_row(form.id) }}
 
@@ -65,7 +65,7 @@
                                 <div class="control-group">
                                     {{ form_label(formValue, formValue.vars.value.attribute.code, { 'label_attr': {'class': 'control-label'} }) }}
                                     <div class="controls">
-                                        {{ form_widget(formValue, {'attr' : { 'class': 'span4' } }) }}
+                                        {{ form_widget(formValue) }}
                                     </div>
                                 </div>
                                 {% endif %}
@@ -100,6 +100,17 @@
             if (nbValues == 0) {
                 $(this).hide();
             }
+        });
+        
+        $('.tab-pan .control-group input').each(function() {
+            $(this).addClass('span4');
+        });
+        $('.tab-pan .control-group textarea').each(function() {
+            $(this).addClass('span4');
+        });
+        $('.tab-pan .control-group .select2-container').each(function() {
+            $(this).addClass('span4');
+            $(this).attr('style', 'margin-left:0px');
         });
     });
 
