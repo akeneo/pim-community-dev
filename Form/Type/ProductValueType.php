@@ -46,7 +46,8 @@ class ProductValueType extends FlexibleValueType
 
         // add a subscriber to deal with display values in relevant attribute group
         $subscriber = new AddAttributeGroupSubscriber(
-            $builder->getFormFactory(), $this->productManager->getStorageManager()
+            $builder->getFormFactory(),
+            $this->productManager->getStorageManager()
         );
         $builder->addEventSubscriber($subscriber);
     }
