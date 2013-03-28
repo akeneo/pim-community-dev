@@ -44,6 +44,9 @@ class ProductValueType extends FlexibleValueType
     {
         parent::buildForm($builder, $options);
 
+        // TODO : datamodel refactoring ? :
+        // this custom type and subscriber should be avoided if we have relation between group and attribute
+
         // add a subscriber to deal with display values in relevant attribute group
         $subscriber = new AddAttributeGroupSubscriber(
             $builder->getFormFactory(),
