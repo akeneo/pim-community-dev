@@ -1,0 +1,18 @@
+default:
+    paths:
+        features: features
+    context:
+        class:  Context\FeatureContext
+    extensions:
+        Behat\MinkExtension\Extension:
+            default_session: symfony2
+
+            # If you want MinkExtension to open browser
+            # with last response page every time you have
+            # a failed step, execute this in your shell:
+            #
+            #   export MINK_EXTENSION_PARAMS='show_auto=true&show_cmd=firefox %s'
+            #
+            # where `firefox %s` is the page opening command
+
+        Behat\Symfony2Extension\Extension: ~

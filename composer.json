@@ -9,9 +9,7 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "": "src/"
-        }
+        "psr-0": { "": "src/", "Context": "features/" }
     },
     "require": {
         "php": ">=5.3.3",
@@ -52,7 +50,8 @@
         "behat/behat": "2.4.*",
         "behat/symfony2-extension": "*",
         "behat/mink-extension": "*",
-        "behat/mink-browserkit-driver": "*"
+        "behat/mink-browserkit-driver": "*",
+        "sensiolabs/behat-page-object-extension": "*"
     },
     "repositories": [
         {
