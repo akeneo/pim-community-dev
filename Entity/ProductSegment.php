@@ -48,7 +48,7 @@ class ProductSegment extends AbstractSegment implements Translatable
      * @ORM\ManyToMany(targetEntity="Product")
      * @ORM\JoinTable(
      *     name="pim_segments_products",
-     *     joinColumn={@ORM\JoinColumn(name="segment_id", referencedColumnName="id")}
+     *     joinColumns={@ORM\JoinColumn(name="segment_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")}
      * )
      */
@@ -57,6 +57,7 @@ class ProductSegment extends AbstractSegment implements Translatable
     /**
      * @var string $title
      *
+     * @ORM\Column(name="title", type="string", length=64)
      * @Gedmo\Translatable
      */
     protected $title;
