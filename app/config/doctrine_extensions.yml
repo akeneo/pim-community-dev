@@ -1,14 +1,12 @@
 services:
     # KernelRequest listener
     extension.listener:
-        class: Oro\Bundle\SegmentationTreeBundle\Listener\DoctrineExtensionListener
+        class: Pim\Bundle\ProductBundle\Listener\DoctrineExtensionListener
         calls:
             - [ setContainer, [ @service_container ] ]
         tags:
             # translatable sets locale after router processing
             - { name: kernel.event_listener, event: kernel.request, method: onLateKernelRequest, priority: -10 }
-            # loggable hooks user username if one is in security context
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
 
     # Doctrine Extension listeners to handle behaviors
     gedmo.listener.tree:
