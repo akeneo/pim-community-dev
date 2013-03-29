@@ -20,7 +20,9 @@ class ProductSegmentManagerTest extends WebTestCase
     public function testServiceCall()
     {
         static::$kernel = static::createKernel();
+        static::$kernel->boot();
         $manager = static::$kernel->getContainer()->get('pim_product.classification_tree_manager');
+
         $this->assertInstanceOf('Oro\Bundle\SegmentationTreeBundle\Model\SegmentManager', $manager);
     }
 }
