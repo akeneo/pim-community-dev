@@ -27,7 +27,6 @@
         <tbody>
         {% for segment in segments %}
             {% set mode %}{{ segment.root == segment.id ? 'tree' : 'node' }}{% endset %}
-            {{ mode }}
             <tr>
                 <td>
                     <a href="{{ path('pim_product_classificationtree_edit', { id: segment.id, mode: mode }) }}">

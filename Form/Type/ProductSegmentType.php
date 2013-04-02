@@ -20,9 +20,10 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class ProductSegmentType extends AbstractType
 {
 
-    const MODE_NODE = 'node';
-    const MODE_TREE = 'tree';
-
+    /**
+     * Defined mode (tree or node)
+     * @var string
+     */
     protected $mode;
 
     /**
@@ -30,7 +31,7 @@ class ProductSegmentType extends AbstractType
      *
      * @param string $mode
      */
-    public function __construct($mode = self::MODE_NODE)
+    public function __construct($mode = 'node')
     {
         $this->mode = $mode;
     }
@@ -46,7 +47,7 @@ class ProductSegmentType extends AbstractType
 
         $builder->add('code');
 
-        if ($this->mode === self::MODE_NODE) {
+        if ($this->mode === 'node') {
             $builder->add('isDynamic', 'checkbox', array('required' => false));
 
             $builder->add(
