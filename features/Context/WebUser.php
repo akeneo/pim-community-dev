@@ -6,22 +6,24 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Exception\PendingException;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextType;
+use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\UserBundle\Entity\Role;
 
-class ProductContext extends PageObjectContext
+class WebUser extends PageObjectContext
 {
     private $locales = array(
-        'english' => 'en_US',
-        'french'  => 'fr_FR',
+        'english' => 'en',
+        'french'  => 'fr',
     );
 
-    private $language;
+    private $currentLocale;
 
     /**
      * @BeforeScenario
      */
-    public function resetLanguage()
+    public function resetCurrentLocale()
     {
-        $this->language = null;
+        $this->currentLocale = null;
     }
 
     /**
@@ -62,23 +64,38 @@ class ProductContext extends PageObjectContext
      */
     public function theCurrentLanguageIs($language)
     {
-        $this->language = $language;
+        $this->currentLocale = $this->locales[$language];
     }
 
     /**
      * @Given /^I am logged in as "([^"]*)"$/
      */
-    public function iAmLoggedInAs($arg1)
+    public function iAmLoggedInAs($username)
     {
-        throw new PendingException();
+        $user = new User;
+        $role = new Role(User::ROLE_DEFAULT);
+
+        $user->setUsername($username);
+        $user->setEmail($username.'@example.com');
+        $user->setPlainPassword($password = $username.'pass');
+        $user->addRole($role);
+
+        $this->getEntityManager()->persist($role);
+        $this->getUserManager()->updateUser($user);
+
+        $this->getPage('Login')->open(array('locale' => $this->currentLocale))->login($username, $password);
     }
 
     /**
      * @Given /^I am on the "([^"]*)" product page$/
      */
-    public function iAmOnTheProductPage($arg1)
+    public function iAmOnTheProductPage($product)
     {
-        throw new PendingException();
+        $product = $this->getProduct($product);
+        $this->getPage('Product')->open(array(
+            'locale' => $this->currentLocale,
+            'id'     => $product->getId(),
+        ));
     }
 
     /**
@@ -94,8 +111,37 @@ class ProductContext extends PageObjectContext
         return $this->getContainer()->get('product_manager');
     }
 
+    private function getUserManager()
+    {
+        return $this->getContainer()->get('oro_user.manager');
+    }
+
+    private function getEntityManager()
+    {
+        return $this->getMainContext()->getEntityManager();
+    }
+
     private function getContainer()
     {
         return $this->getMainContext()->getContainer();
+    }
+
+    private function getProduct($sku)
+    {
+        $product = $this
+            ->getProductManager()
+            ->setLocale($this->currentLocale)
+            ->getFlexibleRepository()
+            ->findOneBy(array(
+                'sku' => $sku,
+            ));
+
+        if (!$product) {
+            throw new \InvalidArgumentException(sprintf(
+                'Could not find product with sku "%s"', $sku
+            ));
+        }
+
+        return $product;
     }
 }

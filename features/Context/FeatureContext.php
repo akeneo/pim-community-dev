@@ -13,7 +13,7 @@ class FeatureContext extends RawMinkContext implements KernelAwareInterface
 
     public function __construct(array $parameters)
     {
-        $this->useContext('product', new ProductContext());
+        $this->useContext('webUser', new WebUser());
     }
 
     /**
@@ -45,8 +45,24 @@ class FeatureContext extends RawMinkContext implements KernelAwareInterface
         return $this->kernel->getContainer();
     }
 
-    protected function getEntityManager()
+    public function getEntityManager()
     {
         return $this->getContainer()->get('doctrine')->getManager();
+    }
+
+    /**
+     * Opens last response content in browser.
+     *
+     * @Then /^show last response$/
+     */
+    public function showLastResponse()
+    {
+        if (null === $this->getMinkParameter('show_cmd')) {
+            throw new \RuntimeException('Set "show_cmd" parameter in behat.yml to be able to open page in browser (ex.: "show_cmd: firefox %s")');
+        }
+
+        $filename = rtrim($this->getMinkParameter('show_tmp_dir'), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.uniqid().'.html';
+        file_put_contents($filename, $this->getSession()->getPage()->getContent());
+        system(sprintf($this->getMinkParameter('show_cmd'), escapeshellarg($filename)));
     }
 }
