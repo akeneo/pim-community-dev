@@ -73,13 +73,31 @@ class ProductSegment extends AbstractSegment implements Translatable
     protected $locale;
 
     /**
+     * Segment code
+     *
+     * @var string $code
+     *
+     * @ORM\Column(name="code", type="string", length=64)
+     */
+    protected $code;
+
+    /**
+     * Define if a node is dynamic or not
+     *
+     * @var boolean $isDynamic
+     *
+     * @ORM\Column(name="is_dynamic", type="boolean")
+     */
+    protected $isDynamic = false;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         parent::__construct();
 
-        $this->products = new ArrayCollection();
+        $this->products  = new ArrayCollection();
     }
 
     /**
@@ -130,6 +148,54 @@ class ProductSegment extends AbstractSegment implements Translatable
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductSegment
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Predicate to know if node is dynamic
+     *
+     * @return boolean
+     */
+    public function getIsDynamic()
+    {
+        return $this->isDynamic;
+    }
+
+    /**
+     * Set if a node is dynamic
+     *
+     * @param boolean $isDynamic
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductSegment
+     */
+    public function setIsDynamic($isDynamic)
+    {
+        $this->isDynamic = $isDynamic;
 
         return $this;
     }

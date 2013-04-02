@@ -1,0 +1,27 @@
+{% extends 'PimProductBundle::layout.html.twig' %}
+
+{% set title = form.vars.value.id ? 'Edit product segment'|trans : 'Add product segment'|trans %}
+{% block title %}{{ title }} - {{ parent() }}{% endblock %}
+
+{% block content %}
+
+<form action="{{ form.vars.value.id ?
+    path('pim_product_classificationtree_edit', { id: form.vars.value.id, mode: mode }) :
+    path('pim_product_classificationtree_create', { mode: mode }) }}" method="POST" class="form-register">
+    <fieldset>
+        <legend>{{ title|trans }}
+            <a class="btn btn-primary pull-right" href="{{ path('pim_product_classificationtree_index') }}">
+                {{ "Back to list" | trans }}
+            </a>
+        </legend>
+
+        {{ form_row(form) }}
+
+        <br />
+
+        <div class="form-row">
+            <button class="btn btn-large btn-primary" type="submit">{{ 'Save'|trans }}</button>
+        </div>
+    </fieldset>
+</form>
+{% endblock %}
