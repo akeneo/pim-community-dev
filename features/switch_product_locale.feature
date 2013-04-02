@@ -12,10 +12,6 @@ Feature: Switch product locale
     And the current language is english
     And I am logged in as "admin"
 
-  Scenario: Successfully display available product locales
-    Given I am on the "Computer" product page
-    Then I should see that the product is available in french and english
-
   Scenario: Succesfully display product in the current locale
     Given I am on the "Computer" product page
     Then the product name should be "computer"
