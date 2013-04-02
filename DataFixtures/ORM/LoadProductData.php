@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
+use Pim\Bundle\ProductBundle\Entity\Product;
+
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
 use Doctrine\Common\Persistence\ObjectManager;
@@ -150,7 +152,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $value->setCurrency('USD');
             $product->addValue($value);
 
-            $this->getProductManager()->getStorageManager()->persist($product);
+            $this->persist($product);
 
             if (($ind % $batchSize) == 0) {
                 $this->getProductManager()->getStorageManager()->flush();
@@ -161,6 +163,16 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         }
 
         $this->getProductManager()->getStorageManager()->flush();
+    }
+
+    /**
+     * Persist object and add it to references
+     * @param Product $product
+     */
+    protected function persist(Product $product)
+    {
+        $this->getProductManager()->getStorageManager()->persist($product);
+        $this->addReference('product-'. $product->getSku(), $product);
     }
 
     /**
