@@ -87,7 +87,7 @@
 'wysiwygEnabled': '__WYSIWYG enabled'
 'numberMin': '__Min number'
 'numberMax': '__Max number'
-'decimalPlaces': '__Decimal places'
+'decimalsAllowed': '__Allow decimals'
 'negativeAllowed': '__Allow negative values'
 'valueCreationAllowed': '__Allow automatic value creation'
 'dateType': '__Date type'

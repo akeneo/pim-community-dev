@@ -123,7 +123,7 @@ class ProductAttributeType extends AttributeType
      */
     protected function addFieldSmart(FormBuilderInterface $builder)
     {
-        $builder->add('smart', 'choice', array('choices' => array('No', 'Yes')));
+        $builder->add('smart', 'checkbox');
     }
 
     /**
@@ -141,7 +141,7 @@ class ProductAttributeType extends AttributeType
      */
     protected function addFieldUseableAsGridColumn(FormBuilderInterface $builder)
     {
-        $builder->add('useableAsGridColumn', 'choice', array('choices' => array('No', 'Yes')));
+        $builder->add('useableAsGridColumn', 'checkbox');
     }
 
     /**
@@ -150,7 +150,25 @@ class ProductAttributeType extends AttributeType
      */
     protected function addFieldUseableAsGridFilter(FormBuilderInterface $builder)
     {
-        $builder->add('useableAsGridFilter', 'choice', array('choices' => array('No', 'Yes')));
+        $builder->add('useableAsGridFilter', 'checkbox');
+    }
+
+   /**
+     * Add field required to form builder
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldRequired(FormBuilderInterface $builder)
+    {
+        $builder->add('required', 'checkbox');
+    }
+
+    /**
+     * Add field searchable to form builder
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldSearchable(FormBuilderInterface $builder)
+    {
+        $builder->add('searchable', 'checkbox');
     }
 
      /**

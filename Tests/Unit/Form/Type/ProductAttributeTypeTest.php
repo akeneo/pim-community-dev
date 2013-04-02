@@ -41,9 +41,9 @@ class ProductAttributeTypeTest extends TypeTestCase
         $this->assertField('name', 'text');
         $this->assertField('description', 'textarea');
         $this->assertField('variant', 'choice');
-        $this->assertField('smart', 'choice');
-        $this->assertField('useableAsGridColumn', 'choice');
-        $this->assertField('useableAsGridFilter', 'choice');
+        $this->assertField('smart', 'checkbox');
+        $this->assertField('useableAsGridColumn', 'checkbox');
+        $this->assertField('useableAsGridFilter', 'checkbox');
 
         $this->assertField('group', 'text');
 
@@ -79,7 +79,7 @@ class ProductAttributeTypeTest extends TypeTestCase
         $this->assertField('id', 'hidden');
         $this->assertField('code', 'text');
         $this->assertField('attributeType', 'choice');
-        $this->assertField('required', 'choice');
-        $this->assertField('searchable', 'choice');
+        $this->assertField('required', 'checkbox');
+        $this->assertField('searchable', 'checkbox');
     }
 }

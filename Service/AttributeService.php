@@ -51,9 +51,10 @@ class AttributeService
     public function getInitialFields($attribute = null)
     {
         $properties = array(
-            array('name' => 'scopable', 'choices' => array('Global', 'Channel')),
-            array('name' => 'translatable', 'choices' => array('No', 'Yes')),
-            array('name' => 'unique', 'choices' => array('No', 'Yes'))
+            array('name' => 'scopable', 'fieldType' => 'choice',
+                'options' => array('choices' => array('Global', 'Channel'))),
+            array('name' => 'translatable', 'fieldType' => 'checkbox'),
+            array('name' => 'unique', 'fieldType' => 'checkbox')
         );
 
         $disabled = false;
@@ -68,15 +69,10 @@ class AttributeService
 
         $fields = array();
         foreach ($properties as $property) {
-            $fields[] = array(
-                'name' => $property['name'],
-                'fieldType' => 'choice',
-                'data' => null,
-                'options' => array(
-                    'choices' => $property['choices'],
-                    'disabled' => $disabled
-                )
-            );
+            $field = $property;
+            $field['data'] = null;
+            $field['options']['disabled'] = $disabled;
+            $fields[] = $field;
         }
 
         return $fields;
@@ -142,12 +138,12 @@ class AttributeService
     /**
      * Return form field parameters for a single property
      *
-     * @param ProductAttribute $attribute
-     * @param string           $property
+     * @param ProductAttribute $attribute Product attribute
+     * @param string           $property  The property to get params for
      *
      * @return array $params
      */
-    public function getFieldParams($attribute, $property)
+    private function getFieldParams($attribute, $property)
     {
         $params = array('name' => $property, 'data' => null, 'options' => array('required' => false, 'label' => $property));
         switch ($property) {
@@ -159,13 +155,20 @@ class AttributeService
                 if ($fieldType === 'entity') {
                     $fieldType = 'text';
                 } elseif ($attTypeClass == AbstractAttributeType::TYPE_BOOLEAN_CLASS) {
-                    $fieldType = 'choice';
-                    $params['options']['choices'] = array(
-                        0 => 'No',
-                        1 => 'Yes'
-                    );
+                    $fieldType = 'checkbox';
                 }
                 $params['fieldType'] = $fieldType;
+                if ($attTypeClass == AbstractAttributeType::TYPE_DATE_CLASS) {
+                    $params['fieldType'] = $attribute->getDateType() ? $attribute->getDateType() : 'datetime';
+                    $params['options']['widget']  = 'single_text';
+                    if ($params['fieldType'] == 'date') {
+                        $params['options']['attr']  = array('data-format' => 'dd/MM/yyyy');
+                    } elseif ($params['fieldType'] == 'datetime') {
+                        $params['options']['attr']  = array('data-format' => 'dd/MM/yyyy hh:mm');
+                    } else {
+                        $params['options']['attr']  = array('data-format' => 'hh:mm');
+                    }
+                }
                 break;
             case 'dateType':
                 $params['fieldType']           = 'choice';
@@ -174,48 +177,54 @@ class AttributeService
                 break;
             case 'dateMin':
                 $params['fieldType'] = $attribute->getDateType() ? $attribute->getDateType() : 'datetime';
+                $params['options']['widget']  = 'single_text';
+                if ($params['fieldType'] == 'date') {
+                    $params['options']['attr']  = array('data-format' => 'dd/MM/yyyy');
+                } elseif ($params['fieldType'] == 'datetime') {
+                    $params['options']['attr']  = array('data-format' => 'dd/MM/yyyy hh:mm');
+                } else {
+                    $params['options']['attr']  = array('data-format' => 'hh:mm');
+                }
                 break;
             case 'dateMax':
                 $params['fieldType'] = $attribute->getDateType() ? $attribute->getDateType() : 'datetime';
+                $params['options']['widget']  = 'single_text';
+                if ($params['fieldType'] == 'date') {
+                    $params['options']['attr']  = array('data-format' => 'dd/MM/yyyy');
+                } elseif ($params['fieldType'] == 'datetime') {
+                    $params['options']['attr']  = array('data-format' => 'dd/MM/yyyy hh:mm');
+                } else {
+                    $params['options']['attr']  = array('data-format' => 'hh:mm');
+                }
                 break;
             case 'negativeAllowed':
-                $params['fieldType'] = 'choice';
-                $params['options']['required'] = true;
-                $params['options']['choices'] = array('No', 'Yes');
+                $params['fieldType'] = 'checkbox';
                 break;
-            case 'decimalPlaces':
-                $params['fieldType']           = 'choice';
-                $params['options']['required'] = true;
-                $params['options']['choices']  = array(0, 1, 2, 3, 4);
+            case 'decimalsAllowed':
+                $params['fieldType'] = 'checkbox';
                 break;
             case 'numberMin':
-                if ($attribute->getDecimalPlaces()) {
-                    $params['fieldType']            = 'number';
-                    $params['options']['precision'] = $attribute->getDecimalPlaces();
+                if ($attribute->getDecimalsAllowed()) {
+                    $params['fieldType'] = 'number';
                 } else {
-                    $params['fieldType']            = 'integer';
+                    $params['fieldType'] = 'integer';
                 }
                 break;
             case 'numberMax':
-                if ($attribute->getDecimalPlaces()) {
-                    $params['fieldType']            = 'number';
-                    $params['options']['precision'] = $attribute->getDecimalPlaces();
+                if ($attribute->getDecimalsAllowed()) {
+                    $params['fieldType'] = 'number';
                 } else {
-                    $params['fieldType']            = 'integer';
+                    $params['fieldType'] = 'integer';
                 }
                 break;
             case 'valueCreationAllowed':
-                $params['fieldType']           = 'choice';
-                $params['options']['required'] = true;
-                $params['options']['choices']  = array('No', 'Yes');
+                $params['fieldType'] = 'checkbox';
                 break;
             case 'maxCharacters':
                 $params['fieldType'] = 'integer';
                 break;
             case 'wysiwygEnabled':
-                $params['fieldType']          = 'choice';
-                $params['options']['required'] = true;
-                $params['options']['choices'] = array('No', 'Yes');
+                $params['fieldType'] = 'checkbox';
                 break;
             case 'metricType':
                 $params['fieldType'] = 'text';
@@ -234,6 +243,7 @@ class AttributeService
             case 'allowedFileExtensions':
                 $params['fieldType'] = 'text';
                 $params['options']['by_reference'] = false;
+                $params['options']['attr'] = array('class' => 'multiselect');
                 $params['data'] = implode(',', $attribute->getAllowedFileExtensions());
                 break;
             case 'validationRule':
@@ -246,7 +256,6 @@ class AttributeService
             case 'unique':
                 $params['fieldType'] = 'checkbox';
                 $params['options']['disabled'] = true;
-                $params['options']['choices']  = array('No', 'Yes');
                 break;
             case 'searchable':
                 $params['fieldType'] = 'checkbox';

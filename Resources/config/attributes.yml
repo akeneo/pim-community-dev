@@ -13,13 +13,13 @@ attributes_config:
         properties: [ 'allowedFileSources', 'maxFileSize', 'allowedFileExtensions' ]
     Metric:
         name: 'Metric'
-        properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalPlaces', 'negativeAllowed', 'metricType', 'defaultMetricUnit', 'searchable' ]
+        properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'metricType', 'defaultMetricUnit', 'searchable' ]
     Money:
         name: 'Money'
-        properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalPlaces', 'negativeAllowed', 'searchable' ]
+        properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'searchable' ]
     Number:
         name: 'Number'
-        properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalPlaces', 'negativeAllowed', 'unique', 'searchable' ]
+        properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'unique', 'searchable' ]
     OptionMultiSelect:
         name: 'Multiselect'
         properties: [ 'defaultValue', 'valueCreationAllowed', 'searchable' ]

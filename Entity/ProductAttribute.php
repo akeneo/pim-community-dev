@@ -131,11 +131,11 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     protected $numberMax;
 
     /**
-     * @var integer $decimalPlaces
+     * @var boolean $decimalsAllowed
      *
-     * @ORM\Column(name="decimal_places", type="smallint", nullable=true)
+     * @ORM\Column(name="decimals_allowed", type="boolean", nullable=true)
      */
-    protected $decimalPlaces;
+    protected $decimalsAllowed;
 
     /**
      * @var boolean $negativeAllowed
@@ -581,25 +581,25 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     }
 
     /**
-     * Get decimalPlaces
+     * Get decimalsAllowed
      *
-     * @return integer $decimalPlaces
+     * @return boolean $decimalsAllowed
      */
-    public function getDecimalPlaces()
+    public function getDecimalsAllowed()
     {
-        return $this->decimalPlaces;
+        return $this->decimalsAllowed;
     }
 
     /**
-     * Set decimalPlaces
+     * Set decimalsAllowed
      *
-     * @param integer $decimalPlaces
+     * @param boolean $decimalsAllowed
      *
      * @return ProductAttribute
      */
-    public function setDecimalPlaces($decimalPlaces)
+    public function setDecimalsAllowed($decimalsAllowed)
     {
-        $this->decimalPlaces = $decimalPlaces;
+        $this->decimalsAllowed = $decimalsAllowed;
 
         return $this;
     }

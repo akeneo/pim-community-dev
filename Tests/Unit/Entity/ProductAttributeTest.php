@@ -240,17 +240,21 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for decimalPlaces property
+     * Test getter/setter for decimalsAllowed property
      */
-    public function testGetSetDecimalPlaces()
+    public function testGetSetDecimalsAllowed()
     {
         $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getDecimalPlaces());
+        $this->assertNull($productAttribute->getDecimalsAllowed());
 
         // Change value and assert new
-        $decimals = 2;
-        $productAttribute->setDecimalPlaces($decimals);
-        $this->assertEquals($decimals, $productAttribute->getDecimalPlaces());
+        $decimalsAllowed = true;
+        $productAttribute->setDecimalsAllowed($decimalsAllowed);
+        $this->assertEquals($decimalsAllowed, $productAttribute->getDecimalsAllowed());
+
+        $decimalsAllowed = false;
+        $productAttribute->setDecimalsAllowed($decimalsAllowed);
+        $this->assertEquals($decimalsAllowed, $productAttribute->getDecimalsAllowed());
     }
 
     /**
