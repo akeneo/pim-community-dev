@@ -5,15 +5,19 @@ namespace Context;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Exception\PendingException;
+
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextType;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\Role;
+
+use Pim\Bundle\ConfigBundle\Entity\Language;
 
 class WebUser extends PageObjectContext
 {
     private $locales = array(
         'english' => 'en',
         'french'  => 'fr',
+        'german'  => 'de',
     );
 
     private $currentLocale;
@@ -27,32 +31,34 @@ class WebUser extends PageObjectContext
     }
 
     /**
-     * @Given /^a "([^"]*)" product with the following translations:$/
+     * @Given /^a "([^"]*)" product(?: with the following translations:)?$/
      */
-    public function aProductWithTheFollowingTranslations($sku, TableNode $translations)
+    public function aProductWithTheFollowingTranslations($sku, TableNode $translations = null)
     {
         $attributes = array();
         $pm         = $this->getProductManager();
         $product    = $pm->createFlexible();
         $product->setSku($sku);
 
-        foreach ($translations->getHash() as $translation) {
-            if (isset($attributes[$translation['attribute']])) {
-                $attribute = $attributes[$translation['attribute']];
-            } else {
-                $attribute = $this->getProductManager()->createAttribute(new TextType);
-                $attribute->setCode($translation['attribute']);
-                $attribute->setTranslatable(true);
-                $this->getProductManager()->getStorageManager()->persist($attribute);
-                $attributes[$translation['attribute']] = $attribute;
-            }
+        if ($translations) {
+            foreach ($translations->getHash() as $translation) {
+                if (isset($attributes[$translation['attribute']])) {
+                    $attribute = $attributes[$translation['attribute']];
+                } else {
+                    $attribute = $this->getProductManager()->createAttribute(new TextType);
+                    $attribute->setCode($translation['attribute']);
+                    $attribute->setTranslatable(true);
+                    $this->getProductManager()->getStorageManager()->persist($attribute);
+                    $attributes[$translation['attribute']] = $attribute;
+                }
 
-            $value = $this->getProductManager()->createFlexibleValue();
-            $value->setAttribute($attribute);
-            $value->setLocale($this->locales[$translation['locale']]);
-            $value->setData($translation['value']);
-            $this->getProductManager()->getStorageManager()->persist($value);
-            $product->addValue($value);
+                $value = $this->getProductManager()->createFlexibleValue();
+                $value->setAttribute($attribute);
+                $value->setLocale($this->getLocale($translation['locale']));
+                $value->setData($translation['value']);
+                $this->getProductManager()->getStorageManager()->persist($value);
+                $product->addValue($value);
+            }
         }
 
         $this->getProductManager()->getStorageManager()->persist($product);
@@ -64,7 +70,7 @@ class WebUser extends PageObjectContext
      */
     public function theCurrentLanguageIs($language)
     {
-        $this->currentLocale = $this->locales[$language];
+        $this->currentLocale = $this->getLocale($language);
     }
 
     /**
@@ -104,6 +110,34 @@ class WebUser extends PageObjectContext
     public function iShouldSeeThatTheProductIsAvailableInFrenchAndEnglish()
     {
         throw new PendingException();
+    }
+
+    /**
+     * @Given /^availabe languages are (.*)$/
+     */
+    public function availabeLanguagesAre($languages)
+    {
+        $languages = explode(', ', str_replace(' and ', ', ', $languages));
+        $em        = $this->getEntityManager();
+
+        foreach ($languages as $language) {
+            $lang = new Language;
+            $lang->setCode($this->getLocale($language));
+            $em->persist($lang);
+        }
+
+        $em->flush();
+    }
+
+    private function getLocale($language)
+    {
+        if (!isset($this->locales[$language])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Undefined language "%s"', $language
+            ));
+        }
+
+        return $this->locales[$language];
     }
 
     private function getProductManager()
