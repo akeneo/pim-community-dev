@@ -6,7 +6,9 @@ Feature: Select product activated languages
   Background:
     Given a "Car" product
     And availabe languages are french, german and english
+    And the current language is english
     And I am logged in as "Admin"
+    And I am on the "Car" product page
 
   Scenario: Successfully display available languages for a product
     Given I visit the "Localisation" tab
