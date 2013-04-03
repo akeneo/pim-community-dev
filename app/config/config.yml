@@ -26,6 +26,9 @@ twig:
     globals:
         bap:
             layout:           PimUIBundle::layout.bootstrap.html.twig  # default layout across all Oro bundles
+    form:
+        resources:
+            - 'PimUIBundle:Form:fields.html.twig'
 
 # Assetic Configuration
 assetic:
