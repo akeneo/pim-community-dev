@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 use Gedmo\Translatable\Translatable;
 
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -19,9 +21,13 @@ use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ORM\Entity(repositoryClass="Oro\Bundle\SegmentationTreeBundle\Entity\Repository\SegmentRepository")
- * @ORM\Table(name="pim_product_segment")
+ * @ORM\Table(
+ *     name="pim_product_segment",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="pim_product_segment_code_uc", columns={"code"})}
+ * )
  * @Gedmo\Tree(type="nested")
  * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\ProductSegmentTranslation")
+ * @UniqueEntity("code")
  */
 class ProductSegment extends AbstractSegment implements Translatable
 {
