@@ -2,7 +2,6 @@
 
 namespace Context;
 
-use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Exception\PendingException;
 
@@ -12,7 +11,7 @@ use Oro\Bundle\UserBundle\Entity\Role;
 
 use Pim\Bundle\ConfigBundle\Entity\Language;
 
-class WebUser extends PageObjectContext
+class WebUser extends PageObjectMinkContext
 {
     private $locales = array(
         'english' => 'en',
@@ -63,6 +62,27 @@ class WebUser extends PageObjectContext
 
         $this->getProductManager()->getStorageManager()->persist($product);
         $this->getProductManager()->getStorageManager()->flush();
+
+        return $product;
+    }
+
+    /**
+     * @Given /^a "([^"]*)" product available in (.*)$/
+     */
+    public function aProductAvailableIn($sku, $languages)
+    {
+        $product   = $this->aProductWithTheFollowingTranslations($sku);
+        $languages = $this->listToArray($languages);
+
+        foreach ($languages as $language) {
+            $language = $this->getLanguage($this->getLocale($language));
+            $pl = $product->getLanguage($language);
+            if (!$pl) {
+                $product->addLanguage($language, true);
+            }
+        }
+
+        $this->getEntityManager()->flush();
     }
 
     /**
@@ -105,6 +125,77 @@ class WebUser extends PageObjectContext
     }
 
     /**
+     * @Given /^availabe languages are (.*)$/
+     */
+    public function availabeLanguagesAre($languages)
+    {
+        $languages = $this->listToArray($languages);
+        $em        = $this->getEntityManager();
+        $products  = $em->getRepository('PimProductBundle:Product')->findAll();
+        $langs     = array();
+
+        foreach ($languages as $language) {
+            $langs[] = $this->getLanguage($this->getLocale($language));
+        }
+
+        foreach ($products as $product) {
+            foreach ($langs as $lang) {
+                $pl = $product->getLanguage($lang);
+                if (!$pl) {
+                    $product->addLanguage($lang);
+                }
+            }
+        }
+
+        $em->flush();
+    }
+
+    /**
+     * @Given /^I visit the "([^"]*)" tab$/
+     */
+    public function iVisitTheTab($tab)
+    {
+    }
+
+    /**
+     * @Then /^I should see that the product is available in (.*)$/
+     */
+    public function iShouldSeeLanguages($languages)
+    {
+        $languages = $this->listToArray($languages);
+        foreach ($languages as $language) {
+            $this
+                ->getPage('Product')
+                ->setAssertSession($this->assertSession())
+                ->assertLocaleIsDisplayed($this->getLocale($language))
+            ;
+        }
+
+    }
+
+    /**
+     * @When /^I select (.*) languages$/
+     */
+    public function iSelectLanguages($languages)
+    {
+        $languages = $this->listToArray($languages);
+        foreach ($languages as $language) {
+            $this
+                ->getPage('Product')
+                ->selectLanguage($this->getLocale($language))
+            ;
+        }
+    }
+
+    /**
+     * @Given /^I press "([^"]*)"$/
+     */
+    public function iPress($button)
+    {
+        $this->getPage('Product')->save();
+    }
+
+    /**
      * @Then /^I should see that the product is available in french and english$/
      */
     public function iShouldSeeThatTheProductIsAvailableInFrenchAndEnglish()
@@ -112,21 +203,9 @@ class WebUser extends PageObjectContext
         throw new PendingException();
     }
 
-    /**
-     * @Given /^availabe languages are (.*)$/
-     */
-    public function availabeLanguagesAre($languages)
+    private function listToArray($list)
     {
-        $languages = explode(', ', str_replace(' and ', ', ', $languages));
-        $em        = $this->getEntityManager();
-
-        foreach ($languages as $language) {
-            $lang = new Language;
-            $lang->setCode($this->getLocale($language));
-            $em->persist($lang);
-        }
-
-        $em->flush();
+        return explode(', ', str_replace(' and ', ', ', $list));
     }
 
     private function getLocale($language)
@@ -138,6 +217,22 @@ class WebUser extends PageObjectContext
         }
 
         return $this->locales[$language];
+    }
+
+    private function getLanguage($code)
+    {
+        $em = $this->getEntityManager();
+        $lang = $em->getRepository('PimConfigBundle:Language')->findOneBy(array(
+            'code' => $code
+        ));
+
+        if (!$lang) {
+            $lang = new Language;
+            $lang->setCode($code);
+            $em->persist($lang);
+        }
+
+        return $lang;
     }
 
     private function getProductManager()
