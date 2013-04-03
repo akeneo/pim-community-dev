@@ -68,9 +68,9 @@ class ProductLanguage
         return $this->language->getCode();
     }
 
-    public function __toString()
+    public function fromLocale($locale)
     {
-        return (string) $this->language;
+        return $this->language->fromLocale($locale);
     }
 }
 
