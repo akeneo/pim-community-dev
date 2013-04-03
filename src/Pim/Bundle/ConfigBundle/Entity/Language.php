@@ -230,7 +230,7 @@ class Language
         return $this;
     }
 
-    public function getDisplayCountries($locale)
+    public function fromLocale($locale)
     {
         $countries = Locale::getDisplayLanguages($locale);
 

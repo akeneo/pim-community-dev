@@ -167,7 +167,7 @@ class WebUser extends PageObjectMinkContext
             $this
                 ->getPage('Product')
                 ->setAssertSession($this->assertSession())
-                ->assertLocaleIsDisplayed($this->getLocale($language))
+                ->assertLocaleIsDisplayed($language)
             ;
         }
 
