@@ -63,7 +63,15 @@
         </div>
         {{ form_row(form.id) }}
         {{ form_row(form._token) }}
+        {{ form_row(form.languages) }}
     </form>
+
+    {# TODO style this as a dropdown #}
+    <ul class="locales">
+        {% for language in form.vars.value.getActiveLanguages() %}
+            <li>{{ language }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}

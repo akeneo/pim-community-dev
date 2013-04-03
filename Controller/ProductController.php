@@ -22,7 +22,6 @@ use Pim\Bundle\ProductBundle\Form\Type\ProductType;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @Route("/product")
  */
 class ProductController extends Controller
 {
@@ -108,7 +107,7 @@ class ProductController extends Controller
      * @param string  $dataScope  data scope
      *
      * @Route(
-     *     "/edit/{id}/{dataLocale}/{dataScope}",
+     *     "{id}/edit",
      *     requirements={"id"="\d+"},
      *     defaults={"id"=0, "dataLocale" = null, "dataScope" = null}
      * )
