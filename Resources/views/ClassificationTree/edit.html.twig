@@ -5,9 +5,11 @@
 
 {% block content %}
 
+{% set parentId %}{{ form.vars.value.parent ? form.vars.value.parent.id : null }}{% endset %}
+
 <form action="{{ form.vars.value.id ?
-    path('pim_product_classificationtree_edit', { id: form.vars.value.id, mode: mode }) :
-    path('pim_product_classificationtree_create', { mode: mode }) }}" method="POST" class="form-register">
+    path('pim_product_classificationtree_edit', { id: form.vars.value.id, parent: parentId }) :
+    path('pim_product_classificationtree_create', { parent: parentId }) }}" method="POST" class="form-register">
     <fieldset>
         <legend>{{ title|trans }}
             <a class="btn btn-primary pull-right" href="{{ path('pim_product_classificationtree_index') }}">

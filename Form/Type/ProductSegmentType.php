@@ -1,9 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
-
-use Sonata\AdminBundle\Form\FormMapper;
+use Pim\Bundle\ProductBundle\Form\Subscriber\ProductSegmentSubscriber;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,22 +19,6 @@ class ProductSegmentType extends AbstractType
 {
 
     /**
-     * Defined mode (tree or node)
-     * @var string
-     */
-    protected $mode;
-
-    /**
-     * Constructor
-     *
-     * @param string $mode
-     */
-    public function __construct($mode = 'node')
-    {
-        $this->mode = $mode;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -47,21 +29,8 @@ class ProductSegmentType extends AbstractType
 
         $builder->add('code');
 
-        if ($this->mode === 'node') {
-            $builder->add('isDynamic', 'checkbox', array('required' => false));
-
-            $builder->add(
-                'parent',
-                'entity',
-                array(
-                    'class' => 'Pim\Bundle\ProductBundle\Entity\ProductSegment',
-                    'property' => 'code',
-                    'query_builder' => function (EntityRepository $repository) {
-                        return $repository->createQueryBuilder('ps')->orderBy('ps.left');
-                    }
-                )
-            );
-        }
+        $subscriber = new ProductSegmentSubscriber($builder->getFormFactory());
+        $builder->addEventSubscriber($subscriber);
     }
 
     /**

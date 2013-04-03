@@ -7,9 +7,7 @@
 
     <h1>{{ title }} 
         <a class="btn btn-primary pull-right" style="margin-left:10px;"
-            href="{{ path('pim_product_classificationtree_create', { mode: 'tree' }) }}">{{ 'New tree'|trans }}</a>
-        <a class="btn btn-primary pull-right" style="margin-left:10px;"
-            href="{{ path('pim_product_classificationtree_create', { mode: 'node' }) }}">{{ 'New node'|trans }}</a>
+            href="{{ path('pim_product_classificationtree_create') }}">{{ 'New tree'|trans }}</a>
     </h1>
 
     <table class="table table-bordered table-striped table-condensed">
@@ -20,6 +18,7 @@
                 <th>{{ 'Parent'|trans }}</th>
                 <th>{{ 'Root'|trans }}</th>
                 <th>{{ 'Is dynamic'|trans }}</th>
+                <th style="width: 50px">{{ 'Create child'|trans }}</th>
                 <th style="width: 50px">{{ 'Edit'|trans }}</th>
                 <th style="width: 50px">{{ 'Remove'|trans }}</th>
             </tr>
@@ -37,6 +36,11 @@
                 <td>{% if segment.parent %}{{ segment.parent.code }}{% endif %}</td>
                 <td>{{ segment.root == segment.id }}</td>
                 <td>{{ segment.isDynamic }}</td>
+                <td>
+                    <a href="{{ path('pim_product_classificationtree_create', { parent: segment.id, mode: mode }) }}">
+                        <i class="icon-file"></i>
+                    </a>
+                </td>
                 <td>
                     <a href="{{ path('pim_product_classificationtree_edit', { id: segment.id, mode: mode }) }}">
                         <i class="icon-edit"></i>

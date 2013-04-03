@@ -53,22 +53,36 @@ class ClassificationTreeController extends Controller
     /**
      * Create segment action
      *
-     * @param string $mode
+     * @param ProductSegment $parent
      *
      * @Route(
-     *     "/create/{mode}",
-     *     requirements={"mode"="node|tree"},
-     *     defaults={"mode"="node"}
+     *     "/create/{parent}",
+     *     requirements={"parent"="\d+"},
+     *     defaults={"parent"=0}
      * )
      * @Template("PimProductBundle:ClassificationTree:edit.html.twig")
      *
      * @return array
      */
-    public function createAction($mode)
+    public function createAction(ProductSegment $parent = null)
     {
         $segment = $this->getTreeManager()->getSegmentInstance();
+        $segment->setParent($parent);
 
-        return $this->editAction($segment, $mode);
+        return $this->editAction($segment, 'node');
+    }
+
+    /**
+     * Create tree action
+     *
+     * @Route("/create")
+     * @Template("PimProductBundle:ClassificationTree:edit.html.twig")
+     *
+     * @return array
+     */
+    public function createTreeAction()
+    {
+        return $this->createAction();
     }
 
     /**
@@ -111,18 +125,21 @@ class ClassificationTreeController extends Controller
     /**
      * Remove classification tree
      *
-     * @param ProductSegment $tree The root segment to delete
+     * @param ProductSegment $segment The segment to delete
      *
      * @Route("/remove/{id}", requirements={"id"="\d+"})
      *
      * @return array
-     *
-     * TODO : Remove method must call remove tree if necessary
      */
-    public function removeAction(ProductSegment $tree)
+    public function removeAction(ProductSegment $segment)
     {
-        $this->getDoctrine()->getEntityManager()->remove($tree);
-        $this->getDoctrine()->getEntityManager()->flush();
+        if ($segment->getParent() === null) {
+            $this->getTreeManager()->removeTree($segment);
+        } else {
+            $this->getTreeManager()->remove($segment);
+        }
+
+        $this->getTreeManager()->getStorageManager()->flush();
 
         $this->get('session')->getFlashBag()->add('success', 'Product segment successfully removed');
 
