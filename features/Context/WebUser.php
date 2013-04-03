@@ -10,9 +10,14 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\Role;
 
 use Pim\Bundle\ConfigBundle\Entity\Language;
+use Behat\MinkExtension\Context\RawMinkContext;
+use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
+use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 
-class WebUser extends PageObjectMinkContext
+class WebUser extends RawMinkContext implements PageObjectAwareInterface
 {
+    private $pageFactory = null;
+
     private $locales = array(
         'english' => 'en',
         'french'  => 'fr',
@@ -27,6 +32,28 @@ class WebUser extends PageObjectMinkContext
     public function resetCurrentLocale()
     {
         $this->currentLocale = null;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Page
+     */
+    public function getPage($name)
+    {
+        if (null === $this->pageFactory) {
+            throw new \RuntimeException('To create pages you need to pass a factory with setPageFactory()');
+        }
+
+        return $this->pageFactory->createPage($name);
+    }
+
+    /**
+     * @param PageFactory $pageFactory
+     */
+    public function setPageFactory(PageFactory $pageFactory)
+    {
+        $this->pageFactory = $pageFactory;
     }
 
     /**
