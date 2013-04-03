@@ -25,10 +25,9 @@
         </thead>
         <tbody>
         {% for segment in segments %}
-            {% set mode %}{{ segment.root == segment.id ? 'tree' : 'node' }}{% endset %}
             <tr>
                 <td>
-                    <a href="{{ path('pim_product_classificationtree_edit', { id: segment.id, mode: mode }) }}">
+                    <a href="{{ path('pim_product_classificationtree_edit', { id: segment.id }) }}">
                         {{ segment.code }}
                     </a>
                 </td>
@@ -37,17 +36,17 @@
                 <td>{{ segment.root == segment.id }}</td>
                 <td>{{ segment.isDynamic }}</td>
                 <td>
-                    <a href="{{ path('pim_product_classificationtree_create', { parent: segment.id, mode: mode }) }}">
+                    <a href="{{ path('pim_product_classificationtree_create', { parent: segment.id }) }}">
                         <i class="icon-file"></i>
                     </a>
                 </td>
                 <td>
-                    <a href="{{ path('pim_product_classificationtree_edit', { id: segment.id, mode: mode }) }}">
+                    <a href="{{ path('pim_product_classificationtree_edit', { id: segment.id }) }}">
                         <i class="icon-edit"></i>
                     </a>
                 </td>
                 <td>
-                    <a href="{{ path('pim_product_classificationtree_remove', { id: segment.id, mode: mode }) }}">
+                    <a href="{{ path('pim_product_classificationtree_remove', { id: segment.id }) }}">
                         <i class="icon-remove"></i>
                     </a>
                 </td>
