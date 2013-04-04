@@ -14,6 +14,13 @@ use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 
+/**
+ * Context of the website
+ *
+ * @author    Gildas Quéméner <gildas.quemener@gmail.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class WebUser extends RawMinkContext implements PageObjectAwareInterface
 {
     private $pageFactory = null;
