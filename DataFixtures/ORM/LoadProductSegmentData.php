@@ -48,43 +48,54 @@ class LoadProductSegmentData extends AbstractFixture implements OrderedFixtureIn
     {
         $this->manager = $manager;
 
-        // create products
+        // get products
         $product1 = $this->getReference('product-sku-1');
         $product2 = $this->getReference('product-sku-2');
         $product3 = $this->getReference('product-sku-3');
         $product4 = $this->getReference('product-sku-4');
         $product5 = $this->getReference('product-sku-5');
 
-        // create trees and segments linked
-        $treeRoot1 = $this->createSegment('Tree One');
+        // create trees
+        $treeCatalog     = $this->createSegment('Master Catalog');
+        $treeCollections = $this->createSegment('Collections');
+        $treeColors      = $this->createSegment('Colors');
+        $treeSales       = $this->createSegment('Europe Sales Catalog');
 
-        $products1 = array($product1, $product2, $product3);
-        $segment1 = $this->createSegment('Segment One', $treeRoot1, $products1);
+        // enrich master catalog with segments
+        $nodeBooks = $this->createSegment('Books', $treeCatalog);
+        $nodeComputers = $this->createSegment('Computers', $treeCatalog);
+        $nodeDesktops = $this->createSegment('Desktops', $nodeComputers);
+        $nodeNotebooks = $this->createSegment('Notebooks', $nodeComputers);
+        $nodeAccessories = $this->createSegment('Accessories', $nodeComputers);
+        $nodeGames = $this->createSegment('Games', $nodeComputers);
+        $nodeSoftware = $this->createSegment('Software', $nodeComputers);
+        $nodeClothing = $this->createSegment('Apparels & Shoes', $treeCatalog);
 
-        $treeRoot2 = $this->createSegment('Tree Two');
-        $segment2 = $this->createSegment('Segment Two', $treeRoot2);
-
-        $products2 = array($product3, $product4, $product5);
-        $segment3 = $this->createSegment('Segment Three', $segment2, $products2);
-
-        $segment4 = $this->createSegment('Segment Four', $segment2);
-        $segment5 = $this->createSegment('Segment Five', $segment4);
-        $segment6 = $this->createSegment('Segment Six', $segment4);
+        $nodeShirts = $this->createSegment('Shirts', $nodeClothing, array($product5));
+        $nodeJeans  = $this->createSegment('Jeans', $nodeClothing, array($product3, $product4));
+        $nodeShoes  = $this->createSegment('Shoes', $nodeClothing, array($product1, $product2, $product3));
 
         $this->manager->flush();
 
-        // translate trees and segments
+        // translate data
         $locale = 'fr_FR';
-        $this->translate($treeRoot1, $locale, 'Arbre un');
-        $this->translate($segment1, $locale, 'Segment un');
+        $this->translate($treeCatalog, $locale, 'Catalogue Principal');
+        $this->translate($treeCollections, $locale, 'Collections');
+        $this->translate($treeColors, $locale, 'Couleurs');
+        $this->translate($treeSales, $locale, 'Catalogue des ventes européennes');
 
-        $this->translate($treeRoot2, $locale, 'Arbre deux');
-        $this->translate($segment2, $locale, 'Segment deux');
+        $this->translate($nodeBooks, $locale, 'Livres');
+        $this->translate($nodeComputers, $locale, 'Ordinateurs');
+        $this->translate($nodeDesktops, $locale, 'Ordinateurs de bureau');
+        $this->translate($nodeNotebooks, $locale, 'Ordinateur portable');
+        $this->translate($nodeAccessories, $locale, 'Accessoires');
+        $this->translate($nodeGames, $locale, 'Jeux');
+        $this->translate($nodeSoftware, $locale, 'Logiciels');
+        $this->translate($nodeClothing, $locale, 'Habillements & Chaussures');
 
-        $this->translate($segment3, $locale, 'Segment trois');
-        $this->translate($segment4, $locale, 'Segment quatre');
-        $this->translate($segment5, $locale, 'Segment cinq');
-        $this->translate($segment6, $locale, 'Segment six');
+        $this->translate($nodeShirts, $locale, 'Chemises');
+        $this->translate($nodeJeans, $locale, 'Jeans');
+        $this->translate($nodeShoes, $locale, 'Chaussures');
 
         $this->manager->flush();
     }
