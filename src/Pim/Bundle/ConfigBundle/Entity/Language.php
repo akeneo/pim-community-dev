@@ -6,6 +6,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Locale\Locale;
 
 /**
  * Language entity
@@ -227,5 +228,12 @@ class Language
         $this->currencies->removeElement($currency);
 
         return $this;
+    }
+
+    public function fromLocale($locale)
+    {
+        $countries = Locale::getDisplayLanguages($locale);
+
+        return isset($countries[$this->code]) ? $countries[$this->code] : $this->code;
     }
 }
