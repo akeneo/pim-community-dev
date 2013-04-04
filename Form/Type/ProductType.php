@@ -23,9 +23,13 @@ class ProductType extends FlexibleType
     {
         parent::addEntityFields($builder);
 
-        $builder->add('sku', 'text', array('required' => true, 'read_only' => $builder->getData()->getId()));
-
-        $builder->add('productFamily');
+        $builder
+            ->add('sku', 'text', array('required' => true, 'read_only' => $builder->getData()->getId()))
+            ->add('productFamily')
+            ->add('languages', 'collection', array(
+                'type' => new ProductLanguageType
+            ))
+        ;
     }
 
     /**
