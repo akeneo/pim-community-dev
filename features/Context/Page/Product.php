@@ -34,32 +34,12 @@ class Product extends Page
 
     public function selectLanguage($language)
     {
-        $field = $this->find('named', array(
-            'field', $this->getSession()->getSelectorsHandler()->xpathLiteral($language)
-        ));
-
-        if (!$field) {
-            throw new ElementNotFoundException(
-                $this->getSession(), 'form field', 'id|name|label|value', $language
-            );
-        }
-
-        $field->check();
+        return $this->findField($language)->check();
     }
 
     public function save()
     {
-        $button = $this->find('named', array(
-            'button', $this->getSession()->getSelectorsHandler()->xpathLiteral('Save')
-        ));
+        return $this->findButton('Save')->press();
 
-        if (!$button) {
-            throw new ElementNotFoundException(
-                $this->getSession(), 'button', 'id|name|title|alt|value', 'Save'
-            );
-        }
-
-        $button->press();
     }
 }
-
