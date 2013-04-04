@@ -9,9 +9,7 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "": "src/"
-        }
+        "psr-0": { "": "src/", "Context": "features/" }
     },
     "require": {
         "php": ">=5.3.3",
@@ -47,6 +45,13 @@
         "sonata-project/admin-bundle": "2.1.x-dev",
         "sonata-project/doctrine-orm-admin-bundle": "2.1.x-dev",
         "knplabs/knp-gaufrette-bundle": "dev-master"
+    },
+    "require-dev": {
+        "behat/behat": "2.4.*",
+        "behat/symfony2-extension": "*",
+        "behat/mink-extension": "*",
+        "behat/mink-browserkit-driver": "*",
+        "sensiolabs/behat-page-object-extension": "*"
     },
     "repositories": [
         {
