@@ -70,4 +70,36 @@ class ProductSegmentTest extends \PHPUnit_Framework_TestCase
         $segment = new ProductSegment();
         $segment->setTranslatableLocale('en_US');
     }
+
+    /**
+     * Test getter/setter for code property
+     */
+    public function testCode()
+    {
+        $segment = new ProductSegment();
+
+        // assert getter
+        $this->assertNull($segment->getCode());
+
+        // assert setter
+        $testCode = 'test-code';
+        $segment->setCode($testCode);
+        $this->assertEquals($testCode, $segment->getCode());
+    }
+
+    /**
+     * Test getter/setter for isDynamic property
+     */
+    public function testIsDynamic()
+    {
+        $segment = new ProductSegment();
+
+        // assert getter
+        $this->assertFalse($segment->getIsDynamic());
+
+        // assert setter
+        $testIsDynamic = true;
+        $segment->setIsDynamic($testIsDynamic);
+        $this->assertEquals($testIsDynamic, $segment->getIsDynamic());
+    }
 }
