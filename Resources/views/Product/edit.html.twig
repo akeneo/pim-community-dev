@@ -69,7 +69,7 @@
     {# TODO style this as a dropdown #}
     <ul class="locales">
         {% for language in form.vars.value.getActiveLanguages() %}
-            <li>{{ language.fromLocale(app.request.locale) }}</li>
+        <li><a href="?dataLocale={{ language.code }}">{{ language.fromLocale(app.request.locale) }}</a></li>
         {% endfor %}
     </ul>
 {% endblock %}

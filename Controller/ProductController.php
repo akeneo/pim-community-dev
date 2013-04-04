@@ -108,18 +108,24 @@ class ProductController extends Controller
      *
      * @Route(
      *     "{id}/edit",
-     *     requirements={"id"="\d+"},
-     *     defaults={"id"=0, "dataLocale" = null, "dataScope" = null}
+     *     requirements={"id"="\d+"}
      * )
      * @Template
      *
      * @return array
      */
-    public function editAction(Product $entity, $dataLocale, $dataScope)
+    public function editAction($id)
     {
+        $entity  = $this->getProductManager()->find($id);
+        if (!$entity) {
+            throw $this->createNotFoundException(sprintf(
+                'Product with id %d could not be found.', $id
+            ));
+        }
+
         $request = $this->getRequest();
 
-        // create form
+         // create form
         $entClassName = $this->getProductManager()->getFlexibleName();
         $valueClassName = $this->getProductManager()->getFlexibleValueName();
         $form = $this->createForm(new ProductType($entClassName, $valueClassName), $entity);
@@ -158,7 +164,11 @@ class ProductController extends Controller
                 $em->flush();
 
                 $this->get('session')->getFlashBag()->add('success', 'Product successfully saved');
-                $params = array('id' => $entity->getId(), 'dataLocale' => $dataLocale, 'dataScope' => $dataScope);
+                $params = array(
+                    'id'         => $entity->getId(),
+                    'dataLocale' => $request->query->get('dataLocale'),
+                    'dataScope'  => $request->query->get('dataScope')
+                );
 
                 return $this->redirect($this->generateUrl('pim_product_product_edit', $params));
             }
