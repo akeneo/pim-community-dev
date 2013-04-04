@@ -40,6 +40,10 @@ class Product extends Page
     public function save()
     {
         return $this->findButton('Save')->press();
+    }
 
+    public function getFieldValue($field)
+    {
+        return $this->findField($field)->getValue();
     }
 }

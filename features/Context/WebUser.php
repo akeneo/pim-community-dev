@@ -227,11 +227,18 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Then /^I should see that the product is available in french and english$/
+     * @Then /^the product (.*) should be "([^"]*)"$/
      */
-    public function iShouldSeeThatTheProductIsAvailableInFrenchAndEnglish()
+    public function theProductFieldValueShouldBe($fieldName, $expected)
     {
-        throw new PendingException();
+        $actual = $this->getPage('Product')->getFieldValue($fieldName);
+
+        if ($expected !== $actual) {
+            throw new \LogicException(sprintf(
+                'Expected product %s to be "%s", but got "%s".',
+                $fieldName, $expected, $actual
+            ));
+        }
     }
 
     private function listToArray($list)
