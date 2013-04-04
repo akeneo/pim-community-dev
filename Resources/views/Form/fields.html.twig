@@ -33,8 +33,8 @@
 
 {% block form_row %}
 {% spaceless %}
-    <div class="control-group">
-        {{ form_label(form) }}
+    <div class="control-group{% if errors|length > 0 %} error{%  endif %}{% if attr.class is defined %} {{ attr.class }}{% endif %}">
+        {{ form_label(form, null, { label_attr: label_attr|merge({ class: 'control-label' })}) }}
         <div class="controls">
             {{ form_errors(form) }}
             {{ form_widget(form) }}
@@ -42,21 +42,6 @@
     </div>
 {% endspaceless %}
 {% endblock form_row %}
-
-{% block form_label %}
-{% spaceless %}
-    {% if not compound %}
-        {% set label_attr = label_attr|merge({'for': id, 'class': 'control-label'}) %}
-    {% endif %}
-    {% if required %}
-        {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
-    {% endif %}
-    {% if label is empty %}
-        {% set label = name|humanize %}
-    {% endif %}
-    <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</label>
-{% endspaceless %}
-{% endblock form_label %}
 
 {% block widget_attributes %}
 {% set attr = attr|merge({'class': 'span4' }) %}
