@@ -6,6 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\ConfigBundle\Entity\Language;
 
 /**
+ * @author    Gildas Quéméner <gildas.quemener@gmail.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
  * @ORM\Entity
  * @ORM\Table(name="pim_product_language")
  */
