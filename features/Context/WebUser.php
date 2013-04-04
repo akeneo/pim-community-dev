@@ -26,7 +26,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private $pageFactory = null;
 
     private $locales = array(
-        'english' => 'en',
+        'english' => 'en_US',
         'french'  => 'fr',
         'german'  => 'de',
     );
@@ -227,10 +227,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Then /^the product (.*) should be empty$/
      * @Then /^the product (.*) should be "([^"]*)"$/
      */
-    public function theProductFieldValueShouldBe($fieldName, $expected)
-    {
+    public function theProductFieldValueShouldBe($fieldName, $expected = '')
+   {
         $actual = $this->getPage('Product')->getFieldValue($fieldName);
 
         if ($expected !== $actual) {
@@ -239,6 +240,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 $fieldName, $expected, $actual
             ));
         }
+    }
+
+    /**
+     * @When /^I switch the locale to "([^"]*)"$/
+     */
+    public function iSwitchTheLocaleTo($locale)
+    {
+        $this->getPage('Product')->switchLocale($locale);
     }
 
     private function listToArray($list)

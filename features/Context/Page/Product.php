@@ -34,16 +34,27 @@ class Product extends Page
 
     public function selectLanguage($language)
     {
-        return $this->findField($language)->check();
+        $this->checkField($language);
     }
 
     public function save()
     {
-        return $this->findButton('Save')->press();
+        $this->pressButton('Save');
     }
 
     public function getFieldValue($field)
     {
-        return $this->findField($field)->getValue();
+        if (null === $field = $this->findField($field)) {
+            throw new ElementNotFoundException(
+                $this->getSession(), 'form field ', 'id|name|label|value', $field
+            );
+        }
+
+        return $field->getValue();
+    }
+
+    public function switchLocale($locale)
+    {
+        $this->getElement('Locales dropdown')->clickLink(ucfirst($locale));
     }
 }
