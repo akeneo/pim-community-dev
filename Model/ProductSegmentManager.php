@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Model;
 
+use Pim\Bundle\ProductBundle\Entity\ProductSegment;
+
 use Oro\Bundle\SegmentationTreeBundle\Model\SegmentManager;
 
 /**
@@ -13,4 +15,25 @@ use Oro\Bundle\SegmentationTreeBundle\Model\SegmentManager;
  */
 class ProductSegmentManager extends SegmentManager
 {
+
+    /**
+     * Get a new tree instance
+     *
+     * @return ProductSegment
+     */
+    public function getTreeInstance()
+    {
+        $tree = $this->getSegmentInstance();
+        $tree->setParent(null);
+
+        $unclassifiedNode = $this->getSegmentInstance();
+        $unclassifiedNode->setParent($tree);
+        $unclassifiedNode->setIsDynamic(true);
+        $unclassifiedNode->setCode('unclassified-node');
+        $unclassifiedNode->setTitle('Unclassified Node');
+
+        $tree->addChild($unclassifiedNode);
+
+        return $tree;
+    }
 }

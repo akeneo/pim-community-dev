@@ -51,6 +51,76 @@ class ClassificationTreeController extends Controller
     }
 
     /**
+     * List classification trees
+     *
+     * @Route("/list-tree")
+     * @Template("PimProductBundle:ClassificationTree:listTree.html.twig")
+     *
+     * @return array
+     */
+    public function listTreeAction()
+    {
+        $trees = $this->getTreeManager()->getTrees();
+
+        return array('trees' => $trees);
+    }
+
+    /**
+     * Show tree in management mode
+     *
+     * @param ProductSegment $treeRoot
+     *
+     * @Route(
+     *     "/manage/{treeRoot}",
+     *     requirements={"treeRoot"="\d+"},
+     *     defaults={"treeRoot"=0}
+     * )
+     * @Template("PimProductBundle:ClassificationTree:manage.html.twig")
+     *
+     * @return array
+     */
+    public function manageAction(ProductSegment $treeRoot)
+    {
+        $segments = $this->getTreeManager()->getTreeSegments($treeRoot);
+
+        return array('segments' => $segments);
+    }
+
+    /**
+     * Show tree in view mode
+     *
+     * @param ProductSegment $treeRoot
+     *
+     * @Route(
+     *     "/view/{treeRoot}",
+     *     requirements={"treeRoot"="\d+"},
+     *     defaults={"treeRoot"=0}
+     * )
+     * @Template("PimProductBundle:ClassificationTree:manage.html.twig")
+     *
+     * @return array
+     */
+    public function viewAction(ProductSegment $treeRoot)
+    {
+        $segments = $this->getTreeManager()->getTreeSegments($treeRoot);
+
+        // TODO : for each dynamic segment, get possible values and count products
+
+        $unclassifiedNode = $this->getTreeManager()->getSegmentInstance();
+        $unclassifiedNode->setParent($treeRoot);
+        $unclassifiedNode->setIsDynamic(true);
+        $unclassifiedNode->setTitle('Unclassified node');
+        $unclassifiedNode->setCode('unclassified-node');
+        $unclassifiedNode->setRoot($treeRoot->getId());
+
+        $treeRoot->addChild($unclassifiedNode);
+
+        $segments[] = $unclassifiedNode;
+
+        return array('segments' => $segments);
+    }
+
+    /**
      * Create segment action
      *
      * @param ProductSegment $parent
@@ -66,8 +136,12 @@ class ClassificationTreeController extends Controller
      */
     public function createAction(ProductSegment $parent = null)
     {
-        $segment = $this->getTreeManager()->getSegmentInstance();
-        $segment->setParent($parent);
+        if ($parent === null) {
+            $segment = $this->getTreeManager()->getTreeInstance();
+        } else {
+            $segment = $this->getTreeManager()->getSegmentInstance();
+            $segment->setParent($parent);
+        }
 
         return $this->editAction($segment);
     }
