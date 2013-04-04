@@ -16,6 +16,7 @@ parameters:
 
     pim_product.attributes_config:    ~
     pim_product.segment_class:        Pim\Bundle\ProductBundle\Entity\ProductSegment
+    pim_product.segment_manager_class: Pim\Bundle\ProductBundle\Model\ProductSegmentManager
 
 services:
     # Managers
@@ -26,7 +27,7 @@ services:
             - { name: oro_flexibleentity_manager, entity: %product_entity_class%}
             
     pim_product.classification_tree_manager:
-        class:     %oro_segmentation_tree.segment_manager.class%
+        class:     %pim_product.segment_manager_class%
         arguments: [@doctrine.orm.entity_manager, %pim_product.segment_class%]
 
     # Form

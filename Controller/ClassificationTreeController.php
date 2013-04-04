@@ -69,56 +69,41 @@ class ClassificationTreeController extends Controller
         $segment = $this->getTreeManager()->getSegmentInstance();
         $segment->setParent($parent);
 
-        return $this->editAction($segment, 'node');
-    }
-
-    /**
-     * Create tree action
-     *
-     * @Route("/create")
-     * @Template("PimProductBundle:ClassificationTree:edit.html.twig")
-     *
-     * @return array
-     */
-    public function createTreeAction()
-    {
-        return $this->createAction();
+        return $this->editAction($segment);
     }
 
     /**
      * Edit tree action
      *
-     * @param ProductSegment $tree The segment to manage
-     * @param string         $mode Define working with node or tree
+     * @param ProductSegment $segment The segment to manage
      *
      * @Route(
-     *     "/edit/{id}/{mode}",
-     *     requirements={"id"="\d+", "mode"="node|tree"},
-     *     defaults={"id"=0, "mode"="node"}
+     *     "/edit/{id}",
+     *     requirements={"id"="\d+"},
+     *     defaults={"id"=0}
      * )
      * @Template("PimProductBundle:ClassificationTree:edit.html.twig")
      *
      * @return array
      */
-    public function editAction(ProductSegment $tree, $mode)
+    public function editAction(ProductSegment $segment)
     {
         $request = $this->getRequest();
-        $form = $this->createForm(new ProductSegmentType($mode), $tree);
+        $form = $this->createForm(new ProductSegmentType(), $segment);
 
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
 
             if ($form->isValid()) {
-                $this->getDoctrine()->getEntityManager()->persist($tree);
-                $this->getDoctrine()->getEntityManager()->flush();
+                $this->getTreeManager()->getStorageManager()->persist($segment);
+                $this->getTreeManager()->getStorageManager()->flush();
 
                 $this->get('session')->getFlashBag()->add('success', 'Product segment successfully saved');
             }
         }
 
         return array(
-            'form' => $form->createView(),
-            'mode' => $mode
+            'form' => $form->createView()
         );
     }
 
@@ -133,12 +118,7 @@ class ClassificationTreeController extends Controller
      */
     public function removeAction(ProductSegment $segment)
     {
-        if ($segment->getParent() === null) {
-            $this->getTreeManager()->removeTree($segment);
-        } else {
-            $this->getTreeManager()->remove($segment);
-        }
-
+        $this->getTreeManager()->remove($segment);
         $this->getTreeManager()->getStorageManager()->flush();
 
         $this->get('session')->getFlashBag()->add('success', 'Product segment successfully removed');
