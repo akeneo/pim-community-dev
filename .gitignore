@@ -10,3 +10,9 @@
 /build/
 /bin/
 composer.lock
+
+.project
+.settings/
+
+app/build/
+app/phpunit.xml
