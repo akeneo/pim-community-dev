@@ -25,10 +25,18 @@ class ProductSegmentType extends AbstractType
     {
         parent::buildForm($builder, $options);
 
-        $builder->add('title');
-
         $builder->add('code');
 
+        $builder->add(
+            'titles',
+            'collection',
+            array(
+                'type' => new ProductSegmentTranslationType(),
+                'by_reference' => false
+            )
+        );
+
+        // Add isDynamic field is needed
         $subscriber = new ProductSegmentSubscriber($builder->getFormFactory());
         $builder->addEventSubscriber($subscriber);
     }
