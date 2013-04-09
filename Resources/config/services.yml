@@ -1,0 +1,7 @@
+parameters:
+
+services:
+    # Managers
+    pim_translation.translation_manager:
+        class: Pim\Bundle\TranslationBundle\Manager\TranslationManager
+        arguments: [@doctrine.orm.entity_manager]
