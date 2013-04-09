@@ -49,6 +49,8 @@ class Product extends AbstractEntityFlexible
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->languages = new ArrayCollection;
     }
 
