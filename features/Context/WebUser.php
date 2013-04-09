@@ -92,7 +92,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 $product->addValue($value);
             }
         }
-        $pm->getStorageManager()->flush();
+        $pm->save($product);
 
         return $product;
     }
