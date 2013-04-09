@@ -159,9 +159,7 @@ class ProductController extends Controller
                     $index++;
                 }
 
-                $em = $this->getProductManager()->getStorageManager();
-                $em->persist($entity);
-                $em->flush();
+                $this->getProductManager()->save($entity);
 
                 $this->get('session')->getFlashBag()->add('success', 'Product successfully saved');
                 $params = array(
