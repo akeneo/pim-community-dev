@@ -7,7 +7,7 @@
 
     {% form_theme form 'PimUIBundle:Form:fields.html.twig' %}
     
-    <form action="{{ form.vars.value.id ? path('pim_product_product_edit', { id: form.vars.value.id }) : path('pim_product_product_create') }}" 
+    <form action="{{ form.vars.value.id ? path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: app.request.query.get('dataLocale') }) : path('pim_product_product_create') }}" 
         method="POST" class="form-register" {{ form_enctype(form) }}>
 
         <div class="row-fluid">
