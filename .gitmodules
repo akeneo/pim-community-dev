@@ -43,3 +43,6 @@
 [submodule "src/Oro/Bundle/GridBundle"]
 	path = src/Oro/Bundle/GridBundle
 	url = git@github.com:laboro/GridBundle.git
+[submodule "src/Pim/Bundle/TranslationBundle"]
+	path = src/Pim/Bundle/TranslationBundle
+	url = git@github.com:akeneo/TranslationBundle.git

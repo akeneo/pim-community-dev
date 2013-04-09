@@ -47,6 +47,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\UIBundle\PimUIBundle(),
             new Pim\Bundle\ProductBundle\PimProductBundle(),
             new Pim\Bundle\ConfigBundle\PimConfigBundle(),
+            new Pim\Bundle\TranslationBundle\PimTranslationBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
