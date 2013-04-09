@@ -12,7 +12,7 @@ use Doctrine\Common\Persistence\ObjectManager;
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
 class TranslationManager
@@ -55,10 +55,10 @@ class TranslationManager
     /**
      * Get translated object
      *
-     * @param unknown_type $entity
-     * @param unknown_type $i18nClass
-     * @param unknown_type $field
-     * @param unknown_type $enrich
+     * @param \Gedmo\Translatable\Translatable $entity    Doctrine entity implementing Translatable interface
+     * @param string                           $i18nClass FQCN for translation entity
+     * @param string                           $field     field name translated
+     * @param boolean                          $enrich    populate with all defined locales or not
      *
      * @return multitype:AbstractTranslation
      */
@@ -69,17 +69,16 @@ class TranslationManager
         if ($wrapped->hasValidIdentifier()) {
             $i18nRepo = $this->objectManager->getRepository($i18nClass);
 
-//             if ($i18nRepo instanceof Pim\Bundle\ProductBundle\Entity\Repository\TranslationRepository) {
+            if ($i18nRepo instanceof \Pim\Bundle\TranslationBundle\Entity\Repository\TranslationRepository) {
                 $i18nEntities = $i18nRepo->findTranslatedObjects($entity, $field, $this->activeLocales);
 
                 if ($enrich) {
                     $i18nEntities = $this->enrich($i18nEntities, $wrapped, $i18nClass, $field);
                 }
-
-//             } else {
-                // ???
+            } else {
                 // Not the good translation repository
-//             }
+                throw new \Exception('Wrong repository');
+            }
         }
 
         return $i18nEntities;
@@ -88,10 +87,10 @@ class TranslationManager
     /**
      * Enrich collection of entities with locales not already defined
      *
-     * @param multitype:AbstractTranslation $i18nEntities
-     * @param EntityWrapper $wrapper
-     * @param string $i18nClass
-     * @param string $field
+     * @param multitype:AbstractTranslation $i18nEntities translated entities collection
+     * @param EntityWrapper                 $wrapper      entity wrapper
+     * @param string                        $i18nClass    class name for translated entities
+     * @param string                        $field        field to translate
      *
      * @return multitype:AbstractTranslation
      */
@@ -121,8 +120,11 @@ class TranslationManager
     }
 
     /**
+     * Order locales
      *
-     * @param unknown_type $i18nEntities
+     * @param multitype $i18nEntities
+     *
+     * @return multitype
      */
     protected function orderByLocales($i18nEntities)
     {
@@ -130,8 +132,9 @@ class TranslationManager
     }
 
     /**
+     * Persist translated entities
      *
-     * @param unknown_type $i18nEntity
+     * @param mixed $i18nEntity
      */
     public function persist($i18nEntity)
     {

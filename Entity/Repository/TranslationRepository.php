@@ -20,8 +20,11 @@ class TranslationRepository extends GedmoTranslationRepository
 {
 
     /**
+     * Find translation entities
      *
-     * @param unknown_type $entity
+     * @param string           $entity  entity FQCN (Fully-Qualified Class Name)
+     * @param string           $field   field translated
+     * @param multitype:string $locales locale string
      *
      * @return \Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation
      */
