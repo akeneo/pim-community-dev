@@ -172,7 +172,7 @@ class AttributeGroupControllerTest extends ControllerTest
     public function testRemove($locale)
     {
         // get attribute group entity
-        $attributeGroup = $this->getRepository()->findOneBy(array());
+        $attributeGroup = $this->getRepository()->findOneBy(array('name' =>self::GROUP_EDITED_NAME));
         $uri = '/'. $locale .'/product/attribute-group/remove/'. $attributeGroup->getId();
 
         // assert without authentication
