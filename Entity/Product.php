@@ -5,6 +5,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\ConfigBundle\Entity\Language;
 
 /**
  * Flexible product
@@ -39,6 +41,16 @@ class Product extends AbstractEntityFlexible
      * @ORM\ManyToOne(targetEntity="ProductFamily")
      */
     protected $productFamily;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ProductLanguage", mappedBy="product", cascade={"persist"})
+     */
+    protected $languages;
+
+    public function __construct()
+    {
+        $this->languages = new ArrayCollection;
+    }
 
     /**
      * Get sku
@@ -86,5 +98,39 @@ class Product extends AbstractEntityFlexible
         $this->productFamily = $productFamily;
 
         return $this;
+    }
+
+    public function getLanguages()
+    {
+        return $this->languages;
+    }
+
+    public function getLanguage(Language $language)
+    {
+        return $this->languages->filter(function ($l) use ($language) {
+            return $language === $l->getLanguage();
+        })->first();
+    }
+
+    public function getActiveLanguages()
+    {
+        return $this->languages->filter(function ($language) {
+            return $language->isActive();
+        });
+    }
+
+    public function setLanguages($languages)
+    {
+        $this->languages = $languages;
+    }
+
+    public function addLanguage(Language $language, $active = false)
+    {
+        $pl = new ProductLanguage;
+        $pl->setProduct($this);
+        $pl->setLanguage($language);
+        $pl->setActive($active);
+
+        $this->languages->add($pl);
     }
 }

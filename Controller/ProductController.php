@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Controller;
 
+use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+
 use Pim\Bundle\ProductBundle\Manager\MediaManager;
 
 use Symfony\Component\HttpFoundation\File\File;
@@ -22,7 +24,6 @@ use Pim\Bundle\ProductBundle\Form\Type\ProductType;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @Route("/product")
  */
 class ProductController extends Controller
 {
@@ -108,7 +109,7 @@ class ProductController extends Controller
      * @param string  $dataScope  data scope
      *
      * @Route(
-     *     "/edit/{id}/{dataLocale}/{dataScope}",
+     *     "{id}/edit",
      *     requirements={"id"="\d+"},
      *     defaults={"id"=0, "dataLocale" = null, "dataScope" = null}
      * )
@@ -124,11 +125,13 @@ class ProductController extends Controller
         $entClassName = $this->getProductManager()->getFlexibleName();
         $valueClassName = $this->getProductManager()->getFlexibleValueName();
         $form = $this->createForm(new ProductType($entClassName, $valueClassName), $entity);
+        $groups = $this->getDoctrine()->getRepository('PimProductBundle:AttributeGroup')->findAllWithVirtualGroup();
 
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
 
             if ($form->isValid()) {
+                // TODO: to move to a relevant method in media manager + use listener
                 $index = 0;
                 // upload files if exist
                 foreach ($entity->getValues() as $value) {
@@ -159,13 +162,15 @@ class ProductController extends Controller
                 $em->flush();
 
                 $this->get('session')->getFlashBag()->add('success', 'Product successfully saved');
+                $params = array('id' => $entity->getId(), 'dataLocale' => $dataLocale, 'dataScope' => $dataScope);
 
-                return $this->redirect($this->generateUrl('pim_product_product_index'));
+                return $this->redirect($this->generateUrl('pim_product_product_edit', $params));
             }
         }
 
         return array(
-            'form' => $form->createView(),
+            'form'   => $form->createView(),
+            'groups' => $groups
         );
     }
 

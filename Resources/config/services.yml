@@ -1,5 +1,5 @@
 parameters:
-    product_manager_class:            Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
+    product_manager_class:            Pim\Bundle\ProductBundle\Manager\ProductManager
     product_entity_class:             Pim\Bundle\ProductBundle\Entity\Product
 
     product_attribute_class:          Pim\Bundle\ProductBundle\Entity\ProductAttribute
@@ -13,6 +13,8 @@ parameters:
     attribute_group_type_class:       Pim\Bundle\ProductBundle\Form\Type\AttributeGroupType
 
     metric_attribute_validator_class: Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricAttributeValidator
+
+    pim_product.attributes_config: ~
 
 services:
     # Managers
@@ -40,6 +42,7 @@ services:
         class: %product_attribute_type_class%
         tags:
             - { name: form.type, alias: pim_product_attribute }
+        arguments: [@pim_product.attribute_service]
 
     pim_product.form.type.attribute_group:
         class: %attribute_group_type_class%
@@ -58,7 +61,6 @@ services:
         arguments: [@pim_product.form.attribute_group, @request, @doctrine.orm.entity_manager]
 
     # Validators
-
     pim_product.form.validator.metric_attribute:
         class: %metric_attribute_validator_class%
         arguments: [%oro_measure.measures_config%]
@@ -69,3 +71,15 @@ services:
     pim_media_manager:
         class: Pim\Bundle\ProductBundle\Manager\MediaManager
         arguments: [@knp_gaufrette.filesystem_map, "pim", %upload_dir%]
+
+    # Product form value type
+    form.type.pim_product_value:
+        class: Pim\Bundle\ProductBundle\Form\Type\ProductValueType
+        arguments: [@product_manager]
+        tags:
+            - { name: form.type, alias: pim_product_value }
+
+    # Attribute manager
+    pim_product.attribute_service:
+        class: Pim\Bundle\ProductBundle\Service\AttributeService
+        arguments: [%pim_product.attributes_config%]

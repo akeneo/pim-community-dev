@@ -69,7 +69,6 @@ class ProductAttributeValidator
     const VIOLATION_INVALID_VALIDATION_REGEXP = 'The validation regular expression is not valid';
     const VIOLATION_INVALID_NUMBER_MIN = 'The minimum number is not valid';
     const VIOLATION_INVALID_NUMBER_MAX = 'The maximum number is not valid';
-    const VIOLATION_INVALID_DECIMAL_PLACES = 'The decimal places property is not valid';
     const VIOLATION_INVALID_DATE_TYPE = 'The date type is not valid';
     const VIOLATION_INVALID_DATE_MIN = 'The minumum date is not valid';
     const VIOLATION_INVALID_DATE_MAX = 'The maximum date is not valid';
@@ -215,7 +214,6 @@ class ProductAttributeValidator
             case AbstractAttributeType::TYPE_METRIC_CLASS:
                 self::isNumberMinValid($productAttribute, $context);
                 self::isNumberMaxValid($productAttribute, $context);
-                self::isDecimalPlacesValid($productAttribute, $context);
                 break;
             case AbstractAttributeType::TYPE_TEXTAREA_CLASS:
                 self::isMaxCharactersValid($productAttribute, $context);
@@ -301,7 +299,7 @@ class ProductAttributeValidator
                     if ($productAttribute->getNumberMax() !== null && $value > $productAttribute->getNumberMax()) {
                         break;
                     }
-                    if ($productAttribute->getDecimalPlaces() !== null && $value != round($value, $productAttribute->getDecimalPlaces())) {
+                    if (!$productAttribute->getDecimalsAllowed() && $value != (int) $value) {
                         break;
                     }
 
@@ -319,9 +317,6 @@ class ProductAttributeValidator
                         if (strlen($value) > $productAttribute->getMaxCharacters()) {
                             break;
                         }
-                    }
-                    if ($productAttribute->getValidationRule() === null) {
-                        return;
                     }
                     if ($productAttribute->getValidationRule() == 'regexp') {
                         if (@preg_match($productAttribute->getValidationRegexp(), $value)) {
@@ -343,6 +338,8 @@ class ProductAttributeValidator
 
                         return;
                     }
+
+                    return;
                 case AbstractAttributeType::TYPE_BOOLEAN_CLASS:
                     if ($value !== (bool) $value) {
                         break;
@@ -426,18 +423,10 @@ class ProductAttributeValidator
     {
         if ($value = $productAttribute->getNumberMin()) {
             if ($productAttribute->getNegativeAllowed()) {
-                if ($value == (int) $value) {
+                if ($value == (int) $value || $productAttribute->getDecimalsAllowed()) {
                     return;
                 }
-                if ($productAttribute->getDecimalPlaces()
-                    && $value == round($value, $productAttribute->getDecimalPlaces())) {
-                    return;
-                }
-            } elseif ($value == (int) $value && $value >= 0) {
-                return;
-            } elseif ($productAttribute->getDecimalPlaces()
-                && $value == round($value, $productAttribute->getDecimalPlaces())
-                && $value >= 0) {
+            } elseif (($value == (int) $value || $productAttribute->getDecimalsAllowed()) && $value >= 0) {
                 return;
             }
 
@@ -458,41 +447,15 @@ class ProductAttributeValidator
         if ($value = $productAttribute->getNumberMax()) {
             if ($productAttribute->getNumberMax() > $productAttribute->getNumberMin()) {
                 if ($productAttribute->getNegativeAllowed()) {
-                    if ($value == (int) $value) {
+                    if ($value == (int) $value || $productAttribute->getDecimalsAllowed()) {
                         return;
                     }
-                    if ($productAttribute->getDecimalPlaces()
-                        && $value == round($value, $productAttribute->getDecimalPlaces())) {
-                        return;
-                    }
-                } elseif ($value == (int) $value && $value >= 0) {
-                    return;
-                } elseif ($productAttribute->getDecimalPlaces()
-                    && $value == round($value, $productAttribute->getDecimalPlaces())
-                    && $value >= 0) {
+                } elseif (($value == (int) $value || $productAttribute->getDecimalsAllowed()) && $value >= 0) {
                     return;
                 }
             }
 
             $context->addViolation(self::VIOLATION_INVALID_NUMBER_MAX);
-        }
-    }
-
-    /**
-     * Validation rule for decimalPlaces
-     *
-     * @param ProductAttribute $productAttribute ProductAttirbute entity
-     * @param ExecutionContext $context          Execution context
-     *
-     * @static
-     */
-    protected static function isDecimalPlacesValid(ProductAttribute $productAttribute, ExecutionContext $context)
-    {
-        if ($productAttribute->getDecimalPlaces() !== null) {
-            if (gettype($productAttribute->getDecimalPlaces()) != 'integer'
-                || ($productAttribute->getDecimalPlaces() < 0 || $productAttribute->getDecimalPlaces() > 4)) {
-                $context->addViolation(self::VIOLATION_INVALID_DECIMAL_PLACES);
-            }
         }
     }
 

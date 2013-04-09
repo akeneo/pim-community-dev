@@ -5,79 +5,125 @@
 
 {% block content %}
 
-    {% set route_params = app.request.attributes.get('_route_params') %}
-    {% if route_params == "" %}
-        {% set route_params = [] %}
-        {% set dataLocale = 'en_US' %}
-        {% set dataScope = 'ecommerce' %}
-    {% else %}
+    {% form_theme form 'PimProductBundle:Form:simple_layout.html.twig' %}
 
-        {% set dataLocale = route_params['dataLocale'] %}
-        {% if dataLocale is null %}
-            {% set dataLocale = 'en_US' %}
-        {% endif %}
-        
-        {% set dataScope = route_params['dataScope'] %}
-        {% if dataScope is null %}
-            {% set dataScope = 'ecommerce' %}
-        {% endif %}
-        
-    {% endif %}
-    <br/>
-    <p>{{ "Choose data locale" | trans }} :
-    {% for locale in ['en_US', 'fr_FR', 'de_DE'] %}
-        <a class="btn btn-small btn-primary {% if dataLocale == locale %} disabled {% endif %}"
-           href="{{ path(app.request.attributes.get('_route'), route_params | merge({'dataLocale': locale})) }}">{{ locale | trans }}</a>
-    {% endfor %}
-    </p>
-    <p>{{ "Choose data scope" | trans }} :
-    {% for scope in ['ecommerce', 'mobile'] %}
-        <a class="btn btn-small btn-primary {% if dataScope == scope %} disabled {% endif %}"
-           href="{{ path(app.request.attributes.get('_route'), route_params | merge({'dataLocale': dataLocale, 'dataScope': scope})) }}">{{ scope | trans }}</a>
-    {% endfor %}
-    </p>
-    <hr/>
-    
-    {% form_theme form 'PimUIBundle:Form:fields.html.twig' %}
-    
     <form action="{{ form.vars.value.id ? path('pim_product_product_edit', { id: form.vars.value.id }) : path('pim_product_product_create') }}" 
-        method="POST" class="form-register" {{ form_enctype(form) }}>
-        <fieldset>
-            <legend>{{ title }} <a class="btn btn-primary pull-right" href="{{ path('pim_product_product_index') }}">{{ "Back to list" | trans }}</a></legend>
-    
-            {{ form_row(form.id) }}
-            
-            {{ form_row(form.sku) }}
-            
-            {{ form_row(form.productFamily) }}
-            
-            {% for formView in form.values %}
-                {{ form_row(formView) }}
-            {% endfor %}
-            
-            {{ form_rest(form) }}
-    
-            <br />
-            <legend>Additional information</legend>
-    
-            <div class="form-horizontal">
-                <div class="control-group">
-                    <label class="control-label">Created at</label>
-                    <div class="controls">
-                        <span class="label">{{ form.vars.value.created ? form.vars.value.created|date('Y-m-d h:i:s') : 'N/A' }}</span>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">Updated at</label>
-                    <div class="controls">
-                        <span class="label">{{ form.vars.value.updated ? form.vars.value.updated|date('Y-m-d h:i:s') : 'N/A' }}</span>
-                    </div>
+        method="POST" class="form-horizontal" {{ form_enctype(form) }}>
+
+        <div class="row-fluid">
+            <h3 class="pull-left">{{ title|trans }}</h3>
+            <div class="pull-right">
+                <a href="{{ path('pim_product_product_index') }}">
+                    {{ "Back to list" | trans }}
+                </a>
+                <a class="btn" href="{{ path('pim_product_product_remove', { id: form.vars.value.id }) }}">
+                    {{ "Delete" | trans }}
+                </a>
+                <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <div class="control-group">
+                {{ form_label(form.productFamily, 'Family', { 'label_attr': {'class': 'control-label span1'} }) }}
+                <div class="controls">
+                    {{ form_widget(form.productFamily, {'attr' : { 'class': 'span1' }}) }}
                 </div>
             </div>
+        </div>
     
-            <div class="form-row">
-                <button class="btn btn-large btn-primary" type="submit">{{ "Save" | trans }}</button>
+        <div class="row-fluid">
+            {% if form.vars.errors|length %}
+                <div class="alert alert-error">
+                    {{ form_errors(form) }}
+                </div>
+            {% endif %}
+            <div id="tabs" style="overflow: inherit;">
+                <div class="span2">
+                    <ul class="nav nav-list">
+                        {% for group in groups %}
+                            <li class="tab{% if loop.index == 1 %} active{% endif %}"><a href="#tabs-{{group.id}}">{{ group.name|trans }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="span10 tab-pan">
+    
+                    {{ form_row(form.id) }}
+
+                    <div class="control-group">
+                        {{ form_label(form.sku, null, { 'label_attr': {'class': 'control-label'} }) }}
+                        <div class="controls">
+                            {{ form_widget(form.sku, {'attr' : { 'class': 'span4' } }) }}
+                        </div>
+                    </div>
+    
+                    {% for group in groups %}
+                        <div id="tabs-{{ group.id }}">
+                            <h3>{{ group.name|trans }}</h3>
+                            {% for formValue in form.values %}
+                                {% if group.id == formValue.group.vars.value %}
+                                <div class="control-group">
+                                    {{ form_label(formValue, formValue.vars.value.attribute.code, { 'label_attr': {'class': 'control-label'} }) }}
+                                    <div class="controls">
+                                        {{ form_widget(formValue) }}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+    
             </div>
-        </fieldset>
+        {{ form_row(form.id) }}
+        {{ form_row(form._token) }}
+        {{ form_row(form.languages) }}
     </form>
+
+    {# TODO style this as a dropdown #}
+    <ul class="locales">
+        {% for language in form.vars.value.getActiveLanguages() %}
+            <li>{{ language.fromLocale(app.request.locale) }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+    $(function() {
+
+        $('select').select2({ allowClear: true });
+        $('input.multiselect').select2({ tags: $(this).val() });
+        
+        $('#tabs').tabs().delegate("a", "click", function() {
+            $(this).parent().parent().find('li').each(function() {
+                $(this).removeClass('active');
+            });
+            $(this).parent().addClass('active');
+        });
+        
+        $('#tabs li.tab').each(function() {
+            var tabId = $(this).attr('aria-controls');
+            var nbValues = $('#'+tabId+' .control-group').length;
+            if (nbValues == 0) {
+                $(this).hide();
+            }
+        });
+        
+        $('.tab-pan .control-group input').each(function() {
+            $(this).addClass('span4');
+        });
+        $('.tab-pan .control-group textarea').each(function() {
+            $(this).addClass('span4');
+        });
+        $('.tab-pan .control-group .select2-container').each(function() {
+            $(this).addClass('span4');
+            $(this).attr('style', 'margin-left:0px');
+        });
+    });
+
+    </script>
+    <link rel="stylesheet" href="{{ asset('bundles/pimui/css/select2.css') }}">
+    <script type="text/javascript" src="{{ asset('bundles/pimui/js/select2.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/pimui/js/jquery-ui-1.10.0.min.js') }}"></script>
 {% endblock %}

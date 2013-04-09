@@ -4,7 +4,6 @@ namespace Pim\Bundle\ProductBundle\Tests\Unit\Entity;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Pim\Bundle\ConfigBundle\Entity\Language;
-use Pim\Bundle\ConfigBundle\Entity\Currency;
 
 /**
  * Test related class
@@ -241,17 +240,21 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for decimalPlaces property
+     * Test getter/setter for decimalsAllowed property
      */
-    public function testGetSetDecimalPlaces()
+    public function testGetSetDecimalsAllowed()
     {
         $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getDecimalPlaces());
+        $this->assertNull($productAttribute->getDecimalsAllowed());
 
         // Change value and assert new
-        $decimals = 2;
-        $productAttribute->setDecimalPlaces($decimals);
-        $this->assertEquals($decimals, $productAttribute->getDecimalPlaces());
+        $decimalsAllowed = true;
+        $productAttribute->setDecimalsAllowed($decimalsAllowed);
+        $this->assertEquals($decimalsAllowed, $productAttribute->getDecimalsAllowed());
+
+        $decimalsAllowed = false;
+        $productAttribute->setDecimalsAllowed($decimalsAllowed);
+        $this->assertEquals($decimalsAllowed, $productAttribute->getDecimalsAllowed());
     }
 
     /**
@@ -322,24 +325,6 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
         $productAttribute->setDateMax($date);
         $this->assertInstanceOf('DateTime', $productAttribute->getDateMax());
         $this->assertEquals($date, $productAttribute->getDateMax());
-    }
-
-    /**
-     * Test getter/setter for defaultCurrency property
-     */
-    public function testGetSetDefaultCurrency()
-    {
-        $productAttribute = new ProductAttribute();
-        $this->assertEmpty($productAttribute->getDefaultCurrency());
-
-        // change value and assert new
-        $currency = new Currency();
-        $productAttribute->setDefaultCurrency($currency);
-        $this->assertEquals($currency, $productAttribute->getDefaultCurrency());
-        $this->assertInstanceOf('Pim\Bundle\ConfigBundle\Entity\Currency', $productAttribute->getDefaultCurrency());
-
-        $productAttribute->setDefaultCurrency(null);
-        $this->assertEquals(null, $productAttribute->getDefaultCurrency());
     }
 
     /**

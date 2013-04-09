@@ -1,33 +1,19 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Form\Type;
 
-use Symfony\Component\Form\FormInterface;
+use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeType;
 
 use Pim\Bundle\ProductBundle\Form\Subscriber\ProductAttributeSubscriber;
+use Pim\Bundle\ProductBundle\Service\AttributeService;
 
 use Symfony\Component\Form\FormEvent;
-
 use Symfony\Component\Form\FormEvents;
-
-use Doctrine\ORM\EntityRepository;
-
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\ImageType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\FileType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\BooleanType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionSimpleSelectType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionMultiSelectType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\DateType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MetricType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MoneyType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextAreaType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\NumberType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\IntegerType;
-
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
+
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Type for attribute form
@@ -39,6 +25,22 @@ use Symfony\Component\Form\AbstractType;
  */
 class ProductAttributeType extends AttributeType
 {
+
+    /**
+     * Attribute service
+     * @var AttributeService
+     */
+    private $attributeService;
+
+    /**
+     * Constructor
+     *
+     * @param AttributeService $attributeService
+     */
+    public function __construct(AttributeService $attributeService = null)
+    {
+        $this->attributeService = $attributeService;
+    }
 
     /**
      * {@inheritdoc}
@@ -74,26 +76,8 @@ class ProductAttributeType extends AttributeType
 
         // add our own subscriber for custom features
         $factory = $builder->getFormFactory();
-        $subscriber = new ProductAttributeSubscriber($factory);
+        $subscriber = new ProductAttributeSubscriber($factory, $this->attributeService);
         $builder->addEventSubscriber($subscriber);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function addFieldScopable(FormBuilderInterface $builder)
-    {
-        // use custom scope notion pofor product
-        $builder->add(
-            'scopable',
-            'choice',
-            array(
-                'choices' => array(
-                    0 => 'Global',
-                    1 =>'Channel'
-                )
-            )
-        );
     }
 
     /**
@@ -139,7 +123,7 @@ class ProductAttributeType extends AttributeType
      */
     protected function addFieldSmart(FormBuilderInterface $builder)
     {
-        $builder->add('smart', 'choice', array('choices' => array('No', 'Yes')));
+        $builder->add('smart', 'checkbox');
     }
 
     /**
@@ -157,7 +141,7 @@ class ProductAttributeType extends AttributeType
      */
     protected function addFieldUseableAsGridColumn(FormBuilderInterface $builder)
     {
-        $builder->add('useableAsGridColumn', 'choice', array('choices' => array('No', 'Yes')));
+        $builder->add('useableAsGridColumn', 'checkbox');
     }
 
     /**
@@ -166,16 +150,64 @@ class ProductAttributeType extends AttributeType
      */
     protected function addFieldUseableAsGridFilter(FormBuilderInterface $builder)
     {
-        $builder->add('useableAsGridFilter', 'choice', array('choices' => array('No', 'Yes')));
+        $builder->add('useableAsGridFilter', 'checkbox');
+    }
+
+   /**
+     * Add field required to form builder
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldRequired(FormBuilderInterface $builder)
+    {
+        $builder->add('required', 'checkbox');
+    }
+
+    /**
+     * Add field searchable to form builder
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldSearchable(FormBuilderInterface $builder)
+    {
+        $builder->add('searchable', 'checkbox');
     }
 
      /**
-     * Overwrite the parent's addFieldDefaultValue method to prevent adding
-     * default value regardless of attribute type
+     * Override the parent's addFieldDefaultValue method to prevent adding
+     * default value field regardless of attribute type
      *
      * @param FormBuilderInterface $builder
      */
     protected function addFieldDefaultValue(FormBuilderInterface $builder)
+    {
+    }
+
+    /**
+     * Override the parent's addFieldUnique method to prevent adding
+     * unique field regardless of attribute type
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldUnique(FormBuilderInterface $builder)
+    {
+    }
+
+    /**
+     * Override the parent's addFieldTranslatable method to prevent adding
+     * translatable field regardless of attribute type
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldTranslatable(FormBuilderInterface $builder)
+    {
+    }
+
+    /**
+     * Override the parent's addFieldScopable method to prevent adding
+     * scopable field regardless of attribute type
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldScopable(FormBuilderInterface $builder)
     {
     }
 
@@ -208,27 +240,7 @@ class ProductAttributeType extends AttributeType
      */
     public function getAttributeTypeChoices()
     {
-        $availablesTypes = array(
-            new BooleanType(),
-            new DateType(),
-            new FileType(),
-            new ImageType(),
-            new IntegerType(),
-            new MetricType(),
-            new MoneyType(),
-            new OptionMultiSelectType(),
-            new OptionSimpleSelectType(),
-            new NumberType(),
-            new TextAreaType(),
-            new TextType(),
-        );
-        $types = array();
-        foreach ($availablesTypes as $type) {
-            $types[get_class($type)]= $type->getName();
-        }
-        asort($types);
-
-        return $types;
+        return $this->attributeService->getAttributeTypes();
     }
 
     /**

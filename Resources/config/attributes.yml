@@ -1,0 +1,34 @@
+attributes_config:
+    Boolean:
+        name: 'Yes/No'
+        properties: [ 'defaultValue' ]
+    Date:
+        name: 'Date'
+        properties: [ 'defaultValue', 'dateType', 'dateMin', 'dateMax', 'unique', 'searchable' ]
+    File:
+        name: 'File'
+        properties: [ 'allowedFileSources', 'maxFileSize', 'allowedFileExtensions' ]
+    Image:
+        name: 'Image'
+        properties: [ 'allowedFileSources', 'maxFileSize', 'allowedFileExtensions' ]
+    Metric:
+        name: 'Metric'
+        properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'metricType', 'defaultMetricUnit', 'searchable' ]
+    Money:
+        name: 'Money'
+        properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'searchable' ]
+    Number:
+        name: 'Number'
+        properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'unique', 'searchable' ]
+    OptionMultiSelect:
+        name: 'Multiselect'
+        properties: [ 'defaultValue', 'valueCreationAllowed', 'searchable' ]
+    OptionSimpleSelect:
+        name: 'Simple select'
+        properties: [ 'defaultValue', 'valueCreationAllowed', 'searchable' ]
+    TextArea:
+        name: 'Textarea'
+        properties: [ 'defaultValue', 'maxCharacters', 'wysiwygEnabled', 'searchable' ]
+    Text:
+        name: 'Text'
+        properties: [ 'defaultValue', 'maxCharacters', 'validationRule', 'validationRegexp', 'unique', 'searchable' ]

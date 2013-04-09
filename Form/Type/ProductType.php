@@ -16,7 +16,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ProductType extends FlexibleType
 {
-
     /**
      * {@inheritdoc}
      */
@@ -24,8 +23,31 @@ class ProductType extends FlexibleType
     {
         parent::addEntityFields($builder);
 
-        $builder->add('sku', 'text', array('required' => true, 'read_only' => $builder->getData()->getId()));
+        $builder
+            ->add('sku', 'text', array('required' => true, 'read_only' => $builder->getData()->getId()))
+            ->add('productFamily')
+            ->add('languages', 'collection', array(
+                'type' => new ProductLanguageType
+            ))
+        ;
+    }
 
-        $builder->add('productFamily');
+    /**
+     * Add entity fields to form builder
+     *
+     * @param FormBuilderInterface $builder
+     */
+    public function addDynamicAttributesFields(FormBuilderInterface $builder)
+    {
+        $builder->add(
+            'values',
+            'collection',
+            array(
+                'type'         => 'pim_product_value',
+                'allow_add'    => true,
+                'allow_delete' => true,
+                'by_reference' => false
+            )
+        );
     }
 }
