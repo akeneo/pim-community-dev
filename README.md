@@ -139,8 +139,55 @@ class TranslatableEntityTranslation extends AbstractTranslation
 
 Update form type
 ----------------
-- FormType must extends TranslationType
-- Redefine data_class and name
+- Define translation form type for translatable field (here "name")
+
+```php
+/**
+ * Translatable entity type
+ */
+class TranslatableEntityType extends AbstractType
+{
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        parent::buildForm($builder, $options);
+
+        $builder->add(
+            'names',
+            'collection',
+            array(
+                'type' => new TranslatableEntityTranslationType(),
+                'by_reference' => false
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(
+            array(
+                'data_class' => 'MyApp\Bundle\MyBundle\Entity\TranslatableEntity'
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'translatable_entity';
+    }
+}
+```
+
+- Redefine TranslationType
 
 ```php
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
