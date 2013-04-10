@@ -2,6 +2,10 @@ pim_default:
     pattern:  /{_locale}
     defaults: { _controller: PimUIBundle:Welcome:index, _locale: %locale% }
 
+oro_default:
+    pattern:  /{_locale}
+    defaults: { _controller: PimUIBundle:Welcome:index, _locale: %locale% }
+
 pim_product:
     resource: "@PimProductBundle/Controller/"
     type:     annotation
