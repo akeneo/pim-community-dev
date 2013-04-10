@@ -65,6 +65,10 @@
         navigation.Item.prototype.urlRoot = {{ path('oro_api_get_navigationitems', {'type': ''})|json_encode|raw }};
     </script>
 
+    {% stylesheets '@PimUIBundle/Resources/public/css/pim.css' filter='cssrewrite' %}
+        <link rel="stylesheet" media="all" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
     <style type="text/css">
         .pin-bar .list-bar, .pin-bar .list-bar li a {
             color: #B2BAC2;
