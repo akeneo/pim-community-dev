@@ -30,9 +30,118 @@ To use as dependency, use composer and add bundle in AppKernel :
 
 Classes / Concepts
 ==================
-
+Used with gedmo doctrine extension and PIM language entity
 
 Example of usage
 ================
+
+Define and use gedmo doctrine extension
+---------------------------------------
+See https://github.com/l3pp4rd/DoctrineExtensions/blob/master/doc/translatable.md
+
+Make entity translatable and add locale property
+------------------------------------------------
+- Define class as translatable
+- Define Translation entity
+- Define fields translatable
+- Add locale property and setter
+
+```php
+use Gedmo\Translatable\Translatable;
+
+use Gedmo\Mapping\Annotation as Gedmo;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Translatable entity
+ *
+ * @ORM\Entity()
+ * @ORM\Table(name="translatable_entity")
+ * @Gedmo\TranslationEntity(class="MyApp\Bundle\MyBundle\Entity\TranslatableEntityTranslation")
+ */
+class TranslatableEntity implements Translatable
+{
+
+    // ... define properties
+
+    /**
+     * @var string $name
+     *
+     * @ORM\Column(name="name", type="string", length=100)
+     * @Gedmo\Translatable
+     */
+    protected $name;
+
+    /**
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     *
+     * @var string $locale
+     *
+     * @Gedmo\Locale
+     */
+    protected $locale;
+    
+    // ... define methods (getter/setter and others)
+
+    /**
+     * Define locale used by entity
+     *
+     * @param string $locale
+     *
+     * @return TranslatableEntity
+     */
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+}
+```
+
+Create Translation entity
+-------------------------
+- Define class as extension of AbstractTranslation (Gedmo class)
+- Redefine default repository as TranslationRepository
+- To be cleaner, redefine table name and index
+
+```php
+use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Translatable entity translation
+ *
+ * @ORM\Entity(repositoryClass="Pim\Bundle\TranslationBundle\Entity\Repository\TranslationRepository")
+ * @ORM\Table(
+ *     name="pim_attribute_group_translations",
+ *     indexes={
+ *         @ORM\Index(
+ *             name="pim_attribute_group_translations_idx",
+ *             columns={"locale", "object_class", "field", "foreign_key"}
+ *         )
+ *     }
+ * )
+ *
+ */
+class AttributeGroupTranslation extends AbstractTranslation
+{
+    /**
+     * All required columns are mapped through inherited superclass
+     */
+}
+
+```
+
+
+Update form type
+----------------
+
+Call manager to save entity and translations
+--------------------------------------------
+
 
 
