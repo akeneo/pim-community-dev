@@ -7,6 +7,7 @@ framework:
     test: ~
     session:
         storage_id: session.storage.mock_file
+    csrf_protection: false
 
 web_profiler:
     toolbar: false
