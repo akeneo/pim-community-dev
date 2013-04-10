@@ -14,7 +14,9 @@ parameters:
 
     metric_attribute_validator_class: Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricAttributeValidator
 
-    pim_product.attributes_config: ~
+    pim_product.attributes_config:    ~
+    pim_product.segment_class:        Pim\Bundle\ProductBundle\Entity\ProductSegment
+    pim_product.segment_manager_class: Pim\Bundle\ProductBundle\Model\ProductSegmentManager
 
 services:
     # Managers
@@ -23,6 +25,10 @@ services:
         arguments: [%product_entity_class%, %oro_flexibleentity.flexible_config%, @doctrine.orm.entity_manager, @event_dispatcher]
         tags:
             - { name: oro_flexibleentity_manager, entity: %product_entity_class%}
+            
+    pim_product.classification_tree_manager:
+        class:     %pim_product.segment_manager_class%
+        arguments: [@doctrine.orm.entity_manager, %pim_product.segment_class%]
 
     # Form
     pim_product.form.attribute:
