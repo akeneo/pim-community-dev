@@ -1,6 +1,10 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity;
 
+use Gedmo\Translatable\Translatable;
+
+use Gedmo\Mapping\Annotation as Gedmo;
+
 use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,10 +18,11 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_attribute_group")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\AttributeGroupRepository")
+ * @ORM\Table(name="pim_attribute_group")
+ * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation")
  */
-class AttributeGroup implements TimestampableInterface
+class AttributeGroup implements TimestampableInterface, Translatable
 {
 
     /**
@@ -33,6 +38,7 @@ class AttributeGroup implements TimestampableInterface
      * @var string $name
      *
      * @ORM\Column(name="name", type="string", length=100)
+     * @Gedmo\Translatable
      */
     protected $name;
 
@@ -63,6 +69,16 @@ class AttributeGroup implements TimestampableInterface
      * @ORM\OneToMany(targetEntity="ProductAttribute", mappedBy="group")
      */
     protected $attributes;
+
+    /**
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     *
+     * @var string $locale
+     *
+     * @Gedmo\Locale
+     */
+    protected $locale;
 
     /**
      * Constructor
@@ -233,5 +249,19 @@ class AttributeGroup implements TimestampableInterface
     public function getAttributes()
     {
         return $this->attributes;
+    }
+
+    /**
+     * Define locale used by entity
+     *
+     * @param string $locale
+     *
+     * @return AbstractSegment
+     */
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
     }
 }
