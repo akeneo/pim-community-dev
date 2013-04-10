@@ -34,6 +34,11 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
     protected $container;
 
     /**
+     * @var ObjectManager
+     */
+    protected $manager;
+
+    /**
      * count groups created to order them
      * @staticvar integer
      */
@@ -52,53 +57,67 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
      */
     public function load(ObjectManager $manager)
     {
+        $this->manager = $manager;
+
         // create group
         $group = $this->createGroup('General');
-        $manager->persist($group);
+        $this->persist($group);
 
         // link attributes with group
         $attribute = $this->getReference('product-attribute.name');
         $attribute->setGroup($group);
-        $manager->persist($attribute);
+        $this->manager->persist($attribute);
 
         $attribute = $this->getReference('product-attribute.shortDescription');
         $attribute->setGroup($group);
-        $manager->persist($attribute);
+        $this->manager->persist($attribute);
 
         $attribute = $this->getReference('product-attribute.longDescription');
         $attribute->setGroup($group);
-        $manager->persist($attribute);
+        $this->manager->persist($attribute);
 
 
         $group = $this->createGroup('SEO');
-        $manager->persist($group);
+        $this->persist($group);
 
         $group = $this->createGroup('Marketing');
-        $manager->persist($group);
+        $this->persist($group);
 
         $attribute = $this->getReference('product-attribute.price');
         $attribute->setGroup($group);
-        $manager->persist($attribute);
+        $this->manager->persist($attribute);
 
 
         // create group and link attribute
         $group = $this->createGroup('Sizes');
-        $manager->persist($group);
+        $this->persist($group);
 
         $attribute = $this->getReference('product-attribute.size');
         $attribute->setGroup($group);
-        $manager->persist($attribute);
+        $this->manager->persist($attribute);
 
         // create group and link attribute
         $group = $this->createGroup('Colors');
-        $manager->persist($group);
+        $this->persist($group);
 
         $attribute = $this->getReference('product-attribute.color');
         $attribute->setGroup($group);
-        $manager->persist($attribute);
+        $this->manager->persist($attribute);
 
         // flush
-        $manager->flush();
+        $this->manager->flush();
+
+
+        // translate groups
+        $locale = 'fr_FR';
+
+        $this->translate('attribute-group.general', $locale, 'Général');
+        $this->translate('attribute-group.seo', $locale, 'SEO');
+        $this->translate('attribute-group.marketing', $locale, 'Commercial');
+        $this->translate('attribute-group.sizes', $locale, 'Tailles');
+        $this->translate('attribute-group.colors', $locale, 'Couleurs');
+
+        $this->manager->flush();
     }
 
     /**
@@ -114,6 +133,36 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
         $group->setSortOrder(++self::$order);
 
         return $group;
+    }
+
+    /**
+     * Persist entity and add reference
+     *
+     * @param AttributeGroup $group
+     */
+    protected function persist(AttributeGroup $group)
+    {
+        $this->manager->persist($group);
+
+        $groupName = strtolower($group->getName());
+        $this->addReference('attribute-group.'. $groupName, $group);
+    }
+
+    /**
+     * Translate a segment
+     *
+     * @param string $reference Attribute group reference
+     * @param string $locale    Locale used
+     * @param string $name      Name translated in locale value linked
+     */
+    protected function translate($reference, $locale, $name)
+    {
+        $group = $this->getReference($reference);
+
+        $group->setTranslatableLocale($locale);
+        $group->setName($name);
+
+        $this->manager->persist($group);
     }
 
     /**
