@@ -44,7 +44,8 @@
         "jms/aop-bundle": "dev-master",
         "sonata-project/admin-bundle": "2.1.x-dev",
         "sonata-project/doctrine-orm-admin-bundle": "2.1.x-dev",
-        "knplabs/knp-gaufrette-bundle": "dev-master"
+        "knplabs/knp-gaufrette-bundle": "dev-master",
+        "leafo/lessphp": "dev-master"
     },
     "require-dev": {
         "behat/behat": "2.4.*",
