@@ -117,17 +117,17 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity(repositoryClass="Pim\Bundle\TranslationBundle\Entity\Repository\TranslationRepository")
  * @ORM\Table(
- *     name="pim_attribute_group_translations",
+ *     name="translatable_entity_translations",
  *     indexes={
  *         @ORM\Index(
- *             name="pim_attribute_group_translations_idx",
+ *             name="translatable_entity_translations_idx",
  *             columns={"locale", "object_class", "field", "foreign_key"}
  *         )
  *     }
  * )
  *
  */
-class AttributeGroupTranslation extends AbstractTranslation
+class TranslatableEntityTranslation extends AbstractTranslation
 {
     /**
      * All required columns are mapped through inherited superclass
@@ -139,6 +139,41 @@ class AttributeGroupTranslation extends AbstractTranslation
 
 Update form type
 ----------------
+- FormType must extends TranslationType
+- Redefine data_class and name
+
+```php
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+use Pim\Bundle\TranslationBundle\Form\Type\TranslationType;
+
+/**
+ * Translatable entity translation form type
+ */
+class TranslatableEntityTranslationType extends TranslationType
+{
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(
+            array(
+                'data_class' => 'MyApp\Bundle\MyBundle\Entity\TranslatableEntityTranslation'
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'translatable_entity_translation';
+    }
+}
+```
 
 Call manager to save entity and translations
 --------------------------------------------
