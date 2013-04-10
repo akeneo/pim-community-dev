@@ -75,13 +75,15 @@ class TranslationManager
                 if ($enrich) {
                     $i18nEntities = $this->enrich($i18nEntities, $wrapped, $i18nClass, $field);
                 }
+
+                return $i18nEntities;
             } else {
                 // Not the good translation repository
                 throw new \Exception('Wrong repository');
             }
+        } else {
+            throw new \Exception('Entity mis wrapped');
         }
-
-        return $i18nEntities;
     }
 
     /**
