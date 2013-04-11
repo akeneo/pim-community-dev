@@ -228,6 +228,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             $attribute = $this->createAttribute($data['code'], false);
             $attribute->setSortOrder($data['position']);
             $attribute->setGroup($this->getGroup($data['group']));
+            $product = $this->getProduct($data['product']);
+
+                $value = $this->getProductManager()->createFlexibleValue();
+                $value->setAttribute($attribute->getAttribute());
+                $value->setData(null);
+                $this->getProductManager()->getStorageManager()->persist($value);
+
+                $product->addValue($value);
         }
         $em->flush();
     }
@@ -288,6 +296,28 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldSee($text)
     {
         $this->assertSession()->pageTextContains($text);
+    }
+
+    /**
+     * @Given /^attributes in group "([^"]*)" should be (.*)$/
+     */
+    public function attributesInGroupShouldBe($group, $attributes)
+    {
+        $attributes = $this->listToArray($attributes);
+        $group = $this->getGroup($group);
+        foreach ($attributes as $index => $attribute) {
+            $field = $this
+                ->getPage('Product')
+                ->getFieldAt($group, $index)
+            ;
+
+            if ($attribute !== $name = $field->getText()) {
+                throw new \Exception(sprintf('
+                    Expecting to see field "%s" at position %d, but saw "%s"',
+                    $attribute, $index + 1, $name
+                ));
+            }
+        }
     }
 
     private function listToArray($list)

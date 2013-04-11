@@ -4,6 +4,7 @@ namespace Context\Page;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Behat\Mink\Exception\ElementNotFoundException;
+use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 
 /**
  * @author    Gildas Quéméner <gildas.quemener@gmail.com>
@@ -56,5 +57,28 @@ class Product extends Page
     public function switchLocale($locale)
     {
         $this->getElement('Locales dropdown')->clickLink(ucfirst($locale));
+    }
+
+    public function getFieldAt(AttributeGroup $group, $position)
+    {
+        $locator = sprintf(
+            '#tabs-%s label', $group->getId()
+        );
+
+        $fields = $this->findAll('css', $locator);
+
+        if (0 === count($fields)) {
+            throw new \Exception(sprintf(
+                'Couldn\'t find elements that matches "%s"', $locator
+            ));
+        }
+
+        if (!isset($fields[$position])) {
+            throw new \Exception(sprintf(
+                'Cannot found %dth field in group "%s"', $position + 1, $group->getName()
+            ));
+        }
+
+        return $fields[$position];
     }
 }
