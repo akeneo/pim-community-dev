@@ -157,9 +157,9 @@ class TranslatableEntityType extends AbstractType
 
         $builder->add(
             'names',
-            'collection',
+            'pim_translation_collection',
             array(
-                'type' => new TranslatableEntityTranslationType(),
+                'type' => 'pim_translation,
                 'by_reference' => false
             )
         );
@@ -183,41 +183,6 @@ class TranslatableEntityType extends AbstractType
     public function getName()
     {
         return 'translatable_entity';
-    }
-}
-```
-
-- Redefine TranslationType
-
-```php
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
-use Pim\Bundle\TranslationBundle\Form\Type\TranslationType;
-
-/**
- * Translatable entity translation form type
- */
-class TranslatableEntityTranslationType extends TranslationType
-{
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(
-            array(
-                'data_class' => 'MyApp\Bundle\MyBundle\Entity\TranslatableEntityTranslation'
-            )
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'translatable_entity_translation';
     }
 }
 ```
