@@ -13,6 +13,7 @@ use Pim\Bundle\ConfigBundle\Entity\Language;
 use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 
 /**
  * Context of the website
@@ -78,24 +79,19 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 if (isset($attributes[$translation['attribute']])) {
                     $attribute = $attributes[$translation['attribute']];
                 } else {
-                    $attribute = $this->getProductManager()->createAttribute(new TextType);
-                    $attribute->setCode($translation['attribute']);
-                    $attribute->setTranslatable(true);
-                    $this->getProductManager()->getStorageManager()->persist($attribute);
+                    $attribute = $this->createAttribute($translation['attribute']);
                     $attributes[$translation['attribute']] = $attribute;
                 }
 
                 $value = $this->getProductManager()->createFlexibleValue();
-                $value->setAttribute($attribute);
+                $value->setAttribute($attribute->getAttribute());
                 $value->setLocale($this->getLocale($translation['locale']));
                 $value->setData($translation['value']);
                 $this->getProductManager()->getStorageManager()->persist($value);
                 $product->addValue($value);
             }
         }
-
-        $this->getProductManager()->getStorageManager()->persist($product);
-        $this->getProductManager()->getStorageManager()->flush();
+        $pm->save($product);
 
         return $product;
     }
@@ -192,6 +188,36 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^the following attribute groups:$/
+     */
+    public function theFollowingAttributeGroups(TableNode $table)
+    {
+        $em = $this->getEntityManager();
+        foreach ($table->getHash() as $index => $data) {
+            $group = new AttributeGroup();
+            $group->setName($data['name']);
+            $group->setSortOrder($index);
+
+            $em->persist($group);
+        }
+        $em->flush();
+    }
+
+    /**
+     * @Given /^the following product attributes:$/
+     */
+    public function theFollowingProductAttributes(TableNode $table)
+    {
+        $em = $this->getEntityManager();
+        foreach ($table->getHash() as $index => $data) {
+            $attribute = $this->createAttribute($data['code'], false);
+            $attribute->setSortOrder($data['position']);
+            $attribute->setGroup($this->getGroup($data['group']));
+        }
+        $em->flush();
+    }
+
+    /**
      * @Then /^I should see that the product is available in (.*)$/
      */
     public function iShouldSeeLanguages($languages)
@@ -222,24 +248,46 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I press "([^"]*)"$/
+     * @Given /^I save the product$/
      */
-    public function iPress($button)
+    public function iSaveTheProduct()
     {
         $this->getPage('Product')->save();
-    }
-
-    /**
-     * @Then /^I should see that the product is available in french and english$/
-     */
-    public function iShouldSeeThatTheProductIsAvailableInFrenchAndEnglish()
-    {
-        throw new PendingException();
     }
 
     private function listToArray($list)
     {
         return explode(', ', str_replace(' and ', ', ', $list));
+    }
+
+    private function getProduct($sku)
+    {
+        $product = $this
+            ->getProductManager()
+            ->setLocale($this->currentLocale)
+            ->getFlexibleRepository()
+            ->findOneBy(array(
+                'sku' => $sku,
+            ));
+
+        if (!$product) {
+            throw new \InvalidArgumentException(sprintf(
+                'Could not find product with sku "%s"', $sku
+            ));
+        }
+
+        return $product;
+    }
+
+    private function createAttribute($code, $translatable = true)
+    {
+        $attribute = $this->getProductManager()->createAttributeExtended(new TextType);
+        $attribute->setCode(strtolower($code));
+        $attribute->setName(ucfirst($code));
+        $attribute->setTranslatable($translatable);
+        $this->getProductManager()->getStorageManager()->persist($attribute);
+
+        return $attribute;
     }
 
     private function getLocale($language)
@@ -269,6 +317,22 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         return $lang;
     }
 
+    private function getGroup($name)
+    {
+        $em    = $this->getEntityManager();
+        $group = $em->getRepository('PimProductBundle:AttributeGroup')->findOneBy(array(
+            'name' => $name
+        ));
+
+        if (!$group) {
+            throw new \InvalidArgumentException(sprintf(
+                'Could not find group with name "%s"', $name
+            ));
+        }
+
+        return $group;
+    }
+
     private function getProductManager()
     {
         return $this->getContainer()->get('product_manager');
@@ -287,24 +351,5 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function getContainer()
     {
         return $this->getMainContext()->getContainer();
-    }
-
-    private function getProduct($sku)
-    {
-        $product = $this
-            ->getProductManager()
-            ->setLocale($this->currentLocale)
-            ->getFlexibleRepository()
-            ->findOneBy(array(
-                'sku' => $sku,
-            ));
-
-        if (!$product) {
-            throw new \InvalidArgumentException(sprintf(
-                'Could not find product with sku "%s"', $sku
-            ));
-        }
-
-        return $product;
     }
 }
