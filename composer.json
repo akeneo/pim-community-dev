@@ -45,7 +45,10 @@
         "sonata-project/admin-bundle": "2.1.x-dev",
         "sonata-project/doctrine-orm-admin-bundle": "2.1.x-dev",
         "knplabs/knp-gaufrette-bundle": "dev-master",
-        "leafo/lessphp": "dev-master"
+        "leafo/lessphp": "dev-master",
+        "zendframework/zend-stdlib": "2.1.1",
+        "liip/imagine-bundle": "dev-master",
+        "ys-tools/back-url-bundle": "dev-master"
     },
     "require-dev": {
         "behat/behat": "2.4.*",
