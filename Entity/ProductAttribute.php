@@ -208,6 +208,11 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     protected $allowedFileExtensions;
 
     /**
+     * @ORM\Column(name="sort_order", type="integer")
+     */
+    protected $sortOrder = 0;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -840,6 +845,18 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     public function setAllowedFileExtensions($allowedFileExtensions)
     {
         $this->allowedFileExtensions = is_array($allowedFileExtensions) ? implode(',', $allowedFileExtensions) : $allowedFileExtensions;
+
+        return $this;
+    }
+
+    public function getSortOrder()
+    {
+        return $this->sortOrder;
+    }
+
+    public function setSortOrder($sortOrder)
+    {
+        $this->sortOrder = $sortOrder;
 
         return $this;
     }
