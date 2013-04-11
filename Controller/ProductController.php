@@ -2,20 +2,16 @@
 namespace Pim\Bundle\ProductBundle\Controller;
 
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
-
 use Pim\Bundle\ProductBundle\Manager\MediaManager;
-
 use Symfony\Component\HttpFoundation\File\File;
-
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
-
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Form\Type\ProductType;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Product Controller
@@ -71,6 +67,34 @@ class ProductController extends Controller
         $products = $this->getProductManager()->getFlexibleRepository()->findByWithAttributes();
 
         return array('products' => $products, 'attributes' => $this->getAttributeCodesToDisplay());
+    }
+
+    /**
+     * @Route("/list.{_format}",
+     *      name="pim_product_product_list",
+     *      requirements={"_format"="html|json"},
+     *      defaults={"_format" = "html"}
+     * )
+     */
+    public function listAction(Request $request)
+    {
+        /** @var $gridManager ProductDatagridManager */
+        $gridManager = $this->get('pim_product_grid_manager');
+        $datagrid = $gridManager->getDatagrid();
+
+        if ('json' == $request->getRequestFormat()) {
+            $view = 'OroGridBundle:Datagrid:list.json.php';
+        } else {
+            $view = 'PimProductBundle:Product:list.html.twig';
+        }
+
+        return $this->render(
+            $view,
+            array(
+                'datagrid' => $datagrid,
+                'form'     => $datagrid->getForm()->createView()
+            )
+        );
     }
 
     /**
