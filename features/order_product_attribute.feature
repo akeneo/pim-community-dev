@@ -3,6 +3,20 @@ Feature: Order product attributes
   As a user
   I need to be able to set an order paramater which will manage fields order
 
+  Scenario: Successfully update an attribute position
+    Given the following attribute group:
+      | name    |
+      | General |
+    And the following product attribute:
+      | code         | group   |
+      | releaseDate  | General |
+    And a "Car" product
+    And the current language is english
+    And I am logged in as "Admin"
+    When I am on the "releaseDate" attribute page
+    And I change the attribute position to 40
+    Then I should see "Attribute successfully saved"
+
   Scenario: Display a produt attribute fields ordered by their position
     Given the following attribute groups:
       | name    |

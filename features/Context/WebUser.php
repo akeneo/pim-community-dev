@@ -155,6 +155,18 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @When /^I am on the "([^"]*)" attribute page$/
+     */
+    public function iAmOnTheAttributePage($code)
+    {
+        $attribute = $this->getAttribute($code);
+        $this->getPage('Attribute')->open(array(
+            'locale' => $this->currentLocale,
+            'id'     => $attribute->getId(),
+        ));
+    }
+
+    /**
      * @Given /^availabe languages are (.*)$/
      */
     public function availabeLanguagesAre($languages)
@@ -188,7 +200,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^the following attribute groups:$/
+     * @Given /^the following attribute groups?:$/
      */
     public function theFollowingAttributeGroups(TableNode $table)
     {
@@ -204,12 +216,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^the following product attributes:$/
+     * @Given /^the following product attributes?:$/
      */
     public function theFollowingProductAttributes(TableNode $table)
     {
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $index => $data) {
+            $data = array_merge(array(
+                'position' => 0,
+            ), $data);
             $attribute = $this->createAttribute($data['code'], false);
             $attribute->setSortOrder($data['position']);
             $attribute->setGroup($this->getGroup($data['group']));
@@ -253,6 +268,26 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iSaveTheProduct()
     {
         $this->getPage('Product')->save();
+    }
+
+    /**
+     * @Given /^I change the attribute position to (\d+)$/
+     */
+    public function iChangeTheAttributePositionTo($position)
+    {
+        $this
+            ->getPage('Attribute')
+            ->setPosition($position)
+            ->save()
+        ;
+    }
+
+    /**
+     * @Then /^I should see "([^"]*)"$/
+     */
+    public function iShouldSee($text)
+    {
+        $this->assertSession()->pageTextContains($text);
     }
 
     private function listToArray($list)
@@ -331,6 +366,22 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
 
         return $group;
+    }
+
+    private function getAttribute($name)
+    {
+        $em    = $this->getEntityManager();
+        $attribute = $em->getRepository('PimProductBundle:ProductAttribute')->findOneBy(array(
+            'name' => ucfirst($name)
+        ));
+
+        if (!$attribute) {
+            throw new \InvalidArgumentException(sprintf(
+                'Could not find attribute with name "%s"', ucfirst($name)
+            ));
+        }
+
+        return $attribute;
     }
 
     private function getProductManager()
