@@ -194,8 +194,8 @@ Call manager to save entity and translations
 Enhancements
 ============
 
-[ ] Sort by locales
-[ ] Integrate locales and currencies (not for now)
-[ ] Implements with default locale
-[ ] Fix bug when create new entity
-[ ] Extends handler
+- [ ] Sort by locales
+- [ ] Integrate locales and currencies (not for now)
+- [ ] Implements with default locale
+- [ ] Fix bug when create new entity
+- [ ] Extends handler
