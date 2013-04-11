@@ -49,45 +49,21 @@
                             </div>
                             <div id="collapseOne" class="accordion-body in">
                                 <div class="accordion-inner">
-                                    <div class="control-group">
-                                        {{ form_label(form.code, 'Name'|trans, { 'label_attr': {'class': 'control-label'} }) }}
-                                        <div class="controls">
-                                            {{ form_widget(form.code, {'attr' : { 'class': 'span4' }}) }}
-                                        </div>
-                                    </div>
+                                    {{ form_row(form.code, { 'label': 'Name'|trans }) }}
+                                    {{ form_row(form.attributeType) }}
+                                    {{ form_row(form.scopable, { 'label': 'Scope'|trans }) }}
+                                    {{ form_row(form.translatable) }}
 
-                                    <div class="control-group">
-                                        {{ form_label(form.attributeType, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                        <div class="controls">
-                                            {{ form_widget(form.attributeType, {'attr' : { 'class': 'span4' }}) }}
-                                        </div>
-                                    </div>
-
-                                    <div class="control-group">
-                                        {{ form_label(form.scopable, 'Scope'|trans, { 'label_attr': {'class': 'control-label'} }) }}
-                                        <div class="controls">
-                                            {{ form_widget(form.scopable, {'attr' : { 'class': 'span4' }}) }}
-                                        </div>
-                                    </div>
-
-                                    <div class="control-group">
-                                        {{ form_label(form.translatable, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                        <div class="controls">
-                                            {{ form_widget(form.translatable, {'attr' : { 'class': 'span4' }}) }}
-                                        </div>
-                                    </div>
-
-                                    <div class="control-group">
-                                        {{ form_label(form.unique, 'Unique value'|trans, { 'label_attr': {'class': 'control-label'} }) }}
-                                        <div class="controls">
-                                            {{ form_widget(form.unique, {'attr' : { 'class': 'span4' }}) }}
-                                        </div>
-                                    </div>
+                                    {% if form.unique is defined %}
+                                        {{ form_row(form.unique, { 'label': 'Unique value'|trans }) }}
+                                    {% endif %}
 
                                     <div class="control-group">
                                         <label class="control-label" for="limitLanguages">{{ 'Locale specific'|trans }}</label>
                                         <div class="controls">
-                                            <input type="checkbox" name="limitLanguages" >
+                                            <div id="limitLanguages-switch" class="switch switch-small" data-on-label="{{ 'Yes'|trans }}" data-off-label="{{ 'No'|trans }}">
+                                                <input type="checkbox" name="limitLanguages" />
+                                            </div>
                                         </div>
                                     </div>
 
@@ -98,176 +74,18 @@
                                         </div>
                                     </div>
 
-                                    {% if form.defaultValue is defined %}
-                                        <div class="control-group">
-                                            {{ form_label(form.defaultValue, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                            <div class="controls">
-                                                {{ form_widget(form.defaultValue, {'attr' : { 'class': 'span4' }}) }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
+                                    {% set optionalFields = ['dateType', 'dateMin', 'dateMax',
+                                    'negativeAllowed', 'decimalsAllowed', 'numberMin', 'numberMax',
+                                    'valueCreationAllowed', 'maxCharacters', 'wysiwygEnabled',
+                                    'metricType', 'defaultMetricUnit', 'allowedFileSources',
+                                    'maxFileSize', 'allowedFileExtensions', 'validationRule',
+                                    'validationRegexp', 'defaultValue'] %}
 
-                                    {% if form.dateType is defined %}
-                                        <div class="control-group">
-                                            {{ form_label(form.dateType, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                            <div class="controls">
-                                                {{ form_widget(form.dateType, {'attr' : { 'class': 'span4' }}) }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-
-                                    {% if form.dateMin is defined %}
-                                        <div class="control-group">
-                                            {{ form_label(form.dateMin, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                            <div class="controls">
-                                                {{ form_widget(form.dateMin, {'attr' : { 'class': 'span4' }}) }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-
-                                    {% if form.dateMax is defined %}
-                                        <div class="control-group">
-                                            {{ form_label(form.dateMax, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                            <div class="controls">
-                                                {{ form_widget(form.dateMax, {'attr' : { 'class': 'span4' }}) }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-
-                                    {% if form.negativeAllowed is defined %}
-                                        <div class="control-group">
-                                            {{ form_label(form.negativeAllowed, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                            <div class="controls">
-                                                {{ form_widget(form.negativeAllowed, {'attr' : { 'class': 'span4' }}) }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-
-                                    {% if form.decimalPlaces is defined %}
-                                        <div class="control-group">
-                                            {{ form_label(form.decimalPlaces, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                            <div class="controls">
-                                                {{ form_widget(form.decimalPlaces, {'attr' : { 'class': 'span4' }}) }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-
-                                    {% if form.numberMin is defined %}
-                                        <div class="control-group">
-                                            {{ form_label(form.numberMin, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                            <div class="controls">
-                                                {{ form_widget(form.numberMin, {'attr' : { 'class': 'span4' }}) }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-
-                                    {% if form.numberMax is defined %}
-                                        <div class="control-group">
-                                            {{ form_label(form.numberMax, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                            <div class="controls">
-                                                {{ form_widget(form.numberMax, {'attr' : { 'class': 'span4' }}) }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-
-                                    {% if form.defaultCurrency is defined %}
-                                        <div class="control-group">
-                                            {{ form_label(form.defaultCurrency, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                            <div class="controls">
-                                                {{ form_widget(form.defaultCurrency, { 'attr': { 'class': 'span4', 'data-placeholder': 'Choose a currency'|trans }}) }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-
-                                    {% if form.valueCreationAllowed is defined %}
-                                        <div class="control-group">
-                                            {{ form_label(form.valueCreationAllowed, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                            <div class="controls">
-                                                {{ form_widget(form.valueCreationAllowed, {'attr' : { 'class': 'span4' }}) }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-
-                                    {% if form.maxCharacters is defined %}
-                                        <div class="control-group">
-                                            {{ form_label(form.maxCharacters, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                            <div class="controls">
-                                                {{ form_widget(form.maxCharacters, {'attr' : { 'class': 'span4' }}) }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-
-                                    {% if form.wysiwygEnabled is defined %}
-                                        <div class="control-group">
-                                            {{ form_label(form.wysiwygEnabled, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                            <div class="controls">
-                                                {{ form_widget(form.wysiwygEnabled, {'attr' : { 'class': 'span4' }}) }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-
-                                    {% if form.metricType is defined %}
-                                        <div class="control-group">
-                                            {{ form_label(form.metricType, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                            <div class="controls">
-                                                {{ form_widget(form.metricType, {'attr' : { 'class': 'span4' }}) }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-
-                                    {% if form.defaultMetricUnit is defined %}
-                                        <div class="control-group">
-                                            {{ form_label(form.defaultMetricUnit, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                            <div class="controls">
-                                                {{ form_widget(form.defaultMetricUnit, {'attr' : { 'class': 'span4' }}) }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-
-                                    {% if form.allowedFileSources is defined %}
-                                        <div class="control-group">
-                                            {{ form_label(form.allowedFileSources, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                            <div class="controls">
-                                                {{ form_widget(form.allowedFileSources, {'attr' : { 'class': 'span4' }}) }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-
-                                    {% if form.maxFileSize is defined %}
-                                        <div class="control-group">
-                                            {{ form_label(form.maxFileSize, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                            <div class="controls">
-                                                {{ form_widget(form.maxFileSize, {'attr' : { 'class': 'span4' }}) }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-
-                                    {% if form.allowedFileExtensions is defined %}
-                                        <div class="control-group">
-                                            {{ form_label(form.allowedFileExtensions, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                            <div class="controls">
-                                                {{ form_widget(form.allowedFileExtensions, {'attr' : { 'class': 'span4 multiselect' }}) }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-
-                                    {% if form.validationRule is defined %}
-                                        <div class="control-group">
-                                            {{ form_label(form.validationRule, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                            <div class="controls">
-                                                {{ form_widget(form.validationRule, {'attr' : { 'class': 'span4' }}) }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-
-                                    {% if form.validationRegexp is defined %}
-                                        <div class="control-group">
-                                            {{ form_label(form.validationRegexp, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                            <div class="controls">
-                                                {{ form_widget(form.validationRegexp, {'attr' : { 'class': 'span4' }}) }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
+                                    {% for field in optionalFields %}
+                                        {% if form[field] is defined %}
+                                            {{ form_row(form[field]) }}
+                                        {% endif %}
+                                    {% endfor %}
 
                                 </div>
                             </div>
@@ -287,33 +105,14 @@
                                         </div>
                                     </div>
 
-                                    <div class="control-group">
-                                        {{ form_label(form.variant, 'Variants behavior when edited'|trans, { 'label_attr': {'class': 'control-label'} }) }}
-                                        <div class="controls">
-                                            {{ form_widget(form.variant, {'attr' : { 'class': 'span4' }}) }}
-                                        </div>
-                                    </div>
+                                    {{ form_row(form.variant, { 'label': 'Variants behavior when edited'|trans }) }}
 
-                                    <div class="control-group">
-                                        {{ form_label(form.searchable, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                        <div class="controls">
-                                            {{ form_widget(form.searchable, {'attr' : { 'class': 'span4' }}) }}
-                                        </div>
-                                    </div>
+                                    {{ form_row(form.searchable) }}
 
-                                    <div class="control-group">
-                                        {{ form_label(form.useableAsGridColumn, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                        <div class="controls">
-                                            {{ form_widget(form.useableAsGridColumn, {'attr' : { 'class': 'span4' }}) }}
-                                        </div>
-                                    </div>
+                                    {{ form_row(form.useableAsGridColumn) }}
 
-                                    <div class="control-group">
-                                        {{ form_label(form.useableAsGridFilter, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                        <div class="controls">
-                                            {{ form_widget(form.useableAsGridFilter, {'attr' : { 'class': 'span4' }}) }}
-                                        </div>
-                                    </div>
+                                    {{ form_row(form.useableAsGridFilter) }}
+
                                 </div>
                             </div>
                         </div>
@@ -331,12 +130,7 @@
                             </div>
                             <div id="collapseThree" class="accordion-body in">
                                 <div class="accordion-inner">
-                                    <div class="control-group">
-                                        {{ form_label(form.name, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                        <div class="controls">
-                                            {{ form_widget(form.name, {'attr' : { 'class': 'span4' }}) }}
-                                        </div>
-                                    </div>
+                                    {{ form_row(form.name) }}
                                 </div>
                             </div>
                         </div>
@@ -349,16 +143,13 @@
                             <div id="collapseFour" class="accordion-body in">
                                 <div class="accordion-inner">
                                     <div class="control-group">
-                                        {{ form_label(form.description, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                        <div class="controls">
-                                            {{ form_widget(form.description, {'attr' : { 'class': 'span4' }}) }}
-                                        </div>
+                                        {{ form_row(form.description) }}
                                     </div>
                                 </div>
                             </div>
                         </div>
                         {% if form.options is defined %}
-                           {% form_theme form 'PimProductBundle:Form:simple_layout.html.twig' %}
+                            {% form_theme form 'PimProductBundle:Form:simple_layout.html.twig' %}
                             <div class="accordion-group">
                                 <div class="accordion-heading">
                                     <a class="accordion-toggle" data-toggle="collapse" data=parent="#accordion2" href="#collapseFive">
@@ -426,7 +217,7 @@
                                     </div>
                                 </div>
                             </div>
-                            {% form_theme form 'form_div_layout.html.twig' %}
+                            {% form_theme form 'PimUIBundle:Form:fields.html.twig' %}
                         {% endif %}
                     </div>
                 </div>
@@ -442,19 +233,8 @@
                             </div>
                             <div id="collapseSix" class="accordion-body in">
                                 <div class="accordion-inner">
-                                    <div class="control-group">
-                                        {{ form_label(form.required, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                        <div class="controls">
-                                            {{ form_widget(form.required, {'attr' : { 'class': 'span4' }}) }}
-                                        </div>
-                                    </div>
-
-                                    <div class="control-group">
-                                        {{ form_label(form.smart, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                        <div class="controls">
-                                            {{ form_widget(form.smart, {'attr' : { 'class': 'span4' }}) }}
-                                        </div>
-                                    </div>
+                                    {{ form_row(form.required) }}
+                                    {{ form_row(form.smart) }}
                                 </div>
                             </div>
                         </div>
@@ -477,7 +257,4 @@
             {% include 'PimProductBundle:ProductAttribute:_js-option.html.twig' %}
         {% endif %}
     </script>
-    <link rel="stylesheet" href="{{ asset('bundles/pimui/css/select2.css') }}">
-    <script type="text/javascript" src="{{ asset('bundles/pimui/js/select2.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/pimui/js/jquery-ui-1.10.0.min.js') }}"></script>
 {% endblock %}

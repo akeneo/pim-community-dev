@@ -72,11 +72,6 @@ $(function() {
 
     $('input.multiselect').select2({ tags: $(this).val() });
 
-    if ($('select[id*=availableLanguages]').val()) {
-        $('select[id*=availableLanguages]').parent().parent().show();
-        $('input[name=limitLanguages]').attr('checked', true);
-    }
-
     $('select[id*=validationRule]').change(function() {
         if ($(this).val() == 'regexp') {
             $('input[id*=validationRegexp]').parent().parent().show();
@@ -86,8 +81,13 @@ $(function() {
     });
     $('select[id*=validationRule]').trigger('change');
 
-    $('input[name=limitLanguages]').change(function() {
-        if($(this).attr('checked')) {
+    if ($('select[id*=availableLanguages]').val()) {
+        $('select[id*=availableLanguages]').parent().parent().show();
+        $('#limitLanguages-switch').bootstrapSwitch('setState', true);
+    }
+
+    $('#limitLanguages-switch').on('switch-change', function (e, data) {
+        if (data.value) {
             $(this).parent().parent().next().show();
         } else {
             $('select[id*=availableLanguages]').select2('val', '');
@@ -102,4 +102,25 @@ $(function() {
         });
     });
     $('#pim_product_attribute_form_metricType').trigger('change');
+
+    $('.picker-datetime').datetimepicker();
+    $('.picker-date').datetimepicker({ pickTime: false });
+    $('.picker-time').datetimepicker({ pickDate: false });
+
+    $('.picker-date, .picker-datetime').on('changeDate', function(e) {
+        var val = e.date ? e.date.toISOString() : '';
+        $(this).parent().children('input').val(val);
+    });
+
+    $('.picker-time').on('changeDate', function(e) {
+        var val = '';
+        if (e.localDate) {
+            var h = e.localDate.getHours();
+            var m = e.localDate.getMinutes();
+            h = (h > 9) ? h : '0' + h;
+            m = (m > 9) ? m : '0' + m;
+            val = h + ':' + m;
+        }
+        $(this).parent().children('input').val(val);
+    });
 });

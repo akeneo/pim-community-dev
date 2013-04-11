@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Tests\Functional\Controller;
 
+use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+
 /**
  * Test related class
  *
@@ -11,6 +13,22 @@ namespace Pim\Bundle\ProductBundle\Tests\Functional\Controller;
  */
 class ProductControllerTest extends ControllerTest
 {
+
+    /**
+     * @staticvar string
+     */
+    const PRODUCT_SKU = 'test-product';
+
+    /**
+     * @staticvar string
+     */
+    const PRODUCT_SAVED_MSG = 'Product successfully saved';
+
+    /**
+     * @staticvar string
+     */
+    const PRODUCT_REMOVED_MSG = 'Product successfully removed';
+
     /**
      * Test related action
      * @param string $locale
@@ -19,94 +37,25 @@ class ProductControllerTest extends ControllerTest
      */
     public function testIndex($locale)
     {
-        $uri = '/'. $locale .'/product/product/index';
+        $uri = '/'. $locale .'/product/index';
 
         // assert without authentication
-        $crawler = $this->client->request('GET', $uri);
+        $this->client->request('GET', $uri);
         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-    }
-
-    /**
-     * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
-     */
-    public function testCreate($locale)
-    {
-        $uri = '/'. $locale .'/product/product/create';
-
-        // assert without authentication
-        $crawler = $this->client->request('GET', $uri);
-        $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
-
-        // assert with authentication
-        $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-    }
-
-    /**
-     * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
-     */
-    public function testEdit($locale)
-    {
-        // initialize authentication to call container and get product entity
-        $product = $this->getRepository()->findOneBy(array());
-        $uri = '/'. $locale .'/product/product/edit/'. $product->getId();
-
-        // assert without authentication
-        $crawler = $this->client->request('GET', $uri);
-        $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
-
-        // assert with authentication
-        $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-
-        // assert with unknown product id and authentication
-        $uri = '/'. $locale .'/product/product/edit/0';
-        $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
-        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
-    }
-
-    /**
-     * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
-     */
-    public function testRemove($locale)
-    {
-        // initialize authentication to call container and get product entity
-        $product = $this->getRepository()->findOneBy(array());
-        $uri = '/'. $locale .'/product/product/remove/'. $product->getId();
-
-        // assert without authentication
-        $crawler = $this->client->request('GET', $uri);
-        $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
-
-        // assert with authentication
-        $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
-        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
-
-        // assert with unknown product id (last removed) and authentication
-        $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
-        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+        $this->assertCount(1, $crawler->filter('table.table:contains("sku-0")'));
     }
 
     /**
      * Get tested entity repository
      *
-     * @return \Doctrine\Common\Persistence\ObjectRepository
+     * @return FlexibleManager
      */
-    protected function getRepository()
+    protected function getProductManager()
     {
-        return $this->getStorageManager()->getRepository('PimProductBundle:Product');
+        return static::getContainer()->get('product_manager');
     }
 }

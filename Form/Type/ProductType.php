@@ -16,7 +16,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ProductType extends FlexibleType
 {
-
     /**
      * {@inheritdoc}
      */
@@ -31,5 +30,24 @@ class ProductType extends FlexibleType
                 'type' => new ProductLanguageType
             ))
         ;
+    }
+
+    /**
+     * Add entity fields to form builder
+     *
+     * @param FormBuilderInterface $builder
+     */
+    public function addDynamicAttributesFields(FormBuilderInterface $builder)
+    {
+        $builder->add(
+            'values',
+            'collection',
+            array(
+                'type'         => 'pim_product_value',
+                'allow_add'    => true,
+                'allow_delete' => true,
+                'by_reference' => false
+            )
+        );
     }
 }

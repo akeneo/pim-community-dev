@@ -14,6 +14,10 @@ parameters:
 
     metric_attribute_validator_class: Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricAttributeValidator
 
+    pim_product.attributes_config:    ~
+    pim_product.segment_class:        Pim\Bundle\ProductBundle\Entity\ProductSegment
+    pim_product.segment_manager_class: Pim\Bundle\ProductBundle\Model\ProductSegmentManager
+
 services:
     # Managers
     product_manager:
@@ -21,6 +25,10 @@ services:
         arguments: [%product_entity_class%, %oro_flexibleentity.flexible_config%, @doctrine.orm.entity_manager, @event_dispatcher]
         tags:
             - { name: oro_flexibleentity_manager, entity: %product_entity_class%}
+            
+    pim_product.classification_tree_manager:
+        class:     %pim_product.segment_manager_class%
+        arguments: [@doctrine.orm.entity_manager, %pim_product.segment_class%]
 
     # Form
     pim_product.form.attribute:
@@ -40,6 +48,7 @@ services:
         class: %product_attribute_type_class%
         tags:
             - { name: form.type, alias: pim_product_attribute }
+        arguments: [@pim_product.attribute_service]
 
     pim_product.form.type.attribute_group:
         class: %attribute_group_type_class%
@@ -58,7 +67,6 @@ services:
         arguments: [@pim_product.form.attribute_group, @request, @doctrine.orm.entity_manager]
 
     # Validators
-
     pim_product.form.validator.metric_attribute:
         class: %metric_attribute_validator_class%
         arguments: [%oro_measure.measures_config%]
@@ -69,3 +77,15 @@ services:
     pim_media_manager:
         class: Pim\Bundle\ProductBundle\Manager\MediaManager
         arguments: [@knp_gaufrette.filesystem_map, "pim", %upload_dir%]
+
+    # Product form value type
+    form.type.pim_product_value:
+        class: Pim\Bundle\ProductBundle\Form\Type\ProductValueType
+        arguments: [@product_manager]
+        tags:
+            - { name: form.type, alias: pim_product_value }
+
+    # Attribute manager
+    pim_product.attribute_service:
+        class: Pim\Bundle\ProductBundle\Service\AttributeService
+        arguments: [%pim_product.attributes_config%]

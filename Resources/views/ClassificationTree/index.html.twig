@@ -1,0 +1,58 @@
+{% extends 'PimProductBundle::layout.html.twig' %}
+
+{% set title = 'Classification tree overview'|trans %}
+{% block title %}{{ title }} - {{ parent() }}{% endblock %}
+
+{% block content %}
+
+    <h1>{{ title }} 
+        <a class="btn btn-primary pull-right" style="margin-left:10px;"
+            href="{{ path('pim_product_classificationtree_create') }}">{{ 'New tree'|trans }}</a>
+    </h1>
+
+    <table class="table table-bordered table-striped table-condensed">
+        <thead>
+            <tr>
+                <th>{{ 'Code'|trans }}</th>
+                <th>{{ 'Title'|trans }}</th>
+                <th>{{ 'Parent'|trans }}</th>
+                <th>{{ 'Root'|trans }}</th>
+                <th>{{ 'Is dynamic'|trans }}</th>
+                <th style="width: 50px">{{ 'Add child'|trans }}</th>
+                <th style="width: 50px">{{ 'Edit'|trans }}</th>
+                <th style="width: 50px">{{ 'Remove'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for segment in segments %}
+            <tr>
+                <td>
+                    <a href="{{ path('pim_product_classificationtree_edit', { id: segment.id }) }}">
+                        {{ segment.code }}
+                    </a>
+                </td>
+                <td>{{ segment.title }}</td>
+                <td>{% if segment.parent %}{{ segment.parent.code }}{% endif %}</td>
+                <td>{{ segment.root == segment.id }}</td>
+                <td>{{ segment.isDynamic }}</td>
+                <td>
+                    <a href="{{ path('pim_product_classificationtree_create', { parent: segment.id }) }}">
+                        <i class="icon-file"></i>
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('pim_product_classificationtree_edit', { id: segment.id }) }}">
+                        <i class="icon-edit"></i>
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('pim_product_classificationtree_remove', { id: segment.id }) }}">
+                        <i class="icon-remove"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

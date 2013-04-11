@@ -22,12 +22,13 @@ class ProductAttributeControllerTest extends ControllerTest
         $uri = '/'. $locale .'/product/product-attribute/index';
 
         // assert without authentication
-        $crawler = $this->client->request('GET', $uri);
+        $this->client->request('GET', $uri);
         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertCount(1, $crawler->filter('table.table:contains("name")'));
     }
 
     /**
@@ -39,16 +40,17 @@ class ProductAttributeControllerTest extends ControllerTest
     public function testList($locale)
     {
         // initialize authentication to call container and get attribute group entity
-        $attributeGroup = $this->getAttributeGroupRepository()->findOneBy(array());
+        $attributeGroup = $this->getAttributeGroupRepository()->findOneBy(array('name' => 'General'));
         $uri = '/'. $locale .'/product/product-attribute/list/'. $attributeGroup->getId();
 
         // assert without authentication
-        $crawler = $this->client->request('GET', $uri);
+        $this->client->request('GET', $uri);
         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertCount(1, $crawler->filter('table.table:contains("name")'));
     }
 
     /**
@@ -62,7 +64,7 @@ class ProductAttributeControllerTest extends ControllerTest
         $uri = '/'. $locale .'/product/product-attribute/create';
 
         // assert without authentication
-        $crawler = $this->client->request('GET', $uri);
+        $this->client->request('GET', $uri);
         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
@@ -83,7 +85,7 @@ class ProductAttributeControllerTest extends ControllerTest
         $uri = '/'. $locale .'/product/product-attribute/edit/'. $productAttribute->getId();
 
         // assert without authentication
-        $crawler = $this->client->request('GET', $uri);
+        $this->client->request('GET', $uri);
         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
@@ -92,7 +94,7 @@ class ProductAttributeControllerTest extends ControllerTest
 
         // assert with unknown product attribute id and authentication
         $uri = '/'. $locale .'/product/product-attribute/edit/0';
-        $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
+        $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 
@@ -109,15 +111,15 @@ class ProductAttributeControllerTest extends ControllerTest
         $uri = '/'. $locale .'/product/product-attribute/remove/'. $productAttribute->getId();
 
         // assert without authentication
-        $crawler = $this->client->request('GET', $uri);
+        $this->client->request('GET', $uri);
         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
-        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         // assert with unknown product attribute id (last removed) and authentication
-        $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
+        $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 

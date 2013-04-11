@@ -5,7 +5,6 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeExtend
 use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
 use Pim\Bundle\ConfigBundle\Entity\Language;
-use Pim\Bundle\ConfigBundle\Entity\Currency;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -132,11 +131,11 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     protected $numberMax;
 
     /**
-     * @var integer $decimalPlaces
+     * @var boolean $decimalsAllowed
      *
-     * @ORM\Column(name="decimal_places", type="smallint", nullable=true)
+     * @ORM\Column(name="decimals_allowed", type="boolean", nullable=true)
      */
-    protected $decimalPlaces;
+    protected $decimalsAllowed;
 
     /**
      * @var boolean $negativeAllowed
@@ -172,14 +171,6 @@ class ProductAttribute extends AbstractEntityAttributeExtended
      * @ORM\Column(name="date_max", type="datetime", nullable=true)
      */
     protected $dateMax;
-
-    /**
-     * @var Currency $defaultCurrency
-     *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ConfigBundle\Entity\Currency")
-     * @ORM\JoinColumn(name="default_currency_id", nullable=true, referencedColumnName="id")
-     */
-    protected $defaultCurrency;
 
     /**
      * @var string $metricType
@@ -237,161 +228,6 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     public function __toString()
     {
         return $this->name;
-    }
-
-    /**
-     * Return activated properties for the attribute
-     *
-     * @return array Activated properties
-     */
-    public function getActivatedProperties()
-    {
-        switch ($this->getAttribute()->getAttributeType()) {
-            case AbstractAttributeType::TYPE_DATE_CLASS:
-                return array('defaultValue', 'dateType', 'dateMin', 'dateMax');
-            case AbstractAttributeType::TYPE_INTEGER_CLASS:
-                return array('defaultValue', 'numberMin', 'numberMax', 'negativeAllowed');
-            case AbstractAttributeType::TYPE_MONEY_CLASS:
-                return array('defaultValue', 'numberMin', 'numberMax', 'decimalPlaces',
-                    'negativeAllowed', 'defaultCurrency');
-            case AbstractAttributeType::TYPE_NUMBER_CLASS:
-                return array('defaultValue', 'numberMin', 'numberMax', 'decimalPlaces', 'negativeAllowed');
-            case AbstractAttributeType::TYPE_OPT_MULTI_SELECT_CLASS:
-                return array('valueCreationAllowed');
-            case AbstractAttributeType::TYPE_OPT_SINGLE_SELECT_CLASS:
-                return array('defaultValue');
-            case AbstractAttributeType::TYPE_TEXTAREA_CLASS:
-                return array('defaultValue', 'maxCharacters', 'wysiwygEnabled');
-            case AbstractAttributeType::TYPE_METRIC_CLASS:
-                return array('defaultValue', 'numberMin', 'numberMax', 'decimalPlaces',
-                    'negativeAllowed', 'metricType', 'defaultMetricUnit');
-            case AbstractAttributeType::TYPE_FILE_CLASS:
-                return array('allowedFileSources', 'maxFileSize', 'allowedFileExtensions');
-            case AbstractAttributeType::TYPE_IMAGE_CLASS:
-                return array('allowedFileSources', 'maxFileSize', 'allowedFileExtensions');
-            case AbstractAttributeType::TYPE_TEXT_CLASS:
-                return array('defaultValue', 'maxCharacters', 'validationRule', 'validationRegexp');
-            case AbstractAttributeType::TYPE_BOOLEAN_CLASS:
-                return array('defaultValue');
-            default:
-                return array();
-        }
-    }
-
-    /**
-     * Return form field parameters for the property
-     *
-     * @param string $property
-     *
-     * @return array|null $params
-     */
-    public function getFieldParams($property)
-    {
-        $params = array('data' => null, 'options' => array('required' => false, 'label' => $property));
-        switch ($property) {
-            case 'defaultValue':
-                $attribute = $this->getAttribute();
-                $attTypeClass = $attribute->getAttributeType();
-                $attType = new $attTypeClass();
-                $fieldType = $attType->getFormType();
-
-                if ($fieldType === 'entity') {
-                    $fieldType = 'text';
-                } elseif ($attTypeClass == AbstractAttributeType::TYPE_BOOLEAN_CLASS) {
-                    $fieldType = 'choice';
-                    $params['options']['choices'] = array(
-                        0 => 'No',
-                        1 => 'Yes'
-                    );
-                }
-                $params['fieldType'] = $fieldType;
-                break;
-            case 'dateType':
-                $params['fieldType']           = 'choice';
-                $params['options']['choices']  = array('date' => 'Date', 'time' => 'Time', 'datetime' => 'Datetime');
-                $params['options']['required'] = true;
-                break;
-            case 'dateMin':
-                $params['fieldType'] = $this->dateType ? $this->dateType : 'datetime';
-                break;
-            case 'dateMax':
-                $params['fieldType'] = $this->dateType ? $this->dateType : 'datetime';
-                break;
-            case 'negativeAllowed':
-                $params['fieldType'] = 'choice';
-                $params['options']['required'] = true;
-                $params['options']['choices'] = array('No', 'Yes');
-                break;
-            case 'decimalPlaces':
-                $params['fieldType']           = 'choice';
-                $params['options']['required'] = true;
-                $params['options']['choices']  = array(0, 1, 2, 3, 4);
-                break;
-            case 'numberMin':
-                if ($this->decimalPlaces) {
-                    $params['fieldType']            = 'number';
-                    $params['options']['precision'] = $this->decimalPlaces;
-                } else {
-                    $params['fieldType']            = 'integer';
-                }
-                break;
-            case 'numberMax':
-                if ($this->decimalPlaces) {
-                    $params['fieldType']            = 'number';
-                    $params['options']['precision'] = $this->decimalPlaces;
-                } else {
-                    $params['fieldType']            = 'integer';
-                }
-                break;
-            case 'defaultCurrency':
-                $params['fieldType']        = 'entity';
-                $params['options']['class'] = 'Pim\Bundle\ConfigBundle\Entity\Currency';
-                break;
-            case 'valueCreationAllowed':
-                $params['fieldType']           = 'choice';
-                $params['options']['required'] = true;
-                $params['options']['choices']  = array('No', 'Yes');
-                break;
-            case 'maxCharacters':
-                $params['fieldType'] = 'integer';
-                break;
-            case 'wysiwygEnabled':
-                $params['fieldType']          = 'choice';
-                $params['options']['required'] = true;
-                $params['options']['choices'] = array('No', 'Yes');
-                break;
-            case 'metricType':
-                $params['fieldType'] = 'text';
-                break;
-            case 'defaultMetricUnit':
-                $params['fieldType'] = 'text';
-                break;
-            case 'allowedFileSources':
-                $params['fieldType']           = 'choice';
-                $params['options']['required'] = true;
-                $params['options']['choices']  = array('all' => 'All',
-                    'upload' => 'Upload', 'external' => 'External');
-                break;
-            case 'maxFileSize':
-                $params['fieldType'] = 'integer';
-                break;
-            case 'allowedFileExtensions':
-                $params['fieldType'] = 'text';
-                $params['options']['by_reference'] = false;
-                $params['data'] = $this->allowedFileExtensions;
-                break;
-            case 'validationRule':
-                $params['fieldType'] = 'choice';
-                $params['options']['choices'] = array(null => 'None', 'email' => 'E-mail', 'url' => 'URL', 'regexp' => 'Regular expression');
-                break;
-            case 'validationRegexp':
-                $params['fieldType'] = 'text';
-                break;
-            default:
-                return null;
-        }
-
-        return $params;
     }
 
     /**
@@ -745,25 +581,25 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     }
 
     /**
-     * Get decimalPlaces
+     * Get decimalsAllowed
      *
-     * @return integer $decimalPlaces
+     * @return boolean $decimalsAllowed
      */
-    public function getDecimalPlaces()
+    public function getDecimalsAllowed()
     {
-        return $this->decimalPlaces;
+        return $this->decimalsAllowed;
     }
 
     /**
-     * Set decimalPlaces
+     * Set decimalsAllowed
      *
-     * @param integer $decimalPlaces
+     * @param boolean $decimalsAllowed
      *
      * @return ProductAttribute
      */
-    public function setDecimalPlaces($decimalPlaces)
+    public function setDecimalsAllowed($decimalsAllowed)
     {
-        $this->decimalPlaces = $decimalPlaces;
+        $this->decimalsAllowed = $decimalsAllowed;
 
         return $this;
     }
@@ -884,30 +720,6 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     public function setDateMax($dateMax)
     {
         $this->dateMax = $dateMax;
-
-        return $this;
-    }
-
-    /**
-     * Get defaultCurrency
-     *
-     * @return Currency $defaultCurrency
-     */
-    public function getDefaultCurrency()
-    {
-        return $this->defaultCurrency;
-    }
-
-    /**
-     * Set defaultCurrency
-     *
-     * @param Currency $defaultCurrency
-     *
-     * @return ProductAttribute
-     */
-    public function setDefaultCurrency(Currency $defaultCurrency = null)
-    {
-        $this->defaultCurrency = $defaultCurrency;
 
         return $this;
     }

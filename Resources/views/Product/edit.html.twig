@@ -5,62 +5,76 @@
 
 {% block content %}
 
-    {% form_theme form 'PimUIBundle:Form:fields.html.twig' %}
-    
-    <form action="{{ form.vars.value.id ? path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: app.request.query.get('dataLocale') }) : path('pim_product_product_create') }}" 
-        method="POST" class="form-register" {{ form_enctype(form) }}>
+    {% form_theme form 'PimProductBundle:Form:simple_layout.html.twig' %}
+
+    <form action="{{ form.vars.value.id ? path('pim_product_product_edit', { id: form.vars.value.id }) : path('pim_product_product_create') }}" 
+        method="POST" class="form-horizontal" {{ form_enctype(form) }}>
 
         <div class="row-fluid">
-            <div class="form-row">
-                <h3 class="pull-left">{{ title|trans }}</h3>
-                <button class="btn btn-primary pull-right" type="submit">{{ 'Save'|trans }}</button>
-                <a class="btn pull-right" href="{{ path('pim_product_product_remove', { id: form.vars.value.id }) }}">
-                    {{ "Delete" | trans }}
-                </a>
-                <a class="pull-right" href="{{ path('pim_product_product_index') }}">
+            <h3 class="pull-left">{{ title|trans }}</h3>
+            <div class="pull-right">
+                <a href="{{ path('pim_product_product_index') }}">
                     {{ "Back to list" | trans }}
                 </a>
+                <a class="btn" href="{{ path('pim_product_product_remove', { id: form.vars.value.id }) }}">
+                    {{ "Delete" | trans }}
+                </a>
+                <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
             </div>
         </div>
 
         <div class="row-fluid">
             <div class="control-group">
+                {{ form_label(form.productFamily, 'Family', { 'label_attr': {'class': 'control-label span1'} }) }}
                 <div class="controls">
-                    {{ form_label(form.productFamily, 'Family', { 'label_attr': {'class': 'control-label'} }) }}
-                    {{ form_widget(form.productFamily) }}
+                    {{ form_widget(form.productFamily, {'attr' : { 'class': 'span1' }}) }}
                 </div>
             </div>
         </div>
+    
+        <div class="row-fluid">
+            {% if form.vars.errors|length %}
+                <div class="alert alert-error">
+                    {{ form_errors(form) }}
+                </div>
+            {% endif %}
+            <div id="tabs" style="overflow: inherit;">
+                <div class="span2">
+                    <ul class="nav nav-list">
+                        {% for group in groups %}
+                            <li class="tab{% if loop.index == 1 %} active{% endif %}"><a href="#tabs-{{group.id}}">{{ group.name|trans }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="span10 tab-pan">
+    
+                    {{ form_row(form.id) }}
 
-
-    <div class="row-fluid">
-        {% if form.vars.errors|length %}
-            <div class="alert alert-error">
-                {{ form_errors(form) }}
-            </div>
-        {% endif %}
-        <div id="tabs" style="overflow: inherit;">
-            <div class="span2">
-                <ul class="nav nav-list">
-                    <li class="active"><a href="#tabs-0">General</a></li>
-                </ul>
-            </div>
-            <div class="span10">
-
-                {{ form_row(form.id) }}
-                
-                {{ form_row(form.sku) }}
-
-                {% for formValue in form.values %}
                     <div class="control-group">
+                        {{ form_label(form.sku, null, { 'label_attr': {'class': 'control-label'} }) }}
                         <div class="controls">
-                            {{ form_widget(formValue) }}
+                            {{ form_widget(form.sku, {'attr' : { 'class': 'span4' } }) }}
                         </div>
                     </div>
-                {% endfor %}
+    
+                    {% for group in groups %}
+                        <div id="tabs-{{ group.id }}">
+                            <h3>{{ group.name|trans }}</h3>
+                            {% for formValue in form.values %}
+                                {% if group.id == formValue.group.vars.value %}
+                                <div class="control-group">
+                                    {{ form_label(formValue, formValue.vars.value.attribute.code, { 'label_attr': {'class': 'control-label'} }) }}
+                                    <div class="controls">
+                                        {{ form_widget(formValue) }}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+    
             </div>
-
-        </div>
         {{ form_row(form.id) }}
         {{ form_row(form._token) }}
         {{ form_row(form.languages) }}
@@ -77,9 +91,37 @@
     {{ parent() }}
     <script type="text/javascript">
     $(function() {
+
         $('select').select2({ allowClear: true });
         $('input.multiselect').select2({ tags: $(this).val() });
+        
+        $('#tabs').tabs().delegate("a", "click", function() {
+            $(this).parent().parent().find('li').each(function() {
+                $(this).removeClass('active');
+            });
+            $(this).parent().addClass('active');
+        });
+        
+        $('#tabs li.tab').each(function() {
+            var tabId = $(this).attr('aria-controls');
+            var nbValues = $('#'+tabId+' .control-group').length;
+            if (nbValues == 0) {
+                $(this).hide();
+            }
+        });
+        
+        $('.tab-pan .control-group input').each(function() {
+            $(this).addClass('span4');
+        });
+        $('.tab-pan .control-group textarea').each(function() {
+            $(this).addClass('span4');
+        });
+        $('.tab-pan .control-group .select2-container').each(function() {
+            $(this).addClass('span4');
+            $(this).attr('style', 'margin-left:0px');
+        });
     });
+
     </script>
     <link rel="stylesheet" href="{{ asset('bundles/pimui/css/select2.css') }}">
     <script type="text/javascript" src="{{ asset('bundles/pimui/js/select2.js') }}"></script>
