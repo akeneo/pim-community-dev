@@ -159,8 +159,7 @@ class TranslatableEntityType extends AbstractType
             'names',
             'pim_translation_collection',
             array(
-                'type' => 'pim_translation,
-                'by_reference' => false
+                'type' => 'pim_translation
             )
         );
     }
