@@ -2,18 +2,13 @@
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
 use Pim\Bundle\ProductBundle\Entity\Product;
-
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Price;
 
 /**
 * Load products
@@ -148,8 +143,10 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             // price
             $value = $this->getProductManager()->createFlexibleValue();
             $value->setAttribute($attPrice->getAttribute());
-            $value->setData(rand(5, 100));
-            $value->setCurrency('USD');
+            $price = new Price();
+            $price->setData(rand(5, 100));
+            $price->setCurrency('USD');
+            $value->setData($price);
             $product->addValue($value);
 
             $this->persist($product);
