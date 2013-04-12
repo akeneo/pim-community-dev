@@ -56,24 +56,46 @@ class LoadProductSegmentData extends AbstractFixture implements OrderedFixtureIn
         $product5 = $this->getReference('product-sku-5');
 
         // create trees
-        $treeCatalog     = $this->createSegment('Master Catalog');
-        $treeCollections = $this->createSegment('Collections');
-        $treeColors      = $this->createSegment('Colors');
-        $treeSales       = $this->createSegment('Europe Sales Catalog');
+        $treeCatalog     = $this->createSegment('Master Catalog (default)');
+        $treeCollections = $this->createSegment('Collections (default)');
+        $treeColors      = $this->createSegment('Colors (default)');
+        $treeSales       = $this->createSegment('Europe Sales Catalog (default)');
 
         // enrich master catalog with segments
-        $nodeBooks = $this->createSegment('Books', $treeCatalog);
-        $nodeComputers = $this->createSegment('Computers', $treeCatalog);
-        $nodeDesktops = $this->createSegment('Desktops', $nodeComputers);
-        $nodeNotebooks = $this->createSegment('Notebooks', $nodeComputers);
-        $nodeAccessories = $this->createSegment('Accessories', $nodeComputers);
-        $nodeGames = $this->createSegment('Games', $nodeComputers);
-        $nodeSoftware = $this->createSegment('Software', $nodeComputers);
-        $nodeClothing = $this->createSegment('Apparels & Shoes', $treeCatalog);
+        $nodeBooks = $this->createSegment('Books (default)', $treeCatalog);
+        $nodeComputers = $this->createSegment('Computers (default)', $treeCatalog);
+        $nodeDesktops = $this->createSegment('Desktops (default)', $nodeComputers);
+        $nodeNotebooks = $this->createSegment('Notebooks (default)', $nodeComputers);
+        $nodeAccessories = $this->createSegment('Accessories (default)', $nodeComputers);
+        $nodeGames = $this->createSegment('Games (default)', $nodeComputers);
+        $nodeSoftware = $this->createSegment('Software (default)', $nodeComputers);
+        $nodeClothing = $this->createSegment('Apparels & Shoes (default)', $treeCatalog);
 
-        $nodeShirts = $this->createSegment('Shirts', $nodeClothing, array($product5));
-        $nodeJeans  = $this->createSegment('Jeans', $nodeClothing, array($product3, $product4));
-        $nodeShoes  = $this->createSegment('Shoes', $nodeClothing, array($product1, $product2, $product3));
+        $nodeShirts = $this->createSegment('Shirts (default)', $nodeClothing, array($product5));
+        $nodeJeans  = $this->createSegment('Jeans (default)', $nodeClothing, array($product3, $product4));
+        $nodeShoes  = $this->createSegment('Shoes (default)', $nodeClothing, array($product1, $product2, $product3));
+
+        $this->manager->flush();
+
+        // translate data in en_US
+        $locale = 'en_US';
+        $this->translate($treeCatalog, $locale, 'Master Catalog');
+        $this->translate($treeCollections, $locale, 'Collections');
+        $this->translate($treeColors, $locale, 'Colors');
+        $this->translate($treeSales, $locale, 'Europe Sales Catalog');
+
+        $this->translate($nodeBooks, $locale, 'Books');
+        $this->translate($nodeComputers, $locale, 'Computers');
+        $this->translate($nodeDesktops, $locale, 'Desktops');
+        $this->translate($nodeNotebooks, $locale, 'Notebooks');
+        $this->translate($nodeAccessories, $locale, 'Accessories');
+        $this->translate($nodeGames, $locale, 'Games');
+        $this->translate($nodeSoftware, $locale, 'Software');
+        $this->translate($nodeClothing, $locale, 'Apparels & Shoes');
+
+        $this->translate($nodeShirts, $locale, 'Shirts');
+        $this->translate($nodeJeans, $locale, 'Jeans');
+        $this->translate($nodeShoes, $locale, 'Shoes');
 
         $this->manager->flush();
 
