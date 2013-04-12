@@ -25,9 +25,14 @@ class AttributeGroupType extends AbstractType
     {
         parent::buildForm($builder, $options);
 
-        $builder->add('id', 'hidden');
-
-        $builder->add('name');
+        $builder->add(
+            'names',
+            'pim_translation_collection',
+            array(
+                'label' => 'Name',
+                'type' => 'pim_translation'
+            )
+        );
 
         $builder->add('sort_order', 'integer');
     }

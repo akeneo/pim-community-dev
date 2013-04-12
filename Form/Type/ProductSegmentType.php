@@ -29,10 +29,10 @@ class ProductSegmentType extends AbstractType
 
         $builder->add(
             'titles',
-            'collection',
+            'pim_translation_collection',
             array(
-                'type' => new ProductSegmentTranslationType(),
-                'by_reference' => false
+                'label' => 'Title',
+                'type' => 'pim_translation'
             )
         );
 

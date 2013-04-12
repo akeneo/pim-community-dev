@@ -26,16 +26,6 @@ class ClassificationTreeController extends Controller
 {
 
     /**
-     * Get classification tree manager
-     *
-     * @return \Oro\Bundle\SegmentationTreeBundle\Model\SegmentManager
-     */
-    protected function getTreeManager()
-    {
-        return $this->container->get('pim_product.classification_tree_manager');
-    }
-
-    /**
      * Index action
      *
      * @Route("/index")
@@ -151,33 +141,6 @@ class ClassificationTreeController extends Controller
     }
 
     /**
-     * @return Pim\Bundle\TranslationBundle\Manager\TranslationManager
-     */
-    protected function getTranslationManager()
-    {
-        return $this->container->get('pim_translation.translation_manager');
-    }
-
-    /**
-     * Return all locales actived
-     * @return multitype:string
-     */
-    protected function getActiveLocales()
-    {
-        $locales = $this->getDoctrine()
-                        ->getEntityManager()
-                        ->getRepository('Pim\Bundle\ConfigBundle\Entity\Language')
-                        ->findBy(array('activated' => true));
-
-        $activeLocales = array();
-        foreach ($locales as $locale) {
-            $activeLocales[] = $locale->getCode();
-        }
-
-        return $activeLocales;
-    }
-
-    /**
      * Edit tree action
      *
      * @param ProductSegment $segment The segment to manage
@@ -195,11 +158,11 @@ class ClassificationTreeController extends Controller
     {
         $request = $this->getRequest();
 
+        // get i18n content
         $i18nClass = 'Pim\Bundle\ProductBundle\Entity\ProductSegmentTranslation';
-        $titles = $this->getTranslationManager()
-                       ->setActiveLocales(array('en_US', 'fr_FR', 'en_GB'))
-                       ->getTranslatedObjects($segment, $i18nClass, 'title');
-        $segment->titles = $titles;
+        $segment->titles = $this->getTranslationManager()
+                                ->setActiveLocales(array('en_US', 'fr_FR', 'en_GB'))
+                                ->getTranslatedObjects($segment, $i18nClass, 'title');
 
         $form = $this->createForm(new ProductSegmentType(), $segment);
 
@@ -239,5 +202,42 @@ class ClassificationTreeController extends Controller
         $this->get('session')->getFlashBag()->add('success', 'Product segment successfully removed');
 
         return $this->redirect($this->generateUrl('pim_product_classificationtree_index'));
+    }
+
+    /**
+     * Get classification tree manager
+     *
+     * @return \Oro\Bundle\SegmentationTreeBundle\Model\SegmentManager
+     */
+    protected function getTreeManager()
+    {
+        return $this->container->get('pim_product.classification_tree_manager');
+    }
+
+    /**
+     * @return Pim\Bundle\TranslationBundle\Manager\TranslationManager
+     */
+    protected function getTranslationManager()
+    {
+        return $this->container->get('pim_translation.translation_manager');
+    }
+
+    /**
+     * Return all locales actived
+     * @return multitype:string
+     */
+    protected function getActiveLocales()
+    {
+        $locales = $this->getDoctrine()
+                        ->getEntityManager()
+                        ->getRepository('Pim\Bundle\ConfigBundle\Entity\Language')
+                        ->findBy(array('activated' => true));
+
+        $activeLocales = array();
+        foreach ($locales as $locale) {
+            $activeLocales[] = $locale->getCode();
+        }
+
+        return $activeLocales;
     }
 }

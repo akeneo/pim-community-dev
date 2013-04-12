@@ -36,26 +36,6 @@ class AttributeGroupController extends Controller
     }
 
     /**
-     * Get entity manager
-     *
-     * @return \Doctrine\ORM\EntityManager
-     */
-    protected function getEntityManager()
-    {
-        return $this->getDoctrine()->getEntityManager();
-    }
-
-    /**
-     * Get attribute group repository
-     *
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    protected function getAttributeGroupRepository()
-    {
-        return $this->getEntityManager()->getRepository('PimProductBundle:AttributeGroup');
-    }
-
-    /**
      * Create attribute group
      *
      * @Route("/create")
@@ -82,6 +62,13 @@ class AttributeGroupController extends Controller
      */
     public function editAction(AttributeGroup $group)
     {
+        // get i18n content
+        $i18nClass = 'Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation';
+        $names = $this->getTranslationManager()
+                      ->setActiveLocales($this->getActiveLocales())
+                      ->getTranslatedObjects($group, $i18nClass, 'name');
+        $group->names = $names;
+
         if ($this->get('pim_product.form.handler.attribute_group')->process($group)) {
             $this->get('session')->getFlashBag()->add('success', 'Group successfully saved');
 
@@ -112,5 +99,52 @@ class AttributeGroupController extends Controller
         $this->get('session')->getFlashBag()->add('success', 'Group successfully removed');
 
         return $this->redirect($this->generateUrl('pim_product_attributegroup_index'));
+    }
+
+    /**
+     * Get entity manager
+     *
+     * @return \Doctrine\ORM\EntityManager
+     */
+    protected function getEntityManager()
+    {
+        return $this->getDoctrine()->getEntityManager();
+    }
+
+    /**
+     * Get attribute group repository
+     *
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    protected function getAttributeGroupRepository()
+    {
+        return $this->getEntityManager()->getRepository('PimProductBundle:AttributeGroup');
+    }
+
+    /**
+     * @return Pim\Bundle\TranslationBundle\Manager\TranslationManager
+     */
+    protected function getTranslationManager()
+    {
+        return $this->container->get('pim_translation.translation_manager');
+    }
+
+    /**
+     * Return all locales actived
+     * @return multitype:string
+     */
+    protected function getActiveLocales()
+    {
+        $locales = $this->getDoctrine()
+                        ->getEntityManager()
+                        ->getRepository('Pim\Bundle\ConfigBundle\Entity\Language')
+                        ->findBy(array('activated' => true));
+
+        $activeLocales = array();
+        foreach ($locales as $locale) {
+            $activeLocales[] = $locale->getCode();
+        }
+
+        return $activeLocales;
     }
 }
