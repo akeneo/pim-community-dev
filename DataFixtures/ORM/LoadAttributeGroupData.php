@@ -108,7 +108,16 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
         $this->manager->flush();
 
 
-        // translate groups
+        // translate groups in en_US
+
+        $this->translate('attribute-group.general', $locale, 'General');
+        $this->translate('attribute-group.seo', $locale, 'SEO');
+        $this->translate('attribute-group.marketing', $locale, 'Marketing');
+        $this->translate('attribute-group.sizes', $locale, 'Sizes');
+        $this->translate('attribute-group.colors', $locale, 'Colors');
+
+
+        // translate groups in fr_FR
         $locale = 'fr_FR';
 
         $this->translate('attribute-group.general', $locale, 'Général');
@@ -129,7 +138,7 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
     protected function createGroup($name)
     {
         $group = new AttributeGroup();
-        $group->setName($name);
+        $group->setName($name .' (default)');
         $group->setSortOrder(++self::$order);
 
         return $group;

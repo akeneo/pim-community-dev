@@ -99,7 +99,7 @@ class LoadProductSegmentData extends AbstractFixture implements OrderedFixtureIn
 
         $this->manager->flush();
 
-        // translate data
+        // translate data in fr_FR
         $locale = 'fr_FR';
         $this->translate($treeCatalog, $locale, 'Catalogue Principal');
         $this->translate($treeCollections, $locale, 'Collections');
