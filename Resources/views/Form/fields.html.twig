@@ -19,8 +19,9 @@
 
 {% block pim_translation_row %}
     <td>
-        {{ form_errors(form.content) }}
+        {{ form_errors(form) }}
         {{ form_widget(form.content) }}
+        {{ form_widget(form.locale) }}
     </td>
 {% endblock %}
 
