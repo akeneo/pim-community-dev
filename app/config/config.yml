@@ -141,8 +141,7 @@ be_simple_soap:
             resource_type:    yml
 
 stof_doctrine_extensions:
-    default_locale: %locale%
-    
+    default_locale: default
     orm:
         default:
             tree: true
