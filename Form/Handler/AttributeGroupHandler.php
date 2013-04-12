@@ -77,6 +77,11 @@ class AttributeGroupHandler
      */
     protected function onSuccess(AttributeGroup $group)
     {
+        // persist i18n entity
+        foreach ($group->names as $name) {
+            $this->manager->persist($name);
+        }
+
         $this->manager->persist($group);
         $this->manager->flush();
     }
