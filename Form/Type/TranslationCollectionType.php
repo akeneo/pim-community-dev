@@ -46,7 +46,7 @@ class TranslationCollectionType extends AbstractType
             return $value;
         };
 
-        $resolver->setDefaults(array('type' => 'text', 'options' => array()));
+        $resolver->setDefaults(array('type' => 'pim_translation', 'options' => array()));
 
         $resolver->setNormalizers(array('options' => $optionsNormalizer));
     }

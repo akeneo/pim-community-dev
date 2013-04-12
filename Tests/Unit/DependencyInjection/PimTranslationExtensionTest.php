@@ -30,6 +30,18 @@ class PimTranslationExtensionTest extends \PHPUnit_Framework_TestCase
     const PIM_TRANSLATION_SRV_ID = 'pim_translation.translation_manager';
 
     /**
+     * Form type translation service id
+     * @staticvar string
+     */
+    const PIM_TRANSLATION_FORM_TYPE = 'pim_translation.form.type.translation';
+
+    /**
+     * Form type collection translation service id
+     * @staticvar string
+     */
+    const PIM_TRANSLATION_COLLECTION_FORM_TYPE = 'pim_translation.form.type.translation_collection';
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
@@ -49,7 +61,9 @@ class PimTranslationExtensionTest extends \PHPUnit_Framework_TestCase
         $this->extension->load($this->configs, $this->containerBuilder);
 
         $serviceIds = $this->containerBuilder->getServiceIds();
-        $this->assertCount(2, $serviceIds);
+        $this->assertCount(4, $serviceIds);
         $this->assertTrue(in_array(self::PIM_TRANSLATION_SRV_ID, $serviceIds));
+        $this->assertTrue(in_array(self::PIM_TRANSLATION_FORM_TYPE, $serviceIds));
+        $this->assertTrue(in_array(self::PIM_TRANSLATION_COLLECTION_FORM_TYPE, $serviceIds));
     }
 }
