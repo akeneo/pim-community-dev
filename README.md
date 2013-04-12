@@ -159,8 +159,7 @@ class TranslatableEntityType extends AbstractType
             'names',
             'pim_translation_collection',
             array(
-                'type' => 'pim_translation,
-                'by_reference' => false
+                'type' => 'pim_translation
             )
         );
     }
@@ -192,3 +191,11 @@ Call manager to save entity and translations
 
 
 
+Enhancements
+============
+
+- [ ] Sort by locales
+- [ ] Integrate locales and currencies (not for now)
+- [ ] Implements with default locale
+- [ ] Fix bug when create new entity
+- [ ] Extends handler
