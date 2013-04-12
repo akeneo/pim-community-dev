@@ -61,7 +61,7 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
 
         // create group
         $group = $this->createGroup('General');
-        $this->persist($group);
+        $this->persist($group, 'attribute-group.general');
 
         // link attributes with group
         $attribute = $this->getReference('product-attribute.name');
@@ -78,10 +78,10 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
 
 
         $group = $this->createGroup('SEO');
-        $this->persist($group);
+        $this->persist($group, 'attribute-group.seo');
 
         $group = $this->createGroup('Marketing');
-        $this->persist($group);
+        $this->persist($group, 'attribute-group.marketing');
 
         $attribute = $this->getReference('product-attribute.price');
         $attribute->setGroup($group);
@@ -90,7 +90,7 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
 
         // create group and link attribute
         $group = $this->createGroup('Sizes');
-        $this->persist($group);
+        $this->persist($group, 'attribute-group.sizes');
 
         $attribute = $this->getReference('product-attribute.size');
         $attribute->setGroup($group);
@@ -98,7 +98,7 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
 
         // create group and link attribute
         $group = $this->createGroup('Colors');
-        $this->persist($group);
+        $this->persist($group, 'attribute-group.colors');
 
         $attribute = $this->getReference('product-attribute.color');
         $attribute->setGroup($group);
@@ -109,6 +109,7 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
 
 
         // translate groups in en_US
+        $locale = 'en_US';
 
         $this->translate('attribute-group.general', $locale, 'General');
         $this->translate('attribute-group.seo', $locale, 'SEO');
@@ -138,7 +139,7 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
     protected function createGroup($name)
     {
         $group = new AttributeGroup();
-        $group->setName($name .' (default)');
+        $group->setName($name);
         $group->setSortOrder(++self::$order);
 
         return $group;
@@ -147,14 +148,14 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
     /**
      * Persist entity and add reference
      *
-     * @param AttributeGroup $group
+     * @param AttributeGroup $group     attribute group entity
+     * @param string         $reference object reference to reuse it
      */
-    protected function persist(AttributeGroup $group)
+    protected function persist(AttributeGroup $group, $reference)
     {
         $this->manager->persist($group);
 
-        $groupName = strtolower($group->getName());
-        $this->addReference('attribute-group.'. $groupName, $group);
+        $this->addReference($reference, $group);
     }
 
     /**
