@@ -156,3 +156,7 @@ a.accordion-toggle {
 .accordion-group {
     margin: 10px;
 }
+
+.controls .switch label{
+    float: none;
+}
