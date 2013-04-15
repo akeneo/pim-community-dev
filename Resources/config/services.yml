@@ -18,3 +18,9 @@ services:
         class: %pim_translation.translation_collection_type_class%
         tags:
             - { name: form.type, alias: pim_translation_collection }
+
+    pim_translation.form.type.translatable_field:
+        class: Pim\Bundle\TranslationBundle\Form\Type\TranslatedFieldType
+        arguments: [ @service_container ]
+        tags:
+            - { name: form.type, alias: pim_translatable_field }

@@ -65,8 +65,9 @@ class TranslationManager
     public function getTranslatedObjects($entity, $i18nClass, $field, $enrich = true)
     {
         $wrapped = new EntityWrapper($entity, $this->objectManager);
+//         var_dump($wrapped);
 
-        if ($wrapped->hasValidIdentifier()) {
+//         if ($wrapped->hasValidIdentifier()) {
             $i18nRepo = $this->objectManager->getRepository($i18nClass);
 
             if ($i18nRepo instanceof \Pim\Bundle\TranslationBundle\Entity\Repository\TranslationRepository) {
@@ -81,9 +82,9 @@ class TranslationManager
                 // Not the good translation repository
                 throw new \Exception('Wrong repository');
             }
-        } else {
-            throw new \Exception('Entity mis wrapped');
-        }
+//         } else {
+//             throw new \Exception('Entity mis wrapped');
+//         }
     }
 
     /**
@@ -110,7 +111,8 @@ class TranslationManager
             if ($present === false) {
                 $i18nEntity = new $i18nClass();
                 $i18nEntity->setField($field);
-                $i18nEntity->setForeignKey($wrapper->getObject()->getId());
+//                 if ($wrapper->hasValidIdentifier())
+                    $i18nEntity->setForeignKey($wrapper->getObject()->getId());
                 $i18nEntity->setLocale($locale);
                 $i18nEntity->setObjectClass($wrapper->getMetadata()->rootEntityName);
 

@@ -24,7 +24,7 @@ class TranslationType extends AbstractType
     {
         parent::buildForm($builder, $options);
 
-        $builder->add('content', 'text');
+        $builder->add('content', 'text', array('required' => false));
 
         $builder->add('locale', 'text');
     }
