@@ -36,17 +36,4 @@ class AttributeGroupTranslation extends AbstractTranslation
      * @ORM\JoinColumn(name="foreign_key", referencedColumnName="id")
      */
     protected $foreignKey;
-
-    /**
-     * *
-     * @param unknown_type $locale
-     * @param unknown_type $field
-     * @param unknown_type $value
-     */
-    public function __construct($locale, $field, $value)
-    {
-        $this->setLocale($locale);
-        $this->setField($field);
-        $this->setContent($value);
-    }
 }

@@ -31,16 +31,6 @@ class AttributeGroupType extends AbstractType
             'personal_translation' => 'Pim\\Bundle\\ProductBundle\\Entity\\AttributeGroupTranslation'
         ));
 
-
-//         $builder->add(
-//             'names',
-//             'pim_translation_collection',
-//             array(
-//                 'label' => 'Name',
-//                 'type' => 'pim_translation'
-//             )
-//         );
-
         $builder->add('sort_order', 'integer');
     }
 

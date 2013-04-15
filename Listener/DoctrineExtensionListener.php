@@ -37,5 +37,6 @@ class DoctrineExtensionListener implements ContainerAwareInterface
         $translatable->setTranslatableLocale($event->getRequest()->getLocale());
         $translatable->setTranslationFallback(true);
         $translatable->setDefaultLocale('default');
+//         $translatable->setPersistDefaultLocaleTranslation('default');
     }
 }
