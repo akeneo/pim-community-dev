@@ -26,6 +26,7 @@ class TranslationCollectionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->add('default', 'pim_translation', array());
         $resizeListener = new ResizeFormListener(
             $builder->getFormFactory(),
             $options['type'],

@@ -61,8 +61,6 @@ class AddTranslatedFieldSubscriber implements EventSubscriberInterface
      */
     private function bindTranslations($data)
     {
-//         var_dump('______________bind translations_______________');
-
         //Small helper function to extract all Personal Translation
         //from the Entity for the field we are interested in
         //and combines it with the fields
@@ -70,35 +68,25 @@ class AddTranslatedFieldSubscriber implements EventSubscriberInterface
         $collection = array();
         $availableTranslations = array();
 
-        foreach($data as $translation)
-        {
-            if(strtolower($translation->getField()) == strtolower($this->options['field']))
-            {
+        foreach ($data as $translation) {
+            if (strtolower($translation->getField()) == strtolower($this->options['field'])) {
                 $availableTranslations[strtolower($translation->getLocale())] = $translation;
             }
         }
 
-        foreach($this->getFieldNames() as $locale => $fieldName)
-        {
+        foreach ($this->getFieldNames() as $locale => $fieldName) {
             if (isset($availableTranslations[strtolower($locale)])) {
                 $translation = $availableTranslations[strtolower($locale)];
             } else {
                 $translation = $this->createPersonalTranslation($locale, $this->options['field'], null);
             }
 
-//             if ($locale != 'default') {
-                $collection[] = array(
-                    'locale'      => $locale,
-                    'fieldName'   => $fieldName,
-                    'translation' => $translation,
-                );
-//             } else {
-//                 $collection['default'] = $this->options['field'];
-//             }
-
+            $collection[] = array(
+                'locale'      => $locale,
+                'fieldName'   => $fieldName,
+                'translation' => $translation,
+            );
         }
-
-//         var_dump('______________________________________________');
 
         return $collection;
     }
@@ -109,7 +97,6 @@ class AddTranslatedFieldSubscriber implements EventSubscriberInterface
      */
     private function getFieldNames()
     {
-//         var_dump('______________get field names_______________');
         //helper function to generate all field names in format:
         // '<locale>' => '<field>|<locale>'
         $collection = array();
@@ -117,8 +104,6 @@ class AddTranslatedFieldSubscriber implements EventSubscriberInterface
         foreach ($this->options['locales'] as $locale) {
             $collection[$locale] = $this->options['field'] .":". $locale;
         }
-
-//         var_dump('____________________________________________');
 
         return $collection;
     }
@@ -132,21 +117,14 @@ class AddTranslatedFieldSubscriber implements EventSubscriberInterface
      */
     private function createPersonalTranslation($locale, $field, $content)
     {
-//         var_dump('_______________create personal translation_________________');
-
         //creates a new Personal Translation
         $className = $this->options['personal_translation'];
 
-        $translation = new $className($locale, $field, $content);
+        $translation = new $className();
         $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\AttributeGroup');
         $translation->setLocale($locale);
         $translation->setField($field);
         $translation->setContent($content);
-//         $translation->setForeignKey();
-//         $translation->setLocale($locale);
-//         $translation->setField($field);
-//         $translation->setContent($content);
-//         var_dump('___________________________________________________________');
 
         return $translation;
     }
@@ -157,41 +135,29 @@ class AddTranslatedFieldSubscriber implements EventSubscriberInterface
      */
     public function bind(DataEvent $event)
     {
-//         var_dump('____________________bind norm data__________________');
-
         //Validates the submitted form
         $data = $event->getData();
         $form = $event->getForm();
 
-        $entity = $form->getParent()->getData();
-        $entity->setTranslatableLocale('default');
-
         $validator = $this->container->get('validator');
 
-        foreach ($this->getFieldNames() as $locale => $fieldName)
-        {
-//             var_dump('call content');
-//             if ($locale != 'default') {
-                $content = $form->get($fieldName)->getData();
-//             var_dump('end call content');
+        foreach ($this->getFieldNames() as $locale => $fieldName) {
+            $content = $form->get($fieldName)->getData();
 
-                if (null === $content && in_array($locale, $this->options['required_locale'])) {
-                    $form->addError(new FormError(sprintf("Field '%s' for locale '%s' cannot be blank", $this->options['field'], $locale)));
-                } else {
-                    $translation = $this->createPersonalTranslation($locale, $fieldName, $content);
-//                     $translation->setContent($content);
-                    $errors = $validator->validate($translation, array(sprintf("%s:%s", $this->options['field'], $locale)));
+            if (null === $content && in_array($locale, $this->options['required_locale'])) {
+                $form->addError(new FormError(sprintf("Field '%s' for locale '%s' cannot be blank", $this->options['field'], $locale)));
+            } else {
+                $translation = $this->createPersonalTranslation($locale, $fieldName, $content);
 
-                    if (count($errors) > 0) {
-                        foreach ($errors as $error) {
-                            $form->addError(new FormError($error->getMessage()));
-                        }
+                $errors = $validator->validate($translation, array(sprintf("%s:%s", $this->options['field'], $locale)));
+
+                if (count($errors) > 0) {
+                    foreach ($errors as $error) {
+                        $form->addError(new FormError($error->getMessage()));
                     }
                 }
-//             }
+            }
         }
-
-//         var_dump('____________________________________________________');
     }
 
     /**
@@ -200,8 +166,6 @@ class AddTranslatedFieldSubscriber implements EventSubscriberInterface
      */
     public function postBind(DataEvent $event)
     {
-//         var_dump('________________post bind__________________');
-
         //if the form passed the validattion then set the corresponding Personal Translations
         $form = $event->getForm();
         $data = $form->getData();
@@ -209,58 +173,22 @@ class AddTranslatedFieldSubscriber implements EventSubscriberInterface
         $entity = $form->getParent()->getData();
         $entity->setTranslatableLocale('default');
 
-
-//         var_dump(get_class($entity));
-
         $translations = $this->bindTranslations($data);
-//         var_dump($translations);
-//         $translations = $collection['translations'];
-//         $default = $collection['default'];
 
         foreach ($translations as $binded) {
             $content = $form->get($binded['fieldName'])->getData();
             $translation = $binded['translation'];
-//             var_dump($translation);
-//             var_dump('------------------------------------------');
 
             // set the submitted content
             $translation->setContent($content);
             $translation->setForeignKey($entity);
 
-            //test if its new
-            if ($translation->getId()) {
-                //Delete the Personal Translation if its empty
-                if (NULL === $content && $this->options['remove_empty']) {
-                    $data->removeElement($translation);
-
-//                     if ($this->options['entity_manager_removal']) {
-//                         $this->container->get('doctrine.orm.entity_manager')->remove($translation);
-//                     }
-                }
+            if ($translation->getLocale() === 'default') {
+                $entity->setName($translation->getContent());
             }
-            elseif (NULL !== $content) {
-                if ($translation->getLocale() === 'default') {
-                    $entity->setName($translation->getContent());
-//                     $entity->addTranslation($translation);
-//                     $entity->removeTranslation($translation);
 
-//                     if ($data->contains($translation)) {
-//                         $data->remove($translation);
-//                     }
-                }
-
-                    $entity->addTranslation($translation);
-                    if (!$data->contains($translation)) {
-                        $data->add($translation);
-                    }
-
-//                     $entity->setName($content);
-//                     $data->removeElement($translation);
-//                 } else {
-                    //add it to entity
-
-//                 }
-            }
+            $entity->removeTranslation($translation);
+            $entity->addTranslation($translation);
         }
     }
 

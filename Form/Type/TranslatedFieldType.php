@@ -39,13 +39,11 @@ class TranslatedFieldType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (!class_exists($options['personal_translation']))
-        {
+        if (!class_exists($options['personal_translation'])) {
             throw new \Exception('unable to find personal translation class');
         }
 
-        if (!$options['field'])
-        {
+        if (!$options['field']) {
             throw new \Exception('must provide a field');
         }
 
