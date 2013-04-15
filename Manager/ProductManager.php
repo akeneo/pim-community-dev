@@ -27,7 +27,7 @@ class ProductManager extends FlexibleManager
         $this->storageManager->flush();
 
         $this->storageManager->refresh($product);
-        $this->addMissingTranslatableAttributeLocaleValue($product);
+        $this->addMissingLocaleValues($product);
         $this->storageManager->flush();
     }
 
@@ -43,7 +43,7 @@ class ProductManager extends FlexibleManager
      *   but the value in english is not available.
      *   This method will create this value with an empty data.
      */
-    private function AddMissingTranslatableAttributeLocaleValue(Product $product)
+    private function addMissingLocaleValues(Product $product)
     {
         $values         = $product->getValues();
         $languages      = $product->getLanguages();
