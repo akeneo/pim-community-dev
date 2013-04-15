@@ -127,7 +127,7 @@ class ProductController extends Controller
 
         $request = $this->getRequest();
 
-         // create form
+        // create form
         $entClassName = $this->getProductManager()->getFlexibleName();
         $valueClassName = $this->getProductManager()->getFlexibleValueName();
         $form = $this->createForm(new ProductType($entClassName, $valueClassName), $entity);
