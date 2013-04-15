@@ -13,7 +13,10 @@ use Pim\Bundle\ProductBundle\Manager\ProductManager;
  */
 class ProductManagerTest extends \PHPUnit_Framework_TestCase
 {
-    /** @test */ function it_should_do_nothing_if_attribute_of_entity_to_save_is_not_translatable()
+    /**
+     * @test
+     */
+    public function itShouldDoNothingIfAttributeOfEntityToSaveIsNotTranslatable()
     {
         $target  = $this->getTargetedClass();
         $value   = $this->getValueMock(false);
@@ -28,7 +31,10 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
         $target->save($product);
     }
 
-    /** @test */ function it_should_add_missing_locale_values_for_translatable_attributes_before_inserting_a_product()
+    /**
+     * @test
+     */
+    public function itShouldAddMissingLocaleValuesForTranslatableAttributesBeforeInsertingAProduct()
     {
         $target   = $this->getTargetedClass();
         $product  = $this->getProductMock(array(
