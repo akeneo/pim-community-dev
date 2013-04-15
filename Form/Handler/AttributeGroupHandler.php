@@ -77,12 +77,15 @@ class AttributeGroupHandler
      */
     protected function onSuccess(AttributeGroup $group)
     {
-        // persist i18n entity
-        foreach ($group->names as $name) {
-            $this->manager->persist($name);
-        }
-
+//         $group->setName('DEFAULT VALUE');
         $this->manager->persist($group);
         $this->manager->flush();
+
+        // persist i18n entity
+//         foreach ($group->names as $i18nEntity) {
+//             $i18nEntity->setForeignKey($group->getId());
+//             $this->manager->persist($i18nEntity);
+//         }
+//         $this->manager->flush();
     }
 }

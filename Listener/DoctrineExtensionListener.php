@@ -35,5 +35,7 @@ class DoctrineExtensionListener implements ContainerAwareInterface
     {
         $translatable = $this->container->get('gedmo.listener.translatable');
         $translatable->setTranslatableLocale($event->getRequest()->getLocale());
+        $translatable->setTranslationFallback(true);
+        $translatable->setDefaultLocale('default');
     }
 }

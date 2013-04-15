@@ -81,11 +81,55 @@ class AttributeGroup implements TimestampableInterface, Translatable
     protected $locale;
 
     /**
+     * @var string $translations
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="AttributeGroupTranslation",
+     *     mappedBy="foreignKey",
+     *     cascade={"persist", "remove"}
+     * )
+     */
+    protected $translations;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->attributes = new ArrayCollection();
+        $this->translations = new ArrayCollection();
+        $this->name = '';
+    }
+
+    /**
+     * Get translations
+     *
+     * @return string
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * Add translation
+     *
+     * @param AttributeGroupTranslation $translation
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
+     */
+    public function addTranslation(AttributeGroupTranslation $translation)
+    {
+        if (!$this->translations->contains($translation)) {
+            $this->translations->add($translation);
+        }
+    }
+
+    public function removeTranslation(AttributeGroupTranslation $translation)
+    {
+//         if ($this->translations->contains($translation)) {
+            $this->translations->removeElement($translation);
+//         }
     }
 
     /**
@@ -112,7 +156,7 @@ class AttributeGroup implements TimestampableInterface, Translatable
      *
      * @param integer $id
      *
-     * @return AbstractFlexible
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
      */
     public function setId($id)
     {
@@ -136,7 +180,7 @@ class AttributeGroup implements TimestampableInterface, Translatable
      *
      * @param string $name
      *
-     * @return AbstractFlexible
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
      */
     public function setName($name)
     {
@@ -160,7 +204,7 @@ class AttributeGroup implements TimestampableInterface, Translatable
      *
      * @param string $sortOrder
      *
-     * @return AbstractAttributeOption
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
      */
     public function setSortOrder($sortOrder)
     {
@@ -184,7 +228,7 @@ class AttributeGroup implements TimestampableInterface, Translatable
      *
      * @param datetime $created
      *
-     * @return TimestampableInterface
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
      */
     public function setCreated($created)
     {
@@ -208,7 +252,7 @@ class AttributeGroup implements TimestampableInterface, Translatable
      *
      * @param datetime $updated
      *
-     * @return TimestampableInterface
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
      */
     public function setUpdated($updated)
     {
@@ -222,7 +266,7 @@ class AttributeGroup implements TimestampableInterface, Translatable
      *
      * @param \Pim\Bundle\ProductBundle\Entity\ProductAttribute $attributes
      *
-     * @return AttributeGroup
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
      */
     public function addAttribute(\Pim\Bundle\ProductBundle\Entity\ProductAttribute $attributes)
     {
@@ -256,7 +300,7 @@ class AttributeGroup implements TimestampableInterface, Translatable
      *
      * @param string $locale
      *
-     * @return AbstractSegment
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
      */
     public function setTranslatableLocale($locale)
     {

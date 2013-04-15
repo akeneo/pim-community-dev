@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Entity(repositoryClass="Pim\Bundle\TranslationBundle\Entity\Repository\TranslationRepository")
+ * @ORM\Entity()
  * @ORM\Table(
  *     name="pim_attribute_group_translations",
  *     indexes={
@@ -29,4 +29,24 @@ class AttributeGroupTranslation extends AbstractTranslation
     /**
      * All required columns are mapped through inherited superclass
      */
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="AttributeGroup", inversedBy="translations")
+     * @ORM\JoinColumn(name="foreign_key", referencedColumnName="id")
+     */
+    protected $foreignKey;
+
+    /**
+     * *
+     * @param unknown_type $locale
+     * @param unknown_type $field
+     * @param unknown_type $value
+     */
+    public function __construct($locale, $field, $value)
+    {
+        $this->setLocale($locale);
+        $this->setField($field);
+        $this->setContent($value);
+    }
 }

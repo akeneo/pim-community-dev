@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ProductBundle\Controller;
 
+use Pim\Bundle\ProductBundle\Form\Type\AttributeGroupType;
+
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -63,19 +65,44 @@ class AttributeGroupController extends Controller
     public function editAction(AttributeGroup $group)
     {
         // get i18n content
-        $i18nClass = 'Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation';
-        $names = $this->getTranslationManager()
-                      ->setActiveLocales($this->getActiveLocales())
-                      ->getTranslatedObjects($group, $i18nClass, 'name');
-        $group->names = $names;
+//         $i18nClass = 'Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation';
+//         $names = $this->getTranslationManager()
+//                       ->setActiveLocales($this->getActiveLocales())
+//                       ->getTranslatedObjects($group, $i18nClass, 'name');
+//         $group->names = $names;
 
-        if ($this->get('pim_product.form.handler.attribute_group')->process($group)) {
-            $this->get('session')->getFlashBag()->add('success', 'Group successfully saved');
+//         if ($this->get('pim_product.form.handler.attribute_group')->process($group)) {
+//             $this->get('session')->getFlashBag()->add('success', 'Group successfully saved');
 
-            return $this->redirect(
-                $this->generateUrl('pim_product_attributegroup_index')
-            );
+//             return $this->redirect(
+//                 $this->generateUrl('pim_product_attributegroup_index')
+//             );
+//         }
+
+        $form = $this->createForm(new AttributeGroupType(), $group);
+
+        if ($this->getRequest()->getMethod() === 'POST') {
+            $form->bind($this->getRequest());
+
+            if ($form->isValid()) {
+
+//                 foreach ($group->getTranslations() as $translation) {
+//                     if ($translation->getLocale() == 'default') {
+//                         $defaultValue = $translation->getContent();
+
+//                         $group->setTranslatableLocale('default');
+//                         $group->setName($defaultValue);
+//                         $group->removeTranslation($translation);
+//                     }
+//                 }
+
+
+                $this->getEntityManager()->persist($group);
+                $this->getEntityManager()->flush($group);
+            }
         }
+
+        return array('form' => $form->createView());
 
         return array(
             'form' => $this->get('pim_product.form.attribute_group')->createView()
