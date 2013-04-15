@@ -277,9 +277,36 @@ class AttributeService
     public function getActivatedProperties($attribute)
     {
         $type = $attribute->getAttributeType();
+        if (!$type) {
+            return array();
+        }
         $type = explode('\\', $attribute->getAttributeType());
         $type = substr(end($type), 0, -4);
 
         return array_key_exists($type, $this->config) ? $this->config[$type]['properties'] : array();
+    }
+
+    /**
+     * Return base properties that apply to all attributes
+     *
+     * @return array Base properties
+     */
+    public function getBaseProperties()
+    {
+        return array(
+            'code' => 'text',
+            'attributeType' => 'text',
+            'required' => 'boolean',
+            'unique' => 'boolean',
+            'searchable' => 'boolean',
+            'translatable' => 'boolean',
+            'scopable' => 'boolean',
+            'name' => 'text',
+            'description' => 'text',
+            'variant' => 'integer',
+            'smart' => 'boolean',
+            'useableAsGridColumn' => 'boolean',
+            'useableAsGridFilter' => 'boolean'
+        );
     }
 }

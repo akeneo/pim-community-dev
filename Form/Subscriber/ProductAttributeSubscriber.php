@@ -67,7 +67,6 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
     public function preSetData(DataEvent $event)
     {
         $data = $event->getData();
-
         if (null === $data) {
             return;
         }
@@ -78,11 +77,8 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
             $form->add($this->factory->createNamed($field['name'], $field['fieldType'], $field['data'], $field['options']));
         }
 
-        // only when editing
-        if ($data->getId()) {
-            foreach ($this->service->getCustomFields($data) as $field) {
-                $form->add($this->factory->createNamed($field['name'], $field['fieldType'], $field['data'], $field['options']));
-            }
+        foreach ($this->service->getCustomFields($data) as $field) {
+            $form->add($this->factory->createNamed($field['name'], $field['fieldType'], $field['data'], $field['options']));
         }
     }
 }

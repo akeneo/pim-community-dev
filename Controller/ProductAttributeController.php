@@ -7,6 +7,7 @@ use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 use Pim\Bundle\ProductBundle\Form\Type\ProductAttributeType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -99,6 +100,51 @@ class ProductAttributeController extends Controller
             'locales' => $locales,
             'disabledLocales' => $disabledLocales,
             'measures' => $this->container->getParameter('oro_measure.measures_config')
+        );
+    }
+
+    /**
+     * Preprocess attribute form
+     *
+     * @param Request $request
+     *
+     * @Route("/preprocess")
+     * @Template("PimProductBundle:ProductAttribute:form.html.twig")
+     *
+     * @return array
+     */
+    public function preProcessAction(Request $request)
+    {
+        $data = $request->request->all();
+        if (!isset($data['pim_product_attribute_form'])) {
+            return $this->redirect($this->generateUrl('pim_product_productattribute_create'));
+        }
+        $data = $data['pim_product_attribute_form'];
+
+        // Create a productattribute from the form's data
+        $attribute = $this->getProductManager()->createAttributeExtended();
+
+        $baseProperties = $this->get('pim_product.attribute_service')->getBaseProperties();
+
+        foreach ($data as $property => $value) {
+            if (array_key_exists($property, $baseProperties) && $value !== '') {
+                $set = 'set' . ucfirst($property);
+                if (method_exists($attribute, $set)) {
+                    if ($baseProperties[$property] === 'boolean') {
+                        $value = (bool) $value;
+                    } elseif ($baseProperties[$property] === 'integer') {
+                        $value = (int) $value;
+                    }
+                    $attribute->$set($value);
+                }
+            }
+        }
+
+        // Add custom fields to the form and set the entered data to the form
+        $this->get('pim_product.form.handler.attribute')->process($attribute);
+
+        return array(
+            'form' => $this->get('pim_product.form.attribute')->createView()
         );
     }
 

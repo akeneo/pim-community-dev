@@ -25,7 +25,7 @@ services:
         arguments: [%product_entity_class%, %oro_flexibleentity.flexible_config%, @doctrine.orm.entity_manager, @event_dispatcher]
         tags:
             - { name: oro_flexibleentity_manager, entity: %product_entity_class%}
-            
+
     pim_product.classification_tree_manager:
         class:     %pim_product.segment_manager_class%
         arguments: [@doctrine.orm.entity_manager, %pim_product.segment_class%]
