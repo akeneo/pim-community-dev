@@ -85,17 +85,8 @@ class AttributeGroupController extends Controller
             $form->bind($this->getRequest());
 
             if ($form->isValid()) {
-
-//                 foreach ($group->getTranslations() as $translation) {
-//                     var_dump($translation->getContent());
-//                     var_dump('----------------------------------------');
-//                 }
-//                 $group->setTranslatableLocale('default');
-//                 $group->setName('DEFAULT VALUE EDITED');
-//                 var_dump($group->getName());
-
                 $this->getEntityManager()->persist($group);
-                $this->getEntityManager()->flush($group);
+                $this->getEntityManager()->flush();
             }
         }
 
