@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Entity(repositoryClass="Pim\Bundle\TranslationBundle\Entity\Repository\TranslationRepository")
+ * @ORM\Entity()
  * @ORM\Table(
  *     name="pim_product_segment_translations",
  *     indexes={
@@ -31,4 +31,12 @@ class ProductSegmentTranslation extends AbstractTranslation
     /**
      * All required columns are mapped through inherited superclass
      */
+
+    /**
+     * Change foreign key to add constraint and work with basic entity
+     *
+     * @ORM\ManyToOne(targetEntity="ProductSegment", inversedBy="translations")
+     * @ORM\JoinColumn(name="foreign_key", referencedColumnName="id")
+     */
+    protected $foreignKey;
 }

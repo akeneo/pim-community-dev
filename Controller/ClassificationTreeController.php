@@ -35,11 +35,10 @@ class ClassificationTreeController extends Controller
      */
     public function indexAction()
     {
-        $manager = $this->getTreeManager();
-
-        $segments = $this->getDoctrine()->getEntityManager()
-                    ->getRepository('Pim\Bundle\ProductBundle\Entity\ProductSegment')
-                    ->findAll();
+        $segments = $this->getDoctrine()
+                         ->getEntityManager()
+                         ->getRepository('Pim\Bundle\ProductBundle\Entity\ProductSegment')
+                         ->findAll();
 
         return array('segments' => $segments);
     }
@@ -157,22 +156,12 @@ class ClassificationTreeController extends Controller
     public function editAction(ProductSegment $segment)
     {
         $request = $this->getRequest();
-
-        // get i18n content
-        $i18nClass = 'Pim\Bundle\ProductBundle\Entity\ProductSegmentTranslation';
-        $segment->titles = $this->getTranslationManager()
-                                ->setActiveLocales(array('en_US', 'fr_FR', 'en_GB'))
-                                ->getTranslatedObjects($segment, $i18nClass, 'title');
-
         $form = $this->createForm(new ProductSegmentType(), $segment);
 
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
 
             if ($form->isValid()) {
-                // save i18n content
-                $this->getTranslationManager()->persist($segment->titles);
-
                 $this->getTreeManager()->getStorageManager()->persist($segment);
                 $this->getTreeManager()->getStorageManager()->flush();
 
@@ -212,14 +201,6 @@ class ClassificationTreeController extends Controller
     protected function getTreeManager()
     {
         return $this->container->get('pim_product.classification_tree_manager');
-    }
-
-    /**
-     * @return Pim\Bundle\TranslationBundle\Manager\TranslationManager
-     */
-    protected function getTranslationManager()
-    {
-        return $this->container->get('pim_translation.translation_manager');
     }
 
     /**

@@ -28,11 +28,13 @@ class ProductSegmentType extends AbstractType
         $builder->add('code');
 
         $builder->add(
-            'titles',
-            'pim_translation_collection',
+            'title',
+            'pim_translatable_field',
             array(
-                'label' => 'Title',
-                'type' => 'pim_translation'
+                'field'             => 'title',
+                'translation_class' => 'Pim\\Bundle\\ProductBundle\\Entity\\ProductSegmentTranslation',
+                'entity_class'      => 'Pim\\Bundle\\ProductBundle\\Entity\\ProductSegment',
+                'property_path'     => 'translations'
             )
         );
 
