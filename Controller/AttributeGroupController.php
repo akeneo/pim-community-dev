@@ -115,31 +115,4 @@ class AttributeGroupController extends Controller
     {
         return $this->getEntityManager()->getRepository('PimProductBundle:AttributeGroup');
     }
-
-    /**
-     * @return Pim\Bundle\TranslationBundle\Manager\TranslationManager
-     */
-    protected function getTranslationManager()
-    {
-        return $this->container->get('pim_translation.translation_manager');
-    }
-
-    /**
-     * Return all locales actived
-     * @return multitype:string
-     */
-    protected function getActiveLocales()
-    {
-        $locales = $this->getDoctrine()
-                        ->getEntityManager()
-                        ->getRepository('Pim\Bundle\ConfigBundle\Entity\Language')
-                        ->findBy(array('activated' => true));
-
-        $activeLocales = array();
-        foreach ($locales as $locale) {
-            $activeLocales[] = $locale->getCode();
-        }
-
-        return $activeLocales;
-    }
 }
