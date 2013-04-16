@@ -16,7 +16,6 @@ use Symfony\Component\Form\AbstractType;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * TODO : Get activated locales from container service (must be create)
  */
 class TranslatedFieldType extends AbstractType
 {
@@ -60,7 +59,7 @@ class TranslatedFieldType extends AbstractType
      * - entity_class         : FQCN of the based entity class
      * - locales              : Locales you wish to edit
      * - default_locale       : Name of the locale for the default translation
-     * - required_locale      : Fields are required or not TODO : must be delete
+     * - required_locale      : Fields are required or not
      * - field                : Field name
      * - widget               : Widget used by translations fields
      */
@@ -69,7 +68,7 @@ class TranslatedFieldType extends AbstractType
         $options['translation_class'] = false;
         $options['entity_class'] = false;
 
-        $options['locales'] = array('default', 'en_US', 'fr_FR');
+        $options['locales'] = $this->getActiveLocales();
         $options['default_locale'] = $this->container->getParameter('default_locale');
         $options['required_locale'] = array($this->container->getParameter('default_locale'));
 
@@ -77,6 +76,19 @@ class TranslatedFieldType extends AbstractType
         $options['widget'] = 'text';
 
         return $options;
+    }
+
+    /**
+     * Get active locales
+     *
+     * @return multitype:string
+     */
+    protected function getActiveLocales()
+    {
+        $locales = $this->container->get('pim_config.manager.locale')->getActiveCodes();
+        array_unshift($locales, $this->container->getParameter('default_locale'));
+
+        return $locales;
     }
 
     /**
