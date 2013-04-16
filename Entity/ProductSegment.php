@@ -161,7 +161,7 @@ class ProductSegment extends AbstractSegment implements Translatable
      *
      * @param string $locale
      *
-     * @return AbstractSegment
+     * @return ProductSegment
      */
     public function setTranslatableLocale($locale)
     {
