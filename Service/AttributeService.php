@@ -182,22 +182,25 @@ class AttributeService
     }
 
     /**
-     * Return basic field parameters
+     * Return field parameters based on provided data
      *
-     * @param property $property
+     * @param name      $name
+     * @param fieldType $fieldType
+     * @param data      $data
+     * @param options   $options
      *
      * @return array $params
      */
-    private function getBaseFieldParams($property)
+    private function getFieldParams($name, $fieldType = 'text', $data = null, $options = array())
     {
+        $baseOptions = array('required' => false, 'label' => $name);
+        $options = array_merge($baseOptions, $options);
+
         return array(
-            'name' => $property,
-            'fieldType' => 'text',
-            'data' => null,
-            'options' => array(
-                'required' => false,
-                'label' => $property
-            )
+            'name' => $name,
+            'fieldType' => $fieldType,
+            'data' => $data,
+            'options' => $options
         );
     }
 
@@ -220,21 +223,21 @@ class AttributeService
             $fieldType = 'checkbox';
         }
 
-        $params = array('fieldType' => $fieldType);
+        $options = array();
 
         if ($attTypeClass == AbstractAttributeType::TYPE_DATE_CLASS) {
-            $params['fieldType'] = $attribute->getDateType() ? $attribute->getDateType() : 'datetime';
-            $params['options']['widget']  = 'single_text';
-            if ($params['fieldType'] == 'date') {
-                $params['options']['attr']  = array('data-format' => 'dd/MM/yyyy');
-            } elseif ($params['fieldType'] == 'time') {
-                $params['options']['attr']  = array('data-format' => 'hh:mm');
+            $fieldType = $attribute->getDateType() ? $attribute->getDateType() : 'datetime';
+            $options['widget'] = 'single_text';
+            if ($fieldType == 'date') {
+                $options['attr'] = array('data-format' => 'dd/MM/yyyy');
+            } elseif ($fieldType == 'time') {
+                $options['attr'] = array('data-format' => 'hh:mm');
             } else {
-                $params['options']['attr']  = array('data-format' => 'dd/MM/yyyy hh:mm');
+                $options['attr'] = array('data-format' => 'dd/MM/yyyy hh:mm');
             }
         }
 
-        return array_merge($this->getBaseFieldParams('defaultValue'), $params);
+        return $this->getFieldParams('defaultValue', $fieldType, null, $options);
     }
 
     /**
@@ -246,15 +249,13 @@ class AttributeService
      */
     private function getDateTypeParams($attribute)
     {
-        $params = array(
-            'fieldType' => 'choice',
-            'options' => array(
-                'required' => true,
-                'choices' => array('date' => 'Date', 'time' => 'Time', 'datetime' => 'Datetime')
-            )
+        $fieldType = 'choice';
+        $options = array(
+            'required' => true,
+            'choices' => array('date' => 'Date', 'time' => 'Time', 'datetime' => 'Datetime')
         );
 
-        return array_merge($this->getBaseFieldParams('dateType'), $params);
+        return $this->getFieldParams('dateType', $fieldType, null, $options);
     }
 
     /**
@@ -268,23 +269,19 @@ class AttributeService
     {
         $fieldType = $attribute->getDateType() ? $attribute->getDateType() : 'datetime';
 
-        if ($fieldType === 'date') {
-            $attr  = array('data-format' => 'dd/MM/yyyy');
-        } elseif ($fieldType === 'time') {
-            $attr  = array('data-format' => 'hh:mm');
-        } else {
-            $attr  = array('data-format' => 'dd/MM/yyyy hh:mm');
-        }
-
-        $params = array(
-            'fieldType' => $fieldType,
-            'options' => array(
-                'widget' => 'single_text',
-                'attr' => $attr
-            )
+        $options = array(
+            'widget' => 'single_text'
         );
 
-        return array_merge($this->getBaseFieldParams('dateMin'), $params);
+        if ($fieldType === 'date') {
+            $options['attr']  = array('data-format' => 'dd/MM/yyyy');
+        } elseif ($fieldType === 'time') {
+            $options['attr']  = array('data-format' => 'hh:mm');
+        } else {
+            $options['attr']  = array('data-format' => 'dd/MM/yyyy hh:mm');
+        }
+
+        return $this->getFieldParams('dateMin', $fieldType, null, $options);
     }
 
     /**
@@ -298,23 +295,19 @@ class AttributeService
     {
         $fieldType = $attribute->getDateType() ? $attribute->getDateType() : 'datetime';
 
-        if ($fieldType === 'date') {
-            $attr  = array('data-format' => 'dd/MM/yyyy');
-        } elseif ($fieldType === 'time') {
-            $attr  = array('data-format' => 'hh:mm');
-        } else {
-            $attr  = array('data-format' => 'dd/MM/yyyy hh:mm');
-        }
-
-        $params = array(
-            'fieldType' => $fieldType,
-            'options' => array(
-                'widget' => 'single_text',
-                'attr' => $attr
-            )
+        $options = array(
+            'widget' => 'single_text'
         );
 
-        return array_merge($this->getBaseFieldParams('dateMax'), $params);
+        if ($fieldType === 'date') {
+            $options['attr']  = array('data-format' => 'dd/MM/yyyy');
+        } elseif ($fieldType === 'time') {
+            $options['attr']  = array('data-format' => 'hh:mm');
+        } else {
+            $options['attr']  = array('data-format' => 'dd/MM/yyyy hh:mm');
+        }
+
+        return $this->getFieldParams('dateMax', $fieldType, null, $options);
     }
 
     /**
@@ -326,9 +319,7 @@ class AttributeService
      */
     private function getNegativeAllowedParams($attribute)
     {
-        $params = array('fieldType' => 'checkbox');
-
-        return array_merge($this->getBaseFieldParams('negativeAllowed'), $params);
+        return $this->getFieldParams('negativeAllowed', 'checkbox');
     }
 
     /**
@@ -340,9 +331,7 @@ class AttributeService
      */
     private function getDecimalsAllowedParams($attribute)
     {
-        $params = array('fieldType' => 'checkbox');
-
-        return array_merge($this->getBaseFieldParams('decimalsAllowed'), $params);
+        return $this->getFieldParams('decimalsAllowed', 'checkbox');
     }
 
     /**
@@ -354,9 +343,9 @@ class AttributeService
      */
     private function getNumberMinParams($attribute)
     {
-        $params = array('fieldType' => $attribute->getDecimalsAllowed() ? 'number' : 'integer');
+        $fieldType = $attribute->getDecimalsAllowed() ? 'number' : 'integer';
 
-        return array_merge($this->getBaseFieldParams('numberMin'), $params);
+        return $this->getFieldParams('numberMin', $fieldType);
     }
 
     /**
@@ -368,9 +357,9 @@ class AttributeService
      */
     private function getNumberMaxParams($attribute)
     {
-        $params = array('fieldType' => $attribute->getDecimalsAllowed() ? 'number' : 'integer');
+        $fieldType = $attribute->getDecimalsAllowed() ? 'number' : 'integer';
 
-        return array_merge($this->getBaseFieldParams('numberMax'), $params);
+        return $this->getFieldParams('numberMax', $fieldType);
     }
 
     /**
@@ -382,9 +371,7 @@ class AttributeService
      */
     private function getValueCreationAllowedParams($attribute)
     {
-        $params = array('fieldType' => 'checkbox');
-
-        return array_merge($this->getBaseFieldParams('valueCreationAllowed'), $params);
+        return $this->getFieldParams('valueCreationAllowed', 'checkbox');
     }
 
     /**
@@ -396,9 +383,7 @@ class AttributeService
      */
     private function getMaxCharactersParams($attribute)
     {
-        $params = array('fieldType' => 'integer');
-
-        return array_merge($this->getBaseFieldParams('maxCharacters'), $params);
+        return $this->getFieldParams('maxCharacters', 'integer');
     }
 
     /**
@@ -410,9 +395,7 @@ class AttributeService
      */
     private function getWysiwygEnabledParams($attribute)
     {
-        $params = array('fieldType' => 'checkbox');
-
-        return array_merge($this->getBaseFieldParams('wysiwygEnabled'), $params);
+        return $this->getFieldParams('wysiwygEnabled', 'checkbox');
     }
 
     /**
@@ -424,7 +407,7 @@ class AttributeService
      */
     private function getMetricTypeParams($attribute)
     {
-        return $this->getBaseFieldParams('metricType');
+        return $this->getFieldParams('metricType');
     }
 
     /**
@@ -436,7 +419,7 @@ class AttributeService
      */
     private function getDefaultMetricUnitParams($attribute)
     {
-        return $this->getBaseFieldParams('defaultMetricUnit');
+        return $this->getFieldParams('defaultMetricUnit');
     }
 
     /**
@@ -448,15 +431,13 @@ class AttributeService
      */
     private function getAllowedFileSourcesParams($attribute)
     {
-        $params = array(
-            'fieldType' => 'choice',
-            'options' => array(
-                'required' => true,
-                'choices' => array('upload' => 'Upload', 'external' => 'External')
-            )
+        $fieldType = 'choice';
+        $options = array(
+            'required' => true,
+            'choices' => array('upload' => 'Upload', 'external' => 'External')
         );
 
-        return array_merge($this->getBaseFieldParams('allowedFileSources'), $params);
+        return $this->getFieldParams('allowedFileSources', $fieldType, null, $options);
     }
 
     /**
@@ -468,9 +449,7 @@ class AttributeService
      */
     private function getMaxFileSizeParams($attribute)
     {
-        $params = array('fieldType' => 'integer');
-
-        return array_merge($this->getBaseFieldParams('maxFileSize'), $params);
+        return $this->getFieldParams('maxFileSize', 'integer');
     }
 
     /**
@@ -482,15 +461,14 @@ class AttributeService
      */
     private function getAllowedFileExtensionsParams($attribute)
     {
-        $params = array(
-            'data' => implode(',', $attribute->getAllowedFileExtensions()),
-            'options' => array(
-                'by_reference' => false,
-                'attr' => array('class' => 'multiselect')
-            )
+        $fieldType = 'text';
+        $data = implode(',', $attribute->getAllowedFileExtensions());
+        $options = array(
+            'by_reference' => false,
+            'attr' => array('class' => 'multiselect')
         );
 
-        return array_merge($this->getBaseFieldParams('allowedFileExtensions'), $params);
+        return $this->getFieldParams('allowedFileExtensions', $fieldType, $data, $options);
     }
 
     /**
@@ -502,19 +480,17 @@ class AttributeService
      */
     private function getValidationRuleParams($attribute)
     {
-        $params = array(
-            'fieldType' => 'choice',
-            'options' => array(
-                'choices' => array(
-                    null => 'None',
-                    'email' => 'E-mail',
-                    'url' => 'URL',
-                    'regexp' => 'Regular expression'
-                )
+        $fieldType = 'choice';
+        $options = array(
+            'choices' => array(
+                null => 'None',
+                'email' => 'E-mail',
+                'url' => 'URL',
+                'regexp' => 'Regular expression'
             )
         );
 
-        return array_merge($this->getBaseFieldParams('validationRule'), $params);
+        return $this->getFieldParams('validationRule', $fieldType, null, $options);
     }
 
     /**
@@ -526,7 +502,7 @@ class AttributeService
      */
     private function getValidationRegexpParams($attribute)
     {
-        return $this->getBaseFieldParams('validationRegexp');
+        return $this->getFieldParams('validationRegexp');
     }
 
     /**
@@ -538,12 +514,10 @@ class AttributeService
      */
     private function getUniqueParams($attribute)
     {
-        $params = array(
-            'fieldType' => 'checkbox',
-            'options' => array('disabled' => true)
-        );
+        $fieldType = 'checkbox';
+        $options = array('disabled' => true, 'read_only' => true);
 
-        return array_merge($this->getBaseFieldParams('unique'), $params);
+        return $this->getFieldParams('unique', $fieldType, null, $options);
     }
 
     /**
@@ -555,8 +529,6 @@ class AttributeService
      */
     private function getSearchableParams($attribute)
     {
-        $params = array('fieldType' => 'checkbox');
-
-        return array_merge($this->getBaseFieldParams('searchable'), $params);
+        return $this->getFieldParams('searchable', 'checkbox');
     }
 }
