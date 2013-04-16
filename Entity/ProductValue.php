@@ -20,7 +20,7 @@ class ProductValue extends AbstractEntityFlexibleValue
     /**
      * @var Oro\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute
      *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Attribute")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\ProductAttribute")
      * @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $attribute;
