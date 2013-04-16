@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
+use Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation;
+
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 
 use Doctrine\Common\Persistence\ObjectManager;
@@ -104,19 +106,14 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
         $attribute->setGroup($group);
         $this->manager->persist($attribute);
 
-        // flush
-        $this->manager->flush();
-
 
         // translate groups in en_US
         $locale = 'en_US';
-
         $this->translate('attribute-group.general', $locale, 'General');
         $this->translate('attribute-group.seo', $locale, 'SEO');
         $this->translate('attribute-group.marketing', $locale, 'Marketing');
         $this->translate('attribute-group.sizes', $locale, 'Sizes');
         $this->translate('attribute-group.colors', $locale, 'Colors');
-
 
         // translate groups in fr_FR
         $locale = 'fr_FR';
@@ -139,7 +136,7 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
     protected function createGroup($name)
     {
         $group = new AttributeGroup();
-        $group->setName($name);
+        $group->setName($name .' (default)');
         $group->setSortOrder(++self::$order);
 
         return $group;
@@ -169,8 +166,14 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
     {
         $group = $this->getReference($reference);
 
-        $group->setTranslatableLocale($locale);
-        $group->setName($name);
+        $translation = new AttributeGroupTranslation();
+        $translation->setContent($name);
+        $translation->setField('name');
+        $translation->setForeignKey($group);
+        $translation->setLocale($locale);
+        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation');
+
+        $group->addTranslation($translation);
 
         $this->manager->persist($group);
     }
