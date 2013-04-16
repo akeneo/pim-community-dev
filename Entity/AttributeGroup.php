@@ -102,46 +102,6 @@ class AttributeGroup implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get translations
-     *
-     * @return string
-     */
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-
-    /**
-     * Add translation
-     *
-     * @param AttributeGroupTranslation $translation
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
-     */
-    public function addTranslation(AttributeGroupTranslation $translation)
-    {
-        if (!$this->translations->contains($translation)) {
-            $this->translations->add($translation);
-        }
-    }
-
-    public function removeTranslation(AttributeGroupTranslation $translation)
-    {
-//         if ($this->translations->contains($translation)) {
-            $this->translations->removeElement($translation);
-//         }
-    }
-
-    /**
-     * Returns the name of the attribute group
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->getName();
-    }
-
-    /**
      * Get id
      *
      * @return integer
@@ -305,6 +265,46 @@ class AttributeGroup implements TimestampableInterface, Translatable
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get translations
+     *
+     * @return string
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * Add translation
+     *
+     * @param AttributeGroupTranslation $translation
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
+     */
+    public function addTranslation(AttributeGroupTranslation $translation)
+    {
+        if (!$this->translations->contains($translation)) {
+            $this->translations->add($translation);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove translation
+     *
+     * @param AttributeGroupTranslation $translation
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
+     */
+    public function removeTranslation(AttributeGroupTranslation $translation)
+    {
+        $this->translations->removeElement($translation);
 
         return $this;
     }
