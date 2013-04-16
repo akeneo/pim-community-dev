@@ -1,28 +1,22 @@
 {% extends 'form_div_layout.html.twig' %}
 
-{% block pim_translation_collection_row %}
+{% block pim_translatable_field_row %}
     {{ form_errors(form) }}
     {{ form_label(form) }}
     <table id="sortable_options" class="table table-striped table-hover table-condensed options">
         <thead>
             <tr>
-                {% for translation in form.vars.value %}
-                    <th>{{ translation.locale }}</th>
+                {% for translation in form %}
+                    <th>{{ form_label(translation) }}</th>
                 {% endfor %}
             </tr>
         </thead>
         <tbody>
-            <tr>{{ form_widget(form) }}</tr>
+            {% for translation in form %}
+                <td>{{ form_widget(translation) }}</td>
+            {% endfor %}
         </tbody>
     </table>
-{% endblock %}
-
-{% block pim_translation_row %}
-    <td>
-        {{ form_errors(form) }}
-        {{ form_widget(form.content) }}
-        {{ form_widget(form.locale) }}
-    </td>
 {% endblock %}
 
 {% block oro_media_row %}
