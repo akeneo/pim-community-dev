@@ -1,26 +1,9 @@
 parameters:
-    pim_translation.translation_type_class:            Pim\Bundle\TranslationBundle\Form\Type\TranslationType
-    pim_translation.translation_collection_type_class: Pim\Bundle\TranslationBundle\Form\Type\TranslationCollectionType
+    pim_translation.translatable_field_class: Pim\Bundle\TranslationBundle\Form\Type\TranslatedFieldType
 
 services:
-    # Managers
-    pim_translation.translation_manager:
-        class: Pim\Bundle\TranslationBundle\Manager\TranslationManager
-        arguments: [@doctrine.orm.entity_manager]
-
-    #Types
-    pim_translation.form.type.translation:
-        class: %pim_translation.translation_type_class%
-        tags:
-            - { name: form.type, alias: pim_translation }
-
-    pim_translation.form.type.translation_collection:
-        class: %pim_translation.translation_collection_type_class%
-        tags:
-            - { name: form.type, alias: pim_translation_collection }
-
     pim_translation.form.type.translatable_field:
-        class: Pim\Bundle\TranslationBundle\Form\Type\TranslatedFieldType
+        class: %pim_translation.translatable_field_class%
         arguments: [ @service_container ]
         tags:
             - { name: form.type, alias: pim_translatable_field }

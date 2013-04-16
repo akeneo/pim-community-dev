@@ -10,12 +10,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 
 /**
- *
+ * Translated field type for translation entities
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
+ * TODO : Get activated locales from container service (must be create)
  */
 class TranslatedFieldType extends AbstractType
 {
@@ -26,6 +27,7 @@ class TranslatedFieldType extends AbstractType
     protected $container;
 
     /**
+     * Define constructor with container injection
      *
      * @param ContainerInterface $container
      */
@@ -39,8 +41,8 @@ class TranslatedFieldType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (!class_exists($options['personal_translation'])) {
-            throw new \Exception('unable to find personal translation class');
+        if (!class_exists($options['translation_class'])) {
+            throw new \Exception('unable to find translation class');
         }
 
         if (!$options['field']) {
@@ -53,21 +55,26 @@ class TranslatedFieldType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * - translation_class    : FQCN of the translation class
+     * - entity_class         : FQCN of the based entity class
+     * - locales              : Locales you wish to edit
+     * - default_locale       : Name of the locale for the default translation
+     * - required_locale      : Fields are required or not TODO : must be delete
+     * - field                : Field name
+     * - widget               : Widget used by translations fields
      */
     public function getDefaultOptions(array $options = array())
     {
-        $options['remove_empty'] = true; //Personal Translations without content are removed
-        $options['csrf_protection'] = false;
-        $options['personal_translation'] = false; //Personal Translation class
+        $options['translation_class'] = false;
+        $options['entity_class'] = false;
 
-        // FIXME : must be injected
-        $options['locales'] = array('default', 'en_US', 'fr_FR'); //the locales you wish to edit
-        // FIXME : must be injected
-        $options['required_locale'] = array('default'); //the required locales cannot be blank
+        $options['locales'] = array('default', 'en_US', 'fr_FR');
+        $options['default_locale'] = $this->container->getParameter('default_locale');
+        $options['required_locale'] = array($this->container->getParameter('default_locale'));
 
-        $options['field'] = 'name'; //the field that you wish to translate
-        $options['widget'] = "text"; //change this to another widget like 'texarea' if needed
-        $options['entity_manager_removal'] = false; //auto removes the Personal Translation thru entity manager
+        $options['field'] = 'name';
+        $options['widget'] = 'text';
 
         return $options;
     }
