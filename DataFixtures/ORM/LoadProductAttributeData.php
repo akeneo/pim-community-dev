@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
+use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
+
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\ImageType;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
@@ -66,6 +68,9 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $productAttribute->setName('Name');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
         $productAttribute->setTranslatable(true);
+        $this->createTranslation($productAttribute, 'default', 'name', 'Name');
+        $this->createTranslation($productAttribute, 'en_US', 'name', 'Name');
+        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Nom');
         $this->getProductManager()->getStorageManager()->persist($productAttribute);
         $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
@@ -75,6 +80,9 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('Price');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $this->createTranslation($productAttribute, 'default', 'name', 'Price');
+        $this->createTranslation($productAttribute, 'en_US', 'name', 'Price');
+        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Prix');
         $this->getProductManager()->getStorageManager()->persist($productAttribute);
         $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
@@ -86,6 +94,9 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
         $productAttribute->setTranslatable(true);
         $productAttribute->setScopable(true);
+        $this->createTranslation($productAttribute, 'default', 'name', 'Short description');
+        $this->createTranslation($productAttribute, 'en_US', 'name', 'Short description');
+        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Description courte');
         $this->getProductManager()->getStorageManager()->persist($productAttribute);
         $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
@@ -97,6 +108,9 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
         $productAttribute->setTranslatable(true);
         $productAttribute->setScopable(true);
+        $this->createTranslation($productAttribute, 'default', 'name', 'Long description');
+        $this->createTranslation($productAttribute, 'en_US', 'name', 'Long description');
+        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Description longue');
         $this->getProductManager()->getStorageManager()->persist($productAttribute);
         $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
@@ -106,6 +120,9 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('Release date');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $this->createTranslation($productAttribute, 'default', 'name', 'Release date');
+        $this->createTranslation($productAttribute, 'en_US', 'name', 'Release date');
+        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Date de sortie');
         $this->getProductManager()->getStorageManager()->persist($productAttribute);
         $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
@@ -124,6 +141,9 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
             $optionValue->setValue($size);
             $option->addOptionValue($optionValue);
         }
+        $this->createTranslation($productAttribute, 'default', 'name', 'Size');
+        $this->createTranslation($productAttribute, 'en_US', 'name', 'Size');
+        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Taille');
         $this->getProductManager()->getStorageManager()->persist($productAttribute);
         $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
@@ -133,6 +153,9 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('Weight');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $this->createTranslation($productAttribute, 'default', 'name', 'Weight');
+        $this->createTranslation($productAttribute, 'en_US', 'name', 'Weight');
+        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Poids');
         $this->getProductManager()->getStorageManager()->persist($productAttribute);
         $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
@@ -161,6 +184,9 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
                 $option->addOptionValue($optionValue);
             }
         }
+        $this->createTranslation($productAttribute, 'default', 'name', 'Color');
+        $this->createTranslation($productAttribute, 'en_US', 'name', 'Color');
+        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Couleur');
         $this->getProductManager()->getStorageManager()->persist($productAttribute);
         $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
@@ -179,6 +205,9 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
             $optionValue->setValue($manufacturer);
             $option->addOptionValue($optionValue);
         }
+        $this->createTranslation($productAttribute, 'default', 'name', 'Manufacturer');
+        $this->createTranslation($productAttribute, 'en_US', 'name', 'Manufacturer');
+        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Fabricant');
         $this->getProductManager()->getStorageManager()->persist($productAttribute);
         $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
@@ -188,6 +217,9 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('File upload');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $this->createTranslation($productAttribute, 'default', 'name', 'File upload');
+        $this->createTranslation($productAttribute, 'en_US', 'name', 'File upload');
+        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Fichier téléchargé');
         $this->getProductManager()->getStorageManager()->persist($productAttribute);
         $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
@@ -197,10 +229,35 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('Image upload');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $this->createTranslation($productAttribute, 'default', 'name', 'Image upload');
+        $this->createTranslation($productAttribute, 'en_US', 'name', 'Image upload');
+        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Image téléchargée');
         $this->getProductManager()->getStorageManager()->persist($productAttribute);
         $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
         $this->getProductManager()->getStorageManager()->flush();
+    }
+
+    /**
+     * Create a translation entity
+     *
+     * @param ProductAttribute $attribute ProductAttribute entity
+     * @param string           $locale    Locale used
+     * @param string           $field     Field to translate
+     * @param string           $content   Translated content
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductSegmentTranslation
+     */
+    public function createTranslation($attribute, $locale, $field, $content)
+    {
+        $translation = new ProductAttributeTranslation();
+        $translation->setContent($content);
+        $translation->setField($field);
+        $translation->setForeignKey($attribute);
+        $translation->setLocale($locale);
+        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation');
+
+        $attribute->addTranslation($translation);
     }
 
     /**
