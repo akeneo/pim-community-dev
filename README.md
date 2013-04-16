@@ -198,4 +198,4 @@ Enhancements
 - [ ] Integrate locales and currencies (not for now)
 - [ ] Implements with default locale
 - [ ] Fix bug when create new entity
-- [ ] Extends handler
+- [ ] Extends entity with AbstractTranslatedClass and maybe AbstractTranslation
