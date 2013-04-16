@@ -155,9 +155,10 @@ class AddTranslatedFieldSubscriber implements EventSubscriberInterface
         // Add field for each translation
         $translations = $this->bindTranslations($data);
         foreach ($translations as $binded) {
+            $methodName = 'get'. ucfirst($this->options['field']);
             $content = ($binded['translation']->getContent() !== null)
                 ? $binded['translation']->getContent()
-                : $entity->getName();
+                : $entity->$methodName();
 
             $form->add(
                 $this->factory->createNamed(
@@ -233,7 +234,8 @@ class AddTranslatedFieldSubscriber implements EventSubscriberInterface
             $translation->setForeignKey($entity);
 
             if ($translation->getLocale() === 'default') {
-                $entity->setName($translation->getContent());
+                $methodName = 'set'. ucfirst($this->options['field']);
+                $entity->$methodName($translation->getContent());
             }
             $entity->addTranslation($translation);
         }
