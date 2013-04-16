@@ -202,23 +202,4 @@ class ClassificationTreeController extends Controller
     {
         return $this->container->get('pim_product.classification_tree_manager');
     }
-
-    /**
-     * Return all locales actived
-     * @return multitype:string
-     */
-    protected function getActiveLocales()
-    {
-        $locales = $this->getDoctrine()
-                        ->getEntityManager()
-                        ->getRepository('Pim\Bundle\ConfigBundle\Entity\Language')
-                        ->findBy(array('activated' => true));
-
-        $activeLocales = array();
-        foreach ($locales as $locale) {
-            $activeLocales[] = $locale->getCode();
-        }
-
-        return $activeLocales;
-    }
 }
