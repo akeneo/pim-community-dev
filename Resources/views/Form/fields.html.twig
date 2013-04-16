@@ -68,7 +68,12 @@
 {% endblock form_row %}
 
 {% block widget_attributes %}
-{% set attr = attr|merge({'class': 'span4' }) %}
+{% if attr.class is defined %}
+    {% set class = attr.class ~ ' span4' %}
+{% else %}
+    {% set class = 'span4' %}
+{% endif %}
+{% set attr = attr|merge({'class': class }) %}
 {% spaceless %}
     id="{{ id }}" name="{{ full_name }}"{% if read_only %} readonly="readonly"{% endif %}{% if disabled %} disabled="disabled"{% endif %}{% if required %} required="required"{% endif %}{% if max_length %} maxlength="{{ max_length }}"{% endif %}{% if pattern %} pattern="{{ pattern }}"{% endif %}
     {% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
