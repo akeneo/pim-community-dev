@@ -16,7 +16,7 @@ use Pim\Bundle\ConfigBundle\Entity\Language;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ORM\Table(name="pim_product")
- * @ORM\Entity(repositoryClass="Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository")
+ * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductRepository")
  * @UniqueEntity("sku");
  */
 class Product extends AbstractEntityFlexible
