@@ -81,7 +81,7 @@ class AttributeGroup implements TimestampableInterface, Translatable
     protected $locale;
 
     /**
-     * @var string $translations
+     * @var ArrayCollection $translations
      *
      * @ORM\OneToMany(
      *     targetEntity="AttributeGroupTranslation",
@@ -96,7 +96,7 @@ class AttributeGroup implements TimestampableInterface, Translatable
      */
     public function __construct()
     {
-        $this->attributes = new ArrayCollection();
+        $this->attributes   = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->name = '';
     }
@@ -272,7 +272,7 @@ class AttributeGroup implements TimestampableInterface, Translatable
     /**
      * Get translations
      *
-     * @return string
+     * @return ArrayCollection
      */
     public function getTranslations()
     {
