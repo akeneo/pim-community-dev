@@ -98,7 +98,15 @@ class AttributeGroup implements TimestampableInterface, Translatable
     {
         $this->attributes   = new ArrayCollection();
         $this->translations = new ArrayCollection();
-        $this->name = '';
+    }
+
+    /**
+     * Returns the name of the attribute group
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
     }
 
     /**
