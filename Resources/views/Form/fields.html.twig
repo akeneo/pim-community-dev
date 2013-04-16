@@ -13,7 +13,10 @@
         </thead>
         <tbody>
             {% for translation in form %}
-                <td>{{ form_widget(translation) }}</td>
+                <td>
+                    {{ form_errors(translation) }}
+                    {{ form_widget(translation) }}
+                </td>
             {% endfor %}
         </tbody>
     </table>
