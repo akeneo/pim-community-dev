@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
+use Pim\Bundle\ProductBundle\Entity\ProductSegmentTranslation;
+
 use Pim\Bundle\ProductBundle\Entity\ProductSegment;
 
 use Doctrine\Common\Persistence\ObjectManager;
@@ -24,12 +26,12 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 class LoadProductSegmentData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
     /**
-     * @var ContainerInterface
+     * @var \Symfony\Component\DependencyInjection\ContainerInterface
      */
     protected $container;
 
     /**
-     * @var ObjectManager
+     * @var \Doctrine\Common\Persistence\ObjectManager
      */
     protected $manager;
 
@@ -74,8 +76,6 @@ class LoadProductSegmentData extends AbstractFixture implements OrderedFixtureIn
         $nodeShirts = $this->createSegment('Shirts (default)', $nodeClothing, array($product5));
         $nodeJeans  = $this->createSegment('Jeans (default)', $nodeClothing, array($product3, $product4));
         $nodeShoes  = $this->createSegment('Shoes (default)', $nodeClothing, array($product1, $product2, $product3));
-
-        $this->manager->flush();
 
         // translate data in en_US
         $locale = 'en_US';
@@ -124,15 +124,38 @@ class LoadProductSegmentData extends AbstractFixture implements OrderedFixtureIn
 
     /**
      * Translate a segment
+     *
      * @param ProductSegment $segment Segment
      * @param string         $locale  Locale used
      * @param string         $title   Title translated in locale value linked
      */
     protected function translate(ProductSegment $segment, $locale, $title)
     {
-        $segment->setTranslatableLocale($locale);
-        $segment->setTitle($title);
+        $translation = $this->createTranslation($segment, $locale, $title);
+        $segment->addTranslation($translation);
+
         $this->manager->persist($segment);
+    }
+
+    /**
+     * Create a translation entity
+     *
+     * @param AttributeGroup $entity AttributeGroup entity
+     * @param string         $locale Locale used
+     * @param string         $title  Title translated in locale value linked
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductSegmentTranslation
+     */
+    protected function createTranslation($entity, $locale, $title)
+    {
+        $translation = new ProductSegmentTranslation();
+        $translation->setContent($title);
+        $translation->setField('title');
+        $translation->setForeignKey($entity);
+        $translation->setLocale($locale);
+        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\ProductSegment');
+
+        return $translation;
     }
 
     /**
@@ -150,6 +173,9 @@ class LoadProductSegmentData extends AbstractFixture implements OrderedFixtureIn
         $segment->setCode($title);
         $segment->setTitle($title);
         $segment->setParent($parent);
+
+        $translation = $this->createTranslation($segment, 'default', $title);
+        $segment->addTranslation($translation);
 
         foreach ($products as $product) {
             $segment->addProduct($product);

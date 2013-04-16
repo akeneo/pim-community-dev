@@ -36,7 +36,7 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
     protected $container;
 
     /**
-     * @var ObjectManager
+     * @var \Doctrine\Common\Persistence\ObjectManager
      */
     protected $manager;
 
@@ -129,6 +129,7 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
 
     /**
      * Create a group
+     *
      * @param string $name
      *
      * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
@@ -138,6 +139,9 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
         $group = new AttributeGroup();
         $group->setName($name .' (default)');
         $group->setSortOrder(++self::$order);
+
+        $translation = $this->createTranslation($group, 'default', $name .' (default)');
+        $group->addTranslation($translation);
 
         return $group;
     }
@@ -166,16 +170,31 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
     {
         $group = $this->getReference($reference);
 
-        $translation = new AttributeGroupTranslation();
-        $translation->setContent($name);
-        $translation->setField('name');
-        $translation->setForeignKey($group);
-        $translation->setLocale($locale);
-        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation');
-
+        $translation = $this->createTranslation($group, $locale, $name);
         $group->addTranslation($translation);
 
         $this->manager->persist($group);
+    }
+
+    /**
+     * Create a translation entity
+     *
+     * @param AttributeGroup $entity AttributeGroup entity
+     * @param string         $locale Locale used
+     * @param string         $name   Name translated in locale value linked
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation
+     */
+    protected function createTranslation($entity, $locale, $name)
+    {
+        $translation = new AttributeGroupTranslation();
+        $translation->setContent($name);
+        $translation->setField('name');
+        $translation->setForeignKey($entity);
+        $translation->setLocale($locale);
+        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\AttributeGroup');
+
+        return $translation;
     }
 
     /**
