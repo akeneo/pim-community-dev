@@ -13,42 +13,9 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": "2.1.*",
-        "doctrine/orm": ">=2.2.3,<2.4-dev",
-        "doctrine/doctrine-bundle": "1.0.*",
-        "twig/extensions": "1.0.*@dev",
-        "symfony/assetic-bundle": "2.1.*",
-        "symfony/swiftmailer-bundle": "2.1.*",
-        "symfony/monolog-bundle": "2.1.*",
-        "sensio/distribution-bundle": "2.1.*",
-        "sensio/framework-extra-bundle": "2.1.*",
-        "sensio/generator-bundle": "2.1.*",
-        "jms/di-extra-bundle": "1.3.*@dev",
-        "jms/job-queue-bundle": "dev-master",
-        "kriswallsmith/assetic": "1.1.*@dev",
-        "doctrine/data-fixtures": "@dev",
-        "doctrine/doctrine-fixtures-bundle": "@dev",
-        "knplabs/knp-paginator-bundle": "dev-master",
-        "friendsofsymfony/rest-bundle": "dev-master",
-        "jms/serializer": "0.11.0",
-        "jms/serializer-bundle": "0.12.*@dev",
-        "nelmio/api-doc-bundle": "dev-master",
-        "ass/xmlsecurity": "dev-master",
-        "besimple/soap-common": "dev-master",
-        "besimple/soap-server": "dev-master",
-        "besimple/soap-bundle": "dev-master",
-        "knplabs/knp-menu-bundle": "dev-master",
-        "knplabs/knp-menu": "dev-master",
+        "oro/bap": "dev-master"
         "ddeboer/data-import": "dev-master",
-        "stof/doctrine-extensions-bundle": "dev-master",
-        "jms/aop-bundle": "dev-master",
-        "sonata-project/admin-bundle": "2.1.x-dev",
-        "sonata-project/doctrine-orm-admin-bundle": "2.1.x-dev",
         "knplabs/knp-gaufrette-bundle": "dev-master",
-        "leafo/lessphp": "dev-master",
-        "zendframework/zend-stdlib": "2.1.1",
-        "liip/imagine-bundle": "dev-master",
-        "ys-tools/back-url-bundle": "dev-master"
     },
     "require-dev": {
         "behat/behat": "2.4.*",
@@ -57,7 +24,76 @@
         "behat/mink-browserkit-driver": "*",
         "sensiolabs/behat-page-object-extension": "*"
     },
+
+    "require": {
+        "php": ">=5.3.3",
+        "oro/bap": "dev-master"
+    },
     "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/laboro/bap"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/laboro/ConfigBundle",
+            "branch": "master"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/laboro/DataFlowBundle",
+            "branch": "master"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/laboro/FlexibleEntityBundle",
+            "branch": "master"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/laboro/GridBundle",
+            "branch": "master"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/laboro/MeasureBundle",
+            "branch": "master"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/laboro/NavigationBundle",
+            "branch": "master"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/laboro/SearchBundle",
+            "branch": "master"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/laboro/SegmentationTreeBundle",
+            "branch": "master"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/laboro/SoapBundle",
+            "branch": "master"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/laboro/UIBundle",
+            "branch": "master"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/laboro/UserBundle",
+            "branch": "master"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/laboro/WindowsBundle",
+            "branch": "master"
+        },
         {
             "type": "vcs",
             "url": "https://github.com/laboro/SonataAdminBundle.git"
