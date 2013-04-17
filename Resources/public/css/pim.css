@@ -108,11 +108,11 @@ header .extra-divider, .navbar .small-divider {
     padding: 0;
 }
 
-button.btn {
+.form-row button.btn {
     height: 32px;
 }
 
-.btn {
+.form-row .btn {
     font-weight: bold;
     margin-top: 8px;
     margin-right: 8px;
@@ -159,4 +159,18 @@ a.accordion-toggle {
 
 .controls .switch label{
     float: none;
+}
+
+#attributegroups-sortable li {
+    list-style: none;
+    cursor: pointer;
+    line-height: 35px;
+}
+
+#attributegroups-sortable li:nth-child(odd) {
+    background-color: #E1E1E1;
+}
+
+#attributegroups-sortable li.active {
+    background-color: #5A8CE6;
 }
