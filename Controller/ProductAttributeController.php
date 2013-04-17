@@ -6,6 +6,7 @@ use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 use Pim\Bundle\ProductBundle\Form\Type\ProductAttributeType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -43,16 +44,46 @@ class ProductAttributeController extends Controller
 
     /**
      * List product attributes
-     * @Route("/index")
-     * @Template()
+     * @param Request $request
      *
-     * @return array
+     * @Route("/index.{_format}",
+     *      name="pim_product_productattribute_index",
+     *      requirements={"_format"="html|json"},
+     *      defaults={"_format" = "html"}
+     * )
+     * @return template
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $attributes = $this->getProductManager()->getAttributeExtendedRepository()->findBy(array());
+        /** @var $em \Doctrine\ORM\EntityManager */
+        $em = $this->getDoctrine()->getManager();
+        $queryBuilder = $em->createQueryBuilder();
+        $queryBuilder
+            ->select('a.id', 'a.code', 'a.attributeType')
+            ->from('OroFlexibleEntityBundle:Attribute', 'a')
+            ->where("a.entityType = 'Pim\Bundle\ProductBundle\Entity\Product'");
 
-        return array('attributes' => $attributes);
+        /** @var $queryFactory QueryFactory */
+        $queryFactory = $this->get('pim_product.productattribute_grid_manager.default_query_factory');
+        $queryFactory->setQueryBuilder($queryBuilder);
+
+        /** @var $gridManager AttributeDatagridManager */
+        $gridManager = $this->get('pim_product.productattribute_grid_manager');
+        $datagrid = $gridManager->getDatagrid();
+
+        if ('json' == $request->getRequestFormat()) {
+            $view = 'OroGridBundle:Datagrid:list.json.php';
+        } else {
+            $view = 'PimProductBundle:ProductAttribute:index.html.twig';
+        }
+
+        return $this->render(
+            $view,
+            array(
+                'datagrid' => $datagrid,
+                'form'     => $datagrid->getForm()->createView()
+            )
+        );
     }
 
     /**

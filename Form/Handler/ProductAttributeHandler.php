@@ -74,6 +74,7 @@ class ProductAttributeHandler
                     if (!in_array($locale, $existingLocales)) {
                         $optionValue = new AttributeOptionValue();
                         $optionValue->setlocale($locale);
+                        $optionValue->setValue('');
                         $option->addOptionValue($optionValue);
                     }
                 }

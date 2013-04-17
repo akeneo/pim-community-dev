@@ -104,7 +104,7 @@
             {% endif %}
 
             {% if 'size' in attributes %}
-                <td>{{product.size}} {% if product.size is not null %} {{ product.getValue('size').getUnit() }} {% endif %}</td>
+                <td>TODO: to check</td>
             {% endif %}
 
             {% if 'color' in attributes %}
@@ -112,7 +112,7 @@
             {% endif %}
             
             {% if 'price' in attributes %}
-                <td>{{product.price}} {% if product.price is not null %} {{ product.getValue('price').getCurrency() }} {% endif %}</td>
+                <td>{{product.price}}</td>
             {% endif %}
 
             <td><a href="{{ path('pim_product_product_edit', { id: product.id, 'dataLocale': dataLocale, 'dataScope': dataScope  }) }}"><i class="icon-edit"></i></a></td>
