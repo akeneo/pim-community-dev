@@ -255,7 +255,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $translation->setField($field);
         $translation->setForeignKey($attribute);
         $translation->setLocale($locale);
-        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation');
+        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\ProductAttribute');
 
         $attribute->addTranslation($translation);
     }
