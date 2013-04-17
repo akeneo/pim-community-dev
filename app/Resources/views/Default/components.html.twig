@@ -60,6 +60,28 @@
             min-height: 800px;
         }
     </style>
+
+    {# BEGIN CUSTOM PIM TO REFACTOR #}
+    <script type="text/javascript" src="{{ asset('bundles/pimui/js/bootstrap-fileupload.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('bundles/pimui/css/bootstrap-fileupload.css') }}" media="all" />
+    <script type="text/javascript" src="{{ asset('bundles/pimui/js/bootstrapSwitch.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('bundles/pimui/css/bootstrapSwitch.css') }}" media="all" />
+    <script type="text/javascript" src="{{ asset('bundles/pimui/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('bundles/pimui/css/bootstrap-datetimepicker.min.css') }}" media="all" />
+    <link rel="stylesheet" href="{{ asset('bundles/pimui/css/select2.css') }}">
+    <script type="text/javascript" src="{{ asset('bundles/pimui/js/select2.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/pimui/js/jquery-ui-1.10.0.min.js') }}"></script>
+    {% stylesheets '@PimUIBundle/Resources/public/css/pim.css' filter='cssrewrite' %}
+        <link rel="stylesheet" media="all" href="{{ asset_url }}" />
+    {% endstylesheets %}
+    <style type="text/css">
+        .pin-bar .list-bar, .pin-bar .list-bar li a {
+            color: #B2BAC2;
+        }
+    </style>
+    {% block javascripts %}{% endblock %}
+    {# END CUSTOM PIM TO REFACTOR #}
+
 {% endblock %}
 
 {% block pin_button %}
