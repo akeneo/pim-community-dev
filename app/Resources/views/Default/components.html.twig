@@ -1,0 +1,89 @@
+{% block user_menu %}
+    {% if app.user %}
+        <li class="dropdown">
+            <a href="javascript: void(0);" class="dropdown-toggle" data-toggle="dropdown">{{ app.user.fullname(get_user_value('oro_user.name_format')) }} <b class="caret"></b></a>
+            {{ oro_menu_render('usermenu') }}
+        </li>
+    {% else %}
+        <li><a href="{{ path('oro_user_security_login') }}">Login</a></li>
+    {% endif %}
+{% endblock user_menu %}
+
+{% block application_menu %}
+    {{ oro_menu_render('application_menu') }}
+    {{ block('pin_button') }}
+{% endblock application_menu %}
+
+{% block searchbar %}
+    {% render "OroSearchBundle:Search:searchBar" with {'searchString':app.request.get('search'), 'fromString':app.request.get('from')} %}
+{% endblock searchbar %}
+
+{% block head_script_component %}
+    {% include 'OroWindowsBundle:Include:javascript.html.twig' %}
+    {% include 'OroWindowsBundle:Include:stylesheet.html.twig' %}
+
+    {% include 'OroNavigationBundle:Js:dot.menu.js.twig' %}
+    {% include 'OroNavigationBundle:Js:pinbar.js.twig' %}
+
+    {% javascripts
+    '@OroNavigationBundle/Resources/public/js/models/navigation.item.js'
+    '@OroNavigationBundle/Resources/public/js/collections/navigation.js'
+    '@OroNavigationBundle/Resources/public/js/views/navigation.abstract.js'
+    '@OroNavigationBundle/Resources/public/js/views/dot.menu.item.js'
+    '@OroNavigationBundle/Resources/public/js/views/dot.menu.js'
+
+    '@OroNavigationBundle/Resources/public/js/models/pinbar.item.js'
+    '@OroNavigationBundle/Resources/public/js/collections/pinbar.js'
+    '@OroNavigationBundle/Resources/public/js/views/pinbar.item.js'
+    '@OroNavigationBundle/Resources/public/js/views/pinbar.js'
+
+    '@OroNavigationBundle/Resources/public/js/views/favorites.js'
+    '@OroNavigationBundle/Resources/public/js/views/shortcuts.js'
+
+    '@OroUserBundle/Resources/public/js/status.js'
+
+    '@OroSearchBundle/Resources/public/js/searchBar.js'
+
+    filter='yui_js'
+    output='js/oroapp-demo.all.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript">
+        navigation.Item.prototype.urlRoot = {{ path('oro_api_get_navigationitems', {'type': ''})|json_encode|raw }};
+    </script>
+
+    {# TODO: remove after functionality realisation #}
+    <style type="text/css">
+        #main {
+            min-height: 800px;
+        }
+    </style>
+{% endblock %}
+
+{% block pin_button %}
+
+    {% block top_action_box %}
+        <div class="navigation clearfix">
+            <div class="container-fluid">
+                <div class="top-action-box">
+                    <div class="btn-group icons-holder icons-small">
+                        <button class="btn minimize-button" data-title="{{ block('title') }}" title="{{ 'Minimize the window to the pinbar'|trans }}"><i class="icon-minimize hide-text">minimaze tab</i></button>
+                        {# <button class="btn maximize-button"><i class="icon-fullscreen hide-text">full screen</i></button> #}
+                        <button class="btn favorite-button" data-title="{{ block('title') }}" title="{{ 'Add this page to favorites'|trans }}"><i class="icon-star icon-white hide-text">favorites</i></button>
+                        <button class="btn close-button" title="{{ 'Close page'|trans }}"><i class="icon-remove hide-text">Close</i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock top_action_box %}
+
+    {{ oro_menu_render('pinbar', {'maxPinbarItems': 10, 'tabTitle': 'Tabs'|trans(), 'defaultUrl': path('oro_default')}) }}
+    {{ oro_menu_render('favorite', {'tabTitle': 'Favorites'|trans()}) }}
+
+{% endblock %}
+
+{% block shortcuts %}
+    {{ oro_menu_render('shortcuts', {source: path('oro_api_get_shortcuts', {query: ''}), details: path('oro_shortcut_actionslist')}) }}
+{% endblock shortcuts %}
