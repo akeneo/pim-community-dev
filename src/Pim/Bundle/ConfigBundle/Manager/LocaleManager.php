@@ -35,7 +35,33 @@ class LocaleManager
      */
     public function getActiveLocales()
     {
-        return $this->objectManager->getRepository('PimConfigBundle:Language')->findBy(array('activated' => true));
+        $criterias = array('activated' => true);
+
+        return $this->getLocales($criterias);
+    }
+
+    /**
+     * Get disabled locales
+     *
+     * @return \Doctrine\Common\Persistence\mixed
+     */
+    public function getDisabledLocales()
+    {
+        $criterias = array('activated' => false);
+
+        return $this->getLocales($criterias);
+    }
+
+    /**
+     * Get locales with criterias
+     *
+     * @param multitype:string $criterias
+     *
+     * @return \Doctrine\Common\Persistence\mixed
+     */
+    public function getLocales($criterias = array())
+    {
+        return $this->objectManager->getRepository('PimConfigBundle:Language')->findBy($criterias);
     }
 
     /**
