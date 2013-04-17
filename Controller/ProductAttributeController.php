@@ -119,32 +119,18 @@ class ProductAttributeController extends Controller
         if (!isset($data['pim_product_attribute_form'])) {
             return $this->redirect($this->generateUrl('pim_product_productattribute_create'));
         }
-        $data = $data['pim_product_attribute_form'];
-
-        // Create a productattribute from the form's data
-        $attribute = $this->getProductManager()->createAttributeExtended();
-
-        $baseProperties = $this->get('pim_product.attribute_service')->getBaseProperties();
-
-        foreach ($data as $property => $value) {
-            if (array_key_exists($property, $baseProperties) && $value !== '') {
-                $set = 'set' . ucfirst($property);
-                if (method_exists($attribute, $set)) {
-                    if ($baseProperties[$property] === 'boolean') {
-                        $value = (bool) $value;
-                    } elseif ($baseProperties[$property] === 'integer') {
-                        $value = (int) $value;
-                    }
-                    $attribute->$set($value);
-                }
-            }
-        }
 
         // Add custom fields to the form and set the entered data to the form
-        $this->get('pim_product.form.handler.attribute')->process($attribute);
+        $this->get('pim_product.form.handler.attribute')->preProcess($data);
+
+        $em = $this->container->get('doctrine.orm.entity_manager');
+        $locales = $em->getRepository('PimConfigBundle:Language')->findBy(array('activated' => 1));
+        $disabledLocales = $em->getRepository('PimConfigBundle:Language')->findBy(array('activated' => 0));
 
         return array(
-            'form' => $this->get('pim_product.form.attribute')->createView()
+            'form' => $this->get('pim_product.form.attribute')->createView(),
+            'locales' => $locales,
+            'disabledLocales' => $disabledLocales
         );
     }
 

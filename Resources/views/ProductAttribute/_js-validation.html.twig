@@ -61,13 +61,6 @@ function updateFieldsFromUnique() {
 }
 
 $(function() {
-    $('#tabs').tabs().delegate("a", "click", function() {
-        $(this).parent().parent().find('li').each(function() {
-            $(this).removeClass('active');
-        });
-        $(this).parent().addClass('active');
-    });
-
     $('select').select2({ allowClear: true });
 
     $('input.multiselect').select2({ tags: $(this).val() });
@@ -128,7 +121,6 @@ $(function() {
         $(n.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-chevron-up icon-chevron-down');
     });
 
-
     function updateForm() {
         $.post(
            'preprocess',
@@ -137,17 +129,110 @@ $(function() {
                 $('#' + formName).remove();
                 $('#main').append($(data));
                 $('#' + formName + ' div.alert').remove();
-
                 $('#' + formName + ' .switch').bootstrapSwitch();
                 $('#' + formName + ' select').select2();
-
-                $('#pim_product_attribute_form_attributeType').select2().bind('change', function() {
-                    updateForm();
-                });
+                initializeOptions();
             }
         );
     }
 
-    updateForm();
+    $('#pim_product_attribute_form_attributeType').select2().on('change', function() {
+        updateForm();
+    });
 
+    function initializeOptions() {
+        var $optionList = $('table#sortable_options');
+        $optionList.after($('<a class="btn btn-small add_option_link" href="#"><i class="icon-plus"></i>{{ 'Add an option'|trans }}</a>'));
+
+        $optionList.find('tr.att-option').each(function() {
+            $(this).append($('<td><button type="button" class="btn btn-small action-delete-inline"><i class="icon-remove"></i></button></td>'));
+        });
+
+        $(document).on('click', 'a.add_option_link', function(e) {
+            e.preventDefault();
+            addOption();
+        });
+
+        $(document).on('click', 'button.action-delete-inline', function(e) {
+            var rows = $optionList.find('tr').length;
+            if (rows > 2) {
+                $(this).parent().parent().remove();
+                if (rows == 3) {
+                    $('button.action-delete-inline').hide();
+                }
+            }
+            updateDefaultValueField();
+        });
+
+        $('#pim_product_attribute_form_defaultValue').parent().parent().hide();
+        $(document).on('change', 'input:radio[name="default_option"]', updateDefaultValueField);
+
+        $(document).on('change', 'table#sortable_options input[id*=defaultValue]', updateDefaultValueField);
+
+        $optionList.find('.handle input').hide();
+
+        $optionList.find('tbody').sortable({
+            handle: '.handle',
+            containment: 'parent',
+            tolerance: 'pointer',
+            update: updateSortOrder
+        });
+    }
+
+    function addOption() {
+        var option = $optionList.find('tr').last().html();
+
+        var optionNumber = $optionList.find('tr.att-option').length + 1;
+
+        option = option.replace(/\[options\]\[([0-9]+)\]/g, "[options][" + optionNumber + "]");
+        option = option.replace(/_options_([0-9]+)_/g, "_options_" + optionNumber + "_");
+        option = option.replace(/\s+/g, ' ');
+
+        var $option = $('<tr class="att-option"></tr>').append($(option));
+
+        // Empty all fields except for locale
+        $option.find('input').each(function() {
+            if ($(this).attr('name').indexOf('locale') == -1) {
+                $(this).removeAttr('value');
+            }
+        });
+
+        $optionList.find('tbody').append($option);
+
+        $('button.action-delete-inline').show();
+        updateSortOrder();
+        updateDefaultValueRadio();
+    }
+
+    function updateSortOrder() {
+        var num = 0;
+        $optionList.find('tr').each(function() {
+            $(this).find('td.handle input').val(num);
+            num++;
+        });
+    }
+
+    function updateDefaultValueRadio() {
+        var defaultValue = $('#pim_product_attribute_form_defaultValue').val();
+        if (defaultValue) {
+            $optionList.find('input[id*=defaultValue]').each(function() {
+                if ($(this).val() == defaultValue) {
+                    $(this).parent().parent().find('input:radio[name="default_option"]').attr('checked', true);
+                    return;
+                }
+            });
+        }
+    }
+
+    function updateDefaultValueField() {
+        var $selected = $optionList.find('input:radio[name="default_option"]:checked');
+
+        if (!$selected) {
+            $('#pim_product_attribute_form_defaultValue').val('');
+            return;
+        }
+
+        var value = $selected.parent().parent().find('input[id*=defaultValue]').first().val();
+        $('#pim_product_attribute_form_defaultValue').val(value);
+    }
 });

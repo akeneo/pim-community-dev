@@ -30,16 +30,24 @@ class ProductAttributeType extends AttributeType
      * Attribute service
      * @var AttributeService
      */
-    private $attributeService;
+    private $service;
+
+    /**
+     * Attribute subscriber
+     * @var ProductAttributeSubscriber
+     */
+    private $subscriber;
 
     /**
      * Constructor
      *
-     * @param AttributeService $attributeService
+     * @param AttributeService           $service
+     * @param ProductAttributeSubscriber $subscriber
      */
-    public function __construct(AttributeService $attributeService = null)
+    public function __construct(AttributeService $service = null, ProductAttributeSubscriber $subscriber = null)
     {
-        $this->attributeService = $attributeService;
+        $this->service = $service;
+        $this->subscriber = $subscriber;
     }
 
     /**
@@ -76,8 +84,8 @@ class ProductAttributeType extends AttributeType
 
         // add our own subscriber for custom features
         $factory = $builder->getFormFactory();
-        $subscriber = new ProductAttributeSubscriber($factory, $this->attributeService);
-        $builder->addEventSubscriber($subscriber);
+        $this->subscriber->setFactory($factory);
+        $builder->addEventSubscriber($this->subscriber);
     }
 
     /**
@@ -240,7 +248,7 @@ class ProductAttributeType extends AttributeType
      */
     public function getAttributeTypeChoices()
     {
-        return $this->attributeService->getAttributeTypes();
+        return $this->service->getAttributeTypes();
     }
 
     /**

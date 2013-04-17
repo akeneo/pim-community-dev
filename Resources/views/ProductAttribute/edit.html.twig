@@ -4,15 +4,12 @@
 {% block title %}{{ title }} - {{ parent() }}{% endblock %}
 
 {% block content %}
-    {% include 'PimProductBundle:ProductAttribute:form.html.twig' with { 'form': form } %}
+    {% include 'PimProductBundle:ProductAttribute:form.html.twig' with { 'form': form, 'locales': locales, 'disabledLocales': disabledLocales } %}
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
         {% include 'PimUIBundle::measures.html.twig' with measures %}
         {% include 'PimProductBundle:ProductAttribute:_js-validation.html.twig' %}
-        {% if form.options is defined %}
-            {% include 'PimProductBundle:ProductAttribute:_js-option.html.twig' %}
-        {% endif %}
     </script>
 {% endblock %}

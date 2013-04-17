@@ -51,6 +51,15 @@ class ProductAttributeHandler
     }
 
     /**
+     * Preprocess method
+     * @param ProductAttribute $data
+     */
+    public function preProcess($data)
+    {
+        $this->form->bind($data);
+    }
+
+    /**
      * Process method for handler
      * @param ProductAttribute $entity
      *
