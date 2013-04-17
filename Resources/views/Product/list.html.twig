@@ -1,19 +1,19 @@
-{% extends bap.layout %}
+{% extends 'PimProductBundle::layout.html.twig' %}
+
+{% set title = 'Products overview'|trans %}
+{% block title %}{{ title }} - {{ parent() }}{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagrid': datagrid, 'selector': '#backgrid'} %}
 {% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
-{% endblock %}
-
 {% block content %}
-    <h1>Products overview
-        <a class="btn btn-primary pull-right" style="margin-left:10px;" href="{{ path('pim_product_product_create') }}">New product</a>
+    <h1>{{ title }}
+        <a class="btn btn-primary pull-right" style="margin-left:10px;"
+            href="{{ path('pim_product_product_create') }}">{{ 'New product'|trans }}</a>
     </h1>
 
     <div id="backgrid"></div>
 {% endblock %}
+
