@@ -56,7 +56,7 @@ class ProductAttributeHandler
      */
     public function preProcess($data)
     {
-        $this->form->bind($data);
+        $this->form->bind($data['pim_product_attribute_form']);
     }
 
     /**

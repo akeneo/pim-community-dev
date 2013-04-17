@@ -110,7 +110,6 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
         $form = $event->getForm();
 
         // Create a productattribute from the form's data
-        $data = $data['pim_product_attribute_form'];
         $attribute = $this->manager->createAttributeExtended();
         $baseProperties = $this->service->getBaseProperties();
 
