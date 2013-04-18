@@ -118,8 +118,7 @@ class ProductController extends Controller
      */
     public function editAction($id)
     {
-        $locale  = $this->getRequest()->query->get('dataLocale', $this->getRequest()->getLocale());
-        $entity  = $this->getDoctrine()->getRepository('PimProductBundle:Product')->findOneLocalized($id, $locale);
+        $entity = $this->getProductManager()->localizedFind($id);
         if (!$entity) {
             throw $this->createNotFoundException(sprintf(
                 'Product with id %d could not be found.', $id
