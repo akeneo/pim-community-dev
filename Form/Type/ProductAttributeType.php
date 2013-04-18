@@ -64,8 +64,6 @@ class ProductAttributeType extends AttributeType
         $this->addFieldAttributeGroup($builder);
 
         $this->addFieldAvailableLanguages($builder);
-
-        $builder->add('sortOrder', null, array('label' => 'Position'));
     }
 
     /**
