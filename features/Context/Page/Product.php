@@ -45,13 +45,8 @@ class Product extends Page
 
     public function getFieldValue($field)
     {
-        if (null === $field = $this->findField($field)) {
-            throw new ElementNotFoundException(
-                $this->getSession(), 'form field ', 'id|name|label|value', $field
-            );
-        }
 
-        return $field->getValue();
+        return $this->findField($field)->getValue();
     }
 
     public function switchLocale($locale)
@@ -80,5 +75,26 @@ class Product extends Page
         }
 
         return $fields[$position];
+    }
+
+    public function findField($name)
+    {
+        $label = $this->find('css', sprintf('label:contains("%s")', $name));
+
+        if (!$label) {
+            throw new ElementNotFoundException(
+                $this->getSession(), 'form label ', 'value', $name
+            );
+        }
+
+        $field = $label->getParent()->find('css', 'input[type="text"]');
+
+        if (!$field) {
+            throw new ElementNotFoundException(
+                $this->getSession(), 'form field ', 'id|name|label|value', $name
+            );
+        }
+
+        return $field;
     }
 }

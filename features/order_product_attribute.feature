@@ -4,7 +4,7 @@ Feature: Order product attributes
   I need to be able to set an order parameter which will manage fields order
 
   Scenario: Successfully update an attribute position
-    Given a "Car" product
+    Given the "Car" product
     And the following attribute group:
       | name    |
       | General |
@@ -18,7 +18,7 @@ Feature: Order product attributes
     Then I should see "Attribute successfully saved"
 
   Scenario: Display a produt attribute fields ordered by their position
-    Given a "Car" product
+    Given the "Car" product
     And the following attribute groups:
       | name    |
       | General |

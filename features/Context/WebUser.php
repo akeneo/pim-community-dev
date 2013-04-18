@@ -27,7 +27,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private $pageFactory = null;
 
     private $locales = array(
-        'english' => 'en',
+        'english' => 'en_US',
         'french'  => 'fr',
         'german'  => 'de',
     );
@@ -65,29 +65,31 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^a "([^"]*)" product(?: with the following translations:)?$/
+     * @Given /^the "([^"]*)" product(?: has the following translations:)?$/
      */
-    public function aProductWithTheFollowingTranslations($sku, TableNode $translations = null)
+    public function theProductWithTheFollowingTranslations($sku, TableNode $translations = null)
     {
         $attributes = array();
+        $product    = $this->getProduct($sku);
         $pm         = $this->getProductManager();
-        $product    = $pm->createFlexible();
-        $product->setSku($sku);
 
         if ($translations) {
             foreach ($translations->getHash() as $translation) {
                 if (isset($attributes[$translation['attribute']])) {
                     $attribute = $attributes[$translation['attribute']];
                 } else {
-                    $attribute = $this->createAttribute($translation['attribute']);
+                    $attribute = $pm->createAttribute(new TextType);
+                    $attribute->setCode($translation['attribute']);
+                    $attribute->setTranslatable(true);
+                    $pm->getStorageManager()->persist($attribute);
                     $attributes[$translation['attribute']] = $attribute;
                 }
 
-                $value = $this->getProductManager()->createFlexibleValue();
-                $value->setAttribute($attribute->getAttribute());
+                $value = $pm->createFlexibleValue();
+                $value->setAttribute($attribute);
                 $value->setLocale($this->getLocale($translation['locale']));
                 $value->setData($translation['value']);
-                $this->getProductManager()->getStorageManager()->persist($value);
+                $pm->getStorageManager()->persist($value);
                 $product->addValue($value);
             }
         }
@@ -101,7 +103,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function aProductAvailableIn($sku, $languages)
     {
-        $product   = $this->aProductWithTheFollowingTranslations($sku);
+        $product   = $this->theProductWithTheFollowingTranslations($sku);
         $languages = $this->listToArray($languages);
 
         foreach ($languages as $language) {
@@ -121,6 +123,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function theCurrentLanguageIs($language)
     {
         $this->currentLocale = $this->getLocale($language);
+    }
+
+    /**
+     * @When /^I switch the locale to "([^"]*)"$/
+     */
+    public function iSwitchTheLocaleTo($locale)
+    {
+        $this->getPage('Product')->switchLocale($locale);
     }
 
     /**
@@ -320,6 +330,22 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
+    /**
+     * @Then /^the product (.*) should be empty$/
+     * @Then /^the product (.*) should be "([^"]*)"$/
+     */
+    public function theProductFieldValueShouldBe($fieldName, $expected = '')
+   {
+        $actual = $this->getPage('Product')->getFieldValue($fieldName);
+
+        if ($expected !== $actual) {
+            throw new \LogicException(sprintf(
+                'Expected product %s to be "%s", but got "%s".',
+                $fieldName, $expected, $actual
+            ));
+        }
+    }
+
     private function listToArray($list)
     {
         return explode(', ', str_replace(' and ', ', ', $list));
@@ -327,8 +353,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     private function getProduct($sku)
     {
-        $product = $this
-            ->getProductManager()
+        $pm = $this->getProductManager();
+        $product = $pm
             ->setLocale($this->currentLocale)
             ->getFlexibleRepository()
             ->findOneBy(array(
@@ -336,9 +362,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             ));
 
         if (!$product) {
-            throw new \InvalidArgumentException(sprintf(
-                'Could not find product with sku "%s"', $sku
-            ));
+            $product = $this->getProductManager()->createFlexible();
+            $product->setSku($sku);
+            $pm->getStorageManager()->persist($product);
         }
 
         return $product;
