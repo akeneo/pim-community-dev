@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
+use Pim\Bundle\ProductBundle\Entity\ProductSegmentTranslation;
+
 use Pim\Bundle\ProductBundle\Entity\ProductSegment;
 
 use Doctrine\Common\Persistence\ObjectManager;
@@ -24,12 +26,12 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 class LoadProductSegmentData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
     /**
-     * @var ContainerInterface
+     * @var \Symfony\Component\DependencyInjection\ContainerInterface
      */
     protected $container;
 
     /**
-     * @var ObjectManager
+     * @var \Doctrine\Common\Persistence\ObjectManager
      */
     protected $manager;
 
@@ -56,28 +58,48 @@ class LoadProductSegmentData extends AbstractFixture implements OrderedFixtureIn
         $product5 = $this->getReference('product-sku-5');
 
         // create trees
-        $treeCatalog     = $this->createSegment('Master Catalog');
-        $treeCollections = $this->createSegment('Collections');
-        $treeColors      = $this->createSegment('Colors');
-        $treeSales       = $this->createSegment('Europe Sales Catalog');
+        $treeCatalog     = $this->createSegment('Master Catalog (default)');
+        $treeCollections = $this->createSegment('Collections (default)');
+        $treeColors      = $this->createSegment('Colors (default)');
+        $treeSales       = $this->createSegment('Europe Sales Catalog (default)');
 
         // enrich master catalog with segments
-        $nodeBooks = $this->createSegment('Books', $treeCatalog);
-        $nodeComputers = $this->createSegment('Computers', $treeCatalog);
-        $nodeDesktops = $this->createSegment('Desktops', $nodeComputers);
-        $nodeNotebooks = $this->createSegment('Notebooks', $nodeComputers);
-        $nodeAccessories = $this->createSegment('Accessories', $nodeComputers);
-        $nodeGames = $this->createSegment('Games', $nodeComputers);
-        $nodeSoftware = $this->createSegment('Software', $nodeComputers);
-        $nodeClothing = $this->createSegment('Apparels & Shoes', $treeCatalog);
+        $nodeBooks = $this->createSegment('Books (default)', $treeCatalog);
+        $nodeComputers = $this->createSegment('Computers (default)', $treeCatalog);
+        $nodeDesktops = $this->createSegment('Desktops (default)', $nodeComputers);
+        $nodeNotebooks = $this->createSegment('Notebooks (default)', $nodeComputers);
+        $nodeAccessories = $this->createSegment('Accessories (default)', $nodeComputers);
+        $nodeGames = $this->createSegment('Games (default)', $nodeComputers);
+        $nodeSoftware = $this->createSegment('Software (default)', $nodeComputers);
+        $nodeClothing = $this->createSegment('Apparels & Shoes (default)', $treeCatalog);
 
-        $nodeShirts = $this->createSegment('Shirts', $nodeClothing, array($product5));
-        $nodeJeans  = $this->createSegment('Jeans', $nodeClothing, array($product3, $product4));
-        $nodeShoes  = $this->createSegment('Shoes', $nodeClothing, array($product1, $product2, $product3));
+        $nodeShirts = $this->createSegment('Shirts (default)', $nodeClothing, array($product5));
+        $nodeJeans  = $this->createSegment('Jeans (default)', $nodeClothing, array($product3, $product4));
+        $nodeShoes  = $this->createSegment('Shoes (default)', $nodeClothing, array($product1, $product2, $product3));
+
+        // translate data in en_US
+        $locale = 'en_US';
+        $this->translate($treeCatalog, $locale, 'Master Catalog');
+        $this->translate($treeCollections, $locale, 'Collections');
+        $this->translate($treeColors, $locale, 'Colors');
+        $this->translate($treeSales, $locale, 'Europe Sales Catalog');
+
+        $this->translate($nodeBooks, $locale, 'Books');
+        $this->translate($nodeComputers, $locale, 'Computers');
+        $this->translate($nodeDesktops, $locale, 'Desktops');
+        $this->translate($nodeNotebooks, $locale, 'Notebooks');
+        $this->translate($nodeAccessories, $locale, 'Accessories');
+        $this->translate($nodeGames, $locale, 'Games');
+        $this->translate($nodeSoftware, $locale, 'Software');
+        $this->translate($nodeClothing, $locale, 'Apparels & Shoes');
+
+        $this->translate($nodeShirts, $locale, 'Shirts');
+        $this->translate($nodeJeans, $locale, 'Jeans');
+        $this->translate($nodeShoes, $locale, 'Shoes');
 
         $this->manager->flush();
 
-        // translate data
+        // translate data in fr_FR
         $locale = 'fr_FR';
         $this->translate($treeCatalog, $locale, 'Catalogue Principal');
         $this->translate($treeCollections, $locale, 'Collections');
@@ -102,15 +124,38 @@ class LoadProductSegmentData extends AbstractFixture implements OrderedFixtureIn
 
     /**
      * Translate a segment
+     *
      * @param ProductSegment $segment Segment
      * @param string         $locale  Locale used
      * @param string         $title   Title translated in locale value linked
      */
     protected function translate(ProductSegment $segment, $locale, $title)
     {
-        $segment->setTranslatableLocale($locale);
-        $segment->setTitle($title);
+        $translation = $this->createTranslation($segment, $locale, $title);
+        $segment->addTranslation($translation);
+
         $this->manager->persist($segment);
+    }
+
+    /**
+     * Create a translation entity
+     *
+     * @param AttributeGroup $entity AttributeGroup entity
+     * @param string         $locale Locale used
+     * @param string         $title  Title translated in locale value linked
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductSegmentTranslation
+     */
+    protected function createTranslation($entity, $locale, $title)
+    {
+        $translation = new ProductSegmentTranslation();
+        $translation->setContent($title);
+        $translation->setField('title');
+        $translation->setForeignKey($entity);
+        $translation->setLocale($locale);
+        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\ProductSegment');
+
+        return $translation;
     }
 
     /**
@@ -128,6 +173,9 @@ class LoadProductSegmentData extends AbstractFixture implements OrderedFixtureIn
         $segment->setCode($title);
         $segment->setTitle($title);
         $segment->setParent($parent);
+
+        $translation = $this->createTranslation($segment, 'default', $title);
+        $segment->addTranslation($translation);
 
         foreach ($products as $product) {
             $segment->addProduct($product);
