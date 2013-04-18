@@ -86,7 +86,16 @@ class ProductAttributeType extends AttributeType
      */
     protected function addFieldName(FormBuilderInterface $builder)
     {
-        $builder->add('name');
+        $builder->add(
+            'name',
+            'pim_translatable_field',
+            array(
+                'field'             => 'name',
+                'translation_class' => 'Pim\\Bundle\\ProductBundle\\Entity\\ProductAttributeTranslation',
+                'entity_class'      => 'Pim\\Bundle\\ProductBundle\\Entity\\ProductAttribute',
+                'property_path'     => 'translations'
+            )
+        );
     }
 
     /**
@@ -153,7 +162,7 @@ class ProductAttributeType extends AttributeType
         $builder->add('useableAsGridFilter', 'checkbox');
     }
 
-   /**
+    /**
      * Add field required to form builder
      * @param FormBuilderInterface $builder
      */

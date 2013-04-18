@@ -2,7 +2,7 @@
     "name": "akeneo/ProductBundle",
     "type": "symfony-bundle",
     "description": "PIM UI Bundle",
-    "keywords": ["PIM", "UI"],
+    "keywords": ["PIM", "Product"],
     "homepage": "https://github.com/akeneo/ProductBundle",
     "license": "OSL",
     "require": {

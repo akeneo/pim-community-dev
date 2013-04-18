@@ -8,6 +8,10 @@ use Pim\Bundle\ConfigBundle\Entity\Language;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Gedmo\Translatable\Translatable;
+
+use Gedmo\Mapping\Annotation as Gedmo;
+
 /**
  * Custom properties for a product attribute
  *
@@ -18,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="pim_product_attribute")
  * @ORM\Entity
  */
-class ProductAttribute extends AbstractEntityAttributeExtended
+class ProductAttribute extends AbstractEntityAttributeExtended implements Translatable
 {
     /**
      * @var Oro\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute
@@ -34,6 +38,7 @@ class ProductAttribute extends AbstractEntityAttributeExtended
      * @var string $name
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Gedmo\Translatable
      */
     protected $name;
 
@@ -208,6 +213,27 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     protected $allowedFileExtensions;
 
     /**
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     *
+     * @var string $locale
+     *
+     * @Gedmo\Locale
+     */
+    protected $locale;
+
+    /**
+     * @var ArrayCollection $translations
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="ProductAttributeTranslation",
+     *     mappedBy="foreignKey",
+     *     cascade={"persist", "remove"}
+     * )
+     */
+    protected $translations;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -218,6 +244,7 @@ class ProductAttribute extends AbstractEntityAttributeExtended
         $this->useableAsGridColumn = false;
         $this->useableAsGridFilter = false;
         $this->availableLanguages  = new ArrayCollection();
+        $this->translations        = new ArrayCollection();
     }
 
     /**
@@ -840,6 +867,60 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     public function setAllowedFileExtensions($allowedFileExtensions)
     {
         $this->allowedFileExtensions = is_array($allowedFileExtensions) ? implode(',', $allowedFileExtensions) : $allowedFileExtensions;
+
+        return $this;
+    }
+
+    /**
+     * Define locale used by entity
+     *
+     * @param string $locale
+     *
+     * @return ProductAttribute
+     */
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get translations
+     *
+     * @return ArrayCollection
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * Add translation
+     *
+     * @param ProductAttributeTranslation $translation
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttribute
+     */
+    public function addTranslation(ProductAttributeTranslation $translation)
+    {
+        if (!$this->translations->contains($translation)) {
+            $this->translations->add($translation);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove translation
+     *
+     * @param ProductAttributeTranslation $translation
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttribute
+     */
+    public function removeTranslation(ProductSegmentTranslation $translation)
+    {
+        $this->translations->removeElement($translation);
 
         return $this;
     }
