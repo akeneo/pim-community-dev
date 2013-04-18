@@ -396,13 +396,4 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
         $productAttribute->setAllowedFileExtensions($extensions);
         $this->assertEquals($extensions, $productAttribute->getAllowedFileExtensions());
     }
-
-    public function testGetSetSortOrder()
-    {
-        $productAttribute = new ProductAttribute();
-        $this->assertEquals(0, $productAttribute->getSortOrder());
-
-        $productAttribute->setSortOrder(20);
-        $this->assertEquals(20, $productAttribute->getSortOrder());
-    }
 }
