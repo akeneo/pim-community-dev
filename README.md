@@ -199,3 +199,4 @@ Enhancements
 - Implements with default locale
 - Create abstract translated entity
 - Fix problem with default value store in translation table
+- Extends entity with AbstractTranslatedClass and maybe AbstractTranslation
