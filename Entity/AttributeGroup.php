@@ -232,13 +232,13 @@ class AttributeGroup implements TimestampableInterface, Translatable
     /**
      * Add attributes
      *
-     * @param \Pim\Bundle\ProductBundle\Entity\ProductAttribute $attributes
+     * @param \Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute
      *
      * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
      */
-    public function addAttribute(\Pim\Bundle\ProductBundle\Entity\ProductAttribute $attributes)
+    public function addAttribute(\Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute)
     {
-        $this->attributes[] = $attributes;
+        $this->attributes[] = $attribute;
 
         return $this;
     }
@@ -246,11 +246,15 @@ class AttributeGroup implements TimestampableInterface, Translatable
     /**
      * Remove attributes
      *
-     * @param \Pim\Bundle\ProductBundle\Entity\ProductAttribute $attributes
+     * @param \Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
      */
-    public function removeAttribute(\Pim\Bundle\ProductBundle\Entity\ProductAttribute $attributes)
+    public function removeAttribute(\Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute)
     {
-        $this->attributes->removeElement($attributes);
+        $this->attributes->removeElement($attribute);
+
+        return $this;
     }
 
     /**

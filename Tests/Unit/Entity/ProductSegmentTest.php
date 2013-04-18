@@ -32,6 +32,7 @@ class ProductSegmentTest extends \PHPUnit_Framework_TestCase
         $segment = new ProductSegment();
 
         // assert instance and implementation
+        $this->assertEntity($segment);
         $this->assertInstanceOf('\Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment', $segment);
         $this->assertInstanceOf('\Gedmo\Translatable\Translatable', $segment);
 
@@ -101,5 +102,14 @@ class ProductSegmentTest extends \PHPUnit_Framework_TestCase
         $testIsDynamic = true;
         $segment->setIsDynamic($testIsDynamic);
         $this->assertEquals($testIsDynamic, $segment->getIsDynamic());
+    }
+
+    /**
+     * Assert entity
+     * @param Pim\Bundle\ProductBundle\Entity\ProductSegment $entity
+     */
+    protected function assertEntity($entity)
+    {
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductSegment', $entity);
     }
 }
