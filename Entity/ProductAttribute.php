@@ -918,7 +918,7 @@ class ProductAttribute extends AbstractEntityAttributeExtended implements Transl
      *
      * @return \Pim\Bundle\ProductBundle\Entity\ProductAttribute
      */
-    public function removeTranslation(ProductSegmentTranslation $translation)
+    public function removeTranslation(ProductAttributeTranslation $translation)
     {
         $this->translations->removeElement($translation);
 

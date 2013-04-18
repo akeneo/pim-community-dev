@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Entity;
 
+use Pim\Bundle\ProductBundle\Entity\ProductSegmentTranslation;
+
 use Pim\Bundle\ProductBundle\Entity\Product;
 
 use Pim\Bundle\ProductBundle\Entity\ProductSegment;
@@ -104,6 +106,30 @@ class ProductSegmentTest extends \PHPUnit_Framework_TestCase
         $testIsDynamic = true;
         $this->assertEntity($segment->setIsDynamic($testIsDynamic));
         $this->assertEquals($testIsDynamic, $segment->getIsDynamic());
+    }
+
+    /**
+     * Test getter/setter for translations property
+     */
+    public function testTranslations()
+    {
+        $segment = new ProductSegment();
+        $this->assertCount(0, $segment->getTranslations());
+
+        // Change value and assert new
+        $newTranslation = new ProductSegmentTranslation();
+        $this->assertEntity($segment->addTranslation($newTranslation));
+        $this->assertCount(1, $segment->getTranslations());
+        $this->assertInstanceOf(
+            'Pim\Bundle\ProductBundle\Entity\ProductSegmentTranslation',
+            $segment->getTranslations()->first()
+        );
+
+        $segment->addTranslation($newTranslation);
+        $this->assertCount(1, $segment->getTranslations());
+
+        $this->assertEntity($segment->removeTranslation($newTranslation));
+        $this->assertCount(0, $segment->getTranslations());
     }
 
     /**
