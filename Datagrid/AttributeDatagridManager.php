@@ -113,7 +113,7 @@ class AttributeDatagridManager extends DatagridManager
                 array(
                     'type'        => FieldDescriptionInterface::TYPE_TEXT,
                     'label'       => 'Type',
-                    'field_name'  => 'type',
+                    'field_name'  => 'attributeType',
                     'filter_type' => FilterInterface::TYPE_STRING,
                     'required'    => false,
                     'sortable'    => true,
@@ -165,6 +165,22 @@ class AttributeDatagridManager extends DatagridManager
     protected function getListFields()
     {
         return $this->getFieldDescriptionCollection()->getElements();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getFilters()
+    {
+        $fields = array();
+        /** @var $fieldDescription FieldDescription */
+        foreach ($this->getFieldDescriptionCollection() as $fieldDescription) {
+            if ($fieldDescription->isFilterable()) {
+                $fields[] = $fieldDescription;
+            }
+        }
+
+        return $fields;
     }
 
     /**
