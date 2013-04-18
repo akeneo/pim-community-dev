@@ -13,6 +13,6 @@ use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class TranslatedFieldType extends TypeTestCase
+class TranslatedFieldTypeTest extends TypeTestCase
 {
 }
