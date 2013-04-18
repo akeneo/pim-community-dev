@@ -12,6 +12,11 @@ parameters:
     channel_type_class:     Pim\Bundle\ConfigBundle\Form\Type\ChannelType
 
 services:
+    # Managers
+    pim_config.manager.locale:
+        class:     Pim\Bundle\ConfigBundle\Manager\LocaleManager
+        arguments: [@doctrine.orm.entity_manager]
+    
     # Form
     pim_config.form.channel:
         class:           Symfony\Component\Form\Form
