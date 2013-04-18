@@ -1,5 +1,12 @@
 {% extends 'form_div_layout.html.twig' %}
 
+{% block pim_wysiwyg_widget %}
+    {{ block('textarea_widget') }}
+    <script type="text/javascript">
+        $('textarea#{{ form.vars.id }}').wysihtml5();
+    </script>
+{% endblock %}
+
 {% block pim_translation_collection_row %}
     {{ form_errors(form) }}
     {{ form_label(form) }}
