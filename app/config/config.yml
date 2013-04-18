@@ -26,7 +26,7 @@ twig:
     strict_variables: %kernel.debug%
     globals:
         bap:
-            layout:           PimUIBundle::layout.bootstrap.html.twig  # default layout across all Oro bundles
+            layout:           ::base.html.twig  # default layout across all Oro bundles
     form:
         resources:
             - 'PimUIBundle:Form:fields.html.twig'
@@ -35,7 +35,8 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        ["PimUIBundle", "OroUserBundle", "OroSegmentationTreeBundle", "PimProductBundle", "OroGridBundle", "OroUIBundle"]
+    bundles:        ["OroUIBundle", "OroUserBundle", "OroGridBundle", "OroNavigationBundle", "OroWindowsBundle", "OroSegmentationTreeBundle", "PimUIBundle", "PimProductBundle"]
+
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -63,6 +64,8 @@ doctrine:
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
+        resolve_target_entities:
+            Symfony\Component\Security\Core\User\UserInterface: Oro\Bundle\UserBundle\Entity\User
         mappings:
             gedmo_translatable:
                 type: annotation
@@ -150,6 +153,10 @@ services:
     cache:
         class: Doctrine\Common\Cache\PhpFileCache
         arguments: [%kernel.cache_dir%]
+    twig.extension.intl:
+         class: Twig_Extensions_Extension_Intl
+         tags:
+             - { name: twig.extension }
 
 knp_gaufrette:
     adapters:

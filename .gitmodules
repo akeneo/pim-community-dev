@@ -1,33 +1,3 @@
-[submodule "src/Oro/Bundle/DataFlowBundle"]
-    path = src/Oro/Bundle/DataFlowBundle
-    url = git@github.com:laboro/DataFlowBundle.git
-[submodule "src/Oro/Bundle/FlexibleEntityBundle"]
-    path = src/Oro/Bundle/FlexibleEntityBundle
-    url = git@github.com:laboro/FlexibleEntityBundle.git
-[submodule "src/Oro/Bundle/UIBundle"]
-    path = src/Oro/Bundle/UIBundle
-    url = git@github.com:laboro/UIBundle.git
-[submodule "src/Oro/Bundle/MeasureBundle"]
-    path = src/Oro/Bundle/MeasureBundle
-    url = git@github.com:laboro/MeasureBundle.git
-[submodule "src/Oro/Bundle/UserBundle"]
-    path = src/Oro/Bundle/UserBundle
-    url = git@github.com:laboro/UserBundle.git
-[submodule "src/Oro/Bundle/SoapBundle"]
-    path = src/Oro/Bundle/SoapBundle
-    url = git@github.com:laboro/SoapBundle.git
-[submodule "src/Oro/Bundle/SearchBundle"]
-    path = src/Oro/Bundle/SearchBundle
-    url = git@github.com:laboro/SearchBundle.git
-[submodule "src/Oro/Bundle/NavigationBundle"]
-    path = src/Oro/Bundle/NavigationBundle
-    url = git@github.com:laboro/NavigationBundle.git
-[submodule "src/Oro/Bundle/SegmentationTreeBundle"]
-    path = src/Oro/Bundle/SegmentationTreeBundle
-    url = git@github.com:laboro/SegmentationTreeBundle.git
-[submodule "src/Oro/Bundle/ConfigBundle"]
-    path = src/Oro/Bundle/ConfigBundle
-    url = git@github.com:laboro/ConfigBundle.git
 [submodule "src/Pim/Bundle/UIBundle"]
     path = src/Pim/Bundle/UIBundle
     url = git@github.com:akeneo/UIBundle.git
@@ -37,12 +7,6 @@
 [submodule "src/Pim/Bundle/DemoBundle"]
     path = src/Pim/Bundle/DemoBundle
     url = git@github.com:akeneo/DemoBundle.git
-[submodule "src/Oro/Bundle/WindowsBundle"]
-    path = src/Oro/Bundle/WindowsBundle
-    url = git@github.com:laboro/WindowsBundle.git
-[submodule "src/Oro/Bundle/GridBundle"]
-    path = src/Oro/Bundle/GridBundle
-    url = git@github.com:laboro/GridBundle.git
 [submodule "src/Pim/Bundle/TranslationBundle"]
     path = src/Pim/Bundle/TranslationBundle
     url = git@github.com:akeneo/TranslationBundle.git
