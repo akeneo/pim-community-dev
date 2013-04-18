@@ -1,16 +1,16 @@
 Feature: Order product attributes
   In order to always have the same attribute fields order in each locale
   As a user
-  I need to be able to set an order paramater which will manage fields order
+  I need to be able to set an order parameter which will manage fields order
 
   Scenario: Successfully update an attribute position
-    Given the following attribute group:
+    Given a "Car" product
+    And the following attribute group:
       | name    |
       | General |
     And the following product attribute:
-      | code         | group   |
-      | releaseDate  | General |
-    And a "Car" product
+      | product | code        | group   |
+      | Car     | releaseDate | General |
     And the current language is english
     And I am logged in as "admin"
     When I am on the "releaseDate" attribute page

@@ -32,7 +32,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         'german'  => 'de',
     );
 
-    private $currentLocale;
+    private $currentLocale = null;
 
     /**
      * @BeforeScenario
@@ -226,7 +226,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 'position' => 0,
             ), $data);
             $attribute = $this->createAttribute($data['code'], false);
-            $attribute->setSortOrder($data['position']);
+            $attribute->getAttribute()->setSortOrder($data['position']);
             $attribute->setGroup($this->getGroup($data['group']));
             $product = $this->getProduct($data['product']);
 
