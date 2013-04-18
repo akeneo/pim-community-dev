@@ -1,5 +1,7 @@
 <?php
-namespace Pim\Bundle\ProductBundle\Tests\Form\Type;
+namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Type;
+
+use Pim\Bundle\TranslationBundle\Form\Type\TranslatedFieldType;
 
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 
