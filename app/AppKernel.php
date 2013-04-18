@@ -29,6 +29,8 @@ class AppKernel extends Kernel
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
+            new Liip\ImagineBundle\LiipImagineBundle(),
+            new YsTools\BackUrlBundle\YsToolsBackUrlBundle(),
 
             // BAP bundles
             new Oro\Bundle\FlexibleEntityBundle\OroFlexibleEntityBundle(),
@@ -42,6 +44,7 @@ class AppKernel extends Kernel
             new Oro\Bundle\NavigationBundle\OroNavigationBundle(),
             new Oro\Bundle\ConfigBundle\OroConfigBundle(),
             new Oro\Bundle\GridBundle\OroGridBundle(),
+            new Oro\Bundle\WindowsBundle\OroWindowsBundle(),
 
             // PIM bundles
             new Pim\Bundle\UIBundle\PimUIBundle(),

@@ -1,12 +1,7 @@
-{% extends "OroUIBundle:Default:index.html.twig" %}
+{% extends "OroUIBundle:Default:twoColumnRight.html.twig" %}
 {% use ':Default:components.html.twig' %}
 
 {% block head_script %}
     {{ parent() }}
     {{ block('head_script_component') }}
-{% endblock %}
-
-{% block main %}
-    {{ parent() }}
-    {{ oro_windows_restore() }}
 {% endblock %}

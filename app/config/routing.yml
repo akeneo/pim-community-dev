@@ -2,6 +2,10 @@ pim_default:
     pattern:  /{_locale}
     defaults: { _controller: PimUIBundle:Welcome:index, _locale: %locale% }
 
+oro_default:
+    pattern:  /{_locale}
+    defaults: { _controller: PimUIBundle:Welcome:index, _locale: %locale% }
+
 pim_product:
     resource: "@PimProductBundle/Controller/"
     type:     annotation
@@ -31,3 +35,8 @@ oro_navigation:
 oro_soap:
     resource: "@OroSoapBundle/Resources/config/routing.yml"
     prefix:   /api
+
+oro_windows:
+    resource: "@OroWindowsBundle/Resources/config/routing.yml"
+    prefix: /
+

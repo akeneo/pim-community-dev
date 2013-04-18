@@ -12,12 +12,6 @@ oro_menu_config:
         pim_config_channel:
             label: 'Channels'
             route: 'pim_config_channel_index'
-        pim_config_users:
-            label: 'Users'
-            route: 'oro_user_index'
-        pim_config_groups:
-            label: 'Groups'
-            route: 'oro_user_group_index'
 
     tree:
         application_menu:
@@ -27,6 +21,4 @@ oro_menu_config:
                         pim_config_language: ~
                         pim_config_currency: ~
                         pim_config_channel: ~
-                        pim_config_users: ~
-                        pim_config_groups: ~
 

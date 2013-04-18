@@ -12,6 +12,5 @@ composer.phar
 .project
 /cov
 /bin
-/composer.lock
 behat.yml
 app/phpunit.xml
