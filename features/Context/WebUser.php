@@ -311,7 +311,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 ->getFieldAt($group, $index)
             ;
 
-            if ($attribute !== $name = $field->getText()) {
+            if (strtolower($attribute) !== $name = strtolower($field->getText())) {
                 throw new \Exception(sprintf('
                     Expecting to see field "%s" at position %d, but saw "%s"',
                     $attribute, $index + 1, $name

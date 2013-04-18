@@ -34,5 +34,5 @@ Feature: Order product attributes
     And the current language is english
     And I am logged in as "admin"
     When I am on the "Car" product page
-    Then attributes in group "General" should be fileUpload, manufacturer and releaseDate
+    Then attributes in group "General" should be fileUpload, releaseDate and manufacturer
     And attributes in group "Shape" should be color, height and weight
