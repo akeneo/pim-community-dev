@@ -53,7 +53,7 @@ class AttributeGroupTypeTest extends TypeTestCase
         // Assert fields
         $this->assertField('id', 'hidden');
         $this->assertField('name', 'text');
-        $this->assertField('sort_order', 'integer');
+        $this->assertField('sort_order', 'hidden');
 
         // Assert option class
         $this->assertEquals(

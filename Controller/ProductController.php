@@ -2,20 +2,16 @@
 namespace Pim\Bundle\ProductBundle\Controller;
 
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
-
 use Pim\Bundle\ProductBundle\Manager\MediaManager;
-
 use Symfony\Component\HttpFoundation\File\File;
-
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
-
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Form\Type\ProductType;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Product Controller
@@ -47,30 +43,34 @@ class ProductController extends Controller
     }
 
     /**
-     * Get attribute codes
-     * @return array
+     * List product attributes
+     * @param Request $request
+     *
+     * @Route("/index.{_format}",
+     *      requirements={"_format"="html|json"},
+     *      defaults={"_format" = "html"}
+     * )
+     * @return template
      */
-    protected function getAttributeCodesToDisplay()
+    public function indexAction(Request $request)
     {
-        return array('name', 'shortDescription', 'size', 'color', 'price');
-    }
+        /** @var $gridManager ProductDatagridManager */
+        $gridManager = $this->get('pim_product.product_grid_manager');
+        $datagrid = $gridManager->getDatagrid();
 
-    /**
-     * Index action
-     *
-     * @param string $dataLocale locale
-     * @param string $dataScope  scope
-     *
-     * @Route("/index/{dataLocale}/{dataScope}", defaults={"dataLocale" = null, "dataScope" = null})
-     * @Template()
-     *
-     * @return array
-     */
-    public function indexAction($dataLocale, $dataScope)
-    {
-        $products = $this->getProductManager()->getFlexibleRepository()->findByWithAttributes();
+        if ('json' == $request->getRequestFormat()) {
+            $view = 'OroGridBundle:Datagrid:list.json.php';
+        } else {
+            $view = 'PimProductBundle:Product:index.html.twig';
+        }
 
-        return array('products' => $products, 'attributes' => $this->getAttributeCodesToDisplay());
+        return $this->render(
+            $view,
+            array(
+                'datagrid' => $datagrid,
+                'form'     => $datagrid->getForm()->createView()
+            )
+        );
     }
 
     /**
@@ -110,15 +110,21 @@ class ProductController extends Controller
      *
      * @Route(
      *     "{id}/edit",
-     *     requirements={"id"="\d+"},
-     *     defaults={"id"=0, "dataLocale" = null, "dataScope" = null}
+     *     requirements={"id"="\d+"}
      * )
      * @Template
      *
      * @return array
      */
-    public function editAction(Product $entity, $dataLocale, $dataScope)
+    public function editAction($id)
     {
+        $entity = $this->getProductManager()->localizedFind($id);
+        if (!$entity) {
+            throw $this->createNotFoundException(sprintf(
+                'Product with id %d could not be found.', $id
+            ));
+        }
+
         $request = $this->getRequest();
 
         // create form
@@ -157,20 +163,24 @@ class ProductController extends Controller
                     $index++;
                 }
 
-                $em = $this->getProductManager()->getStorageManager();
-                $em->persist($entity);
-                $em->flush();
+                $this->getProductManager()->save($entity);
 
                 $this->get('session')->getFlashBag()->add('success', 'Product successfully saved');
-                $params = array('id' => $entity->getId(), 'dataLocale' => $dataLocale, 'dataScope' => $dataScope);
+                $params = array(
+                    'id'         => $entity->getId(),
+                    'dataLocale' => $request->query->get('dataLocale'),
+                    'dataScope'  => $request->query->get('dataScope')
+                );
 
                 return $this->redirect($this->generateUrl('pim_product_product_edit', $params));
             }
         }
 
         return array(
-            'form'   => $form->createView(),
-            'groups' => $groups
+            'form'       => $form->createView(),
+            'groups'     => $groups,
+            'dataLocale' => $request->query->get('dataLocale', 'en_US'),
+            'dataScope'  => $request->query->get('dataScope')
         );
     }
 

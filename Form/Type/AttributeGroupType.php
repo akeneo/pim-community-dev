@@ -36,7 +36,7 @@ class AttributeGroupType extends AbstractType
             )
         );
 
-        $builder->add('sort_order', 'integer');
+        $builder->add('sort_order', 'hidden');
     }
 
     /**

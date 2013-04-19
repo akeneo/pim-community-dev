@@ -3,126 +3,18 @@
 {% set title = 'Products overview'|trans %}
 {% block title %}{{ title }} - {{ parent() }}{% endblock %}
 
-{% block content %}
-
-    {% set route_params = app.request.attributes.get('_route_params') %}
-    {% if route_params == "" %}
-        {% set route_params = [] %}
-        
-        {% set dataLocale = 'en_US' %}
-        {% set dataScope = 'ecommerce' %}
-        
-    {% else %}
-    
-        {% set dataLocale = route_params['dataLocale'] %}
-        {% if dataLocale is null %}
-            {% set dataLocale = 'en_US' %}
-        {% endif %}
-
-        {% set dataScope = route_params['dataScope'] %}
-        {% if dataScope is null %}
-            {% set dataScope = 'ecommerce' %}
-        {% endif %}
-    {% endif %}
-    
-    <h1>{{ title }} 
-        <a class="btn btn-primary pull-right" style="margin-left:10px;" href="{{ path('pim_product_product_create', {'dataLocale': dataLocale, 'dataScope': dataScope}) }}">New product</a> 
-        <a class="btn btn-primary pull-right" href="{{ path('pim_product_productattribute_index') }}">Manage attributes</a>
-    </h1>
-    
-    <br/>
-    <p>{{ "Choose data locale : " | trans }}
-    {% for locale in ['en_US', 'fr_FR', 'de_DE'] %}
-        <a class="btn btn-small btn-primary {% if dataLocale == locale %} disabled {% endif %}"
-           href="{{ path(app.request.attributes.get('_route'), route_params | merge({'dataLocale': locale})) }}">{{ locale | trans }}</a>
-    {% endfor %}
-    </p>
-    <p>{{ "Choose data scope : " | trans }}
-    {% for scope in ['ecommerce', 'mobile'] %}
-        <a class="btn btn-small btn-primary {% if dataScope == scope %} disabled {% endif %}"
-           href="{{ path(app.request.attributes.get('_route'), route_params | merge({'dataLocale': dataLocale, 'dataScope': scope})) }}">{{ scope | trans }}</a>
-    {% endfor %}
-    </p>
-    <hr/>
-
-    <p>Nb results : {{ products|length }}</p>
-
-    <table class="table table-bordered table-striped table-condensed">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Sku</th>
-
-            {% if 'name' in attributes %}
-                <th>Name</th>
-            {% endif %}
-
-            {% if 'shortDescription' in attributes %}
-                <th>Description</th>
-            {% endif %}
-
-            {% if 'size' in attributes %}
-                <th>Size</th>
-            {% endif %}
-
-            {% if 'color' in attributes %}
-               <th>Color</th>
-            {% endif %}
-
-            {% if 'price' in attributes %}
-               <th>Price</th>
-            {% endif %}
-            
-            <th>Edit</th>
-            <th>Delete</th>
-
-        </tr>
-        </thead>
-        <tbody>
-
-        {% for product in products %}
-        <tr>
-            <!-- fields -->
-            <td>{{ product.id }}</td>
-            <td>
-                <a href="{{ path('pim_product_product_edit', { id: product.id, 'dataLocale': dataLocale, 'dataScope': dataScope  }) }}">
-                    {{ product.sku }}
-                </a>
-            </td>
-
-            <!-- attributes -->
-            {% if 'name' in attributes %}
-                <td>
-                    <a href="{{ path('pim_product_product_edit', { id: product.id, 'dataLocale': dataLocale, 'dataScope': dataScope  }) }}">
-                        {{ product.name }}
-                    </a>
-                </td>
-            {% endif %}
-
-            {% if 'shortDescription' in attributes %}
-                <td>{{ product.shortDescription }}</td>
-            {% endif %}
-
-            {% if 'size' in attributes %}
-                <td>TODO: to check</td>
-            {% endif %}
-
-            {% if 'color' in attributes %}
-                <td>{{ product.color }}</td>
-            {% endif %}
-            
-            {% if 'price' in attributes %}
-                <td>{{product.price}}</td>
-            {% endif %}
-
-            <td><a href="{{ path('pim_product_product_edit', { id: product.id, 'dataLocale': dataLocale, 'dataScope': dataScope  }) }}"><i class="icon-edit"></i></a></td>
-            <td><a href="{{ path('pim_product_product_remove', { id: product.id, 'dataLocale': dataLocale, 'dataScope': dataScope  }) }}"><i class="icon-remove"></i></a></td>
-         </tr>
-         {% endfor %}
-
-        </tbody>
-    </table>
-
-    <hr />
-
+{% block head_script %}
+    {{ parent() }}
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagrid': datagrid, 'selector': '#backgrid'} %}
+    {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
 {% endblock %}
+
+{% block content %}
+    <h1>{{ title }}
+        <a class="btn btn-primary pull-right" style="margin-left:10px;"
+            href="{{ path('pim_product_product_create') }}">{{ 'New product'|trans }}</a>
+    </h1>
+
+    <div id="backgrid"></div>
+{% endblock %}
+
