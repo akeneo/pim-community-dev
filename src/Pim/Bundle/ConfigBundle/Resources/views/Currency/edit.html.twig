@@ -12,7 +12,7 @@
         <div class="form-row">
             <h3 class="pull-left">{{ title|trans }}</h3>
             <button class="btn btn-primary pull-right" type="submit">{{ 'Save'|trans }}</button>
-            <a class="btn btn-primary pull-right" href="{{ path('pim_config_currency_index') }}">
+            <a class="pull-right return" href="{{ path('pim_config_currency_index') }}">
                 {{ "Back to list" | trans }}
             </a>
         </div>
@@ -32,7 +32,6 @@
         {{ form_row(form.activated) }}
         
         {{ form_row(form._token) }}
-
     </div>
 </form>
 {% endblock %}
