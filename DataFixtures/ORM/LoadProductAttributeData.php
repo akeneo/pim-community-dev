@@ -63,7 +63,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute name
         $attributeCode = 'name';
-        $productAttribute = $this->getProductManager()->createAttributeExtended(new TextType());
+        $productAttribute = $this->getProductManager()->createAttribute(new TextType());
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('Name');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
@@ -76,7 +76,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute price
         $attributeCode = 'price';
-        $productAttribute = $this->getProductManager()->createAttributeExtended(new MoneyType());
+        $productAttribute = $this->getProductManager()->createAttribute(new MoneyType());
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('Price');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
@@ -88,7 +88,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute short description
         $attributeCode = 'shortDescription';
-        $productAttribute = $this->getProductManager()->createAttributeExtended(new TextAreaType());
+        $productAttribute = $this->getProductManager()->createAttribute(new TextAreaType());
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('Short Description');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
@@ -102,7 +102,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute short description
         $attributeCode = 'longDescription';
-        $productAttribute = $this->getProductManager()->createAttributeExtended(new TextAreaType());
+        $productAttribute = $this->getProductManager()->createAttribute(new TextAreaType());
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('Long Description');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
@@ -116,7 +116,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute relaease date
         $attributeCode = 'releaseDate';
-        $productAttribute = $this->getProductManager()->createAttributeExtended(new DateType());
+        $productAttribute = $this->getProductManager()->createAttribute(new DateType());
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('Release date');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
@@ -128,7 +128,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute size
         $attributeCode = 'size';
-        $productAttribute = $this->getProductManager()->createAttributeExtended(new OptionSimpleSelectType());
+        $productAttribute = $this->getProductManager()->createAttribute(new OptionSimpleSelectType());
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('Size');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
@@ -149,7 +149,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute weight
         $attributeCode = 'weight';
-        $productAttribute = $this->getProductManager()->createAttributeExtended(new MetricType());
+        $productAttribute = $this->getProductManager()->createAttribute(new MetricType());
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('Weight');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
@@ -161,7 +161,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute color and translated options
         $attributeCode = 'color';
-        $productAttribute = $this->getProductManager()->createAttributeExtended(new OptionMultiSelectType());
+        $productAttribute = $this->getProductManager()->createAttribute(new OptionMultiSelectType());
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('Color');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
@@ -192,7 +192,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute manufacturer
         $attributeCode = 'manufacturer';
-        $productAttribute = $this->getProductManager()->createAttributeExtended(new OptionSimpleSelectType());
+        $productAttribute = $this->getProductManager()->createAttribute(new OptionSimpleSelectType());
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('Manufacturer');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
@@ -213,7 +213,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute file upload
         $attributeCode = 'fileUpload';
-        $productAttribute = $this->getProductManager()->createAttributeExtended(new FileType());
+        $productAttribute = $this->getProductManager()->createAttribute(new FileType());
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('File upload');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
@@ -225,7 +225,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute image upload
         $attributeCode = 'imageUpload';
-        $productAttribute = $this->getProductManager()->createAttributeExtended(new ImageType());
+        $productAttribute = $this->getProductManager()->createAttribute(new ImageType());
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('Image upload');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
