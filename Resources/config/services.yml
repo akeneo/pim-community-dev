@@ -18,8 +18,6 @@ parameters:
     pim_product.segment_class:        Pim\Bundle\ProductBundle\Entity\ProductSegment
     pim_product.segment_manager_class: Pim\Bundle\ProductBundle\Model\ProductSegmentManager
 
-    pim_product.productattribute_grid_manager_class:  Pim\Bundle\ProductBundle\Datagrid\AttributeDatagridManager
-
 services:
     # Managers
     product_manager:
@@ -31,17 +29,6 @@ services:
     pim_product.classification_tree_manager:
         class:     %pim_product.segment_manager_class%
         arguments: [@doctrine.orm.entity_manager, %pim_product.segment_class%]
-
-    pim_product.productattribute_grid_manager:
-        class: "%pim_product.productattribute_grid_manager_class%"
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: attributes
-              entity_hint: attributes
-              route_name: pim_product_productattribute_index
-        calls:
-            - [ setRouter, [ @router ] ]
-            - [ setBaseActionUrl, ["pim_product_productattribute"] ]
 
     # Form
     pim_product.form.attribute:
