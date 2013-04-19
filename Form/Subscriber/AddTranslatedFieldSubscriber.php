@@ -227,17 +227,20 @@ class AddTranslatedFieldSubscriber implements EventSubscriberInterface
 
         foreach ($translations as $binded) {
             $content = $form->get($binded['fieldName'])->getData();
-            $translation = $binded['translation'];
 
-            // set the submitted content
-            $translation->setContent($content);
-            $translation->setForeignKey($entity);
+            if ($content !== null) {
+                $translation = $binded['translation'];
 
-            if ($translation->getLocale() === 'default') {
-                $methodName = 'set'. ucfirst($this->options['field']);
-                $entity->$methodName($translation->getContent());
+                // set the submitted content
+                $translation->setContent($content);
+                $translation->setForeignKey($entity);
+
+                if ($translation->getLocale() === 'default') {
+                    $methodName = 'set'. ucfirst($this->options['field']);
+                    $entity->$methodName($translation->getContent());
+                }
+                $entity->addTranslation($translation);
             }
-            $entity->addTranslation($translation);
         }
     }
 }
