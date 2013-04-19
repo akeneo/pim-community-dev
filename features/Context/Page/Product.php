@@ -43,9 +43,13 @@ class Product extends Page
         $this->pressButton('Save');
     }
 
+    public function setFieldValue($field, $value)
+    {
+        return $this->findField($field)->setValue($value);
+    }
+
     public function getFieldValue($field)
     {
-
         return $this->findField($field)->getValue();
     }
 

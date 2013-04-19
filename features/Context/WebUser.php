@@ -335,7 +335,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      * @Then /^the product (.*) should be "([^"]*)"$/
      */
     public function theProductFieldValueShouldBe($fieldName, $expected = '')
-   {
+    {
         $actual = $this->getPage('Product')->getFieldValue($fieldName);
 
         if ($expected !== $actual) {
@@ -344,6 +344,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 $fieldName, $expected, $actual
             ));
         }
+    }
+
+    /**
+     * @When /^I change the (.*) to "([^"]*)"$/
+     */
+    public function iChangeTheNameTo($fieldName, $value)
+    {
+        $this->getPage('Product')->setFieldValue($fieldName, $value);
     }
 
     private function listToArray($list)

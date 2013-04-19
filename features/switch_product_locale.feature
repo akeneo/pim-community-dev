@@ -26,3 +26,16 @@ Feature: Switch product locale
     Given I am on the "Computer" product page
     When I switch the locale to "french"
     Then the product screen should be empty
+
+  Scenario: Successfully edit a translated value in the default locale
+    Given I am on the "Computer" product page
+    When I change the name to "laptop"
+    And I save the product
+    Then the product name should be "laptop"
+
+  Scenario: Sucessfully edit a translated value in another locale
+    Given I am on the "Computer" product page
+    And I switch the locale to "french"
+    When I change the name to "ordinateur portable"
+    And I save the product
+    Then the product name should be "ordinateur portable"
