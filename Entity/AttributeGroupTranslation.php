@@ -3,12 +3,10 @@ namespace Pim\Bundle\ProductBundle\Entity;
 
 use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;
 
-use Gedmo\Mapping\Annotation as Gedmo;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Flexible product segment translation entity
+ * Attribute group translation entity
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
@@ -16,17 +14,17 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity()
  * @ORM\Table(
- *     name="pim_product_segment_translations",
+ *     name="pim_attribute_group_translations",
  *     indexes={
  *         @ORM\Index(
- *             name="pim_product_segment_translations_idx",
+ *             name="pim_attribute_group_translations_idx",
  *             columns={"locale", "object_class", "field", "foreign_key"}
  *         )
  *     }
  * )
  *
  */
-class ProductSegmentTranslation extends AbstractTranslation
+class AttributeGroupTranslation extends AbstractTranslation
 {
     /**
      * All required columns are mapped through inherited superclass
@@ -35,7 +33,7 @@ class ProductSegmentTranslation extends AbstractTranslation
     /**
      * Change foreign key to add constraint and work with basic entity
      *
-     * @ORM\ManyToOne(targetEntity="ProductSegment", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity="AttributeGroup", inversedBy="translations")
      * @ORM\JoinColumn(name="foreign_key", referencedColumnName="id")
      */
     protected $foreignKey;

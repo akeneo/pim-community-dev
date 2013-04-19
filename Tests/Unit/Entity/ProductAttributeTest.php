@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Entity;
 
+use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
+
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Pim\Bundle\ConfigBundle\Entity\Language;
@@ -149,7 +151,10 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
         // Change value and assert new
         $newLanguage = new Language();
         $productAttribute->addAvailableLanguage($newLanguage);
-        $this->assertInstanceOf('Pim\Bundle\ConfigBundle\Entity\Language', $productAttribute->getAvailableLanguages()->first());
+        $this->assertInstanceOf(
+            'Pim\Bundle\ConfigBundle\Entity\Language',
+            $productAttribute->getAvailableLanguages()->first()
+        );
         $this->assertCount(1, $productAttribute->getAvailableLanguages());
 
         $productAttribute->removeAvailableLanguage($newLanguage);
@@ -395,5 +400,48 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
         $extensions = array('jpg', 'png', 'gif');
         $productAttribute->setAllowedFileExtensions($extensions);
         $this->assertEquals($extensions, $productAttribute->getAllowedFileExtensions());
+    }
+
+    /**
+     * Test getter/setter for translations property
+     */
+    public function testTranslations()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertCount(0, $productAttribute->getTranslations());
+
+        // Change value and assert new
+        $newTranslation = new ProductAttributeTranslation();
+        $this->assertEntity($productAttribute->addTranslation($newTranslation));
+        $this->assertCount(1, $productAttribute->getTranslations());
+        $this->assertInstanceOf(
+            'Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation',
+            $productAttribute->getTranslations()->first()
+        );
+
+        $productAttribute->addTranslation($newTranslation);
+        $this->assertCount(1, $productAttribute->getTranslations());
+
+        $this->assertEntity($productAttribute->removeTranslation($newTranslation));
+        $this->assertCount(0, $productAttribute->getTranslations());
+    }
+
+    /**
+     * Test related method
+     * Just a call to prevent fatal errors (no way to verify value is set)
+     */
+    public function testSetTranslatableLocale()
+    {
+        $productAttribute = new ProductAttribute();
+        $productAttribute->setTranslatableLocale('en_US');
+    }
+
+    /**
+     * Assert entity
+     * @param Pim\Bundle\ProductBundle\Entity\ProductAttribute $entity
+     */
+    protected function assertEntity($entity)
+    {
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductAttribute', $entity);
     }
 }
