@@ -35,7 +35,7 @@ abstract class ControllerTest extends WebTestCase
      * List of locales to test
      * @staticvar multitype:string
      */
-    protected static $locales = array('en');
+    protected static $locales = array('en_US');
 
     /**
      * @var \Symfony\Bundle\FrameworkBundle\Client

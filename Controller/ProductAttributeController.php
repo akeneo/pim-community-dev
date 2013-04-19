@@ -153,30 +153,4 @@ class ProductAttributeController extends Controller
         return $this->redirect($this->generateUrl('pim_product_productattribute_index'));
     }
 
-    /**
-     * List attributes group by AttributeGroup asked
-     * - groupId = 0 => get all product attributes
-     * - groupId > 0 => get product attributes by group id
-     * - groupId = null => get unclassified product attributes
-     *
-     * @param integer $groupId
-     *
-     * @Route("/list/{groupId}", requirements={"groupId"="\d+"}, defaults={"groupId"=null})
-     * @Template("PimProductBundle:ProductAttribute:index.html.twig")
-     *
-     * @return multitype:ProductAttribute
-     */
-    public function listAction($groupId = null)
-    {
-        $criterias = array();
-        if ($groupId > 0) {
-            $criterias = array('group' => $groupId);
-        } elseif ($groupId === null) {
-            $criterias = array('group' => null);
-        }
-
-        return array(
-            'attributes' => $this->getProductManager()->getAttributeExtendedRepository()->findBy($criterias)
-        );
-    }
 }
