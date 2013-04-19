@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ConfigBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Pim\Bundle\ConfigBundle\Entity\Currency;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -23,16 +25,44 @@ class CurrencyController extends Controller
     /**
      * List currencies
      *
-     * @return multitype
+     * @param Request $request
      *
-     * @Route("/index")
+     * @Route(
+     *     "/index.{_format}",
+     *     requirements={"_format"="html|json"},
+     *     defaults={"_format" = "html"}
+     * )
      * @Template()
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $currencies = $this->getCurrencyRepository()->findAll();
+        /** @var $queryBuilder QueryBuilder */
+        $em = $this->getDoctrine()->getManager();
+        $queryBuilder = $em->createQueryBuilder();
+        $queryBuilder
+            ->select('c.id', 'c.code', 'c.activated')
+            ->from('PimConfigBundle:Currency', 'c');
 
-        return array('currencies' => $currencies);
+        /** @var $queryFactory QueryFactory */
+        $queryFactory = $this->get('pim_config.datagrid.manager.currency.default_query_factory');
+        $queryFactory->setQueryBuilder($queryBuilder);
+
+        /** @var $datagridManager LocaleDatagridManager */
+        $datagridManager = $this->get('pim_config.datagrid.manager.currency');
+        $datagrid = $datagridManager->getDatagrid();
+
+        $view = ('json' === $request->getRequestFormat()) ?
+            'OroGridBundle:Datagrid:list.json.php' : 'PimConfigBundle:Currency:index.html.twig';
+
+        return $this->render(
+            $view,
+            array(
+                'datagrid' => $datagrid,
+                'form'     => $datagrid->getForm()->createView()
+            )
+        );
     }
 
     /**

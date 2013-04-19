@@ -1,17 +1,17 @@
 parameters:
-    currency_entity_class:  Pim\Bundle\ConfigBundle\Entity\Currency
-    currency_handler_class: Pim\Bundle\ConfigBundle\Form\Handler\CurrencyHandler
-    currency_type_class:    Pim\Bundle\ConfigBundle\Form\Type\CurrencyType
+    currency_entity_class:       Pim\Bundle\ConfigBundle\Entity\Currency
+    currency_handler_class:      Pim\Bundle\ConfigBundle\Form\Handler\CurrencyHandler
+    currency_type_class:         Pim\Bundle\ConfigBundle\Form\Type\CurrencyType
     currency_grid_manager_class: Pim\Bundle\ConfigBundle\Datagrid\CurrencyDatagridManager
     
-    language_entity_class:  Pim\Bundle\ConfigBundle\Entity\Language
-    language_handler_class: Pim\Bundle\ConfigBundle\Form\Handler\LanguageHandler
-    language_type_class:    Pim\Bundle\ConfigBundle\Form\Type\LanguageType
-    locale_grid_manager_class: Pim\Bundle\ConfigBundle\Datagrid\LocaleDatagridManager
+    language_entity_class:       Pim\Bundle\ConfigBundle\Entity\Language
+    language_handler_class:      Pim\Bundle\ConfigBundle\Form\Handler\LanguageHandler
+    language_type_class:         Pim\Bundle\ConfigBundle\Form\Type\LanguageType
+    locale_grid_manager_class:   Pim\Bundle\ConfigBundle\Datagrid\LocaleDatagridManager
     
-    channel_entity_class:   Pim\Bundle\ConfigBundle\Entity\Channel
-    channel_handler_class:  Pim\Bundle\ConfigBundle\Form\Handler\ChannelHandler
-    channel_type_class:     Pim\Bundle\ConfigBundle\Form\Type\ChannelType
+    channel_entity_class:        Pim\Bundle\ConfigBundle\Entity\Channel
+    channel_handler_class:       Pim\Bundle\ConfigBundle\Form\Handler\ChannelHandler
+    channel_type_class:          Pim\Bundle\ConfigBundle\Form\Type\ChannelType
 
 services:
     # DataGrid
@@ -31,7 +31,11 @@ services:
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: currencies
+              entity_hint: currencies
               route_name: pim_config_currency_index
+        calls:
+            - [ setRouter, [ @router ] ]
+            - [ setBaseActionUrl, ["pim_config_currency"] ]
     
     # Managers
     pim_config.manager.locale:

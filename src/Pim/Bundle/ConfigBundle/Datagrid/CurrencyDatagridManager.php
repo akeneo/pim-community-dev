@@ -63,12 +63,12 @@ class CurrencyDatagridManager extends DatagridManager
     {
         return array(
             new UrlProperty('edit_link', $this->router, $this->baseActionUrl.'_edit', array('id')),
-            new UrlProperty('delete_link', $this->router, $this->baseActionUrl.'_remove', array('id')),
+            new UrlProperty('disable_link', $this->router, $this->baseActionUrl.'_disable', array('id'))
         );
     }
 
     /**
-     * @return FieldDescriptionCollection
+     * {@inheritdoc}
      */
     protected function getFieldDescriptionCollection()
     {
@@ -108,44 +108,12 @@ class CurrencyDatagridManager extends DatagridManager
             $this->fieldsCollection->add($field);
 
             $field = new FieldDescription();
-            $field->setName('attributeType');
-            $field->setOptions(
-                array(
-                    'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                    'label'       => 'Type',
-                    'field_name'  => 'attributeType',
-                    'filter_type' => FilterInterface::TYPE_STRING,
-                    'required'    => false,
-                    'sortable'    => true,
-                    'filterable'  => true,
-                    'show_filter' => true,
-                )
-            );
-            $this->fieldsCollection->add($field);
-
-            $field = new FieldDescription();
-            $field->setName('scopable');
+            $field->setName('activated');
             $field->setOptions(
                 array(
                     'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                    'label'       => 'Scopable',
-                    'field_name'  => 'scopable',
-                    'filter_type' => FilterInterface::TYPE_NUMBER,
-                    'required'    => false,
-                    'sortable'    => true,
-                    'filterable'  => true,
-                    'show_filter' => true,
-                )
-            );
-            $this->fieldsCollection->add($field);
-
-            $field = new FieldDescription();
-            $field->setName('translatable');
-            $field->setOptions(
-                array(
-                    'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                    'label'       => 'Translatable',
-                    'field_name'  => 'translatable',
+                    'label'       => 'Activated',
+                    'field_name'  => 'activated',
                     'filter_type' => FilterInterface::TYPE_NUMBER,
                     'required'    => false,
                     'sortable'    => true,
@@ -212,21 +180,22 @@ class CurrencyDatagridManager extends DatagridManager
                 'label'=> 'Edit',
                 'icon' => 'edit',
                 'link' => 'edit_link',
-                'backUrl' => true,
+                'backUrl' => false
             )
         );
 
-        $deleteAction = array(
-            'name'         => 'delete',
+        $disableAction = array(
+            'name'         => 'disable',
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'=> 'Delete',
-                'icon' => 'trash',
-                'link' => 'delete_link',
+                'label'   => 'Disable',
+                'icon'    => 'trash',
+                'link'    => 'disable_link',
+                'backUrl' => false
             )
         );
 
-        return array($editAction, $deleteAction);
+        return array($editAction, $disableAction);
     }
 }
