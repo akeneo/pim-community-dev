@@ -98,6 +98,7 @@ class AttributeGroup implements TimestampableInterface, Translatable
     {
         $this->attributes   = new ArrayCollection();
         $this->translations = new ArrayCollection();
+        $this->sortOrder = 0;
     }
 
     /**

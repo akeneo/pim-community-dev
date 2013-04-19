@@ -6,6 +6,8 @@ use Pim\Bundle\ProductBundle\Form\Type\AttributeGroupType;
 
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -75,6 +77,41 @@ class AttributeGroupController extends Controller
         return array(
             'form' => $this->get('pim_product.form.attribute_group')->createView()
         );
+    }
+
+    /**
+     * Edit AttributeGroup sort order
+     *
+     * @param Request $request
+     *
+     * @Route("/sort")
+     *
+     * @return Response
+     */
+    public function sortAction(Request $request)
+    {
+        if ($request->getMethod() !== 'POST') {
+            return $this->redirect($this->generateUrl('pim_product_attributegroup_index'));
+        }
+
+        $data = $request->request->all();
+
+        $em = $this->getEntityManager();
+
+        if (!empty($data)) {
+            foreach ($data as $id => $sort) {
+                $group = $this->getAttributeGroupRepository()->find((int) $id);
+                if ($group) {
+                    $group->setSortOrder((int) $sort);
+                    $em->persist($group);
+                }
+            }
+            $em->flush();
+
+            return new Response(1);
+        }
+
+        return new Response(0);
     }
 
     /**
