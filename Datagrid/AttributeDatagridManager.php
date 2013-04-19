@@ -45,25 +45,14 @@ class AttributeDatagridManager extends DatagridManager
     }
 
     /**
-     * get base action url
-     * @param string $url
-     *
-     * @return string
-     */
-    public function setBaseActionUrl($url)
-    {
-        $this->baseActionUrl = $url;
-    }
-
-    /**
      * get properties
      * @return array
      */
     protected function getProperties()
     {
         return array(
-            new UrlProperty('edit_link', $this->router, $this->baseActionUrl.'_edit', array('id')),
-            new UrlProperty('delete_link', $this->router, $this->baseActionUrl.'_remove', array('id')),
+            new UrlProperty('edit_link', $this->router, 'pim_product_productattribute_edit', array('id')),
+            new UrlProperty('delete_link', $this->router, 'pim_product_productattribute_remove', array('id')),
         );
     }
 
@@ -209,10 +198,11 @@ class AttributeDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'=> 'Edit',
-                'icon' => 'edit',
-                'link' => 'edit_link',
+                'label'   => 'Edit',
+                'icon'    => 'edit',
+                'link'    => 'edit_link',
                 'backUrl' => true,
+                'runOnRowClick' => true
             )
         );
 
