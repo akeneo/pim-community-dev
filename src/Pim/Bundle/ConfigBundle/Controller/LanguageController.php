@@ -38,8 +38,7 @@ class LanguageController extends Controller
     public function indexAction(Request $request)
     {
         /** @var $queryBuilder QueryBuilder */
-        $em = $this->getDoctrine()->getManager();
-        $queryBuilder = $em->createQueryBuilder();
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder
             ->select('l.id', 'l.code', 'l.fallback', 'l.activated')
             ->from('PimConfigBundle:Language', 'l');

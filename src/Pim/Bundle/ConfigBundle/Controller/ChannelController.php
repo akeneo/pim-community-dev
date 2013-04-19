@@ -39,8 +39,7 @@ class ChannelController extends Controller
     public function indexAction(Request $request)
     {
         /** @var $queryBuilder QueryBuilder */
-        $em = $this->getDoctrine()->getManager();
-        $queryBuilder = $em->createQueryBuilder();
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder
             ->select('c.id', 'c.code', 'c.name')
             ->from('PimConfigBundle:Channel', 'c');
