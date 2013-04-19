@@ -54,18 +54,9 @@
         navigation.Item.prototype.urlRoot = {{ path('oro_api_get_navigationitems', {'type': ''})|json_encode|raw }};
     </script>
 
-    {# TODO: remove after functionality realisation #}
-    <style type="text/css">
-        #main {
-            min-height: 800px;
-        }
-    </style>
-
     {# BEGIN CUSTOM PIM TO REFACTOR #}
     <script type="text/javascript" src="{{ asset('bundles/pimui/js/bootstrap-fileupload.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('bundles/pimui/css/bootstrap-fileupload.css') }}" media="all" />
-    <script type="text/javascript" src="{{ asset('bundles/pimui/js/bootstrapSwitch.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('bundles/pimui/css/bootstrapSwitch.css') }}" media="all" />
     <script type="text/javascript" src="{{ asset('bundles/pimui/js/bootstrap-datetimepicker.min.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('bundles/pimui/css/bootstrap-datetimepicker.min.css') }}" media="all" />
     <link rel="stylesheet" href="{{ asset('bundles/pimui/css/select2.css') }}">
