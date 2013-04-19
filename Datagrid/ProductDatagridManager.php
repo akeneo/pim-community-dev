@@ -174,12 +174,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
                     $field->setOption('multiple', true);
                 }
 
-                // until we support these backend types
-                if ($attribute->getCode() === 'price' or $attribute->getCode() === 'size') {
-                    $field->setOption('sortable', false);
-                    $field->setOption('filterable', false);
-                }
-
                 $this->fieldsCollection->add($field);
                 }
             }
@@ -238,10 +232,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'=> 'Edit',
-                'icon' => 'edit',
-                'link' => 'edit_link',
+                'label'   => 'Edit',
+                'icon'    => 'edit',
+                'link'    => 'edit_link',
                 'backUrl' => true,
+                'runOnRowClick' => true
             )
         );
 

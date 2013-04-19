@@ -18,8 +18,6 @@ parameters:
     pim_product.segment_class:        Pim\Bundle\ProductBundle\Entity\ProductSegment
     pim_product.segment_manager_class: Pim\Bundle\ProductBundle\Model\ProductSegmentManager
 
-    pim_product_grid_manager_class:    Pim\Bundle\ProductBundle\Datagrid\ProductDatagridManager
-
 services:
     # Managers
     product_manager:
@@ -96,17 +94,4 @@ services:
     pim_product.attribute_service:
         class: Pim\Bundle\ProductBundle\Service\AttributeService
         arguments: [%pim_product.attributes_config%]
-
-    # Product grid manager
-    pim_product_grid_manager:
-        class: "%pim_product_grid_manager_class%"
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: products
-              entity_name: Pim\Bundle\ProductBundle\Entity\Product
-              entity_hint: products
-              flexible: true
-              route_name: pim_product_product_list
-        calls:
-            - [ setRouter, [ @router ] ]
 

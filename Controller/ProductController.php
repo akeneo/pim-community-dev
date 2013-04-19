@@ -43,52 +43,25 @@ class ProductController extends Controller
     }
 
     /**
-     * Get attribute codes
-     * @return array
-     */
-    protected function getAttributeCodesToDisplay()
-    {
-        return array('name', 'shortDescription', 'size', 'color', 'price');
-    }
-
-    /**
-     * Index action
-     *
-     * @param string $dataLocale locale
-     * @param string $dataScope  scope
-     *
-     * @Route("/index/{dataLocale}/{dataScope}", defaults={"dataLocale" = null, "dataScope" = null})
-     * @Template()
-     *
-     * @return array
-     */
-    public function indexAction($dataLocale, $dataScope)
-    {
-        $products = $this->getProductManager()->getFlexibleRepository()->findByWithAttributes();
-
-        return array('products' => $products, 'attributes' => $this->getAttributeCodesToDisplay());
-    }
-
-    /**
      * List product attributes
      * @param Request $request
      *
-     * @Route("/list.{_format}",
+     * @Route("/index.{_format}",
      *      requirements={"_format"="html|json"},
      *      defaults={"_format" = "html"}
      * )
      * @return template
      */
-    public function listAction(Request $request)
+    public function indexAction(Request $request)
     {
         /** @var $gridManager ProductDatagridManager */
-        $gridManager = $this->get('pim_product_grid_manager');
+        $gridManager = $this->get('pim_product.product_grid_manager');
         $datagrid = $gridManager->getDatagrid();
 
         if ('json' == $request->getRequestFormat()) {
             $view = 'OroGridBundle:Datagrid:list.json.php';
         } else {
-            $view = 'PimProductBundle:Product:list.html.twig';
+            $view = 'PimProductBundle:Product:index.html.twig';
         }
 
         return $this->render(
