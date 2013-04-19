@@ -1,7 +1,6 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeExtended;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
 use Pim\Bundle\ConfigBundle\Entity\Language;
@@ -22,18 +21,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="pim_product_attribute")
  * @ORM\Entity
  */
-class ProductAttribute extends AbstractEntityAttributeExtended implements Translatable
+class ProductAttribute extends Attribute implements Translatable
 {
-    /**
-     * @var Oro\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute
-     *
-     * @ORM\OneToOne(
-     *     targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Attribute", cascade={"persist", "merge", "remove"}
-     * )
-     * @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")
-     */
-    protected $attribute;
-
     /**
      * @var string $name
      *
