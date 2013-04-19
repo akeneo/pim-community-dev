@@ -159,9 +159,6 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 
             if (($ind % $batchSize) == 0) {
                 $this->getProductManager()->getStorageManager()->flush();
-                // detaches all products and values from doctrine
-                $this->getProductManager()->getStorageManager()->clear('Pim\Bundle\ProductBundle\Entity\Product');
-                $this->getProductManager()->getStorageManager()->clear('Pim\Bundle\ProductBundle\Entity\ProductValue');
             }
         }
 
