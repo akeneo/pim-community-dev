@@ -1,8 +1,4 @@
 {
-    "_readme": [
-        "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
-    ],
     "hash": "261a2e6c44c9996efb2b1a49e389d1c4",
     "packages": [
         {
@@ -911,7 +907,7 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes Schmitt",
+                    "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -2628,12 +2624,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/FlexibleEntityBundle.git",
-                "reference": "aa146fab30347276e1e419c4b8ec07bb7c9cdee2"
+                "reference": "23bfc066f3cac7482aea726c985be54ca8dce083"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/aa146fab30347276e1e419c4b8ec07bb7c9cdee2",
-                "reference": "aa146fab30347276e1e419c4b8ec07bb7c9cdee2",
+                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/23bfc066f3cac7482aea726c985be54ca8dce083",
+                "reference": "23bfc066f3cac7482aea726c985be54ca8dce083",
                 "shasum": ""
             },
             "require": {
@@ -2668,7 +2664,7 @@
                 "source": "https://github.com/laboro/FlexibleEntityBundle/tree/master",
                 "issues": "https://github.com/laboro/FlexibleEntityBundle/issues"
             },
-            "time": "2013-04-18 14:22:02"
+            "time": "2013-04-19 20:20:03"
         },
         {
             "name": "oro/grid-bundle",
@@ -2774,12 +2770,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/NavigationBundle.git",
-                "reference": "3ed9d11e1d4e0a45c8d31e86e70f19d3855f8dbe"
+                "reference": "42e9e5300c560c2af174bcf445db619eee01a57a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/NavigationBundle/zipball/3ed9d11e1d4e0a45c8d31e86e70f19d3855f8dbe",
-                "reference": "3ed9d11e1d4e0a45c8d31e86e70f19d3855f8dbe",
+                "url": "https://api.github.com/repos/laboro/NavigationBundle/zipball/42e9e5300c560c2af174bcf445db619eee01a57a",
+                "reference": "42e9e5300c560c2af174bcf445db619eee01a57a",
                 "shasum": ""
             },
             "require": {
@@ -2826,7 +2822,7 @@
                 "source": "https://github.com/laboro/NavigationBundle/tree/master",
                 "issues": "https://github.com/laboro/NavigationBundle/issues"
             },
-            "time": "2013-04-17 16:08:24"
+            "time": "2013-04-19 10:52:50"
         },
         {
             "name": "oro/search-bundle",
@@ -2985,12 +2981,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/UIBundle.git",
-                "reference": "5edb337c5dc90d0798df61cbd3d4d4c1d4e3aa82"
+                "reference": "5e3c9467d5589a185befab6880e3c3ea09a88ae6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/UIBundle/zipball/5edb337c5dc90d0798df61cbd3d4d4c1d4e3aa82",
-                "reference": "5edb337c5dc90d0798df61cbd3d4d4c1d4e3aa82",
+                "url": "https://api.github.com/repos/laboro/UIBundle/zipball/5e3c9467d5589a185befab6880e3c3ea09a88ae6",
+                "reference": "5e3c9467d5589a185befab6880e3c3ea09a88ae6",
                 "shasum": ""
             },
             "require": {
@@ -3025,7 +3021,7 @@
                 "source": "https://github.com/laboro/UIBundle/tree/master",
                 "issues": "https://github.com/laboro/UIBundle/issues"
             },
-            "time": "2013-04-17 16:25:32"
+            "time": "2013-04-19 14:43:19"
         },
         {
             "name": "oro/user-bundle",
