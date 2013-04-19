@@ -50,7 +50,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $nbProducts = 25;
+        $nbProducts = 250;
         $batchSize = 500;
 
         // get scopes
@@ -188,11 +188,12 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $product->addValue($value);
 
             // date
+            /*
             $value = $this->getProductManager()->createFlexibleValue();
             $value->setAttribute($attDate->getAttribute());
             $value->setData(new \Datetime());
             $product->addValue($value);
-
+            */
             $this->persist($product);
 
             if (($ind % $batchSize) == 0) {
