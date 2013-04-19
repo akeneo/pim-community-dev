@@ -226,12 +226,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ddeboer/data-import.git",
-                "reference": "97f0225eef8ccaa838117f154c6abd13ea2516a0"
+                "reference": "1600a7cfd85bc304ce8fa404e17e7246e2ebf679"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ddeboer/data-import/zipball/97f0225eef8ccaa838117f154c6abd13ea2516a0",
-                "reference": "97f0225eef8ccaa838117f154c6abd13ea2516a0",
+                "url": "https://api.github.com/repos/ddeboer/data-import/zipball/1600a7cfd85bc304ce8fa404e17e7246e2ebf679",
+                "reference": "1600a7cfd85bc304ce8fa404e17e7246e2ebf679",
                 "shasum": ""
             },
             "require": {
@@ -281,7 +281,7 @@
                 "export",
                 "import"
             ],
-            "time": "2013-04-08 19:46:42"
+            "time": "2013-04-18 20:41:06"
         },
         {
             "name": "dflydev/markdown",
@@ -3968,12 +3968,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "8be013d8fb5e0d6410310e9f3f35cca78177a804"
+                "reference": "a8915ff5c8b22dcc3139aac11b9b499c05f156ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/8be013d8fb5e0d6410310e9f3f35cca78177a804",
-                "reference": "8be013d8fb5e0d6410310e9f3f35cca78177a804",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/a8915ff5c8b22dcc3139aac11b9b499c05f156ad",
+                "reference": "a8915ff5c8b22dcc3139aac11b9b499c05f156ad",
                 "shasum": ""
             },
             "require": {
@@ -4048,7 +4048,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2013-04-17 12:11:36"
+            "time": "2013-04-19 06:18:27"
         },
         {
             "name": "twig/extensions",
