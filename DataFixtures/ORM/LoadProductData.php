@@ -94,7 +94,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 
         // get attribute manufacturer options
         $optManufact = $this->getProductManager()->getAttributeOptionRepository()->findBy(
-            array('attribute' => $attManufact->getAttribute())
+            array('attribute' => $attManufact)
         );
         $manufacturers = array();
         foreach ($optManufact as $option) {
@@ -147,7 +147,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
                     $value = $this->getProductManager()->createFlexibleValue();
                     $value->setLocale($locale);
                     $value->setScope($scope);
-                    $value->setAttribute($attLongDesc->getAttribute());
+                    $value->setAttribute($attLongDesc);
                     $product->addValue($value);
                     $value->setData('long description ('.$locale.') ('.$scope.') '.$ind);
                 }
@@ -162,7 +162,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 
             // manufacturer
             $value = $this->getProductManager()->createFlexibleValue();
-            $value->setAttribute($attManufact->getAttribute());
+            $value->setAttribute($attManufact);
             $firstManOpt = $manufacturers[rand(0, count($manufacturers)-1)];
             $value->setData($firstManOpt);
             $product->addValue($value);
