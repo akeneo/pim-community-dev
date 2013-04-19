@@ -9,8 +9,7 @@
 
 {% block pim_translatable_field_row %}
     {{ form_errors(form) }}
-    {{ form_label(form) }}
-    <table id="sortable_options" class="table table-striped table-hover table-condensed options">
+    <table class="table table-condensed">
         <thead>
             <tr>
                 {% for translation in form %}
@@ -62,6 +61,13 @@
 
 {% block form_row %}
 {% spaceless %}
+{% if compound %}
+    <div>
+        {{ form_label(form) }}
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
+    </div>
+{% else %}
     <div class="control-group{% if errors|length > 0 %} error{%  endif %}{% if attr.class is defined %} {{ attr.class }}{% endif %}">
         {{ form_label(form, null, { label_attr: label_attr|merge({ class: 'control-label' })}) }}
         <div class="controls">
@@ -69,6 +75,7 @@
             {{ form_widget(form) }}
         </div>
     </div>
+{% endif %}
 {% endspaceless %}
 {% endblock form_row %}
 

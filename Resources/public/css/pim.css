@@ -174,3 +174,23 @@ a.accordion-toggle {
 #attributegroups-sortable li.active {
     background-color: #5A8CE6;
 }
+
+#form-tab tbody td {
+    border: none;
+}
+
+th label {
+    text-align: center;
+}
+
+.table-condensed td {
+    text-align: center;
+}
+
+form .table-condensed input.span4 {
+    width: 100%;
+}
+
+.has-switch > div.switch-off, .has-switch > div.switch-on {
+    height: auto;
+}
