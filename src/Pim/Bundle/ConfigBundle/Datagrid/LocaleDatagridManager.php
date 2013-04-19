@@ -31,11 +31,6 @@ class LocaleDatagridManager extends DatagridManager
     protected $router;
 
     /**
-     * @var string
-     */
-    protected $baseActionUrl;
-
-    /**
      * set router
      * @param Router $router
      */
@@ -45,25 +40,14 @@ class LocaleDatagridManager extends DatagridManager
     }
 
     /**
-     * get base action url
-     * @param string $url
-     *
-     * @return string
-     */
-    public function setBaseActionUrl($url)
-    {
-        $this->baseActionUrl = $url;
-    }
-
-    /**
      * get properties
      * @return array
      */
     protected function getProperties()
     {
         return array(
-            new UrlProperty('edit_link', $this->router, $this->baseActionUrl.'_edit', array('id')),
-            new UrlProperty('disable_link', $this->router, $this->baseActionUrl.'_disable', array('id'))
+            new UrlProperty('edit_link', $this->router, 'pim_config_language_edit', array('id')),
+            new UrlProperty('disable_link', $this->router, 'pim_config_language_disable', array('id'))
         );
     }
 

@@ -24,7 +24,6 @@ services:
               route_name: pim_config_language_index
         calls:
             - [ setRouter, [ @router ] ]
-            - [ setBaseActionUrl, ["pim_config_language"] ]
             
     pim_config.datagrid.manager.currency:
         class: %currency_grid_manager_class%
@@ -35,7 +34,6 @@ services:
               route_name: pim_config_currency_index
         calls:
             - [ setRouter, [ @router ] ]
-            - [ setBaseActionUrl, ["pim_config_currency"] ]
     
     # Managers
     pim_config.manager.locale:
