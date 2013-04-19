@@ -140,6 +140,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             );
             $this->fieldsCollection->add($fieldSku);
 
+            // TODO : until we'll have related backend type in grid bundle
             $excludedBackend = array(
                 AbstractAttributeType::BACKEND_TYPE_MEDIA,
                 AbstractAttributeType::BACKEND_TYPE_METRIC,
@@ -149,8 +150,13 @@ class ProductDatagridManager extends FlexibleDatagridManager
             foreach ($this->getFlexibleAttributes() as $attribute) {
 
                 $backendType   = $attribute->getBackendType();
+                if (in_array($backendType, $excludedBackend)) {
+                    continue;
+                }
 
-                if (!in_array($backendType, $excludedBackend)) {
+                if (!$attribute->getUseableAsGridColumn()) {
+                    continue;
+                }
 
                 $attributeType = $this->convertFlexibleTypeToFieldType($backendType);
                 $filterType    = $this->convertFlexibleTypeToFilterType($backendType);
@@ -174,8 +180,12 @@ class ProductDatagridManager extends FlexibleDatagridManager
                     $field->setOption('multiple', true);
                 }
 
-                $this->fieldsCollection->add($field);
+                if (!$attribute->getUseableAsGridFilter()) {
+                    $field->setOption('filter_type', false);
+                    $field->setOption('filterable', false);
                 }
+
+                $this->fieldsCollection->add($field);
             }
         }
 
