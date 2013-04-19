@@ -63,6 +63,7 @@ class LocaleDatagridManager extends DatagridManager
     {
         return array(
             new UrlProperty('edit_link', $this->router, $this->baseActionUrl.'_edit', array('id')),
+            new UrlProperty('disable_link', $this->router, $this->baseActionUrl.'_disable', array('id'))
         );
     }
 
@@ -195,10 +196,22 @@ class LocaleDatagridManager extends DatagridManager
                 'label'=> 'Edit',
                 'icon' => 'edit',
                 'link' => 'edit_link',
-                'backUrl' => true,
+                'backUrl' => false
             )
         );
 
-        return array($editAction);
+        $disableAction = array(
+            'name'         => 'disable',
+            'type'         => ActionInterface::TYPE_DELETE,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label'   => 'Disable',
+                'icon'    => 'trash',
+                'link'    => 'disable_link',
+                'backUrl' => false
+            )
+        );
+
+        return array($editAction, $disableAction);
     }
 }

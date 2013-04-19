@@ -41,7 +41,7 @@ class LanguageController extends Controller
         $em = $this->getDoctrine()->getManager();
         $queryBuilder = $em->createQueryBuilder();
         $queryBuilder
-            ->select('l.id', 'l.code', 'l.fallback')
+            ->select('l.id', 'l.code', 'l.fallback', 'l.activated')
             ->from('PimConfigBundle:Language', 'l');
 
         /** @var $queryFactory QueryFactory */
