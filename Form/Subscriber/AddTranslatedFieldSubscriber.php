@@ -5,6 +5,8 @@ use Symfony\Component\Form\Event\DataEvent;
 
 use Symfony\Component\Form\FormEvents;
 
+use Symfony\Component\Form\FormError;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Symfony\Component\Form\FormFactoryInterface;
