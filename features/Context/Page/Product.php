@@ -4,6 +4,7 @@ namespace Context\Page;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Behat\Mink\Exception\ElementNotFoundException;
+use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 
 /**
  * @author    Gildas Quéméner <gildas.quemener@gmail.com>
@@ -34,32 +35,66 @@ class Product extends Page
 
     public function selectLanguage($language)
     {
-        $field = $this->find('named', array(
-            'field', $this->getSession()->getSelectorsHandler()->xpathLiteral($language)
-        ));
-
-        if (!$field) {
-            throw new ElementNotFoundException(
-                $this->getSession(), 'form field', 'id|name|label|value', $language
-            );
-        }
-
-        $field->check();
+        $this->checkField($language);
     }
 
     public function save()
     {
-        $button = $this->find('named', array(
-            'button', $this->getSession()->getSelectorsHandler()->xpathLiteral('Save')
-        ));
+        $this->pressButton('Save');
+    }
 
-        if (!$button) {
+    public function getFieldValue($field)
+    {
+
+        return $this->findField($field)->getValue();
+    }
+
+    public function switchLocale($locale)
+    {
+        $this->getElement('Locales dropdown')->clickLink(ucfirst($locale));
+    }
+
+    public function getFieldAt(AttributeGroup $group, $position)
+    {
+        $locator = sprintf(
+            '#tabs-%s label', $group->getId()
+        );
+
+        $fields = $this->findAll('css', $locator);
+
+        if (0 === count($fields)) {
+            throw new \Exception(sprintf(
+                'Couldn\'t find elements that matches "%s"', $locator
+            ));
+        }
+
+        if (!isset($fields[$position])) {
+            throw new \Exception(sprintf(
+                'Cannot found %dth field in group "%s"', $position + 1, $group->getName()
+            ));
+        }
+
+        return $fields[$position];
+    }
+
+    public function findField($name)
+    {
+        $label = $this->find('css', sprintf('label:contains("%s")', $name));
+
+        if (!$label) {
             throw new ElementNotFoundException(
-                $this->getSession(), 'button', 'id|name|title|alt|value', 'Save'
+                $this->getSession(), 'form label ', 'value', $name
             );
         }
 
-        $button->press();
+        $field = $label->getParent()->find('css', 'input[type="text"]');
+
+        if (!$field) {
+            throw new ElementNotFoundException(
+                $this->getSession(), 'form field ', 'id|name|label|value', $name
+            );
+        }
+
+        return $field;
     }
 }
-
