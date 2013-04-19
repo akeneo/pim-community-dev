@@ -74,7 +74,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 
         // get attribute color options
         $optColors = $this->getProductManager()->getAttributeOptionRepository()->findBy(
-            array('attribute' => $attColor->getAttribute())
+            array('attribute' => $attColor)
         );
         $colors = array();
         foreach ($optColors as $option) {
@@ -83,7 +83,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 
         // get attribute size options
         $optSizes = $this->getProductManager()->getAttributeOptionRepository()->findBy(
-            array('attribute' => $attSize->getAttribute())
+            array('attribute' => $attSize)
         );
         $sizes = array();
         foreach ($optSizes as $option) {
@@ -102,7 +102,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $names = array('en_US' => 'my product name', 'fr_FR' => 'mon nom de produit', 'de_DE' => 'produkt namen');
             foreach ($names as $locale => $data) {
                 $value = $this->getProductManager()->createFlexibleValue();
-                $value->setAttribute($attName->getAttribute());
+                $value->setAttribute($attName);
                 $value->setLocale($locale);
                 $value->setData($data.' '.$ind);
                 $product->addValue($value);
@@ -116,7 +116,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
                     $value = $this->getProductManager()->createFlexibleValue();
                     $value->setLocale($locale);
                     $value->setScope($scope);
-                    $value->setAttribute($attDescription->getAttribute());
+                    $value->setAttribute($attDescription);
                     $product->addValue($value);
                     $value->setData('description ('.$locale.') ('.$scope.') '.$ind);
                 }
@@ -124,14 +124,14 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 
             // size
             $value = $this->getProductManager()->createFlexibleValue();
-            $value->setAttribute($attSize->getAttribute());
+            $value->setAttribute($attSize);
             $firstSizeOpt = $sizes[rand(0, count($sizes)-1)];
             $value->addOption($firstSizeOpt);
             $product->addValue($value);
 
             // color
             $value = $this->getProductManager()->createFlexibleValue();
-            $value->setAttribute($attColor->getAttribute());
+            $value->setAttribute($attColor);
             $firstColorOpt = $colors[rand(0, count($colors)-1)];
             $value->addOption($firstColorOpt);
             $secondColorOpt = $colors[rand(0, count($colors)-1)];
@@ -142,7 +142,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 
             // price
             $value = $this->getProductManager()->createFlexibleValue();
-            $value->setAttribute($attPrice->getAttribute());
+            $value->setAttribute($attPrice);
             $price = new Price();
             $price->setData(rand(5, 100));
             $price->setCurrency('USD');
