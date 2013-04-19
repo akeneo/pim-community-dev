@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ConfigBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Pim\Bundle\ConfigBundle\Entity\Channel;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -23,16 +25,43 @@ class ChannelController extends Controller
     /**
      * List channels
      *
-     * @return multitype
+     * @param Request $request
      *
-     * @Route("/index")
+     * @Route(
+     *     "/index.{_format}",
+     *     requirements={"_format"="html|json"},
+     *     defaults={"_format" = "html"}
+     * )
      * @Template()
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $channels = $this->getChannelRepository()->findAll();
+        /** @var $queryBuilder QueryBuilder */
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder
+            ->select('c.id', 'c.code', 'c.name')
+            ->from('PimConfigBundle:Channel', 'c');
 
-        return array('channels' => $channels);
+        /** @var $queryFactory QueryFactory */
+        $queryFactory = $this->get('pim_config.datagrid.manager.channel.default_query_factory');
+        $queryFactory->setQueryBuilder($queryBuilder);
+
+        /** @var $datagridManager LocaleDatagridManager */
+        $datagridManager = $this->get('pim_config.datagrid.manager.channel');
+        $datagrid = $datagridManager->getDatagrid();
+
+        $view = ('json' === $request->getRequestFormat()) ?
+            'OroGridBundle:Datagrid:list.json.php' : 'PimConfigBundle:Channel:index.html.twig';
+
+        return $this->render(
+            $view,
+            array(
+                'datagrid' => $datagrid,
+                'form'     => $datagrid->getForm()->createView()
+            )
+        );
     }
 
     /**

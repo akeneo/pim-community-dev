@@ -1,15 +1,15 @@
 parameters:
-    currency_entity_class:  Pim\Bundle\ConfigBundle\Entity\Currency
-    currency_handler_class: Pim\Bundle\ConfigBundle\Form\Handler\CurrencyHandler
-    currency_type_class:    Pim\Bundle\ConfigBundle\Form\Type\CurrencyType
+    currency_entity_class:       Pim\Bundle\ConfigBundle\Entity\Currency
+    currency_handler_class:      Pim\Bundle\ConfigBundle\Form\Handler\CurrencyHandler
+    currency_type_class:         Pim\Bundle\ConfigBundle\Form\Type\CurrencyType
     
-    language_entity_class:  Pim\Bundle\ConfigBundle\Entity\Language
-    language_handler_class: Pim\Bundle\ConfigBundle\Form\Handler\LanguageHandler
-    language_type_class:    Pim\Bundle\ConfigBundle\Form\Type\LanguageType
+    language_entity_class:       Pim\Bundle\ConfigBundle\Entity\Language
+    language_handler_class:      Pim\Bundle\ConfigBundle\Form\Handler\LanguageHandler
+    language_type_class:         Pim\Bundle\ConfigBundle\Form\Type\LanguageType
     
-    channel_entity_class:   Pim\Bundle\ConfigBundle\Entity\Channel
-    channel_handler_class:  Pim\Bundle\ConfigBundle\Form\Handler\ChannelHandler
-    channel_type_class:     Pim\Bundle\ConfigBundle\Form\Type\ChannelType
+    channel_entity_class:        Pim\Bundle\ConfigBundle\Entity\Channel
+    channel_handler_class:       Pim\Bundle\ConfigBundle\Form\Handler\ChannelHandler
+    channel_type_class:          Pim\Bundle\ConfigBundle\Form\Type\ChannelType
 
 services:
     # Managers
