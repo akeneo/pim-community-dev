@@ -161,10 +161,11 @@ class CurrencyDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'=> 'Edit',
-                'icon' => 'edit',
-                'link' => 'edit_link',
-                'backUrl' => false
+                'label'         => 'Edit',
+                'icon'          => 'edit',
+                'link'          => 'edit_link',
+                'backUrl'       => false,
+                'runOnRowClick' => true
             )
         );
 

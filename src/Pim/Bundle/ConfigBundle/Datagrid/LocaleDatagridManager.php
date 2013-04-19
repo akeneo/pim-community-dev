@@ -177,10 +177,11 @@ class LocaleDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'=> 'Edit',
-                'icon' => 'edit',
-                'link' => 'edit_link',
-                'backUrl' => false
+                'label'         => 'Edit',
+                'icon'          => 'edit',
+                'link'          => 'edit_link',
+                'backUrl'       => false,
+                'runOnRowClick' => true
             )
         );
 
@@ -192,7 +193,7 @@ class LocaleDatagridManager extends DatagridManager
                 'label'   => 'Disable',
                 'icon'    => 'trash',
                 'link'    => 'disable_link',
-                'backUrl' => false
+                'backUrl' => false,
             )
         );
 
