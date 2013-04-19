@@ -2,14 +2,12 @@
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
-
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\ImageType;
-
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionSimpleSelectType;
+use Pim\Bundle\ProductBundle\Model\AttributeType\OptionSimpleSelectType;
+use Pim\Bundle\ProductBundle\Model\AttributeType\OptionMultiSelectType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MoneyType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionMultiSelectType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextAreaType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\DateType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextType;
