@@ -4,39 +4,44 @@
 {% block title %}{{ title }} - {{ parent() }}{% endblock %}
 
 {% block content %}
-    <form action="{{ form.vars.value.id ? 
-        path('pim_config_currency_edit', { id: form.vars.value.id }) : 
-        path('pim_config_currency_create') }}" method="POST" class="form-register">
+<form class="form-horizontal" action="{{ form.vars.value.id ? 
+    path('pim_config_currency_edit', { id: form.vars.value.id }) : 
+    path('pim_config_currency_create') }}" method="POST" class="form-register">
 
-        <fieldset>
-            <legend>
-                {{ title }} 
-                <a class="btn btn-primary pull-right" href="{{ path('pim_config_currency_index') }}">
-                    {{ "Back to list" | trans }}
-                </a>
-            </legend>
-            
-            {% if form.vars.errors|length %}
-                <div class="alert alert-error">
-                    {{ form_errors(form) }}
-                </div>
-            {% endif %}
-            
-            {{ form_row(form.id) }}
-            
-            {{ form_row(form.code) }}
-            
-            {{ form_row(form.activated) }}
-            
-            {{ form_row(form._token) }}
-            
-            <br />
-            <div class="form_row">
-                <button class="btn btn-large btn-primary" type="submit">{{ 'Save'|trans }}</button>
+    <div class="row-fluid">
+        <div class="form-row">
+            <h3 class="pull-left">{{ title|trans }}</h3>
+            <button class="btn btn-primary pull-right" type="submit">{{ 'Save'|trans }}</button>
+            <a class="pull-right return" href="{{ path('pim_config_currency_index') }}">
+                {{ "Back to list" | trans }}
+            </a>
+        </div>
+    </div>
+
+    <div class="row_fluid">
+        {% if form.vars.errors|length %}
+            <div class="alert alert-error">
+                {{ form_errors(form) }}
             </div>
-    
-        </fieldset>
-    
-    </form>
+        {% endif %}
+            
+        {{ form_row(form.id) }}
+        
+        {{ form_row(form.code) }}
+        
+        {{ form_row(form.activated) }}
+        
+        {{ form_row(form._token) }}
+    </div>
+</form>
+{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+    $(function() {
+        $('select').select2({ allowClear: true });
+        $('input.multiselect').select2({ tags: $(this).val() });
+    });
+    </script>
 {% endblock %}
