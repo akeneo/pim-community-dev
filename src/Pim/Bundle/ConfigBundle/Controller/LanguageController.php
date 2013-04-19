@@ -1,6 +1,7 @@
 <?php
-
 namespace Pim\Bundle\ConfigBundle\Controller;
+
+use Symfony\Component\HttpFoundation\Request;
 
 use Pim\Bundle\ConfigBundle\Entity\Language;
 
@@ -23,16 +24,44 @@ class LanguageController extends Controller
     /**
      * List languages
      *
-     * @return multitype
+     * @param Request $request
      *
-     * @Route("/index")
+     * @Route("/index.{_format}",
+     *      name="pim_config_language_index",
+     *      requirements={"_format"="html|json"},
+     *      defaults={"_format" = "html"}
+     * )
      * @Template()
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $languages = $this->getLanguageRepository()->findAll();
+        /** @var $queryBuilder QueryBuilder */
+        $em = $this->getDoctrine()->getManager();
+        $queryBuilder = $em->createQueryBuilder();
+        $queryBuilder
+            ->select('l.id', 'l.code', 'l.fallback')
+            ->from('PimConfigBundle:Language', 'l');
 
-        return array('languages' => $languages);
+        /** @var $queryFactory QueryFactory */
+        $queryFactory = $this->get('pim_config.datagrid.manager.locale.default_query_factory');
+        $queryFactory->setQueryBuilder($queryBuilder);
+
+        /** @var $datagridManager LocaleDatagridManager */
+        $datagridManager = $this->get('pim_config.datagrid.manager.locale');
+        $datagrid = $datagridManager->getDatagrid();
+
+        $view = ('json' === $request->getRequestFormat()) ?
+            'OroGridBundle:Datagrid:list.json.php' : 'PimConfigBundle:Language:index.html.twig';
+
+        return $this->render(
+            $view,
+            array(
+                'datagrid' => $datagrid,
+                'form'     => $datagrid->getForm()->createView()
+            )
+        );
     }
 
     /**
