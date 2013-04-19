@@ -66,6 +66,8 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $productAttribute->setName('Name');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
         $productAttribute->setTranslatable(true);
+        $productAttribute->setUseableAsGridColumn(true);
+        $productAttribute->setUseableAsGridFilter(true);
         $this->createTranslation($productAttribute, 'default', 'name', 'Name');
         $this->createTranslation($productAttribute, 'en_US', 'name', 'Name');
         $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Nom');
@@ -78,6 +80,8 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('Price');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $productAttribute->setUseableAsGridColumn(true);
+        $productAttribute->setUseableAsGridFilter(true);
         $this->createTranslation($productAttribute, 'default', 'name', 'Price');
         $this->createTranslation($productAttribute, 'en_US', 'name', 'Price');
         $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Prix');
@@ -92,6 +96,8 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
         $productAttribute->setTranslatable(true);
         $productAttribute->setScopable(true);
+        $productAttribute->setUseableAsGridColumn(true);
+        $productAttribute->setUseableAsGridFilter(true);
         $this->createTranslation($productAttribute, 'default', 'name', 'Short description');
         $this->createTranslation($productAttribute, 'en_US', 'name', 'Short description');
         $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Description courte');
@@ -112,12 +118,14 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $this->getProductManager()->getStorageManager()->persist($productAttribute);
         $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
 
-        // attribute relaease date
+        // attribute release date
         $attributeCode = 'releaseDate';
         $productAttribute = $this->getProductManager()->createAttribute(new DateType());
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('Release date');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $productAttribute->setUseableAsGridColumn(true);
+        $productAttribute->setUseableAsGridFilter(true);
         $this->createTranslation($productAttribute, 'default', 'name', 'Release date');
         $this->createTranslation($productAttribute, 'en_US', 'name', 'Release date');
         $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Date de sortie');
@@ -130,6 +138,8 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('Size');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $productAttribute->setUseableAsGridColumn(true);
+        $productAttribute->setUseableAsGridFilter(true);
         $sizes = array('XS', 'S', 'M', 'L', 'XL');
         foreach ($sizes as $size) {
             $option = $this->getProductManager()->createAttributeOption();
@@ -151,6 +161,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('Weight');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $productAttribute->setUseableAsGridColumn(true);
         $this->createTranslation($productAttribute, 'default', 'name', 'Weight');
         $this->createTranslation($productAttribute, 'en_US', 'name', 'Weight');
         $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Poids');
@@ -164,6 +175,8 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $productAttribute->setName('Color');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
         $productAttribute->setTranslatable(false); // only one value but option can be translated in option values
+        $productAttribute->setUseableAsGridColumn(true);
+        $productAttribute->setUseableAsGridFilter(true);
         $colors = array(
                 array('en_US' => 'Red', 'fr_FR' => 'Rouge', 'de_DE' => 'Rot'),
                 array('en_US' => 'Blue', 'fr_FR' => 'Bleu', 'de_DE' => 'Blau'),
@@ -194,6 +207,8 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('Manufacturer');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $productAttribute->setUseableAsGridColumn(true);
+        $productAttribute->setUseableAsGridFilter(true);
         $manufacturers = array('MyMug', 'MugStore');
         foreach ($manufacturers as $manufacturer) {
             $option = $this->getProductManager()->createAttributeOption();
@@ -215,6 +230,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('File upload');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $productAttribute->setUseableAsGridColumn(true);
         $this->createTranslation($productAttribute, 'default', 'name', 'File upload');
         $this->createTranslation($productAttribute, 'en_US', 'name', 'File upload');
         $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Fichier téléchargé');
@@ -227,6 +243,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $productAttribute->setCode($attributeCode);
         $productAttribute->setName('Image upload');
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
+        $productAttribute->setUseableAsGridColumn(true);
         $this->createTranslation($productAttribute, 'default', 'name', 'Image upload');
         $this->createTranslation($productAttribute, 'en_US', 'name', 'Image upload');
         $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Image téléchargée');
