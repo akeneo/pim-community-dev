@@ -106,7 +106,7 @@ services:
               entity_name: Pim\Bundle\ProductBundle\Entity\Product
               entity_hint: products
               flexible: true
-              route_name: pim_product_product_index
+              route_name: pim_product_product_list
         calls:
             - [ setRouter, [ @router ] ]
 

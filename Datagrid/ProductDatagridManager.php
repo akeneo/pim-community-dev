@@ -80,7 +80,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     /**
      * set router
      *
-     * @param Router $router 
+     * @param Router $router
      */
     public function setRouter(Router $router)
     {
@@ -94,8 +94,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
     protected function getProperties()
     {
         return array(
-            new UrlProperty('edit_link', $this->router, 'acme_demoflexibleentity_product_edit', array('id')),
-            new UrlProperty('delete_link', $this->router, 'acme_demoflexibleentity_product_remove', array('id')),
+            new UrlProperty('edit_link', $this->router, 'pim_product_product_edit', array('id')),
+            new UrlProperty('delete_link', $this->router, 'pim_product_product_remove', array('id')),
         );
     }
 

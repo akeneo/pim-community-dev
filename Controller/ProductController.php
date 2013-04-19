@@ -70,11 +70,14 @@ class ProductController extends Controller
     }
 
     /**
+     * List product attributes
+     * @param Request $request
+     *
      * @Route("/list.{_format}",
-     *      name="pim_product_product_list",
      *      requirements={"_format"="html|json"},
      *      defaults={"_format" = "html"}
      * )
+     * @return template
      */
     public function listAction(Request $request)
     {
