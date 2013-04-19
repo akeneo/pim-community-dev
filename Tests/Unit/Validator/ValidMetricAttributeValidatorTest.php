@@ -97,9 +97,6 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
     {
         $productAttribute = new ProductAttribute();
 
-        $attribute = new Attribute();
-        $productAttribute->setAttribute($attribute);
-
         $productAttribute->setAttributeType(AbstractAttributeType::TYPE_METRIC_CLASS);
         $productAttribute->setMetricType($metricType);
         $productAttribute->setDefaultMetricUnit($metricUnit);
