@@ -25,6 +25,8 @@ class AttributeGroupType extends AbstractType
     {
         parent::buildForm($builder, $options);
 
+        $builder->add('code');
+
         $builder->add(
             'name',
             'pim_translatable_field',
