@@ -26,10 +26,10 @@ class LanguageController extends Controller
      *
      * @param Request $request
      *
-     * @Route("/index.{_format}",
-     *      name="pim_config_language_index",
-     *      requirements={"_format"="html|json"},
-     *      defaults={"_format" = "html"}
+     * @Route(
+     *     "/index.{_format}",
+     *     requirements={"_format"="html|json"},
+     *     defaults={"_format" = "html"}
      * )
      * @Template()
      *
