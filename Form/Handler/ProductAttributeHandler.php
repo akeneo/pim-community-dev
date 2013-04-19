@@ -2,13 +2,9 @@
 namespace Pim\Bundle\ProductBundle\Form\Handler;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-
-use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOptionValue;
-
+use Pim\Bundle\ProductBundle\Entity\AttributeOptionValue;
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Component\Form\FormInterface;
 
 /**

@@ -1,7 +1,8 @@
 entities_config:
     Pim\Bundle\ProductBundle\Entity\Product:
-        flexible_manager:         product_manager
-        flexible_class:           Pim\Bundle\ProductBundle\Entity\Product
-        flexible_value_class:     Pim\Bundle\ProductBundle\Entity\ProductValue
-        attribute_extended_class: Pim\Bundle\ProductBundle\Entity\ProductAttribute
-        flexible_init_mode:       required_attributes
+        flexible_manager:             product_manager
+        flexible_class:               Pim\Bundle\ProductBundle\Entity\Product
+        flexible_value_class:         Pim\Bundle\ProductBundle\Entity\ProductValue
+        attribute_class:              Pim\Bundle\ProductBundle\Entity\ProductAttribute
+        attribute_option_class:       Pim\Bundle\ProductBundle\Entity\AttributeOption
+        attribute_option_value_class: Pim\Bundle\ProductBundle\Entity\AttributeOptionValue

@@ -60,7 +60,7 @@ class ProductAttributeController extends Controller
         $queryBuilder = $em->createQueryBuilder();
         $queryBuilder
             ->select('a.id', 'a.code', 'a.attributeType', 'a.scopable', 'a.translatable')
-            ->from('OroFlexibleEntityBundle:Attribute', 'a')
+            ->from('PimProductBundle:ProductAttribute', 'a')
             ->where("a.entityType = 'Pim\Bundle\ProductBundle\Entity\Product'");
 
         /** @var $queryFactory QueryFactory */
