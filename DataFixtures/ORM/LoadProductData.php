@@ -69,8 +69,10 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         $attDate        = $this->getReference('product-attribute.releaseDate');
         $attDescription = $this->getReference('product-attribute.shortDescription');
         $attSize        = $this->getReference('product-attribute.size');
+        $attLongDesc    = $this->getReference('product-attribute.longDescription');
         $attColor       = $this->getReference('product-attribute.color');
         $attPrice       = $this->getReference('product-attribute.price');
+        $attManufact    = $this->getReference('product-attribute.manufacturer');
 
         // get attribute color options
         $optColors = $this->getProductManager()->getAttributeOptionRepository()->findBy(
@@ -88,6 +90,15 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         $sizes = array();
         foreach ($optSizes as $option) {
             $sizes[]= $option;
+        }
+
+        // get attribute manufacturer options
+        $optManufact = $this->getProductManager()->getAttributeOptionRepository()->findBy(
+            array('attribute' => $attManufact->getAttribute())
+        );
+        $manufacturers = array();
+        foreach ($optManufact as $option) {
+            $manufacturers[]= $option;
         }
 
         $descriptions = array('my long description', 'my other description');
@@ -114,7 +125,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
                 $product->addValue($value);
             }
 
-            // description
+            // short description
             $locales = array('en_US', 'fr_FR', 'de_DE');
             $scopes = array('ecommerce', 'mobile');
             foreach ($locales as $locale) {
@@ -128,11 +139,32 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
                 }
             }
 
+            // long description
+            $locales = array('en_US', 'fr_FR', 'de_DE');
+            $scopes = array('ecommerce', 'mobile');
+            foreach ($locales as $locale) {
+                foreach ($scopes as $scope) {
+                    $value = $this->getProductManager()->createFlexibleValue();
+                    $value->setLocale($locale);
+                    $value->setScope($scope);
+                    $value->setAttribute($attLongDesc->getAttribute());
+                    $product->addValue($value);
+                    $value->setData('long description ('.$locale.') ('.$scope.') '.$ind);
+                }
+            }
+
             // size
             $value = $this->getProductManager()->createFlexibleValue();
             $value->setAttribute($attSize->getAttribute());
             $firstSizeOpt = $sizes[rand(0, count($sizes)-1)];
-            $value->addOption($firstSizeOpt);
+            $value->setData($firstSizeOpt);
+            $product->addValue($value);
+
+            // manufacturer
+            $value = $this->getProductManager()->createFlexibleValue();
+            $value->setAttribute($attManufact->getAttribute());
+            $firstManOpt = $manufacturers[rand(0, count($manufacturers)-1)];
+            $value->setData($firstManOpt);
             $product->addValue($value);
 
             // color
@@ -153,6 +185,12 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $price->setData(rand(5, 100));
             $price->setCurrency('USD');
             $value->setData($price);
+            $product->addValue($value);
+
+            // date
+            $value = $this->getProductManager()->createFlexibleValue();
+            $value->setAttribute($attDate->getAttribute());
+            $value->setData(new \Datetime());
             $product->addValue($value);
 
             $this->persist($product);
