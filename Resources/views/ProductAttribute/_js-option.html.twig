@@ -30,6 +30,11 @@ $(function() {
 
     $optionList.find('.handle input').hide();
 
+    // Set the width on each cell of the sortable table so that width stays the same when sorting
+    $optionList.find('td').each(function() {
+        $(this).css({ 'width': $(this).width() });
+    });
+
     $optionList.find('tbody').sortable({
         handle: '.handle',
         containment: 'parent',

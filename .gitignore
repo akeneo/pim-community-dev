@@ -1,1 +1,3 @@
 Resources/public/uploads/*
+vendor
+composer.lock

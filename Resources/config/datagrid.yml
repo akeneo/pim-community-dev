@@ -1,0 +1,15 @@
+parameters:
+    pim_product.productattribute_grid_manager_class:  Pim\Bundle\ProductBundle\Datagrid\AttributeDatagridManager
+
+services:
+
+    pim_product.productattribute_grid_manager:
+        class: "%pim_product.productattribute_grid_manager_class%"
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: attributes
+              entity_hint: attributes
+              route_name: pim_product_productattribute_index
+        calls:
+            - [ setRouter, [ @router ] ]
+
