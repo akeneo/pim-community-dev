@@ -41,7 +41,9 @@ class PimConfigExtensionTest extends \PHPUnit_Framework_TestCase
     public function testLoad()
     {
         $configs = array();
-        $res = $this->extension->load($configs, $this->container);
+        $this->assertCount(1, $this->container->getServiceIds());
+        $this->extension->load($configs, $this->container);
+        $this->assertCount(14, $this->container->getServiceIds());
 
         // assert currency configuration
         $configCurrencies = $this->container->getParameter('pim_config.currencies');
