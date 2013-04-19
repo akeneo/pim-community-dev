@@ -230,6 +230,13 @@ class Language
         return $this;
     }
 
+    /**
+     * Get displayed language from locale code
+     *
+     * @param string $locale
+     *
+     * @return string
+     */
     public function fromLocale($locale)
     {
         $countries = Locale::getDisplayLanguages($locale);
