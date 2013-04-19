@@ -19,14 +19,8 @@
                 {{ form_errors(form) }}
             </div>
         {% endif %}
-
-        {{ form_row(form.id) }}
         
-        {{ form_row(form.name) }}
-        
-        {{ form_row(form.sort_order) }}
-        
-        {{ form_row(form._token) }}
+        {{ form_row(form) }}
 
         <br />
         <legend>{{ 'Additional information'|trans }}</legend>

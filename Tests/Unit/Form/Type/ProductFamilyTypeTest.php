@@ -1,5 +1,5 @@
 <?php
-namespace Pim\Bundle\ProductBundle\Tests\Form\Type;
+namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Type;
 
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
 

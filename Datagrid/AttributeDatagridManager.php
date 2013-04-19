@@ -113,8 +113,40 @@ class AttributeDatagridManager extends DatagridManager
                 array(
                     'type'        => FieldDescriptionInterface::TYPE_TEXT,
                     'label'       => 'Type',
-                    'field_name'  => 'type',
+                    'field_name'  => 'attributeType',
                     'filter_type' => FilterInterface::TYPE_STRING,
+                    'required'    => false,
+                    'sortable'    => true,
+                    'filterable'  => true,
+                    'show_filter' => true,
+                )
+            );
+            $this->fieldsCollection->add($field);
+
+            $field = new FieldDescription();
+            $field->setName('scopable');
+            $field->setOptions(
+                array(
+                    'type'        => FieldDescriptionInterface::TYPE_INTEGER,
+                    'label'       => 'Scopable',
+                    'field_name'  => 'scopable',
+                    'filter_type' => FilterInterface::TYPE_NUMBER,
+                    'required'    => false,
+                    'sortable'    => true,
+                    'filterable'  => true,
+                    'show_filter' => true,
+                )
+            );
+            $this->fieldsCollection->add($field);
+
+            $field = new FieldDescription();
+            $field->setName('translatable');
+            $field->setOptions(
+                array(
+                    'type'        => FieldDescriptionInterface::TYPE_INTEGER,
+                    'label'       => 'Translatable',
+                    'field_name'  => 'translatable',
+                    'filter_type' => FilterInterface::TYPE_NUMBER,
                     'required'    => false,
                     'sortable'    => true,
                     'filterable'  => true,
@@ -133,6 +165,22 @@ class AttributeDatagridManager extends DatagridManager
     protected function getListFields()
     {
         return $this->getFieldDescriptionCollection()->getElements();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getFilters()
+    {
+        $fields = array();
+        /** @var $fieldDescription FieldDescription */
+        foreach ($this->getFieldDescriptionCollection() as $fieldDescription) {
+            if ($fieldDescription->isFilterable()) {
+                $fields[] = $fieldDescription;
+            }
+        }
+
+        return $fields;
     }
 
     /**

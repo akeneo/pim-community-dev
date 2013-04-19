@@ -6,11 +6,12 @@
 {% block javascripts %}
     {{ parent() }}
     {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagrid': datagrid, 'selector': '#backgrid'} %}
+    {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
 {% endblock %}
 
 {% block content %}
     <h1>{{ title }}
-        <a class="btn btn-primary pull-right" style="margin-left:10px;" 
+        <a class="btn btn-primary pull-right" style="margin-left:10px;"
             href="{{ path('pim_product_productattribute_create') }}">{{ 'New attribute'|trans }}</a>
     </h1>
 

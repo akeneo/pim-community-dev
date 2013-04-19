@@ -1,6 +1,10 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Entity;
 
+use Pim\Bundle\ProductBundle\Entity\ProductSegmentTranslation;
+
+use Pim\Bundle\ProductBundle\Entity\Product;
+
 use Pim\Bundle\ProductBundle\Entity\ProductSegment;
 
 /**
@@ -21,7 +25,7 @@ class ProductSegmentTest extends \PHPUnit_Framework_TestCase
      */
     protected function createProduct()
     {
-        return $this->getMock('\Pim\Bundle\ProductBundle\Entity\Product');
+        return new Product();
     }
 
     /**
@@ -32,6 +36,7 @@ class ProductSegmentTest extends \PHPUnit_Framework_TestCase
         $segment = new ProductSegment();
 
         // assert instance and implementation
+        $this->assertEntity($segment);
         $this->assertInstanceOf('\Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment', $segment);
         $this->assertInstanceOf('\Gedmo\Translatable\Translatable', $segment);
 
@@ -52,12 +57,12 @@ class ProductSegmentTest extends \PHPUnit_Framework_TestCase
         $product2 = $this->createProduct();
 
         // assert adding
-        $segment->addProduct($product1);
+        $this->assertEntity($segment->addProduct($product1));
         $segment->addProduct($product2);
         $this->assertCount(2, $segment->getProducts());
 
         // assert removing
-        $segment->removeProduct($product1);
+        $this->assertEntity($segment->removeProduct($product1));
         $this->assertCount(1, $segment->getProducts());
     }
 
@@ -68,7 +73,7 @@ class ProductSegmentTest extends \PHPUnit_Framework_TestCase
     public function testSetTranslatableLocale()
     {
         $segment = new ProductSegment();
-        $segment->setTranslatableLocale('en_US');
+        $this->assertEntity($segment->setTranslatableLocale('en_US'));
     }
 
     /**
@@ -83,7 +88,7 @@ class ProductSegmentTest extends \PHPUnit_Framework_TestCase
 
         // assert setter
         $testCode = 'test-code';
-        $segment->setCode($testCode);
+        $this->assertEntity($segment->setCode($testCode));
         $this->assertEquals($testCode, $segment->getCode());
     }
 
@@ -99,7 +104,40 @@ class ProductSegmentTest extends \PHPUnit_Framework_TestCase
 
         // assert setter
         $testIsDynamic = true;
-        $segment->setIsDynamic($testIsDynamic);
+        $this->assertEntity($segment->setIsDynamic($testIsDynamic));
         $this->assertEquals($testIsDynamic, $segment->getIsDynamic());
+    }
+
+    /**
+     * Test getter/setter for translations property
+     */
+    public function testTranslations()
+    {
+        $segment = new ProductSegment();
+        $this->assertCount(0, $segment->getTranslations());
+
+        // Change value and assert new
+        $newTranslation = new ProductSegmentTranslation();
+        $this->assertEntity($segment->addTranslation($newTranslation));
+        $this->assertCount(1, $segment->getTranslations());
+        $this->assertInstanceOf(
+            'Pim\Bundle\ProductBundle\Entity\ProductSegmentTranslation',
+            $segment->getTranslations()->first()
+        );
+
+        $segment->addTranslation($newTranslation);
+        $this->assertCount(1, $segment->getTranslations());
+
+        $this->assertEntity($segment->removeTranslation($newTranslation));
+        $this->assertCount(0, $segment->getTranslations());
+    }
+
+    /**
+     * Assert entity
+     * @param Pim\Bundle\ProductBundle\Entity\ProductSegment $entity
+     */
+    protected function assertEntity($entity)
+    {
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductSegment', $entity);
     }
 }

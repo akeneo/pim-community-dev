@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ProductBundle\Controller;
 
+use Pim\Bundle\ProductBundle\Form\Type\AttributeGroupType;
+
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -33,26 +35,6 @@ class AttributeGroupController extends Controller
         $groups = $this->getAttributeGroupRepository()->findAll();
 
         return array('groups' => $groups);
-    }
-
-    /**
-     * Get entity manager
-     *
-     * @return \Doctrine\ORM\EntityManager
-     */
-    protected function getEntityManager()
-    {
-        return $this->getDoctrine()->getEntityManager();
-    }
-
-    /**
-     * Get attribute group repository
-     *
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    protected function getAttributeGroupRepository()
-    {
-        return $this->getEntityManager()->getRepository('PimProductBundle:AttributeGroup');
     }
 
     /**
@@ -112,5 +94,25 @@ class AttributeGroupController extends Controller
         $this->get('session')->getFlashBag()->add('success', 'Group successfully removed');
 
         return $this->redirect($this->generateUrl('pim_product_attributegroup_index'));
+    }
+
+    /**
+     * Get entity manager
+     *
+     * @return \Doctrine\ORM\EntityManager
+     */
+    protected function getEntityManager()
+    {
+        return $this->getDoctrine()->getEntityManager();
+    }
+
+    /**
+     * Get attribute group repository
+     *
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    protected function getAttributeGroupRepository()
+    {
+        return $this->getEntityManager()->getRepository('PimProductBundle:AttributeGroup');
     }
 }

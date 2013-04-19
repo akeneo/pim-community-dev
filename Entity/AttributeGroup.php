@@ -1,6 +1,10 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity;
 
+use Gedmo\Translatable\Translatable;
+
+use Gedmo\Mapping\Annotation as Gedmo;
+
 use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,10 +18,11 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_attribute_group")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\AttributeGroupRepository")
+ * @ORM\Table(name="pim_attribute_group")
+ * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation")
  */
-class AttributeGroup implements TimestampableInterface
+class AttributeGroup implements TimestampableInterface, Translatable
 {
 
     /**
@@ -33,6 +38,7 @@ class AttributeGroup implements TimestampableInterface
      * @var string $name
      *
      * @ORM\Column(name="name", type="string", length=100)
+     * @Gedmo\Translatable
      */
     protected $name;
 
@@ -65,11 +71,33 @@ class AttributeGroup implements TimestampableInterface
     protected $attributes;
 
     /**
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     *
+     * @var string $locale
+     *
+     * @Gedmo\Locale
+     */
+    protected $locale;
+
+    /**
+     * @var ArrayCollection $translations
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="AttributeGroupTranslation",
+     *     mappedBy="foreignKey",
+     *     cascade={"persist", "remove"}
+     * )
+     */
+    protected $translations;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->attributes = new ArrayCollection();
+        $this->attributes   = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -96,7 +124,7 @@ class AttributeGroup implements TimestampableInterface
      *
      * @param integer $id
      *
-     * @return AbstractFlexible
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
      */
     public function setId($id)
     {
@@ -120,7 +148,7 @@ class AttributeGroup implements TimestampableInterface
      *
      * @param string $name
      *
-     * @return AbstractFlexible
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
      */
     public function setName($name)
     {
@@ -144,7 +172,7 @@ class AttributeGroup implements TimestampableInterface
      *
      * @param string $sortOrder
      *
-     * @return AbstractAttributeOption
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
      */
     public function setSortOrder($sortOrder)
     {
@@ -168,7 +196,7 @@ class AttributeGroup implements TimestampableInterface
      *
      * @param datetime $created
      *
-     * @return TimestampableInterface
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
      */
     public function setCreated($created)
     {
@@ -192,7 +220,7 @@ class AttributeGroup implements TimestampableInterface
      *
      * @param datetime $updated
      *
-     * @return TimestampableInterface
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
      */
     public function setUpdated($updated)
     {
@@ -204,13 +232,13 @@ class AttributeGroup implements TimestampableInterface
     /**
      * Add attributes
      *
-     * @param \Pim\Bundle\ProductBundle\Entity\ProductAttribute $attributes
+     * @param \Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute
      *
-     * @return AttributeGroup
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
      */
-    public function addAttribute(\Pim\Bundle\ProductBundle\Entity\ProductAttribute $attributes)
+    public function addAttribute(\Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute)
     {
-        $this->attributes[] = $attributes;
+        $this->attributes[] = $attribute;
 
         return $this;
     }
@@ -218,11 +246,15 @@ class AttributeGroup implements TimestampableInterface
     /**
      * Remove attributes
      *
-     * @param \Pim\Bundle\ProductBundle\Entity\ProductAttribute $attributes
+     * @param \Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
      */
-    public function removeAttribute(\Pim\Bundle\ProductBundle\Entity\ProductAttribute $attributes)
+    public function removeAttribute(\Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute)
     {
-        $this->attributes->removeElement($attributes);
+        $this->attributes->removeElement($attribute);
+
+        return $this;
     }
 
     /**
@@ -233,5 +265,59 @@ class AttributeGroup implements TimestampableInterface
     public function getAttributes()
     {
         return $this->attributes;
+    }
+
+    /**
+     * Define locale used by entity
+     *
+     * @param string $locale
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
+     */
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get translations
+     *
+     * @return ArrayCollection
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * Add translation
+     *
+     * @param AttributeGroupTranslation $translation
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
+     */
+    public function addTranslation(AttributeGroupTranslation $translation)
+    {
+        if (!$this->translations->contains($translation)) {
+            $this->translations->add($translation);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove translation
+     *
+     * @param AttributeGroupTranslation $translation
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
+     */
+    public function removeTranslation(AttributeGroupTranslation $translation)
+    {
+        $this->translations->removeElement($translation);
+
+        return $this;
     }
 }

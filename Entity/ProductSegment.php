@@ -97,13 +97,25 @@ class ProductSegment extends AbstractSegment implements Translatable
     protected $isDynamic = false;
 
     /**
+     * @var ArrayCollection $translations
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="ProductSegmentTranslation",
+     *     mappedBy="foreignKey",
+     *     cascade={"persist", "remove"}
+     * )
+     */
+    protected $translations;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         parent::__construct();
 
-        $this->products  = new ArrayCollection();
+        $this->products     = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -149,7 +161,7 @@ class ProductSegment extends AbstractSegment implements Translatable
      *
      * @param string $locale
      *
-     * @return AbstractSegment
+     * @return ProductSegment
      */
     public function setTranslatableLocale($locale)
     {
@@ -202,6 +214,46 @@ class ProductSegment extends AbstractSegment implements Translatable
     public function setIsDynamic($isDynamic)
     {
         $this->isDynamic = $isDynamic;
+
+        return $this;
+    }
+
+    /**
+     * Get translations
+     *
+     * @return ArrayCollection
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * Add translation
+     *
+     * @param ProductSegmentTranslation $translation
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductSegment
+     */
+    public function addTranslation(ProductSegmentTranslation $translation)
+    {
+        if (!$this->translations->contains($translation)) {
+            $this->translations->add($translation);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove translation
+     *
+     * @param ProductSegmentTranslation $translation
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductSegment
+     */
+    public function removeTranslation(ProductSegmentTranslation $translation)
+    {
+        $this->translations->removeElement($translation);
 
         return $this;
     }
