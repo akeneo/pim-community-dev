@@ -98,6 +98,12 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $product = $this->getProductManager()->createFlexible();
             $product->setSku($prodSku);
 
+            // product languages
+            $product->addLanguage($this->getReference('language.fr_FR'), true);
+            $product->addLanguage($this->getReference('language.en_US'), true);
+            $product->addLanguage($this->getReference('language.en_GB'));
+            $product->addLanguage($this->getReference('language.fr_CA'));
+
             // name
             $names = array('en_US' => 'my product name', 'fr_FR' => 'mon nom de produit', 'de_DE' => 'produkt namen');
             foreach ($names as $locale => $data) {
