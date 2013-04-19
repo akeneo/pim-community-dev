@@ -1,4 +1,8 @@
 {
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
     "hash": "261a2e6c44c9996efb2b1a49e389d1c4",
     "packages": [
         {
@@ -907,7 +911,7 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -2397,12 +2401,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/NelmioApiDocBundle.git",
-                "reference": "c5971321cc84ae8b8f314c49f19546d556e93d3a"
+                "reference": "3c43cc5d07b84560f723165d3360b0827df5214d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/c5971321cc84ae8b8f314c49f19546d556e93d3a",
-                "reference": "c5971321cc84ae8b8f314c49f19546d556e93d3a",
+                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/3c43cc5d07b84560f723165d3360b0827df5214d",
+                "reference": "3c43cc5d07b84560f723165d3360b0827df5214d",
                 "shasum": ""
             },
             "require": {
@@ -2455,7 +2459,7 @@
                 "documentation",
                 "rest"
             ],
-            "time": "2013-04-16 19:30:26"
+            "time": "2013-04-17 22:29:56"
         },
         {
             "name": "oro/bap",
@@ -2624,12 +2628,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/FlexibleEntityBundle.git",
-                "reference": "a0be51790ed02202ff3def80818caa01f879acb3"
+                "reference": "aa146fab30347276e1e419c4b8ec07bb7c9cdee2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/a0be51790ed02202ff3def80818caa01f879acb3",
-                "reference": "a0be51790ed02202ff3def80818caa01f879acb3",
+                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/aa146fab30347276e1e419c4b8ec07bb7c9cdee2",
+                "reference": "aa146fab30347276e1e419c4b8ec07bb7c9cdee2",
                 "shasum": ""
             },
             "require": {
@@ -2664,7 +2668,7 @@
                 "source": "https://github.com/laboro/FlexibleEntityBundle/tree/master",
                 "issues": "https://github.com/laboro/FlexibleEntityBundle/issues"
             },
-            "time": "2013-04-17 16:10:45"
+            "time": "2013-04-18 14:22:02"
         },
         {
             "name": "oro/grid-bundle",
@@ -3030,12 +3034,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/UserBundle.git",
-                "reference": "45cc945c448507fed14fe1a24e275f7b0683433d"
+                "reference": "2099da9ac7e4f1a92ea04a0c61c709355bc302b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/45cc945c448507fed14fe1a24e275f7b0683433d",
-                "reference": "45cc945c448507fed14fe1a24e275f7b0683433d",
+                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/2099da9ac7e4f1a92ea04a0c61c709355bc302b0",
+                "reference": "2099da9ac7e4f1a92ea04a0c61c709355bc302b0",
                 "shasum": ""
             },
             "require": {
@@ -3079,7 +3083,7 @@
                 "source": "https://github.com/laboro/UserBundle/tree/master",
                 "issues": "https://github.com/laboro/UserBundle/issues"
             },
-            "time": "2013-04-17 16:15:59"
+            "time": "2013-04-18 11:43:43"
         },
         {
             "name": "oro/windows-bundle",
@@ -4240,12 +4244,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendEscaper.git",
-                "reference": "bdef8f4c283120f72ae23c489c20e9a1c3aca170"
+                "reference": "release-2.1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendEscaper/zipball/bdef8f4c283120f72ae23c489c20e9a1c3aca170",
-                "reference": "bdef8f4c283120f72ae23c489c20e9a1c3aca170",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendEscaper/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
                 "shasum": ""
             },
             "require": {
@@ -4280,12 +4284,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendEventManager.git",
-                "reference": "20e943ae5768b1e389f2f02371e30b61bd972635"
+                "reference": "release-2.1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendEventManager/zipball/20e943ae5768b1e389f2f02371e30b61bd972635",
-                "reference": "20e943ae5768b1e389f2f02371e30b61bd972635",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendEventManager/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
                 "shasum": ""
             },
             "require": {
@@ -4321,12 +4325,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendI18n.git",
-                "reference": "f48c671a2b46f12f16f0b4517f039f5708d29489"
+                "reference": "release-2.1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendI18n/zipball/f48c671a2b46f12f16f0b4517f039f5708d29489",
-                "reference": "f48c671a2b46f12f16f0b4517f039f5708d29489",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendI18n/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
                 "shasum": ""
             },
             "require": {
@@ -4368,12 +4372,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendLoader.git",
-                "reference": "1810160b13db7d31ce6f60d14db1f4533a9b7449"
+                "reference": "release-2.1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendLoader/zipball/1810160b13db7d31ce6f60d14db1f4533a9b7449",
-                "reference": "1810160b13db7d31ce6f60d14db1f4533a9b7449",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendLoader/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
                 "shasum": ""
             },
             "require": {
@@ -4411,12 +4415,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendMail.git",
-                "reference": "04b52fac01af92a6722311c96411dd00234947f5"
+                "reference": "release-2.1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendMail/zipball/04b52fac01af92a6722311c96411dd00234947f5",
-                "reference": "04b52fac01af92a6722311c96411dd00234947f5",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendMail/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
                 "shasum": ""
             },
             "require": {
@@ -4459,12 +4463,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendMime.git",
-                "reference": "release-2.1.4"
+                "reference": "release-2.1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendMime/zipball/release-2.1.4",
-                "reference": "release-2.1.4",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendMime/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
                 "shasum": ""
             },
             "require": {
@@ -4500,12 +4504,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendServer.git",
-                "reference": "4f05406aa475b85c1e64e7ce6bb7a2e1ff017223"
+                "reference": "release-2.1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendServer/zipball/4f05406aa475b85c1e64e7ce6bb7a2e1ff017223",
-                "reference": "4f05406aa475b85c1e64e7ce6bb7a2e1ff017223",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendServer/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
                 "shasum": ""
             },
             "require": {
@@ -4542,12 +4546,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendServiceManager.git",
-                "reference": "c4df163b4cd6a0605f9e789cc1d46fb2bbacf06c"
+                "reference": "release-2.1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendServiceManager/zipball/c4df163b4cd6a0605f9e789cc1d46fb2bbacf06c",
-                "reference": "c4df163b4cd6a0605f9e789cc1d46fb2bbacf06c",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendServiceManager/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
                 "shasum": ""
             },
             "require": {
@@ -4585,12 +4589,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendSoap.git",
-                "reference": "release-2.1.4"
+                "reference": "release-2.1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendSoap/zipball/release-2.1.4",
-                "reference": "release-2.1.4",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendSoap/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
                 "shasum": ""
             },
             "require": {
@@ -4628,12 +4632,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendStdlib.git",
-                "reference": "1b21f3f9a206bd79da3c660b8c550b50d88f3a7e"
+                "reference": "release-2.1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendStdlib/zipball/1b21f3f9a206bd79da3c660b8c550b50d88f3a7e",
-                "reference": "1b21f3f9a206bd79da3c660b8c550b50d88f3a7e",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendStdlib/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
                 "shasum": ""
             },
             "require": {
@@ -4671,12 +4675,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendUri.git",
-                "reference": "6079597edd7d36c691ff88d0b70b63e0fff00c25"
+                "reference": "release-2.1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendUri/zipball/6079597edd7d36c691ff88d0b70b63e0fff00c25",
-                "reference": "6079597edd7d36c691ff88d0b70b63e0fff00c25",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendUri/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
                 "shasum": ""
             },
             "require": {
@@ -4714,12 +4718,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendValidator.git",
-                "reference": "1f75f6954bb89ecbd3d7790c82c9722cfa52e29d"
+                "reference": "release-2.1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendValidator/zipball/1f75f6954bb89ecbd3d7790c82c9722cfa52e29d",
-                "reference": "1f75f6954bb89ecbd3d7790c82c9722cfa52e29d",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendValidator/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
                 "shasum": ""
             },
             "require": {
