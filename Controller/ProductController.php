@@ -204,8 +204,10 @@ class ProductController extends Controller
         }
 
         return array(
-            'form'   => $form->createView(),
-            'groups' => $groups
+            'form'       => $form->createView(),
+            'groups'     => $groups,
+            'dataLocale' => $request->query->get('dataLocale', 'en_US'),
+            'dataScope'  => $request->query->get('dataScope')
         );
     }
 
