@@ -21,7 +21,16 @@ class ProductFamilyTest extends \PHPUnit_Framework_TestCase
     public function testConstruct()
     {
         $productFamily = new ProductFamily();
-        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductFamily', $productFamily);
+        $this->assertEntity($productFamily);
+    }
+
+    /**
+     * Test getter/setter for id property
+     */
+    public function testId()
+    {
+        $productFamily = new ProductFamily();
+        $this->assertEmpty($productFamily->getId());
     }
 
     /**
@@ -63,10 +72,16 @@ class ProductFamilyTest extends \PHPUnit_Framework_TestCase
         // Change value and assert new
         $newAttribute = new ProductAttribute();
         $productFamily->addAttribute($newAttribute);
-        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductAttribute', $productFamily->getAttributes()->first());
+        $this->assertInstanceOf(
+            'Pim\Bundle\ProductBundle\Entity\ProductAttribute',
+            $productFamily->getAttributes()->first()
+        );
 
         $productFamily->removeAttribute($newAttribute);
-        $this->assertNotInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductAttribute', $productFamily->getAttributes()->first());
+        $this->assertNotInstanceOf(
+            'Pim\Bundle\ProductBundle\Entity\ProductAttribute',
+            $productFamily->getAttributes()->first()
+        );
     }
 
     /**
@@ -78,5 +93,14 @@ class ProductFamilyTest extends \PHPUnit_Framework_TestCase
         $string = 'test-string';
         $productFamily->setName($string);
         $this->assertEquals($string, $productFamily->__toString());
+    }
+
+    /**
+     * Assert entity
+     * @param Pim\Bundle\ProductBundle\Entity\ProductFamily $entity
+     */
+    protected function assertEntity($entity)
+    {
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductFamily', $entity);
     }
 }

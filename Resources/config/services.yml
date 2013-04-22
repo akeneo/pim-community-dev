@@ -56,6 +56,11 @@ services:
         tags:
             - { name: form.type, alias: pim_attribute_group }
 
+    pim_product.form.type.wysiwyg:
+        class: Pim\Bundle\ProductBundle\Form\Type\WysiwygType
+        tags:
+            - { name: form.type, alias: pim_wysiwyg }
+
     # Handlers
     pim_product.form.handler.attribute:
         class: %product_attribute_handler_class%
@@ -95,3 +100,4 @@ services:
     pim_product.attribute_service:
         class: Pim\Bundle\ProductBundle\Service\AttributeService
         arguments: [%pim_product.attributes_config%]
+

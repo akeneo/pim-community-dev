@@ -1,5 +1,7 @@
 <?php
-namespace Pim\Bundle\ProductBundle\Tests\Form\Type;
+namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Type;
+
+use Pim\Bundle\TranslationBundle\Form\Type\TranslatedFieldType;
 
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 
@@ -51,7 +53,7 @@ class AttributeGroupTypeTest extends TypeTestCase
         // Assert fields
         $this->assertField('id', 'hidden');
         $this->assertField('name', 'text');
-        $this->assertField('sort_order', 'integer');
+        $this->assertField('sort_order', 'hidden');
 
         // Assert option class
         $this->assertEquals(

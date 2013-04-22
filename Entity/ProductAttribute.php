@@ -1,39 +1,113 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeExtended;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
 use Pim\Bundle\ConfigBundle\Entity\Language;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Translatable\Translatable;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Custom properties for a product attribute
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_product_attribute")
+ * @ORM\Table(
+ *     name="pim_product_attribute", indexes={@ORM\Index(name="searchcode_idx", columns={"code"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="searchunique_idx", columns={"code", "entity_type"})}
+ * )
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity("code")
  */
-class ProductAttribute extends AbstractEntityAttributeExtended
+class ProductAttribute extends AbstractEntityAttribute implements Translatable
 {
     /**
-     * @var Oro\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute
+     * Overrided to change target entity name
      *
-     * @ORM\OneToOne(
-     *     targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Attribute", cascade={"persist", "merge", "remove"}
+     * @var ArrayCollection $options
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Pim\Bundle\ProductBundle\Entity\AttributeOption", mappedBy="attribute", cascade={"persist", "remove"}, orphanRemoval=true
      * )
-     * @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
-    protected $attribute;
+    protected $options;
+
+    /**
+     * @ORM\Column(name="sort_order", type="integer")
+     */
+    protected $sortOrder = 0;
+
+    /**
+     * Convert defaultValue to UNIX timestamp if it is a DateTime object
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function convertDefaultValueToTimestamp()
+    {
+        if ($this->getDefaultValue() instanceof \DateTime) {
+            $this->setDefaultValue($this->getDefaultValue()->format('U'));
+        }
+    }
+
+    /**
+     * Convert defaultValue to DateTime if attribute type is date
+     *
+     * @ORM\PostLoad
+     */
+    public function convertDefaultValueToDatetime()
+    {
+        if ($this->getDefaultValue()) {
+            if (strpos($this->getAttributeType(), 'DateType') !== false) {
+                $date = new \DateTime();
+                $date->setTimestamp(intval($this->getDefaultValue()));
+
+                $this->setDefaultValue($date);
+            }
+        }
+    }
+
+    /**
+     * Convert defaultValue to integer if attribute type is boolean
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function convertDefaultValueToInteger()
+    {
+        if ($this->getDefaultValue() !== null) {
+            if (strpos($this->getAttributeType(), 'BooleanType') !== false) {
+                $this->setDefaultValue((int) $this->getDefaultValue());
+            }
+        }
+    }
+
+    /**
+     * Convert defaultValue to boolean if attribute type is boolean
+     *
+     * @ORM\PostLoad
+     */
+    public function convertDefaultValueToBoolean()
+    {
+        if ($this->getDefaultValue() !== null) {
+            if (strpos($this->getAttributeType(), 'BooleanType') !== false) {
+                $this->setDefaultValue((bool) $this->getDefaultValue());
+            }
+        }
+    }
 
     /**
      * @var string $name
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Gedmo\Translatable
      */
     protected $name;
 
@@ -208,16 +282,45 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     protected $allowedFileExtensions;
 
     /**
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     *
+     * @var string $locale
+     *
+     * @Gedmo\Locale
+     */
+    protected $locale;
+
+    /**
+     * @var ArrayCollection $translations
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="ProductAttributeTranslation",
+     *     mappedBy="foreignKey",
+     *     cascade={"persist", "remove"}
+     * )
+     */
+    protected $translations;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
+        $this->options      = new ArrayCollection();
+        $this->required     = false;
+        $this->unique       = false;
+        $this->defaultValue = null;
+        $this->searchable   = false;
+        $this->translatable = false;
+        $this->scopable     = false;
         $this->description         = '';
         $this->smart               = false;
         $this->variant             = false;
         $this->useableAsGridColumn = false;
         $this->useableAsGridFilter = false;
         $this->availableLanguages  = new ArrayCollection();
+        $this->translations        = new ArrayCollection();
     }
 
     /**
@@ -840,6 +943,72 @@ class ProductAttribute extends AbstractEntityAttributeExtended
     public function setAllowedFileExtensions($allowedFileExtensions)
     {
         $this->allowedFileExtensions = is_array($allowedFileExtensions) ? implode(',', $allowedFileExtensions) : $allowedFileExtensions;
+
+        return $this;
+    }
+
+    /**
+     * Define locale used by entity
+     *
+     * @param string $locale
+     *
+     * @return ProductAttribute
+     */
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get translations
+     *
+     * @return ArrayCollection
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * Add translation
+     *
+     * @param ProductAttributeTranslation $translation
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttribute
+     */
+    public function addTranslation(ProductAttributeTranslation $translation)
+    {
+        if (!$this->translations->contains($translation)) {
+            $this->translations->add($translation);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove translation
+     *
+     * @param ProductAttributeTranslation $translation
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttribute
+     */
+    public function removeTranslation(ProductAttributeTranslation $translation)
+    {
+        $this->translations->removeElement($translation);
+
+        return $this;
+    }
+
+    public function getSortOrder()
+    {
+        return $this->sortOrder;
+    }
+
+    public function setSortOrder($sortOrder)
+    {
+        $this->sortOrder = $sortOrder;
 
         return $this;
     }

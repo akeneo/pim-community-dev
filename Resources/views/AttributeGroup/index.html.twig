@@ -5,53 +5,73 @@
 
 {% block content %}
 
-    <h1>{{ title }}
-        <a class="btn btn-primary pull-right" style="margin-left:10px;" 
-            href="{{ path('pim_product_attributegroup_create') }}">{{ 'New group'|trans }}</a>
-    </h1>
+    <div class="row-fluid has-resizable-sidebar">
+        <div class="resizable-sidebar">
+            <form id="pim_product_attributegroup_sort" action="{{ path('pim_product_attributegroup_sort') }}" method="POST">
+                <ul id="attributegroups-sortable">
+                    {% for group in groups %}
+                        <li data-id="{{ group.id }}">
+                            <span class="handle">
+                                <i class="icon-list"></i>
+                                <input name="{{ group.id }}" type="hidden" value="{{ group.sortOrder }}">
+                            </span>
+                            <span>{{ group.name }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </form>
+            <a id="attributegroup-create" class="btn btn-small" href="{{ path('pim_product_attributegroup_create') }}">{{ 'New group'|trans }}</a>
+        </div>
+        <div id="form-tab" class="resizable-content">
+            <h1>{{ title }}</h1>
+        </div>
+    </div>
 
-    <table class="table table-bordered table-striped table-condensed">
-        <thead>
-            <tr>
-                <th>{{ 'Name'|trans }}</th>
-                <th>{{ 'Order'|trans }}</th>
-                <th>{{ 'Attributes count'|trans }}</th>
-                <th>{{ 'Created'|trans }}</th>
-                <th>{{ 'Updated'|trans }}</th>
-                <th style="width: 50px">{{ 'Edit'|trans }}</th>
-                <th style="width: 50px">{{ 'Remove'|trans }}</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for group in groups %}
-            <tr>
-                <td>
-                    <a href="{{ path('pim_product_attributegroup_edit', { id: group.id }) }}">
-                        {{ group.name }}
-                    </a>
-                </td>
-                <td>{{ group.sortOrder }}</td>
-                <td>
-                    <a href="{{ path('pim_product_productattribute_list', { groupId: group.id }) }}">
-                        {{ group.attributes|length }} - ({{ 'Show list'|trans }})
-                    </a>
-                </td>
-                <td>{{ group.created|date('Y-m-d h:i:s') }}</td>
-                <td>{{ group.updated|date('Y-m-d h:i:s') }}</td>
-                <td>
-                    <a href="{{ path('pim_product_attributegroup_edit', { id: group.id }) }}">
-                        <i class="icon-edit"></i>
-                    </a>
-                </td>
-                <td>
-                    <a href="{{ path('pim_product_attributegroup_remove', { id: group.id }) }}">
-                        <i class="icon-remove"></i>
-                    </a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <hr />
+    <script type="text/javascript">
+        $(function() {
+            $('#attributegroups-sortable').sortable({
+                handle: '.handle',
+                containment: 'parent',
+                tolerance: 'pointer',
+                update: updateSortOrder
+            });
+
+            function updateSortOrder() {
+                var num = 0;
+                $('#attributegroups-sortable').find('li').each(function() {
+                    $(this).find('.handle input').val(num);
+                    num++;
+                });
+
+                $.ajax({
+                    url: '{{ path('pim_product_attributegroup_sort') }}',
+                    type: 'POST',
+                    data: $('#pim_product_attributegroup_sort').serialize()
+                });
+            }
+
+            $('#attributegroups-sortable li').click(function() {
+                $(this).siblings().removeClass('active');
+                $(this).addClass('active');
+                var id = $(this).attr('data-id');
+                $.get('{{ path('pim_product_attributegroup_edit') }}' + '/' + id, null, function(data, status) {
+                    if (status === 'success') {
+                        $('#form-tab').html(data);
+                    }
+                });
+            });
+
+            $('#attributegroup-create').click(function(e) {
+                e.preventDefault();
+                $('#attributegroups-sortable li').removeClass('active');
+                $.get('{{ path('pim_product_attributegroup_create') }}', null, function(data, status) {
+                    if (status === 'success') {
+                        $('#form-tab').html(data);
+                    }
+                });
+            });
+
+        });
+    </script>
 
 {% endblock %}

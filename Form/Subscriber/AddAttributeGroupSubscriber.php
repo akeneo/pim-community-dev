@@ -10,6 +10,7 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\NoResultException;
 
 /**
  * Form subscriber for product value, add relevant group for any values
@@ -75,10 +76,13 @@ class AddAttributeGroupSubscriber implements EventSubscriberInterface
         $qb->select('AttributeGroup.id')
             ->from('PimProductBundle:ProductAttribute', 'ProductAttribute')
             ->leftJoin('ProductAttribute.group', 'AttributeGroup')
-            ->where($qb->expr()->eq('ProductAttribute.attribute', $value->getAttribute()->getId()));
+            ->where($qb->expr()->eq('ProductAttribute', $value->getAttribute()->getId()));
 
-        $groupId = $qb->getQuery()->getResult(Query::HYDRATE_SINGLE_SCALAR);
-        $groupId = ($groupId === null) ? 0 : $groupId;
+        try {
+            $groupId = $qb->getQuery()->getResult(Query::HYDRATE_SINGLE_SCALAR);
+        } catch (NoResultException $e) {
+            $groupId = 0;
+        }
 
         $form->add(
             $this->factory->createNamed('group', 'hidden', $groupId, array('property_path' => false))

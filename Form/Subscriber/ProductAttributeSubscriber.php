@@ -6,13 +6,14 @@ use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Service\AttributeService;
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
-
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Event\DataEvent;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Oro\Bundle\FlexibleEntityBundle\Form\EventListener\AttributeTypeSubscriber;
+use Pim\Bundle\ProductBundle\Form\Type\AttributeOptionType as ProductAttributeOptionType;
 
 /**
  * Form subscriber for ProductAttribute
@@ -23,7 +24,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ProductAttributeSubscriber implements EventSubscriberInterface
+class ProductAttributeSubscriber extends AttributeTypeSubscriber
 {
 
     /**
@@ -84,6 +85,7 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
      */
     public function preSetData(DataEvent $event)
     {
+        parent::preSetData($event);
         $data = $event->getData();
 
         if (null === $data) {
@@ -164,5 +166,33 @@ class ProductAttributeSubscriber implements EventSubscriberInterface
                 );
             }
         }
+
+        // only when editing
+        if ($attribute->getId()) {
+            foreach ($this->service->getCustomFields($attribute) as $field) {
+                $form->add($this->factory->createNamed($field['name'], $field['fieldType'], $field['data'], $field['options']));
+            }
+        }
+    }
+
+    /**
+     * Add attribute option collection
+     * @param Form $form
+     */
+    protected function addOptionCollection($form)
+    {
+        $form->add(
+            $this->factory->createNamed(
+                'options',
+                'collection',
+                null,
+                array(
+                    'type'         => new ProductAttributeOptionType(),
+                    'allow_add'    => true,
+                    'allow_delete' => true,
+                    'by_reference' => false
+                )
+            )
+        );
     }
 }

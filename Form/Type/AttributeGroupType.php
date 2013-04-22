@@ -25,11 +25,20 @@ class AttributeGroupType extends AbstractType
     {
         parent::buildForm($builder, $options);
 
-        $builder->add('id', 'hidden');
+        $builder->add('code');
 
-        $builder->add('name');
+        $builder->add(
+            'name',
+            'pim_translatable_field',
+            array(
+                'field'             => 'name',
+                'translation_class' => 'Pim\\Bundle\\ProductBundle\\Entity\\AttributeGroupTranslation',
+                'entity_class'      => 'Pim\\Bundle\\ProductBundle\\Entity\\AttributeGroup',
+                'property_path'     => 'translations'
+            )
+        );
 
-        $builder->add('sort_order', 'integer');
+        $builder->add('sort_order', 'hidden');
     }
 
     /**

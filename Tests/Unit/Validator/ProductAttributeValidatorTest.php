@@ -83,10 +83,6 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
         // instanciate product attribute
         $productAttribute = new ProductAttribute();
 
-        // add attribute
-        $attribute = new Attribute();
-        $productAttribute->setAttribute($attribute);
-
         // set values
         $productAttribute->setAttributeType($attributeType);
         $productAttribute->setCode($code);
@@ -299,7 +295,7 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
         foreach ($optionValues as $value) {
             $attributeOption = new AttributeOption();
             $attributeOption->setDefaultValue($value);
-            $productAttribute->getAttribute()->addOption($attributeOption);
+            $productAttribute->addOption($attributeOption);
         }
 
         // Call validator

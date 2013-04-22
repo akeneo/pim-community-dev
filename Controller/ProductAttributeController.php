@@ -44,16 +44,46 @@ class ProductAttributeController extends Controller
 
     /**
      * List product attributes
-     * @Route("/index")
-     * @Template()
+     * @param Request $request
      *
-     * @return array
+     * @Route("/index.{_format}",
+     *      name="pim_product_productattribute_index",
+     *      requirements={"_format"="html|json"},
+     *      defaults={"_format" = "html"}
+     * )
+     * @return template
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $attributes = $this->getProductManager()->getAttributeExtendedRepository()->findBy(array());
+        /** @var $em \Doctrine\ORM\EntityManager */
+        $em = $this->getDoctrine()->getManager();
+        $queryBuilder = $em->createQueryBuilder();
+        $queryBuilder
+            ->select('a.id', 'a.code', 'a.attributeType', 'a.scopable', 'a.translatable')
+            ->from('PimProductBundle:ProductAttribute', 'a')
+            ->where("a.entityType = 'Pim\Bundle\ProductBundle\Entity\Product'");
 
-        return array('attributes' => $attributes);
+        /** @var $queryFactory QueryFactory */
+        $queryFactory = $this->get('pim_product.productattribute_grid_manager.default_query_factory');
+        $queryFactory->setQueryBuilder($queryBuilder);
+
+        /** @var $gridManager AttributeDatagridManager */
+        $gridManager = $this->get('pim_product.productattribute_grid_manager');
+        $datagrid = $gridManager->getDatagrid();
+
+        if ('json' == $request->getRequestFormat()) {
+            $view = 'OroGridBundle:Datagrid:list.json.php';
+        } else {
+            $view = 'PimProductBundle:ProductAttribute:index.html.twig';
+        }
+
+        return $this->render(
+            $view,
+            array(
+                'datagrid' => $datagrid,
+                'form'     => $datagrid->getForm()->createView()
+            )
+        );
     }
 
     /**
@@ -154,30 +184,4 @@ class ProductAttributeController extends Controller
         return $this->redirect($this->generateUrl('pim_product_productattribute_index'));
     }
 
-    /**
-     * List attributes group by AttributeGroup asked
-     * - groupId = 0 => get all product attributes
-     * - groupId > 0 => get product attributes by group id
-     * - groupId = null => get unclassified product attributes
-     *
-     * @param integer $groupId
-     *
-     * @Route("/list/{groupId}", requirements={"groupId"="\d+"}, defaults={"groupId"=null})
-     * @Template("PimProductBundle:ProductAttribute:index.html.twig")
-     *
-     * @return multitype:ProductAttribute
-     */
-    public function listAction($groupId = null)
-    {
-        $criterias = array();
-        if ($groupId > 0) {
-            $criterias = array('group' => $groupId);
-        } elseif ($groupId === null) {
-            $criterias = array('group' => null);
-        }
-
-        return array(
-            'attributes' => $this->getProductManager()->getAttributeExtendedRepository()->findBy($criterias)
-        );
-    }
 }

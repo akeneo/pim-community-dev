@@ -1,6 +1,10 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Entity;
 
+use Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation;
+
+use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 
 /**
@@ -20,7 +24,17 @@ class AttributeGroupTest extends \PHPUnit_Framework_TestCase
     public function testConstruct()
     {
         $group = new AttributeGroup();
+
+        // assert instance and implementation
         $this->assertEntity($group);
+        $this->assertInstanceOf('\Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface', $group);
+        $this->assertInstanceOf('\Gedmo\Translatable\Translatable', $group);
+
+        // assert object properties
+        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $group->getAttributes());
+        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $group->getTranslations());
+        $this->assertCount(0, $group->getAttributes());
+        $this->assertCount(0, $group->getTranslations());
     }
 
     /**
@@ -35,6 +49,20 @@ class AttributeGroupTest extends \PHPUnit_Framework_TestCase
         $newId = 7;
         $this->assertEntity($group->setId($newId));
         $this->assertEquals($newId, $group->getId());
+    }
+
+    /**
+     * Test getter/setter for code property
+     */
+    public function testCode()
+    {
+        $group = new AttributeGroup();
+        $this->assertEmpty($group->getCode());
+
+        // Change value and assert new
+        $newCode = 'test-code';
+        $this->assertEntity($group->setCode($newCode));
+        $this->assertEquals($newCode, $group->getCode());
     }
 
     /**
@@ -91,6 +119,58 @@ class AttributeGroupTest extends \PHPUnit_Framework_TestCase
         $newUpdated = new \Datetime();
         $this->assertEntity($group->setUpdated($newUpdated));
         $this->assertEquals($newUpdated, $group->getUpdated());
+    }
+
+    /**
+     * Test getter/setter for attributes property
+     */
+    public function testAttributes()
+    {
+        $group = new AttributeGroup();
+        $this->assertCount(0, $group->getAttributes());
+
+        // Change value and assert new
+        $newAttribute = new ProductAttribute();
+        $this->assertEntity($group->addAttribute($newAttribute));
+        $this->assertCount(1, $group->getAttributes());
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductAttribute', $group->getAttributes()->first());
+
+        $this->assertEntity($group->removeAttribute($newAttribute));
+        $this->assertCount(0, $group->getAttributes());
+    }
+
+    /**
+     * Test getter/setter for translations property
+     */
+    public function testTranslations()
+    {
+        $group = new AttributeGroup();
+        $this->assertCount(0, $group->getTranslations());
+
+        // Change value and assert new
+        $newTranslation = new AttributeGroupTranslation();
+        $this->assertEntity($group->addTranslation($newTranslation));
+        $this->assertCount(1, $group->getTranslations());
+        $this->assertInstanceOf(
+            'Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation',
+            $group->getTranslations()->first()
+        );
+
+        $group->addTranslation($newTranslation);
+        $this->assertCount(1, $group->getTranslations());
+
+        $this->assertEntity($group->removeTranslation($newTranslation));
+        $this->assertCount(0, $group->getTranslations());
+    }
+
+    /**
+     * Test related method
+     * Just a call to prevent fatal errors (no way to verify value is set)
+     */
+    public function testSetTranslatableLocale()
+    {
+        $group = new AttributeGroup();
+        $group->setTranslatableLocale('en_US');
     }
 
     /**

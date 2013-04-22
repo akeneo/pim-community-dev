@@ -7,7 +7,7 @@
 
     {% form_theme form 'PimProductBundle:Form:simple_layout.html.twig' %}
 
-    <form action="{{ form.vars.value.id ? path('pim_product_product_edit', { id: form.vars.value.id }) : path('pim_product_product_create') }}" 
+    <form action="{{ form.vars.value.id ? path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) : path('pim_product_product_create', { dataLocale: dataLocale }) }}"
         method="POST" class="form-horizontal" {{ form_enctype(form) }}>
 
         <div class="row-fluid">
@@ -83,7 +83,7 @@
     {# TODO style this as a dropdown #}
     <ul class="locales">
         {% for language in form.vars.value.getActiveLanguages() %}
-            <li>{{ language.fromLocale(app.request.locale) }}</li>
+        <li><a href="?dataLocale={{ language.code }}">{{ language.fromLocale(app.request.locale) }}</a></li>
         {% endfor %}
     </ul>
 {% endblock %}

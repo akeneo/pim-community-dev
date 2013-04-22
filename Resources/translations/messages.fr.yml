@@ -68,6 +68,8 @@
 'Ask': 'Demander'
 
 # Attribute group
+'General Properties': '__General Properties'
+'Group values': '__Group values'
 'New group': 'Nouveau groupe'
 'Groups overview': 'Aperçu des groupes'
 'Attributes count': "Nombre d'attributs"
