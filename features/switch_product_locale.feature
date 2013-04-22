@@ -1,10 +1,11 @@
 Feature: Switch product locale
-  In order to manage product information in different language
+  In order to manage product information in different languages
   as a PIM User
   I need to be able to switch product locale
 
   Background:
-    Given a "Computer" product with the following translations:
+    Given a "Computer" product available in english and french
+    And the "Computer" product has the following translations:
       | locale  | attribute | value      |
       | english | name      | computer   |
       | french  | name      | ordinateur |
@@ -25,3 +26,16 @@ Feature: Switch product locale
     Given I am on the "Computer" product page
     When I switch the locale to "french"
     Then the product screen should be empty
+
+  Scenario: Successfully edit a translated value in the default locale
+    Given I am on the "Computer" product page
+    When I change the name to "laptop"
+    And I save the product
+    Then the product name should be "laptop"
+
+  Scenario: Sucessfully edit a translated value in another locale
+    Given I am on the "Computer" product page
+    And I switch the locale to "french"
+    When I change the name to "ordinateur portable"
+    And I save the product
+    Then the product name should be "ordinateur portable"
