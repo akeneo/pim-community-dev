@@ -2,15 +2,14 @@
 namespace Pim\Bundle\ProductBundle\Controller;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-
 use Pim\Bundle\ProductBundle\Form\Type\ProductAttributeType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use YsTools\BackUrlBundle\Annotation\BackUrl;
 
 /**
  * Product attribute controller
@@ -140,7 +139,7 @@ class ProductAttributeController extends Controller
      *
      * @Route("/remove/{id}", requirements={"id"="\d+"})
      *
-     * @return array
+     * @BackUrl("back")
      */
     public function removeAction(ProductAttribute $entity)
     {

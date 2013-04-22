@@ -52,6 +52,20 @@ class AttributeGroupTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test getter/setter for code property
+     */
+    public function testCode()
+    {
+        $group = new AttributeGroup();
+        $this->assertEmpty($group->getCode());
+
+        // Change value and assert new
+        $newCode = 'test-code';
+        $this->assertEntity($group->setCode($newCode));
+        $this->assertEquals($newCode, $group->getCode());
+    }
+
+    /**
      * Test getter/setter for name property
      */
     public function testName()

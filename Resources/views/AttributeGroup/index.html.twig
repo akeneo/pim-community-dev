@@ -5,8 +5,8 @@
 
 {% block content %}
 
-    <div class="row-fluid">
-        <div id="sidebar" class="span3">
+    <div class="row-fluid has-resizable-sidebar">
+        <div class="resizable-sidebar">
             <form id="pim_product_attributegroup_sort" action="{{ path('pim_product_attributegroup_sort') }}" method="POST">
                 <ul id="attributegroups-sortable">
                     {% for group in groups %}
@@ -22,7 +22,7 @@
             </form>
             <a id="attributegroup-create" class="btn btn-small" href="{{ path('pim_product_attributegroup_create') }}">{{ 'New group'|trans }}</a>
         </div>
-        <div id="form-tab" class="span9">
+        <div id="form-tab" class="resizable-content">
             <h1>{{ title }}</h1>
         </div>
     </div>
@@ -70,6 +70,7 @@
                     }
                 });
             });
+
         });
     </script>
 
