@@ -1,4 +1,8 @@
 {
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
     "hash": "261a2e6c44c9996efb2b1a49e389d1c4",
     "packages": [
         {
@@ -340,16 +344,16 @@
         },
         {
             "name": "doctrine/annotations",
-            "version": "v1.1",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "v1.1"
+                "reference": "v1.1.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/v1.1",
-                "reference": "v1.1",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/v1.1.1",
+                "reference": "v1.1.1",
                 "shasum": ""
             },
             "require": {
@@ -360,6 +364,11 @@
                 "doctrine/cache": "1.*"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "Doctrine\\Common\\Annotations\\": "lib/"
@@ -391,7 +400,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -402,7 +411,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2013-03-17 14:03:10"
+            "time": "2013-04-20 08:30:17"
         },
         {
             "name": "doctrine/cache",
@@ -672,12 +681,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "c75da707518488506efa93e29fb67cf278353f85"
+                "reference": "4abe8f7602e0f4079848950190fb6798781c94c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/c75da707518488506efa93e29fb67cf278353f85",
-                "reference": "c75da707518488506efa93e29fb67cf278353f85",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/4abe8f7602e0f4079848950190fb6798781c94c7",
+                "reference": "4abe8f7602e0f4079848950190fb6798781c94c7",
                 "shasum": ""
             },
             "require": {
@@ -727,7 +736,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2013-04-14 12:36:49"
+            "time": "2013-04-20 08:33:51"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -907,7 +916,7 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -1230,12 +1239,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/l3pp4rd/DoctrineExtensions.git",
-                "reference": "673a8dfb05875e8512e3aab2cf10476f537db4cd"
+                "reference": "cfabd4076c52ae0e86646dd22cc786c86783308c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/673a8dfb05875e8512e3aab2cf10476f537db4cd",
-                "reference": "673a8dfb05875e8512e3aab2cf10476f537db4cd",
+                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/cfabd4076c52ae0e86646dd22cc786c86783308c",
+                "reference": "cfabd4076c52ae0e86646dd22cc786c86783308c",
                 "shasum": ""
             },
             "require": {
@@ -1301,7 +1310,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2013-04-17 16:42:34"
+            "time": "2013-04-21 18:56:48"
         },
         {
             "name": "imagine/imagine",
@@ -1802,12 +1811,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/Gaufrette.git",
-                "reference": "8e621420008b3d59c4862bc59a59ba9fa522d29b"
+                "reference": "1540391e4115ac7c01255e07e02ea3250ca31c51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/Gaufrette/zipball/8e621420008b3d59c4862bc59a59ba9fa522d29b",
-                "reference": "8e621420008b3d59c4862bc59a59ba9fa522d29b",
+                "url": "https://api.github.com/repos/KnpLabs/Gaufrette/zipball/1540391e4115ac7c01255e07e02ea3250ca31c51",
+                "reference": "1540391e4115ac7c01255e07e02ea3250ca31c51",
                 "shasum": ""
             },
             "require": {
@@ -1869,7 +1878,7 @@
                 "filesystem",
                 "media"
             ],
-            "time": "2013-04-15 06:10:15"
+            "time": "2013-04-20 08:12:21"
         },
         {
             "name": "knplabs/knp-components",
@@ -2624,12 +2633,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/FlexibleEntityBundle.git",
-                "reference": "23bfc066f3cac7482aea726c985be54ca8dce083"
+                "reference": "d1a7c36d1829034982e8876d4d943d9e6e6af337"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/23bfc066f3cac7482aea726c985be54ca8dce083",
-                "reference": "23bfc066f3cac7482aea726c985be54ca8dce083",
+                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/d1a7c36d1829034982e8876d4d943d9e6e6af337",
+                "reference": "d1a7c36d1829034982e8876d4d943d9e6e6af337",
                 "shasum": ""
             },
             "require": {
@@ -2664,7 +2673,7 @@
                 "source": "https://github.com/laboro/FlexibleEntityBundle/tree/master",
                 "issues": "https://github.com/laboro/FlexibleEntityBundle/issues"
             },
-            "time": "2013-04-19 20:20:03"
+            "time": "2013-04-22 10:23:30"
         },
         {
             "name": "oro/grid-bundle",
@@ -3964,12 +3973,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "a8915ff5c8b22dcc3139aac11b9b499c05f156ad"
+                "reference": "f10364a07e037a021e77fb92566bb06fa42df34b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/a8915ff5c8b22dcc3139aac11b9b499c05f156ad",
-                "reference": "a8915ff5c8b22dcc3139aac11b9b499c05f156ad",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/f10364a07e037a021e77fb92566bb06fa42df34b",
+                "reference": "f10364a07e037a021e77fb92566bb06fa42df34b",
                 "shasum": ""
             },
             "require": {
@@ -4044,7 +4053,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2013-04-19 06:18:27"
+            "time": "2013-04-22 06:34:44"
         },
         {
             "name": "twig/extensions",
@@ -4149,12 +4158,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yshyshkin/BackUrl.git",
-                "reference": "0bdbbba09db0c2b48a7b3e63089c21d5cf2673ac"
+                "reference": "b444f31710fdcde75c2d3a1aba312eb270a9633a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yshyshkin/BackUrl/zipball/0bdbbba09db0c2b48a7b3e63089c21d5cf2673ac",
-                "reference": "0bdbbba09db0c2b48a7b3e63089c21d5cf2673ac",
+                "url": "https://api.github.com/repos/yshyshkin/BackUrl/zipball/b444f31710fdcde75c2d3a1aba312eb270a9633a",
+                "reference": "b444f31710fdcde75c2d3a1aba312eb270a9633a",
                 "shasum": ""
             },
             "require": {
@@ -4183,7 +4192,7 @@
                 "annotation",
                 "redirect"
             ],
-            "time": "2013-04-08 20:09:45"
+            "time": "2013-04-20 11:01:04"
         },
         {
             "name": "zendframework/zend-code",
