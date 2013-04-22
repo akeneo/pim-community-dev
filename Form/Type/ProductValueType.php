@@ -1,9 +1,9 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Form\Type;
 
-use Pim\Bundle\ProductBundle\Manager\ProductManager;
+use Pim\Bundle\ProductBundle\Form\Subscriber\AddValueFieldSubscriber;
 
-use Oro\Bundle\FlexibleEntityBundle\Form\EventListener\AddValueFieldSubscriber;
+use Pim\Bundle\ProductBundle\Manager\ProductManager;
 
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleValueType;
 use Pim\Bundle\ProductBundle\Form\Subscriber\AddAttributeGroupSubscriber;
@@ -40,9 +40,10 @@ class ProductValueType extends FlexibleValueType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function addSubscriber(FormBuilderInterface $builder)
     {
-        parent::buildForm($builder, $options);
+        $subscriber = new AddValueFieldSubscriber($builder->getFormFactory());
+        $builder->addEventSubscriber($subscriber);
 
         // TODO : datamodel refactoring ? :
         // this custom type and subscriber should be avoided if we have relation between group and attribute
