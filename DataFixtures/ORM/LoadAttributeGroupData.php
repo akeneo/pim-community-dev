@@ -137,6 +137,7 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
     protected function createGroup($name)
     {
         $group = new AttributeGroup();
+        $group->setCode(strtolower($name));
         $group->setName($name .' (default)');
         $group->setSortOrder(++self::$order);
 
