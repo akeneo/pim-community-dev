@@ -194,3 +194,19 @@ form .table-condensed input.span4 {
 .has-switch > div.switch-off, .has-switch > div.switch-on {
     height: auto;
 }
+
+#attributegroups-sortable {
+    margin-left: 0;
+}
+
+.resizable-sidebar-handle {
+    background-color: #F5F5F5;
+}
+
+.resizable-sidebar-handle:hover {
+    background-color: #D0D0D0;
+}
+
+.resizable-content h3 {
+    margin-left: 10px;
+}
