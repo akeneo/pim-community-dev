@@ -1,6 +1,9 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Service;
 
+use Pim\Bundle\ProductBundle\Manager\ProductManager;
+use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\ImageType;
@@ -31,13 +34,57 @@ class AttributeService
     protected $config;
 
     /**
+     * @var ProductManager
+     */
+    protected $manager;
+
+    /**
      * Constructor
      *
-     * @param array $config Configuration parameters
+     * @param array          $config  Configuration parameters
+     * @param ProductManager $manager Product manager
      */
-    public function __construct($config)
+    public function __construct($config, ProductManager $manager)
     {
         $this->config = $config['attributes_config'];
+        $this->manager = $manager;
+    }
+
+    /**
+     * Create a ProductAttribute object from data in the form
+     *
+     * @param array $data Form data
+     *
+     * @return ProductAttribute $attribute | null
+     */
+    public function createAttributeFromFormData($data)
+    {
+        if (gettype($data) === 'array') {
+            $attribute = $this->manager->createAttribute();
+
+            $baseProperties = $this->getBaseProperties();
+
+            foreach ($data as $property => $value) {
+                if (array_key_exists($property, $baseProperties) && $value !== '') {
+                    $set = 'set' . ucfirst($property);
+                    if (method_exists($attribute, $set)) {
+                        if ($baseProperties[$property] === 'boolean') {
+                            $value = (bool) $value;
+                        } elseif ($baseProperties[$property] === 'integer') {
+                            $value = (int) $value;
+                        }
+                        $attribute->$set($value);
+                    }
+                }
+            }
+
+            return $attribute;
+        } elseif ($data instanceof ProductAttribute) {
+
+            return $data;
+        }
+
+        return null;
     }
 
     /**

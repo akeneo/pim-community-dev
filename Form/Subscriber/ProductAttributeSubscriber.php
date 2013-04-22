@@ -1,11 +1,9 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Form\Subscriber;
 
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeOptionType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Service\AttributeService;
-use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Event\DataEvent;
 use Symfony\Component\Form\FormEvent;
@@ -28,12 +26,6 @@ class ProductAttributeSubscriber extends AttributeTypeSubscriber
 {
 
     /**
-     * Product manager service
-     * @var ProductManager
-     */
-    protected $manager;
-
-    /**
      * Attribute service
      * @var AttributeService
      */
@@ -48,12 +40,10 @@ class ProductAttributeSubscriber extends AttributeTypeSubscriber
     /**
      * Constructor
      *
-     * @param ProductManager   $manager
      * @param AttributeService $service
      */
-    public function __construct(ProductManager $manager = null, AttributeService $service = null)
+    public function __construct(AttributeService $service = null)
     {
-        $this->manager = $manager;
         $this->service = $service;
     }
 
@@ -92,9 +82,7 @@ class ProductAttributeSubscriber extends AttributeTypeSubscriber
             return;
         }
 
-        $form = $event->getForm();
-
-        $this->customizeForm($form, $data);
+        $this->customizeForm($event->getForm(), $data);
     }
 
     /**
@@ -109,27 +97,9 @@ class ProductAttributeSubscriber extends AttributeTypeSubscriber
             return;
         }
 
-        $form = $event->getForm();
+        $attribute = $this->service->createAttributeFromFormData($data);
 
-        // Create a productattribute from the form's data
-        $attribute = $this->manager->createAttribute();
-        $baseProperties = $this->service->getBaseProperties();
-
-        foreach ($data as $property => $value) {
-            if (array_key_exists($property, $baseProperties) && $value !== '') {
-                $set = 'set' . ucfirst($property);
-                if (method_exists($attribute, $set)) {
-                    if ($baseProperties[$property] === 'boolean') {
-                        $value = (bool) $value;
-                    } elseif ($baseProperties[$property] === 'integer') {
-                        $value = (int) $value;
-                    }
-                    $attribute->$set($value);
-                }
-            }
-        }
-
-        $this->customizeForm($form, $attribute);
+        $this->customizeForm($event->getForm(), $attribute);
     }
 
     /**
@@ -151,26 +121,7 @@ class ProductAttributeSubscriber extends AttributeTypeSubscriber
         // add options if creating an attribute with options
         if (!$attribute->getId()) {
             if ($attribute->getBackendType() === AbstractAttributeType::BACKEND_TYPE_OPTION) {
-                $form->add(
-                    $this->factory->createNamed(
-                        'options',
-                        'collection',
-                        null,
-                        array(
-                            'type'         => new AttributeOptionType(),
-                            'allow_add'    => true,
-                            'allow_delete' => true,
-                            'by_reference' => false
-                        )
-                    )
-                );
-            }
-        }
-
-        // only when editing
-        if ($attribute->getId()) {
-            foreach ($this->service->getCustomFields($attribute) as $field) {
-                $form->add($this->factory->createNamed($field['name'], $field['fieldType'], $field['data'], $field['options']));
+                $this->addOptionCollection($form);
             }
         }
     }

@@ -5,9 +5,6 @@
 
 {% block content %}
     {% include 'PimProductBundle:ProductAttribute:form.html.twig' with { 'form': form, 'locales': locales, 'disabledLocales': disabledLocales } %}
-                                {{ form_row(form.sortOrder) }}
-
-                                </div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
