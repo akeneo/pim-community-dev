@@ -6,8 +6,8 @@ use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 use Pim\Bundle\ProductBundle\Form\Type\ProductAttributeType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -96,7 +96,7 @@ class ProductAttributeController extends Controller
      */
     public function createAction()
     {
-        $attribute = $this->getProductManager()->createAttributeExtended();
+        $attribute = $this->getProductManager()->createAttribute();
 
         return $this->editAction($attribute);
     }

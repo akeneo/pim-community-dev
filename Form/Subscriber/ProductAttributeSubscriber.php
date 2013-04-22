@@ -112,7 +112,7 @@ class ProductAttributeSubscriber extends AttributeTypeSubscriber
         $form = $event->getForm();
 
         // Create a productattribute from the form's data
-        $attribute = $this->manager->createAttributeExtended();
+        $attribute = $this->manager->createAttribute();
         $baseProperties = $this->service->getBaseProperties();
 
         foreach ($data as $property => $value) {
