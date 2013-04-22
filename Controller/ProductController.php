@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Form\Type\ProductType;
 use Symfony\Component\HttpFoundation\Request;
+use YsTools\BackUrlBundle\Annotation\BackUrl;
 
 /**
  * Product Controller
@@ -190,6 +191,8 @@ class ProductController extends Controller
      * @param Product $entity
      *
      * @Route("/remove/{id}", requirements={"id"="\d+"})
+     *
+     * @BackUrl("back")
      *
      * @return array
      */
