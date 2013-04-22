@@ -43,7 +43,7 @@ class Product extends AbstractEntityFlexible
     protected $productFamily;
 
     /**
-     * @ORM\OneToMany(targetEntity="ProductLanguage", mappedBy="product", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="ProductLanguage", mappedBy="product", cascade={"persist", "remove"})
      */
     protected $languages;
 
