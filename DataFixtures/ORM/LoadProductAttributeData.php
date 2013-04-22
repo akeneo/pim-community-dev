@@ -112,6 +112,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $productAttribute->setDescription(ucfirst($attributeCode .' description'));
         $productAttribute->setTranslatable(true);
         $productAttribute->setScopable(true);
+        $productAttribute->setWysiwygEnabled(true);
         $this->createTranslation($productAttribute, 'default', 'name', 'Long description');
         $this->createTranslation($productAttribute, 'en_US', 'name', 'Long description');
         $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Description longue');
