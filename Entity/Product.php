@@ -47,6 +47,9 @@ class Product extends AbstractEntityFlexible
      */
     protected $languages;
 
+    /**
+     * Redefine constructor
+     */
     public function __construct()
     {
         parent::__construct();
@@ -69,7 +72,7 @@ class Product extends AbstractEntityFlexible
      *
      * @param string $sku
      *
-     * @return EntityAttribute
+     * @return \Pim\Bundle\ProductBundle\Entity\Product
      */
     public function setSku($sku)
     {
@@ -93,7 +96,7 @@ class Product extends AbstractEntityFlexible
      *
      * @param ProductFamily $productFamily
      *
-     * @return EntityAttribute
+     * @return \Pim\Bundle\ProductBundle\Entity\Product
      */
     public function setProductFamily($productFamily)
     {
@@ -102,30 +105,69 @@ class Product extends AbstractEntityFlexible
         return $this;
     }
 
+    /**
+     * Get languages
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
     public function getLanguages()
     {
         return $this->languages;
     }
 
+    /**
+     * Get Language
+     *
+     * @param Language $language
+     *
+     * @return Language
+     */
     public function getLanguage(Language $language)
     {
-        return $this->languages->filter(function ($l) use ($language) {
-            return $language === $l->getLanguage();
-        })->first();
+        return $this->languages->filter(
+            function ($l) use ($language) {
+                return $language === $l->getLanguage();
+            }
+        )
+        ->first();
     }
 
+    /**
+     * Get a collection of active languages
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
     public function getActiveLanguages()
     {
-        return $this->languages->filter(function ($language) {
-            return $language->isActive();
-        });
+        return $this->languages->filter(
+            function ($language) {
+                return $language->isActive();
+            }
+        );
     }
 
+    /**
+     * Set languages
+     *
+     * @param ArrayCollection $languages
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Product
+     */
     public function setLanguages($languages)
     {
         $this->languages = $languages;
+
+        return $this;
     }
 
+    /**
+     * Add language
+     *
+     * @param Language $language Language
+     * @param boolean  $active   Predicate for language activated or not
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Product
+     */
     public function addLanguage(Language $language, $active = false)
     {
         $pl = new ProductLanguage;
@@ -134,5 +176,7 @@ class Product extends AbstractEntityFlexible
         $pl->setActive($active);
 
         $this->languages->add($pl);
+
+        return $this;
     }
 }
