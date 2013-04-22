@@ -68,6 +68,8 @@
 'Ask': 'Ask'
 
 # Attribute group
+'General Properties': 'General Properties'
+'Group values': 'Group values'
 'New group': 'New group'
 'Groups overview': 'Groups overview'
 'Attributes count': 'Attributes count'

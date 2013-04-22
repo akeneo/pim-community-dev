@@ -35,6 +35,13 @@ class AttributeGroup implements TimestampableInterface, Translatable
     protected $id;
 
     /**
+     * @var string $code
+     *
+     * @ORM\Column(name="code", type="string", length=100)
+     */
+    protected $code;
+
+    /**
      * @var string $name
      *
      * @ORM\Column(name="name", type="string", length=100)
@@ -130,6 +137,30 @@ class AttributeGroup implements TimestampableInterface, Translatable
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
 
         return $this;
     }
