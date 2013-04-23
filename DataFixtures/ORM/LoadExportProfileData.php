@@ -39,12 +39,6 @@ class LoadExportProfileData extends AbstractFixture implements OrderedFixtureInt
     protected $manager;
 
     /**
-     * count profiles created to order them
-     * @staticvar integer
-     */
-    static protected $order = 0;
-
-    /**
      * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
@@ -103,7 +97,6 @@ class LoadExportProfileData extends AbstractFixture implements OrderedFixtureInt
         $profile = new ExportProfile();
         $profile->setCode(strtolower($name));
         $profile->setName($name .' (default)');
-        $profile->setSortOrder(++self::$order);
 
         $translation = $this->createTranslation($profile, 'default', $name .' (default)');
         $profile->addTranslation($translation);
