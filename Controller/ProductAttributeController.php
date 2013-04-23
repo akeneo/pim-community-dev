@@ -4,6 +4,7 @@ namespace Pim\Bundle\ProductBundle\Controller;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Form\Type\ProductAttributeType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\DateType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -95,7 +96,7 @@ class ProductAttributeController extends Controller
      */
     public function createAction()
     {
-        $attribute = $this->getProductManager()->createAttribute();
+        $attribute = $this->getProductManager()->createAttribute(new DateType());
 
         return $this->editAction($attribute);
     }
@@ -150,7 +151,7 @@ class ProductAttributeController extends Controller
         }
 
         // Add custom fields to the form and set the entered data to the form
-        $this->get('pim_product.form.handler.attribute')->preProcess($data);
+        $this->get('pim_product.form.handler.attribute')->preProcess($data['pim_product_attribute_form']);
 
         $em = $this->container->get('doctrine.orm.entity_manager');
         $locales = $em->getRepository('PimConfigBundle:Language')->findBy(array('activated' => 1));

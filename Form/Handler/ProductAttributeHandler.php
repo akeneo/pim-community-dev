@@ -63,7 +63,7 @@ class ProductAttributeHandler
         $attribute = $this->service->createAttributeFromFormData($data);
 
         $this->form->setData($attribute);
-        $this->form->bind($data['pim_product_attribute_form']);
+        $this->form->bind($data);
     }
 
     /**

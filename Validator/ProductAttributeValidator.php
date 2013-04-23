@@ -247,7 +247,6 @@ class ProductAttributeValidator
         $value = $productAttribute->getDefaultValue();
         if ($value !== null) {
             $exclusions = array(
-                AbstractAttributeType::TYPE_OPT_MULTI_SELECT_CLASS,
                 AbstractAttributeType::TYPE_IMAGE_CLASS,
                 AbstractAttributeType::TYPE_FILE_CLASS
             );

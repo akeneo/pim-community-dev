@@ -3,6 +3,8 @@ namespace Pim\Bundle\ProductBundle\Service;
 
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+use Pim\Bundle\ProductBundle\Entity\AttributeOption;
+use Pim\Bundle\ProductBundle\Entity\AttributeOptionValue;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
 
@@ -60,7 +62,8 @@ class AttributeService
     public function createAttributeFromFormData($data)
     {
         if (gettype($data) === 'array') {
-            $attribute = $this->manager->createAttribute();
+            $type = !empty($data['attributeType']) ? new $data['attributeType']() : null;
+            $attribute = $this->manager->createAttribute($type);
 
             $baseProperties = $this->getBaseProperties();
 
@@ -76,6 +79,20 @@ class AttributeService
                         $attribute->$set($value);
                     }
                 }
+            }
+
+            if ($attribute->getBackendType() === AbstractAttributeType::BACKEND_TYPE_OPTION
+                || $attribute->getBackendType() === AbstractAttributeType::BACKEND_TYPE_OPTIONS) {
+
+                $option = new AttributeOption();
+                $option->setTranslatable(true);
+                $option->setDefaultValue('test');
+                $optionValue = new AttributeOptionValue();
+                $optionValue->setLocale('fr_FR');
+                $optionValue->setValue('test');
+
+                $option->addOptionValue($optionValue);
+                $attribute->addOption($option);
             }
 
             return $attribute;
@@ -264,7 +281,7 @@ class AttributeService
         $attType = new $attTypeClass();
         $fieldType = $attType->getFormType();
 
-        if ($fieldType === 'entity') {
+        if ($fieldType === 'entity' || $fieldType = 'oro_flexibleentity_metric') {
             $fieldType = 'text';
         } elseif ($attTypeClass == AbstractAttributeType::TYPE_BOOLEAN_CLASS) {
             $fieldType = 'checkbox';

@@ -62,58 +62,6 @@ function updateFieldsFromUnique() {
 
 $(function() {
 
-    $('select[id*=validationRule]').change(function() {
-        if ($(this).val() == 'regexp') {
-            $('input[id*=validationRegexp]').parent().parent().show();
-        } else {
-            $('input[id*=validationRegexp]').parent().parent().hide();
-        }
-    });
-    $('select[id*=validationRule]').trigger('change');
-
-    if ($('select[id*=availableLanguages]').val()) {
-        $('select[id*=availableLanguages]').parent().parent().show();
-        $('#limitLanguages-switch').bootstrapSwitch('setState', true);
-    }
-
-    $('#limitLanguages-switch').on('switch-change', function (e, data) {
-        if (data.value) {
-            $(this).parent().parent().next().show();
-        } else {
-            $('select[id*=availableLanguages]').select2('val', '');
-            $(this).parent().parent().next().hide();
-        }
-    });
-
-    $('#pim_product_attribute_form_metricType').select2({ data: OroApp.measures.getMetricTypes() });
-    $('#pim_product_attribute_form_metricType').change(function() {
-        $('#pim_product_attribute_form_defaultMetricUnit').select2({
-            data: OroApp.measures.getMetricUnits($(this).select2('val'))
-        });
-    });
-    $('#pim_product_attribute_form_metricType').trigger('change');
-
-    $('.picker-datetime').datetimepicker();
-    $('.picker-date').datetimepicker({ pickTime: false });
-    $('.picker-time').datetimepicker({ pickDate: false });
-
-    $('.picker-date, .picker-datetime').on('changeDate', function(e) {
-        var val = e.date ? e.date.toISOString() : '';
-        $(this).parent().children('input').val(val);
-    });
-
-    $('.picker-time').on('changeDate', function(e) {
-        var val = '';
-        if (e.localDate) {
-            var h = e.localDate.getHours();
-            var m = e.localDate.getMinutes();
-            h = (h > 9) ? h : '0' + h;
-            m = (m > 9) ? m : '0' + m;
-            val = h + ':' + m;
-        }
-        $(this).parent().children('input').val(val);
-    });
-
     function updateForm() {
         $.post(
            'preprocess',
@@ -122,22 +70,80 @@ $(function() {
                 $('#' + formName).remove();
                 $('#main').append($(data));
                 $('#' + formName + ' div.alert').remove();
-                $('#' + formName + ' .switch').bootstrapSwitch();
-                $('#' + formName + ' select').select2();
-                initializeOptions();
-                $('#pim_product_attribute_form_attributeType').select2().on('change', function() {
-                    updateForm();
-                });
+                initializeForm();
             }
         );
     }
 
-    $('#pim_product_attribute_form_attributeType').select2().on('change', function() {
-        updateForm();
-    });
+    function initializeForm() {
+        $('#' + formName + ' .switch:not(.has-switch)').bootstrapSwitch();
+        $('#' + formName + ' select').select2();
+        $('#' + formName + ' input.multiselect').select2({ tags: $('#' + formName + ' input.multiselect').val() });
+        initializeOptions();
+        $('#pim_product_attribute_form_attributeType').select2().on('change', function() {
+            updateForm();
+        });
+
+        $('select[id*=validationRule]').change(function() {
+            if ($(this).val() == 'regexp') {
+                $('input[id*=validationRegexp]').parent().parent().show();
+            } else {
+                $('input[id*=validationRegexp]').parent().parent().hide();
+            }
+        });
+        $('select[id*=validationRule]').trigger('change');
+
+        if ($('select[id*=availableLanguages]').val()) {
+            $('select[id*=availableLanguages]').parent().parent().show();
+            $('#limitLanguages-switch').bootstrapSwitch('setState', true);
+        }
+
+        $('#limitLanguages-switch').on('switch-change', function (e, data) {
+            if (data.value) {
+                $(this).parent().parent().next().show();
+            } else {
+                $('select[id*=availableLanguages]').select2('val', '');
+                $(this).parent().parent().next().hide();
+            }
+        });
+
+        $('#pim_product_attribute_form_metricType').select2({ data: OroApp.measures.getMetricTypes() });
+        $('#pim_product_attribute_form_metricType').change(function() {
+            $('#pim_product_attribute_form_defaultMetricUnit').select2({
+                data: OroApp.measures.getMetricUnits($(this).select2('val'))
+            });
+        });
+        $('#pim_product_attribute_form_metricType').trigger('change');
+
+        $('.picker-datetime').datetimepicker();
+        $('.picker-date').datetimepicker({ pickTime: false });
+        $('.picker-time').datetimepicker({ pickDate: false });
+
+        $('.picker-date, .picker-datetime').on('changeDate', function(e) {
+            var val = e.date ? e.date.toISOString() : '';
+            $(this).parent().children('input').val(val);
+        });
+
+        $('.picker-time').on('changeDate', function(e) {
+            var val = '';
+            if (e.localDate) {
+                var h = e.localDate.getHours();
+                var m = e.localDate.getMinutes();
+                h = (h > 9) ? h : '0' + h;
+                m = (m > 9) ? m : '0' + m;
+                val = h + ':' + m;
+            }
+            $(this).parent().children('input').val(val);
+        });
+    }
+
+    initializeForm();
 
     function initializeOptions() {
         var $optionList = $('table#sortable_options');
+        if (!$optionList.length) {
+            return;
+        }
         $optionList.after($('<a class="btn btn-small add_option_link" href="#"><i class="icon-plus"></i>{{ 'Add an option'|trans }}</a>'));
 
         $optionList.find('tr.att-option').each(function() {

@@ -249,6 +249,18 @@ class ProductAttributeType extends AttributeType
     }
 
     /**
+     * Override the parent's method to add a hidden field for sort order
+     * @param FormBuilderInterface $builder
+     *
+     * @return void
+     */
+    protected function addPositionField(FormBuilderInterface $builder)
+    {
+        $builder->add('sortOrder', 'hidden');
+    }
+
+
+    /**
      * Return available frontend type
      *
      * @return array

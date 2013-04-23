@@ -118,11 +118,9 @@ class ProductAttributeSubscriber extends AttributeTypeSubscriber
             $form->add($this->factory->createNamed($field['name'], $field['fieldType'], $field['data'], $field['options']));
         }
 
-        // add options if creating an attribute with options
-        if (!$attribute->getId()) {
-            if ($attribute->getBackendType() === AbstractAttributeType::BACKEND_TYPE_OPTION) {
-                $this->addOptionCollection($form);
-            }
+        if ($attribute->getBackendType() === AbstractAttributeType::BACKEND_TYPE_OPTION
+            || $attribute->getBackendType() === AbstractAttributeType::BACKEND_TYPE_OPTIONS) {
+            $this->addOptionCollection($form);
         }
     }
 
