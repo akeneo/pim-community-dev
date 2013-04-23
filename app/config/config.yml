@@ -35,7 +35,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        ["OroUIBundle", "OroUserBundle", "OroGridBundle", "OroNavigationBundle", "OroWindowsBundle", "OroSegmentationTreeBundle", "PimUIBundle", "PimProductBundle"]
+    bundles:        ["OroUIBundle", "OroUserBundle", "OroGridBundle", "OroNavigationBundle", "OroWindowsBundle", "OroFilterBundle", "OroSegmentationTreeBundle", "PimUIBundle", "PimProductBundle"]
 
     #java: /usr/bin/java
     filters:

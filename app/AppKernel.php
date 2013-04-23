@@ -45,6 +45,7 @@ class AppKernel extends Kernel
             new Oro\Bundle\ConfigBundle\OroConfigBundle(),
             new Oro\Bundle\GridBundle\OroGridBundle(),
             new Oro\Bundle\WindowsBundle\OroWindowsBundle(),
+            new Oro\Bundle\FilterBundle\OroFilterBundle(),
 
             // PIM bundles
             new Pim\Bundle\UIBundle\PimUIBundle(),
