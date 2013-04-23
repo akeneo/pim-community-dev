@@ -77,41 +77,6 @@ class ExportProfileController extends Controller
     }
 
     /**
-     * Sprt export profiles
-     *
-     * @param Request $request
-     *
-     * @Route("/sort")
-     *
-     * @return Response
-     */
-    public function sortAction(Request $request)
-    {
-        if ($request->getMethod() !== 'POST') {
-            return $this->redirect($this->generateUrl('pim_product_exportprofile_index'));
-        }
-
-        $data = $request->request->all();
-
-        $em = $this->getEntityManager();
-
-        if (!empty($data)) {
-            foreach ($data as $id => $sort) {
-                $profile = $this->getExportProfileRepository()->find((int) $id);
-                if ($profile) {
-                    $profile->setSortOrder((int) $sort);
-                    $em->persist($profile);
-                }
-            }
-            $em->flush();
-
-            return new Response(1);
-        }
-
-        return new Response(0);
-    }
-
-    /**
      * Remove export profile
      *
      * @param ExportProfile $profile
