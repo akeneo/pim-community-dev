@@ -104,7 +104,7 @@ knp_paginator:
         sort_direction_name:  direction # sort direction query parameter name
         distinct:             true      # ensure distinct results, useful when ORM queries are using GROUP BY statements
     template:
-        pagination:           PimUIBundle::pager.bootstrap.html.twig
+        pagination:           pagination: OroUIBundle::pager.html.twig
 
 fos_rest:
     view:

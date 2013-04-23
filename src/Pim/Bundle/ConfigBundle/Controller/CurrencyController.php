@@ -55,13 +55,7 @@ class CurrencyController extends Controller
         $view = ('json' === $request->getRequestFormat()) ?
             'OroGridBundle:Datagrid:list.json.php' : 'PimConfigBundle:Currency:index.html.twig';
 
-        return $this->render(
-            $view,
-            array(
-                'datagrid' => $datagrid,
-                'form'     => $datagrid->getForm()->createView()
-            )
-        );
+        return $this->render($view, array('datagrid' => $datagrid->createView()));
     }
 
     /**

@@ -4203,12 +4203,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yshyshkin/BackUrl.git",
-                "reference": "b444f31710fdcde75c2d3a1aba312eb270a9633a"
+                "reference": "ea30c6b6363a8a931d535b38cd4c5cddedaacdb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yshyshkin/BackUrl/zipball/b444f31710fdcde75c2d3a1aba312eb270a9633a",
-                "reference": "b444f31710fdcde75c2d3a1aba312eb270a9633a",
+                "url": "https://api.github.com/repos/yshyshkin/BackUrl/zipball/ea30c6b6363a8a931d535b38cd4c5cddedaacdb4",
+                "reference": "ea30c6b6363a8a931d535b38cd4c5cddedaacdb4",
                 "shasum": ""
             },
             "require": {
@@ -4237,7 +4237,7 @@
                 "annotation",
                 "redirect"
             ],
-            "time": "2013-04-20 11:01:04"
+            "time": "2013-04-23 10:51:19"
         },
         {
             "name": "zendframework/zend-code",

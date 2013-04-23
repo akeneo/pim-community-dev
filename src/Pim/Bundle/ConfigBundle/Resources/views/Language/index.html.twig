@@ -5,13 +5,13 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagrid': datagrid, 'selector': '#backgrid'} %}
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#backgrid'} %}
     {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
 {% endblock %}
 
 {% block content %}
     <h1>{{ title }}
-        <a class="btn btn-primary pull-right" 
+        <a class="btn btn-primary pull-right"
             href="{{ path('pim_config_language_create') }}">{{ 'New language'|trans }}</a>
     </h1>
 
