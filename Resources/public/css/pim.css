@@ -161,17 +161,17 @@ a.accordion-toggle {
     float: none;
 }
 
-#attributegroups-sortable li {
+#entities-sortable li {
     list-style: none;
     cursor: pointer;
     line-height: 35px;
 }
 
-#attributegroups-sortable li:nth-child(odd) {
+#entities-sortable li:nth-child(odd) {
     background-color: #E1E1E1;
 }
 
-#attributegroups-sortable li.active {
+#entities-sortable li.active {
     background-color: #5A8CE6;
 }
 
@@ -195,7 +195,7 @@ form .table-condensed input.span4 {
     height: auto;
 }
 
-#attributegroups-sortable {
+#entities-sortable {
     margin-left: 0;
 }
 
