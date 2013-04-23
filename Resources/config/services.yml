@@ -94,3 +94,4 @@ services:
     pim_product.attribute_service:
         class: Pim\Bundle\ProductBundle\Service\AttributeService
         arguments: [%pim_product.attributes_config%]
+

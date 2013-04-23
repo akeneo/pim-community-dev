@@ -20,7 +20,7 @@ class ProductValue extends AbstractEntityFlexibleValue
     /**
      * @var Oro\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute
      *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Attribute")
+     * @ORM\ManyToOne(targetEntity="ProductAttribute")
      * @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $attribute;
@@ -37,11 +37,21 @@ class ProductValue extends AbstractEntityFlexibleValue
      *
      * @var options ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption")
-     * @ORM\JoinTable(name="acmedemoflexibleentity_product_value_option",
+     * @ORM\ManyToMany(targetEntity="AttributeOption")
+     * @ORM\JoinTable(name="pim_product_value_option",
      *      joinColumns={@ORM\JoinColumn(name="value_id", referencedColumnName="id", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="option_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
      */
     protected $options;
+
+    /**
+     * Store simple option value
+     *
+     * @var Pim\Bundle\ProductBundle\Entity\AttributeOption $option
+     *
+     * @ORM\ManyToOne(targetEntity="AttributeOption", cascade="persist")
+     * @ORM\JoinColumn(name="option_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $option;
 }

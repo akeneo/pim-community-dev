@@ -1,38 +1,107 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeExtended;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
 use Pim\Bundle\ConfigBundle\Entity\Language;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-
 use Gedmo\Translatable\Translatable;
-
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Custom properties for a product attribute
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_product_attribute")
+ * @ORM\Table(
+ *     name="pim_product_attribute", indexes={@ORM\Index(name="searchcode_idx", columns={"code"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="searchunique_idx", columns={"code", "entity_type"})}
+ * )
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity("code")
  */
-class ProductAttribute extends AbstractEntityAttributeExtended implements Translatable
+class ProductAttribute extends AbstractEntityAttribute implements Translatable
 {
     /**
-     * @var Oro\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute
+     * Overrided to change target entity name
      *
-     * @ORM\OneToOne(
-     *     targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Attribute", cascade={"persist", "merge", "remove"}
+     * @var ArrayCollection $options
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Pim\Bundle\ProductBundle\Entity\AttributeOption", mappedBy="attribute", cascade={"persist", "remove"}, orphanRemoval=true
      * )
-     * @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
-    protected $attribute;
+    protected $options;
+
+    /**
+     * @ORM\Column(name="sort_order", type="integer")
+     */
+    protected $sortOrder = 0;
+
+    /**
+     * Convert defaultValue to UNIX timestamp if it is a DateTime object
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function convertDefaultValueToTimestamp()
+    {
+        if ($this->getDefaultValue() instanceof \DateTime) {
+            $this->setDefaultValue($this->getDefaultValue()->format('U'));
+        }
+    }
+
+    /**
+     * Convert defaultValue to DateTime if attribute type is date
+     *
+     * @ORM\PostLoad
+     */
+    public function convertDefaultValueToDatetime()
+    {
+        if ($this->getDefaultValue()) {
+            if (strpos($this->getAttributeType(), 'DateType') !== false) {
+                $date = new \DateTime();
+                $date->setTimestamp(intval($this->getDefaultValue()));
+
+                $this->setDefaultValue($date);
+            }
+        }
+    }
+
+    /**
+     * Convert defaultValue to integer if attribute type is boolean
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function convertDefaultValueToInteger()
+    {
+        if ($this->getDefaultValue() !== null) {
+            if (strpos($this->getAttributeType(), 'BooleanType') !== false) {
+                $this->setDefaultValue((int) $this->getDefaultValue());
+            }
+        }
+    }
+
+    /**
+     * Convert defaultValue to boolean if attribute type is boolean
+     *
+     * @ORM\PostLoad
+     */
+    public function convertDefaultValueToBoolean()
+    {
+        if ($this->getDefaultValue() !== null) {
+            if (strpos($this->getAttributeType(), 'BooleanType') !== false) {
+                $this->setDefaultValue((bool) $this->getDefaultValue());
+            }
+        }
+    }
 
     /**
      * @var string $name
@@ -238,6 +307,13 @@ class ProductAttribute extends AbstractEntityAttributeExtended implements Transl
      */
     public function __construct()
     {
+        $this->options      = new ArrayCollection();
+        $this->required     = false;
+        $this->unique       = false;
+        $this->defaultValue = null;
+        $this->searchable   = false;
+        $this->translatable = false;
+        $this->scopable     = false;
         $this->description         = '';
         $this->smart               = false;
         $this->variant             = false;
@@ -921,6 +997,18 @@ class ProductAttribute extends AbstractEntityAttributeExtended implements Transl
     public function removeTranslation(ProductAttributeTranslation $translation)
     {
         $this->translations->removeElement($translation);
+
+        return $this;
+    }
+
+    public function getSortOrder()
+    {
+        return $this->sortOrder;
+    }
+
+    public function setSortOrder($sortOrder)
+    {
+        $this->sortOrder = $sortOrder;
 
         return $this;
     }

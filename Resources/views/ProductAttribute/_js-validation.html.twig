@@ -61,16 +61,6 @@ function updateFieldsFromUnique() {
 }
 
 $(function() {
-    $('#tabs').tabs().delegate("a", "click", function() {
-        $(this).parent().parent().find('li').each(function() {
-            $(this).removeClass('active');
-        });
-        $(this).parent().addClass('active');
-    });
-
-    $('select').select2({ allowClear: true });
-
-    $('input.multiselect').select2({ tags: $(this).val() });
 
     $('select[id*=validationRule]').change(function() {
         if ($(this).val() == 'regexp') {
@@ -122,10 +112,6 @@ $(function() {
             val = h + ':' + m;
         }
         $(this).parent().children('input').val(val);
-    });
-
-    $('.accordion').on('show hide', function (n) {
-        $(n.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-chevron-up icon-chevron-down');
     });
 
 });

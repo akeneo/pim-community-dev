@@ -76,7 +76,7 @@ class AddAttributeGroupSubscriber implements EventSubscriberInterface
         $qb->select('AttributeGroup.id')
             ->from('PimProductBundle:ProductAttribute', 'ProductAttribute')
             ->leftJoin('ProductAttribute.group', 'AttributeGroup')
-            ->where($qb->expr()->eq('ProductAttribute.attribute', $value->getAttribute()->getId()));
+            ->where($qb->expr()->eq('ProductAttribute', $value->getAttribute()->getId()));
 
         try {
             $groupId = $qb->getQuery()->getResult(Query::HYDRATE_SINGLE_SCALAR);

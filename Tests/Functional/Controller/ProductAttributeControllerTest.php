@@ -37,28 +37,6 @@ class ProductAttributeControllerTest extends ControllerTest
      *
      * @dataProvider localeProvider
      */
-    public function testList($locale)
-    {
-        // initialize authentication to call container and get attribute group entity
-        $attributeGroup = $this->getAttributeGroupRepository()->findOneBy(array('name' => 'General'));
-        $uri = '/'. $locale .'/product/product-attribute/list/'. $attributeGroup->getId();
-
-        // assert without authentication
-        $this->client->request('GET', $uri);
-        $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
-
-        // assert with authentication
-        $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertCount(1, $crawler->filter('table.table:contains("name")'));
-    }
-
-    /**
-     * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
-     */
     public function testCreate($locale)
     {
         $uri = '/'. $locale .'/product/product-attribute/create';

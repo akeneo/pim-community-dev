@@ -2,15 +2,14 @@
 namespace Pim\Bundle\ProductBundle\Controller;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-
 use Pim\Bundle\ProductBundle\Form\Type\ProductAttributeType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use YsTools\BackUrlBundle\Annotation\BackUrl;
 
 /**
  * Product attribute controller
@@ -60,7 +59,7 @@ class ProductAttributeController extends Controller
         $queryBuilder = $em->createQueryBuilder();
         $queryBuilder
             ->select('a.id', 'a.code', 'a.attributeType', 'a.scopable', 'a.translatable')
-            ->from('OroFlexibleEntityBundle:Attribute', 'a')
+            ->from('PimProductBundle:ProductAttribute', 'a')
             ->where("a.entityType = 'Pim\Bundle\ProductBundle\Entity\Product'");
 
         /** @var $queryFactory QueryFactory */
@@ -77,13 +76,7 @@ class ProductAttributeController extends Controller
             $view = 'PimProductBundle:ProductAttribute:index.html.twig';
         }
 
-        return $this->render(
-            $view,
-            array(
-                'datagrid' => $datagrid,
-                'form'     => $datagrid->getForm()->createView()
-            )
-        );
+        return $this->render($view, array('datagrid' => $datagrid->createView()));
     }
 
     /**
@@ -140,7 +133,7 @@ class ProductAttributeController extends Controller
      *
      * @Route("/remove/{id}", requirements={"id"="\d+"})
      *
-     * @return array
+     * @BackUrl("back")
      */
     public function removeAction(ProductAttribute $entity)
     {
@@ -153,30 +146,4 @@ class ProductAttributeController extends Controller
         return $this->redirect($this->generateUrl('pim_product_productattribute_index'));
     }
 
-    /**
-     * List attributes group by AttributeGroup asked
-     * - groupId = 0 => get all product attributes
-     * - groupId > 0 => get product attributes by group id
-     * - groupId = null => get unclassified product attributes
-     *
-     * @param integer $groupId
-     *
-     * @Route("/list/{groupId}", requirements={"groupId"="\d+"}, defaults={"groupId"=null})
-     * @Template("PimProductBundle:ProductAttribute:index.html.twig")
-     *
-     * @return multitype:ProductAttribute
-     */
-    public function listAction($groupId = null)
-    {
-        $criterias = array();
-        if ($groupId > 0) {
-            $criterias = array('group' => $groupId);
-        } elseif ($groupId === null) {
-            $criterias = array('group' => null);
-        }
-
-        return array(
-            'attributes' => $this->getProductManager()->getAttributeExtendedRepository()->findBy($criterias)
-        );
-    }
 }
