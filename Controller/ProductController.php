@@ -65,13 +65,7 @@ class ProductController extends Controller
             $view = 'PimProductBundle:Product:index.html.twig';
         }
 
-        return $this->render(
-            $view,
-            array(
-                'datagrid' => $datagrid,
-                'form'     => $datagrid->getForm()->createView()
-            )
-        );
+        return $this->render($view, array('datagrid' => $datagrid->createView()));
     }
 
     /**
