@@ -37,6 +37,11 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
     protected $config;
 
     /**
+     * @var ProductManager
+     */
+    protected $manager;
+
+    /**
      * {@inheritDoc}
      */
     public function setUp()
@@ -49,8 +54,9 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
         static::$kernel->boot();
 
         $this->config = static::$kernel->getContainer()->getParameter('pim_product.attributes_config');
+        $this->manager = static::$kernel->getContainer()->get('product_manager');
 
-        $this->service = new AttributeService($this->config);
+        $this->service = new AttributeService($this->config, $this->manager);
     }
 
     /**
