@@ -1,6 +1,10 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Type;
 
+use Symfony\Component\DependencyInjection\Container;
+
+use Pim\Bundle\TranslationBundle\Form\Type\TranslatedFieldType;
+
 use Pim\Bundle\ProductBundle\Tests\Entity\ObjectTestEntity;
 
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
@@ -29,13 +33,18 @@ class ExportProfileTypeTest extends TypeTestCase
     {
         parent::setUp();
 
-        // redefine form factory
+        // Create mock container
+        $container = $this->getContainerMock();
+
+        // redefine form factory and builder to add translatable field
+        $this->builder->add('pim_translatable_field');
         $this->factory = Forms::createFormFactoryBuilder()
             ->addTypeExtension(
                 new FormTypeValidatorExtension(
                     $this->getMock('Symfony\Component\Validator\ValidatorInterface')
                 )
             )
+            ->addType(new TranslatedFieldType($container))
             ->getFormFactory();
 
         // Create form type
@@ -44,14 +53,57 @@ class ExportProfileTypeTest extends TypeTestCase
     }
 
     /**
+     * Create mock container for pim_translatable_field
+     *
+     * @return \Symfony\Component\DependencyInjection\Container
+     */
+    protected function getContainerMock()
+    {
+        $localeManager = $this->getLocaleManagerMock();
+        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
+
+        // add locale manager and default locale to container
+        $container = new Container();
+        $container->set('pim_config.manager.locale', $localeManager);
+        $container->set('validator', $validator);
+        $container->setParameter('default_locale', 'default');
+
+        return $container;
+    }
+
+    /**
+     * Create mock for locale manager
+     *
+     * @return \Pim\Bundle\ConfigBundle\Manager\LocaleManager
+     */
+    protected function getLocaleManagerMock()
+    {
+        $objectManager = $this->getMockForAbstractClass('\Doctrine\Common\Persistence\ObjectManager');
+
+        // create mock builder for locale manager and redefine constructor to set object manager
+        $mockBuilder = $this->getMockBuilder('Pim\Bundle\ConfigBundle\Manager\LocaleManager')
+                            ->setConstructorArgs(array($objectManager));
+
+        // create locale manager mock from mock builder previously create and redefine getActiveCodes method
+        $localeManager = $mockBuilder->getMock(
+            'Pim\Bundle\ConfigBundle\Manager\LocaleManager',
+            array('getActiveCodes')
+        );
+        $localeManager->expects($this->once())
+                      ->method('getActiveCodes')
+                      ->will($this->returnValue(array('en_US', 'fr_FR')));
+
+        return $localeManager;
+    }
+
+    /**
      * Test build of form with form type
      */
     public function testFormCreate()
     {
         // Assert fields
-        $this->assertField('id', 'hidden');
         $this->assertField('code', 'text');
-        $this->assertField('name', 'text');
+        $this->assertField('name', 'pim_translatable_field');
 
         // Assert option class
         $this->assertEquals(
@@ -73,82 +125,5 @@ class ExportProfileTypeTest extends TypeTestCase
         $formType = $this->form->get($name);
         $this->assertInstanceOf('\Symfony\Component\Form\Form', $formType);
         $this->assertEquals($type, $formType->getConfig()->getType()->getInnerType()->getName());
-    }
-
-    /**
-     * Data provider for success validation of form
-     * @return multitype:multitype:multitype:mixed
-     *
-     * @static
-     */
-    public static function successProvider()
-    {
-        return array(
-            array(array('id' => 5, 'name' => 'Test-Profile', 'sort_order' => 1)),
-            array(array('id' => null, 'name' => 'Test-Profile', 'sort_order' => 5)),
-        );
-    }
-
-    /**
-     * Test bind data
-     * @param array $formData
-     *
-     * @dataProvider successProvider
-     */
-    public function testBindValidData($formData)
-    {
-        // create tested object
-        $object = new ExportProfileTestEntity('\Pim\Bundle\ProductBundle\Entity\ExportProfile', $formData);
-
-        // bind data and assert data transformer
-        $this->form->bind($formData);
-        $this->assertTrue($this->form->isSynchronized());
-        $this->assertEquals($object->getTestedEntity(), $this->form->getData());
-
-        // assert view renderer
-        $view = $this->form->createView();
-        $children = $view->getChildren();
-
-        foreach (array_keys($formData) as $key) {
-            $this->assertArrayHasKey($key, $children);
-        }
-    }
-
-    /**
-     * Data provider for success validation of form
-     * @return multitype:multitype:multitype:mixed
-     *
-     * @static
-     */
-    public static function failureProvider()
-    {
-        return array(
-            array(array('id' => 5, 'name' => 'Test-Group', 'sort_order' => 'string'))
-        );
-    }
-
-    /**
-     * Test bind data
-     * @param array $formData
-     *
-     * @dataProvider failureProvider
-     */
-    public function testBindFailedData($formData)
-    {
-        // create tested object
-        $object = new ObjectTestEntity('\Pim\Bundle\ProductBundle\Entity\ExportProfile', $formData);
-
-        // bind data and assert data transformer
-        $this->form->bind($formData);
-        $this->assertTrue($this->form->isSynchronized());
-        $this->assertNotEquals($object->getTestedEntity(), $this->form->getData());
-
-        // assert view renderer
-        $view = $this->form->createView();
-        $children = $view->getChildren();
-
-        foreach (array_keys($formData) as $key) {
-            $this->assertArrayHasKey($key, $children);
-        }
     }
 }
