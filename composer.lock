@@ -1,9 +1,5 @@
 {
-    "_readme": [
-        "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
-    ],
-    "hash": "261a2e6c44c9996efb2b1a49e389d1c4",
+    "hash": "b450be715606b4c40799eff53059d9b5",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -465,9 +461,9 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
+                    "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -531,9 +527,9 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
+                    "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -603,7 +599,7 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -1722,7 +1718,7 @@
                 {
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -2049,7 +2045,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -2126,16 +2122,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpPaginatorBundle.git",
-                "reference": "6d93d89a3c913155d9d1778db4232db0e4d6f3e3"
+                "reference": "e798c5689ff63edfb22df2b65d5094485c0e6bd2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpPaginatorBundle/zipball/6d93d89a3c913155d9d1778db4232db0e4d6f3e3",
-                "reference": "6d93d89a3c913155d9d1778db4232db0e4d6f3e3",
+                "url": "https://api.github.com/repos/KnpLabs/KnpPaginatorBundle/zipball/e798c5689ff63edfb22df2b65d5094485c0e6bd2",
+                "reference": "e798c5689ff63edfb22df2b65d5094485c0e6bd2",
                 "shasum": ""
             },
             "require": {
-                "knplabs/knp-components": ">=1.1,<2.0",
+                "knplabs/knp-components": ">=1.2,<2.0",
                 "php": ">=5.3.3",
                 "symfony/framework-bundle": ">=2.0,<3.0",
                 "twig/twig": ">=1.5,<2.0"
@@ -2176,7 +2172,7 @@
                 "pagination",
                 "paginator"
             ],
-            "time": "2013-04-08 18:28:56"
+            "time": "2013-04-23 07:46:41"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -2627,18 +2623,66 @@
             "time": "2013-04-17 16:13:53"
         },
         {
+            "name": "oro/filter-bundle",
+            "version": "dev-master",
+            "target-dir": "Oro/Bundle/FilterBundle",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:laboro/FilterBundle.git",
+                "reference": "763a3644b89543c526d3b51ece17e327e6499ce1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laboro/FilterBundle/zipball/763a3644b89543c526d3b51ece17e327e6499ce1",
+                "reference": "763a3644b89543c526d3b51ece17e327e6499ce1",
+                "shasum": ""
+            },
+            "require": {
+                "oro/ui-bundle": "dev-master",
+                "php": ">=5.3.3",
+                "symfony/symfony": ">=2.1"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Oro\\Bundle\\FilterBundle": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "BAP Filter Bundle",
+            "homepage": "https://github.com/laboro/FilterBundle",
+            "keywords": [
+                "BAP",
+                "Filter",
+                "UI",
+                "User Interface"
+            ],
+            "support": {
+                "source": "https://github.com/laboro/FilterBundle/tree/master",
+                "issues": "https://github.com/laboro/FilterBundle/issues"
+            },
+            "time": "2013-04-22 13:38:59"
+        },
+        {
             "name": "oro/flexible-entity-bundle",
             "version": "dev-master",
             "target-dir": "Oro/Bundle/FlexibleEntityBundle",
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/FlexibleEntityBundle.git",
-                "reference": "d1a7c36d1829034982e8876d4d943d9e6e6af337"
+                "reference": "dc4d3b44a1cee818956413cb36c265eb78be0a49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/d1a7c36d1829034982e8876d4d943d9e6e6af337",
-                "reference": "d1a7c36d1829034982e8876d4d943d9e6e6af337",
+                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/dc4d3b44a1cee818956413cb36c265eb78be0a49",
+                "reference": "dc4d3b44a1cee818956413cb36c265eb78be0a49",
                 "shasum": ""
             },
             "require": {
@@ -2673,7 +2717,7 @@
                 "source": "https://github.com/laboro/FlexibleEntityBundle/tree/master",
                 "issues": "https://github.com/laboro/FlexibleEntityBundle/issues"
             },
-            "time": "2013-04-22 10:23:30"
+            "time": "2013-04-23 10:25:55"
         },
         {
             "name": "oro/grid-bundle",
@@ -2682,15 +2726,16 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/GridBundle.git",
-                "reference": "88db57b18a05983fcad5db11b97a8011c5932c30"
+                "reference": "fb9d649ac05d76954e0a2864e918724162d699fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/GridBundle/zipball/88db57b18a05983fcad5db11b97a8011c5932c30",
-                "reference": "88db57b18a05983fcad5db11b97a8011c5932c30",
+                "url": "https://api.github.com/repos/laboro/GridBundle/zipball/fb9d649ac05d76954e0a2864e918724162d699fb",
+                "reference": "fb9d649ac05d76954e0a2864e918724162d699fb",
                 "shasum": ""
             },
             "require": {
+                "oro/filter-bundle": "dev-master",
                 "oro/flexible-entity-bundle": "dev-master",
                 "oro/ui-bundle": "dev-master",
                 "php": ">=5.3.3",
@@ -2721,10 +2766,10 @@
                 "User Interface"
             ],
             "support": {
-                "source": "https://github.com/laboro/GridBundle/tree/master",
+                "source": "https://github.com/laboro/GridBundle/tree/grid_bundle",
                 "issues": "https://github.com/laboro/GridBundle/issues"
             },
-            "time": "2013-04-12 14:31:30"
+            "time": "2013-04-23 09:23:36"
         },
         {
             "name": "oro/measure-bundle",
@@ -2990,12 +3035,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/UIBundle.git",
-                "reference": "5e3c9467d5589a185befab6880e3c3ea09a88ae6"
+                "reference": "56e76d022f0a300870d6d02a223c6053b67fa76d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/UIBundle/zipball/5e3c9467d5589a185befab6880e3c3ea09a88ae6",
-                "reference": "5e3c9467d5589a185befab6880e3c3ea09a88ae6",
+                "url": "https://api.github.com/repos/laboro/UIBundle/zipball/56e76d022f0a300870d6d02a223c6053b67fa76d",
+                "reference": "56e76d022f0a300870d6d02a223c6053b67fa76d",
                 "shasum": ""
             },
             "require": {
@@ -3030,7 +3075,7 @@
                 "source": "https://github.com/laboro/UIBundle/tree/master",
                 "issues": "https://github.com/laboro/UIBundle/issues"
             },
-            "time": "2013-04-19 14:43:19"
+            "time": "2013-04-22 15:56:30"
         },
         {
             "name": "oro/user-bundle",
@@ -3039,12 +3084,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/UserBundle.git",
-                "reference": "2099da9ac7e4f1a92ea04a0c61c709355bc302b0"
+                "reference": "dacb7ae9ff61b2f6be1d69ddaff83656a3cf8e0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/2099da9ac7e4f1a92ea04a0c61c709355bc302b0",
-                "reference": "2099da9ac7e4f1a92ea04a0c61c709355bc302b0",
+                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/dacb7ae9ff61b2f6be1d69ddaff83656a3cf8e0e",
+                "reference": "dacb7ae9ff61b2f6be1d69ddaff83656a3cf8e0e",
                 "shasum": ""
             },
             "require": {
@@ -3088,7 +3133,7 @@
                 "source": "https://github.com/laboro/UserBundle/tree/master",
                 "issues": "https://github.com/laboro/UserBundle/issues"
             },
-            "time": "2013-04-18 11:43:43"
+            "time": "2013-04-23 08:54:16"
         },
         {
             "name": "oro/windows-bundle",
@@ -4201,12 +4246,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendCode.git",
-                "reference": "release-2.1.5"
+                "reference": "326977e34e7e3c4533f1de371e4effb89c74f982"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendCode/zipball/release-2.1.5",
-                "reference": "release-2.1.5",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendCode/zipball/326977e34e7e3c4533f1de371e4effb89c74f982",
+                "reference": "326977e34e7e3c4533f1de371e4effb89c74f982",
                 "shasum": ""
             },
             "require": {
@@ -4240,7 +4285,7 @@
                 "code",
                 "zf2"
             ],
-            "time": "2013-04-17 11:42:28"
+            "time": "2013-04-22 19:13:02"
         },
         {
             "name": "zendframework/zend-escaper",
@@ -4551,12 +4596,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendServiceManager.git",
-                "reference": "release-2.1.5"
+                "reference": "51be8e207baa2b064c3ac838b6420607802f84eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendServiceManager/zipball/release-2.1.5",
-                "reference": "release-2.1.5",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendServiceManager/zipball/51be8e207baa2b064c3ac838b6420607802f84eb",
+                "reference": "51be8e207baa2b064c3ac838b6420607802f84eb",
                 "shasum": ""
             },
             "require": {
@@ -4585,7 +4630,7 @@
                 "servicemanager",
                 "zf2"
             ],
-            "time": "2013-04-17 11:42:28"
+            "time": "2013-04-22 19:13:09"
         },
         {
             "name": "zendframework/zend-soap",
@@ -4680,12 +4725,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendUri.git",
-                "reference": "release-2.1.5"
+                "reference": "49c416d411d9ff6e1563a511f8d32cfe6328e053"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendUri/zipball/release-2.1.5",
-                "reference": "release-2.1.5",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendUri/zipball/49c416d411d9ff6e1563a511f8d32cfe6328e053",
+                "reference": "49c416d411d9ff6e1563a511f8d32cfe6328e053",
                 "shasum": ""
             },
             "require": {
@@ -4714,7 +4759,7 @@
                 "uri",
                 "zf2"
             ],
-            "time": "2013-04-17 11:42:28"
+            "time": "2013-04-22 19:13:10"
         },
         {
             "name": "zendframework/zend-validator",
@@ -4723,12 +4768,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendValidator.git",
-                "reference": "release-2.1.5"
+                "reference": "406433977c57b21062a93bed34b8b39c3162fba0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendValidator/zipball/release-2.1.5",
-                "reference": "release-2.1.5",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendValidator/zipball/406433977c57b21062a93bed34b8b39c3162fba0",
+                "reference": "406433977c57b21062a93bed34b8b39c3162fba0",
                 "shasum": ""
             },
             "require": {
@@ -4765,7 +4810,7 @@
                 "validator",
                 "zf2"
             ],
-            "time": "2013-04-04 15:00:49"
+            "time": "2013-04-22 19:13:13"
         }
     ],
     "packages-dev": [
