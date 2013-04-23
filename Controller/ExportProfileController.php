@@ -22,7 +22,7 @@ class ExportProfileController extends Controller
 {
 
     /**
-     * List export profiles action
+     * List export profiles
      *
      * @Route("/index")
      * @Template()
@@ -37,7 +37,7 @@ class ExportProfileController extends Controller
     }
 
     /**
-     * Create export profile action
+     * Create export profile
      *
      * @Route("/create")
      * @Template("PimProductBundle:ExportProfile:edit.html.twig")
