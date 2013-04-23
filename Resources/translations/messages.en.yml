@@ -127,3 +127,8 @@
 'Add child': 'Add child'
 'Edit product segment': 'Edit product segment'
 'Add product segment': 'Add product segment'
+
+# Export profiles
+'Export profiles overview': 'Export profiles overview'
+'New export profile': 'New export profile'
+'Edit export profile': 'Edit export profile'

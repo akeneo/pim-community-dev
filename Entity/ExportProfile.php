@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Gedmo\Translatable\Translatable;
@@ -19,6 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table(name="pim_export_profile")
  * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\ExportProfileTranslation")
+ * @UniqueEntity("code")
  */
 class ExportProfile implements Translatable
 {
@@ -130,30 +133,6 @@ class ExportProfile implements Translatable
     public function setName($name)
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get sort order
-     *
-     * @return integer
-     */
-    public function getSortOrder()
-    {
-        return $this->sortOrder;
-    }
-
-    /**
-     * Set sort order
-     *
-     * @param string $sortOrder
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\ExportProfile
-     */
-    public function setSortOrder($sortOrder)
-    {
-        $this->sortOrder = $sortOrder;
 
         return $this;
     }

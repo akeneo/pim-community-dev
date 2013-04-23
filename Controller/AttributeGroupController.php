@@ -1,8 +1,5 @@
 <?php
-
 namespace Pim\Bundle\ProductBundle\Controller;
-
-use Pim\Bundle\ProductBundle\Form\Type\AttributeGroupType;
 
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 
