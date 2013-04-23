@@ -13,7 +13,7 @@
             <h3 class="pull-left">{{ title|trans }}</h3>
             <button class="btn btn-primary pull-right" type="submit">{{ 'Save'|trans }}</button>
             {% if form.vars.value.id %}
-                <a class="btn pull-right" href="{{ path('pim_product_productattribute_remove', { id: form.vars.value.id }) }}">
+                <a class="btn pull-right" href="{{ path('pim_config_channel_remove', { id: form.vars.value.id }) }}">
                     {{ "Delete" | trans }}
                 </a>
             {% endif %}
