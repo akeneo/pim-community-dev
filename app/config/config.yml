@@ -158,6 +158,9 @@ services:
          tags:
              - { name: twig.extension }
 
+escape_wsse_authentication:
+    authentication_provider_class: Oro\Bundle\UserBundle\Security\WsseUserProvider
+
 knp_gaufrette:
     adapters:
         pim_adapter:

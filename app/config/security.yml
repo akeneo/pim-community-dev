@@ -2,47 +2,59 @@ security:
     providers:
         chain_provider:
             chain:
-                providers:                  [in_memory, oro_user]
+                providers: [in_memory, oro_user]
         oro_user:
-            id:                             oro_user.security.provider
+            id: oro_user.security.provider
         in_memory:
             memory:
-                users:                      []
+                users: []
 
     encoders:
         Oro\Bundle\UserBundle\Entity\User: sha512
         Symfony\Component\Security\Core\User\User: plaintext
 
     firewalls:
-        navigationrest:
-            pattern:                        ^/api/rest/(latest|v1)/navigationitems
-            provider:                       chain_provider
-            api:
-                parent_context:             main
-            anonymous:                      false
-
         dev:
-            pattern:                        ^/(_(profiler|wdt)|css|images|js)/
-            security:                       false
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        wsse_secured:
+            pattern: ^/api/(rest|soap).*
+            wsse:
+                nonce_dir: null
+                lifetime: 3600
+                realm: "Secured API"
+                profile: "UsernameToken"
+            context: main
+
+        login:
+            pattern: ^/user/(login|reset-request|send-email|check-email)$
+            provider: chain_provider
+            anonymous: true
+
+        reset_password:
+            pattern: ^/user/reset/*
+            provider: chain_provider
+            anonymous: true
 
         main:
-            pattern:                        ^/
-            provider:                       chain_provider
+            pattern: ^/
+            provider: chain_provider
             form_login:
-                csrf_provider:              form.csrf_provider
-                check_path:                 /%locale%/user/login-check
-                login_path:                 /%locale%/user/login
+                csrf_provider: form.csrf_provider
+                check_path: /user/login-check
+                login_path: /user/login
             logout:
-                path:                       /%locale%/user/logout
+                path: /user/logout
             remember_me:
-                key:                        %secret%
-                name:                       BAPRM
-                lifetime:                   1209600   # stay logged for two weeks
-            anonymous:                      true
+                key: %secret%
+                name: BAPRM
+                lifetime: 1209600 # stay logged for two weeks
+            anonymous: false
 
     access_control:
-        - { path: ^/%locale%/user/login$,         role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/%locale%/user/register,       role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/%locale%/user/resetting,      role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/,                       role: ROLE_ADMIN }
+        - { path: ^/user/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/api/rest/(latest|v1)/pinbars, role: ROLE_USER }

@@ -1107,6 +1107,60 @@
             "time": "2013-03-25 09:51:31"
         },
         {
+            "name": "friendsofsymfony/jsrouting-bundle",
+            "version": "dev-master",
+            "target-dir": "FOS/JsRoutingBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git",
+                "reference": "1.1.5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSJsRoutingBundle/zipball/1.1.5",
+                "reference": "1.1.5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "symfony/console": ">=2.0,<3.0",
+                "symfony/framework-bundle": ">=2.0,<3.0",
+                "symfony/serializer": ">=2.0,<3.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "FOS\\JsRoutingBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "William Durand",
+                    "email": "william.durand1@gmail.com",
+                    "homepage": "http://www.willdurand.fr"
+                },
+                {
+                    "name": "FriendsOfSymfony Community",
+                    "homepage": "https://github.com/friendsofsymfony/FOSJsRoutingBundle/contributors"
+                }
+            ],
+            "description": "Symfony FOSJsRoutingBundle",
+            "homepage": "http://friendsofsymfony.github.com",
+            "keywords": [
+                "Js Routing"
+            ],
+            "time": "2013-04-05 20:13:12"
+        },
+        {
             "name": "friendsofsymfony/rest",
             "version": "dev-master",
             "target-dir": "FOS/Rest",
@@ -2677,12 +2731,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/FlexibleEntityBundle.git",
-                "reference": "dc4d3b44a1cee818956413cb36c265eb78be0a49"
+                "reference": "e41c4c31c9e805c3fbf1149a84a137868d4d08d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/dc4d3b44a1cee818956413cb36c265eb78be0a49",
-                "reference": "dc4d3b44a1cee818956413cb36c265eb78be0a49",
+                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/e41c4c31c9e805c3fbf1149a84a137868d4d08d3",
+                "reference": "e41c4c31c9e805c3fbf1149a84a137868d4d08d3",
                 "shasum": ""
             },
             "require": {
@@ -2717,7 +2771,7 @@
                 "source": "https://github.com/laboro/FlexibleEntityBundle/tree/master",
                 "issues": "https://github.com/laboro/FlexibleEntityBundle/issues"
             },
-            "time": "2013-04-23 10:25:55"
+            "time": "2013-04-23 16:30:54"
         },
         {
             "name": "oro/grid-bundle",
@@ -2824,15 +2878,16 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/NavigationBundle.git",
-                "reference": "42e9e5300c560c2af174bcf445db619eee01a57a"
+                "reference": "086fc458e2149ef05ac643d733912c0fb315681a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/NavigationBundle/zipball/42e9e5300c560c2af174bcf445db619eee01a57a",
-                "reference": "42e9e5300c560c2af174bcf445db619eee01a57a",
+                "url": "https://api.github.com/repos/laboro/NavigationBundle/zipball/086fc458e2149ef05ac643d733912c0fb315681a",
+                "reference": "086fc458e2149ef05ac643d733912c0fb315681a",
                 "shasum": ""
             },
             "require": {
+                "friendsofsymfony/jsrouting-bundle": "1.1.*@dev",
                 "friendsofsymfony/rest-bundle": "0.11.*",
                 "knplabs/knp-menu": "dev-master",
                 "knplabs/knp-menu-bundle": "dev-master",
@@ -2876,7 +2931,7 @@
                 "source": "https://github.com/laboro/NavigationBundle/tree/master",
                 "issues": "https://github.com/laboro/NavigationBundle/issues"
             },
-            "time": "2013-04-19 10:52:50"
+            "time": "2013-04-23 15:28:42"
         },
         {
             "name": "oro/search-bundle",
@@ -3035,12 +3090,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/UIBundle.git",
-                "reference": "56e76d022f0a300870d6d02a223c6053b67fa76d"
+                "reference": "3374140fffb9fe71f419f117d12aef72454e6358"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/UIBundle/zipball/56e76d022f0a300870d6d02a223c6053b67fa76d",
-                "reference": "56e76d022f0a300870d6d02a223c6053b67fa76d",
+                "url": "https://api.github.com/repos/laboro/UIBundle/zipball/3374140fffb9fe71f419f117d12aef72454e6358",
+                "reference": "3374140fffb9fe71f419f117d12aef72454e6358",
                 "shasum": ""
             },
             "require": {
@@ -3072,10 +3127,10 @@
                 "User Interface"
             ],
             "support": {
-                "source": "https://github.com/laboro/UIBundle/tree/master",
+                "source": "https://github.com/laboro/UIBundle/tree/hashtag-navigation",
                 "issues": "https://github.com/laboro/UIBundle/issues"
             },
-            "time": "2013-04-22 15:56:30"
+            "time": "2013-04-23 14:12:15"
         },
         {
             "name": "oro/user-bundle",
@@ -3084,12 +3139,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/UserBundle.git",
-                "reference": "dacb7ae9ff61b2f6be1d69ddaff83656a3cf8e0e"
+                "reference": "0e7251b7783046ea9ff0974a21e8bfb596f1016b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/dacb7ae9ff61b2f6be1d69ddaff83656a3cf8e0e",
-                "reference": "dacb7ae9ff61b2f6be1d69ddaff83656a3cf8e0e",
+                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/0e7251b7783046ea9ff0974a21e8bfb596f1016b",
+                "reference": "0e7251b7783046ea9ff0974a21e8bfb596f1016b",
                 "shasum": ""
             },
             "require": {
@@ -3130,10 +3185,10 @@
                 "BAP"
             ],
             "support": {
-                "source": "https://github.com/laboro/UserBundle/tree/master",
+                "source": "https://github.com/laboro/UserBundle/tree/hashtag-navigation",
                 "issues": "https://github.com/laboro/UserBundle/issues"
             },
-            "time": "2013-04-23 08:54:16"
+            "time": "2013-04-23 13:47:33"
         },
         {
             "name": "oro/windows-bundle",
