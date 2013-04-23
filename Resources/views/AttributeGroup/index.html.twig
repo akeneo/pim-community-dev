@@ -8,7 +8,7 @@
     <div class="row-fluid has-resizable-sidebar">
         <div class="resizable-sidebar">
             <form id="pim_product_attributegroup_sort" action="{{ path('pim_product_attributegroup_sort') }}" method="POST">
-                <ul id="attributegroups-sortable">
+                <ul id="entities-sortable">
                     {% for group in groups %}
                         <li data-id="{{ group.id }}">
                             <span class="handle">
@@ -23,13 +23,13 @@
             <a id="attributegroup-create" class="btn btn-small" href="{{ path('pim_product_attributegroup_create') }}">{{ 'New group'|trans }}</a>
         </div>
         <div id="form-tab" class="resizable-content">
-            <h1>{{ title }}</h1>
+            <h3>{{ title }}</h3>
         </div>
     </div>
 
     <script type="text/javascript">
         $(function() {
-            $('#attributegroups-sortable').sortable({
+            $('#entities-sortable').sortable({
                 handle: '.handle',
                 containment: 'parent',
                 tolerance: 'pointer',
@@ -38,7 +38,7 @@
 
             function updateSortOrder() {
                 var num = 0;
-                $('#attributegroups-sortable').find('li').each(function() {
+                $('#entities-sortable').find('li').each(function() {
                     $(this).find('.handle input').val(num);
                     num++;
                 });
@@ -50,7 +50,7 @@
                 });
             }
 
-            $('#attributegroups-sortable li').click(function() {
+            $('#entities-sortable li').click(function() {
                 $(this).siblings().removeClass('active');
                 $(this).addClass('active');
                 var id = $(this).attr('data-id');
@@ -61,9 +61,9 @@
                 });
             });
 
-            $('#attributegroup-create').click(function(e) {
+            $('#entities-create').click(function(e) {
                 e.preventDefault();
-                $('#attributegroups-sortable li').removeClass('active');
+                $('#entities-sortable li').removeClass('active');
                 $.get('{{ path('pim_product_attributegroup_create') }}', null, function(data, status) {
                     if (status === 'success') {
                         $('#form-tab').html(data);
