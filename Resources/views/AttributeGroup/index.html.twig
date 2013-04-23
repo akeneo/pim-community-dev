@@ -61,7 +61,7 @@
                 });
             });
 
-            $('#entities-create').click(function(e) {
+            $('#attributegroup-create').click(function(e) {
                 e.preventDefault();
                 $('#entities-sortable li').removeClass('active');
                 $.get('{{ path('pim_product_attributegroup_create') }}', null, function(data, status) {
