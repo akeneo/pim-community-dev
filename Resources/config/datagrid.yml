@@ -3,7 +3,7 @@ parameters:
     pim_product.product_grid_manager_class:           Pim\Bundle\ProductBundle\Datagrid\ProductDatagridManager
 
 services:
-
+    # Product attribute grid manager
     pim_product.productattribute_grid_manager:
         class: "%pim_product.productattribute_grid_manager_class%"
         tags:

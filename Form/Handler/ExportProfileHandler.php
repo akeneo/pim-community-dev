@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Form\Handler;
 
-use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+use Pim\Bundle\ProductBundle\Entity\ExportProfile;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -10,14 +10,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
 
 /**
- * Form handler for attribute groups
+ * Form handler for export profiles
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class AttributeGroupHandler
+class ExportProfileHandler
 {
 
     /**
@@ -37,6 +37,7 @@ class AttributeGroupHandler
 
     /**
      * Constructor for handler
+     *
      * @param FormInterface $form    Form called
      * @param Request       $request Web request
      * @param ObjectManager $manager Storage manager
@@ -50,19 +51,20 @@ class AttributeGroupHandler
 
     /**
      * Process method for handler
-     * @param AttributeGroup $group
+     *
+     * @param ExportProfile $profile
      *
      * @return boolean
      */
-    public function process(AttributeGroup $group)
+    public function process(ExportProfile $profile)
     {
-        $this->form->setData($group);
+        $this->form->setData($profile);
 
         if ($this->request->getMethod() === 'POST') {
             $this->form->bind($this->request);
 
             if ($this->form->isValid()) {
-                $this->onSuccess($group);
+                $this->onSuccess($profile);
 
                 return true;
             }
@@ -73,11 +75,12 @@ class AttributeGroupHandler
 
     /**
      * Call when form is valid
-     * @param AttributeGroup $group
+     *
+     * @param ExportProfile $profile
      */
-    protected function onSuccess(AttributeGroup $group)
+    protected function onSuccess(ExportProfile $profile)
     {
-        $this->manager->persist($group);
+        $this->manager->persist($profile);
         $this->manager->flush();
     }
 }

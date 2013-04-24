@@ -1,10 +1,6 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Controller;
 
-use Gedmo\Tool\Wrapper\EntityWrapper;
-
-use Pim\Bundle\ProductBundle\Entity\ProductSegmentTranslation;
-
 use Pim\Bundle\ProductBundle\Form\Type\ProductSegmentType;
 
 use Pim\Bundle\ProductBundle\Entity\ProductSegment;
