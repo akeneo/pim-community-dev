@@ -23,6 +23,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
+ * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation")
  * @UniqueEntity("code")
  */
 class ProductAttribute extends AbstractEntityAttribute implements Translatable
