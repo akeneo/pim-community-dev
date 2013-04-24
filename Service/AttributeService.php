@@ -5,6 +5,7 @@ use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\AttributeOption;
 use Pim\Bundle\ProductBundle\Entity\AttributeOptionValue;
+use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
 
@@ -41,15 +42,22 @@ class AttributeService
     protected $manager;
 
     /**
+     * @var LocaleManager
+     */
+    protected $localeManager;
+
+    /**
      * Constructor
      *
-     * @param array          $config  Configuration parameters
-     * @param ProductManager $manager Product manager
+     * @param array          $config        Configuration parameters
+     * @param ProductManager $manager       Product manager
+     * @param LocaleManager  $localeManager Locale manager
      */
-    public function __construct($config, ProductManager $manager)
+    public function __construct($config, ProductManager $manager, LocaleManager $localeManager)
     {
         $this->config = $config['attributes_config'];
         $this->manager = $manager;
+        $this->localeManager = $localeManager;
     }
 
     /**
@@ -86,12 +94,12 @@ class AttributeService
 
                 $option = new AttributeOption();
                 $option->setTranslatable(true);
-                $option->setDefaultValue('test');
-                $optionValue = new AttributeOptionValue();
-                $optionValue->setLocale('fr_FR');
-                $optionValue->setValue('test');
+                foreach ($this->localeManager->getActiveLocales() as $locale) {
+                    $optionValue = new AttributeOptionValue();
+                    $optionValue->setLocale($locale->getCode());
 
-                $option->addOptionValue($optionValue);
+                    $option->addOptionValue($optionValue);
+                }
                 $attribute->addOption($option);
             }
 

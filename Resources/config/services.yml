@@ -119,5 +119,5 @@ services:
     # Attribute manager
     pim_product.attribute_service:
         class: Pim\Bundle\ProductBundle\Service\AttributeService
-        arguments: [%pim_product.attributes_config%, @product_manager]
+        arguments: [%pim_product.attributes_config%, @product_manager, @pim_config.manager.locale]
 
