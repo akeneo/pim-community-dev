@@ -22,7 +22,6 @@
             $handle = $('.resizable-sidebar-handle');
             $handle.css({ 'float': 'left', 'width': handleWidth, 'height': sidebarHeight, 'cursor': 'col-resize' });
             $sidebar.css({ 'float': 'left', 'width': '180px', 'height': sidebarHeight });
-            console.log($(element).width() - $sidebar.width() - handleWidth);
             $content.css({ 'float': 'left', 'width': $(element).width() - $sidebar.width() - handleWidth });
 
             $('.resizable-sidebar-handle').mousedown(function(e) {

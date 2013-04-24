@@ -19,7 +19,8 @@ header .extra-divider, .navbar .small-divider {
     background: transparent;
 }
 
-.header-search .dropdown-toggle {
+.header-search .dropdown-toggle,
+.header-search .btn-group.open .btn.dropdown-toggle {
     background : -webkit-linear-gradient(top, rgb(137, 68, 176) 00%, rgb(104, 49, 144) 99%);
     background : -moz-linear-gradient(top, rgb(137, 68, 176) 00%, rgb(104, 49, 144) 99%);
     background : -o-linear-gradient(top, rgb(137, 68, 176) 00%, rgb(104, 49, 144) 99%);
@@ -44,6 +45,10 @@ header .extra-divider, .navbar .small-divider {
 
 .pin-bar .list-bar li.active{
     background-color: #6800A9;
+}
+
+.pin-bar .list-bar, .pin-bar .list-bar li a {
+    color: #B2BAC2;
 }
 
 .application-menu {
