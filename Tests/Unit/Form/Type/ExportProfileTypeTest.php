@@ -3,7 +3,7 @@ namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Type;
 
 use Symfony\Component\DependencyInjection\Container;
 
-use Pim\Bundle\TranslationBundle\Form\Type\TranslatedFieldType;
+use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
 
 use Pim\Bundle\ProductBundle\Tests\Entity\ObjectTestEntity;
 
@@ -27,6 +27,16 @@ class ExportProfileTypeTest extends TypeTestCase
 {
 
     /**
+     * @var ExportProfileType
+     */
+    protected $type;
+
+    /**
+     * @var \Symfony\Component\Form\FormInterface
+     */
+    protected $form;
+
+    /**
      * {@inheritdoc}
      */
     public function setUp()
@@ -44,7 +54,7 @@ class ExportProfileTypeTest extends TypeTestCase
                     $this->getMock('Symfony\Component\Validator\ValidatorInterface')
                 )
             )
-            ->addType(new TranslatedFieldType($container))
+            ->addType(new TranslatableFieldType($container))
             ->getFormFactory();
 
         // Create form type

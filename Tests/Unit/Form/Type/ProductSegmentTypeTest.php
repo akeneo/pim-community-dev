@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Type;
 
-use Pim\Bundle\TranslationBundle\Form\Type\TranslatedFieldType;
+use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
 
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 
@@ -25,6 +25,16 @@ class ProductSegmentTypeTest extends TypeTestCase
 {
 
     /**
+     * @var ProductSegmentType
+     */
+    protected $type;
+
+    /**
+     * @var \Symfony\Component\Form\FormInterface
+     */
+    protected $form;
+
+    /**
      * {@inheritdoc}
      */
     public function setUp()
@@ -42,7 +52,7 @@ class ProductSegmentTypeTest extends TypeTestCase
                     $this->getMock('Symfony\Component\Validator\ValidatorInterface')
                 )
             )
-            ->addType(new TranslatedFieldType($container))
+            ->addType(new TranslatableFieldType($container))
             ->getFormFactory();
 
         // Create form type
