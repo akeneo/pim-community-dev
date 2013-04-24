@@ -50,9 +50,7 @@
             <div style="display: inline-block; margin-left: 50px;">
                 {{ form_row(form.remove) }}
             </div>
-            <div style="width: 50px; height: 50px; display: inline-block; margin-left: 30px;">
-                <img src="{{ asset(form.vars.value.filePath) }}" />
-            </div>
+            <a href="{{ asset(form.vars.value.filePath) }}" rel="lightbox" class="btn"><i class="icon-eye-open"></i></a>
         {% endif %}
     </div>
 
