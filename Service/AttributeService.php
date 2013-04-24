@@ -5,6 +5,7 @@ use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\AttributeOption;
 use Pim\Bundle\ProductBundle\Entity\AttributeOptionValue;
+use Pim\Bundle\ProductBundle\Form\Type\AttributeOptionType;
 use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
@@ -20,6 +21,8 @@ use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MetricType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MoneyType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextAreaType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\NumberType;
+
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Attribute Service
@@ -71,25 +74,8 @@ class AttributeService
     {
         if (gettype($data) === 'array') {
             $type = !empty($data['attributeType']) ? new $data['attributeType']() : null;
-            $attribute = $this->manager->createAttribute($type);
 
-            $baseProperties = $this->getBaseProperties();
-
-            foreach ($data as $property => $value) {
-                if (array_key_exists($property, $baseProperties) && $value !== '') {
-                    $set = 'set' . ucfirst($property);
-                    if (method_exists($attribute, $set)) {
-                        if ($baseProperties[$property] === 'boolean') {
-                            $value = (bool) $value;
-                        } elseif ($baseProperties[$property] === 'integer') {
-                            $value = (int) $value;
-                        }
-                        $attribute->$set($value);
-                    }
-                }
-            }
-
-            return $attribute;
+            return $this->manager->createAttribute($type);
         } elseif ($data instanceof ProductAttribute) {
 
             return $data;
@@ -131,63 +117,50 @@ class AttributeService
         return $data;
     }
 
-
     /**
-     * Return an array of form field parameters for properties
-     * that can't be changed once the attribute has been created
+     * Return an array of form field parameters for attribute parameters
      *
      * @param ProductAttribute $attribute
      *
      * @return array $fields
      */
-    public function getInitialFields($attribute = null)
+    public function getParameterFields($attribute = null)
     {
-        $properties = array(
-            array('name' => 'scopable', 'fieldType' => 'choice',
-                'options' => array('choices' => array('Global', 'Channel'))),
-            array('name' => 'translatable', 'fieldType' => 'checkbox'),
-            array('name' => 'unique', 'fieldType' => 'checkbox')
-        );
-
-        $disabled = false;
-        if ($attribute !== null) {
-            if ($attribute->getId()) {
-                $disabled = true;
-                if (!in_array('unique', $this->getActivatedProperties($attribute))) {
-                    array_pop($properties);
-                }
-            }
-        }
-
+        $parameters = array('translatable', 'scopable', 'unique', 'availableLanguages');
+        $activatedParameters = $this->getActivatedParameters($attribute);
         $fields = array();
-        foreach ($properties as $property) {
-            $field = $property;
-            $field['data'] = null;
-            $field['options']['disabled'] = $disabled;
-            $fields[] = $field;
+
+        foreach ($parameters as $parameter) {
+            $method = 'get' . ucfirst($parameter) . 'params';
+            if (method_exists($this, $method)) {
+                $field = $this->$method($attribute);
+                if (!in_array($parameter, $activatedParameters)) {
+                    $field['options']['disabled'] = true;
+                    $field['options']['read_only'] = true;
+                }
+                $fields[] = $field;
+            }
         }
 
         return $fields;
     }
 
     /**
-     * Return an array of form field parameters for all custom properties
+     * Return an array of form field parameters for attribute properties
      *
      * @param ProductAttribute $attribute
      *
-     * @return array|null $params
+     * @return array $fields
      */
-    public function getCustomFields($attribute)
+    public function getPropertyFields($attribute)
     {
         $properties = $this->getActivatedProperties($attribute);
         $fields = array();
 
         foreach ($properties as $property) {
-            if ($property != 'unique') {
-                $method = 'get' . ucfirst($property) . 'params';
-                if (method_exists($this, $method)) {
-                    $fields[] = $this->$method($attribute);
-                }
+            $method = 'get' . ucfirst($property) . 'params';
+            if (method_exists($this, $method)) {
+                $fields[] = $this->$method($attribute);
             }
         }
 
@@ -231,13 +204,32 @@ class AttributeService
     }
 
     /**
+     * Return activated parameters for the attribute
+     *
+     * @param ProductAttribute $attribute
+     *
+     * @return array Activated parameters
+     */
+    private function getActivatedParameters($attribute)
+    {
+        $type = $attribute->getAttributeType();
+        if (!$type) {
+            return array();
+        }
+        $type = explode('\\', $attribute->getAttributeType());
+        $type = substr(end($type), 0, -4);
+
+        return array_key_exists($type, $this->config) ? $this->config[$type]['parameters'] : array();
+    }
+
+    /**
      * Return activated properties for the attribute
      *
      * @param ProductAttribute $attribute
      *
      * @return array Activated properties
      */
-    public function getActivatedProperties($attribute)
+    private function getActivatedProperties($attribute)
     {
         $type = $attribute->getAttributeType();
         if (!$type) {
@@ -247,30 +239,6 @@ class AttributeService
         $type = substr(end($type), 0, -4);
 
         return array_key_exists($type, $this->config) ? $this->config[$type]['properties'] : array();
-    }
-
-    /**
-     * Return base properties that apply to all attributes
-     *
-     * @return array Base properties
-     */
-    public function getBaseProperties()
-    {
-        return array(
-            'code' => 'text',
-            'attributeType' => 'text',
-            'required' => 'boolean',
-            'unique' => 'boolean',
-            'searchable' => 'boolean',
-            'translatable' => 'boolean',
-            'scopable' => 'boolean',
-            'name' => 'text',
-            'description' => 'text',
-            'variant' => 'integer',
-            'smart' => 'boolean',
-            'useableAsGridColumn' => 'boolean',
-            'useableAsGridFilter' => 'boolean'
-        );
     }
 
     /**
@@ -598,21 +566,6 @@ class AttributeService
     }
 
     /**
-     * Return form field parameters for unique property
-     *
-     * @param ProductAttribute $attribute Product attribute
-     *
-     * @return array $params
-     */
-    private function getUniqueParams($attribute)
-    {
-        $fieldType = 'checkbox';
-        $options = array('disabled' => true, 'read_only' => true);
-
-        return $this->getFieldParams('unique', $fieldType, null, $options);
-    }
-
-    /**
      * Return form field parameters for searchable property
      *
      * @param ProductAttribute $attribute Product attribute
@@ -622,5 +575,96 @@ class AttributeService
     private function getSearchableParams($attribute)
     {
         return $this->getFieldParams('searchable', 'checkbox');
+    }
+
+   /**
+     * Return form field parameters for options property
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getOptionsParams($attribute)
+    {
+        $fieldType = 'collection';
+        $options = array(
+            'type'         => new AttributeOptionType(),
+            'allow_add'    => true,
+            'allow_delete' => true,
+            'by_reference' => false
+        );
+
+        return $this->getFieldParams('options', $fieldType, null, $options);
+    }
+
+    /**
+     * Return form field parameters for translatable parameter
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getTranslatableParams($attribute)
+    {
+        return $this->getFieldParams('translatable', 'checkbox');
+    }
+
+    /**
+     * Return form field parameters for scopable parameter
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getScopableParams($attribute)
+    {
+        $fieldType = 'choice';
+        $options = array(
+            'choices' => array('Global', 'Channel'),
+            'disabled' => (bool) $attribute->getId(),
+            'read_only' => (bool) $attribute->getId()
+        );
+
+        return $this->getFieldParams('scopable', $fieldType, null, $options);
+    }
+
+    /**
+     * Return form field parameters for unique parameter
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getUniqueParams($attribute)
+    {
+        $fieldType = 'checkbox';
+        $options = array(
+            'disabled' => (bool) $attribute->getId(),
+            'read_only' => (bool) $attribute->getId()
+        );
+
+        return $this->getFieldParams('unique', $fieldType, null, $options);
+    }
+
+    /**
+     * Return form field parameters for available languages parameter
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getAvailableLanguagesParams($attribute)
+    {
+        $fieldType = 'entity';
+        $options = array(
+            'required' => false,
+            'multiple' => true,
+            'class' => 'Pim\Bundle\ConfigBundle\Entity\Language',
+            'query_builder' => function(EntityRepository $repository) {
+                return $repository->createQueryBuilder('l')->where('l.activated = 1')->orderBy('l.code');
+            }
+        );
+
+        return $this->getFieldParams('availableLanguages', $fieldType, null, $options);
     }
 }

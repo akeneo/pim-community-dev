@@ -13,8 +13,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
 
-use Doctrine\ORM\EntityRepository;
-
 /**
  * Type for attribute form
  *
@@ -70,8 +68,6 @@ class ProductAttributeType extends AttributeType
         $this->addFieldUseableAsGridFilter($builder);
 
         $this->addFieldAttributeGroup($builder);
-
-        $this->addFieldAvailableLanguages($builder);
     }
 
     /**
@@ -178,12 +174,13 @@ class ProductAttributeType extends AttributeType
     }
 
     /**
-     * Add field searchable to form builder
+     * Override the parent's addFieldSearchable method to prevent adding
+     * searchable field regardless of attribute type
+     *
      * @param FormBuilderInterface $builder
      */
     protected function addFieldSearchable(FormBuilderInterface $builder)
     {
-        $builder->add('searchable', 'checkbox');
     }
 
      /**
@@ -193,16 +190,6 @@ class ProductAttributeType extends AttributeType
      * @param FormBuilderInterface $builder
      */
     protected function addFieldDefaultValue(FormBuilderInterface $builder)
-    {
-    }
-
-    /**
-     * Override the parent's addFieldUnique method to prevent adding
-     * unique field regardless of attribute type
-     *
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldUnique(FormBuilderInterface $builder)
     {
     }
 
@@ -217,6 +204,16 @@ class ProductAttributeType extends AttributeType
     }
 
     /**
+     * Override the parent's addFieldUnique method to prevent adding
+     * unique field regardless of attribute type
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldUnique(FormBuilderInterface $builder)
+    {
+    }
+
+    /**
      * Override the parent's addFieldScopable method to prevent adding
      * scopable field regardless of attribute type
      *
@@ -224,28 +221,6 @@ class ProductAttributeType extends AttributeType
      */
     protected function addFieldScopable(FormBuilderInterface $builder)
     {
-    }
-
-    /**
-     * Add a field for available languages
-     * @param FormBuilderInterface $builder
-     *
-     * @return void
-     */
-    protected function addFieldAvailableLanguages(FormBuilderInterface $builder)
-    {
-        $builder->add(
-            'availableLanguages',
-            'entity',
-            array(
-                'required' => false,
-                'multiple' => true,
-                'class' => 'Pim\Bundle\ConfigBundle\Entity\Language',
-                'query_builder' => function (EntityRepository $repository) {
-                    return $repository->createQueryBuilder('l')->where('l.activated = 1')->orderBy('l.code');
-                }
-            )
-        );
     }
 
     /**

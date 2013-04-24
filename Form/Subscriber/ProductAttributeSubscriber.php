@@ -11,7 +11,6 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Oro\Bundle\FlexibleEntityBundle\Form\EventListener\AttributeTypeSubscriber;
-use Pim\Bundle\ProductBundle\Form\Type\AttributeOptionType as ProductAttributeOptionType;
 
 /**
  * Form subscriber for ProductAttribute
@@ -110,38 +109,12 @@ class ProductAttributeSubscriber extends AttributeTypeSubscriber
      */
     private function customizeForm($form, ProductAttribute $attribute)
     {
-        foreach ($this->service->getInitialFields($attribute) as $field) {
+        foreach ($this->service->getParameterFields($attribute) as $field) {
             $form->add($this->factory->createNamed($field['name'], $field['fieldType'], $field['data'], $field['options']));
         }
 
-        foreach ($this->service->getCustomFields($attribute) as $field) {
+        foreach ($this->service->getPropertyFields($attribute) as $field) {
             $form->add($this->factory->createNamed($field['name'], $field['fieldType'], $field['data'], $field['options']));
         }
-
-        if ($attribute->getBackendType() === AbstractAttributeType::BACKEND_TYPE_OPTION
-            || $attribute->getBackendType() === AbstractAttributeType::BACKEND_TYPE_OPTIONS) {
-            $this->addOptionCollection($form);
-        }
-    }
-
-    /**
-     * Add attribute option collection
-     * @param Form $form
-     */
-    protected function addOptionCollection($form)
-    {
-        $form->add(
-            $this->factory->createNamed(
-                'options',
-                'collection',
-                null,
-                array(
-                    'type'         => new ProductAttributeOptionType(),
-                    'allow_add'    => true,
-                    'allow_delete' => true,
-                    'by_reference' => false
-                )
-            )
-        );
     }
 }
