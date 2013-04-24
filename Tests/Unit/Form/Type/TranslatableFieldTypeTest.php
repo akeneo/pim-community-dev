@@ -33,6 +33,31 @@ class TranslatableFieldTypeTest extends TypeTestCase
     protected $form;
 
     /**
+     * @var array
+     */
+    protected $options;
+
+    /**
+     * @staticvar string
+     */
+    const DEFAULT_LOCALE = 'default';
+
+    /**
+     * @staticvar string
+     */
+    const OPT_NAME = 'name';
+
+    /**
+     * @staticvar string
+     */
+    const OPT_ENTITY_CLASS = 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\Item';
+
+    /**
+     * @staticvar string
+     */
+    const OPT_TRANSLATION_CLASS = 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\ItemTranslation';
+
+    /**
      * {@inheritdoc}
      */
     public function setUp()
@@ -55,13 +80,9 @@ class TranslatableFieldTypeTest extends TypeTestCase
 
         // Create form type
         $this->type = new TranslatableFieldType($container);
-        $options = array(
-            'entity_class'      => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\Item',
-            'translation_class' => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\ItemTranslation'
-        );
+        $this->options = $this->buildOptions(self::OPT_ENTITY_CLASS, self::OPT_NAME, self::OPT_TRANSLATION_CLASS);
 
-
-        $this->form = $this->factory->create($this->type, null, $options);
+        $this->form = $this->factory->create($this->type, null, $this->options);
     }
 
     /**
@@ -78,7 +99,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
         $container = new Container();
         $container->set('pim_config.manager.locale', $localeManager);
         $container->set('validator', $validator);
-        $container->setParameter('default_locale', 'default');
+        $container->setParameter('default_locale', self::DEFAULT_LOCALE);
 
         return $container;
     }
@@ -108,16 +129,92 @@ class TranslatableFieldTypeTest extends TypeTestCase
         return $localeManager;
     }
 
+    /**
+     * Test related
+     */
     public function testFormCreate()
     {
         // Assert default options
         $options = $this->type->getDefaultOptions();
+        $expectedOptions = array(
+            'default_locale'    => self::DEFAULT_LOCALE,
+            'entity_class'      => false,
+            'field'             => false,
+            'locales'           => array(self::DEFAULT_LOCALE, 'en_US', 'fr_FR'),
+            'required_locale'   => array(self::DEFAULT_LOCALE),
+            'translation_class' => false,
+            'widget'            => 'text'
+        );
+        foreach ($expectedOptions as $expectedKey => $expectedValue) {
+            $this->assertArrayHasKey($expectedKey, $options);
+            $this->assertEquals($expectedValue, $options[$expectedKey]);
+        }
+
+        // Assert options
+        $options = $this->form->getConfig()->getOptions();
+        $expectedOptions['entity_class']      = self::OPT_ENTITY_CLASS;
+        $expectedOptions['field']             = self::OPT_NAME;
+        $expectedOptions['translation_class'] = self::OPT_TRANSLATION_CLASS;
+        foreach ($expectedOptions as $expectedKey => $expectedValue) {
+            $this->assertArrayHasKey($expectedKey, $options);
+            $this->assertEquals($expectedValue, $options[$expectedKey]);
+        }
 
         // Assert name
         $this->assertEquals('pim_translatable_field', $this->form->getName());
     }
 
+    /**
+     * Create options
+     *
+     * @param string $entityClass      Entity class name
+     * @param string $fieldName        Entity field name
+     * @param string $translationClass Translation class name
+     *
+     * @return multitype:string
+     */
+    protected function buildOptions($entityClass, $fieldName, $translationClass)
+    {
+        return array(
+            'entity_class'      => $entityClass,
+            'field'             => $fieldName,
+            'translation_class' => $translationClass
+        );
+    }
 
+    /**
+     * Data provider for options
+     *
+     * @static
+     *
+     * @return multitype:multitype:string
+     */
+    public static function dataOptionsProvider()
+    {
+        return array(
+            array(self::OPT_ENTITY_CLASS, self::OPT_NAME, null),
+            array(self::OPT_ENTITY_CLASS, null, self::OPT_TRANSLATION_CLASS),
+            array(null, self::OPT_NAME, self::OPT_TRANSLATION_CLASS)
+        );
+    }
 
-    // TODO : Tests with unexistent classes in options
+    /**
+     * Assert buildForm exceptions
+     *
+     * @param string $entityClass      Entity class name
+     * @param string $fieldName        Entity field name
+     * @param string $translationClass Translation class name
+     *
+     * @dataProvider dataOptionsProvider
+     * @expectedException \Symfony\Component\Form\Exception\FormException
+     */
+    public function testAssertException($entityClass, $fieldName, $translationClass)
+    {
+        // Create mock container
+        $container = $this->getContainerMock();
+
+        $type = new TranslatableFieldType($container);
+        $options = $this->buildOptions($entityClass, $fieldName, $translationClass);
+        $form = $this->factory->create($type, null, $options);
+    }
 }

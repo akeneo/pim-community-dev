@@ -1,9 +1,11 @@
 <?php
 namespace Pim\Bundle\TranslationBundle\Form\Type;
 
+use Symfony\Component\Form\Exception\FormException;
+
 use Symfony\Component\Form\FormBuilderInterface;
 
-use Pim\Bundle\TranslationBundle\Form\Subscriber\AddTranslatedFieldSubscriber;
+use Pim\Bundle\TranslationBundle\Form\Subscriber\AddTranslatableFieldSubscriber;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -41,18 +43,18 @@ class TranslatableFieldType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if (!class_exists($options['entity_class'])) {
-            throw new \Exception('unable to find entity class');
+            throw new FormException('unable to find entity class');
         }
 
         if (!class_exists($options['translation_class'])) {
-            throw new \Exception('unable to find translation class');
+            throw new FormException('unable to find translation class');
         }
 
         if (!$options['field']) {
-            throw new \Exception('must provide a field');
+            throw new FormException('must provide a field');
         }
 
-        $subscriber = new AddTranslatedFieldSubscriber($builder->getFormFactory(), $this->container, $options);
+        $subscriber = new AddTranslatableFieldSubscriber($builder->getFormFactory(), $this->container, $options);
         $builder->addEventSubscriber($subscriber);
     }
 
@@ -71,12 +73,12 @@ class TranslatableFieldType extends AbstractType
     {
         $options['translation_class'] = false;
         $options['entity_class'] = false;
+        $options['field'] = false;
 
         $options['locales'] = $this->getActiveLocales();
         $options['default_locale'] = $this->container->getParameter('default_locale');
         $options['required_locale'] = array($this->container->getParameter('default_locale'));
 
-        $options['field'] = 'name';
         $options['widget'] = 'text';
 
         return $options;

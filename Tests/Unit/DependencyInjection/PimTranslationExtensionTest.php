@@ -24,22 +24,20 @@ class PimTranslationExtensionTest extends \PHPUnit_Framework_TestCase
     protected $extension;
 
     /**
-     * Translation manager service id
-     * @staticvar string
+     * @var multitype:mixed
      */
-    const PIM_TRANSLATION_SRV_ID = 'pim_translation.translation_manager';
+    protected $configs = array();
+
+    /**
+     * @var ContainerBuilder
+     */
+    protected $containerBuilder;
 
     /**
      * Form type translation service id
      * @staticvar string
      */
-    const PIM_TRANSLATION_FORM_TYPE = 'pim_translation.form.type.translation';
-
-    /**
-     * Form type collection translation service id
-     * @staticvar string
-     */
-    const PIM_TRANSLATION_COLLECTION_FORM_TYPE = 'pim_translation.form.type.translation_collection';
+    const PIM_TRANSLATION_FORM_TYPE = 'pim_translation.form.type.translatable_field';
 
     /**
      * {@inheritdoc}
@@ -49,7 +47,6 @@ class PimTranslationExtensionTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
 
         $this->extension = new PimTranslationExtension();
-        $this->configs   = array();
         $this->containerBuilder = new ContainerBuilder();
     }
 
@@ -61,9 +58,7 @@ class PimTranslationExtensionTest extends \PHPUnit_Framework_TestCase
         $this->extension->load($this->configs, $this->containerBuilder);
 
         $serviceIds = $this->containerBuilder->getServiceIds();
-        $this->assertCount(4, $serviceIds);
-        $this->assertTrue(in_array(self::PIM_TRANSLATION_SRV_ID, $serviceIds));
+        $this->assertCount(2, $serviceIds);
         $this->assertTrue(in_array(self::PIM_TRANSLATION_FORM_TYPE, $serviceIds));
-        $this->assertTrue(in_array(self::PIM_TRANSLATION_COLLECTION_FORM_TYPE, $serviceIds));
     }
 }

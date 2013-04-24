@@ -21,7 +21,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class AddTranslatedFieldSubscriber implements EventSubscriberInterface
+class AddTranslatableFieldSubscriber implements EventSubscriberInterface
 {
 
     /**
