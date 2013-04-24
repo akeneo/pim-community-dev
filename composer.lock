@@ -991,12 +991,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/doctrine2.git",
-                "reference": "803f2740c9073fdf94e327c555d496078f82d8ce"
+                "reference": "ad7b5871bf47040f2d9955cd00409c5a13e3f3f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/803f2740c9073fdf94e327c555d496078f82d8ce",
-                "reference": "803f2740c9073fdf94e327c555d496078f82d8ce",
+                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/ad7b5871bf47040f2d9955cd00409c5a13e3f3f4",
+                "reference": "ad7b5871bf47040f2d9955cd00409c5a13e3f3f4",
                 "shasum": ""
             },
             "require": {
@@ -1053,7 +1053,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2013-04-14 07:52:39"
+            "time": "2013-04-23 20:26:59"
         },
         {
             "name": "escapestudios/wsse-authentication-bundle",
