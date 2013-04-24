@@ -73,6 +73,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         $attColor       = $this->getReference('product-attribute.color');
         $attPrice       = $this->getReference('product-attribute.price');
         $attManufact    = $this->getReference('product-attribute.manufacturer');
+        $attImage       = $this->getReference('product-attribute.imageUpload');
 
         // get attribute color options
         $optColors = $this->getProductManager()->getAttributeOptionRepository()->findBy(
@@ -190,10 +191,17 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             // date
             /*
             $value = $this->getProductManager()->createFlexibleValue();
-            $value->setAttribute($attDate->getAttribute());
+            $value->setAttribute($attDate);
             $value->setData(new \Datetime());
             $product->addValue($value);
             */
+
+            // image upload
+            $value = $this->getProductManager()->createFlexibleValue();
+            $value->setAttribute($attImage);
+            $value->setData(null);
+            $product->addValue($value);
+
             $this->persist($product);
 
             if (($ind % $batchSize) == 0) {
