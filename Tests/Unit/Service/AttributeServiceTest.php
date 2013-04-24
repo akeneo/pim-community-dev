@@ -118,7 +118,7 @@ class AttributeServiceTest extends WebTestCase
         }
     }
 
-   /**
+    /**
      * Test getAttributeTypes method
      */
     public function testGetAttributeTypes()
