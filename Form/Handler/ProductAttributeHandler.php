@@ -63,6 +63,9 @@ class ProductAttributeHandler
         $attribute = $this->service->createAttributeFromFormData($data);
 
         $this->form->setData($attribute);
+
+        $data = $this->service->prepareFormData($data);
+
         $this->form->bind($data);
     }
 

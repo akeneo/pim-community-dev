@@ -89,20 +89,6 @@ class AttributeService
                 }
             }
 
-            if ($attribute->getBackendType() === AbstractAttributeType::BACKEND_TYPE_OPTION
-                || $attribute->getBackendType() === AbstractAttributeType::BACKEND_TYPE_OPTIONS) {
-
-                $option = new AttributeOption();
-                $option->setTranslatable(true);
-                foreach ($this->localeManager->getActiveLocales() as $locale) {
-                    $optionValue = new AttributeOptionValue();
-                    $optionValue->setLocale($locale->getCode());
-
-                    $option->addOptionValue($optionValue);
-                }
-                $attribute->addOption($option);
-            }
-
             return $attribute;
         } elseif ($data instanceof ProductAttribute) {
 
@@ -111,6 +97,40 @@ class AttributeService
 
         return null;
     }
+
+    /**
+     * Prepare data for binding to the form
+     *
+     * @param array $data Form data
+     *
+     * @return array Prepared form data
+     */
+    public function prepareFormData($data)
+    {
+        $optionTypes = array(
+            AbstractAttributeType::TYPE_OPT_MULTI_SELECT_CLASS,
+            AbstractAttributeType::TYPE_OPT_SINGLE_SELECT_CLASS
+        );
+
+        // If the attribute type can have options but no options have been created,
+        // create an empty option to render the corresponding form fields
+        if (in_array($data['attributeType'], $optionTypes) && !isset($data['options'])) {
+            $option = array(
+                'optionValues' => array()
+            );
+
+            foreach ($this->localeManager->getActiveLocales() as $locale) {
+                $option['optionValues'][] = array(
+                    'locale' => $locale->getCode()
+                );
+            }
+
+            $data['options'] = array($option);
+        }
+
+        return $data;
+    }
+
 
     /**
      * Return an array of form field parameters for properties

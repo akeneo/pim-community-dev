@@ -62,6 +62,8 @@ function updateFieldsFromUnique() {
 
 $(function() {
 
+    var $optionList;
+
     function updateForm() {
         $.post(
            'preprocess',
@@ -140,7 +142,7 @@ $(function() {
     initializeForm();
 
     function initializeOptions() {
-        var $optionList = $('table#sortable_options');
+        $optionList = $('table#sortable_options');
         if (!$optionList.length) {
             return;
         }
@@ -190,7 +192,7 @@ $(function() {
         option = option.replace(/_options_([0-9]+)_/g, "_options_" + optionNumber + "_");
         option = option.replace(/\s+/g, ' ');
 
-        var $option = $('<tr class="att-option"></tr>').append($(option));
+        var $option = $('<tr class="att-option">' + option + '</tr>');
 
         // Empty all fields except for locale
         $option.find('input').each(function() {
