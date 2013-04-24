@@ -3,6 +3,7 @@ namespace Pim\Bundle\ProductBundle\Form\Handler;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\AttributeOptionValue;
+use Pim\Bundle\ProductBundle\Service\AttributeService;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
@@ -34,16 +35,38 @@ class ProductAttributeHandler
     protected $manager;
 
     /**
-     * Constructor for handler
-     * @param FormInterface $form    Form called
-     * @param Request       $request Web request
-     * @param ObjectManager $manager Storage manager
+     * @var AttributeService
      */
-    public function __construct(FormInterface $form, Request $request, ObjectManager $manager)
+    protected $service;
+
+    /**
+     * Constructor for handler
+     * @param FormInterface    $form    Form called
+     * @param Request          $request Web request
+     * @param ObjectManager    $manager Storage manager
+     * @param AttributeService $service Attribute service
+     */
+    public function __construct(FormInterface $form, Request $request, ObjectManager $manager, AttributeService $service)
     {
         $this->form    = $form;
         $this->request = $request;
         $this->manager = $manager;
+        $this->service = $service;
+    }
+
+    /**
+     * Preprocess method
+     * @param ProductAttribute $data
+     */
+    public function preProcess($data)
+    {
+        $attribute = $this->service->createAttributeFromFormData($data);
+
+        $this->form->setData($attribute);
+
+        $data = $this->service->prepareFormData($data);
+
+        $this->form->bind($data);
     }
 
     /**

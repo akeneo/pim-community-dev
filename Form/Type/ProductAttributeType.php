@@ -30,16 +30,24 @@ class ProductAttributeType extends AttributeType
      * Attribute service
      * @var AttributeService
      */
-    private $attributeService;
+    private $service;
+
+    /**
+     * Attribute subscriber
+     * @var ProductAttributeSubscriber
+     */
+    private $subscriber;
 
     /**
      * Constructor
      *
-     * @param AttributeService $attributeService
+     * @param AttributeService           $service
+     * @param ProductAttributeSubscriber $subscriber
      */
-    public function __construct(AttributeService $attributeService = null)
+    public function __construct(AttributeService $service = null, ProductAttributeSubscriber $subscriber = null)
     {
-        $this->attributeService = $attributeService;
+        $this->service = $service;
+        $this->subscriber = $subscriber;
     }
 
     /**
@@ -74,8 +82,8 @@ class ProductAttributeType extends AttributeType
     {
         // add our own subscriber for custom features
         $factory = $builder->getFormFactory();
-        $subscriber = new ProductAttributeSubscriber($factory, $this->attributeService);
-        $builder->addEventSubscriber($subscriber);
+        $this->subscriber->setFactory($factory);
+        $builder->addEventSubscriber($this->subscriber);
     }
 
     /**
@@ -241,13 +249,25 @@ class ProductAttributeType extends AttributeType
     }
 
     /**
+     * Override the parent's method to add a hidden field for sort order
+     * @param FormBuilderInterface $builder
+     *
+     * @return void
+     */
+    protected function addPositionField(FormBuilderInterface $builder)
+    {
+        $builder->add('sortOrder', 'hidden');
+    }
+
+
+    /**
      * Return available frontend type
      *
      * @return array
      */
     public function getAttributeTypeChoices()
     {
-        return $this->attributeService->getAttributeTypes();
+        return $this->service->getAttributeTypes();
     }
 
     /**

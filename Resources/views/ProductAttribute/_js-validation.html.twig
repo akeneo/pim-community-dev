@@ -62,56 +62,181 @@ function updateFieldsFromUnique() {
 
 $(function() {
 
-    $('select[id*=validationRule]').change(function() {
-        if ($(this).val() == 'regexp') {
-            $('input[id*=validationRegexp]').parent().parent().show();
-        } else {
-            $('input[id*=validationRegexp]').parent().parent().hide();
-        }
-    });
-    $('select[id*=validationRule]').trigger('change');
+    var $optionList;
 
-    if ($('select[id*=availableLanguages]').val()) {
-        $('select[id*=availableLanguages]').parent().parent().show();
-        $('#limitLanguages-switch').bootstrapSwitch('setState', true);
+    function updateForm() {
+        $.post(
+           'preprocess',
+            $('#' + formName).serialize(),
+            function(data) {
+                $('#' + formName).remove();
+                $('#main').append($(data));
+                $('#' + formName + ' div.alert').remove();
+                initializeForm();
+            }
+        );
     }
 
-    $('#limitLanguages-switch').on('switch-change', function (e, data) {
-        if (data.value) {
-            $(this).parent().parent().next().show();
-        } else {
-            $('select[id*=availableLanguages]').select2('val', '');
-            $(this).parent().parent().next().hide();
-        }
-    });
-
-    $('#pim_product_attribute_form_metricType').select2({ data: OroApp.measures.getMetricTypes() });
-    $('#pim_product_attribute_form_metricType').change(function() {
-        $('#pim_product_attribute_form_defaultMetricUnit').select2({
-            data: OroApp.measures.getMetricUnits($(this).select2('val'))
+    function initializeForm() {
+        $('#' + formName + ' .switch:not(.has-switch)').bootstrapSwitch();
+        $('#' + formName + ' select').select2();
+        $('#' + formName + ' input.multiselect').select2({ tags: $('#' + formName + ' input.multiselect').val() });
+        initializeOptions();
+        $('#pim_product_attribute_form_attributeType').select2().on('change', function() {
+            updateForm();
         });
-    });
-    $('#pim_product_attribute_form_metricType').trigger('change');
 
-    $('.picker-datetime').datetimepicker();
-    $('.picker-date').datetimepicker({ pickTime: false });
-    $('.picker-time').datetimepicker({ pickDate: false });
+        $('select[id*=validationRule]').change(function() {
+            if ($(this).val() == 'regexp') {
+                $('input[id*=validationRegexp]').parent().parent().show();
+            } else {
+                $('input[id*=validationRegexp]').parent().parent().hide();
+            }
+        });
+        $('select[id*=validationRule]').trigger('change');
 
-    $('.picker-date, .picker-datetime').on('changeDate', function(e) {
-        var val = e.date ? e.date.toISOString() : '';
-        $(this).parent().children('input').val(val);
-    });
-
-    $('.picker-time').on('changeDate', function(e) {
-        var val = '';
-        if (e.localDate) {
-            var h = e.localDate.getHours();
-            var m = e.localDate.getMinutes();
-            h = (h > 9) ? h : '0' + h;
-            m = (m > 9) ? m : '0' + m;
-            val = h + ':' + m;
+        if ($('select[id*=availableLanguages]').val()) {
+            $('select[id*=availableLanguages]').parent().parent().show();
+            $('#limitLanguages-switch').bootstrapSwitch('setState', true);
         }
-        $(this).parent().children('input').val(val);
-    });
 
+        $('#limitLanguages-switch').on('switch-change', function (e, data) {
+            if (data.value) {
+                $(this).parent().parent().next().show();
+            } else {
+                $('select[id*=availableLanguages]').select2('val', '');
+                $(this).parent().parent().next().hide();
+            }
+        });
+
+        $('#pim_product_attribute_form_metricType').select2({ data: OroApp.measures.getMetricTypes() });
+        $('#pim_product_attribute_form_metricType').change(function() {
+            $('#pim_product_attribute_form_defaultMetricUnit').select2({
+                data: OroApp.measures.getMetricUnits($(this).select2('val'))
+            });
+        });
+        $('#pim_product_attribute_form_metricType').trigger('change');
+
+        $('.picker-datetime').datetimepicker();
+        $('.picker-date').datetimepicker({ pickTime: false });
+        $('.picker-time').datetimepicker({ pickDate: false });
+
+        $('.picker-date, .picker-datetime').on('changeDate', function(e) {
+            var val = e.date ? e.date.toISOString() : '';
+            $(this).parent().children('input').val(val);
+        });
+
+        $('.picker-time').on('changeDate', function(e) {
+            var val = '';
+            if (e.localDate) {
+                var h = e.localDate.getHours();
+                var m = e.localDate.getMinutes();
+                h = (h > 9) ? h : '0' + h;
+                m = (m > 9) ? m : '0' + m;
+                val = h + ':' + m;
+            }
+            $(this).parent().children('input').val(val);
+        });
+    }
+
+    initializeForm();
+
+    function initializeOptions() {
+        $optionList = $('table#sortable_options');
+        if (!$optionList.length) {
+            return;
+        }
+        $optionList.after($('<a class="btn btn-small add_option_link" href="#"><i class="icon-plus"></i>{{ 'Add an option'|trans }}</a>'));
+
+        $optionList.find('tr.att-option').each(function() {
+            $(this).append($('<td><button type="button" class="btn btn-small action-delete-inline"><i class="icon-remove"></i></button></td>'));
+        });
+
+        $(document).on('click', 'a.add_option_link', function(e) {
+            e.preventDefault();
+            addOption();
+        });
+
+        $(document).on('click', 'button.action-delete-inline', function(e) {
+            var rows = $optionList.find('tr').length;
+            if (rows > 2) {
+                $(this).parent().parent().remove();
+                if (rows == 3) {
+                    $('button.action-delete-inline').hide();
+                }
+            }
+            updateDefaultValueField();
+        });
+
+        $('#pim_product_attribute_form_defaultValue').parent().parent().hide();
+        $(document).on('change', 'input:radio[name="default_option"]', updateDefaultValueField);
+
+        $(document).on('change', 'table#sortable_options input[id*=defaultValue]', updateDefaultValueField);
+
+        $optionList.find('.handle input').hide();
+
+        $optionList.find('tbody').sortable({
+            handle: '.handle',
+            containment: 'parent',
+            tolerance: 'pointer',
+            update: updateSortOrder
+        });
+    }
+
+    function addOption() {
+        var option = $optionList.find('tr').last().html();
+
+        var optionNumber = $optionList.find('tr.att-option').length + 1;
+
+        option = option.replace(/\[options\]\[([0-9]+)\]/g, "[options][" + optionNumber + "]");
+        option = option.replace(/_options_([0-9]+)_/g, "_options_" + optionNumber + "_");
+        option = option.replace(/\s+/g, ' ');
+
+        var $option = $('<tr class="att-option">' + option + '</tr>');
+
+        // Empty all fields except for locale
+        $option.find('input').each(function() {
+            if ($(this).attr('name').indexOf('locale') == -1) {
+                $(this).removeAttr('value');
+            }
+        });
+
+        $optionList.find('tbody').append($option);
+
+        $('button.action-delete-inline').show();
+        updateSortOrder();
+        updateDefaultValueRadio();
+    }
+
+    function updateSortOrder() {
+        var num = 0;
+        $optionList.find('tr').each(function() {
+            $(this).find('td.handle input').val(num);
+            num++;
+        });
+    }
+
+    function updateDefaultValueRadio() {
+        var defaultValue = $('#pim_product_attribute_form_defaultValue').val();
+        if (defaultValue) {
+            $optionList.find('input[id*=defaultValue]').each(function() {
+                if ($(this).val() == defaultValue) {
+                    $(this).parent().parent().find('input:radio[name="default_option"]').attr('checked', true);
+                    return;
+                }
+            });
+        }
+    }
+
+    function updateDefaultValueField() {
+        var $selected = $optionList.find('input:radio[name="default_option"]:checked');
+
+        if (!$selected) {
+            $('#pim_product_attribute_form_defaultValue').val('');
+            return;
+        }
+
+        var value = $selected.parent().parent().find('input[id*=defaultValue]').first().val();
+        $('#pim_product_attribute_form_defaultValue').val(value);
+    }
 });

@@ -1,9 +1,12 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Form\Subscriber;
 
+use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
+use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Service\AttributeService;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Event\DataEvent;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -37,13 +40,21 @@ class ProductAttributeSubscriber extends AttributeTypeSubscriber
     /**
      * Constructor
      *
-     * @param FormFactoryInterface $factory
-     * @param AttributeService     $service
+     * @param AttributeService $service
      */
-    public function __construct(FormFactoryInterface $factory = null, AttributeService $service = null)
+    public function __construct(AttributeService $service = null)
+    {
+        $this->service = $service;
+    }
+
+    /**
+     * Set form factory
+     *
+     * @param FormFactoryInterface $factory
+     */
+    public function setFactory(FormFactoryInterface $factory = null)
     {
         $this->factory = $factory;
-        $this->service = $service;
     }
 
     /**
@@ -53,6 +64,7 @@ class ProductAttributeSubscriber extends AttributeTypeSubscriber
     public static function getSubscribedEvents()
     {
         return array(
+            FormEvents::PRE_BIND => 'preBind',
             FormEvents::PRE_SET_DATA => 'preSetData'
         );
     }
@@ -70,17 +82,45 @@ class ProductAttributeSubscriber extends AttributeTypeSubscriber
             return;
         }
 
-        $form = $event->getForm();
+        $this->customizeForm($event->getForm(), $data);
+    }
 
-        foreach ($this->service->getInitialFields($data) as $field) {
+    /**
+     * Method called before binding data
+     * @param FormEvent $event
+     */
+    public function preBind(FormEvent $event)
+    {
+        $data = $event->getData();
+
+        if (null === $data) {
+            return;
+        }
+
+        $attribute = $this->service->createAttributeFromFormData($data);
+
+        $this->customizeForm($event->getForm(), $attribute);
+    }
+
+    /**
+     * Customize the attribute form
+     *
+     * @param Form             $form
+     * @param ProductAttribute $attribute
+     */
+    private function customizeForm($form, ProductAttribute $attribute)
+    {
+        foreach ($this->service->getInitialFields($attribute) as $field) {
             $form->add($this->factory->createNamed($field['name'], $field['fieldType'], $field['data'], $field['options']));
         }
 
-        // only when editing
-        if ($data->getId()) {
-            foreach ($this->service->getCustomFields($data) as $field) {
-                $form->add($this->factory->createNamed($field['name'], $field['fieldType'], $field['data'], $field['options']));
-            }
+        foreach ($this->service->getCustomFields($attribute) as $field) {
+            $form->add($this->factory->createNamed($field['name'], $field['fieldType'], $field['data'], $field['options']));
+        }
+
+        if ($attribute->getBackendType() === AbstractAttributeType::BACKEND_TYPE_OPTION
+            || $attribute->getBackendType() === AbstractAttributeType::BACKEND_TYPE_OPTIONS) {
+            $this->addOptionCollection($form);
         }
     }
 

@@ -1,26 +1,27 @@
 parameters:
-    product_manager_class:            Pim\Bundle\ProductBundle\Manager\ProductManager
-    product_entity_class:             Pim\Bundle\ProductBundle\Entity\Product
+    product_manager_class:              Pim\Bundle\ProductBundle\Manager\ProductManager
+    product_entity_class:               Pim\Bundle\ProductBundle\Entity\Product
 
-    product_attribute_class:          Pim\Bundle\ProductBundle\Entity\ProductAttribute
-    product_attribute_value_class:    Pim\Bundle\ProductBundle\Entity\ProductValue
+    product_attribute_class:            Pim\Bundle\ProductBundle\Entity\ProductAttribute
+    product_attribute_value_class:      Pim\Bundle\ProductBundle\Entity\ProductValue
 
-    product_attribute_type_class:     Pim\Bundle\ProductBundle\Form\Type\ProductAttributeType
-    product_attribute_handler_class:  Pim\Bundle\ProductBundle\Form\Handler\ProductAttributeHandler
+    product_attribute_type_class:       Pim\Bundle\ProductBundle\Form\Type\ProductAttributeType
+    product_attribute_handler_class:    Pim\Bundle\ProductBundle\Form\Handler\ProductAttributeHandler
+    product_attribute_subscriber_class: Pim\Bundle\ProductBundle\Form\Subscriber\ProductAttributeSubscriber
 
-    attribute_group_entity_class:     Pim\Bundle\ProductBundle\Entity\AttributeGroup
-    attribute_group_handler_class:    Pim\Bundle\ProductBundle\Form\Handler\AttributeGroupHandler
-    attribute_group_type_class:       Pim\Bundle\ProductBundle\Form\Type\AttributeGroupType
+    attribute_group_entity_class:       Pim\Bundle\ProductBundle\Entity\AttributeGroup
+    attribute_group_handler_class:      Pim\Bundle\ProductBundle\Form\Handler\AttributeGroupHandler
+    attribute_group_type_class:         Pim\Bundle\ProductBundle\Form\Type\AttributeGroupType
 
     export_profile_entity_class:      Pim\Bundle\ProductBundle\Entity\ExportProfile
     export_profile_handler_class:     Pim\Bundle\ProductBundle\Form\Handler\ExportProfileHandler
     export_profile_type_class:        Pim\Bundle\ProductBundle\Form\Type\ExportProfileType
 
-    metric_attribute_validator_class: Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricAttributeValidator
+    metric_attribute_validator_class:   Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricAttributeValidator
 
-    pim_product.attributes_config:    ~
-    pim_product.segment_class:        Pim\Bundle\ProductBundle\Entity\ProductSegment
-    pim_product.segment_manager_class: Pim\Bundle\ProductBundle\Model\ProductSegmentManager
+    pim_product.attributes_config:      ~
+    pim_product.segment_class:          Pim\Bundle\ProductBundle\Entity\ProductSegment
+    pim_product.segment_manager_class:  Pim\Bundle\ProductBundle\Model\ProductSegmentManager
 
 services:
     # Managers
@@ -58,7 +59,7 @@ services:
         class: %product_attribute_type_class%
         tags:
             - { name: form.type, alias: pim_product_attribute }
-        arguments: [@pim_product.attribute_service]
+        arguments: [@pim_product.attribute_service, @pim_product.form.subscriber.attribute]
 
     pim_product.form.type.attribute_group:
         class: %attribute_group_type_class%
@@ -79,7 +80,7 @@ services:
     pim_product.form.handler.attribute:
         class: %product_attribute_handler_class%
         scope: request
-        arguments: [@pim_product.form.attribute, @request, @doctrine.orm.entity_manager]
+        arguments: [@pim_product.form.attribute, @request, @doctrine.orm.entity_manager, @pim_product.attribute_service]
 
     pim_product.form.handler.attribute_group:
         class: %attribute_group_handler_class%
@@ -90,6 +91,11 @@ services:
         class: %export_profile_handler_class%
         scope: request
         arguments: [@pim_product.form.export_profile, @request, @doctrine.orm.entity_manager]
+
+    # Subscribers
+    pim_product.form.subscriber.attribute:
+        class: %product_attribute_subscriber_class%
+        arguments: [@pim_product.attribute_service]
 
     # Validators
     pim_product.form.validator.metric_attribute:
@@ -113,5 +119,5 @@ services:
     # Attribute manager
     pim_product.attribute_service:
         class: Pim\Bundle\ProductBundle\Service\AttributeService
-        arguments: [%pim_product.attributes_config%]
+        arguments: [%pim_product.attributes_config%, @product_manager, @pim_config.manager.locale]
 
