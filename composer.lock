@@ -1,4 +1,8 @@
 {
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
     "hash": "b450be715606b4c40799eff53059d9b5",
     "packages": [
         {
@@ -461,9 +465,9 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes Schmitt",
+                    "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -527,9 +531,9 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes Schmitt",
+                    "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -599,7 +603,7 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes Schmitt",
+                    "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -1289,12 +1293,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/l3pp4rd/DoctrineExtensions.git",
-                "reference": "ae5ff75ac8076213af0bfece16ecc012bf3ec151"
+                "reference": "c2aba006aa376a6c76007e81f09fe3cf59e421f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/ae5ff75ac8076213af0bfece16ecc012bf3ec151",
-                "reference": "ae5ff75ac8076213af0bfece16ecc012bf3ec151",
+                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/c2aba006aa376a6c76007e81f09fe3cf59e421f6",
+                "reference": "c2aba006aa376a6c76007e81f09fe3cf59e421f6",
                 "shasum": ""
             },
             "require": {
@@ -1360,7 +1364,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2013-04-22 12:44:19"
+            "time": "2013-04-25 07:51:56"
         },
         {
             "name": "imagine/imagine",
@@ -1772,7 +1776,7 @@
                 {
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
+                    "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -2099,7 +2103,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -2820,7 +2824,7 @@
                 "User Interface"
             ],
             "support": {
-                "source": "https://github.com/laboro/GridBundle/tree/grid_bundle",
+                "source": "https://github.com/laboro/GridBundle/tree/master",
                 "issues": "https://github.com/laboro/GridBundle/issues"
             },
             "time": "2013-04-23 09:23:36"
@@ -3043,18 +3047,19 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/SoapBundle.git",
-                "reference": "e3d8e08285b434d105da1a0ad99842435d1ff29f"
+                "reference": "b82e760fc9244b2efa961d04ac02059cad23e05c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/SoapBundle/zipball/e3d8e08285b434d105da1a0ad99842435d1ff29f",
-                "reference": "e3d8e08285b434d105da1a0ad99842435d1ff29f",
+                "url": "https://api.github.com/repos/laboro/SoapBundle/zipball/b82e760fc9244b2efa961d04ac02059cad23e05c",
+                "reference": "b82e760fc9244b2efa961d04ac02059cad23e05c",
                 "shasum": ""
             },
             "require": {
                 "besimple/soap-bundle": "dev-master",
                 "besimple/soap-common": "dev-master",
                 "besimple/soap-server": "dev-master",
+                "oro/flexible-entity-bundle": "dev-master",
                 "php": ">=5.3.3",
                 "symfony/symfony": "2.1.*"
             },
@@ -3081,7 +3086,7 @@
                 "source": "https://github.com/laboro/SoapBundle/tree/master",
                 "issues": "https://github.com/laboro/SoapBundle/issues"
             },
-            "time": "2013-04-17 11:29:04"
+            "time": "2013-04-24 12:01:05"
         },
         {
             "name": "oro/ui-bundle",
@@ -3127,7 +3132,7 @@
                 "User Interface"
             ],
             "support": {
-                "source": "https://github.com/laboro/UIBundle/tree/hashtag-navigation",
+                "source": "https://github.com/laboro/UIBundle/tree/master",
                 "issues": "https://github.com/laboro/UIBundle/issues"
             },
             "time": "2013-04-23 14:12:15"
@@ -3185,7 +3190,7 @@
                 "BAP"
             ],
             "support": {
-                "source": "https://github.com/laboro/UserBundle/tree/hashtag-navigation",
+                "source": "https://github.com/laboro/UserBundle/tree/master",
                 "issues": "https://github.com/laboro/UserBundle/issues"
             },
             "time": "2013-04-23 13:47:33"
@@ -3197,12 +3202,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/WindowsBundle.git",
-                "reference": "2e0ac1732536f53de1d6e054b857e6632db12862"
+                "reference": "7eb1c44b9430e561df09271bb12cd4e0395cd7b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/WindowsBundle/zipball/2e0ac1732536f53de1d6e054b857e6632db12862",
-                "reference": "2e0ac1732536f53de1d6e054b857e6632db12862",
+                "url": "https://api.github.com/repos/laboro/WindowsBundle/zipball/7eb1c44b9430e561df09271bb12cd4e0395cd7b8",
+                "reference": "7eb1c44b9430e561df09271bb12cd4e0395cd7b8",
                 "shasum": ""
             },
             "require": {
@@ -3238,7 +3243,7 @@
                 "source": "https://github.com/laboro/WindowsBundle/tree/master",
                 "issues": "https://github.com/laboro/WindowsBundle/issues"
             },
-            "time": "2013-04-11 14:06:11"
+            "time": "2013-04-24 10:21:28"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -4208,12 +4213,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "80fd11cbbe68fada461626e7b2d67bda0ef8ecfa"
+                "reference": "501ecc5df33faa52cba864c65467419aae0b384f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/80fd11cbbe68fada461626e7b2d67bda0ef8ecfa",
-                "reference": "80fd11cbbe68fada461626e7b2d67bda0ef8ecfa",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/501ecc5df33faa52cba864c65467419aae0b384f",
+                "reference": "501ecc5df33faa52cba864c65467419aae0b384f",
                 "shasum": ""
             },
             "require": {
@@ -4249,7 +4254,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-04-17 12:07:50"
+            "time": "2013-04-24 14:49:01"
         },
         {
             "name": "ys-tools/back-url-bundle",
@@ -4258,12 +4263,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yshyshkin/BackUrl.git",
-                "reference": "ea30c6b6363a8a931d535b38cd4c5cddedaacdb4"
+                "reference": "c5e0c8bc4e72dae97ea579a7ea96ef2316a9cc06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yshyshkin/BackUrl/zipball/ea30c6b6363a8a931d535b38cd4c5cddedaacdb4",
-                "reference": "ea30c6b6363a8a931d535b38cd4c5cddedaacdb4",
+                "url": "https://api.github.com/repos/yshyshkin/BackUrl/zipball/c5e0c8bc4e72dae97ea579a7ea96ef2316a9cc06",
+                "reference": "c5e0c8bc4e72dae97ea579a7ea96ef2316a9cc06",
                 "shasum": ""
             },
             "require": {
@@ -4292,7 +4297,7 @@
                 "annotation",
                 "redirect"
             ],
-            "time": "2013-04-23 10:51:19"
+            "time": "2013-04-24 16:17:41"
         },
         {
             "name": "zendframework/zend-code",
