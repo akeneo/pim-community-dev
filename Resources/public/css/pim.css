@@ -215,3 +215,7 @@ form .table-condensed input.span4 {
 .resizable-content h3 {
     margin-left: 10px;
 }
+
+#sortable_options th {
+    text-align: center;
+}
