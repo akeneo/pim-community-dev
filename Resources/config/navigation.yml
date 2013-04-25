@@ -29,3 +29,37 @@ oro_menu_config:
                         pim_enrich_attribute: ~
                         pim_enrich_attributegroup: ~
                         pim_enrich_exportprofile: ~
+
+oro_titles:
+    pim_default:                             Dashboard
+    pim_product_attributegroup_index:        Attribute groups
+    pim_product_attributegroup_create:       Attribute groups | Create
+    pim_product_attributegroup_edit:         Attribute groups | Edit
+    pim_product_attributegroup_sort:         Attribute groups | Sort
+    pim_product_classificationtree_index:    Classification trees
+    pim_product_classificationtree_listtree: Classification trees | List
+    pim_product_classificationtree_manage:   Classification trees | Manage
+    pim_product_classificationtree_view:     Classification trees | View
+    pim_product_classificationtree_create:   Classification trees | Create
+    pim_product_classificationtree_edit:     Classification trees | Edit
+    pim_product_exportprofile_index:         Export profiles
+    pim_product_exportprofile_create:        Export profiles | Create
+    pim_product_exportprofile_edit:          Export profiles | Edit
+    pim_product_productattribute_index:      Product attributes
+    pim_product_productattribute_create:     Product attributes | Create
+    pim_product_productattribute_edit:       Product attributes | Edit
+    pim_product_product_index:               Products
+    pim_product_product_create:              Products | Create
+    pim_product_product_edit:                Products | Edit
+    pim_product_productfamily_index:         Product families
+    pim_product_productfamily_create:        Product families | Create
+    pim_product_productfamily_edit:          Product families | Edit
+    pim_config_channel_index:                Channels
+    pim_config_channel_create:               Channels | Create
+    pim_config_channel_edit:                 Channels | Edit
+    pim_config_currency_index:               Currencies
+    pim_config_currency_create:              Currencies | Create
+    pim_config_currency_edit:                Currencies | Edit
+    pim_config_language_index:               Languages
+    pim_config_language_create:              Languages | Create
+    pim_config_language_edit:                Languages | Edit

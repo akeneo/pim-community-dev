@@ -1,8 +1,5 @@
 {% extends 'PimProductBundle::layout.html.twig' %}
 
-{% set title = form.vars.value.id ? 'Edit attribute'|trans : 'Add attribute'|trans %}
-{% block title %}{{ title }} - {{ parent() }}{% endblock %}
-
 {% block content %}
     {% include 'PimProductBundle:ProductAttribute:form.html.twig' with { 'form': form, 'locales': locales, 'disabledLocales': disabledLocales } %}
 {% endblock %}
