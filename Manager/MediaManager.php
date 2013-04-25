@@ -55,6 +55,7 @@ class MediaManager
         // write file
         $this->write($filename, $content, $overwrite);
 
+        $media->setOriginalFilename($uploadedFile->getClientOriginalName());
         $media->setFilename($filename);
         $media->setFilepath($this->getFilePath($media));
         $media->setMimeType($uploadedFile->getMimeType());

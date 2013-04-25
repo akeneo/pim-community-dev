@@ -5,6 +5,8 @@ namespace Pim\Bundle\ProductBundle\Manager;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Entity\ProductValue;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -13,6 +15,15 @@ use Pim\Bundle\ProductBundle\Entity\ProductValue;
  */
 class ProductManager extends FlexibleManager
 {
+    protected $mediaManager;
+
+    public function __construct($flexibleName, $flexibleConfig, ObjectManager $storageManager, EventDispatcherInterface $eventDispatcher, $mediaManager)
+    {
+        parent::__construct($flexibleName, $flexibleConfig, $storageManager, $eventDispatcher);
+
+        $this->mediaManager = $mediaManager;
+    }
+
     /**
      * Save a product in two phases :
      *   1) Persist and flush the entity as usual
@@ -23,6 +34,7 @@ class ProductManager extends FlexibleManager
      */
     public function save(Product $product)
     {
+        $this->upload($product);
         $this->storageManager->persist($product);
         $this->storageManager->flush();
 
@@ -76,6 +88,34 @@ class ProductManager extends FlexibleManager
 
                 $product->addValue($value);
             }
+        }
+    }
+
+    private function upload(Product $product)
+    {
+        $index = 0;
+        // upload files if exist
+        foreach ($product->getValues() as $value) {
+            if ($value->getMedia() !== null) {
+                // upload file
+                if ($value->getMedia()->getFile() !== null) {
+                    $filename = $product->getSku() .'-'. $value->getAttribute()->getCode() .'-'.
+                        $value->getLocale() .'-'. $value->getScope() .'-'. time() .'-'.
+                        $value->getMedia()->getFile()->getClientOriginalName();
+
+                    $this->mediaManager->upload($value->getMedia(), $filename);
+                } elseif ($value->getMedia()->getFile() === null &&
+                    (!$value->getMedia()->getId() ||
+                    $form->get('values')->get($index)->get('media')->get('remove')->getData() === true)) {
+                    // unkink media if exists
+                    if ($this->mediaManager->fileExists($value->getMedia())) {
+                        $this->mediaManager->delete($value->getMedia());
+                    }
+                    // remove value if empty file
+                    $value->setMedia(null);
+                }
+            }
+            $index++;
         }
     }
 }
