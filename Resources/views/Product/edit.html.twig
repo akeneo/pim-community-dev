@@ -13,7 +13,19 @@
         <div class="row-fluid">
             <h3 class="pull-left">{{ title|trans }}</h3>
             <div class="pull-right">
-                <a href="{{ path('pim_product_product_index') }}">
+                <span id="updated" class="label label-warning">{{ 'The product has been updated.'|trans }}</span>
+                <div class="btn-group">
+                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                        Locale
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        {% for language in form.vars.value.getActiveLanguages() %}
+                            <li><a href="?dataLocale={{ language.code }}">{{ language.fromLocale(app.request.locale) }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <a class="btn" href="{{ path('pim_product_product_index') }}">
                     {{ "Back to list" | trans }}
                 </a>
                 <a class="btn" href="{{ path('pim_product_product_remove', { id: form.vars.value.id }) }}">
@@ -29,6 +41,7 @@
                 <div class="controls">
                     {{ form_widget(form.productFamily, {'attr' : { 'class': 'span1' }}) }}
                 </div>
+
             </div>
         </div>
 
@@ -105,28 +118,40 @@
         {{ form_row(form._token) }}
     </form>
 
-    {# TODO style this as a dropdown #}
-    <ul class="locales">
-        {% for language in form.vars.value.getActiveLanguages() %}
-        <li><a href="?dataLocale={{ language.code }}">{{ language.fromLocale(app.request.locale) }}</a></li>
-        {% endfor %}
+    <ul class="channels">
+        <li><a href="#" data-channel="ecommerce">ecommerce</a></li>
+        <li><a href="#" data-channel="mobile">mobile</a></li>
     </ul>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
     $(function() {
+        var updated = false;
+
+        $('#updated').css('display', 'none');
+        $('input, textarea, select').change(function(event){
+            updated = true;
+            $('#updated').css('display', 'inline-block');
+            $('input, textarea, select').unbind('change');
+        });
+
+        $(window).on('beforeunload', function(){
+            if (updated) {
+                return "{{ 'You will lose changes to the product if you leave the page.'|trans }}";
+            }
+        });
 
         $('select').select2({ allowClear: true });
         $('input.multiselect').select2({ tags: $(this).val() });
-        
+
         $('#tabs').tabs().delegate("a", "click", function() {
             $(this).parent().parent().find('li').each(function() {
                 $(this).removeClass('active');
             });
             $(this).parent().addClass('active');
         });
-        
+
         $('#tabs li.tab').each(function() {
             var tabId = $(this).attr('aria-controls');
             var nbValues = $('#'+tabId+' .control-group').length;
