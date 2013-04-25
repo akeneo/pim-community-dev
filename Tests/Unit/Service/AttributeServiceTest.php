@@ -19,7 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ValidMetricAttributeValidatorTest extends WebTestCase
+class AttributeServiceTest extends WebTestCase
 {
     /**
      * @var ExecutionContext
@@ -37,6 +37,16 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
     protected $config;
 
     /**
+     * @var ProductManager
+     */
+    protected $manager;
+
+    /**
+     * @var Pim\Bundle\ConfigBundle\Manager\LocaleManager
+     */
+    protected $localeManager;
+
+    /**
      * {@inheritDoc}
      */
     public function setUp()
@@ -49,8 +59,10 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
         static::$kernel->boot();
 
         $this->config = static::$kernel->getContainer()->getParameter('pim_product.attributes_config');
+        $this->manager = static::$kernel->getContainer()->get('product_manager');
+        $this->localeManager = static::$kernel->getContainer()->get('pim_config.manager.locale');
 
-        $this->service = new AttributeService($this->config);
+        $this->service = new AttributeService($this->config, $this->manager, $this->localeManager);
     }
 
     /**
@@ -106,7 +118,7 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
         }
     }
 
-   /**
+    /**
      * Test getAttributeTypes method
      */
     public function testGetAttributeTypes()

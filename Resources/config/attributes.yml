@@ -2,33 +2,44 @@ attributes_config:
     Boolean:
         name: 'Yes/No'
         properties: [ 'defaultValue' ]
+        parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
     Date:
         name: 'Date'
-        properties: [ 'defaultValue', 'dateType', 'dateMin', 'dateMax', 'unique', 'searchable' ]
+        properties: [ 'defaultValue', 'dateType', 'dateMin', 'dateMax', 'searchable' ]
+        parameters: [ 'translatable', 'scopable', 'unique', 'availableLanguages' ]
     File:
         name: 'File'
         properties: [ 'allowedFileSources', 'maxFileSize', 'allowedFileExtensions' ]
+        parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
     Image:
         name: 'Image'
         properties: [ 'allowedFileSources', 'maxFileSize', 'allowedFileExtensions' ]
+        parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
     Metric:
         name: 'Metric'
         properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'metricType', 'defaultMetricUnit', 'searchable' ]
+        parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
     Money:
         name: 'Money'
         properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'searchable' ]
+        parameters: [ 'translatable', 'availableLanguages' ]
     Number:
         name: 'Number'
-        properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'unique', 'searchable' ]
+        properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'searchable' ]
+        parameters: [ 'translatable', 'scopable', 'unique', 'availableLanguages' ]
     OptionMultiSelect:
         name: 'Multiselect'
-        properties: [ 'defaultValue', 'valueCreationAllowed', 'searchable' ]
+        properties: [ 'defaultValue', 'valueCreationAllowed', 'searchable', 'options' ]
+        parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
     OptionSimpleSelect:
         name: 'Simple select'
-        properties: [ 'defaultValue', 'valueCreationAllowed', 'searchable' ]
+        properties: [ 'defaultValue', 'valueCreationAllowed', 'searchable', 'options' ]
+        parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
     TextArea:
         name: 'Textarea'
         properties: [ 'defaultValue', 'maxCharacters', 'wysiwygEnabled', 'searchable' ]
+        parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
     Text:
         name: 'Text'
-        properties: [ 'defaultValue', 'maxCharacters', 'validationRule', 'validationRegexp', 'unique', 'searchable' ]
+        properties: [ 'defaultValue', 'maxCharacters', 'validationRule', 'validationRegexp', 'searchable' ]
+        parameters: [ 'translatable', 'scopable', 'unique', 'availableLanguages' ]

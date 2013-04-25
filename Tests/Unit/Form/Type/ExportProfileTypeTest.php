@@ -5,15 +5,15 @@ use Symfony\Component\DependencyInjection\Container;
 
 use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
 
+use Pim\Bundle\ProductBundle\Tests\Entity\ObjectTestEntity;
+
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 
 use Symfony\Component\Form\Forms;
 
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
 
-use Pim\Bundle\ProductBundle\Form\Type\AttributeGroupType;
-
-use Pim\Bundle\ProductBundle\Tests\Entity\AttributeGroupTestEntity;
+use Pim\Bundle\ProductBundle\Form\Type\ExportProfileType;
 
 /**
  * Test related class
@@ -23,11 +23,11 @@ use Pim\Bundle\ProductBundle\Tests\Entity\AttributeGroupTestEntity;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class AttributeGroupTypeTest extends TypeTestCase
+class ExportProfileTypeTest extends TypeTestCase
 {
 
     /**
-     * @var AttributeGroupType
+     * @var ExportProfileType
      */
     protected $type;
 
@@ -58,7 +58,7 @@ class AttributeGroupTypeTest extends TypeTestCase
             ->getFormFactory();
 
         // Create form type
-        $this->type = new AttributeGroupType();
+        $this->type = new ExportProfileType();
         $this->form = $this->factory->create($this->type);
     }
 
@@ -112,17 +112,17 @@ class AttributeGroupTypeTest extends TypeTestCase
     public function testFormCreate()
     {
         // Assert fields
+        $this->assertField('code', 'text');
         $this->assertField('name', 'pim_translatable_field');
-        $this->assertField('sort_order', 'hidden');
 
         // Assert option class
         $this->assertEquals(
-            'Pim\Bundle\ProductBundle\Entity\AttributeGroup',
+            'Pim\Bundle\ProductBundle\Entity\ExportProfile',
             $this->form->getConfig()->getDataClass()
         );
 
         // Assert name
-        $this->assertEquals('pim_attribute_group', $this->form->getName());
+        $this->assertEquals('pim_export_profile', $this->form->getName());
     }
 
     /**

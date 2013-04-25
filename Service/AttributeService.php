@@ -1,6 +1,13 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Service;
 
+use Pim\Bundle\ProductBundle\Manager\ProductManager;
+use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+use Pim\Bundle\ProductBundle\Entity\AttributeOption;
+use Pim\Bundle\ProductBundle\Entity\AttributeOptionValue;
+use Pim\Bundle\ProductBundle\Form\Type\AttributeOptionType;
+use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
+
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\ImageType;
@@ -14,6 +21,8 @@ use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MetricType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MoneyType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextAreaType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\NumberType;
+
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Attribute Service
@@ -31,68 +40,127 @@ class AttributeService
     protected $config;
 
     /**
+     * @var ProductManager
+     */
+    protected $manager;
+
+    /**
+     * @var LocaleManager
+     */
+    protected $localeManager;
+
+    /**
      * Constructor
      *
-     * @param array $config Configuration parameters
+     * @param array          $config        Configuration parameters
+     * @param ProductManager $manager       Product manager
+     * @param LocaleManager  $localeManager Locale manager
      */
-    public function __construct($config)
+    public function __construct($config, ProductManager $manager, LocaleManager $localeManager)
     {
         $this->config = $config['attributes_config'];
+        $this->manager = $manager;
+        $this->localeManager = $localeManager;
     }
 
     /**
-     * Return an array of form field parameters for properties
-     * that can't be changed once the attribute has been created
+     * Create a ProductAttribute object from data in the form
+     *
+     * @param array $data Form data
+     *
+     * @return ProductAttribute $attribute | null
+     */
+    public function createAttributeFromFormData($data)
+    {
+        if (gettype($data) === 'array') {
+            $type = !empty($data['attributeType']) ? new $data['attributeType']() : null;
+
+            return $this->manager->createAttribute($type);
+        } elseif ($data instanceof ProductAttribute) {
+
+            return $data;
+        }
+
+        return null;
+    }
+
+    /**
+     * Prepare data for binding to the form
+     *
+     * @param array $data Form data
+     *
+     * @return array Prepared form data
+     */
+    public function prepareFormData($data)
+    {
+        $optionTypes = array(
+            AbstractAttributeType::TYPE_OPT_MULTI_SELECT_CLASS,
+            AbstractAttributeType::TYPE_OPT_SINGLE_SELECT_CLASS
+        );
+
+        // If the attribute type can have options but no options have been created,
+        // create an empty option to render the corresponding form fields
+        if (in_array($data['attributeType'], $optionTypes) && !isset($data['options'])) {
+            $option = array(
+                'optionValues' => array()
+            );
+
+            foreach ($this->localeManager->getActiveLocales() as $locale) {
+                $option['optionValues'][] = array(
+                    'locale' => $locale->getCode()
+                );
+            }
+
+            $data['options'] = array($option);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Return an array of form field parameters for attribute parameters
      *
      * @param ProductAttribute $attribute
      *
      * @return array $fields
      */
-    public function getInitialFields($attribute = null)
+    public function getParameterFields($attribute = null)
     {
-        $properties = array(
-            array('name' => 'scopable', 'fieldType' => 'choice',
-                'options' => array('choices' => array('Global', 'Channel'))),
-            array('name' => 'translatable', 'fieldType' => 'checkbox'),
-            array('name' => 'unique', 'fieldType' => 'checkbox')
-        );
-
-        $disabled = false;
-        if ($attribute !== null) {
-            if ($attribute->getId()) {
-                $disabled = true;
-                if (!in_array('unique', $this->getActivatedProperties($attribute))) {
-                    array_pop($properties);
-                }
-            }
-        }
-
+        $parameters = array('translatable', 'scopable', 'unique', 'availableLanguages');
+        $activatedParameters = $this->getActivatedParameters($attribute);
         $fields = array();
-        foreach ($properties as $property) {
-            $field = $property;
-            $field['data'] = null;
-            $field['options']['disabled'] = $disabled;
-            $fields[] = $field;
+
+        foreach ($parameters as $parameter) {
+            $method = 'get' . ucfirst($parameter) . 'params';
+            if (method_exists($this, $method)) {
+                $field = $this->$method($attribute);
+                if (!in_array($parameter, $activatedParameters)) {
+                    $field['options']['disabled'] = true;
+                    $field['options']['read_only'] = true;
+                }
+                $fields[] = $field;
+            }
         }
 
         return $fields;
     }
 
     /**
-     * Return an array of form field parameters for all custom properties
+     * Return an array of form field parameters for attribute properties
      *
      * @param ProductAttribute $attribute
      *
-     * @return array|null $params
+     * @return array $fields
      */
-    public function getCustomFields($attribute)
+    public function getPropertyFields($attribute)
     {
         $properties = $this->getActivatedProperties($attribute);
         $fields = array();
 
         foreach ($properties as $property) {
-            if ($property != 'unique') {
-                $fields[] = $this->getFieldParams($attribute, $property);
+            $method = 'get' . ucfirst($property) . 'params';
+            if (method_exists($this, $method)) {
+                $fields[] = $this->$method($attribute);
             }
         }
 
@@ -136,135 +204,22 @@ class AttributeService
     }
 
     /**
-     * Return form field parameters for a single property
+     * Return activated parameters for the attribute
      *
-     * @param ProductAttribute $attribute Product attribute
-     * @param string           $property  The property to get params for
+     * @param ProductAttribute $attribute
      *
-     * @return array $params
+     * @return array Activated parameters
      */
-    private function getFieldParams($attribute, $property)
+    private function getActivatedParameters($attribute)
     {
-        $params = array('name' => $property, 'data' => null, 'options' => array('required' => false, 'label' => $property));
-        switch ($property) {
-            case 'defaultValue':
-                $attTypeClass = $attribute->getAttributeType();
-                $attType = new $attTypeClass();
-                $fieldType = $attType->getFormType();
-
-                if ($fieldType === 'entity') {
-                    $fieldType = 'text';
-                } elseif ($attTypeClass == AbstractAttributeType::TYPE_BOOLEAN_CLASS) {
-                    $fieldType = 'checkbox';
-                }
-                $params['fieldType'] = $fieldType;
-                if ($attTypeClass == AbstractAttributeType::TYPE_DATE_CLASS) {
-                    $params['fieldType'] = $attribute->getDateType() ? $attribute->getDateType() : 'datetime';
-                    $params['options']['widget']  = 'single_text';
-                    if ($params['fieldType'] == 'date') {
-                        $params['options']['attr']  = array('data-format' => 'dd/MM/yyyy');
-                    } elseif ($params['fieldType'] == 'datetime') {
-                        $params['options']['attr']  = array('data-format' => 'dd/MM/yyyy hh:mm');
-                    } else {
-                        $params['options']['attr']  = array('data-format' => 'hh:mm');
-                    }
-                }
-                break;
-            case 'dateType':
-                $params['fieldType']           = 'choice';
-                $params['options']['choices']  = array('date' => 'Date', 'time' => 'Time', 'datetime' => 'Datetime');
-                $params['options']['required'] = true;
-                break;
-            case 'dateMin':
-                $params['fieldType'] = $attribute->getDateType() ? $attribute->getDateType() : 'datetime';
-                $params['options']['widget']  = 'single_text';
-                if ($params['fieldType'] == 'date') {
-                    $params['options']['attr']  = array('data-format' => 'dd/MM/yyyy');
-                } elseif ($params['fieldType'] == 'datetime') {
-                    $params['options']['attr']  = array('data-format' => 'dd/MM/yyyy hh:mm');
-                } else {
-                    $params['options']['attr']  = array('data-format' => 'hh:mm');
-                }
-                break;
-            case 'dateMax':
-                $params['fieldType'] = $attribute->getDateType() ? $attribute->getDateType() : 'datetime';
-                $params['options']['widget']  = 'single_text';
-                if ($params['fieldType'] == 'date') {
-                    $params['options']['attr']  = array('data-format' => 'dd/MM/yyyy');
-                } elseif ($params['fieldType'] == 'datetime') {
-                    $params['options']['attr']  = array('data-format' => 'dd/MM/yyyy hh:mm');
-                } else {
-                    $params['options']['attr']  = array('data-format' => 'hh:mm');
-                }
-                break;
-            case 'negativeAllowed':
-                $params['fieldType'] = 'checkbox';
-                break;
-            case 'decimalsAllowed':
-                $params['fieldType'] = 'checkbox';
-                break;
-            case 'numberMin':
-                if ($attribute->getDecimalsAllowed()) {
-                    $params['fieldType'] = 'number';
-                } else {
-                    $params['fieldType'] = 'integer';
-                }
-                break;
-            case 'numberMax':
-                if ($attribute->getDecimalsAllowed()) {
-                    $params['fieldType'] = 'number';
-                } else {
-                    $params['fieldType'] = 'integer';
-                }
-                break;
-            case 'valueCreationAllowed':
-                $params['fieldType'] = 'checkbox';
-                break;
-            case 'maxCharacters':
-                $params['fieldType'] = 'integer';
-                break;
-            case 'wysiwygEnabled':
-                $params['fieldType'] = 'checkbox';
-                break;
-            case 'metricType':
-                $params['fieldType'] = 'text';
-                break;
-            case 'defaultMetricUnit':
-                $params['fieldType'] = 'text';
-                break;
-            case 'allowedFileSources':
-                $params['fieldType']           = 'choice';
-                $params['options']['required'] = true;
-                $params['options']['choices']  = array('upload' => 'Upload', 'external' => 'External');
-                break;
-            case 'maxFileSize':
-                $params['fieldType'] = 'integer';
-                break;
-            case 'allowedFileExtensions':
-                $params['fieldType'] = 'text';
-                $params['options']['by_reference'] = false;
-                $params['options']['attr'] = array('class' => 'multiselect');
-                $params['data'] = implode(',', $attribute->getAllowedFileExtensions());
-                break;
-            case 'validationRule':
-                $params['fieldType'] = 'choice';
-                $params['options']['choices'] = array(null => 'None', 'email' => 'E-mail', 'url' => 'URL', 'regexp' => 'Regular expression');
-                break;
-            case 'validationRegexp':
-                $params['fieldType'] = 'text';
-                break;
-            case 'unique':
-                $params['fieldType'] = 'checkbox';
-                $params['options']['disabled'] = true;
-                break;
-            case 'searchable':
-                $params['fieldType'] = 'checkbox';
-                break;
-            default:
-                return null;
+        $type = $attribute->getAttributeType();
+        if (!$type) {
+            return array();
         }
+        $type = explode('\\', $attribute->getAttributeType());
+        $type = substr(end($type), 0, -4);
 
-        return $params;
+        return array_key_exists($type, $this->config) ? $this->config[$type]['parameters'] : array();
     }
 
     /**
@@ -274,12 +229,442 @@ class AttributeService
      *
      * @return array Activated properties
      */
-    public function getActivatedProperties($attribute)
+    private function getActivatedProperties($attribute)
     {
         $type = $attribute->getAttributeType();
+        if (!$type) {
+            return array();
+        }
         $type = explode('\\', $attribute->getAttributeType());
         $type = substr(end($type), 0, -4);
 
         return array_key_exists($type, $this->config) ? $this->config[$type]['properties'] : array();
+    }
+
+    /**
+     * Return field parameters based on provided data
+     *
+     * @param name      $name
+     * @param fieldType $fieldType
+     * @param data      $data
+     * @param options   $options
+     *
+     * @return array $params
+     */
+    private function getFieldParams($name, $fieldType = 'text', $data = null, $options = array())
+    {
+        $baseOptions = array('required' => false, 'label' => $name);
+        $options = array_merge($baseOptions, $options);
+
+        return array(
+            'name' => $name,
+            'fieldType' => $fieldType,
+            'data' => $data,
+            'options' => $options
+        );
+    }
+
+    /**
+     * Return form field parameters for defaultValue property
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getDefaultValueParams($attribute)
+    {
+        $attTypeClass = $attribute->getAttributeType();
+        $attType = new $attTypeClass();
+        $fieldType = $attType->getFormType();
+
+        if ($fieldType === 'entity' || $fieldType = 'oro_flexibleentity_metric') {
+            $fieldType = 'text';
+        } elseif ($attTypeClass == AbstractAttributeType::TYPE_BOOLEAN_CLASS) {
+            $fieldType = 'checkbox';
+        }
+
+        $options = array();
+
+        if ($attTypeClass == AbstractAttributeType::TYPE_DATE_CLASS) {
+            $fieldType = $attribute->getDateType() ? $attribute->getDateType() : 'datetime';
+            $options['widget'] = 'single_text';
+            if ($fieldType == 'date') {
+                $options['attr'] = array('data-format' => 'dd/MM/yyyy');
+            } elseif ($fieldType == 'time') {
+                $options['attr'] = array('data-format' => 'hh:mm');
+            } else {
+                $options['attr'] = array('data-format' => 'dd/MM/yyyy hh:mm');
+            }
+        }
+
+        return $this->getFieldParams('defaultValue', $fieldType, null, $options);
+    }
+
+    /**
+     * Return form field parameters for dateType property
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getDateTypeParams($attribute)
+    {
+        $fieldType = 'choice';
+        $options = array(
+            'required' => true,
+            'choices' => array('date' => 'Date', 'time' => 'Time', 'datetime' => 'Datetime')
+        );
+
+        return $this->getFieldParams('dateType', $fieldType, null, $options);
+    }
+
+    /**
+     * Return form field parameters for dateMin property
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getDateMinParams($attribute)
+    {
+        $fieldType = $attribute->getDateType() ? $attribute->getDateType() : 'datetime';
+
+        $options = array(
+            'widget' => 'single_text'
+        );
+
+        if ($fieldType === 'date') {
+            $options['attr']  = array('data-format' => 'dd/MM/yyyy');
+        } elseif ($fieldType === 'time') {
+            $options['attr']  = array('data-format' => 'hh:mm');
+        } else {
+            $options['attr']  = array('data-format' => 'dd/MM/yyyy hh:mm');
+        }
+
+        return $this->getFieldParams('dateMin', $fieldType, null, $options);
+    }
+
+    /**
+     * Return form field parameters for dateMax property
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getDateMaxParams($attribute)
+    {
+        $fieldType = $attribute->getDateType() ? $attribute->getDateType() : 'datetime';
+
+        $options = array(
+            'widget' => 'single_text'
+        );
+
+        if ($fieldType === 'date') {
+            $options['attr']  = array('data-format' => 'dd/MM/yyyy');
+        } elseif ($fieldType === 'time') {
+            $options['attr']  = array('data-format' => 'hh:mm');
+        } else {
+            $options['attr']  = array('data-format' => 'dd/MM/yyyy hh:mm');
+        }
+
+        return $this->getFieldParams('dateMax', $fieldType, null, $options);
+    }
+
+    /**
+     * Return form field parameters for negativeAllowed property
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getNegativeAllowedParams($attribute)
+    {
+        return $this->getFieldParams('negativeAllowed', 'checkbox');
+    }
+
+    /**
+     * Return form field parameters for decimalsAllowed property
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getDecimalsAllowedParams($attribute)
+    {
+        return $this->getFieldParams('decimalsAllowed', 'checkbox');
+    }
+
+    /**
+     * Return form field parameters for numberMin property
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getNumberMinParams($attribute)
+    {
+        $fieldType = $attribute->getDecimalsAllowed() ? 'number' : 'integer';
+
+        return $this->getFieldParams('numberMin', $fieldType);
+    }
+
+    /**
+     * Return form field parameters for numberMax property
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getNumberMaxParams($attribute)
+    {
+        $fieldType = $attribute->getDecimalsAllowed() ? 'number' : 'integer';
+
+        return $this->getFieldParams('numberMax', $fieldType);
+    }
+
+    /**
+     * Return form field parameters for valueCreationAllowed property
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getValueCreationAllowedParams($attribute)
+    {
+        return $this->getFieldParams('valueCreationAllowed', 'checkbox');
+    }
+
+    /**
+     * Return form field parameters for maxCharacters property
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getMaxCharactersParams($attribute)
+    {
+        return $this->getFieldParams('maxCharacters', 'integer');
+    }
+
+    /**
+     * Return form field parameters for wysiwygEnabled property
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getWysiwygEnabledParams($attribute)
+    {
+        return $this->getFieldParams('wysiwygEnabled', 'checkbox');
+    }
+
+    /**
+     * Return form field parameters for metricType property
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getMetricTypeParams($attribute)
+    {
+        return $this->getFieldParams('metricType');
+    }
+
+    /**
+     * Return form field parameters for defaultMetricUnit property
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getDefaultMetricUnitParams($attribute)
+    {
+        return $this->getFieldParams('defaultMetricUnit');
+    }
+
+    /**
+     * Return form field parameters for allowedFileSources property
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getAllowedFileSourcesParams($attribute)
+    {
+        $fieldType = 'choice';
+        $options = array(
+            'required' => true,
+            'choices' => array('upload' => 'Upload', 'external' => 'External')
+        );
+
+        return $this->getFieldParams('allowedFileSources', $fieldType, null, $options);
+    }
+
+    /**
+     * Return form field parameters for maxFileSize property
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getMaxFileSizeParams($attribute)
+    {
+        return $this->getFieldParams('maxFileSize', 'integer');
+    }
+
+    /**
+     * Return form field parameters for allowedFileExtensions property
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getAllowedFileExtensionsParams($attribute)
+    {
+        $fieldType = 'text';
+        $data = implode(',', $attribute->getAllowedFileExtensions());
+        $options = array(
+            'by_reference' => false,
+            'attr' => array('class' => 'multiselect')
+        );
+
+        return $this->getFieldParams('allowedFileExtensions', $fieldType, $data, $options);
+    }
+
+    /**
+     * Return form field parameters for validationRule property
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getValidationRuleParams($attribute)
+    {
+        $fieldType = 'choice';
+        $options = array(
+            'choices' => array(
+                null => 'None',
+                'email' => 'E-mail',
+                'url' => 'URL',
+                'regexp' => 'Regular expression'
+            )
+        );
+
+        return $this->getFieldParams('validationRule', $fieldType, null, $options);
+    }
+
+    /**
+     * Return form field parameters for validationRegexp property
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getValidationRegexpParams($attribute)
+    {
+        return $this->getFieldParams('validationRegexp');
+    }
+
+    /**
+     * Return form field parameters for searchable property
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getSearchableParams($attribute)
+    {
+        return $this->getFieldParams('searchable', 'checkbox');
+    }
+
+   /**
+     * Return form field parameters for options property
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getOptionsParams($attribute)
+    {
+        $fieldType = 'collection';
+        $options = array(
+            'type'         => new AttributeOptionType(),
+            'allow_add'    => true,
+            'allow_delete' => true,
+            'by_reference' => false
+        );
+
+        return $this->getFieldParams('options', $fieldType, null, $options);
+    }
+
+    /**
+     * Return form field parameters for translatable parameter
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getTranslatableParams($attribute)
+    {
+        return $this->getFieldParams('translatable', 'checkbox');
+    }
+
+    /**
+     * Return form field parameters for scopable parameter
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getScopableParams($attribute)
+    {
+        $fieldType = 'choice';
+        $options = array(
+            'choices' => array('Global', 'Channel'),
+            'disabled' => (bool) $attribute->getId(),
+            'read_only' => (bool) $attribute->getId()
+        );
+
+        return $this->getFieldParams('scopable', $fieldType, null, $options);
+    }
+
+    /**
+     * Return form field parameters for unique parameter
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getUniqueParams($attribute)
+    {
+        $fieldType = 'checkbox';
+        $options = array(
+            'disabled' => (bool) $attribute->getId(),
+            'read_only' => (bool) $attribute->getId()
+        );
+
+        return $this->getFieldParams('unique', $fieldType, null, $options);
+    }
+
+    /**
+     * Return form field parameters for available languages parameter
+     *
+     * @param ProductAttribute $attribute Product attribute
+     *
+     * @return array $params
+     */
+    private function getAvailableLanguagesParams($attribute)
+    {
+        $fieldType = 'entity';
+        $options = array(
+            'required' => false,
+            'multiple' => true,
+            'class' => 'Pim\Bundle\ConfigBundle\Entity\Language',
+            'query_builder' => function(EntityRepository $repository) {
+                return $repository->createQueryBuilder('l')->where('l.activated = 1')->orderBy('l.code');
+            }
+        );
+
+        return $this->getFieldParams('availableLanguages', $fieldType, null, $options);
     }
 }
