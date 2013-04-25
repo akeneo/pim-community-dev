@@ -3,8 +3,6 @@ namespace Pim\Bundle\ProductBundle\Entity;
 
 use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;
 
-use Gedmo\Mapping\Annotation as Gedmo;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
