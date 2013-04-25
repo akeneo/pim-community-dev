@@ -181,6 +181,11 @@ $(function() {
             tolerance: 'pointer',
             update: updateSortOrder
         });
+
+        // Set width on each table cell to prevent them from being resized when sorted
+        $optionList.find('tr.att-option td').each(function() {
+            $(this).css('width', $(this).width());
+        });
     }
 
     function addOption() {
