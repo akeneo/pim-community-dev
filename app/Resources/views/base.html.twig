@@ -6,6 +6,12 @@
     {{ block('head_script_component') }}
 {% endblock %}
 
+{% block logo %}
+    <h1 class="logo">
+        <a href="{{ path('pim_default') }}">Akeneo</a>
+    </h1>
+{% endblock logo %}
+
 {% block main %}
     {{ parent() }}
     {{ oro_windows_restore() }}
