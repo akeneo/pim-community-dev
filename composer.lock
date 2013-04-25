@@ -1,8 +1,4 @@
 {
-    "_readme": [
-        "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
-    ],
     "hash": "b450be715606b4c40799eff53059d9b5",
     "packages": [
         {
@@ -465,9 +461,9 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
+                    "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -531,9 +527,9 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
+                    "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -603,7 +599,7 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -1776,7 +1772,7 @@
                 {
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -2103,7 +2099,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -2687,12 +2683,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/FilterBundle.git",
-                "reference": "763a3644b89543c526d3b51ece17e327e6499ce1"
+                "reference": "ff8eb28b55202b5b7d5c3d0ac9ae56d50885393a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/FilterBundle/zipball/763a3644b89543c526d3b51ece17e327e6499ce1",
-                "reference": "763a3644b89543c526d3b51ece17e327e6499ce1",
+                "url": "https://api.github.com/repos/laboro/FilterBundle/zipball/ff8eb28b55202b5b7d5c3d0ac9ae56d50885393a",
+                "reference": "ff8eb28b55202b5b7d5c3d0ac9ae56d50885393a",
                 "shasum": ""
             },
             "require": {
@@ -2726,7 +2722,7 @@
                 "source": "https://github.com/laboro/FilterBundle/tree/master",
                 "issues": "https://github.com/laboro/FilterBundle/issues"
             },
-            "time": "2013-04-22 13:38:59"
+            "time": "2013-04-25 09:31:33"
         },
         {
             "name": "oro/flexible-entity-bundle",
@@ -2784,12 +2780,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/GridBundle.git",
-                "reference": "fb9d649ac05d76954e0a2864e918724162d699fb"
+                "reference": "36edc221952d3bf40f40b974042b4f6f52556e17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/GridBundle/zipball/fb9d649ac05d76954e0a2864e918724162d699fb",
-                "reference": "fb9d649ac05d76954e0a2864e918724162d699fb",
+                "url": "https://api.github.com/repos/laboro/GridBundle/zipball/36edc221952d3bf40f40b974042b4f6f52556e17",
+                "reference": "36edc221952d3bf40f40b974042b4f6f52556e17",
                 "shasum": ""
             },
             "require": {
@@ -2824,10 +2820,10 @@
                 "User Interface"
             ],
             "support": {
-                "source": "https://github.com/laboro/GridBundle/tree/master",
+                "source": "https://github.com/laboro/GridBundle/tree/grid_bundle",
                 "issues": "https://github.com/laboro/GridBundle/issues"
             },
-            "time": "2013-04-23 09:23:36"
+            "time": "2013-04-25 09:34:56"
         },
         {
             "name": "oro/measure-bundle",
@@ -3095,12 +3091,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/UIBundle.git",
-                "reference": "3374140fffb9fe71f419f117d12aef72454e6358"
+                "reference": "696ab46efd47818a4e34e0f135d0676dfb44d980"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/UIBundle/zipball/3374140fffb9fe71f419f117d12aef72454e6358",
-                "reference": "3374140fffb9fe71f419f117d12aef72454e6358",
+                "url": "https://api.github.com/repos/laboro/UIBundle/zipball/696ab46efd47818a4e34e0f135d0676dfb44d980",
+                "reference": "696ab46efd47818a4e34e0f135d0676dfb44d980",
                 "shasum": ""
             },
             "require": {
@@ -3135,7 +3131,7 @@
                 "source": "https://github.com/laboro/UIBundle/tree/master",
                 "issues": "https://github.com/laboro/UIBundle/issues"
             },
-            "time": "2013-04-23 14:12:15"
+            "time": "2013-04-25 09:30:55"
         },
         {
             "name": "oro/user-bundle",
@@ -3190,7 +3186,7 @@
                 "BAP"
             ],
             "support": {
-                "source": "https://github.com/laboro/UserBundle/tree/master",
+                "source": "https://github.com/laboro/UserBundle/tree/hashtag-navigation",
                 "issues": "https://github.com/laboro/UserBundle/issues"
             },
             "time": "2013-04-23 13:47:33"
@@ -4078,12 +4074,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "f10364a07e037a021e77fb92566bb06fa42df34b"
+                "reference": "9abcf4f81b3047e44bc7016f8b112737f8340e00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/f10364a07e037a021e77fb92566bb06fa42df34b",
-                "reference": "f10364a07e037a021e77fb92566bb06fa42df34b",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/9abcf4f81b3047e44bc7016f8b112737f8340e00",
+                "reference": "9abcf4f81b3047e44bc7016f8b112737f8340e00",
                 "shasum": ""
             },
             "require": {
@@ -4158,7 +4154,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2013-04-22 06:34:44"
+            "time": "2013-04-25 10:13:02"
         },
         {
             "name": "twig/extensions",
