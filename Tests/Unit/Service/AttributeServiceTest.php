@@ -7,6 +7,19 @@ use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
 use Pim\Bundle\ProductBundle\Service\AttributeService;
 
+use Pim\Bundle\ProductBundle\Model\AttributeType\OptonSimpleSelectType;
+use Pim\Bundle\ProductBundle\Model\AttributeType\OptonMultiSelectType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\BooleanType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\DateType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\FileType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\ImageType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\IntegerType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MetricType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MoneyType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\NumberType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextAreaType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextType;
+
 use Symfony\Component\Validator\GlobalExecutionContext;
 use Symfony\Component\Validator\ExecutionContext;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -92,26 +105,24 @@ class AttributeServiceTest extends WebTestCase
     /**
      * Create a product attribute entity
      *
+     * @param AttributeType|null $type Product attribute type
+     *
      * @return \Pim\Bundle\ProductBundle\Entity\ProductAttribute
      */
-    protected function createProductAttribute()
+    protected function createProductAttribute($type = null)
     {
-        $productAttribute = new ProductAttribute();
+        $type = ($type !== null) ? $type : new DateType();
 
-        $attribute = new Attribute();
-        $productAttribute->setAttribute($attribute);
-
-        $productAttribute->setAttributeType(AbstractAttributeType::TYPE_METRIC_CLASS);
-
-        return $productAttribute;
+        return $this->manager->createAttribute($type);
     }
 
     /**
-     * Test getInitialFields method
+     * Test getPropertyFields method
      */
-    public function testGetInitialFields()
+    public function testGetPropertyFields()
     {
-        $fields = $this->service->getInitialFields();
+        $attribute = $this->createProductAttribute();
+        $fields = $this->service->getPropertyFields($attribute);
         $this->assertNotEmpty($fields);
         foreach ($fields as $field) {
             $this->assertArrayHasKey('name', $field);

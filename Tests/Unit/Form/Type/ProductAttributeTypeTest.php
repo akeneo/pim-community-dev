@@ -155,6 +155,5 @@ class ProductAttributeTypeTest extends TypeTestCase
         $this->assertField('code', 'text');
         $this->assertField('attributeType', 'choice');
         $this->assertField('required', 'checkbox');
-        $this->assertField('searchable', 'checkbox');
     }
 }

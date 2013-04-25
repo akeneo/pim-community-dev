@@ -1,7 +1,6 @@
 {% extends 'PimProductBundle::layout.html.twig' %}
 
 {% set title = form.vars.value.id ? 'Edit product family'|trans : 'Add product family'|trans %}
-{% block title %}{{ title }} - {{ parent() }}{% endblock %}
 
 {% block content %}
 <form action="{{ form.vars.value.id ?
