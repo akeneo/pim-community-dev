@@ -158,9 +158,8 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
         $translations = $this->bindTranslations($data);
         foreach ($translations as $binded) {
             $methodName = 'get'. ucfirst($this->options['field']);
-            $content = ($binded['translation']->getContent() !== null)
-                ? $binded['translation']->getContent()
-                : $entity->$methodName();
+
+            $content = ($binded['translation']->getContent() !== null) ? $binded['translation']->getContent() : '';
 
             $form->add(
                 $this->factory->createNamed(
