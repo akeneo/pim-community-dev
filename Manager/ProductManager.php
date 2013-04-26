@@ -5,6 +5,8 @@ namespace Pim\Bundle\ProductBundle\Manager;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Entity\ProductValue;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -13,6 +15,15 @@ use Pim\Bundle\ProductBundle\Entity\ProductValue;
  */
 class ProductManager extends FlexibleManager
 {
+    protected $mediaManager;
+
+    public function __construct($flexibleName, $flexibleConfig, ObjectManager $storageManager, EventDispatcherInterface $eventDispatcher, $mediaManager)
+    {
+        parent::__construct($flexibleName, $flexibleConfig, $storageManager, $eventDispatcher);
+
+        $this->mediaManager = $mediaManager;
+    }
+
     /**
      * Save a product in two phases :
      *   1) Persist and flush the entity as usual
@@ -23,6 +34,7 @@ class ProductManager extends FlexibleManager
      */
     public function save(Product $product)
     {
+        $this->handleMedia($product);
         $this->storageManager->persist($product);
         $this->storageManager->flush();
 
@@ -77,6 +89,34 @@ class ProductManager extends FlexibleManager
                 $product->addValue($value);
             }
         }
+    }
+
+    private function handleMedia(Product $product)
+    {
+        foreach ($product->getValues() as $value) {
+            if (null !== $media = $value->getMedia()) {
+                $this->mediaManager->handle(
+                    $value->getMedia(),
+                    null !== $media->getFile() ? $this->generateFilenamePrefix($product, $value) : null
+                );
+                if ($media->isRemoved() || null === $media->getFile()) {
+                    $this->storageManager->remove($media);
+                    $value->setMedia(null);
+                }
+            }
+        }
+    }
+
+    private function generateFilenamePrefix(Product $product, ProductValue $value)
+    {
+        return sprintf(
+            '%s-%s-%s-%s-%s',
+            $product->getSku(),
+            $value->getAttribute()->getCode(),
+            $value->getLocale(),
+            $value->getScope(),
+            time()
+        );
     }
 }
 

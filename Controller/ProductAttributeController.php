@@ -55,11 +55,10 @@ class ProductAttributeController extends Controller
      */
     public function indexAction(Request $request)
     {
-        /** @var $em \Doctrine\ORM\EntityManager */
-        $em = $this->getDoctrine()->getManager();
-        $queryBuilder = $em->createQueryBuilder();
+        /** @var $queryBuilder QueryBuilder */
+        $queryBuilder = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
         $queryBuilder
-            ->select('a.id', 'a.code', 'a.name', 'a.attributeType', 'a.scopable', 'a.translatable')
+            ->select('a')
             ->from('PimProductBundle:ProductAttribute', 'a')
             ->where("a.entityType = 'Pim\Bundle\ProductBundle\Entity\Product'");
 

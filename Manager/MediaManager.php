@@ -4,6 +4,7 @@ namespace Pim\Bundle\ProductBundle\Manager;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Media Manager actually implements with Gaufrette Bundle and Local adapter
@@ -36,8 +37,25 @@ class MediaManager
      */
     public function __construct(FilesystemMap $fileSystemMap, $fileSystemName, $uploadDirectory)
     {
-        $this->fileSystem = $fileSystemMap->get($fileSystemName);
-        $this->uploadDirectory  = $uploadDirectory;
+        $this->fileSystem      = $fileSystemMap->get($fileSystemName);
+        $this->uploadDirectory = $uploadDirectory;
+    }
+
+    public function handle(Media $media, $filenamePrefix)
+    {
+        if (null !== $file = $media->getFile()) {
+            if (null !== $media->getFilename() && $this->fileExists($media)) {
+                $this->delete($media);
+            }
+            $this->upload($media, $this->generateFilename($file, $filenamePrefix));
+        } elseif ($media->isRemoved() && $this->fileExists($media)) {
+            $this->delete($media);
+        }
+    }
+
+    private function generateFilename(File $file, $filenamePrefix)
+    {
+        return sprintf('%s-%s', $filenamePrefix, $file->getClientOriginalName());
     }
 
     /**
@@ -46,15 +64,12 @@ class MediaManager
      * @param string  $filename  Filename
      * @param boolean $overwrite Overwrite file or not
      */
-    public function upload(Media $media, $filename, $overwrite = false)
+    private function upload(Media $media, $filename, $overwrite = false)
     {
-        // prepare upload
         $uploadedFile = $media->getFile();
-        $content = file_get_contents($uploadedFile->getPathname());
+        $this->write($filename, file_get_contents($uploadedFile->getPathname()), $overwrite);
 
-        // write file
-        $this->write($filename, $content, $overwrite);
-
+        $media->setOriginalFilename($uploadedFile->getClientOriginalName());
         $media->setFilename($filename);
         $media->setFilepath($this->getFilePath($media));
         $media->setMimeType($uploadedFile->getMimeType());
@@ -66,7 +81,7 @@ class MediaManager
      * @param string  $content   File content
      * @param boolean $overwrite Overwrite file or not
      */
-    protected function write($filename, $content, $overwrite = false)
+    private function write($filename, $content, $overwrite = false)
     {
         $this->fileSystem->write($filename, $content, $overwrite);
     }
@@ -77,9 +92,9 @@ class MediaManager
      *
      * @return content
      */
-    public function getFilePath(Media $media)
+    private function getFilePath(Media $media)
     {
-        if ($this->fileSystem->has($media->getFilename())) {
+        if ($this->fileExists($media)) {
             return $this->uploadDirectory . DIRECTORY_SEPARATOR . $media->getFilename();
         }
     }
@@ -88,7 +103,7 @@ class MediaManager
      * Delete a file
      * @param Media $media
      */
-    public function delete(Media $media)
+    private function delete(Media $media)
     {
         $this->fileSystem->delete($media->getFilename());
     }
@@ -100,10 +115,8 @@ class MediaManager
      *
      * @return boolean
      */
-    public function fileExists(Media $media)
+    private function fileExists(Media $media)
     {
-        $filePath = $this->uploadDirectory . DIRECTORY_SEPARATOR . $media->getFilename();
-
-        return $media->getFilename() !== null && file_exists($filePath);
+        return $this->fileSystem->has($media->getFilename());
     }
 }

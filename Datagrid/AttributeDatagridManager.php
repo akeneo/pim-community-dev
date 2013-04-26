@@ -64,12 +64,12 @@ class AttributeDatagridManager extends DatagridManager
             $this->fieldsCollection = new FieldDescriptionCollection();
 
             $field = new FieldDescription();
-            $field->setName('code');
+            $field->setName('name');
             $field->setOptions(
                 array(
                     'type'        => FieldDescriptionInterface::TYPE_TEXT,
                     'label'       => $this->translator->trans('Name'),
-                    'field_name'  => 'code',
+                    'field_name'  => 'name',
                     'filter_type' => FilterInterface::TYPE_STRING,
                     'required'    => false,
                     'sortable'    => true,
