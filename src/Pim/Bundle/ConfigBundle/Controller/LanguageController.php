@@ -40,7 +40,7 @@ class LanguageController extends Controller
         /** @var $queryBuilder QueryBuilder */
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder
-            ->select('l.id', 'l.code', 'l.fallback', 'l.activated')
+            ->select('l')
             ->from('PimConfigBundle:Language', 'l');
 
         /** @var $queryFactory QueryFactory */
