@@ -6,6 +6,7 @@
 'Activated': 'Actif'
 'Edit': 'Modifier'
 'Disable': 'Désactiver'
+'Languages': 'Langues'
 
 'Edit language': 'Modifier une langue'
 'Add language': 'Ajouter une langue'
@@ -18,6 +19,7 @@
 'Label': 'Libellé'
 'Add currency': 'Ajouter une monnaie'
 'Edit currency': 'Modifier une monnaie'
+'Currencies': 'Monnaies'
 
 # Channels
 'Channels overview': 'Aperçu des canaux'
@@ -26,3 +28,4 @@
 'Name': 'Nom'
 'Edit channel': 'Modifier un canal'
 'Remove': 'Supprimer'
+'Channels': 'Canaux'

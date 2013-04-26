@@ -64,7 +64,7 @@ class ChannelDatagridManager extends DatagridManager
             $fieldId->setOptions(
                 array(
                     'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                    'label'       => 'ID',
+                    'label'       => $this->translator->trans('ID'),
                     'field_name'  => 'id',
                     'filter_type' => FilterInterface::TYPE_NUMBER,
                     'required'    => false,
@@ -80,7 +80,7 @@ class ChannelDatagridManager extends DatagridManager
             $field->setOptions(
                 array(
                     'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                    'label'       => 'Code',
+                    'label'       => $this->translator->trans('Code'),
                     'field_name'  => 'code',
                     'filter_type' => FilterInterface::TYPE_STRING,
                     'required'    => false,
@@ -96,7 +96,7 @@ class ChannelDatagridManager extends DatagridManager
             $field->setOptions(
                 array(
                     'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                    'label'       => 'Name',
+                    'label'       => $this->translator->trans('Name'),
                     'field_name'  => 'name',
                     'filter_type' => FilterInterface::TYPE_STRING,
                     'required'    => false,
@@ -161,7 +161,7 @@ class ChannelDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'         => 'Edit',
+                'label'         => $this->translator->trans('Edit'),
                 'icon'          => 'edit',
                 'link'          => 'edit_link',
                 'backUrl'       => false,
@@ -174,7 +174,7 @@ class ChannelDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => 'Delete',
+                'label'   => $this->translator->trans('Delete'),
                 'icon'    => 'trash',
                 'link'    => 'delete_link',
                 'backUrl' => false,
