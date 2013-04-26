@@ -44,7 +44,7 @@
 
     '@OroSearchBundle/Resources/public/js/searchBar.js'
 
-    filter='yui_js'
+    filter='?yui_js'
     output='js/oroapp-demo.all.js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -62,6 +62,7 @@
     '@PimUIBundle/Resources/public/css/bootstrap-wysihtml5.css'
     '@PimUIBundle/Resources/public/css/slimbox2.css'
 
+    debug=true
     filter='cssrewrite'
     %}
     <link rel="stylesheet" media="all" href="{{ asset_url }}" />
@@ -77,7 +78,7 @@
     '@PimUIBundle/Resources/public/js/bootstrap-wysihtml5.js'
     '@PimUIBundle/Resources/public/js/slimbox2.js'
 
-    filter='yui_js'
+    ?filter='yui_js'
     output='js/pimapp.all.js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>

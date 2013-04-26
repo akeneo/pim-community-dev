@@ -6,6 +6,7 @@
 'Activated': 'Activated'
 'Edit': 'Edit'
 'Disable': 'Disable'
+'Languages': 'Languages'
 
 'Edit language': 'Edit language'
 'Add language': 'Add language'
@@ -18,6 +19,7 @@
 'Label': 'Label'
 'Add currency': 'Add currency'
 'Edit currency': 'Edit currency'
+'Currencies': 'Currencies'
 
 # Channels
 'Channels overview': 'Channels overview'
@@ -26,3 +28,4 @@
 'Name': 'Name'
 'Edit channel': 'Edit channel'
 'Remove': 'Remove'
+'Channels': 'Channels'
