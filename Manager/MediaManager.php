@@ -4,6 +4,7 @@ namespace Pim\Bundle\ProductBundle\Manager;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Media Manager actually implements with Gaufrette Bundle and Local adapter
@@ -40,16 +41,21 @@ class MediaManager
         $this->uploadDirectory = $uploadDirectory;
     }
 
-    public function handle(Media $media, $filename)
+    public function handle(Media $media, $filenamePrefix)
     {
-        if ($media->getFile() !== null) {
+        if (null !== $file = $media->getFile()) {
             if (null !== $media->getFilename() && $this->fileExists($media)) {
                 $this->delete($media);
             }
-            $this->upload($media, $filename);
+            $this->upload($media, $this->generateFilename($file, $filenamePrefix));
         } elseif ($media->isRemoved() && $this->fileExists($media)) {
             $this->delete($media);
         }
+    }
+
+    private function generateFilename(File $file, $filenamePrefix)
+    {
+        return sprintf('%s-%s', $filenamePrefix, $file->getClientOriginalName());
     }
 
     /**

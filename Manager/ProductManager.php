@@ -97,7 +97,7 @@ class ProductManager extends FlexibleManager
             if (null !== $media = $value->getMedia()) {
                 $this->mediaManager->handle(
                     $value->getMedia(),
-                    null !== $media->getFile() ? $this->generateFilename($product, $value) : null
+                    null !== $media->getFile() ? $this->generateFilenamePrefix($product, $value) : null
                 );
                 if ($media->isRemoved() || null === $media->getFile()) {
                     $this->storageManager->remove($media);
@@ -107,16 +107,15 @@ class ProductManager extends FlexibleManager
         }
     }
 
-    private function generateFilename(Product $product, ProductValue $value)
+    private function generateFilenamePrefix(Product $product, ProductValue $value)
     {
         return sprintf(
-            '%s-%s-%s-%s-%s-%s',
+            '%s-%s-%s-%s-%s',
             $product->getSku(),
             $value->getAttribute()->getCode(),
             $value->getLocale(),
             $value->getScope(),
-            time(),
-            $value->getMedia()->getFile()->getClientOriginalName()
+            time()
         );
     }
 }

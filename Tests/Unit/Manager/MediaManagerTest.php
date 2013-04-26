@@ -26,7 +26,7 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
         $filesystem->expects($this->once())
                    ->method('write')
                    ->with(
-                       $this->equalTo('foo.jpg'),
+                       $this->equalTo('foo-akeneo.jpg'),
                        $this->anything(),
                        $this->equalTo(false)
                    );
@@ -37,21 +37,21 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
 
         $media->expects($this->once())
               ->method('setFilename')
-              ->with($this->equalTo('foo.jpg'));
+              ->with($this->equalTo('foo-akeneo.jpg'));
 
         $media->expects($this->any())
               ->method('getFilename')
-              ->will($this->returnValue('foo.jpg'));
+              ->will($this->returnValue('foo-akeneo.jpg'));
 
         $media->expects($this->once())
               ->method('setFilepath')
-              ->with($this->equalTo('/tmp/upload/foo.jpg'));
+              ->with($this->equalTo('/tmp/upload/foo-akeneo.jpg'));
 
         $media->expects($this->once())
               ->method('setMimeType')
               ->with($this->equalTo('image/jpeg'));
 
-        $target->handle($media, 'foo.jpg');
+        $target->handle($media, 'foo');
     }
 
     /**
