@@ -36,8 +36,8 @@ class MediaManager
      */
     public function __construct(FilesystemMap $fileSystemMap, $fileSystemName, $uploadDirectory)
     {
-        $this->fileSystem = $fileSystemMap->get($fileSystemName);
-        $this->uploadDirectory  = $uploadDirectory;
+        $this->fileSystem      = $fileSystemMap->get($fileSystemName);
+        $this->uploadDirectory = $uploadDirectory;
     }
 
     /**
@@ -48,12 +48,8 @@ class MediaManager
      */
     public function upload(Media $media, $filename, $overwrite = false)
     {
-        // prepare upload
         $uploadedFile = $media->getFile();
-        $content = file_get_contents($uploadedFile->getPathname());
-
-        // write file
-        $this->write($filename, $content, $overwrite);
+        $this->write($filename, file_get_contents($uploadedFile->getPathname()), $overwrite);
 
         $media->setOriginalFilename($uploadedFile->getClientOriginalName());
         $media->setFilename($filename);
@@ -106,5 +102,22 @@ class MediaManager
         $filePath = $this->uploadDirectory . DIRECTORY_SEPARATOR . $media->getFilename();
 
         return $media->getFilename() !== null && file_exists($filePath);
+    }
+
+    public function handle(Media $media, $filename)
+    {
+        // upload file
+        if ($media->getFile() !== null) {
+            $this->upload($media, $filename);
+        } elseif ($value->getMedia()->getFile() === null &&
+            (!$value->getMedia()->getId() ||
+            $form->get('values')->get($index)->get('media')->get('remove')->getData() === true)) {
+                // unkink media if exists
+                if ($this->mediaManager->fileExists($value->getMedia())) {
+                    $this->mediaManager->delete($value->getMedia());
+                }
+                // remove value if empty file
+                $value->setMedia(null);
+            }
     }
 }

@@ -97,26 +97,25 @@ class ProductManager extends FlexibleManager
         // upload files if exist
         foreach ($product->getValues() as $value) {
             if ($value->getMedia() !== null) {
-                // upload file
-                if ($value->getMedia()->getFile() !== null) {
-                    $filename = $product->getSku() .'-'. $value->getAttribute()->getCode() .'-'.
-                        $value->getLocale() .'-'. $value->getScope() .'-'. time() .'-'.
-                        $value->getMedia()->getFile()->getClientOriginalName();
-
-                    $this->mediaManager->upload($value->getMedia(), $filename);
-                } elseif ($value->getMedia()->getFile() === null &&
-                    (!$value->getMedia()->getId() ||
-                    $form->get('values')->get($index)->get('media')->get('remove')->getData() === true)) {
-                    // unkink media if exists
-                    if ($this->mediaManager->fileExists($value->getMedia())) {
-                        $this->mediaManager->delete($value->getMedia());
-                    }
-                    // remove value if empty file
-                    $value->setMedia(null);
-                }
+                $this->mediaManager->handle(
+                    $value->getMedia(),
+                    $this->generateFilename($product, $value)
+                );
             }
-            $index++;
         }
+    }
+
+    private function generateFilename(Product $product, ProductValue $value)
+    {
+        return sprintf(
+            '%s-%s-%s-%s-%s-%s',
+            $product->getSku(),
+            $value->getAttribute()->getCode(),
+            $value->getLocale(),
+            $value->getScope(),
+            time(),
+            $value->getMedia()->getFile()->getClientOriginalName()
+        );
     }
 }
 
