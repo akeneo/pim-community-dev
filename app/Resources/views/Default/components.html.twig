@@ -44,7 +44,7 @@
 
     '@OroSearchBundle/Resources/public/js/searchBar.js'
 
-    filter='yui_js'
+    filter='?yui_js'
     output='js/oroapp-demo.all.js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -56,13 +56,14 @@
 
     {# BEGIN CUSTOM PIM ASSETS #}
     {% stylesheets
-    '@PimUIBundle/Resources/public/css/pim.css'
-    '@PimUIBundle/Resources/public/css/bootstrap-fileupload.css'
-    '@PimUIBundle/Resources/public/css/bootstrap-datetimepicker.min.css'
-    '@PimUIBundle/Resources/public/css/select2.css'
-    '@PimUIBundle/Resources/public/css/bootstrap-wysihtml5.css'
-    '@PimUIBundle/Resources/public/css/slimbox2.css'
+    'bundles/pimui/css/pim.css'
+    'bundles/pimui/css/bootstrap-fileupload.css'
+    'bundles/pimui/css/bootstrap-datetimepicker.min.css'
+    'bundles/pimui/css/select2.css'
+    'bundles/pimui/css/bootstrap-wysihtml5.css'
+    'bundles/pimui/css/slimbox2.css'
 
+    debug=true
     filter='cssrewrite'
     %}
     <link rel="stylesheet" media="all" href="{{ asset_url }}" />
@@ -79,7 +80,7 @@
     '@PimUIBundle/Resources/public/js/bootstrap-wysihtml5.js'
     '@PimUIBundle/Resources/public/js/slimbox2.js'
 
-    filter='yui_js'
+    filter='?yui_js'
     output='js/pimapp.all.js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>

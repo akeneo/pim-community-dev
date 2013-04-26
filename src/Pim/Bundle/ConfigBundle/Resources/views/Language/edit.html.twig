@@ -1,7 +1,6 @@
 {% extends 'PimConfigBundle::layout.html.twig' %}
 
 {% set title = form.vars.value.id ? 'Edit language'|trans : 'Add language'|trans %}
-{% block title %}{{ title }} - {{ parent() }}{% endblock %}
 
 {% block content %}
 <form class="form-horizontal" action="{{ form.vars.value.id ? 

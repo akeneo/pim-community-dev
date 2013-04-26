@@ -28,12 +28,12 @@ security:
             context: main
 
         login:
-            pattern: ^/user/(login|reset-request|send-email|check-email)$
+            pattern: ^/%locale%/user/(login|reset-request|send-email|check-email)$
             provider: chain_provider
             anonymous: true
 
         reset_password:
-            pattern: ^/user/reset/*
+            pattern: ^/%locale%/user/reset/*
             provider: chain_provider
             anonymous: true
 
@@ -42,10 +42,10 @@ security:
             provider: chain_provider
             form_login:
                 csrf_provider: form.csrf_provider
-                check_path: /user/login-check
-                login_path: /user/login
+                check_path: /%locale%/user/login-check
+                login_path: /%locale%/user/login
             logout:
-                path: /user/logout
+                path: /%locale%/user/logout
             remember_me:
                 key: %secret%
                 name: BAPRM
@@ -53,8 +53,8 @@ security:
             anonymous: false
 
     access_control:
-        - { path: ^/user/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/%locale%/user/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/%locale%/user/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/%locale%/user/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/api/rest/(latest|v1)/pinbars, role: ROLE_USER }

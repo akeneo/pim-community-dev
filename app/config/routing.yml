@@ -20,7 +20,8 @@ pim_config:
 
 oro_user:
     resource: "@OroUserBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /{_locale}/
+    defaults: { _locale: %locale% }
 
 oro_search:
     resource: "@OroSearchBundle/Resources/config/routing.yml"
@@ -29,7 +30,8 @@ oro_search:
 
 oro_navigation:
     resource: "@OroNavigationBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /{_locale}/
+    defaults: { _locale: %locale% }
 
 oro_soap:
     resource: "@OroSoapBundle/Resources/config/routing.yml"
@@ -37,7 +39,6 @@ oro_soap:
 
 oro_windows:
     resource: "@OroWindowsBundle/Resources/config/routing.yml"
-    prefix: /
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
