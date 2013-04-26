@@ -32,6 +32,7 @@ services:
             - %oro_flexibleentity.flexible_config%
             - @doctrine.orm.entity_manager
             - @event_dispatcher
+            - @oro_flexibleentity.attributetype.factory
             - @pim_media_manager
         tags:
             - { name: oro_flexibleentity_manager, entity: %product_entity_class%}
@@ -117,7 +118,7 @@ services:
     # Product form value type
     form.type.pim_product_value:
         class: Pim\Bundle\ProductBundle\Form\Type\ProductValueType
-        arguments: [@product_manager]
+        arguments: [@product_manager, %product_attribute_value_class%]
         tags:
             - { name: form.type, alias: pim_product_value }
 

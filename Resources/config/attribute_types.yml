@@ -1,0 +1,11 @@
+services:
+    pim_product.attributetype.multiselect:
+        class: Pim\Bundle\ProductBundle\Model\AttributeType\OptionMultiSelectType
+        arguments: ["@translator"]
+        tags:
+            - { name: oro_flexibleentity.attributetype, alias: pim_product_multiselect }
+    pim_product.attributetype.simpleselect:
+        class: Pim\Bundle\ProductBundle\Model\AttributeType\OptionSimpleSelectType
+        arguments: ["@translator"]
+        tags:
+            - { name: oro_flexibleentity.attributetype, alias: pim_product_simpleselect }

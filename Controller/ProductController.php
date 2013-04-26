@@ -123,9 +123,7 @@ class ProductController extends Controller
         $request = $this->getRequest();
 
         // create form
-        $entClassName = $this->getProductManager()->getFlexibleName();
-        $valueClassName = $this->getProductManager()->getFlexibleValueName();
-        $form = $this->createForm(new ProductType($entClassName, $valueClassName), $entity);
+        $form = $this->createForm(new ProductType($this->getProductManager(), 'pim_product_value'), $entity);
         $groups = $this->getDoctrine()->getRepository('PimProductBundle:AttributeGroup')->findAllWithVirtualGroup();
 
         if ($request->getMethod() == 'POST') {

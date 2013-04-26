@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ProductBundle\Manager;
 
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
+
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Entity\ProductValue;
@@ -17,9 +19,9 @@ class ProductManager extends FlexibleManager
 {
     protected $mediaManager;
 
-    public function __construct($flexibleName, $flexibleConfig, ObjectManager $storageManager, EventDispatcherInterface $eventDispatcher, $mediaManager)
+    public function __construct($flexibleName, $flexibleConfig, ObjectManager $storageManager, EventDispatcherInterface $eventDispatcher, AttributeTypeFactory $attributeTypeFactory, $mediaManager)
     {
-        parent::__construct($flexibleName, $flexibleConfig, $storageManager, $eventDispatcher);
+        parent::__construct($flexibleName, $flexibleConfig, $storageManager, $eventDispatcher, $attributeTypeFactory);
 
         $this->mediaManager = $mediaManager;
     }

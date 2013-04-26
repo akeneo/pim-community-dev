@@ -22,7 +22,6 @@ class OptionMultiSelectType extends AbstractAttributeType
     {
         $this->backendType = self::BACKEND_TYPE_OPTIONS;
         $this->formType    = 'entity';
-        $this->name      = 'Multi-options (select)';
     }
 
     /**

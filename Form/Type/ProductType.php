@@ -31,19 +31,4 @@ class ProductType extends FlexibleType
             ))
         ;
     }
-
-    /**
-     * Add entity fields to form builder
-     *
-     * @param FormBuilderInterface $builder
-     */
-    public function addDynamicAttributesFields(FormBuilderInterface $builder)
-    {
-        $builder->add('values', 'collection', array(
-            'type'         => 'pim_product_value',
-            'allow_add'    => true,
-            'allow_delete' => true,
-            'by_reference' => false,
-        ));
-    }
 }

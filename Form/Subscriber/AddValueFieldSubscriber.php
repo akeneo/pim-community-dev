@@ -30,9 +30,8 @@ class AddValueFieldSubscriber extends OroAddValueFieldSubscriber
             return;
         }
 
-        $attribute          = $value->getAttribute();
-        $attributeTypeClass = $attribute->getAttributeType();
-        $attributeType      = new $attributeTypeClass();
+        $attribute     = $value->getAttribute();
+        $attributeType = $this->flexibleManager->getAttributeTypeFactory()->create($attribute->getAttributeType());
 
         $formName    = $attribute->getBackendType();
         $formType    = $attributeType->getFormType();

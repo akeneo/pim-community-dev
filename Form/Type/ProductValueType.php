@@ -21,28 +21,11 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class ProductValueType extends FlexibleValueType
 {
     /**
-     * Product manager
-     * @var ProductManager
-     */
-    public $productManager;
-
-    /**
-     * Constructor
-     *
-     * @param ProductManager $productManager product manager
-     */
-    public function __construct(ProductManager $productManager)
-    {
-        parent::__construct($productManager->getFlexibleValueName());
-        $this->productManager = $productManager;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function addSubscriber(FormBuilderInterface $builder)
     {
-        $subscriber = new AddValueFieldSubscriber($builder->getFormFactory());
+        $subscriber = new AddValueFieldSubscriber($builder->getFormFactory(), $this->flexibleManager);
         $builder->addEventSubscriber($subscriber);
 
         // TODO : datamodel refactoring ? :
@@ -51,7 +34,7 @@ class ProductValueType extends FlexibleValueType
         // add a subscriber to deal with display values in relevant attribute group
         $subscriber = new AddAttributeGroupSubscriber(
             $builder->getFormFactory(),
-            $this->productManager->getStorageManager()
+            $this->flexibleManager->getStorageManager()
         );
         $builder->addEventSubscriber($subscriber);
     }

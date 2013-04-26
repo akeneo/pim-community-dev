@@ -22,6 +22,7 @@ class PimProductExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
         $loader->load('datagrid.yml');
+        $loader->load('attribute_types.yml');
 
         if (is_file($file = __DIR__.'/../Resources/config/attributes.yml')) {
             $config = Yaml::parse(realpath($file));
