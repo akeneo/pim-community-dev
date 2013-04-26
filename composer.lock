@@ -1,4 +1,8 @@
 {
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
     "hash": "b450be715606b4c40799eff53059d9b5",
     "packages": [
         {
@@ -912,7 +916,7 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -1289,12 +1293,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/l3pp4rd/DoctrineExtensions.git",
-                "reference": "c2aba006aa376a6c76007e81f09fe3cf59e421f6"
+                "reference": "78264361e12e643b58e3fe0396e9500fb3b6d222"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/c2aba006aa376a6c76007e81f09fe3cf59e421f6",
-                "reference": "c2aba006aa376a6c76007e81f09fe3cf59e421f6",
+                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/78264361e12e643b58e3fe0396e9500fb3b6d222",
+                "reference": "78264361e12e643b58e3fe0396e9500fb3b6d222",
                 "shasum": ""
             },
             "require": {
@@ -1360,7 +1364,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2013-04-25 07:51:56"
+            "time": "2013-04-26 04:27:28"
         },
         {
             "name": "imagine/imagine",
@@ -1772,7 +1776,7 @@
                 {
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
+                    "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -2878,12 +2882,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/NavigationBundle.git",
-                "reference": "086fc458e2149ef05ac643d733912c0fb315681a"
+                "reference": "7d6ad818e67a87d5f40c67b29044f1b7619940fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/NavigationBundle/zipball/086fc458e2149ef05ac643d733912c0fb315681a",
-                "reference": "086fc458e2149ef05ac643d733912c0fb315681a",
+                "url": "https://api.github.com/repos/laboro/NavigationBundle/zipball/7d6ad818e67a87d5f40c67b29044f1b7619940fa",
+                "reference": "7d6ad818e67a87d5f40c67b29044f1b7619940fa",
                 "shasum": ""
             },
             "require": {
@@ -2931,7 +2935,7 @@
                 "source": "https://github.com/laboro/NavigationBundle/tree/master",
                 "issues": "https://github.com/laboro/NavigationBundle/issues"
             },
-            "time": "2013-04-23 15:28:42"
+            "time": "2013-04-26 08:28:20"
         },
         {
             "name": "oro/search-bundle",
@@ -3091,12 +3095,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/UIBundle.git",
-                "reference": "696ab46efd47818a4e34e0f135d0676dfb44d980"
+                "reference": "08a26505a1776ce207f21528615a032b8f19bc2a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/UIBundle/zipball/696ab46efd47818a4e34e0f135d0676dfb44d980",
-                "reference": "696ab46efd47818a4e34e0f135d0676dfb44d980",
+                "url": "https://api.github.com/repos/laboro/UIBundle/zipball/08a26505a1776ce207f21528615a032b8f19bc2a",
+                "reference": "08a26505a1776ce207f21528615a032b8f19bc2a",
                 "shasum": ""
             },
             "require": {
@@ -3131,7 +3135,7 @@
                 "source": "https://github.com/laboro/UIBundle/tree/master",
                 "issues": "https://github.com/laboro/UIBundle/issues"
             },
-            "time": "2013-04-25 09:30:55"
+            "time": "2013-04-25 15:14:11"
         },
         {
             "name": "oro/user-bundle",
@@ -3140,12 +3144,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/UserBundle.git",
-                "reference": "0e7251b7783046ea9ff0974a21e8bfb596f1016b"
+                "reference": "45b18b4db77b67085b23db09cd162b21c75a8ee9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/0e7251b7783046ea9ff0974a21e8bfb596f1016b",
-                "reference": "0e7251b7783046ea9ff0974a21e8bfb596f1016b",
+                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/45b18b4db77b67085b23db09cd162b21c75a8ee9",
+                "reference": "45b18b4db77b67085b23db09cd162b21c75a8ee9",
                 "shasum": ""
             },
             "require": {
@@ -3186,10 +3190,10 @@
                 "BAP"
             ],
             "support": {
-                "source": "https://github.com/laboro/UserBundle/tree/hashtag-navigation",
+                "source": "https://github.com/laboro/UserBundle/tree/master",
                 "issues": "https://github.com/laboro/UserBundle/issues"
             },
-            "time": "2013-04-23 13:47:33"
+            "time": "2013-04-26 08:30:28"
         },
         {
             "name": "oro/windows-bundle",
@@ -4209,12 +4213,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "501ecc5df33faa52cba864c65467419aae0b384f"
+                "reference": "536ea37d1f87a882ce8a5d62680caf881ecaf6fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/501ecc5df33faa52cba864c65467419aae0b384f",
-                "reference": "501ecc5df33faa52cba864c65467419aae0b384f",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/536ea37d1f87a882ce8a5d62680caf881ecaf6fe",
+                "reference": "536ea37d1f87a882ce8a5d62680caf881ecaf6fe",
                 "shasum": ""
             },
             "require": {
@@ -4250,7 +4254,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-04-24 14:49:01"
+            "time": "2013-04-26 09:34:36"
         },
         {
             "name": "ys-tools/back-url-bundle",
@@ -4431,20 +4435,20 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendI18n.git",
-                "reference": "release-2.1.5"
+                "reference": "fab6502c305bb9cdb86a89f715b22a5b0cb7d406"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendI18n/zipball/release-2.1.5",
-                "reference": "release-2.1.5",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendI18n/zipball/fab6502c305bb9cdb86a89f715b22a5b0cb7d406",
+                "reference": "fab6502c305bb9cdb86a89f715b22a5b0cb7d406",
                 "shasum": ""
             },
             "require": {
-                "ext-intl": "*",
                 "php": ">=5.3.3",
                 "zendframework/zend-stdlib": "self.version"
             },
             "suggest": {
+                "ext-intl": "Required for most features of Zend\\I18n; included in default builds of PHP",
                 "zendframework/zend-filter": "You should install this package to use the provided filters",
                 "zendframework/zend-validator": "You should install this package to use the provided validators",
                 "zendframework/zend-view": "You should install this package to use the provided view helpers"
@@ -4469,7 +4473,7 @@
                 "i18n",
                 "zf2"
             ],
-            "time": "2013-04-10 18:14:09"
+            "time": "2013-04-25 18:00:09"
         },
         {
             "name": "zendframework/zend-loader",
