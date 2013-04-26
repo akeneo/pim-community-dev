@@ -34,7 +34,10 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @var ArrayCollection $options
      *
      * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\ProductBundle\Entity\AttributeOption", mappedBy="attribute", cascade={"persist", "remove"}, orphanRemoval=true
+     *     targetEntity="Pim\Bundle\ProductBundle\Entity\AttributeOption",
+     *     mappedBy="attribute",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
      * )
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
@@ -943,7 +946,8 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      */
     public function setAllowedFileExtensions($allowedFileExtensions)
     {
-        $this->allowedFileExtensions = is_array($allowedFileExtensions) ? implode(',', $allowedFileExtensions) : $allowedFileExtensions;
+        $this->allowedFileExtensions = is_array($allowedFileExtensions)
+            ? implode(',', $allowedFileExtensions) : $allowedFileExtensions;
 
         return $this;
     }
@@ -1002,11 +1006,23 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
         return $this;
     }
 
+    /**
+     * Get sortOrder
+     *
+     * @return number
+     */
     public function getSortOrder()
     {
         return $this->sortOrder;
     }
 
+    /**
+     * Set sortOrder
+     *
+     * @param number $sortOrder
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttribute
+     */
     public function setSortOrder($sortOrder)
     {
         $this->sortOrder = $sortOrder;
