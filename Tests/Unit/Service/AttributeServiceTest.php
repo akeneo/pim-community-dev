@@ -7,8 +7,8 @@ use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
 use Pim\Bundle\ProductBundle\Service\AttributeService;
 
-use Pim\Bundle\ProductBundle\Model\AttributeType\OptonSimpleSelectType;
-use Pim\Bundle\ProductBundle\Model\AttributeType\OptonMultiSelectType;
+use Pim\Bundle\ProductBundle\Model\AttributeType\OptionSimpleSelectType;
+use Pim\Bundle\ProductBundle\Model\AttributeType\OptionMultiSelectType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\BooleanType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\DateType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\FileType;
@@ -45,7 +45,7 @@ class AttributeServiceTest extends WebTestCase
     protected $service;
 
     /**
-     * @var array Measures
+     * @var array Attributes config
      */
     protected $config;
 
@@ -103,17 +103,52 @@ class AttributeServiceTest extends WebTestCase
     }
 
     /**
-     * Create a product attribute entity
-     *
-     * @param AttributeType|null $type Product attribute type
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttribute
+     * Test attribute configuration file
      */
-    protected function createProductAttribute($type = null)
+    public function testAttributeConfig()
     {
-        $type = ($type !== null) ? $type : new DateType();
+        $this->assertArrayHasKey('attributes_config', $this->config);
+        foreach ($this->config['attributes_config'] as $type => $options) {
+            $this->assertInternalType('string', $type);
 
-        return $this->manager->createAttribute($type);
+            $this->assertArrayHasKey('name', $options);
+            $this->assertArrayHasKey('properties', $options);
+            $this->assertArrayHasKey('parameters', $options);
+
+            $this->assertInternalType('string', $options['name']);
+            $this->assertInternalType('array', $options['properties']);
+            $this->assertInternalType('array', $options['parameters']);
+        }
+    }
+
+   /**
+     * Test createAttributeFromFormData method
+     */
+    public function testCreateAttributeFromFormData()
+    {
+        $data = array('attributeType' => AbstractAttributeType::TYPE_METRIC_CLASS);
+        $attribute = $this->service->createAttributeFromFormData($data);
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductAttribute', $attribute);
+
+        $attribute = $this->createProductAttribute(new MoneyType());
+        $newAttribute = $this->service->createAttributeFromFormData($attribute);
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductAttribute', $newAttribute);
+        $this->assertEquals($attribute, $newAttribute);
+
+        $attribute = 'ImageType';
+        $newAttribute = $this->service->createAttributeFromFormData($attribute);
+        $this->assertNull($newAttribute);
+    }
+
+   /**
+     * Test prepareFormData method
+     */
+    public function testPrepareFormData()
+    {
+        $data = array('attributeType' => AbstractAttributeType::TYPE_OPT_MULTI_SELECT_CLASS);
+        $data = $this->service->prepareFormData($data);
+        $this->assertNotEmpty($data);
+        $this->assertArrayHasKey('options', $data);
     }
 
     /**
@@ -121,11 +156,77 @@ class AttributeServiceTest extends WebTestCase
      */
     public function testGetPropertyFields()
     {
+        $attributeTypes = array_keys($this->config['attributes_config']);
+        $pimPath = 'Pim\Bundle\ProductBundle\Model\AttributeType\\';
+        $oroPath = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\\';
+
+        foreach ($attributeTypes as $type) {
+            $type .= 'Type';
+            $type = class_exists($pimPath . $type) ? $pimPath . $type : $oroPath . $type;
+
+            $attribute = $this->createProductAttribute(new $type());
+            $fields = $this->service->getPropertyFields($attribute);
+
+            $this->assertNotEmpty($fields);
+            foreach ($fields as $field) {
+                $this->assertArrayHasKey('name', $field);
+            }
+        }
+
+        // Test custom cases = with attribute type missing and with DateType
         $attribute = $this->createProductAttribute();
         $fields = $this->service->getPropertyFields($attribute);
+        $this->assertEmpty($fields);
+
+        $attribute = $this->createProductAttribute(new DateType());
+        $attribute->setDateType('date');
+        $fields = $this->service->getPropertyFields($attribute);
         $this->assertNotEmpty($fields);
+
+        $attribute = $this->createProductAttribute(new DateType());
+        $attribute->setDateType('time');
+        $fields = $this->service->getPropertyFields($attribute);
+        $this->assertNotEmpty($fields);
+    }
+
+    /**
+     * Test getParameterFields method
+     */
+    public function testGetParameterFields()
+    {
+        $attributeTypes = array_keys($this->config['attributes_config']);
+        $pimPath = 'Pim\Bundle\ProductBundle\Model\AttributeType\\';
+        $oroPath = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\\';
+
+        $numOfParams = 0;
+        foreach ($this->config['attributes_config'] as $item) {
+            $i = count($item['parameters']);
+            $numOfParams = $i > $numOfParams ? $i : $numOfParams;
+        }
+
+        foreach ($attributeTypes as $type) {
+            $type .= 'Type';
+            $type = class_exists($pimPath . $type) ? $pimPath . $type : $oroPath . $type;
+
+            $attribute = $this->createProductAttribute(new $type());
+            $fields = $this->service->getParameterFields($attribute);
+
+            $this->assertNotEmpty($fields);
+            $this->assertCount($numOfParams, $fields);
+            foreach ($fields as $field) {
+                $this->assertArrayHasKey('name', $field);
+            }
+        }
+
+        // Test case with attribute type missing
+        $attribute = $this->createProductAttribute();
+        $fields = $this->service->getParameterFields($attribute);
+        $this->assertNotEmpty($fields);
+        $this->assertCount($numOfParams, $fields);
         foreach ($fields as $field) {
-            $this->assertArrayHasKey('name', $field);
+            $this->assertArrayHasKey('options', $field);
+            $this->assertTrue($field['options']['disabled']);
+            $this->assertTrue($field['options']['read_only']);
         }
     }
 
@@ -139,5 +240,17 @@ class AttributeServiceTest extends WebTestCase
         foreach ($types as $type) {
             $this->assertNotEmpty($type);
         }
+    }
+
+    /**
+     * Create a product attribute entity
+     *
+     * @param AttributeType|null $type Product attribute type
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttribute
+     */
+    protected function createProductAttribute($type = null)
+    {
+        return $this->manager->createAttribute($type);
     }
 }

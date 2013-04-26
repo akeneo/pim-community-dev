@@ -152,7 +152,7 @@ class AttributeService
      *
      * @return array $fields
      */
-    public function getPropertyFields($attribute)
+    public function getPropertyFields($attribute = null)
     {
         $properties = $this->getActivatedProperties($attribute);
         $fields = array();
@@ -277,9 +277,9 @@ class AttributeService
         $attType = new $attTypeClass();
         $fieldType = $attType->getFormType();
 
-        if ($fieldType === 'entity' || $fieldType = 'oro_flexibleentity_metric') {
+        if ($fieldType === 'entity' || $fieldType === 'oro_flexibleentity_metric') {
             $fieldType = 'text';
-        } elseif ($attTypeClass == AbstractAttributeType::TYPE_BOOLEAN_CLASS) {
+        } elseif ($attTypeClass === AbstractAttributeType::TYPE_BOOLEAN_CLASS) {
             $fieldType = 'checkbox';
         }
 
