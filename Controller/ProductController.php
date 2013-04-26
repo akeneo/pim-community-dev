@@ -115,7 +115,9 @@ class ProductController extends Controller
     {
         $entity = $this->getProductManager()->localizedFind($id);
         if (!$entity) {
-            throw $this->createNotFoundException(sprintf('Product with id %d could not be found.', $id));
+            throw $this->createNotFoundException(
+                sprintf('Product with id %d could not be found.', $id)
+            );
         }
 
         $request = $this->getRequest();
