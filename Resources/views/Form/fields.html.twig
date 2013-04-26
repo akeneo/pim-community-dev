@@ -32,27 +32,18 @@
     {% spaceless %}
 
     {{ form_errors(form) }}
+    {{ form_row(form.file) }}
 
-    <div class="fileupload fileupload-new" data-provides="fileupload">
-        {{ form_label(form) }}
-        {{ form_widget(form.id) }}
-        <div class="fileupload-new thumbnail" style="width: 50px; height: 50px;">
-            <img src="http://www.placehold.it/50x50/EFEFEF/AAAAAA" />
-        </div>
-        <div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px;"></div>
-        <span class="btn btn-file">
-            <span class="fileupload-new">{{ "Select file" | trans }}</span>
-            <span class="fileupload-exists">{{ "Change file" | trans }}</span>
-            {{ form_widget(form.file) }}
-        </span>
-        <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">{{ "Remove file" | trans }}</a>
-        {% if form.vars.value %}
-            <div style="display: inline-block; margin-left: 50px;">
-                {{ form_row(form.remove) }}
-            </div>
-            <a href="{{ asset(form.vars.value.filePath) }}" rel="lightbox" class="btn"><i class="icon-eye-open"></i></a>
-        {% endif %}
+    {% if form.vars.value %}
+    <div style="clear: both;">
+        <ul class="unstyled">
+            <li>
+                <a href="{{ asset(form.vars.value.filePath) }}" rel="lightbox">{{ form.vars.value.originalFilename }}</a>
+                {{ form_widget(form.removed, {attr: {style: 'margin: 4px;'}}) }} Remove
+            </li>
+        </ul>
     </div>
+    {% endif %}
 
     {% endspaceless %}
 {% endblock %}
@@ -79,7 +70,11 @@
 
 {% block widget_attributes %}
 {% if attr.class is defined %}
-    {% set class = attr.class ~ ' span4' %}
+    {% if attr.class != 'noswitch' %}
+        {% set class = attr.class ~ ' span4' %}
+    {% else %}
+        {% set class = attr.class %}
+    {% endif %}
 {% else %}
     {% set class = 'span4' %}
 {% endif %}
