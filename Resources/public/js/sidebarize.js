@@ -9,6 +9,9 @@
 (function($) {
     "use strict";
     $.fn.sidebarize = function() {
+        if (!$(this).length) {
+            return;
+        }
         var element = $(this).selector;
         var sidebar = sidebar || '.resizable-sidebar';
         var content = content || '.resizable-content';
