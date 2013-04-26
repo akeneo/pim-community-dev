@@ -41,7 +41,7 @@ class ChannelController extends Controller
         /** @var $queryBuilder QueryBuilder */
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder
-            ->select('c.id', 'c.code', 'c.name')
+            ->select('c')
             ->from('PimConfigBundle:Channel', 'c');
 
         /** @var $queryFactory QueryFactory */
