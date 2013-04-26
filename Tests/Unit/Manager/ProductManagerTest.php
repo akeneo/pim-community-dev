@@ -71,16 +71,43 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     */
+    public function itShouldRemoveMediaEntityIfMediaIsMeantToBeRemoved()
+    {
+        $mediaManager  = $this->getMediaManagerMock();
+        $objectManager = $this->getObjectManagerMock();
+        $target        = $this->getTargetedClass($mediaManager, $objectManager);
+        $media         = $this->getMediaMock('foo.jpg');
+        $value         = $this->getValueMock(false, $media, 'baz');
+        $product       = $this->getProductMock(array($value), 'foobar');
+
+        $media->expects($this->any())
+              ->method('isRemoved')
+              ->will($this->returnValue(true));
+
+        $objectManager->expects($this->once())
+                      ->method('remove')
+                      ->with($this->equalTo($media));
+
+        $value->expects($this->once())
+              ->method('setMedia')
+              ->with($this->equalTo(null));
+
+        $target->save($product);
+    }
+
+    /**
      * Create ProductManager
      *
      * @return \Pim\Bundle\ProductBundle\Manager\ProductManager
      */
-    private function getTargetedClass($mediaManager = null)
+    private function getTargetedClass($mediaManager = null, $objectManager = null)
     {
         return new ProductManager(
             'Product',
             array('entities_config' => array('Product' => null)),
-            $this->getObjectManagerMock(),
+            $objectManager ?: $this->getObjectManagerMock(),
             $this->getEventDispatcherInterfaceMock(),
             $mediaManager ?: $this->getMediaManagerMock()
         );
@@ -101,7 +128,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
      *
      * @return \Symfony\Component\EventDispatcher\EventDispatcherInterface
      */
-    public function getEventDispatcherInterfaceMock()
+    private function getEventDispatcherInterfaceMock()
     {
         return $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
     }
@@ -111,7 +138,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
      *
      * @return \Pim\Bundle\ProductBundle\Manager\MediaManager
      */
-    public function getMediaManagerMock()
+    private function getMediaManagerMock()
     {
         return $this
             ->getMockBuilder('Pim\Bundle\ProductBundle\Manager\MediaManager')
@@ -129,9 +156,9 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
      */
     private function getValueMock($translatable = false, $media = null, $code = null)
     {
-        $methods = array('getAttribute', 'getMedia', 'getLocale');
-
-        $value = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductValue', $methods);
+        $value = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductValue', array(
+            'getAttribute', 'getMedia', 'getLocale', 'setMedia'
+        ));
 
         $value->expects($this->any())
               ->method('getAttribute')
@@ -230,7 +257,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
      */
     private function getMediaMock($filename = null)
     {
-        $media = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Media', array('getFile'));
+        $media = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Media', array('getFile', 'isRemoved'));
 
         $media->expects($this->any())
               ->method('getFile')

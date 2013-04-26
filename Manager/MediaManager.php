@@ -40,13 +40,25 @@ class MediaManager
         $this->uploadDirectory = $uploadDirectory;
     }
 
+    public function handle(Media $media, $filename)
+    {
+        if ($media->getFile() !== null) {
+            if (null !== $media->getFilename() && $this->fileExists($media)) {
+                $this->delete($media);
+            }
+            $this->upload($media, $filename);
+        } elseif ($media->isRemoved() && $this->fileExists($media)) {
+            $this->delete($media);
+        }
+    }
+
     /**
      * Upload file
      * @param Media   $media     Media entity
      * @param string  $filename  Filename
      * @param boolean $overwrite Overwrite file or not
      */
-    public function upload(Media $media, $filename, $overwrite = false)
+    private function upload(Media $media, $filename, $overwrite = false)
     {
         $uploadedFile = $media->getFile();
         $this->write($filename, file_get_contents($uploadedFile->getPathname()), $overwrite);
@@ -63,7 +75,7 @@ class MediaManager
      * @param string  $content   File content
      * @param boolean $overwrite Overwrite file or not
      */
-    protected function write($filename, $content, $overwrite = false)
+    private function write($filename, $content, $overwrite = false)
     {
         $this->fileSystem->write($filename, $content, $overwrite);
     }
@@ -74,9 +86,9 @@ class MediaManager
      *
      * @return content
      */
-    public function getFilePath(Media $media)
+    private function getFilePath(Media $media)
     {
-        if ($this->fileSystem->has($media->getFilename())) {
+        if ($this->fileExists($media)) {
             return $this->uploadDirectory . DIRECTORY_SEPARATOR . $media->getFilename();
         }
     }
@@ -85,7 +97,7 @@ class MediaManager
      * Delete a file
      * @param Media $media
      */
-    public function delete(Media $media)
+    private function delete(Media $media)
     {
         $this->fileSystem->delete($media->getFilename());
     }
@@ -97,27 +109,8 @@ class MediaManager
      *
      * @return boolean
      */
-    public function fileExists(Media $media)
+    private function fileExists(Media $media)
     {
-        $filePath = $this->uploadDirectory . DIRECTORY_SEPARATOR . $media->getFilename();
-
-        return $media->getFilename() !== null && file_exists($filePath);
-    }
-
-    public function handle(Media $media, $filename)
-    {
-        // upload file
-        if ($media->getFile() !== null) {
-            $this->upload($media, $filename);
-        } elseif ($value->getMedia()->getFile() === null &&
-            (!$value->getMedia()->getId() ||
-            $form->get('values')->get($index)->get('media')->get('remove')->getData() === true)) {
-                // unkink media if exists
-                if ($this->mediaManager->fileExists($value->getMedia())) {
-                    $this->mediaManager->delete($value->getMedia());
-                }
-                // remove value if empty file
-                $value->setMedia(null);
-            }
+        return $this->fileSystem->has($media->getFilename());
     }
 }

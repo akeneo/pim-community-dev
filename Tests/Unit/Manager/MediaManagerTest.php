@@ -19,9 +19,9 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function itShouldUploadIfAFileIsPresent()
     {
-        $filesystem   = $this->getFilesystemMock();
-        $target       = $this->getTargetedClass($filesystem);
-        $media        = $this->getMediaMock($this->getFileMock());
+        $filesystem = $this->getFilesystemMock();
+        $target     = $this->getTargetedClass($filesystem);
+        $media      = $this->getMediaMock($this->getFileMock());
 
         $filesystem->expects($this->once())
                    ->method('write')
@@ -52,6 +52,25 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
               ->with($this->equalTo('image/jpeg'));
 
         $target->handle($media, 'foo.jpg');
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldRemoveAFileIfMediaIsRemoved()
+    {
+        $filesystem = $this->getFilesystemMock();
+        $target     = $this->getTargetedClass($filesystem);
+        $media      = $this->getMediaMock();
+
+        $media->expects($this->any())
+              ->method('isRemoved')
+              ->will($this->returnValue(true));
+
+        $filesystem->expects($this->once())
+                   ->method('delete');
+
+        $target->handle($media, '');
     }
 
     private function getTargetedClass($filesystem)
@@ -85,7 +104,7 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $filesystem = $this
             ->getMockBuilder('Knp\Bundle\GaufretteBundle\Filesystem')
-            ->setMethods(array('write', 'has'))
+            ->setMethods(array('write', 'has', 'delete'))
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -101,7 +120,15 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $media = $this
             ->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Entity\Media')
-            ->setMethods(array('getFile', 'setOriginalFilename', 'setFilename', 'getFilename', 'setFilepath', 'setMimeType'))
+            ->setMethods(array(
+                'getFile',
+                'setOriginalFilename',
+                'setFilename',
+                'getFilename',
+                'setFilepath',
+                'setMimeType',
+                'isRemoved'
+            ))
             ->getMock()
         ;
 

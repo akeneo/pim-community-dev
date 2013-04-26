@@ -34,7 +34,7 @@ class ProductManager extends FlexibleManager
      */
     public function save(Product $product)
     {
-        $this->upload($product);
+        $this->handleMedia($product);
         $this->storageManager->persist($product);
         $this->storageManager->flush();
 
@@ -91,16 +91,18 @@ class ProductManager extends FlexibleManager
         }
     }
 
-    private function upload(Product $product)
+    private function handleMedia(Product $product)
     {
-        $index = 0;
-        // upload files if exist
         foreach ($product->getValues() as $value) {
-            if ($value->getMedia() !== null) {
+            if (null !== $media = $value->getMedia()) {
                 $this->mediaManager->handle(
                     $value->getMedia(),
-                    $this->generateFilename($product, $value)
+                    null !== $media->getFile() ? $this->generateFilename($product, $value) : null
                 );
+                if ($media->isRemoved()) {
+                    $this->storageManager->remove($media);
+                    $value->setMedia(null);
+                }
             }
         }
     }
