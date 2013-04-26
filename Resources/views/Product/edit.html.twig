@@ -141,6 +141,10 @@
             }
         });
 
+        $('button[type="submit"]').click(function(event) {
+            $(window).unbind('beforeunload');
+        });
+
         $('select').select2({ allowClear: true });
         $('input.multiselect').select2({ tags: $(this).val() });
 
