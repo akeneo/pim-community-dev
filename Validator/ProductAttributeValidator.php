@@ -122,14 +122,14 @@ class ProductAttributeValidator
     protected static function isAttributeTypeMatrixValid(ProductAttribute $productAttribute, ExecutionContext $context)
     {
         $attributeType = array(
-            AbstractAttributeType::TYPE_TEXTAREA_CLASS,
-            AbstractAttributeType::TYPE_MONEY_CLASS,
-            AbstractAttributeType::TYPE_OPT_MULTI_SELECT_CLASS,
-            AbstractAttributeType::TYPE_OPT_SINGLE_SELECT_CLASS,
-            AbstractAttributeType::TYPE_IMAGE_CLASS,
-            AbstractAttributeType::TYPE_FILE_CLASS,
-            AbstractAttributeType::TYPE_METRIC_CLASS,
-            AbstractAttributeType::TYPE_BOOLEAN_CLASS
+            'oro_flexibleentity_textarea',
+            'oro_flexibleentity_money',
+            'oro_flexibleentity_multiselect',
+            'oro_flexibleentity_simpleselect',
+            'oro_flexibleentity_image',
+            'oro_flexibleentity_file',
+            'oro_flexibleentity_metric',
+            'oro_flexibleentity_boolean'
         );
         if (
             in_array($productAttribute->getAttributeType(), $attributeType)
@@ -168,8 +168,8 @@ class ProductAttributeValidator
     protected static function areOptionsValid(ProductAttribute $productAttribute, ExecutionContext $context)
     {
         $optionTypes = array(
-            AbstractAttributeType::TYPE_OPT_MULTI_SELECT_CLASS,
-            AbstractAttributeType::TYPE_OPT_SINGLE_SELECT_CLASS
+            'oro_flexibleentity_multiselect',
+            'oro_flexibleentity_simpleselect'
         );
 
         if (in_array($productAttribute->getAttributeType(), $optionTypes)) {
@@ -200,30 +200,30 @@ class ProductAttributeValidator
         self::isDefaultValueValid($productAttribute, $context);
 
         switch($productAttribute->getAttributeType()) {
-            case AbstractAttributeType::TYPE_DATE_CLASS:
+            case 'oro_flexibleentity_date':
                 self::isDateTypeValid($productAttribute, $context);
                 self::isDateMinValid($productAttribute, $context);
                 self::isDateMaxValid($productAttribute, $context);
                 break;
-            case AbstractAttributeType::TYPE_INTEGER_CLASS:
+            case 'oro_flexibleentity_integer':
                 self::isNumberMinValid($productAttribute, $context);
                 self::isNumberMaxValid($productAttribute, $context);
                 break;
-            case AbstractAttributeType::TYPE_MONEY_CLASS:
-            case AbstractAttributeType::TYPE_NUMBER_CLASS:
-            case AbstractAttributeType::TYPE_METRIC_CLASS:
+            case 'oro_flexibleentity_money':
+            case 'oro_flexibleentity_number':
+            case 'oro_flexibleentity_metric':
                 self::isNumberMinValid($productAttribute, $context);
                 self::isNumberMaxValid($productAttribute, $context);
                 break;
-            case AbstractAttributeType::TYPE_TEXTAREA_CLASS:
+            case 'oro_flexibleentity_textarea':
                 self::isMaxCharactersValid($productAttribute, $context);
                 break;
-            case AbstractAttributeType::TYPE_FILE_CLASS:
-            case AbstractAttributeType::TYPE_IMAGE_CLASS:
+            case 'oro_flexibleentity_file':
+            case 'oro_flexibleentity_image':
                 self::isAllowedFileSourcesValid($productAttribute, $context);
                 self::isMaxFileSizeValid($productAttribute, $context);
                 break;
-            case AbstractAttributeType::TYPE_TEXT_CLASS:
+            case 'oro_flexibleentity_text':
                 self::isMaxCharactersValid($productAttribute, $context);
                 self::isValidationRuleValid($productAttribute, $context);
                 break;
@@ -247,8 +247,8 @@ class ProductAttributeValidator
         $value = $productAttribute->getDefaultValue();
         if ($value !== null) {
             $exclusions = array(
-                AbstractAttributeType::TYPE_IMAGE_CLASS,
-                AbstractAttributeType::TYPE_FILE_CLASS
+                'oro_flexibleentity_image',
+                'oro_flexibleentity_file'
             );
 
             if (in_array($productAttribute->getAttributeType(), $exclusions)) {
@@ -258,7 +258,7 @@ class ProductAttributeValidator
             }
 
             switch ($productAttribute->getAttributeType()) {
-                case AbstractAttributeType::TYPE_DATE_CLASS:
+                case 'oro_flexibleentity_date':
                     if (!$value instanceof \Datetime) {
                         break;
                     }
@@ -274,7 +274,7 @@ class ProductAttributeValidator
                     }
 
                     return;
-                case AbstractAttributeType::TYPE_INTEGER_CLASS:
+                case 'oro_flexibleentity_integer':
                     if ($productAttribute->getNegativeAllowed() === false && $value < 0) {
                         break;
                     }
@@ -286,9 +286,9 @@ class ProductAttributeValidator
                     }
 
                     return;
-                case AbstractAttributeType::TYPE_MONEY_CLASS:
-                case AbstractAttributeType::TYPE_NUMBER_CLASS:
-                case AbstractAttributeType::TYPE_METRIC_CLASS:
+                case 'oro_flexibleentity_money':
+                case 'oro_flexibleentity_number':
+                case 'oro_flexibleentity_metric':
                     if ($productAttribute->getNegativeAllowed() === false && $value < 0) {
                         break;
                     }
@@ -303,7 +303,7 @@ class ProductAttributeValidator
                     }
 
                     return;
-                case AbstractAttributeType::TYPE_TEXTAREA_CLASS:
+                case 'oro_flexibleentity_textarea':
                     if ($productAttribute->getMaxCharacters() !== null) {
                         if (strlen($value) > $productAttribute->getMaxCharacters()) {
                             break;
@@ -311,7 +311,7 @@ class ProductAttributeValidator
                     }
 
                     return;
-                case AbstractAttributeType::TYPE_TEXT_CLASS:
+                case 'oro_flexibleentity_text':
                     if ($productAttribute->getMaxCharacters() !== null) {
                         if (strlen($value) > $productAttribute->getMaxCharacters()) {
                             break;
@@ -339,7 +339,7 @@ class ProductAttributeValidator
                     }
 
                     return;
-                case AbstractAttributeType::TYPE_BOOLEAN_CLASS:
+                case 'oro_flexibleentity_boolean':
                     if ($value !== (bool) $value) {
                         break;
                     }

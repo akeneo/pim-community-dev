@@ -141,9 +141,9 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     public static function providerUniqueConstraintInvalid()
     {
         return array(
-            array(AbstractAttributeType::TYPE_TEXT_CLASS, 'code1', true, true, false, false, true),
-            array(AbstractAttributeType::TYPE_TEXT_CLASS, 'code2', true, false, false, false, true),
-            array(AbstractAttributeType::TYPE_TEXT_CLASS, 'code3', true, true, false, false, false),
+            array('oro_flexibleentity_text', 'code1', true, true, false, false, true),
+            array('oro_flexibleentity_text', 'code2', true, false, false, false, true),
+            array('oro_flexibleentity_text', 'code3', true, true, false, false, false),
         );
     }
 
@@ -186,14 +186,14 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     public static function providerMatrixConstraintInvalid()
     {
         return array(
-            array(AbstractAttributeType::TYPE_TEXTAREA_CLASS, 'code1', true, false, false, false, false),
-            array(AbstractAttributeType::TYPE_MONEY_CLASS, 'code2', true, false, false, false, false),
-            array(AbstractAttributeType::TYPE_OPT_MULTI_SELECT_CLASS, 'code4', true, false, false, false, false),
-            array(AbstractAttributeType::TYPE_OPT_SINGLE_SELECT_CLASS, 'code6', true, false, false, false, false),
-            array(AbstractAttributeType::TYPE_IMAGE_CLASS, 'code7', true, false, false, false, false),
-            array(AbstractAttributeType::TYPE_FILE_CLASS, 'code8', true, false, false, false, false),
-            array(AbstractAttributeType::TYPE_METRIC_CLASS, 'code9', true, false, false, false, false),
-            array(AbstractAttributeType::TYPE_BOOLEAN_CLASS, 'code10', true, false, false, false, false),
+            array('oro_flexibleentity_textarea', 'code1', true, false, false, false, false),
+            array('oro_flexibleentity_money', 'code2', true, false, false, false, false),
+            array('oro_flexibleentity_multiselect', 'code4', true, false, false, false, false),
+            array('oro_flexibleentity_simpleselect', 'code6', true, false, false, false, false),
+            array('oro_flexibleentity_image', 'code7', true, false, false, false, false),
+            array('oro_flexibleentity_file', 'code8', true, false, false, false, false),
+            array('oro_flexibleentity_metric', 'code9', true, false, false, false, false),
+            array('oro_flexibleentity_boolean', 'code10', true, false, false, false, false),
         );
     }
 
@@ -206,13 +206,13 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     public static function providerManyViolations()
     {
         return array(
-            array(AbstractAttributeType::TYPE_MONEY_CLASS, 'code1', true, true, false, false, false),
-            array(AbstractAttributeType::TYPE_METRIC_CLASS, 'code2', true, true, false, false, false),
-            array(AbstractAttributeType::TYPE_METRIC_CLASS, 'code3', true, false, false, false, true),
-            array(AbstractAttributeType::TYPE_METRIC_CLASS, 'code4', true, true, false, false, true),
-            array(AbstractAttributeType::TYPE_METRIC_CLASS, ' ', true, false, false, false, false),
-            array(AbstractAttributeType::TYPE_METRIC_CLASS, '#code', true, false, false, false, false),
-            array(AbstractAttributeType::TYPE_METRIC_CLASS, null, true, false, false, false, false),
+            array('oro_flexibleentity_money', 'code1', true, true, false, false, false),
+            array('oro_flexibleentity_metric', 'code2', true, true, false, false, false),
+            array('oro_flexibleentity_metric', 'code3', true, false, false, false, true),
+            array('oro_flexibleentity_metric', 'code4', true, true, false, false, true),
+            array('oro_flexibleentity_metric', ' ', true, false, false, false, false),
+            array('oro_flexibleentity_metric', '#code', true, false, false, false, false),
+            array('oro_flexibleentity_metric', null, true, false, false, false, false),
         );
     }
 
@@ -249,11 +249,11 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     public static function providerNoViolation()
     {
         return array(
-            array(AbstractAttributeType::TYPE_MONEY_CLASS, 'code1', false, false, false, false, false),
-            array(AbstractAttributeType::TYPE_TEXT_CLASS, 'code2', true, false, false, false, false),
-            array(AbstractAttributeType::TYPE_TEXT_CLASS, 'code3', true, false, false, true, false),
-            array(AbstractAttributeType::TYPE_TEXT_CLASS, 'code4', true, false, true, false, false),
-            array(AbstractAttributeType::TYPE_TEXT_CLASS, 'code5', true, false, true, true, false),
+            array('oro_flexibleentity_money', 'code1', false, false, false, false, false),
+            array('oro_flexibleentity_text', 'code2', true, false, false, false, false),
+            array('oro_flexibleentity_text', 'code3', true, false, false, true, false),
+            array('oro_flexibleentity_text', 'code4', true, false, true, false, false),
+            array('oro_flexibleentity_text', 'code5', true, false, true, true, false),
         );
     }
 
@@ -320,9 +320,9 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     public static function providerAttributeOptionsInvalid()
     {
         return array(
-            array(AbstractAttributeType::TYPE_OPT_MULTI_SELECT_CLASS, array('a', 'b', null), ProductAttributeValidator::VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED),
-            array(AbstractAttributeType::TYPE_OPT_SINGLE_SELECT_CLASS, array(1, null, 3), ProductAttributeValidator::VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED),
-            array(AbstractAttributeType::TYPE_OPT_SINGLE_SELECT_CLASS, array('a', 'a', 'b'), ProductAttributeValidator::VIOLATION_DUPLICATE_OPTION_DEFAULT_VALUE),
+            array('oro_flexibleentity_multiselect', array('a', 'b', null), ProductAttributeValidator::VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED),
+            array('oro_flexibleentity_simpleselect', array(1, null, 3), ProductAttributeValidator::VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED),
+            array('oro_flexibleentity_simpleselect', array('a', 'a', 'b'), ProductAttributeValidator::VIOLATION_DUPLICATE_OPTION_DEFAULT_VALUE),
         );
     }
 
@@ -335,39 +335,39 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     public static function providerNoPropertyViolations()
     {
         return array(
-            array(AbstractAttributeType::TYPE_DATE_CLASS, 'code1',
+            array('oro_flexibleentity_date', 'code1',
                 array('defaultValue' => new \DateTime('+1 month'), 'dateType' => 'datetime', 'dateMin' => new \DateTime('now'), 'dateMax' => new \DateTime('+1 year'))),
-            array(AbstractAttributeType::TYPE_INTEGER_CLASS, 'code2',
+            array('oro_flexibleentity_integer', 'code2',
                 array('defaultValue' => 10, 'numberMin' => 1, 'numberMax' => 100.1, 'decimalsAllowed' => true, 'negativeAllowed' => false)),
-            array(AbstractAttributeType::TYPE_MONEY_CLASS, 'code3',
+            array('oro_flexibleentity_money', 'code3',
                 array('defaultValue' => 9.99, 'numberMin' => 0.01, 'numberMax' => 1000000, 'decimalsAllowed' => true,
                     'negativeAllowed' => false)),
-            array(AbstractAttributeType::TYPE_NUMBER_CLASS, 'code4',
+            array('oro_flexibleentity_number', 'code4',
                 array('defaultValue' => -10, 'numberMin' => -100, 'numberMax' => 100, 'decimalsAllowed' => false, 'negativeAllowed' => true)),
-            array(AbstractAttributeType::TYPE_NUMBER_CLASS, 'code4',
+            array('oro_flexibleentity_number', 'code4',
                 array('numberMin' => 1.1, 'numberMax' => 2.2, 'decimalsAllowed' => true, 'negativeAllowed' => true)),
-            array(AbstractAttributeType::TYPE_OPT_MULTI_SELECT_CLASS, 'code5',
+            array('oro_flexibleentity_multiselect', 'code5',
                 array('valueCreationAllowed' => true)),
-            array(AbstractAttributeType::TYPE_OPT_SINGLE_SELECT_CLASS, 'code6',
+            array('oro_flexibleentity_simpleselect', 'code6',
                 array('defaultValue' => 'test value')),
-            array(AbstractAttributeType::TYPE_TEXTAREA_CLASS, 'code7',
+            array('oro_flexibleentity_textarea', 'code7',
                 array('defaultValue' => 'test value', 'maxCharacters' => 200, 'wysiwygEnabled' => true)),
-            array(AbstractAttributeType::TYPE_METRIC_CLASS, 'code8',
+            array('oro_flexibleentity_metric', 'code8',
                 array('defaultValue' => 20, 'numberMin' => -273, 'numberMax' => 1000, 'decimalsAllowed' => false,
                     'negativeAllowed' => true, 'metricType' => 'temperature', 'defaultMetricUnit' => 'C')),
-            array(AbstractAttributeType::TYPE_FILE_CLASS, 'code9',
+            array('oro_flexibleentity_file', 'code9',
                 array('allowedFileSources' => 'all', 'maxFileSize' => 10000)),
-            array(AbstractAttributeType::TYPE_IMAGE_CLASS, 'code10',
+            array('oro_flexibleentity_image', 'code10',
                 array('allowedFileSources' => 'upload', 'maxFileSize' => null)),
-            array(AbstractAttributeType::TYPE_TEXT_CLASS, 'code11',
+            array('oro_flexibleentity_text', 'code11',
                 array('defaultValue' => 'Test123', 'maxCharacters' => 100, 'validationRule' => 'regexp', 'validationRegexp' => '#[[:alnum:]]#')),
-            array(AbstractAttributeType::TYPE_TEXT_CLASS, 'code12',
+            array('oro_flexibleentity_text', 'code12',
                 array('defaultValue' => 'user@sub.domain.museum', 'validationRule' => 'email')),
-            array(AbstractAttributeType::TYPE_TEXT_CLASS, 'code13',
+            array('oro_flexibleentity_text', 'code13',
                 array('defaultValue' => 'http://symfony.com/', 'validationRule' => 'url')),
-            array(AbstractAttributeType::TYPE_TEXT_CLASS, 'code14',
+            array('oro_flexibleentity_text', 'code14',
                 array('defaultValue' => 'value', 'maxCharacters' => 10)),
-            array(AbstractAttributeType::TYPE_BOOLEAN_CLASS, 'code15',
+            array('oro_flexibleentity_boolean', 'code15',
                 array('defaultValue' => true))
         );
     }
@@ -401,64 +401,64 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     public static function providerManyPropertyViolations()
     {
         return array(
-            array(AbstractAttributeType::TYPE_DATE_CLASS, 'code1', array(
+            array('oro_flexibleentity_date', 'code1', array(
                 'defaultValue' => new \DateTime('now'), 'dateType' => 'H:i',
                 'dateMin' => new \DateTime('+1 day'), 'dateMax' => new \DateTime('-1 day')), 3),
-            array(AbstractAttributeType::TYPE_DATE_CLASS, 'code2',
+            array('oro_flexibleentity_date', 'code2',
                 array('defaultValue' => new \DateTime('now'), 'dateType' => 'date',
                     'dateMin' => null, 'dateMax' => new \DateTime('-1 day')), 1),
-            array(AbstractAttributeType::TYPE_DATE_CLASS, 'code3',
+            array('oro_flexibleentity_date', 'code3',
                 array('defaultValue' => date('d/m/Y'), 'dateType' => 'time',
                     'dateMin' => new \DateTime('-1 day'), 'dateMax' => new \DateTime('-1 day')), 2),
-            array(AbstractAttributeType::TYPE_DATE_CLASS, 'code4', array(
+            array('oro_flexibleentity_date', 'code4', array(
                 'dateType' => 'date', 'dateMin' => 1, 'dateMax' => 2), 2),
-            array(AbstractAttributeType::TYPE_INTEGER_CLASS, 'code5',
+            array('oro_flexibleentity_integer', 'code5',
                 array('defaultValue' => -10, 'numberMin' => 1.5, 'numberMax' => -2,
                     'negativeAllowed' => false), 3),
-            array(AbstractAttributeType::TYPE_INTEGER_CLASS, 'code6',
+            array('oro_flexibleentity_integer', 'code6',
                 array('defaultValue' => -2, 'numberMin' => -1, 'numberMax' => 2,
                     'negativeAllowed' => true), 1),
-            array(AbstractAttributeType::TYPE_INTEGER_CLASS, 'code7',
+            array('oro_flexibleentity_integer', 'code7',
                 array('defaultValue' => 10, 'numberMin' => -1, 'numberMax' => 5,
                     'negativeAllowed' => false), 2),
-            array(AbstractAttributeType::TYPE_MONEY_CLASS, 'code8',
+            array('oro_flexibleentity_money', 'code8',
                 array('defaultValue' => 9.999, 'numberMin' => -0.01, 'numberMax' => 1000000,
                     'decimalsAllowed' => true, 'negativeAllowed' => false), 1),
-            array(AbstractAttributeType::TYPE_MONEY_CLASS, 'code9',
+            array('oro_flexibleentity_money', 'code9',
                 array('defaultValue' => 1, 'numberMin' => 5.5, 'decimalsAllowed' => false, 'negativeAllowed' => false), 2),
-            array(AbstractAttributeType::TYPE_MONEY_CLASS, 'code10',
+            array('oro_flexibleentity_money', 'code10',
                 array('defaultValue' => 0, 'numberMax' => -1, 'negativeAllowed' => false), 2),
-            array(AbstractAttributeType::TYPE_MONEY_CLASS, 'code11',
+            array('oro_flexibleentity_money', 'code11',
                 array('defaultValue' => -1, 'negativeAllowed' => false), 1),
-            array(AbstractAttributeType::TYPE_NUMBER_CLASS, 'code12',
+            array('oro_flexibleentity_number', 'code12',
                 array('defaultValue' => -100, 'numberMin' => -10.111111, 'numberMax' => null,
                     'decimalsAllowed' => false, 'negativeAllowed' => true), 2),
-            array(AbstractAttributeType::TYPE_TEXTAREA_CLASS, 'code13',
+            array('oro_flexibleentity_textarea', 'code13',
                 array('defaultValue' => 'test value', 'maxCharacters' => 5,
                     'wysiwygEnabled' => true), 1),
-            array(AbstractAttributeType::TYPE_METRIC_CLASS, 'code14',
+            array('oro_flexibleentity_metric', 'code14',
                 array('defaultValue' => 0, 'numberMin' => -2, 'numberMax' => -1,
                     'decimalsAllowed' => true, 'negativeAllowed' => false,
                     'metricType' => 'temperature', 'defaultMetricUnit' => 'C'), 3),
-            array(AbstractAttributeType::TYPE_FILE_CLASS, 'code15',
+            array('oro_flexibleentity_file', 'code15',
                 array('allowedFileSources' => 'other', 'maxFileSize' => -1, 'defaultValue' => 1), 3),
-            array(AbstractAttributeType::TYPE_TEXT_CLASS, 'code16',
+            array('oro_flexibleentity_text', 'code16',
                 array('defaultValue' => 'Test123', 'maxCharacters' => '',
                     'validationRule' => 'regexp', 'validationRegexp' => ''), 3),
-            array(AbstractAttributeType::TYPE_TEXT_CLASS, 'code17',
+            array('oro_flexibleentity_text', 'code17',
                 array('defaultValue' => 'Test123', 'maxCharacters' => 1,
                     'validationRule' => 'text', 'validationRegexp' => '/[^0-9]/'), 3),
-            array(AbstractAttributeType::TYPE_TEXT_CLASS, 'code18',
+            array('oro_flexibleentity_text', 'code18',
                 array('defaultValue' => '_', 'validationRule' => 'regexp',
                     'validationRegexp' => '#[[:alnum:]]#'), 1),
-            array(AbstractAttributeType::TYPE_TEXT_CLASS, 'code19',
+            array('oro_flexibleentity_text', 'code19',
                 array('defaultValue' => 'email', 'validationRule' => 'email'), 1),
-            array(AbstractAttributeType::TYPE_TEXT_CLASS, 'code20',
+            array('oro_flexibleentity_text', 'code20',
                 array('defaultValue' => 'www.test.com', 'validationRule' => 'url'), 1),
-            array(AbstractAttributeType::TYPE_TEXT_CLASS, 'code21',
+            array('oro_flexibleentity_text', 'code21',
                 array('validationRule' => 'text'), 1),
-            array(AbstractAttributeType::TYPE_BOOLEAN_CLASS, 'code22', array('defaultValue' => 5), 1),
-            array(AbstractAttributeType::TYPE_METRIC_CLASS, 'code23',
+            array('oro_flexibleentity_boolean', 'code22', array('defaultValue' => 5), 1),
+            array('oro_flexibleentity_metric', 'code23',
                 array('defaultValue' => 0.1, 'numberMin' => 0, 'numberMax' => 2,
                     'decimalsAllowed' => false, 'negativeAllowed' => false,
                     'metricType' => 'temperature', 'defaultMetricUnit' => 'C'), 1)

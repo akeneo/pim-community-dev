@@ -9,7 +9,6 @@ use Pim\Bundle\ProductBundle\Form\Type\AttributeOptionType;
 use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
-
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\ImageType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\FileType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\BooleanType;
@@ -73,6 +72,8 @@ class AttributeService
     public function createAttributeFromFormData($data)
     {
         if (gettype($data) === 'array') {
+        
+            // TODO : we need to use the attribute type factory
             $type = !empty($data['attributeType']) ? new $data['attributeType']() : null;
 
             return $this->manager->createAttribute($type);
@@ -94,8 +95,8 @@ class AttributeService
     public function prepareFormData($data)
     {
         $optionTypes = array(
-            AbstractAttributeType::TYPE_OPT_MULTI_SELECT_CLASS,
-            AbstractAttributeType::TYPE_OPT_SINGLE_SELECT_CLASS
+            'oro_flexibleentity_multiselect',
+            'oro_flexibleentity_simpleselect'
         );
 
         // If the attribute type can have options but no options have been created,
@@ -174,30 +175,20 @@ class AttributeService
      */
     public function getAttributeTypes()
     {
-        $availableTypes = array(
-            new BooleanType(),
-            new DateType(),
-            new FileType(),
-            new ImageType(),
-            new MetricType(),
-            new MoneyType(),
-            new OptionMultiSelectType(),
-            new OptionSimpleSelectType(),
-            new NumberType(),
-            new TextAreaType(),
-            new TextType(),
+        // TODO : get from factory
+        $types = array(
+            'oro_flexibleentity_text' => 'oro_flexibleentity_text',
+            'oro_flexibleentity_textarea' => 'oro_flexibleentity_textarea',
+            'oro_flexibleentity_number' => 'oro_flexibleentity_number',
+            'oro_flexibleentity_money' => 'oro_flexibleentity_money',
+            'oro_flexibleentity_multiselect' => 'oro_flexibleentity_multiselect',
+            'oro_flexibleentity_simpleselect' => 'oro_flexibleentity_simpleselect',
+            'oro_flexibleentity_file' => 'oro_flexibleentity_file',
+            'oro_flexibleentity_image' => 'oro_flexibleentity_image',
+            'oro_flexibleentity_metric' => 'oro_flexibleentity_metric',
+            'oro_flexibleentity_boolean' => 'oro_flexibleentity_boolean',
+            'oro_flexibleentity_date' => 'oro_flexibleentity_date'
         );
-        $types = array();
-        foreach ($availableTypes as $type) {
-            $name = explode('\\', get_class($type));
-            $name = substr(end($name), 0, -4);
-            if (array_key_exists($name, $this->config)) {
-                $name = $this->config[$name]['name'];
-            } else {
-                $name = $type->getName();
-            }
-            $types[get_class($type)] = $name;
-        }
         asort($types);
 
         return $types;

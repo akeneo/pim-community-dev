@@ -97,7 +97,7 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
     {
         $productAttribute = new ProductAttribute();
 
-        $productAttribute->setAttributeType(AbstractAttributeType::TYPE_METRIC_CLASS);
+        $productAttribute->setAttributeType('oro_flexibleentity_metric');
         $productAttribute->setMetricType($metricType);
         $productAttribute->setDefaultMetricUnit($metricUnit);
 
