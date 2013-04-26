@@ -39,15 +39,11 @@ class ProductType extends FlexibleType
      */
     public function addDynamicAttributesFields(FormBuilderInterface $builder)
     {
-        $builder->add(
-            'values',
-            'collection',
-            array(
-                'type'         => 'pim_product_value',
-                'allow_add'    => true,
-                'allow_delete' => true,
-                'by_reference' => false
-            )
-        );
+        $builder->add('values', 'collection', array(
+            'type'         => 'pim_product_value',
+            'allow_add'    => true,
+            'allow_delete' => true,
+            'by_reference' => false,
+        ));
     }
 }

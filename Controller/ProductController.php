@@ -132,42 +132,15 @@ class ProductController extends Controller
             $form->bind($request);
 
             if ($form->isValid()) {
-                // TODO: to move to a relevant method in media manager + use listener
-                $index = 0;
-                // upload files if exist
-                foreach ($entity->getValues() as $value) {
-                    if ($value->getMedia() !== null) {
-                        // upload file
-                        if ($value->getMedia()->getFile() !== null) {
-                            $filename = $entity->getSku() .'-'. $value->getAttribute()->getCode() .'-'.
-                                        $value->getLocale() .'-'. $value->getScope() .'-'. time() .'-'.
-                                        $value->getMedia()->getFile()->getClientOriginalName();
-
-                            $this->getMediaManager()->upload($value->getMedia(), $filename);
-                        } elseif ($value->getMedia()->getFile() === null &&
-                                (!$value->getMedia()->getId() ||
-                                $form->get('values')->get($index)->get('media')->get('remove')->getData() === true)) {
-                            // unkink media if exists
-                            if ($this->getMediaManager()->fileExists($value->getMedia())) {
-                                $this->getMediaManager()->delete($value->getMedia());
-                            }
-                            // remove value if empty file
-                            $value->setMedia(null);
-                        }
-                    }
-                    $index++;
-                }
-
                 $this->getProductManager()->save($entity);
 
                 $this->get('session')->getFlashBag()->add('success', 'Product successfully saved');
-                $params = array(
+
+                return $this->redirect($this->generateUrl('pim_product_product_edit', array(
                     'id'         => $entity->getId(),
                     'dataLocale' => $request->query->get('dataLocale'),
                     'dataScope'  => $request->query->get('dataScope')
-                );
-
-                return $this->redirect($this->generateUrl('pim_product_product_edit', $params));
+                )));
             }
         }
 
