@@ -15,7 +15,7 @@ use Oro\Bundle\GridBundle\Property\UrlProperty;
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
- * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class AttributeDatagridManager extends DatagridManager
 {
@@ -63,28 +63,12 @@ class AttributeDatagridManager extends DatagridManager
         if (!$this->fieldsCollection) {
             $this->fieldsCollection = new FieldDescriptionCollection();
 
-            $fieldId = new FieldDescription();
-            $fieldId->setName('id');
-            $fieldId->setOptions(
-                array(
-                    'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                    'label'       => 'ID',
-                    'field_name'  => 'id',
-                    'filter_type' => FilterInterface::TYPE_NUMBER,
-                    'required'    => false,
-                    'sortable'    => true,
-                    'filterable'  => true,
-                    'show_filter' => true,
-                )
-            );
-            $this->fieldsCollection->add($fieldId);
-
             $field = new FieldDescription();
             $field->setName('code');
             $field->setOptions(
                 array(
                     'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                    'label'       => 'Code',
+                    'label'       => $this->translator->trans('Name'),
                     'field_name'  => 'code',
                     'filter_type' => FilterInterface::TYPE_STRING,
                     'required'    => false,
@@ -100,7 +84,7 @@ class AttributeDatagridManager extends DatagridManager
             $field->setOptions(
                 array(
                     'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                    'label'       => 'Type',
+                    'label'       => $this->translator->trans('Type'),
                     'field_name'  => 'attributeType',
                     'filter_type' => FilterInterface::TYPE_STRING,
                     'required'    => false,
@@ -116,7 +100,7 @@ class AttributeDatagridManager extends DatagridManager
             $field->setOptions(
                 array(
                     'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                    'label'       => 'Scopable',
+                    'label'       => $this->translator->trans('Scopable'),
                     'field_name'  => 'scopable',
                     'filter_type' => FilterInterface::TYPE_NUMBER,
                     'required'    => false,
@@ -132,7 +116,7 @@ class AttributeDatagridManager extends DatagridManager
             $field->setOptions(
                 array(
                     'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                    'label'       => 'Translatable',
+                    'label'       => $this->translator->trans('Translatable'),
                     'field_name'  => 'translatable',
                     'filter_type' => FilterInterface::TYPE_NUMBER,
                     'required'    => false,
@@ -197,7 +181,7 @@ class AttributeDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => 'Edit',
+                'label'   => $this->translator->trans('Edit'),
                 'icon'    => 'edit',
                 'link'    => 'edit_link',
                 'backUrl' => true,
@@ -210,7 +194,7 @@ class AttributeDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'=> 'Delete',
+                'label'=> $this->translator->trans('Delete'),
                 'icon' => 'trash',
                 'link' => 'delete_link',
             )

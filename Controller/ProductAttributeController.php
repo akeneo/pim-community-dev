@@ -59,7 +59,7 @@ class ProductAttributeController extends Controller
         $em = $this->getDoctrine()->getManager();
         $queryBuilder = $em->createQueryBuilder();
         $queryBuilder
-            ->select('a.id', 'a.code', 'a.attributeType', 'a.scopable', 'a.translatable')
+            ->select('a.id', 'a.code', 'a.name', 'a.attributeType', 'a.scopable', 'a.translatable')
             ->from('PimProductBundle:ProductAttribute', 'a')
             ->where("a.entityType = 'Pim\Bundle\ProductBundle\Entity\Product'");
 
@@ -166,6 +166,8 @@ class ProductAttributeController extends Controller
      * @Route("/remove/{id}", requirements={"id"="\d+"})
      *
      * @BackUrl("back")
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeAction(ProductAttribute $entity)
     {
@@ -177,5 +179,4 @@ class ProductAttributeController extends Controller
 
         return $this->redirect($this->generateUrl('pim_product_productattribute_index'));
     }
-
 }

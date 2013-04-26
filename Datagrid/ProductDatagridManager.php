@@ -108,28 +108,12 @@ class ProductDatagridManager extends FlexibleDatagridManager
         if (!$this->fieldsCollection) {
             $this->fieldsCollection = new FieldDescriptionCollection();
 
-            $fieldId = new FieldDescription();
-            $fieldId->setName('id');
-            $fieldId->setOptions(
-                array(
-                    'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                    'label'       => 'ID',
-                    'field_name'  => 'id',
-                    'filter_type' => FilterInterface::TYPE_NUMBER,
-                    'required'    => false,
-                    'sortable'    => true,
-                    'filterable'  => true,
-                    'show_filter' => true,
-                )
-            );
-            $this->fieldsCollection->add($fieldId);
-
             $fieldSku = new FieldDescription();
             $fieldSku->setName('sku');
             $fieldSku->setOptions(
                 array(
                     'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                    'label'       => 'Sku',
+                    'label'       => $this->translator->trans('Sku'),
                     'field_name'  => 'sku',
                     'filter_type' => FilterInterface::TYPE_STRING,
                     'required'    => false,
@@ -166,7 +150,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 $field->setOptions(
                     array(
                         'type'          => $attributeType,
-                        'label'         => $attribute->getCode(),
+                        'label'         => $attribute->getName(),
                         'field_name'    => $attribute->getCode(),
                         'filter_type'   => $filterType,
                         'required'      => false,
@@ -242,7 +226,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => 'Edit',
+                'label'   => $this->translator->trans('Edit'),
                 'icon'    => 'edit',
                 'link'    => 'edit_link',
                 'backUrl' => true,
@@ -255,7 +239,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'=> 'Delete',
+                'label'=> $this->translator->trans('Delete'),
                 'icon' => 'trash',
                 'link' => 'delete_link',
             )
@@ -267,7 +251,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
     /**
      * Override to add support for price and metric
      *
-     * @param $flexibleFieldType
+     * @param string $flexibleFieldType
+     *
      * @return string
      * @throws \LogicException
      */
@@ -283,7 +268,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
     /**
      * Override to add support for price and metric
      *
-     * @param $flexibleFieldType
+     * @param string $flexibleFieldType
+     *
      * @return string
      * @throws \LogicException
      */
