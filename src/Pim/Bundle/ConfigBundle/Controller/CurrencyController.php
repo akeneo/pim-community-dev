@@ -41,7 +41,7 @@ class CurrencyController extends Controller
         /** @var $queryBuilder QueryBuilder */
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder
-            ->select('c.id', 'c.code', 'c.activated')
+            ->select('c')
             ->from('PimConfigBundle:Currency', 'c');
 
         /** @var $queryFactory QueryFactory */
