@@ -12,7 +12,7 @@
             <h3 class="pull-left">{{ title|trans }}</h3>
             <button class="btn btn-primary pull-right" type="submit">{{ 'Save'|trans }}</button>
             {% if form.vars.value.id %}
-                <a class="btn pull-right" href="{{ path('pim_config_channel_remove', { id: form.vars.value.id }) }}">
+                <a class="btn pull-right" href="#" id="btn-delete-channel">
                     {{ "Delete" | trans }}
                 </a>
             {% endif %}
@@ -38,4 +38,31 @@
         {{ form_row(form._token) }}
     </div>
 </form>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.bootstrap-modal.js') }}"></script>
+    
+    <script type="text/javascript">
+    $(function() {
+        $('#btn-delete-channel').click(function(event) {
+            doAction = function() {
+                window.location.href = "{{ path('pim_config_channel_remove', { id: form.vars.value.id }) }}";
+            };
+            
+            if (!_.isUndefined(Backbone.BootstrapModal)) {
+                confirm = new Backbone.BootstrapModal({
+                    title: "{{ 'Delete Confirmation' | trans }}",
+                    content: "{{ 'Are you sure you want to delete this item' | trans }}"
+                });
+                confirm.on('ok', doAction);
+                confirm.open();
+            } else if (window.confirm(message)) {
+                doAction();
+            }
+        });
+    });
+    </script>
 {% endblock %}
