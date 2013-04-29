@@ -27,9 +27,11 @@
                 <a class="btn" href="{{ path('pim_product_product_index') }}">
                     {{ "Back to list" | trans }}
                 </a>
-                <a class="btn" href="{{ path('pim_product_product_remove', { id: form.vars.value.id }) }}">
-                    {{ "Delete" | trans }}
-                </a>
+                {% if form.vars.value.id %}
+                    <a class="btn" href="#" id="btn-delete-product">
+                        {{ "Delete" | trans }}
+                    </a>
+                {% endif %}
                 <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
             </div>
         </div>
@@ -121,9 +123,19 @@
         <li><a href="#" data-channel="ecommerce">ecommerce</a></li>
         <li><a href="#" data-channel="mobile">mobile</a></li>
     </ul>
+    <div id="dialog-confirm" title="{{ 'Delete Confirmation'|trans }}">
+        <p>
+            <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+            {{ "Are you sure you want to delete this item ?"|trans }}
+        </p>
+    </div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    
+    <script type="text/javascript" src="{{ asset('bundles/pimui/js/select2.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.bootstrap-modal.js') }}"></script>
+    
     <script type="text/javascript">
     $(function() {
         var updated = false;
@@ -143,6 +155,23 @@
 
         $('button[type="submit"]').click(function(event) {
             $(window).unbind('beforeunload');
+        });
+
+        $('#btn-delete-product').click(function(event) {
+            doAction = function() {
+                window.location.href = "{{ path('pim_product_product_remove', { id: form.vars.value.id }) }}";
+            };
+            
+            if (!_.isUndefined(Backbone.BootstrapModal)) {
+                confirm = new Backbone.BootstrapModal({
+                    title: "{{ 'Delete Confirmation' | trans }}",
+                    content: "{{ 'Are you sure you want to delete this item' | trans }}"
+                });
+                confirm.on('ok', doAction);
+                confirm.open();
+            } else if (window.confirm(message)) {
+                doAction();
+            }
         });
 
         $('select').select2({ allowClear: true });
