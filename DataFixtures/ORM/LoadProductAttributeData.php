@@ -3,7 +3,7 @@ namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
