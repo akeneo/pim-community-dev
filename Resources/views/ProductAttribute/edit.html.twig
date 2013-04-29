@@ -5,6 +5,7 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.bootstrap-modal.js') }}"></script>
     <script type="text/javascript">
         {% include 'PimUIBundle::measures.html.twig' with measures %}
         {% include 'PimProductBundle:ProductAttribute:_js-validation.html.twig' %}
