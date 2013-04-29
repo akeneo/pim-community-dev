@@ -124,8 +124,8 @@ class ProductAttributeValidator
         $attributeType = array(
             'oro_flexibleentity_textarea',
             'oro_flexibleentity_money',
-            'oro_flexibleentity_multiselect',
-            'oro_flexibleentity_simpleselect',
+            'pim_product_multiselect',
+            'pim_product_simpleselect',
             'oro_flexibleentity_image',
             'oro_flexibleentity_file',
             'oro_flexibleentity_metric',
@@ -168,8 +168,8 @@ class ProductAttributeValidator
     protected static function areOptionsValid(ProductAttribute $productAttribute, ExecutionContext $context)
     {
         $optionTypes = array(
-            'oro_flexibleentity_multiselect',
-            'oro_flexibleentity_simpleselect'
+            'pim_product_multiselect',
+            'pim_product_simpleselect'
         );
 
         if (in_array($productAttribute->getAttributeType(), $optionTypes)) {

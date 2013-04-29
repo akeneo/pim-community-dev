@@ -84,8 +84,8 @@ class AttributeService
     public function prepareFormData($data)
     {
         $optionTypes = array(
-            'oro_flexibleentity_multiselect',
-            'oro_flexibleentity_simpleselect'
+            'pim_product_multiselect',
+            'pim_product_simpleselect'
         );
 
         // If the attribute type can have options but no options have been created,
@@ -170,8 +170,8 @@ class AttributeService
             'oro_flexibleentity_textarea' => 'oro_flexibleentity_textarea',
             'oro_flexibleentity_number' => 'oro_flexibleentity_number',
             'oro_flexibleentity_money' => 'oro_flexibleentity_money',
-            'oro_flexibleentity_multiselect' => 'oro_flexibleentity_multiselect',
-            'oro_flexibleentity_simpleselect' => 'oro_flexibleentity_simpleselect',
+            'pim_product_multiselect' => 'pim_product_multiselect',
+            'pim_product_simpleselect' => 'pim_product_simpleselect',
             'oro_flexibleentity_file' => 'oro_flexibleentity_file',
             'oro_flexibleentity_image' => 'oro_flexibleentity_image',
             'oro_flexibleentity_metric' => 'oro_flexibleentity_metric',

@@ -188,8 +188,8 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
         return array(
             array('oro_flexibleentity_textarea', 'code1', true, false, false, false, false),
             array('oro_flexibleentity_money', 'code2', true, false, false, false, false),
-            array('oro_flexibleentity_multiselect', 'code4', true, false, false, false, false),
-            array('oro_flexibleentity_simpleselect', 'code6', true, false, false, false, false),
+            array('pim_product_multiselect', 'code4', true, false, false, false, false),
+            array('pim_product_simpleselect', 'code6', true, false, false, false, false),
             array('oro_flexibleentity_image', 'code7', true, false, false, false, false),
             array('oro_flexibleentity_file', 'code8', true, false, false, false, false),
             array('oro_flexibleentity_metric', 'code9', true, false, false, false, false),
@@ -320,9 +320,9 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     public static function providerAttributeOptionsInvalid()
     {
         return array(
-            array('oro_flexibleentity_multiselect', array('a', 'b', null), ProductAttributeValidator::VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED),
-            array('oro_flexibleentity_simpleselect', array(1, null, 3), ProductAttributeValidator::VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED),
-            array('oro_flexibleentity_simpleselect', array('a', 'a', 'b'), ProductAttributeValidator::VIOLATION_DUPLICATE_OPTION_DEFAULT_VALUE),
+            array('pim_product_multiselect', array('a', 'b', null), ProductAttributeValidator::VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED),
+            array('pim_product_simpleselect', array(1, null, 3), ProductAttributeValidator::VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED),
+            array('pim_product_simpleselect', array('a', 'a', 'b'), ProductAttributeValidator::VIOLATION_DUPLICATE_OPTION_DEFAULT_VALUE),
         );
     }
 
@@ -346,9 +346,9 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
                 array('defaultValue' => -10, 'numberMin' => -100, 'numberMax' => 100, 'decimalsAllowed' => false, 'negativeAllowed' => true)),
             array('oro_flexibleentity_number', 'code4',
                 array('numberMin' => 1.1, 'numberMax' => 2.2, 'decimalsAllowed' => true, 'negativeAllowed' => true)),
-            array('oro_flexibleentity_multiselect', 'code5',
+            array('pim_product_multiselect', 'code5',
                 array('valueCreationAllowed' => true)),
-            array('oro_flexibleentity_simpleselect', 'code6',
+            array('pim_product_simpleselect', 'code6',
                 array('defaultValue' => 'test value')),
             array('oro_flexibleentity_textarea', 'code7',
                 array('defaultValue' => 'test value', 'maxCharacters' => 200, 'wysiwygEnabled' => true)),
