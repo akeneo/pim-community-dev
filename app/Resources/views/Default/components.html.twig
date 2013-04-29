@@ -56,12 +56,11 @@
 
     {# BEGIN CUSTOM PIM ASSETS #}
     {% stylesheets
-    'bundles/pimui/css/pim.css'
-    'bundles/pimui/css/bootstrap-fileupload.css'
-    'bundles/pimui/css/bootstrap-datetimepicker.min.css'
-    'bundles/pimui/css/select2.css'
-    'bundles/pimui/css/bootstrap-wysihtml5.css'
-    'bundles/pimui/css/slimbox2.css'
+    '@PimUIBundle/Resources/public/css/pim.css'
+    '@PimUIBundle/Resources/public/css/bootstrap-datetimepicker.min.css'
+    '@PimUIBundle/Resources/public/css/select2.css'
+    '@PimUIBundle/Resources/public/css/bootstrap-wysihtml5.css'
+    '@PimUIBundle/Resources/public/css/slimbox2.css'
 
     debug=true
     filter='cssrewrite'
@@ -71,7 +70,6 @@
 
     {% javascripts
     '@PimUIBundle/Resources/public/js/pim_all.js'
-    '@PimUIBundle/Resources/public/js/bootstrap-fileupload.js'
     '@PimUIBundle/Resources/public/js/bootstrap-datetimepicker.min.js'
     '@PimUIBundle/Resources/public/js/select2.js'
     '@PimUIBundle/Resources/public/js/jquery-ui-1.10.0.min.js'
