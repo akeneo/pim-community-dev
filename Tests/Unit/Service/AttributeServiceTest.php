@@ -123,7 +123,7 @@ class AttributeServiceTest extends WebTestCase
         $attribute = $this->service->createAttributeFromFormData($data);
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductAttribute', $attribute);
 
-        $attribute = $this->createProductAttribute(new MoneyType());
+        $attribute = $this->createProductAttribute('oro_flexibleentity_money');
         $newAttribute = $this->service->createAttributeFromFormData($attribute);
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductAttribute', $newAttribute);
         $this->assertEquals($attribute, $newAttribute);
@@ -150,14 +150,9 @@ class AttributeServiceTest extends WebTestCase
     public function testGetPropertyFields()
     {
         $attributeTypes = array_keys($this->config['attributes_config']);
-        $pimPath = 'Pim\Bundle\ProductBundle\Model\AttributeType\\';
-        $oroPath = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\\';
 
         foreach ($attributeTypes as $type) {
-            $type .= 'Type';
-            $type = class_exists($pimPath . $type) ? $pimPath . $type : $oroPath . $type;
-
-            $attribute = $this->createProductAttribute(new $type());
+            $attribute = $this->createProductAttribute($type);
             $fields = $this->service->getPropertyFields($attribute);
 
             $this->assertNotEmpty($fields);
@@ -171,12 +166,12 @@ class AttributeServiceTest extends WebTestCase
         $fields = $this->service->getPropertyFields($attribute);
         $this->assertEmpty($fields);
 
-        $attribute = $this->createProductAttribute(new DateType());
+        $attribute = $this->createProductAttribute('oro_flexibleentity_date');
         $attribute->setDateType('date');
         $fields = $this->service->getPropertyFields($attribute);
         $this->assertNotEmpty($fields);
 
-        $attribute = $this->createProductAttribute(new DateType());
+        $attribute = $this->createProductAttribute('oro_flexibleentity_date');
         $attribute->setDateType('time');
         $fields = $this->service->getPropertyFields($attribute);
         $this->assertNotEmpty($fields);
@@ -188,8 +183,6 @@ class AttributeServiceTest extends WebTestCase
     public function testGetParameterFields()
     {
         $attributeTypes = array_keys($this->config['attributes_config']);
-        $pimPath = 'Pim\Bundle\ProductBundle\Model\AttributeType\\';
-        $oroPath = 'Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\\';
 
         $numOfParams = 0;
         foreach ($this->config['attributes_config'] as $item) {
@@ -198,10 +191,7 @@ class AttributeServiceTest extends WebTestCase
         }
 
         foreach ($attributeTypes as $type) {
-            $type .= 'Type';
-            $type = class_exists($pimPath . $type) ? $pimPath . $type : $oroPath . $type;
-
-            $attribute = $this->createProductAttribute(new $type());
+            $attribute = $this->createProductAttribute($type);
             $fields = $this->service->getParameterFields($attribute);
 
             $this->assertNotEmpty($fields);
@@ -244,6 +234,8 @@ class AttributeServiceTest extends WebTestCase
      */
     protected function createProductAttribute($type = null)
     {
+        $type = $type === null ? $type : $this->manager->getAttributeTypeFactory()->create($type);
+
         return $this->manager->createAttribute($type);
     }
 }
