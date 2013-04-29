@@ -9,6 +9,7 @@ use Pim\Bundle\ProductBundle\Form\Type\AttributeOptionType;
 use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -38,17 +39,24 @@ class AttributeService
     protected $localeManager;
 
     /**
+     * @var AttributeTypeFactory
+     */
+    protected $factory;
+
+    /**
      * Constructor
      *
-     * @param array          $config        Configuration parameters
-     * @param ProductManager $manager       Product manager
-     * @param LocaleManager  $localeManager Locale manager
+     * @param array                $config        Configuration parameters
+     * @param ProductManager       $manager       Product manager
+     * @param LocaleManager        $localeManager Locale manager
+     * @param AttributeTypeFactory $factory       Attribute type factory
      */
-    public function __construct($config, ProductManager $manager, LocaleManager $localeManager)
+    public function __construct($config, ProductManager $manager, LocaleManager $localeManager, AttributeTypeFactory $factory)
     {
         $this->config = $config['attributes_config'];
         $this->manager = $manager;
         $this->localeManager = $localeManager;
+        $this->factory = $factory;
     }
 
     /**
@@ -60,18 +68,17 @@ class AttributeService
      */
     public function createAttributeFromFormData($data)
     {
-        if (gettype($data) === 'array') {
-        
-            // TODO : we need to use the attribute type factory here
-            $type = !empty($data['attributeType']) ? new $data['attributeType']() : null;
-
-            return $this->manager->createAttribute($type);
-        } elseif ($data instanceof ProductAttribute) {
-
+        if ($data instanceof ProductAttribute) {
             return $data;
         }
 
-        return null;
+        if (gettype($data) === 'array' && isset($data['attributeType'])) {
+            return $this->manager->createAttribute(
+                $this->manager->getAttributeTypeFactory()->create($data['attributeType'])
+            );
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -196,8 +203,6 @@ class AttributeService
         if (!$type) {
             return array();
         }
-        $type = explode('\\', $attribute->getAttributeType());
-        $type = substr(end($type), 0, -4);
 
         return array_key_exists($type, $this->config) ? $this->config[$type]['parameters'] : array();
     }
@@ -215,8 +220,6 @@ class AttributeService
         if (!$type) {
             return array();
         }
-        $type = explode('\\', $attribute->getAttributeType());
-        $type = substr(end($type), 0, -4);
 
         return array_key_exists($type, $this->config) ? $this->config[$type]['properties'] : array();
     }
@@ -253,19 +256,18 @@ class AttributeService
      */
     private function getDefaultValueParams($attribute)
     {
-        $attTypeClass = $attribute->getAttributeType();
-        $attType = new $attTypeClass();
-        $fieldType = $attType->getFormType();
+        $type = $attribute->getAttributeType();
+        $fieldType = $this->factory->create($type)->getFormType();
 
         if ($fieldType === 'entity' || $fieldType === 'oro_flexibleentity_metric') {
             $fieldType = 'text';
-        } elseif ($attTypeClass === AbstractAttributeType::TYPE_BOOLEAN_CLASS) {
+        } elseif ($type === 'oro_flexibleentity_boolean') {
             $fieldType = 'checkbox';
         }
 
         $options = array();
 
-        if ($attTypeClass == AbstractAttributeType::TYPE_DATE_CLASS) {
+        if ($type === 'oro_flexibleentity_date') {
             $fieldType = $attribute->getDateType() ? $attribute->getDateType() : 'datetime';
             $options['widget'] = 'single_text';
             if ($fieldType == 'date') {
