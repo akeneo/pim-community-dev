@@ -22,7 +22,8 @@
         "behat/symfony2-extension": "*",
         "behat/mink-extension": "*",
         "behat/mink-browserkit-driver": "*",
-        "sensiolabs/behat-page-object-extension": "*"
+        "sensiolabs/behat-page-object-extension": "*",
+        "behat/mink-selenium2-driver":  "1.0.*"
     },
     "repositories": [
         {
