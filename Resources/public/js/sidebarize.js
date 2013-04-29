@@ -15,14 +15,14 @@
         var element = $(this).selector;
         var sidebar = sidebar || '.resizable-sidebar';
         var content = content || '.resizable-content';
-        $sidebar = $(element + ' ' + sidebar);
-        $content = $(element + ' ' + content);
+        var $sidebar = $(element + ' ' + sidebar);
+        var $content = $(element + ' ' + content);
         var handle = $('<div class="resizable-sidebar-handle"></div>');
         var sidebarHeight = 355;
         var handleWidth = 7;
         this.init = function() {
             $sidebar.after(handle);
-            $handle = $('.resizable-sidebar-handle');
+            var $handle = $('.resizable-sidebar-handle');
             $handle.css({ 'float': 'left', 'width': handleWidth, 'height': sidebarHeight, 'cursor': 'col-resize' });
             $sidebar.css({ 'float': 'left', 'width': '180px', 'height': sidebarHeight });
             $content.css({ 'float': 'left', 'width': $(element).width() - $sidebar.width() - handleWidth });
