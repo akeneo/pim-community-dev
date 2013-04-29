@@ -813,19 +813,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineFixturesBundle.git",
-                "reference": "275540d96599baec19fa3292c4d06c5cd4eefd06"
+                "reference": "5696cd636df7cbfaf4d1c45ed2922438968cf890"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineFixturesBundle/zipball/275540d96599baec19fa3292c4d06c5cd4eefd06",
-                "reference": "275540d96599baec19fa3292c4d06c5cd4eefd06",
+                "url": "https://api.github.com/repos/doctrine/DoctrineFixturesBundle/zipball/5696cd636df7cbfaf4d1c45ed2922438968cf890",
+                "reference": "5696cd636df7cbfaf4d1c45ed2922438968cf890",
                 "shasum": ""
             },
             "require": {
                 "doctrine/data-fixtures": "*",
                 "doctrine/doctrine-bundle": ">=1.0,<2.0",
                 "php": ">=5.3.2",
-                "symfony/doctrine-bridge": ">=2.1.0,<2.3-dev"
+                "symfony/doctrine-bridge": ">=2.1.0,<2.4-dev"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -862,7 +862,7 @@
                 "Fixture",
                 "persistence"
             ],
-            "time": "2013-02-12 11:13:27"
+            "time": "2013-04-27 11:57:35"
         },
         {
             "name": "doctrine/inflector",
@@ -1865,12 +1865,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/Gaufrette.git",
-                "reference": "1540391e4115ac7c01255e07e02ea3250ca31c51"
+                "reference": "4bfc8e16086276134768159093e2f5d2ad752991"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/Gaufrette/zipball/1540391e4115ac7c01255e07e02ea3250ca31c51",
-                "reference": "1540391e4115ac7c01255e07e02ea3250ca31c51",
+                "url": "https://api.github.com/repos/KnpLabs/Gaufrette/zipball/4bfc8e16086276134768159093e2f5d2ad752991",
+                "reference": "4bfc8e16086276134768159093e2f5d2ad752991",
                 "shasum": ""
             },
             "require": {
@@ -1932,7 +1932,7 @@
                 "filesystem",
                 "media"
             ],
-            "time": "2013-04-20 08:12:21"
+            "time": "2013-04-28 21:52:32"
         },
         {
             "name": "knplabs/knp-components",
@@ -2238,12 +2238,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kriswallsmith/assetic.git",
-                "reference": "0a55a9ba70bd9250899ad77deceaf8cb9e145371"
+                "reference": "1b17f9a239276f24344f9f7d7be8293f6dca4e19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kriswallsmith/assetic/zipball/0a55a9ba70bd9250899ad77deceaf8cb9e145371",
-                "reference": "0a55a9ba70bd9250899ad77deceaf8cb9e145371",
+                "url": "https://api.github.com/repos/kriswallsmith/assetic/zipball/1b17f9a239276f24344f9f7d7be8293f6dca4e19",
+                "reference": "1b17f9a239276f24344f9f7d7be8293f6dca4e19",
                 "shasum": ""
             },
             "require": {
@@ -2301,7 +2301,7 @@
                 "compression",
                 "minification"
             ],
-            "time": "2013-04-02 21:36:28"
+            "time": "2013-04-27 14:32:20"
         },
         {
             "name": "leafo/lessphp",
@@ -2460,12 +2460,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/NelmioApiDocBundle.git",
-                "reference": "3c43cc5d07b84560f723165d3360b0827df5214d"
+                "reference": "42f0b65a4a9dbcaa36c9da484c1a60ff67687275"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/3c43cc5d07b84560f723165d3360b0827df5214d",
-                "reference": "3c43cc5d07b84560f723165d3360b0827df5214d",
+                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/42f0b65a4a9dbcaa36c9da484c1a60ff67687275",
+                "reference": "42f0b65a4a9dbcaa36c9da484c1a60ff67687275",
                 "shasum": ""
             },
             "require": {
@@ -2489,7 +2489,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1.x-dev"
+                    "dev-master": "2.2.x-dev"
                 }
             },
             "autoload": {
@@ -2518,7 +2518,7 @@
                 "documentation",
                 "rest"
             ],
-            "time": "2013-04-17 22:29:56"
+            "time": "2013-04-29 07:36:00"
         },
         {
             "name": "oro/bap",
@@ -2688,12 +2688,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/FilterBundle.git",
-                "reference": "ff8eb28b55202b5b7d5c3d0ac9ae56d50885393a"
+                "reference": "a3b0ab40a5b04e9e76276b63c119c40f563b8217"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/FilterBundle/zipball/ff8eb28b55202b5b7d5c3d0ac9ae56d50885393a",
-                "reference": "ff8eb28b55202b5b7d5c3d0ac9ae56d50885393a",
+                "url": "https://api.github.com/repos/laboro/FilterBundle/zipball/a3b0ab40a5b04e9e76276b63c119c40f563b8217",
+                "reference": "a3b0ab40a5b04e9e76276b63c119c40f563b8217",
                 "shasum": ""
             },
             "require": {
@@ -2727,7 +2727,7 @@
                 "source": "https://github.com/laboro/FilterBundle/tree/master",
                 "issues": "https://github.com/laboro/FilterBundle/issues"
             },
-            "time": "2013-04-25 09:31:33"
+            "time": "2013-04-27 15:05:29"
         },
         {
             "name": "oro/flexible-entity-bundle",
@@ -3145,12 +3145,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/UserBundle.git",
-                "reference": "93e395be3180b605943cb54c71370509412fa07e"
+                "reference": "afcf41aa8fca55c1a618e56bdef0b6fd234bea40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/93e395be3180b605943cb54c71370509412fa07e",
-                "reference": "93e395be3180b605943cb54c71370509412fa07e",
+                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/afcf41aa8fca55c1a618e56bdef0b6fd234bea40",
+                "reference": "afcf41aa8fca55c1a618e56bdef0b6fd234bea40",
                 "shasum": ""
             },
             "require": {
@@ -3194,7 +3194,7 @@
                 "source": "https://github.com/laboro/UserBundle/tree/master",
                 "issues": "https://github.com/laboro/UserBundle/issues"
             },
-            "time": "2013-04-26 13:00:26"
+            "time": "2013-04-27 15:03:10"
         },
         {
             "name": "oro/windows-bundle",
@@ -4079,12 +4079,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "9abcf4f81b3047e44bc7016f8b112737f8340e00"
+                "reference": "372a76a4531e0fcac8e78a46a7ab3472e63d9fa1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/9abcf4f81b3047e44bc7016f8b112737f8340e00",
-                "reference": "9abcf4f81b3047e44bc7016f8b112737f8340e00",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/372a76a4531e0fcac8e78a46a7ab3472e63d9fa1",
+                "reference": "372a76a4531e0fcac8e78a46a7ab3472e63d9fa1",
                 "shasum": ""
             },
             "require": {
@@ -4159,7 +4159,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2013-04-25 10:13:02"
+            "time": "2013-04-29 07:14:50"
         },
         {
             "name": "twig/extensions",
@@ -4743,12 +4743,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendStdlib.git",
-                "reference": "release-2.1.5"
+                "reference": "df2681f906df76ac4d6738800834828fc17a50ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendStdlib/zipball/release-2.1.5",
-                "reference": "release-2.1.5",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendStdlib/zipball/df2681f906df76ac4d6738800834828fc17a50ab",
+                "reference": "df2681f906df76ac4d6738800834828fc17a50ab",
                 "shasum": ""
             },
             "require": {
@@ -4777,7 +4777,7 @@
                 "stdlib",
                 "zf2"
             ],
-            "time": "2013-04-15 11:43:47"
+            "time": "2013-04-26 20:00:10"
         },
         {
             "name": "zendframework/zend-uri",
