@@ -2,17 +2,8 @@
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\ImageType;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Pim\Bundle\ProductBundle\Model\AttributeType\OptionSimpleSelectType;
-use Pim\Bundle\ProductBundle\Model\AttributeType\OptionMultiSelectType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MoneyType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextAreaType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\DateType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MetricType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\FileType;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -141,7 +132,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute size
         $attributeCode = 'size';
-        $attributeType = $attributeTypeFactory->create('oro_flexibleentity_simpleselect');
+        $attributeType = $attributeTypeFactory->create('pim_product_simpleselect');
         $attribute = $this->getProductManager()->createAttribute($attributeType);
         $attribute->setCode($attributeCode);
         $attribute->setName('Size');
@@ -213,7 +204,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute manufacturer
         $attributeCode = 'manufacturer';
-        $attributeType = $attributeTypeFactory->create('oro_flexibleentity_simpleselect');
+        $attributeType = $attributeTypeFactory->create('pim_product_simpleselect');
         $attribute = $this->getProductManager()->createAttribute($attributeType);
         $attribute->setCode($attributeCode);
         $attribute->setName('Manufacturer');
