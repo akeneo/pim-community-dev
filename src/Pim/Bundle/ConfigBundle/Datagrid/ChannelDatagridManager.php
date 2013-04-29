@@ -59,22 +59,6 @@ class ChannelDatagridManager extends DatagridManager
         if (!$this->fieldsCollection) {
             $this->fieldsCollection = new FieldDescriptionCollection();
 
-            $fieldId = new FieldDescription();
-            $fieldId->setName('id');
-            $fieldId->setOptions(
-                array(
-                    'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                    'label'       => $this->translator->trans('ID'),
-                    'field_name'  => 'id',
-                    'filter_type' => FilterInterface::TYPE_NUMBER,
-                    'required'    => false,
-                    'sortable'    => true,
-                    'filterable'  => true,
-                    'show_filter' => true,
-                )
-            );
-            $this->fieldsCollection->add($fieldId);
-
             $field = new FieldDescription();
             $field->setName('code');
             $field->setOptions(
@@ -156,8 +140,8 @@ class ChannelDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
-        $editAction = array(
-            'name'         => 'edit',
+        $clickAction = array(
+            'name'         => 'rowClick',
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
@@ -166,6 +150,18 @@ class ChannelDatagridManager extends DatagridManager
                 'link'          => 'edit_link',
                 'backUrl'       => false,
                 'runOnRowClick' => true
+            )
+        );
+
+        $editAction = array(
+            'name'         => 'edit',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label'         => $this->translator->trans('Edit'),
+                'icon'          => 'edit',
+                'link'          => 'edit_link',
+                'backUrl'       => false
             )
         );
 
@@ -181,6 +177,6 @@ class ChannelDatagridManager extends DatagridManager
             )
         );
 
-        return array($editAction, $disableAction);
+        return array($clickAction, $editAction, $disableAction);
     }
 }

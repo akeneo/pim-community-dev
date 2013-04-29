@@ -140,8 +140,8 @@ class CurrencyDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
-        $editAction = array(
-            'name'         => 'edit',
+        $clickAction = array(
+            'name'         => 'rowClick',
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
@@ -150,6 +150,18 @@ class CurrencyDatagridManager extends DatagridManager
                 'link'          => 'edit_link',
                 'backUrl'       => false,
                 'runOnRowClick' => true
+            )
+        );
+
+        $editAction = array(
+            'name'         => 'edit',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label'         => $this->translator->trans('Edit'),
+                'icon'          => 'edit',
+                'link'          => 'edit_link',
+                'backUrl'       => false
             )
         );
 
@@ -165,6 +177,6 @@ class CurrencyDatagridManager extends DatagridManager
             )
         );
 
-        return array($editAction, $disableAction);
+        return array($clickAction, $editAction, $disableAction);
     }
 }
