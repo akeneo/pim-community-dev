@@ -156,6 +156,19 @@ class LocaleDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
+        $clickAction = array(
+            'name'         => 'rowClick',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label'         => $this->translator->trans('Edit'),
+                'icon'          => 'edit',
+                'link'          => 'edit_link',
+                'runOnRowClick' => true,
+                'backUrl'       => true
+            )
+        );
+
         $editAction = array(
             'name'         => 'edit',
             'type'         => ActionInterface::TYPE_REDIRECT,
@@ -164,7 +177,7 @@ class LocaleDatagridManager extends DatagridManager
                 'label'         => $this->translator->trans('Edit'),
                 'icon'          => 'edit',
                 'link'          => 'edit_link',
-                'backUrl'       => false
+                'backUrl'       => true
             )
         );
 
@@ -175,10 +188,11 @@ class LocaleDatagridManager extends DatagridManager
             'options'      => array(
                 'label'   => $this->translator->trans('Disable'),
                 'icon'    => 'trash',
-                'link'    => 'disable_link'
+                'link'    => 'disable_link',
+                'backUrl'       => true
             )
         );
 
-        return array($editAction, $disableAction);
+        return array($clickAction, $editAction, $disableAction);
     }
 }
