@@ -176,9 +176,9 @@ class AttributeService
         foreach ($types as $type) {
             $choice[$type]= $type;
         }
-        asort($types);
+        asort($choice);
 
-        return $types;
+        return $choice;
     }
 
     /**
