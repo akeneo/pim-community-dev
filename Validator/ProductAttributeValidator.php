@@ -122,7 +122,7 @@ class ProductAttributeValidator
     protected static function isAttributeTypeMatrixValid(ProductAttribute $productAttribute, ExecutionContext $context)
     {
         $attributeType = array(
-            'oro_flexibleentity_textarea',
+            'pim_product_textarea',
             'oro_flexibleentity_money',
             'pim_product_multiselect',
             'pim_product_simpleselect',
@@ -215,7 +215,7 @@ class ProductAttributeValidator
                 self::isNumberMinValid($productAttribute, $context);
                 self::isNumberMaxValid($productAttribute, $context);
                 break;
-            case 'oro_flexibleentity_textarea':
+            case 'pim_product_textarea':
                 self::isMaxCharactersValid($productAttribute, $context);
                 break;
             case 'oro_flexibleentity_file':
@@ -303,7 +303,7 @@ class ProductAttributeValidator
                     }
 
                     return;
-                case 'oro_flexibleentity_textarea':
+                case 'pim_product_textarea':
                     if ($productAttribute->getMaxCharacters() !== null) {
                         if (strlen($value) > $productAttribute->getMaxCharacters()) {
                             break;

@@ -38,7 +38,7 @@ services:
             - { name: oro_flexibleentity_manager, entity: %product_entity_class%}
         calls:
             - [ addAttributeType, ['oro_flexibleentity_text'] ]
-            - [ addAttributeType, ['oro_flexibleentity_textarea'] ]
+            - [ addAttributeType, ['pim_product_textarea'] ]
             - [ addAttributeType, ['oro_flexibleentity_number'] ]
             - [ addAttributeType, ['oro_flexibleentity_money'] ]
             - [ addAttributeType, ['pim_product_multiselect'] ]

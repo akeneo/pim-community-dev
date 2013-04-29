@@ -25,12 +25,10 @@ class ProductValueType extends FlexibleValueType
      */
     public function addSubscriber(FormBuilderInterface $builder)
     {
-        $subscriber = new AddValueFieldSubscriber($builder->getFormFactory(), $this->flexibleManager);
-        $builder->addEventSubscriber($subscriber);
+        parent::addSubscriber($builder);
 
         // TODO : datamodel refactoring ? :
-        // this custom type and subscriber should be avoided if we have relation between group and attribute
-
+        // -> this custom type and subscriber should be avoided if we have relation between group and attribute
         // add a subscriber to deal with display values in relevant attribute group
         $subscriber = new AddAttributeGroupSubscriber(
             $builder->getFormFactory(),

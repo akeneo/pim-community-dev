@@ -186,7 +186,7 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     public static function providerMatrixConstraintInvalid()
     {
         return array(
-            array('oro_flexibleentity_textarea', 'code1', true, false, false, false, false),
+            array('pim_product_textarea', 'code1', true, false, false, false, false),
             array('oro_flexibleentity_money', 'code2', true, false, false, false, false),
             array('pim_product_multiselect', 'code4', true, false, false, false, false),
             array('pim_product_simpleselect', 'code6', true, false, false, false, false),
@@ -350,7 +350,7 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
                 array('valueCreationAllowed' => true)),
             array('pim_product_simpleselect', 'code6',
                 array('defaultValue' => 'test value')),
-            array('oro_flexibleentity_textarea', 'code7',
+            array('pim_product_textarea', 'code7',
                 array('defaultValue' => 'test value', 'maxCharacters' => 200, 'wysiwygEnabled' => true)),
             array('oro_flexibleentity_metric', 'code8',
                 array('defaultValue' => 20, 'numberMin' => -273, 'numberMax' => 1000, 'decimalsAllowed' => false,
@@ -433,7 +433,7 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
             array('oro_flexibleentity_number', 'code12',
                 array('defaultValue' => -100, 'numberMin' => -10.111111, 'numberMax' => null,
                     'decimalsAllowed' => false, 'negativeAllowed' => true), 2),
-            array('oro_flexibleentity_textarea', 'code13',
+            array('pim_product_textarea', 'code13',
                 array('defaultValue' => 'test value', 'maxCharacters' => 5,
                     'wysiwygEnabled' => true), 1),
             array('oro_flexibleentity_metric', 'code14',
