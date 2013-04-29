@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Validator;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
 

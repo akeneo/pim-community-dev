@@ -32,7 +32,13 @@ class AddValueFieldSubscriber extends OroAddValueFieldSubscriber
 
         $attribute     = $value->getAttribute();
         $attributeType = $this->flexibleManager->getAttributeTypeFactory()->create($attribute->getAttributeType());
-
+        $valueForm = $attributeType->buildValueFormType($this->factory, $value);
+        $form->add($valueForm);
+        
+        /* TODO : how to add this kind of rules (wysiwyg) without property management ?
+        $attribute     = $value->getAttribute();
+        $attributeType = $this->flexibleManager->getAttributeTypeFactory()->create($attribute->getAttributeType());
+ 
         $formName    = $attribute->getBackendType();
         $formType    = $attributeType->getFormType();
         $formOptions = $attributeType->prepareFormOptions($attribute);
@@ -44,5 +50,6 @@ class AddValueFieldSubscriber extends OroAddValueFieldSubscriber
         }
 
         $form->add($this->factory->createNamed($formName, $formType, $data, $formOptions));
+*/
     }
 }

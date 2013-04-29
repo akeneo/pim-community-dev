@@ -8,18 +8,7 @@ use Pim\Bundle\ProductBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\ProductBundle\Form\Type\AttributeOptionType;
 use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\ImageType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\FileType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\BooleanType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionSimpleSelectType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\OptionMultiSelectType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\DateType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MetricType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MoneyType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextAreaType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\NumberType;
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -73,7 +62,7 @@ class AttributeService
     {
         if (gettype($data) === 'array') {
         
-            // TODO : we need to use the attribute type factory
+            // TODO : we need to use the attribute type factory here
             $type = !empty($data['attributeType']) ? new $data['attributeType']() : null;
 
             return $this->manager->createAttribute($type);

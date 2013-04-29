@@ -1,9 +1,9 @@
 <?php
-namespace Pim\Bundle\ProductBundle\Model\AttributeType;
+namespace Pim\Bundle\ProductBundle\AttributeType;
 
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 /**
  * Multi options (select) attribute type

@@ -1,7 +1,6 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Form\Subscriber;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Service\AttributeService;
 use Symfony\Component\Form\Form;

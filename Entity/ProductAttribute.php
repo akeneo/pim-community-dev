@@ -2,7 +2,6 @@
 namespace Pim\Bundle\ProductBundle\Entity;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
 use Pim\Bundle\ConfigBundle\Entity\Language;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
