@@ -137,5 +137,5 @@ services:
     # Attribute manager
     pim_product.attribute_service:
         class: Pim\Bundle\ProductBundle\Service\AttributeService
-        arguments: [%pim_product.attributes_config%, @product_manager, @pim_config.manager.locale]
+        arguments: [%pim_product.attributes_config%, @product_manager, @pim_config.manager.locale, @oro_flexibleentity.attributetype.factory]
 

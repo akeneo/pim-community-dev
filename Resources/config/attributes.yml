@@ -1,45 +1,45 @@
 attributes_config:
-    Boolean:
+    oro_flexibleentity_boolean:
         name: 'Yes/No'
         properties: [ 'defaultValue' ]
         parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
-    Date:
+    oro_flexibleentity_date:
         name: 'Date'
         properties: [ 'defaultValue', 'dateType', 'dateMin', 'dateMax', 'searchable' ]
         parameters: [ 'translatable', 'scopable', 'unique', 'availableLanguages' ]
-    File:
+    oro_flexibleentity_file:
         name: 'File'
         properties: [ 'allowedFileSources', 'maxFileSize', 'allowedFileExtensions' ]
         parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
-    Image:
+    oro_flexibleentity_image:
         name: 'Image'
         properties: [ 'allowedFileSources', 'maxFileSize', 'allowedFileExtensions' ]
         parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
-    Metric:
+    oro_flexibleentity_metric:
         name: 'Metric'
         properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'metricType', 'defaultMetricUnit', 'searchable' ]
         parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
-    Money:
+    oro_flexibleentity_money:
         name: 'Money'
         properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'searchable' ]
         parameters: [ 'translatable', 'availableLanguages' ]
-    Number:
+    oro_flexibleentity_number:
         name: 'Number'
         properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'searchable' ]
         parameters: [ 'translatable', 'scopable', 'unique', 'availableLanguages' ]
-    OptionMultiSelect:
+    pim_product_multiselect:
         name: 'Multiselect'
         properties: [ 'defaultValue', 'valueCreationAllowed', 'searchable', 'options' ]
         parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
-    OptionSimpleSelect:
+    pim_product_simpleselect:
         name: 'Simple select'
         properties: [ 'defaultValue', 'valueCreationAllowed', 'searchable', 'options' ]
         parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
-    TextArea:
+    oro_flexibleentity_textarea:
         name: 'Textarea'
         properties: [ 'defaultValue', 'maxCharacters', 'wysiwygEnabled', 'searchable' ]
         parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
-    Text:
+    oro_flexibleentity_text:
         name: 'Text'
         properties: [ 'defaultValue', 'maxCharacters', 'validationRule', 'validationRegexp', 'searchable' ]
         parameters: [ 'translatable', 'scopable', 'unique', 'availableLanguages' ]

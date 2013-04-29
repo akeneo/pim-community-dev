@@ -46,6 +46,11 @@ class AttributeServiceTest extends WebTestCase
     protected $localeManager;
 
     /**
+     * @var AttributeTypeFactory
+     */
+    protected $factory;
+
+    /**
      * {@inheritDoc}
      */
     public function setUp()
@@ -60,8 +65,10 @@ class AttributeServiceTest extends WebTestCase
         $this->config = static::$kernel->getContainer()->getParameter('pim_product.attributes_config');
         $this->manager = static::$kernel->getContainer()->get('product_manager');
         $this->localeManager = static::$kernel->getContainer()->get('pim_config.manager.locale');
+        $this->factory = static::$kernel->getContainer()
+            ->get('oro_flexibleentity.attributetype.factory');
 
-        $this->service = new AttributeService($this->config, $this->manager, $this->localeManager);
+        $this->service = new AttributeService($this->config, $this->manager, $this->localeManager, $this->factory);
     }
 
     /**
@@ -112,7 +119,7 @@ class AttributeServiceTest extends WebTestCase
      */
     public function testCreateAttributeFromFormData()
     {
-        $data = array('attributeType' => AbstractAttributeType::TYPE_METRIC_CLASS);
+        $data = array('attributeType' => 'oro_flexibleentity_metric');
         $attribute = $this->service->createAttributeFromFormData($data);
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductAttribute', $attribute);
 
@@ -131,7 +138,7 @@ class AttributeServiceTest extends WebTestCase
      */
     public function testPrepareFormData()
     {
-        $data = array('attributeType' => AbstractAttributeType::TYPE_OPT_MULTI_SELECT_CLASS);
+        $data = array('attributeType' => 'pim_product_multiselect');
         $data = $this->service->prepareFormData($data);
         $this->assertNotEmpty($data);
         $this->assertArrayHasKey('options', $data);
