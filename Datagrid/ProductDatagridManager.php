@@ -155,8 +155,9 @@ class ProductDatagridManager extends FlexibleDatagridManager
                         'filter_type'   => $filterType,
                         'required'      => false,
                         'sortable'      => true,
-                        'filterable'    => true,
-                        'flexible_name' => $this->flexibleManager->getFlexibleName()
+                        'filterable'    => $attribute->getUseableAsGridFilter(),
+                        'flexible_name' => $this->flexibleManager->getFlexibleName(),
+                        'show_filter'   => $attribute->getUseableAsGridFilter()
                     )
                 );
 
@@ -258,7 +259,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             )
         );
 
-        return array($editAction, $deleteAction);
+        return array($clickAction, $editAction, $deleteAction);
     }
 
     /**

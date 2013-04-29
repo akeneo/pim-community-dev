@@ -213,6 +213,6 @@ class AttributeDatagridManager extends DatagridManager
             )
         );
 
-        return array($editAction, $deleteAction);
+        return array($clickAction, $editAction, $deleteAction);
     }
 }
