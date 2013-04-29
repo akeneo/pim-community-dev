@@ -663,7 +663,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jonathan Wage",
+                    "name": "Jonathan H. Wage",
                     "email": "jonwage@gmail.com",
                     "homepage": "http://www.jwage.com/"
                 }
@@ -1293,12 +1293,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/l3pp4rd/DoctrineExtensions.git",
-                "reference": "78264361e12e643b58e3fe0396e9500fb3b6d222"
+                "reference": "91d608d5f4a437b47df4e482a964ef534da1e8a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/78264361e12e643b58e3fe0396e9500fb3b6d222",
-                "reference": "78264361e12e643b58e3fe0396e9500fb3b6d222",
+                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/91d608d5f4a437b47df4e482a964ef534da1e8a8",
+                "reference": "91d608d5f4a437b47df4e482a964ef534da1e8a8",
                 "shasum": ""
             },
             "require": {
@@ -1364,7 +1364,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2013-04-26 04:27:28"
+            "time": "2013-04-26 14:37:18"
         },
         {
             "name": "imagine/imagine",
@@ -2526,12 +2526,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/bap.git",
-                "reference": "df6801a6a07f080f545dc95c59cb09e5817fef80"
+                "reference": "7bfd80414e98353bc05ff2b09f2718c76c3c3f8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/bap/zipball/df6801a6a07f080f545dc95c59cb09e5817fef80",
-                "reference": "df6801a6a07f080f545dc95c59cb09e5817fef80",
+                "url": "https://api.github.com/repos/laboro/bap/zipball/7bfd80414e98353bc05ff2b09f2718c76c3c3f8c",
+                "reference": "7bfd80414e98353bc05ff2b09f2718c76c3c3f8c",
                 "shasum": ""
             },
             "require": {
@@ -2541,6 +2541,7 @@
                 "kriswallsmith/assetic": "1.1.*@dev",
                 "oro/config-bundle": "dev-master",
                 "oro/data-flow-bundle": "dev-master",
+                "oro/filter-bundle": "dev-master",
                 "oro/flexible-entity-bundle": "dev-master",
                 "oro/grid-bundle": "dev-master",
                 "oro/measure-bundle": "dev-master",
@@ -2581,7 +2582,7 @@
                 "source": "https://github.com/laboro/bap/tree/master",
                 "issues": "https://github.com/laboro/bap/issues"
             },
-            "time": "2013-04-12 14:28:07"
+            "time": "2013-04-26 14:23:49"
         },
         {
             "name": "oro/config-bundle",
@@ -2735,12 +2736,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/FlexibleEntityBundle.git",
-                "reference": "e41c4c31c9e805c3fbf1149a84a137868d4d08d3"
+                "reference": "0cefba901b78a9789351cd1c8118ea376ed2ea63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/e41c4c31c9e805c3fbf1149a84a137868d4d08d3",
-                "reference": "e41c4c31c9e805c3fbf1149a84a137868d4d08d3",
+                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/0cefba901b78a9789351cd1c8118ea376ed2ea63",
+                "reference": "0cefba901b78a9789351cd1c8118ea376ed2ea63",
                 "shasum": ""
             },
             "require": {
@@ -2775,7 +2776,7 @@
                 "source": "https://github.com/laboro/FlexibleEntityBundle/tree/master",
                 "issues": "https://github.com/laboro/FlexibleEntityBundle/issues"
             },
-            "time": "2013-04-23 16:30:54"
+            "time": "2013-04-26 15:01:33"
         },
         {
             "name": "oro/grid-bundle",
@@ -3144,12 +3145,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/UserBundle.git",
-                "reference": "45b18b4db77b67085b23db09cd162b21c75a8ee9"
+                "reference": "93e395be3180b605943cb54c71370509412fa07e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/45b18b4db77b67085b23db09cd162b21c75a8ee9",
-                "reference": "45b18b4db77b67085b23db09cd162b21c75a8ee9",
+                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/93e395be3180b605943cb54c71370509412fa07e",
+                "reference": "93e395be3180b605943cb54c71370509412fa07e",
                 "shasum": ""
             },
             "require": {
@@ -3193,7 +3194,7 @@
                 "source": "https://github.com/laboro/UserBundle/tree/master",
                 "issues": "https://github.com/laboro/UserBundle/issues"
             },
-            "time": "2013-04-26 08:30:28"
+            "time": "2013-04-26 13:00:26"
         },
         {
             "name": "oro/windows-bundle",
