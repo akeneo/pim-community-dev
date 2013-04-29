@@ -229,7 +229,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'label'         => $this->translator->trans('Edit'),
                 'icon'          => 'edit',
                 'link'          => 'edit_link',
-                'backUrl'       => false,
+                'backUrl'       => true,
                 'runOnRowClick' => true
             )
         );
@@ -251,9 +251,10 @@ class ProductDatagridManager extends FlexibleDatagridManager
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'=> $this->translator->trans('Delete'),
-                'icon' => 'trash',
-                'link' => 'delete_link',
+                'label'   => $this->translator->trans('Delete'),
+                'icon'    => 'trash',
+                'link'    => 'delete_link',
+                'backUrl' => true
             )
         );
 

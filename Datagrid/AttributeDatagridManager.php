@@ -184,8 +184,8 @@ class AttributeDatagridManager extends DatagridManager
                 'label'         => $this->translator->trans('Edit'),
                 'icon'          => 'edit',
                 'link'          => 'edit_link',
-                'backUrl'       => false,
-                'runOnRowClick' => true
+                'runOnRowClick' => true,
+                'backUrl'       => true
             )
         );
 
@@ -206,9 +206,10 @@ class AttributeDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'=> $this->translator->trans('Delete'),
-                'icon' => 'trash',
-                'link' => 'delete_link',
+                'label'   => $this->translator->trans('Delete'),
+                'icon'    => 'trash',
+                'link'    => 'delete_link',
+                'backUrl' => true
             )
         );
 
