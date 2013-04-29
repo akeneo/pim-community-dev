@@ -195,12 +195,10 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $product->addValue($value);
 
             // date
-            /*
             $value = $this->getProductManager()->createFlexibleValue();
             $value->setAttribute($attDate);
             $value->setData(new \Datetime());
             $product->addValue($value);
-            */
             $this->persist($product);
 
             if (($ind % $batchSize) == 0) {

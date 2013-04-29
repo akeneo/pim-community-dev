@@ -170,7 +170,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute color and translated options
         $attributeCode = 'color';
-        $attributeType = $attributeTypeFactory->create('oro_flexibleentity_multiselect');
+        $attributeType = $attributeTypeFactory->create('pim_product_multiselect');
         $attribute = $this->getProductManager()->createAttribute($attributeType);
         $attribute->setCode($attributeCode);
         $attribute->setName('Color');
