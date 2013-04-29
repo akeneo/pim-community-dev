@@ -197,8 +197,7 @@ class AttributeDatagridManager extends DatagridManager
                 'label'   => $this->translator->trans('Edit'),
                 'icon'    => 'edit',
                 'link'    => 'edit_link',
-                'backUrl' => true,
-                'runOnRowClick' => true
+                'backUrl' => true
             )
         );
 
