@@ -61,7 +61,7 @@ class AttributeService
     public function createAttributeFromFormData($data)
     {
         if (gettype($data) === 'array') {
-        
+
             // TODO : we need to use the attribute type factory here
             $type = !empty($data['attributeType']) ? new $data['attributeType']() : null;
 
@@ -164,20 +164,11 @@ class AttributeService
      */
     public function getAttributeTypes()
     {
-        // TODO : get from factory
-        $types = array(
-            'oro_flexibleentity_text' => 'oro_flexibleentity_text',
-            'oro_flexibleentity_textarea' => 'oro_flexibleentity_textarea',
-            'oro_flexibleentity_number' => 'oro_flexibleentity_number',
-            'oro_flexibleentity_money' => 'oro_flexibleentity_money',
-            'pim_product_multiselect' => 'pim_product_multiselect',
-            'pim_product_simpleselect' => 'pim_product_simpleselect',
-            'oro_flexibleentity_file' => 'oro_flexibleentity_file',
-            'oro_flexibleentity_image' => 'oro_flexibleentity_image',
-            'oro_flexibleentity_metric' => 'oro_flexibleentity_metric',
-            'oro_flexibleentity_boolean' => 'oro_flexibleentity_boolean',
-            'oro_flexibleentity_date' => 'oro_flexibleentity_date'
-        );
+        $types = $this->manager->getAttributeTypes();
+        $choice = array();
+        foreach ($types as $type) {
+            $choice[$type]= $type;
+        }
         asort($types);
 
         return $types;

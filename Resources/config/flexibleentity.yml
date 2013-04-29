@@ -6,3 +6,4 @@ entities_config:
         attribute_class:              Pim\Bundle\ProductBundle\Entity\ProductAttribute
         attribute_option_class:       Pim\Bundle\ProductBundle\Entity\AttributeOption
         attribute_option_value_class: Pim\Bundle\ProductBundle\Entity\AttributeOptionValue
+
