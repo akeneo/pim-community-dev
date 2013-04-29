@@ -155,8 +155,9 @@ class ProductDatagridManager extends FlexibleDatagridManager
                         'filter_type'   => $filterType,
                         'required'      => false,
                         'sortable'      => true,
-                        'filterable'    => true,
-                        'flexible_name' => $this->flexibleManager->getFlexibleName()
+                        'filterable'    => $attribute->getUseableAsGridFilter(),
+                        'flexible_name' => $this->flexibleManager->getFlexibleName(),
+                        'show_filter'   => $attribute->getUseableAsGridFilter()
                     )
                 );
 
@@ -221,6 +222,19 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function getRowActions()
     {
+        $clickAction = array(
+            'name'         => 'rowClick',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label'         => $this->translator->trans('Edit'),
+                'icon'          => 'edit',
+                'link'          => 'edit_link',
+                'backUrl'       => true,
+                'runOnRowClick' => true
+            )
+        );
+
         $editAction = array(
             'name'         => 'edit',
             'type'         => ActionInterface::TYPE_REDIRECT,
@@ -229,8 +243,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'label'   => $this->translator->trans('Edit'),
                 'icon'    => 'edit',
                 'link'    => 'edit_link',
-                'backUrl' => true,
-                'runOnRowClick' => true
+                'backUrl' => true
             )
         );
 
@@ -239,13 +252,14 @@ class ProductDatagridManager extends FlexibleDatagridManager
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'=> $this->translator->trans('Delete'),
-                'icon' => 'trash',
-                'link' => 'delete_link',
+                'label'   => $this->translator->trans('Delete'),
+                'icon'    => 'trash',
+                'link'    => 'delete_link',
+                'backUrl' => true
             )
         );
 
-        return array($editAction, $deleteAction);
+        return array($clickAction, $editAction, $deleteAction);
     }
 
     /**

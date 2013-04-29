@@ -176,6 +176,19 @@ class AttributeDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
+        $clickAction = array(
+            'name'         => 'rowClick',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label'         => $this->translator->trans('Edit'),
+                'icon'          => 'edit',
+                'link'          => 'edit_link',
+                'runOnRowClick' => true,
+                'backUrl'       => true
+            )
+        );
+
         $editAction = array(
             'name'         => 'edit',
             'type'         => ActionInterface::TYPE_REDIRECT,
@@ -184,8 +197,7 @@ class AttributeDatagridManager extends DatagridManager
                 'label'   => $this->translator->trans('Edit'),
                 'icon'    => 'edit',
                 'link'    => 'edit_link',
-                'backUrl' => true,
-                'runOnRowClick' => true
+                'backUrl' => true
             )
         );
 
@@ -194,12 +206,13 @@ class AttributeDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'=> $this->translator->trans('Delete'),
-                'icon' => 'trash',
-                'link' => 'delete_link',
+                'label'   => $this->translator->trans('Delete'),
+                'icon'    => 'trash',
+                'link'    => 'delete_link',
+                'backUrl' => true
             )
         );
 
-        return array($editAction, $deleteAction);
+        return array($clickAction, $editAction, $deleteAction);
     }
 }
