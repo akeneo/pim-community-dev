@@ -164,8 +164,8 @@ class LocaleDatagridManager extends DatagridManager
                 'label'         => $this->translator->trans('Edit'),
                 'icon'          => 'edit',
                 'link'          => 'edit_link',
-                'backUrl'       => false,
-                'runOnRowClick' => true
+                'runOnRowClick' => true,
+                'backUrl'       => true
             )
         );
 
@@ -177,7 +177,7 @@ class LocaleDatagridManager extends DatagridManager
                 'label'         => $this->translator->trans('Edit'),
                 'icon'          => 'edit',
                 'link'          => 'edit_link',
-                'backUrl'       => false
+                'backUrl'       => true
             )
         );
 
@@ -188,7 +188,8 @@ class LocaleDatagridManager extends DatagridManager
             'options'      => array(
                 'label'   => $this->translator->trans('Disable'),
                 'icon'    => 'trash',
-                'link'    => 'disable_link'
+                'link'    => 'disable_link',
+                'backUrl'       => true
             )
         );
 

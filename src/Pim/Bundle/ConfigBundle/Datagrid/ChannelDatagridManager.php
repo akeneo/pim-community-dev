@@ -148,7 +148,7 @@ class ChannelDatagridManager extends DatagridManager
                 'label'         => $this->translator->trans('Edit'),
                 'icon'          => 'edit',
                 'link'          => 'edit_link',
-                'backUrl'       => false,
+                'backUrl'       => true,
                 'runOnRowClick' => true
             )
         );
@@ -161,7 +161,7 @@ class ChannelDatagridManager extends DatagridManager
                 'label'         => $this->translator->trans('Edit'),
                 'icon'          => 'edit',
                 'link'          => 'edit_link',
-                'backUrl'       => false
+                'backUrl'       => true
             )
         );
 
@@ -173,7 +173,7 @@ class ChannelDatagridManager extends DatagridManager
                 'label'   => $this->translator->trans('Delete'),
                 'icon'    => 'trash',
                 'link'    => 'delete_link',
-                'backUrl' => false,
+                'backUrl' => true
             )
         );
 

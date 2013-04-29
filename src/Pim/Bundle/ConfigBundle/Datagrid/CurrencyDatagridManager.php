@@ -148,8 +148,8 @@ class CurrencyDatagridManager extends DatagridManager
                 'label'         => $this->translator->trans('Edit'),
                 'icon'          => 'edit',
                 'link'          => 'edit_link',
-                'backUrl'       => false,
-                'runOnRowClick' => true
+                'runOnRowClick' => true,
+                'backUrl'       => true
             )
         );
 
@@ -161,7 +161,7 @@ class CurrencyDatagridManager extends DatagridManager
                 'label'         => $this->translator->trans('Edit'),
                 'icon'          => 'edit',
                 'link'          => 'edit_link',
-                'backUrl'       => false
+                'backUrl'       => true
             )
         );
 
@@ -173,7 +173,7 @@ class CurrencyDatagridManager extends DatagridManager
                 'label'   => $this->translator->trans('Disable'),
                 'icon'    => 'trash',
                 'link'    => 'disable_link',
-                'backUrl' => false
+                'backUrl'       => true
             )
         );
 
