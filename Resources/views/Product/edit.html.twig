@@ -3,138 +3,114 @@
 {% set title = form.vars.value.id ? 'Edit product'|trans : 'Add product'|trans %}
 
 {% block content %}
+{% form_theme form 'PimProductBundle:Form:simple_layout.html.twig' %}
 
-    {% form_theme form 'PimProductBundle:Form:simple_layout.html.twig' %}
-
-    <form action="{{ form.vars.value.id ? path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) : path('pim_product_product_create', { dataLocale: dataLocale }) }}"
-        method="POST" class="form-horizontal" {{ form_enctype(form) }}>
-
-        <div class="row-fluid">
-            <h3 class="pull-left">{{ title|trans }}</h3>
-            <div class="pull-right">
-                <span id="updated" class="label label-warning">{{ 'The product has been updated.'|trans }}</span>
-                <div class="btn-group">
-                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                        Locale
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        {% for language in form.vars.value.getActiveLanguages() %}
-                            <li><a href="?dataLocale={{ language.code }}">{{ language.fromLocale(app.request.locale) }}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <a class="btn" href="{{ path('pim_product_product_index') }}">
-                    {{ "Back to list" | trans }}
+<form method="POST" class="form-horizontal" action="{{ form.vars.value.id ?
+    path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) :
+    path('pim_product_product_create', { dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
+    <div class="row-fluid">
+        <h3 class="pull-left">{{ title|trans }}</h3>
+        <div class="pull-right">
+            <span id="updated" class="label label-warning">{{ 'The product has been updated.'|trans }}</span>
+            <div class="btn-group">
+                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                    Locale
+                    <span class="caret"></span>
                 </a>
-                {% if form.vars.value.id %}
-                    <a class="btn" href="#" id="btn-delete-product">
-                        {{ "Delete" | trans }}
-                    </a>
-                {% endif %}
-                <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
+                <ul class="dropdown-menu">
+                    {% for language in form.vars.value.getActiveLanguages() %}
+                        <li><a href="?dataLocale={{ language.code }}">{{ language.fromLocale(app.request.locale) }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <a class="btn" href="{{ path('pim_product_product_index') }}">
+                {{ "Back to list" | trans }}
+            </a>
+            <a class="btn" href="#" id="btn-delete-product">
+                {{ "Delete" | trans }}
+            </a>
+            <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="control-group">
+            {{ form_label(form.productFamily, 'Family', { 'label_attr': {'class': 'control-label span1'} }) }}
+            <div class="controls">
+                {{ form_widget(form.productFamily, {'attr' : { 'class': 'span1' }}) }}
+            </div>
+
+        </div>
+    </div>
+
+    <div id="form-navbar" class="navbar navbar-static scrollspy-nav">
+        <div class="navbar-inner">
+            <div class="row-fluid">
+                <ul class="nav">
+                    <li class="active"><a href="#attributes" data-toggle="tab">Attributes</a></li>
+                    <li class=""><a href="#localisations" data-toggle="tab">Localisations</a></li>
+                </ul>
             </div>
         </div>
+    </div>
 
-        <div class="row-fluid">
-            <div class="control-group">
-                {{ form_label(form.productFamily, 'Family', { 'label_attr': {'class': 'control-label span1'} }) }}
-                <div class="controls">
-                    {{ form_widget(form.productFamily, {'attr' : { 'class': 'span1' }}) }}
+    <div class="row-fluid tab-content">
+        {% if form.vars.errors|length %}
+            <div class="alert alert-error">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+        <div class="tab-pane active" id="attributes">
+            <div id="form-parameters">
+                <h3 class="scrollspy-title">Attributes</h3>
+            </div>
+            <div class="span2">
+                <ul class="nav nav-list">
+                    {% for group in groups %}
+                    <li class="tab{% if loop.index == 1 %} active{% endif %}">
+                        <a href="#tabs-{{group.id}}" data-toggle="tab">{{ group.name|trans }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="span9 tab-content">
+                {{ form_row(form.id) }}
+                <div class="control-group">
+                    {{ form_label(form.sku, null, { 'label_attr': {'class': 'control-label'} }) }}
+                    <div class="controls">
+                        {{ form_widget(form.sku, {'attr' : { 'class': 'span4' } }) }}
+                    </div>
                 </div>
-
+                {% for group in groups %}
+                <div id="tabs-{{ group.id }}" class="tab-pane{% if loop.index == 1 %} active{% endif %}">
+                    <h3>{{ group.name|trans }}</h3>
+                    {% for formValue in form.values %}
+                    {% if group.id == formValue.group.vars.value %}
+                    <div class="control-group">
+                        {{ form_label(formValue, formValue.vars.value.attribute.code, { 'label_attr': {'class': 'control-label'} }) }}
+                        <div class="controls">{{ form_widget(formValue) }}</div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endfor %}
             </div>
         </div>
-
-        <div id="form-navbar" class="navbar navbar-static scrollspy-nav">
-            <div class="navbar-inner">
-                <div class="row-fluid">
-                    <ul class="nav">
-                        <li class="active"><a href="#form-attributes">Attributes</a></li>
-                        <li class=""><a href="#form-localisations">Localisations</a></li>
-                    </ul>
-                </div>
+        <div class="tab-pane" id="localisations">
+            <div id="form-parameters">
+                <h3 class="scrollspy-title">Localisations</h3>
+                {{ form_row(form.languages) }}
             </div>
         </div>
-
-        <div class="row-fluid">
-            {% if form.vars.errors|length %}
-                <div class="alert alert-error">
-                    {{ form_errors(form) }}
-                </div>
-            {% endif %}
-
-            <div data-spy="scroll" data-target="#form-attributes" data-offset="50" class="scrollspy row-fluid">
-                <div id="form-parameters">
-                    <h3 class="scrollspy-title">Attributes</h3>
-                </div>
-                <div class="row">
-                    <div class="span2">
-                        <div class="resizable-sidebar" style="float: left; width: 180px; height: 355px;">
-                            <ul class="nav nav-list">
-                                {% for group in groups %}
-                                    <li class="tab{% if loop.index == 1 %} active{% endif %}"><a href="#tabs-{{group.id}}">{{ group.name|trans }}</a></li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="span10 tab-pan">
-
-                        {{ form_row(form.id) }}
-
-                        <div class="control-group">
-                            {{ form_label(form.sku, null, { 'label_attr': {'class': 'control-label'} }) }}
-                            <div class="controls">
-                                {{ form_widget(form.sku, {'attr' : { 'class': 'span4' } }) }}
-                            </div>
-                        </div>
-
-                        {% for group in groups %}
-                            <div id="tabs-{{ group.id }}">
-                                <h3>{{ group.name|trans }}</h3>
-                                {% for formValue in form.values %}
-                                    {% if group.id == formValue.group.vars.value %}
-                                    <div class="control-group">
-                                        {{ form_label(formValue, formValue.vars.value.attribute.code, { 'label_attr': {'class': 'control-label'} }) }}
-                                        <div class="controls">
-                                            {{ form_widget(formValue) }}
-                                        </div>
-                                    </div>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <div data-spy="scroll" data-target="#form-localisations" data-offset="50" class="scrollspy row-fluid">
-                    <div id="form-parameters">
-                        <h3 class="scrollspy-title">Localisations</h3>
-                        {{ form_row(form.languages) }}
-                    </div>
-                </div>
-
-            </div>
         {{ form_row(form.id) }}
         {{ form_row(form._token) }}
-    </form>
-
-    <ul class="channels">
-        <li><a href="#" data-channel="ecommerce">ecommerce</a></li>
-        <li><a href="#" data-channel="mobile">mobile</a></li>
-    </ul>
-    
-    <div id="dialog-confirm" title="{{ 'Delete Confirmation' | trans }}">
-        <p>
-            <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-            {{ 'Are you sure you want to delete this item ?' | trans }}
-        </p>
     </div>
+</form>
+
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     
-    <script type="text/javascript" src="{{ asset('bundles/pimui/js/select2.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.bootstrap-modal.js') }}"></script>
     
     <script type="text/javascript">
@@ -158,6 +134,14 @@
             $(window).unbind('beforeunload');
         });
 
+        $('select').select2({ allowClear: true });
+        $('input.multiselect').select2({ tags: $(this).val() });
+
+        $('.tab-pan .control-group .select2-container').each(function() {
+            $(this).addClass('span4');
+            $(this).attr('style', 'margin-left:0px');
+        });
+
         $('#btn-delete-product').click(function(event) {
             doAction = function() {
                 window.location.href = "{{ path('pim_product_product_remove', { id: form.vars.value.id }) }}";
@@ -174,33 +158,8 @@
                 doAction();
             }
         });
-
-        $('select').select2({ allowClear: true });
-        $('input.multiselect').select2({ tags: $(this).val() });
-
-        $('#tabs').tabs().delegate("a", "click", function() {
-            $(this).parent().parent().find('li').each(function() {
-                $(this).removeClass('active');
-            });
-            $(this).parent().addClass('active');
-        });
-
-        $('#tabs li.tab').each(function() {
-            var tabId = $(this).attr('aria-controls');
-            var nbValues = $('#'+tabId+' .control-group').length;
-            if (nbValues == 0) {
-                $(this).hide();
-            }
-        });
-
-        $('.tab-pan .control-group .select2-container').each(function() {
-            $(this).addClass('span4');
-            $(this).attr('style', 'margin-left:0px');
-        });
     });
 
     </script>
-    <link rel="stylesheet" href="{{ asset('bundles/pimui/css/select2.css') }}">
-    <script type="text/javascript" src="{{ asset('bundles/pimui/js/select2.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/pimui/js/jquery-ui-1.10.0.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('bundles/pimui/css/select2.css') }}" />
 {% endblock %}
