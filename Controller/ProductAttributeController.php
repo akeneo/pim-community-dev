@@ -89,8 +89,7 @@ class ProductAttributeController extends Controller
      */
     public function createAction()
     {
-        $factory = $this->container->get('oro_flexibleentity.attributetype.factory');
-        $attribute = $this->getProductManager()->createAttribute($factory->get('oro_flexibleentity_date'));
+        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_date');
 
         return $this->editAction($attribute);
     }

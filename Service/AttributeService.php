@@ -73,9 +73,7 @@ class AttributeService
         }
 
         if (gettype($data) === 'array' && isset($data['attributeType'])) {
-            return $this->manager->createAttribute(
-                $this->manager->getAttributeTypeFactory()->get($data['attributeType'])
-            );
+            return $this->manager->createAttribute($data['attributeType']);
         } else {
             return null;
         }

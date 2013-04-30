@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ProductBundle\Manager;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
-
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Entity\ProductValue;
