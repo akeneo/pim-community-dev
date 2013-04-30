@@ -49,12 +49,10 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
     public function load(ObjectManager $manager)
     {
         $referencePrefix = 'product-attribute.';
-        $attributeTypeFactory = $this->container->get('oro_flexibleentity.attributetype.factory');
 
         // attribute name
         $attributeCode = 'name';
-        $attributeType = $attributeTypeFactory->get('oro_flexibleentity_text');
-        $attribute = $this->getProductManager()->createAttribute($attributeType);
+        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_text');
         $attribute->setCode($attributeCode);
         $attribute->setName('Name');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
@@ -69,8 +67,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute price
         $attributeCode = 'price';
-        $attributeType = $attributeTypeFactory->get('oro_flexibleentity_money');
-        $attribute = $this->getProductManager()->createAttribute($attributeType);
+        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_money');
         $attribute->setCode($attributeCode);
         $attribute->setName('Price');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
@@ -84,8 +81,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute short description
         $attributeCode = 'shortDescription';
-        $attributeType = $attributeTypeFactory->get('pim_product_textarea');
-        $attribute = $this->getProductManager()->createAttribute($attributeType);
+        $attribute = $this->getProductManager()->createAttribute('pim_product_textarea');
         $attribute->setCode($attributeCode);
         $attribute->setName('Short Description');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
@@ -101,8 +97,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute short description
         $attributeCode = 'longDescription';
-        $attributeType = $attributeTypeFactory->get('pim_product_textarea');
-        $attribute = $this->getProductManager()->createAttribute($attributeType);
+        $attribute = $this->getProductManager()->createAttribute('pim_product_textarea');
         $attribute->setCode($attributeCode);
         $attribute->setName('Long Description');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
@@ -117,8 +112,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute release date
         $attributeCode = 'releaseDate';
-        $attributeType = $attributeTypeFactory->get('oro_flexibleentity_date');
-        $attribute = $this->getProductManager()->createAttribute($attributeType);
+        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_date');
         $attribute->setCode($attributeCode);
         $attribute->setName('Release date');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
@@ -132,8 +126,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute size
         $attributeCode = 'size';
-        $attributeType = $attributeTypeFactory->get('pim_product_simpleselect');
-        $attribute = $this->getProductManager()->createAttribute($attributeType);
+        $attribute = $this->getProductManager()->createAttribute('pim_product_simpleselect');
         $attribute->setCode($attributeCode);
         $attribute->setName('Size');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
@@ -156,8 +149,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute weight
         $attributeCode = 'weight';
-        $attributeType = $attributeTypeFactory->get('oro_flexibleentity_metric');
-        $attribute = $this->getProductManager()->createAttribute($attributeType);
+        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_metric');
         $attribute->setCode($attributeCode);
         $attribute->setName('Weight');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
@@ -170,8 +162,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute color and translated options
         $attributeCode = 'color';
-        $attributeType = $attributeTypeFactory->get('pim_product_multiselect');
-        $attribute = $this->getProductManager()->createAttribute($attributeType);
+        $attribute = $this->getProductManager()->createAttribute('pim_product_multiselect');
         $attribute->setCode($attributeCode);
         $attribute->setName('Color');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
@@ -204,8 +195,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute manufacturer
         $attributeCode = 'manufacturer';
-        $attributeType = $attributeTypeFactory->get('pim_product_simpleselect');
-        $attribute = $this->getProductManager()->createAttribute($attributeType);
+        $attribute = $this->getProductManager()->createAttribute('pim_product_simpleselect');
         $attribute->setCode($attributeCode);
         $attribute->setName('Manufacturer');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
@@ -228,8 +218,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute file upload
         $attributeCode = 'fileUpload';
-        $attributeType = $attributeTypeFactory->get('oro_flexibleentity_file');
-        $attribute = $this->getProductManager()->createAttribute($attributeType);
+        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_file');
         $attribute->setCode($attributeCode);
         $attribute->setName('File upload');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
@@ -242,8 +231,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute image upload
         $attributeCode = 'imageUpload';
-        $attributeType = $attributeTypeFactory->get('oro_flexibleentity_image');
-        $attribute = $this->getProductManager()->createAttribute($attributeType);
+        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_image');
         $attribute->setCode($attributeCode);
         $attribute->setName('Image upload');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
