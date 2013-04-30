@@ -12,6 +12,20 @@
         <h3 class="pull-left">{{ title|trans }}</h3>
         <div class="pull-right">
             <span id="updated" class="label label-warning">{{ 'The product has been updated.'|trans }}</span>
+            <a class="btn" href="{{ path('pim_product_product_index') }}">
+                {{ "Back to list" | trans }}
+            </a>
+            <div class="btn-group">
+                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                    Displayed channel
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu channel">
+                    {% for channel in channels %}
+                        <li><a href="#channel-{{ channel.code }}" data-scope="{{ channel.code }}">{{ channel.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
             <div class="btn-group">
                 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                     Locale
@@ -23,9 +37,6 @@
                     {% endfor %}
                 </ul>
             </div>
-            <a class="btn" href="{{ path('pim_product_product_index') }}">
-                {{ "Back to list" | trans }}
-            </a>
             <a class="btn" href="#" id="btn-delete-product">
                 {{ "Delete" | trans }}
             </a>
@@ -81,17 +92,27 @@
                         {{ form_widget(form.sku, {'attr' : { 'class': 'span4' } }) }}
                     </div>
                 </div>
+                {% set attributeCode = '' %}
                 {% for group in groups %}
                 <div id="tabs-{{ group.id }}" class="tab-pane{% if loop.index == 1 %} active{% endif %}">
                     <h3>{{ group.name|trans }}</h3>
-                    {% for formValue in form.values %}
-                    {% if group.id == formValue.group.vars.value %}
-                    <div class="control-group">
-                        {{ form_label(formValue, formValue.vars.value.attribute.code, { 'label_attr': {'class': 'control-label'} }) }}
-                        <div class="controls">{{ form_widget(formValue) }}</div>
+                    <div> {# will generate a <div></div> for first iteration #}
+                        {% for formValue in form.values %}
+                            {% if group.id == formValue.group.vars.value %}
+                                {% if attributeCode != formValue.vars.value.attribute.code %}
+                                    </div>
+                                    <div class="{{ formValue.vars.value.attribute.scopable ? 'scopable' : '' }}">
+                                {% endif %}
+                                <div class="control-group">
+                                    {{ form_label(formValue, formValue.vars.value.attribute.code, { 'label_attr': {'class': 'control-label'} }) }}
+                                    <div class="controls">
+                                        {{ form_widget(formValue, {'attr': {'data-scope': formValue.vars.value.scope}} ) }}
+                                    </div>
+                                </div>
+                                {% set attributeCode = formValue.vars.value.attribute.code %}
+                            {% endif %}
+                        {% endfor %}
                     </div>
-                    {% endif %}
-                    {% endfor %}
                 </div>
                 {% endfor %}
             </div>
@@ -158,8 +179,22 @@
                 doAction();
             }
         });
-    });
 
+        /**
+         * Move scopable element which is of the selected displayed channel to the top
+         * of its group of scopable elements
+         */
+        $('.channel a').click(function(event) {
+            var selectedScope = $(this).data('scope');
+            $('.scopable').each(function(e) {
+                $(this)
+                    .find('div[data-scope="' + selectedScope + '"]')
+                    .parents('.control-group')
+                    .prependTo(this)
+                ;
+            });
+        });
+    });
     </script>
     <link rel="stylesheet" href="{{ asset('bundles/pimui/css/select2.css') }}" />
 {% endblock %}
