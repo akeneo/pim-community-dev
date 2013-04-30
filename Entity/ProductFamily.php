@@ -50,7 +50,7 @@ class ProductFamily
      * @ORM\JoinTable(
      *    name="pim_product_family_attribute",
      *    joinColumns={@ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="CASCADE")},
-     *    inverseJoinColumns={@ORM\JoinColumn(name="attribute_id", referencedColumnName="id")}
+     *    inverseJoinColumns={@ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
     */
     protected $attributes;

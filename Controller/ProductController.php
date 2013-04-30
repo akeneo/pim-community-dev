@@ -124,6 +124,7 @@ class ProductController extends Controller
         // create form
         $form = $this->createForm(new ProductType($this->getProductManager(), 'pim_product_value'), $entity);
         $groups = $this->getDoctrine()->getRepository('PimProductBundle:AttributeGroup')->findAllWithVirtualGroup();
+        $channels = $this->getDoctrine()->getRepository('PimConfigBundle:Channel')->findAll();
 
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
@@ -145,7 +146,8 @@ class ProductController extends Controller
             'form'       => $form->createView(),
             'groups'     => $groups,
             'dataLocale' => $request->query->get('dataLocale', 'en_US'),
-            'dataScope'  => $request->query->get('dataScope')
+            'dataScope'  => $request->query->get('dataScope'),
+            'channels'   => $channels,
         );
     }
 
