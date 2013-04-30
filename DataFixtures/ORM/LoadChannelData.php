@@ -50,8 +50,8 @@ class LoadChannelData extends AbstractFixture implements OrderedFixtureInterface
         $this->manager = $manager;
 
         // create channels
-        $channel = $this->createChannel('ecommerce', 'E-Commerce');
-        $channel = $this->createChannel('mobile', 'Mobile');
+        $this->createChannel('ecommerce', 'E-Commerce');
+        $this->createChannel('mobile', 'Mobile');
 
         $this->manager->flush();
     }
