@@ -16,12 +16,20 @@ class TextAreaType extends OroTextAreaType
     /**
      * {@inheritdoc}
      */
-    protected function getValueFormType(FlexibleValueInterface $value)
+    protected function prepareValueFormAlias(FlexibleValueInterface $value)
     {
         if ($value->getAttribute()->getWysiwygEnabled()) {
             return 'pim_wysiwyg';
         }
 
-        return $this->getFormType();
+        return parent::prepareValueFormAlias($value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'pim_product_textarea';
     }
 }

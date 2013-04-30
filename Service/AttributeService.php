@@ -74,7 +74,7 @@ class AttributeService
 
         if (gettype($data) === 'array' && isset($data['attributeType'])) {
             return $this->manager->createAttribute(
-                $this->manager->getAttributeTypeFactory()->create($data['attributeType'])
+                $this->manager->getAttributeTypeFactory()->get($data['attributeType'])
             );
         } else {
             return null;
@@ -248,7 +248,7 @@ class AttributeService
     private function getDefaultValueParams($attribute)
     {
         $type = $attribute->getAttributeType();
-        $fieldType = $this->factory->create($type)->getFormType();
+        $fieldType = $this->factory->get($type)->getFormType();
 
         if ($fieldType === 'entity' || $fieldType === 'oro_flexibleentity_metric') {
             $fieldType = 'text';

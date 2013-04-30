@@ -2,7 +2,7 @@
 namespace Pim\Bundle\ProductBundle\AttributeType;
 
 use Doctrine\ORM\EntityRepository;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 /**
@@ -25,15 +25,12 @@ class OptionMultiSelectType extends AbstractAttributeType
     }
 
     /**
-     * Get form type options
-     *
-     * @param AbstractAttribute $attribute
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function prepareFormOptions(AbstractAttribute $attribute)
+    protected function prepareValueFormOptions(FlexibleValueInterface $value)
     {
-        $options = parent::prepareFormOptions($attribute);
+        $options = parent::prepareValueFormOptions($value);
+        $attribute = $value->getAttribute();
         $options['empty_value']   = false;
         $options['class']         = 'PimProductBundle:AttributeOption';
         $options['query_builder'] = function (EntityRepository $er) use ($attribute) {
@@ -43,5 +40,13 @@ class OptionMultiSelectType extends AbstractAttributeType
         $options['multiple'] = true;
 
         return $options;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'pim_product_multiselect';
     }
 }
