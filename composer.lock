@@ -467,7 +467,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -533,7 +533,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -663,7 +663,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jonathan H. Wage",
+                    "name": "Jonathan Wage",
                     "email": "jonwage@gmail.com",
                     "homepage": "http://www.jwage.com/"
                 }
@@ -1776,7 +1776,7 @@
                 {
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -2785,12 +2785,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/GridBundle.git",
-                "reference": "6d737a8dba342587e4ec8fc938d69fa307583099"
+                "reference": "422bbbebd85e827eca76fe536eab31bd45dbed11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/GridBundle/zipball/6d737a8dba342587e4ec8fc938d69fa307583099",
-                "reference": "6d737a8dba342587e4ec8fc938d69fa307583099",
+                "url": "https://api.github.com/repos/laboro/GridBundle/zipball/422bbbebd85e827eca76fe536eab31bd45dbed11",
+                "reference": "422bbbebd85e827eca76fe536eab31bd45dbed11",
                 "shasum": ""
             },
             "require": {
@@ -2828,7 +2828,7 @@
                 "source": "https://github.com/laboro/GridBundle/tree/master",
                 "issues": "https://github.com/laboro/GridBundle/issues"
             },
-            "time": "2013-04-30 08:31:03"
+            "time": "2013-04-30 14:14:13"
         },
         {
             "name": "oro/measure-bundle",
@@ -3096,12 +3096,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/UIBundle.git",
-                "reference": "b282d5cc8508320f68dbdf00d396712aceb65237"
+                "reference": "8ab5e299bae9a9dc371c7bcc6a28d9614ffbabd0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/UIBundle/zipball/b282d5cc8508320f68dbdf00d396712aceb65237",
-                "reference": "b282d5cc8508320f68dbdf00d396712aceb65237",
+                "url": "https://api.github.com/repos/laboro/UIBundle/zipball/8ab5e299bae9a9dc371c7bcc6a28d9614ffbabd0",
+                "reference": "8ab5e299bae9a9dc371c7bcc6a28d9614ffbabd0",
                 "shasum": ""
             },
             "require": {
@@ -3136,7 +3136,7 @@
                 "source": "https://github.com/laboro/UIBundle/tree/master",
                 "issues": "https://github.com/laboro/UIBundle/issues"
             },
-            "time": "2013-04-29 13:51:17"
+            "time": "2013-04-30 14:13:55"
         },
         {
             "name": "oro/user-bundle",
@@ -3145,12 +3145,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/UserBundle.git",
-                "reference": "ac76f6367d3ecd2ecd406f013b866389f79ef6ba"
+                "reference": "cf683493eae1c86ed4b453449cbd41f5a1c845ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/ac76f6367d3ecd2ecd406f013b866389f79ef6ba",
-                "reference": "ac76f6367d3ecd2ecd406f013b866389f79ef6ba",
+                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/cf683493eae1c86ed4b453449cbd41f5a1c845ce",
+                "reference": "cf683493eae1c86ed4b453449cbd41f5a1c845ce",
                 "shasum": ""
             },
             "require": {
@@ -3191,10 +3191,10 @@
                 "BAP"
             ],
             "support": {
-                "source": "https://github.com/laboro/UserBundle/tree/grid_bundle",
+                "source": "https://github.com/laboro/UserBundle/tree/master",
                 "issues": "https://github.com/laboro/UserBundle/issues"
             },
-            "time": "2013-04-29 13:51:23"
+            "time": "2013-04-30 14:14:03"
         },
         {
             "name": "oro/windows-bundle",
