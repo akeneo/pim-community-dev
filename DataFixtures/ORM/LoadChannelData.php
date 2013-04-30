@@ -30,6 +30,11 @@ class LoadChannelData extends AbstractFixture implements OrderedFixtureInterface
     protected $container;
 
     /**
+     * @var \Doctrine\Common\Persistence\ObjectManager
+     */
+    protected $manager;
+
+    /**
      * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
@@ -42,14 +47,13 @@ class LoadChannelData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+        $this->manager = $manager;
+
         // create channels
         $channel = $this->createChannel('ecommerce', 'E-Commerce');
-        $manager->persist($channel);
-
         $channel = $this->createChannel('mobile', 'Mobile');
-        $manager->persist($channel);
 
-        $manager->flush();
+        $this->manager->flush();
     }
 
     /**
@@ -65,6 +69,7 @@ class LoadChannelData extends AbstractFixture implements OrderedFixtureInterface
         $channel->setCode($code);
         $channel->setName($name);
 
+        $this->manager->persist($channel);
         $this->setReference('channel.'. $code, $channel);
 
         return $channel;
