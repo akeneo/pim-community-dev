@@ -99,10 +99,10 @@ class AttributeDatagridManager extends DatagridManager
             $field->setName('scopable');
             $field->setOptions(
                 array(
-                    'type'        => FieldDescriptionInterface::TYPE_INTEGER,
+                    'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
                     'label'       => $this->translator->trans('Scopable'),
                     'field_name'  => 'scopable',
-                    'filter_type' => FilterInterface::TYPE_NUMBER,
+                    'filter_type' => FilterInterface::TYPE_BOOLEAN,
                     'required'    => false,
                     'sortable'    => true,
                     'filterable'  => true,
@@ -115,10 +115,10 @@ class AttributeDatagridManager extends DatagridManager
             $field->setName('translatable');
             $field->setOptions(
                 array(
-                    'type'        => FieldDescriptionInterface::TYPE_INTEGER,
+                    'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
                     'label'       => $this->translator->trans('Translatable'),
                     'field_name'  => 'translatable',
-                    'filter_type' => FilterInterface::TYPE_NUMBER,
+                    'filter_type' => FilterInterface::TYPE_BOOLEAN,
                     'required'    => false,
                     'sortable'    => true,
                     'filterable'  => true,
