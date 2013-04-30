@@ -79,10 +79,10 @@ class CurrencyDatagridManager extends DatagridManager
             $field->setName('activated');
             $field->setOptions(
                 array(
-                    'type'        => FieldDescriptionInterface::TYPE_INTEGER,
+                    'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
                     'label'       => $this->translator->trans('Activated'),
                     'field_name'  => 'activated',
-                    'filter_type' => FilterInterface::TYPE_NUMBER,
+                    'filter_type' => FilterInterface::TYPE_BOOLEAN,
                     'required'    => false,
                     'sortable'    => true,
                     'filterable'  => true,
