@@ -14,16 +14,6 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
  */
 class OptionSimpleSelectType extends AbstractAttributeType
 {
-
-    /**
-     * constructor
-     */
-    public function __construct()
-    {
-        $this->backendType = self::BACKEND_TYPE_OPTION;
-        $this->formType    = 'entity';
-    }
-
     /**
      * {@inheritdoc}
      */

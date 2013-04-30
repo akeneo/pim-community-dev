@@ -1,16 +1,16 @@
 services:
     pim_product.attributetype.textarea:
         class: Pim\Bundle\ProductBundle\AttributeType\TextAreaType
-        arguments: ["@translator"]
+        arguments: ["@translator", "text", "textarea"]
         tags:
             - { name: oro_flexibleentity.attributetype, alias: pim_product_textarea }
     pim_product.attributetype.multiselect:
         class: Pim\Bundle\ProductBundle\AttributeType\OptionMultiSelectType
-        arguments: ["@translator"]
+        arguments: ["@translator", "options", "entity"]
         tags:
             - { name: oro_flexibleentity.attributetype, alias: pim_product_multiselect }
     pim_product.attributetype.simpleselect:
         class: Pim\Bundle\ProductBundle\AttributeType\OptionSimpleSelectType
-        arguments: ["@translator"]
+        arguments: ["@translator", "option", "entity"]
         tags:
             - { name: oro_flexibleentity.attributetype, alias: pim_product_simpleselect }

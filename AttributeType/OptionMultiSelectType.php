@@ -14,16 +14,6 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
  */
 class OptionMultiSelectType extends AbstractAttributeType
 {
-
-    /**
-     * constructor
-     */
-    public function __construct()
-    {
-        $this->backendType = self::BACKEND_TYPE_OPTIONS;
-        $this->formType    = 'entity';
-    }
-
     /**
      * {@inheritdoc}
      */
