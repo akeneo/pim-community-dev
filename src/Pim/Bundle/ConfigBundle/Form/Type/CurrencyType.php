@@ -56,7 +56,7 @@ class CurrencyType extends AbstractType
             )
         );
 
-        $builder->add('activated', 'checkbox', array('required' => false));
+        $builder->add('activated', 'hidden');
     }
 
     /**

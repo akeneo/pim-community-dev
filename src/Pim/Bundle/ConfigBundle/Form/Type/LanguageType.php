@@ -54,7 +54,7 @@ class LanguageType extends AbstractType
         // Add currency field
         $this->addCurrencyField($builder);
 
-        $builder->add('activated', 'checkbox', array('required' => false));
+        $builder->add('activated', 'hidden');
     }
 
     /**
