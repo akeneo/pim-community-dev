@@ -134,9 +134,9 @@
 
 {% block javascripts %}
     {{ parent() }}
-    
+
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.bootstrap-modal.js') }}"></script>
-    
+
     <script type="text/javascript">
     $(function() {
         var updated = false;
@@ -170,7 +170,7 @@
             doAction = function() {
                 window.location.href = "{{ path('pim_product_product_remove', { id: form.vars.value.id }) }}";
             };
-            
+
             if (!_.isUndefined(Backbone.BootstrapModal)) {
                 confirm = new Backbone.BootstrapModal({
                     title: "{{ 'Delete Confirmation' | trans }}",
