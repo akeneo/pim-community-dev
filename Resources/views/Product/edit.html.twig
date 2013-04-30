@@ -101,7 +101,10 @@
                             {% if group.id == formValue.group.vars.value %}
                                 {% if attributeCode != formValue.vars.value.attribute.code %}
                                     </div>
-                                    <div class="{{ formValue.vars.value.attribute.scopable ? 'scopable' : '' }}">
+                                    {% if formValue.vars.value.attribute.scopable %}
+                                    <a href="#" class="expand" data-field="{{ formValue.vars.value.attribute.code }}"><i class="icon-chevron-down"></i></a>
+                                    {% endif %}
+                                    <div class="{{ formValue.vars.value.attribute.scopable ? 'scopable' : '' }}" data-field="{{ formValue.vars.value.attribute.code }}">
                                 {% endif %}
                                 <div class="control-group">
                                     {{ form_label(formValue, formValue.vars.value.attribute.code, { 'label_attr': {'class': 'control-label'} }) }}
@@ -160,17 +163,59 @@
         });
 
         /**
+         * Expand or collpase scopable fields group
+         */
+        $('.scopable').each(function() {
+            $(this).children('.control-group').slice(1).hide();
+        });
+
+        $('#attributes').on('click', '.expand', function(event) {
+            var field = $(this).data('field');
+            $('.scopable[data-field="' + field + '"]').children('.control-group').show();
+            $(this)
+                .removeClass('expand')
+                .addClass('collapse')
+            ;
+            $(this)
+                .children('i')
+                .removeClass('icon-chevron-down')
+                .addClass('icon-chevron-up')
+            ;
+        });
+
+        $('#attributes').on('click', '.collapse', function(event) {
+            var field = $(this).data('field');
+            $('.scopable[data-field="' + field + '"]').children('.control-group').slice(1).hide();
+            $(this)
+                .removeClass('collapse')
+                .addClass('expand')
+            ;
+            $(this)
+                .children('i')
+                .removeClass('icon-chevron-up')
+                .addClass('icon-chevron-down')
+            ;
+        });
+
+        /**
          * Move scopable element which is of the selected displayed channel to the top
          * of its group of scopable elements
          */
         $('.channel a').click(function(event) {
             var selectedScope = $(this).data('scope');
-            $('.scopable').each(function(e) {
+            $('.scopable').each(function() {
+                var field = $(this).data('field');
+
                 $(this)
                     .find('div[data-scope="' + selectedScope + '"]')
                     .parents('.control-group')
                     .prependTo(this)
                 ;
+
+                $(this).children('.control-group').first().show();
+                if ($('a[data-field="' + field + '"]').hasClass('expand')) {
+                    $(this).children('.control-group').slice(1).hide();
+                }
             });
         });
     });
