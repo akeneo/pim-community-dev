@@ -11,6 +11,11 @@
         <div class="form-row">
             <h3 class="pull-left">{{ title|trans }}</h3>
             <button class="btn btn-primary pull-right" type="submit">{{ 'Save'|trans }}</button>
+            {% if form.vars.value.id %}
+                <a class="btn pull-right" href="#" id="btn-disable-locale">
+                    {{ "Disable" | trans }}
+                </a>
+            {% endif %}
             <a class="pull-right return" href="{{ path('pim_config_language_index') }}">
                 {{ "Back to list" | trans }}
             </a>
@@ -41,10 +46,29 @@
 
 {% block javascripts %}
     {{ parent() }}
+
+    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.bootstrap-modal.js') }}"></script>
+    
     <script type="text/javascript">
     $(function() {
         $('select').select2({ allowClear: true });
         $('input.multiselect').select2({ tags: $(this).val() });
+        $('#btn-disable-locale').click(function(event) {
+            doAction = function() {
+                window.location.href = "{{ path('pim_config_language_disable', { id: form.vars.value.id }) }}";
+            };
+            
+            if (!_.isUndefined(Backbone.BootstrapModal)) {
+                confirm = new Backbone.BootstrapModal({
+                    title: "{{ 'Disable Confirmation' | trans }}",
+                    content: "{{ 'Are you sure you want to disable this item' | trans }}"
+                });
+                confirm.on('ok', doAction);
+                confirm.open();
+            } else if (window.confirm(message)) {
+                doAction();
+            }
+        });
     });
     </script>
 {% endblock %}
