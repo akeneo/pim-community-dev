@@ -102,6 +102,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $manufacturers[]= $option;
         }
 
+        $names = array('en_US' => 'my product name', 'fr_FR' => 'mon nom de produit', 'de_DE' => 'produkt namen');
         $descriptions = array('my long description', 'my other description');
         for ($ind= 0; $ind < $nbProducts; $ind++) {
 
@@ -123,7 +124,6 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $product->addLanguage($this->getReference('language.fr_CA'));
 
             // name
-            $names = array('en_US' => 'my product name', 'fr_FR' => 'mon nom de produit', 'de_DE' => 'produkt namen');
             foreach ($names as $locale => $data) {
                 $value = $this->getProductManager()->createFlexibleValue();
                 $value->setAttribute($attName);
@@ -195,12 +195,11 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $product->addValue($value);
 
             // date
-            /*
             $value = $this->getProductManager()->createFlexibleValue();
             $value->setAttribute($attDate);
             $value->setData(new \Datetime());
             $product->addValue($value);
-            */
+
             $this->persist($product);
 
             if (($ind % $batchSize) == 0) {

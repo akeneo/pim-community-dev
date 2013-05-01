@@ -2,17 +2,8 @@
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\ImageType;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Pim\Bundle\ProductBundle\Model\AttributeType\OptionSimpleSelectType;
-use Pim\Bundle\ProductBundle\Model\AttributeType\OptionMultiSelectType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MoneyType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextAreaType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\DateType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\MetricType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\FileType;
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -61,123 +52,123 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute name
         $attributeCode = 'name';
-        $productAttribute = $this->getProductManager()->createAttribute(new TextType());
-        $productAttribute->setCode($attributeCode);
-        $productAttribute->setName('Name');
-        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
-        $productAttribute->setTranslatable(true);
-        $productAttribute->setUseableAsGridColumn(true);
-        $productAttribute->setUseableAsGridFilter(true);
-        $this->createTranslation($productAttribute, 'default', 'name', 'Name');
-        $this->createTranslation($productAttribute, 'en_US', 'name', 'Name');
-        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Nom');
-        $this->getProductManager()->getStorageManager()->persist($productAttribute);
-        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
+        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_text');
+        $attribute->setCode($attributeCode);
+        $attribute->setName('Name');
+        $attribute->setDescription(ucfirst($attributeCode .' description'));
+        $attribute->setTranslatable(true);
+        $attribute->setUseableAsGridColumn(true);
+        $attribute->setUseableAsGridFilter(true);
+        $this->createTranslation($attribute, 'default', 'name', 'Name');
+        $this->createTranslation($attribute, 'en_US', 'name', 'Name');
+        $this->createTranslation($attribute, 'fr_FR', 'name', 'Nom');
+        $this->getProductManager()->getStorageManager()->persist($attribute);
+        $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
         // attribute price
         $attributeCode = 'price';
-        $productAttribute = $this->getProductManager()->createAttribute(new MoneyType());
-        $productAttribute->setCode($attributeCode);
-        $productAttribute->setName('Price');
-        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
-        $productAttribute->setUseableAsGridColumn(true);
-        $productAttribute->setUseableAsGridFilter(true);
-        $this->createTranslation($productAttribute, 'default', 'name', 'Price');
-        $this->createTranslation($productAttribute, 'en_US', 'name', 'Price');
-        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Prix');
-        $this->getProductManager()->getStorageManager()->persist($productAttribute);
-        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
+        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_money');
+        $attribute->setCode($attributeCode);
+        $attribute->setName('Price');
+        $attribute->setDescription(ucfirst($attributeCode .' description'));
+        $attribute->setUseableAsGridColumn(true);
+        $attribute->setUseableAsGridFilter(true);
+        $this->createTranslation($attribute, 'default', 'name', 'Price');
+        $this->createTranslation($attribute, 'en_US', 'name', 'Price');
+        $this->createTranslation($attribute, 'fr_FR', 'name', 'Prix');
+        $this->getProductManager()->getStorageManager()->persist($attribute);
+        $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
         // attribute short description
         $attributeCode = 'shortDescription';
-        $productAttribute = $this->getProductManager()->createAttribute(new TextAreaType());
-        $productAttribute->setCode($attributeCode);
-        $productAttribute->setName('Short Description');
-        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
-        $productAttribute->setTranslatable(true);
-        $productAttribute->setScopable(true);
-        $productAttribute->setUseableAsGridColumn(true);
-        $productAttribute->setUseableAsGridFilter(true);
-        $this->createTranslation($productAttribute, 'default', 'name', 'Short description');
-        $this->createTranslation($productAttribute, 'en_US', 'name', 'Short description');
-        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Description courte');
-        $this->getProductManager()->getStorageManager()->persist($productAttribute);
-        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
+        $attribute = $this->getProductManager()->createAttribute('pim_product_textarea');
+        $attribute->setCode($attributeCode);
+        $attribute->setName('Short Description');
+        $attribute->setDescription(ucfirst($attributeCode .' description'));
+        $attribute->setTranslatable(true);
+        $attribute->setScopable(true);
+        $attribute->setUseableAsGridColumn(true);
+        $attribute->setUseableAsGridFilter(true);
+        $this->createTranslation($attribute, 'default', 'name', 'Short description');
+        $this->createTranslation($attribute, 'en_US', 'name', 'Short description');
+        $this->createTranslation($attribute, 'fr_FR', 'name', 'Description courte');
+        $this->getProductManager()->getStorageManager()->persist($attribute);
+        $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
         // attribute short description
         $attributeCode = 'longDescription';
-        $productAttribute = $this->getProductManager()->createAttribute(new TextAreaType());
-        $productAttribute->setCode($attributeCode);
-        $productAttribute->setName('Long Description');
-        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
-        $productAttribute->setTranslatable(true);
-        $productAttribute->setScopable(true);
-        $productAttribute->setWysiwygEnabled(true);
-        $this->createTranslation($productAttribute, 'default', 'name', 'Long description');
-        $this->createTranslation($productAttribute, 'en_US', 'name', 'Long description');
-        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Description longue');
-        $this->getProductManager()->getStorageManager()->persist($productAttribute);
-        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
+        $attribute = $this->getProductManager()->createAttribute('pim_product_textarea');
+        $attribute->setCode($attributeCode);
+        $attribute->setName('Long Description');
+        $attribute->setDescription(ucfirst($attributeCode .' description'));
+        $attribute->setTranslatable(true);
+        $attribute->setScopable(true);
+        $attribute->setWysiwygEnabled(true);
+        $this->createTranslation($attribute, 'default', 'name', 'Long description');
+        $this->createTranslation($attribute, 'en_US', 'name', 'Long description');
+        $this->createTranslation($attribute, 'fr_FR', 'name', 'Description longue');
+        $this->getProductManager()->getStorageManager()->persist($attribute);
+        $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
         // attribute release date
         $attributeCode = 'releaseDate';
-        $productAttribute = $this->getProductManager()->createAttribute(new DateType());
-        $productAttribute->setCode($attributeCode);
-        $productAttribute->setName('Release date');
-        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
-        $productAttribute->setUseableAsGridColumn(true);
-        $productAttribute->setUseableAsGridFilter(true);
-        $this->createTranslation($productAttribute, 'default', 'name', 'Release date');
-        $this->createTranslation($productAttribute, 'en_US', 'name', 'Release date');
-        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Date de sortie');
-        $this->getProductManager()->getStorageManager()->persist($productAttribute);
-        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
+        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_date');
+        $attribute->setCode($attributeCode);
+        $attribute->setName('Release date');
+        $attribute->setDescription(ucfirst($attributeCode .' description'));
+        $attribute->setUseableAsGridColumn(true);
+        $attribute->setUseableAsGridFilter(true);
+        $this->createTranslation($attribute, 'default', 'name', 'Release date');
+        $this->createTranslation($attribute, 'en_US', 'name', 'Release date');
+        $this->createTranslation($attribute, 'fr_FR', 'name', 'Date de sortie');
+        $this->getProductManager()->getStorageManager()->persist($attribute);
+        $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
         // attribute size
         $attributeCode = 'size';
-        $productAttribute = $this->getProductManager()->createAttribute(new OptionSimpleSelectType());
-        $productAttribute->setCode($attributeCode);
-        $productAttribute->setName('Size');
-        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
-        $productAttribute->setUseableAsGridColumn(true);
-        $productAttribute->setUseableAsGridFilter(true);
+        $attribute = $this->getProductManager()->createAttribute('pim_product_simpleselect');
+        $attribute->setCode($attributeCode);
+        $attribute->setName('Size');
+        $attribute->setDescription(ucfirst($attributeCode .' description'));
+        $attribute->setUseableAsGridColumn(true);
+        $attribute->setUseableAsGridFilter(true);
         $sizes = array('XS', 'S', 'M', 'L', 'XL');
         foreach ($sizes as $size) {
             $option = $this->getProductManager()->createAttributeOption();
             $option->setTranslatable(true);
-            $productAttribute->addOption($option);
+            $attribute->addOption($option);
             $optionValue = $this->getProductManager()->createAttributeOptionValue();
             $optionValue->setValue($size);
             $option->addOptionValue($optionValue);
         }
-        $this->createTranslation($productAttribute, 'default', 'name', 'Size');
-        $this->createTranslation($productAttribute, 'en_US', 'name', 'Size');
-        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Taille');
-        $this->getProductManager()->getStorageManager()->persist($productAttribute);
-        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
+        $this->createTranslation($attribute, 'default', 'name', 'Size');
+        $this->createTranslation($attribute, 'en_US', 'name', 'Size');
+        $this->createTranslation($attribute, 'fr_FR', 'name', 'Taille');
+        $this->getProductManager()->getStorageManager()->persist($attribute);
+        $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
         // attribute weight
         $attributeCode = 'weight';
-        $productAttribute = $this->getProductManager()->createAttribute(new MetricType());
-        $productAttribute->setCode($attributeCode);
-        $productAttribute->setName('Weight');
-        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
-        $productAttribute->setUseableAsGridColumn(true);
-        $this->createTranslation($productAttribute, 'default', 'name', 'Weight');
-        $this->createTranslation($productAttribute, 'en_US', 'name', 'Weight');
-        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Poids');
-        $this->getProductManager()->getStorageManager()->persist($productAttribute);
-        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
+        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_metric');
+        $attribute->setCode($attributeCode);
+        $attribute->setName('Weight');
+        $attribute->setDescription(ucfirst($attributeCode .' description'));
+        $attribute->setUseableAsGridColumn(true);
+        $this->createTranslation($attribute, 'default', 'name', 'Weight');
+        $this->createTranslation($attribute, 'en_US', 'name', 'Weight');
+        $this->createTranslation($attribute, 'fr_FR', 'name', 'Poids');
+        $this->getProductManager()->getStorageManager()->persist($attribute);
+        $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
         // attribute color and translated options
         $attributeCode = 'color';
-        $productAttribute = $this->getProductManager()->createAttribute(new OptionMultiSelectType());
-        $productAttribute->setCode($attributeCode);
-        $productAttribute->setName('Color');
-        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
-        $productAttribute->setTranslatable(false); // only one value but option can be translated in option values
-        $productAttribute->setUseableAsGridColumn(true);
-        $productAttribute->setUseableAsGridFilter(true);
+        $attribute = $this->getProductManager()->createAttribute('pim_product_multiselect');
+        $attribute->setCode($attributeCode);
+        $attribute->setName('Color');
+        $attribute->setDescription(ucfirst($attributeCode .' description'));
+        $attribute->setTranslatable(false); // only one value but option can be translated in option values
+        $attribute->setUseableAsGridColumn(true);
+        $attribute->setUseableAsGridFilter(true);
         $colors = array(
                 array('en_US' => 'Red', 'fr_FR' => 'Rouge', 'de_DE' => 'Rot'),
                 array('en_US' => 'Blue', 'fr_FR' => 'Bleu', 'de_DE' => 'Blau'),
@@ -188,7 +179,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         foreach ($colors as $color) {
             $option = $this->getProductManager()->createAttributeOption();
             $option->setTranslatable(true);
-            $productAttribute->addOption($option);
+            $attribute->addOption($option);
             foreach ($color as $locale => $translated) {
                 $optionValue = $this->getProductManager()->createAttributeOptionValue();
                 $optionValue->setValue($translated);
@@ -196,60 +187,60 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
                 $option->addOptionValue($optionValue);
             }
         }
-        $this->createTranslation($productAttribute, 'default', 'name', 'Color');
-        $this->createTranslation($productAttribute, 'en_US', 'name', 'Color');
-        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Couleur');
-        $this->getProductManager()->getStorageManager()->persist($productAttribute);
-        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
+        $this->createTranslation($attribute, 'default', 'name', 'Color');
+        $this->createTranslation($attribute, 'en_US', 'name', 'Color');
+        $this->createTranslation($attribute, 'fr_FR', 'name', 'Couleur');
+        $this->getProductManager()->getStorageManager()->persist($attribute);
+        $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
         // attribute manufacturer
         $attributeCode = 'manufacturer';
-        $productAttribute = $this->getProductManager()->createAttribute(new OptionSimpleSelectType());
-        $productAttribute->setCode($attributeCode);
-        $productAttribute->setName('Manufacturer');
-        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
-        $productAttribute->setUseableAsGridColumn(true);
-        $productAttribute->setUseableAsGridFilter(true);
+        $attribute = $this->getProductManager()->createAttribute('pim_product_simpleselect');
+        $attribute->setCode($attributeCode);
+        $attribute->setName('Manufacturer');
+        $attribute->setDescription(ucfirst($attributeCode .' description'));
+        $attribute->setUseableAsGridColumn(true);
+        $attribute->setUseableAsGridFilter(true);
         $manufacturers = array('MyMug', 'MugStore');
         foreach ($manufacturers as $manufacturer) {
             $option = $this->getProductManager()->createAttributeOption();
             $option->setTranslatable(true);
-            $productAttribute->addOption($option);
+            $attribute->addOption($option);
             $optionValue = $this->getProductManager()->createAttributeOptionValue();
             $optionValue->setValue($manufacturer);
             $option->addOptionValue($optionValue);
         }
-        $this->createTranslation($productAttribute, 'default', 'name', 'Manufacturer');
-        $this->createTranslation($productAttribute, 'en_US', 'name', 'Manufacturer');
-        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Fabricant');
-        $this->getProductManager()->getStorageManager()->persist($productAttribute);
-        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
+        $this->createTranslation($attribute, 'default', 'name', 'Manufacturer');
+        $this->createTranslation($attribute, 'en_US', 'name', 'Manufacturer');
+        $this->createTranslation($attribute, 'fr_FR', 'name', 'Fabricant');
+        $this->getProductManager()->getStorageManager()->persist($attribute);
+        $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
         // attribute file upload
         $attributeCode = 'fileUpload';
-        $productAttribute = $this->getProductManager()->createAttribute(new FileType());
-        $productAttribute->setCode($attributeCode);
-        $productAttribute->setName('File upload');
-        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
-        $productAttribute->setUseableAsGridColumn(true);
-        $this->createTranslation($productAttribute, 'default', 'name', 'File upload');
-        $this->createTranslation($productAttribute, 'en_US', 'name', 'File upload');
-        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Fichier téléchargé');
-        $this->getProductManager()->getStorageManager()->persist($productAttribute);
-        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
+        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_file');
+        $attribute->setCode($attributeCode);
+        $attribute->setName('File upload');
+        $attribute->setDescription(ucfirst($attributeCode .' description'));
+        $attribute->setUseableAsGridColumn(true);
+        $this->createTranslation($attribute, 'default', 'name', 'File upload');
+        $this->createTranslation($attribute, 'en_US', 'name', 'File upload');
+        $this->createTranslation($attribute, 'fr_FR', 'name', 'Fichier téléchargé');
+        $this->getProductManager()->getStorageManager()->persist($attribute);
+        $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
         // attribute image upload
         $attributeCode = 'imageUpload';
-        $productAttribute = $this->getProductManager()->createAttribute(new ImageType());
-        $productAttribute->setCode($attributeCode);
-        $productAttribute->setName('Image upload');
-        $productAttribute->setDescription(ucfirst($attributeCode .' description'));
-        $productAttribute->setUseableAsGridColumn(true);
-        $this->createTranslation($productAttribute, 'default', 'name', 'Image upload');
-        $this->createTranslation($productAttribute, 'en_US', 'name', 'Image upload');
-        $this->createTranslation($productAttribute, 'fr_FR', 'name', 'Image téléchargée');
-        $this->getProductManager()->getStorageManager()->persist($productAttribute);
-        $this->addReference($referencePrefix. $productAttribute->getCode(), $productAttribute);
+        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_image');
+        $attribute->setCode($attributeCode);
+        $attribute->setName('Image upload');
+        $attribute->setDescription(ucfirst($attributeCode .' description'));
+        $attribute->setUseableAsGridColumn(true);
+        $this->createTranslation($attribute, 'default', 'name', 'Image upload');
+        $this->createTranslation($attribute, 'en_US', 'name', 'Image upload');
+        $this->createTranslation($attribute, 'fr_FR', 'name', 'Image téléchargée');
+        $this->getProductManager()->getStorageManager()->persist($attribute);
+        $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
         $this->getProductManager()->getStorageManager()->flush();
     }
