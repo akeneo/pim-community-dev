@@ -234,8 +234,6 @@ class AttributeServiceTest extends WebTestCase
      */
     protected function createProductAttribute($type = null)
     {
-        $type = $type === null ? $type : $this->manager->getAttributeTypeFactory()->get($type);
-
         return $this->manager->createAttribute($type);
     }
 }

@@ -109,6 +109,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
             array('entities_config' => array('Product' => null)),
             $objectManager ?: $this->getObjectManagerMock(),
             $this->getEventDispatcherInterfaceMock(),
+            $this->getAttributeTypeFactoryMock(),
             $mediaManager ?: $this->getMediaManagerMock()
         );
     }
@@ -134,6 +135,19 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Get a mock of AttributeTypeFactory
+     *
+     * @return Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory
+     */
+    private function getAttributeTypeFactoryMock()
+    {
+        return $this
+            ->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    /**
      * Get a mock of MediaManager
      *
      * @return \Pim\Bundle\ProductBundle\Manager\MediaManager
@@ -143,8 +157,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
         return $this
             ->getMockBuilder('Pim\Bundle\ProductBundle\Manager\MediaManager')
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
     }
 
     /**
