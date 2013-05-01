@@ -26,9 +26,6 @@ class ProductType extends FlexibleType
         $builder
             ->add('sku', 'text', array('required' => true, 'read_only' => $builder->getData()->getId()))
             ->add('productFamily')
-            ->add('languages', 'collection', array(
-                'type' => new ProductLanguageType
-            ))
-        ;
+            ->add('languages', 'collection', array('type' => new ProductLanguageType));
     }
 }

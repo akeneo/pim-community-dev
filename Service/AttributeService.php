@@ -548,7 +548,7 @@ class AttributeService
         return $this->getFieldParams('searchable', 'checkbox');
     }
 
-   /**
+    /**
      * Return form field parameters for options property
      *
      * @param ProductAttribute $attribute Product attribute
@@ -631,7 +631,7 @@ class AttributeService
             'required' => false,
             'multiple' => true,
             'class' => 'Pim\Bundle\ConfigBundle\Entity\Language',
-            'query_builder' => function(EntityRepository $repository) {
+            'query_builder' => function (EntityRepository $repository) {
                 return $repository->createQueryBuilder('l')->where('l.activated = 1')->orderBy('l.code');
             }
         );

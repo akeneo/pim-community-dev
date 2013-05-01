@@ -10,6 +10,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
+ * Product manager
+ *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -18,6 +20,9 @@ class ProductManager extends FlexibleManager
 {
     protected $mediaManager;
 
+    /**
+     * {@inheritDoc}
+     */
     public function __construct($flexibleName, $flexibleConfig, ObjectManager $storageManager, EventDispatcherInterface $eventDispatcher, AttributeTypeFactory $attributeTypeFactory, $mediaManager)
     {
         parent::__construct($flexibleName, $flexibleConfig, $storageManager, $eventDispatcher, $attributeTypeFactory);
@@ -32,6 +37,8 @@ class ProductManager extends FlexibleManager
      *     2.1) Force the reloading of the object (to be sure all values are loaded)
      *     2.2) Add the missing translatable attribute locale values
      *     2.3) Reflush to save these new values
+     *
+     * @param Product $product
      */
     public function save(Product $product)
     {
@@ -55,6 +62,10 @@ class ProductManager extends FlexibleManager
      *   It has a translatable attribute "name" with a value in french,
      *   but the value in english is not available.
      *   This method will create this value with an empty data.
+     *
+     * @param Product $product
+     *
+     * @return null
      */
     private function addMissingLocaleValues(Product $product)
     {
@@ -92,6 +103,9 @@ class ProductManager extends FlexibleManager
         }
     }
 
+    /**
+     * @param Product $product
+     */
     private function handleMedia(Product $product)
     {
         foreach ($product->getValues() as $value) {
@@ -108,6 +122,12 @@ class ProductManager extends FlexibleManager
         }
     }
 
+    /**
+     * @param Product      $product
+     * @param ProductValue $value
+     *
+     * @return string
+     */
     private function generateFilenamePrefix(Product $product, ProductValue $value)
     {
         return sprintf(
@@ -120,4 +140,3 @@ class ProductManager extends FlexibleManager
         );
     }
 }
-

@@ -98,9 +98,7 @@ class ProductController extends Controller
     /**
      * Edit product
      *
-     * @param Product $entity     product
-     * @param string  $dataLocale data locale
-     * @param string  $dataScope  data scope
+     * @param integer $id
      *
      * @Route(
      *     "{id}/edit",
@@ -134,11 +132,16 @@ class ProductController extends Controller
 
                 $this->get('session')->getFlashBag()->add('success', 'Product successfully saved');
 
-                return $this->redirect($this->generateUrl('pim_product_product_edit', array(
-                    'id'         => $entity->getId(),
-                    'dataLocale' => $request->query->get('dataLocale'),
-                    'dataScope'  => $request->query->get('dataScope')
-                )));
+                return $this->redirect(
+                    $this->generateUrl(
+                        'pim_product_product_edit',
+                        array(
+                            'id'         => $entity->getId(),
+                            'dataLocale' => $request->query->get('dataLocale'),
+                            'dataScope'  => $request->query->get('dataScope')
+                        )
+                    )
+                );
             }
         }
 

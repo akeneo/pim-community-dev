@@ -41,6 +41,10 @@ class MediaManager
         $this->uploadDirectory = $uploadDirectory;
     }
 
+    /**
+     * @param Media  $media
+     * @param string $filenamePrefix
+     */
     public function handle(Media $media, $filenamePrefix)
     {
         if (null !== $file = $media->getFile()) {
@@ -53,6 +57,12 @@ class MediaManager
         }
     }
 
+    /**
+     * @param File   $file
+     * @param string $filenamePrefix
+     *
+     * @return string
+     */
     private function generateFilename(File $file, $filenamePrefix)
     {
         return sprintf('%s-%s', $filenamePrefix, $file->getClientOriginalName());

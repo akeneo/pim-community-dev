@@ -47,4 +47,3 @@ class AttributeOptionType extends FlexibleAttributeOptionType
         );
     }
 }
-
