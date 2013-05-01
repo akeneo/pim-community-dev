@@ -467,7 +467,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
+                    "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -533,7 +533,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
+                    "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -681,12 +681,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "4abe8f7602e0f4079848950190fb6798781c94c7"
+                "reference": "ac0c0630e63ae5b3c569996aac8f174a74ba599b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/4abe8f7602e0f4079848950190fb6798781c94c7",
-                "reference": "4abe8f7602e0f4079848950190fb6798781c94c7",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/ac0c0630e63ae5b3c569996aac8f174a74ba599b",
+                "reference": "ac0c0630e63ae5b3c569996aac8f174a74ba599b",
                 "shasum": ""
             },
             "require": {
@@ -736,7 +736,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2013-04-20 08:33:51"
+            "time": "2013-05-01 17:16:27"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -916,7 +916,7 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes Schmitt",
+                    "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -995,12 +995,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/doctrine2.git",
-                "reference": "ad7b5871bf47040f2d9955cd00409c5a13e3f3f4"
+                "reference": "6063fe4adf3b1d8c0d608f103f55a5562a579391"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/ad7b5871bf47040f2d9955cd00409c5a13e3f3f4",
-                "reference": "ad7b5871bf47040f2d9955cd00409c5a13e3f3f4",
+                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/6063fe4adf3b1d8c0d608f103f55a5562a579391",
+                "reference": "6063fe4adf3b1d8c0d608f103f55a5562a579391",
                 "shasum": ""
             },
             "require": {
@@ -1057,7 +1057,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2013-04-23 20:26:59"
+            "time": "2013-05-01 09:01:17"
         },
         {
             "name": "escapestudios/wsse-authentication-bundle",
@@ -1293,12 +1293,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/l3pp4rd/DoctrineExtensions.git",
-                "reference": "91d608d5f4a437b47df4e482a964ef534da1e8a8"
+                "reference": "6b263e633615003fe9026fc8146a0e6a5a7f80b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/91d608d5f4a437b47df4e482a964ef534da1e8a8",
-                "reference": "91d608d5f4a437b47df4e482a964ef534da1e8a8",
+                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/6b263e633615003fe9026fc8146a0e6a5a7f80b4",
+                "reference": "6b263e633615003fe9026fc8146a0e6a5a7f80b4",
                 "shasum": ""
             },
             "require": {
@@ -1364,7 +1364,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2013-04-26 14:37:18"
+            "time": "2013-05-01 16:51:50"
         },
         {
             "name": "imagine/imagine",
@@ -2126,17 +2126,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpMenuBundle.git",
-                "reference": "8f84c396927809e885f7a17ef3737358c001d78f"
+                "reference": "a4d6b338e47920880d1c972143ef39ffb564665f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpMenuBundle/zipball/8f84c396927809e885f7a17ef3737358c001d78f",
-                "reference": "8f84c396927809e885f7a17ef3737358c001d78f",
+                "url": "https://api.github.com/repos/KnpLabs/KnpMenuBundle/zipball/a4d6b338e47920880d1c972143ef39ffb564665f",
+                "reference": "a4d6b338e47920880d1c972143ef39ffb564665f",
                 "shasum": ""
             },
             "require": {
                 "knplabs/knp-menu": "2.0.*",
-                "symfony/framework-bundle": ">=2.0,<2.3-dev"
+                "symfony/framework-bundle": ">=2.0,<2.4-dev"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -2171,7 +2171,7 @@
             "keywords": [
                 "menu"
             ],
-            "time": "2013-03-18 17:08:00"
+            "time": "2013-05-01 01:55:58"
         },
         {
             "name": "knplabs/knp-paginator-bundle",
@@ -2736,12 +2736,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/FlexibleEntityBundle.git",
-                "reference": "864d6e05389919d54e4f4658b718519a9ede62e4"
+                "reference": "22ae25eac8cafba546055fadfc613528922a6595"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/864d6e05389919d54e4f4658b718519a9ede62e4",
-                "reference": "864d6e05389919d54e4f4658b718519a9ede62e4",
+                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/22ae25eac8cafba546055fadfc613528922a6595",
+                "reference": "22ae25eac8cafba546055fadfc613528922a6595",
                 "shasum": ""
             },
             "require": {
@@ -2776,7 +2776,7 @@
                 "source": "https://github.com/laboro/FlexibleEntityBundle/tree/master",
                 "issues": "https://github.com/laboro/FlexibleEntityBundle/issues"
             },
-            "time": "2013-04-29 14:53:31"
+            "time": "2013-05-01 18:55:20"
         },
         {
             "name": "oro/grid-bundle",
@@ -3048,12 +3048,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/SoapBundle.git",
-                "reference": "b82e760fc9244b2efa961d04ac02059cad23e05c"
+                "reference": "8d59e58f35fba9b40a79b6e027314960e26a7372"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/SoapBundle/zipball/b82e760fc9244b2efa961d04ac02059cad23e05c",
-                "reference": "b82e760fc9244b2efa961d04ac02059cad23e05c",
+                "url": "https://api.github.com/repos/laboro/SoapBundle/zipball/8d59e58f35fba9b40a79b6e027314960e26a7372",
+                "reference": "8d59e58f35fba9b40a79b6e027314960e26a7372",
                 "shasum": ""
             },
             "require": {
@@ -3087,7 +3087,7 @@
                 "source": "https://github.com/laboro/SoapBundle/tree/master",
                 "issues": "https://github.com/laboro/SoapBundle/issues"
             },
-            "time": "2013-04-24 12:01:05"
+            "time": "2013-05-01 18:56:28"
         },
         {
             "name": "oro/ui-bundle",
@@ -3133,7 +3133,7 @@
                 "User Interface"
             ],
             "support": {
-                "source": "https://github.com/laboro/UIBundle/tree/master",
+                "source": "https://github.com/laboro/UIBundle/tree/grid_bundle",
                 "issues": "https://github.com/laboro/UIBundle/issues"
             },
             "time": "2013-04-30 14:13:55"
@@ -3145,12 +3145,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/UserBundle.git",
-                "reference": "cf683493eae1c86ed4b453449cbd41f5a1c845ce"
+                "reference": "6a46864097c25a73bc185dff0329b6701427cce2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/cf683493eae1c86ed4b453449cbd41f5a1c845ce",
-                "reference": "cf683493eae1c86ed4b453449cbd41f5a1c845ce",
+                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/6a46864097c25a73bc185dff0329b6701427cce2",
+                "reference": "6a46864097c25a73bc185dff0329b6701427cce2",
                 "shasum": ""
             },
             "require": {
@@ -3194,7 +3194,7 @@
                 "source": "https://github.com/laboro/UserBundle/tree/master",
                 "issues": "https://github.com/laboro/UserBundle/issues"
             },
-            "time": "2013-04-30 14:14:03"
+            "time": "2013-05-01 18:55:49"
         },
         {
             "name": "oro/windows-bundle",
@@ -4079,12 +4079,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "02e9b19f29de20ed77ffe649e6cdde4a6949b101"
+                "reference": "030695752be5f9c3c992f1119fec57432195eb98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/02e9b19f29de20ed77ffe649e6cdde4a6949b101",
-                "reference": "02e9b19f29de20ed77ffe649e6cdde4a6949b101",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/030695752be5f9c3c992f1119fec57432195eb98",
+                "reference": "030695752be5f9c3c992f1119fec57432195eb98",
                 "shasum": ""
             },
             "require": {
@@ -4159,7 +4159,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2013-04-30 07:12:45"
+            "time": "2013-05-01 04:14:15"
         },
         {
             "name": "twig/extensions",
@@ -4214,12 +4214,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "536ea37d1f87a882ce8a5d62680caf881ecaf6fe"
+                "reference": "7f70bbf77581c25a5b225823e2dde578b63fddb3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/536ea37d1f87a882ce8a5d62680caf881ecaf6fe",
-                "reference": "536ea37d1f87a882ce8a5d62680caf881ecaf6fe",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/7f70bbf77581c25a5b225823e2dde578b63fddb3",
+                "reference": "7f70bbf77581c25a5b225823e2dde578b63fddb3",
                 "shasum": ""
             },
             "require": {
@@ -4228,7 +4228,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.12-dev"
+                    "dev-master": "1.13-dev"
                 }
             },
             "autoload": {
@@ -4255,7 +4255,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-04-26 09:34:36"
+            "time": "2013-05-01 19:03:39"
         },
         {
             "name": "ys-tools/back-url-bundle",
@@ -4355,12 +4355,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendEscaper.git",
-                "reference": "release-2.1.5"
+                "reference": "2350e646ff2d6d4c003c60d3e9c527d8e45c40ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendEscaper/zipball/release-2.1.5",
-                "reference": "release-2.1.5",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendEscaper/zipball/2350e646ff2d6d4c003c60d3e9c527d8e45c40ff",
+                "reference": "2350e646ff2d6d4c003c60d3e9c527d8e45c40ff",
                 "shasum": ""
             },
             "require": {
@@ -4386,7 +4386,7 @@
                 "escaper",
                 "zf2"
             ],
-            "time": "2013-04-17 11:42:28"
+            "time": "2013-05-01 18:00:15"
         },
         {
             "name": "zendframework/zend-eventmanager",
@@ -4829,12 +4829,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendValidator.git",
-                "reference": "406433977c57b21062a93bed34b8b39c3162fba0"
+                "reference": "983c0fcf1f7c21d44ec59fa7aeb3446bc1c76870"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendValidator/zipball/406433977c57b21062a93bed34b8b39c3162fba0",
-                "reference": "406433977c57b21062a93bed34b8b39c3162fba0",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendValidator/zipball/983c0fcf1f7c21d44ec59fa7aeb3446bc1c76870",
+                "reference": "983c0fcf1f7c21d44ec59fa7aeb3446bc1c76870",
                 "shasum": ""
             },
             "require": {
@@ -4871,7 +4871,7 @@
                 "validator",
                 "zf2"
             ],
-            "time": "2013-04-22 19:13:13"
+            "time": "2013-05-01 18:00:20"
         }
     ],
     "packages-dev": [
