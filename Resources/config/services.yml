@@ -73,6 +73,18 @@ services:
         arguments: ["pim_export_profile_form", "pim_export_profile"]
 
     # Types
+    pim_product.form.type.product:
+        class: Pim\Bundle\ProductBundle\Form\Type\ProductType
+        arguments: [@product_manager, 'pim_product_value']
+        tags:
+            - { name: form.type, alias: pim_product }
+
+    pim_product.form.type.product_value:
+        class: Pim\Bundle\ProductBundle\Form\Type\ProductValueType
+        arguments: [@product_manager]
+        tags:
+            - { name: form.type, alias: pim_product_value }
+
     pim_product.form.type.attribute:
         class: %product_attribute_type_class%
         tags:
@@ -126,13 +138,6 @@ services:
     pim_media_manager:
         class: Pim\Bundle\ProductBundle\Manager\MediaManager
         arguments: [@knp_gaufrette.filesystem_map, "pim", %upload_dir%]
-
-    # Product form value type
-    form.type.pim_product_value:
-        class: Pim\Bundle\ProductBundle\Form\Type\ProductValueType
-        arguments: [@product_manager, %product_attribute_value_class%]
-        tags:
-            - { name: form.type, alias: pim_product_value }
 
     # Attribute manager
     pim_product.attribute_service:

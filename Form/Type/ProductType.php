@@ -28,4 +28,12 @@ class ProductType extends FlexibleType
             ->add('productFamily')
             ->add('languages', 'collection', array('type' => new ProductLanguageType));
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'pim_product';
+    }
 }

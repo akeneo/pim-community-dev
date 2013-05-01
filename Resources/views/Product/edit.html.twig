@@ -98,7 +98,12 @@
                     <h3>{{ group.name|trans }}</h3>
                     <div> {# will generate a <div></div> for first iteration #}
                         {% for formValue in form.values %}
-                            {% if group.id == formValue.group.vars.value %}
+                            {% if formValue.vars.value.attribute.group is null %}
+                                {% set groupId = 0 %}
+                            {% else %}
+                                {% set groupId = formValue.vars.value.attribute.group.id %}
+                            {% endif %}
+                            {% if group.id == groupId %}
                                 {% if attributeCode != formValue.vars.value.attribute.code %}
                                     </div>
                                     {% if formValue.vars.value.attribute.scopable %}

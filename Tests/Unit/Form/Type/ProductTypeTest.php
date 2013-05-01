@@ -103,7 +103,7 @@ class ProductTypeTest extends TypeTestCase
 
         $this->assertEquals($this->flexibleClass, $this->form->getConfig()->getDataClass());
 
-        $this->assertEquals('oro_flexibleentity_entity', $this->form->getName());
+        $this->assertEquals('pim_product', $this->form->getName());
     }
 
     /**

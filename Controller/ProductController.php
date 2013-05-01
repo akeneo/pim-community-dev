@@ -120,7 +120,7 @@ class ProductController extends Controller
         $request = $this->getRequest();
 
         // create form
-        $form = $this->createForm(new ProductType($this->getProductManager(), 'pim_product_value'), $entity);
+        $form = $this->createForm('pim_product', $entity);
         $groups = $this->getDoctrine()->getRepository('PimProductBundle:AttributeGroup')->findAllWithVirtualGroup();
         $channels = $this->getDoctrine()->getRepository('PimConfigBundle:Channel')->findAll();
 

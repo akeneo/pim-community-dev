@@ -23,23 +23,6 @@ class ProductValueType extends FlexibleValueType
     /**
      * {@inheritdoc}
      */
-    public function addSubscriber(FormBuilderInterface $builder)
-    {
-        parent::addSubscriber($builder);
-
-        // TODO : datamodel refactoring ? :
-        // -> this custom type and subscriber should be avoided if we have relation between group and attribute
-        // add a subscriber to deal with display values in relevant attribute group
-        $subscriber = new AddAttributeGroupSubscriber(
-            $builder->getFormFactory(),
-            $this->flexibleManager->getStorageManager()
-        );
-        $builder->addEventSubscriber($subscriber);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return 'pim_product_value';
