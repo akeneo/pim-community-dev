@@ -47,7 +47,7 @@ class ChannelDatagridManager extends DatagridManager
     {
         return array(
             new UrlProperty('edit_link', $this->router, 'pim_config_channel_edit', array('id')),
-            new UrlProperty('delete_link', $this->router, 'pim_config_channel_remove', array('id'))
+            new UrlProperty('delete_link', $this->router, 'pim_config_apirestchannel_delete', array('id'))
         );
     }
 
@@ -58,6 +58,22 @@ class ChannelDatagridManager extends DatagridManager
     {
         if (!$this->fieldsCollection) {
             $this->fieldsCollection = new FieldDescriptionCollection();
+
+            $field = new FieldDescription();
+            $field->setName('id');
+            $field->setOptions(
+                array(
+                    'type'        => FieldDescriptionInterface::TYPE_INTEGER,
+                    'label'       => $this->translator->trans('Id'),
+                    'field_name'  => 'id',
+                    'filter_type' => FilterInterface::TYPE_NUMBER,
+                    'required'    => false,
+                    'sortable'    => true,
+                    'filterable'  => true,
+                    'show_filter' => true,
+                )
+            );
+            $this->fieldsCollection->add($field);
 
             $field = new FieldDescription();
             $field->setName('code');
@@ -165,18 +181,17 @@ class ChannelDatagridManager extends DatagridManager
             )
         );
 
-        $disableAction = array(
+        $deleteAction = array(
             'name'         => 'delete',
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'root',
             'options'      => array(
                 'label'   => $this->translator->trans('Delete'),
                 'icon'    => 'trash',
-                'link'    => 'delete_link',
-                'backUrl' => true
+                'link'    => 'delete_link'
             )
         );
 
-        return array($clickAction, $editAction, $disableAction);
+        return array($clickAction, $editAction, $deleteAction);
     }
 }
