@@ -127,7 +127,7 @@ class CurrencyController extends Controller
      *
      * @Route("/disable/{id}", requirements={"id"="\d+"})
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function disableAction(Currency $currency)
     {
