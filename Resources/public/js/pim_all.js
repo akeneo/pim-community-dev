@@ -1,4 +1,7 @@
 $(function() {
+    // Prevent UniformJS from breaking our stuff
+    $(document).uniform.restore();
+
     // Apply Select2
     $('select').select2({ allowClear: true });
 
