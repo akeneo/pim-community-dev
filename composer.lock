@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "69dade22acd3083d469c03813bf7a6bd",
+    "hash": "8b1a1aa1107d45ef20a4dda9238d9a65",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -467,7 +467,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -533,7 +533,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -916,7 +916,7 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -2521,17 +2521,64 @@
             "time": "2013-04-30 08:52:19"
         },
         {
+            "name": "oro/address-bundle",
+            "version": "dev-master",
+            "target-dir": "Oro/Bundle/AddressBundle",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:laboro/AddressBundle.git",
+                "reference": "4cdbd3ff86bee554c10d177b66dcf245bc82f1f7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laboro/AddressBundle/zipball/4cdbd3ff86bee554c10d177b66dcf245bc82f1f7",
+                "reference": "4cdbd3ff86bee554c10d177b66dcf245bc82f1f7",
+                "shasum": ""
+            },
+            "require": {
+                "besimple/soap-bundle": "dev-master",
+                "friendsofsymfony/jsrouting-bundle": "1.1.*@dev",
+                "friendsofsymfony/rest-bundle": "0.11.*",
+                "nelmio/api-doc-bundle": "dev-master",
+                "oro/flexible-entity-bundle": "dev-master",
+                "php": ">=5.3.3",
+                "symfony/icu": "1.2.*@dev",
+                "symfony/intl": "2.3.*@dev",
+                "symfony/symfony": "2.1.*"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Oro\\Bundle\\AddressBundle": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "BAP Address Bundle",
+            "homepage": "https://github.com/laboro/AddressBundle",
+            "keywords": [
+                "Address",
+                "BAP"
+            ],
+            "support": {
+                "source": "https://github.com/laboro/AddressBundle/tree/master",
+                "issues": "https://github.com/laboro/AddressBundle/issues"
+            },
+            "time": "2013-05-02 12:44:59"
+        },
+        {
             "name": "oro/bap",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/bap.git",
-                "reference": "b971bdcb95f7b4c437be98b41ef26d90f307a41d"
+                "reference": "2ad0a73f34ced3c0f593f4fa3d932d3f2b5f2280"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/bap/zipball/b971bdcb95f7b4c437be98b41ef26d90f307a41d",
-                "reference": "b971bdcb95f7b4c437be98b41ef26d90f307a41d",
+                "url": "https://api.github.com/repos/laboro/bap/zipball/2ad0a73f34ced3c0f593f4fa3d932d3f2b5f2280",
+                "reference": "2ad0a73f34ced3c0f593f4fa3d932d3f2b5f2280",
                 "shasum": ""
             },
             "require": {
@@ -2539,6 +2586,7 @@
                 "doctrine/orm": ">=2.2.3,<2.4-dev",
                 "jms/di-extra-bundle": "1.3.*@dev",
                 "kriswallsmith/assetic": "1.1.*@dev",
+                "oro/address-bundle": "dev-master",
                 "oro/config-bundle": "dev-master",
                 "oro/data-flow-bundle": "dev-master",
                 "oro/filter-bundle": "dev-master",
@@ -2582,7 +2630,7 @@
                 "source": "https://github.com/laboro/bap/tree/master",
                 "issues": "https://github.com/laboro/bap/issues"
             },
-            "time": "2013-04-29 10:33:47"
+            "time": "2013-05-02 13:03:00"
         },
         {
             "name": "oro/config-bundle",
@@ -3133,7 +3181,7 @@
                 "User Interface"
             ],
             "support": {
-                "source": "https://github.com/laboro/UIBundle/tree/grid_bundle",
+                "source": "https://github.com/laboro/UIBundle/tree/master",
                 "issues": "https://github.com/laboro/UIBundle/issues"
             },
             "time": "2013-04-30 14:13:55"
@@ -3960,6 +4008,131 @@
             "time": "2013-03-25 20:16:21"
         },
         {
+            "name": "symfony/icu",
+            "version": "1.2.x-dev",
+            "target-dir": "Symfony/Component/Icu",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Icu.git",
+                "reference": "v1.2.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Icu/zipball/v1.2.0",
+                "reference": "v1.2.0",
+                "shasum": ""
+            },
+            "require": {
+                "lib-icu": ">=4.4",
+                "php": ">=5.3.3",
+                "symfony/intl": ">=2.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Icu\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Bernhard Schussek",
+                    "email": "bschussek@gmail.com"
+                }
+            ],
+            "description": "Contains an excerpt of the ICU data and classes to load it.",
+            "homepage": "http://symfony.com",
+            "keywords": [
+                "icu",
+                "intl"
+            ],
+            "time": "2013-04-05 10:34:44"
+        },
+        {
+            "name": "symfony/intl",
+            "version": "dev-master",
+            "target-dir": "Symfony/Component/Intl",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Intl.git",
+                "reference": "c93d63a221ac4ce678f253ebcdb522ff144a7c77"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Intl/zipball/c93d63a221ac4ce678f253ebcdb522ff144a7c77",
+                "reference": "c93d63a221ac4ce678f253ebcdb522ff144a7c77",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "symfony/icu": ">=1.0,<2.0"
+            },
+            "require-dev": {
+                "symfony/filesystem": ">=2.1"
+            },
+            "suggest": {
+                "ext-intl": "to use the component with locales other than \"en\""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Intl\\": ""
+                },
+                "classmap": [
+                    "Symfony/Component/Intl/Resources/stubs"
+                ],
+                "files": [
+                    "Symfony/Component/Intl/Resources/stubs/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Igor Wiedler",
+                    "email": "igor@wiedler.ch",
+                    "homepage": "http://wiedler.ch/igor/"
+                },
+                {
+                    "name": "Bernhard Schussek",
+                    "email": "bschussek@gmail.com"
+                },
+                {
+                    "name": "Eriksen Costa",
+                    "email": "eriksen.costa@infranology.com.br"
+                }
+            ],
+            "description": "A PHP replacement layer for the C intl extension that includes additional data from the ICU library.",
+            "homepage": "http://symfony.com",
+            "keywords": [
+                "i18n",
+                "icu",
+                "internationalization",
+                "intl",
+                "l10n",
+                "localization"
+            ],
+            "time": "2013-04-22 04:31:56"
+        },
+        {
             "name": "symfony/monolog-bundle",
             "version": "2.1.x-dev",
             "target-dir": "Symfony/Bundle/MonologBundle",
@@ -4302,17 +4475,17 @@
         },
         {
             "name": "zendframework/zend-code",
-            "version": "dev-master",
+            "version": "2.1.5",
             "target-dir": "Zend/Code",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendCode.git",
-                "reference": "326977e34e7e3c4533f1de371e4effb89c74f982"
+                "reference": "release-2.1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendCode/zipball/326977e34e7e3c4533f1de371e4effb89c74f982",
-                "reference": "326977e34e7e3c4533f1de371e4effb89c74f982",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendCode/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
                 "shasum": ""
             },
             "require": {
@@ -4346,21 +4519,21 @@
                 "code",
                 "zf2"
             ],
-            "time": "2013-04-22 19:13:02"
+            "time": "2013-04-17 11:42:28"
         },
         {
             "name": "zendframework/zend-escaper",
-            "version": "dev-master",
+            "version": "2.1.5",
             "target-dir": "Zend/Escaper",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendEscaper.git",
-                "reference": "2350e646ff2d6d4c003c60d3e9c527d8e45c40ff"
+                "reference": "release-2.1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendEscaper/zipball/2350e646ff2d6d4c003c60d3e9c527d8e45c40ff",
-                "reference": "2350e646ff2d6d4c003c60d3e9c527d8e45c40ff",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendEscaper/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
                 "shasum": ""
             },
             "require": {
@@ -4386,11 +4559,11 @@
                 "escaper",
                 "zf2"
             ],
-            "time": "2013-05-01 18:00:15"
+            "time": "2013-04-17 11:42:28"
         },
         {
             "name": "zendframework/zend-eventmanager",
-            "version": "dev-master",
+            "version": "2.1.5",
             "target-dir": "Zend/EventManager",
             "source": {
                 "type": "git",
@@ -4431,25 +4604,25 @@
         },
         {
             "name": "zendframework/zend-i18n",
-            "version": "dev-master",
+            "version": "2.1.5",
             "target-dir": "Zend/I18n",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendI18n.git",
-                "reference": "fab6502c305bb9cdb86a89f715b22a5b0cb7d406"
+                "reference": "release-2.1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendI18n/zipball/fab6502c305bb9cdb86a89f715b22a5b0cb7d406",
-                "reference": "fab6502c305bb9cdb86a89f715b22a5b0cb7d406",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendI18n/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
                 "shasum": ""
             },
             "require": {
+                "ext-intl": "*",
                 "php": ">=5.3.3",
                 "zendframework/zend-stdlib": "self.version"
             },
             "suggest": {
-                "ext-intl": "Required for most features of Zend\\I18n; included in default builds of PHP",
                 "zendframework/zend-filter": "You should install this package to use the provided filters",
                 "zendframework/zend-validator": "You should install this package to use the provided validators",
                 "zendframework/zend-view": "You should install this package to use the provided view helpers"
@@ -4474,11 +4647,11 @@
                 "i18n",
                 "zf2"
             ],
-            "time": "2013-04-25 18:00:09"
+            "time": "2013-04-10 18:14:09"
         },
         {
             "name": "zendframework/zend-loader",
-            "version": "dev-master",
+            "version": "2.1.5",
             "target-dir": "Zend/Loader",
             "source": {
                 "type": "git",
@@ -4521,7 +4694,7 @@
         },
         {
             "name": "zendframework/zend-mail",
-            "version": "dev-master",
+            "version": "2.1.5",
             "target-dir": "Zend/Mail",
             "source": {
                 "type": "git",
@@ -4569,7 +4742,7 @@
         },
         {
             "name": "zendframework/zend-mime",
-            "version": "dev-master",
+            "version": "2.1.5",
             "target-dir": "Zend/Mime",
             "source": {
                 "type": "git",
@@ -4610,7 +4783,7 @@
         },
         {
             "name": "zendframework/zend-server",
-            "version": "dev-master",
+            "version": "2.1.5",
             "target-dir": "Zend/Server",
             "source": {
                 "type": "git",
@@ -4652,17 +4825,17 @@
         },
         {
             "name": "zendframework/zend-servicemanager",
-            "version": "dev-master",
+            "version": "2.1.5",
             "target-dir": "Zend/ServiceManager",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendServiceManager.git",
-                "reference": "51be8e207baa2b064c3ac838b6420607802f84eb"
+                "reference": "release-2.1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendServiceManager/zipball/51be8e207baa2b064c3ac838b6420607802f84eb",
-                "reference": "51be8e207baa2b064c3ac838b6420607802f84eb",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendServiceManager/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
                 "shasum": ""
             },
             "require": {
@@ -4691,11 +4864,11 @@
                 "servicemanager",
                 "zf2"
             ],
-            "time": "2013-04-22 19:13:09"
+            "time": "2013-04-17 11:42:28"
         },
         {
             "name": "zendframework/zend-soap",
-            "version": "dev-master",
+            "version": "2.1.5",
             "target-dir": "Zend/Soap",
             "source": {
                 "type": "git",
@@ -4738,17 +4911,17 @@
         },
         {
             "name": "zendframework/zend-stdlib",
-            "version": "dev-master",
+            "version": "2.1.5",
             "target-dir": "Zend/Stdlib",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendStdlib.git",
-                "reference": "df2681f906df76ac4d6738800834828fc17a50ab"
+                "reference": "release-2.1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendStdlib/zipball/df2681f906df76ac4d6738800834828fc17a50ab",
-                "reference": "df2681f906df76ac4d6738800834828fc17a50ab",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendStdlib/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
                 "shasum": ""
             },
             "require": {
@@ -4777,21 +4950,21 @@
                 "stdlib",
                 "zf2"
             ],
-            "time": "2013-04-26 20:00:10"
+            "time": "2013-04-15 11:43:47"
         },
         {
             "name": "zendframework/zend-uri",
-            "version": "dev-master",
+            "version": "2.1.5",
             "target-dir": "Zend/Uri",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendUri.git",
-                "reference": "49c416d411d9ff6e1563a511f8d32cfe6328e053"
+                "reference": "release-2.1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendUri/zipball/49c416d411d9ff6e1563a511f8d32cfe6328e053",
-                "reference": "49c416d411d9ff6e1563a511f8d32cfe6328e053",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendUri/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
                 "shasum": ""
             },
             "require": {
@@ -4820,21 +4993,21 @@
                 "uri",
                 "zf2"
             ],
-            "time": "2013-04-22 19:13:10"
+            "time": "2013-04-17 11:42:28"
         },
         {
             "name": "zendframework/zend-validator",
-            "version": "dev-master",
+            "version": "2.1.5",
             "target-dir": "Zend/Validator",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendValidator.git",
-                "reference": "983c0fcf1f7c21d44ec59fa7aeb3446bc1c76870"
+                "reference": "release-2.1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendValidator/zipball/983c0fcf1f7c21d44ec59fa7aeb3446bc1c76870",
-                "reference": "983c0fcf1f7c21d44ec59fa7aeb3446bc1c76870",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendValidator/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
                 "shasum": ""
             },
             "require": {
@@ -4871,7 +5044,7 @@
                 "validator",
                 "zf2"
             ],
-            "time": "2013-05-01 18:00:20"
+            "time": "2013-04-04 15:00:49"
         }
     ],
     "packages-dev": [
@@ -5338,12 +5511,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/BehatPageObjectExtension.git",
-                "reference": "v1.0.0"
+                "reference": "096c47eae6f50c2fa5a18aff868867b956edd4b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/BehatPageObjectExtension/zipball/v1.0.0",
-                "reference": "v1.0.0",
+                "url": "https://api.github.com/repos/sensiolabs/BehatPageObjectExtension/zipball/096c47eae6f50c2fa5a18aff868867b956edd4b4",
+                "reference": "096c47eae6f50c2fa5a18aff868867b956edd4b4",
                 "shasum": ""
             },
             "require": {
@@ -5352,8 +5525,7 @@
                 "php": ">=5.3.0"
             },
             "require-dev": {
-                "phpspec/php-diff": "*@dev",
-                "phpspec/phpspec2": "dev-develop"
+                "phpspec/phpspec": "dev-master"
             },
             "suggest": {
                 "bossa/phpspec2-expect": "Allows to use PHPSpec2 matchers in Behat context files"
@@ -5361,7 +5533,8 @@
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "SensioLabs\\Behat\\PageObjectExtension\\": "src/"
+                    "SensioLabs\\Behat\\PageObjectExtension\\": "src/",
+                    "spec\\": "."
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -5385,7 +5558,7 @@
                 "Behat",
                 "page"
             ],
-            "time": "2013-04-11 10:45:23"
+            "time": "2013-05-02 08:17:03"
         }
     ],
     "aliases": [

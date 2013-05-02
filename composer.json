@@ -32,6 +32,11 @@
         },
         {
             "type": "vcs",
+            "url": "https://github.com/laboro/AddressBundle",
+            "branch": "master"
+        },
+        {
+            "type": "vcs",
             "url": "https://github.com/laboro/ConfigBundle",
             "branch": "master"
         },
@@ -39,6 +44,10 @@
             "type": "vcs",
             "url": "https://github.com/laboro/DataFlowBundle",
             "branch": "master"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/laboro/FilterBundle"
         },
         {
             "type": "vcs",
@@ -89,10 +98,6 @@
             "type": "vcs",
             "url": "https://github.com/laboro/WindowsBundle",
             "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/FilterBundle"
         },
         {
             "type": "vcs",
