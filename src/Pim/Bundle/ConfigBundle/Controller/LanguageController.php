@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Component\HttpFoundation\Request;
 
 use Pim\Bundle\ConfigBundle\Entity\Language;
@@ -133,8 +135,6 @@ class LanguageController extends Controller
         $this->getEntityManager()->persist($language);
         $this->getEntityManager()->flush();
 
-        $this->get('session')->getFlashBag()->add('success', 'Language successfully disable');
-
-        return $this->redirect($this->generateUrl('pim_config_language_index'));
+        return new Response('', 204);
     }
 }

@@ -45,7 +45,17 @@ class LocaleDatagridManager extends DatagridManager
      */
     protected function getProperties()
     {
+        $fieldId = new FieldDescription();
+        $fieldId->setName('id');
+        $fieldId->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
+                'required'    => true,
+            )
+        );
+
         return array(
+            new FieldProperty($fieldId),
             new UrlProperty('edit_link', $this->router, 'pim_config_language_edit', array('id')),
             new UrlProperty('disable_link', $this->router, 'pim_config_language_disable', array('id'))
         );

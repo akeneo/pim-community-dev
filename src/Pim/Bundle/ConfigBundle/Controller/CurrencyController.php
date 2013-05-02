@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ConfigBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Component\HttpFoundation\Request;
 
 use Pim\Bundle\ConfigBundle\Entity\Currency;
@@ -135,11 +137,9 @@ class CurrencyController extends Controller
             $this->getEntityManager()->persist($currency);
             $this->getEntityManager()->flush();
 
-            $this->get('session')->getFlashBag()->add('success', 'Currency successfully disable');
+            return new Response('', 204);
         } else {
-            $this->get('session')->getFlashBag()->add('info', 'Currency linked to languages... Can\'t be disabled');
+            return new Response('Currency linked to languages. Can`\t be disabled', 500);
         }
-
-        return $this->redirect($this->generateUrl('pim_config_currency_index'));
     }
 }
