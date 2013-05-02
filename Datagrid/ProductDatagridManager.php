@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Property\FieldProperty;
+
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -93,7 +95,17 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function getProperties()
     {
+        $fieldId = new FieldDescription();
+        $fieldId->setName('id');
+        $fieldId->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
+                'required'    => true,
+            )
+        );
+
         return array(
+            new FieldProperty($fieldId),
             new UrlProperty('edit_link', $this->router, 'pim_product_product_edit', array('id')),
             new UrlProperty('delete_link', $this->router, 'pim_product_product_remove', array('id')),
         );
@@ -254,8 +266,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             'options'      => array(
                 'label'   => $this->translator->trans('Delete'),
                 'icon'    => 'trash',
-                'link'    => 'delete_link',
-                'backUrl' => true
+                'link'    => 'delete_link'
             )
         );
 
