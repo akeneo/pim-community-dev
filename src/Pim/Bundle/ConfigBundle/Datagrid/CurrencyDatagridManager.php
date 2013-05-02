@@ -182,10 +182,9 @@ class CurrencyDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => $this->translator->trans('Disable'),
-                'icon'    => 'trash',
-                'link'    => 'disable_link',
-                'backUrl'       => true
+                'label' => $this->translator->trans('Disable'),
+                'icon'  => 'trash',
+                'link'  => 'disable_link'
             )
         );
 

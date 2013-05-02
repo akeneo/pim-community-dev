@@ -170,10 +170,10 @@ class ChannelDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'         => $this->translator->trans('Edit'),
-                'icon'          => 'edit',
-                'link'          => 'edit_link',
-                'backUrl'       => true
+                'label'   => $this->translator->trans('Edit'),
+                'icon'    => 'edit',
+                'link'    => 'edit_link',
+                'backUrl' => true
             )
         );
 
@@ -182,9 +182,9 @@ class ChannelDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => $this->translator->trans('Delete'),
-                'icon'    => 'trash',
-                'link'    => 'delete_link'
+                'label' => $this->translator->trans('Delete'),
+                'icon'  => 'trash',
+                'link'  => 'delete_link'
             )
         );
 
