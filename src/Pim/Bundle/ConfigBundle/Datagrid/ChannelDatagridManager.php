@@ -47,7 +47,7 @@ class ChannelDatagridManager extends DatagridManager
     {
         return array(
             new UrlProperty('edit_link', $this->router, 'pim_config_channel_edit', array('id')),
-            new UrlProperty('delete_link', $this->router, 'pim_config_apirestchannel_delete', array('id'))
+            new UrlProperty('delete_link', $this->router, 'pim_config_channel_remove', array('id'))
         );
     }
 

@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ConfigBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Component\HttpFoundation\Request;
 
 use Pim\Bundle\ConfigBundle\Entity\Channel;
@@ -132,8 +134,6 @@ class ChannelController extends Controller
         $this->getEntityManager()->remove($channel);
         $this->getEntityManager()->flush();
 
-        $this->get('session')->getFlashBag()->add('success', 'Channel successfully removed');
-
-        return $this->redirect($this->generateUrl('pim_config_channel_index'));
+        return new Response('', 204);
     }
 }
