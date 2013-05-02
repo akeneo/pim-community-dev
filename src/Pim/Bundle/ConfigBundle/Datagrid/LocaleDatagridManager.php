@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Property\FieldProperty;
+
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
