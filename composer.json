@@ -23,7 +23,10 @@
         "behat/mink-extension": "*",
         "behat/mink-browserkit-driver": "*",
         "sensiolabs/behat-page-object-extension": "*",
-        "behat/mink-selenium2-driver":  "1.0.*"
+        "behat/mink-selenium2-driver":  "1.0.*",
+        "besimple/soap-common": "dev-master",
+        "besimple/soap-server": "dev-master",
+        "besimple/soap-bundle": "dev-master"
     },
     "repositories": [
         {
