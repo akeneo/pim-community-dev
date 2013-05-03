@@ -179,4 +179,11 @@ class Product extends AbstractEntityFlexible
 
         return $this;
     }
+
+    public function getAttributes()
+    {
+        return array_map(function($value){
+            return $value->getAttribute();
+        }, $this->getValues()->toArray());
+    }
 }

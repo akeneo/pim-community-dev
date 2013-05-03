@@ -17,6 +17,22 @@
             </a>
             <div class="btn-group">
                 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="icon-plus"></i> Add attribute
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    {% set attributeGroup = true %}
+                    {% for attribute in attributes %}
+                        {% if attributeGroup != attribute.group %}
+                            <li><b>{{ attribute.group ? attribute.group.name : 'Other'}}</b></li>
+                        {% endif %}
+                        <li><a href="#">{{ attribute.name }}</a></li>
+                    {% set attributeGroup = attribute.group %}
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="btn-group">
+                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                     Displayed channel
                     <span class="caret"></span>
                 </a>

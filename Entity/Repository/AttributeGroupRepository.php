@@ -14,7 +14,6 @@ use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
  */
 class AttributeGroupRepository extends EntityRepository
 {
-
     /**
      * {@inheritdoc}
      */

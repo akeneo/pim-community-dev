@@ -120,9 +120,11 @@ class ProductController extends Controller
         $request = $this->getRequest();
 
         // create form
-        $form = $this->createForm('pim_product', $entity);
+        $form   = $this->createForm('pim_product', $entity);
         $groups = $this->getDoctrine()->getRepository('PimProductBundle:AttributeGroup')->findAllWithVirtualGroup();
-        $channels = $this->getDoctrine()->getRepository('PimConfigBundle:Channel')->findAll();
+
+        $channels   = $this->getDoctrine()->getRepository('PimConfigBundle:Channel')->findAll();
+        $attributes = $this->getDoctrine()->getRepository('PimProductBundle:ProductAttribute')->findAllExcept($entity->getAttributes());
 
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
@@ -151,6 +153,7 @@ class ProductController extends Controller
             'dataLocale' => $request->query->get('dataLocale', 'en_US'),
             'dataScope'  => $request->query->get('dataScope'),
             'channels'   => $channels,
+            'attributes' => $attributes,
         );
     }
 
