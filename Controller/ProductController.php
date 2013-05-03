@@ -3,14 +3,16 @@ namespace Pim\Bundle\ProductBundle\Controller;
 
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Pim\Bundle\ProductBundle\Manager\MediaManager;
-use Symfony\Component\HttpFoundation\File\File;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Form\Type\ProductType;
+use Pim\Bundle\ProductBundle\Form\Type\AvailableProductAttributesType;
+use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
+use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use YsTools\BackUrlBundle\Annotation\BackUrl;
 
 /**
@@ -110,27 +112,22 @@ class ProductController extends Controller
      */
     public function editAction($id)
     {
-        $entity = $this->getProductManager()->localizedFind($id);
-        if (!$entity) {
-            throw $this->createNotFoundException(
-                sprintf('Product with id %d could not be found.', $id)
-            );
-        }
-
+        $product  = $this->findProductOr404($id);
         $request = $this->getRequest();
 
         // create form
-        $form   = $this->createForm('pim_product', $entity);
+        $form   = $this->createForm('pim_product', $product);
         $groups = $this->getDoctrine()->getRepository('PimProductBundle:AttributeGroup')->findAllWithVirtualGroup();
 
         $channels   = $this->getDoctrine()->getRepository('PimConfigBundle:Channel')->findAll();
-        $attributes = $this->getDoctrine()->getRepository('PimProductBundle:ProductAttribute')->findAllExcept($entity->getAttributes());
+        $attributes = $this->getDoctrine()->getRepository('PimProductBundle:ProductAttribute')->findAllExcept($product->getAttributes());
+        $attributesForm = $this->createForm(new AvailableProductAttributesType, new AvailableProductAttributes($attributes));
 
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
 
             if ($form->isValid()) {
-                $this->getProductManager()->save($entity);
+                $this->getProductManager()->save($product);
 
                 $this->get('session')->getFlashBag()->add('success', 'Product successfully saved');
 
@@ -138,7 +135,7 @@ class ProductController extends Controller
                     $this->generateUrl(
                         'pim_product_product_edit',
                         array(
-                            'id'         => $entity->getId(),
+                            'id'         => $product->getId(),
                             'dataLocale' => $request->query->get('dataLocale'),
                             'dataScope'  => $request->query->get('dataScope')
                         )
@@ -148,13 +145,42 @@ class ProductController extends Controller
         }
 
         return array(
-            'form'       => $form->createView(),
-            'groups'     => $groups,
-            'dataLocale' => $request->query->get('dataLocale', 'en_US'),
-            'dataScope'  => $request->query->get('dataScope'),
-            'channels'   => $channels,
-            'attributes' => $attributes,
+            'form'           => $form->createView(),
+            'groups'         => $groups,
+            'dataLocale'     => $request->query->get('dataLocale', 'en_US'),
+            'dataScope'      => $request->query->get('dataScope'),
+            'channels'       => $channels,
+            'attributesForm' => $attributesForm->createView(),
+            'product'        => $product,
         );
+    }
+
+    /**
+     * Add attributes to product
+     *
+     * @Route("/{id}/attributes", requirements={"id"="\d+", "_method"="POST"})
+     */
+    public function addProductAttributes($id)
+    {
+        $product             = $this->findProductOr404($id);
+        $attributes          = $this->getDoctrine()->getRepository('PimProductBundle:ProductAttribute')->findAllExcept($product->getAttributes());
+        $availableAttributes = new AvailableProductAttributes($attributes);
+        $attributesForm      = $this->createForm(new AvailableProductAttributesType, $availableAttributes);
+
+        $attributesForm->bind($this->getRequest());
+
+        foreach ($availableAttributes->getAttributesToAdd() as $attribute) {
+            $value = $this->getProductManager()->createFlexibleValue();
+            $value->setAttribute($attribute);
+            $value->setData(null);
+            $product->addValue($value);
+        }
+
+        $this->getProductManager()->save($product);
+
+        return $this->redirect($this->generateUrl('pim_product_product_edit', array(
+            'id' => $product->getId(),
+        )));
     }
 
     /**
@@ -177,5 +203,17 @@ class ProductController extends Controller
         $this->get('session')->getFlashBag()->add('success', 'Product successfully removed');
 
         return $this->redirect($this->generateUrl('pim_product_product_index'));
+    }
+
+    private function findProductOr404($id)
+    {
+        $product = $this->getProductManager()->localizedFind($id);
+        if (!$product) {
+            throw $this->createNotFoundException(
+                sprintf('Product with id %d could not be found.', $id)
+            );
+        }
+
+        return $product;
     }
 }
