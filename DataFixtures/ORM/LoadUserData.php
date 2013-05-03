@@ -151,18 +151,19 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     /**
      * Creates a user
      *
-     * @param string $username
-     * @param string $email
-     * @param string $firstName
-     * @param string $lastName
-     * @param string $middleName
+     * @param string    $username
+     * @param string    $email
+     * @param string    $firstName
+     * @param string    $lastName
+     * @param string    $middleName
      * @param \DateTime $birthday
-     * @param int $salary
-     * @param string $company
-     * @param string $website
-     * @param string $gender
-     * @param array $hobbies
+     * @param int       $salary
+     * @param string    $company
+     * @param string    $website
+     * @param string    $gender
+     * @param array     $hobbies
      * @param \DateTime $lastVisit
+     *
      * @return User
      */
     private function createUser(
@@ -203,9 +204,11 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      * Sets a flexible attribute value
      *
      * @param AbstractFlexible $flexibleEntity
-     * @param string $attributeCode
-     * @param string $value
+     * @param string           $attributeCode
+     * @param string           $value
+     *
      * @return void
+     *
      * @throws \LogicException
      */
     private function setFlexibleAttributeValue(AbstractFlexible $flexibleEntity, $attributeCode, $value)
@@ -221,8 +224,9 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      * Sets a flexible attribute value as option with given value
      *
      * @param AbstractFlexible $flexibleEntity
-     * @param string $attributeCode
-     * @param string $value
+     * @param string           $attributeCode
+     * @param string           $value
+     *
      * @return void
      * @throws \LogicException
      */
@@ -240,8 +244,9 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      * Adds option values to flexible attribute value
      *
      * @param AbstractFlexible $flexibleEntity
-     * @param string $attributeCode
-     * @param array $values
+     * @param string           $attributeCode
+     * @param array            $values
+     *
      * @return void
      * @throws \LogicException
      */
@@ -262,7 +267,8 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      * Finds an attribute option with value
      *
      * @param AbstractAttribute $attribute
-     * @param string $value
+     * @param string            $value
+     *
      * @return AbstractAttributeOption
      * @throws \LogicException
      */
@@ -286,8 +292,9 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     /**
      * Gets or creates a flexible value for attribute
      *
-     * @param AbstractFlexible $flexibleEntity
+     * @param AbstractFlexible  $flexibleEntity
      * @param AbstractAttribute $attribute
+     *
      * @return FlexibleValueInterface
      */
     private function getFlexibleValueForAttribute(AbstractFlexible $flexibleEntity, AbstractAttribute $attribute)
@@ -298,6 +305,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
             $flexibleValue->setAttribute($attribute);
             $flexibleEntity->addValue($flexibleValue);
         }
+
         return $flexibleValue;
     }
 
@@ -305,6 +313,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      * Finds an attribute
      *
      * @param string $attributeCode
+     *
      * @return AbstractAttribute
      */
     private function findAttribute($attributeCode)
@@ -317,6 +326,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      *
      * @param string $attributeType
      * @param string $attributeCode
+     *
      * @return AbstractAttribute
      */
     private function createAttribute($attributeType, $attributeCode)
@@ -331,7 +341,8 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      *
      * @param string $attributeType
      * @param string $attributeCode
-     * @param array $optionValues
+     * @param array  $optionValues
+     *
      * @return AbstractAttribute
      */
     private function createAttributeWithOptions(
@@ -343,6 +354,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         foreach ($optionValues as $value) {
             $attribute->addOption($this->createAttributeOptionWithValue($value));
         }
+
         return $attribute;
     }
 
@@ -350,6 +362,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      * Create an attribute option with value
      *
      * @param string $value
+     *
      * @return AbstractAttributeOption
      */
     private function createAttributeOptionWithValue($value)
@@ -357,6 +370,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $option = $this->userManager->createAttributeOption();
         $optionValue = $this->userManager->createAttributeOptionValue()->setValue($value);
         $option->addOptionValue($optionValue);
+
         return $option;
     }
 
@@ -365,11 +379,13 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      *
      * @param string $firstName
      * @param string $lastName
+     *
      * @return string
      */
     private function generateUsername($firstName, $lastName)
     {
         $uniqueString = substr(uniqid(rand()), -5, 5);
+
         return sprintf("%s.%s_%s", strtolower($firstName), strtolower($lastName), $uniqueString);
     }
 
@@ -378,6 +394,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      *
      * @param string $firstName
      * @param string $lastName
+     *
      * @return string
      */
     private function generateEmail($firstName, $lastName)
@@ -386,6 +403,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $domains = array('yahoo.com', 'gmail.com', 'example.com', 'hotmail.com', 'aol.com', 'msn.com');
         $randomIndex = rand(0, count($domains) - 1);
         $domain = $domains[$randomIndex];
+
         return sprintf("%s.%s_%s@%s", strtolower($firstName), strtolower($lastName), $uniqueString, $domain);
     }
 
@@ -416,6 +434,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      * Loads dictionary from file by name
      *
      * @param string $name
+     *
      * @return array
      */
     private function loadDictionary($name)
@@ -493,11 +512,13 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      *
      * @param string $firstName
      * @param string $lastName
+     *
      * @return string
      */
     private function generateWebsite($firstName, $lastName)
     {
         $domain = 'example.com';
+
         return sprintf("http://%s%s.%s", strtolower($firstName), strtolower($lastName), $domain);
     }
 
@@ -509,6 +530,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     private function generateGender()
     {
         $genders = array('Male', 'Female');
+
         return $genders[rand(0, 1)];
     }
 
@@ -522,6 +544,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $hobbies = self::getHobbies();
         $randomCount = rand(1, count($hobbies));
         shuffle($hobbies);
+
         return array_slice($hobbies, 0, $randomCount);
     }
 
@@ -534,6 +557,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     {
         $lastVisit = new \DateTime('now');
         $lastVisit->sub(new \DateInterval('P' . rand(1, 30) . 'D'));
+
         return $lastVisit;
     }
 
@@ -551,6 +575,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      * Persist object
      *
      * @param mixed $object
+     *
      * @return void
      */
     private function persist($object)
