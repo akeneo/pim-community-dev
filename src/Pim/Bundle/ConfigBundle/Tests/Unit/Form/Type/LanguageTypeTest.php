@@ -69,7 +69,7 @@ class LanguageTypeTest extends TypeTestCase
         // Assert fields
 //         $this->assertField('id', 'hidden');
 //         $this->assertField('code', 'locale');
-//         $this->assertField('activated', 'checkbox');
+//         $this->assertField('activated', 'hidden');
 
 //         // Assert option class
 //         $this->assertEquals(

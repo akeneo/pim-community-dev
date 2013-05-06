@@ -73,7 +73,7 @@ class CurrencyTypeTest extends TypeTestCase
         // Assert fields
         $this->assertField('id', 'hidden');
         $this->assertField('code', 'choice');
-        $this->assertField('activated', 'checkbox');
+        $this->assertField('activated', 'hidden');
 
         // Assert option class
         $this->assertEquals(
