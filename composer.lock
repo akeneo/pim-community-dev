@@ -2460,12 +2460,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/NelmioApiDocBundle.git",
-                "reference": "2.2.2"
+                "reference": "80b5162c83ebd6426f4181df806d787bc3a47ed8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/2.2.2",
-                "reference": "2.2.2",
+                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/80b5162c83ebd6426f4181df806d787bc3a47ed8",
+                "reference": "80b5162c83ebd6426f4181df806d787bc3a47ed8",
                 "shasum": ""
             },
             "require": {
@@ -2518,7 +2518,7 @@
                 "documentation",
                 "rest"
             ],
-            "time": "2013-05-06 08:00:51"
+            "time": "2013-05-06 08:04:13"
         },
         {
             "name": "oro/address-bundle",
@@ -3400,12 +3400,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensio/SensioDistributionBundle.git",
-                "reference": "6ba9c464d8cf408b1e5699673d6b7ce1eb0ead28"
+                "reference": "v2.1.10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensio/SensioDistributionBundle/zipball/6ba9c464d8cf408b1e5699673d6b7ce1eb0ead28",
-                "reference": "6ba9c464d8cf408b1e5699673d6b7ce1eb0ead28",
+                "url": "https://api.github.com/repos/sensio/SensioDistributionBundle/zipball/v2.1.10",
+                "reference": "v2.1.10",
                 "shasum": ""
             },
             "require": {
@@ -3446,12 +3446,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensio/SensioFrameworkExtraBundle.git",
-                "reference": "dcbd6941763c42a597085e35f9491c771290efc8"
+                "reference": "v2.1.10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensio/SensioFrameworkExtraBundle/zipball/dcbd6941763c42a597085e35f9491c771290efc8",
-                "reference": "dcbd6941763c42a597085e35f9491c771290efc8",
+                "url": "https://api.github.com/repos/sensio/SensioFrameworkExtraBundle/zipball/v2.1.10",
+                "reference": "v2.1.10",
                 "shasum": ""
             },
             "require": {
@@ -3493,12 +3493,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensio/SensioGeneratorBundle.git",
-                "reference": "689b26cca0a46dce7aa4b953b0cb1aa39c97d877"
+                "reference": "v2.1.10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensio/SensioGeneratorBundle/zipball/689b26cca0a46dce7aa4b953b0cb1aa39c97d877",
-                "reference": "689b26cca0a46dce7aa4b953b0cb1aa39c97d877",
+                "url": "https://api.github.com/repos/sensio/SensioGeneratorBundle/zipball/v2.1.10",
+                "reference": "v2.1.10",
                 "shasum": ""
             },
             "require": {
@@ -4198,12 +4198,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/SwiftmailerBundle.git",
-                "reference": "v2.1.9"
+                "reference": "v2.1.10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/SwiftmailerBundle/zipball/v2.1.9",
-                "reference": "v2.1.9",
+                "url": "https://api.github.com/repos/symfony/SwiftmailerBundle/zipball/v2.1.10",
+                "reference": "v2.1.10",
                 "shasum": ""
             },
             "require": {
@@ -4252,12 +4252,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "7deb9232361820835c9436e26c9277d92aa1a645"
+                "reference": "v2.1.10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/7deb9232361820835c9436e26c9277d92aa1a645",
-                "reference": "7deb9232361820835c9436e26c9277d92aa1a645",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/v2.1.10",
+                "reference": "v2.1.10",
                 "shasum": ""
             },
             "require": {
@@ -4332,7 +4332,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2013-05-06 06:31:43"
+            "time": "2013-05-06 11:01:51"
         },
         {
             "name": "twig/extensions",
