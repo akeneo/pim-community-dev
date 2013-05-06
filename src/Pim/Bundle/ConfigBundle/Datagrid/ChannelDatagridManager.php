@@ -21,25 +21,6 @@ use Oro\Bundle\GridBundle\Property\UrlProperty;
 class ChannelDatagridManager extends DatagridManager
 {
     /**
-     * @var FieldDescriptionCollection
-     */
-    protected $fieldsCollection;
-
-    /**
-     * @var Router
-     */
-    protected $router;
-
-    /**
-     * set router
-     * @param Router $router
-     */
-    public function setRouter(Router $router)
-    {
-        $this->router = $router;
-    }
-
-    /**
      * get properties
      * @return array
      */
@@ -54,45 +35,39 @@ class ChannelDatagridManager extends DatagridManager
     /**
      * {@inheritdoc}
      */
-    protected function getFieldDescriptionCollection()
+    protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        if (!$this->fieldsCollection) {
-            $this->fieldsCollection = new FieldDescriptionCollection();
+        $field = new FieldDescription();
+        $field->setName('code');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => $this->translator->trans('Code'),
+                'field_name'  => 'code',
+                'filter_type' => FilterInterface::TYPE_STRING,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+            )
+        );
+        $fieldsCollection->add($field);
 
-            $field = new FieldDescription();
-            $field->setName('code');
-            $field->setOptions(
-                array(
-                    'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                    'label'       => $this->translator->trans('Code'),
-                    'field_name'  => 'code',
-                    'filter_type' => FilterInterface::TYPE_STRING,
-                    'required'    => false,
-                    'sortable'    => true,
-                    'filterable'  => true,
-                    'show_filter' => true,
-                )
-            );
-            $this->fieldsCollection->add($field);
-
-            $field = new FieldDescription();
-            $field->setName('name');
-            $field->setOptions(
-                array(
-                    'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                    'label'       => $this->translator->trans('Name'),
-                    'field_name'  => 'name',
-                    'filter_type' => FilterInterface::TYPE_STRING,
-                    'required'    => false,
-                    'sortable'    => true,
-                    'filterable'  => true,
-                    'show_filter' => true,
-                )
-            );
-            $this->fieldsCollection->add($field);
-        }
-
-        return $this->fieldsCollection;
+        $field = new FieldDescription();
+        $field->setName('name');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => $this->translator->trans('Name'),
+                'field_name'  => 'name',
+                'filter_type' => FilterInterface::TYPE_STRING,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+            )
+        );
+        $fieldsCollection->add($field);
     }
 
     /**

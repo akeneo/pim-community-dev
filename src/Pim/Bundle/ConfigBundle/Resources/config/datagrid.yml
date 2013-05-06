@@ -12,8 +12,6 @@ services:
               datagrid_name: channels
               entity_hint: channels
               route_name: pim_config_channel_index
-        calls:
-            - [ setRouter, [ @router ] ]
 
     pim_config.datagrid.manager.currency:
         class: %currency_grid_manager_class%
@@ -22,8 +20,6 @@ services:
               datagrid_name: currencies
               entity_hint: currencies
               route_name: pim_config_currency_index
-        calls:
-            - [ setRouter, [ @router ] ]
 
     pim_config.datagrid.manager.locale:
         class: %locale_grid_manager_class%
@@ -32,5 +28,3 @@ services:
               datagrid_name: locales
               entity_hint: locales
               route_name: pim_config_language_index
-        calls:
-            - [ setRouter, [ @router ] ]
