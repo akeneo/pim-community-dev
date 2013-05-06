@@ -22,11 +22,6 @@ use Oro\Bundle\GridBundle\Property\UrlProperty;
 class AttributeDatagridManager extends DatagridManager
 {
     /**
-     * @var string
-     */
-    protected $baseActionUrl;
-
-    /**
      * get properties
      * @return array
      */

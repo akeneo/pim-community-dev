@@ -24,52 +24,6 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 class ProductDatagridManager extends FlexibleDatagridManager
 {
     /**
-     * @var array
-     */
-    protected static $typeMatches = array(
-        AbstractAttributeType::BACKEND_TYPE_DATE => array(
-            'field'  => FieldDescriptionInterface::TYPE_DATE,
-            'filter' => FilterInterface::TYPE_FLEXIBLE_DATE,
-        ),
-        AbstractAttributeType::BACKEND_TYPE_DATETIME => array(
-            'field'  => FieldDescriptionInterface::TYPE_DATETIME,
-            'filter' => FilterInterface::TYPE_FLEXIBLE_STRING,
-        ),
-        AbstractAttributeType::BACKEND_TYPE_DECIMAL => array(
-            'field'  => FieldDescriptionInterface::TYPE_DECIMAL,
-            'filter' => FilterInterface::TYPE_FLEXIBLE_NUMBER,
-        ),
-        AbstractAttributeType::BACKEND_TYPE_INTEGER => array(
-            'field'  => FieldDescriptionInterface::TYPE_INTEGER,
-            'filter' => FilterInterface::TYPE_FLEXIBLE_NUMBER,
-        ),
-        AbstractAttributeType::BACKEND_TYPE_OPTION => array(
-            'field'  => FieldDescriptionInterface::TYPE_OPTIONS,
-            'filter' => FilterInterface::TYPE_FLEXIBLE_OPTIONS,
-        ),
-        AbstractAttributeType::BACKEND_TYPE_OPTIONS => array(
-            'field'  => FieldDescriptionInterface::TYPE_OPTIONS,
-            'filter' => FilterInterface::TYPE_FLEXIBLE_OPTIONS,
-        ),
-        AbstractAttributeType::BACKEND_TYPE_TEXT => array(
-            'field'  => FieldDescriptionInterface::TYPE_TEXT,
-            'filter' => FilterInterface::TYPE_FLEXIBLE_STRING,
-        ),
-        AbstractAttributeType::BACKEND_TYPE_VARCHAR => array(
-            'field' => FieldDescriptionInterface::TYPE_TEXT,
-            'filter' => FilterInterface::TYPE_FLEXIBLE_STRING,
-        ),
-        AbstractAttributeType::BACKEND_TYPE_PRICE => array(
-            'field'  => FieldDescriptionInterface::TYPE_TEXT,
-            'filter' => FilterInterface::TYPE_FLEXIBLE_STRING,
-        ),
-        AbstractAttributeType::BACKEND_TYPE_METRIC => array(
-            'field'  => FieldDescriptionInterface::TYPE_TEXT,
-            'filter' => FilterInterface::TYPE_FLEXIBLE_STRING,
-        ),
-    );
-
-    /**
      * get properties
      * @return array
      */
@@ -160,46 +114,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
             $fieldsCollection->add($field);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getListFields()
-    {
-        return $this->getFieldDescriptionCollection()->getElements();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getSorters()
-    {
-        $fields = array();
-        /** @var $fieldDescription FieldDescription */
-        foreach ($this->getFieldDescriptionCollection() as $fieldDescription) {
-            if ($fieldDescription->isSortable()) {
-                $fields[] = $fieldDescription;
-            }
-        }
-
-        return $fields;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getFilters()
-    {
-        $fields = array();
-        /** @var $fieldDescription FieldDescription */
-        foreach ($this->getFieldDescriptionCollection() as $fieldDescription) {
-            if ($fieldDescription->isFilterable()) {
-                $fields[] = $fieldDescription;
-            }
-        }
-
-        return $fields;
     }
 
     /**
