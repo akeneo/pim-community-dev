@@ -5,11 +5,19 @@
 {% block content %}
 {% form_theme form 'PimProductBundle:Form:simple_layout.html.twig' %}
 
-<form method="POST" action="{{ path('pim_product_product_addproductattributes', {'id': product.id}) }}">
-    {{ form_widget(attributesForm.attributes) }}
-    <input type="submit" value="Add" class="btn btn-mini" title="Add attributes"/>
-    {{ form_widget(attributesForm._token) }}
-</form>
+<div class="btn-group">
+    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+        <i class="icon-plus"></i> Add attributes
+        <span class="caret"></span>
+    </a>
+    <div class="dropdown-menu">
+        <form method="POST" action="{{ path('pim_product_product_addproductattributes', {'id': product.id}) }}">
+            {{ form_widget(attributesForm.attributes) }}
+            {{ form_widget(attributesForm._token) }}
+            <input type="submit" value="Add" class="btn btn-mini" title="Add attributes"/>
+        </form>
+    </div>
+</div>
 
 <form method="POST" class="form-horizontal" action="{{ form.vars.value.id ?
     path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) :
@@ -250,6 +258,11 @@
                 }
             });
         });
+
+        $('.dropdown-menu').find('form').click(function (e) {
+            e.stopPropagation();
+        });
+        $('#pim_available_product_attributes_attributes').select2('destroy');
     });
     </script>
     <link rel="stylesheet" href="{{ asset('bundles/pimui/css/select2.css') }}" />
