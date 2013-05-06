@@ -14,7 +14,7 @@ use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
  */
 class ProductAttributeRepository extends EntityRepository
 {
-    public function findAllExcept(array $attributes)
+    public function getFindAllExceptQB(array $attributes)
     {
         $ids = array_map(function ($attribute) {
             return $attribute->getId();
@@ -26,6 +26,6 @@ class ProductAttributeRepository extends EntityRepository
             ->orderBy('a.group')
         ;
 
-        return $qb->getQuery()->getResult();
+        return $qb;
     }
 }

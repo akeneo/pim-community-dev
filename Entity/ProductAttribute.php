@@ -440,7 +440,14 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      */
     public function getGroup()
     {
-        return $this->group;
+        if ($this->group) {
+            return $this->group;
+        }
+
+        $group = new AttributeGroup;
+        $group->setName('Other');
+
+        return $group;
     }
 
     /**

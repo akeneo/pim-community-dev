@@ -112,16 +112,13 @@ class ProductController extends Controller
      */
     public function editAction($id)
     {
-        $product  = $this->findProductOr404($id);
+        $product = $this->findProductOr404($id);
         $request = $this->getRequest();
 
         // create form
-        $form   = $this->createForm('pim_product', $product);
-        $groups = $this->getDoctrine()->getRepository('PimProductBundle:AttributeGroup')->findAllWithVirtualGroup();
-
-        $channels   = $this->getDoctrine()->getRepository('PimConfigBundle:Channel')->findAll();
-        $attributes = $this->getDoctrine()->getRepository('PimProductBundle:ProductAttribute')->findAllExcept($product->getAttributes());
-        $attributesForm = $this->createForm(new AvailableProductAttributesType, new AvailableProductAttributes($attributes));
+        $form     = $this->createForm('pim_product', $product);
+        $groups   = $this->getDoctrine()->getRepository('PimProductBundle:AttributeGroup')->findAllWithVirtualGroup();
+        $channels = $this->getDoctrine()->getRepository('PimConfigBundle:Channel')->findAll();
 
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
@@ -150,7 +147,7 @@ class ProductController extends Controller
             'dataLocale'     => $request->query->get('dataLocale', 'en_US'),
             'dataScope'      => $request->query->get('dataScope'),
             'channels'       => $channels,
-            'attributesForm' => $attributesForm->createView(),
+            'attributesForm' => $this->getAvailableProductAttributesForm($product)->createView(),
             'product'        => $product,
         );
     }
@@ -163,13 +160,12 @@ class ProductController extends Controller
     public function addProductAttributes($id)
     {
         $product             = $this->findProductOr404($id);
-        $attributes          = $this->getDoctrine()->getRepository('PimProductBundle:ProductAttribute')->findAllExcept($product->getAttributes());
-        $availableAttributes = new AvailableProductAttributes($attributes);
-        $attributesForm      = $this->createForm(new AvailableProductAttributesType, $availableAttributes);
+        $availableAttributes = new AvailableProductAttributes;
+        $attributesForm      = $this->getAvailableProductAttributesForm($product, $availableAttributes);
 
         $attributesForm->bind($this->getRequest());
 
-        foreach ($availableAttributes->getAttributesToAdd() as $attribute) {
+        foreach ($availableAttributes->getAttributes() as $attribute) {
             $value = $this->getProductManager()->createFlexibleValue();
             $value->setAttribute($attribute);
             $value->setData(null);
@@ -215,5 +211,19 @@ class ProductController extends Controller
         }
 
         return $product;
+    }
+
+    private function getAvailableProductAttributesForm(Product $product, AvailableProductAttributes $availableAttributes = null)
+    {
+        return $this->createForm(
+            new AvailableProductAttributesType,
+            $availableAttributes ?: new AvailableProductAttributes,
+            array('attributes' => $product->getAttributes())
+        );
+    }
+
+    private function getProductAttributeRepository()
+    {
+        return $this->getDoctrine()->getRepository('PimProductBundle:ProductAttribute');
     }
 }

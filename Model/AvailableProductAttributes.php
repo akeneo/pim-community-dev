@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ProductBundle\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -11,41 +13,18 @@ class AvailableProductAttributes
 {
     protected $attributes;
 
-    protected $availableAttributes;
-
-    public function __construct(array $attributes)
+    public function __construct()
     {
-        foreach ($attributes as $attribute) {
-            $this->attributes[$attribute->getId()]          = false;
-            $this->availableAttributes[$attribute->getId()] = $attribute;
-        }
+        $this->attributes = new ArrayCollection;
+    }
+
+    public function setAttributes(ArrayCollection $attributes)
+    {
+        $this->attributes = $attributes;
     }
 
     public function getAttributes()
     {
         return $this->attributes;
-    }
-
-    public function setAttributes(array $attributes)
-    {
-        $this->attributes = $attributes;
-    }
-
-    public function getAttribute($id)
-    {
-        return isset($this->availableAttributes[$id]) ? $this->availableAttributes[$id] : null;
-    }
-
-    public function getAttributesToAdd()
-    {
-        $attributesToAdd = array();
-
-        foreach ($this->attributes as $id => $toAdd) {
-            if ($toAdd) {
-                $attributesToAdd[] = $this->getAttribute($id);
-            }
-        }
-
-        return $attributesToAdd;
     }
 }

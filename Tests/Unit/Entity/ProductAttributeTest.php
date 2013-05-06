@@ -89,16 +89,14 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     public function testGetSetGroup()
     {
         $productAttribute = new ProductAttribute();
-        $this->assertEmpty($productAttribute->getGroup());
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $productAttribute->getGroup());
+        $this->assertEquals('Other', $productAttribute->getGroup()->getName());
 
         // change value and assert new
         $attributeGroup = new AttributeGroup();
         $productAttribute->setGroup($attributeGroup);
-        $this->assertEquals($attributeGroup, $productAttribute->getGroup());
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $productAttribute->getGroup());
-
-        $productAttribute->setGroup(null);
-        $this->assertEquals(null, $productAttribute->getGroup());
+        $this->assertEquals($attributeGroup, $productAttribute->getGroup());
     }
 
     /**

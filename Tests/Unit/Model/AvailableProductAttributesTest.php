@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Model;
 
 use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Test related class
@@ -16,52 +17,22 @@ class AvailableProductAttributesTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstructor()
     {
-        $attributes[] = $this->getProductAttributeMock(24);
-        $attributes[] = $this->getProductAttributeMock(42);
-        $target       = $this->getTargetedClass($attributes);
+        $target = $this->getTargetedClass();
 
-        $this->assertEquals(array(24 => false, 42 => false), $target->getAttributes());
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $target->getAttributes());
     }
 
-    public function testSetAttributes()
+    public function testGetSetAttributes()
     {
         $target = $this->getTargetedClass();
-        $target->setAttributes(array('foo', 'bar'));
+        $attributes = new ArrayCollection(array('foo', 'bar'));
+        $target->setAttributes($attributes);
 
-        $this->assertEquals(array('foo', 'bar'), $target->getAttributes());
+        $this->assertEquals($attributes, $target->getAttributes());
     }
 
-    public function testGetAttribute()
+    private function getTargetedClass()
     {
-        $attribute = $this->getProductAttributeMock(42);
-        $target    = $this->getTargetedClass(array($attribute));
-
-        $this->assertEquals(null, $target->getAttribute(24));
-        $this->assertEquals($attribute, $target->getAttribute(42));
-    }
-
-    public function testGetAttributeToAdd()
-    {
-        $attribute24 = $this->getProductAttributeMock(24);
-        $attribute42 = $this->getProductAttributeMock(42);
-        $target       = $this->getTargetedClass(array($attribute24, $attribute42));
-        $target->setAttributes(array(24 => true, 42 => false));
-
-        $this->assertEquals(array($attribute24), $target->getAttributesToAdd());
-    }
-
-    private function getTargetedClass(array $attributes = array())
-    {
-        return new AvailableProductAttributes($attributes);
-    }
-
-    private function getProductAttributeMock($id)
-    {
-        $productAttribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute', array('getId'));
-        $productAttribute->expects($this->any())
-                         ->method('getId')
-                         ->will($this->returnValue($id));
-
-        return $productAttribute;
+        return new AvailableProductAttributes();
     }
 }

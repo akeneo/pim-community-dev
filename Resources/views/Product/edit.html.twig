@@ -6,18 +6,8 @@
 {% form_theme form 'PimProductBundle:Form:simple_layout.html.twig' %}
 
 <form method="POST" action="{{ path('pim_product_product_addproductattributes', {'id': product.id}) }}">
-    <ul>
-        {% set attributeGroup = true %}
-        {% for id, attributeForm in attributesForm.attributes %}
-            {% set attribute = attributesForm.vars.value.getAttribute(id) %}
-            {% if attributeGroup != attribute.group %}
-            <li><b>{{ attribute.group ? attribute.group.name : 'Other'}}</b></li>
-            {% endif %}
-            <li>{{ form_widget(attributeForm) }} {{ attribute.name }}</li>
-        {% set attributeGroup = attribute.group %}
-        {% endfor %}
-        <li><input type="submit" value="Add" class="btn btn-mini pull-right" /></li>
-    </ul>
+    {{ form_widget(attributesForm.attributes) }}
+    <input type="submit" value="Add" class="btn btn-mini" />
     {{ form_widget(attributesForm._token) }}
 </form>
 

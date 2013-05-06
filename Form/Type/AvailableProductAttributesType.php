@@ -4,6 +4,8 @@ namespace Pim\Bundle\ProductBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -18,16 +20,24 @@ class AvailableProductAttributesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('attributes', 'collection', array(
-                'type' => 'checkbox',
-                'options' => array(
-                    'required' => false,
-                    'attr'     => array(
-                        'class' => 'noswitch',
-                    ),
-                )
+            ->add('attributes', 'entity', array(
+                'class' => 'PimProductBundle:ProductAttribute',
+                'query_builder' => function (EntityRepository $er) use ($options) {
+                    return $er->getFindAllExceptQB($options['attributes']);
+                },
+                'multiple' => true,
+                'expanded' => false,
+                'group_by' => 'group.name',
             ))
         ;
+    }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'Pim\Bundle\ProductBundle\Model\AvailableProductAttributes',
+            'attributes' => array(),
+        ));
     }
 
     /**
