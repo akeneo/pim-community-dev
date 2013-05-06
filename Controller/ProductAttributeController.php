@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Form\Type\ProductAttributeType;
@@ -164,9 +166,7 @@ class ProductAttributeController extends Controller
      *
      * @Route("/remove/{id}", requirements={"id"="\d+"})
      *
-     * @BackUrl("back")
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function removeAction(ProductAttribute $entity)
     {
@@ -174,8 +174,6 @@ class ProductAttributeController extends Controller
         $em->remove($entity);
         $em->flush();
 
-        $this->get('session')->getFlashBag()->add('success', 'Attribute successfully removed');
-
-        return $this->redirect($this->generateUrl('pim_product_productattribute_index'));
+        return new Response('', 204);
     }
 }
