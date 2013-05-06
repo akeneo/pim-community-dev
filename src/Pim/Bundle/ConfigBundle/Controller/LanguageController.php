@@ -135,6 +135,10 @@ class LanguageController extends Controller
         $this->getEntityManager()->persist($language);
         $this->getEntityManager()->flush();
 
-        return new Response('', 204);
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            return $this->redirect($this->generateUrl('pim_config_language_index'));
+        }
     }
 }

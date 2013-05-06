@@ -137,7 +137,11 @@ class CurrencyController extends Controller
             $this->getEntityManager()->persist($currency);
             $this->getEntityManager()->flush();
 
-            return new Response('', 204);
+            if ($this->getRequest()->isXmlHttpRequest()) {
+                return new Response('', 204);
+            } else {
+                return $this->redirect($this->generateUrl('pim_config_currency_index'));
+            }
         } else {
             return new Response('Currency linked to languages. Can`\t be disabled', 500);
         }
