@@ -7,7 +7,7 @@
 
 <form method="POST" action="{{ path('pim_product_product_addproductattributes', {'id': product.id}) }}">
     {{ form_widget(attributesForm.attributes) }}
-    <input type="submit" value="Add" class="btn btn-mini" />
+    <input type="submit" value="Add" class="btn btn-mini" title="Add attributes"/>
     {{ form_widget(attributesForm._token) }}
 </form>
 
