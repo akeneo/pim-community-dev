@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Property\FieldProperty;
+
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -26,7 +28,17 @@ class ChannelDatagridManager extends DatagridManager
      */
     protected function getProperties()
     {
+        $fieldId = new FieldDescription();
+        $fieldId->setName('id');
+        $fieldId->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
+                'required'    => true,
+            )
+        );
+
         return array(
+            new FieldProperty($fieldId),
             new UrlProperty('edit_link', $this->router, 'pim_config_channel_edit', array('id')),
             new UrlProperty('delete_link', $this->router, 'pim_config_channel_remove', array('id'))
         );
@@ -133,25 +145,24 @@ class ChannelDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'         => $this->translator->trans('Edit'),
-                'icon'          => 'edit',
-                'link'          => 'edit_link',
-                'backUrl'       => true
-            )
-        );
-
-        $disableAction = array(
-            'name'         => 'delete',
-            'type'         => ActionInterface::TYPE_DELETE,
-            'acl_resource' => 'root',
-            'options'      => array(
-                'label'   => $this->translator->trans('Delete'),
-                'icon'    => 'trash',
-                'link'    => 'delete_link',
+                'label'   => $this->translator->trans('Edit'),
+                'icon'    => 'edit',
+                'link'    => 'edit_link',
                 'backUrl' => true
             )
         );
 
-        return array($clickAction, $editAction, $disableAction);
+        $deleteAction = array(
+            'name'         => 'delete',
+            'type'         => ActionInterface::TYPE_DELETE,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label' => $this->translator->trans('Delete'),
+                'icon'  => 'trash',
+                'link'  => 'delete_link'
+            )
+        );
+
+        return array($clickAction, $editAction, $deleteAction);
     }
 }
