@@ -85,46 +85,6 @@ class ChannelDatagridManager extends DatagridManager
     /**
      * {@inheritdoc}
      */
-    protected function getListFields()
-    {
-        return $this->getFieldDescriptionCollection()->getElements();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getFilters()
-    {
-        $fields = array();
-        /** @var $fieldDescription FieldDescription */
-        foreach ($this->getFieldDescriptionCollection() as $fieldDescription) {
-            if ($fieldDescription->isFilterable()) {
-                $fields[] = $fieldDescription;
-            }
-        }
-
-        return $fields;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getSorters()
-    {
-        $fields = array();
-        /** @var $fieldDescription FieldDescription */
-        foreach ($this->getFieldDescriptionCollection() as $fieldDescription) {
-            if ($fieldDescription->isSortable()) {
-                $fields[] = $fieldDescription;
-            }
-        }
-
-        return $fields;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function getRowActions()
     {
         $clickAction = array(

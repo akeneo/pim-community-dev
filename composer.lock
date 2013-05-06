@@ -2784,12 +2784,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/FlexibleEntityBundle.git",
-                "reference": "22ae25eac8cafba546055fadfc613528922a6595"
+                "reference": "066f1334841739f16b256a6104ba70be496b6b78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/22ae25eac8cafba546055fadfc613528922a6595",
-                "reference": "22ae25eac8cafba546055fadfc613528922a6595",
+                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/066f1334841739f16b256a6104ba70be496b6b78",
+                "reference": "066f1334841739f16b256a6104ba70be496b6b78",
                 "shasum": ""
             },
             "require": {
@@ -2824,7 +2824,7 @@
                 "source": "https://github.com/laboro/FlexibleEntityBundle/tree/master",
                 "issues": "https://github.com/laboro/FlexibleEntityBundle/issues"
             },
-            "time": "2013-05-01 18:55:20"
+            "time": "2013-05-06 13:41:26"
         },
         {
             "name": "oro/grid-bundle",
