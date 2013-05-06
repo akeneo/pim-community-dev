@@ -124,7 +124,7 @@ class ProductValue extends AbstractEntityFlexibleValue
      *
      * @param Metric $metric
      *
-     * @return AbstractEntityFlexibleValue
+     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\ProductValue
      */
     public function setMetric($metric)
     {
@@ -148,7 +148,7 @@ class ProductValue extends AbstractEntityFlexibleValue
      *
      * @param Price $price
      *
-     * @return AbstractEntityFlexibleValue
+     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\ProductValue
      */
     public function setPrice($price)
     {
