@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Property\FieldProperty;
+
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -26,7 +28,17 @@ class LocaleDatagridManager extends DatagridManager
      */
     protected function getProperties()
     {
+        $fieldId = new FieldDescription();
+        $fieldId->setName('id');
+        $fieldId->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
+                'required'    => true,
+            )
+        );
+
         return array(
+            new FieldProperty($fieldId),
             new UrlProperty('edit_link', $this->router, 'pim_config_language_edit', array('id')),
             new UrlProperty('disable_link', $this->router, 'pim_config_language_disable', array('id'))
         );
@@ -161,10 +173,9 @@ class LocaleDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => $this->translator->trans('Disable'),
-                'icon'    => 'trash',
-                'link'    => 'disable_link',
-                'backUrl'       => true
+                'label' => $this->translator->trans('Disable'),
+                'icon'  => 'trash',
+                'link'  => 'disable_link'
             )
         );
 
