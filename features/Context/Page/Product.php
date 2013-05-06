@@ -59,13 +59,11 @@ class Product extends Page
         $this->getElement('Locales dropdown')->clickLink(ucfirst($locale));
     }
 
-    public function getFieldAt(AttributeGroup $group, $position)
+    public function getFieldAt($group, $position)
     {
-        $locator = sprintf(
-            '#tabs-%s label', $group->getId()
-        );
-
-        $fields = $this->findAll('css', $locator);
+        $fields  = $this->findAll('css', sprintf(
+            '#tabs-%s label', $group instanceof AttributeGroup ? $group->getId() : 0
+        ));
 
         if (0 === count($fields)) {
             throw new \Exception(sprintf(
@@ -112,5 +110,15 @@ class Product extends Page
                 $group, $attribute
             ))
         ;
+    }
+
+    public function selectAvailableAttribute($attribute)
+    {
+        $this->getElement('Available attributes')->selectOption($attribute, true);
+    }
+
+    public function addSelectedAvailableAttributes()
+    {
+        $this->pressButton('Add attributes');
     }
 }

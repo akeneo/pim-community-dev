@@ -330,7 +330,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^attributes in group "([^"]*)" should be (.*)$/
+     * @Given /^attributes? in group "([^"]*)" should be (.*)$/
      */
     public function attributesInGroupShouldBe($group, $attributes)
     {
@@ -339,13 +339,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         foreach ($attributes as $index => $attribute) {
             $field = $this
                 ->getPage('Product')
-                ->getFieldAt($group, $index)
+                ->getFieldAt($group ?: 'Other', $index)
             ;
 
-            if (strtolower($attribute) !== $name = strtolower($field->getText())) {
+            if ($this->camelize($attribute) !== $name = $field->getText()) {
                 throw new \Exception(sprintf('
                     Expecting to see field "%s" at position %d, but saw "%s"',
-                    $attribute, $index + 1, $name
+                    $this->camelize($attribute), $index + 1, $name
                 ));
             }
         }
@@ -392,12 +392,24 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             } else {
                 if ($element) {
                     throw new \RuntimeException(sprintf(
-                        'Expecting not to see attribute %s under group %s, but was not present.',
+                        'Expecting not to see attribute %s under group %s, but was present.',
                         $attribute, $group
                     ));
                 }
             }
         }
+    }
+
+    /**
+     * @Given /^I add available attributes (.*)$/
+     */
+    public function iAddAvailableAttributes($attributes)
+    {
+        foreach ($this->listToArray($attributes) as $attribute) {
+            $this->getPage('Product')->selectAvailableAttribute($attribute);
+        }
+
+        $this->getPage('Product')->addSelectedAvailableAttributes();
     }
 
     private function listToArray($list)
