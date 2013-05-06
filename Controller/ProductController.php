@@ -171,6 +171,10 @@ class ProductController extends Controller
         $em->remove($entity);
         $em->flush();
 
-        return new Response('', 204);
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            return $this->redirect($this->generateUrl('pim_product_product_index'));
+        }
     }
 }
