@@ -22,16 +22,6 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 class ProductDatagridManager extends FlexibleDatagridManager
 {
     /**
-     * @var FieldDescriptionCollection
-     */
-    protected $fieldsCollection;
-
-    /**
-     * @var Router
-     */
-    protected $router;
-
-    /**
      * @var array
      */
     protected static $typeMatches = array(
@@ -78,16 +68,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
     );
 
     /**
-     * set router
-     *
-     * @param Router $router
-     */
-    public function setRouter(Router $router)
-    {
-        $this->router = $router;
-    }
-
-    /**
      * get properties
      * @return array
      */
@@ -100,81 +80,74 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
-     * get field description
-     * @return FieldDescriptionCollection
+     * {@inheritDoc}
      */
-    protected function getFieldDescriptionCollection()
+    protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        if (!$this->fieldsCollection) {
-            $this->fieldsCollection = new FieldDescriptionCollection();
+        $fieldSku = new FieldDescription();
+        $fieldSku->setName('sku');
+        $fieldSku->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => $this->translator->trans('Sku'),
+                'field_name'  => 'sku',
+                'filter_type' => FilterInterface::TYPE_STRING,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+            )
+        );
+        $fieldsCollection->add($fieldSku);
 
-            $fieldSku = new FieldDescription();
-            $fieldSku->setName('sku');
-            $fieldSku->setOptions(
+        // TODO : until we'll have related backend type in grid bundle
+        $excludedBackend = array(
+            AbstractAttributeType::BACKEND_TYPE_MEDIA,
+            AbstractAttributeType::BACKEND_TYPE_METRIC,
+            AbstractAttributeType::BACKEND_TYPE_PRICE
+        );
+
+        foreach ($this->getFlexibleAttributes() as $attribute) {
+
+            $backendType   = $attribute->getBackendType();
+            if (in_array($backendType, $excludedBackend)) {
+                continue;
+            }
+
+            if (!$attribute->getUseableAsGridColumn()) {
+                continue;
+            }
+
+            $attributeType = $this->convertFlexibleTypeToFieldType($backendType);
+            $filterType    = $this->convertFlexibleTypeToFilterType($backendType);
+
+            $field = new FieldDescription();
+            $field->setName($attribute->getCode());
+            $field->setOptions(
                 array(
-                    'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                    'label'       => $this->translator->trans('Sku'),
-                    'field_name'  => 'sku',
-                    'filter_type' => FilterInterface::TYPE_STRING,
-                    'required'    => false,
-                    'sortable'    => true,
-                    'filterable'  => true,
-                    'show_filter' => true,
+                    'type'          => $attributeType,
+                    'label'         => $attribute->getName(),
+                    'field_name'    => $attribute->getCode(),
+                    'filter_type'   => $filterType,
+                    'required'      => false,
+                    'sortable'      => true,
+                    'filterable'    => $attribute->getUseableAsGridFilter(),
+                    'flexible_name' => $this->flexibleManager->getFlexibleName(),
+                    'show_filter'   => $attribute->getUseableAsGridFilter()
                 )
             );
-            $this->fieldsCollection->add($fieldSku);
 
-            // TODO : until we'll have related backend type in grid bundle
-            $excludedBackend = array(
-                AbstractAttributeType::BACKEND_TYPE_MEDIA,
-                AbstractAttributeType::BACKEND_TYPE_METRIC,
-                AbstractAttributeType::BACKEND_TYPE_PRICE
-            );
-
-            foreach ($this->getFlexibleAttributes() as $attribute) {
-
-                $backendType   = $attribute->getBackendType();
-                if (in_array($backendType, $excludedBackend)) {
-                    continue;
-                }
-
-                if (!$attribute->getUseableAsGridColumn()) {
-                    continue;
-                }
-
-                $attributeType = $this->convertFlexibleTypeToFieldType($backendType);
-                $filterType    = $this->convertFlexibleTypeToFilterType($backendType);
-
-                $field = new FieldDescription();
-                $field->setName($attribute->getCode());
-                $field->setOptions(
-                    array(
-                        'type'          => $attributeType,
-                        'label'         => $attribute->getName(),
-                        'field_name'    => $attribute->getCode(),
-                        'filter_type'   => $filterType,
-                        'required'      => false,
-                        'sortable'      => true,
-                        'filterable'    => $attribute->getUseableAsGridFilter(),
-                        'flexible_name' => $this->flexibleManager->getFlexibleName(),
-                        'show_filter'   => $attribute->getUseableAsGridFilter()
-                    )
-                );
-
-                if ($attributeType == FieldDescriptionInterface::TYPE_OPTIONS) {
-                    $field->setOption('multiple', true);
-                }
-
-                if (!$attribute->getUseableAsGridFilter()) {
-                    $field->setOption('filter_type', false);
-                    $field->setOption('filterable', false);
-                }
-
-                $this->fieldsCollection->add($field);
+            if ($attributeType == FieldDescriptionInterface::TYPE_OPTIONS) {
+                $field->setOption('multiple', true);
             }
-        }
 
-        return $this->fieldsCollection;
+            if (!$attribute->getUseableAsGridFilter()) {
+                $field->setOption('filter_type', false);
+                $field->setOption('filterable', false);
+            }
+
+            $fieldsCollection->add($field);
+        }
     }
 
     /**

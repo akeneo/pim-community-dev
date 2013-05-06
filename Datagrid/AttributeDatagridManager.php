@@ -20,28 +20,9 @@ use Oro\Bundle\GridBundle\Property\UrlProperty;
 class AttributeDatagridManager extends DatagridManager
 {
     /**
-     * @var FieldDescriptionCollection
-     */
-    protected $fieldsCollection;
-
-    /**
-     * @var Router
-     */
-    protected $router;
-
-    /**
      * @var string
      */
     protected $baseActionUrl;
-
-    /**
-     * set router
-     * @param Router $router
-     */
-    public function setRouter(Router $router)
-    {
-        $this->router = $router;
-    }
 
     /**
      * get properties
@@ -56,79 +37,73 @@ class AttributeDatagridManager extends DatagridManager
     }
 
     /**
-     * @return FieldDescriptionCollection
+     * {@inheritDoc}
      */
-    protected function getFieldDescriptionCollection()
+    protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        if (!$this->fieldsCollection) {
-            $this->fieldsCollection = new FieldDescriptionCollection();
+        $field = new FieldDescription();
+        $field->setName('name');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => $this->translator->trans('Name'),
+                'field_name'  => 'name',
+                'filter_type' => FilterInterface::TYPE_STRING,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+            )
+        );
+        $fieldsCollection->add($field);
 
-            $field = new FieldDescription();
-            $field->setName('name');
-            $field->setOptions(
-                array(
-                    'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                    'label'       => $this->translator->trans('Name'),
-                    'field_name'  => 'name',
-                    'filter_type' => FilterInterface::TYPE_STRING,
-                    'required'    => false,
-                    'sortable'    => true,
-                    'filterable'  => true,
-                    'show_filter' => true,
-                )
-            );
-            $this->fieldsCollection->add($field);
+        $field = new FieldDescription();
+        $field->setName('attributeType');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => $this->translator->trans('Type'),
+                'field_name'  => 'attributeType',
+                'filter_type' => FilterInterface::TYPE_STRING,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+            )
+        );
+        $fieldsCollection->add($field);
 
-            $field = new FieldDescription();
-            $field->setName('attributeType');
-            $field->setOptions(
-                array(
-                    'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                    'label'       => $this->translator->trans('Type'),
-                    'field_name'  => 'attributeType',
-                    'filter_type' => FilterInterface::TYPE_STRING,
-                    'required'    => false,
-                    'sortable'    => true,
-                    'filterable'  => true,
-                    'show_filter' => true,
-                )
-            );
-            $this->fieldsCollection->add($field);
+        $field = new FieldDescription();
+        $field->setName('scopable');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
+                'label'       => $this->translator->trans('Scopable'),
+                'field_name'  => 'scopable',
+                'filter_type' => FilterInterface::TYPE_BOOLEAN,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+            )
+        );
+        $fieldsCollection->add($field);
 
-            $field = new FieldDescription();
-            $field->setName('scopable');
-            $field->setOptions(
-                array(
-                    'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
-                    'label'       => $this->translator->trans('Scopable'),
-                    'field_name'  => 'scopable',
-                    'filter_type' => FilterInterface::TYPE_BOOLEAN,
-                    'required'    => false,
-                    'sortable'    => true,
-                    'filterable'  => true,
-                    'show_filter' => true,
-                )
-            );
-            $this->fieldsCollection->add($field);
-
-            $field = new FieldDescription();
-            $field->setName('translatable');
-            $field->setOptions(
-                array(
-                    'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
-                    'label'       => $this->translator->trans('Translatable'),
-                    'field_name'  => 'translatable',
-                    'filter_type' => FilterInterface::TYPE_BOOLEAN,
-                    'required'    => false,
-                    'sortable'    => true,
-                    'filterable'  => true,
-                    'show_filter' => true,
-                )
-            );
-            $this->fieldsCollection->add($field);
-        }
-
-        return $this->fieldsCollection;
+        $field = new FieldDescription();
+        $field->setName('translatable');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
+                'label'       => $this->translator->trans('Translatable'),
+                'field_name'  => 'translatable',
+                'filter_type' => FilterInterface::TYPE_BOOLEAN,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+            )
+        );
+        $fieldsCollection->add($field);
     }
 
     /**
