@@ -134,6 +134,10 @@ class ChannelController extends Controller
         $this->getEntityManager()->remove($channel);
         $this->getEntityManager()->flush();
 
-        return new Response('', 204);
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            return $this->redirect($this->generateUrl('pim_config_channel_index'));
+        }
     }
 }
