@@ -14,6 +14,7 @@ use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+use Doctrine\Common\Util\Inflector;
 
 /**
  * Context of the website
@@ -149,7 +150,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getEntityManager()->persist($role);
         $this->getUserManager()->updateUser($user);
 
-        $this->getPage('Login')->open(array('locale' => $this->currentLocale))->login($username, $password);
+        $this
+            ->getPage('Login')
+            ->open(array('locale' => $this->currentLocale))
+            ->login($username, $password)
+        ;
     }
 
     /**
@@ -217,6 +222,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $index => $data) {
             $group = new AttributeGroup();
+            $group->setCode($this->camelize($data['name']));
             $group->setName($data['name']);
             $group->setSortOrder($index);
 
@@ -235,17 +241,32 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             $data = array_merge(array(
                 'position' => 0,
             ), $data);
-            $attribute = $this->createAttribute($data['code'], false);
-            $attribute->getAttribute()->setSortOrder($data['position']);
+            $attribute = $this->createAttribute($this->camelize($data['name'], false));
+            $attribute->setSortOrder($data['position']);
             $attribute->setGroup($this->getGroup($data['group']));
             $product = $this->getProduct($data['product']);
 
-                $value = $this->getProductManager()->createFlexibleValue();
-                $value->setAttribute($attribute->getAttribute());
-                $value->setData(null);
-                $this->getProductManager()->getStorageManager()->persist($value);
+            $value = $this->getProductManager()->createFlexibleValue();
+            $value->setAttribute($attribute);
+            $value->setData(null);
+            $this->getProductManager()->getStorageManager()->persist($value);
 
-                $product->addValue($value);
+            $product->addValue($value);
+        }
+        $em->flush();
+    }
+
+    /**
+     * @Given /^the following attributes:$/
+     */
+    public function theFollowingAttributes(TableNode $table)
+    {
+        $em = $this->getEntityManager();
+        foreach ($table->getHash() as $data) {
+            $attribute = $this->createAttribute($this->camelize($data['name']), false);
+            $attribute->setGroup($this->getGroup($data['group']));
+
+            $em->persist($attribute);
         }
         $em->flush();
     }
@@ -380,7 +401,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     private function createAttribute($code, $translatable = true)
     {
-        $attribute = $this->getProductManager()->createAttributeExtended(new TextType);
+        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_text');
         $attribute->setCode(strtolower($code));
         $attribute->setName(ucfirst($code));
         $attribute->setTranslatable($translatable);
@@ -466,5 +487,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function getContainer()
     {
         return $this->getMainContext()->getContainer();
+    }
+
+    private function camelize($string)
+    {
+        return Inflector::camelize(str_replace(' ', '_', $string));
     }
 }
