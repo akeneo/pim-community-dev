@@ -16,7 +16,8 @@ class Product extends Page
     protected $path = '/{locale}/product/{id}/edit';
 
     protected $elements = array(
-        'Locales dropdown' => array('css' => '.locales')
+        'Locales dropdown'     => array('css' => '.locales'),
+        'Available attributes' => array('css' => '#pim_available_product_attributes_attributes'),
     );
 
     protected $assertSession;
@@ -100,5 +101,16 @@ class Product extends Page
         }
 
         return $field;
+    }
+
+    public function getAvailableAttribute($attribute, $group)
+    {
+        return $this
+            ->getElement('Available attributes')
+            ->find('css', sprintf(
+                'optgroup[label="%s"] option:contains("%s")',
+                $group, $attribute
+            ))
+        ;
     }
 }

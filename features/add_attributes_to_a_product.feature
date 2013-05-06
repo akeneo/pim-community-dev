@@ -16,12 +16,10 @@ Feature: Add attributes to a product
       | name             | group   |
       | Long Description | General |
       | Manufacturer     | General |
-      | Size             | General |
-      | Cost             | Prices  |
+      | Size             |         |
     And the current language is english
     And I am logged in as "admin"
     When I am on the "Car" product page
-    And I click on "Add Attribute"
-    Then I should see attributes Long Description, Manufacturer and Size in group "General"
-    And I should see attribute Cost in group "Prices"
-    But I should not see attribute Release Date in group "General"
+    Then I should see available attributes Long Description and Manufacturer in group "General"
+    And I should see available attribute Size in group "Other"
+    But I should not see available attribute Release Date in group "General"

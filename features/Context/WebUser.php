@@ -241,7 +241,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             $data = array_merge(array(
                 'position' => 0,
             ), $data);
-            $attribute = $this->createAttribute($this->camelize($data['name'], false));
+            $attribute = $this->createAttribute($data['name'], false);
             $attribute->setSortOrder($data['position']);
             $attribute->setGroup($this->getGroup($data['group']));
             $product = $this->getProduct($data['product']);
@@ -263,7 +263,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $data) {
-            $attribute = $this->createAttribute($this->camelize($data['name']), false);
+            $attribute = $this->createAttribute($data['name'], false);
             $attribute->setGroup($this->getGroup($data['group']));
 
             $em->persist($attribute);
@@ -375,6 +375,31 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getPage('Product')->setFieldValue($fieldName, $value);
     }
 
+    /**
+     * @Then /^I should (not )?see available attributes? (.*) in group "([^"]*)"$/
+     */
+    public function iShouldSeeAvailableAttributesInGroup($not, $attributes, $group)
+    {
+        foreach ($this->listToArray($attributes) as $attribute) {
+            $element = $this->getPage('Product')->getAvailableAttribute($attribute, $group);
+            if (!$not) {
+                if (!$element) {
+                    throw new \RuntimeException(sprintf(
+                        'Expecting to see attribute %s under group %s, but was not present.',
+                        $attribute, $group
+                    ));
+                }
+            } else {
+                if ($element) {
+                    throw new \RuntimeException(sprintf(
+                        'Expecting not to see attribute %s under group %s, but was not present.',
+                        $attribute, $group
+                    ));
+                }
+            }
+        }
+    }
+
     private function listToArray($list)
     {
         return explode(', ', str_replace(' and ', ', ', $list));
@@ -399,11 +424,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         return $product;
     }
 
-    private function createAttribute($code, $translatable = true)
+    private function createAttribute($name, $translatable = true)
     {
         $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_text');
-        $attribute->setCode(strtolower($code));
-        $attribute->setName(ucfirst($code));
+        $attribute->setCode($this->camelize($name));
+        $attribute->setName($name);
         $attribute->setTranslatable($translatable);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
@@ -443,12 +468,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $group = $em->getRepository('PimProductBundle:AttributeGroup')->findOneBy(array(
             'name' => $name
         ));
-
-        if (!$group) {
-            throw new \InvalidArgumentException(sprintf(
-                'Could not find group with name "%s"', $name
-            ));
-        }
 
         return $group;
     }
