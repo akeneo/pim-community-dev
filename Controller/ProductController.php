@@ -135,8 +135,8 @@ class ProductController extends Controller
                         'pim_product_product_edit',
                         array(
                             'id'         => $product->getId(),
-                            'dataLocale' => $request->query->get('dataLocale'),
-                            'dataScope'  => $request->query->get('dataScope')
+                            'dataLocale' => $request->query->get('dataLocale', $this->getParameter('locale')),
+                            'dataScope'  => $request->query->get('dataScope'),
                         )
                     )
                 );
@@ -146,7 +146,7 @@ class ProductController extends Controller
         return array(
             'form'           => $form->createView(),
             'groups'         => $groups,
-            'dataLocale'     => $request->query->get('dataLocale', 'en_US'),
+            'dataLocale'     => $request->query->get('dataLocale', $this->getParameter('locale')),
             'dataScope'      => $request->query->get('dataScope'),
             'channels'       => $channels,
             'attributesForm' => $this->getAvailableProductAttributesForm($product)->createView(),
@@ -227,5 +227,10 @@ class ProductController extends Controller
     private function getProductAttributeRepository()
     {
         return $this->getDoctrine()->getRepository('PimProductBundle:ProductAttribute');
+    }
+
+    private function getParameter($name)
+    {
+        return $this->container->getParameter($name);
     }
 }
