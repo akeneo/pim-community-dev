@@ -179,4 +179,18 @@ class Product extends AbstractEntityFlexible
 
         return $this;
     }
+
+    /**
+     * Remove language
+     *
+     * @param Language $language Language
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Product
+     */
+    public function removeLanguage(Language $language)
+    {
+        $this->languages->removeElement($this->getLanguage($language));
+
+        return $this;
+    }
 }
