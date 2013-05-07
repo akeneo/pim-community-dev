@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Form\Type;
 
+use Oro\Bundle\SegmentationTreeBundle\Form\Type\SegmentType;
+
 use Pim\Bundle\ProductBundle\Form\Subscriber\ProductSegmentSubscriber;
 
 use Symfony\Component\Form\AbstractType;
@@ -15,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ProductSegmentType extends AbstractType
+class ProductSegmentType extends SegmentType
 {
 
     /**
@@ -24,8 +26,6 @@ class ProductSegmentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
-
-        $builder->add('code');
 
         $builder->add(
             'title',

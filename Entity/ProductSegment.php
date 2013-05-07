@@ -119,6 +119,30 @@ class ProductSegment extends AbstractSegment implements Translatable
     }
 
     /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     *
+     * @return string
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this->title;
+    }
+
+    /**
      * Add product to this segment node
      *
      * @param Product $product
