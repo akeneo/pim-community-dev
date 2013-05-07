@@ -18,6 +18,9 @@ oro_menu_config:
         pim_enrich_exportprofile:
             label: 'Export profiles'
             route: 'pim_product_exportprofile_index'
+        pim_enrich_classificationtree:
+            label: 'Classification trees'
+            route: 'pim_product_classificationtree_index'
 
     tree:
         application_menu:
@@ -29,6 +32,7 @@ oro_menu_config:
                         pim_enrich_attribute: ~
                         pim_enrich_attributegroup: ~
                         pim_enrich_exportprofile: ~
+                        pim_enrich_classificationtree: ~
 
 oro_titles:
     pim_default:                             Dashboard
