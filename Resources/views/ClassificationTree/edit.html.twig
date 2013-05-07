@@ -1,10 +1,15 @@
 {% extends 'PimProductBundle::layout.html.twig' %}
 
-{% set title = form.vars.value.id ? 'Edit product segment'|trans : 'Add product segment'|trans %}
+{% set parentId %}{{ form.vars.value.parent ? form.vars.value.parent.id : null }}{% endset %}
+{% set type = parentId ? 'node' : 'tree' %}
+{% set action = form.vars.value.id ? 'Edit' : 'Add' %}
+
+{% set title = action|trans ~ ' ' ~ type|trans %}
+{% if form.vars.value.id %}
+    {% set title = title ~ ' - ' ~ form.vars.value.title %}
+{% endif %}
 
 {% block content %}
-
-{% set parentId %}{{ form.vars.value.parent ? form.vars.value.parent.id : null }}{% endset %}
 
 <form action="{{ form.vars.value.id ?
     path('pim_product_classificationtree_edit', { id: form.vars.value.id }) :
@@ -13,8 +18,8 @@
     <div class="row-fluid">
         <h3 class="pull-left">{{ title|trans }}</h3>
         <div class="pull-right">
-            <a class="btn" href="#" id="btn-delete-product">
-                {{ "Delete" | trans }}
+            <a class="btn" href="#" id="btn-delete-segment">
+                {{ 'Delete' | trans }}
             </a>
             <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
         </div>
