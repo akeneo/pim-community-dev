@@ -44,7 +44,8 @@
       multiple: true,
       position: {},
       appendTo: "body",
-      buttons: {}
+      buttons: {},
+      preventClosing: false
     },
 
     _create: function() {
@@ -607,6 +608,9 @@
     // close the menu
     close: function() {
       if(this._trigger('beforeclose') === false) {
+        return;
+      }
+      if (this.options.preventClosing === true) {
         return;
       }
 
