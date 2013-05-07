@@ -11,9 +11,6 @@ services:
               datagrid_name: attributes
               entity_hint: attributes
               route_name: pim_product_productattribute_index
-        calls:
-            - [ setRouter, [ @router ] ]
-
 
     # Product grid manager
     pim_product.product_grid_manager:
@@ -25,6 +22,4 @@ services:
               entity_hint: products
               flexible: true
               route_name: pim_product_product_index
-        calls:
-            - [ setRouter, [ @router ] ]
 

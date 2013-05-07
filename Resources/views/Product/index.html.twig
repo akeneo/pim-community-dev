@@ -4,16 +4,22 @@
 
 {% block head_script %}
     {{ parent() }}
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#backgrid'} %}
+    
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#product-grid'} %}
     {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
 {% endblock %}
 
-{% block content %}
-    <h1>{{ title }}
-        <a class="btn btn-primary pull-right" style="margin-left:10px;"
-            href="{{ path('pim_product_product_create') }}">{{ 'New product'|trans }}</a>
-    </h1>
-
-    <div id="backgrid"></div>
+{% block page_container %}
+<div class="container-fluid">
+    {% block content %}
+    <div class="usser-row">
+        <h1>{{ title }}
+            <a class="btn btn-primary pull-right" style="margin-left:10px;"
+                href="{{ path('pim_product_product_create') }}">{{ 'New product'|trans }}</a>
+        </h1>
+    
+        <div id="product-grid"></div>
+    </div>
+    {% endblock %}
+</div>
 {% endblock %}
-

@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Pim\Bundle\ProductBundle\Manager\MediaManager;
 use Pim\Bundle\ProductBundle\Entity\Product;
@@ -186,9 +188,7 @@ class ProductController extends Controller
      *
      * @Route("/remove/{id}", requirements={"id"="\d+"})
      *
-     * @BackUrl("back")
-     *
-     * @return array
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function removeAction(Product $entity)
     {
@@ -196,9 +196,11 @@ class ProductController extends Controller
         $em->remove($entity);
         $em->flush();
 
-        $this->get('session')->getFlashBag()->add('success', 'Product successfully removed');
-
-        return $this->redirect($this->generateUrl('pim_product_product_index'));
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            return $this->redirect($this->generateUrl('pim_product_product_index'));
+        }
     }
 
     private function findProductOr404($id)

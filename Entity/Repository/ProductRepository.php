@@ -16,38 +16,17 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 class ProductRepository extends FlexibleEntityRepository
 {
     /**
-     * Build query builder
+     * Add join to values tables
      *
-     * @param integer $id     the id
-     * @param string  $locale the locale
-     *
-     * @return QueryBuilder
+     * @param QueryBuilder $qb
      */
-    public function buildOneLocalized($id, $locale)
+    protected function addJoinToValueTables(QueryBuilder $qb)
     {
-        $qb = $this->buildOne($id);
+        parent::addJoinToValueTables($qb);
 
-        return $qb
-            ->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->isNull('Value.locale'),
-                    $qb->expr()->eq('Value.locale', $qb->expr()->literal($locale))
-                )
-            )
-            ->orderBy('Attribute.sortOrder');
-    }
-
-    /**
-     * Add joins
-     *
-     * @return QueryBuilder
-     */
-    protected function build()
-    {
-        return parent::build()
-            ->leftJoin($this->getAlias().'.values', 'Value')
-            ->leftJoin('Value.attribute', 'Attribute')
-            ->leftJoin('Value.options', 'ValueOption')
-            ->leftJoin('ValueOption.optionValues', 'AttributeOptionValue');
+        $qb->addSelect('ValueMetric')->addSelect('ValuePrice')->addSelect('ValueMedia');
+        $qb->leftJoin('Value.price', 'ValuePrice')
+            ->leftJoin('Value.media', 'ValueMedia')
+            ->leftJoin('Value.metric', 'ValueMetric');
     }
 }

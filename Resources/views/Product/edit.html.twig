@@ -86,9 +86,6 @@
             </div>
         {% endif %}
         <div class="tab-pane active" id="attributes">
-            <div id="form-parameters">
-                <h3 class="scrollspy-title">Attributes</h3>
-            </div>
             <div class="span2">
                 <ul class="nav nav-list">
                     {% for group in groups %}
@@ -140,10 +137,7 @@
             </div>
         </div>
         <div class="tab-pane" id="localisations">
-            <div id="form-parameters">
-                <h3 class="scrollspy-title">Localisations</h3>
-                {{ form_row(form.languages) }}
-            </div>
+            {{ form_row(form.languages) }}
         </div>
         {{ form_row(form.id) }}
         {{ form_row(form._token) }}
