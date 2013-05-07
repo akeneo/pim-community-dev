@@ -3,13 +3,12 @@
 {% set title = form.vars.value.id ? 'Edit product segment'|trans : 'Add product segment'|trans %}
 
 {% block content %}
-{% form_theme form 'PimProductBundle:Form:simple_layout.html.twig' %}
 
 {% set parentId %}{{ form.vars.value.parent ? form.vars.value.parent.id : null }}{% endset %}
 
 <form action="{{ form.vars.value.id ?
     path('pim_product_classificationtree_edit', { id: form.vars.value.id }) :
-    path('pim_product_classificationtree_create', { parent: parentId }) }}" method="POST" class="form-register">
+    path('pim_product_classificationtree_create', { parent: parentId }) }}" method="POST" class="form-horizontal">
     
     <div class="row-fluid">
         <h3 class="pull-left">{{ title|trans }}</h3>
@@ -27,7 +26,9 @@
             <div class="row-fluid">
                 <ul class="nav">
                     <li class="active"><a href="#form-properties" data-toggle="tab">{{ 'Properties'|trans }}</a></li>
-                    <li><a href="#form-rules" data-toggle="tab">{{ 'Rules'|trans }}</a></li>
+                    {% if parentId %}
+                        <li><a href="#form-rules" data-toggle="tab">{{ 'Rules'|trans }}</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -78,6 +79,7 @@
             </div>
         </div>
         
+        {% if parentId %}
         <div class="tab-pane" id="form-rules">
             <div id="accordion2" class="accordion">
                 <div class="accordion-group">
@@ -97,7 +99,8 @@
                 </div>
             </div>
         </div>
+        {% endif %}
     </div>
-    
+    {{ form_rest(form) }}
 </form>
 {% endblock %}
