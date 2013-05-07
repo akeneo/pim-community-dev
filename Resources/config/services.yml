@@ -21,7 +21,7 @@ parameters:
 
     pim_product.attributes_config:      ~
     pim_product.segment_class:          Pim\Bundle\ProductBundle\Entity\ProductSegment
-    pim_product.segment_manager_class:  Pim\Bundle\ProductBundle\Model\ProductSegmentManager
+    pim_product.segment_manager_class:  Pim\Bundle\ProductBundle\Manager\ProductSegmentManager
 
 services:
     # Managers

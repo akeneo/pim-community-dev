@@ -1,9 +1,9 @@
 <?php
-namespace Pim\Bundle\ProductBundle\Model;
+namespace Pim\Bundle\ProductBundle\Manager;
+
+use Oro\Bundle\SegmentationTreeBundle\Manager\SegmentManager;
 
 use Pim\Bundle\ProductBundle\Entity\ProductSegment;
-
-use Oro\Bundle\SegmentationTreeBundle\Model\SegmentManager;
 
 /**
  * Extends SegmentManager for classification tree
