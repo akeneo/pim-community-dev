@@ -2784,12 +2784,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/FlexibleEntityBundle.git",
-                "reference": "066f1334841739f16b256a6104ba70be496b6b78"
+                "reference": "e0cdd6125482c35163c633ad2204b7574581dde7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/066f1334841739f16b256a6104ba70be496b6b78",
-                "reference": "066f1334841739f16b256a6104ba70be496b6b78",
+                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/e0cdd6125482c35163c633ad2204b7574581dde7",
+                "reference": "e0cdd6125482c35163c633ad2204b7574581dde7",
                 "shasum": ""
             },
             "require": {
@@ -2824,7 +2824,7 @@
                 "source": "https://github.com/laboro/FlexibleEntityBundle/tree/master",
                 "issues": "https://github.com/laboro/FlexibleEntityBundle/issues"
             },
-            "time": "2013-05-06 13:41:26"
+            "time": "2013-05-07 15:34:05"
         },
         {
             "name": "oro/grid-bundle",
@@ -2833,12 +2833,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/GridBundle.git",
-                "reference": "a72c391f9be1bdfd5427f99fc065fabda7616559"
+                "reference": "fcfbd0120240bde452343db92a3d271978a7fa62"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/GridBundle/zipball/a72c391f9be1bdfd5427f99fc065fabda7616559",
-                "reference": "a72c391f9be1bdfd5427f99fc065fabda7616559",
+                "url": "https://api.github.com/repos/laboro/GridBundle/zipball/fcfbd0120240bde452343db92a3d271978a7fa62",
+                "reference": "fcfbd0120240bde452343db92a3d271978a7fa62",
                 "shasum": ""
             },
             "require": {
@@ -2876,7 +2876,7 @@
                 "source": "https://github.com/laboro/GridBundle/tree/master",
                 "issues": "https://github.com/laboro/GridBundle/issues"
             },
-            "time": "2013-05-04 16:47:42"
+            "time": "2013-05-07 14:24:36"
         },
         {
             "name": "oro/measure-bundle",
@@ -3045,12 +3045,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/SegmentationTreeBundle.git",
-                "reference": "fb3881be0a34163f3d3bac592707fe0f7f15ed95"
+                "reference": "c1fc11c0ea73828050b470ec7336529f650a4f0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/SegmentationTreeBundle/zipball/fb3881be0a34163f3d3bac592707fe0f7f15ed95",
-                "reference": "fb3881be0a34163f3d3bac592707fe0f7f15ed95",
+                "url": "https://api.github.com/repos/laboro/SegmentationTreeBundle/zipball/c1fc11c0ea73828050b470ec7336529f650a4f0d",
+                "reference": "c1fc11c0ea73828050b470ec7336529f650a4f0d",
                 "shasum": ""
             },
             "require": {
@@ -3087,7 +3087,7 @@
                 "source": "https://github.com/laboro/SegmentationTreeBundle/tree/master",
                 "issues": "https://github.com/laboro/SegmentationTreeBundle/issues"
             },
-            "time": "2013-04-11 14:07:18"
+            "time": "2013-05-07 15:26:42"
         },
         {
             "name": "oro/soap-bundle",
@@ -3144,12 +3144,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/UIBundle.git",
-                "reference": "2a1bb633f016075e3a9bd1099af49e6cc33a7ea1"
+                "reference": "4c5a8f3f5f1f4d089e3bdf51e19c5c195e98edb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/UIBundle/zipball/2a1bb633f016075e3a9bd1099af49e6cc33a7ea1",
-                "reference": "2a1bb633f016075e3a9bd1099af49e6cc33a7ea1",
+                "url": "https://api.github.com/repos/laboro/UIBundle/zipball/4c5a8f3f5f1f4d089e3bdf51e19c5c195e98edb4",
+                "reference": "4c5a8f3f5f1f4d089e3bdf51e19c5c195e98edb4",
                 "shasum": ""
             },
             "require": {
@@ -3184,7 +3184,7 @@
                 "source": "https://github.com/laboro/UIBundle/tree/master",
                 "issues": "https://github.com/laboro/UIBundle/issues"
             },
-            "time": "2013-05-04 16:39:28"
+            "time": "2013-05-07 13:06:56"
         },
         {
             "name": "oro/user-bundle",
@@ -3193,12 +3193,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/UserBundle.git",
-                "reference": "97dce31989363e89535b053a1767c53ddc793781"
+                "reference": "079240dcf4ccdcd5caec4c2c036e9cb71cce7e36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/97dce31989363e89535b053a1767c53ddc793781",
-                "reference": "97dce31989363e89535b053a1767c53ddc793781",
+                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/079240dcf4ccdcd5caec4c2c036e9cb71cce7e36",
+                "reference": "079240dcf4ccdcd5caec4c2c036e9cb71cce7e36",
                 "shasum": ""
             },
             "require": {
@@ -3242,7 +3242,7 @@
                 "source": "https://github.com/laboro/UserBundle/tree/master",
                 "issues": "https://github.com/laboro/UserBundle/issues"
             },
-            "time": "2013-05-04 16:50:07"
+            "time": "2013-05-07 14:48:08"
         },
         {
             "name": "oro/windows-bundle",
@@ -3619,12 +3619,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataBlockBundle.git",
-                "reference": "3f18e2df3171bb1149f55ffcb34ecc41169bf15f"
+                "reference": "2.1.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/3f18e2df3171bb1149f55ffcb34ecc41169bf15f",
-                "reference": "3f18e2df3171bb1149f55ffcb34ecc41169bf15f",
+                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/2.1.2",
+                "reference": "2.1.2",
                 "shasum": ""
             },
             "require": {
@@ -3734,16 +3734,16 @@
         },
         {
             "name": "sonata-project/exporter",
-            "version": "1.2.1",
+            "version": "1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/exporter.git",
-                "reference": "1.2.1"
+                "reference": "1.2.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/exporter/zipball/1.2.1",
-                "reference": "1.2.1",
+                "url": "https://api.github.com/repos/sonata-project/exporter/zipball/1.2.2",
+                "reference": "1.2.2",
                 "shasum": ""
             },
             "require": {
@@ -3783,7 +3783,7 @@
                 "export",
                 "xls"
             ],
-            "time": "2013-03-04 14:20:46"
+            "time": "2013-05-02 17:17:04"
         },
         {
             "name": "sonata-project/jquery-bundle",
@@ -4252,12 +4252,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "v2.1.10"
+                "reference": "17a214a1c78ac2d27f70c79d90effcaa3997eace"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/v2.1.10",
-                "reference": "v2.1.10",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/17a214a1c78ac2d27f70c79d90effcaa3997eace",
+                "reference": "17a214a1c78ac2d27f70c79d90effcaa3997eace",
                 "shasum": ""
             },
             "require": {
@@ -4332,7 +4332,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2013-05-06 11:01:51"
+            "time": "2013-05-06 19:45:53"
         },
         {
             "name": "twig/extensions",
@@ -5457,15 +5457,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/instaclick/php-webdriver.git",
-                "reference": "6f2196bc09dbf4f8eaa2bbcc94d4fc979544706a"
+                "reference": "4e720813de0e871d28ba41e7e97f01855cb2bf31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/instaclick/php-webdriver/zipball/6f2196bc09dbf4f8eaa2bbcc94d4fc979544706a",
-                "reference": "6f2196bc09dbf4f8eaa2bbcc94d4fc979544706a",
+                "url": "https://api.github.com/repos/instaclick/php-webdriver/zipball/4e720813de0e871d28ba41e7e97f01855cb2bf31",
+                "reference": "4e720813de0e871d28ba41e7e97f01855cb2bf31",
                 "shasum": ""
             },
             "require": {
+                "ext-curl": "*",
                 "php": ">=5.3.2"
             },
             "type": "library",
@@ -5503,7 +5504,7 @@
                 "webdriver",
                 "webtest"
             ],
-            "time": "2013-02-21 16:05:33"
+            "time": "2013-05-07 15:25:21"
         },
         {
             "name": "sensiolabs/behat-page-object-extension",
