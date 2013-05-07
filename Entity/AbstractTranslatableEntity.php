@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\TranslationBundle\Entity;
 
+use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;
+
 use Gedmo\Translatable\Translatable;
 
 use Doctrine\Common\Collections\ArrayCollection;

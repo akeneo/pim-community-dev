@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\TranslationBundle\Tests\Entity;
 
+use Pim\Bundle\TranslationBundle\Entity\AbstractTranslatableEntity;
+
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Gedmo\Translatable\Translatable;
@@ -16,35 +18,13 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @Gedmo\TranslationEntity(class="Pim\Bundle\TranslationBundle\Tests\Entity\ItemTranslation")
  */
-class Item implements Translatable
+class Item extends AbstractTranslatableEntity implements Translatable
 {
 
     /**
      * @var string $name
      */
     protected $name;
-
-    /**
-     * Used locale
-     *
-     * @var string $locale
-     *
-     * @Gedmo\Locale
-     */
-    protected $locale;
-
-    /**
-     * @var ArrayCollection $translations
-     */
-    protected $translations;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->translations = new ArrayCollection();
-    }
 
     /**
      * Get name
@@ -66,60 +46,6 @@ class Item implements Translatable
     public function setName($name)
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Define locale used by entity
-     *
-     * @param string $locale
-     *
-     * @return Item
-     */
-    public function setTranslatableLocale($locale)
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get translations
-     *
-     * @return ArrayCollection
-     */
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-
-    /**
-     * Add translation
-     *
-     * @param ItemTranslation $translation
-     *
-     * @return Item
-     */
-    public function addTranslation(ItemTranslation $translation)
-    {
-        if (!$this->translations->contains($translation)) {
-            $this->translations->add($translation);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove translation
-     *
-     * @param ItemTranslation $translation
-     *
-     * @return Item
-     */
-    public function removeTranslation(ItemTranslation $translation)
-    {
-        $this->translations->removeElement($translation);
 
         return $this;
     }
