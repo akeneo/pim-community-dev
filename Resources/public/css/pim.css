@@ -223,3 +223,15 @@ form .table-condensed input.span4 {
 #sortable_options th {
     text-align: center;
 }
+
+div.ui-dialog form {
+    margin: 0;
+}
+
+div.ui-dialog-buttonpane>div.ui-dialog-buttonset>button {
+    float: right;
+}
+
+.ui-dialog:focus {
+    outline: none!important;
+}
