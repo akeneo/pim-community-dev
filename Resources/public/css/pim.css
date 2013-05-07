@@ -223,3 +223,24 @@ form .table-condensed input.span4 {
 #sortable_options th {
     text-align: center;
 }
+
+#attributes .nav-list > .active > a {
+    font-weight: bold;
+    color: #000000;
+    background-color: #FFFFFF;
+    text-shadow: none;
+}
+
+#attributes .nav-list > li > a {
+    color: #000000;
+    background-color: #FFFFFF;
+}
+
+#attributes .nav-list > li {
+    line-height: 25px;
+}
+
+#attributes .tab-content {
+    border-left: 1px solid #BBBBBB;
+    padding: 20px;
+}
