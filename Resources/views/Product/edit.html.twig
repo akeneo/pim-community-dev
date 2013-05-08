@@ -109,7 +109,7 @@
                                     <div class="{{ formValue.vars.value.attribute.scopable ? 'scopable' : '' }}" data-field="{{ formValue.vars.value.attribute.code }}">
                                 {% endif %}
                                 <div class="control-group">
-                                    {{ form_label(formValue, formValue.vars.value.attribute.code, { 'label_attr': {'class': 'control-label'} }) }}
+                                    {{ form_label(formValue, formValue.vars.value.attribute.label, { 'label_attr': {'class': 'control-label'} }) }}
                                     <div class="controls">
                                         {{ form_widget(formValue, {'attr': {'data-scope': formValue.vars.value.scope}} ) }}
                                     </div>

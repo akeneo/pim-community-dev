@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     name="pim_product_attribute_translation",
  *     indexes={
  *         @ORM\Index(
- *             name="pim_product_attribute_translations_idx",
+ *             name="pim_product_attribute_translation_idx",
  *             columns={"locale", "object_class", "field", "foreign_key"}
  *         )
  *     }

@@ -3,6 +3,7 @@
 {% block content %}
     {% include 'PimProductBundle:ProductAttribute:form.html.twig' with { 'form': form, 'locales': locales, 'disabledLocales': disabledLocales } %}
 {% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.bootstrap-modal.js') }}"></script>
