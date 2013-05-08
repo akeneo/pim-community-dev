@@ -2309,12 +2309,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafo/lessphp.git",
-                "reference": "51aad6ef903bdcb18280ae81fb85016a078232a0"
+                "reference": "dbb61d4beaafb0d708b79b008d0b708abeb4eae9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafo/lessphp/zipball/51aad6ef903bdcb18280ae81fb85016a078232a0",
-                "reference": "51aad6ef903bdcb18280ae81fb85016a078232a0",
+                "url": "https://api.github.com/repos/leafo/lessphp/zipball/dbb61d4beaafb0d708b79b008d0b708abeb4eae9",
+                "reference": "dbb61d4beaafb0d708b79b008d0b708abeb4eae9",
                 "shasum": ""
             },
             "type": "library",
@@ -2342,7 +2342,7 @@
             ],
             "description": "lessphp is a compiler for LESS written in PHP.",
             "homepage": "http://leafo.net/lessphp/",
-            "time": "2013-04-09 01:25:49"
+            "time": "2013-05-07 23:46:12"
         },
         {
             "name": "liip/imagine-bundle",
@@ -4387,12 +4387,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "b8a8701b6c2957a365b8596f55684679627d7cfb"
+                "reference": "4d90a5008d2c2cc30f5e5c8622e979674178bf6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/b8a8701b6c2957a365b8596f55684679627d7cfb",
-                "reference": "b8a8701b6c2957a365b8596f55684679627d7cfb",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/4d90a5008d2c2cc30f5e5c8622e979674178bf6c",
+                "reference": "4d90a5008d2c2cc30f5e5c8622e979674178bf6c",
                 "shasum": ""
             },
             "require": {
@@ -4428,7 +4428,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-05-06 06:36:47"
+            "time": "2013-05-07 18:59:51"
         },
         {
             "name": "ys-tools/back-url-bundle",
