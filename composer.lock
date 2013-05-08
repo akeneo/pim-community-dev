@@ -2527,12 +2527,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/AddressBundle.git",
-                "reference": "c2371950d6382187769929faa902170c80a6fe45"
+                "reference": "f2db9ecf5176dcc9239665020e82d7f390e1bf76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/AddressBundle/zipball/c2371950d6382187769929faa902170c80a6fe45",
-                "reference": "c2371950d6382187769929faa902170c80a6fe45",
+                "url": "https://api.github.com/repos/laboro/AddressBundle/zipball/f2db9ecf5176dcc9239665020e82d7f390e1bf76",
+                "reference": "f2db9ecf5176dcc9239665020e82d7f390e1bf76",
                 "shasum": ""
             },
             "require": {
@@ -2565,7 +2565,7 @@
                 "source": "https://github.com/laboro/AddressBundle/tree/master",
                 "issues": "https://github.com/laboro/AddressBundle/issues"
             },
-            "time": "2013-05-08 16:33:40"
+            "time": "2013-05-08 17:30:52"
         },
         {
             "name": "oro/bap",
@@ -2784,12 +2784,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/FlexibleEntityBundle.git",
-                "reference": "43f7fe96bc6d89f3a452874446d8f8fe197cb4a2"
+                "reference": "d5a1f28f108ee0ed889d9cea14b451939c2f7d76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/43f7fe96bc6d89f3a452874446d8f8fe197cb4a2",
-                "reference": "43f7fe96bc6d89f3a452874446d8f8fe197cb4a2",
+                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/d5a1f28f108ee0ed889d9cea14b451939c2f7d76",
+                "reference": "d5a1f28f108ee0ed889d9cea14b451939c2f7d76",
                 "shasum": ""
             },
             "require": {
@@ -2824,7 +2824,7 @@
                 "source": "https://github.com/laboro/FlexibleEntityBundle/tree/master",
                 "issues": "https://github.com/laboro/FlexibleEntityBundle/issues"
             },
-            "time": "2013-05-08 16:33:32"
+            "time": "2013-05-08 17:29:45"
         },
         {
             "name": "oro/grid-bundle",
@@ -2833,12 +2833,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/GridBundle.git",
-                "reference": "fc330ac9323ad7c54b83543399c8e63349711f50"
+                "reference": "e9f8c78cc861d2bada712ff4a636e9f421953633"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/GridBundle/zipball/fc330ac9323ad7c54b83543399c8e63349711f50",
-                "reference": "fc330ac9323ad7c54b83543399c8e63349711f50",
+                "url": "https://api.github.com/repos/laboro/GridBundle/zipball/e9f8c78cc861d2bada712ff4a636e9f421953633",
+                "reference": "e9f8c78cc861d2bada712ff4a636e9f421953633",
                 "shasum": ""
             },
             "require": {
@@ -2876,7 +2876,7 @@
                 "source": "https://github.com/laboro/GridBundle/tree/master",
                 "issues": "https://github.com/laboro/GridBundle/issues"
             },
-            "time": "2013-05-08 11:53:00"
+            "time": "2013-05-08 17:30:38"
         },
         {
             "name": "oro/measure-bundle",
@@ -2993,12 +2993,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/SearchBundle.git",
-                "reference": "d53323c0b65b6028a3bdc29dae7d8ca22860e77e"
+                "reference": "a4b5a05c401f174ab5272e6cb05dbc30f91a0734"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/SearchBundle/zipball/d53323c0b65b6028a3bdc29dae7d8ca22860e77e",
-                "reference": "d53323c0b65b6028a3bdc29dae7d8ca22860e77e",
+                "url": "https://api.github.com/repos/laboro/SearchBundle/zipball/a4b5a05c401f174ab5272e6cb05dbc30f91a0734",
+                "reference": "a4b5a05c401f174ab5272e6cb05dbc30f91a0734",
                 "shasum": ""
             },
             "require": {
@@ -3036,7 +3036,7 @@
                 "source": "https://github.com/laboro/SearchBundle/tree/master",
                 "issues": "https://github.com/laboro/SearchBundle/issues"
             },
-            "time": "2013-05-04 07:15:21"
+            "time": "2013-05-08 17:31:02"
         },
         {
             "name": "oro/segmentation-tree-bundle",
