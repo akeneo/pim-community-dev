@@ -54,7 +54,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'name';
         $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_text');
         $attribute->setCode($attributeCode);
-        $attribute->setName('Name');
+        $attribute->setLabel('Name');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setTranslatable(true);
         $attribute->setUseableAsGridColumn(true);
@@ -69,7 +69,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'price';
         $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_money');
         $attribute->setCode($attributeCode);
-        $attribute->setName('Price');
+        $attribute->setLabel('Price');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setUseableAsGridColumn(true);
         $attribute->setUseableAsGridFilter(true);
@@ -83,7 +83,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'shortDescription';
         $attribute = $this->getProductManager()->createAttribute('pim_product_textarea');
         $attribute->setCode($attributeCode);
-        $attribute->setName('Short Description');
+        $attribute->setLabel('Short Description');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setTranslatable(true);
         $attribute->setScopable(true);
@@ -99,7 +99,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'longDescription';
         $attribute = $this->getProductManager()->createAttribute('pim_product_textarea');
         $attribute->setCode($attributeCode);
-        $attribute->setName('Long Description');
+        $attribute->setLabel('Long Description');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setTranslatable(true);
         $attribute->setScopable(true);
@@ -114,7 +114,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'releaseDate';
         $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_date');
         $attribute->setCode($attributeCode);
-        $attribute->setName('Release date');
+        $attribute->setLabel('Release date');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setUseableAsGridColumn(true);
         $attribute->setUseableAsGridFilter(true);
@@ -128,7 +128,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'size';
         $attribute = $this->getProductManager()->createAttribute('pim_product_simpleselect');
         $attribute->setCode($attributeCode);
-        $attribute->setName('Size');
+        $attribute->setLabel('Size');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setUseableAsGridColumn(true);
         $attribute->setUseableAsGridFilter(true);
@@ -151,7 +151,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'weight';
         $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_metric');
         $attribute->setCode($attributeCode);
-        $attribute->setName('Weight');
+        $attribute->setLabel('Weight');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setUseableAsGridColumn(true);
         $this->createTranslation($attribute, 'default', 'name', 'Weight');
@@ -164,7 +164,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'color';
         $attribute = $this->getProductManager()->createAttribute('pim_product_multiselect');
         $attribute->setCode($attributeCode);
-        $attribute->setName('Color');
+        $attribute->setLabel('Color');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setTranslatable(false); // only one value but option can be translated in option values
         $attribute->setUseableAsGridColumn(true);
@@ -197,7 +197,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'manufacturer';
         $attribute = $this->getProductManager()->createAttribute('pim_product_simpleselect');
         $attribute->setCode($attributeCode);
-        $attribute->setName('Manufacturer');
+        $attribute->setLabel('Manufacturer');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setUseableAsGridColumn(true);
         $attribute->setUseableAsGridFilter(true);
@@ -220,7 +220,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'fileUpload';
         $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_file');
         $attribute->setCode($attributeCode);
-        $attribute->setName('File upload');
+        $attribute->setLabel('File upload');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setUseableAsGridColumn(true);
         $this->createTranslation($attribute, 'default', 'name', 'File upload');
@@ -233,7 +233,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'imageUpload';
         $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_image');
         $attribute->setCode($attributeCode);
-        $attribute->setName('Image upload');
+        $attribute->setLabel('Image upload');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setUseableAsGridColumn(true);
         $this->createTranslation($attribute, 'default', 'name', 'Image upload');
