@@ -113,7 +113,7 @@ class ProductAttributeTypeTest extends TypeTestCase
     public function testFormCreate()
     {
         // Assert fields
-        $this->assertField('name', 'pim_translatable_field');
+        $this->assertField('label', 'pim_translatable_field');
         $this->assertField('description', 'textarea');
         $this->assertField('variant', 'choice');
         $this->assertField('smart', 'checkbox');

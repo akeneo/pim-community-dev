@@ -325,7 +325,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      */
     public function __toString()
     {
-        return $this->name;
+        return $this->label;
     }
 
     /**
