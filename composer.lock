@@ -269,7 +269,7 @@
                 {
                     "name": "David de Boer",
                     "email": "david@ddeboer.nl",
-                    "homepage": "http://ddeboer.nl"
+                    "homepage": "https://github.com/ddeboer"
                 }
             ],
             "description": "Import data from, and export data to, a range of file formats and media",
@@ -533,7 +533,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -916,7 +916,7 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -1444,7 +1444,7 @@
             ],
             "authors": [
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -1486,9 +1486,9 @@
             ],
             "authors": [
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -1551,7 +1551,7 @@
             ],
             "authors": [
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -1623,7 +1623,7 @@
             ],
             "authors": [
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -1674,7 +1674,7 @@
             ],
             "authors": [
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -1774,7 +1774,7 @@
             ],
             "authors": [
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -1842,7 +1842,7 @@
             ],
             "authors": [
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -2103,7 +2103,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -2527,12 +2527,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/AddressBundle.git",
-                "reference": "da44b44bb67903469e74f41042598ef8130497cb"
+                "reference": "c2371950d6382187769929faa902170c80a6fe45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/AddressBundle/zipball/da44b44bb67903469e74f41042598ef8130497cb",
-                "reference": "da44b44bb67903469e74f41042598ef8130497cb",
+                "url": "https://api.github.com/repos/laboro/AddressBundle/zipball/c2371950d6382187769929faa902170c80a6fe45",
+                "reference": "c2371950d6382187769929faa902170c80a6fe45",
                 "shasum": ""
             },
             "require": {
@@ -2565,7 +2565,7 @@
                 "source": "https://github.com/laboro/AddressBundle/tree/master",
                 "issues": "https://github.com/laboro/AddressBundle/issues"
             },
-            "time": "2013-05-03 09:43:02"
+            "time": "2013-05-08 16:33:40"
         },
         {
             "name": "oro/bap",
@@ -2784,17 +2784,17 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/FlexibleEntityBundle.git",
-                "reference": "e0cdd6125482c35163c633ad2204b7574581dde7"
+                "reference": "43f7fe96bc6d89f3a452874446d8f8fe197cb4a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/e0cdd6125482c35163c633ad2204b7574581dde7",
-                "reference": "e0cdd6125482c35163c633ad2204b7574581dde7",
+                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/43f7fe96bc6d89f3a452874446d8f8fe197cb4a2",
+                "reference": "43f7fe96bc6d89f3a452874446d8f8fe197cb4a2",
                 "shasum": ""
             },
             "require": {
-                "oro/ui-bundle": "dev-master",
                 "php": ">=5.3.3",
+                "stof/doctrine-extensions-bundle": "dev-master",
                 "symfony/symfony": "2.1.*"
             },
             "require-dev": {
@@ -2824,7 +2824,7 @@
                 "source": "https://github.com/laboro/FlexibleEntityBundle/tree/master",
                 "issues": "https://github.com/laboro/FlexibleEntityBundle/issues"
             },
-            "time": "2013-05-07 15:34:05"
+            "time": "2013-05-08 16:33:32"
         },
         {
             "name": "oro/grid-bundle",
@@ -2833,12 +2833,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/GridBundle.git",
-                "reference": "fcfbd0120240bde452343db92a3d271978a7fa62"
+                "reference": "fc330ac9323ad7c54b83543399c8e63349711f50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/GridBundle/zipball/fcfbd0120240bde452343db92a3d271978a7fa62",
-                "reference": "fcfbd0120240bde452343db92a3d271978a7fa62",
+                "url": "https://api.github.com/repos/laboro/GridBundle/zipball/fc330ac9323ad7c54b83543399c8e63349711f50",
+                "reference": "fc330ac9323ad7c54b83543399c8e63349711f50",
                 "shasum": ""
             },
             "require": {
@@ -2876,7 +2876,7 @@
                 "source": "https://github.com/laboro/GridBundle/tree/master",
                 "issues": "https://github.com/laboro/GridBundle/issues"
             },
-            "time": "2013-05-07 14:24:36"
+            "time": "2013-05-08 11:53:00"
         },
         {
             "name": "oro/measure-bundle",
@@ -3144,12 +3144,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/UIBundle.git",
-                "reference": "4c5a8f3f5f1f4d089e3bdf51e19c5c195e98edb4"
+                "reference": "bfd695d9fead282123aa57925c5a1390c70dc1e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/UIBundle/zipball/4c5a8f3f5f1f4d089e3bdf51e19c5c195e98edb4",
-                "reference": "4c5a8f3f5f1f4d089e3bdf51e19c5c195e98edb4",
+                "url": "https://api.github.com/repos/laboro/UIBundle/zipball/bfd695d9fead282123aa57925c5a1390c70dc1e0",
+                "reference": "bfd695d9fead282123aa57925c5a1390c70dc1e0",
                 "shasum": ""
             },
             "require": {
@@ -3184,7 +3184,7 @@
                 "source": "https://github.com/laboro/UIBundle/tree/master",
                 "issues": "https://github.com/laboro/UIBundle/issues"
             },
-            "time": "2013-05-07 13:06:56"
+            "time": "2013-05-08 11:13:20"
         },
         {
             "name": "oro/user-bundle",
@@ -3193,12 +3193,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/UserBundle.git",
-                "reference": "079240dcf4ccdcd5caec4c2c036e9cb71cce7e36"
+                "reference": "e5294fc1ec680be3b835be7e755cc16b5b95f3c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/079240dcf4ccdcd5caec4c2c036e9cb71cce7e36",
-                "reference": "079240dcf4ccdcd5caec4c2c036e9cb71cce7e36",
+                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/e5294fc1ec680be3b835be7e755cc16b5b95f3c0",
+                "reference": "e5294fc1ec680be3b835be7e755cc16b5b95f3c0",
                 "shasum": ""
             },
             "require": {
@@ -3242,7 +3242,7 @@
                 "source": "https://github.com/laboro/UserBundle/tree/master",
                 "issues": "https://github.com/laboro/UserBundle/issues"
             },
-            "time": "2013-05-07 14:48:08"
+            "time": "2013-05-08 11:16:36"
         },
         {
             "name": "oro/windows-bundle",
@@ -3328,7 +3328,7 @@
             ],
             "authors": [
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -3378,7 +3378,7 @@
             ],
             "authors": [
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
