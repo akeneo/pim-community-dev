@@ -54,14 +54,14 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'name';
         $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_text');
         $attribute->setCode($attributeCode);
-        $attribute->setName('Name');
+        $attribute->setLabel('Name');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setTranslatable(true);
         $attribute->setUseableAsGridColumn(true);
         $attribute->setUseableAsGridFilter(true);
-        $this->createTranslation($attribute, 'default', 'name', 'Name');
-        $this->createTranslation($attribute, 'en_US', 'name', 'Name');
-        $this->createTranslation($attribute, 'fr_FR', 'name', 'Nom');
+        $this->createTranslation($attribute, 'default', 'label', 'Name');
+        $this->createTranslation($attribute, 'en_US', 'label', 'Name');
+        $this->createTranslation($attribute, 'fr_FR', 'label', 'Nom');
         $this->getProductManager()->getStorageManager()->persist($attribute);
         $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
@@ -69,13 +69,13 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'price';
         $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_money');
         $attribute->setCode($attributeCode);
-        $attribute->setName('Price');
+        $attribute->setLabel('Price');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setUseableAsGridColumn(true);
         $attribute->setUseableAsGridFilter(true);
-        $this->createTranslation($attribute, 'default', 'name', 'Price');
-        $this->createTranslation($attribute, 'en_US', 'name', 'Price');
-        $this->createTranslation($attribute, 'fr_FR', 'name', 'Prix');
+        $this->createTranslation($attribute, 'default', 'label', 'Price');
+        $this->createTranslation($attribute, 'en_US', 'label', 'Price');
+        $this->createTranslation($attribute, 'fr_FR', 'label', 'Prix');
         $this->getProductManager()->getStorageManager()->persist($attribute);
         $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
@@ -83,15 +83,15 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'shortDescription';
         $attribute = $this->getProductManager()->createAttribute('pim_product_textarea');
         $attribute->setCode($attributeCode);
-        $attribute->setName('Short Description');
+        $attribute->setLabel('Short Description');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setTranslatable(true);
         $attribute->setScopable(true);
         $attribute->setUseableAsGridColumn(true);
         $attribute->setUseableAsGridFilter(true);
-        $this->createTranslation($attribute, 'default', 'name', 'Short description');
-        $this->createTranslation($attribute, 'en_US', 'name', 'Short description');
-        $this->createTranslation($attribute, 'fr_FR', 'name', 'Description courte');
+        $this->createTranslation($attribute, 'default', 'label', 'Short description');
+        $this->createTranslation($attribute, 'en_US', 'label', 'Short description');
+        $this->createTranslation($attribute, 'fr_FR', 'label', 'Description courte');
         $this->getProductManager()->getStorageManager()->persist($attribute);
         $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
@@ -99,14 +99,14 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'longDescription';
         $attribute = $this->getProductManager()->createAttribute('pim_product_textarea');
         $attribute->setCode($attributeCode);
-        $attribute->setName('Long Description');
+        $attribute->setLabel('Long Description');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setTranslatable(true);
         $attribute->setScopable(true);
         $attribute->setWysiwygEnabled(true);
-        $this->createTranslation($attribute, 'default', 'name', 'Long description');
-        $this->createTranslation($attribute, 'en_US', 'name', 'Long description');
-        $this->createTranslation($attribute, 'fr_FR', 'name', 'Description longue');
+        $this->createTranslation($attribute, 'default', 'label', 'Long description');
+        $this->createTranslation($attribute, 'en_US', 'label', 'Long description');
+        $this->createTranslation($attribute, 'fr_FR', 'label', 'Description longue');
         $this->getProductManager()->getStorageManager()->persist($attribute);
         $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
@@ -114,13 +114,13 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'releaseDate';
         $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_date');
         $attribute->setCode($attributeCode);
-        $attribute->setName('Release date');
+        $attribute->setLabel('Release date');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setUseableAsGridColumn(true);
         $attribute->setUseableAsGridFilter(true);
-        $this->createTranslation($attribute, 'default', 'name', 'Release date');
-        $this->createTranslation($attribute, 'en_US', 'name', 'Release date');
-        $this->createTranslation($attribute, 'fr_FR', 'name', 'Date de sortie');
+        $this->createTranslation($attribute, 'default', 'label', 'Release date');
+        $this->createTranslation($attribute, 'en_US', 'label', 'Release date');
+        $this->createTranslation($attribute, 'fr_FR', 'label', 'Date de sortie');
         $this->getProductManager()->getStorageManager()->persist($attribute);
         $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
@@ -128,7 +128,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'size';
         $attribute = $this->getProductManager()->createAttribute('pim_product_simpleselect');
         $attribute->setCode($attributeCode);
-        $attribute->setName('Size');
+        $attribute->setLabel('Size');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setUseableAsGridColumn(true);
         $attribute->setUseableAsGridFilter(true);
@@ -141,9 +141,9 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
             $optionValue->setValue($size);
             $option->addOptionValue($optionValue);
         }
-        $this->createTranslation($attribute, 'default', 'name', 'Size');
-        $this->createTranslation($attribute, 'en_US', 'name', 'Size');
-        $this->createTranslation($attribute, 'fr_FR', 'name', 'Taille');
+        $this->createTranslation($attribute, 'default', 'label', 'Size');
+        $this->createTranslation($attribute, 'en_US', 'label', 'Size');
+        $this->createTranslation($attribute, 'fr_FR', 'label', 'Taille');
         $this->getProductManager()->getStorageManager()->persist($attribute);
         $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
@@ -151,12 +151,12 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'weight';
         $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_metric');
         $attribute->setCode($attributeCode);
-        $attribute->setName('Weight');
+        $attribute->setLabel('Weight');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setUseableAsGridColumn(true);
-        $this->createTranslation($attribute, 'default', 'name', 'Weight');
-        $this->createTranslation($attribute, 'en_US', 'name', 'Weight');
-        $this->createTranslation($attribute, 'fr_FR', 'name', 'Poids');
+        $this->createTranslation($attribute, 'default', 'label', 'Weight');
+        $this->createTranslation($attribute, 'en_US', 'label', 'Weight');
+        $this->createTranslation($attribute, 'fr_FR', 'label', 'Poids');
         $this->getProductManager()->getStorageManager()->persist($attribute);
         $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
@@ -164,7 +164,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'color';
         $attribute = $this->getProductManager()->createAttribute('pim_product_multiselect');
         $attribute->setCode($attributeCode);
-        $attribute->setName('Color');
+        $attribute->setLabel('Color');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setTranslatable(false); // only one value but option can be translated in option values
         $attribute->setUseableAsGridColumn(true);
@@ -187,9 +187,9 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
                 $option->addOptionValue($optionValue);
             }
         }
-        $this->createTranslation($attribute, 'default', 'name', 'Color');
-        $this->createTranslation($attribute, 'en_US', 'name', 'Color');
-        $this->createTranslation($attribute, 'fr_FR', 'name', 'Couleur');
+        $this->createTranslation($attribute, 'default', 'label', 'Color');
+        $this->createTranslation($attribute, 'en_US', 'label', 'Color');
+        $this->createTranslation($attribute, 'fr_FR', 'label', 'Couleur');
         $this->getProductManager()->getStorageManager()->persist($attribute);
         $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
@@ -197,7 +197,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'manufacturer';
         $attribute = $this->getProductManager()->createAttribute('pim_product_simpleselect');
         $attribute->setCode($attributeCode);
-        $attribute->setName('Manufacturer');
+        $attribute->setLabel('Manufacturer');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setUseableAsGridColumn(true);
         $attribute->setUseableAsGridFilter(true);
@@ -210,9 +210,9 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
             $optionValue->setValue($manufacturer);
             $option->addOptionValue($optionValue);
         }
-        $this->createTranslation($attribute, 'default', 'name', 'Manufacturer');
-        $this->createTranslation($attribute, 'en_US', 'name', 'Manufacturer');
-        $this->createTranslation($attribute, 'fr_FR', 'name', 'Fabricant');
+        $this->createTranslation($attribute, 'default', 'label', 'Manufacturer');
+        $this->createTranslation($attribute, 'en_US', 'label', 'Manufacturer');
+        $this->createTranslation($attribute, 'fr_FR', 'label', 'Fabricant');
         $this->getProductManager()->getStorageManager()->persist($attribute);
         $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
@@ -220,12 +220,12 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'fileUpload';
         $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_file');
         $attribute->setCode($attributeCode);
-        $attribute->setName('File upload');
+        $attribute->setLabel('File upload');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setUseableAsGridColumn(true);
-        $this->createTranslation($attribute, 'default', 'name', 'File upload');
-        $this->createTranslation($attribute, 'en_US', 'name', 'File upload');
-        $this->createTranslation($attribute, 'fr_FR', 'name', 'Fichier téléchargé');
+        $this->createTranslation($attribute, 'default', 'label', 'File upload');
+        $this->createTranslation($attribute, 'en_US', 'label', 'File upload');
+        $this->createTranslation($attribute, 'fr_FR', 'label', 'Fichier téléchargé');
         $this->getProductManager()->getStorageManager()->persist($attribute);
         $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
@@ -233,12 +233,12 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attributeCode = 'imageUpload';
         $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_image');
         $attribute->setCode($attributeCode);
-        $attribute->setName('Image upload');
+        $attribute->setLabel('Image upload');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setUseableAsGridColumn(true);
-        $this->createTranslation($attribute, 'default', 'name', 'Image upload');
-        $this->createTranslation($attribute, 'en_US', 'name', 'Image upload');
-        $this->createTranslation($attribute, 'fr_FR', 'name', 'Image téléchargée');
+        $this->createTranslation($attribute, 'default', 'label', 'Image upload');
+        $this->createTranslation($attribute, 'en_US', 'label', 'Image upload');
+        $this->createTranslation($attribute, 'fr_FR', 'label', 'Image téléchargée');
         $this->getProductManager()->getStorageManager()->persist($attribute);
         $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
