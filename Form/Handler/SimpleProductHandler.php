@@ -2,7 +2,8 @@
 namespace Pim\Bundle\ProductBundle\Form\Handler;
 
 use Pim\Bundle\ProductBundle\Entity\Product;
-use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\ProductBundle\Manager\ProductManager;
+use Pim\Bundle\ProductBundle\Entity\ProductValue;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
 
@@ -28,17 +29,17 @@ class SimpleProductHandler
     protected $request;
 
     /**
-     * @var ObjectManager
+     * @var ProductManager
      */
     protected $manager;
 
     /**
      * Constructor for handler
-     * @param FormInterface $form    Form called
-     * @param Request       $request Web request
-     * @param ObjectManager $manager Storage manager
+     * @param FormInterface  $form    Form called
+     * @param Request        $request Web request
+     * @param ProductManager $manager Product manager
      */
-    public function __construct(FormInterface $form, Request $request, ObjectManager $manager)
+    public function __construct(FormInterface $form, Request $request, ProductManager $manager)
     {
         $this->form    = $form;
         $this->request = $request;
@@ -77,8 +78,6 @@ class SimpleProductHandler
         foreach ($entity->getLanguages() as $language) {
             $language->setActive(true);
         }
-
-        $this->manager->persist($entity);
-        $this->manager->flush();
+        $this->manager->save($entity);
     }
 }
