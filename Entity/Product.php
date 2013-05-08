@@ -106,6 +106,19 @@ class Product extends AbstractEntityFlexible
     }
 
     /**
+     * Allow to access attribute even if this product has no value for this one
+     *
+     * @param string $name
+     *
+     * @return boolean
+     */
+    public function __isset($name)
+    {
+        // TODO : we could check on list of current attributes
+        return true;
+    }
+
+    /**
      * Get languages
      *
      * @return \Doctrine\Common\Collections\ArrayCollection
