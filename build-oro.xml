@@ -48,12 +48,12 @@
         <apply executable="php" failonerror="true">
             <arg value="-l" />
 
-            <fileset dir="${basedir}/vendor/oro">
+            <fileset dir="${basedir}/src/Oro">
                 <include name="**/*.php" />
                 <modified />
             </fileset>
 
-            <fileset dir="${basedir}/vendor/oro/">
+            <fileset dir="${basedir}/src/Oro/">
                 <include name="**/*Test.php" />
                 <modified />
             </fileset>
@@ -64,7 +64,7 @@
         <exec executable="phploc">
             <arg value="--log-csv" />
             <arg value="${basedir}/app/build/logs/phploc.csv" />
-            <arg path="${basedir}/vendor/oro" />
+            <arg path="${basedir}/src/Oro" />
         </exec>
     </target>
 
@@ -73,27 +73,27 @@
             <arg value="--jdepend-xml=${basedir}/app/build/logs/jdepend.xml" />
             <arg value="--jdepend-chart=${basedir}/app/build/pdepend/dependencies.svg" />
             <arg value="--overview-pyramid=${basedir}/app/build/pdepend/overview-pyramid.svg" />
-            <arg path="${basedir}/vendor/oro" />
+            <arg path="${basedir}/src/Oro" />
         </exec>
     </target>
 
     <target name="phpmd" description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="phpmd">
-            <arg path="${basedir}/vendor/oro" />
+            <arg path="${basedir}/src/Oro" />
             <arg value="text" />
             <arg value="${basedir}/app/Resources/jenkins/phpmd.xml" />
-            <arg value="--ignore=${basedir}/vendor/oro/*/Oro/Bundle/*/Tests/*.php,${basedir}/vendor/oro/*/Oro/Bundle/*/Tests/Files/*" />
+            <arg value="--ignore=${basedir}/src/*/Tests/*.php,${basedir}/src/*Tests/Files/*" />
         </exec>
     </target>
 
     <target name="phpmd-ci" description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
         <exec executable="phpmd">
-            <arg path="${basedir}/vendor/oro" />
+            <arg path="${basedir}/src/Oro" />
             <arg value="xml" />
             <arg value="${basedir}/app/Resources/jenkins/phpmd.xml" />
             <arg value="--reportfile" />
             <arg value="${basedir}/app/build/logs/pmd.xml" />
-            <arg value="--ignore=${basedir}/vendor/oro/*/Oro/Bundle/*/Tests/*.php,${basedir}/vendor/oro/*/Oro/Bundle/*/Tests/Files/*" />
+            <arg value="--ignore=${basedir}/src/*/Tests/*.php,${basedir}/src/*Tests/Files/*" />
         </exec>
     </target>
 
@@ -103,8 +103,8 @@
             <arg value="--standard=PSR1" />
             <arg value="--standard=PSR2" />
             <arg value="--extensions=php" />
-            <arg path="${basedir}/vendor/oro" />
-            <arg value="--ignore=${basedir}/vendor/oro/*/Oro/Bundle/*/Tests/*.php,${basedir}/vendor/oro/*/Oro/Bundle/*/Tests/Files/*" />
+            <arg path="${basedir}/src/Oro" />
+            <arg value="--ignore=${basedir}/src/*/Tests/*.php,${basedir}/src/*Tests/Files/*" />
         </exec>
     </target>
 
@@ -116,8 +116,8 @@
             <arg value="--standard=PSR1" />
             <arg value="--standard=PSR2" />
             <arg value="--extensions=php" />
-            <arg path="${basedir}/vendor/oro" />
-            <arg value="--ignore=${basedir}/vendor/oro/*/Oro/Bundle/*/Tests/*.php,${basedir}/vendor/oro/*/Oro/Bundle/*/Tests/Files/*" />
+            <arg path="${basedir}/src/Oro" />
+            <arg value="--ignore=${basedir}/src/*/Tests/*.php,${basedir}/src/*Tests/Files/*" />
         </exec>
     </target>
 
@@ -125,7 +125,7 @@
         <exec executable="phpcpd">
             <arg value="--log-pmd" />
             <arg value="${basedir}/app/build/logs/pmd-cpd.xml" />
-            <arg path="${basedir}/vendor/oro" />
+            <arg path="${basedir}/src/Oro" />
         </exec>
     </target>
 
@@ -149,7 +149,7 @@
             <arg value="--log" />
             <arg path="${basedir}/app/build/logs" />
             <arg value="--source" />
-            <arg path="${basedir}/vendor/oro" />
+            <arg path="${basedir}/src/Oro" />
             <arg value="--output" />
             <arg path="${basedir}/app/build/code-browser" />
         </exec>
