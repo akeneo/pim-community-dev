@@ -6,7 +6,8 @@
 <div class="container-fluid">
     
     {% block content %}
-    {% form_theme form 'PimProductBundle:Form:simple_layout.html.twig' %}
+
+    {% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
     
     <form method="POST" class="form-horizontal" action="{{ form.vars.value.id ?
         path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) :
@@ -66,11 +67,6 @@
                                         <li><a href="?dataLocale={{ language.code }}">{{ language.fromLocale(app.request.locale) }}</a></li>
                                     {% endfor %}
                                 </ul>
-                            </div>
-
-                            <div class="btn-group">
-                                {{ form_label(form.productFamily, 'Family', { 'label_attr': {'class': 'control-label span1'} }) }}
-                                {{ form_widget(form.productFamily, {'attr' : { 'class': 'span1' }}) }}
                             </div>
 
                        </div>
@@ -148,10 +144,7 @@
                                                 <div class="{{ formValue.vars.value.attribute.scopable ? 'scopable' : '' }}" data-field="{{ formValue.vars.value.attribute.code }}">
                                             {% endif %}
                                             <div class="control-group">
-                                                {{ form_label(formValue, formValue.vars.value.attribute.label, { 'label_attr': {'class': 'control-label'} }) }}
-                                                <div class="controls">
-                                                    {{ form_widget(formValue, {'attr': {'data-scope': formValue.vars.value.scope}} ) }}
-                                                </div>
+                                                {{ form_widget(formValue, {'attr': {'data-scope': formValue.vars.value.scope}} ) }}
                                             </div>
                                             {% set attributeCode = formValue.vars.value.attribute.code %}
                                         {% endif %}

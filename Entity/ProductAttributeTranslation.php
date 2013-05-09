@@ -22,7 +22,6 @@ use Doctrine\ORM\Mapping as ORM;
  *         )
  *     }
  * )
- *
  */
 class ProductAttributeTranslation extends AbstractTranslation
 {
