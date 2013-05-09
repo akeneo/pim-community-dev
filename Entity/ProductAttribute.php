@@ -5,7 +5,6 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
 use Pim\Bundle\ConfigBundle\Entity\Language;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Translatable\Translatable;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -22,11 +21,19 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
- * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation")
  * @UniqueEntity("code")
+ * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation")
  */
-class ProductAttribute extends AbstractEntityAttribute implements Translatable
+class ProductAttribute extends AbstractEntityAttribute
 {
+    /**
+     * @var string $label
+     *
+     * @ORM\Column(name="label", type="string", length=255)
+     * @Gedmo\Translatable
+     */
+    protected $label;
+
     /**
      * Overrided to change target entity name
      *
