@@ -54,7 +54,7 @@ class AttributeGroupControllerTest extends ControllerTest
         // assert with authentication
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertCount(1, $crawler->filter('table.table:contains("SEO")'));
+        $this->assertCount(1, $crawler->filter('#pim_product_attributegroup_sort:contains("SEO")'));
     }
 
     /**
