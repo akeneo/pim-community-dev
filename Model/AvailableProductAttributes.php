@@ -13,16 +13,31 @@ class AvailableProductAttributes
 {
     protected $attributes;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->attributes = new ArrayCollection;
     }
 
+    /**
+     * Set attributes to add
+     *
+     * @param ArrayCollection $attributes The attributes to add
+     *
+     * @return null
+     */
     public function setAttributes(ArrayCollection $attributes)
     {
         $this->attributes = $attributes;
     }
 
+    /**
+     * Get the attributes to add
+     *
+     * @return ArrayCollection
+     */
     public function getAttributes()
     {
         return $this->attributes;

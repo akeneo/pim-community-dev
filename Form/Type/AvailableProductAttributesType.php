@@ -19,8 +19,8 @@ class AvailableProductAttributesType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('attributes', 'entity', array(
+        $builder->add(
+            'attributes', 'entity', array(
                 'class' => 'PimProductBundle:ProductAttribute',
                 'query_builder' => function (EntityRepository $er) use ($options) {
                     return $er->getFindAllExceptQB($options['attributes']);
@@ -28,16 +28,21 @@ class AvailableProductAttributesType extends AbstractType
                 'multiple' => true,
                 'expanded' => false,
                 'group_by' => 'group.name',
-            ))
-        ;
+            )
+        );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Pim\Bundle\ProductBundle\Model\AvailableProductAttributes',
-            'attributes' => array(),
-        ));
+        $resolver->setDefaults(
+            array(
+                'data_class' => 'Pim\Bundle\ProductBundle\Model\AvailableProductAttributes',
+                'attributes' => array(),
+            )
+        );
     }
 
     /**

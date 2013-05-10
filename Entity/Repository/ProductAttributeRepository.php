@@ -14,11 +14,21 @@ use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
  */
 class ProductAttributeRepository extends EntityRepository
 {
+    /**
+     * Get the query builder to find all product attributes except the ones
+     * defined in arguments
+     *
+     * @param array $attributes The attributes to exclude from the results set
+     *
+     * @return Doctrine\ORM\QueryBuilder
+     */
     public function getFindAllExceptQB(array $attributes)
     {
-        $ids = array_map(function ($attribute) {
-            return $attribute->getId();
-        }, $attributes);
+        $ids = array_map(
+            function ($attribute) {
+                return $attribute->getId();
+            }, $attributes
+        );
 
         $qb = $this->createQueryBuilder('a');
         $qb

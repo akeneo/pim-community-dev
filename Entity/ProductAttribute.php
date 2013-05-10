@@ -49,65 +49,6 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     protected $sortOrder = 0;
 
     /**
-     * Convert defaultValue to UNIX timestamp if it is a DateTime object
-     *
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function convertDefaultValueToTimestamp()
-    {
-        if ($this->getDefaultValue() instanceof \DateTime) {
-            $this->setDefaultValue($this->getDefaultValue()->format('U'));
-        }
-    }
-
-    /**
-     * Convert defaultValue to DateTime if attribute type is date
-     *
-     * @ORM\PostLoad
-     */
-    public function convertDefaultValueToDatetime()
-    {
-        if ($this->getDefaultValue()) {
-            if (strpos($this->getAttributeType(), 'DateType') !== false) {
-                $date = new \DateTime();
-                $date->setTimestamp(intval($this->getDefaultValue()));
-
-                $this->setDefaultValue($date);
-            }
-        }
-    }
-
-    /**
-     * Convert defaultValue to integer if attribute type is boolean
-     *
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function convertDefaultValueToInteger()
-    {
-        if ($this->getDefaultValue() !== null) {
-            if (strpos($this->getAttributeType(), 'BooleanType') !== false) {
-                $this->setDefaultValue((int) $this->getDefaultValue());
-            }
-        }
-    }
-
-    /**
-     * Convert defaultValue to boolean if attribute type is boolean
-     *
-     * @ORM\PostLoad
-     */
-    public function convertDefaultValueToBoolean()
-    {
-        if ($this->getDefaultValue() !== null) {
-            if (strpos($this->getAttributeType(), 'BooleanType') !== false) {
-                $this->setDefaultValue((bool) $this->getDefaultValue());
-            }
-        }
-    }
-
-    /**
      * @var string $name
      *
      * @ORM\Column(name="name", type="string", length=255)
@@ -311,13 +252,13 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      */
     public function __construct()
     {
-        $this->options      = new ArrayCollection();
-        $this->required     = false;
-        $this->unique       = false;
-        $this->defaultValue = null;
-        $this->searchable   = false;
-        $this->translatable = false;
-        $this->scopable     = false;
+        $this->options             = new ArrayCollection();
+        $this->required            = false;
+        $this->unique              = false;
+        $this->defaultValue        = null;
+        $this->searchable          = false;
+        $this->translatable        = false;
+        $this->scopable            = false;
         $this->description         = '';
         $this->smart               = false;
         $this->variant             = false;
@@ -325,6 +266,73 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
         $this->useableAsGridFilter = false;
         $this->availableLanguages  = new ArrayCollection();
         $this->translations        = new ArrayCollection();
+    }
+
+    /**
+     * Convert defaultValue to UNIX timestamp if it is a DateTime object
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     *
+     * @return null
+     */
+    public function convertDefaultValueToTimestamp()
+    {
+        if ($this->getDefaultValue() instanceof \DateTime) {
+            $this->setDefaultValue($this->getDefaultValue()->format('U'));
+        }
+    }
+
+    /**
+     * Convert defaultValue to DateTime if attribute type is date
+     *
+     * @ORM\PostLoad
+     *
+     * @return null
+     */
+    public function convertDefaultValueToDatetime()
+    {
+        if ($this->getDefaultValue()) {
+            if (strpos($this->getAttributeType(), 'DateType') !== false) {
+                $date = new \DateTime();
+                $date->setTimestamp(intval($this->getDefaultValue()));
+
+                $this->setDefaultValue($date);
+            }
+        }
+    }
+
+    /**
+     * Convert defaultValue to integer if attribute type is boolean
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     *
+     * @return null
+     */
+    public function convertDefaultValueToInteger()
+    {
+        if ($this->getDefaultValue() !== null) {
+            if (strpos($this->getAttributeType(), 'BooleanType') !== false) {
+                $this->setDefaultValue((int) $this->getDefaultValue());
+            }
+        }
+    }
+
+    /**
+     * Convert defaultValue to boolean if attribute type is boolean
+     *
+     * @ORM\PostLoad
+     *
+     * @return null
+     */
+    public function convertDefaultValueToBoolean()
+    {
+        if ($this->getDefaultValue() !== null) {
+            if (strpos($this->getAttributeType(), 'BooleanType') !== false) {
+                $this->setDefaultValue((bool) $this->getDefaultValue());
+            }
+        }
     }
 
     /**
