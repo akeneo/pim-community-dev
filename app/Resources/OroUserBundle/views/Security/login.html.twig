@@ -1,0 +1,59 @@
+{% extends 'OroUserBundle::layout.html.twig' %}
+
+{% block head %}
+    {{ parent() }}
+    {% stylesheets
+        'bundles/pimui/css/pim.less'
+
+        debug=false
+        filter='cssrewrite'
+        output='css/pim.css'
+    %}
+    <link rel="stylesheet" media="all" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block bodyClass %}login-page{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% if error %}
+    <div class="alert alert-error">
+        <button data-dismiss="alert" class="close" type="button">&times;</button>
+        <div>{{ error|trans }}</div>
+    </div>
+    {% endif %}
+
+    <form action="{{ path('oro_user_security_check') }}" method="post" class="form-signin">
+        <div class="title-box">
+            <h1 class="oro-title">
+                <img src="{{ asset('/bundles/pimui/images/logo_old.png') }}" alt="Logo">
+            </h1>
+        </div>
+        <fieldset>
+            <div class="input-prepend">
+                <label for="prependedInput" class="add-on">{{ 'Username'|trans }}</label>
+                <input type="text" id="prependedInput" class="span2" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'Username or Email'|trans }}" />
+            </div>
+            <div class="input-prepend">
+                <label for="prependedInput2" class="add-on">{{ 'Password'|trans }}</label>
+                <input type="password" id="prependedInput2" class="span2" name="_password" required="required" placeholder="{{ 'Password'|trans }}" autocomplete="off" />
+            </div>
+            <div class="form-row">
+                <label class="checkbox">
+                    <input type="checkbox" id="remember_me" name="_remember_me" value="on" /> {{ 'Remember me on this computer'|trans }}
+                </label>
+            </div>
+            <div class="form-row">
+                <button type="submit" class="btn btn-large btn-primary btn-submit" id="_submit" name="_submit">{{ 'Log in'|trans }}</button>
+            </div>
+            <div class="signin-help">
+                <a href="#">{{ 'Forgot your username?'|trans }}</a>
+                <div class="divider-vertical-small"></div>
+                <a href="{{ path('oro_user_reset_request') }}">{{ 'Forgot your password?'|trans }}</a>
+            </div>
+        </fieldset>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+    </form>
+</div>
+{% endblock content %}
