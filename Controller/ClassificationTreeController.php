@@ -1,6 +1,10 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
+use Pim\Bundle\ProductBundle\Helper\JsonSegmentHelper;
+
 use Pim\Bundle\ProductBundle\Form\Type\ProductSegmentType;
 
 use Pim\Bundle\ProductBundle\Entity\ProductSegment;
@@ -31,19 +35,18 @@ class ClassificationTreeController extends Controller
      */
     public function indexAction()
     {
-        $segments = $this->getDoctrine()
-                         ->getEntityManager()
-                         ->getRepository('Pim\Bundle\ProductBundle\Entity\ProductSegment')
-                         ->findAll();
-
-        return array('segments' => $segments);
+        return array();
     }
 
     /**
      * List classification trees
      *
      * @Route("/list-tree")
-     * @Template("PimProductBundle:ClassificationTree:listTree.html.twig")
+     *
+     *
+     * @TODO : response json format
+     * @TODO : XML HTTP Request
+     * @TODO : Use layout
      *
      * @return array
      */
@@ -51,7 +54,78 @@ class ClassificationTreeController extends Controller
     {
         $trees = $this->getTreeManager()->getTrees();
 
-        return array('trees' => $trees);
+        $data = JsonSegmentHelper::treesResponse($trees);
+
+        return $this->prepareJsonResponse($data);
+    }
+
+
+    /**
+     * Return a response in json content type with well formated data
+     * @param mixed $data
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * TODO : Must be removed
+     */
+    protected function prepareJsonResponse($data)
+    {
+        $response = new Response(json_encode($data));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
+    /**
+     * List children of a segment
+     *
+     * @param ProductSegment $segment
+     *
+     * @Route("/children")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function childrenAction()
+    {
+        $parentId = (int) $this->getRequest()->get('id');
+
+        if ($parentId <= 0) {
+            throw new \InvalidArgumentException("Missing segment id parameter 'id':".$parentId);
+        }
+
+        $segments = $this->getTreeManager()->getChildren($parentId);
+
+        $data = JsonSegmentHelper::childrenResponse($segments);
+
+        return $this->prepareJsonResponse($data);
+    }
+
+    /**
+     * List products associated with the provided segment
+     *
+     * @param Request $request Request (segment_id)
+     *
+     * @Route("/list-items")
+     *
+     * @return Response
+     *
+     */
+    public function listItemsAction()
+    {
+        $segmentId = $this->getRequest()->get('segment_id');
+
+        $repo = $this->getTreeManager()->getEntityRepository();
+        $segment = $repo->find($segmentId);
+
+        $products = new ArrayCollection();
+
+        if (is_object($segment)) {
+            $products = $segment->getProducts();
+        }
+
+        $data = JsonSegmentHelper::productsResponse($products);
+
+        return $this->prepareJsonResponse($data);
     }
 
     /**
