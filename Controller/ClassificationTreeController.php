@@ -43,12 +43,8 @@ class ClassificationTreeController extends Controller
     /**
      * List classification trees
      *
-     * @Route("/list-tree")
-     *
-     *
-     * @TODO : response json format
-     * @TODO : XML HTTP Request
-     * @TODO : Use layout
+     * @Route("/list-tree.{_format}", requirements={"_format"="json"})
+     * @Template()
      *
      * @return array
      */
@@ -56,9 +52,7 @@ class ClassificationTreeController extends Controller
     {
         $trees = $this->getTreeManager()->getTrees();
 
-        $data = JsonSegmentHelper::treesResponse($trees);
-
-        return $this->prepareJsonResponse($data);
+        return array('trees' => $trees);
     }
 
 

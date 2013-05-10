@@ -7,7 +7,7 @@ $('#tree').jstree({
     ],
     "tree_selector" : {
         "ajax" : {
-            "url" : "list-tree"
+            "url" : "list-tree.json"
         },
         "auto_open_root" : true
     },
