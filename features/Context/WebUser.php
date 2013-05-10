@@ -14,6 +14,7 @@ use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+use Doctrine\Common\Util\Inflector;
 
 /**
  * Context of the website
@@ -149,7 +150,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getEntityManager()->persist($role);
         $this->getUserManager()->updateUser($user);
 
-        $this->getPage('Login')->open(array('locale' => $this->currentLocale))->login($username, $password);
+        $this
+            ->getPage('Login')
+            ->open(array('locale' => $this->currentLocale))
+            ->login($username, $password)
+        ;
     }
 
     /**
@@ -217,6 +222,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $index => $data) {
             $group = new AttributeGroup();
+            $group->setCode($this->camelize($data['name']));
             $group->setName($data['name']);
             $group->setSortOrder($index);
 
@@ -235,17 +241,32 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             $data = array_merge(array(
                 'position' => 0,
             ), $data);
-            $attribute = $this->createAttribute($data['code'], false);
-            $attribute->getAttribute()->setSortOrder($data['position']);
+            $attribute = $this->createAttribute($data['name'], false);
+            $attribute->setSortOrder($data['position']);
             $attribute->setGroup($this->getGroup($data['group']));
             $product = $this->getProduct($data['product']);
 
-                $value = $this->getProductManager()->createFlexibleValue();
-                $value->setAttribute($attribute->getAttribute());
-                $value->setData(null);
-                $this->getProductManager()->getStorageManager()->persist($value);
+            $value = $this->getProductManager()->createFlexibleValue();
+            $value->setAttribute($attribute);
+            $value->setData(null);
+            $this->getProductManager()->getStorageManager()->persist($value);
 
-                $product->addValue($value);
+            $product->addValue($value);
+        }
+        $em->flush();
+    }
+
+    /**
+     * @Given /^the following attributes:$/
+     */
+    public function theFollowingAttributes(TableNode $table)
+    {
+        $em = $this->getEntityManager();
+        foreach ($table->getHash() as $data) {
+            $attribute = $this->createAttribute($data['name'], false);
+            $attribute->setGroup($this->getGroup($data['group']));
+
+            $em->persist($attribute);
         }
         $em->flush();
     }
@@ -309,7 +330,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^attributes in group "([^"]*)" should be (.*)$/
+     * @Given /^attributes? in group "([^"]*)" should be (.*)$/
      */
     public function attributesInGroupShouldBe($group, $attributes)
     {
@@ -318,13 +339,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         foreach ($attributes as $index => $attribute) {
             $field = $this
                 ->getPage('Product')
-                ->getFieldAt($group, $index)
+                ->getFieldAt($group ?: 'Other', $index)
             ;
 
-            if (strtolower($attribute) !== $name = strtolower($field->getText())) {
+            if ($this->camelize($attribute) !== $name = $field->getText()) {
                 throw new \Exception(sprintf('
                     Expecting to see field "%s" at position %d, but saw "%s"',
-                    $attribute, $index + 1, $name
+                    $this->camelize($attribute), $index + 1, $name
                 ));
             }
         }
@@ -354,6 +375,43 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getPage('Product')->setFieldValue($fieldName, $value);
     }
 
+    /**
+     * @Then /^I should (not )?see available attributes? (.*) in group "([^"]*)"$/
+     */
+    public function iShouldSeeAvailableAttributesInGroup($not, $attributes, $group)
+    {
+        foreach ($this->listToArray($attributes) as $attribute) {
+            $element = $this->getPage('Product')->getAvailableAttribute($attribute, $group);
+            if (!$not) {
+                if (!$element) {
+                    throw new \RuntimeException(sprintf(
+                        'Expecting to see attribute %s under group %s, but was not present.',
+                        $attribute, $group
+                    ));
+                }
+            } else {
+                if ($element) {
+                    throw new \RuntimeException(sprintf(
+                        'Expecting not to see attribute %s under group %s, but was present.',
+                        $attribute, $group
+                    ));
+                }
+            }
+        }
+    }
+
+    /**
+     * @Given /^I add available attributes (.*)$/
+     */
+    public function iAddAvailableAttributes($attributes)
+    {
+        foreach ($this->listToArray($attributes) as $attribute) {
+            $this->getPage('Product')->selectAvailableAttribute($attribute);
+        }
+
+        $this->getPage('Product')->addSelectedAvailableAttributes();
+    }
+
     private function listToArray($list)
     {
         return explode(', ', str_replace(' and ', ', ', $list));
@@ -378,11 +436,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         return $product;
     }
 
-    private function createAttribute($code, $translatable = true)
+    private function createAttribute($name, $translatable = true)
     {
-        $attribute = $this->getProductManager()->createAttributeExtended(new TextType);
-        $attribute->setCode(strtolower($code));
-        $attribute->setName(ucfirst($code));
+        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_text');
+        $attribute->setCode($this->camelize($name));
+        $attribute->setName($name);
         $attribute->setTranslatable($translatable);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
@@ -423,12 +481,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             'name' => $name
         ));
 
-        if (!$group) {
-            throw new \InvalidArgumentException(sprintf(
-                'Could not find group with name "%s"', $name
-            ));
-        }
-
         return $group;
     }
 
@@ -466,5 +518,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function getContainer()
     {
         return $this->getMainContext()->getContainer();
+    }
+
+    private function camelize($string)
+    {
+        return Inflector::camelize(str_replace(' ', '_', $string));
     }
 }
