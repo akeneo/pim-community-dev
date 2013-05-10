@@ -212,6 +212,34 @@ class Product extends AbstractEntityFlexible
         );
     }
 
+    public function getOrderedGroups()
+    {
+        $groups = array_unique(
+            array_map(
+                function ($value) {
+                    return $value->getGroup();
+                }, $this->getAttributes()
+            )
+        );
+
+        $groups = new \Doctrine\Common\Collections\ArrayCollection($groups);
+        list($firsts, $lasts) = $groups->partition(function ($key, $element) {
+            return $element->getSortOrder() >= 0;
+        });
+        $firsts = $firsts->toArray();
+        usort(
+            $firsts, function ($a, $b) {
+                if ($a->getSortOrder() === $b->getSortOrder()) {
+                    return 0;
+                }
+
+                return $a->getSortOrder() < $b->getSortOrder() ? -1 : +1;
+            }
+        );
+
+        return array_merge($firsts, $lasts->toArray());
+    }
+
     /**
      * Make sure that at least one language has been added to the product
      *

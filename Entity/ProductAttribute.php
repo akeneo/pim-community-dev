@@ -430,6 +430,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
 
         $group = new AttributeGroup;
         $group->setName('Other');
+        $group->setSortOrder(-1);
 
         return $group;
     }
