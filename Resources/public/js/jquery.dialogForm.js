@@ -33,25 +33,33 @@
             var formTitle = $form.data('title');
             var formId = '#' + $form.attr('id');
 
-            var formButtons = {};
+            var formButtons = [];
             var submitButton = $form.data('button-submit');
             var cancelButton = $form.data('button-cancel');
             if (submitButton) {
-                formButtons[submitButton] = function() {
-                    $.ajax({
-                        url: options.url,
-                        type: 'post',
-                        data: $(formId).serialize(),
-                        success: function (data) {
-                            processResponse(data, $dialog);
-                        }
-                    });
-                };
+                formButtons.push({
+                    text: submitButton,
+                    class: 'btn btn-submit',
+                    click: function() {
+                        $.ajax({
+                            url: options.url,
+                            type: 'post',
+                            data: $(formId).serialize(),
+                            success: function (data) {
+                                processResponse(data, $dialog);
+                            }
+                        });
+                    }
+                });
             }
             if (cancelButton) {
-                formButtons[cancelButton] = function() {
-                    destroyDialog();
-                };
+                formButtons.push({
+                    text: cancelButton,
+                    class: 'btn',
+                    click: function() {
+                        destroyDialog();
+                    }
+                });
             }
 
             $form.find('.span4').each(function() {

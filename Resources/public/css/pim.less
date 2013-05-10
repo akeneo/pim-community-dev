@@ -206,10 +206,6 @@ form.form-signin {
   .buttonBackground(#83c817, #519d0b);
 }
 
-.ui-button {
-  .buttonBackground(#fcfcfc, #efefef, #666);
-}
-
 a.return {
   line-height: 30px;
   margin-top: 8px;
@@ -292,8 +288,14 @@ div.ui-dialog {
   &:focus {
     outline: none;
   }
+  .ui-widget-content {
+    border: 1px solid #c3c3c3;
+  }
   .ui-dialog-titlebar {
     #gradient .vertical(@color-dialogHeader_top, @color-dialogHeader_bottom);
+    .ui-dialog-title {
+      font-weight: bold;
+    }
   }
   .ui-dialog-titlebar-close {
     .buttonBackground(@color-dialogHeader_top, @color-dialogHeader_bottom);
@@ -308,8 +310,14 @@ div.ui-dialog {
   form {
     margin: 0;
   }
-  .ui-dialog-buttonpane>div.ui-dialog-buttonset>button {
-    float: right;
+  .ui-dialog-buttonpane {
+    background-color: #fafafa;
+    background-image: none;
+    border-top: none;
+    >div.ui-dialog-buttonset>button {
+      float: right;
+      margin: 10px 8px 12px 0;
+    }
   }
 }
 
