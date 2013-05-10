@@ -54,4 +54,78 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $product->setProductFamily(null);
         $this->assertNull($product->getProductFamily());
     }
+
+    public function testGetAttributes()
+    {
+        $product    = new Product();
+        $attributes = array(
+            $this->getAttributeMock(),
+            $this->getAttributeMock(),
+            $this->getAttributeMock(),
+        );
+
+        foreach ($attributes as $attribute) {
+            $product->addValue($this->getValueMock($attribute));
+        }
+
+        $this->assertEquals($attributes, $product->getAttributes());
+    }
+
+    public function testGetGroups()
+    {
+        $product = new Product();
+        $groups  = array(
+            $otherGroup   = $this->getGroupMock('Other', -1),
+            $generalGroup = $this->getGroupMock('General', 0),
+            $alphaGroup   = $this->getGroupMock('Alpha', 20),
+            $betaGroup    = $this->getGroupMock('Beta', 10),
+        );
+
+        foreach ($groups as $group) {
+            $product->addValue($this->getValueMock($this->getAttributeMock($group)));
+        }
+
+        $groups = $product->getOrderedGroups();
+        $this->assertSame(4, count($groups));
+        $this->assertSame($generalGroup, current($groups));
+        $this->assertSame($betaGroup, next($groups));
+        $this->assertSame($alphaGroup, next($groups));
+        $this->assertSame($otherGroup, next($groups));
+    }
+
+    private function getAttributeMock($group = null)
+    {
+        $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute', array('getGroup'));
+
+        $attribute->expects($this->any())
+                  ->method('getGroup')
+                  ->will($this->returnValue($group));
+
+        return $attribute;
+    }
+
+    private function getValueMock($attribute)
+    {
+        $value = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductValue', array('getAttribute'));
+        $value->expects($this->any())
+              ->method('getAttribute')
+              ->will($this->returnValue($attribute));
+
+        return $value;
+    }
+
+    private function getGroupMock($name, $sortOrder)
+    {
+        $group = $this->getMock('Pim\Bundle\ProductBundle\Entity\AttributeGroup', array('getSortOrder', 'getName'));
+
+        $group->expects($this->any())
+              ->method('getSortOrder')
+              ->will($this->returnValue($sortOrder));
+
+        $group->expects($this->any())
+              ->method('getName')
+              ->will($this->returnValue($name));
+
+        return $group;
+    }
 }
