@@ -87,6 +87,10 @@ class ProductTest extends \PHPUnit_Framework_TestCase
 
         $groups = $product->getOrderedGroups();
         $this->assertSame(4, count($groups));
+        $this->assertSame($generalGroup, current($groups));
+        $this->assertSame($betaGroup, next($groups));
+        $this->assertSame($alphaGroup, next($groups));
+        $this->assertSame($otherGroup, next($groups));
     }
 
     private function getAttributeMock($group = null)
