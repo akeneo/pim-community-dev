@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity()
  * @ORM\Table(
- *     name="pim_attribute_group_translations",
+ *     name="pim_attribute_group_translation",
  *     indexes={
  *         @ORM\Index(
  *             name="pim_attribute_group_translations_idx",

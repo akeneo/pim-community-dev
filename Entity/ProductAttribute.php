@@ -29,6 +29,14 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class ProductAttribute extends AbstractEntityAttribute implements Translatable
 {
     /**
+     * @var string $label
+     *
+     * @ORM\Column(name="label", type="string", length=255)
+     * @Gedmo\Translatable
+     */
+    protected $label;
+
+    /**
      * Overrided to change target entity name
      *
      * @var ArrayCollection $options

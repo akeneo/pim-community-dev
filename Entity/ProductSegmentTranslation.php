@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity()
  * @ORM\Table(
- *     name="pim_product_segment_translations",
+ *     name="pim_product_segment_translation",
  *     indexes={
  *         @ORM\Index(
  *             name="pim_product_segment_translations_idx",

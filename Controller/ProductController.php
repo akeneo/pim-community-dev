@@ -104,6 +104,41 @@ class ProductController extends Controller
     }
 
     /**
+     * Create product using simple form
+     *
+     * @param string $dataLocale data locale
+     * @param string $dataScope  data scope
+     *
+     * @Route("/quickcreate/{dataLocale}/{dataScope}", defaults={"dataLocale" = null, "dataScope" = null})
+     * @Template("PimProductBundle:Product:quickcreate.html.twig")
+     *
+     * @return array
+     */
+    public function quickCreateAction($dataLocale, $dataScope)
+    {
+        $entity = $this->getProductManager()->createFlexible(true);
+
+        if ($this->get('pim_product.form.handler.simple_product')->process($entity)) {
+            $this->get('session')->getFlashBag()->add('success', 'Product successfully saved');
+
+            $response = array(
+                'status' => 1,
+                'url' => $this->generateUrl('pim_product_product_edit', array('id' => $entity->getId()))
+            );
+
+            return new Response(json_encode($response));
+        }
+
+        $request = $this->getRequest();
+
+        return array(
+            'form'       => $this->get('pim_product.form.simple_product')->createView(),
+            'dataLocale' => $request->query->get('dataLocale', 'en_US'),
+            'dataScope'  => $request->query->get('dataScope'),
+        );
+    }
+
+    /**
      * Edit product
      *
      * @param integer $id the product id

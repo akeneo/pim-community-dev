@@ -58,6 +58,14 @@
 'Label translations': '__Label translations'
 'default': '__Default'
 
+'Create': '__Create'
+'Cancel': '__Cancel'
+'New product': '__New product'
+'Create a new product': '__Create a new product'
+'Choose a product family': '__Choose a product family'
+'Activated locales': '__Activated locales'
+'Product successfully saved': '__Product successfully saved'
+
 # Scopes
 'Global': 'Global'
 'Channel': 'Canal'

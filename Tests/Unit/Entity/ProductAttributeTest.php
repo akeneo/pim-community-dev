@@ -30,15 +30,15 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     /**
      * Test getter/setter for name property
      */
-    public function testGetSetName()
+    public function testGetSetLabel()
     {
         $productAttribute = new ProductAttribute();
-        $this->assertEmpty($productAttribute->getName());
+        $this->assertEmpty($productAttribute->getLabel());
 
         // Change value and assert new
-        $newName = 'test-name';
-        $productAttribute->setName($newName);
-        $this->assertEquals($newName, $productAttribute->getName());
+        $newName = 'test-label';
+        $productAttribute->setLabel($newName);
+        $this->assertEquals($newName, $productAttribute->getLabel());
     }
 
     /**
@@ -106,7 +106,7 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     {
         $productAttribute = new ProductAttribute();
         $string = 'test-string';
-        $productAttribute->setName($string);
+        $productAttribute->setLabel($string);
         $this->assertEquals($string, $productAttribute->__toString());
     }
 

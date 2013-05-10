@@ -35,8 +35,9 @@ class ProductManager extends FlexibleManager
      *   1) Persist and flush the entity as usual
      *   2)
      *     2.1) Force the reloading of the object (to be sure all values are loaded)
-     *     2.2) Add the missing translatable attribute locale values
-     *     2.3) Reflush to save these new values
+     *     2.2) Add values for missing attributes that exist in the product family
+     *     2.3) Add the missing translatable attribute locale values
+     *     2.4) Reflush to save these new values
      *
      * @param Product $product
      */
@@ -47,8 +48,38 @@ class ProductManager extends FlexibleManager
         $this->storageManager->flush();
 
         $this->storageManager->refresh($product);
+        $this->addMissingAttributeValues($product);
         $this->addMissingLocaleValues($product);
         $this->storageManager->flush();
+    }
+
+    /**
+     * Add empty values for attributes specified by the group that the product belongs to
+     *
+     * @param Product $product
+     *
+     * @return null
+     */
+    private function addMissingAttributeValues(Product $product)
+    {
+        if ($family = $product->getProductFamily()) {
+            $values = $product->getValues();
+            $existingAttributes = array();
+
+            foreach ($values as $value) {
+                $attribute = $value->getAttribute();
+                $existingAttributes[] = $attribute;
+            }
+
+            foreach ($family->getAttributes() as $attribute) {
+                if (!in_array($attribute, $existingAttributes)) {
+                    $value = $this->createFlexibleValue();
+                    $value->setAttribute($attribute);
+
+                    $product->addValue($value);
+                }
+            }
+        }
     }
 
     /**

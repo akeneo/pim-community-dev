@@ -2,6 +2,8 @@ parameters:
     product_manager_class:              Pim\Bundle\ProductBundle\Manager\ProductManager
     product_entity_class:               Pim\Bundle\ProductBundle\Entity\Product
 
+    simple_product_handler_class:       Pim\Bundle\ProductBundle\Form\Handler\SimpleProductHandler
+
     product_attribute_class:            Pim\Bundle\ProductBundle\Entity\ProductAttribute
     product_attribute_value_class:      Pim\Bundle\ProductBundle\Entity\ProductValue
 
@@ -13,15 +15,15 @@ parameters:
     attribute_group_handler_class:      Pim\Bundle\ProductBundle\Form\Handler\AttributeGroupHandler
     attribute_group_type_class:         Pim\Bundle\ProductBundle\Form\Type\AttributeGroupType
 
-    export_profile_entity_class:      Pim\Bundle\ProductBundle\Entity\ExportProfile
-    export_profile_handler_class:     Pim\Bundle\ProductBundle\Form\Handler\ExportProfileHandler
-    export_profile_type_class:        Pim\Bundle\ProductBundle\Form\Type\ExportProfileType
+    export_profile_entity_class:        Pim\Bundle\ProductBundle\Entity\ExportProfile
+    export_profile_handler_class:       Pim\Bundle\ProductBundle\Form\Handler\ExportProfileHandler
+    export_profile_type_class:          Pim\Bundle\ProductBundle\Form\Type\ExportProfileType
 
     metric_attribute_validator_class:   Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricAttributeValidator
 
     pim_product.attributes_config:      ~
     pim_product.segment_class:          Pim\Bundle\ProductBundle\Entity\ProductSegment
-    pim_product.segment_manager_class:  Pim\Bundle\ProductBundle\Model\ProductSegmentManager
+    pim_product.segment_manager_class:  Pim\Bundle\ProductBundle\Manager\ProductSegmentManager
 
 services:
     # Managers
@@ -54,6 +56,12 @@ services:
         arguments: [@doctrine.orm.entity_manager, %pim_product.segment_class%]
 
     # Form
+    pim_product.form.simple_product:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments: ["pim_simple_product_form", "pim_simple_product"]
+
     pim_product.form.attribute:
         class:           Symfony\Component\Form\Form
         factory_method:  createNamed
@@ -78,6 +86,12 @@ services:
         arguments: [@product_manager, 'pim_product_value']
         tags:
             - { name: form.type, alias: pim_product }
+
+    pim_product.form.type.simple_product:
+        class: Pim\Bundle\ProductBundle\Form\Type\SimpleProductType
+        arguments: [@product_manager, 'pim_product_value']
+        tags:
+            - { name: form.type, alias: pim_simple_product }
 
     pim_product.form.type.product_value:
         class: Pim\Bundle\ProductBundle\Form\Type\ProductValueType
@@ -107,6 +121,11 @@ services:
             - { name: form.type, alias: pim_wysiwyg }
 
     # Handlers
+    pim_product.form.handler.simple_product:
+        class: %simple_product_handler_class%
+        scope: request
+        arguments: [@pim_product.form.simple_product, @request, @product_manager]
+
     pim_product.form.handler.attribute:
         class: %product_attribute_handler_class%
         scope: request

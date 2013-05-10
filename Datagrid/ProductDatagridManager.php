@@ -92,7 +92,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             $field->setOptions(
                 array(
                     'type'          => $attributeType,
-                    'label'         => $attribute->getName(),
+                    'label'         => $attribute->getLabel(),
                     'field_name'    => $attribute->getCode(),
                     'filter_type'   => $filterType,
                     'required'      => false,

@@ -74,6 +74,8 @@ class AttributeService
 
         if (gettype($data) === 'array' && isset($data['attributeType'])) {
             return $this->manager->createAttribute($data['attributeType']);
+        } elseif (gettype($data) === 'array' && isset($data['id'])) {
+            return $this->manager->getAttributeRepository()->find($data['id']);
         } else {
             return null;
         }
