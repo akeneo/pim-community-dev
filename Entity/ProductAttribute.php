@@ -57,14 +57,6 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     protected $sortOrder = 0;
 
     /**
-     * @var string $name
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     * @Gedmo\Translatable
-     */
-    protected $name;
-
-    /**
      * @var string $description
      *
      * @ORM\Column(name="description", type="string", length=255)
@@ -350,31 +342,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      */
     public function __toString()
     {
-        return $this->name;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string $name
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return ProductAttribute
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
+        return $this->label;
     }
 
     /**
