@@ -2,6 +2,8 @@
 namespace Pim\Bundle\ProductBundle\Entity;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\ExecutionContext;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,6 +20,7 @@ use Pim\Bundle\ConfigBundle\Entity\Language;
  * @ORM\Table(name="pim_product")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductRepository")
  * @UniqueEntity("sku");
+ * @Assert\Callback(methods={"isLanguagesValid"})
  */
 class Product extends AbstractEntityFlexible
 {
@@ -25,6 +28,7 @@ class Product extends AbstractEntityFlexible
      * @var string $sku
      *
      * @ORM\Column(name="sku", type="string", length=255, unique=true)
+     * @Assert\NotNull()
      */
     protected $sku;
 
@@ -206,5 +210,20 @@ class Product extends AbstractEntityFlexible
                 return $value->getAttribute();
             }, $this->getValues()->toArray()
         );
+    }
+
+    /**
+     * Make sure that at least one language has been added to the product
+     *
+     * @param ExecutionContext $context Execution Context
+     */
+    public function isLanguagesValid(ExecutionContext $context)
+    {
+        if ($this->languages->count() == 0) {
+            $context->addViolationAtPath(
+                $context->getPropertyPath() . '.languages',
+                'Please specify at least one activated locale'
+            );
+        }
     }
 }
