@@ -158,7 +158,6 @@ class ProductController extends Controller
 
         // create form
         $form     = $this->createForm('pim_product', $product);
-        $groups   = $this->getAttributeGroupRepository()->findAllWithVirtualGroup();
         $channels = $this->getChannelRepository()->findAll();
 
         if ($request->getMethod() == 'POST') {
@@ -186,7 +185,6 @@ class ProductController extends Controller
 
         return array(
             'form'           => $form->createView(),
-            'groups'         => $groups,
             'dataLocale'     => $request->query->get(
                 'dataLocale', $this->getParameter('locale')
             ),
