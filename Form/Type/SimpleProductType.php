@@ -28,7 +28,7 @@ class SimpleProductType extends FlexibleType
             ->add('sku', 'text', array('required' => true))
             ->add('productFamily')
             ->add('languages', 'entity', array(
-                'required' => false,
+                'required' => true,
                 'multiple' => true,
                 'class' => 'Pim\Bundle\ConfigBundle\Entity\Language',
                 'by_reference' => false,
