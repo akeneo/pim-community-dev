@@ -143,6 +143,49 @@ header .extra-divider, .navbar .small-divider {
   padding: 0;
 }
 
+form.form-signin {
+  .title-box {
+    .border-radius(7px 7px 0 0);
+    padding-top: 0;
+    padding-left: 15px;
+    padding-bottom: 10px;
+    #gradient .vertical(@color-header_top, @color-header_bottom);
+  }
+  .input-prepend {
+    margin-bottom: 3px;
+    input[type="text"],
+    input[type="password"] {
+      color: @textColor;
+      background-color: #fbfbfb;
+    }
+    .add-on {
+      color: @textColor;
+      #gradient .vertical(#f4f4f4, #dcdcdc);
+    }
+  }
+  button.btn-submit {
+    height: auto;
+    float: none;
+  }
+  .form-row {
+    padding: 0;
+  }
+  div.divider-vertical-small {
+    float: left;
+    width: 1px;
+    height: 14px;
+    background-color: #b8b8b8;
+    margin: 3px 5px;
+  }
+  .signin-help {
+    margin-top: 15px;
+    a {
+      float: left;
+      font-size: 13px;
+    }
+  }
+}
+
 .form-row {
   button.btn {
     height: 32px;
@@ -156,6 +199,10 @@ header .extra-divider, .navbar .small-divider {
 
 .btn-primary {
   .buttonBackground(#9e71c7, #71429a);
+}
+
+.btn-submit {
+  .buttonBackground(#83c817, #519d0b);
 }
 
 .ui-button {
