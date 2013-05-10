@@ -3,13 +3,12 @@ $('#tree').jstree({
         "animation" : 200
     },
     "plugins" : [
-        "tree_selector", "themes","json_data","ui","crrm","cookies","dnd","search","types","hotkeys"
+        "tree_selector", "themes", "json_data", "ui", "crrm", "cookies", "dnd", "search", "types", "hotkeys"
     ],
     "tree_selector" : {
         "ajax" : {
             "url" : "list-tree"
         },
-    //                "data" :'[{"id":"node_1","title":"Titre 1"},{"id":"node_2","title":"Titre 2"}]',
         "auto_open_root" : true
     },
     "themes" : {
@@ -99,14 +98,13 @@ $('#tree').jstree({
     })
     .bind("remove.jstree", function (e, data) {
         data.rslt.obj.each(function () {
+            var id = $(this).attr("data-id");
             $.ajax({
                 async : false,
-                type: 'POST',
-                url: "remove-node",
-                data : {
-                    "id" : this.id.replace('node_','')
-                },
+                type: 'GET',
+                url: "remove-node/"+id,
                 success : function (r) {
+                    console.log(r);
                     if(!r.status) {
                         data.inst.refresh();
                     }

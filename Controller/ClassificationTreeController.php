@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Symfony\Component\HttpFoundation\Response;
 
 use Pim\Bundle\ProductBundle\Helper\JsonSegmentHelper;

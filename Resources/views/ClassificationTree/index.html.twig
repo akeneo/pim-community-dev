@@ -12,20 +12,51 @@
 {% endblock %}
 
 {% block content %}
-    <div id="tree_menu" style="overflow:auto;">
-    </div>
+    <div class="row-fluid has-resizable-sidebar">
+        <div class="resizable-sidebar">
+            <div id="tree_menu">
     
-    <div id="tree">
+                <div id="tree"></div>
+                
+                <div class="text-center">
+                    <button id="segment-edit" class="btn btn-small" href="#"><i class="icon-edit"></i></a>
+                    <button id="segment-duplicate" class="btn btn-small" href="#"><i class="icon-copy"></i></a>
+                    <button id="remove" class="btn btn-small"><i class="icon-trash"></i></button>
+                    <button id="refresh" class="btn btn-small"><i class="icon-refresh"></i></button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="form-tab" class="resizable-content">
+            <h3>{{ title }}</h3>
+            
+            <div id="list">
+                <table id="product_grid" border="1"></table>
+            </div>
+        </div>
     </div>
 
     <!-- JavaScript for the tree -->
     <script type="text/javascript">
         var assetsPath = "{{ asset('bundles/pimproduct/') }}";
+        $(function() {
+            $('#segment-create').click(function(e) {
+                e.preventDefault();
+                $.get('{{ path('pim_product_classificationtree_create') }}', null, function(data, status) {
+                    if (status === 'success') {
+                        $('#form-tab').html(data);
+                    }
+                });
+            });
+            
+            $('#segment-edit').click(function(e) {
+                console.log();
+            });
+            
+            $('#remove').click(function(e) {
+                console.log('segment-remove');
+            });
+        });
     </script>
     <script type="text/javascript" src="{{ asset('bundles/pimproduct/js/classificationtree.jstree.js') }}"></script>
-    
-    <div id="list">
-        <table id="product_grid" border="1">
-        </table>
-    </div>
 {% endblock %}

@@ -1,5 +1,3 @@
-{% extends 'PimProductBundle::layout.html.twig' %}
-
 {% set parentId %}{{ form.vars.value.parent ? form.vars.value.parent.id : null }}{% endset %}
 {% set type = parentId ? 'node' : 'tree' %}
 {% set action = form.vars.value.id ? 'Edit' : 'Add' %}
