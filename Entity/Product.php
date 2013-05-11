@@ -214,30 +214,37 @@ class Product extends AbstractEntityFlexible
 
     public function getOrderedGroups()
     {
-        $groups = array_unique(
-            array_map(
-                function ($value) {
-                    return $value->getGroup();
-                }, $this->getAttributes()
-            )
+        $groups = array_map(
+            function ($value) {
+                return $value->getGroup();
+            }, $this->getAttributes()
         );
+        array_map(function($group){return (string) $group;}, $groups);
+        $groups = array_unique($groups);
 
-        $groups = new \Doctrine\Common\Collections\ArrayCollection($groups);
-        list($firsts, $lasts) = $groups->partition(function ($key, $element) {
-            return $element->getSortOrder() >= 0;
-        });
-        $firsts = $firsts->toArray();
         usort(
-            $firsts, function ($a, $b) {
-                if ($a->getSortOrder() === $b->getSortOrder()) {
+            $groups, function ($a, $b) {
+                $a = $a->getSortOrder();
+                $b = $b->getSortOrder();
+
+                if ($a === $b) {
                     return 0;
                 }
 
-                return $a->getSortOrder() < $b->getSortOrder() ? -1 : +1;
+                if ($a < $b && $a < 0) {
+                    return 1;
+                }
+
+                if ($a > $b && $b < 0) {
+                    return -1;
+                }
+
+
+                return $a < $b ? -1 : 1;
             }
         );
 
-        return array_merge($firsts, $lasts->toArray());
+        return $groups;
     }
 
     /**
