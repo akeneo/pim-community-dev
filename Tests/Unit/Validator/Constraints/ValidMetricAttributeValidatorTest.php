@@ -98,7 +98,7 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
         $productAttribute = new ProductAttribute();
 
         $productAttribute->setAttributeType('oro_flexibleentity_metric');
-        $productAttribute->setMetricType($metricType);
+        $productAttribute->setMetricFamily($metricType);
         $productAttribute->setDefaultMetricUnit($metricUnit);
 
         return $productAttribute;
@@ -108,9 +108,9 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
      * Test case with invalid metric type
      * @param string $metricType Metric type
      *
-     * @dataProvider providerMetricTypeInvalid
+     * @dataProvider providerMetricFamilyInvalid
      */
-    public function testMetricTypeInvalid($metricType)
+    public function testMetricFamilyInvalid($metricType)
     {
         $productAttribute = $this->createProductAttribute($metricType);
 
@@ -119,7 +119,7 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
         $this->assertCount(1, $this->executionContext->getViolations());
         foreach ($this->executionContext->getViolations() as $violation) {
             $this->assertEquals(
-                $this->constraint->invalidMetricTypeMessage,
+                $this->constraint->invalidMetricFamilyMessage,
                 $violation->getMessageTemplate()
             );
         }
@@ -131,7 +131,7 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
      *
      * @static
      */
-    public static function providerMetricTypeInvalid()
+    public static function providerMetricFamilyInvalid()
     {
         return array(
             array('invalid_type_1'),
@@ -180,7 +180,7 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
     /**
      * Test case with valid metric type and unit
      */
-    public function testMetricTypeAndUnitValid()
+    public function testMetricFamilyAndUnitValid()
     {
         $metricType = key($this->measures['measures_config']);
         $metricUnit = $this->measures['measures_config'][$metricType]['standard'];

@@ -333,15 +333,15 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     /**
      * Test getter/setter for metricType property
      */
-    public function testGetSetMetricType()
+    public function testGetSetMetricFamily()
     {
         $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getMetricType());
+        $this->assertNull($productAttribute->getMetricFamily());
 
         // Change value and assert new
         $type = 'weight';
-        $productAttribute->setMetricType($type);
-        $this->assertEquals($type, $productAttribute->getMetricType());
+        $productAttribute->setMetricFamily($type);
+        $this->assertEquals($type, $productAttribute->getMetricFamily());
     }
 
     /**
