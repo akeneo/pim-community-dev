@@ -125,6 +125,7 @@ be_simple_soap:
 
 stof_doctrine_extensions:
     default_locale: %default_locale%
+    translation_fallback: true
     orm:
         default:
             tree: true
