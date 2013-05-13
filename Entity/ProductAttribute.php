@@ -192,11 +192,11 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     protected $dateMax;
 
     /**
-     * @var string $metricType
+     * @var string $metricFamily
      *
-     * @ORM\Column(name="metric_type", type="string", length=30, nullable=true)
+     * @ORM\Column(name="metric_family", type="string", length=30, nullable=true)
      */
-    protected $metricType;
+    protected $metricFamily;
 
     /**
      * @var string $defaultMetricUnit
@@ -423,6 +423,11 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
      */
     public function getGroup()
+    {
+        return $this->group;
+    }
+
+    public function getVirtualGroup()
     {
         if ($this->group) {
             return $this->group;
@@ -824,25 +829,25 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Get metricType
+     * Get metricFamily
      *
-     * @return string $metricType
+     * @return string $metricFamily
      */
-    public function getMetricType()
+    public function getMetricFamily()
     {
-        return $this->metricType;
+        return $this->metricFamily;
     }
 
     /**
-     * Set metricType
+     * Set metricFamily
      *
-     * @param string $metricType
+     * @param string $metricFamily
      *
      * @return ProductAttribute
      */
-    public function setMetricType($metricType)
+    public function setMetricFamily($metricFamily)
     {
-        $this->metricType = $metricType;
+        $this->metricFamily = $metricFamily;
 
         return $this;
     }

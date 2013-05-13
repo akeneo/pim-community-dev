@@ -83,16 +83,26 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($productAttribute->getSmart());
     }
 
+    public function testGetVirtualGroup()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $productAttribute->getVirtualGroup());
+        $this->assertEquals('Other', $productAttribute->getVirtualGroup()->getName());
+
+        $attributeGroup = new AttributeGroup();
+        $productAttribute->setGroup($attributeGroup);
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $productAttribute->getVirtualGroup());
+        $this->assertEquals($attributeGroup, $productAttribute->getGroup());
+    }
+
     /**
      * Test getter/setter for group property
      */
     public function testGetSetGroup()
     {
         $productAttribute = new ProductAttribute();
-        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $productAttribute->getGroup());
-        $this->assertEquals('Other', $productAttribute->getGroup()->getName());
+        $this->assertNull($productAttribute->getGroup());
 
-        // change value and assert new
         $attributeGroup = new AttributeGroup();
         $productAttribute->setGroup($attributeGroup);
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $productAttribute->getGroup());
@@ -333,15 +343,15 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     /**
      * Test getter/setter for metricType property
      */
-    public function testGetSetMetricType()
+    public function testGetSetMetricFamily()
     {
         $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getMetricType());
+        $this->assertNull($productAttribute->getMetricFamily());
 
         // Change value and assert new
         $type = 'weight';
-        $productAttribute->setMetricType($type);
-        $this->assertEquals($type, $productAttribute->getMetricType());
+        $productAttribute->setMetricFamily($type);
+        $this->assertEquals($type, $productAttribute->getMetricFamily());
     }
 
     /**
