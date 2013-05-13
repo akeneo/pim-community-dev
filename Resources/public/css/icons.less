@@ -31,11 +31,11 @@
 .icon-dots-lightgray()       { .pim-icon(-203px, -28px); }
 .icon-dots-white()           { .pim-icon(-228px, -28px); }
 
-.icon-home()                 { .pim-icon(-2px, -53px); }
+.icon-home()                 { .pim-icon(-5px, -55px); }
 .icon-shout()                { .pim-icon(-28px, -53px); }
 .icon-help()                 { .pim-icon(-53px, -53px); }
-.icon-search()               { .pim-icon(-77px, -53px); }
-.icon-shortcuts()            { .pim-icon(-153px, -53px); }
+.icon-search()               { .pim-icon(-71px, -50px); }
+.icon-shortcuts()            { .pim-icon(-149px, -49px); }
 
 .icon-alert()                { .pim-icon(-103px, -53px); }
 .icon-alert-small()          { .pim-icon(-128px, -53px); }
@@ -52,3 +52,13 @@
 .icon-close-purple()         { .pim-icon(-127px, -78px); }
 .icon-close-red()            { .pim-icon(-152px, -78px); }
 .icon-close-yellow()         { .pim-icon(-177px, -78px); }
+
+//---------------------------------------//
+// Add !important to override oro !important statements. To be removed when oro.less is cleaned up
+.pim-icon-important(@x, @y) {
+  background-image: url("images/pim_icons.png") !important;
+  background-position: @x @y !important;
+}
+
+.icon-search-important()    { .pim-icon-important(-71px, -50px); }
+.icon-shortcuts-important() { .pim-icon-important(-149px, -49px); }

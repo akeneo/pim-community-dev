@@ -40,13 +40,24 @@ header .extra-divider, .navbar .small-divider {
     background-image: none;
   }
   .btn-search {
-    background-color: @color-purple_dark;
-    :hover,
-    :active,
-    :focus {
-      background-color: @color-purple_dark;
+    background-color: @color-purple_dark - #171328;
+    .icon-search();
+    &:hover,
+    &:active,
+    &:focus {
+      .icon-search-important();
+      background-color: darken(@color-purple_dark - #171328, 5%) !important;
     }
   }
+}
+
+header .shortcuts .dropdown > a {
+    .icon-shortcuts-important();
+    &:hover,
+    &:active,
+    &:focus {
+      .icon-shortcuts-important();
+    }
 }
 
 .pin-bar {
@@ -130,6 +141,10 @@ header .extra-divider, .navbar .small-divider {
       }
     }
   }
+}
+
+i.icon-home {
+  .icon-home();
 }
 
 .navbar .nav > .active > a,
