@@ -154,6 +154,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attribute->setLabel('Weight');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setUseableAsGridColumn(true);
+        $attribute->setMetricFamily('Weight');
         $this->createTranslation($attribute, 'default', 'label', 'Weight');
         $this->createTranslation($attribute, 'en_US', 'label', 'Weight');
         $this->createTranslation($attribute, 'fr_FR', 'label', 'Poids');
