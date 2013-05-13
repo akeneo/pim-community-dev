@@ -88,17 +88,18 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
 
     /**
      * Create a product attribute entity
-     * @param string $metricType Metric type
-     * @param string $metricUnit Default metric unit
+     *
+     * @param string $metricFamily Metric type
+     * @param string $metricUnit   Default metric unit
      *
      * @return \Pim\Bundle\ProductBundle\Entity\ProductAttribute
      */
-    protected function createProductAttribute($metricType, $metricUnit = '')
+    protected function createProductAttribute($metricFamily, $metricUnit = '')
     {
         $productAttribute = new ProductAttribute();
 
         $productAttribute->setAttributeType('oro_flexibleentity_metric');
-        $productAttribute->setMetricFamily($metricType);
+        $productAttribute->setMetricFamily($metricFamily);
         $productAttribute->setDefaultMetricUnit($metricUnit);
 
         return $productAttribute;
@@ -106,13 +107,14 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
 
     /**
      * Test case with invalid metric type
-     * @param string $metricType Metric type
+     *
+     * @param string $metricFamily Metric type
      *
      * @dataProvider providerMetricFamilyInvalid
      */
-    public function testMetricFamilyInvalid($metricType)
+    public function testMetricFamilyInvalid($metricFamily)
     {
-        $productAttribute = $this->createProductAttribute($metricType);
+        $productAttribute = $this->createProductAttribute($metricFamily);
 
         $this->validator->validate($productAttribute, $this->constraint);
 
@@ -127,6 +129,7 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
 
     /**
      * Provider for metric type violation
+     *
      * @return array
      *
      * @static
@@ -142,14 +145,15 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
 
     /**
      * Test case with invalid metric unit
+     *
      * @param string $metricUnit Metric unit
      *
      * @dataProvider providerMetricUnitInvalid
      */
     public function testMetricUnitInvalid($metricUnit)
     {
-        $metricType = key($this->measures['measures_config']);
-        $productAttribute = $this->createProductAttribute($metricType, $metricUnit);
+        $metricFamily = key($this->measures['measures_config']);
+        $productAttribute = $this->createProductAttribute($metricFamily, $metricUnit);
 
         $this->validator->validate($productAttribute, $this->constraint);
 
@@ -164,6 +168,7 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
 
     /**
      * Provider for metric unit violation
+     *
      * @return array
      *
      * @static
@@ -182,9 +187,9 @@ class ValidMetricAttributeValidatorTest extends WebTestCase
      */
     public function testMetricFamilyAndUnitValid()
     {
-        $metricType = key($this->measures['measures_config']);
-        $metricUnit = $this->measures['measures_config'][$metricType]['standard'];
-        $productAttribute = $this->createProductAttribute($metricType, $metricUnit);
+        $metricFamily = key($this->measures['measures_config']);
+        $metricUnit = $this->measures['measures_config'][$metricFamily]['standard'];
+        $productAttribute = $this->createProductAttribute($metricFamily, $metricUnit);
 
         $this->validator->validate($productAttribute, $this->constraint);
 
