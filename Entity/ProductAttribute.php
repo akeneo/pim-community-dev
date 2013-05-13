@@ -424,6 +424,11 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      */
     public function getGroup()
     {
+        return $this->group;
+    }
+
+    public function getVirtualGroup()
+    {
         if ($this->group) {
             return $this->group;
         }
