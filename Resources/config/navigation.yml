@@ -13,7 +13,7 @@ oro_menu_config:
             label: 'Families'
             route: 'pim_product_productfamily_index'
         pim_enrich_attributegroup:
-            label: 'Groups'
+            label: 'Attribute groups'
             route: 'pim_product_attributegroup_index'
         pim_enrich_exportprofile:
             label: 'Export profiles'
