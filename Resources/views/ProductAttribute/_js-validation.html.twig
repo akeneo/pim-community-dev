@@ -109,13 +109,13 @@ $(function() {
             }
         });
 
-        $('#pim_product_attribute_form_metricType').select2({ data: OroApp.measures.getMetricTypes() });
-        $('#pim_product_attribute_form_metricType').change(function() {
+        $('#pim_product_attribute_form_metricFamily').select2({ data: OroApp.measures.getMetricTypes() });
+        $('#pim_product_attribute_form_metricFamily').change(function() {
             $('#pim_product_attribute_form_defaultMetricUnit').select2({
                 data: OroApp.measures.getMetricUnits($(this).select2('val'))
             });
         });
-        $('#pim_product_attribute_form_metricType').trigger('change');
+        $('#pim_product_attribute_form_metricFamily').trigger('change');
 
         $('.picker-datetime').datetimepicker();
         $('.picker-date').datetimepicker({ pickTime: false });

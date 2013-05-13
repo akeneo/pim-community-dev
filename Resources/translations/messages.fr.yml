@@ -104,7 +104,7 @@
 'dateMin': '__Min date'
 'dateMax': '__Max date'
 'defaultCurrency': '__Default currency'
-'metricType': '__Metric type'
+'metricFamily': '__Metric family'
 'defaultMetricUnit': '__Default metric unit'
 'allowedFileSources': '__Allowed file sources'
 'maxFileSize': '__Max file size'

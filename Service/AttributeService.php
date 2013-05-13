@@ -432,7 +432,7 @@ class AttributeService
     }
 
     /**
-     * Return form field parameters for metricType property
+     * Return form field parameters for metricFamily property
      *
      * @param ProductAttribute $attribute Product attribute
      *
@@ -440,7 +440,7 @@ class AttributeService
      */
     private function getMetricTypeParams($attribute)
     {
-        return $this->getFieldParams('metricType');
+        return $this->getFieldParams('metricFamily');
     }
 
     /**

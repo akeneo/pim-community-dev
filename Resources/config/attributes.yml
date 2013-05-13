@@ -17,7 +17,7 @@ attributes_config:
         parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
     oro_flexibleentity_metric:
         name: 'Metric'
-        properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'metricType', 'defaultMetricUnit', 'searchable' ]
+        properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'metricFamily', 'defaultMetricUnit', 'searchable' ]
         parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
     oro_flexibleentity_money:
         name: 'Money'

@@ -33,11 +33,9 @@ class ProductAttributeRepository extends EntityRepository
                 }, $attributes
             );
 
-            $qb
-                ->where($qb->expr()->notIn('a.id', $ids))
-                ->orderBy('a.group')
-            ;
+            $qb->where($qb->expr()->notIn('a.id', $ids));
         }
+        $qb->orderBy('a.group');
 
         return $qb;
     }
