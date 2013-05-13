@@ -123,7 +123,10 @@ class ProductController extends Controller
 
             $response = array(
                 'status' => 1,
-                'url' => $this->generateUrl('pim_product_product_edit', array('id' => $entity->getId()))
+                'url' => $this->generateUrl('pim_product_product_edit', array(
+                    'id' => $entity->getId(),
+                    'locale' => $entity->getActiveLanguages()->first()->getLanguage()->getCode()
+                ))
             );
 
             return new Response(json_encode($response));
@@ -262,8 +265,7 @@ class ProductController extends Controller
     {
         return $this
             ->getDoctrine()
-            ->getRepository('PimProductBundle:ProductAttribute')
-        ;
+            ->getRepository('PimProductBundle:ProductAttribute');
     }
 
     /**
@@ -275,8 +277,7 @@ class ProductController extends Controller
     {
         return $this
             ->getDoctrine()
-            ->getRepository('PimProductBundle:AttributeGroup')
-        ;
+            ->getRepository('PimProductBundle:AttributeGroup');
     }
 
     /**
