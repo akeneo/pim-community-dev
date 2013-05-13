@@ -125,7 +125,7 @@ class ProductController extends Controller
                 'status' => 1,
                 'url' => $this->generateUrl('pim_product_product_edit', array(
                     'id' => $entity->getId(),
-                    'locale' => $entity->getActiveLanguages()->first()->getLanguage()->getCode()
+                    'dataLocale' => $entity->getActiveLanguages()->first()->getLanguage()->getCode()
                 ))
             );
 
