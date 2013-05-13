@@ -93,7 +93,8 @@ class AttributeGroup implements TimestampableInterface, Translatable
      * @ORM\OneToMany(
      *     targetEntity="AttributeGroupTranslation",
      *     mappedBy="foreignKey",
-     *     cascade={"persist", "remove"}
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
      * )
      */
     protected $translations;

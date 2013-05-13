@@ -24,17 +24,18 @@ class ProductAttributeRepository extends EntityRepository
      */
     public function getFindAllExceptQB(array $attributes)
     {
-        $ids = array_map(
-            function ($attribute) {
-                return $attribute->getId();
-            }, $attributes
-        );
-
         $qb = $this->createQueryBuilder('a');
-        $qb
-            ->where($qb->expr()->notIn('a.id', $ids))
-            ->orderBy('a.group')
-        ;
+
+        if (!empty($attributes)) {
+            $ids = array_map(
+                function ($attribute) {
+                    return $attribute->getId();
+                }, $attributes
+            );
+
+            $qb->where($qb->expr()->notIn('a.id', $ids));
+        }
+        $qb->orderBy('a.group');
 
         return $qb;
     }
