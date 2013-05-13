@@ -228,10 +228,9 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
 
         foreach ($translations as $binded) {
             $content = $form->get($binded['fieldName'])->getData();
+            $translation = $binded['translation'];
 
             if ($content !== null) {
-                $translation = $binded['translation'];
-
                 // set the submitted content
                 $translation->setContent($content);
                 $translation->setForeignKey($entity);
@@ -241,6 +240,8 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
                     $entity->$methodName($translation->getContent());
                 }
                 $entity->addTranslation($translation);
+            } else {
+                $entity->removeTranslation($translation);
             }
         }
     }
