@@ -16,16 +16,12 @@
         }
         options.width = options.width || 400;
 
-        $(document).delegate(options.trigger, 'click', function(e) {
-            e.preventDefault();
-            $.ajax({
-                url: options.url,
-                type: 'get',
-                success: function(data) {
-                    createDialog(data);
-                }
-            });
-        });
+        function destroyDialog() {
+            if ($dialog && $dialog.length) {
+                $dialog.remove();
+            }
+            $dialog = null;
+        }
 
         function createDialog(data) {
             destroyDialog();
@@ -39,7 +35,7 @@
             if (submitButton) {
                 formButtons.push({
                     text: submitButton,
-                    class: 'btn btn-submit',
+                    'class': 'btn btn-submit',
                     click: function() {
                         $.ajax({
                             url: options.url,
@@ -55,7 +51,7 @@
             if (cancelButton) {
                 formButtons.push({
                     text: cancelButton,
-                    class: 'btn',
+                    'class': 'btn',
                     click: function() {
                         destroyDialog();
                     }
@@ -77,13 +73,6 @@
             $(formId + ' select').select2({ allowClear: true });
         }
 
-        function destroyDialog() {
-            if ($dialog && $dialog.length) {
-                $dialog.remove();
-            }
-            $dialog = null;
-        }
-
         function processResponse(data, $dialog) {
             if (isJSON(data)) {
                 data = $.parseJSON(data);
@@ -103,6 +92,17 @@
             }
             return true;
         }
+
+        $(document).delegate(options.trigger, 'click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: options.url,
+                type: 'get',
+                success: function(data) {
+                    createDialog(data);
+                }
+            });
+        });
     };
 
 })(jQuery);
