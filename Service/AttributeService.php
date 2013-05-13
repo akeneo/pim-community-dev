@@ -438,7 +438,7 @@ class AttributeService
      *
      * @return array $params
      */
-    private function getMetricTypeParams($attribute)
+    private function getMetricFamilyParams($attribute)
     {
         return $this->getFieldParams('metricFamily');
     }
