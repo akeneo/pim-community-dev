@@ -49,12 +49,12 @@ class AttributeDatagridManager extends DatagridManager
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
         $field = new FieldDescription();
-        $field->setName('name');
+        $field->setName('label');
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
                 'label'       => $this->translator->trans('Name'),
-                'field_name'  => 'name',
+                'field_name'  => 'label',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
                 'sortable'    => true,

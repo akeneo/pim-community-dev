@@ -55,7 +55,7 @@ class ProductAttributeType extends AttributeType
     {
         parent::buildForm($builder, $options);
 
-        $this->addFieldName($builder);
+        $this->addFieldLabel($builder);
 
         $this->addFieldDescription($builder);
 
@@ -83,16 +83,16 @@ class ProductAttributeType extends AttributeType
     }
 
     /**
-     * Add a field for name
+     * Add a field for label
      * @param FormBuilderInterface $builder
      */
-    protected function addFieldName(FormBuilderInterface $builder)
+    protected function addFieldLabel(FormBuilderInterface $builder)
     {
         $builder->add(
-            'name',
+            'label',
             'pim_translatable_field',
             array(
-                'field'             => 'name',
+                'field'             => 'label',
                 'translation_class' => 'Pim\\Bundle\\ProductBundle\\Entity\\ProductAttributeTranslation',
                 'entity_class'      => 'Pim\\Bundle\\ProductBundle\\Entity\\ProductAttribute',
                 'property_path'     => 'translations'

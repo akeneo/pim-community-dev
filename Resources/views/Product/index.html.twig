@@ -4,9 +4,12 @@
 
 {% block head_script %}
     {{ parent() }}
-    
+
     {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#product-grid'} %}
     {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
+    <script>
+        $(document).dialogForm({ trigger: '#create-product', url: 'quickcreate' });
+    </script>
 {% endblock %}
 
 {% block page_container %}
@@ -14,10 +17,10 @@
     {% block content %}
     <div class="usser-row">
         <h1>{{ title }}
-            <a class="btn btn-primary pull-right" style="margin-left:10px;"
+            <a id="create-product" class="btn btn-primary pull-right" style="margin-left:10px;"
                 href="{{ path('pim_product_product_create') }}">{{ 'New product'|trans }}</a>
         </h1>
-    
+
         <div id="product-grid"></div>
     </div>
     {% endblock %}

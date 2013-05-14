@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Entity;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
@@ -20,13 +21,21 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     name="pim_product_attribute", indexes={@ORM\Index(name="searchcode_idx", columns={"code"})},
  *     uniqueConstraints={@ORM\UniqueConstraint(name="searchunique_idx", columns={"code", "entity_type"})}
  * )
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductAttributeRepository")
  * @ORM\HasLifecycleCallbacks
  * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation")
  * @UniqueEntity("code")
  */
 class ProductAttribute extends AbstractEntityAttribute implements Translatable
 {
+    /**
+     * @var string $label
+     *
+     * @ORM\Column(name="label", type="string", length=255)
+     * @Gedmo\Translatable
+     */
+    protected $label;
+
     /**
      * Overrided to change target entity name
      *
@@ -46,73 +55,6 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * @ORM\Column(name="sort_order", type="integer")
      */
     protected $sortOrder = 0;
-
-    /**
-     * Convert defaultValue to UNIX timestamp if it is a DateTime object
-     *
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function convertDefaultValueToTimestamp()
-    {
-        if ($this->getDefaultValue() instanceof \DateTime) {
-            $this->setDefaultValue($this->getDefaultValue()->format('U'));
-        }
-    }
-
-    /**
-     * Convert defaultValue to DateTime if attribute type is date
-     *
-     * @ORM\PostLoad
-     */
-    public function convertDefaultValueToDatetime()
-    {
-        if ($this->getDefaultValue()) {
-            if (strpos($this->getAttributeType(), 'DateType') !== false) {
-                $date = new \DateTime();
-                $date->setTimestamp(intval($this->getDefaultValue()));
-
-                $this->setDefaultValue($date);
-            }
-        }
-    }
-
-    /**
-     * Convert defaultValue to integer if attribute type is boolean
-     *
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function convertDefaultValueToInteger()
-    {
-        if ($this->getDefaultValue() !== null) {
-            if (strpos($this->getAttributeType(), 'BooleanType') !== false) {
-                $this->setDefaultValue((int) $this->getDefaultValue());
-            }
-        }
-    }
-
-    /**
-     * Convert defaultValue to boolean if attribute type is boolean
-     *
-     * @ORM\PostLoad
-     */
-    public function convertDefaultValueToBoolean()
-    {
-        if ($this->getDefaultValue() !== null) {
-            if (strpos($this->getAttributeType(), 'BooleanType') !== false) {
-                $this->setDefaultValue((bool) $this->getDefaultValue());
-            }
-        }
-    }
-
-    /**
-     * @var string $name
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     * @Gedmo\Translatable
-     */
-    protected $name;
 
     /**
      * @var string $description
@@ -250,11 +192,11 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     protected $dateMax;
 
     /**
-     * @var string $metricType
+     * @var string $metricFamily
      *
-     * @ORM\Column(name="metric_type", type="string", length=30, nullable=true)
+     * @ORM\Column(name="metric_family", type="string", length=30, nullable=true)
      */
-    protected $metricType;
+    protected $metricFamily;
 
     /**
      * @var string $defaultMetricUnit
@@ -310,13 +252,13 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      */
     public function __construct()
     {
-        $this->options      = new ArrayCollection();
-        $this->required     = false;
-        $this->unique       = false;
-        $this->defaultValue = null;
-        $this->searchable   = false;
-        $this->translatable = false;
-        $this->scopable     = false;
+        $this->options             = new ArrayCollection();
+        $this->required            = false;
+        $this->unique              = false;
+        $this->defaultValue        = null;
+        $this->searchable          = false;
+        $this->translatable        = false;
+        $this->scopable            = false;
         $this->description         = '';
         $this->smart               = false;
         $this->variant             = false;
@@ -327,37 +269,80 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
+     * Convert defaultValue to UNIX timestamp if it is a DateTime object
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     *
+     * @return null
+     */
+    public function convertDefaultValueToTimestamp()
+    {
+        if ($this->getDefaultValue() instanceof \DateTime) {
+            $this->setDefaultValue($this->getDefaultValue()->format('U'));
+        }
+    }
+
+    /**
+     * Convert defaultValue to DateTime if attribute type is date
+     *
+     * @ORM\PostLoad
+     *
+     * @return null
+     */
+    public function convertDefaultValueToDatetime()
+    {
+        if ($this->getDefaultValue()) {
+            if (strpos($this->getAttributeType(), 'DateType') !== false) {
+                $date = new \DateTime();
+                $date->setTimestamp(intval($this->getDefaultValue()));
+
+                $this->setDefaultValue($date);
+            }
+        }
+    }
+
+    /**
+     * Convert defaultValue to integer if attribute type is boolean
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     *
+     * @return null
+     */
+    public function convertDefaultValueToInteger()
+    {
+        if ($this->getDefaultValue() !== null) {
+            if (strpos($this->getAttributeType(), 'BooleanType') !== false) {
+                $this->setDefaultValue((int) $this->getDefaultValue());
+            }
+        }
+    }
+
+    /**
+     * Convert defaultValue to boolean if attribute type is boolean
+     *
+     * @ORM\PostLoad
+     *
+     * @return null
+     */
+    public function convertDefaultValueToBoolean()
+    {
+        if ($this->getDefaultValue() !== null) {
+            if (strpos($this->getAttributeType(), 'BooleanType') !== false) {
+                $this->setDefaultValue((bool) $this->getDefaultValue());
+            }
+        }
+    }
+
+    /**
      * To string
      *
      * @return string
      */
     public function __toString()
     {
-        return $this->name;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string $name
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return ProductAttribute
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
+        return $this->label;
     }
 
     /**
@@ -440,6 +425,19 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     public function getGroup()
     {
         return $this->group;
+    }
+
+    public function getVirtualGroup()
+    {
+        if ($this->group) {
+            return $this->group;
+        }
+
+        $group = new AttributeGroup;
+        $group->setName('Other');
+        $group->setSortOrder(-1);
+
+        return $group;
     }
 
     /**
@@ -831,25 +829,25 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Get metricType
+     * Get metricFamily
      *
-     * @return string $metricType
+     * @return string $metricFamily
      */
-    public function getMetricType()
+    public function getMetricFamily()
     {
-        return $this->metricType;
+        return $this->metricFamily;
     }
 
     /**
-     * Set metricType
+     * Set metricFamily
      *
-     * @param string $metricType
+     * @param string $metricFamily
      *
      * @return ProductAttribute
      */
-    public function setMetricType($metricType)
+    public function setMetricFamily($metricFamily)
     {
-        $this->metricType = $metricType;
+        $this->metricFamily = $metricFamily;
 
         return $this;
     }

@@ -40,11 +40,11 @@ class ValidMetricAttributeValidator extends ConstraintValidator
     public function validate($entity, Constraint $constraint)
     {
         if ($entity->getAttributeType() == 'oro_flexibleentity_metric') {
-            $type = $entity->getMetricType();
+            $type = $entity->getMetricFamily();
             $unit = $entity->getDefaultMetricUnit();
 
             if (!array_key_exists($type, $this->measures)) {
-                $this->context->addViolation($constraint->invalidMetricTypeMessage);
+                $this->context->addViolation($constraint->invalidMetricFamilyMessage);
             } elseif (!array_key_exists($unit, $this->measures[$type]['units'])) {
                 $this->context->addViolation($constraint->invalidMetricUnitMessage);
             }

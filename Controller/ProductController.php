@@ -1,18 +1,21 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Pim\Bundle\ProductBundle\Manager\MediaManager;
-use Symfony\Component\HttpFoundation\File\File;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Form\Type\ProductType;
+use Pim\Bundle\ProductBundle\Form\Type\AvailableProductAttributesType;
+use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
+use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use YsTools\BackUrlBundle\Annotation\BackUrl;
 
 /**
@@ -28,6 +31,7 @@ class ProductController extends Controller
 
     /**
      * Get product manager
+     *
      * @return FlexibleManager
      */
     protected function getProductManager()
@@ -46,7 +50,8 @@ class ProductController extends Controller
 
     /**
      * List product attributes
-     * @param Request $request
+     *
+     * @param Request $request the request
      *
      * @Route("/index.{_format}",
      *      requirements={"_format"="html|json"},
@@ -85,7 +90,8 @@ class ProductController extends Controller
      * @param string $dataLocale data locale
      * @param string $dataScope  data scope
      *
-     * @Route("/create/{dataLocale}/{dataScope}", defaults={"dataLocale" = null, "dataScope" = null})
+     * @Route("/create/{dataLocale}/{dataScope}",
+     *      defaults={"dataLocale" = null, "dataScope" = null})
      * @Template("PimProductBundle:Product:edit.html.twig")
      *
      * @return array
@@ -98,9 +104,47 @@ class ProductController extends Controller
     }
 
     /**
+     * Create product using simple form
+     *
+     * @param string $dataLocale data locale
+     * @param string $dataScope  data scope
+     *
+     * @Route("/quickcreate/{dataLocale}/{dataScope}", defaults={"dataLocale" = null, "dataScope" = null})
+     * @Template("PimProductBundle:Product:quickcreate.html.twig")
+     *
+     * @return array
+     */
+    public function quickCreateAction($dataLocale, $dataScope)
+    {
+        $entity = $this->getProductManager()->createFlexible(true);
+
+        if ($this->get('pim_product.form.handler.simple_product')->process($entity)) {
+            $this->get('session')->getFlashBag()->add('success', 'Product successfully saved');
+
+            $response = array(
+                'status' => 1,
+                'url' => $this->generateUrl('pim_product_product_edit', array(
+                    'id' => $entity->getId(),
+                    'dataLocale' => $entity->getActiveLanguages()->first()->getLanguage()->getCode()
+                ))
+            );
+
+            return new Response(json_encode($response));
+        }
+
+        $request = $this->getRequest();
+
+        return array(
+            'form'       => $this->get('pim_product.form.simple_product')->createView(),
+            'dataLocale' => $request->query->get('dataLocale', 'en_US'),
+            'dataScope'  => $request->query->get('dataScope'),
+        );
+    }
+
+    /**
      * Edit product
      *
-     * @param integer $id
+     * @param integer $id the product id
      *
      * @Route(
      *     "{id}/edit",
@@ -112,35 +156,30 @@ class ProductController extends Controller
      */
     public function editAction($id)
     {
-        $entity = $this->getProductManager()->localizedFind($id);
-        if (!$entity) {
-            throw $this->createNotFoundException(
-                sprintf('Product with id %d could not be found.', $id)
-            );
-        }
-
+        $product = $this->findProductOr404($id);
         $request = $this->getRequest();
 
         // create form
-        $form = $this->createForm('pim_product', $entity);
-        $groups = $this->getDoctrine()->getRepository('PimProductBundle:AttributeGroup')->findAllWithVirtualGroup();
-        $channels = $this->getDoctrine()->getRepository('PimConfigBundle:Channel')->findAll();
+        $form     = $this->createForm('pim_product', $product);
+        $channels = $this->getChannelRepository()->findAll();
 
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
 
             if ($form->isValid()) {
-                $this->getProductManager()->save($entity);
+                $this->getProductManager()->save($product);
 
-                $this->get('session')->getFlashBag()->add('success', 'Product successfully saved');
+                $this->addFlash('success', 'Product successfully saved');
 
                 return $this->redirect(
                     $this->generateUrl(
                         'pim_product_product_edit',
                         array(
-                            'id'         => $entity->getId(),
-                            'dataLocale' => $request->query->get('dataLocale'),
-                            'dataScope'  => $request->query->get('dataScope')
+                            'id'         => $product->getId(),
+                            'dataLocale' => $request->query->get(
+                                'dataLocale', $this->getParameter('locale')
+                            ),
+                            'dataScope'  => $request->query->get('dataScope'),
                         )
                     )
                 );
@@ -148,27 +187,66 @@ class ProductController extends Controller
         }
 
         return array(
-            'form'       => $form->createView(),
-            'groups'     => $groups,
-            'dataLocale' => $request->query->get('dataLocale', 'en_US'),
-            'dataScope'  => $request->query->get('dataScope'),
-            'channels'   => $channels,
+            'form'           => $form->createView(),
+            'dataLocale'     => $request->query->get(
+                'dataLocale', $this->getParameter('locale')
+            ),
+            'dataScope'      => $request->query->get('dataScope'),
+            'channels'       => $channels,
+            'attributesForm' => $this->getAvailableProductAttributesForm($product)->createView(),
+            'product'        => $product,
+        );
+    }
+
+    /**
+     * Add attributes to product
+     *
+     * @param int $id The product id to which add attributes
+     *
+     * @return Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route("/{id}/attributes", requirements={"id"="\d+", "_method"="POST"})
+     *
+     */
+    public function addProductAttributes($id)
+    {
+        $product             = $this->findProductOr404($id);
+        $availableAttributes = new AvailableProductAttributes;
+        $attributesForm      = $this->getAvailableProductAttributesForm(
+            $product, $availableAttributes
+        );
+
+        $attributesForm->bind($this->getRequest());
+
+        foreach ($availableAttributes->getAttributes() as $attribute) {
+            $value = $this->getProductManager()->createFlexibleValue();
+            $value->setAttribute($attribute);
+            $value->setData(null);
+            $product->addValue($value);
+        }
+
+        $this->getProductManager()->save($product);
+
+        return $this->redirect(
+            $this->generateUrl(
+                'pim_product_product_edit', array('id' => $product->getId())
+            )
         );
     }
 
     /**
      * Remove product
      *
-     * @param Product $entity
+     * @param Product $product The product to remove
      *
      * @Route("/remove/{id}", requirements={"id"="\d+"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function removeAction(Product $entity)
+    public function removeAction(Product $product)
     {
         $em = $this->getProductManager()->getStorageManager();
-        $em->remove($entity);
+        $em->remove($product);
         $em->flush();
 
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -176,5 +254,102 @@ class ProductController extends Controller
         } else {
             return $this->redirect($this->generateUrl('pim_product_product_index'));
         }
+    }
+
+    /**
+     * Get the ProductAttribute entity repository
+     *
+     * @return Pim\Bundle\ProductBundle\Entity\Repository\ProductAttributeRepository
+     */
+    protected function getProductAttributeRepository()
+    {
+        return $this
+            ->getDoctrine()
+            ->getRepository('PimProductBundle:ProductAttribute');
+    }
+
+    /**
+     * Get the AttributeGroup entity repository
+     *
+     * @return Pim\Bundle\ProductBundle\Entity\Repository\AttributeGroupRepository
+     */
+    protected function getAttributeGroupRepository()
+    {
+        return $this
+            ->getDoctrine()
+            ->getRepository('PimProductBundle:AttributeGroup');
+    }
+
+    /**
+     * Get the Channel entity repository
+     *
+     * @return Doctrine\ORM\EntityRepository
+     */
+    protected function getChannelRepository()
+    {
+        return $this->getDoctrine()->getRepository('PimConfigBundle:Channel');
+    }
+
+    /**
+     * Get the container parameter value
+     *
+     * @param string $name the container parameter name
+     *
+     * @return string
+     */
+    protected function getParameter($name)
+    {
+        return $this->container->getParameter($name);
+    }
+
+    /**
+     * Add flash message
+     *
+     * @param string $type    the flash type
+     * @param string $message the flash message
+     *
+     * @return null
+     */
+    protected function addFlash($type, $message)
+    {
+        $this->get('session')->getFlashBag()->add($type, $message);
+    }
+
+    /**
+     * Find a product by its id or return a 404 response
+     *
+     * @param int $id the product id
+     *
+     * @return Pim\Bundle\ProductBundle\Entity\Product
+     *
+     * @throw Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    private function findProductOr404($id)
+    {
+        $product = $this->getProductManager()->localizedFind($id);
+        if (!$product) {
+            throw $this->createNotFoundException(
+                sprintf('Product with id %d could not be found.', $id)
+            );
+        }
+
+        return $product;
+    }
+
+    /**
+     * Get the AvailbleProductAttributes form
+     *
+     * @param Pim\Bundle\ProductBundle\Entity\Product                   $product             The product from which to compute available attributes
+     * @param Pim\Bundle\ProductBundle\Model\AvailableProductAttributes $availableAttributes The available attributes container
+     *
+     * @return Symfony\Component\Form\Form
+     */
+    private function getAvailableProductAttributesForm(Product $product, AvailableProductAttributes $availableAttributes = null)
+    {
+        return $this->createForm(
+            new AvailableProductAttributesType,
+            $availableAttributes ?: new AvailableProductAttributes,
+            array('attributes' => $product->getAttributes())
+        );
     }
 }

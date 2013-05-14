@@ -1,5 +1,5 @@
 <?php
-namespace Pim\Bundle\ProductBundle\Tests\Functional\Model;
+namespace Pim\Bundle\ProductBundle\Tests\Functional\Manager;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -23,6 +23,6 @@ class ProductSegmentManagerTest extends WebTestCase
         static::$kernel->boot();
         $manager = static::$kernel->getContainer()->get('pim_product.classification_tree_manager');
 
-        $this->assertInstanceOf('Oro\Bundle\SegmentationTreeBundle\Model\SegmentManager', $manager);
+        $this->assertInstanceOf('Oro\Bundle\SegmentationTreeBundle\Manager\SegmentManager', $manager);
     }
 }

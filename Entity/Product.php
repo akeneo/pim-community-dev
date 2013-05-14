@@ -2,6 +2,8 @@
 namespace Pim\Bundle\ProductBundle\Entity;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\ExecutionContext;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,6 +20,7 @@ use Pim\Bundle\ConfigBundle\Entity\Language;
  * @ORM\Table(name="pim_product")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductRepository")
  * @UniqueEntity("sku");
+ * @Assert\Callback(methods={"isLanguagesValid"})
  */
 class Product extends AbstractEntityFlexible
 {
@@ -25,6 +28,7 @@ class Product extends AbstractEntityFlexible
      * @var string $sku
      *
      * @ORM\Column(name="sku", type="string", length=255, unique=true)
+     * @Assert\NotNull()
      */
     protected $sku;
 
@@ -178,5 +182,83 @@ class Product extends AbstractEntityFlexible
         $this->languages->add($pl);
 
         return $this;
+    }
+
+    /**
+     * Remove language
+     *
+     * @param Language $language Language
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Product
+     */
+    public function removeLanguage(Language $language)
+    {
+        $this->languages->removeElement($this->getLanguage($language));
+
+        return $this;
+    }
+
+    /**
+     * Get the attributes of the product
+     *
+     * @return array the attributes of the current product
+     */
+    public function getAttributes()
+    {
+        return array_map(
+            function ($value) {
+                return $value->getAttribute();
+            }, $this->getValues()->toArray()
+        );
+    }
+
+    public function getOrderedGroups()
+    {
+        $groups = array_map(
+            function ($value) {
+                return $value->getGroup();
+            }, $this->getAttributes()
+        );
+        array_map(function($group){return (string) $group;}, $groups);
+        $groups = array_unique($groups);
+
+        usort(
+            $groups, function ($a, $b) {
+                $a = $a->getSortOrder();
+                $b = $b->getSortOrder();
+
+                if ($a === $b) {
+                    return 0;
+                }
+
+                if ($a < $b && $a < 0) {
+                    return 1;
+                }
+
+                if ($a > $b && $b < 0) {
+                    return -1;
+                }
+
+
+                return $a < $b ? -1 : 1;
+            }
+        );
+
+        return $groups;
+    }
+
+    /**
+     * Make sure that at least one language has been added to the product
+     *
+     * @param ExecutionContext $context Execution Context
+     */
+    public function isLanguagesValid(ExecutionContext $context)
+    {
+        if ($this->languages->count() == 0) {
+            $context->addViolationAtPath(
+                $context->getPropertyPath() . '.languages',
+                'Please specify at least one activated locale'
+            );
+        }
     }
 }

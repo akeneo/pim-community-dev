@@ -30,15 +30,15 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     /**
      * Test getter/setter for name property
      */
-    public function testGetSetName()
+    public function testGetSetLabel()
     {
         $productAttribute = new ProductAttribute();
-        $this->assertEmpty($productAttribute->getName());
+        $this->assertEmpty($productAttribute->getLabel());
 
         // Change value and assert new
-        $newName = 'test-name';
-        $productAttribute->setName($newName);
-        $this->assertEquals($newName, $productAttribute->getName());
+        $newName = 'test-label';
+        $productAttribute->setLabel($newName);
+        $this->assertEquals($newName, $productAttribute->getLabel());
     }
 
     /**
@@ -83,22 +83,30 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($productAttribute->getSmart());
     }
 
+    public function testGetVirtualGroup()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $productAttribute->getVirtualGroup());
+        $this->assertEquals('Other', $productAttribute->getVirtualGroup()->getName());
+
+        $attributeGroup = new AttributeGroup();
+        $productAttribute->setGroup($attributeGroup);
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $productAttribute->getVirtualGroup());
+        $this->assertEquals($attributeGroup, $productAttribute->getGroup());
+    }
+
     /**
      * Test getter/setter for group property
      */
     public function testGetSetGroup()
     {
         $productAttribute = new ProductAttribute();
-        $this->assertEmpty($productAttribute->getGroup());
+        $this->assertNull($productAttribute->getGroup());
 
-        // change value and assert new
         $attributeGroup = new AttributeGroup();
         $productAttribute->setGroup($attributeGroup);
-        $this->assertEquals($attributeGroup, $productAttribute->getGroup());
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $productAttribute->getGroup());
-
-        $productAttribute->setGroup(null);
-        $this->assertEquals(null, $productAttribute->getGroup());
+        $this->assertEquals($attributeGroup, $productAttribute->getGroup());
     }
 
     /**
@@ -108,7 +116,7 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     {
         $productAttribute = new ProductAttribute();
         $string = 'test-string';
-        $productAttribute->setName($string);
+        $productAttribute->setLabel($string);
         $this->assertEquals($string, $productAttribute->__toString());
     }
 
@@ -335,15 +343,15 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     /**
      * Test getter/setter for metricType property
      */
-    public function testGetSetMetricType()
+    public function testGetSetMetricFamily()
     {
         $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getMetricType());
+        $this->assertNull($productAttribute->getMetricFamily());
 
         // Change value and assert new
         $type = 'weight';
-        $productAttribute->setMetricType($type);
-        $this->assertEquals($type, $productAttribute->getMetricType());
+        $productAttribute->setMetricFamily($type);
+        $this->assertEquals($type, $productAttribute->getMetricFamily());
     }
 
     /**

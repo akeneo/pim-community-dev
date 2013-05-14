@@ -354,7 +354,7 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
                 array('defaultValue' => 'test value', 'maxCharacters' => 200, 'wysiwygEnabled' => true)),
             array('oro_flexibleentity_metric', 'code8',
                 array('defaultValue' => 20, 'numberMin' => -273, 'numberMax' => 1000, 'decimalsAllowed' => false,
-                    'negativeAllowed' => true, 'metricType' => 'temperature', 'defaultMetricUnit' => 'C')),
+                    'negativeAllowed' => true, 'metricFamily' => 'temperature', 'defaultMetricUnit' => 'C')),
             array('oro_flexibleentity_file', 'code9',
                 array('allowedFileSources' => 'all', 'maxFileSize' => 10000)),
             array('oro_flexibleentity_image', 'code10',
@@ -439,7 +439,7 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
             array('oro_flexibleentity_metric', 'code14',
                 array('defaultValue' => 0, 'numberMin' => -2, 'numberMax' => -1,
                     'decimalsAllowed' => true, 'negativeAllowed' => false,
-                    'metricType' => 'temperature', 'defaultMetricUnit' => 'C'), 3),
+                    'metricFamily' => 'temperature', 'defaultMetricUnit' => 'C'), 3),
             array('oro_flexibleentity_file', 'code15',
                 array('allowedFileSources' => 'other', 'maxFileSize' => -1, 'defaultValue' => 1), 3),
             array('oro_flexibleentity_text', 'code16',
@@ -461,7 +461,7 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
             array('oro_flexibleentity_metric', 'code23',
                 array('defaultValue' => 0.1, 'numberMin' => 0, 'numberMax' => 2,
                     'decimalsAllowed' => false, 'negativeAllowed' => false,
-                    'metricType' => 'temperature', 'defaultMetricUnit' => 'C'), 1)
+                    'metricFamily' => 'temperature', 'defaultMetricUnit' => 'C'), 1)
         );
     }
 
