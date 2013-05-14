@@ -26,7 +26,7 @@ $('#tree').jstree({
             }
         ],
         "ajax" : {
-            "url" : "children",
+            "url" : "children.json",
             "data" : function (node) {
                 // the result is fed to the AJAX request `data` option
                 return {
@@ -68,63 +68,32 @@ $('#tree').jstree({
     .bind('trees_loaded.jstree', function(e, tree_select_id) {
         $('#'+tree_select_id).uniform();
     })
-    .bind("create.jstree", function (e, data) {
-        var this_jstree = $.jstree._focused();
-        var parentId = null;
-
-        if (data.rslt.parent == -1) {
-            parentId = this_jstree.get_tree_id();
-        } else {
-            parentId = data.rslt.parent.attr("id");
-        }
-
-        $.post(
-            "create-node",
-            {
-                "id" : parentId,
-                "position" : data.rslt.position,
-                "title" : data.rslt.name,
-                "type" : data.rslt.obj.attr("rel")
-            },
-            function (r) {
-                if(r.status) {
-                    $(data.rslt.obj).attr("id", r.id);
-                }
-                else {
-                    this_jstree.rollback(data.rlbk);
-                }
-            }
-        );
-    })
     .bind("remove.jstree", function (e, data) {
         data.rslt.obj.each(function () {
-            var id = $(this).attr("data-id");
+            var id = $(this).attr("id").replace('node_', '');
             $.ajax({
-                async : false,
+                async : true,
                 type: 'GET',
-                url: "remove-node/"+id,
+                url: "remove/"+id,
                 success : function (r) {
-                    console.log(r);
-                    if(!r.status) {
+                    if(r.status) {
                         data.inst.refresh();
+                    } else {
+                        var alert = new Backbone.BootstrapModal({
+                            allowCancel: false,
+                            title: "{{ 'Alert message' | trans }}",
+                            content: "{{ 'Impossible to delete root node' | trans }}"
+                        });
+                        alert.open();
+                        $.jstree.rollback(data.inst.rlbk);
                     }
+                },
+                error: function (r) {
+                    // TODO : Show popup to know problem !
+                    $.jstree.rollback(data.inst.rlbk);
                 }
             });
         });
-    })
-    .bind("rename.jstree", function (e, data) {
-        $.post(
-            "rename-node",
-            {
-                "id" : data.rslt.obj.attr("id").replace('node_',''),
-                "title" : data.rslt.new_name
-            },
-            function (r) {
-                if(!r.status) {
-                    this_jstree.rollback(data.rlbk);
-                }
-            }
-        );
     })
     .bind("move_node.jstree", function (e, data) {
         var this_jstree = $.jstree._focused();
@@ -161,24 +130,22 @@ $('#tree').jstree({
 
         var a = this_jstree.get_selected();
         var nodeId = a.attr('id').replace('node_','');
+        console.log('select node jstree');
         $.fn.renderItemList(nodeId);
     });
 
-$.fn.removeTree = function(tree_id) {
-    var this_jstree = $.jstree._focused();
-
-    $.ajax({
-        async : false,
-        type: 'POST',
-        url: "remove-tree",
-        data : {
-            "id" : tree_id
-        },
-        success: function(data) {
-            this_jstree.refresh_trees();
-        }
-    });
-};
+//$.fn.removeTree = function(tree_id) {
+//    var this_jstree = $.jstree._focused();
+//
+//    $.ajax({
+//        async : false,
+//        type: 'POST',
+//        url: "remove/"+tree_id,
+//        success: function(data) {
+//            this_jstree.refresh_trees();
+//        }
+//    });
+//};
 
 $.fn.createTree = function (title) {
     var this_jstree = $.jstree._focused();
@@ -200,10 +167,7 @@ $.fn.renderItemList = function renderItemList(segmentId) {
     $.ajax({
         async : false,
         type: "GET",
-        url: "list-items",
-        data : {
-            "segment_id" : segmentId
-        },
+        url: "list-items.json/"+segmentId,
         success: function(data) {
             var table = $('#product_grid');
             table.empty();
@@ -251,65 +215,17 @@ $.fn.addItem = function(segmentId, itemId) {
     });
 };
 
-$.fn.removeItem = function(segmentId, itemId) {
-    $.ajax({
-        async : false,
-        type: 'POST',
-        url: "remove-item",
-        data : {
-            "segment_id" : segmentId,
-            "item_id" : itemId
-        },
-        success : function (r) {
-            renderItemList(segmentId);
-        }
-    });
-};
-
-$(function () {
-    $("#tree_menu button").click(function () {
-        var tree_id = "#tree";
-        switch(this.id) {
-            case "refresh":
-                $(tree_id).jstree('refresh',-1);
-                break;
-            case "add":
-                $(tree_id).jstree("create", null, "last", { "attr" : { "rel" : this.id.toString().replace("add_", "") } });
-                break;
-            case "search":
-                $(tree_id).jstree("search", $("#search_text").val());
-                break;
-            case "clear_search":
-                $(tree_id).jstree("clear_search");
-                break;
-            case "rename":
-                $(tree_id).jstree("rename");
-                break;
-            case "remove":
-                $(tree_id).jstree("remove");
-                break;
-            case "add_segment":
-                $(tree_id).jstree("create");
-                break;
-            case "create_tree":
-                $.fn.createTree($("#create_tree_title").val(), '#trees','#tree','#selectedTreeId');
-                break;
-            case "add_item":
-                node = $.jstree._focused().get_selected();
-                nodeId = node.attr('id');
-                segmentId = nodeId.replace('node_','');
-                itemId = $("#add_item_id").val();
-
-                $.fn.addItem(segmentId, itemId);
-                break;
-            case "remove_item":
-                node = $.jstree._focused().get_selected();
-                nodeId = node.attr('id');
-                segmentId = nodeId.replace('node_','');
-                itemId = $("#remove_item_id").val();
-
-                $.fn.removeItem(segmentId, itemId);
-                break;
-        }
-   });
-});
+//$.fn.removeItem = function(segmentId, itemId) {
+//    $.ajax({
+//        async : false,
+//        type: 'POST',
+//        url: "remove-item",
+//        data : {
+//            "segment_id" : segmentId,
+//            "item_id" : itemId
+//        },
+//        success : function (r) {
+//            renderItemList(segmentId);
+//        }
+//    });
+//};

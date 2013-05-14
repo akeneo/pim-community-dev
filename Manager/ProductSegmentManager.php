@@ -26,13 +26,13 @@ class ProductSegmentManager extends SegmentManager
         $tree = $this->getSegmentInstance();
         $tree->setParent(null);
 
-        $unclassifiedNode = $this->getSegmentInstance();
-        $unclassifiedNode->setParent($tree);
-        $unclassifiedNode->setIsDynamic(true);
-        $unclassifiedNode->setCode('unclassified-node');
-        $unclassifiedNode->setTitle('Unclassified Node');
+//         $unclassifiedNode = $this->getSegmentInstance();
+//         $unclassifiedNode->setParent($tree);
+//         $unclassifiedNode->setIsDynamic(true);
+//         $unclassifiedNode->setCode('unclassified-node');
+//         $unclassifiedNode->setTitle('Unclassified Node');
 
-        $tree->addChild($unclassifiedNode);
+//         $tree->addChild($unclassifiedNode);
 
         return $tree;
     }

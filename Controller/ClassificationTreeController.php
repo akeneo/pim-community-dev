@@ -5,7 +5,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Symfony\Component\HttpFoundation\Response;
 
-use Pim\Bundle\ProductBundle\Helper\JsonSegmentHelper;
+use Pim\Bundle\ProductBundle\Helper\SegmentHelper;
 
 use Pim\Bundle\ProductBundle\Form\Type\ProductSegmentType;
 
@@ -55,45 +55,44 @@ class ClassificationTreeController extends Controller
         return array('trees' => $trees);
     }
 
-
-    /**
-     * Return a response in json content type with well formated data
-     * @param mixed $data
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * TODO : Must be removed
-     */
-    protected function prepareJsonResponse($data)
-    {
-        $response = new Response(json_encode($data));
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
-    }
-
     /**
      * List children of a segment
      *
      * @param ProductSegment $segment
      *
-     * @Route("/children")
+     * @Route("/children.{_format}", requirements={"_format"="json"})
+     * @Template()
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return array
      */
     public function childrenAction()
     {
-        $parentId = (int) $this->getRequest()->get('id');
+        $segment = $this->findSegment($this->getRequest()->get('id'));
 
-        if ($parentId <= 0) {
-            throw new \InvalidArgumentException("Missing segment id parameter 'id':".$parentId);
+        $segments = $this->getTreeManager()->getChildren($segment->getId());
+
+        $data = SegmentHelper::childrenResponse($segments);
+
+        return array('data' => $data);
+    }
+
+
+    /**
+     * Find a segment from its id
+     *
+     * @param integer $segmentId
+     *
+     * @return ProductSegment
+     */
+    protected function findSegment($segmentId)
+    {
+        $segment = $this->getTreeManager()->getEntityRepository()->find($segmentId);
+
+        if (!$segment) {
+            return $this->createNotFoundException('Product Segment not found');
         }
 
-        $segments = $this->getTreeManager()->getChildren($parentId);
-
-        $data = JsonSegmentHelper::childrenResponse($segments);
-
-        return $this->prepareJsonResponse($data);
+        return $segment;
     }
 
     /**
@@ -101,27 +100,23 @@ class ClassificationTreeController extends Controller
      *
      * @param Request $request Request (segment_id)
      *
-     * @Route("/list-items")
+     * @Route("/list-items.{_format}/{id}", requirements={"_format"="json", "id"="\d+"})
+     * @Template()
      *
-     * @return Response
+     * @return array
      *
      */
-    public function listItemsAction()
+    public function listItemsAction(ProductSegment $segment)
     {
-        $segmentId = $this->getRequest()->get('segment_id');
-
-        $repo = $this->getTreeManager()->getEntityRepository();
-        $segment = $repo->find($segmentId);
-
         $products = new ArrayCollection();
 
         if (is_object($segment)) {
             $products = $segment->getProducts();
         }
 
-        $data = JsonSegmentHelper::productsResponse($products);
+        $data = SegmentHelper::productsResponse($products);
 
-        return $this->prepareJsonResponse($data);
+        return array('data' => $data);
     }
 
     /**
@@ -232,6 +227,8 @@ class ClassificationTreeController extends Controller
                 $this->getTreeManager()->getStorageManager()->flush();
 
                 $this->get('session')->getFlashBag()->add('success', 'Product segment successfully saved');
+
+                return $this->redirect($this->generateUrl('pim_product_classificationtree_index'));
             }
         }
 
@@ -254,15 +251,17 @@ class ClassificationTreeController extends Controller
         $this->getTreeManager()->remove($segment);
         $this->getTreeManager()->getStorageManager()->flush();
 
-        $this->get('session')->getFlashBag()->add('success', 'Product segment successfully removed');
-
-        return $this->redirect($this->generateUrl('pim_product_classificationtree_index'));
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new Response('', 200);
+        } else {
+            return $this->redirect($this->generateUrl('pim_product_classificationtree_index'));
+        }
     }
 
     /**
      * Get classification tree manager
      *
-     * @return \Oro\Bundle\SegmentationTreeBundle\Model\SegmentManager
+     * @return \Oro\Bundle\SegmentationTreeBundle\Manager\SegmentManager
      */
     protected function getTreeManager()
     {

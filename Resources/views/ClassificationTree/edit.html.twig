@@ -1,3 +1,5 @@
+{% extends 'PimProductBundle::layout.html.twig' %}
+
 {% set parentId %}{{ form.vars.value.parent ? form.vars.value.parent.id : null }}{% endset %}
 {% set type = parentId ? 'node' : 'tree' %}
 {% set action = form.vars.value.id ? 'Edit' : 'Add' %}
@@ -16,9 +18,9 @@
     <div class="row-fluid">
         <h3 class="pull-left">{{ title|trans }}</h3>
         <div class="pull-right">
-            <a class="btn" href="#" id="btn-delete-segment">
-                {{ 'Delete' | trans }}
-            </a>
+            {% if form.vars.value.id %}
+                <a class="btn" href="#" id="btn-delete-segment">{{ 'Delete' | trans }}</a>
+            {% endif %}
             <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
         </div>
     </div>
@@ -106,4 +108,29 @@
     </div>
     {{ form_rest(form) }}
 </form>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.bootstrap-modal.js') }}"></script>
+    <script type="text/javascript">
+$(function() {
+    $('#btn-delete-segment').click(function(event) {
+        doAction = function() {
+            window.location.href = "{{ path('pim_product_classificationtree_remove', { id: form.vars.value.id }) }}";
+        };
+        
+        if (!_.isUndefined(Backbone.BootstrapModal)) {
+            confirm = new Backbone.BootstrapModal({
+                title: "{{ 'Delete Confirmation' | trans }}",
+                content: "{{ 'Are you sure you want to delete this item' | trans }}"
+            });
+            confirm.on('ok', doAction);
+            confirm.open();
+        } else if (window.confirm(message)) {
+            doAction();
+        }
+    });
+});
+    </script>
 {% endblock %}
