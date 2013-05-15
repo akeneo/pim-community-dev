@@ -41,6 +41,9 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
             )
         );
 
+        $product->expects($this->atLeastOnce())
+                ->method('addValue');
+
         $target->save($product);
     }
 
