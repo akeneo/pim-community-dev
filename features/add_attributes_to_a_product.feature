@@ -29,5 +29,5 @@ Feature: Add attributes to a product
   Scenario: Successfully add attributes to a product
     Given I am on the "Car" product page
     And I add available attributes Long Description and Size
-    Then attributes in group "General" should be Release Date and Long Description
+    Then attributes in group "General" should be Release date and Long description
     And attribute in group "Other" should be Size

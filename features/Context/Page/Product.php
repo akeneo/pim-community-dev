@@ -61,9 +61,11 @@ class Product extends Page
 
     public function getFieldAt($group, $position)
     {
-        $fields  = $this->findAll('css', sprintf(
+        $locator = sprintf(
             '#tabs-%s label', $group instanceof AttributeGroup ? $group->getId() : 0
-        ));
+        );
+
+        $fields  = $this->findAll('css', $locator);
 
         if (0 === count($fields)) {
             throw new \Exception(sprintf(

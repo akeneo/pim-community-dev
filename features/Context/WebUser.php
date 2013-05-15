@@ -342,10 +342,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 ->getFieldAt($group ?: 'Other', $index)
             ;
 
-            if ($this->camelize($attribute) !== $name = $field->getText()) {
+            if ($attribute !== $name = $field->getText()) {
                 throw new \Exception(sprintf('
                     Expecting to see field "%s" at position %d, but saw "%s"',
-                    $this->camelize($attribute), $index + 1, $name
+                    $attribute, $index + 1, $name
                 ));
             }
         }
@@ -440,7 +440,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_text');
         $attribute->setCode($this->camelize($name));
-        $attribute->setName($name);
+        $attribute->setLabel($name);
         $attribute->setTranslatable($translatable);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
