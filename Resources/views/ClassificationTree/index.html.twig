@@ -69,7 +69,7 @@ $(function () {
                 break;
             case "segment-edit":
                 var node = $.jstree._focused().get_selected();
-                if(!$.jstree._focused()._get_node(node)) {
+                if(!$.jstree._focused()._get_node(node) || $.jstree._focused()._get_parent() == -1) {
                     PimDialog.alert("{{ 'You must select a node' | trans }}", "{{ 'Alert message' | trans }}");
                 } else {
                     var segmentId = node.attr("id").replace('node_', '');
@@ -77,7 +77,8 @@ $(function () {
                 }
                 break;
             case "segment-remove":
-                if(!$.jstree._focused()._get_node($.jstree._focused().get_selected())) {
+                if(!$.jstree._focused()._get_node($.jstree._focused().get_selected()) 
+                    || $.jstree._focused()._get_parent() == -1) {
                     PimDialog.alert("{{ 'You must select a node' | trans }}", "{{ 'Alert message' | trans }}");
                 } else {
                     doRemove = function() {
