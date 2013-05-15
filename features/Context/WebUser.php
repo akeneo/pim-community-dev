@@ -15,6 +15,7 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Doctrine\Common\Util\Inflector;
+use Pim\Bundle\ProductBundle\Entity\ProductFamily;
 
 /**
  * Context of the website
@@ -116,6 +117,21 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
 
         $this->getEntityManager()->flush();
+    }
+
+    /**
+     * @Given /^the following families:$/
+     */
+    public function theFollowingFamilies(TableNode $table)
+    {
+        $em = $this->getEntityManager();
+        foreach ($table->getHash() as $data) {
+            $family = new ProductFamily;
+            $family->setName($data['name']);
+            $em->persist($family);
+        }
+
+        $em->flush();
     }
 
     /**
@@ -410,6 +426,32 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
 
         $this->getPage('Product')->addSelectedAvailableAttributes();
+    }
+
+    /**
+     * @When /^I am on family page$/
+     */
+    public function iAmOnFamilyPage()
+    {
+        $this->getPage('Family index')->open(array(
+            'locale' => $this->currentLocale,
+        ));
+    }
+
+    /**
+     * @Then /^I should see the families (.*)$/
+     */
+    public function iShouldSeeTheFamilies($families)
+    {
+        $expectedFamilies = $this->listToArray($families);
+
+        if ($expectedFamilies !== $families = $this->getPage('Family index')->getFamilies()) {
+            throw new \RuntimeException(sprintf(
+                'Expecting to see families %s, but saw %s',
+                print_r($expectedFamilies, true),
+                print_r($families, true)
+            ));
+        }
     }
 
     private function listToArray($list)
