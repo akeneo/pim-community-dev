@@ -1,3 +1,8 @@
+{% extends 'PimProductBundle:ProductFamily:index.html.twig' %}
+
+{% set title = 'Family'|trans %}
+
+{% block familyTab %}
 <form action="{{ form.vars.value.id ?
     path('pim_product_productfamily_edit', { id: form.vars.value.id }) :
     path('pim_product_productfamily_create') }}" method="POST" class="form-register">
@@ -62,3 +67,17 @@
     </div>
 
 </form>
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        $(function() {
+            $('#form-tab').on('click', '.group', function(event) {
+                event.preventDefault();
+                $(this).parent().find('tr:not(.group)').toggle();
+                var icon = $(this).find('i');
+                icon.toggleClass('icon-chevron-down').toggleClass('icon-chevron-up');
+            });
+        });
+    </script>
+{% endblock %}

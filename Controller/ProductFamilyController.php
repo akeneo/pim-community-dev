@@ -65,7 +65,8 @@ class ProductFamilyController extends Controller
      */
     public function editAction($id)
     {
-        $family  = $this->getProductFamilyRepository()->findOneWithAttributes($id);
+        $families = $this->getProductFamilyRepository()->findAll();
+        $family   = $this->getProductFamilyRepository()->findOneWithAttributes($id);
         $request = $this->getRequest();
         $form    = $this->createForm(new ProductFamilyType(), $family);
 
@@ -78,13 +79,14 @@ class ProductFamilyController extends Controller
 
                 $this->get('session')->getFlashBag()->add('success', 'Product family successfully saved');
 
-                return $this->redirect($this->generateUrl('pim_product_productfamily_index'));
+                return $this->redirect($this->generateUrl('pim_product_productfamily_edit', array('id' => $id)));
             }
         }
 
         return array(
-            'form'   => $form->createView(),
-            'family' => $family,
+            'form'     => $form->createView(),
+            'families' => $families,
+            'family'   => $family,
         );
     }
 
