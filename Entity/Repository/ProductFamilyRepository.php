@@ -11,6 +11,11 @@ use Pim\Bundle\ProductBundle\Doctrine\EntityRepository;
  */
 class ProductFamilyRepository extends EntityRepository
 {
+    public function buildAllOrderedByName()
+    {
+        return $this->build()->orderBy('product_family.name');
+    }
+
     public function buildOneWithAttributes($id)
     {
         return $this

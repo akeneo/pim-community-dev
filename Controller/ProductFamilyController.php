@@ -29,7 +29,7 @@ class ProductFamilyController extends Controller
      */
     public function indexAction()
     {
-        $families = $this->getProductFamilyRepository()->findAll();
+        $families = $this->getProductFamilyRepository()->findAllOrderedByName();
 
         return array('families' => $families);
     }
@@ -65,7 +65,7 @@ class ProductFamilyController extends Controller
      */
     public function editAction($id)
     {
-        $families = $this->getProductFamilyRepository()->findAll();
+        $families = $this->getProductFamilyRepository()->findAllOrderedByName();
         $family   = $this->getProductFamilyRepository()->findOneWithAttributes($id);
         $request = $this->getRequest();
         $form    = $this->createForm(new ProductFamilyType(), $family);
