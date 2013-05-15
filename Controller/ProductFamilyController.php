@@ -36,26 +36,6 @@ class ProductFamilyController extends Controller
     }
 
     /**
-     * Get entity manager
-     *
-     * @return \Doctrine\ORM\EntityManager
-     */
-    protected function getEntityManager()
-    {
-        return $this->getDoctrine()->getEntityManager();
-    }
-
-    /**
-     * Get product family repository
-     *
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    protected function getProductFamilyRepository()
-    {
-        return $this->getEntityManager()->getRepository('PimProductBundle:ProductFamily');
-    }
-
-    /**
      * Create product family
      *
      * @Route("/create")
@@ -84,12 +64,13 @@ class ProductFamilyController extends Controller
      *
      * @return array
      */
-    public function editAction(ProductFamily $family)
+    public function editAction($id)
     {
+        $family  = $this->getProductFamilyRepository()->findOneWithAttributes($id);
         $request = $this->getRequest();
-        $form = $this->createForm(new ProductFamilyType(), $family);
+        $form    = $this->createForm(new ProductFamilyType(), $family);
 
-        if ($request->getMethod() == 'POST') {
+        if ($request->isMethod('POST')) {
             $form->bind($request);
 
             if ($form->isValid()) {
@@ -103,7 +84,8 @@ class ProductFamilyController extends Controller
         }
 
         return array(
-            'form' => $form->createView(),
+            'form'   => $form->createView(),
+            'family' => $family,
         );
     }
 
@@ -125,4 +107,25 @@ class ProductFamilyController extends Controller
 
         return $this->redirect($this->generateUrl('pim_product_productfamily_index'));
     }
+
+    /**
+     * Get entity manager
+     *
+     * @return \Doctrine\ORM\EntityManager
+     */
+    protected function getEntityManager()
+    {
+        return $this->getDoctrine()->getEntityManager();
+    }
+
+    /**
+     * Get product family repository
+     *
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    protected function getProductFamilyRepository()
+    {
+        return $this->getEntityManager()->getRepository('PimProductBundle:ProductFamily');
+    }
+
 }

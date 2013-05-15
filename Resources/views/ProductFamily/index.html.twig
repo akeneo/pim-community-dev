@@ -1,54 +1,40 @@
 {% extends 'PimProductBundle::layout.html.twig' %}
 
-{% set title = 'Families overview'|trans %}
+{% set title = 'Family'|trans %}
 
 {% block content %}
 
-    <h1>{{ title }} 
-        <a class="btn btn-primary pull-right" style="margin-left:10px;"
-            href="{{ path('pim_product_productfamily_create') }}">{{ 'New product family'|trans }}</a>
-    </h1>
+    <div class="row-fluid has-resizable-sidebar">
+        <div class="resizable-sidebar">
+            <ul>
+                {% for family in families %}
+                <li data-url="{{ path('pim_product_productfamily_edit', {'id': family.id}) }}">{{ family.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div id="form-tab" class="resizable-content">
+            <h3>{{ title }}</h3>
+        </div>
+    </div>
 
-    <table class="table table-bordered table-striped table-condensed">
-        <thead>
-            <tr>
-                <th>{{ 'Name'|trans }}</th>
-                <th>{{ 'Description'|trans }}</th>
-                <th>{{ 'Attributes'|trans }}</th>
-                <th style="width: 50px">{{ 'Edit'|trans }}</th>
-                <th style="width: 50px">{{ 'Remove'|trans }}</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for family in families %}
-            <tr>
-                <td>
-                    <a href="{{ path('pim_product_productfamily_edit', { id: family.id }) }}">
-                        {{ family.name }}
-                    </a>
-                </td>
-                <td>{{ family.description }}</td>
-                <td>
-                    <ul>
-                    {% for attribute in family.attributes %}
-                        <li>{{ attribute }}</li>
-                    {% endfor %}
-                    </ul>
-                </td>
-                <td>
-                    <a href="{{ path('pim_product_productfamily_edit', { id: family.id }) }}">
-                        <i class="icon-edit"></i>
-                    </a>
-                </td>
-                <td>
-                    <a href="{{ path('pim_product_productfamily_remove', { id: family.id }) }}">
-                        <i class="icon-remove"></i>
-                    </a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <hr />
-
+    <script type="text/javascript">
+        $(function() {
+            $('.resizable-sidebar li').click(function(event) {
+                $(this).siblings().removeClass('active');
+                $(this).addClass('active');
+                var url = $(this).data('url');
+                $.get(url, null, function (data, status) {
+                    if ('success' === status) {
+                        $('#form-tab').html(data);
+                    }
+                });
+            });
+            $('#form-tab').on('click', '.group', function(event) {
+                event.preventDefault();
+                $(this).parent().find('tr:not(.group)').toggle();
+                var icon = $(this).find('i');
+                icon.toggleClass('icon-chevron-down').toggleClass('icon-chevron-up');
+            });
+        });
+    </script>
 {% endblock %}

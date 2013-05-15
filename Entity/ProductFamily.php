@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ORM\Table(name="pim_product_family")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductFamilyRepository")
  */
 class ProductFamily
 {

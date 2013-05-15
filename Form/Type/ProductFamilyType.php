@@ -21,40 +21,10 @@ class ProductFamilyType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::buildForm($builder, $options);
-
-        $this->addFieldName($builder);
-
-        $this->addFieldDescription($builder);
-
-        $this->addFieldAttributes($builder);
-    }
-
-    /**
-     * Add a field for name
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldName(FormBuilderInterface $builder)
-    {
-        $builder->add('name');
-    }
-
-    /**
-     * Add a field for description
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldDescription(FormBuilderInterface $builder)
-    {
-        $builder->add('description', 'textarea');
-    }
-
-    /**
-     * Add a field for attributes
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldAttributes(FormBuilderInterface $builder)
-    {
-        $builder->add('attributes');
+        $builder
+            ->add('name')
+            ->add('description', 'textarea')
+        ;
     }
 
     /**

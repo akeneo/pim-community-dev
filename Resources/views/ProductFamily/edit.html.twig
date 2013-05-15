@@ -1,37 +1,64 @@
-{% extends 'PimProductBundle::layout.html.twig' %}
-
-{% set title = form.vars.value.id ? 'Edit product family'|trans : 'Add product family'|trans %}
-
-{% block content %}
 <form action="{{ form.vars.value.id ?
     path('pim_product_productfamily_edit', { id: form.vars.value.id }) :
     path('pim_product_productfamily_create') }}" method="POST" class="form-register">
-    <fieldset>
-        <legend>{{ title|trans }}
-            <a class="btn btn-primary pull-right" href="{{ path('pim_product_productfamily_index') }}">
-                {{ "Back to list" | trans }}
-            </a>
-        </legend>
+
+    <div class="form-row">
+        <h3>
+            Family - {{ family.name }}
+            <button type="submit" class="btn btn-primary pull-right">{{ ' Save'|trans }}</button>
+            <a href="#" class="btn pull-right">{{ 'Delete'|trans }}</a>
+        </h3>
+    </div>
+
+    <div id="form-navbar" class="navbar navbar-static scrollspy-nav">
+        <div class="navbar-inner">
+            <div class="row-fluid">
+                <ul class="nav">
+                    <li class="active"><a href="#properties" data-toggle="tab">{{ 'Properties' | trans }}</a></li>
+                    <li><a href="#attributes" data-toggle="tab">{{ 'Attributes' | trans }}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-content">
 
         {% if form.vars.errors|length %}
-            <div class="alert alert-error">
-                {{ form_errors(form) }}
-            </div>
+        <div class="alert alert-error">
+            {{ form_errors(form) }}
+        </div>
         {% endif %}
 
-        {{ form_row(form.name) }}
-
-        {{ form_row(form.description) }}
-
-        {{ form_row(form.attributes) }}
-
-        {{ form_row(form._token) }}
-
-        <br />
-
-        <div class="form-row">
-            <button class="btn btn-large btn-primary" type="submit">{{ 'Save'|trans }}</button>
+        <div class="tab-pane active" id="properties">
+            {{ form_widget(form) }}
         </div>
-    </fieldset>
+
+        <div class="tab-pane" id="attributes">
+            <table class="table groups">
+                <thead>
+                    <th>Label</th>
+                </thead>
+
+                <tbody>
+
+                    {% set attributeGroup = false %}
+                    {% for attribute in family.attributes %}
+                        {% if attribute.group != attributeGroup %}
+                        </tbody>
+                        <tbody>
+                            <tr class="group">
+                                <td><i class="icon-chevron-down"></i> {{ attribute.group ? attribute.group.name : 'Other'|trans }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <td>{{ attribute.label }}</td>
+                        </tr>
+                        {% set attributeGroup = attribute.group %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
 </form>
-{% endblock %}
