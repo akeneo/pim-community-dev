@@ -261,6 +261,8 @@ class ClassificationTreeController extends Controller
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new JsonResponse();
         } else {
+            $this->get('session')->getFlashBag()->add('success', 'Product segment successfully removed');
+
             return $this->redirect($this->generateUrl('pim_product_classificationtree_index'));
         }
     }
