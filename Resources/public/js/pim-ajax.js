@@ -57,7 +57,7 @@ var PimAjax = function() {
      * @param string url The url to which the request is sent
      * @param string|PlainObject data Data to be sent to the server
      */
-    this.post = function(url, data) {
+    this.ajaxPost = function(url, data) {
         PimAjax.ajax('POST', url, data);
     },
     
