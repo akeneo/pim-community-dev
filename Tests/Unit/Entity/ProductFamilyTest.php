@@ -48,26 +48,11 @@ class ProductFamilyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for description property
-     */
-    public function testGetSetDescription()
-    {
-        $productFamily = new ProductFamily();
-        $this->assertEmpty($productFamily->getDescription());
-
-        // Change value and assert new
-        $newDescription = 'test-description';
-        $productFamily->setDescription($newDescription);
-        $this->assertEquals($newDescription, $productFamily->getDescription());
-    }
-
-    /**
      * Test getter/setter for attributes property
      */
     public function testGetAddRemoveAttribute()
     {
         $productFamily = new ProductFamily();
-        $this->assertEmpty($productFamily->getDescription());
 
         // Change value and assert new
         $newAttribute = new ProductAttribute();

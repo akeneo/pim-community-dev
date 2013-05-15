@@ -37,13 +37,6 @@ class ProductFamily
     protected $name;
 
     /**
-     * @var string $description
-     *
-     * @ORM\Column(name="description", type="string", length=255)
-     */
-    protected $description;
-
-    /**
      * @var ArrayCollection $attributes
      *
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\ProductBundle\Entity\ProductAttribute")
@@ -103,30 +96,6 @@ class ProductFamily
     public function setName($name)
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string $description
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return ProductAttribute
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
 
         return $this;
     }
