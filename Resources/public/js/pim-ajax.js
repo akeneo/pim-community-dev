@@ -5,6 +5,8 @@
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * 
+ * @uses PimDialog
+ * 
  * Example :
  *      PimAjax.remove(myURL, '');
  *      if (PimAjax.isSuccessfull()) return true;
@@ -18,7 +20,7 @@ var PimAjax = new function() {
      */
     this.ajax = function(type, url, data) {
         $.ajax({
-            async: false,
+            async: PimAjax.isAsynchronous(),
             data: data,
             type: type,
             url: url,
@@ -31,6 +33,7 @@ var PimAjax = new function() {
             }
         });
     },
+    
     /**
      * Call jquery DELETE ajax request
      * @param string url The url to which the request is sent
@@ -39,6 +42,7 @@ var PimAjax = new function() {
     this.delete = function(url, data) {
         PimAjax.ajax('DELETE', url, data);
     },
+    
     /**
      * Call jquery GET ajax request
      * @param string url The url to which the request is sent
@@ -47,6 +51,7 @@ var PimAjax = new function() {
     this.get = function(url, data) {
         PimAjax.ajax('GET', url, data);
     },
+    
     /**
      * Call jquery POST ajax request
      * @param string url The url to which the request is sent
@@ -55,12 +60,29 @@ var PimAjax = new function() {
     this.post = function(url, data) {
         PimAjax.ajax('POST', url, data);
     },
+    
     /**
      * Predicate to know last ajax request success result
      * @return boolean
      */
     this.isSuccessfull = function() {
         return PimAjax.success;
-    }
+    },
     
+    /**
+     * Set Ajax request asynchronous or not
+     * @param boolean async
+     */
+    this.setAsync = function(async) {
+        PimAjax.async = async;
+    },
+    
+    /**
+     * Predicate to know if ajax request is asynchronous or not
+     * Returns false by default
+     * @return boolean
+     */
+    this.isAsynchronous = function() {
+        return PimAjax.async || false;
+    }
 }

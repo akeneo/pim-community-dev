@@ -5,6 +5,8 @@
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * 
+ * @uses Backbone.BootstrapModal
+ * 
  * Example:
  *      PimDialog.alert('{{ 'MyMessage' | trans }}', 'MyTitle');
  */
@@ -26,6 +28,7 @@ var PimDialog = new function() {
             window.alert(content);
         }
     },
+    
     /**
      * Open a confirm modal dialog to validate the action made by user
      * If user validate its action, a js callback function is called
