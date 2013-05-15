@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Entity;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;

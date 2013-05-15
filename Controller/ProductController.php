@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use YsTools\BackUrlBundle\Annotation\BackUrl;
+use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
 
 /**
  * Product Controller
@@ -210,7 +211,7 @@ class ProductController extends Controller
         $product             = $this->findProductOr404($id);
         $availableAttributes = new AvailableProductAttributes;
         $attributesForm      = $this->getAvailableProductAttributesForm(
-            $product, $availableAttributes
+            $product->getAttributes(), $availableAttributes
         );
 
         $attributesForm->bind($this->getRequest());
