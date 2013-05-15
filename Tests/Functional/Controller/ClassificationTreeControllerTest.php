@@ -326,7 +326,7 @@ class ClassificationTreeControllerTest extends ControllerTest
 
         // assert with authentication
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
-        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertFlashBagMessage($crawler, self::SEGMENT_REMOVED_MSG);
 
         // assert with unknown tree id (last removed) and authentication
