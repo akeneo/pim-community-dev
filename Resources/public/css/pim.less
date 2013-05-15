@@ -246,18 +246,44 @@ a.accordion-toggle {
   float: none;
 }
 
-#entities-sortable li {
-  list-style: none;
-  cursor: pointer;
-  line-height: 35px;
+.resizable-sidebar ul {
+    margin: 10px 0 0 0;
+    li {
+      list-style: none;
+      cursor: pointer;
+      line-height: 35px;
+      padding: 0 10px;
+    }
 }
 
-#entities-sortable li:nth-child(odd) {
-  background-color: #E1E1E1;
+.resizable-sidebar li.active {
+  background-color: #eeeeee;
 }
 
-#entities-sortable li.active {
-  background-color: #5A8CE6;
+.groups {
+    margin: 10px 0;
+    thead {
+        tr {
+            border-top: 1px solid #dfdfdf;
+            border-bottom: 1px solid #dfdfdf;
+            background-color: #f3f3f3;
+            th {
+                line-height: 6px;
+            }
+        }
+    }
+    tbody, tbody + tbody {
+        border: 0;
+        tr.group {
+            border-bottom: 1px solid #d8d8d8;
+            background-color: #ffffff;
+            font-weight: bold;
+        }
+        tr {
+            border-bottom: 1px solid #ebebeb;
+            background-color: #f8f8f8;
+        }
+    }
 }
 
 #form-tab tbody td {
@@ -278,10 +304,6 @@ form .table-condensed input.span4 {
 
 .has-switch > div.switch-off, .has-switch > div.switch-on {
   height: auto;
-}
-
-#entities-sortable {
-  margin-left: 0;
 }
 
 .resizable-sidebar-handle {
