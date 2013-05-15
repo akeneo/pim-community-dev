@@ -216,7 +216,7 @@ class Product extends AbstractEntityFlexible
     {
         $groups = array_map(
             function ($value) {
-                return $value->getGroup();
+                return $value->getVirtualGroup();
             }, $this->getAttributes()
         );
         array_map(function($group){return (string) $group;}, $groups);

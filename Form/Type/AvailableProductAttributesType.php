@@ -27,7 +27,7 @@ class AvailableProductAttributesType extends AbstractType
                 },
                 'multiple' => true,
                 'expanded' => false,
-                'group_by' => 'group.name',
+                'group_by' => 'virtualGroup.name',
             )
         );
     }
