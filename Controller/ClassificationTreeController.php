@@ -2,10 +2,7 @@
 namespace Pim\Bundle\ProductBundle\Controller;
 
 use Pim\Bundle\ProductBundle\Form\Type\ProductSegmentType;
-
 use Pim\Bundle\ProductBundle\Entity\ProductSegment;
-
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 

@@ -8,10 +8,7 @@ use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Pim\Bundle\ProductBundle\Manager\MediaManager;
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Form\Type\ProductType;
-use Pim\Bundle\ProductBundle\Form\Type\AvailableProductAttributesType;
-use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -193,7 +190,7 @@ class ProductController extends Controller
             ),
             'dataScope'      => $request->query->get('dataScope'),
             'channels'       => $channels,
-            'attributesForm' => $this->getAvailableProductAttributesForm($product)->createView(),
+            'attributesForm' => $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
             'product'        => $product,
         );
     }
@@ -334,22 +331,5 @@ class ProductController extends Controller
         }
 
         return $product;
-    }
-
-    /**
-     * Get the AvailbleProductAttributes form
-     *
-     * @param Pim\Bundle\ProductBundle\Entity\Product                   $product             The product from which to compute available attributes
-     * @param Pim\Bundle\ProductBundle\Model\AvailableProductAttributes $availableAttributes The available attributes container
-     *
-     * @return Symfony\Component\Form\Form
-     */
-    private function getAvailableProductAttributesForm(Product $product, AvailableProductAttributes $availableAttributes = null)
-    {
-        return $this->createForm(
-            new AvailableProductAttributesType,
-            $availableAttributes ?: new AvailableProductAttributes,
-            array('attributes' => $product->getAttributes())
-        );
     }
 }
