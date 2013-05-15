@@ -110,27 +110,22 @@
 </form>
 {% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.bootstrap-modal.js') }}"></script>
-    <script type="text/javascript">
-$(function() {
-    $('#btn-delete-segment').click(function(event) {
-        doAction = function() {
-            window.location.href = "{{ path('pim_product_classificationtree_remove', { id: form.vars.value.id }) }}";
-        };
-        
-        if (!_.isUndefined(Backbone.BootstrapModal)) {
-            confirm = new Backbone.BootstrapModal({
-                title: "{{ 'Delete Confirmation' | trans }}",
-                content: "{{ 'Are you sure you want to delete this item' | trans }}"
-            });
-            confirm.on('ok', doAction);
-            confirm.open();
-        } else if (window.confirm(message)) {
-            doAction();
-        }
+{% if form.vars.value.id %}
+    {% block javascripts %}
+        {{ parent() }}
+        <script type="text/javascript">
+    $(function() {
+        $('#btn-delete-segment').click(function(event) {
+            doRemove = function() {
+                window.location.href = "{{ path('pim_product_classificationtree_remove', { id: form.vars.value.id }) }}";
+            };
+            PimDialog.confirm(
+                "{{ 'Are you sure you want to delete this item' | trans }}",
+                "{{ 'Delete Confirmation' | trans }}",
+                doRemove
+            );
+        });
     });
-});
-    </script>
-{% endblock %}
+        </script>
+    {% endblock %}
+{% endif %}
