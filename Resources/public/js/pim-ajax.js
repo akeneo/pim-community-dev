@@ -20,7 +20,7 @@ var PimAjax = new function() {
      */
     this.ajax = function(type, url, data) {
         $.ajax({
-            async: PimAjax.isAsynchronous(),
+            async: PimAjax.isAsync(),
             data: data,
             type: type,
             url: url,
@@ -82,7 +82,7 @@ var PimAjax = new function() {
      * Returns false by default
      * @return boolean
      */
-    this.isAsynchronous = function() {
+    this.isAsync = function() {
         return PimAjax.async || false;
     }
 }
