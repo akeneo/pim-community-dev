@@ -246,18 +246,25 @@ a.accordion-toggle {
   float: none;
 }
 
-.resizable-sidebar ul {
-    margin: 10px 0 0 0;
-    li {
-      list-style: none;
-      cursor: pointer;
-      line-height: 35px;
-      padding: 0 10px;
+.resizable-sidebar {
+    ul {
+        margin: 10px 0 0 0;
+        li {
+            list-style: none;
+            cursor: pointer;
+            line-height: 35px;
+            padding: 0 10px;
+            a {
+                color: #444444;
+            }
+            a:hover {
+                text-decoration: none;
+            }
+        }
+        li.active {
+            background-color: #eeeeee;
+        }
     }
-}
-
-.resizable-sidebar li.active {
-  background-color: #eeeeee;
 }
 
 .groups {
