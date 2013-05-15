@@ -55,10 +55,11 @@ $(function () {
                 window.location = "{{ path('pim_product_classificationtree_create') }}";
                 break;
             case "segment-create":
-                if(!$.jstree._focused()._get_node($.jstree._focused().get_selected())) {
+                var node = $.jstree._focused().get_selected();
+                if(!$.jstree._focused()._get_node(node)) {
                     PimDialog.alert("{{ 'You must select a node' | trans }}", "{{ 'Alert message' | trans }}");
                 } else {
-                    var parentId = $.jstree._focused().get_selected();
+                    var parentId = node.attr("id").replace('node_', '');
                     window.location = "{{ path('pim_product_classificationtree_create') }}/"+parentId;
                 }
                 break;
