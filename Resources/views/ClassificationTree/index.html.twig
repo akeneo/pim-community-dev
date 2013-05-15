@@ -28,8 +28,6 @@
                     <button id="segment-edit" class="btn btn-small"><i class="icon-edit"></i></button>
                     <button id="segment-duplicate" class="btn btn-small"><i class="icon-copy"></i></button>
                     <button id="segment-remove" class="btn btn-small"><i class="icon-trash"></i></button>
-                    <hr />
-                    <button id="refresh" class="btn btn-small"><i class="icon-refresh"></i></button>
                 </div>
             </div>
         </div>
@@ -47,24 +45,21 @@
         var assetsPath = "{{ asset('bundles/pimproduct/') }}";
     </script>
     <script type="text/javascript" src="{{ asset('bundles/pimproduct/js/classificationtree.jstree.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.bootstrap-modal.js') }}"></script>
     <script type="text/javascript">
 $(function () {
+
     $("#tree_menu button").click(function () {
         var tree_id = "#tree";
-        console.log(this.id);
         switch(this.id) {
             case "tree-create":
                 window.location = "{{ path('pim_product_classificationtree_create') }}";
                 break;
             case "segment-create":
-                var node = $.jstree._focused().get_selected();
-                if (node.length != 0) {
-                    var parentId = node.attr("id").replace('node_', '');
-                    window.location = "{{ path('pim_product_classificationtree_create') }}/"+parentId;
+                if(!$.jstree._focused()._get_node($.jstree._focused().get_selected())) {
+                    PimDialog.alert("{{ 'You must select a node' | trans }}", "{{ 'Alert message' | trans }}");
                 } else {
-                    //TODO : Window with Oro
-                    window.alert('You must select a parent node');
+                    var parentId = $.jstree._focused().get_selected();
+                    window.location = "{{ path('pim_product_classificationtree_create') }}/"+parentId;
                 }
                 break;
             case "tree-edit":
@@ -73,78 +68,51 @@ $(function () {
                 break;
             case "segment-edit":
                 var node = $.jstree._focused().get_selected();
-                if (node.length != 0) {
+                if(!$.jstree._focused()._get_node(node)) {
+                    PimDialog.alert("{{ 'You must select a node' | trans }}", "{{ 'Alert message' | trans }}");
+                } else {
                     var segmentId = node.attr("id").replace('node_', '');
                     window.location = "{{ path('pim_product_classificationtree_edit') }}/"+segmentId;
+                }
+                break;
+            case "segment-remove":
+                if(!$.jstree._focused()._get_node($.jstree._focused().get_selected())) {
+                    PimDialog.alert("{{ 'You must select a node' | trans }}", "{{ 'Alert message' | trans }}");
                 } else {
-                    //TODO : Window with Oro
-                    window.alert('You must select a parent node');
+                    doRemove = function() {
+                        $(tree_id).jstree("remove");
+                    };
+                    PimDialog.confirm(
+                        "{{ 'Are you sure you want to delete this item' | trans }}",
+                        "{{ 'Delete Confirmation' | trans }}",
+                        doRemove
+                    );
                 }
                 break;
             case "segment-duplicate":
-                console.log("segment duplicate");
-                
-                break;
-            case "segment-remove":
-                if ($.jstree._focused()._get_parent() == -1) {
-                    var alert = new Backbone.BootstrapModal({
-                        allowCancel: false,
-                        title: "{{ 'Alert message' | trans }}",
-                        content: "{{ 'Impossible to delete root node' | trans }}"
-                    });
-                    alert.open();
-                    return;
-                }
-                doRemove = function() {
-                    $(tree_id).jstree("remove")
-                };
-                if (!_.isUndefined(Backbone.BootstrapModal)) {
-                    var confirm = new Backbone.BootstrapModal({
-                        title: "{{ 'Delete Confirmation' | trans }}",
-                        content: "{{ 'Are you sure you want to delete this item' | trans }}"
-                    });
-                    confirm.on('ok', doRemove);
-                    confirm.open();
-                } else {
-                    doRemove();
-                }
+                PimDialog.alert('Not yet implemented', '');
                 break;
             case "refresh":
-                console.log('refresh');
-//                $(tree_id).jstree('refresh',-1);
+                PimDialog.alert('Not yet implemented', '');
                 break;
-//            case "add":
-//                console.log('add');
-//                $(tree_id).jstree("create", null, "last", { "attr" : { "rel" : this.id.toString().replace("add_", "") } });
-//                break;
+            case "add":
+                PimDialog.alert('Not yet implemented', '');
+                break;
             case "search":
-                console.log('search');
-//                $(tree_id).jstree("search", $("#search_text").val());
+                PimDialog.alert('Not yet implemented', '');
                 break;
             case "clear-search":
-                console.log('clear search');
-//                $(tree_id).jstree("clear_search");
+                PimDialog.alert('Not yet implemented', '');
                 break;
-//            case "rename":
-//                console.log('rename');
-////                $(tree_id).jstree("rename");
-//                break;
-//            case "add-item":
-//                console.log('add item');
-//                node = $.jstree._focused().get_selected();
-//                segmentId = node.attr('id').replace('node_','');
-//                itemId = $("#add_item_id").val();
-//
-//                $.fn.addItem(segmentId, itemId);
-//                break;
-//            case "remove-item":
-//                console.log('remove item');
-//                node = $.jstree._focused().get_selected();
-//                segmentId = node.attr('id').replace('node_','');
-//                itemId = $("#remove_item_id").val();
-//
-//                $.fn.removeItem(segmentId, itemId);
-//                break;
+            case "rename":
+                PimDialog.alert('Not yet implemented', '');
+                break;
+            case "add-item":
+                PimDialog.alert('Not yet implemented', '');
+                break;
+            case "remove-item":
+                PimDialog.alert('Not yet implemented', '');
+                break;
         }
    });
 });

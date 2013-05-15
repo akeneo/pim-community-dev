@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -242,7 +244,12 @@ class ClassificationTreeController extends Controller
      *
      * @param ProductSegment $segment The segment to delete
      *
-     * @Route("/remove/{id}", requirements={"id"="\d+"})
+     * @Route(
+     *     "/{id}/remove.{_format}",
+     *     requirements={"_format"="json|html", "id"="\d+"},
+     *     defaults={"_format"="html", "id"="\d+"}
+     * )
+     * @Template()
      *
      * @return array
      */
@@ -252,7 +259,7 @@ class ClassificationTreeController extends Controller
         $this->getTreeManager()->getStorageManager()->flush();
 
         if ($this->getRequest()->isXmlHttpRequest()) {
-            return new Response('', 200);
+            return new JsonResponse();
         } else {
             return $this->redirect($this->generateUrl('pim_product_classificationtree_index'));
         }
