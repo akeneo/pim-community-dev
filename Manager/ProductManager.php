@@ -65,8 +65,7 @@ class ProductManager extends FlexibleManager
     private function addMissingAttributeValues(Product $product)
     {
         $channels  = $this->getChannels();
-        $languages = $product->getLanguages();
-
+        $languages = $product->getActiveLanguages();
         $attributes = $product->getAttributes();
 
         if ($family = $product->getProductFamily()) {
@@ -83,7 +82,7 @@ class ProductManager extends FlexibleManager
 
             foreach ($product->getValues() as $value) {
                 if ($value->getAttribute() === $attribute) {
-                    $exinstingValues[] = $value->getScope() . ':' . $value->getLocale();
+                    $existingValues[] = $value->getScope() . ':' . $value->getLocale();
                 }
             }
 

@@ -118,10 +118,11 @@
 'Add product family': 'Add product family'
 
 # Locales
-'en_US': 'English (en_us)'
-'en_GB': 'English (en_gb)'
-'fr_FR': 'French (fr_fr)'
-'fr_CA': 'French (fr_ca)'
+'de_DE': 'Deutsch (de_DE)'
+'en_US': 'English (en_US)'
+'en_GB': 'English (en_GB)'
+'fr_FR': 'French (fr_FR)'
+'fr_CA': 'French (fr_CA)'
 
 # Product Segment
 'Product segment successfully saved': 'Product segment successfully saved'

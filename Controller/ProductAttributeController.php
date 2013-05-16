@@ -36,10 +36,6 @@ class ProductAttributeController extends Controller
         // force data locale if provided
         $dataLocale = $this->getRequest()->get('dataLocale');
         $pm->setLocale($dataLocale);
-        // force data scope if provided
-        $dataScope = $this->getRequest()->get('dataScope');
-        $dataScope = ($dataScope) ? $dataScope : 'ecommerce';
-        $pm->setScope($dataScope);
 
         return $pm;
     }

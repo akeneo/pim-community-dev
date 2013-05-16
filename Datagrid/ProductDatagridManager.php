@@ -33,8 +33,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $fieldId->setName('id');
         $fieldId->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                'required'    => true,
+                'type'     => FieldDescriptionInterface::TYPE_INTEGER,
+                'required' => true,
             )
         );
 
