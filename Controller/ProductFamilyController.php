@@ -65,8 +65,13 @@ class ProductFamilyController extends Controller
      */
     public function editAction($id)
     {
-        $families = $this->getProductFamilyRepository()->findAllOrderedByName();
         $family   = $this->getProductFamilyRepository()->findOneWithAttributes($id);
+        if (!$family) {
+            throw $this->createNotFoundException(sprintf(
+                'Couldn\'t find a product family with id %d', $id
+            ));
+        }
+        $families = $this->getProductFamilyRepository()->findAllOrderedByName();
         $request = $this->getRequest();
         $form    = $this->createForm(new ProductFamilyType(), $family);
 
