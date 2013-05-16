@@ -16,6 +16,7 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Doctrine\Common\Util\Inflector;
 use Pim\Bundle\ProductBundle\Entity\ProductFamily;
+use Behat\Mink\Exception\ExpectationException;
 
 /**
  * Context of the website
@@ -421,14 +422,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             $element = $this->getPage($this->currentPage)->getAvailableAttribute($attribute, $group);
             if (!$not) {
                 if (!$element) {
-                    throw new \RuntimeException(sprintf(
+                    throw new ExpectationException(sprintf(
                         'Expecting to see attribute %s under group %s, but was not present.',
                         $attribute, $group
                     ));
                 }
             } else {
                 if ($element) {
-                    throw new \RuntimeException(sprintf(
+                    throw new ExpectationException(sprintf(
                         'Expecting not to see attribute %s under group %s, but was present.',
                         $attribute, $group
                     ));
@@ -467,7 +468,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $expectedFamilies = $this->listToArray($families);
 
         if ($expectedFamilies !== $families = $this->getPage('Family index')->getFamilies()) {
-            throw new \RuntimeException(sprintf(
+            throw new ExpectationException(sprintf(
                 'Expecting to see families %s, but saw %s',
                 print_r($expectedFamilies, true),
                 print_r($families, true)
