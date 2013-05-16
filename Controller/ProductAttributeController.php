@@ -177,7 +177,7 @@ class ProductAttributeController extends Controller
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirect($this->generateUrl('pim_product_attribute_index'));
+            return $this->redirect($this->generateUrl('pim_product_productattribute_index'));
         }
     }
 }
