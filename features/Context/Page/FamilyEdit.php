@@ -15,6 +15,7 @@ class FamilyEdit extends Page
 
     protected $elements = array(
         'Available attributes' => array('css' => '#pim_available_product_attributes_attributes'),
+        'Attributes'           => array('css' => '#attributes table'),
     );
 
     public function getAvailableAttribute($attribute, $group)
@@ -24,6 +25,29 @@ class FamilyEdit extends Page
             ->find('css', sprintf(
                 'optgroup[label="%s"] option:contains("%s")',
                 $group, $attribute
+            ))
+        ;
+    }
+
+    public function getAttribute($attribute, $group)
+    {
+        $groupNode = $this
+            ->getElement('Attributes')
+            ->find('css', sprintf(
+                'tr.group:contains("%s")', $group
+            ));
+
+        if (!$groupNode) {
+            throw new \RuntimeException(sprintf(
+                'Couldn\'t find the attribute group "%s" in the attributes table',
+                $group
+            ));
+        }
+
+        return $groupNode
+            ->getParent()
+            ->find('css', sprintf(
+                'td:contains("%s")', $attribute
             ))
         ;
     }

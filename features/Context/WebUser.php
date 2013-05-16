@@ -291,6 +291,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             $attribute = $this->createAttribute($data['name'], false);
             $attribute->setGroup($this->getGroup($data['group']));
 
+            if ($data['family'] && $family = $this->getFamily($data['family'])) {
+                $family->addAttribute($attribute);
+            }
+
             $em->persist($attribute);
         }
         $em->flush();
@@ -488,6 +492,19 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             'locale'    => $this->currentLocale,
             'family_id' => $this->getFamily($family)->getId()
         ));
+    }
+
+    /**
+     * @Given /^I should see attribute "([^"]*)" in group "([^"]*)"$/
+     */
+    public function iShouldSeeAttributeInGroup($attribute, $group)
+    {
+        if (!$this->getPage($this->currentPage)->getAttribute($attribute, $group)) {
+            throw new \RuntimeException(sprintf(
+                'Expecting to see attribute %s under group %s, but was not present.',
+                $attribute, $group
+            ));
+        }
     }
 
     private function openPage($page, array $options)

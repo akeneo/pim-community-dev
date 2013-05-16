@@ -45,9 +45,29 @@ Feature: Manage product families
       | Size             |         |
     And the current language is english
     And I am logged in as "admin"
-    And I am on the "Bags" family page
+    When I am on the "Bags" family page
     Then I should see available attributes Long Description and Manufacturer in group "General"
     And I should see available attribute Size in group "Other"
+
+  Scenario: Successfully display all grouped family's attributes
+    Given the following families:
+      | name       |
+      | Smartphone |
+      | Bags       |
+      | Jewels     |
+    And the following attribute group:
+      | name    |
+      | General |
+    And the following attributes:
+      | name             | group   | family     |
+      | Long Description | General | Smartphone |
+      | Manufacturer     | General |            |
+      | Size             |         | Smartphone |
+    And the current language is english
+    And I am logged in as "admin"
+    When I am on the "Smartphone" family page
+    Then I should see attribute "Long Description" in group "General"
+    And I should see attribute "Size" in group "Other"
 
   @info https://akeneo.atlassian.net/browse/PIM-244
   Scenario: Successfully add an attribute to a family
