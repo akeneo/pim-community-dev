@@ -461,6 +461,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @When /^I am on the family creation page$/
+     */
+    public function iAmOnTheFamilyCreationPage()
+    {
+        $this->openPage('Family creation', array(
+            'locale' => $this->currentLocale,
+        ));
+    }
+
+    /**
      * @Then /^I should see the families (.*)$/
      */
     public function iShouldSeeTheFamilies($families)
@@ -501,11 +511,23 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldSeeAttributeInGroup($attribute, $group)
     {
         if (!$this->getPage($this->currentPage)->getAttribute($attribute, $group)) {
-            throw new \RuntimeException(sprintf(
+            throw new ExpectationException(sprintf(
                 'Expecting to see attribute %s under group %s, but was not present.',
                 $attribute, $group
             ));
         }
+    }
+
+    /**
+     * @Given /^I should be on the "([^"]*)" family page$/
+     */
+    public function iShouldBeOnTheFamilyPage($family)
+    {
+        $expectedAddress = $this->getPage('Family edit')->getUrl(array(
+            'locale'    => $this->currentLocale,
+            'family_id' => $this->getFamily($family)->getId(),
+        ));
+        $this->assertSession()->addressEquals($expectedAddress);
     }
 
     private function openPage($page, array $options)

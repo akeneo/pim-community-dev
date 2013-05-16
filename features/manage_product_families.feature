@@ -91,4 +91,13 @@ Feature: Manage product families
     Then I should see attribute "Long Description" in group "General"
     And I should see attribute "Size" in group "Other"
 
+  Scenario: Succesfully create a family
+    Given the current language is english
+    And I am logged in as "admin"
+    When I am on the family creation page
+    And I change the Name to "Computer"
+    And I save the family
+    Then I should see "Product family successfully created"
+    And I should be on the "Computer" family page
+
   Scenario: Sucessfully remove and attribute from a family

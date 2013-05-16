@@ -66,4 +66,15 @@ class FamilyEdit extends Page
     {
         $this->pressButton('Save');
     }
+
+    public function getUrl(array $options)
+    {
+        $url = $this->getPath();
+
+        foreach ($options as $parameter => $value) {
+            $url = str_replace(sprintf('{%s}', $parameter), $value, $url);
+        }
+
+        return $url;
+    }
 }
