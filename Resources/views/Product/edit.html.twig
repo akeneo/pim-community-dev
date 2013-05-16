@@ -23,9 +23,7 @@
 		</div>
 	</div>
 
-    <form method="POST" class="form-horizontal" action="{{ form.vars.value.id ?
-        path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) :
-        path('pim_product_product_create', { dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
+    <form method="POST" class="form-horizontal" action="{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
 
         <div class="navigation clearfix navbar-extra navbar-extra-right">
             <div class="row">
@@ -78,7 +76,7 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     {% for language in form.vars.value.getActiveLanguages() %}
-                                        <li><a href="?dataLocale={{ language.code }}">{{ language.fromLocale(app.request.locale) }}</a></li>
+                                        <li><a href="?dataLocale={{ language.code }}">{{ language.code | trans }}</a></li>
                                     {% endfor %}
                                 </ul>
                             </div>

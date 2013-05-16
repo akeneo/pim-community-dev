@@ -36,10 +36,6 @@ class ProductAttributeController extends Controller
         // force data locale if provided
         $dataLocale = $this->getRequest()->get('dataLocale');
         $pm->setLocale($dataLocale);
-        // force data scope if provided
-        $dataScope = $this->getRequest()->get('dataScope');
-        $dataScope = ($dataScope) ? $dataScope : 'ecommerce';
-        $pm->setScope($dataScope);
 
         return $pm;
     }
@@ -177,7 +173,7 @@ class ProductAttributeController extends Controller
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirect($this->generateUrl('pim_product_attribute_index'));
+            return $this->redirect($this->generateUrl('pim_product_productattribute_index'));
         }
     }
 }

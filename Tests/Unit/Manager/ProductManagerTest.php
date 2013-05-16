@@ -17,17 +17,14 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function itShouldDoNothingIfAttributeOfEntityToSaveIsNotTranslatable()
+    public function itShouldAddOneValueIfAttributeIsNotScopableOrTranslatable()
     {
         $target  = $this->getTargetedClass();
-        $value   = $this->getValueMock(false);
+        $value   = $this->getValueMock();
         $product = $this->getProductMock(array($value));
 
-        $product->expects($this->never())
+        $product->expects($this->once())
                 ->method('addValue');
-
-        $value->expects($this->never())
-              ->method('getLocale');
 
         $target->save($product);
     }
@@ -35,17 +32,16 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function itShouldAddMissingLocaleValuesForTranslatableAttributesBeforeInsertingAProduct()
+    public function itShouldAddMissingScopeAndLocaleValuesForTranslatableAttribute()
     {
         $target  = $this->getTargetedClass();
         $product = $this->getProductMock(
             array(
-                $this->getValueMock(true),
-                $this->getValueMock(false),
+                $this->getValueMock('mobile', 'en_US'),
             )
         );
 
-        $product->expects($this->once())
+        $product->expects($this->atLeastOnce())
                 ->method('addValue');
 
         $target->save($product);
@@ -60,7 +56,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
         $target       = $this->getTargetedClass($mediaManager);
         $media        = $this->getMediaMock('foo.jpg');
         $product      = $this->getProductMock(array(
-            $this->getValueMock(false, $media, 'baz')
+            $this->getValueMock(null, null, $media, 'baz')
         ), 'foobar');
 
         $mediaManager->expects($this->once())
@@ -79,7 +75,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
         $objectManager = $this->getObjectManagerMock();
         $target        = $this->getTargetedClass($mediaManager, $objectManager);
         $media         = $this->getMediaMock('foo.jpg');
-        $value         = $this->getValueMock(false, $media, 'baz');
+        $value         = $this->getValueMock(null, null, $media, 'baz');
         $product       = $this->getProductMock(array($value), 'foobar');
 
         $media->expects($this->any())
@@ -100,18 +96,40 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * Create ProductManager
      *
+     * @param MediaManager  $mediaManager
+     * @param ObjectManager $objectManager
+     *
      * @return \Pim\Bundle\ProductBundle\Manager\ProductManager
      */
     private function getTargetedClass($mediaManager = null, $objectManager = null)
     {
-        return new ProductManager(
-            'Product',
-            array('entities_config' => array('Product' => null)),
-            $objectManager ?: $this->getObjectManagerMock(),
-            $this->getEventDispatcherInterfaceMock(),
-            $this->getAttributeTypeFactoryMock(),
-            $mediaManager ?: $this->getMediaManagerMock()
+        $productManager = $this->getMock('Pim\Bundle\ProductBundle\Manager\ProductManager',
+            array('getChannels', 'createFlexibleValue'),
+            array(
+                'Product',
+                array('entities_config' => array('Product' => null)),
+                $objectManager ?: $this->getObjectManagerMock(),
+                $this->getEventDispatcherInterfaceMock(),
+                $this->getAttributeTypeFactoryMock(),
+                $mediaManager ?: $this->getMediaManagerMock()
+            )
         );
+
+        $productManager->expects($this->any())
+            ->method('getChannels')
+            ->will($this->returnValue(array(
+                $this->getChannelMock('ecommerce'),
+                $this->getChannelMock('mobile')
+            )));
+
+        $productManager->expects($this->any())
+            ->method('createFlexibleValue')
+            ->will($this->returnValue(
+                $this->getValueMock()
+            ));
+
+
+        return $productManager;
     }
 
     /**
@@ -163,27 +181,33 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * Get a mock of ProductValue entity
      *
-     * @param boolean $translatable
+     * @param string $scope
+     * @param string $locale
+     * @param Media  $media
+     * @param string $code
      *
      * @return \Pim\Bundle\ProductBundle\Entity\ProductValue
      */
-    private function getValueMock($translatable = false, $media = null, $code = null)
+    private function getValueMock($scope = null, $locale = null, $media = null, $code = null)
     {
         $value = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductValue', array(
-            'getAttribute', 'getMedia', 'getLocale', 'setMedia'
+            'getAttribute', 'getMedia', 'setMedia'
         ));
+
+        $scopable = $scope ? true : false;
+        $translatable = $locale ? true : false;
+        $locale = $locale ?: 'en_US';
+
+        $value->setScope($scope);
+        $value->setLocale($locale);
 
         $value->expects($this->any())
               ->method('getAttribute')
-              ->will($this->returnValue($this->getAttributeMock($translatable, $code)));
+              ->will($this->returnValue($this->getAttributeMock($scopable, $translatable, $code)));
 
         $value->expects($this->any())
               ->method('getMedia')
               ->will($this->returnValue($media));
-
-        $value->expects($this->any())
-              ->method('getLocale')
-              ->will($this->returnValue($translatable ? 'fr' : null));
 
         return $value;
     }
@@ -191,17 +215,24 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * Get a mock of Attribute entity
      *
+     * @param boolean $scopable
      * @param boolean $translatable
+     * @param string  $code
      *
      * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Attribute
      */
-    private function getAttributeMock($translatable = false, $code = null)
+    private function getAttributeMock($scopable = false, $translatable = false, $code = null)
     {
-        $attribute = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Attribute', array('getTranslatable', 'getCode'));
+        $attribute = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Attribute',
+            array('getTranslatable', 'getScopable', 'getCode'));
 
         $attribute->expects($this->any())
                   ->method('getTranslatable')
                   ->will($this->returnValue($translatable));
+
+        $attribute->expects($this->any())
+                  ->method('getScopable')
+                  ->will($this->returnValue($scopable));
 
         $attribute->expects($this->any())
                   ->method('getCode')
@@ -213,7 +244,8 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * Get a mock of Product entity
      *
-     * @param array $values
+     * @param array  $values
+     * @param string $sku
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Product
      */
@@ -262,6 +294,24 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Get a mock of Channel entity
+     *
+     * @param string $scope
+     *
+     * @return \Pim\Bundle\ConfigBundle\Entity\Channel
+     */
+    private function getChannelMock($scope = null)
+    {
+        $channel = $this->getMock('Pim\Bundle\ConfigBundle\Entity\Channel', array('getCode'));
+
+        $channel->expects($this->any())
+                 ->method('getCode')
+                 ->will($this->returnValue($scope));
+
+        return $channel;
+    }
+
+    /**
      * Get a mock of Media entity
      *
      * @param string $filename
@@ -279,7 +329,6 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
         return $media;
     }
 
-
     /**
      * Get a mock of UploadedFile
      *
@@ -293,8 +342,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
             ->setMethods(array('getClientOriginalName'))
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
         $file->expects($this->any())
              ->method('getClientOriginalName')
