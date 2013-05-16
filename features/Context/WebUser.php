@@ -36,12 +36,22 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     private $currentLocale = null;
 
+    private $currentPage = null;
+
     /**
      * @BeforeScenario
      */
     public function resetCurrentLocale()
     {
         $this->currentLocale = null;
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function resetCurrentPage()
+    {
+        $this->currentPage = null;
     }
 
     /**
@@ -167,8 +177,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getUserManager()->updateUser($user);
 
         $this
-            ->getPage('Login')
-            ->open(array('locale' => $this->currentLocale))
+            ->openPage('Login', array('locale' => $this->currentLocale))
             ->login($username, $password)
         ;
     }
@@ -178,8 +187,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iAmOnTheProductPage($product)
     {
-        $product = $this->getProduct($product);
-        $this->getPage('Product')->open(array(
+        $product           = $this->getProduct($product);
+        $this->openPage('Product', array(
             'locale' => $this->currentLocale,
             'id'     => $product->getId(),
         ));
@@ -191,7 +200,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheAttributePage($code)
     {
         $attribute = $this->getAttribute($code);
-        $this->getPage('Attribute')->open(array(
+        $this->openPage('Attribute', array(
             'locale' => $this->currentLocale,
             'id'     => $attribute->getId(),
         ));
@@ -405,7 +414,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldSeeAvailableAttributesInGroup($not, $attributes, $group)
     {
         foreach ($this->listToArray($attributes) as $attribute) {
-            $element = $this->getPage('Product')->getAvailableAttribute($attribute, $group);
+            $element = $this->getPage($this->currentPage)->getAvailableAttribute($attribute, $group);
             if (!$not) {
                 if (!$element) {
                     throw new \RuntimeException(sprintf(
@@ -441,7 +450,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iAmOnFamilyPage()
     {
-        $this->getPage('Family index')->open(array(
+        $this->openPage('Family index', array(
             'locale' => $this->currentLocale,
         ));
     }
@@ -468,6 +477,24 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iEditTheFamily($family)
     {
         $this->getPage('Family index')->getFamilyLink($family)->click();
+    }
+
+    /**
+     * @Given /^I am on the "([^"]*)" family page$/
+     */
+    public function iAmOnTheFamilyPage($family)
+    {
+        $this->openPage('Family edit', array(
+            'locale'    => $this->currentLocale,
+            'family_id' => $this->getFamily($family)->getId()
+        ));
+    }
+
+    private function openPage($page, array $options)
+    {
+        $this->currentPage = $page;
+
+        return $this->getPage($page)->open($options);
     }
 
     private function listToArray($list)
@@ -518,15 +545,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     private function getLanguage($code)
     {
-        $em = $this->getEntityManager();
-        $lang = $em->getRepository('PimConfigBundle:Language')->findOneBy(array(
-            'code' => $code
-        ));
-
-        if (!$lang) {
+        try {
+            $lang = $this->getEntityOrException('PimConfigBundle:Language', array(
+                'code' => $code
+            ));
+        } catch (\InvalidArgumentException $e) {
             $lang = new Language;
             $lang->setCode($code);
-            $em->persist($lang);
+            $this->getEntityManager()->persist($lang);
         }
 
         return $lang;
@@ -534,28 +560,44 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     private function getGroup($name)
     {
-        $em    = $this->getEntityManager();
-        $group = $em->getRepository('PimProductBundle:AttributeGroup')->findOneBy(array(
-            'name' => $name
-        ));
-
-        return $group;
+        try {
+            return $this->getEntityOrException('PimProductBundle:AttributeGroup', array(
+                'name' => $name
+            ));
+        } catch (\InvalidArgumentException $e) {
+            return null;
+        }
     }
 
     private function getAttribute($name)
     {
-        $em    = $this->getEntityManager();
-        $attribute = $em->getRepository('PimProductBundle:ProductAttribute')->findOneBy(array(
+        return $this->getEntityOrException('PimProductBundle:ProductAttribute', array(
             'name' => ucfirst($name)
         ));
+    }
 
-        if (!$attribute) {
+    private function getFamily($name)
+    {
+        return $this->getEntityOrException('PimProductBundle:ProductFamily', array(
+            'name' => $name
+        ));
+    }
+
+    private function getEntityOrException($namespace, array $criteria)
+    {
+        $entity = $this
+            ->getEntityManager()
+            ->getRepository($namespace)
+            ->findOneBy($criteria)
+        ;
+
+        if (!$entity) {
             throw new \InvalidArgumentException(sprintf(
-                'Could not find attribute with name "%s"', ucfirst($name)
+                'Could not find "%s" with criteria %s', $namespace, print_r($criteria, true)
             ));
         }
 
-        return $attribute;
+        return $entity;
     }
 
     private function getProductManager()
