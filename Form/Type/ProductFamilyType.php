@@ -23,7 +23,6 @@ class ProductFamilyType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('description', 'textarea')
         ;
     }
 
