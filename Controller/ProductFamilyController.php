@@ -39,15 +39,37 @@ class ProductFamilyController extends Controller
      * Create product family
      *
      * @Route("/create")
-     * @Template("PimProductBundle:ProductFamily:edit.html.twig")
+     * @Template()
      *
      * @return array
      */
-    public function createAction()
+    public function newAction()
     {
-        $family = new ProductFamily();
+        $family   = new ProductFamily;
+        $form     = $this->createForm(new ProductFamilyType(), $family);
+        $families = $this->getProductFamilyRepository()->findAllOrderedByName();
+        $request  = $this->getRequest();
 
-        return $this->editAction($family);
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $em = $this->getEntityManager();
+                $em->persist($family);
+                $em->flush();
+
+                $this->addFlash('success', 'Product family successfully created');
+
+                return $this->redirect($this->generateUrl('pim_product_productfamily_edit', array(
+                    'id' => $family->getId()
+                )));
+            }
+        }
+
+        return array(
+            'form'     => $form->createView(),
+            'families' => $families,
+        );
     }
 
     /**

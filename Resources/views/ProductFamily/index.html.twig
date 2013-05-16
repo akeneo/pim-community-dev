@@ -12,7 +12,9 @@
                 {% for family in families %}
                 <li class="{{ family == currentFamily ? 'active' : '' }}"><a href="{{ path('pim_product_productfamily_edit', {'id': family.id}) }}">{{ family.name }}</a></li>
                 {% endfor %}
+                <li><a href="{{ path('pim_product_productfamily_new') }}" class="btn">{{ 'New family'|trans }}</a></li>
             </ul>
+
         </div>
         <div id="form-tab" class="resizable-content">
             {% block familyTab %}

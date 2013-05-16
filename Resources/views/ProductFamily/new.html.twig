@@ -1,0 +1,24 @@
+{% extends 'PimProductBundle:ProductFamily:index.html.twig' %}
+
+{% set title = 'New family'|trans %}
+
+{% block familyTab %}
+<form action="{{ path('pim_product_productfamily_new') }}" method="POST">
+
+    <div class="form-row">
+        <h3>
+            {{ title }}
+            <button type="submit" class="btn btn-primary pull-right">{{ ' Save'|trans }}</button>
+        </h3>
+    </div>
+
+    {% if form.vars.errors|length %}
+    <div class="alert alert-error">
+        {{ form_errors(form) }}
+    </div>
+    {% endif %}
+
+
+    {{ form_widget(form) }}
+</form>
+{% endblock %}

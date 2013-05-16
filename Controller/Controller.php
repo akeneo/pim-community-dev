@@ -29,4 +29,17 @@ class Controller extends BaseController
             array('attributes' => $attributes)
         );
     }
+
+    /**
+     * Add flash message
+     *
+     * @param string $type    the flash type
+     * @param string $message the flash message
+     *
+     * @return null
+     */
+    protected function addFlash($type, $message)
+    {
+        $this->get('session')->getFlashBag()->add($type, $message);
+    }
 }

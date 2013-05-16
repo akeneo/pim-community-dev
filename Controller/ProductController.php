@@ -301,19 +301,6 @@ class ProductController extends Controller
     }
 
     /**
-     * Add flash message
-     *
-     * @param string $type    the flash type
-     * @param string $message the flash message
-     *
-     * @return null
-     */
-    protected function addFlash($type, $message)
-    {
-        $this->get('session')->getFlashBag()->add($type, $message);
-    }
-
-    /**
      * Find a product by its id or return a 404 response
      *
      * @param int $id the product id
