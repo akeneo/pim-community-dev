@@ -76,9 +76,15 @@
 {% block javascript %}
     <script type="text/javascript">
         $(function() {
+            $('.group').click(function(event) {
+                event.preventDefault();
+                $(this).parent().find('tr:not(.group)').toggle();
+                $(this).find('i').toggleClass('icon-chevron-down').toggleClass('icon-chevron-up');
+            });
+
             $('#pim_available_product_attributes_attributes').select2('destroy');
-            $('.dropdown-menu').find('form').click(function (e) {
-                e.stopPropagation();
+            $('.dropdown-menu').find('form').click(function (event) {
+                event.stopPropagation();
             });
         });
     </script>
