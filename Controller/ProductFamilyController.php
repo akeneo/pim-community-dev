@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Entity\ProductFamily;
 use Pim\Bundle\ProductBundle\Form\Type\ProductFamilyType;
+use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
 
 /**
  * Product Controller
@@ -65,15 +66,10 @@ class ProductFamilyController extends Controller
      */
     public function editAction($id)
     {
-        $family   = $this->getProductFamilyRepository()->findOneWithAttributes($id);
-        if (!$family) {
-            throw $this->createNotFoundException(sprintf(
-                'Couldn\'t find a product family with id %d', $id
-            ));
-        }
+        $family   = $this->findFamilyOr404($id);
         $families = $this->getProductFamilyRepository()->findAllOrderedByName();
-        $request = $this->getRequest();
-        $form    = $this->createForm(new ProductFamilyType(), $family);
+        $request  = $this->getRequest();
+        $form     = $this->createForm(new ProductFamilyType(), $family);
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -113,6 +109,51 @@ class ProductFamilyController extends Controller
         $this->get('session')->getFlashBag()->add('success', 'Product family successfully removed');
 
         return $this->redirect($this->generateUrl('pim_product_productfamily_index'));
+    }
+
+    /**
+     * Add attributes to a family
+     *
+     * @param int $id The family id to which add attributes
+     *
+     * @return Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route("/{id}/attributes", requirements={"id"="\d+", "_method"="POST"})
+     *
+     */
+    public function addProductAttributes($id)
+    {
+        $family              = $this->findFamilyOr404($id);
+        $availableAttributes = new AvailableProductAttributes;
+        $attributesForm      = $this->getAvailableProductAttributesForm(
+            $family->getAttributes()->toArray(), $availableAttributes
+        );
+
+        $attributesForm->bind($this->getRequest());
+
+        foreach ($availableAttributes->getAttributes() as $attribute) {
+            $family->addAttribute($attribute);
+        }
+
+        $this->getEntityManager()->flush();
+
+        return $this->redirect(
+            $this->generateUrl(
+                'pim_product_productfamily_edit', array('id' => $family->getId())
+            )
+        );
+    }
+
+    public function findFamilyOr404($id)
+    {
+        $family = $this->getProductFamilyRepository()->findOneWithAttributes($id);
+        if (!$family) {
+            throw $this->createNotFoundException(sprintf(
+                'Couldn\'t find a product family with id %d', $id
+            ));
+        }
+
+        return $family;
     }
 
     /**

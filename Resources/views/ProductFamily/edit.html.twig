@@ -37,11 +37,12 @@
         <div class="tab-pane active" id="properties">
             {{ form_widget(form) }}
         </div>
+</form>
 
         <div class="tab-pane" id="attributes">
             {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
                 'form': attributesForm,
-                'action': path('pim_product_product_addproductattributes', {'id': family.id})
+                'action': path('pim_product_productfamily_addproductattributes', {'id': family.id})
             } %}
             <table class="table groups">
                 <thead>
@@ -69,8 +70,6 @@
         </div>
 
     </div>
-
-</form>
 {% endblock %}
 
 {% block javascript %}
