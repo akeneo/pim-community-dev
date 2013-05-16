@@ -71,5 +71,24 @@ Feature: Manage product families
 
   @info https://akeneo.atlassian.net/browse/PIM-244
   Scenario: Successfully add an attribute to a family
+    Given the following families:
+      | name       |
+      | Smartphone |
+      | Bags       |
+      | Jewels     |
+    And the following attribute group:
+      | name    |
+      | General |
+    And the following attributes:
+      | name             | group   |
+      | Long Description | General |
+      | Manufacturer     | General |
+      | Size             |         |
+    And the current language is english
+    And I am logged in as "admin"
+    When I am on the "Bags" family page
+    And I add available attributes Long Description and Size
+    Then I should see attribute "Long Description" in group "General"
+    And I should see attribute "Size" in group "Other"
 
   Scenario: Sucessfully remove and attribute from a family

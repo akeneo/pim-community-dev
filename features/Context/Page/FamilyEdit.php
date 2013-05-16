@@ -57,6 +57,11 @@ class FamilyEdit extends Page
         $this->getElement('Available attributes')->selectOption($attribute, true);
     }
 
+    public function addSelectedAvailableAttributes()
+    {
+        $this->pressButton('Add attributes');
+    }
+
     public function save()
     {
         $this->pressButton('Save');

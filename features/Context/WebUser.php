@@ -291,8 +291,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             $attribute = $this->createAttribute($data['name'], false);
             $attribute->setGroup($this->getGroup($data['group']));
 
-            if ($data['family'] && $family = $this->getFamily($data['family'])) {
-                $family->addAttribute($attribute);
+            if (isset($data['family']) && $data['family']) {
+                $this->getFamily($data['family'])->addAttribute($attribute);
             }
 
             $em->persist($attribute);
@@ -443,10 +443,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAddAvailableAttributes($attributes)
     {
         foreach ($this->listToArray($attributes) as $attribute) {
-            $this->getPage('Product')->selectAvailableAttribute($attribute);
+            $this->getPage($this->currentPage)->selectAvailableAttribute($attribute);
         }
 
-        $this->getPage('Product')->addSelectedAvailableAttributes();
+        $this->getPage($this->currentPage)->addSelectedAvailableAttributes();
     }
 
     /**
