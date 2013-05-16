@@ -138,6 +138,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
             $option->setTranslatable(true);
             $attribute->addOption($option);
             $optionValue = $this->getProductManager()->createAttributeOptionValue();
+            $optionValue->setLocale('en_US');
             $optionValue->setValue($size);
             $option->addOptionValue($optionValue);
         }
@@ -209,6 +210,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
             $attribute->addOption($option);
             $optionValue = $this->getProductManager()->createAttributeOptionValue();
             $optionValue->setValue($manufacturer);
+            $optionValue->setLocale('en_US');
             $option->addOptionValue($optionValue);
         }
         $this->createTranslation($attribute, 'default', 'label', 'Manufacturer');

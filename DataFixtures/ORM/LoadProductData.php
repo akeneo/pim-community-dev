@@ -125,6 +125,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $product->addValue($value);
 
             // product languages
+            $product->addLanguage($this->getReference('language.de_DE'), true);
             $product->addLanguage($this->getReference('language.fr_FR'), true);
             $product->addLanguage($this->getReference('language.en_US'), true);
             $product->addLanguage($this->getReference('language.en_GB'));
