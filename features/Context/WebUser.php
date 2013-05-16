@@ -326,6 +326,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^I save the family$/
+     */
+    public function iSaveTheFamily()
+    {
+        $this->getPage('Family edit')->save();
+    }
+
+    /**
      * @Given /^I change the attribute position to (\d+)$/
      */
     public function iChangeTheAttributePositionTo($position)
@@ -452,6 +460,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 print_r($families, true)
             ));
         }
+    }
+
+    /**
+     * @Given /^I edit the "([^"]*)" family$/
+     */
+    public function iEditTheFamily($family)
+    {
+        $this->getPage('Family index')->getFamilyLink($family)->click();
     }
 
     private function listToArray($list)

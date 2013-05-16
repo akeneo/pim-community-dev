@@ -23,5 +23,13 @@ class FamilyIndex extends Page
             return $node->getText();
         }, $this->getElement('List')->findAll('css', 'li'));
     }
+
+    public function getFamilyLink($family)
+    {
+        return $this
+            ->getElement('List')
+            ->find('css', sprintf('a:contains("%s")', $family))
+        ;
+    }
 }
 

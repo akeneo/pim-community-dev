@@ -16,6 +16,18 @@ Feature: Manage product families
     Then I should see the families Bags, Jewels and Smartphone
 
   Scenario: Successfully edit a family name
+    Given the following families:
+      | name       |
+      | Smartphone |
+      | Bags       |
+      | Jewels     |
+    And the current language is english
+    And I am logged in as "admin"
+    When I am on family page
+    And I edit the "Bags" family
+    And I change the Name to "Purse"
+    And I save the family
+    Then I should see the families Jewels, Purse and Smartphone
 
   @info https://akeneo.atlassian.net/browse/PIM-244
   Scenario: Successfully add an attribute to a family
