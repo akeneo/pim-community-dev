@@ -4,6 +4,7 @@ namespace Pim\Bundle\ProductBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
 use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
+use Pim\Bundle\ProductBundle\Form\Type\AvailableProductAttributesType;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -20,7 +21,7 @@ class Controller extends BaseController
      *
      * @return Symfony\Component\Form\Form
      */
-    private function getAvailableProductAttributesForm(array $attributes = array(), AvailableProductAttributes $availableAttributes = null)
+    protected function getAvailableProductAttributesForm(array $attributes = array(), AvailableProductAttributes $availableAttributes = null)
     {
         return $this->createForm(
             new AvailableProductAttributesType,

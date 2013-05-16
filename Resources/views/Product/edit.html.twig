@@ -9,19 +9,10 @@
 
     {% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
 
-	<div class="btn-group">
-		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-		    <i class="icon-plus"></i> Add attributes
-		    <span class="caret"></span>
-		</a>
-		<div class="dropdown-menu">
-		    <form method="POST" action="{{ path('pim_product_product_addproductattributes', {'id': product.id}) }}">
-		        {{ form_widget(attributesForm.attributes) }}
-		        {{ form_widget(attributesForm._token) }}
-		        <input type="submit" value="Add" class="btn btn-mini" title="Add attributes"/>
-		    </form>
-		</div>
-	</div>
+    {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
+        'form': attributesForm,
+        'action': path('pim_product_product_addproductattributes', {'id': product.id})
+    } %}
 
     <form method="POST" class="form-horizontal" action="{{ form.vars.value.id ?
         path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) :

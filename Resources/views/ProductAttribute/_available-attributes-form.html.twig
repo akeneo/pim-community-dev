@@ -1,0 +1,13 @@
+<div class="btn-group">
+    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+        <i class="icon-plus"></i> Add attributes
+        <span class="caret"></span>
+    </a>
+    <div class="dropdown-menu">
+        <form method="POST" action="{{ action }}">
+            {{ form_widget(form.attributes) }}
+            {{ form_widget(form._token) }}
+            <input type="submit" value="Add" class="btn btn-mini" title="Add attributes"/>
+        </form>
+    </div>
+</div>

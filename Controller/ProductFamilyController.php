@@ -84,9 +84,10 @@ class ProductFamilyController extends Controller
         }
 
         return array(
-            'form'     => $form->createView(),
-            'families' => $families,
-            'family'   => $family,
+            'form'           => $form->createView(),
+            'families'       => $families,
+            'family'         => $family,
+            'attributesForm' => $this->getAvailableProductAttributesForm($family->getAttributes()->toArray())->createView()
         );
     }
 
