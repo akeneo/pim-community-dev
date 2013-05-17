@@ -3,7 +3,7 @@ var jstree = $('#tree').jstree({
         "animation" : 200
     },
     "plugins" : [
-        "tree_selector", "themes", "json_data", "ui", "crrm", "cookies", "dnd", "search", "types", "hotkeys"
+         "tree_selector", "themes", "json_data", "ui", "crrm", "types"
     ],
     "tree_selector" : {
         "ajax" : {
@@ -52,6 +52,10 @@ var jstree = $('#tree').jstree({
                 }
             }
         }
+    },
+    "ui" : {
+        "select_limit": 1,
+        "select_multiple_modifier" : false
     }
 })
     .bind('trees_loaded.jstree', function(e, tree_select_id) {
@@ -66,17 +70,11 @@ var jstree = $('#tree').jstree({
     })
     .bind('select_node.jstree', function (event, node) {
         $('.node-action').remove();
-        var btnAdd = '<button id="segment-create" class="btn btn-mini"><i class="icon-plus"></i></button>';
-        var btnRemove = '<button id="segment-remove" class="btn btn-mini"><i class="icon-trash"></i></button>';
         node.rslt.obj.before('<div style="display: inline-block; valign: top;" align="right" class="node-action pull-right">'
-                + btnAdd
+                + btnCreate
                 + btnRemove
             + '</div>');
-        $('#segment-create').on('click', function(event) {
-            fctCreate();
-        });
-        $('#segment-remove').on('click', function(event) {
-            fctRemove();
-        });
+        $('#segment-create').on('click', function(event) { fctCreate(); });
+        $('#segment-remove').on('click', function(event) { fctRemove(); });
     })
     ;

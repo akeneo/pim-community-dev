@@ -44,6 +44,7 @@
 <script type="text/javascript">
     var assetsPath = "{{ asset('bundles/pimproduct/') }}";
     var tree_id = "#tree";
+    // define action when click on dynamic buttons
     var fctCreate = function() {
         var node = $.jstree._focused().get_selected();
         if(!$.jstree._focused()._get_node()) {
@@ -53,13 +54,12 @@
             window.location = "{{ path('pim_product_classificationtree_create') }}/"+parentId;
         }
     }
-    
     var fctRemove = function() {
         if(!$.jstree._focused()._get_node($.jstree._focused().get_selected()) 
             || $.jstree._focused()._get_parent() == -1) {
             PimDialog.alert("{{ 'You must select a node' | trans }}", "{{ 'Alert message' | trans }}");
         } else {
-            doRemove = function() {
+            var doRemove = function() {
                 $(tree_id).jstree("remove");
             };
             PimDialog.confirm(
@@ -69,7 +69,11 @@
             );
         }
     }
+    // define dynamic buttons
+    var btnCreate = '<button id="segment-create" class="btn btn-mini"><i class="icon-plus"></i></button>';
+    var btnRemove = '<button id="segment-remove" class="btn btn-mini"><i class="icon-trash"></i></button>';
     
+    // define buttons actions
     $("#tree_menu button").click(function () {
         switch(this.id) {
             case "tree-create":
