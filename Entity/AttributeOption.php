@@ -35,4 +35,25 @@ class AttributeOption extends AbstractEntityAttributeOption
      * )
      */
     protected $optionValues;
+
+    /**
+     * Default value is mandatory
+     *
+     * @var string $defaultValue
+     *
+     * @ORM\Column(name="default_value", type="string", length=255, nullable=false)
+     */
+    protected $defaultValue;
+
+    /**
+     * Override to use default value
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        $value = $this->getOptionValue();
+
+        return ($value and $value->getValue()) ? $value->getValue() : $this->getDefaultValue();
+    }
 }
