@@ -104,6 +104,8 @@ class ProductFamilyController extends Controller
 
                 return $this->redirect($this->generateUrl('pim_product_productfamily_edit', array('id' => $id)));
             }
+
+            $this->getEntityManager()->refresh($family);
         }
 
         return array(
