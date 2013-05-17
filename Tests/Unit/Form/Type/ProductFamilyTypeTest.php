@@ -34,7 +34,7 @@ class ProductFamilyTypeTest extends TypeTestCase
     public function testFormCreate()
     {
         // Assert fields
-        $this->assertField('name', 'text');
+        $this->assertField('code', 'text');
 
         // Assert option class
         $this->assertEquals(

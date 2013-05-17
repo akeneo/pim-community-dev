@@ -39,12 +39,12 @@ class ProductFamilyTest extends \PHPUnit_Framework_TestCase
     public function testGetSetName()
     {
         $productFamily = new ProductFamily();
-        $this->assertEmpty($productFamily->getName());
+        $this->assertEmpty($productFamily->getCode());
 
         // Change value and assert new
         $newName = 'test-name';
-        $productFamily->setName($newName);
-        $this->assertEquals($newName, $productFamily->getName());
+        $productFamily->setCode($newName);
+        $this->assertEquals($newName, $productFamily->getCode());
     }
 
     /**
@@ -76,7 +76,7 @@ class ProductFamilyTest extends \PHPUnit_Framework_TestCase
     {
         $productFamily = new ProductFamily();
         $string = 'test-string';
-        $productFamily->setName($string);
+        $productFamily->setCode($string);
         $this->assertEquals($string, $productFamily->__toString());
     }
 

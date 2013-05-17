@@ -53,17 +53,17 @@ class ProductFamily
      */
     public function __construct()
     {
-        $this->description = '';
         $this->attributes = new ArrayCollection();
     }
 
     /**
-     * Returns the name of the product family
+     * Returns the code of the product family
+     *
      * @return string
      */
     public function __toString()
     {
-        return $this->name;
+        return $this->code;
     }
 
     /**
@@ -77,25 +77,25 @@ class ProductFamily
     }
 
     /**
-     * Get name
+     * Get code
      *
-     * @return string $name
+     * @return string $code
      */
-    public function getName()
+    public function getCode()
     {
-        return $this->name;
+        return $this->code;
     }
 
     /**
-     * Set name
+     * Set code
      *
-     * @param string $name
+     * @param string $code
      *
      * @return ProductAttribute
      */
-    public function setName($name)
+    public function setCode($code)
     {
-        $this->name = $name;
+        $this->code = $code;
 
         return $this;
     }

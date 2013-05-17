@@ -13,7 +13,7 @@ class ProductFamilyRepository extends EntityRepository
 {
     public function buildAllOrderedByName()
     {
-        return $this->build()->orderBy('product_family.name');
+        return $this->build()->orderBy('product_family.code');
     }
 
     public function buildOneWithAttributes($id)
