@@ -53,7 +53,7 @@ class ProductSegment extends AbstractSegment implements Translatable
      *
      * @ORM\ManyToMany(targetEntity="Product")
      * @ORM\JoinTable(
-     *     name="pim_segments_products",
+     *     name="pim_segment_product",
      *     joinColumns={@ORM\JoinColumn(name="segment_id", referencedColumnName="id", onDelete="CASCADE")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
