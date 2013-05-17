@@ -1,11 +1,12 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Entity;
 
-use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
 /**
  * Product family
@@ -16,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="pim_product_family")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductFamilyRepository")
+ * @UniqueEntity(fields="code", message="This code is already taken.")
  */
 class ProductFamily
 {
@@ -30,11 +32,12 @@ class ProductFamily
     protected $id;
 
     /**
-     * @var string $name
+     * @var string $code
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(unique=true)
+     * @Assert\Regex(pattern="/^[a-zA-Z0-9]+$/", message="The code must only contain alphanumeric characters.")
      */
-    protected $name;
+    protected $code;
 
     /**
      * @var ArrayCollection $attributes
