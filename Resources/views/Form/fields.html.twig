@@ -162,3 +162,11 @@
     {% endif %}
 {% endspaceless %}
 {% endblock checkbox_widget %}
+
+{% block oro_flexibleentity_metric_widget %}
+{% spaceless %}
+    {{ form_widget(form.unit) }}
+    {{ form_widget(form.data) }}
+{% endspaceless %}
+{% endblock oro_flexibleentity_metric_widget %}
+
