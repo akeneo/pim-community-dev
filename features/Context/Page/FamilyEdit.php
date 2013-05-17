@@ -77,4 +77,9 @@ class FamilyEdit extends Page
 
         return $url;
     }
+
+    public function getFieldLocator($name, $locale)
+    {
+        return sprintf('pim_product_family_name_%s:%s', strtolower($name), $locale);
+    }
 }

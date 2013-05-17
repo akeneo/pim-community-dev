@@ -21,7 +21,7 @@ class FamilyIndex extends Page
     {
         return array_map(function ($node) {
             return $node->getText();
-        }, $this->getElement('List')->findAll('css', 'li'));
+        }, $this->getElement('List')->findAll('css', 'a:not(.btn)'));
     }
 
     public function getFamilyLink($family)

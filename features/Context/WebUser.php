@@ -17,6 +17,7 @@ use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Doctrine\Common\Util\Inflector;
 use Pim\Bundle\ProductBundle\Entity\ProductFamily;
 use Behat\Mink\Exception\ExpectationException;
+use Pim\Bundle\ProductBundle\Entity\ProductFamilyTranslation;
 
 /**
  * Context of the website
@@ -31,7 +32,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     private $locales = array(
         'english' => 'en_US',
-        'french'  => 'fr',
+        'french'  => 'fr_FR',
         'german'  => 'de',
     );
 
@@ -44,6 +45,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function resetCurrentLocale()
     {
+        foreach ($this->locales as $locale) {
+            $this->createLanguage($locale);
+        }
         $this->currentLocale = null;
     }
 
@@ -138,8 +142,30 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $data) {
             $family = new ProductFamily;
-            $family->setName($data['name']);
+            $family->setCode($data['code']);
             $em->persist($family);
+
+            $translation = $this->createFamilyTranslation($family, $data['code']);
+            $family->addTranslation($translation);
+        }
+
+        $em->flush();
+    }
+
+    /**
+     * @Given /^the following family translations:$/
+     */
+    public function theFollowingFamilyTranslations(TableNode $table)
+    {
+        $em = $this->getEntityManager();
+
+        foreach ($table->getHash() as $data) {
+            $family      = $this->getFamily($data['family']);
+            $translation = $this->createFamilyTranslation(
+                $family, $data['label'], $this->getLocale($data['language'])
+            );
+
+            $family->addTranslation($translation);
         }
 
         $em->flush();
@@ -395,7 +421,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function theProductFieldValueShouldBe($fieldName, $expected = '')
     {
-        $actual = $this->getPage('Product')->getFieldValue($fieldName);
+        $actual = $this->getSession()->getPage()->findField($field)->getValue();
 
         if ($expected !== $actual) {
             throw new \LogicException(sprintf(
@@ -406,11 +432,47 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @When /^I change the (.*) to "([^"]*)"$/
+     * @When /^I change the (?<field>\w+) to "([^"]*)"$/
+     * @When /^I change the (?P<language>\w+) (?P<field>\w+) to "(?P<value>[^"]*)"$/
+     * @When /^I change the (?P<field>\w+) to an invalid value$/
      */
-    public function iChangeTheNameTo($fieldName, $value)
+    public function iChangeTheTo($field, $value = null, $language = null)
     {
-        $this->getPage('Product')->setFieldValue($fieldName, $value);
+        try {
+            $field = $language ? $this->getPage($this->currentPage)->getFieldLocator(
+                $field, $this->getLocale($language)
+            ) : $field;
+        } catch (\BadMethodCallException $e) {
+            // Use default $field if current page does not provide a getFieldLocator method
+        }
+
+        return $this->getSession()->getPage()->fillField(
+            $field, $value ?: $this->getInvalidValueFor(sprintf('%s.%s', $this->currentPage, $field))
+        );
+    }
+
+    private function createFamilyTranslation(ProductFamily $family, $content, $locale = 'default')
+    {
+        $translation = new ProductFamilyTranslation();
+        $translation->setContent($content);
+        $translation->setField('label');
+        $translation->setLocale($locale);
+        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\ProductFamily');
+        $translation->setForeignKey($family);
+
+        $em = $this->getEntityManager();
+        $em->persist($translation);
+        $em->flush();
+
+        return $translation;
+    }
+
+    private function getInvalidValueFor($field)
+    {
+        switch ($field) {
+            case 'Family edit.Code':
+                return 'inv@lid';
+        }
     }
 
     /**
@@ -422,14 +484,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             $element = $this->getPage($this->currentPage)->getAvailableAttribute($attribute, $group);
             if (!$not) {
                 if (!$element) {
-                    throw new ExpectationException(sprintf(
+                    throw $this->createExpectationException(sprintf(
                         'Expecting to see attribute %s under group %s, but was not present.',
                         $attribute, $group
                     ));
                 }
             } else {
                 if ($element) {
-                    throw new ExpectationException(sprintf(
+                    throw $this->createExpectationException(sprintf(
                         'Expecting not to see attribute %s under group %s, but was present.',
                         $attribute, $group
                     ));
@@ -478,7 +540,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $expectedFamilies = $this->listToArray($families);
 
         if ($expectedFamilies !== $families = $this->getPage('Family index')->getFamilies()) {
-            throw new ExpectationException(sprintf(
+            throw $this->createExpectationException(sprintf(
                 'Expecting to see families %s, but saw %s',
                 print_r($expectedFamilies, true),
                 print_r($families, true)
@@ -491,7 +553,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iEditTheFamily($family)
     {
-        $this->getPage('Family index')->getFamilyLink($family)->click();
+        $this->currentPage = 'Family edit';
+        $link = $this->getPage('Family index')->getFamilyLink($family);
+
+        if (!$link) {
+            throw $this->createExpectationException(sprintf(
+                'Couldn\'t find a "%s" link', $family
+            ));
+        }
+
+        $link->click();
     }
 
     /**
@@ -574,6 +645,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     private function getLocale($language)
     {
+        if ('default' === $language) {
+            return $language;
+        }
+
         if (!isset($this->locales[$language])) {
             throw new \InvalidArgumentException(sprintf(
                 'Undefined language "%s"', $language
@@ -590,12 +665,20 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 'code' => $code
             ));
         } catch (\InvalidArgumentException $e) {
-            $lang = new Language;
-            $lang->setCode($code);
-            $this->getEntityManager()->persist($lang);
+            $this->createLanguage($code);
         }
 
         return $lang;
+    }
+
+    private function createLanguage($code)
+    {
+        $lang = new Language;
+        $lang->setCode($code);
+
+        $em = $this->getEntityManager();
+        $em->persist($lang);
+        $em->flush();
     }
 
     private function getGroup($name)
@@ -616,10 +699,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         ));
     }
 
-    private function getFamily($name)
+    private function getFamily($code)
     {
         return $this->getEntityOrException('PimProductBundle:ProductFamily', array(
-            'name' => $name
+            'code' => $code
         ));
     }
 
@@ -663,5 +746,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function camelize($string)
     {
         return Inflector::camelize(str_replace(' ', '_', $string));
+    }
+
+    private function createExpectationException($message)
+    {
+        return new ExpectationException($message, $this->getSession());
     }
 }

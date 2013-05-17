@@ -12,4 +12,9 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 class FamilyCreation extends Page
 {
     protected $path='/{locale}/product/product-family/create';
+
+    public function getFieldLocator($name, $locale)
+    {
+        return sprintf('pim_product_family_name_%s:%s', strtolower($name), $locale);
+    }
 }

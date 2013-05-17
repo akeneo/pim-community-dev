@@ -1,44 +1,21 @@
 @info https://akeneo.atlassian.net/browse/PIM-355
-Feature: Manage product families
+Feature: Add attribute to a product family
   In order to validate exported product attributes
   As an user
   I need to be able to define which attributes belong to a family
 
-  Scenario: Successfully display all the families
+  Background:
     Given the following families:
-      | name       |
-      | Smartphone |
-      | Bags       |
-      | Jewels     |
-    And the current language is english
-    And I am logged in as "admin"
-    When I am on family page
-    Then I should see the families Bags, Jewels and Smartphone
-
-  Scenario: Successfully edit a family name
-    Given the following families:
-      | name       |
-      | Smartphone |
-      | Bags       |
-      | Jewels     |
-    And the current language is english
-    And I am logged in as "admin"
-    When I am on family page
-    And I edit the "Bags" family
-    And I change the Name to "Purse"
-    And I save the family
-    Then I should see the families Jewels, Purse and Smartphone
-
-  Scenario: Successfully list available grouped attributes
-    Given the following families:
-      | name       |
+      | code       |
       | Smartphone |
       | Bags       |
       | Jewels     |
     And the following attribute group:
       | name    |
       | General |
-    And the following attributes:
+
+  Scenario: Successfully list available grouped attributes
+    Given the following attributes:
       | name             | group   |
       | Long Description | General |
       | Manufacturer     | General |
@@ -50,15 +27,7 @@ Feature: Manage product families
     And I should see available attribute Size in group "Other"
 
   Scenario: Successfully display all grouped family's attributes
-    Given the following families:
-      | name       |
-      | Smartphone |
-      | Bags       |
-      | Jewels     |
-    And the following attribute group:
-      | name    |
-      | General |
-    And the following attributes:
+    Given the following attributes:
       | name             | group   | family     |
       | Long Description | General | Smartphone |
       | Manufacturer     | General |            |
@@ -71,15 +40,7 @@ Feature: Manage product families
 
   @info https://akeneo.atlassian.net/browse/PIM-244
   Scenario: Successfully add an attribute to a family
-    Given the following families:
-      | name       |
-      | Smartphone |
-      | Bags       |
-      | Jewels     |
-    And the following attribute group:
-      | name    |
-      | General |
-    And the following attributes:
+    Given the following attributes:
       | name             | group   |
       | Long Description | General |
       | Manufacturer     | General |
@@ -90,14 +51,3 @@ Feature: Manage product families
     And I add available attributes Long Description and Size
     Then I should see attribute "Long Description" in group "General"
     And I should see attribute "Size" in group "Other"
-
-  Scenario: Succesfully create a family
-    Given the current language is english
-    And I am logged in as "admin"
-    When I am on the family creation page
-    And I change the Name to "Computer"
-    And I save the family
-    Then I should see "Product family successfully created"
-    And I should be on the "Computer" family page
-
-  Scenario: Sucessfully remove and attribute from a family
