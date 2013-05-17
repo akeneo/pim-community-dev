@@ -41,27 +41,42 @@
         </div>
     </div>
     
-    <script type="text/javascript">
-        var assetsPath = "{{ asset('bundles/pimproduct/') }}";
-    </script>
-    <script type="text/javascript" src="{{ asset('bundles/pimproduct/js/classificationtree.jstree.js') }}"></script>
-    <script type="text/javascript">
-$(function () {
-
+<script type="text/javascript">
+    var assetsPath = "{{ asset('bundles/pimproduct/') }}";
+    var tree_id = "#tree";
+    var fctCreate = function() {
+        var node = $.jstree._focused().get_selected();
+        if(!$.jstree._focused()._get_node()) {
+            PimDialog.alert("{{ 'You must select a node' | trans }}", "{{ 'Alert message' | trans }}");
+        } else {
+            var parentId = node.attr("id").replace('node_', '');
+            window.location = "{{ path('pim_product_classificationtree_create') }}/"+parentId;
+        }
+    }
+    
+    var fctRemove = function() {
+        if(!$.jstree._focused()._get_node($.jstree._focused().get_selected()) 
+            || $.jstree._focused()._get_parent() == -1) {
+            PimDialog.alert("{{ 'You must select a node' | trans }}", "{{ 'Alert message' | trans }}");
+        } else {
+            doRemove = function() {
+                $(tree_id).jstree("remove");
+            };
+            PimDialog.confirm(
+                "{{ 'Are you sure you want to delete this item' | trans }}",
+                "{{ 'Delete Confirmation' | trans }}",
+                doRemove
+            );
+        }
+    }
+    
     $("#tree_menu button").click(function () {
-        var tree_id = "#tree";
         switch(this.id) {
             case "tree-create":
                 window.location = "{{ path('pim_product_classificationtree_create') }}";
                 break;
             case "segment-create":
-                var node = $.jstree._focused().get_selected();
-                if(!$.jstree._focused()._get_node(node)) {
-                    PimDialog.alert("{{ 'You must select a node' | trans }}", "{{ 'Alert message' | trans }}");
-                } else {
-                    var parentId = node.attr("id").replace('node_', '');
-                    window.location = "{{ path('pim_product_classificationtree_create') }}/"+parentId;
-                }
+                fctCreate();
                 break;
             case "tree-edit":
                 var treeId = $.jstree._focused().get_tree_id();
@@ -77,19 +92,7 @@ $(function () {
                 }
                 break;
             case "segment-remove":
-                if(!$.jstree._focused()._get_node($.jstree._focused().get_selected()) 
-                    || $.jstree._focused()._get_parent() == -1) {
-                    PimDialog.alert("{{ 'You must select a node' | trans }}", "{{ 'Alert message' | trans }}");
-                } else {
-                    doRemove = function() {
-                        $(tree_id).jstree("remove");
-                    };
-                    PimDialog.confirm(
-                        "{{ 'Are you sure you want to delete this item' | trans }}",
-                        "{{ 'Delete Confirmation' | trans }}",
-                        doRemove
-                    );
-                }
+                fctRemove();
                 break;
             case "segment-duplicate":
                 PimDialog.alert('Not yet implemented', '');
@@ -116,7 +119,7 @@ $(function () {
                 PimDialog.alert('Not yet implemented', '');
                 break;
         }
-   });
-});
-    </script>
+    });
+</script>
+<script type="text/javascript" src="{{ asset('bundles/pimproduct/js/classificationtree.jstree.js') }}"></script>
 {% endblock %}

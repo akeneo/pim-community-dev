@@ -1,4 +1,4 @@
-$('#tree').jstree({
+var jstree = $('#tree').jstree({
     "core" : {
         "animation" : 200
     },
@@ -60,7 +60,23 @@ $('#tree').jstree({
     .bind("remove.jstree", function (e, data) {
         data.rslt.obj.each(function () {
             var id = $(this).attr("id").replace('node_', '');
-            PimAjax.delete(id+"/remove.json", '');
+            PimAjax.ajaxDelete(id+"/remove.json", '');
             data.inst.refresh();
         });
-    });
+    })
+    .bind('select_node.jstree', function (event, node) {
+        $('.node-action').remove();
+        var btnAdd = '<button id="segment-create" class="btn btn-mini"><i class="icon-plus"></i></button>';
+        var btnRemove = '<button id="segment-remove" class="btn btn-mini"><i class="icon-trash"></i></button>';
+        node.rslt.obj.before('<div style="display: inline-block; valign: top;" align="right" class="node-action pull-right">'
+                + btnAdd
+                + btnRemove
+            + '</div>');
+        $('#segment-create').on('click', function(event) {
+            fctCreate();
+        });
+        $('#segment-remove').on('click', function(event) {
+            fctRemove();
+        });
+    })
+    ;
