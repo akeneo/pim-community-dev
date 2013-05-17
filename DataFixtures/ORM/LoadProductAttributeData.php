@@ -136,6 +136,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         foreach ($sizes as $size) {
             $option = $this->getProductManager()->createAttributeOption();
             $option->setTranslatable(true);
+            $option->setDefaultValue($size);
             $attribute->addOption($option);
             $optionValue = $this->getProductManager()->createAttributeOptionValue();
             $optionValue->setLocale('en_US');
@@ -181,6 +182,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         foreach ($colors as $color) {
             $option = $this->getProductManager()->createAttributeOption();
             $option->setTranslatable(true);
+            $option->setDefaultValue($color['en_US']);
             $attribute->addOption($option);
             foreach ($color as $locale => $translated) {
                 $optionValue = $this->getProductManager()->createAttributeOptionValue();
@@ -206,6 +208,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $manufacturers = array('MyMug', 'MugStore');
         foreach ($manufacturers as $manufacturer) {
             $option = $this->getProductManager()->createAttributeOption();
+            $option->setDefaultValue($manufacturer);
             $option->setTranslatable(true);
             $attribute->addOption($option);
             $optionValue = $this->getProductManager()->createAttributeOptionValue();
