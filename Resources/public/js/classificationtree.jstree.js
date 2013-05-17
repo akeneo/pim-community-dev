@@ -72,9 +72,11 @@ var jstree = $('#tree').jstree({
         $('.node-action').remove();
         node.rslt.obj.before('<div style="display: inline-block; valign: top;" align="right" class="node-action pull-right">'
                 + btnCreate
+                + btnUpdate
                 + btnRemove
             + '</div>');
         $('#segment-create').on('click', function(event) { fctCreate(); });
+        $('#segment-edit').on('click', function(event) { fctEdit(); });
         $('#segment-remove').on('click', function(event) { fctRemove(); });
     })
     ;

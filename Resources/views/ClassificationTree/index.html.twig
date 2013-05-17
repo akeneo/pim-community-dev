@@ -15,19 +15,13 @@
     <div class="row-fluid has-resizable-sidebar">
         <div class="resizable-sidebar" width="250">
             <div id="tree_menu">
-                <div class="text-center">
-                    <button id="tree-create" class="btn btn-small"><i class="icon-plus"></i></button>
-                    <button id="tree-edit" class="btn btn-small"><i class="icon-edit"></i></button>
-                </div>
-    
                 <div id="tree"></div>
                 
                 <div class="text-center">
                     <hr />
-                    <button id="segment-create" class="btn btn-small"><i class="icon-plus"></i></button>
-                    <button id="segment-edit" class="btn btn-small"><i class="icon-edit"></i></button>
-                    <button id="segment-duplicate" class="btn btn-small"><i class="icon-copy"></i></button>
-                    <button id="segment-remove" class="btn btn-small"><i class="icon-trash"></i></button>
+                    <button id="tree-edit" class="btn btn-small"><i class="icon-edit"></i></button>
+                    <button id="tree-duplicate" class="btn btn-small"><i class="icon-copy"></i></button>
+                    <button id="tree-remove" class="btn btn-small"><i class="icon-trash"></i></button>
                 </div>
             </div>
         </div>
@@ -69,8 +63,18 @@
             );
         }
     }
+    var fctEdit = function() {
+        var node = $.jstree._focused().get_selected();
+        if(!$.jstree._focused()._get_node(node) || $.jstree._focused()._get_parent() == -1) {
+            PimDialog.alert("{{ 'You must select a node' | trans }}", "{{ 'Alert message' | trans }}");
+        } else {
+            var segmentId = node.attr("id").replace('node_', '');
+            window.location = "{{ path('pim_product_classificationtree_edit') }}/"+segmentId;
+        }
+    }
     // define dynamic buttons
-    var btnCreate = '<button id="segment-create" class="btn btn-mini"><i class="icon-plus"></i></button>';
+    var btnCreate = '<button id="segment-create" class="btn btn-mini"><i class="icon-plus-sign"></i></button>';
+    var btnUpdate = '<button id="segment-edit" class="btn btn-mini"><i class="icon-edit"></i></button>';
     var btnRemove = '<button id="segment-remove" class="btn btn-mini"><i class="icon-trash"></i></button>';
     
     // define buttons actions
@@ -86,14 +90,11 @@
                 var treeId = $.jstree._focused().get_tree_id();
                 window.location = "{{ path('pim_product_classificationtree_edit') }}/"+treeId;
                 break;
+            case "tree-remove":
+                PimDialog.alert('Not yet implemented');
+                break;
             case "segment-edit":
-                var node = $.jstree._focused().get_selected();
-                if(!$.jstree._focused()._get_node(node) || $.jstree._focused()._get_parent() == -1) {
-                    PimDialog.alert("{{ 'You must select a node' | trans }}", "{{ 'Alert message' | trans }}");
-                } else {
-                    var segmentId = node.attr("id").replace('node_', '');
-                    window.location = "{{ path('pim_product_classificationtree_edit') }}/"+segmentId;
-                }
+                fctEdit();
                 break;
             case "segment-remove":
                 fctRemove();
@@ -101,25 +102,7 @@
             case "segment-duplicate":
                 PimDialog.alert('Not yet implemented', '');
                 break;
-            case "refresh":
-                PimDialog.alert('Not yet implemented', '');
-                break;
-            case "add":
-                PimDialog.alert('Not yet implemented', '');
-                break;
-            case "search":
-                PimDialog.alert('Not yet implemented', '');
-                break;
-            case "clear-search":
-                PimDialog.alert('Not yet implemented', '');
-                break;
-            case "rename":
-                PimDialog.alert('Not yet implemented', '');
-                break;
-            case "add-item":
-                PimDialog.alert('Not yet implemented', '');
-                break;
-            case "remove-item":
+            case "tree-duplicate":
                 PimDialog.alert('Not yet implemented', '');
                 break;
         }
