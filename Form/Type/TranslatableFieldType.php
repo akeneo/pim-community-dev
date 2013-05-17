@@ -1,15 +1,13 @@
 <?php
+
 namespace Pim\Bundle\TranslationBundle\Form\Type;
 
 use Symfony\Component\Form\Exception\FormException;
-
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Pim\Bundle\TranslationBundle\Form\Subscriber\AddTranslatableFieldSubscriber;
-
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Validator\ValidatorInterface;
+use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
 
 /**
  * Translatable field type for translation entities
@@ -23,18 +21,30 @@ class TranslatableFieldType extends AbstractType
 {
 
     /**
-     * @var ContainerInterface
+     * @var ValidatorInterface
      */
-    protected $container;
+    protected $validator;
+
+    /**
+     * @var LocaleManager
+     */
+    protected $localeManager;
+
+    /**
+     * @var string
+     */
+    protected $defaultLocale;
 
     /**
      * Define constructor with container injection
      *
      * @param ContainerInterface $container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ValidatorInterface $validator, LocaleManager $localeManager, $defaultLocale)
     {
-        $this->container = $container;
+        $this->validator     = $validator;
+        $this->localeManager = $localeManager;
+        $this->defaultLocale = $defaultLocale;
     }
 
     /**
@@ -54,7 +64,7 @@ class TranslatableFieldType extends AbstractType
             throw new FormException('must provide a field');
         }
 
-        $subscriber = new AddTranslatableFieldSubscriber($builder->getFormFactory(), $this->container, $options);
+        $subscriber = new AddTranslatableFieldSubscriber($builder->getFormFactory(), $this->validator, $options);
         $builder->addEventSubscriber($subscriber);
     }
 
@@ -76,8 +86,8 @@ class TranslatableFieldType extends AbstractType
         $options['field'] = false;
 
         $options['locales'] = $this->getActiveLocales();
-        $options['default_locale'] = $this->container->getParameter('default_locale');
-        $options['required_locale'] = array($this->container->getParameter('default_locale'));
+        $options['default_locale'] = $this->defaultLocale;
+        $options['required_locale'] = array($this->defaultLocale);
 
         $options['widget'] = 'text';
 
@@ -91,8 +101,8 @@ class TranslatableFieldType extends AbstractType
      */
     protected function getActiveLocales()
     {
-        $locales = $this->container->get('pim_config.manager.locale')->getActiveCodes();
-        array_unshift($locales, $this->container->getParameter('default_locale'));
+        $locales = $this->localeManager->getActiveCodes();
+        array_unshift($locales, $this->defaultLocale);
 
         return $locales;
     }

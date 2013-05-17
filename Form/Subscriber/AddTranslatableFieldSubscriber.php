@@ -1,17 +1,14 @@
 <?php
+
 namespace Pim\Bundle\TranslationBundle\Form\Subscriber;
 
 use Symfony\Component\Form\Event\DataEvent;
-
 use Symfony\Component\Form\FormEvents;
-
 use Symfony\Component\Form\FormError;
-
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Symfony\Component\Form\FormFactoryInterface;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Validator\ValidatorInterface;
+use Pim\Bundle\TranslationBundle\Entity\AbstractTranslatableEntity;
 
 /**
  * Define subscriber for translation fields
@@ -25,9 +22,9 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
 {
 
     /**
-     * @var ContainerInterface
+     * @var ValidatorInterface
      */
-    private $container;
+    private $validator;
 
     /**
      * @var FormFactoryInterface
@@ -42,14 +39,14 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     /**
      * Constructor
      * @param FormFactoryInterface $factory   Form factory
-     * @param ContainerInterface   $container Service container
+     * @param ValidatorInterface   $validator Validator
      * @param array                $options   Option for fields
      */
-    public function __construct(FormFactoryInterface $factory, ContainerInterface $container, Array $options)
+    public function __construct(FormFactoryInterface $factory, ValidatorInterface $validator, array $options)
     {
-        $this->factory = $factory;
-        $this->container = $container;
-        $this->options = $options;
+        $this->factory   = $factory;
+        $this->validator = $validator;
+        $this->options   = $options;
     }
 
     /**
@@ -59,9 +56,116 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::POST_BIND => 'postBind',
-            FormEvents::BIND => 'bind'
+            FormEvents::POST_BIND    => 'postBind',
+            FormEvents::BIND         => 'bind'
         );
+    }
+
+    /**
+     * On pre set data event
+     * Build the custom form based on the provided locales
+     *
+     * @param DataEvent $event
+     */
+    public function preSetData(DataEvent $event)
+    {
+        $data = $event->getData();
+        $form = $event->getForm();
+
+        if (null === $data) {
+            return;
+        }
+
+        $entity = $form->getParent()->getData();
+        $entity->setTranslatableLocale('default');
+
+        $translations = $this->bindTranslations($data);
+        foreach ($translations as $binded) {
+            $methodName = 'get'. ucfirst($this->options['field']);
+
+            $content = ($binded['translation']->getContent() !== null) ? $binded['translation']->getContent() : '';
+
+            $form->add(
+                $this->factory->createNamed(
+                    $binded['fieldName'],
+                    $this->options['widget'],
+                    $content,
+                    array(
+                        'label' => $binded['locale'],
+                        'required' => in_array($binded['locale'], $this->options['required_locale']),
+                        'property_path'=> false,
+                    )
+                )
+            );
+        }
+    }
+
+    /**
+     * On bind event (validation)
+     *
+     * @param DataEvent $event
+     */
+    public function bind(DataEvent $event)
+    {
+        $data = $event->getData();
+        $form = $event->getForm();
+
+        foreach ($this->getFieldNames() as $locale => $fieldName) {
+            $content = $form->get($fieldName)->getData();
+
+            if (null === $content && in_array($locale, $this->options['required_locale'])) {
+                $form->addError(
+                    new FormError(
+                        sprintf("Field '%s' for locale '%s' cannot be blank", $this->options['field'], $locale)
+                    )
+                );
+            } else {
+                $translation = $this->createPersonalTranslation($locale);
+
+                $errors = $this->validator->validate($translation, array(sprintf("%s:%s", $this->options['field'], $locale)));
+
+                if (count($errors) > 0) {
+                    foreach ($errors as $error) {
+                        $form->addError(new FormError($error->getMessage()));
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * On post bind event (after validation)
+     *
+     * @param DataEvent $event
+     */
+    public function postBind(DataEvent $event)
+    {
+        $form = $event->getForm();
+        $data = $form->getData();
+
+        $entity = $form->getParent()->getData();
+        $entity->setTranslatableLocale('default');
+
+        $translations = $this->bindTranslations($data);
+
+        foreach ($translations as $binded) {
+            $content = $form->get($binded['fieldName'])->getData();
+            $translation = $binded['translation'];
+
+            if ($content !== null) {
+                // set the submitted content
+                $translation->setContent($content);
+                $translation->setForeignKey($entity);
+
+                if ($translation->getLocale() === 'default') {
+                    $methodName = 'set'. ucfirst($this->options['field']);
+                    $entity->$methodName($translation->getContent());
+                }
+                $entity->addTranslation($translation);
+            } else {
+                $entity->removeTranslation($translation);
+            }
+        }
     }
 
     /**
@@ -133,116 +237,5 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
         $translation->setField($this->options['field']);
 
         return $translation;
-    }
-
-    /**
-     * On pre set data event
-     * Build the custom form based on the provided locales
-     *
-     * @param DataEvent $event
-     */
-    public function preSetData(DataEvent $event)
-    {
-        $data = $event->getData();
-        $form = $event->getForm();
-
-        if (null === $data) {
-            return;
-        }
-
-        // get value of default translation
-        $entity = $form->getParent()->getData();
-        $entity->setTranslatableLocale('default');
-
-        // Add field for each translation
-        $translations = $this->bindTranslations($data);
-        foreach ($translations as $binded) {
-            $methodName = 'get'. ucfirst($this->options['field']);
-
-            $content = ($binded['translation']->getContent() !== null) ? $binded['translation']->getContent() : '';
-
-            $form->add(
-                $this->factory->createNamed(
-                    $binded['fieldName'],
-                    $this->options['widget'],
-                    $content,
-                    array(
-                        'label' => $binded['locale'],
-                        'required' => in_array($binded['locale'], $this->options['required_locale']),
-                        'property_path'=> false,
-                    )
-                )
-            );
-        }
-    }
-
-    /**
-     * On bind event (validation)
-     *
-     * @param DataEvent $event
-     */
-    public function bind(DataEvent $event)
-    {
-        $data = $event->getData();
-        $form = $event->getForm();
-
-        $validator = $this->container->get('validator');
-
-        foreach ($this->getFieldNames() as $locale => $fieldName) {
-            $content = $form->get($fieldName)->getData();
-
-            if (null === $content && in_array($locale, $this->options['required_locale'])) {
-                $form->addError(
-                    new FormError(
-                        sprintf("Field '%s' for locale '%s' cannot be blank", $this->options['field'], $locale)
-                    )
-                );
-            } else {
-                $translation = $this->createPersonalTranslation($locale);
-
-                $errors = $validator->validate($translation, array(sprintf("%s:%s", $this->options['field'], $locale)));
-
-                if (count($errors) > 0) {
-                    foreach ($errors as $error) {
-                        $form->addError(new FormError($error->getMessage()));
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * On post bind event (after validation)
-     *
-     * @param DataEvent $event
-     */
-    public function postBind(DataEvent $event)
-    {
-        $form = $event->getForm();
-        $data = $form->getData();
-
-        $entity = $form->getParent()->getData();
-        $entity->setTranslatableLocale('default');
-
-        $translations = $this->bindTranslations($data);
-
-        foreach ($translations as $binded) {
-            $content = $form->get($binded['fieldName'])->getData();
-            $translation = $binded['translation'];
-
-            if ($content !== null) {
-                // set the submitted content
-                $translation->setContent($content);
-                $translation->setForeignKey($entity);
-
-                if ($translation->getLocale() === 'default') {
-                    $methodName = 'set'. ucfirst($this->options['field']);
-                    $entity->$methodName($translation->getContent());
-                }
-                $entity->addTranslation($translation);
-            } else {
-                $entity->removeTranslation($translation);
-            }
-        }
     }
 }

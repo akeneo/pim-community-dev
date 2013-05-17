@@ -1,14 +1,11 @@
 <?php
+
 namespace Pim\Bundle\TranslationBundle\Form\Subscriber;
 
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
-
 use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
-
 use Symfony\Component\Form\Event\DataEvent;
-
 use Symfony\Component\DependencyInjection\Container;
-
 use Symfony\Component\Form\Forms;
 
 /**
@@ -19,48 +16,15 @@ use Symfony\Component\Form\Forms;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class AddTranslatableFieldSubscriberTest extends TypeTestCase
+class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var AddTranslatableFieldSubscriber
-     */
-    protected $subscriber;
-
-    /**
-     * @var AttributeGroupType
-     */
-    protected $type;
-
-    /**
-     * @var \Symfony\Component\Form\FormInterface
-     */
-    protected $form;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setUp()
-    {
-        parent::setUp();
-
-        // Create mock container
-        $container = $this->getContainerMock();
-
-        // redefine form factory and builder to add translatable field
-        $this->builder->add('pim_translatable_field');
-        $this->factory = Forms::createFormFactoryBuilder()
-            ->addType(new TranslatableFieldType($container))
-            ->getFormFactory();
-
-        $this->subscriber = new AddTranslatableFieldSubscriber($this->factory, $container, array());
-    }
-
     /**
      * Test subscriber events
      */
     public function testGetSubscriberEvents()
     {
-        $events = $this->subscriber->getSubscribedEvents();
+        $target = $this->getTargetedClass();
+        $events = $target->getSubscribedEvents();
 
         $this->assertTrue(array_key_exists('form.pre_set_data', $events), 'preSetData');
         $this->assertTrue(array_key_exists('form.post_bind', $events), 'postBind');
@@ -68,46 +32,70 @@ class AddTranslatableFieldSubscriberTest extends TypeTestCase
     }
 
     /**
-     * Create mock container for pim_translatable_field
-     *
-     * @return \Symfony\Component\DependencyInjection\Container
+     * @test
      */
-    protected function getContainerMock()
+    public function itsPreSetDataShouldDoNothingIfDataIsNull()
     {
-        $localeManager = $this->getLocaleManagerMock();
-        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
+        $target = $this->getTargetedClass();
+        $form   = $this->getFormMock();
+        $event  = $this->getEventMock(null, $form);
 
-        // add locale manager and default locale to container
-        $container = new Container();
-        $container->set('pim_config.manager.locale', $localeManager);
-        $container->set('validator', $validator);
-        $container->setParameter('default_locale', 'default');
+        $form->expects($this->never())
+             ->method('getParent');
 
-        return $container;
+        $target->preSetData($event);
     }
 
-    /**
-     * Create mock for locale manager
-     *
-     * @return \Pim\Bundle\ConfigBundle\Manager\LocaleManager
-     */
-    protected function getLocaleManagerMock()
+    protected function getTargetedClass()
     {
-        $objectManager = $this->getMockForAbstractClass('\Doctrine\Common\Persistence\ObjectManager');
-
-        // create mock builder for locale manager and redefine constructor to set object manager
-        $mockBuilder = $this->getMockBuilder('Pim\Bundle\ConfigBundle\Manager\LocaleManager')
-                            ->setConstructorArgs(array($objectManager));
-
-        // create locale manager mock from mock builder previously create and redefine getActiveCodes method
-        $localeManager = $mockBuilder->getMock(
-            'Pim\Bundle\ConfigBundle\Manager\LocaleManager',
-            array('getActiveCodes')
+        return new AddTranslatableFieldSubscriber(
+            $this->getFormFactoryMock(), $this->getValidatorMock(), array()
         );
-        $localeManager->expects($this->any())
-                      ->method('getActiveCodes')
-                      ->will($this->returnValue(array('en_US', 'fr_FR')));
+    }
 
-        return $localeManager;
+    protected function getFormFactoryMock()
+    {
+        return $this->getMock('Symfony\Component\Form\FormFactoryInterface');
+    }
+
+    protected function getValidatorMock()
+    {
+        return $this->getMock('Symfony\Component\Validator\ValidatorInterface');
+    }
+
+    protected function getEventMock($data, $form)
+    {
+        $event = $this
+            ->getMockBuilder('Symfony\Component\Form\Event\DataEvent')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getData', 'getForm'))
+            ->getMock()
+        ;
+
+        $event->expects($this->any())
+              ->method('getData')
+              ->will($this->returnValue($data));
+
+        $event->expects($this->any())
+              ->method('getForm')
+              ->will($this->returnValue($form));
+
+        return $event;
+    }
+
+    protected function getFormMock()
+    {
+        return $this
+            ->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+    }
+
+    protected function getDataMock($namespace = 'Pim\Bundle\TranslationBundle\Entity\AbstractTranslatableEntity')
+    {
+        return $this
+            ->getMock($namespace)
+        ;
     }
 }
