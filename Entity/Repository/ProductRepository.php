@@ -24,8 +24,8 @@ class ProductRepository extends FlexibleEntityRepository
     {
         parent::addJoinToValueTables($qb);
 
-        $qb->addSelect('ValueMetric')->addSelect('ValuePrice')->addSelect('ValueMedia');
-        $qb->leftJoin('Value.price', 'ValuePrice')
+        $qb->addSelect('ValueMetric')->addSelect('ValuePrices')->addSelect('ValueMedia');
+        $qb->leftJoin('Value.prices', 'ValuePrices')
             ->leftJoin('Value.media', 'ValueMedia')
             ->leftJoin('Value.metric', 'ValueMetric');
     }

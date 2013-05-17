@@ -14,3 +14,8 @@ services:
         arguments: ["option", "entity"]
         tags:
             - { name: oro_flexibleentity.attributetype, alias: pim_product_simpleselect }
+    pim_product.attributetype.price:
+        class: Pim\Bundle\ProductBundle\AttributeType\PriceType
+        arguments: ["prices", "entity", @pim_config.manager.locale]
+        tags:
+            - { name: oro_flexibleentity.attributetype, alias: pim_product_price }

@@ -76,14 +76,13 @@ class ProductValue extends AbstractEntityFlexibleValue
     protected $metric;
 
     /**
-     * Store price value
+     * Store prices value
      *
      * @var Price $price
      *
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Price", cascade="persist")
-     * @ORM\JoinColumn(name="price_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\OneToMany(targetEntity="ProductValuePrice", mappedBy="value", cascade={"persist", "remove"})
      */
-    protected $price;
+    protected $prices;
 
     /**
      * Get media
@@ -134,25 +133,39 @@ class ProductValue extends AbstractEntityFlexibleValue
     }
 
     /**
-     * Get price
+     * Get prices
      *
-     * @return Price
+     * @return array
      */
-    public function getPrice()
+    public function getPrices()
     {
-        return $this->price;
+        return $this->prices;
     }
 
     /**
-     * Set price
+     * Set prices, used for multi select to retrieve many options
      *
-     * @param Price $price
+     * @param ArrayCollection $prices
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\ProductValue
+     * @return ProductValue
      */
-    public function setPrice($price)
+    public function setPrices($prices)
     {
-        $this->price = $price;
+        $this->prices = $prices;
+
+        return $this;
+    }
+
+    /**
+     * Add price
+     *
+     * @param ProductValuePrice $price
+     *
+     * @return ProductValue
+     */
+    public function addPrice(ProductValuePrice $price)
+    {
+        $this->prices[] = $price;
 
         return $this;
     }

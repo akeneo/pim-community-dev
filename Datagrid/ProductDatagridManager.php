@@ -70,7 +70,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $excludedBackend = array(
             AbstractAttributeType::BACKEND_TYPE_MEDIA,
             AbstractAttributeType::BACKEND_TYPE_METRIC,
-            AbstractAttributeType::BACKEND_TYPE_PRICE
+            AbstractAttributeType::BACKEND_TYPE_PRICE,
+            'prices'
         );
 
         foreach ($this->getFlexibleAttributes() as $attribute) {

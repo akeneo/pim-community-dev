@@ -42,7 +42,7 @@ services:
             - [ addAttributeType, ['oro_flexibleentity_text'] ]
             - [ addAttributeType, ['pim_product_textarea'] ]
             - [ addAttributeType, ['oro_flexibleentity_number'] ]
-            - [ addAttributeType, ['oro_flexibleentity_money'] ]
+            - [ addAttributeType, ['pim_product_price'] ]
             - [ addAttributeType, ['pim_product_multiselect'] ]
             - [ addAttributeType, ['pim_product_simpleselect'] ]
             - [ addAttributeType, ['oro_flexibleentity_file'] ]
