@@ -7,7 +7,7 @@ var jstree = $('#tree').jstree({
     ],
     "tree_selector" : {
         "ajax" : {
-            "url" : "list-tree.json"
+            "url" : urlListTree
         },
         "auto_open_root" : true
     },
@@ -26,7 +26,7 @@ var jstree = $('#tree').jstree({
             }
         ],
         "ajax" : {
-            "url" : "children.json",
+            "url" : urlChildren,
             "data" : function (node) {
                 // the result is fed to the AJAX request `data` option
                 return {

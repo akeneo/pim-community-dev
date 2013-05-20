@@ -39,6 +39,9 @@
 <script type="text/javascript">
     var assetsPath = "{{ asset('bundles/pimproduct/') }}";
     var tree_id = "#tree";
+    var urlListTree = "{{ path('pim_product_classificationtree_listtree', { '_format': 'json' }) }}";
+    var urlChildren = "{{ path('pim_product_classificationtree_children', { '_format': 'json' }) }}";
+    
     // define action when click on dynamic buttons
     var fctCreate = function() {
         var node = $.jstree._focused().get_selected();
@@ -109,5 +112,5 @@
         }
     });
 </script>
-<script type="text/javascript" src="{{ asset('bundles/pimproduct/js/classificationtree.jstree.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/pimproduct/js/tree-management.jstree.js') }}"></script>
 {% endblock %}
