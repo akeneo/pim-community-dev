@@ -173,7 +173,6 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
         $entity->setTranslatableLocale('default');
 
         $translations = $this->bindTranslations($data);
-
         foreach ($translations as $binded) {
             $content = $form->get($binded['fieldName'])->getData();
             $translation = $binded['translation'];
