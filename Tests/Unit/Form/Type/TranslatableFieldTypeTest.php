@@ -1,14 +1,10 @@
 <?php
+
 namespace Pim\Bundle\TranslationBundle\Tests\Unit\Form\Type;
 
 use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
-
-use Symfony\Component\DependencyInjection\Container;
-
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
-
 use Symfony\Component\Form\Forms;
-
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
 
 /**
@@ -64,9 +60,6 @@ class TranslatableFieldTypeTest extends TypeTestCase
     {
         parent::setUp();
 
-        // Create mock container
-        $container = $this->getContainerMock();
-
         // redefine form factory and builder to add translatable field
         $this->builder->add('pim_translatable_field');
         $this->factory = Forms::createFormFactoryBuilder()
@@ -75,33 +68,22 @@ class TranslatableFieldTypeTest extends TypeTestCase
                     $this->getMock('Symfony\Component\Validator\ValidatorInterface')
                 )
             )
-            ->addType(new TranslatableFieldType($container))
+            ->addType(new TranslatableFieldType(
+                $this->getMock('Symfony\Component\Validator\ValidatorInterface'),
+                $this->getLocaleManagerMock(),
+                self::DEFAULT_LOCALE
+            ))
             ->getFormFactory();
 
         // Create form type
-        $this->type = new TranslatableFieldType($container);
+        $this->type = new TranslatableFieldType(
+            $this->getMock('Symfony\Component\Validator\ValidatorInterface'),
+            $this->getLocaleManagerMock(),
+            self::DEFAULT_LOCALE
+        );
         $this->options = $this->buildOptions(self::OPT_ENTITY_CLASS, self::OPT_NAME, self::OPT_TRANSLATION_CLASS);
 
         $this->form = $this->factory->create($this->type, null, $this->options);
-    }
-
-    /**
-     * Create mock container for pim_translatable_field
-     *
-     * @return \Symfony\Component\DependencyInjection\Container
-     */
-    protected function getContainerMock()
-    {
-        $localeManager = $this->getLocaleManagerMock();
-        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
-
-        // add locale manager and default locale to container
-        $container = new Container();
-        $container->set('pim_config.manager.locale', $localeManager);
-        $container->set('validator', $validator);
-        $container->setParameter('default_locale', self::DEFAULT_LOCALE);
-
-        return $container;
     }
 
     /**
@@ -210,11 +192,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
      */
     public function testAssertException($entityClass, $fieldName, $translationClass)
     {
-        // Create mock container
-        $container = $this->getContainerMock();
-
-        $type = new TranslatableFieldType($container);
         $options = $this->buildOptions($entityClass, $fieldName, $translationClass);
-        $form = $this->factory->create($type, null, $options);
+        $form = $this->factory->create($this->type, null, $options);
     }
 }
