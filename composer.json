@@ -15,7 +15,8 @@
         "php": ">=5.3.3",
         "oro/bap": "dev-master",
         "ddeboer/data-import": "dev-master",
-        "knplabs/knp-gaufrette-bundle": "dev-master"
+        "knplabs/knp-gaufrette-bundle": "dev-master",
+        "kriswallsmith/assetic": "v1.1.0-alpha4"
     },
     "require-dev": {
         "behat/behat": "2.4.*",
