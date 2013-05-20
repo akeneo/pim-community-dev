@@ -148,9 +148,6 @@
                                         {% if group.id == groupId %}
                                             {% if attributeCode != formValue.vars.value.attribute.code %}
                                                 </div>
-                                                {% if formValue.vars.value.attribute.scopable %}
-                                                <a href="#" class="expand" data-field="{{ formValue.vars.value.attribute.code }}"><i class="icon-chevron-down"></i></a>
-                                                {% endif %}
                                                 <div class="{{ formValue.vars.value.attribute.scopable ? 'scopable' : '' }}" data-field="{{ formValue.vars.value.attribute.code }}">
                                             {% endif %}
                                             <div class="control-group">
