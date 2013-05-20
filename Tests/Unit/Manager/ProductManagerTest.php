@@ -17,32 +17,14 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function itShouldAddOneValueIfAttributeIsNotScopableOrTranslatable()
+    public function noValueAddedIfAttributeIsNotScopableOrTranslatable()
     {
         $target  = $this->getTargetedClass();
         $value   = $this->getValueMock();
         $product = $this->getProductMock(array($value));
 
-        $product->expects($this->once())
-                ->method('addValue');
-
-        $target->save($product);
-    }
-
-    /**
-     * @test
-     */
-    public function itShouldAddMissingScopeAndLocaleValuesForTranslatableAttribute()
-    {
-        $target  = $this->getTargetedClass();
-        $product = $this->getProductMock(
-            array(
-                $this->getValueMock('mobile', 'en_US'),
-            )
-        );
-
-        $product->expects($this->atLeastOnce())
-                ->method('addValue');
+        $product->expects($this->never())
+            ->method('addValue');
 
         $target->save($product);
     }
@@ -198,12 +180,16 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
         $translatable = $locale ? true : false;
         $locale = $locale ?: 'en_US';
 
-        $value->setScope($scope);
-        $value->setLocale($locale);
-
         $value->expects($this->any())
               ->method('getAttribute')
               ->will($this->returnValue($this->getAttributeMock($scopable, $translatable, $code)));
+
+        if ($scopable) {
+            $value->setScope($scope);
+        }
+        if ($translatable) {
+            $value->setLocale($locale);
+        }
 
         $value->expects($this->any())
               ->method('getMedia')
@@ -253,19 +239,18 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     {
         $product = $this->getMock(
             'Pim\Bundle\ProductBundle\Entity\Product',
-            array('getValues', 'getLanguages', 'addValue', 'getSku')
+            array('getValues', 'getActiveLanguages', 'addValue', 'getSku')
         );
 
         $product->expects($this->any())
                 ->method('getValues')
                 ->will($this->returnValue(new ArrayCollection($values)));
 
+        $languages = array($this->getLanguageMock('fr_FR'), $this->getLanguageMock('en_US'));
         $product->expects($this->any())
-                ->method('getLanguages')
+                ->method('getActiveLanguages')
                 ->will(
-                    $this->returnValue(
-                        new ArrayCollection(array($this->getLanguageMock('fr'), $this->getLanguageMock('en')))
-                    )
+                    $this->returnValue(new ArrayCollection($languages))
                 );
 
         $product->expects($this->any())

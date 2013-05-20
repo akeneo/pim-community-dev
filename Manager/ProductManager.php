@@ -87,15 +87,9 @@ class ProductManager extends FlexibleManager
             }
 
             if ($attribute->getScopable()) {
-                if ($attribute->getTranslatable()) {
-                    foreach ($channels as $channel) {
-                        foreach ($languages as $language) {
-                            $requiredValues[] = $channel->getCode() . ':' . $language->getCode();
-                        }
-                    }
-                } else {
-                    foreach ($channels as $channel) {
-                        $requiredValues[] = $channel->getCode() . ':';
+                foreach ($channels as $channel) {
+                    foreach ($languages as $language) {
+                        $requiredValues[] = $channel->getCode() . ':' . $language->getCode();
                     }
                 }
             } elseif ($attribute->getTranslatable()) {

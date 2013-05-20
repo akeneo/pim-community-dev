@@ -35,7 +35,7 @@ class ProductValue extends AbstractEntityFlexibleValue
     /**
      * Store options values
      *
-     * @var options ArrayCollection
+     * @var ArrayCollection options
      *
      * @ORM\ManyToMany(targetEntity="AttributeOption")
      * @ORM\JoinTable(name="pim_product_value_option",
@@ -78,9 +78,10 @@ class ProductValue extends AbstractEntityFlexibleValue
     /**
      * Store prices value
      *
-     * @var Price $price
+     * @var ArrayCollection $prices
      *
-     * @ORM\OneToMany(targetEntity="ProductValuePrice", mappedBy="value", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="ProductPrice", mappedBy="value", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"currency" = "ASC"})
      */
     protected $prices;
 
@@ -159,13 +160,28 @@ class ProductValue extends AbstractEntityFlexibleValue
     /**
      * Add price
      *
-     * @param ProductValuePrice $price
+     * @param ProductPrice $price
      *
      * @return ProductValue
      */
-    public function addPrice(ProductValuePrice $price)
+    public function addPrice(ProductPrice $price)
     {
         $this->prices[] = $price;
+        $price->setValue($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove price
+     *
+     * @param ProductPrice $price
+     *
+     * @return ProductValue
+     */
+    public function removePrice(ProductPrice $price)
+    {
+        $this->prices->removeElement($price);
 
         return $this;
     }

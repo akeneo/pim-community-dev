@@ -123,7 +123,7 @@ class ProductAttributeValidator
     {
         $attributeType = array(
             'pim_product_textarea',
-            'pim_product_price',
+            'pim_product_price_collection',
             'pim_product_multiselect',
             'pim_product_simpleselect',
             'oro_flexibleentity_image',
@@ -209,7 +209,7 @@ class ProductAttributeValidator
                 self::isNumberMinValid($productAttribute, $context);
                 self::isNumberMaxValid($productAttribute, $context);
                 break;
-            case 'pim_product_price':
+            case 'pim_product_price_collection':
             case 'oro_flexibleentity_number':
             case 'oro_flexibleentity_metric':
                 self::isNumberMinValid($productAttribute, $context);
@@ -286,7 +286,7 @@ class ProductAttributeValidator
                     }
 
                     return;
-                case 'pim_product_price':
+                case 'pim_product_price_collection':
                 case 'oro_flexibleentity_number':
                 case 'oro_flexibleentity_metric':
                     if ($productAttribute->getNegativeAllowed() === false && $value < 0) {

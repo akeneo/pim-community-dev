@@ -19,8 +19,8 @@ attributes_config:
         name: 'Metric'
         properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'metricFamily', 'defaultMetricUnit', 'searchable' ]
         parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
-    pim_product_price:
-        name: 'Money'
+    pim_product_price_collection:
+        name: 'Prices'
         properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'searchable' ]
         parameters: [ 'translatable', 'availableLanguages' ]
     oro_flexibleentity_number:

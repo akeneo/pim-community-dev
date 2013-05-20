@@ -1,10 +1,14 @@
 <?php
 namespace Pim\Bundle\ProductBundle\AttributeType;
 
+use Oro\Bundle\FlexibleEntityBundle\Entity\Price;
+
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\PriceType;
+
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
-use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
+use Pim\Bundle\ConfigBundle\Manager\CurrencyManager;
 
 /**
  * Price attribute type
@@ -13,25 +17,25 @@ use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class PriceType extends AbstractAttributeType
+class PriceCollectionType extends AbstractAttributeType
 {
     /**
-     * @var LocaleManager
+     * @var CurrencyManager
      */
-    protected $localeManager;
+    protected $currencyManager;
 
     /**
      * Constructor
      *
-     * @param string        $backendType the backend type
-     * @param string        $formType    the form type
-     * @param LocaleManager $manager     the locale manager
+     * @param string          $backendType the backend type
+     * @param string          $formType    the form type
+     * @param CurrencyManager $manager     the currency manager
      */
-    public function __construct($backendType, $formType, LocaleManager $manager)
+    public function __construct($backendType, $formType, CurrencyManager $manager)
     {
         parent::__construct($backendType, $formType);
 
-        $this->localeManager = $manager;
+        $this->currencyManager = $manager;
     }
 
     /**
@@ -40,11 +44,10 @@ class PriceType extends AbstractAttributeType
     protected function prepareValueFormOptions(FlexibleValueInterface $value)
     {
         $options = parent::prepareValueFormOptions($value);
-        $options['empty_value']   = false;
-        $options['class']         = 'PimProductBundle:ProductValuePrice';
-        $options['query_builder'] = function (EntityRepository $er) use ($value) {
-            return $er->createQueryBuilder('price')->where('price.value = '.$value->getId());
-        };
+        $options['type']         = 'pim_product_price';
+        $options['allow_add']    = false;
+        $options['allow_delete'] = false;
+        $options['by_reference'] = false;
 
         return $options;
     }
@@ -54,6 +57,6 @@ class PriceType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_product_price';
+        return 'pim_product_price_collection';
     }
 }

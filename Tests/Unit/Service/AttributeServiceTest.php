@@ -123,7 +123,7 @@ class AttributeServiceTest extends WebTestCase
         $attribute = $this->service->createAttributeFromFormData($data);
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductAttribute', $attribute);
 
-        $attribute = $this->createProductAttribute('pim_product_price');
+        $attribute = $this->createProductAttribute('pim_product_price_collection');
         $newAttribute = $this->service->createAttributeFromFormData($attribute);
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductAttribute', $newAttribute);
         $this->assertEquals($attribute, $newAttribute);

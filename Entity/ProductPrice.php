@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="pim_product_value_price")
  * @ORM\Entity
  */
-class ProductValuePrice
+class ProductPrice
 {
     /**
      * @var integer $id
@@ -44,7 +44,7 @@ class ProductValuePrice
      * Currency code
      * @var string $currency
      *
-     * @ORM\Column(name="currency_code", type="string", length=5, nullable=true)
+     * @ORM\Column(name="currency_code", type="string", length=5, nullable=false)
      */
     protected $currency;
 
@@ -116,6 +116,30 @@ class ProductValuePrice
     public function setCurrency($currency)
     {
         $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * Get value
+     *
+     * @return ProductValue $value
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * Set value
+     *
+     * @param ProductValue $value
+     *
+     * @return ProductPrice
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
 
         return $this;
     }
