@@ -17,6 +17,10 @@ services:
         class:     Pim\Bundle\ConfigBundle\Manager\LocaleManager
         arguments: [@doctrine.orm.entity_manager]
     
+    pim_config.manager.currency:
+        class:     Pim\Bundle\ConfigBundle\Manager\CurrencyManager
+        arguments: [@doctrine.orm.entity_manager]
+
     # Form
     pim_config.form.channel:
         class:           Symfony\Component\Form\Form
