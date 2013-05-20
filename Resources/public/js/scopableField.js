@@ -10,9 +10,9 @@
     "use strict";
 
     function showTitle(el, opts) {
-        var title = opts.title || $(el).data('field');
-        var $title = $('<h5>').html(title);
-        $(el).find('>h5').remove();
+        var title = opts.title || $(el).find('label').first().html();
+        var $title = $('<label>').addClass('control-label').html(title);
+        $(el).find('>label').remove();
         $(el).prepend($title);
     }
 
@@ -59,11 +59,16 @@
             var scope = $fields[i].scope;
 
             $label.html(scope).addClass('add-on');
-            $label.css(opts.labelCss);
-            $label.height($field.height() - 10);
+
+            if ($field.find('iframe.wysihtml5-sandbox').length > 0) {
+                $field.find('iframe.wysihtml5-sandbox, textarea').width(opts.wysihtml5.width);
+                $label.height(opts.wysihtml5.height);
+            } else {
+                $label.height($field.height() - 10);
+            }
 
             var $controls = $field.find('.controls').first();
-            $controls.addClass('input-prepend').prepend($label).css({'width': 'auto', 'max-width': '100%'});
+            $controls.addClass('input-prepend').prepend($label);
         }
     }
 
@@ -80,8 +85,8 @@
         var $fields = getFields(el);
 
         $fields.find('label span').remove();
-        var $icon = $('<span>').html($('<i>').addClass(opts.collapseIcon)).css(opts.spanCss);
-        $fields.first().find('label.control-label').prepend($icon);
+        var $icon = $('<span>').html($('<i>').addClass(opts.collapseIcon));
+        $fields.first().removeClass('selected').find('label.control-label').prepend($icon);
         $fields.show();
     }
 
@@ -92,8 +97,8 @@
         $fields.first().show();
 
         $fields.find('label span').remove();
-        var $icon = $('<span>').html($('<i>').addClass(opts.expandIcon)).css(opts.spanCss);
-        getFields(el).first().find('label.control-label').prepend($icon);
+        var $icon = $('<span>').html($('<i>').addClass(opts.expandIcon));
+        getFields(el).first().addClass('selected').find('label.control-label').prepend($icon);
     }
 
     function toggleOpen(el, opts, close) {
@@ -127,7 +132,6 @@
         }
 
         $('.span4').removeClass('span4').addClass('input-large');
-        this.find('.control-group').css('margin', 0);
 
         return this.each(function() {
             if (!$(this).hasClass('scopablefield')) {
@@ -144,22 +148,11 @@
     $.fn.scopableField.defaults = {
         defaultScope: null,
         title: null,
-        expandIcon: 'icon-chevron-right',
-        collapseIcon: 'icon-chevron-down',
-        labelCss: {
-            'padding-top': '4px',
-            'width': '100px',
-            'margin-bottom': 0,
-            'border-radius': 0,
-            'float': 'left'
-        },
-        spanCss: {
-            'position': 'relative',
-            'float': 'left',
-            'left': '-5px',
-            'top': '-4px',
-            'padding': '4px 5px',
-            'height': '100%'
+        expandIcon: 'icon-caret-right',
+        collapseIcon: 'icon-caret-down-gray',
+        wysihtml5: {
+            width: 523,
+            height: 192
         }
     };
 
