@@ -38,8 +38,8 @@ class LoadProductFamilyData extends AbstractFixture implements OrderedFixtureInt
         );
 
         $this->createProductFamily(
+            'mug',
             'Mug',
-            'A large cup, typically cylindrical and with a handle and used without a saucer.',
             $attributes,
             $manager
         );
@@ -58,6 +58,7 @@ class LoadProductFamilyData extends AbstractFixture implements OrderedFixtureInt
     {
         $productFamily = new ProductFamily();
 
+        $productFamily->setCode($name);
         $productFamily->setLabel($name);
 
         foreach ($attributes as $attribute) {
