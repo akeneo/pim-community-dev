@@ -36,15 +36,29 @@ class ProductFamilyTest extends \PHPUnit_Framework_TestCase
     /**
      * Test getter/setter for name property
      */
-    public function testGetSetName()
+    public function testGetSetCode()
     {
         $productFamily = new ProductFamily();
         $this->assertEmpty($productFamily->getCode());
 
         // Change value and assert new
-        $newName = 'test-name';
-        $productFamily->setCode($newName);
-        $this->assertEquals($newName, $productFamily->getCode());
+        $newCode = 'test-code';
+        $productFamily->setCode($newCode);
+        $this->assertEquals($newCode, $productFamily->getCode());
+    }
+
+    /**
+     * Test getter/setter for name property
+     */
+    public function testGetSetLabel()
+    {
+        $productFamily = new ProductFamily();
+        $this->assertEmpty($productFamily->getLabel());
+
+        // Change value and assert new
+        $newLabel = 'test-label';
+        $productFamily->setLabel($newLabel);
+        $this->assertEquals($newLabel, $productFamily->getLabel());
     }
 
     /**

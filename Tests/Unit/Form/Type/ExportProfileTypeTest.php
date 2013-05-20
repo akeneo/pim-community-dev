@@ -43,9 +43,6 @@ class ExportProfileTypeTest extends TypeTestCase
     {
         parent::setUp();
 
-        // Create mock container
-        $container = $this->getContainerMock();
-
         // redefine form factory and builder to add translatable field
         $this->builder->add('pim_translatable_field');
         $this->factory = Forms::createFormFactoryBuilder()
@@ -54,31 +51,16 @@ class ExportProfileTypeTest extends TypeTestCase
                     $this->getMock('Symfony\Component\Validator\ValidatorInterface')
                 )
             )
-            ->addType(new TranslatableFieldType($container))
+            ->addType(new TranslatableFieldType(
+                $this->getMock('Symfony\Component\Validator\ValidatorInterface'),
+                $this->getLocaleManagerMock(),
+                'en_US'
+            ))
             ->getFormFactory();
 
         // Create form type
         $this->type = new ExportProfileType();
         $this->form = $this->factory->create($this->type);
-    }
-
-    /**
-     * Create mock container for pim_translatable_field
-     *
-     * @return \Symfony\Component\DependencyInjection\Container
-     */
-    protected function getContainerMock()
-    {
-        $localeManager = $this->getLocaleManagerMock();
-        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
-
-        // add locale manager and default locale to container
-        $container = new Container();
-        $container->set('pim_config.manager.locale', $localeManager);
-        $container->set('validator', $validator);
-        $container->setParameter('default_locale', 'default');
-
-        return $container;
     }
 
     /**
@@ -99,7 +81,7 @@ class ExportProfileTypeTest extends TypeTestCase
             'Pim\Bundle\ConfigBundle\Manager\LocaleManager',
             array('getActiveCodes')
         );
-        $localeManager->expects($this->once())
+        $localeManager->expects($this->any())
                       ->method('getActiveCodes')
                       ->will($this->returnValue(array('en_US', 'fr_FR')));
 

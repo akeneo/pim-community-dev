@@ -6,7 +6,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+use Gedmo\Translatable\Translatable;
+use Pim\Bundle\ProductBundle\Entity\ProductFamilyTranslation;
 
 /**
  * Product family
@@ -18,8 +21,9 @@ use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
  * @ORM\Table(name="pim_product_family")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductFamilyRepository")
  * @UniqueEntity(fields="code", message="This code is already taken.")
+ * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\ProductFamilyTranslation")
  */
-class ProductFamily
+class ProductFamily implements Translatable
 {
 
     /**
@@ -40,6 +44,14 @@ class ProductFamily
     protected $code;
 
     /**
+     * @var string $label
+     *
+     * @ORM\Column(nullable=true)
+     * @Gedmo\Translatable
+     */
+    protected $label;
+
+    /**
      * @var ArrayCollection $attributes
      *
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\ProductBundle\Entity\ProductAttribute")
@@ -52,11 +64,34 @@ class ProductFamily
     protected $attributes;
 
     /**
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     *
+     * @var string $locale
+     *
+     * @Gedmo\Locale
+     */
+    protected $locale;
+
+    /**
+     * @var ArrayCollection $translations
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="ProductFamilyTranslation",
+     *     mappedBy="foreignKey",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     * )
+     */
+    protected $translations;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->attributes = new ArrayCollection();
+        $this->attributes   = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -135,5 +170,83 @@ class ProductFamily
     public function getAttributes()
     {
         return $this->attributes;
+    }
+
+    /**
+     * Set label
+     *
+     * @param string $label
+     *
+     * @return ProductAttribute
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * Get the label
+     *
+     * return string
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
+     * Define locale used by entity
+     *
+     * @param string $locale
+     *
+     * @return Pim\Bundle\ProductBundle\Entity\ProductFamily
+     */
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get translations
+     *
+     * @return ArrayCollection
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * Add translation
+     *
+     * @param AttributeGroupTranslation $translation
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
+     */
+    public function addTranslation(ProductFamilyTranslation $translation)
+    {
+        if (!$this->translations->contains($translation)) {
+            $this->translations->add($translation);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove translation
+     *
+     * @param AttributeGroupTranslation $translation
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
+     */
+    public function removeTranslation(ProductFamilyTranslation $translation)
+    {
+        $this->translations->removeElement($translation);
+
+        return $this;
     }
 }

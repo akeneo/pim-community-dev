@@ -100,7 +100,7 @@ class ProductFamilyController extends Controller
                 $this->getEntityManager()->persist($family);
                 $this->getEntityManager()->flush();
 
-                $this->get('session')->getFlashBag()->add('success', 'Product family successfully saved');
+                $this->addFlash('success', 'Product family successfully updated');
 
                 return $this->redirect($this->generateUrl('pim_product_productfamily_edit', array('id' => $id)));
             }

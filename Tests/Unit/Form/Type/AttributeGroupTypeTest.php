@@ -1,18 +1,12 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Type;
 
-use Symfony\Component\DependencyInjection\Container;
-
 use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
-
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
-
 use Symfony\Component\Form\Forms;
-
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
-
 use Pim\Bundle\ProductBundle\Form\Type\AttributeGroupType;
-
 use Pim\Bundle\ProductBundle\Tests\Entity\AttributeGroupTestEntity;
 
 /**
@@ -43,9 +37,6 @@ class AttributeGroupTypeTest extends TypeTestCase
     {
         parent::setUp();
 
-        // Create mock container
-        $container = $this->getContainerMock();
-
         // redefine form factory and builder to add translatable field
         $this->builder->add('pim_translatable_field');
         $this->factory = Forms::createFormFactoryBuilder()
@@ -54,31 +45,16 @@ class AttributeGroupTypeTest extends TypeTestCase
                     $this->getMock('Symfony\Component\Validator\ValidatorInterface')
                 )
             )
-            ->addType(new TranslatableFieldType($container))
+            ->addType(new TranslatableFieldType(
+                $this->getMock('Symfony\Component\Validator\ValidatorInterface'),
+                $this->getLocaleManagerMock(),
+                'en_US'
+            ))
             ->getFormFactory();
 
         // Create form type
         $this->type = new AttributeGroupType();
         $this->form = $this->factory->create($this->type);
-    }
-
-    /**
-     * Create mock container for pim_translatable_field
-     *
-     * @return \Symfony\Component\DependencyInjection\Container
-     */
-    protected function getContainerMock()
-    {
-        $localeManager = $this->getLocaleManagerMock();
-        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
-
-        // add locale manager and default locale to container
-        $container = new Container();
-        $container->set('pim_config.manager.locale', $localeManager);
-        $container->set('validator', $validator);
-        $container->setParameter('default_locale', 'default');
-
-        return $container;
     }
 
     /**
