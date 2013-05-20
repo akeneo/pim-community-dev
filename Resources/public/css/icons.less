@@ -3,10 +3,17 @@
   background-position: @x @y;
 }
 
-.icon-caret-down-gray()      { .pim-icon(-3px, -2px); }
+.icon-caret-down-gray()      { .pim-icon(-6px, -4px); }
 .icon-caret-down-lightgray() { .pim-icon(-28px, -2px); }
 .icon-caret-down-white()     { .pim-icon(-53px, -1px); }
-.icon-caret-right()          { .pim-icon(-78px, -2px); }
+.icon-caret-right() {
+  .pim-icon(-6px, -4px);
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
 .icon-caret-up()             { .pim-icon(-103px, -3px); }
 
 .icon-tick-green-small()     { .pim-icon(-128px, -3px); }
