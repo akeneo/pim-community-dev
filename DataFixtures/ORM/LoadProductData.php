@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Price;
+use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 
 /**
 * Load products
@@ -196,10 +197,13 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             // price
             $value = $this->getProductManager()->createFlexibleValue();
             $value->setAttribute($attPrice);
-            $price = new Price();
-            $price->setData(rand(5, 100));
-            $price->setCurrency('USD');
-            $value->setData($price);
+            $currencies = array('USD', 'EUR');
+            foreach ($currencies as $currency) {
+                $price = new ProductPrice();
+                $price->setData(rand(5, 100));
+                $price->setCurrency($currency);
+                $value->addPrice($price);
+            }
             $product->addValue($value);
 
             // date
