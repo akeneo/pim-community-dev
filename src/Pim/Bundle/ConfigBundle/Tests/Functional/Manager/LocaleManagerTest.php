@@ -7,11 +7,11 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Test related class
-*
-* @author    Romain Monceau <romain@akeneo.com>
-* @copyright 2013 Akeneo SAS (http://www.akeneo.com)
-* @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
-*
+ *
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
  */
 class LocaleManagerTest extends WebTestCase
 {
@@ -98,7 +98,7 @@ class LocaleManagerTest extends WebTestCase
     public function testGetLocales()
     {
         $locales = $this->localeManager->getLocales();
-        $expectedLocales = array('en_US', 'fr_FR', 'en_GB', 'fr_CA', 'de_DE');
+        $expectedLocales = array('en_US', 'fr_FR', 'en_GB', 'de_DE', 'fr_CA');
 
         $this->assertCount(5, $locales);
         foreach ($locales as $locale) {
