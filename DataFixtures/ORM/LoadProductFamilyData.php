@@ -59,7 +59,6 @@ class LoadProductFamilyData extends AbstractFixture implements OrderedFixtureInt
         $productFamily = new ProductFamily();
 
         $productFamily->setLabel($name);
-        $productFamily->setDescription($description);
 
         foreach ($attributes as $attribute) {
             $productFamily->addAttribute($attribute);
