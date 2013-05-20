@@ -1,8 +1,6 @@
 <?php
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
-use Pim\Bundle\ProductBundle\Entity\ProductValuePrice;
-
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -11,6 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Price;
+use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 
 /**
 * Load products
@@ -200,7 +199,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $value->setAttribute($attPrice);
             $currencies = array('USD', 'EUR');
             foreach ($currencies as $currency) {
-                $price = new ProductValuePrice();
+                $price = new ProductPrice();
                 $price->setData(rand(5, 100));
                 $price->setCurrency($currency);
                 $value->addPrice($price);
