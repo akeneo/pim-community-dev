@@ -20,6 +20,26 @@
         </div>
     </div>
 
+    <div class="btn-group">
+        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+            <i class="icon-settings"></i>
+            <span class="caret"></span>
+        </a>
+        <div class="dropdown-menu channel">
+            <h5>{{ 'Scope'|trans }}</h5>
+            <div class="controls">
+                <label for="pim_product_default_channel">{{ 'Default channel'|trans }}</label>
+                <select id="pim_product_default_channel">
+                    {% for channel in channels %}
+                        <option value="{{ channel.code }}" data-scope="{{ channel.code }}">{{ channel.name }}</option>
+                    {% endfor %}
+                </select>
+                <a href="#" data-action="expand">{{ 'Expand all channels'|trans }}</a>
+                <a href="#" data-action="collapse">{{ 'Collapse all channels'|trans }}</a>
+            </div>
+        </div>
+    </div>
+
     <form method="POST" class="form-horizontal" action="{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
 
         <div class="navigation clearfix navbar-extra navbar-extra-right">
@@ -56,18 +76,6 @@
 
                             <div class="btn-group">
                                 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                    Displayed channel
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu channel">
-                                    {% for channel in channels %}
-                                        <li><a href="#channel-{{ channel.code }}" data-scope="{{ channel.code }}">{{ channel.name }}</a></li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-
-                            <div class="btn-group">
-                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                                     Locale
                                     <span class="caret"></span>
                                 </a>
@@ -93,7 +101,6 @@
             </div>
         </div>
         <div class="layout-content">
-
 
                 <div id="form-navbar" class="navbar navbar-static scrollspy-nav">
                     <div class="navbar-inner">
@@ -190,10 +197,10 @@
         var updated = false;
 
         $('#updated').css('display', 'none');
-        $('input, textarea, select').change(function(event){
+        $('form input, form textarea, form select').change(function(event){
             updated = true;
             $('#updated').css('display', 'inline-block');
-            $('input, textarea, select').unbind('change');
+            $('form input, form textarea, form select').unbind('change');
         });
 
         $(window).on('beforeunload', function(){
@@ -205,9 +212,6 @@
         $('button[type="submit"]').click(function(event) {
             $(window).unbind('beforeunload');
         });
-
-        $('select').select2({ allowClear: true });
-        $('input.multiselect').select2({ tags: $(this).val() });
 
         $('.tab-pan .control-group .select2-container').each(function() {
             $(this).addClass('span4');
@@ -231,67 +235,22 @@
             }
         });
 
-        /**
-         * Expand or collpase scopable fields group
-         */
-        $('.scopable').each(function() {
-            $(this).children('.control-group').slice(1).hide();
-        });
-
-        $('#attributes').on('click', '.expand', function(event) {
-            var field = $(this).data('field');
-            $('.scopable[data-field="' + field + '"]').children('.control-group').show();
-            $(this)
-                .removeClass('expand')
-                .addClass('collapse')
-            ;
-            $(this)
-                .children('i')
-                .removeClass('icon-chevron-down')
-                .addClass('icon-chevron-up')
-            ;
-        });
-
-        $('#attributes').on('click', '.collapse', function(event) {
-            var field = $(this).data('field');
-            $('.scopable[data-field="' + field + '"]').children('.control-group').slice(1).hide();
-            $(this)
-                .removeClass('collapse')
-                .addClass('expand')
-            ;
-            $(this)
-                .children('i')
-                .removeClass('icon-chevron-up')
-                .addClass('icon-chevron-down')
-            ;
-        });
-
-        /**
-         * Move scopable element which is of the selected displayed channel to the top
-         * of its group of scopable elements
-         */
-        $('.channel a').click(function(event) {
-            var selectedScope = $(this).data('scope');
-            $('.scopable').each(function() {
-                var field = $(this).data('field');
-
-                $(this)
-                    .find('div[data-scope="' + selectedScope + '"]')
-                    .parents('.control-group')
-                    .prependTo(this)
-                ;
-
-                $(this).children('.control-group').first().show();
-                if ($('a[data-field="' + field + '"]').hasClass('expand')) {
-                    $(this).children('.control-group').slice(1).hide();
-                }
-            });
-        });
-
-        $('.dropdown-menu').find('form').click(function (e) {
+        $('.dropdown-menu form, .dropdown-menu.channel').click(function (e) {
             e.stopPropagation();
         });
-        $('#pim_available_product_attributes_attributes').select2('destroy');
+
+        // Destroy Select2 where it's not necessary
+        $('#pim_available_product_attributes_attributes, #pim_product_default_channel').select2('destroy');
+
+        $('#pim_product_default_channel').change(function() {
+            $('.scopable').scopableField({ defaultScope: $(this).val() });
+        });
+
+        $('.dropdown-menu.channel a').click(function (e) {
+            e.preventDefault();
+            $('.scopable').scopableField($(this).data('action'));
+        });
+
     });
     </script>
     <link rel="stylesheet" href="{{ asset('bundles/pimui/css/select2.css') }}" />
