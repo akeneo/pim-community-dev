@@ -56,9 +56,9 @@ class LocaleManagerTest extends WebTestCase
     public function testGetActiveLocales()
     {
         $locales = $this->localeManager->getActiveLocales();
-        $expectedLocales = array('en_US', 'fr_FR', 'en_GB');
+        $expectedLocales = array('en_US', 'fr_FR', 'en_GB', 'de_DE');
 
-        $this->assertCount(3, $locales);
+        $this->assertCount(4, $locales);
         foreach ($locales as $locale) {
             $this->assertContains($locale->getCode(), $expectedLocales);
         }
@@ -84,9 +84,9 @@ class LocaleManagerTest extends WebTestCase
     public function testGetActiveCodes()
     {
         $locales = $this->localeManager->getActiveCodes();
-        $expectedLocales = array('en_US', 'fr_FR', 'en_GB');
+        $expectedLocales = array('en_US', 'fr_FR', 'en_GB', 'de_DE');
 
-        $this->assertCount(3, $locales);
+        $this->assertCount(4, $locales);
         foreach ($locales as $locale) {
             $this->assertContains($locale, $expectedLocales);
         }
@@ -98,9 +98,9 @@ class LocaleManagerTest extends WebTestCase
     public function testGetLocales()
     {
         $locales = $this->localeManager->getLocales();
-        $expectedLocales = array('en_US', 'fr_FR', 'en_GB', 'fr_CA');
+        $expectedLocales = array('en_US', 'fr_FR', 'en_GB', 'fr_CA', 'de_DE');
 
-        $this->assertCount(4, $locales);
+        $this->assertCount(5, $locales);
         foreach ($locales as $locale) {
             $this->assertContains($locale->getCode(), $expectedLocales);
         }
