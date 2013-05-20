@@ -1,6 +1,14 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+use Doctrine\Common\Collections\ArrayCollection;
+
+use Symfony\Component\HttpFoundation\Response;
+
+use Pim\Bundle\ProductBundle\Helper\SegmentHelper;
+
 use Pim\Bundle\ProductBundle\Form\Type\ProductSegmentType;
 use Pim\Bundle\ProductBundle\Entity\ProductSegment;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -28,19 +36,14 @@ class ClassificationTreeController extends Controller
      */
     public function indexAction()
     {
-        $segments = $this->getDoctrine()
-                         ->getEntityManager()
-                         ->getRepository('Pim\Bundle\ProductBundle\Entity\ProductSegment')
-                         ->findAll();
-
-        return array('segments' => $segments);
+        return array();
     }
 
     /**
      * List classification trees
      *
-     * @Route("/list-tree")
-     * @Template("PimProductBundle:ClassificationTree:listTree.html.twig")
+     * @Route("/list-tree.{_format}", requirements={"_format"="json"})
+     * @Template()
      *
      * @return array
      */
@@ -49,6 +52,70 @@ class ClassificationTreeController extends Controller
         $trees = $this->getTreeManager()->getTrees();
 
         return array('trees' => $trees);
+    }
+
+    /**
+     * List children of a segment
+     *
+     * @param ProductSegment $segment
+     *
+     * @Route("/children.{_format}", requirements={"_format"="json"})
+     * @Template()
+     *
+     * @return array
+     */
+    public function childrenAction()
+    {
+        $segment = $this->findSegment($this->getRequest()->get('id'));
+
+        $segments = $this->getTreeManager()->getChildren($segment->getId());
+
+        $data = SegmentHelper::childrenResponse($segments);
+
+        return array('data' => $data);
+    }
+
+
+    /**
+     * Find a segment from its id
+     *
+     * @param integer $segmentId
+     *
+     * @return ProductSegment
+     */
+    protected function findSegment($segmentId)
+    {
+        $segment = $this->getTreeManager()->getEntityRepository()->find($segmentId);
+
+        if (!$segment) {
+            return $this->createNotFoundException('Product Segment not found');
+        }
+
+        return $segment;
+    }
+
+    /**
+     * List products associated with the provided segment
+     *
+     * @param Request $request Request (segment_id)
+     *
+     * @Route("/list-items.{_format}/{id}", requirements={"_format"="json", "id"="\d+"})
+     * @Template()
+     *
+     * @return array
+     *
+     */
+    public function listItemsAction(ProductSegment $segment)
+    {
+        $products = new ArrayCollection();
+
+        if (is_object($segment)) {
+            $products = $segment->getProducts();
+        }
+
+        $data = SegmentHelper::productsResponse($products);
+
+        return array('data' => $data);
     }
 
     /**
@@ -159,6 +226,8 @@ class ClassificationTreeController extends Controller
                 $this->getTreeManager()->getStorageManager()->flush();
 
                 $this->get('session')->getFlashBag()->add('success', 'Product segment successfully saved');
+
+                return $this->redirect($this->generateUrl('pim_product_classificationtree_index'));
             }
         }
 
@@ -172,7 +241,12 @@ class ClassificationTreeController extends Controller
      *
      * @param ProductSegment $segment The segment to delete
      *
-     * @Route("/remove/{id}", requirements={"id"="\d+"})
+     * @Route(
+     *     "/{id}/remove.{_format}",
+     *     requirements={"_format"="json|html", "id"="\d+"},
+     *     defaults={"_format"="html", "id"="\d+"}
+     * )
+     * @Template()
      *
      * @return array
      */
@@ -181,15 +255,19 @@ class ClassificationTreeController extends Controller
         $this->getTreeManager()->remove($segment);
         $this->getTreeManager()->getStorageManager()->flush();
 
-        $this->get('session')->getFlashBag()->add('success', 'Product segment successfully removed');
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new JsonResponse();
+        } else {
+            $this->get('session')->getFlashBag()->add('success', 'Product segment successfully removed');
 
-        return $this->redirect($this->generateUrl('pim_product_classificationtree_index'));
+            return $this->redirect($this->generateUrl('pim_product_classificationtree_index'));
+        }
     }
 
     /**
      * Get classification tree manager
      *
-     * @return \Oro\Bundle\SegmentationTreeBundle\Model\SegmentManager
+     * @return \Oro\Bundle\SegmentationTreeBundle\Manager\SegmentManager
      */
     protected function getTreeManager()
     {

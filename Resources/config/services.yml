@@ -42,7 +42,7 @@ services:
             - [ addAttributeType, ['oro_flexibleentity_text'] ]
             - [ addAttributeType, ['pim_product_textarea'] ]
             - [ addAttributeType, ['oro_flexibleentity_number'] ]
-            - [ addAttributeType, ['oro_flexibleentity_money'] ]
+            - [ addAttributeType, ['pim_product_price_collection'] ]
             - [ addAttributeType, ['pim_product_multiselect'] ]
             - [ addAttributeType, ['pim_product_simpleselect'] ]
             - [ addAttributeType, ['oro_flexibleentity_file'] ]
@@ -120,6 +120,16 @@ services:
         tags:
             - { name: form.type, alias: pim_wysiwyg }
 
+    pim_product.form.type.price:
+        class: Pim\Bundle\ProductBundle\Form\Type\PriceType
+        tags:
+            - { name: form.type, alias: pim_product_price }
+
+    pim_product.form.type.price_collection:
+        class: Pim\Bundle\ProductBundle\Form\Type\PriceCollectionType
+        tags:
+            - { name: form.type, alias: pim_product_price_collection }
+
     # Handlers
     pim_product.form.handler.simple_product:
         class: %simple_product_handler_class%
@@ -163,3 +173,8 @@ services:
         class: Pim\Bundle\ProductBundle\Service\AttributeService
         arguments: [%pim_product.attributes_config%, @product_manager, @pim_config.manager.locale, @oro_flexibleentity.attributetype.factory]
 
+    # twig extension
+    pim_product.twig.product_extension:
+        class: Pim\Bundle\ProductBundle\Twig\ProductExtension
+        tags:
+            - { name: twig.extension }

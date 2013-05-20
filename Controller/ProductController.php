@@ -35,15 +35,19 @@ class ProductController extends Controller
     protected function getProductManager()
     {
         $pm = $this->container->get('product_manager');
-        // force data locale if provided
-        $dataLocale = $this->getRequest()->get('dataLocale');
-        $pm->setLocale($dataLocale);
-        // force data scope if provided
-        $dataScope = $this->getRequest()->get('dataScope');
-        $dataScope = ($dataScope) ? $dataScope : 'ecommerce';
-        $pm->setScope($dataScope);
+        $pm->setLocale($this->getDataLocale());
 
         return $pm;
+    }
+
+    /**
+     * Get data locale
+     *
+     * @return string
+     */
+    protected function getDataLocale()
+    {
+        return $this->getRequest()->get('dataLocale', 'en_US');
     }
 
     /**
@@ -86,46 +90,42 @@ class ProductController extends Controller
      * Create product
      *
      * @param string $dataLocale data locale
-     * @param string $dataScope  data scope
      *
-     * @Route("/create/{dataLocale}/{dataScope}",
-     *      defaults={"dataLocale" = null, "dataScope" = null})
+     * @Route("/create/{dataLocale}", defaults={"dataLocale" = null})
      * @Template("PimProductBundle:Product:edit.html.twig")
      *
      * @return array
      */
-    public function createAction($dataLocale, $dataScope)
+    public function createAction($dataLocale)
     {
         $entity = $this->getProductManager()->createFlexible(true);
 
-        return $this->editAction($entity, $dataLocale, $dataScope);
+        return $this->editAction($entity, $dataLocale);
     }
 
     /**
      * Create product using simple form
      *
      * @param string $dataLocale data locale
-     * @param string $dataScope  data scope
      *
-     * @Route("/quickcreate/{dataLocale}/{dataScope}", defaults={"dataLocale" = null, "dataScope" = null})
+     * @Route("/quickcreate/{dataLocale}", defaults={"dataLocale" = null})
      * @Template("PimProductBundle:Product:quickcreate.html.twig")
      *
      * @return array
      */
-    public function quickCreateAction($dataLocale, $dataScope)
+    public function quickCreateAction($dataLocale)
     {
         $entity = $this->getProductManager()->createFlexible(true);
 
         if ($this->get('pim_product.form.handler.simple_product')->process($entity)) {
             $this->get('session')->getFlashBag()->add('success', 'Product successfully saved');
 
-            $response = array(
-                'status' => 1,
-                'url' => $this->generateUrl('pim_product_product_edit', array(
-                    'id' => $entity->getId(),
-                    'dataLocale' => $entity->getActiveLanguages()->first()->getLanguage()->getCode()
-                ))
+            $dataLocale = $entity->getActiveLanguages()->first()->getLanguage()->getCode();
+            $url = $this->generateUrl(
+                'pim_product_product_edit',
+                array('id' => $entity->getId(), 'dataLocale' => $dataLocale)
             );
+            $response = array('status' => 1, 'url' => $url);
 
             return new Response(json_encode($response));
         }
@@ -134,8 +134,7 @@ class ProductController extends Controller
 
         return array(
             'form'       => $this->get('pim_product.form.simple_product')->createView(),
-            'dataLocale' => $request->query->get('dataLocale', 'en_US'),
-            'dataScope'  => $request->query->get('dataScope'),
+            'dataLocale' => $this->getDataLocale()
         );
     }
 
@@ -174,10 +173,7 @@ class ProductController extends Controller
                         'pim_product_product_edit',
                         array(
                             'id'         => $product->getId(),
-                            'dataLocale' => $request->query->get(
-                                'dataLocale', $this->getParameter('locale')
-                            ),
-                            'dataScope'  => $request->query->get('dataScope'),
+                            'dataLocale' => $this->getDataLocale()
                         )
                     )
                 );
@@ -186,10 +182,7 @@ class ProductController extends Controller
 
         return array(
             'form'           => $form->createView(),
-            'dataLocale'     => $request->query->get(
-                'dataLocale', $this->getParameter('locale')
-            ),
-            'dataScope'      => $request->query->get('dataScope'),
+            'dataLocale'     => $this->getDataLocale(),
             'channels'       => $channels,
             'attributesForm' => $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
             'product'        => $product,
@@ -213,7 +206,6 @@ class ProductController extends Controller
         $attributesForm      = $this->getAvailableProductAttributesForm(
             $product->getAttributes(), $availableAttributes
         );
-
         $attributesForm->bind($this->getRequest());
 
         foreach ($availableAttributes->getAttributes() as $attribute) {
@@ -226,9 +218,7 @@ class ProductController extends Controller
         $this->getProductManager()->save($product);
 
         return $this->redirect(
-            $this->generateUrl(
-                'pim_product_product_edit', array('id' => $product->getId())
-            )
+            $this->generateUrl('pim_product_product_edit', array('id' => $product->getId()))
         );
     }
 

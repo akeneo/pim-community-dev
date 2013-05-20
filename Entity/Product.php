@@ -209,22 +209,32 @@ class Product extends AbstractEntityFlexible
         return array_map(
             function ($value) {
                 return $value->getAttribute();
-            }, $this->getValues()->toArray()
+            },
+            $this->getValues()->toArray()
         );
     }
 
+    /**
+     * Get ordered group
+     * @return string|number|multitype:
+     */
     public function getOrderedGroups()
     {
         $groups = array_map(
             function ($value) {
                 return $value->getVirtualGroup();
-            }, $this->getAttributes()
+            },
+            $this->getAttributes()
         );
-        array_map(function($group){return (string) $group;}, $groups);
+        array_map(
+            function($group) { return (string) $group; },
+            $groups
+        );
         $groups = array_unique($groups);
 
         usort(
-            $groups, function ($a, $b) {
+            $groups,
+            function ($a, $b) {
                 $a = $a->getSortOrder();
                 $b = $b->getSortOrder();
 
@@ -239,7 +249,6 @@ class Product extends AbstractEntityFlexible
                 if ($a > $b && $b < 0) {
                     return -1;
                 }
-
 
                 return $a < $b ? -1 : 1;
             }

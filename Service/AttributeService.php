@@ -252,6 +252,8 @@ class AttributeService
 
         if ($fieldType === 'entity' || $fieldType === 'oro_flexibleentity_metric') {
             $fieldType = 'text';
+        } elseif ($type === 'pim_product_price_collection') {
+            $fieldType = 'number';
         } elseif ($type === 'oro_flexibleentity_boolean') {
             $fieldType = 'checkbox';
         }

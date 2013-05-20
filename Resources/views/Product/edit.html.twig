@@ -6,6 +6,19 @@
 <div class="container-fluid">
 
     {% block content %}
+    <div class="btn-group">
+        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+            <i class="icon-plus"></i> Add attributes
+            <span class="caret"></span>
+        </a>
+        <div class="dropdown-menu">
+            <form method="POST" action="{{ path('pim_product_product_addproductattributes', {'id': product.id}) }}">
+                {{ form_widget(attributesForm.attributes) }}
+                {{ form_widget(attributesForm._token) }}
+                <input type="submit" value="Add" class="btn btn-mini" title="Add attributes"/>
+            </form>
+        </div>
+    </div>
 
     {% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
 
@@ -14,9 +27,7 @@
         'action': path('pim_product_product_addproductattributes', {'id': product.id})
     } %}
 
-    <form method="POST" class="form-horizontal" action="{{ form.vars.value.id ?
-        path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) :
-        path('pim_product_product_create', { dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
+    <form method="POST" class="form-horizontal" action="{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
 
         <div class="navigation clearfix navbar-extra navbar-extra-right">
             <div class="row">
@@ -69,7 +80,7 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     {% for language in form.vars.value.getActiveLanguages() %}
-                                        <li><a href="?dataLocale={{ language.code }}">{{ language.fromLocale(app.request.locale) }}</a></li>
+                                        <li><a href="?dataLocale={{ language.code }}">{{ language.code | trans }}</a></li>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -143,9 +154,6 @@
                                         {% if group.id == groupId %}
                                             {% if attributeCode != formValue.vars.value.attribute.code %}
                                                 </div>
-                                                {% if formValue.vars.value.attribute.scopable %}
-                                                <a href="#" class="expand" data-field="{{ formValue.vars.value.attribute.code }}"><i class="icon-chevron-down"></i></a>
-                                                {% endif %}
                                                 <div class="{{ formValue.vars.value.attribute.scopable ? 'scopable' : '' }}" data-field="{{ formValue.vars.value.attribute.code }}">
                                             {% endif %}
                                             <div class="control-group">

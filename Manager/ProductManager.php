@@ -35,9 +35,8 @@ class ProductManager extends FlexibleManager
      *   1) Persist and flush the entity as usual
      *   2)
      *     2.1) Force the reloading of the object (to be sure all values are loaded)
-     *     2.2) Add values for missing attributes that exist in the product family
-     *     2.3) Add the missing translatable attribute locale values
-     *     2.4) Reflush to save these new values
+     *     2.2) Add missing scope and locale values for each attribute
+     *     2.3) Reflush to save these new values
      *
      * @param Product $product
      */
@@ -49,12 +48,15 @@ class ProductManager extends FlexibleManager
 
         $this->storageManager->refresh($product);
         $this->addMissingAttributeValues($product);
-        $this->addMissingLocaleValues($product);
         $this->storageManager->flush();
     }
 
     /**
-     * Add empty values for attributes specified by the group that the product belongs to
+     * Add empty values for product family and product-specific attributes for relevant scopes and locales
+     *
+     * It makes sure that if an attribute is translatable/scopable, then all values
+     * in the required locales/channels exist. If the attribute is not scopable or
+     * translatable, makes sure that a single value exists.
      *
      * @param Product $product
      *
@@ -62,76 +64,82 @@ class ProductManager extends FlexibleManager
      */
     private function addMissingAttributeValues(Product $product)
     {
-        if ($family = $product->getProductFamily()) {
-            $values = $product->getValues();
-            $existingAttributes = array();
+        $channels  = $this->getChannels();
+        $languages = $product->getActiveLanguages();
+        $attributes = $product->getAttributes();
 
-            foreach ($values as $value) {
-                $attribute = $value->getAttribute();
-                $existingAttributes[] = $attribute;
+        if ($family = $product->getProductFamily()) {
+            foreach ($family->getAttributes() as $attribute) {
+                $attributes[] = $attribute;
+            }
+        }
+
+        $attributes = array_unique($attributes, SORT_REGULAR);
+
+        foreach ($attributes as $attribute) {
+            $existingValues = array();
+            $requiredValues = array();
+
+            foreach ($product->getValues() as $value) {
+                if ($value->getAttribute() === $attribute) {
+                    $existingValues[] = $value->getScope() . ':' . $value->getLocale();
+                }
             }
 
-            foreach ($family->getAttributes() as $attribute) {
-                if (!in_array($attribute, $existingAttributes)) {
-                    $value = $this->createFlexibleValue();
-                    $value->setAttribute($attribute);
-
-                    $product->addValue($value);
+            if ($attribute->getScopable()) {
+                foreach ($channels as $channel) {
+                    foreach ($languages as $language) {
+                        $requiredValues[] = $channel->getCode() . ':' . $language->getCode();
+                    }
                 }
+            } elseif ($attribute->getTranslatable()) {
+                foreach ($languages as $language) {
+                    $requiredValues[] = ':' . $language->getCode();
+                }
+            } else {
+                $requiredValues[] = ':';
+            }
+
+            $missingValues = array_diff($requiredValues, $existingValues);
+            foreach ($missingValues as $value) {
+                $value = explode(':', $value);
+                $scope = $value[0] === '' ? null : $value[0];
+                $locale = $value[1] === '' ? null : $value[1];
+                $this->addProductValue($product, $attribute, $locale, $scope);
             }
         }
     }
 
     /**
-     * Add missing translatable attribute locale value
+     * Return available channels
      *
-     * It makes sure that if an attribute is translatable, then all values
-     * in the locales defined by the entity activated languages exist.
+     * @return ArrayCollection
+     */
+    protected function getChannels()
+    {
+        return $this->storageManager->getRepository('PimConfigBundle:Channel')->findAll();
+    }
+
+    /**
+     * Add a missing value to the product
      *
-     * For example:
-     *   An entity has french and english languages activated.
-     *   It has a translatable attribute "name" with a value in french,
-     *   but the value in english is not available.
-     *   This method will create this value with an empty data.
-     *
-     * @param Product $product
+     * @param Product   $product
+     * @param Attribute $attribute
+     * @param string    $locale
+     * @param string    $scope
      *
      * @return null
      */
-    private function addMissingLocaleValues(Product $product)
+    private function addProductValue(Product $product, $attribute, $locale = null, $scope = null)
     {
-        $values         = $product->getValues();
-        $languages      = $product->getLanguages();
-        $attributes     = array();
-        $missingLocales = array();
-
-        foreach ($values as $value) {
-            $attribute = $value->getAttribute();
-            $attributes[$attribute->getCode()] = $attribute;
-            if (true === $attribute->getTranslatable()) {
-                if (!isset($missingLocales[$attribute->getCode()])) {
-                    $missingLocales[$attribute->getCode()] = $languages->map(function ($language) {
-                        return $language->getCode();
-                    })->toArray();
-                }
-
-                foreach ($languages as $language) {
-                    if ($language->getCode() === $value->getLocale()) {
-                        $missingLocales[$attribute->getCode()] = array_diff($missingLocales[$attribute->getCode()], array($value->getLocale()));
-                    }
-                }
-            }
+        $value = $this->createFlexibleValue();
+        if ($locale) {
+            $value->setLocale($locale);
         }
+        $value->setScope($scope);
+        $value->setAttribute($attribute);
 
-        foreach ($missingLocales as $attribute => $locales) {
-            foreach ($locales as $locale) {
-                $value = new ProductValue;
-                $value->setLocale($locale);
-                $value->setAttribute($attributes[$attribute]);
-
-                $product->addValue($value);
-            }
-        }
+        $product->addValue($value);
     }
 
     /**
