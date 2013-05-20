@@ -89,14 +89,12 @@ class TranslatableFieldType extends AbstractType
     public function getDefaultOptions(array $options = array())
     {
         $options['translation_class'] = false;
-        $options['entity_class'] = false;
-        $options['field'] = false;
-
-        $options['locales'] = $this->getActiveLocales();
-        $options['default_locale'] = $this->defaultLocale;
-        $options['required_locale'] = array($this->defaultLocale);
-
-        $options['widget'] = 'text';
+        $options['entity_class']      = false;
+        $options['field']             = false;
+        $options['locales']           = $this->getActiveLocales();
+        $options['default_locale']    = $this->defaultLocale;
+        $options['required_locale']   = $this->defaultLocale;
+        $options['widget']            = 'text';
 
         return $options;
     }
