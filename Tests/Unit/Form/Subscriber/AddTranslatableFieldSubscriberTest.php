@@ -46,71 +46,137 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
         $target->preSetData($event);
     }
 
+    public static function preSetDataProvider()
+    {
+        return array(
+            array(
+                'requiredLocale'   => 'fr_FR',
+                'locales'          => array('en_US', 'fr_FR'),
+            ),
+            array(
+                'requiredLocale'   => 'en_US',
+                'locales'          => array('fr_FR', 'en_US'),
+            )
+        );
+    }
+
     /**
      * @test
+     * @dataProvider preSetDataProvider
      */
-    public function itsPreSetDataShouldAddFormFieldsForEachTranslations()
+    public function itsPreSetDataShouldAddFormFieldsForEachTranslations($requiredLocale, $locales)
     {
-        $translationFactory = $this->getTranslationFactoryMock();
-        $enTranslation      = $this->getTranslationMock('name', 'en_US');
-        $frTranslation      = $this->getTranslationMock('name', 'fr_FR');
-        $formFactory        = $this->getFormFactoryMock();
-        $target             = $this->getTargetedClass('name', 'text', array('fr_FR'), array('en_US', 'fr_FR'), $formFactory, $translationFactory);
-        $form               = $this->getFormMock();
-        $translatableEntity = $this->getTranslatableEntityMock();
-        $event              = $this->getEventMock($form, $translatableEntity, array());
+        $translationFactory    = $this->getTranslationFactoryMock();
+        $formFactory           = $this->getFormFactoryMock();
+        $target                = $this->getTargetedClass('name', 'text', $requiredLocale, $locales, $formFactory, $translationFactory);
+        $form                  = $this->getFormMock();
+        $translatableEntity    = $this->getTranslatableEntityMock();
+
+        $event = $this->getEventMock($form, $translatableEntity, array());
 
         $translatableEntity->expects($this->once())
                            ->method('setTranslatableLocale')
                            ->with($this->equalTo('default'));
 
-        $translationFactory->expects($this->at(0))
-                           ->method('createTranslation')
-                           ->with($this->equalTo('en_US'))
-                           ->will($this->returnValue($enTranslation));
+        foreach ($locales as $index => $locale) {
+            $translation = $this->getTranslationMock('name', $locale);
 
-        $translationFactory->expects($this->at(1))
-                           ->method('createTranslation')
-                           ->with($this->equalTo('fr_FR'))
-                           ->will($this->returnValue($frTranslation));
+            $translationFactory->expects($this->at($index))
+                               ->method('createTranslation')
+                               ->with($this->equalTo($locale))
+                               ->will($this->returnValue($translation));
 
-        $formFactory->expects($this->at(0))
-                    ->method('createNamed')
-                    ->with(
-                        $this->equalTo('name:en_US'),
-                        $this->equalTo('text'),
-                        $this->equalTo(''),
-                        $this->equalTo(array(
-                            'label'         => 'en_US',
-                            'required'      => false,
-                            'property_path' => false,
-                        ))
-                    )
-                    ->will($this->returnValue($enField = $this->getFormMock()));
+            $formFactory->expects($this->at($index))
+                        ->method('createNamed')
+                        ->with(
+                            $this->equalTo(sprintf('name:%s', $locale)),
+                            $this->equalTo('text'),
+                            $this->equalTo(''),
+                            $this->equalTo(array(
+                                'label'         => $locale,
+                                'required'      => in_array($locale, array($requiredLocale)),
+                                'property_path' => false,
+                            ))
+                        )
+                        ->will($this->returnValue($field = $this->getFormMock()));
 
-        $formFactory->expects($this->at(1))
-                    ->method('createNamed')
-                    ->with(
-                        $this->equalTo('name:fr_FR'),
-                        $this->equalTo('text'),
-                        $this->equalTo(''),
-                        $this->equalTo(array(
-                            'label'         => 'fr_FR',
-                            'required'      => true,
-                            'property_path' => false,
-                        ))
-                    )
-                    ->will($this->returnValue($frField = $this->getFormMock()));
-
-        $form->expects($this->any())
-             ->method('add')
-             ->with($this->equalTo($enField));
-
-        $form->expects($this->any())
-             ->method('add')
-             ->with($this->equalTo($frField));
+            $form->expects($this->any())
+                 ->method('add')
+                 ->with($this->equalTo($field));
+        }
 
         $target->preSetData($event);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldValidateRequiredTranslationsWhenBinding()
+    {
+        $translationFactory = $this->getTranslationFactoryMock();
+        $target             = $this->getTargetedClass('name', 'text', 'fr_FR', array('fr_FR'), null, $translationFactory);
+        $form               = $this->getFormMock();
+        $event              = $this->getEventMock($form);
+
+        $form->expects($this->at(0))
+             ->method('get')
+             ->with($this->equalTo('name:fr_FR'))
+             ->will($this->returnValue($frField = $this->getFormMock()));
+
+        $frField->expects($this->any())
+                ->method('getData')
+                ->will($this->returnValue(null));
+
+        $form->expects($this->once())
+             ->method('addError');
+
+        $translationFactory->expects($this->once())
+                           ->method('createTranslation')
+                           ->with($this->equalTo('fr_FR'))
+                           ->will($this->returnValue($frTranslation = $this->getTranslationMock('name', 'fr_FR')));
+
+        $target->bind($event);
+    }
+
+    /**
+     * @test
+     * @dataProvider preSetDataProvider
+     */
+    public function itShouldAddTranslationIfContentIsProvidedAfterBinding($requiredLocale, $locales)
+    {
+        $translationFactory = $this->getTranslationFactoryMock();
+        $formFactory        = $this->getFormFactoryMock();
+        $target             = $this->getTargetedClass('name', 'text', $requiredLocale, $locales, $formFactory, $translationFactory);
+        $form               = $this->getFormMock();
+        $translatableEntity = $this->getTranslatableEntityMock();
+        $event              = $this->getEventMock($form, $translatableEntity, array());
+
+        foreach ($locales as $index => $locale) {
+            $form->expects($this->at($index+1))
+                 ->method('get')
+                 ->with(sprintf('name:%s', $locale))
+                 ->will($this->returnValue($field = $this->getFormMock()));
+            $field->expects($this->any())
+                  ->method('getData')
+                  ->will($this->returnValue('foo'));
+
+            $translation = $this->getTranslationMock('name', $locale);
+
+            $translationFactory->expects($this->at($index))
+                               ->method('createTranslation')
+                               ->with($this->equalTo($locale))
+                               ->will($this->returnValue($translation));
+
+            $translation->expects($this->once())
+                        ->method('setContent')
+                        ->with($this->equalTo('foo'));
+        }
+
+        $translatableEntity->expects($this->once())
+                           ->method('setTranslatableLocale')
+                           ->with($this->equalTo('default'));
+
+        $target->postBind($event);
     }
 
     protected function getTargetedClass($field = null, $widget = null, $requiredLocale = null, array $locales = array(), $formFactory = null, $translationFactory = null)
@@ -205,7 +271,7 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
         return $this
             ->getMockBuilder('Symfony\Component\Form\Form')
             ->setConstructorArgs(array($config))
-            ->setMethods(array('getParent', 'getData', 'add'))
+            ->setMethods(array('getParent', 'getData', 'add', 'get', 'addError'))
             ->getMock()
         ;
     }

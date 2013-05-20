@@ -75,7 +75,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
         $this->translationFactory = $translationFactory;
         $this->field              = $field;
         $this->widget             = $widget;
-        $this->requiredLocale     = $requiredLocale;
+        $this->requiredLocale     = array($requiredLocale);
         $this->locales            = $locales;
     }
 
@@ -140,20 +140,19 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
             $content = $form->get($fieldName)->getData();
 
             if (null === $content && in_array($locale, $this->requiredLocale)) {
-                $form->addError(
-                    new FormError(
-                        sprintf("Field '%s' for locale '%s' cannot be blank", $this->field, $locale)
-                    )
-                );
-            } else {
-                $translation = $this->createPersonalTranslation($locale);
+                $form->addError(new FormError(sprintf(
+                    'Field "%s" for locale "%s" cannot be blank', $this->field, $locale
+                )));
+            }
 
-                $errors = $this->validator->validate($translation, array(sprintf("%s:%s", $this->field, $locale)));
+            $translation = $this->translationFactory->createTranslation($locale);
+            $translation->setContent($content);
 
-                if (count($errors) > 0) {
-                    foreach ($errors as $error) {
-                        $form->addError(new FormError($error->getMessage()));
-                    }
+            $errors = $this->validator->validate($translation, array(sprintf("%s:%s", $this->field, $locale)));
+
+            if (count($errors) > 0) {
+                foreach ($errors as $error) {
+                    $form->addError(new FormError($error->getMessage()));
                 }
             }
         }
@@ -167,7 +166,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     public function postBind(DataEvent $event)
     {
         $form = $event->getForm();
-        $data = $form->getData();
+        $data = $event->getData();
 
         $entity = $form->getParent()->getData();
         $entity->setTranslatableLocale('default');
@@ -239,7 +238,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
         $collection = array();
 
         foreach ($this->locales as $locale) {
-            $collection[$locale] = $this->field .':'. $locale;
+            $collection[$locale] = sprintf('%s:%s', $this->field, $locale);
         }
 
         return $collection;
