@@ -4,10 +4,11 @@ namespace Pim\Bundle\TranslationBundle\Form\Type;
 
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\FormBuilderInterface;
-use Pim\Bundle\TranslationBundle\Form\Subscriber\AddTranslatableFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Validator\ValidatorInterface;
 use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
+use Pim\Bundle\TranslationBundle\Form\Subscriber\AddTranslatableFieldSubscriber;
+use Pim\Bundle\TranslationBundle\Factory\TranslationFactory;
 
 /**
  * Translatable field type for translation entities
@@ -64,7 +65,13 @@ class TranslatableFieldType extends AbstractType
             throw new FormException('must provide a field');
         }
 
-        $subscriber = new AddTranslatableFieldSubscriber($builder->getFormFactory(), $this->validator, $options);
+        $translationFactory = new TranslationFactory(
+            $options['translation_class'], $options['entity_class'], $options['field']
+        );
+
+        $subscriber = new AddTranslatableFieldSubscriber(
+            $builder->getFormFactory(), $this->validator, $options, $translationFactory
+        );
         $builder->addEventSubscriber($subscriber);
     }
 

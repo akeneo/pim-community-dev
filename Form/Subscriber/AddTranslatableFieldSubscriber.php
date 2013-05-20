@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslatableEntity;
+use Pim\Bundle\TranslationBundle\Factory\TranslationFactory;
 
 /**
  * Define subscriber for translation fields
@@ -29,24 +30,53 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     /**
      * @var FormFactoryInterface
      */
-    private $factory;
+    private $formFactory;
+
+    /**
+     * @var TranslationFactory
+     */
+    private $translationFactory;
+
+    /**
+     * @var string
+     */
+    private $field;
+
+    /**
+     * @var string
+     */
+    private $widget;
+
+    /**
+     * @var string
+     */
+    private $requiredLocale;
 
     /**
      * @var array
      */
-    private $options;
+    private $locales;
 
     /**
      * Constructor
-     * @param FormFactoryInterface $factory   Form factory
+     *
+     * @param FormFactoryInterface $formFactory
      * @param ValidatorInterface   $validator Validator
-     * @param array                $options   Option for fields
+     * @param TranslationFactory   $translationFactory
+     * @param string               $field
+     * @param string               $widget
+     * @param string               $requiredLocale
+     * @param array                $locales
      */
-    public function __construct(FormFactoryInterface $factory, ValidatorInterface $validator, array $options)
+    public function __construct(FormFactoryInterface $formFactory, ValidatorInterface $validator, TranslationFactory $translationFactory, $field, $widget, $requiredLocale, array $locales)
     {
-        $this->factory   = $factory;
-        $this->validator = $validator;
-        $this->options   = $options;
+        $this->formFactory        = $formFactory;
+        $this->validator          = $validator;
+        $this->translationFactory = $translationFactory;
+        $this->field              = $field;
+        $this->widget             = $widget;
+        $this->requiredLocale     = $requiredLocale;
+        $this->locales            = $locales;
     }
 
     /**
@@ -81,19 +111,15 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
 
         $translations = $this->bindTranslations($data);
         foreach ($translations as $binded) {
-            $methodName = 'get'. ucfirst($this->options['field']);
-
-            $content = ($binded['translation']->getContent() !== null) ? $binded['translation']->getContent() : '';
-
             $form->add(
-                $this->factory->createNamed(
+                $this->formFactory->createNamed(
                     $binded['fieldName'],
-                    $this->options['widget'],
-                    $content,
+                    $this->widget,
+                    $binded['translation']->getContent() !== null ? $binded['translation']->getContent() : '',
                     array(
-                        'label' => $binded['locale'],
-                        'required' => in_array($binded['locale'], $this->options['required_locale']),
-                        'property_path'=> false,
+                        'label'         => $binded['locale'],
+                        'required'      => in_array($binded['locale'], $this->requiredLocale),
+                        'property_path' => false,
                     )
                 )
             );
@@ -113,16 +139,16 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
         foreach ($this->getFieldNames() as $locale => $fieldName) {
             $content = $form->get($fieldName)->getData();
 
-            if (null === $content && in_array($locale, $this->options['required_locale'])) {
+            if (null === $content && in_array($locale, $this->requiredLocale)) {
                 $form->addError(
                     new FormError(
-                        sprintf("Field '%s' for locale '%s' cannot be blank", $this->options['field'], $locale)
+                        sprintf("Field '%s' for locale '%s' cannot be blank", $this->field, $locale)
                     )
                 );
             } else {
                 $translation = $this->createPersonalTranslation($locale);
 
-                $errors = $this->validator->validate($translation, array(sprintf("%s:%s", $this->options['field'], $locale)));
+                $errors = $this->validator->validate($translation, array(sprintf("%s:%s", $this->field, $locale)));
 
                 if (count($errors) > 0) {
                     foreach ($errors as $error) {
@@ -158,7 +184,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
                 $translation->setForeignKey($entity);
 
                 if ($translation->getLocale() === 'default') {
-                    $methodName = 'set'. ucfirst($this->options['field']);
+                    $methodName = 'set'. ucfirst($this->field);
                     $entity->$methodName($translation->getContent());
                 }
                 $entity->addTranslation($translation);
@@ -182,7 +208,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
         $availableTranslations = array();
 
         foreach ($data as $translation) {
-            if (strtolower($translation->getField()) == strtolower($this->options['field'])) {
+            if (strtolower($translation->getField()) === strtolower($this->field)) {
                 $availableTranslations[strtolower($translation->getLocale())] = $translation;
             }
         }
@@ -191,7 +217,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
             if (isset($availableTranslations[strtolower($locale)])) {
                 $translation = $availableTranslations[strtolower($locale)];
             } else {
-                $translation = $this->createPersonalTranslation($locale);
+                $translation = $this->translationFactory->createTranslation($locale);
             }
 
             $collection[] = array(
@@ -213,29 +239,10 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     {
         $collection = array();
 
-        foreach ($this->options['locales'] as $locale) {
-            $collection[$locale] = $this->options['field'] .':'. $locale;
+        foreach ($this->locales as $locale) {
+            $collection[$locale] = $this->field .':'. $locale;
         }
 
         return $collection;
-    }
-
-    /**
-     * Create new translation entity
-     *
-     * @param string $locale
-     *
-     * @return object
-     */
-    private function createPersonalTranslation($locale)
-    {
-        $className = $this->options['translation_class'];
-
-        $translation = new $className();
-        $translation->setLocale($locale);
-        $translation->setObjectClass($this->options['entity_class']);
-        $translation->setField($this->options['field']);
-
-        return $translation;
     }
 }
