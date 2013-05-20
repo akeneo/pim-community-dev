@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ProductBundle\Controller;
 
+use Pim\Bundle\ProductBundle\Entity\ProductPrice;
+
 use Symfony\Component\HttpFoundation\Response;
 
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
@@ -316,6 +318,9 @@ class ProductController extends Controller
     private function findProductOr404($id)
     {
         $product = $this->getProductManager()->localizedFind($id);
+        $currencyManager = $this->container->get('pim_config.manager.currency');
+        $this->getProductManager()->addMissingPrices($currencyManager, $product);
+
         if (!$product) {
             throw $this->createNotFoundException(
                 sprintf('Product with id %d could not be found.', $id)
