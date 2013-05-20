@@ -67,7 +67,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute price
         $attributeCode = 'price';
-        $attribute = $this->getProductManager()->createAttribute('pim_product_price');
+        $attribute = $this->getProductManager()->createAttribute('pim_product_price_collection');
         $attribute->setCode($attributeCode);
         $attribute->setLabel('Price');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
