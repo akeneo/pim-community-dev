@@ -12,8 +12,8 @@
 .jstree-default .jstree-closed > ins { background-position:-54px 0; }
 .jstree-default .jstree-leaf > ins { background-position:-36px 0; }
 
-.jstree-default .jstree-hovered { background:#e7f4f9; border:1px solid #d8f0fa; padding:0 2px 0 1px; }
-.jstree-default .jstree-clicked { background:#beebff; border:1px solid #99defd; padding:0 2px 0 1px; }
+.jstree-default .jstree-hovered { background:#f2ebf8; border:1px solid #f2ebf8; padding:0 2px 0 1px; }
+.jstree-default .jstree-clicked { background:#f2ebf8; border:1px solid #f2ebf8; padding:0 2px 0 1px; }
 .jstree-default a .jstree-icon {
     background-position: -56px -19px;
     width: 18px;
@@ -80,3 +80,8 @@ li.jstree-open > a .jstree-icon { background:url("folder_standard_opened.png") 0
 li.jstree-closed > a .jstree-icon { background:url("folder_standard_closed.png") 0px 0px no-repeat !important; }
 li.jstree-leaf > a .jstree-icon { background:url("folder_leaf.png") 0px 0px no-repeat !important; }
 li.jstree-unclassified > a .jstree-icon { background:url("folder_unclassified.png") 0px 0px no-repeat !important; }
+
+.tree-toolbar {
+    bottom: 0;
+    vertical-align: bottom;
+}

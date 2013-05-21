@@ -13,17 +13,14 @@
 
 {% block content %}
     <div class="row-fluid has-resizable-sidebar">
-        <div class="resizable-sidebar" width="250">
-            <div id="tree_menu">
-                <div id="tree"></div>
-                
-                <div class="text-center">
-                    <hr />
-                    <button id="tree-create" class="btn btn-mini"><i class="icon-plus-sign"></i></button>
-                    <button id="tree-edit" class="btn btn-mini"><i class="icon-edit"></i></button>
-                    <button id="tree-duplicate" class="btn btn-mini"><i class="icon-copy"></i></button>
-                    <button id="tree-remove" class="btn btn-mini"><i class="icon-trash"></i></button>
-                </div>
+        <div class="resizable-sidebar tree-sidebar">
+            <div id="tree"></div>
+            
+            <div class="tree-toolbar">
+                <button id="tree-create" class="btn btn-mini"><i class="icon-plus-sign"></i></button>
+                <button id="tree-edit" class="btn btn-mini"><i class="icon-edit"></i></button>
+                <button id="tree-duplicate" class="btn btn-mini"><i class="icon-copy"></i></button>
+                <button id="tree-remove" class="btn btn-mini"><i class="icon-trash"></i></button>
             </div>
         </div>
         
@@ -82,7 +79,7 @@
     var btnRemove = '<button id="segment-remove" class="btn btn-mini"><i class="icon-trash"></i></button>';
     
     // define buttons actions
-    $("#tree_menu button").click(function () {
+    $(".tree-toolbar button").click(function () {
         switch(this.id) {
             case "tree-create":
                 window.location = "{{ path('pim_product_classificationtree_create') }}";
