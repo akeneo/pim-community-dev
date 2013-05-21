@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Helper;
 
+use Pim\Bundle\ProductBundle\Entity\ProductSegment;
+
 /**
  * Segment helper
  *
@@ -27,16 +29,27 @@ class SegmentHelper
         foreach ($segments as $segment) {
             $return[] = array(
                 'attr' => array(
-                    'data-id' => $segment->getId(),
-                    'id'      => 'node_'. $segment->getId(),
-                    'rel'     => 'folder'
+                    'id' => 'node_'. $segment->getId()
                 ),
-                'data' => $segment->getTitle(),
-                'state'=> 'closed'
+                'data'  => $segment->getTitle(),
+                'state' => static::getState($segment)
             );
         }
 
         return $return;
+    }
+
+    /**
+     * Return the state of the segment (leaf if no children, closed otherwise)
+     *
+     * @param ProductSegment $segment
+     *
+     * @return string
+     * @static
+     */
+    protected static function getState(ProductSegment $segment)
+    {
+        return $segment->hasChildren() ? 'closed' : 'leaf';
     }
 
     /**
