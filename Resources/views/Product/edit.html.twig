@@ -7,31 +7,6 @@
 
     {% block content %}
 
-    {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
-        'form': attributesForm,
-        'action': path('pim_product_product_addproductattributes', {'id': product.id})
-    } %}
-
-    <div class="btn-group">
-        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-            <i class="icon-settings"></i>
-            <span class="caret"></span>
-        </a>
-        <div class="dropdown-menu channel">
-            <h5>{{ 'Scope'|trans }}</h5>
-            <div class="controls">
-                <label for="pim_product_default_channel">{{ 'Default channel'|trans }}</label>
-                <select id="pim_product_default_channel">
-                    {% for channel in channels %}
-                        <option value="{{ channel.code }}" data-scope="{{ channel.code }}">{{ channel.name }}</option>
-                    {% endfor %}
-                </select>
-                <a href="#" data-action="expand">{{ 'Expand all channels'|trans }}</a>
-                <a href="#" data-action="collapse">{{ 'Collapse all channels'|trans }}</a>
-            </div>
-        </div>
-    </div>
-
     <form method="POST" class="form-horizontal" action="{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
 
         <div class="navigation clearfix navbar-extra navbar-extra-right">
@@ -94,7 +69,6 @@
         </div>
         <div class="layout-content">
 
-
                 <div id="form-navbar" class="navbar navbar-static scrollspy-nav">
                     <div class="navbar-inner">
                         <div class="row-fluid">
@@ -125,7 +99,36 @@
                                 {% endfor %}
                             </ul>
                         </div>
-                        <div class="span9 tab-content">
+                        <div class="span10 tab-content">
+
+                            <div id="attribute-buttons">
+                                {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
+                                    'form': attributesForm,
+                                    'action': path('pim_product_product_addproductattributes', {'id': product.id})
+                                } %}
+                                <div class="btn-group">
+                                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <i class="icon-settings"></i>
+                                        <span class="caret"></span>
+                                    </a>
+                                    <div class="dropdown-menu channel pull-right">
+                                        <h5>{{ 'Scope'|trans }}</h5>
+                                        <div>
+                                            <label for="default_channel">{{ 'Default channel'|trans }}</label>
+                                            <select id="default_channel">
+                                                {% for channel in channels %}
+                                                    <option value="{{ channel.code }}" data-scope="{{ channel.code }}">{{ channel.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <div>
+                                                <a href="#" data-action="expand">{{ 'Expand all channels'|trans }}</a>
+                                                <a href="#" data-action="collapse">{{ 'Collapse all channels'|trans }}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             {{ form_row(form.id) }}
                             <div class="control-group">
                                 {{ form_label(form.sku, null, { 'label_attr': {'class': 'control-label'} }) }}
@@ -190,10 +193,10 @@
         var updated = false;
 
         $('#updated').css('display', 'none');
-        $('form input, form textarea, form select').change(function(event){
+        $('form [id^="pim_product_"]').change(function(event){
             updated = true;
             $('#updated').css('display', 'inline-block');
-            $('form input, form textarea, form select').unbind('change');
+            $('form [id^="pim_product_"]').unbind('change');
         });
 
         $(window).on('beforeunload', function(){
@@ -228,14 +231,14 @@
             }
         });
 
-        $('.dropdown-menu form, .dropdown-menu.channel').click(function (e) {
+        $('#attribute-buttons .dropdown-menu').click(function (e) {
             e.stopPropagation();
         });
 
         // Destroy Select2 where it's not necessary
-        $('#pim_available_product_attributes_attributes, #pim_product_default_channel').select2('destroy');
+        $('#pim_available_product_attributes_attributes, #default_channel').select2('destroy');
 
-        $('#pim_product_default_channel').change(function() {
+        $('#default_channel').change(function() {
             $('.scopable').scopableField({ defaultScope: $(this).val() });
         });
 
@@ -243,6 +246,9 @@
             e.preventDefault();
             $('.scopable').scopableField($(this).data('action'));
         });
+
+        // TODO: Decide where the SKU field should be displayed
+        $('#pim_product_sku').parent().parent().hide();
 
     });
     </script>
