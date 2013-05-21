@@ -30,7 +30,7 @@ class AttributeGroupController extends Controller
      */
     public function indexAction()
     {
-        $groups = $this->getAttributeGroupRepository()->findAll();
+        $groups = $this->getAttributeGroupRepository()->findAllOrderedBySortOrder();
 
         return array('groups' => $groups);
     }
@@ -62,6 +62,8 @@ class AttributeGroupController extends Controller
      */
     public function editAction(AttributeGroup $group)
     {
+        $groups = $this->getAttributeGroupRepository()->findAllOrderedBySortOrder();
+
         if ($this->get('pim_product.form.handler.attribute_group')->process($group)) {
             $this->get('session')->getFlashBag()->add('success', 'Group successfully saved');
 
