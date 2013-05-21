@@ -2,6 +2,10 @@
 
 namespace Pim\Bundle\ProductBundle\Manager;
 
+use Pim\Bundle\ProductBundle\Entity\ProductPrice;
+
+use Pim\Bundle\ConfigBundle\Manager\CurrencyManager;
+
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Entity\Product;
@@ -118,6 +122,31 @@ class ProductManager extends FlexibleManager
     protected function getChannels()
     {
         return $this->storageManager->getRepository('PimConfigBundle:Channel')->findAll();
+    }
+
+    /**
+     * Add missing prices (a price per currency)
+     *
+     * @param CurrencyManager $manager the currency manager
+     * @param Product         $product the product
+     */
+    public function addMissingPrices(CurrencyManager $manager, Product $product)
+    {
+        foreach ($product->getValues() as $value) {
+            if ($value->getAttribute()->getAttributeType() === 'pim_product_price_collection') {
+                $activeCurrencies = $manager->getActiveCodes();
+                $existingCurrencies = array();
+                foreach ($value->getPrices() as $price) {
+                    $existingCurrencies[]= $price->getCurrency();
+                }
+                $newCurrencies = array_diff($activeCurrencies, $existingCurrencies);
+                foreach ($newCurrencies as $currency) {
+                    $price = new ProductPrice();
+                    $price->setCurrency($currency);
+                    $value->addPrice($price);
+                }
+            }
+        }
     }
 
     /**
