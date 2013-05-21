@@ -150,7 +150,7 @@
                                         {% if group.id == groupId %}
                                             {% if attributeCode != formValue.vars.value.attribute.code %}
                                                 </div>
-                                                <div class="{{ formValue.vars.value.attribute.scopable ? 'scopable' : '' }}" data-field="{{ formValue.vars.value.attribute.code }}">
+                                                <div class="{{ formValue.vars.value.attribute.scopable ? 'scopable' : '' }}{{ formValue.vars.value.attribute.attributeType == 'pim_product_price_collection' ? 'currency' : '' }}" data-field="{{ formValue.vars.value.attribute.code }}">
                                             {% endif %}
                                             <div class="control-group">
                                                 {{ form_widget(formValue, {'attr': {'data-scope': formValue.vars.value.scope}} ) }}
