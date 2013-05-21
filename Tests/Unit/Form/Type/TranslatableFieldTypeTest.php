@@ -123,7 +123,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
             'entity_class'      => false,
             'field'             => false,
             'locales'           => array(self::DEFAULT_LOCALE, 'en_US', 'fr_FR'),
-            'required_locale'   => array(self::DEFAULT_LOCALE),
+            'required_locale'   => self::DEFAULT_LOCALE,
             'translation_class' => false,
             'widget'            => 'text'
         );
