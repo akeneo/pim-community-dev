@@ -41,15 +41,7 @@ var jstree = $('#tree').jstree({
         "valid_children" : [ "folder" ],
         "types" : {
             "default" : {
-                "valid_children" : "folder",
-                "icon" : {
-                    "image" : assetsPath + "images/folder.png"
-                }
-            },
-            "folder" : {
-                "icon" : {
-                    "image" : assetsPath + "images/folder.png"
-                }
+                "valid_children" : "folder"
             }
         }
     },

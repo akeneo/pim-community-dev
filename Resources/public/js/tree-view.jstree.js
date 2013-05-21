@@ -51,7 +51,10 @@ $(tree_id).jstree({
     }
 })
     .bind('loaded.jstree', function(e, tree_select_id) {
-        $(tree_id).jstree('create', null, "last", { "data" : {"title": unclassifiedNodeTitle, "icon": "jstree-unclassified"}}, false, true);
+        $(tree_id).jstree('create', null, "last", { 
+            "attr": { "class": "jstree-unclassified" },
+            "data" : { "title": unclassifiedNodeTitle }
+        }, false, true);
     })
     .bind('select_node.jstree', function (event, node) {
         // TODO : Call list content and backbone filter on datagrid
