@@ -247,50 +247,50 @@ a.accordion-toggle {
 }
 
 .sidebar-list {
-    ul {
-        margin: 10px 0 0 0;
-        li {
-            list-style: none;
-            cursor: pointer;
-            line-height: 35px;
-            padding: 0 10px;
-            a {
-                color: #444444;
-            }
-            a:hover {
-                text-decoration: none;
-            }
-        }
-        li.active {
-            background-color: #eeeeee;
-        }
+  ul {
+    margin: 10px 0 0 0;
+    li {
+      list-style: none;
+      cursor: pointer;
+      line-height: 35px;
+      padding: 0 10px;
+      a {
+        color: #444444;
+      }
+      a:hover {
+        text-decoration: none;
+      }
     }
+    li.active {
+      background-color: #eeeeee;
+    }
+  }
 }
 
 .groups {
-    margin: 10px 0;
-    thead {
-        tr {
-            border-top: 1px solid #dfdfdf;
-            border-bottom: 1px solid #dfdfdf;
-            background-color: #f3f3f3;
-            th {
-                line-height: 6px;
-            }
-        }
+  margin: 10px 0;
+  thead {
+    tr {
+      border-top: 1px solid #dfdfdf;
+      border-bottom: 1px solid #dfdfdf;
+      background-color: #f3f3f3;
+      th {
+        line-height: 6px;
+      }
     }
-    tbody, tbody + tbody {
-        border: 0;
-        tr.group {
-            border-bottom: 1px solid #d8d8d8;
-            background-color: #ffffff;
-            font-weight: bold;
-        }
-        tr {
-            border-bottom: 1px solid #ebebeb;
-            background-color: #f8f8f8;
-        }
+  }
+  tbody, tbody + tbody {
+    border: 0;
+    tr.group {
+      border-bottom: 1px solid #d8d8d8;
+      background-color: #ffffff;
+      font-weight: bold;
     }
+    tr {
+      border-bottom: 1px solid #ebebeb;
+      background-color: #f8f8f8;
+    }
+  }
 }
 
 #form-tab tbody td {
@@ -524,6 +524,50 @@ div.dropdown-menu.channel {
   }
   select {
     width: auto;
+  }
+}
+
+.form-horizontal .tab-content .tab-pane {
+  min-height: 300px;
+}
+
+.product-title {
+  line-height: 28px;
+}
+
+#locale-switcher {
+  span.dropdown-toggle {
+    color: @textColor;
+    margin-bottom: 0;
+    padding: 3px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: none;
+    .caret {
+      margin-top: 6px;
+    }
+  }
+  .dropdown-menu {
+    padding: 0;
+    li>a {
+      padding: 5px;
+      color: @textColor;
+      &:hover, &:active, &:focus {
+        background-color: #f1f1f1;
+        background-image: none;
+      };
+      span.code {
+        color: @textColor + #444;
+        float: left;
+        text-align: right;
+        width: 70px;
+      }
+      span.title {
+        font-weight: bold;
+        margin: 0 10px;
+        font-size: 12px;
+      }
+    }
   }
 }
 
