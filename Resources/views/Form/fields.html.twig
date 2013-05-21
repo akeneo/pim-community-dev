@@ -162,3 +162,25 @@
     {% endif %}
 {% endspaceless %}
 {% endblock checkbox_widget %}
+
+{% block oro_flexibleentity_metric_widget %}
+{% spaceless %}
+    {{ form_widget(form.unit) }}
+    {{ form_widget(form.data) }}
+{% endspaceless %}
+{% endblock oro_flexibleentity_metric_widget %}
+
+{% block pim_product_price_collection_widget %}
+    {% for child in form.children %}
+        {{ form_widget(child) }}
+    {% endfor %}
+{% endblock pim_product_price_collection_widget %}
+
+{% block pim_product_price_widget %}
+{% spaceless %}
+    {{ form_widget(form.currency) }}
+    {{ form_row(form.data, {label:currencySymbol(form.currency.vars.value)} ) }}
+{% endspaceless %}
+{% endblock pim_product_price_widget %}
+
+

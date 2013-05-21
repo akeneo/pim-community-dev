@@ -11,7 +11,7 @@
  *      PimAjax.remove(myURL, '');
  *      if (PimAjax.isSuccessfull()) return true;
  */
-var PimAjax = new function() {
+var PimAjax = function() {
     /**
      * Synchronous request call with jQuery ajax component
      * @param string type Request type
@@ -39,7 +39,7 @@ var PimAjax = new function() {
      * @param string url The url to which the request is sent
      * @param string|PlainObject data Data to be sent to the server
      */
-    this.delete = function(url, data) {
+    this.ajaxDelete = function(url, data) {
         PimAjax.ajax('DELETE', url, data);
     },
     
@@ -48,7 +48,7 @@ var PimAjax = new function() {
      * @param string url The url to which the request is sent
      * @param string|PlainObject data Data to be sent to the server
      */
-    this.get = function(url, data) {
+    this.ajaxGet = function(url, data) {
         PimAjax.ajax('GET', url, data);
     },
     
@@ -57,7 +57,7 @@ var PimAjax = new function() {
      * @param string url The url to which the request is sent
      * @param string|PlainObject data Data to be sent to the server
      */
-    this.post = function(url, data) {
+    this.ajaxPost = function(url, data) {
         PimAjax.ajax('POST', url, data);
     },
     
@@ -84,5 +84,6 @@ var PimAjax = new function() {
      */
     this.isAsync = function() {
         return PimAjax.async || false;
-    }
-}
+    };
+};
+

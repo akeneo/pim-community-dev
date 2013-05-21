@@ -386,3 +386,130 @@ div.ui-dialog {
     padding: 20px;
   }
 }
+
+form .scopable {
+  margin-bottom: 10px;
+  .control-group {
+    margin: 0;
+  }
+  &>.control-group {
+    &:first-of-type {
+      .control-label {
+        background-color: @backgroundColor-white;
+        font-weight: bold;
+        border-top-left-radius: 3px;
+      }
+      input, select, textarea {
+        border-top-right-radius: 3px;
+      }
+      .controls:first-child {
+        margin-left: 20px;
+      }
+    }
+    &:last-of-type {
+      .control-label {
+        border-bottom-left-radius: 3px;
+      }
+      input, select, textarea {
+        border-bottom-right-radius: 3px;
+      }
+    }
+    &.selected {
+      .control-label {
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+      }
+      input, select, textarea {
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+      }
+    }
+  }
+  div.controls {
+    .control-label {
+      font-weight: normal;
+      background-color: #fbfbfb;
+      padding-top: 4px;
+      width: 100px;
+      margin-bottom: 0;
+      border-radius: 0;
+      float: left;
+      text-align: right;
+      span {
+        position: relative;
+        float: left;
+        left: -5px;
+        top: -4px;
+        padding: 4px 5px;
+        height: 100%;
+      }
+    }
+    ul.wysihtml5-toolbar {
+      width: 655px;
+      height: 42px;
+    }
+    input, select, textarea {
+      border-radius: 0;
+    }
+  }
+}
+
+div.dropdown-menu.channel {
+  padding: 10px;
+  h5 {
+    text-transform: uppercase;
+    margin: 0;
+  }
+  a {
+    display: block;
+  }
+  label {
+    float: left;
+    line-height: 26px;
+    margin-right: 10px;
+  }
+  select {
+    width: auto;
+  }
+}
+
+/* Icons */
+i {
+  &.icon-caret-down-gray { .icon-caret-down-gray(); }
+  &.icon-caret-down-lightgray { .icon-caret-down-lightgray(); }
+  &.icon-caret-down-white { .icon-caret-down-white(); }
+  &.icon-caret-right { .icon-caret-right(); }
+  &.icon-caret-up { .icon-caret-up(); }
+  &.icon-tick-green-small { .icon-tick-green-small(); }
+  &.icon-tick-green { .icon-tick-green(); }
+  &.icon-tick-yellow { .icon-tick-yellow(); }
+  &.icon-expand { .icon-expand(); }
+  &.icon-collapse { .icon-collapse(); }
+  &.icon-copy-gray { .icon-copy-gray(); }
+  &.icon-copy-white { .icon-copy-white(); }
+  &.icon-edit { .icon-edit(); }
+  &.icon-pencil { .icon-pencil(); }
+  &.icon-pencil-blue { .icon-pencil-blue(); }
+  &.icon-pin { .icon-pin(); }
+  &.icon-trash { .icon-trash(); }
+  &.icon-dots-gray { .icon-dots-gray(); }
+  &.icon-dots-lightgray { .icon-dots-lightgray(); }
+  &.icon-dots-white { .icon-dots-white(); }
+  &.icon-home { .icon-home(); }
+  &.icon-shout { .icon-shout(); }
+  &.icon-help { .icon-help(); }
+  &.icon-search { .icon-search(); }
+  &.icon-shortcuts { .icon-shortcuts(); }
+  &.icon-alert { .icon-alert(); }
+  &.icon-alert-small { .icon-alert-small(); }
+  &.icon-plus { .icon-plus(); }
+  &.icon-document { .icon-document(); }
+  &.icon-close-lightgray { .icon-close-lightgray(); }
+  &.icon-close-gray { .icon-close-gray(); }
+  &.icon-close-darkgray { .icon-close-darkgray(); }
+  &.icon-close-white { .icon-close-white(); }
+  &.icon-close-green { .icon-close-green(); }
+  &.icon-close-purple { .icon-close-purple(); }
+  &.icon-close-red { .icon-close-red(); }
+  &.icon-close-yellow { .icon-close-yellow(); }
+}
