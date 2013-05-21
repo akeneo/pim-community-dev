@@ -1,4 +1,4 @@
-var jstree = $('#tree').jstree({
+$(tree_id).jstree({
     "core" : {
         "animation" : 200
     },
@@ -7,7 +7,7 @@ var jstree = $('#tree').jstree({
     ],
     "tree_selector" : {
         "ajax" : {
-            "url" : "list-tree.json"
+            "url" : urlListTree
         },
         "auto_open_root" : true
     },
@@ -26,7 +26,7 @@ var jstree = $('#tree').jstree({
             }
         ],
         "ajax" : {
-            "url" : "children.json",
+            "url" : urlChildren,
             "data" : function (node) {
                 // the result is fed to the AJAX request `data` option
                 return {
@@ -42,14 +42,6 @@ var jstree = $('#tree').jstree({
         "types" : {
             "default" : {
                 "valid_children" : "folder",
-                "icon" : {
-                    "image" : assetsPath + "images/folder.png"
-                }
-            },
-            "folder" : {
-                "icon" : {
-                    "image" : assetsPath + "images/folder.png"
-                }
             }
         }
     },
@@ -58,25 +50,11 @@ var jstree = $('#tree').jstree({
         "select_multiple_modifier" : false
     }
 })
-    .bind('trees_loaded.jstree', function(e, tree_select_id) {
-        $('#'+tree_select_id).uniform();
-    })
-    .bind("remove.jstree", function (e, data) {
-        data.rslt.obj.each(function () {
-            var id = $(this).attr("id").replace('node_', '');
-            $.post(id+'/remove');
-            data.inst.refresh();
-        });
+    .bind('loaded.jstree', function(e, tree_select_id) {
+        $(tree_id).jstree('create', null, "last", { "data" : {"title": unclassifiedNodeTitle, "icon": "jstree-unclassified"}}, false, true);
     })
     .bind('select_node.jstree', function (event, node) {
-        $('.node-action').remove();
-        node.rslt.obj.before('<div style="display: inline-block; valign: top;" align="right" class="node-action pull-right">'
-                + btnCreate
-                + btnUpdate
-                + btnRemove
-            + '</div>');
-        $('#segment-create').on('click', function(event) { fctCreate(); });
-        $('#segment-edit').on('click', function(event) { fctEdit(); });
-        $('#segment-remove').on('click', function(event) { fctRemove(); });
+        // TODO : Call list content and backbone filter on datagrid
+        console.log('select node');
     })
     ;

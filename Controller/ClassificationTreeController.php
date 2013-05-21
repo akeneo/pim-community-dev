@@ -140,40 +140,6 @@ class ClassificationTreeController extends Controller
     }
 
     /**
-     * Show tree in view mode
-     *
-     * @param ProductSegment $treeRoot
-     *
-     * @Route(
-     *     "/view/{treeRoot}",
-     *     requirements={"treeRoot"="\d+"},
-     *     defaults={"treeRoot"=0}
-     * )
-     * @Template("PimProductBundle:ClassificationTree:manage.html.twig")
-     *
-     * @return array
-     */
-    public function viewAction(ProductSegment $treeRoot)
-    {
-        $segments = $this->getTreeManager()->getTreeSegments($treeRoot);
-
-        // TODO : for each dynamic segment, get possible values and count products
-
-        $unclassifiedNode = $this->getTreeManager()->getSegmentInstance();
-        $unclassifiedNode->setParent($treeRoot);
-        $unclassifiedNode->setIsDynamic(true);
-        $unclassifiedNode->setTitle('Unclassified node');
-        $unclassifiedNode->setCode('unclassified-node');
-        $unclassifiedNode->setRoot($treeRoot->getId());
-
-        $treeRoot->addChild($unclassifiedNode);
-
-        $segments[] = $unclassifiedNode;
-
-        return array('segments' => $segments);
-    }
-
-    /**
      * Create segment action
      *
      * @param ProductSegment $parent

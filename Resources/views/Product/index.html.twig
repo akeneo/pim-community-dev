@@ -7,6 +7,12 @@
 
     {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#product-grid'} %}
     {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
+    
+    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.cookie.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.hotkeys.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.jstree.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.jstree.tree_selector.js') }}"></script>
+    
     <script>
         $(document).dialogForm({ trigger: '#create-product', url: 'quickcreate' });
     </script>
@@ -15,14 +21,23 @@
 {% block page_container %}
 <div class="container-fluid">
     {% block content %}
-    <div class="usser-row">
-        <h1>{{ title }}
-            <a id="create-product" class="btn btn-primary pull-right" style="margin-left:10px;"
-                href="{{ path('pim_product_product_create') }}">{{ 'New product'|trans }}</a>
-        </h1>
-
-        <div id="product-grid"></div>
+    <div class="row-fluid has-resizable-sidebar">
+        <div class="resizable-sidebar" height="100%">
+            <div id="tree"></div>
+        </div>
+        <div id="form-tab" class="resizable-content">
+            <div id="product-grid"></div>
+        </div>
     </div>
     {% endblock %}
 </div>
+
+<script type="text/javascript">
+    var assetsPath = "{{ asset('bundles/pimproduct/') }}";
+    var tree_id = "#tree";
+    var urlListTree = "{{ path('pim_product_classificationtree_listtree', { '_format': 'json' }) }}";
+    var urlChildren = "{{ path('pim_product_classificationtree_children', { '_format': 'json' }) }}";
+    var unclassifiedNodeTitle = "{{ 'Unclassified node' | trans }}";
+</script>
+<script type="text/javascript" src="{{ asset('bundles/pimproduct/js/tree-view.jstree.js') }}"></script>
 {% endblock %}
