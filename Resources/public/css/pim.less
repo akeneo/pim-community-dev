@@ -383,7 +383,16 @@ div.ui-dialog {
   }
   .tab-content {
     border-left: 1px solid #BBBBBB;
-    padding: 20px;
+    .tab-pane h3 {
+      background-color: #fafafa;
+      margin-top: 0;
+      padding-left: 20px;
+    }
+  }
+  #attribute-buttons {
+    position: relative;
+    float: right;
+    top: 4px;
   }
 }
 
@@ -462,6 +471,8 @@ div.dropdown-menu.channel {
   }
   a {
     display: block;
+    float: left;
+    clear: both;
   }
   label {
     float: left;
