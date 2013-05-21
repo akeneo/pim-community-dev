@@ -18,13 +18,6 @@ var jstree = $('#tree').jstree({
         "url" : assetsPath + "/css/style.css"
     },
     "json_data" : {
-        "data" : [
-            {
-                "data": "Loading root...",
-                "state": "closed",
-                "attr" : { "id" : "node_1"}
-            }
-        ],
         "ajax" : {
             "url" : "children.json",
             "data" : function (node) {
@@ -59,7 +52,7 @@ var jstree = $('#tree').jstree({
     }
 })
     .bind('trees_loaded.jstree', function(e, tree_select_id) {
-        $('#'+tree_select_id).uniform();
+        $('#'+tree_select_id).select2();
     })
     .bind("remove.jstree", function (e, data) {
         data.rslt.obj.each(function () {
