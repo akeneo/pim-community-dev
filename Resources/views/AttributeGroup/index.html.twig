@@ -3,25 +3,32 @@
 {% set title = 'Groups overview'|trans %}
 
 {% block content %}
+
+    {% set currentGroup = group is defined ? group : null %}
+
     <div class="row-fluid has-resizable-sidebar">
         <div class="resizable-sidebar">
             <form id="pim_product_attributegroup_sort" action="{{ path('pim_product_attributegroup_sort') }}" method="POST">
-                <ul id="entities-sortable">
-                    {% for group in groups %}
-                        <li data-id="{{ group.id }}">
-                            <span class="handle">
-                                <i class="icon-list"></i>
-                                <input name="{{ group.id }}" type="hidden" value="{{ group.sortOrder }}">
-                            </span>
-                            <span>{{ group.name }}</span>
-                        </li>
-                    {% endfor %}
-                </ul>
+            <ul id="entities-sortable">
+                {% for group in groups %}
+                    <li class="{{ group == currentGroup ? 'active' : '' }}">
+                        <span class="handle">
+                            <i class="icon-list"></i>
+                            <input name="{{ group.id }}" type="hidden" value="{{ group.sortOrder }}">
+                        </span>
+                        <a href="{{ path('pim_product_attributegroup_edit', {'id': group.id}) }}">{{ group.name }}</a>
+                    </li>
+                {% endfor %}
+                <li>
+                    <a id="attributegroup-create" class="btn btn-small" href="{{ path('pim_product_attributegroup_create') }}">{{ 'New group'|trans }}</a>
+                </li>
+            </ul>
             </form>
-            <a id="attributegroup-create" class="btn btn-small" href="{{ path('pim_product_attributegroup_create') }}">{{ 'New group'|trans }}</a>
         </div>
         <div id="form-tab" class="resizable-content">
+            {% block groupTab %}
             <h3>{{ title }}</h3>
+            {% endblock groupTab %}
         </div>
     </div>
 
@@ -47,28 +54,6 @@
                     data: $('#pim_product_attributegroup_sort').serialize()
                 });
             }
-
-            $('#entities-sortable li').click(function() {
-                $(this).siblings().removeClass('active');
-                $(this).addClass('active');
-                var id = $(this).attr('data-id');
-                $.get('{{ path('pim_product_attributegroup_edit') }}' + '/' + id, null, function(data, status) {
-                    if (status === 'success') {
-                        $('#form-tab').html(data);
-                    }
-                });
-            });
-
-            $('#attributegroup-create').click(function(e) {
-                e.preventDefault();
-                $('#entities-sortable li').removeClass('active');
-                $.get('{{ path('pim_product_attributegroup_create') }}', null, function(data, status) {
-                    if (status === 'success') {
-                        $('#form-tab').html(data);
-                    }
-                });
-            });
-
         });
     </script>
 
