@@ -26,6 +26,10 @@
             <div id="tree"></div>
         </div>
         <div id="form-tab" class="resizable-content">
+            <h1>{{ title }}
+                <a id="create-product" class="btn btn-primary pull-right" style="margin-left:10px;"
+                    href="{{ path('pim_product_product_create') }}">{{ 'New product'|trans }}</a>
+            </h1>
             <div id="product-grid"></div>
         </div>
     </div>
