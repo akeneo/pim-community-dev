@@ -7,7 +7,7 @@
     {% set currentFamily = family is defined ? family : null %}
 
     <div class="row-fluid has-resizable-sidebar">
-        <div class="resizable-sidebar">
+        <div class="resizable-sidebar sidebar-list">
             <ul>
                 {% for family in families %}
                 <li class="{{ family == currentFamily ? 'active' : '' }}"><a href="{{ path('pim_product_productfamily_edit', {'id': family.id}) }}">{{ family.label }}</a></li>
