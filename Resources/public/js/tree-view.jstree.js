@@ -22,8 +22,15 @@ $(tree_id).jstree({
             "url" : urlChildren,
             "data" : function (node) {
                 // the result is fed to the AJAX request `data` option
+                var id = null;
+
+                if (node && node != -1) {
+                    id = node.attr("id").replace('node_','');
+                } else{
+                    id = 1;
+                }
                 return {
-                    "id" : node.attr("id").replace('node_','')
+                    "id" : id
                 };
             }
         }
@@ -34,7 +41,7 @@ $(tree_id).jstree({
         "valid_children" : [ "folder" ],
         "types" : {
             "default" : {
-                "valid_children" : "folder",
+                "valid_children" : "folder"
             }
         }
     },

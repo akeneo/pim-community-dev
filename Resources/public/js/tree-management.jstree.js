@@ -22,8 +22,15 @@ var jstree = $('#tree').jstree({
             "url" : urlChildren,
             "data" : function (node) {
                 // the result is fed to the AJAX request `data` option
+                var id = null;
+
+                if (node && node != -1) {
+                    id = node.attr("id").replace('node_','');
+                } else{
+                    id = 1;
+                }
                 return {
-                    "id" : node.attr("id").replace('node_','')
+                    "id" : id
                 };
             }
         }
@@ -52,16 +59,5 @@ var jstree = $('#tree').jstree({
             $.post(id+'/remove');
             data.inst.refresh();
         });
-    })
-    .bind('select_node.jstree', function (event, node) {
-        $('.node-action').remove();
-        node.rslt.obj.before('<div style="display: inline-block; valign: top;" align="right" class="node-action pull-right">'
-                + btnCreate
-                + btnUpdate
-                + btnRemove
-            + '</div>');
-        $('#segment-create').on('click', function(event) { fctCreate(); });
-        $('#segment-edit').on('click', function(event) { fctEdit(); });
-        $('#segment-remove').on('click', function(event) { fctRemove(); });
     })
     ;
