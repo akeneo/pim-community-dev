@@ -3047,12 +3047,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/SegmentationTreeBundle.git",
-                "reference": "c1fc11c0ea73828050b470ec7336529f650a4f0d"
+                "reference": "9039c14724c36a2805e55b1768da25b91595fe12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/SegmentationTreeBundle/zipball/c1fc11c0ea73828050b470ec7336529f650a4f0d",
-                "reference": "c1fc11c0ea73828050b470ec7336529f650a4f0d",
+                "url": "https://api.github.com/repos/laboro/SegmentationTreeBundle/zipball/9039c14724c36a2805e55b1768da25b91595fe12",
+                "reference": "9039c14724c36a2805e55b1768da25b91595fe12",
                 "shasum": ""
             },
             "require": {
@@ -3089,7 +3089,7 @@
                 "source": "https://github.com/laboro/SegmentationTreeBundle/tree/master",
                 "issues": "https://github.com/laboro/SegmentationTreeBundle/issues"
             },
-            "time": "2013-05-07 15:26:42"
+            "time": "2013-05-21 15:26:42"
         },
         {
             "name": "oro/soap-bundle",
