@@ -11,9 +11,11 @@
     
 {% endblock %}
 
-{% block content %}
-    <div class="row-fluid has-resizable-sidebar">
-        <div class="resizable-sidebar tree-sidebar">
+{% block page_container %}
+<div class="container-fluid classification">
+    {% block content %}
+    <div class="row-fluid">
+        <div class="span2 tree-sidebar">
             <div id="tree"></div>
             
             <div class="tree-toolbar">
@@ -24,7 +26,7 @@
             </div>
         </div>
         
-        <div id="form-tab" class="resizable-content">
+        <div id="form-tab" class="span10">
             <h3>{{ title }}</h3>
             
             <div id="list">
@@ -110,4 +112,6 @@
     });
 </script>
 <script type="text/javascript" src="{{ asset('bundles/pimproduct/js/tree-management.jstree.js') }}"></script>
+{% endblock %}
+</div>
 {% endblock %}
