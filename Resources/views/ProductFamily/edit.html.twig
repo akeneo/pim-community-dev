@@ -68,10 +68,12 @@
 </form>
 
         <div class="tab-pane" id="attributes">
-            {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
-                'form': attributesForm,
-                'action': path('pim_product_productfamily_addproductattributes', {'id': family.id})
-            } %}
+            <div id="attribute-buttons">
+                {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
+                    'form': attributesForm,
+                    'action': path('pim_product_productfamily_addproductattributes', {'id': family.id})
+                } %}
+            </div>
             <table class="table groups">
                 <thead>
                     <th>{{ 'Label'|upper }}</th>
