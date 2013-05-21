@@ -11,23 +11,22 @@
     
 {% endblock %}
 
-{% block content %}
-    <div class="row-fluid has-resizable-sidebar">
-        <div class="resizable-sidebar" width="250">
-            <div id="tree_menu">
-                <div id="tree"></div>
-                
-                <div class="text-center">
-                    <hr />
-                    <button id="tree-create" class="btn btn-small"><i class="icon-plus-sign"></i></button>
-                    <button id="tree-edit" class="btn btn-small"><i class="icon-edit"></i></button>
-                    <button id="tree-duplicate" class="btn btn-small"><i class="icon-copy"></i></button>
-                    <button id="tree-remove" class="btn btn-small"><i class="icon-trash"></i></button>
-                </div>
+{% block page_container %}
+<div class="container-fluid classification">
+    {% block content %}
+    <div class="row-fluid">
+        <div class="span2 tree-sidebar">
+            <div id="tree"></div>
+            
+            <div class="tree-toolbar">
+                <button id="tree-create" class="btn btn-mini"><i class="icon-plus-sign"></i></button>
+                <button id="tree-edit" class="btn btn-mini"><i class="icon-edit"></i></button>
+                <button id="tree-duplicate" class="btn btn-mini"><i class="icon-copy"></i></button>
+                <button id="tree-remove" class="btn btn-mini"><i class="icon-trash"></i></button>
             </div>
         </div>
         
-        <div id="form-tab" class="resizable-content">
+        <div id="form-tab" class="span10">
             <h3>{{ title }}</h3>
             
             <div id="list">
@@ -39,6 +38,9 @@
 <script type="text/javascript">
     var assetsPath = "{{ asset('bundles/pimproduct/') }}";
     var tree_id = "#tree";
+    var urlListTree = "{{ path('pim_product_classificationtree_listtree', { '_format': 'json' }) }}";
+    var urlChildren = "{{ path('pim_product_classificationtree_children', { '_format': 'json' }) }}";
+    
     // define action when click on dynamic buttons
     var fctCreate = function() {
         var node = $.jstree._focused().get_selected();
@@ -79,7 +81,7 @@
     var btnRemove = '<button id="segment-remove" class="btn btn-mini"><i class="icon-trash"></i></button>';
     
     // define buttons actions
-    $("#tree_menu button").click(function () {
+    $(".tree-toolbar button").click(function () {
         switch(this.id) {
             case "tree-create":
                 window.location = "{{ path('pim_product_classificationtree_create') }}";
@@ -109,5 +111,7 @@
         }
     });
 </script>
-<script type="text/javascript" src="{{ asset('bundles/pimproduct/js/classificationtree.jstree.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/pimproduct/js/tree-management.jstree.js') }}"></script>
+{% endblock %}
+</div>
 {% endblock %}

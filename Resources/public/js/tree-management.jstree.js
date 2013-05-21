@@ -7,7 +7,7 @@ var jstree = $('#tree').jstree({
     ],
     "tree_selector" : {
         "ajax" : {
-            "url" : "list-tree.json"
+            "url" : urlListTree
         },
         "auto_open_root" : true
     },
@@ -19,7 +19,7 @@ var jstree = $('#tree').jstree({
     },
     "json_data" : {
         "ajax" : {
-            "url" : "children.json",
+            "url" : urlChildren,
             "data" : function (node) {
                 // the result is fed to the AJAX request `data` option
                 return {
@@ -34,15 +34,7 @@ var jstree = $('#tree').jstree({
         "valid_children" : [ "folder" ],
         "types" : {
             "default" : {
-                "valid_children" : "folder",
-                "icon" : {
-                    "image" : assetsPath + "images/folder.png"
-                }
-            },
-            "folder" : {
-                "icon" : {
-                    "image" : assetsPath + "images/folder.png"
-                }
+                "valid_children" : "folder"
             }
         }
     },

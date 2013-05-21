@@ -1,14 +1,11 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Entity;
 
 use Gedmo\Translatable\Translatable;
-
 use Gedmo\Mapping\Annotation as Gedmo;
-
 use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
-
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\AttributeGroupRepository")
  * @ORM\Table(name="pim_attribute_group")
  * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation")
  */
