@@ -68,7 +68,7 @@ class AttributeGroupController extends Controller
             $this->get('session')->getFlashBag()->add('success', 'Group successfully saved');
 
             return $this->redirect(
-                $this->generateUrl('pim_product_attributegroup_index')
+                $this->generateUrl('pim_product_attributegroup_edit', array('id' => $group->getId()))
             );
         }
 
