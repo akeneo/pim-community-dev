@@ -31,28 +31,30 @@
                 <div class="pull-left">
                     <div class="customer-info well-small" style="padding-left: 21px;">
                         <div class="customer-content pull-left">
-                            <div class="clearfix-oro">
+                            <div class="product-title clearfix-oro">
                                 <div class="sub-title">{{ 'Products'|trans }}</div>
                                 <span class="separator">/</span>
-                                <h1 class="usser-name">{{ form.vars.value.sku }}</h1>
+                                <div id="locale-switcher" class="btn-group sub-title">
+                                    <span class="usser-name dropdown-toggle" data-toggle="dropdown">
+                                        {{ form.vars.value.sku }}
+                                        <span class="caret"></span>
+                                    </span>
+                                    <ul class="dropdown-menu">
+                                        {% for language in form.vars.value.getActiveLanguages() %}
+                                            <li>
+                                                <a href="?dataLocale={{ language.code }}">
+                                                    <span class="code">{{ language.code|upper }}</span>
+                                                    <span class="title">{{ form.vars.value.sku }}</span>
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
                             </div>
 
                             <ul class="inline">
-                                <li><span id="updated" class="label label-warning">{{ 'The product has been updated.'|trans }}</span></li>
+                                <li><span id="updated" class="label label-warning">{{ 'There are unsaved changes.'|trans }}</span></li>
                             </ul>
-
-                            <div class="btn-group">
-                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                    Locale
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    {% for language in form.vars.value.getActiveLanguages() %}
-                                        <li><a href="?dataLocale={{ language.code }}">{{ language.code | trans }}</a></li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-
                        </div>
                    </div>
                 </div>
@@ -206,6 +208,7 @@
         });
 
         $('button[type="submit"]').click(function(event) {
+            $('#pim_available_product_attributes_attributes').removeAttr('required');
             $(window).unbind('beforeunload');
         });
 

@@ -65,6 +65,7 @@
 'Choose a product family': '__Choose a product family'
 'Activated locales': '__Activated locales'
 'Product successfully saved': '__Product successfully saved'
+'There are unsaved changes.': '__There are unsaved changes.'
 
 # Scopes
 'Global': 'Global'
