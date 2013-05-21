@@ -3,9 +3,7 @@
 {% set title = 'Family'|trans %}
 
 {% block familyTab %}
-<form action="{{ form.vars.value.id ?
-    path('pim_product_productfamily_edit', { id: form.vars.value.id }) :
-    path('pim_product_productfamily_create') }}" method="POST" class="form-horizontal">
+<form action="{{ path('pim_product_productfamily_edit', { id: family.id }) }}" method="POST" class="form-horizontal">
     {{ form_row(form._token) }}
 
     <div class="form-row">
