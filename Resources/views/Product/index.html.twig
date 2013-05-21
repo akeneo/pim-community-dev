@@ -22,7 +22,7 @@
 <div class="container-fluid">
     {% block content %}
     <div class="row-fluid has-resizable-sidebar">
-        <div class="resizable-sidebar">
+        <div class="resizable-sidebar" height="100%">
             <div id="tree"></div>
         </div>
         <div id="form-tab" class="resizable-content">
@@ -37,6 +37,7 @@
     var tree_id = "#tree";
     var urlListTree = "{{ path('pim_product_classificationtree_listtree', { '_format': 'json' }) }}";
     var urlChildren = "{{ path('pim_product_classificationtree_children', { '_format': 'json' }) }}";
+    var unclassifiedNodeTitle = "{{ 'Unclassified node' | trans }}";
 </script>
 <script type="text/javascript" src="{{ asset('bundles/pimproduct/js/tree-view.jstree.js') }}"></script>
 {% endblock %}
