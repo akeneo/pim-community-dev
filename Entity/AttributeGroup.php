@@ -1,14 +1,11 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Entity;
 
 use Gedmo\Translatable\Translatable;
-
 use Gedmo\Mapping\Annotation as Gedmo;
-
 use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
-
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**

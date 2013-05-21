@@ -1,5 +1,8 @@
+{% extends 'PimProductBundle:AttributeGroup:index.html.twig' %}
+
 {% set title = form.vars.value.id ? 'Edit group'|trans : 'Add group'|trans %}
 
+{% block groupTab %}
 <form action="{{ form.vars.value.id ?
     path('pim_product_attributegroup_edit', { id: form.vars.value.id }) :
     path('pim_product_attributegroup_create') }}" method="POST" class="form-horizontal">
@@ -62,3 +65,4 @@
     </div>
 
 </form>
+{% endblock %}

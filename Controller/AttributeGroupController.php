@@ -71,7 +71,9 @@ class AttributeGroupController extends Controller
         }
 
         return array(
-            'form' => $this->get('pim_product.form.attribute_group')->createView()
+            'groups' => $groups,
+            'group'  => $group,
+            'form'   => $this->get('pim_product.form.attribute_group')->createView()
         );
     }
 
