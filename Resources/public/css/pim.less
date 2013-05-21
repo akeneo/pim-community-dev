@@ -423,16 +423,6 @@ form .scopable {
         border-bottom-right-radius: 3px;
       }
     }
-    &.selected {
-      .control-label {
-        border-top-left-radius: 3px;
-        border-bottom-left-radius: 3px;
-      }
-      input, select, textarea {
-        border-top-right-radius: 3px;
-        border-bottom-right-radius: 3px;
-      }
-    }
   }
   div.controls {
     .control-label {
@@ -458,6 +448,59 @@ form .scopable {
       height: 42px;
     }
     input, select, textarea {
+      border-radius: 0;
+    }
+  }
+}
+
+form .currency {
+  margin-bottom: 10px;
+  .control-group {
+    margin: 0;
+  }
+  &>.control-group .control-group>.controls .control-group {
+    .controls {
+      margin: 0;
+    }
+    &:first-of-type {
+      .control-label {
+        background-color: @backgroundColor-white;
+        font-weight: bold;
+        border-top-left-radius: 3px;
+      }
+      input {
+        border-top-right-radius: 3px;
+      }
+    }
+    &:last-of-type {
+      .control-label {
+        border-bottom-left-radius: 3px;
+      }
+      input {
+        border-bottom-right-radius: 3px;
+      }
+    }
+  }
+  div.controls {
+    .control-label {
+      font-weight: normal;
+      background-color: #fbfbfb;
+      padding-top: 4px;
+      width: 100px;
+      margin-bottom: 0;
+      border-radius: 0;
+      float: left;
+      text-align: right;
+      span {
+        position: relative;
+        float: left;
+        left: -5px;
+        top: -4px;
+        padding: 4px 5px;
+        height: 100%;
+      }
+    }
+    input {
       border-radius: 0;
     }
   }

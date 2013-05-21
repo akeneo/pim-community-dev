@@ -1,5 +1,5 @@
 /**
- * Allow expanding/collapsing scopable fields
+ * Allow expanding/collapsing currency fields
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -10,62 +10,38 @@
     "use strict";
 
     function showTitle(el, opts) {
-        var title = opts.title || $(el).find('label').first().html();
+        var title = $(el).find('label').first().html();
+        $(el).find('label').first().remove();
         var $title = $('<label>').addClass('control-label').html(title);
-        $(el).find('>label').remove();
         $(el).prepend($title);
     }
 
     function getFields(el) {
-        return $(el).find('>.control-group');
+        return $(el).find('>.control-group .control-group>.controls>.control-group');
     }
 
     function prepareFields(el) {
         var $fields = [];
+
         getFields(el).each(function() {
             var $label = $(this).find('label').first();
-            var scope = $(this).find('>:first-child').data('scope');
 
             $fields.push(
-                {'field': $(this), 'label': $label, 'scope': scope }
+                {'field': $(this), 'label': $label }
             );
         });
         return $fields;
     }
 
-    function sortFields(el, opts) {
-        if (!opts.defaultScope) {
-            return;
-        }
-        var $fields = prepareFields(el);
-
-        for (var i = 0; i < $fields.length; i++) {
-            var $field = $fields[i].field;
-            var scope = $fields[i].scope;
-
-            if (i !== 0 && scope === opts.defaultScope) {
-                $field.insertBefore($fields[0].field);
-                break;
-            }
-        }
-    }
-
     function prepareLabels(el, opts) {
+
         var $fields = prepareFields(el);
 
         for (var i = 0; i < $fields.length; i++) {
             var $field = $fields[i].field;
             var $label = $fields[i].label;
-            var scope = $fields[i].scope;
 
-            $label.html(scope).addClass('add-on');
-
-            if ($field.find('iframe.wysihtml5-sandbox').length > 0) {
-                $field.find('iframe.wysihtml5-sandbox, textarea').width(opts.wysihtml5.width);
-                $label.height(opts.wysihtml5.height);
-            } else {
-                $label.height($field.height() - 10);
-            }
+            $label.addClass('add-on');
 
             var $controls = $field.find('.controls').first();
             $controls.addClass('input-prepend').prepend($label);
@@ -76,7 +52,7 @@
         var $fields = getFields(el);
         $fields.first().off('click', 'label span');
         $fields.first().on('click', 'label span', function() {
-            toggleOpen($(this).parents('.scopablefield'), opts);
+            toggleOpen($(this).parents('.currencyfield'), opts);
         });
 
     }
@@ -111,10 +87,10 @@
         }
     }
 
-    $.fn.scopableField = function(options) {
+    $.fn.currencyField = function(options) {
         var opts;
         if (typeof(options) === 'string' && options !== '') {
-            opts = $.fn.scopableField.defaults;
+            opts = $.fn.currencyField.defaults;
 
             if (options === 'collapse') {
                 return this.each(function() {
@@ -128,32 +104,25 @@
                 return this;
             }
         } else {
-            opts = $.extend({}, $.fn.scopableField.defaults, options);
+            opts = $.extend({}, $.fn.currencyField.defaults, options);
         }
 
         $('.span4').removeClass('span4').addClass('input-large');
 
         return this.each(function() {
-            if (!$(this).hasClass('scopablefield')) {
-                $(this).addClass('scopablefield');
+            if (!$(this).hasClass('currencyfield')) {
+                $(this).addClass('currencyfield');
                 showTitle(this, opts);
             }
-            sortFields(this, opts);
             prepareLabels(this, opts);
             bindEvents(this, opts);
             toggleOpen(this, opts, true);
         });
     }
 
-    $.fn.scopableField.defaults = {
-        defaultScope: null,
-        title: null,
+    $.fn.currencyField.defaults = {
         expandIcon: 'icon-caret-right',
-        collapseIcon: 'icon-caret-down-gray',
-        wysihtml5: {
-            width: 523,
-            height: 192
-        }
+        collapseIcon: 'icon-caret-down-gray'
     };
 
 }(jQuery));
@@ -161,5 +130,5 @@
 $(function() {
     "use strict";
 
-    $('form div.scopable').scopableField();
+    $('.currency').currencyField();
 });
