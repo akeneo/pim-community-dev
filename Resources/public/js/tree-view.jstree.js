@@ -1,4 +1,4 @@
-var jstree = $('#tree').jstree({
+$(tree_id).jstree({
     "core" : {
         "animation" : 200
     },
@@ -42,14 +42,6 @@ var jstree = $('#tree').jstree({
         "types" : {
             "default" : {
                 "valid_children" : "folder",
-                "icon" : {
-                    "image" : assetsPath + "images/folder.png"
-                }
-            },
-            "folder" : {
-                "icon" : {
-                    "image" : assetsPath + "images/folder.png"
-                }
             }
         }
     },
@@ -58,10 +50,11 @@ var jstree = $('#tree').jstree({
         "select_multiple_modifier" : false
     }
 })
-    .bind('trees_loaded.jstree', function(e, tree_select_id) {
-        $('#'+tree_select_id).uniform();
+    .bind('loaded.jstree', function(e, tree_select_id) {
+        $(tree_id).jstree('create', null, "last", { "data" : {"title": unclassifiedNodeTitle, "icon": "jstree-unclassified"}}, false, true);
     })
     .bind('select_node.jstree', function (event, node) {
-        // TODO : Call list content
+        // TODO : Call list content and backbone filter on datagrid
+        console.log('select node');
     })
     ;
