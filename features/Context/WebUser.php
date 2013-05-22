@@ -136,6 +136,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     /**
      * @Given /^the following families:$/
+     * @Given /^the following family:$/
      */
     public function theFollowingFamilies(TableNode $table)
     {
@@ -292,20 +293,49 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         foreach ($table->getHash() as $index => $data) {
             $data = array_merge(array(
                 'position' => 0,
+                'group'    => null,
+                'product'  => null,
+                'family'   => null,
             ), $data);
+
             $attribute = $this->createAttribute($data['name'], false);
             $attribute->setSortOrder($data['position']);
             $attribute->setGroup($this->getGroup($data['group']));
-            $product = $this->getProduct($data['product']);
 
-            $value = $this->getProductManager()->createFlexibleValue();
-            $value->setAttribute($attribute);
-            $value->setData(null);
-            $this->getProductManager()->getStorageManager()->persist($value);
+            if ($family = $data['family']) {
+                $family = $this->getProductFamily($family);
+                $family->addAttribute($attribute);
 
-            $product->addValue($value);
+            }
+
+            if (!empty($data['product'])) {
+                $product = $this->getProduct($data['product']);
+
+                $value = $this->getProductManager()->createFlexibleValue();
+                $value->setAttribute($attribute);
+                $value->setData(null);
+                $pm = $this->getProductManager();
+
+                $pm->getStorageManager()->persist($value);
+
+                $product->addValue($value);
+                $pm->save($product);
+            }
         }
         $em->flush();
+    }
+
+    /**
+     * @Given /^the following product:$/
+     */
+    public function theFollowingProduct(TableNode $table)
+    {
+        $pm = $this->getProductManager();
+        foreach ($table->getHash() as $data) {
+            $product = $this->createProduct($data['sku']);
+            $product->setProductFamily($this->getProductFamily($data['family']));
+            $pm->save($product);
+        }
     }
 
     /**
@@ -623,11 +653,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 'sku' => $sku,
             ));
 
-        if (!$product) {
-            $product = $this->getProductManager()->createFlexible();
-            $product->setSku($sku);
-            $pm->getStorageManager()->persist($product);
-        }
+        return $product ?: $this->createProduct($sku);
+    }
+
+    private function createProduct($sku)
+    {
+        $product = $this->getProductManager()->createFlexible();
+        $product->setSku($sku);
+        $this->getProductManager()->getStorageManager()->persist($product);
 
         return $product;
     }
@@ -656,6 +689,41 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
 
         return $this->locales[$language];
+    }
+
+    public function getProductFamily($code)
+    {
+        return $this->getEntityOrException('PimProductBundle:ProductFamily', array(
+            'code' => $code
+        ));
+    }
+
+    /**
+     * @Then /^I should not see a remove link next to the "([^"]*)" field$/
+     */
+    public function iShouldNotSeeARemoveLinkNextToTheField($field)
+    {
+        if ($this->getPage('Product')->getRemoveLinkFor($field)) {
+            throw $this->createExpectationException(sprintf(
+                'Remove link on field "%s" should not be displayed.', $field
+            ));
+        }
+    }
+
+    /**
+     * @When /^I remove the "([^"]*)" attribute$/
+     */
+    public function iRemoveTheAttribute($field)
+    {
+        if (null === $link = $this->getPage('Product')->getRemoveLinkFor($field)) {
+            throw $this->createExpectationException(sprintf(
+                'Remove link on field "%s" should be displayed.', $field
+            ));
+        }
+
+        $link->click();
+        $this->getSession()->getDriver()->getWebDriverSession()->accept_alert();
+        sleep(5); //TODO Find a way to wait for the page to be loaded
     }
 
     private function getLanguage($code)

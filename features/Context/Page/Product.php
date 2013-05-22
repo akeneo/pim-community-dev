@@ -113,4 +113,18 @@ class Product extends Page
     {
         $this->pressButton('Add attributes');
     }
+
+    public function getRemoveLinkFor($field)
+    {
+        $controlGroupNode = $this
+            ->findField($field)
+            ->getParent()
+            ->getParent()
+            ->getParent()
+            ->getParent()
+            ->getParent()
+        ;
+
+        return $controlGroupNode->find('css', 'a.remove-attribute');
+    }
 }
