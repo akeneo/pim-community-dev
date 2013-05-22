@@ -14,13 +14,10 @@ class LanguageControllerTest extends ControllerTest
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      */
-    public function testIndex($locale)
+    public function testIndex()
     {
-        $uri = '/'. $locale .'/config/language/index';
+        $uri = '/config/language/index';
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
@@ -33,13 +30,10 @@ class LanguageControllerTest extends ControllerTest
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      */
-    public function testCreate($locale)
+    public function testCreate()
     {
-        $uri = '/'. $locale .'/config/language/create';
+        $uri = '/config/language/create';
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
@@ -52,15 +46,12 @@ class LanguageControllerTest extends ControllerTest
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      */
-    public function testEdit($locale)
+    public function testEdit()
     {
         // initialize authentication to call container and get language entity
         $language = $this->getRepository()->findOneBy(array());
-        $uri = '/'. $locale .'/config/language/edit/'. $language->getId();
+        $uri = '/config/language/edit/'. $language->getId();
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
@@ -71,22 +62,19 @@ class LanguageControllerTest extends ControllerTest
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         // assert with unknown language id
-        $uri = '/'. $locale .'/config/language/edit/0';
+        $uri = '/config/language/edit/0';
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      */
-//     public function testDisable($locale)
+//     public function testDisable()
 //     {
 //         // initialize authentication to call container and get language entity
 //         $language = $this->getRepository()->findOneBy(array());
-//         $uri = '/'. $locale .'/config/language/disable/'. $language->getId();
+//         $uri = '/config/language/disable/'. $language->getId();
 
 //         // assert without authentication
 //         $crawler = $this->client->request('GET', $uri);
