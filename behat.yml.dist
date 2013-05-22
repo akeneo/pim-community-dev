@@ -19,3 +19,9 @@ default:
 
         Behat\Symfony2Extension\Extension: ~
         SensioLabs\Behat\PageObjectExtension\Extension: ~
+
+jenkins:
+    formatter:
+        name: pretty,junit
+        parameters:
+            output_path: null,/tmp/junit
