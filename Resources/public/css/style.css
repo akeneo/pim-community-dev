@@ -80,8 +80,3 @@ li.jstree-open > a .jstree-icon { background:url("folder_standard_opened.png") 0
 li.jstree-closed > a .jstree-icon { background:url("folder_standard_closed.png") 0px 0px no-repeat !important; }
 li.jstree-leaf > a .jstree-icon { background:url("folder_leaf.png") 0px 0px no-repeat !important; }
 li.jstree-unclassified > a .jstree-icon { background:url("folder_unclassified.png") 0px 0px no-repeat !important; }
-
-.tree-toolbar {
-    bottom: 0;
-    vertical-align: bottom;
-}
