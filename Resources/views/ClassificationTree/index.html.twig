@@ -16,14 +16,14 @@
     {% block content %}
     <div class="row-fluid">
         <div class="span2 tree-sidebar">
+            <div class="tree-toolbar">
+                <button id="tree-create" class="btn-tree-toolbar"><i class="icon-plus-sign"></i></button>
+                <button id="tree-duplicate" class="btn-tree-toolbar"><i class="icon-copy"></i></button>
+                <button id="tree-remove" class="btn-tree-toolbar"><i class="icon-trash"></i></button>
+                <button id="sidebar-collapse" class="btn-tree-toolbar"><i class="icon-chevron-left"></i></button>
+            </div>
             <div id="tree"></div>
             
-            <div class="tree-toolbar">
-                <button id="tree-create" class="btn btn-mini"><i class="icon-plus-sign"></i></button>
-                <button id="tree-edit" class="btn btn-mini"><i class="icon-edit"></i></button>
-                <button id="tree-duplicate" class="btn btn-mini"><i class="icon-copy"></i></button>
-                <button id="tree-remove" class="btn btn-mini"><i class="icon-trash"></i></button>
-            </div>
         </div>
         
         <div id="form-tab" class="span10">
@@ -89,21 +89,8 @@
             case "segment-create":
                 fctCreate();
                 break;
-            case "tree-edit":
-                var treeId = $.jstree._focused().get_tree_id();
-                window.location = "{{ path('pim_product_classificationtree_edit') }}/"+treeId;
-                break;
             case "tree-remove":
                 PimDialog.alert('Not yet implemented');
-                break;
-            case "segment-edit":
-                fctEdit();
-                break;
-            case "segment-remove":
-                fctRemove();
-                break;
-            case "segment-duplicate":
-                PimDialog.alert('Not yet implemented', '');
                 break;
             case "tree-duplicate":
                 PimDialog.alert('Not yet implemented', '');
