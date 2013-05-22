@@ -27,7 +27,7 @@ var jstree = $('#tree').jstree({
                 if (node && node != -1) {
                     id = node.attr("id").replace('node_','');
                 } else{
-                    id = 1;
+                    id = -1;
                 }
                 return {
                     "id" : id
@@ -60,7 +60,7 @@ var jstree = $('#tree').jstree({
             data.inst.refresh();
         });
     })
-    .bind("select_node.jstree", function (e, data) {
+    .bind("dblclick.jstree", function (e, data) {
         fctEdit();
     })
     ;
