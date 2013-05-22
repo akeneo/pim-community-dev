@@ -18,19 +18,19 @@ $(tree_id).jstree({
         "url" : assetsPath + "/css/style.css"
     },
     "json_data" : {
-        "data" : [
-            {
-                "data": "Loading root...",
-                "state": "closed",
-                "attr" : { "id" : "node_1"}
-            }
-        ],
         "ajax" : {
             "url" : urlChildren,
             "data" : function (node) {
                 // the result is fed to the AJAX request `data` option
+                var id = null;
+
+                if (node && node != -1) {
+                    id = node.attr("id").replace('node_','');
+                } else{
+                    id = 1;
+                }
                 return {
-                    "id" : node.attr("id").replace('node_','')
+                    "id" : id
                 };
             }
         }
@@ -41,7 +41,7 @@ $(tree_id).jstree({
         "valid_children" : [ "folder" ],
         "types" : {
             "default" : {
-                "valid_children" : "folder",
+                "valid_children" : "folder"
             }
         }
     },
@@ -51,7 +51,10 @@ $(tree_id).jstree({
     }
 })
     .bind('loaded.jstree', function(e, tree_select_id) {
-        $(tree_id).jstree('create', null, "last", { "data" : {"title": unclassifiedNodeTitle, "icon": "jstree-unclassified"}}, false, true);
+        $(tree_id).jstree('create', null, "last", { 
+            "attr": { "class": "jstree-unclassified" },
+            "data" : { "title": unclassifiedNodeTitle }
+        }, false, true);
     })
     .bind('select_node.jstree', function (event, node) {
         // TODO : Call list content and backbone filter on datagrid

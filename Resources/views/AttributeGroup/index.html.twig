@@ -7,7 +7,7 @@
     {% set currentGroup = group is defined ? group : null %}
 
     <div class="row-fluid has-resizable-sidebar">
-        <div class="resizable-sidebar">
+        <div class="resizable-sidebar sidebar-list">
             <form id="pim_product_attributegroup_sort" action="{{ path('pim_product_attributegroup_sort') }}" method="POST">
             <ul id="entities-sortable">
                 {% for group in groups %}
