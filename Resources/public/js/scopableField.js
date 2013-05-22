@@ -48,8 +48,7 @@
 
                 if ($field.find('.wysihtml5-sandbox').length !== 0) {
                     var $el = $field.find('textarea').first();
-                    destroyWysihtml5($el);
-                    $el.wysihtml5();
+                    reinitWysihtml5($el);
                 }
 
                 break;
@@ -128,8 +127,15 @@
         }
     }
 
-    function destroyWysihtml5(el) {
+    function reinitWysihtml5(el) {
         $(el).show().siblings('.wysihtml5-toolbar, .wysihtml5-sandbox, input[name="_wysihtml5_mode"]').remove();
+        $(el).wysihtml5({
+            events: {
+                change: function() {
+                    $el.trigger('change');
+                }
+            }
+        });
     }
 
     $.fn.scopableField = function(options) {
