@@ -60,4 +60,7 @@ var jstree = $('#tree').jstree({
             data.inst.refresh();
         });
     })
+    .bind("select_node.jstree", function (e, data) {
+        fctEdit();
+    })
     ;
