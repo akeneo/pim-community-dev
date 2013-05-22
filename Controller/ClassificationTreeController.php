@@ -88,7 +88,7 @@ class ClassificationTreeController extends Controller
         $segment = $this->getTreeManager()->getEntityRepository()->find($segmentId);
 
         if (!$segment) {
-            return $this->createNotFoundException('Product Segment not found');
+            throw $this->createNotFoundException('Product Segment not found');
         }
 
         return $segment;
