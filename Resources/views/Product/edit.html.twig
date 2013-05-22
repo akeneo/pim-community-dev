@@ -11,7 +11,6 @@
 
         <div class="navigation clearfix navbar-extra navbar-extra-right">
             <div class="row">
-                {% if form.vars.value.id %}
                 <div class="pull-right">
                     <div class="pull-right">
                         <div class="pull-left btn-group icons-holder">
@@ -56,15 +55,6 @@
                        </div>
                    </div>
                 </div>
-                {% else %}
-                <div class="pull-left">
-                    <div class="customer-info well-small">
-                        <div class="customer-content">
-                            <h1 class="usser-name">{{ title }}</h1>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
             </div>
         </div>
         <div class="layout-content">
@@ -154,6 +144,9 @@
                                             {% endif %}
                                             <div class="control-group">
                                                 {{ form_widget(formValue, {'attr': {'data-scope': formValue.vars.value.scope}} ) }}
+                                                {% if formValue.vars.value.isRemovable() %}
+                                                <a href="{{ path('pim_product_product_removeproductvalue', {'productId': formValue.vars.value.entity.id, 'valueId': formValue.vars.value.id}) }}" class="remove-attribute" data-method="DELETE" date-confirm="{{ 'Are you sure'|trans }}">Remove</a>
+                                                {% endif %}
                                             </div>
                                             {% set attributeCode = formValue.vars.value.attribute.code %}
                                         {% endif %}
