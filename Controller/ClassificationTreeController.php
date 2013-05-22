@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -66,7 +68,11 @@ class ClassificationTreeController extends Controller
      */
     public function childrenAction()
     {
-        $segment = $this->findSegment($this->getRequest()->get('id'));
+        try {
+            $segment = $this->findSegment($this->getRequest()->get('id'));
+        } catch (NotFoundHttpException $e) {
+            return array('data' => array());
+        }
 
         $segments = $this->getTreeManager()->getChildren($segment->getId());
 
