@@ -18,6 +18,7 @@ use Doctrine\Common\Util\Inflector;
 use Pim\Bundle\ProductBundle\Entity\ProductFamily;
 use Behat\Mink\Exception\ExpectationException;
 use Pim\Bundle\ProductBundle\Entity\ProductFamilyTranslation;
+use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
 
 /**
  * Context of the website
@@ -225,9 +226,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @When /^I am on the "([^"]*)" attribute page$/
      */
-    public function iAmOnTheAttributePage($code)
+    public function iAmOnTheAttributePage($label)
     {
-        $attribute = $this->getAttribute($code);
+        $attribute = $this->getAttribute($label);
+
         $this->openPage('Attribute', array(
             'locale' => $this->currentLocale,
             'id'     => $attribute->getId(),
@@ -298,7 +300,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 'family'   => null,
             ), $data);
 
-            $attribute = $this->createAttribute($data['name'], false);
+            $attribute = $this->createAttribute($data['label'], false);
             $attribute->setSortOrder($data['position']);
             $attribute->setGroup($this->getGroup($data['group']));
 
@@ -345,7 +347,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $data) {
-            $attribute = $this->createAttribute($data['name'], false);
+            $attribute = $this->createAttribute($data['label'], false);
             $attribute->setGroup($this->getGroup($data['group']));
 
             if (isset($data['family']) && $data['family']) {
@@ -665,12 +667,21 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         return $product;
     }
 
-    private function createAttribute($name, $translatable = true)
+    private function createAttribute($label, $translatable = true)
     {
         $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_text');
-        $attribute->setCode($this->camelize($name));
-        $attribute->setLabel($name);
+        $attribute->setCode($this->camelize($label));
+        $attribute->setLabel($label);
         $attribute->setTranslatable($translatable);
+
+        $translation = new ProductAttributeTranslation();
+        $translation->setContent($label);
+        $translation->setField('label');
+        $translation->setForeignKey($attribute);
+        $translation->setLocale('default');
+        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\ProductAttribute');
+
+        $attribute->addTranslation($translation);
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
         return $attribute;
@@ -760,10 +771,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
-    private function getAttribute($name)
+    private function getAttribute($label)
     {
         return $this->getEntityOrException('PimProductBundle:ProductAttribute', array(
-            'name' => ucfirst($name)
+            'label' => ucfirst($label)
         ));
     }
 
