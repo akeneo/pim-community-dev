@@ -17,7 +17,7 @@ class CurrencyControllerTest extends ControllerTest
      */
     public function testIndex()
     {
-        $uri = '/config/currency/index';
+        $uri = '/configuration/currency/index';
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
@@ -33,7 +33,7 @@ class CurrencyControllerTest extends ControllerTest
      */
     public function testCreate()
     {
-        $uri = '/config/currency/create';
+        $uri = '/configuration/currency/create';
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
@@ -51,7 +51,7 @@ class CurrencyControllerTest extends ControllerTest
     {
         // initialize authentication to call container and get currency entity
         $currency = $this->getRepository()->findOneBy(array());
-        $uri = '/config/currency/edit/'. $currency->getId();
+        $uri = '/configuration/currency/edit/'. $currency->getId();
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
@@ -62,7 +62,7 @@ class CurrencyControllerTest extends ControllerTest
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         // assert with unknown currency id
-        $uri = '/config/currency/edit/0';
+        $uri = '/configuration/currency/edit/0';
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
@@ -75,7 +75,7 @@ class CurrencyControllerTest extends ControllerTest
 //         // initialize authentication to call container and get currency entity
 //         $this->client = static::createClient();
 //         $currency = $this->getRepository()->findOneBy(array());
-//         $uri = '/config/currency/disable/'. $currency->getId();
+//         $uri = '/configuration/currency/disable/'. $currency->getId();
 
 //         // assert without authentication
 //         $crawler = $this->client->request('GET', $uri);

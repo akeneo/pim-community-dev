@@ -16,7 +16,7 @@ class ChannelControllerTest extends ControllerTest
      */
     public function testIndex()
     {
-        $uri = '/config/channel/index';
+        $uri = '/configuration/channel/index';
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
@@ -32,7 +32,7 @@ class ChannelControllerTest extends ControllerTest
      */
     public function testCreate()
     {
-        $uri = '/config/channel/create';
+        $uri = '/configuration/channel/create';
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
@@ -50,7 +50,7 @@ class ChannelControllerTest extends ControllerTest
     {
         // initialize authentication to call container and get channel entity
         $channel = $this->getRepository()->findOneBy(array());
-        $uri = '/config/channel/edit/'. $channel->getId();
+        $uri = '/configuration/channel/edit/'. $channel->getId();
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
@@ -61,7 +61,7 @@ class ChannelControllerTest extends ControllerTest
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         // assert with unknown channel id and authentication
-        $uri = '/config/channel/edit/0';
+        $uri = '/configuration/channel/edit/0';
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
@@ -73,7 +73,7 @@ class ChannelControllerTest extends ControllerTest
     {
         // initialize authentication to call container and get channel entity
         $channel = $this->getRepository()->findOneBy(array());
-        $uri = '/config/channel/remove/'. $channel->getId();
+        $uri = '/configuration/channel/remove/'. $channel->getId();
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);

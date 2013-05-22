@@ -10,7 +10,7 @@ pim_product:
 pim_config:
     resource: "@PimConfigBundle/Controller/"
     type:     annotation
-    prefix:   /config/
+    prefix:   /configuration/
 
 oro_default:
     pattern:  /{_locale}

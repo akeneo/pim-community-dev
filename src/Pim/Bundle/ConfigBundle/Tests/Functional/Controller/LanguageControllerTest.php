@@ -17,7 +17,7 @@ class LanguageControllerTest extends ControllerTest
      */
     public function testIndex()
     {
-        $uri = '/config/language/index';
+        $uri = '/configuration/language/index';
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
@@ -33,7 +33,7 @@ class LanguageControllerTest extends ControllerTest
      */
     public function testCreate()
     {
-        $uri = '/config/language/create';
+        $uri = '/configuration/language/create';
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
@@ -51,7 +51,7 @@ class LanguageControllerTest extends ControllerTest
     {
         // initialize authentication to call container and get language entity
         $language = $this->getRepository()->findOneBy(array());
-        $uri = '/config/language/edit/'. $language->getId();
+        $uri = '/configuration/language/edit/'. $language->getId();
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
@@ -62,7 +62,7 @@ class LanguageControllerTest extends ControllerTest
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         // assert with unknown language id
-        $uri = '/config/language/edit/0';
+        $uri = '/configuration/language/edit/0';
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
@@ -74,7 +74,7 @@ class LanguageControllerTest extends ControllerTest
 //     {
 //         // initialize authentication to call container and get language entity
 //         $language = $this->getRepository()->findOneBy(array());
-//         $uri = '/config/language/disable/'. $language->getId();
+//         $uri = '/configuration/language/disable/'. $language->getId();
 
 //         // assert without authentication
 //         $crawler = $this->client->request('GET', $uri);
