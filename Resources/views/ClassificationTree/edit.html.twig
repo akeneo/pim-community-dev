@@ -13,25 +13,7 @@
 <div class="container-fluid classification">
     {% block content %}
     <div class="row-fluid">
-        <div class="span2 tree-sidebar">
-            <div class="tree-toolbar">
-                <div class="btn-group">
-                    <button data-toggle="dropdown" class="btn-tree-toolbar dropdown-toggle">
-                        <i class="icon-plus-sign"></i> <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a id="tree-create" href="#">Create tree</a></li>
-                        <li><a id="segment-create" href="#">Create segment</a></li>
-                    </ul>
-                </div>
-                
-                <button id="segment-edit" class="btn-tree-toolbar"><i class="icon-edit"></i></button>
-                <button id="tree-duplicate" class="btn-tree-toolbar"><i class="icon-copy"></i></button>
-                <button id="tree-remove" class="btn-tree-toolbar"><i class="icon-trash"></i></button>
-                <button id="sidebar-collapse" class="btn-tree-toolbar"><i class="icon-chevron-left"></i></button>
-            </div>
-            <div id="tree"></div>
-        </div>
+        {% include 'PimProductBundle:ClassificationTree:_tree-management-sidebar.html.twig' %}
         
         <div id="form-tab" class="span10">
             <form action="{{ form.vars.value.id ?
