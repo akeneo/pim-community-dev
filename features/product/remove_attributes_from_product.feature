@@ -8,7 +8,7 @@ Feature: Remove an attribute from a product
       | code    |
       | vehicle |
     And the following product attribute:
-      | name  | Group   | family  |
+      | label | Group   | family  |
       | Model | General | vehicle |
     And the following product:
       | sku    | family  |
@@ -27,7 +27,7 @@ Feature: Remove an attribute from a product
       | sku    | family  |
       | kangoo | vehicle |
     And the following product attribute:
-      | product | name  | group   | family  |
+      | product | label | group   | family  |
       |         | Model | Other | vehicle |
       | kangoo  | Color | Other |         |
     And the current language is english
