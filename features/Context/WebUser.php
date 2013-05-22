@@ -2,21 +2,22 @@
 
 namespace Context;
 
+use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Exception\PendingException;
+use Behat\Mink\Exception\ExpectationException;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextType;
+use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
+use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+
+use Doctrine\Common\Util\Inflector;
+
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\Role;
 
 use Pim\Bundle\ConfigBundle\Entity\Language;
-use Behat\MinkExtension\Context\RawMinkContext;
-use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
-use Doctrine\Common\Util\Inflector;
 use Pim\Bundle\ProductBundle\Entity\ProductFamily;
-use Behat\Mink\Exception\ExpectationException;
 use Pim\Bundle\ProductBundle\Entity\ProductFamilyTranslation;
 use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
 
@@ -96,9 +97,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 if (isset($attributes[$translation['attribute']])) {
                     $attribute = $attributes[$translation['attribute']];
                 } else {
-                    $attribute = $pm->createAttribute(new TextType);
-                    $attribute->setCode($translation['attribute']);
-                    $attribute->setTranslatable(true);
+                    $attribute = $this->createAttribute($translation['attribute'], true);
                     $pm->getStorageManager()->persist($attribute);
                     $attributes[$translation['attribute']] = $attribute;
                 }
@@ -184,9 +183,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @When /^I switch the locale to "([^"]*)"$/
      */
-    public function iSwitchTheLocaleTo($locale)
+    public function iSwitchTheLocaleTo($language)
     {
-        $this->getPage('Product')->switchLocale($locale);
+        $this->getPage('Product')->switchLocale(
+            $this->getLocale($language)
+        );
     }
 
     /**
@@ -362,21 +363,23 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @Then /^I should see that the product is available in (.*)$/
      */
-    public function iShouldSeeLanguages($languages)
+    public function iShouldSeeThatTheProductIsAvailableIn($languages)
     {
         $languages = $this->listToArray($languages);
         foreach ($languages as $language) {
-            $this
-                ->getPage('Product')
-                ->setAssertSession($this->assertSession())
-                ->assertLocaleIsDisplayed($language)
             ;
+
+            if (null === $this->getPage('Product')->findLocaleLink($this->getLocale($language))) {
+                throw $this->createExpectationException(sprintf('
+                    Expecting to see a locale link for "%s", but didn\'t', $language
+                ));
+            }
         }
 
     }
 
     /**
-     * @When /^I select (.*) languages$/
+     * @When /^I select (.*) languages?$/
      */
     public function iSelectLanguages($languages)
     {
@@ -384,7 +387,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         foreach ($languages as $language) {
             $this
                 ->getPage('Product')
-                ->selectLanguage($this->getLocale($language))
+                ->selectLanguage($language)
             ;
         }
     }
@@ -453,7 +456,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function theProductFieldValueShouldBe($fieldName, $expected = '')
     {
-        $actual = $this->getSession()->getPage()->findField($field)->getValue();
+        $actual = $this->getPage('Product')->findField(ucfirst($fieldName))->getValue();
 
         if ($expected !== $actual) {
             throw new \LogicException(sprintf(
@@ -470,12 +473,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iChangeTheTo($field, $value = null, $language = null)
     {
-        try {
-            $field = $language ? $this->getPage($this->currentPage)->getFieldLocator(
-                $field, $this->getLocale($language)
-            ) : $field;
-        } catch (\BadMethodCallException $e) {
-            // Use default $field if current page does not provide a getFieldLocator method
+        if ($language) {
+            try {
+                $field = $this->getPage($this->currentPage)->getFieldLocator(
+                    $field, $this->getLocale($language)
+                );
+            } catch (\BadMethodCallException $e) {
+                // Use default $field if current page does not provide a getFieldLocator method
+            }
+        } else {
+            $field = ucfirst($field);
         }
 
         return $this->getSession()->getPage()->fillField(

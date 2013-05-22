@@ -16,27 +16,18 @@ class Product extends Page
     protected $path = '/{locale}/product/{id}/edit';
 
     protected $elements = array(
-        'Locales dropdown'     => array('css' => '.locales'),
+        'Locales dropdown'     => array('css' => '#locale-switcher'),
         'Available attributes' => array('css' => '#pim_available_product_attributes_attributes'),
     );
 
-    protected $assertSession;
-
-    public function setAssertSession($assertSession)
+    public function findLocaleLink($locale)
     {
-        $this->assertSession = $assertSession;
-
-        return $this;
-    }
-
-    public function assertLocaleIsDisplayed($locale)
-    {
-        $this->assertSession->elementTextContains('css', $this->elements['Locales dropdown']['css'], $locale);
+        return $this->getElement('Locales dropdown')->findLink(strtolower($locale));
     }
 
     public function selectLanguage($language)
     {
-        $this->checkField($language);
+        $this->findField(ucfirst($language))->check();
     }
 
     public function save()
@@ -46,7 +37,7 @@ class Product extends Page
 
     public function switchLocale($locale)
     {
-        $this->getElement('Locales dropdown')->clickLink(ucfirst($locale));
+        $this->getElement('Locales dropdown')->clickLink(strtolower($locale));
     }
 
     public function getFieldAt($group, $position)
@@ -82,7 +73,7 @@ class Product extends Page
             );
         }
 
-        $field = $label->getParent()->find('css', 'input[type="text"]');
+        $field = $label->getParent()->find('css', 'input');
 
         if (!$field) {
             throw new ElementNotFoundException(
