@@ -10,10 +10,10 @@ Feature: Add attributes to a product
       | General |
       | Prices  |
     And the following product attribute:
-      | product | name         | group   |
+      | product | label        | group   |
       | Car     | Release Date | General |
     And the following attributes:
-      | name             | group   |
+      | label            | group   |
       | Long Description | General |
       | Manufacturer     | General |
       | Size             |         |
