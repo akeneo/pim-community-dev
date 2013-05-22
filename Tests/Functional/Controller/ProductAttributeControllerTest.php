@@ -13,13 +13,10 @@ class ProductAttributeControllerTest extends ControllerTest
 {
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      */
-    public function testIndex($locale)
+    public function testIndex()
     {
-        $uri = '/'. $locale .'/product/product-attribute/index';
+        $uri = '/product/product-attribute/index';
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -33,13 +30,10 @@ class ProductAttributeControllerTest extends ControllerTest
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      */
-    public function testCreate($locale)
+    public function testCreate()
     {
-        $uri = '/'. $locale .'/product/product-attribute/create';
+        $uri = '/product/product-attribute/create';
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -52,15 +46,12 @@ class ProductAttributeControllerTest extends ControllerTest
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      */
-    public function testEdit($locale)
+    public function testEdit()
     {
         // initialize authentication to call container and get product attribute entity
         $productAttribute = $this->getRepository()->findOneBy(array());
-        $uri = '/'. $locale .'/product/product-attribute/edit/'. $productAttribute->getId();
+        $uri = '/product/product-attribute/edit/'. $productAttribute->getId();
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -71,22 +62,19 @@ class ProductAttributeControllerTest extends ControllerTest
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         // assert with unknown product attribute id and authentication
-        $uri = '/'. $locale .'/product/product-attribute/edit/0';
+        $uri = '/product/product-attribute/edit/0';
         $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      */
-    public function testRemove($locale)
+    public function testRemove()
     {
         // initialize authentication to call container and get product attribute entity
         $productAttribute = $this->getRepository()->findOneBy(array());
-        $uri = '/'. $locale .'/product/product-attribute/remove/'. $productAttribute->getId();
+        $uri = '/product/product-attribute/remove/'. $productAttribute->getId();
 
         // assert without authentication
         $this->client->request('GET', $uri);
