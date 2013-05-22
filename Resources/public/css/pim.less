@@ -527,6 +527,13 @@ div.dropdown-menu.channel {
   }
 }
 
+#channel-controls {
+  display: inline-block;
+  float: left;
+  min-width: 210px;
+  max-width: 400px;
+}
+
 .form-horizontal .tab-content .tab-pane {
   min-height: 300px;
 }
@@ -539,10 +546,11 @@ div.dropdown-menu.channel {
   span.dropdown-toggle {
     color: @textColor;
     margin-bottom: 0;
-    padding: 3px;
+    padding: 3px 6px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-shadow: none;
+    cursor: pointer;
     .caret {
       margin-top: 6px;
     }
@@ -571,6 +579,17 @@ div.dropdown-menu.channel {
   }
 }
 
+div.product-updated {
+  clear: right;
+  margin-top: 10px;
+  margin-right: 5px;
+  .label-warning {
+    background-color: #fefecb;
+    color: @textColor + #333;
+    text-shadow: none;
+  }
+}
+
 /* Grids */
 .grid th a {color: #666666; }
 .table-hover tbody tr:hover > td {background-color: #f2ebf8; }
@@ -587,7 +606,7 @@ div.dropdown-menu.channel {
   width: 100%;
   border-bottom: 1px solid #d3d3d3;
   margin-top: 3px;
-  margin-bottom: 5%; 
+  margin-bottom: 5%;
 }
 
 .btn-tree-toolbar {
