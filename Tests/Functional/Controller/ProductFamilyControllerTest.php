@@ -14,12 +14,12 @@ class ProductFamilyControllerTest extends ControllerTest
     /**
      * @staticvar string
      */
-    const FAMILY_NAME = 'family name';
+    const FAMILY_LABEL = 'family name';
 
     /**
      * @staticvar string
      */
-    const FAMILY_DESC = 'family description';
+    const FAMILY_CODE = 'familycode';
 
     /**
      * @staticvar string
@@ -29,7 +29,12 @@ class ProductFamilyControllerTest extends ControllerTest
     /**
      * @staticvar string
      */
-    const FAMILY_SAVED_MSG = 'Product family successfully saved';
+    const FAMILY_CREATED_MSG = 'Product family successfully created';
+
+    /**
+     * @staticvar string
+     */
+    const FAMILY_SAVED_MSG = 'Product family successfully updated';
 
     /**
      * @staticvar string
@@ -53,7 +58,7 @@ class ProductFamilyControllerTest extends ControllerTest
         // assert with authentication
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertCount(1, $crawler->filter('table.table:contains("Mug")'));
+        $this->assertCount(1, $crawler->filter('html:contains("mug")'));
     }
 
     /**
@@ -91,18 +96,17 @@ class ProductFamilyControllerTest extends ControllerTest
         )->first()->form();
 
         $values = array(
-            'pim_product_family[name]'        => self::FAMILY_NAME,
-            'pim_product_family[description]' => self::FAMILY_DESC,
-            'pim_product_family[attributes]'  => array()
+            'pim_product_family[name][label:default]' => self::FAMILY_LABEL,
+            'pim_product_family[code]'                => self::FAMILY_CODE,
         );
 
-        $this->submitFormAndAssertFlashbag($form, $values, self::FAMILY_SAVED_MSG);
+        $this->submitFormAndAssertFlashbag($form, $values, self::FAMILY_CREATED_MSG);
 
         // assert entity well inserted
-        $family = $this->getRepository()->findOneBy(array('name' => self::FAMILY_NAME));
+        $family = $this->getRepository()->findOneBy(array('code' => self::FAMILY_CODE));
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductFamily', $family);
-        $this->assertEquals(self::FAMILY_NAME, $family->getName());
-        $this->assertEquals(self::FAMILY_DESC, $family->getDescription());
+        $this->assertEquals(self::FAMILY_LABEL, $family->getLabel());
+        $this->assertEquals(self::FAMILY_CODE, $family->getCode());
     }
 
     /**
@@ -117,7 +121,7 @@ class ProductFamilyControllerTest extends ControllerTest
     public function testEdit($locale)
     {
         // get product family entity
-        $productFamily = $this->getRepository()->findOneBy(array('name' => self::FAMILY_NAME));
+        $productFamily = $this->getRepository()->findOneBy(array('code' => self::FAMILY_CODE));
         $uri = '/'. $locale .'/product/product-family/edit/'. $productFamily->getId();
 
         // assert without authentication
@@ -143,18 +147,17 @@ class ProductFamilyControllerTest extends ControllerTest
         )->first()->form();
 
         $values = array(
-            'pim_product_family[name]'        => self::FAMILY_EDITED_NAME,
-            'pim_product_family[description]' => self::FAMILY_DESC,
-            'pim_product_family[attributes]'  => array()
+            'pim_product_family[name][label:default]' => self::FAMILY_EDITED_NAME,
+            'pim_product_family[code]'                => self::FAMILY_CODE,
         );
 
         $this->submitFormAndAssertFlashbag($form, $values, self::FAMILY_SAVED_MSG);
 
         // assert entity well inserted
-        $family = $this->getRepository()->findOneBy(array('name' => self::FAMILY_EDITED_NAME));
+        $family = $this->getRepository()->findOneBy(array('code' => self::FAMILY_CODE));
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductFamily', $family);
-        $this->assertEquals(self::FAMILY_EDITED_NAME, $family->getName());
-        $this->assertEquals(self::FAMILY_DESC, $family->getDescription());
+        $this->assertEquals(self::FAMILY_EDITED_NAME, $family->getLabel());
+        $this->assertEquals(self::FAMILY_CODE, $family->getCode());
 
         // assert with unknown product family id and authentication
         $uri = '/'. $locale .'/product/product-family/edit/0';
