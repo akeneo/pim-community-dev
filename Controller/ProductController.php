@@ -305,13 +305,13 @@ class ProductController extends Controller
     {
         $product = $this->getProductManager()->localizedFind($id);
         $currencyManager = $this->container->get('pim_config.manager.currency');
-        $this->getProductManager()->addMissingPrices($currencyManager, $product);
 
         if (!$product) {
             throw $this->createNotFoundException(
                 sprintf('Product with id %d could not be found.', $id)
             );
         }
+        $this->getProductManager()->addMissingPrices($currencyManager, $product);
 
         return $product;
     }
