@@ -6,7 +6,6 @@ Feature: Select product activated languages
   Background:
     Given a "Car" product available in french and german
     And availabe languages are french, german and english
-    And the current language is english
     And I am logged in as "admin"
     And I am on the "Car" product page
 

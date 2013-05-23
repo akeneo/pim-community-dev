@@ -11,7 +11,6 @@ Feature: Order product attributes
     And the following product attribute:
       | product | label         | group   |
       | Car     | Release Date | General |
-    And the current language is english
     And I am logged in as "admin"
     When I am on the "Release date" attribute page
     And I change the attribute position to 40
@@ -31,7 +30,6 @@ Feature: Order product attributes
       | Car     | Color        | 10       | Shape   |
       | Car     | Weight       | 30       | Shape   |
       | Car     | Height       | 20       | Shape   |
-    And the current language is english
     And I am logged in as "admin"
     When I am on the "Car" product page
     Then attributes in group "General" should be File upload, Release date and Manufacturer

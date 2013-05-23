@@ -38,8 +38,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         'german'  => 'de',
     );
 
-    private $currentLocale = null;
-
     private $currentPage = null;
 
     /**
@@ -50,7 +48,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         foreach ($this->locales as $locale) {
             $this->createLanguage($locale);
         }
-        $this->currentLocale = null;
     }
 
     /**
@@ -173,14 +170,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^the current language is (\w+)$/
-     */
-    public function theCurrentLanguageIs($language)
-    {
-        $this->currentLocale = $this->getLocale($language);
-    }
-
-    /**
      * @When /^I switch the locale to "([^"]*)"$/
      */
     public function iSwitchTheLocaleTo($language)
@@ -207,7 +196,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getUserManager()->updateUser($user);
 
         $this
-            ->openPage('Login', array('locale' => $this->currentLocale))
+            ->openPage('Login')
             ->login($username, $password)
         ;
     }
@@ -219,8 +208,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $product           = $this->getProduct($product);
         $this->openPage('Product', array(
-            'locale' => $this->currentLocale,
-            'id'     => $product->getId(),
+            'id' => $product->getId(),
         ));
     }
 
@@ -232,8 +220,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $attribute = $this->getAttribute($label);
 
         $this->openPage('Attribute', array(
-            'locale' => $this->currentLocale,
-            'id'     => $attribute->getId(),
+            'id' => $attribute->getId(),
         ));
     }
 
@@ -556,9 +543,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iAmOnFamilyPage()
     {
-        $this->openPage('Family index', array(
-            'locale' => $this->currentLocale,
-        ));
+        $this->openPage('Family index');
     }
 
     /**
@@ -566,8 +551,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iAmOnTheFamilyCreationPage()
     {
-        $this->openPage('Family creation', array(
-            'locale' => $this->currentLocale,
+        $this->openPage('Family creation');
+    }
+
+    /**
+     * @Given /^I am on the "([^"]*)" family page$/
+     */
+    public function iAmOnTheFamilyPage($family)
+    {
+        $this->openPage('Family edit', array(
+            'family_id' => $this->getFamily($family)->getId()
         ));
     }
 
@@ -605,17 +598,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I am on the "([^"]*)" family page$/
-     */
-    public function iAmOnTheFamilyPage($family)
-    {
-        $this->openPage('Family edit', array(
-            'locale'    => $this->currentLocale,
-            'family_id' => $this->getFamily($family)->getId()
-        ));
-    }
-
-    /**
      * @Given /^I should see attribute "([^"]*)" in group "([^"]*)"$/
      */
     public function iShouldSeeAttributeInGroup($attribute, $group)
@@ -634,13 +616,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldBeOnTheFamilyPage($family)
     {
         $expectedAddress = $this->getPage('Family edit')->getUrl(array(
-            'locale'    => $this->currentLocale,
             'family_id' => $this->getFamily($family)->getId(),
         ));
         $this->assertSession()->addressEquals($expectedAddress);
     }
 
-    private function openPage($page, array $options)
+    private function openPage($page, array $options = array())
     {
         $this->currentPage = $page;
 
@@ -656,7 +637,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $pm = $this->getProductManager();
         $product = $pm
-            ->setLocale($this->currentLocale)
             ->getFlexibleRepository()
             ->findOneBy(array(
                 'sku' => $sku,

@@ -17,7 +17,6 @@ Feature: Add attributes to a product
       | Long Description | General |
       | Manufacturer     | General |
       | Size             |         |
-    And the current language is english
     And I am logged in as "admin"
 
   Scenario: Display attributes that are not related to the current product

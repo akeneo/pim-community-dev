@@ -20,7 +20,6 @@ Feature: Add attribute to a product family
       | Long Description | General |
       | Manufacturer     | General |
       | Size             |         |
-    And the current language is english
     And I am logged in as "admin"
     When I am on the "Bags" family page
     Then I should see available attributes Long Description and Manufacturer in group "General"
@@ -32,7 +31,6 @@ Feature: Add attribute to a product family
       | Long Description | General | Smartphone |
       | Manufacturer     | General |            |
       | Size             |         | Smartphone |
-    And the current language is english
     And I am logged in as "admin"
     When I am on the "Smartphone" family page
     Then I should see attribute "Long Description" in group "General"
@@ -45,7 +43,6 @@ Feature: Add attribute to a product family
       | Long Description | General |
       | Manufacturer     | General |
       | Size             |         |
-    And the current language is english
     And I am logged in as "admin"
     When I am on the "Bags" family page
     And I add available attributes Long Description and Size

@@ -13,7 +13,6 @@ Feature: Remove an attribute from a product
     And the following product:
       | sku    | family  |
       | kangoo | vehicle |
-    And the current language is english
     And I am logged in as "admin"
     And I am on the "kangoo" product page
     Then I should not see a remove link next to the "Model" field
@@ -30,7 +29,6 @@ Feature: Remove an attribute from a product
       | product | label | group   | family  |
       |         | Model | Other | vehicle |
       | kangoo  | Color | Other |         |
-    And the current language is english
     And I am logged in as "admin"
     And I am on the "kangoo" product page
     When I remove the "Color" attribute

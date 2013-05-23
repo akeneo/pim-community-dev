@@ -11,7 +11,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  */
 class Login extends Page
 {
-    protected $path = '/{locale}/user/login';
+    protected $path = '/user/login';
 
     protected $elements = array(
         'Login form' => array('css' => '.form-signin')

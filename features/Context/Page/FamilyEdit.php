@@ -11,7 +11,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  */
 class FamilyEdit extends Page
 {
-    protected $path = '/{locale}/product/product-family/edit/{family_id}';
+    protected $path = '/product/product-family/edit/{family_id}';
 
     protected $elements = array(
         'Available attributes' => array('css' => '#pim_available_product_attributes_attributes'),
