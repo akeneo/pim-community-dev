@@ -31,13 +31,10 @@ class ProductControllerTest extends ControllerTest
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      */
-    public function testIndex($locale)
+    public function testIndex()
     {
-        $uri = '/'. $locale .'/product/index';
+        $uri = '/product/index';
 
         // assert without authentication
         $this->client->request('GET', $uri);

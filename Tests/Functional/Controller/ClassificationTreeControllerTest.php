@@ -59,13 +59,10 @@ class ClassificationTreeControllerTest extends ControllerTest
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      */
-//     public function testIndex($locale)
+//     public function testIndex()
 //     {
-//         $uri = '/'. $locale .'/product/classification-tree/index';
+//         $uri = '/product/classification-tree/index';
 
 //         // assert without authentication
 //         $this->client->request('GET', $uri);
@@ -80,15 +77,11 @@ class ClassificationTreeControllerTest extends ControllerTest
     /**
      * Test create action for a tree
      *
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
-     *
      * @return null
      */
-    public function testCreateTree($locale)
+    public function testCreateTree()
     {
-        $uri = '/'. $locale .'/product/classification-tree/create';
+        $uri = '/product/classification-tree/create';
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -133,18 +126,15 @@ class ClassificationTreeControllerTest extends ControllerTest
     /**
      * Test create action for a node
      *
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      * @depends testCreateTree
      *
      * @return null
      */
-    public function testCreateNode($locale)
+    public function testCreateNode()
     {
         $tree = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::TREE_CODE));
 
-        $uri = '/'. $locale .'/product/classification-tree/create/'. $tree->getId();
+        $uri = '/product/classification-tree/create/'. $tree->getId();
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -191,18 +181,15 @@ class ClassificationTreeControllerTest extends ControllerTest
     /**
      * Test edit action for a tree
      *
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      * @depends testCreateTree
      *
      * @return null
      */
-    public function testEditTree($locale)
+    public function testEditTree()
     {
         // get tree
         $segmentTree = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::TREE_CODE));
-        $uri = '/'. $locale .'/product/classification-tree/edit/'. $segmentTree->getId();
+        $uri = '/product/classification-tree/edit/'. $segmentTree->getId();
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -244,7 +231,7 @@ class ClassificationTreeControllerTest extends ControllerTest
         $this->assertEquals(self::TREE_TITLE, $tree->getTitle());
 
         // assert with unknown tree id and authentication
-        $uri = '/'. $locale .'/product/classification-tree/edit/0';
+        $uri = '/product/classification-tree/edit/0';
         $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
@@ -252,18 +239,15 @@ class ClassificationTreeControllerTest extends ControllerTest
     /**
      * Test edit action for a node
      *
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      * @depends testCreateNode
      *
      * @return null
      */
-    public function testEditNode($locale)
+    public function testEditNode()
     {
         // get node
         $segmentNode = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::NODE_CODE));
-        $uri = '/'. $locale .'/product/classification-tree/edit/'. $segmentNode->getId();
+        $uri = '/product/classification-tree/edit/'. $segmentNode->getId();
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -309,16 +293,13 @@ class ClassificationTreeControllerTest extends ControllerTest
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      * @depends testEditTree
      */
-    public function testRemove($locale)
+    public function testRemove()
     {
         // get tree entity
         $tree = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::TREE_EDITED_CODE));
-        $uri = '/'. $locale .'/product/classification-tree/'. $tree->getId() .'/remove';
+        $uri = '/product/classification-tree/'. $tree->getId() .'/remove';
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
