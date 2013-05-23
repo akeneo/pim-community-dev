@@ -9,7 +9,7 @@
     var fctCreate = function() {
         var node = $.jstree._focused().get_selected();
         if(!$.jstree._focused()._get_node()) {
-            PimDialog.alert("{{ 'You must select a node' | trans }}", "{{ 'Alert message' | trans }}");
+            PimDialog.alert("{{ 'You must select a parent node.' | trans }}", "{{ 'Alert message' | trans }}");
         } else {
             var parentId = node.attr("id").replace('node_', '');
             window.location = "{{ path('pim_product_classificationtree_create') }}/"+parentId;
@@ -18,7 +18,7 @@
     var fctRemove = function() {
         if(!$.jstree._focused()._get_node($.jstree._focused().get_selected()) 
             || $.jstree._focused()._get_parent() == -1) {
-            PimDialog.alert("{{ 'You must select a node' | trans }}", "{{ 'Alert message' | trans }}");
+            PimDialog.alert("{{ 'You must select a node to remove.' | trans }}", "{{ 'Alert message' | trans }}");
         } else {
             var doRemove = function() {
                 $(tree_id).jstree("remove");
@@ -33,7 +33,7 @@
     var fctEdit = function() {
         var node = $.jstree._focused().get_selected();
         if(!$.jstree._focused()._get_node(node)) {
-            PimDialog.alert("{{ 'You must select a node' | trans }}", "{{ 'Alert message' | trans }}");
+            PimDialog.alert("{{ 'You must select a node.' | trans }}", "{{ 'Alert message' | trans }}");
         } else {
             var segmentId = node.attr("id").replace('node_', '');
             window.location = "{{ path('pim_product_classificationtree_edit') }}/"+segmentId;
@@ -68,3 +68,9 @@
     });
 </script>
 <script type="text/javascript" src="{{ asset('bundles/pimproduct/js/tree-management.jstree.js') }}"></script>
+<script>
+     $(document).ready(function () {
+        var column_height = $("#form-tab").height();
+        $(".tree-sidebar").css("min-height",column_height);
+    });
+</script>
