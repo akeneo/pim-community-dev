@@ -27,7 +27,7 @@ $(tree_id).jstree({
                 if (node && node != -1) {
                     id = node.attr("id").replace('node_','');
                 } else{
-                    id = 1;
+                    id = -1;
                 }
                 return {
                     "id" : id
@@ -50,13 +50,16 @@ $(tree_id).jstree({
         "select_multiple_modifier" : false
     }
 })
-    .bind('loaded.jstree', function(e, tree_select_id) {
+    .bind('trees_loaded.jstree', function (e, data) {
+        $('#'+tree_select_id).select2();
+    })
+    .bind('loaded.jstree', function(e, data) {
         $(tree_id).jstree('create', null, "last", { 
             "attr": { "class": "jstree-unclassified" },
             "data" : { "title": unclassifiedNodeTitle }
         }, false, true);
     })
-    .bind('select_node.jstree', function (event, node) {
+    .bind('select_node.jstree', function (e, data) {
         // TODO : Call list content and backbone filter on datagrid
         console.log('select node');
     })

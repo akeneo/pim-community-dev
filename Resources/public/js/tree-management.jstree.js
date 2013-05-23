@@ -1,4 +1,4 @@
-var jstree = $('#tree').jstree({
+$('#tree').jstree({
     "core" : {
         "animation" : 200
     },
@@ -50,8 +50,8 @@ var jstree = $('#tree').jstree({
         "select_multiple_modifier" : false
     }
 })
-    .bind('trees_loaded.jstree', function(e, tree_select_id) {
-        $('#'+tree_select_id).select2();
+    .bind('trees_loaded.jstree', function(e, data) {
+        $('#'+data).select2();
     })
     .bind("remove.jstree", function (e, data) {
         data.rslt.obj.each(function () {
@@ -59,8 +59,5 @@ var jstree = $('#tree').jstree({
             $.post(id+'/remove');
             data.inst.refresh();
         });
-    })
-    .bind("dblclick.jstree", function (e, data) {
-        fctEdit();
     })
     ;
