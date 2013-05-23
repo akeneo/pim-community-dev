@@ -43,8 +43,21 @@
 
     '@OroSearchBundle/Resources/public/js/searchBar.js'
 
-    filter='?yui_js'
-    output='js/oroapp-demo.all.js'
+    '@PimUIBundle/Resources/public/js/pim_all.js'
+    '@PimUIBundle/Resources/public/js/select2.js'
+    '@PimUIBundle/Resources/public/js/jquery-ui-1.10.0.min.js'
+    '@PimUIBundle/Resources/public/js/sidebarize.js'
+    '@PimUIBundle/Resources/public/js/wysihtml5-0.3.0.js'
+    '@PimUIBundle/Resources/public/js/bootstrap-wysihtml5.js'
+    '@PimUIBundle/Resources/public/js/slimbox2.js'
+    '@PimUIBundle/Resources/public/js/jquery.dialogForm.js'
+    '@PimUIBundle/Resources/public/js/pim-dialog.js'
+    '@PimUIBundle/Resources/public/js/pim-ajax.js'
+    '@PimUIBundle/Resources/public/js/scopableField.js'
+    '@PimUIBundle/Resources/public/js/currencyField.js'
+
+    filter='yui_js'
+    output='js/oroapp.all.js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
@@ -53,7 +66,6 @@
         navigation.Item.prototype.urlRoot = {{ path('oro_api_get_navigationitems', {'type': ''})|json_encode|raw }};
     </script>
 
-    {# BEGIN CUSTOM PIM ASSETS #}
     {% stylesheets
     'bundles/pimui/css/pim.less'
     'bundles/pimui/css/bootstrap-datetimepicker.min.css'
@@ -67,28 +79,6 @@
     <link rel="stylesheet" media="all" href="{{ asset_url }}" />
     {% endstylesheets %}
 
-    {% javascripts
-    '@PimUIBundle/Resources/public/js/pim_all.js'
-    '@PimUIBundle/Resources/public/js/bootstrap-datetimepicker.min.js'
-    '@PimUIBundle/Resources/public/js/select2.js'
-    '@PimUIBundle/Resources/public/js/jquery-ui-1.10.0.min.js'
-    '@PimUIBundle/Resources/public/js/sidebarize.js'
-    '@PimUIBundle/Resources/public/js/wysihtml5-0.3.0.js'
-    '@PimUIBundle/Resources/public/js/bootstrap-wysihtml5.js'
-    '@PimUIBundle/Resources/public/js/slimbox2.js'
-    '@PimUIBundle/Resources/public/js/jquery.dialogForm.js'
-    '@PimUIBundle/Resources/public/js/pim-dialog.js'
-    '@PimUIBundle/Resources/public/js/pim-ajax.js'
-    '@PimUIBundle/Resources/public/js/scopableField.js'
-    '@PimUIBundle/Resources/public/js/currencyField.js'
-
-    filter='?yui_js'
-    output='js/pimapp.all.js'
-    %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-
-    {# END CUSTOM PIM ASSETS #}
     {% block javascripts %}{% endblock %}
 
 {% endblock %}
