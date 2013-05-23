@@ -47,5 +47,5 @@ var PimDialog = new function() {
         } else {
             callback();
         }
-    }
-}
+    };
+};

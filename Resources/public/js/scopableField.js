@@ -45,6 +45,12 @@
 
             if (i !== 0 && scope === opts.defaultScope) {
                 $field.insertBefore($fields[0].field);
+
+                if ($field.find('.wysihtml5-sandbox').length !== 0) {
+                    var $el = $field.find('textarea').first();
+                    reinitWysihtml5($el);
+                }
+
                 break;
             }
         }
@@ -76,39 +82,60 @@
         var $fields = getFields(el);
         $fields.first().off('click', 'label span');
         $fields.first().on('click', 'label span', function() {
-            toggleOpen($(this).parents('.scopablefield'), opts);
+            toggleOpen($(this).parents('.scopablefield'), opts, true);
         });
 
     }
 
-    function expand(el, opts) {
+    function expand(el, opts, force) {
         var $fields = getFields(el);
 
         $fields.find('label span').remove();
         var $icon = $('<span>').html($('<i>').addClass(opts.collapseIcon));
         $fields.first().find('label.control-label').prepend($icon);
-        $fields.show();
+
+        if (opts.toggleOnUpdate || force) {
+            $fields.show();
+        } else {
+            $fields.hide();
+            $fields.first().show();
+        }
     }
 
-    function collapse(el, opts) {
+    function collapse(el, opts, force) {
         var $fields = getFields(el);
-        $fields.hide();
-
-        $fields.first().show();
 
         $fields.find('label span').remove();
         var $icon = $('<span>').html($('<i>').addClass(opts.expandIcon));
-        getFields(el).first().find('label.control-label').prepend($icon);
+        $fields.first().find('label.control-label').prepend($icon);
+
+        if (opts.toggleOnUpdate || force) {
+            $fields.hide();
+            $fields.first().show();
+        } else {
+            $fields.show();
+        }
     }
 
-    function toggleOpen(el, opts, close) {
+    function toggleOpen(el, opts, force) {
         var $fields = getFields(el);
 
-        if ($fields.filter(':visible').length > 1 || close === true) {
-            collapse(el, opts);
+        if ($fields.filter(':visible').length === 1) {
+            expand(el, opts, force);
         } else {
-            expand(el, opts);
+            collapse(el, opts, force);
         }
+    }
+
+    function reinitWysihtml5(el) {
+        $(el).show().siblings('.wysihtml5-toolbar, .wysihtml5-sandbox, input[name="_wysihtml5_mode"]').remove();
+        $(el).wysihtml5({
+            events: {
+                change: function() {
+                    $el.trigger('change');
+                }
+            }
+        });
     }
 
     $.fn.scopableField = function(options) {
@@ -118,11 +145,11 @@
 
             if (options === 'collapse') {
                 return this.each(function() {
-                    collapse(this, opts);
+                    collapse(this, opts, true);
                 });
             } else if (options === 'expand') {
                 return this.each(function() {
-                    expand(this, opts);
+                    expand(this, opts, true);
                 });
             } else {
                 return this;
@@ -135,17 +162,22 @@
 
         return this.each(function() {
             if (!$(this).hasClass('scopablefield')) {
-                $(this).addClass('scopablefield');
                 showTitle(this, opts);
             }
             sortFields(this, opts);
             prepareLabels(this, opts);
             bindEvents(this, opts);
-            toggleOpen(this, opts, true);
+            if (!$(this).hasClass('scopablefield') || opts.toggleOnUpdate === true) {
+                toggleOpen(this, opts, true);
+            } else {
+                toggleOpen(this, opts);
+            }
+            $(this).addClass('scopablefield');
         });
     }
 
     $.fn.scopableField.defaults = {
+        toggleOnUpdate: false,
         defaultScope: null,
         title: null,
         expandIcon: 'icon-caret-right',

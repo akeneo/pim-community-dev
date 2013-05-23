@@ -3,7 +3,13 @@
 {% block pim_wysiwyg_widget %}
     {{ block('textarea_widget') }}
     <script type="text/javascript">
-        $('textarea#{{ form.vars.id }}').wysihtml5();
+        $('#{{ form.vars.id }}').wysihtml5({
+            events: {
+                change: function() {
+                   $('#{{ form.vars.id }}').trigger('change');
+                }
+            }
+        });
     </script>
 {% endblock %}
 

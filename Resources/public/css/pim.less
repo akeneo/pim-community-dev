@@ -246,51 +246,51 @@ a.accordion-toggle {
   float: none;
 }
 
-.resizable-sidebar {
-    ul {
-        margin: 10px 0 0 0;
-        li {
-            list-style: none;
-            cursor: pointer;
-            line-height: 35px;
-            padding: 0 10px;
-            a {
-                color: #444444;
-            }
-            a:hover {
-                text-decoration: none;
-            }
-        }
-        li.active {
-            background-color: #eeeeee;
-        }
+.sidebar-list {
+  ul {
+    margin: 10px 0 0 0;
+    li {
+      list-style: none;
+      cursor: pointer;
+      line-height: 35px;
+      padding: 0 10px;
+      a {
+        color: #444444;
+      }
+      a:hover {
+        text-decoration: none;
+      }
     }
+    li.active {
+      background-color: #eeeeee;
+    }
+  }
 }
 
 .groups {
-    margin: 10px 0;
-    thead {
-        tr {
-            border-top: 1px solid #dfdfdf;
-            border-bottom: 1px solid #dfdfdf;
-            background-color: #f3f3f3;
-            th {
-                line-height: 6px;
-            }
-        }
+  margin: 10px 0;
+  thead {
+    tr {
+      border-top: 1px solid #dfdfdf;
+      border-bottom: 1px solid #dfdfdf;
+      background-color: #f3f3f3;
+      th {
+        line-height: 6px;
+      }
     }
-    tbody, tbody + tbody {
-        border: 0;
-        tr.group {
-            border-bottom: 1px solid #d8d8d8;
-            background-color: #ffffff;
-            font-weight: bold;
-        }
-        tr {
-            border-bottom: 1px solid #ebebeb;
-            background-color: #f8f8f8;
-        }
+  }
+  tbody, tbody + tbody {
+    border: 0;
+    tr.group {
+      border-bottom: 1px solid #d8d8d8;
+      background-color: #ffffff;
+      font-weight: bold;
     }
+    tr {
+      border-bottom: 1px solid #ebebeb;
+      background-color: #f8f8f8;
+    }
+  }
 }
 
 #form-tab tbody td {
@@ -527,43 +527,140 @@ div.dropdown-menu.channel {
   }
 }
 
+#channel-controls {
+  display: inline-block;
+  float: left;
+  min-width: 210px;
+  max-width: 400px;
+}
+
+.form-horizontal .tab-content .tab-pane {
+  min-height: 300px;
+}
+
+.product-title {
+  line-height: 28px;
+}
+
+#locale-switcher {
+  span.dropdown-toggle {
+    color: @textColor;
+    margin-bottom: 0;
+    padding: 3px 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: none;
+    cursor: pointer;
+    .caret {
+      margin-top: 6px;
+    }
+  }
+  .dropdown-menu {
+    padding: 0;
+    li>a {
+      padding: 5px;
+      color: @textColor;
+      &:hover, &:active, &:focus {
+        background-color: #f1f1f1;
+        background-image: none;
+      };
+      span.code {
+        color: @textColor + #444;
+        float: left;
+        text-align: right;
+        width: 70px;
+      }
+      span.title {
+        font-weight: bold;
+        margin: 0 10px;
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+div.product-updated {
+  clear: right;
+  margin-top: 10px;
+  margin-right: 5px;
+  .label-warning {
+    background-color: #fefecb;
+    color: @textColor + #333;
+    text-shadow: none;
+  }
+}
+
+/* Grids */
+.grid th a {color: #666666; }
+.table-hover tbody tr:hover > td {background-color: #f2ebf8; }
+
+/* Tree */
+.product-list h3 {margin:0px;}
+.tree-sidebar {min-height:100%; min-height:500px; border-right: #F5F5F5 7px solid;}
+.product-list #tree_toolbar { padding: 10px 0px 0px 0px; border-top: #ccc 1px solid; border-bottom: #ccc 1px solid; margin-bottom: 20px; }
+/*.classification #tree_toolbar { padding: 10px 0px 10px 0px;}
+.classification .tree-toolbar { margin-top:15px; }*/
+
+.tree-toolbar {
+  background-color: #f3f3f3;
+  display: table;
+  width: 100%;
+  border-top: 1px solid #d3d3d3;
+  margin-top: 5%;
+}
+
+.btn-tree-toolbar {
+  background-color: #f3f3f3;
+  display:block;
+  float:left;
+  border: 0px;
+  border-right: 1px solid #d3d3d3;
+  color:#000;
+  text-decoration:none;
+}
+
+.tree-toolbar .btn-group .dropdown-toggle {
+  border-bottom-right-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+.tree-toolbar .btn-group .dropdown-toggle .caret {
+  vertical-align: bottom;
+}
+
+#sidebar-collapse {
+  float: right;
+  border: 0px;
+}
+
+#tree_toolbar {
+  margin-bottom: 5%;
+  margin-top: 5%;
+}
+
+.dropdown-menu{
+  li > a:hover,
+  li > a:focus{
+    background: @color-purple_dark;
+    color: #ffffff;
+  }
+}
+
+.modal{
+  top: 20%;
+  background-color: @backgroundColor-white;
+}
+.modal .modal-header{
+  background-color: @color-purple_light;
+  -webkit-border-radius: 6px 6px 0 0;
+  border-radius: 6px 6px 0 0;
+}
+.modal-header h3{
+  color: #fff;
+}
+
 /* Icons */
 i {
   &.icon-caret-down-gray { .icon-caret-down-gray(); }
-  &.icon-caret-down-lightgray { .icon-caret-down-lightgray(); }
-  &.icon-caret-down-white { .icon-caret-down-white(); }
   &.icon-caret-right { .icon-caret-right(); }
-  &.icon-caret-up { .icon-caret-up(); }
-  &.icon-tick-green-small { .icon-tick-green-small(); }
-  &.icon-tick-green { .icon-tick-green(); }
-  &.icon-tick-yellow { .icon-tick-yellow(); }
-  &.icon-expand { .icon-expand(); }
-  &.icon-collapse { .icon-collapse(); }
-  &.icon-copy-gray { .icon-copy-gray(); }
-  &.icon-copy-white { .icon-copy-white(); }
-  &.icon-edit { .icon-edit(); }
-  &.icon-pencil { .icon-pencil(); }
-  &.icon-pencil-blue { .icon-pencil-blue(); }
-  &.icon-pin { .icon-pin(); }
-  &.icon-trash { .icon-trash(); }
-  &.icon-dots-gray { .icon-dots-gray(); }
-  &.icon-dots-lightgray { .icon-dots-lightgray(); }
-  &.icon-dots-white { .icon-dots-white(); }
-  &.icon-home { .icon-home(); }
-  &.icon-shout { .icon-shout(); }
-  &.icon-help { .icon-help(); }
-  &.icon-search { .icon-search(); }
-  &.icon-shortcuts { .icon-shortcuts(); }
-  &.icon-alert { .icon-alert(); }
-  &.icon-alert-small { .icon-alert-small(); }
-  &.icon-plus { .icon-plus(); }
-  &.icon-document { .icon-document(); }
-  &.icon-close-lightgray { .icon-close-lightgray(); }
-  &.icon-close-gray { .icon-close-gray(); }
-  &.icon-close-darkgray { .icon-close-darkgray(); }
-  &.icon-close-white { .icon-close-white(); }
-  &.icon-close-green { .icon-close-green(); }
-  &.icon-close-purple { .icon-close-purple(); }
-  &.icon-close-red { .icon-close-red(); }
-  &.icon-close-yellow { .icon-close-yellow(); }
 }
