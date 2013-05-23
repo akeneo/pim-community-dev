@@ -14,13 +14,10 @@ class CurrencyControllerTest extends ControllerTest
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      */
-    public function testIndex($locale)
+    public function testIndex()
     {
-        $uri = '/'. $locale .'/config/currency/index';
+        $uri = '/configuration/currency/index';
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
@@ -33,13 +30,10 @@ class CurrencyControllerTest extends ControllerTest
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      */
-    public function testCreate($locale)
+    public function testCreate()
     {
-        $uri = '/'. $locale .'/config/currency/create';
+        $uri = '/configuration/currency/create';
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
@@ -52,15 +46,12 @@ class CurrencyControllerTest extends ControllerTest
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      */
-    public function testEdit($locale)
+    public function testEdit()
     {
         // initialize authentication to call container and get currency entity
         $currency = $this->getRepository()->findOneBy(array());
-        $uri = '/'. $locale .'/config/currency/edit/'. $currency->getId();
+        $uri = '/configuration/currency/edit/'. $currency->getId();
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
@@ -71,23 +62,20 @@ class CurrencyControllerTest extends ControllerTest
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         // assert with unknown currency id
-        $uri = '/'. $locale .'/config/currency/edit/0';
+        $uri = '/configuration/currency/edit/0';
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      */
-//     public function testDisable($locale)
+//     public function testDisable()
 //     {
 //         // initialize authentication to call container and get currency entity
 //         $this->client = static::createClient();
 //         $currency = $this->getRepository()->findOneBy(array());
-//         $uri = '/'. $locale .'/config/currency/disable/'. $currency->getId();
+//         $uri = '/configuration/currency/disable/'. $currency->getId();
 
 //         // assert without authentication
 //         $crawler = $this->client->request('GET', $uri);

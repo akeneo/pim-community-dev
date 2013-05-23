@@ -105,6 +105,11 @@
         },
         {
             "type": "vcs",
+            "url": "https://github.com/laboro/TestFrameworkBundle.git",
+            "branch": "master"
+        },
+        {
+            "type": "vcs",
             "url": "https://github.com/laboro/SonataAdminBundle.git"
         }
     ],

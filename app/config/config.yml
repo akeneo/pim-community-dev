@@ -144,6 +144,30 @@ services:
 escape_wsse_authentication:
     authentication_provider_class: Oro\Bundle\UserBundle\Security\WsseUserProvider
 
+liip_imagine:
+    filter_sets:
+        avatar_med:
+            quality:          95
+            filters:
+                thumbnail:    { size: [58, 58], mode: outbound }
+                strip:        ~
+
+oro_search:
+    engine:                   orm
+    realtime_update:          true
+
+oro_ui:
+    settings:
+        application_name:
+            value: "ORO CRM"
+        application_title:
+            value: "ORO CRM"
+
+oro_user:
+    settings:
+        name_format:
+          value:              %%last%%, %%first%%
+
 knp_gaufrette:
     adapters:
         pim_adapter:

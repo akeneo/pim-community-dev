@@ -1,44 +1,58 @@
 pim_default:
-    pattern:  /{_locale}
-    defaults: { _controller: PimUIBundle:Welcome:index, _locale: %locale% }
-
-oro_default:
-    pattern:  /{_locale}
+    pattern:  /
     defaults: { _controller: PimUIBundle:Welcome:index, _locale: %locale% }
 
 pim_product:
     resource: "@PimProductBundle/Controller/"
     type:     annotation
-    prefix:   /{_locale}/product/
-    defaults: { _locale: %locale% }
+    prefix:   /product/
 
 pim_config:
     resource: "@PimConfigBundle/Controller/"
     type:     annotation
-    prefix:   /{_locale}/config/
-    defaults: { _locale: %locale% }
+    prefix:   /configuration/
+
+oro_default:
+    pattern:  /{_locale}
+    defaults:
+        template:    ::base.html.twig
+        _locale:     %locale%
+        _controller: FrameworkBundle:Template:template
+    requirements:
+        _locale:  en|fr|de
+
+oro_ui:
+    resource: "@OroUIBundle/Resources/config/routing.yml"
+    prefix:   /ui
 
 oro_user:
     resource: "@OroUserBundle/Resources/config/routing.yml"
-    prefix:   /{_locale}/
-    defaults: { _locale: %locale% }
 
 oro_search:
     resource: "@OroSearchBundle/Resources/config/routing.yml"
-    prefix:   /{_locale}/
-    defaults: { _locale: %locale% }
+    prefix:   /
 
 oro_navigation:
     resource: "@OroNavigationBundle/Resources/config/routing.yml"
-    prefix:   /{_locale}/
-    defaults: { _locale: %locale% }
+    prefix:   /
+
+oro_windows:
+    resource: "@OroWindowsBundle/Resources/config/routing.yml"
+    prefix: /
 
 oro_soap:
     resource: "@OroSoapBundle/Resources/config/routing.yml"
     prefix:   /api
 
-oro_windows:
-    resource: "@OroWindowsBundle/Resources/config/routing.yml"
+oro_dataflow:
+    resource: "@OroDataFlowBundle/Resources/config/routing.yml"
+
+oro_config:
+    resource: "@OroConfigBundle/Resources/config/routing.yml"
+
+nelmio_api_doc:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /api/doc
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
