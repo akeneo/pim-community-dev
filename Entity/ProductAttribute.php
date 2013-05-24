@@ -59,7 +59,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     /**
      * @var string $description
      *
-     * @ORM\Column(name="description", type="string", length=255)
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
     protected $description;
 
@@ -273,8 +273,6 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      *
      * @ORM\PrePersist
      * @ORM\PreUpdate
-     *
-     * @return null
      */
     public function convertDefaultValueToTimestamp()
     {
@@ -287,13 +285,12 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * Convert defaultValue to DateTime if attribute type is date
      *
      * @ORM\PostLoad
-     *
-     * @return null
      */
     public function convertDefaultValueToDatetime()
     {
         if ($this->getDefaultValue()) {
-            if (strpos($this->getAttributeType(), 'DateType') !== false) {
+            // TODO : must be moved and avoid to use service name here
+            if ($this->getAttributeType() === 'oro_flexibleentity_date') {
                 $date = new \DateTime();
                 $date->setTimestamp(intval($this->getDefaultValue()));
 
@@ -307,13 +304,12 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      *
      * @ORM\PrePersist
      * @ORM\PreUpdate
-     *
-     * @return null
      */
     public function convertDefaultValueToInteger()
     {
         if ($this->getDefaultValue() !== null) {
-            if (strpos($this->getAttributeType(), 'BooleanType') !== false) {
+            // TODO : must be moved and avoid to use service name here
+            if ($this->getAttributeType() === 'oro_flexibleentity_integer') {
                 $this->setDefaultValue((int) $this->getDefaultValue());
             }
         }
@@ -323,17 +319,17 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * Convert defaultValue to boolean if attribute type is boolean
      *
      * @ORM\PostLoad
-     *
-     * @return null
      */
     public function convertDefaultValueToBoolean()
     {
         if ($this->getDefaultValue() !== null) {
-            if (strpos($this->getAttributeType(), 'BooleanType') !== false) {
+            // TODO : must be moved and avoid to use service name here
+            if ($this->getAttributeType() === 'oro_flexibleentity_boolean') {
                 $this->setDefaultValue((bool) $this->getDefaultValue());
             }
         }
     }
+
 
     /**
      * To string
