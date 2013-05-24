@@ -138,6 +138,7 @@
                                 </div>
                             </div>
                             {% set attributeCode = '' %}
+                            {% set displayRemoveAttributeLink = true %}
                             {% for group in product.orderedGroups %}
                             <div id="tabs-{{ group.id }}" class="tab-pane{% if loop.index == 1 %} active{% endif %}">
                                 <h3>{{ group.name|trans }}</h3>
@@ -152,13 +153,17 @@
                                             {% if attributeCode != formValue.vars.value.attribute.code %}
                                                 </div>
                                                 <div class="{{ formValue.vars.value.attribute.scopable ? 'scopable' : '' }}{{ formValue.vars.value.attribute.attributeType == 'pim_product_price_collection' ? 'currency' : '' }}" data-field="{{ formValue.vars.value.attribute.code }}">
+                                                {% set displayRemoveAttributeLink = true %}
                                             {% endif %}
                                             <div class="control-group">
                                                 {{ form_widget(formValue, {'attr': {'data-scope': formValue.vars.value.scope}} ) }}
-                                                {% if formValue.vars.value.isRemovable() %}
-                                                    <a href="{{ path('pim_product_product_removeproductvalue', {'productId': formValue.vars.value.entity.id, 'attributeId': formValue.vars.value.attribute.id}) }}"
-                                                       class="btn btn-action btn-link remove-attribute"
-                                                       data-method="DELETE" date-confirm="{{ 'Are you sure'|trans }}">×</a>
+                                                {% if displayRemoveAttributeLink %}
+                                                    {% if formValue.vars.value.isRemovable() %}
+                                                        <a href="{{ path('pim_product_product_removeproductvalue', {'productId': formValue.vars.value.entity.id, 'attributeId': formValue.vars.value.attribute.id}) }}"
+                                                           class="btn btn-action btn-link remove-attribute"
+                                                           data-method="DELETE" date-confirm="{{ 'Are you sure'|trans }}">×</a>
+                                                    {% endif %}
+                                                    {% set displayRemoveAttributeLink = false %}
                                                 {% endif %}
                                             </div>
                                             {% set attributeCode = formValue.vars.value.attribute.code %}
