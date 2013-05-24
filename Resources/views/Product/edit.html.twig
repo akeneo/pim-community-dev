@@ -156,7 +156,9 @@
                                             <div class="control-group">
                                                 {{ form_widget(formValue, {'attr': {'data-scope': formValue.vars.value.scope}} ) }}
                                                 {% if formValue.vars.value.isRemovable() %}
-                                                <a href="{{ path('pim_product_product_removeproductvalue', {'productId': formValue.vars.value.entity.id, 'attributeId': formValue.vars.value.attribute.id}) }}" class="remove-attribute" data-method="DELETE" date-confirm="{{ 'Are you sure'|trans }}">Remove</a>
+                                                    <a href="{{ path('pim_product_product_removeproductvalue', {'productId': formValue.vars.value.entity.id, 'attributeId': formValue.vars.value.attribute.id}) }}"
+                                                       class="btn btn-action btn-link remove-attribute"
+                                                       data-method="DELETE" date-confirm="{{ 'Are you sure'|trans }}">×</a>
                                                 {% endif %}
                                             </div>
                                             {% set attributeCode = formValue.vars.value.attribute.code %}
