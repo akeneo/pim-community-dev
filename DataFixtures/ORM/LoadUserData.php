@@ -79,6 +79,15 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
             $this->persist($hobbyAttribute);
         }
 
+        if (!$this->findAttribute('cataloglocale')) {
+            $localeAttribute = $this->createAttributeWithOptions(
+                'oro_flexibleentity_simpleselect',
+                'cataloglocale',
+                self::getLocales()
+            );
+            $this->persist($localeAttribute);
+        }
+
         $this->flush();
     }
 
@@ -111,6 +120,14 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      */
     public function loadUsers()
     {
+        // change existing users (imported by user bundle itself)
+        $users = $this->userRepository->findAll();
+        foreach ($users as $user) {
+            $this->setFlexibleAttributeValueOption($user, 'cataloglocale', $this->generateLocale());
+            $this->persist($user);
+        }
+
+        // create users
         for ($i = 0; $i < 50; ++$i) {
             $firstName = $this->generateFirstName();
             $lastName = $this->generateLastName();
@@ -124,6 +141,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
             $gender = $this->generateGender();
             $hobbies = $this->generateHobbies();
             $lastVisit = $this->generateLastVisit();
+            $locale    = $this->generateLocale();
 
             $user = $this->createUser(
                 $username,
@@ -137,7 +155,8 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
                 $website,
                 $gender,
                 $hobbies,
-                $lastVisit
+                $lastVisit,
+                $locale
             );
 
             $user->setPlainPassword(uniqid());
@@ -163,6 +182,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      * @param string    $gender
      * @param array     $hobbies
      * @param \DateTime $lastVisit
+     * @param string    $locale
      *
      * @return User
      */
@@ -178,7 +198,8 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $website,
         $gender,
         array $hobbies,
-        $lastVisit
+        $lastVisit,
+        $locale
     ) {
         /** @var $user User */
         $user = $this->userManager->createFlexible();
@@ -196,6 +217,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $this->setFlexibleAttributeValue($user, 'website', $website);
         $this->addFlexibleAttributeValueOptions($user, 'hobby', $hobbies);
         // $this->setFlexibleAttributeValue($user, 'last_visit', $lastVisit);
+        $this->setFlexibleAttributeValueOption($user, 'cataloglocale', $locale);
 
         return $user;
     }
@@ -537,6 +559,16 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     }
 
     /**
+     * Generates a locale
+     *
+     * @return string
+     */
+    private function generateLocale()
+    {
+        return 'en_US';
+    }
+
+    /**
      * Generates hobbies
      *
      * @return string
@@ -574,6 +606,16 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     }
 
     /**
+     * Get array of locales
+     *
+     * @return array
+     */
+    private static function getLocales()
+    {
+        return array('fr_FR', 'fr_CA', 'de_DE', 'en_US', 'en_GB');
+    }
+
+    /**
      * Persist object
      *
      * @param mixed $object
@@ -602,6 +644,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      */
     public function getOrder()
     {
-        return 3;
+        return 111;
     }
 }
