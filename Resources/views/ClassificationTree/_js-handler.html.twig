@@ -5,64 +5,48 @@
     var urlListTree = "{{ path('pim_product_classificationtree_listtree', { '_format': 'json' }) }}";
     var urlChildren = "{{ path('pim_product_classificationtree_children', { '_format': 'json' }) }}";
     
-    // define action when click on dynamic buttons
-    var fctCreate = function() {
-        var node = $.jstree._focused().get_selected();
-        if(!$.jstree._focused()._get_node()) {
-            PimDialog.alert("{{ 'You must select a parent node.' | trans }}", "{{ 'Alert message' | trans }}");
-        } else {
-            var parentId = node.attr("id").replace('node_', '');
-            window.location = "{{ path('pim_product_classificationtree_create') }}/"+parentId;
-        }
-    }
-    var fctRemove = function() {
-        if(!$.jstree._focused()._get_node($.jstree._focused().get_selected()) 
-            || $.jstree._focused()._get_parent() == -1) {
-            PimDialog.alert("{{ 'You must select a node to remove.' | trans }}", "{{ 'Alert message' | trans }}");
-        } else {
-            var doRemove = function() {
-                $(tree_id).jstree("remove");
-            };
-            PimDialog.confirm(
-                "{{ 'Are you sure you want to delete the category' | trans }}",
-                "{{ 'Delete Confirmation' | trans }}",
-                doRemove
-            );
-        }
-    }
-    var fctEdit = function() {
-        var node = $.jstree._focused().get_selected();
-        if(!$.jstree._focused()._get_node(node)) {
-            PimDialog.alert("{{ 'You must select a node.' | trans }}", "{{ 'Alert message' | trans }}");
-        } else {
-            var segmentId = node.attr("id").replace('node_', '');
-            window.location = "{{ path('pim_product_classificationtree_edit') }}/"+segmentId;
-        }
-    }
-    
     // define buttons actions
     $(".tree-toolbar button").click(function () {
         switch(this.id) {
             case "segment-edit":
-                fctEdit();
+                var node = $.jstree._focused().get_selected();
+                if(!$.jstree._focused()._get_node(node)) {
+                    PimDialog.alert("{{ 'You must select a node.' | trans }}", "{{ 'Alert message' | trans }}");
+                } else {
+                    var segmentId = node.attr("id").replace('node_', '');
+                    window.location = "{{ path('pim_product_classificationtree_edit') }}/"+segmentId;
+                }
                 break;
-            case "tree-remove":
-                fctRemove();
-                break;
-            case "tree-duplicate":
-                PimDialog.alert('Not yet implemented', '');
+            case "segment-remove":
+                if(!$.jstree._focused()._get_node($.jstree._focused().get_selected())) {
+                    PimDialog.alert("{{ 'You must select a node to remove.' | trans }}", "{{ 'Alert message' | trans }}");
+                } else {
+                    var doRemove = function() {
+                        $(tree_id).jstree("remove");
+                    };
+                    PimDialog.confirm(
+                        "{{ 'Are you sure you want to delete the category' | trans }}",
+                        "{{ 'Delete Confirmation' | trans }}",
+                        doRemove
+                    );
+                }
                 break;
         }
     });
     
     $(".tree-toolbar a").click(function() {
-        console.log(this.id);
         switch (this.id) {
             case "tree-create":
                 window.location = "{{ path('pim_product_classificationtree_create') }}";
                 break;
             case "segment-create":
-                fctCreate();
+                var node = $.jstree._focused().get_selected();
+                if(!$.jstree._focused()._get_node()) {
+                    PimDialog.alert("{{ 'You must select a parent node.' | trans }}", "{{ 'Alert message' | trans }}");
+                } else {
+                    var parentId = node.attr("id").replace('node_', '');
+                    window.location = "{{ path('pim_product_classificationtree_create') }}/"+parentId;
+                }
                 break;
         }
     });
