@@ -224,8 +224,14 @@ class ClassificationTreeController extends Controller
      */
     public function removeAction(ProductSegment $segment)
     {
-        $this->getTreeManager()->remove($segment);
-        $this->getTreeManager()->getStorageManager()->flush();
+        $count = $this->getTreeManager()->getEntityRepository()->countProductsLinked($segment, false);
+
+        if ($count == 0) {
+            $this->getTreeManager()->remove($segment);
+            $this->getTreeManager()->getStorageManager()->flush();
+        } else {
+            return new JsonResponse('They are products in this category, but they will not be deleted', 500);
+        }
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new JsonResponse();
