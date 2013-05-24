@@ -20,7 +20,7 @@ use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Entity(repositoryClass="Oro\Bundle\SegmentationTreeBundle\Entity\Repository\SegmentRepository")
+ * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductSegmentRepository")
  * @ORM\Table(
  *     name="pim_product_segment",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="pim_product_segment_code_uc", columns={"code"})}
@@ -55,7 +55,7 @@ class ProductSegment extends AbstractSegment implements Translatable
      * @ORM\JoinTable(
      *     name="pim_segment_product",
      *     joinColumns={@ORM\JoinColumn(name="segment_id", referencedColumnName="id", onDelete="CASCADE")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")}
+     *     inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")}
      * )
      */
     protected $products;
