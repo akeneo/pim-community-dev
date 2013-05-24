@@ -1,11 +1,11 @@
 {% extends 'PimConfigBundle::layout.html.twig' %}
 
-{% set title = form.vars.value.id ? 'Edit language'|trans : 'Add language'|trans %}
+{% set title = form.vars.value.id ? 'Edit locale'|trans : 'Add locale'|trans %}
 
 {% block content %}
 <form class="form-horizontal" action="{{ form.vars.value.id ? 
-    path('pim_config_language_edit', { id: form.vars.value.id }) : 
-    path('pim_config_language_create') }}" method="POST" class="form-register">
+    path('pim_config_locale_edit', { id: form.vars.value.id }) : 
+    path('pim_config_locale_create') }}" method="POST" class="form-register">
 
     <div class="row-fluid">
         <div class="form-row">
@@ -16,7 +16,7 @@
                     {{ "Disable" | trans }}
                 </a>
             {% endif %}
-            <a class="pull-right return" href="{{ path('pim_config_language_index') }}">
+            <a class="pull-right return" href="{{ path('pim_config_locale_index') }}">
                 {{ "Back to list" | trans }}
             </a>
         </div>
@@ -55,7 +55,7 @@
         $('input.multiselect').select2({ tags: $(this).val() });
         $('#btn-disable-locale').click(function(event) {
             doAction = function() {
-                window.location.href = "{{ path('pim_config_language_disable', { id: form.vars.value.id }) }}";
+                window.location.href = "{{ path('pim_config_locale_disable', { id: form.vars.value.id }) }}";
             };
             
             if (!_.isUndefined(Backbone.BootstrapModal)) {

@@ -9,7 +9,7 @@ use Oro\Bundle\FlexibleEntityBundle\Model\AttributeType\TextType;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\Role;
 
-use Pim\Bundle\ConfigBundle\Entity\Language;
+use Pim\Bundle\ConfigBundle\Entity\Locale;
 use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
@@ -46,7 +46,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function resetCurrentLocale()
     {
         foreach ($this->locales as $locale) {
-            $this->createLanguage($locale);
+            $this->createLocale($locale);
         }
         $this->currentLocale = null;
     }
@@ -104,7 +104,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
                 $value = $pm->createFlexibleValue();
                 $value->setAttribute($attribute);
-                $value->setLocale($this->getLocale($translation['locale']));
+                $value->setLocale($this->getLocaleCode($translation['locale']));
                 $value->setData($translation['value']);
                 $pm->getStorageManager()->persist($value);
                 $product->addValue($value);
@@ -124,10 +124,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $languages = $this->listToArray($languages);
 
         foreach ($languages as $language) {
-            $language = $this->getLanguage($this->getLocale($language));
-            $pl = $product->getLanguage($language);
+            $language = $this->getLocale($this->getLocaleCode($language));
+            $pl = $product->getLocale($language);
             if (!$pl) {
-                $product->addLanguage($language, true);
+                $product->addLocale($language, true);
             }
         }
 
@@ -162,7 +162,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         foreach ($table->getHash() as $data) {
             $family      = $this->getFamily($data['family']);
             $translation = $this->createFamilyTranslation(
-                $family, $data['label'], $this->getLocale($data['language'])
+                $family, $data['label'], $this->getLocaleCode($data['language'])
             );
 
             $family->addTranslation($translation);
@@ -176,7 +176,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function theCurrentLanguageIs($language)
     {
-        $this->currentLocale = $this->getLocale($language);
+        $this->currentLocale = $this->getLocaleCode($language);
     }
 
     /**
@@ -244,14 +244,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $langs     = array();
 
         foreach ($languages as $language) {
-            $langs[] = $this->getLanguage($this->getLocale($language));
+            $langs[] = $this->getLocale($this->getLocaleCode($language));
         }
 
         foreach ($products as $product) {
             foreach ($langs as $lang) {
-                $pl = $product->getLanguage($lang);
+                $pl = $product->getLocale($lang);
                 if (!$pl) {
-                    $product->addLanguage($lang);
+                    $product->addLocale($lang);
                 }
             }
         }
@@ -352,7 +352,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         foreach ($languages as $language) {
             $this
                 ->getPage('Product')
-                ->selectLanguage($this->getLocale($language))
+                ->selectLanguage($this->getLocaleCode($language))
             ;
         }
     }
@@ -440,7 +440,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         try {
             $field = $language ? $this->getPage($this->currentPage)->getFieldLocator(
-                $field, $this->getLocale($language)
+                $field, $this->getLocaleCode($language)
             ) : $field;
         } catch (\BadMethodCallException $e) {
             // Use default $field if current page does not provide a getFieldLocator method
@@ -643,7 +643,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         return $attribute;
     }
 
-    private function getLocale($language)
+    private function getLocaleCode($language)
     {
         if ('default' === $language) {
             return $language;
@@ -658,26 +658,26 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         return $this->locales[$language];
     }
 
-    private function getLanguage($code)
+    private function getLocale($code)
     {
         try {
-            $lang = $this->getEntityOrException('PimConfigBundle:Language', array(
+            $lang = $this->getEntityOrException('PimConfigBundle:Locale', array(
                 'code' => $code
             ));
         } catch (\InvalidArgumentException $e) {
-            $this->createLanguage($code);
+            $this->createLocale($code);
         }
 
         return $lang;
     }
 
-    private function createLanguage($code)
+    private function createLocale($code)
     {
-        $lang = new Language;
-        $lang->setCode($code);
+        $locale = new Locale();
+        $locale->setCode($code);
 
         $em = $this->getEntityManager();
-        $em->persist($lang);
+        $em->persist($locale);
         $em->flush();
     }
 

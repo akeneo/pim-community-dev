@@ -9,7 +9,7 @@ namespace Pim\Bundle\ConfigBundle\Tests\Functional\Controller;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class LanguageControllerTest extends ControllerTest
+class LocaleControllerTest extends ControllerTest
 {
 
     /**
@@ -17,7 +17,7 @@ class LanguageControllerTest extends ControllerTest
      */
     public function testIndex()
     {
-        $uri = '/configuration/language/index';
+        $uri = '/configuration/locale/index';
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
@@ -33,7 +33,7 @@ class LanguageControllerTest extends ControllerTest
      */
     public function testCreate()
     {
-        $uri = '/configuration/language/create';
+        $uri = '/configuration/locale/create';
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
@@ -49,9 +49,9 @@ class LanguageControllerTest extends ControllerTest
      */
     public function testEdit()
     {
-        // initialize authentication to call container and get language entity
-        $language = $this->getRepository()->findOneBy(array());
-        $uri = '/configuration/language/edit/'. $language->getId();
+        // initialize authentication to call container and get locale entity
+        $locale = $this->getRepository()->findOneBy(array());
+        $uri = '/configuration/locale/edit/'. $locale->getId();
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
@@ -61,8 +61,8 @@ class LanguageControllerTest extends ControllerTest
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
-        // assert with unknown language id
-        $uri = '/configuration/language/edit/0';
+        // assert with unknown locale id
+        $uri = '/configuration/locale/edit/0';
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
@@ -72,9 +72,9 @@ class LanguageControllerTest extends ControllerTest
      */
 //     public function testDisable()
 //     {
-//         // initialize authentication to call container and get language entity
-//         $language = $this->getRepository()->findOneBy(array());
-//         $uri = '/configuration/language/disable/'. $language->getId();
+//         // initialize authentication to call container and get locale entity
+//         $locale = $this->getRepository()->findOneBy(array());
+//         $uri = '/configuration/locale/disable/'. $locale->getId();
 
 //         // assert without authentication
 //         $crawler = $this->client->request('GET', $uri);
@@ -84,7 +84,7 @@ class LanguageControllerTest extends ControllerTest
 //         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
 //         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
 
-//         // assert with unknown language id (last removed)
+//         // assert with unknown locale id (last removed)
 //         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
 //         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
 //     }
@@ -96,6 +96,6 @@ class LanguageControllerTest extends ControllerTest
      */
     protected function getRepository()
     {
-        return $this->getStorageManager()->getRepository('PimConfigBundle:Language');
+        return $this->getStorageManager()->getRepository('PimConfigBundle:Locale');
     }
 }
