@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
+use Symfony\Component\Yaml\Yaml;
+
 use Pim\Bundle\ConfigBundle\Entity\Currency;
 
 use Doctrine\Common\Persistence\ObjectManager;
@@ -42,18 +44,18 @@ class LoadCurrencyData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
-        // create currencies
-        $currency = $this->createCurrency('EUR');
-        $manager->persist($currency);
+        $pathfile = realpath(__DIR__ .'/../../../ConfigBundle/Resources/config/pim_currencies.yml');
 
-        $currency = $this->createCurrency('USD');
-        $manager->persist($currency);
+        if (!$pathfile) {
+            throw new \Exception('pim_currencies.yml file not found');
+        }
 
-        $currency = $this->createCurrency('GBP');
-        $manager->persist($currency);
+        $configCurrencies = Yaml::parse($pathfile);
 
-        $currency = $this->createCurrency('CAD', false);
-        $manager->persist($currency);
+        foreach ($configCurrencies['currencies'] as $currencyCode => $currencyName) {
+            $currency = $this->createCurrency($currencyCode);
+            $manager->persist($currency);
+        }
 
         $manager->flush();
     }
@@ -65,7 +67,7 @@ class LoadCurrencyData extends AbstractFixture implements OrderedFixtureInterfac
      *
      * @return \Pim\Bundle\ConfigBundle\Entity\Currency
      */
-    protected function createCurrency($code, $activated = true)
+    protected function createCurrency($code, $activated = false)
     {
         $currency = new Currency();
         $currency->setCode($code);
