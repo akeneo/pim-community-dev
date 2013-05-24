@@ -59,7 +59,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     /**
      * @var string $description
      *
-     * @ORM\Column(name="description", type="string", length=255)
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
     protected $description;
 
