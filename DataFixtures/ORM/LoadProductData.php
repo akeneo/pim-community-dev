@@ -59,7 +59,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         $scopeMobile    = $this->getReference('channel.mobile');
 
         // force in english because product is translatable
-        $locale = $this->getReference('language.en_US');
+        $locale = $this->getReference('locale.en_US');
         $this->getProductManager()->setLocale($locale->getCode());
 
         // get currency
@@ -125,12 +125,12 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $value->setData(null);
             $product->addValue($value);
 
-            // product languages
-            $product->addLanguage($this->getReference('language.de_DE'), true);
-            $product->addLanguage($this->getReference('language.fr_FR'), true);
-            $product->addLanguage($this->getReference('language.en_US'), true);
-            $product->addLanguage($this->getReference('language.en_GB'));
-            $product->addLanguage($this->getReference('language.fr_CA'));
+            // product locales
+            $product->addLocale($this->getReference('locale.de_DE'), true);
+            $product->addLocale($this->getReference('locale.fr_FR'), true);
+            $product->addLocale($this->getReference('locale.en_US'), true);
+            $product->addLocale($this->getReference('locale.en_GB'));
+            $product->addLocale($this->getReference('locale.fr_CA'));
 
             // name
             foreach ($names as $locale => $data) {
