@@ -123,7 +123,7 @@ class AttributeService
      */
     public function getParameterFields($attribute = null)
     {
-        $parameters = array('translatable', 'scopable', 'unique', 'availableLanguages');
+        $parameters = array('translatable', 'scopable', 'unique', 'availableLocales');
         $activatedParameters = $this->getActivatedParameters($attribute);
         $fields = array();
 
@@ -622,24 +622,24 @@ class AttributeService
     }
 
     /**
-     * Return form field parameters for available languages parameter
+     * Return form field parameters for available locales parameter
      *
      * @param ProductAttribute $attribute Product attribute
      *
      * @return array $params
      */
-    private function getAvailableLanguagesParams($attribute)
+    private function getAvailableLocalesParams($attribute)
     {
         $fieldType = 'entity';
         $options = array(
             'required' => false,
             'multiple' => true,
-            'class' => 'Pim\Bundle\ConfigBundle\Entity\Language',
+            'class' => 'Pim\Bundle\ConfigBundle\Entity\Locale',
             'query_builder' => function (EntityRepository $repository) {
                 return $repository->createQueryBuilder('l')->where('l.activated = 1')->orderBy('l.code');
             }
         );
 
-        return $this->getFieldParams('availableLanguages', $fieldType, null, $options);
+        return $this->getFieldParams('availableLocales', $fieldType, null, $options);
     }
 }

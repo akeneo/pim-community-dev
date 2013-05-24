@@ -239,18 +239,18 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     {
         $product = $this->getMock(
             'Pim\Bundle\ProductBundle\Entity\Product',
-            array('getValues', 'getActiveLanguages', 'addValue', 'getSku')
+            array('getValues', 'getActiveLocales', 'addValue', 'getSku')
         );
 
         $product->expects($this->any())
                 ->method('getValues')
                 ->will($this->returnValue(new ArrayCollection($values)));
 
-        $languages = array($this->getLanguageMock('fr_FR'), $this->getLanguageMock('en_US'));
+        $locales = array($this->getLocaleMock('fr_FR'), $this->getLocaleMock('en_US'));
         $product->expects($this->any())
-                ->method('getActiveLanguages')
+                ->method('getActiveLocales')
                 ->will(
-                    $this->returnValue(new ArrayCollection($languages))
+                    $this->returnValue(new ArrayCollection($locales))
                 );
 
         $product->expects($this->any())
@@ -261,21 +261,21 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Get a mock of Language entity
+     * Get a mock of Locale entity
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductLanguage
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductLocale
      */
-    private function getLanguageMock($code)
+    private function getLocaleMock($code)
     {
-        $language = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductLanguage', array('getCode'));
+        $locale = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductLocale', array('getCode'));
 
-        $language->expects($this->any())
+        $locale->expects($this->any())
                  ->method('getCode')
                  ->will($this->returnValue($code));
 
-        return $language;
+        return $locale;
     }
 
     /**

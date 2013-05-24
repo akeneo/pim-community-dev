@@ -56,10 +56,10 @@ class ProductAttributeTypeTest extends TypeTestCase
             ))
             ->getFormFactory();
 
-        // Create a mock for the form and exclude the availableLanguages and getAttributeTypeChoices methods
+        // Create a mock for the form and exclude the availableLocales and getAttributeTypeChoices methods
         $this->type = $this->getMock(
             'Pim\Bundle\ProductBundle\Form\Type\ProductAttributeType',
-            array('addFieldAvailableLanguages', 'getAttributeTypeChoices', 'addSubscriber')
+            array('addFieldAvailableLocales', 'getAttributeTypeChoices', 'addSubscriber')
         );
         $this->form = $this->factory->create($this->type);
     }

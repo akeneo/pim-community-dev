@@ -51,7 +51,7 @@ class AttributeGroupController extends Controller
     }
 
     /**
-     * Edit language
+     * Edit attribute group
      *
      * @param AttributeGroup $group
      *
@@ -115,7 +115,7 @@ class AttributeGroupController extends Controller
     }
 
     /**
-     * Remove language
+     * Remove attribute group
      *
      * @param AttributeGroup $group
      *

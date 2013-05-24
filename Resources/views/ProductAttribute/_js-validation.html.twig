@@ -95,16 +95,16 @@ $(function() {
         });
         $('select[id*=validationRule]').trigger('change');
 
-        if ($('select[id*=availableLanguages]').val()) {
-            $('select[id*=availableLanguages]').parent().parent().show();
-            $('#limitLanguages-switch').bootstrapSwitch('setState', true);
+        if ($('select[id*=availableLocales]').val()) {
+            $('select[id*=availableLocales]').parent().parent().show();
+            $('#limitLocales-switch').bootstrapSwitch('setState', true);
         }
 
-        $('#limitLanguages-switch').on('switch-change', function (e, data) {
+        $('#limitLocales-switch').on('switch-change', function (e, data) {
             if (data.value) {
                 $(this).parent().parent().next().show();
             } else {
-                $('select[id*=availableLanguages]').select2('val', '');
+                $('select[id*=availableLocales]').select2('val', '');
                 $(this).parent().parent().next().hide();
             }
         });
