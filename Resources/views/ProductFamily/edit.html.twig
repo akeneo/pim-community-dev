@@ -80,21 +80,25 @@
                 </thead>
 
                 <tbody>
-
-                    {% set attributeGroup = false %}
-                    {% for attribute in family.attributes %}
-                        {% if attribute.group != attributeGroup %}
-                        </tbody>
-                        <tbody>
-                            <tr class="group">
-                                <td><i class="icon-chevron-down"></i> {{ attribute.group ? attribute.group.name : 'Other'|trans }}</td>
-                            </tr>
-                        {% endif %}
-                        <tr>
-                            <td>{{ attribute.label }}</td>
+                    {% if family.attributes|length > 0 %}
+                        {% set attributeGroup = family.attributes.first.group %}
+                        <tr class="group">
+                            <td><i class="icon-chevron-down"></i> {{ attributeGroup ? attributeGroup.name : 'Other'|trans }}</td>
                         </tr>
-                        {% set attributeGroup = attribute.group %}
-                    {% endfor %}
+                        {% for attribute in family.attributes %}
+                            {% if attribute.group != attributeGroup %}
+                            </tbody>
+                            <tbody>
+                                <tr class="group">
+                                    <td><i class="icon-chevron-down"></i> {{ attribute.group ? attribute.group.name : 'Other'|trans }}</td>
+                                </tr>
+                            {% endif %}
+                            <tr>
+                                <td>{{ attribute.label }}</td>
+                            </tr>
+                            {% set attributeGroup = attribute.group %}
+                        {% endfor %}
+                    {% endif %}
                 </tbody>
             </table>
         </div>
