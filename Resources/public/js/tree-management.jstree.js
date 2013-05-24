@@ -56,7 +56,7 @@ $('#tree').jstree({
     .bind("remove.jstree", function (e, data) {
         data.rslt.obj.each(function () {
             var id = $(this).attr("id").replace('node_', '');
-            $.post(id+'/remove');
+            PimAjax.ajaxPost(id+'/remove', '');
             data.inst.refresh();
         });
     })
