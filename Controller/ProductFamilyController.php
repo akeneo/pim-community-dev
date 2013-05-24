@@ -161,11 +161,9 @@ class ProductFamilyController extends Controller
 
         $this->getEntityManager()->flush();
 
-        return $this->redirect(
-            $this->generateUrl(
-                'pim_product_productfamily_edit', array('id' => $family->getId())
-            )
-        );
+        return $this->redirect(sprintf('%s#attributes', $this->generateUrl(
+            'pim_product_productfamily_edit', array('id' => $family->getId())
+        )));
     }
 
     public function findFamilyOr404($id)
