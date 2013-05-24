@@ -21,7 +21,7 @@ attributes_config:
         parameters: [ 'translatable', 'scopable', 'availableLocales' ]
     pim_product_price_collection:
         name: 'Prices'
-        properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'searchable' ]
+        properties: [ 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'searchable' ]
         parameters: [ 'translatable', 'availableLocales' ]
     oro_flexibleentity_number:
         name: 'Number'

@@ -49,7 +49,13 @@ class ProductController extends Controller
      */
     protected function getDataLocale()
     {
-        return $this->getRequest()->get('dataLocale', 'en_US');
+        $userLocale = $this->getUser()->getValue('cataloglocale')->__toString();
+        $dataLocale = $this->getRequest()->get('dataLocale', $userLocale);
+        if (!$dataLocale) {
+            throw new Exception('User must have a catalog locale defined');
+        }
+
+        return $dataLocale;
     }
 
     /**
@@ -206,7 +212,8 @@ class ProductController extends Controller
         $product             = $this->findProductOr404($id);
         $availableAttributes = new AvailableProductAttributes;
         $attributesForm      = $this->getAvailableProductAttributesForm(
-            $product->getAttributes(), $availableAttributes
+            $product->getAttributes(),
+            $availableAttributes
         );
         $attributesForm->bind($this->getRequest());
 
