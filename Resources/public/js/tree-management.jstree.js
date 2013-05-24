@@ -1,4 +1,4 @@
-$('#tree').jstree({
+$(tree_id).jstree({
     "core" : {
         "animation" : 200
     },

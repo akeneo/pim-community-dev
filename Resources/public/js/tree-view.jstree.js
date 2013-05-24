@@ -9,7 +9,8 @@ $(tree_id).jstree({
         "ajax" : {
             "url" : urlListTree
         },
-        "auto_open_root" : true
+        "auto_open_root" : true,
+        "node_label_field" : "title"
     },
     "themes" : {
         "dots" : true,
