@@ -8,7 +8,7 @@ use Oro\Bundle\SegmentationTreeBundle\Entity\Repository\SegmentRepository;
 /**
  * ProductSegment repository
  * Override SegmentRepository of OroSegmentationTreeBundle
- *     Allow to count products linked to a node
+ *     Allow to count products linked to nodes
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
