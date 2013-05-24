@@ -18,8 +18,7 @@
         return this.each(function() {
             $(this).addClass('pimmultiselect');
 
-            if (opts.appendTo) {
-            } else {
+            if (!opts.appendTo) {
                 opts.appendTo = $(this).parent();
             }
             opts.buttonPrependTo = opts.appendTo;
