@@ -758,8 +758,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
 
         $link->click();
-        $this->getSession()->getDriver()->getWebDriverSession()->accept_alert();
-        sleep(5); //TODO Find a way to wait for the page to be loaded
+        $this->getSession()->getPage()->clickLink('OK');
     }
 
     private function getLanguage($code)
