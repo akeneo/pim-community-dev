@@ -55,7 +55,7 @@ class ProductSegment extends AbstractSegment implements Translatable
      * @ORM\JoinTable(
      *     name="pim_segment_product",
      *     joinColumns={@ORM\JoinColumn(name="segment_id", referencedColumnName="id", onDelete="CASCADE")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")}
+     *     inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
      */
     protected $products;
