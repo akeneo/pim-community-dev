@@ -12,21 +12,21 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 
 /**
- * Type for language form
+ * Type for locale form
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class LanguageType extends AbstractType
+class LocaleType extends AbstractType
 {
 
     /**
-     * List of existing languages
+     * List of existing locales
      * @var array
      */
-    protected $languages;
+    protected $locales;
 
     /**
      * Constructor
@@ -34,7 +34,7 @@ class LanguageType extends AbstractType
      */
     public function __construct($config = array())
     {
-        $this->languages = $config['languages'];
+        $this->locales = $config['locales'];
     }
 
     /**
@@ -67,7 +67,7 @@ class LanguageType extends AbstractType
             'code',
             'choice',
             array(
-                'choices' => $this->prepareLanguageList($this->languages),
+                'choices' => $this->prepareLocaleList($this->locales),
                 'required' => true,
                 'preferred_choices' => array('en_EN', 'fr_FR', 'en_US')
             )
@@ -84,7 +84,7 @@ class LanguageType extends AbstractType
             'fallback',
             'choice',
             array(
-                'choices' => $this->prepareLanguageList($this->languages),
+                'choices' => $this->prepareLocaleList($this->locales),
                 'required' => false,
                 'preferred_choices' => array('en_EN', 'fr_FR', 'en_US')
             )
@@ -92,17 +92,17 @@ class LanguageType extends AbstractType
     }
 
     /**
-     * Prepare language list
-     * @param array $languages
+     * Prepare locale list
+     * @param array $locales
      *
      * @return multitype:string
      */
-    protected function prepareLanguageList($languages = array())
+    protected function prepareLocaleList($locales = array())
     {
         $choices = array();
 
-        foreach ($languages as $code => $language) {
-            $choices[$code] = $language['label'];
+        foreach ($locales as $code => $locale) {
+            $choices[$code] = $locale['label'];
         }
 
         // Sort choices by alphabetical
@@ -148,7 +148,7 @@ class LanguageType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\ConfigBundle\Entity\Language'
+                'data_class' => 'Pim\Bundle\ConfigBundle\Entity\Locale'
             )
         );
     }
@@ -158,6 +158,6 @@ class LanguageType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_config_language';
+        return 'pim_config_locale';
     }
 }

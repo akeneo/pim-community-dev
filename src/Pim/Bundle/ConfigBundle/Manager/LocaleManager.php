@@ -61,7 +61,7 @@ class LocaleManager
      */
     public function getLocales($criterias = array())
     {
-        return $this->objectManager->getRepository('PimConfigBundle:Language')->findBy($criterias);
+        return $this->objectManager->getRepository('PimConfigBundle:Locale')->findBy($criterias);
     }
 
     /**

@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\ConfigBundle\Entity\Language;
+use Pim\Bundle\ConfigBundle\Entity\Locale;
 
 use Pim\Bundle\ConfigBundle\Entity\Currency;
 
@@ -68,44 +68,44 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for languages property
+     * Test getter/setter for locales property
      */
-    public function testGetSetLanguages()
+    public function testGetSetLocales()
     {
         $currency = new Currency();
-        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $currency->getLanguages());
-        $this->assertCount(0, $currency->getLanguages());
+        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $currency->getLocales());
+        $this->assertCount(0, $currency->getLocales());
 
-        // create languages
-        $listLanguages = array('fr_FR', 'en_US', 'en_EN');
+        // create locales
+        $listLocales = array('fr_FR', 'en_US', 'en_EN');
 
-        $langFr = $this->createLanguage('fr_FR', 'fr_FR');
-        $langUs = $this->createLanguage('en_US', 'en_EN');
-        $langEn = $this->createLanguage('en_EN', 'en_EN');
+        $langFr = $this->createLocale('fr_FR', 'fr_FR');
+        $langUs = $this->createLocale('en_US', 'en_EN');
+        $langEn = $this->createLocale('en_EN', 'en_EN');
 
-        // Set languages and assert
-        $newLanguages = array($langFr, $langUs, $langEn);
-        $currency->setLanguages(array($langFr, $langUs, $langEn));
-        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $currency->getLanguages());
-        $this->assertCount(3, $currency->getLanguages());
-        foreach ($currency->getLanguages() as $language) {
-            $this->assertTrue(in_array($language, $newLanguages));
+        // Set locales and assert
+        $newLocales = array($langFr, $langUs, $langEn);
+        $currency->setLocales(array($langFr, $langUs, $langEn));
+        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $currency->getLocales());
+        $this->assertCount(3, $currency->getLocales());
+        foreach ($currency->getLocales() as $locale) {
+            $this->assertTrue(in_array($locale, $newLocales));
         }
     }
 
     /**
-     * Create a language for testing
+     * Create a locale for testing
      * @param string $code     Locale code
      * @param string $fallback Fallback code
      *
-     * @return \Pim\Bundle\ConfigBundle\Entity\Language
+     * @return \Pim\Bundle\ConfigBundle\Entity\Locale
      */
-    protected function createLanguage($code, $fallback)
+    protected function createLocale($code, $fallback)
     {
-        $language = new Language();
-        $language->setCode($code);
-        $language->setFallback($fallback);
+        $locale = new Locale();
+        $locale->setCode($code);
+        $locale->setFallback($fallback);
 
-        return $language;
+        return $locale;
     }
 }

@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 
 use Symfony\Component\Form\Forms;
 
-use Pim\Bundle\ConfigBundle\Form\Type\LanguageType;
+use Pim\Bundle\ConfigBundle\Form\Type\LocaleType;
 
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
 
@@ -19,7 +19,7 @@ use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class LanguageTypeTest extends TypeTestCase
+class LocaleTypeTest extends TypeTestCase
 {
 
     /**
@@ -38,21 +38,21 @@ class LanguageTypeTest extends TypeTestCase
             )
             ->getFormFactory();
 
-        // initialize language configuration
+        // initialize locale configuration
         $config = $this->initializeConfiguration();
 
         // Create form type
-//         $this->type = new LanguageType($config);
+//         $this->type = new LocaleType($config);
 //         $this->form = $this->factory->create($this->type);
     }
 
     /**
-     * Initialize language configuration
+     * Initialize locale configuration
      * @return config
      */
     protected function initializeConfiguration()
     {
-        $filepath = realpath(dirname(__FILE__) .'/../../../../Resources/config') .'/pim_languages.yml';
+        $filepath = realpath(dirname(__FILE__) .'/../../../../Resources/config') .'/pim_locales.yml';
 
         if (!file_exists($filepath)) {
             throw new \Exception($filepath .' not exists');
@@ -73,12 +73,12 @@ class LanguageTypeTest extends TypeTestCase
 
 //         // Assert option class
 //         $this->assertEquals(
-//             'Pim\Bundle\ConfigBundle\Entity\Language',
+//             'Pim\Bundle\ConfigBundle\Entity\Locale',
 //             $this->form->getConfig()->getDataClass()
 //         );
 
 //         // Assert name
-//         $this->assertEquals('pim_config_language', $this->form->getName());
+//         $this->assertEquals('pim_config_locale', $this->form->getName());
     }
 
     /**
@@ -116,7 +116,7 @@ class LanguageTypeTest extends TypeTestCase
     public function testBindValidData($formData)
     {
         // create tested object
-//         $object = new ObjectTestEntity('\Pim\Bundle\ConfigBundle\Entity\Language', $formData);
+//         $object = new ObjectTestEntity('\Pim\Bundle\ConfigBundle\Entity\Locale', $formData);
 
 //         // bind data and assert data transformer
 //         $this->form->bind($formData);

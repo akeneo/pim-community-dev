@@ -27,4 +27,4 @@ services:
             - name: oro_grid.datagrid.manager
               datagrid_name: locales
               entity_hint: locales
-              route_name: pim_config_language_index
+              route_name: pim_config_locale_index
