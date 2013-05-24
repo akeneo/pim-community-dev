@@ -2791,7 +2791,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/FlexibleEntityBundle.git",
-                "reference": "3338100f1d0a647e945dd0a8ef8f2e2bfd3435fb"
+                "reference": "461c4e2dfa22411af49aca27e400f9dfdadaa3bc"
             },
             "dist": {
                 "type": "zip",
