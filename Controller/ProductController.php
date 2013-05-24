@@ -216,25 +216,27 @@ class ProductController extends Controller
     /**
      * Remove an attribute value
      *
-     * @Route("/{productId}/attributes/{valueId}")
+     * @Route("/{productId}/attributes/{attributeId}")
      * @Method("DELETE")
      */
-    public function removeProductValueAction($productId, $valueId)
+    public function removeProductValueAction($productId, $attributeId)
     {
-        $productValue = $this->getProductValueRepository()->findOneBy(array(
-            'entity' => $productId,
-            'id'     => $valueId,
+        $values = $this->getProductValueRepository()->findBy(array(
+            'entity'    => $productId,
+            'attribute' => $attributeId,
         ));
 
-        if (null === $productValue || false === $productValue->isRemovable()) {
+        if (false === $this->checkValuesRemovability($values)) {
             throw $this->createNotFoundException(sprintf(
-                'Could not find removable product value for product %d with id %d',
-                $productId, $valueId
+                'Could not find removable product attribute for product %d with id %d',
+                $productId, $attributeId
             ));
         }
 
         $em = $this->getEntityManager();
-        $em->remove($productValue);
+        foreach ($values as $value) {
+            $em->remove($value);
+        }
         $em->flush();
 
         $this->addFlash('success', 'Attribute was successfully removed.');
@@ -351,5 +353,20 @@ class ProductController extends Controller
         $this->getProductManager()->addMissingPrices($currencyManager, $product);
 
         return $product;
+    }
+
+    private function checkValuesRemovability(array $values)
+    {
+        if (0 === count($values)) {
+            return false;
+        }
+
+        foreach ($values as $value) {
+            if (!$value->isRemovable()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
