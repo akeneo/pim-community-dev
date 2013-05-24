@@ -34,3 +34,25 @@ Feature: Remove an attribute from a product
     When I remove the "Color" attribute
     Then I should see "Attribute was successfully removed."
     And attribute in group "Other" should be Model
+
+  @javascript
+  Scenario: Successfully remove a scopable attribute from a product
+    Given the following family:
+      | code    |
+      | vehicle |
+    And the following product:
+      | sku    | family  |
+      | kangoo | vehicle |
+    And the following product attribute:
+      | product | label | group | family  |
+      |         | Model | Other | vehicle |
+      | kangoo  | Color | Other |         |
+    And the following product values:
+      | product | attribute | scope     | value |
+      | kangoo  | Color     | web       | red   |
+      | kangoo  | Color     | ecommerce | blue  |
+    And I am logged in as "admin"
+    And I am on the "kangoo" product page
+    When I remove the "Color" attribute
+    Then I should see "Attribute was successfully removed."
+    And attribute in group "Other" should be Model

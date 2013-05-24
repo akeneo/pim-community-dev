@@ -20,6 +20,7 @@ use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Pim\Bundle\ProductBundle\Entity\ProductFamily;
 use Pim\Bundle\ProductBundle\Entity\ProductFamilyTranslation;
 use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
+use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
 /**
  * Context of the website
@@ -99,11 +100,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                     $attributes[$translation['attribute']] = $attribute;
                 }
 
-                $value = $pm->createFlexibleValue();
-                $value->setAttribute($attribute);
-                $value->setLocale($this->getLocale($translation['locale']));
-                $value->setData($translation['value']);
-                $pm->getStorageManager()->persist($value);
+                $value = $this->createValue($attribute, $translation['value'], $this->getLocale($translation['locale']));
                 $product->addValue($value);
             }
         }
@@ -295,21 +292,40 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             if ($family = $data['family']) {
                 $family = $this->getProductFamily($family);
                 $family->addAttribute($attribute);
-
             }
 
             if (!empty($data['product'])) {
                 $product = $this->getProduct($data['product']);
-
-                $value = $this->getProductManager()->createFlexibleValue();
-                $value->setAttribute($attribute);
-                $value->setData(null);
-                $pm = $this->getProductManager();
-
-                $pm->getStorageManager()->persist($value);
+                $value   = $this->createValue($attribute);
 
                 $product->addValue($value);
-                $pm->save($product);
+                $this->getProductManager()->save($product);
+            }
+        }
+        $em->flush();
+    }
+
+    /**
+     * @Given /^the following product values:$/
+     */
+    public function theFollowingProductValues(TableNode $table)
+    {
+        $em = $this->getEntityManager();
+        foreach ($table->getHash() as $data) {
+            $data = array_merge(array(
+                'scope' => null,
+            ), $data);
+
+            $product = $this->getProduct($data['product']);
+            $value   = $product->getValue($this->camelize($data['attribute']));
+
+            if ($value && false === $value->getScope()) {
+                $value->setScope($data['scope']);
+                $value->setData($data['value']);
+            } else {
+                $attribute = $this->getAttribute($data['attribute']);
+                $value = $this->createValue($attribute, $data['value'], null, $data['scope']);
+                $product->addValue($value);
             }
         }
         $em->flush();
@@ -421,11 +437,19 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function attributesInGroupShouldBe($group, $attributes)
     {
         $attributes = $this->listToArray($attributes);
-        $group = $this->getGroup($group);
+        $group = $this->getGroup($group) ?: 'Other';
+
+        if (count($attributes) !== $actual = $this->getPage('Product')->getFieldsCountFor($group)) {
+            throw $this->createExpectationException(sprintf(
+                'Expected to see %d fields in group "%s", actually saw %d',
+                count($attributes), $group, $actual
+            ));
+        }
+
         foreach ($attributes as $index => $attribute) {
             $field = $this
                 ->getPage('Product')
-                ->getFieldAt($group ?: 'Other', $index)
+                ->getFieldAt($group, $index)
             ;
 
             if ($attribute !== $name = $field->getText()) {
@@ -672,6 +696,20 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
         return $attribute;
+    }
+
+    private function createValue(ProductAttribute $attribute, $data = null, $locale = null, $scope = null)
+    {
+        $pm = $this->getProductManager();
+
+        $value = $pm->createFlexibleValue();
+        $value->setAttribute($attribute);
+        $value->setData($data);
+        $value->setLocale($locale);
+
+        $pm->getStorageManager()->persist($value);
+
+        return $value;
     }
 
     private function getLocale($language)

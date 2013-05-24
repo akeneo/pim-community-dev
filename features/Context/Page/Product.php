@@ -42,25 +42,35 @@ class Product extends Page
 
     public function getFieldAt($group, $position)
     {
-        $locator = sprintf(
-            '#tabs-%s label', $group instanceof AttributeGroup ? $group->getId() : 0
-        );
-
-        $fields  = $this->findAll('css', $locator);
+        $fields = $this->getFieldsForGroup($group);
 
         if (0 === count($fields)) {
             throw new \Exception(sprintf(
-                'Couldn\'t find elements that matches "%s"', $locator
+                'Couldn\'t find group "%s"', $group
             ));
         }
 
         if (!isset($fields[$position])) {
             throw new \Exception(sprintf(
-                'Cannot found %dth field in group "%s"', $position + 1, $group->getName()
+                'Couldn\'t find %dth field in group "%s"', $position + 1, $group
             ));
         }
 
         return $fields[$position];
+    }
+
+    public function getFieldsCountFor($group)
+    {
+        return count($this->getFieldsForGroup($group));
+    }
+
+    private function getFieldsForGroup($group)
+    {
+        $locator = sprintf(
+            '#tabs-%s label', $group instanceof AttributeGroup ? $group->getId() : 0
+        );
+
+        return $this->findAll('css', $locator);
     }
 
     public function findField($name)
