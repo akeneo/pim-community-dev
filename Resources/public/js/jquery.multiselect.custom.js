@@ -44,8 +44,8 @@
       multiple: true,
       position: {},
       appendTo: "body",
-      buttons: {},
-      preventClosing: false
+      buttonPrependTo: null,
+      buttons: {}
     },
 
     _create: function() {
@@ -60,13 +60,18 @@
       // jQuery UI 1.9+, and otherwise fallback to a custom string.
       this._namespaceID = this.eventNamespace || ('multiselect' + multiselectID);
 
-      var button = (this.button = $('<button type="button"><span class="ui-icon ui-icon-triangle-1-s"></span></button>'))
-        .addClass('ui-multiselect ui-widget ui-state-default ui-corner-all')
+      var button = (this.button = $('<button type="button"></button>'))
+        .html($('<span>').addClass('caret').css({ 'float': 'right' }))
+        .addClass('ui-multiselect btn ui-widget ui-state-default ui-corner-all')
         .addClass(o.classes)
-        .attr({ 'title':el.attr('title'), 'aria-haspopup':true, 'tabIndex':el.attr('tabIndex') })
-        .insertAfter(el),
+        .attr({ 'title':el.attr('title'), 'aria-haspopup':true, 'tabIndex':el.attr('tabIndex') });
+      if (o.buttonPrependTo) {
+        button.prependTo(o.buttonPrependTo);
+      } else {
+        button.insertAfter(el);
+      }
 
-        buttonlabel = (this.buttonlabel = $('<span />'))
+      var buttonlabel = (this.buttonlabel = $('<span />'))
           .html(o.noneSelectedText)
           .appendTo(button),
 
@@ -608,9 +613,6 @@
     // close the menu
     close: function() {
       if(this._trigger('beforeclose') === false) {
-        return;
-      }
-      if (this.options.preventClosing === true) {
         return;
       }
 
