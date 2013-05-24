@@ -179,6 +179,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iAmLoggedInAs($username)
     {
+        $em   = $this->getEntityManager();
         $user = new User;
         $role = new Role(User::ROLE_DEFAULT);
 
@@ -186,6 +187,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $user->setEmail($username.'@example.com');
         $user->setPlainPassword($password = $username.'pass');
         $user->addRole($role);
+
+        $um = $this->getContainer()->get('oro_user.manager.flexible');
+        $catalogLocaleAttribute = $um->createAttribute('oro_flexibleentity_text');
+        $catalogLocaleAttribute->setCode('cataloglocale');
+        $catalogLocaleAttribute->setLabel('cataloglocale');
+        $em->persist($catalogLocaleAttribute);
+
+        $catalogLocaleValue = $um->createFlexibleValue();
+        $catalogLocaleValue->setAttribute($catalogLocaleAttribute);
+        $catalogLocaleValue->setData('en_US');
+        $user->addValue($catalogLocaleValue);
 
         $this->getEntityManager()->persist($role);
         $this->getUserManager()->updateUser($user);
