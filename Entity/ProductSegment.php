@@ -251,6 +251,16 @@ class ProductSegment extends AbstractSegment implements Translatable
     }
 
     /**
+     * Get created date
+     *
+     * @return datetime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
      * Get translations
      *
      * @return ArrayCollection
