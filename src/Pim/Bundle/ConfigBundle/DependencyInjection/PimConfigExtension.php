@@ -25,9 +25,9 @@ class PimConfigExtension extends Extension
         $config = $this->processConfiguration(new CurrencyConfiguration(), $currencyConfig);
         $container->setParameter('pim_config.currencies', $currencyConfig);
 
-        $languageConfig = Yaml::parse(realpath(__DIR__.'/../Resources/config/pim_languages.yml'));
-        $config = $this->processConfiguration(new LanguageConfiguration(), $languageConfig);
-        $container->setParameter('pim_config.languages', $languageConfig);
+        $localeConfig = Yaml::parse(realpath(__DIR__.'/../Resources/config/pim_locales.yml'));
+        $config = $this->processConfiguration(new LocaleConfiguration(), $localeConfig);
+        $container->setParameter('pim_config.locales', $localeConfig);
 
         // load services
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

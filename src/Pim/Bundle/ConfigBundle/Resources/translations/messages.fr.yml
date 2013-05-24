@@ -1,15 +1,15 @@
-# Languages
-'Languages overview': 'Aperçu des langues'
-'New language': 'Nouvelle langue'
+# Locales
+'Locales overview': 'Aperçu des locales'
+'New locale': 'Nouvelle locale'
 'Code': 'Code'
 'Fallback': 'Repli'
 'Activated': 'Actif'
 'Edit': 'Modifier'
 'Disable': 'Désactiver'
-'Languages': 'Langues'
+'Locales': 'Locales'
 
-'Edit language': 'Modifier une langue'
-'Add language': 'Ajouter une langue'
+'Edit locale': 'Modifier une locale'
+'Add locale': 'Ajouter une locale'
 'Back to list': 'Retour à la liste'
 'Save': 'Sauvegarder'
 

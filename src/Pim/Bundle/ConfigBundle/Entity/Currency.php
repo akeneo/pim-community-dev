@@ -45,11 +45,11 @@ class Currency
     protected $activated;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection $locales
      *
-     * @ORM\ManyToMany(targetEntity="Language", mappedBy="currencies")
+     * @ORM\ManyToMany(targetEntity="Locale", mappedBy="currencies")
      */
-    protected $languages;
+    protected $locales;
 
     /**
      * Constructor
@@ -57,7 +57,7 @@ class Currency
     public function __construct()
     {
         $this->activated = true;
-        $this->languages = new ArrayCollection();
+        $this->locales = new ArrayCollection();
     }
 
     /**
@@ -143,25 +143,25 @@ class Currency
     }
 
     /**
-     * Get languages
+     * Get locales
      *
      * @return \Pim\Bundle\ConfigBundle\Entity\ArrayCollection
      */
-    public function getLanguages()
+    public function getLocales()
     {
-        return $this->languages;
+        return $this->locales;
     }
 
     /**
-     * Set languages
+     * Set locales
      *
-     * @param array $languages
+     * @param array $locales
      *
      * @return \Pim\Bundle\ConfigBundle\Entity\Currency
      */
-    public function setLanguages($languages = array())
+    public function setLocales($locales = array())
     {
-        $this->languages = new ArrayCollection($languages);
+        $this->locales = new ArrayCollection($locales);
 
         return $this;
     }

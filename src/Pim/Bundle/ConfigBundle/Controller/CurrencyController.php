@@ -131,8 +131,8 @@ class CurrencyController extends Controller
      */
     public function disableAction(Currency $currency)
     {
-        // Disable activated property if no language associated
-        if ($currency->getLanguages()->count() === 0) {
+        // Disable activated property if no locale associated
+        if ($currency->getLocales()->count() === 0) {
             $currency->setActivated(false);
             $this->getEntityManager()->persist($currency);
             $this->getEntityManager()->flush();
@@ -143,7 +143,7 @@ class CurrencyController extends Controller
                 return $this->redirect($this->generateUrl('pim_config_currency_index'));
             }
         } else {
-            return new Response('Currency linked to languages. Can`\t be disabled', 500);
+            return new Response('Currency linked to locales. Can`\t be disabled', 500);
         }
     }
 }

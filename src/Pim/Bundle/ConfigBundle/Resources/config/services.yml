@@ -3,9 +3,9 @@ parameters:
     currency_handler_class:      Pim\Bundle\ConfigBundle\Form\Handler\CurrencyHandler
     currency_type_class:         Pim\Bundle\ConfigBundle\Form\Type\CurrencyType
     
-    language_entity_class:       Pim\Bundle\ConfigBundle\Entity\Language
-    language_handler_class:      Pim\Bundle\ConfigBundle\Form\Handler\LanguageHandler
-    language_type_class:         Pim\Bundle\ConfigBundle\Form\Type\LanguageType
+    locale_entity_class:       Pim\Bundle\ConfigBundle\Entity\Locale
+    locale_handler_class:      Pim\Bundle\ConfigBundle\Form\Handler\LocaleHandler
+    locale_type_class:         Pim\Bundle\ConfigBundle\Form\Type\LocaleType
     
     channel_entity_class:        Pim\Bundle\ConfigBundle\Entity\Channel
     channel_handler_class:       Pim\Bundle\ConfigBundle\Form\Handler\ChannelHandler
@@ -34,11 +34,11 @@ services:
         factory_service: form.factory
         arguments: ["pim_config_currency_form", "pim_config_currency"]
         
-    pim_config.form.language:
+    pim_config.form.locale:
         class:           Symfony\Component\Form\Form
         factory_method:  createNamed
         factory_service: form.factory
-        arguments: ["pim_config_language_form", "pim_config_language"]
+        arguments: ["pim_config_locale_form", "pim_config_locale"]
 
     # Types
     pim_config.form.type.channel:
@@ -52,11 +52,11 @@ services:
         tags:
             - { name: form.type, alias: pim_config_currency }
     
-    pim_config.form.type.language:
-        class: %language_type_class%
-        arguments: [%pim_config.languages%]
+    pim_config.form.type.locale:
+        class: %locale_type_class%
+        arguments: [%pim_config.locales%]
         tags:
-            - { name: form.type, alias: pim_config_language }
+            - { name: form.type, alias: pim_config_locale }
     
     # Handlers
     pim_config.form.handler.channel:
@@ -69,8 +69,8 @@ services:
         scope: request
         arguments: [@pim_config.form.currency, @request, @doctrine.orm.entity_manager]
     
-    pim_config.form.handler.language:
-        class: %language_handler_class%
+    pim_config.form.handler.locale:
+        class: %locale_handler_class%
         scope: request
-        arguments: [@pim_config.form.language, @request, @doctrine.orm.entity_manager]
+        arguments: [@pim_config.form.locale, @request, @doctrine.orm.entity_manager]
         

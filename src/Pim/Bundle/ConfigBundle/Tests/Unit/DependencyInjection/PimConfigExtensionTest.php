@@ -51,10 +51,10 @@ class PimConfigExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('currencies', $configCurrencies);
         $this->assertTrue(is_array($configCurrencies['currencies']));
 
-        // assert language configuration
-        $configLanguages = $this->container->getParameter('pim_config.languages');
-        $this->assertCount(1, $configLanguages);
-        $this->assertArrayHasKey('languages', $configLanguages);
-        $this->assertTrue(is_array($configLanguages['languages']));
+        // assert locale configuration
+        $configLocales = $this->container->getParameter('pim_config.locales');
+        $this->assertCount(1, $configLocales);
+        $this->assertArrayHasKey('locales', $configLocales);
+        $this->assertTrue(is_array($configLocales['locales']));
     }
 }
