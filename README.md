@@ -30,7 +30,7 @@ To use as dependency, use composer and add bundle in AppKernel :
 
 Classes / Concepts
 ==================
-Used with gedmo doctrine extension and PIM language entity
+Used with gedmo doctrine extension and PIM locale entity
 
 Example of usage
 ================
