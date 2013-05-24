@@ -1,37 +1,32 @@
 (function($, undefined) {
-    function confirmDeletion (event) {
-        var needConfirmation = !event.currentTarget.hasAttribute('data-no-confirm');
-
-        if (needConfirmation && !confirm($(event.currentTarget).data('confirm') || 'Are you sure?')) {
-            return false;
-        }
-
-        return true;
-    }
-
     $(document).ready(function() {
         $('body').delegate('a[data-method]', 'click', function (event) {
-            event.preventDefault();
+            event.preventDefault()
+            console.log($(event.currentTarget).data('confirm'));
 
-            if (!confirmDeletion(event)) {
-                return;
+            PimDialog.confirm(
+                $(event.currentTarget).data('confirm') || 'Are you sure?',
+                $(event.currentTarget).data('title') || 'Confirmation required',
+                function(){ sendRequest(event.currentTarget.href, $(event.currentTarget).data('method')) }
+            );
+
+            function sendRequest(action, method) {
+                var form    = document.createElement('form');
+                var input   = document.createElement('input');
+
+                form.method = 'POST';
+                form.action = action;
+
+                input.type  = 'hidden';
+                input.name  = '_method';
+                input.value = method;
+
+                form.appendChild(input);
+
+                document.body.appendChild(form);
+
+                form.submit();
             }
-
-            var form      = document.createElement('form');
-            var input     = document.createElement('input');
-
-            form.method   = 'POST';
-            form.action   = event.currentTarget.href;
-
-            input.type    = 'hidden';
-            input.name    = '_method';
-            input.value   = $(event.target).data('method');
-
-            form.appendChild(input);
-
-            document.body.appendChild(form);
-
-            form.submit();
         });
     });
 })( jQuery );
