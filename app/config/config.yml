@@ -28,8 +28,8 @@ twig:
             layout:           ::base.html.twig  # default layout across all Oro bundles
     form:
         resources:
-            - 'PimUIBundle:Form:fields.html.twig'
             - 'OroUIBundle:Form:fields.html.twig'
+            - 'PimUIBundle:Form:fields.html.twig'
 
 # Assetic Configuration
 assetic:
