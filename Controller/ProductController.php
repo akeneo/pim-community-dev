@@ -266,7 +266,15 @@ class ProductController extends Controller
      */
     protected function getDataLocale()
     {
-        return $this->getRequest()->get('dataLocale', 'en_US');
+        $dataLocale = $this->getRequest()->get('dataLocale');
+        if ($dataLocale === null) {
+            $dataLocale = (string) $this->getUser()->getValue('cataloglocale');
+        }
+        if (!$dataLocale) {
+            throw new \Exception('User must have a catalog locale defined');
+        }
+
+        return $dataLocale;
     }
 
 
