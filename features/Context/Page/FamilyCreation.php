@@ -11,7 +11,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  */
 class FamilyCreation extends Page
 {
-    protected $path='/{locale}/product/product-family/create';
+    protected $path='/product/product-family/create';
 
     public function getFieldLocator($name, $locale)
     {

@@ -10,7 +10,6 @@ Feature: Switch product locale
       | english | name      | computer   |
       | french  | name      | ordinateur |
       | english | screen    | 15 inches  |
-    And the current language is english
     And I am logged in as "admin"
 
   Scenario: Succesfully display product in the current locale
