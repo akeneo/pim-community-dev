@@ -13,30 +13,21 @@ use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
  */
 class Product extends Page
 {
-    protected $path = '/{locale}/product/{id}/edit';
+    protected $path = '/product/{id}/edit';
 
     protected $elements = array(
-        'Locales dropdown'     => array('css' => '.locales'),
+        'Locales dropdown'     => array('css' => '#locale-switcher'),
         'Available attributes' => array('css' => '#pim_available_product_attributes_attributes'),
     );
 
-    protected $assertSession;
-
-    public function setAssertSession($assertSession)
+    public function findLocaleLink($locale)
     {
-        $this->assertSession = $assertSession;
-
-        return $this;
-    }
-
-    public function assertLocaleIsDisplayed($locale)
-    {
-        $this->assertSession->elementTextContains('css', $this->elements['Locales dropdown']['css'], $locale);
+        return $this->getElement('Locales dropdown')->findLink(strtolower($locale));
     }
 
     public function selectLanguage($language)
     {
-        $this->checkField($language);
+        $this->findField(ucfirst($language))->check();
     }
 
     public function save()
@@ -46,30 +37,40 @@ class Product extends Page
 
     public function switchLocale($locale)
     {
-        $this->getElement('Locales dropdown')->clickLink(ucfirst($locale));
+        $this->getElement('Locales dropdown')->clickLink(strtolower($locale));
     }
 
     public function getFieldAt($group, $position)
     {
-        $locator = sprintf(
-            '#tabs-%s label', $group instanceof AttributeGroup ? $group->getId() : 0
-        );
-
-        $fields  = $this->findAll('css', $locator);
+        $fields = $this->getFieldsForGroup($group);
 
         if (0 === count($fields)) {
             throw new \Exception(sprintf(
-                'Couldn\'t find elements that matches "%s"', $locator
+                'Couldn\'t find group "%s"', $group
             ));
         }
 
         if (!isset($fields[$position])) {
             throw new \Exception(sprintf(
-                'Cannot found %dth field in group "%s"', $position + 1, $group->getName()
+                'Couldn\'t find %dth field in group "%s"', $position + 1, $group
             ));
         }
 
         return $fields[$position];
+    }
+
+    public function getFieldsCountFor($group)
+    {
+        return count($this->getFieldsForGroup($group));
+    }
+
+    private function getFieldsForGroup($group)
+    {
+        $locator = sprintf(
+            '#tabs-%s label', $group instanceof AttributeGroup ? $group->getId() : 0
+        );
+
+        return $this->findAll('css', $locator);
     }
 
     public function findField($name)
@@ -82,7 +83,7 @@ class Product extends Page
             );
         }
 
-        $field = $label->getParent()->find('css', 'input[type="text"]');
+        $field = $label->getParent()->find('css', 'input');
 
         if (!$field) {
             throw new ElementNotFoundException(
@@ -112,5 +113,19 @@ class Product extends Page
     public function addSelectedAvailableAttributes()
     {
         $this->pressButton('Add attributes');
+    }
+
+    public function getRemoveLinkFor($field)
+    {
+        $controlGroupNode = $this
+            ->findField($field)
+            ->getParent()
+            ->getParent()
+            ->getParent()
+            ->getParent()
+            ->getParent()
+        ;
+
+        return $controlGroupNode->find('css', 'a.remove-attribute');
     }
 }
