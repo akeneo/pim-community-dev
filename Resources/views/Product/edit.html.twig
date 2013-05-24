@@ -39,14 +39,14 @@
                                         <span class="caret"></span>
                                     </span>
                                     <ul class="dropdown-menu">
-                                        {% for language in form.vars.value.getActiveLanguages() %}
+                                        {% for locale in form.vars.value.getActiveLocales() %}
                                             <li>
-                                                <a href="?dataLocale={{ language.code }}" title="{{ language.code|lower }}">
+                                                <a href="?dataLocale={{ locale.code }}" title="{{ locale.code|lower }}">
                                                     <span class="code">
-                                                        {% if language.code == dataLocale %}
+                                                        {% if locale.code == dataLocale %}
                                                             <i class="icon-asterisk"></i>
                                                         {% endif %}
-                                                        {{ language.code|upper }}
+                                                        {{ locale.code|upper }}
                                                     </span>
                                                     <span class="title">{{ form.vars.value.sku }}</span>
                                                 </a>
@@ -180,7 +180,7 @@
                     <div class="tab-pane" id="associations"></div>
 
                     <div class="tab-pane" id="localisations">
-                        {{ form_row(form.languages) }}
+                        {{ form_row(form.locales) }}
                     </div>
 
                     <div class="tab-pane" id="history"></div>

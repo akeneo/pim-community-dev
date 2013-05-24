@@ -24,7 +24,7 @@ class PimProductExtension extends Extension
         $loader->load('datagrid.yml');
         $loader->load('attribute_types.yml');
 
-        if (is_file($file = __DIR__.'/../Resources/config/attributes.yml')) {
+        if (is_file($file = __DIR__.'/../Resources/config/attribute_types_properties.yml')) {
             $config = Yaml::parse(realpath($file));
             $container->setParameter('pim_product.attributes_config', $config);
         }

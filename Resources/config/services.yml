@@ -95,7 +95,7 @@ services:
 
     pim_product.form.type.product_value:
         class: Pim\Bundle\ProductBundle\Form\Type\ProductValueType
-        arguments: [@product_manager]
+        arguments: [@product_manager, @oro_flexibleentity.value_form.value_subscriber]
         tags:
             - { name: form.type, alias: pim_product_value }
 
