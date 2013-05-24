@@ -27,7 +27,7 @@ use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
  * )
  * @Gedmo\Tree(type="nested")
  * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\ProductSegmentTranslation")
- * @UniqueEntity("code")
+ * @UniqueEntity(fields="code", message="This code is already taken")
  */
 class ProductSegment extends AbstractSegment implements Translatable
 {
@@ -95,6 +95,14 @@ class ProductSegment extends AbstractSegment implements Translatable
      * @ORM\Column(name="is_dynamic", type="boolean")
      */
     protected $isDynamic = false;
+
+    /**
+     * @var datetime
+     *
+     * @Gedmo\Timestampable
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
 
     /**
      * @var ArrayCollection $translations

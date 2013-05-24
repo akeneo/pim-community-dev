@@ -28,4 +28,14 @@ class ProductSegmentManager extends SegmentManager
 
         return $tree;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTrees()
+    {
+        $entityRepository = $this->getEntityRepository();
+
+        return $entityRepository->getChildren(null, true, 'created', 'DESC');
+    }
 }
