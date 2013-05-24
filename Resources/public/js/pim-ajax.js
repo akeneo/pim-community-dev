@@ -11,7 +11,7 @@
  *      PimAjax.remove(myURL, '');
  *      if (PimAjax.isSuccessfull()) return true;
  */
-var PimAjax = function() {
+var PimAjax = new function() {
     /**
      * Synchronous request call with jQuery ajax component
      * @param string type Request type
