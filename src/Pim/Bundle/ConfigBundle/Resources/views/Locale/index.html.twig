@@ -1,6 +1,6 @@
 {% extends 'PimConfigBundle::layout.html.twig' %}
 
-{% set title = 'Languages overview'|trans %}
+{% set title = 'Locales overview'|trans %}
 
 {% block head_script %}
     {{ parent() }}
@@ -15,7 +15,7 @@
     <div class="usser-row">
         <h1>{{ title }}
             <a class="btn btn-primary pull-right"
-                href="{{ path('pim_config_language_create') }}">{{ 'New language'|trans }}</a>
+                href="{{ path('pim_config_locale_create') }}">{{ 'New locale'|trans }}</a>
         </h1>
     
         <div id="locale-grid"></div>

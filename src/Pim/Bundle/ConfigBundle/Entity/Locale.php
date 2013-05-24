@@ -6,20 +6,20 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Locale\Locale;
+use Symfony\Component\Locale\Locale as SfLocale;
 
 /**
- * Language entity
+ * Locale entity
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_language")
+ * @ORM\Table(name="pim_locale")
  * @ORM\Entity
  * @UniqueEntity("code")
  */
-class Language
+class Locale
 {
 
     /**
@@ -39,7 +39,7 @@ class Language
     protected $code;
 
     /**
-     * @var string
+     * @var string $fallback
      *
      * @ORM\Column(name="fallback", type="string", length=10, nullable=true)
      */
@@ -48,9 +48,9 @@ class Language
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Currency", inversedBy="languages")
-     * @ORM\JoinTable(name="pim_language_currency",
-     *     joinColumns={@ORM\JoinColumn(name="language_id", referencedColumnName="id")},
+     * @ORM\ManyToMany(targetEntity="Currency", inversedBy="locales")
+     * @ORM\JoinTable(name="pim_locale_currency",
+     *     joinColumns={@ORM\JoinColumn(name="locale_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="currency_id", referencedColumnName="id")}
      * )
      */
@@ -97,7 +97,7 @@ class Language
      *
      * @param integer $id
      *
-     * @return \Pim\Bundle\ConfigBundle\Entity\Language
+     * @return \Pim\Bundle\ConfigBundle\Entity\Locale
      */
     public function setId($id)
     {
@@ -121,7 +121,7 @@ class Language
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\ConfigBundle\Entity\Language
+     * @return \Pim\Bundle\ConfigBundle\Entity\Locale
      */
     public function setCode($code)
     {
@@ -145,7 +145,7 @@ class Language
      *
      * @param string $fallback
      *
-     * @return \Pim\Bundle\ConfigBundle\Entity\Language
+     * @return \Pim\Bundle\ConfigBundle\Entity\Locale
      */
     public function setFallback($fallback)
     {
@@ -169,7 +169,7 @@ class Language
      *
      * @param boolean $activated
      *
-     * @return \Pim\Bundle\ConfigBundle\Entity\Language
+     * @return \Pim\Bundle\ConfigBundle\Entity\Locale
      */
     public function setActivated($activated)
     {
@@ -193,7 +193,7 @@ class Language
      *
      * @param array $currencies
      *
-     * @return \Pim\Bundle\ConfigBundle\Entity\Language
+     * @return \Pim\Bundle\ConfigBundle\Entity\Locale
      */
     public function setCurrencies($currencies = array())
     {
@@ -207,7 +207,7 @@ class Language
      *
      * @param Currency $currency
      *
-     * @return \Pim\Bundle\ConfigBundle\Entity\Language
+     * @return \Pim\Bundle\ConfigBundle\Entity\Locale
      */
     public function addCurrency(Currency $currency)
     {
@@ -221,7 +221,7 @@ class Language
      *
      * @param Currency $currency
      *
-     * @return \Pim\Bundle\ConfigBundle\Entity\Language
+     * @return \Pim\Bundle\ConfigBundle\Entity\Locale
      */
     public function removeCurrency(Currency $currency)
     {
@@ -231,7 +231,7 @@ class Language
     }
 
     /**
-     * Get displayed language from locale code
+     * Get displayed locale from locale code
      *
      * @param string $locale
      *
@@ -239,7 +239,7 @@ class Language
      */
     public function fromLocale($locale)
     {
-        $countries = Locale::getDisplayLanguages($locale);
+        $countries = SfLocale::getDisplayLanguages($locale);
 
         return isset($countries[$this->code]) ? $countries[$this->code] : $this->code;
     }

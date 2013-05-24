@@ -43,33 +43,7 @@
 
     '@OroSearchBundle/Resources/public/js/searchBar.js'
 
-    filter='?yui_js'
-    output='js/oroapp-demo.all.js'
-    %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-
-    <script type="text/javascript">
-        navigation.Item.prototype.urlRoot = {{ path('oro_api_get_navigationitems', {'type': ''})|json_encode|raw }};
-    </script>
-
-    {# BEGIN CUSTOM PIM ASSETS #}
-    {% stylesheets
-    'bundles/pimui/css/pim.less'
-    'bundles/pimui/css/bootstrap-datetimepicker.min.css'
-    'bundles/pimui/css/select2.css'
-    'bundles/pimui/css/bootstrap-wysihtml5.css'
-    'bundles/pimui/css/slimbox2.css'
-
-    debug=true
-    filter='cssrewrite'
-    %}
-    <link rel="stylesheet" media="all" href="{{ asset_url }}" />
-    {% endstylesheets %}
-
-    {% javascripts
     '@PimUIBundle/Resources/public/js/pim_all.js'
-    '@PimUIBundle/Resources/public/js/bootstrap-datetimepicker.min.js'
     '@PimUIBundle/Resources/public/js/select2.js'
     '@PimUIBundle/Resources/public/js/jquery-ui-1.10.0.min.js'
     '@PimUIBundle/Resources/public/js/sidebarize.js'
@@ -84,12 +58,28 @@
     '@PimUIBundle/Resources/public/js/unsafe-method-link.js'
 
     filter='?yui_js'
-    output='js/pimapp.all.js'
+    output='js/oroapp.all.js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
-    {# END CUSTOM PIM ASSETS #}
+    <script type="text/javascript">
+        navigation.Item.prototype.urlRoot = {{ path('oro_api_get_navigationitems', {'type': ''})|json_encode|raw }};
+    </script>
+
+    {% stylesheets
+    'bundles/pimui/css/pim.less'
+    'bundles/pimui/css/bootstrap-datetimepicker.min.css'
+    'bundles/pimui/css/select2.css'
+    'bundles/pimui/css/bootstrap-wysihtml5.css'
+    'bundles/pimui/css/slimbox2.css'
+
+    debug=true
+    filter='cssrewrite'
+    %}
+    <link rel="stylesheet" media="all" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
     {% block javascripts %}{% endblock %}
 
 {% endblock %}

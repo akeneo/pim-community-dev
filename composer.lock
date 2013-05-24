@@ -2791,7 +2791,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/FlexibleEntityBundle.git",
-                "reference": "3338100f1d0a647e945dd0a8ef8f2e2bfd3435fb"
+                "reference": "461c4e2dfa22411af49aca27e400f9dfdadaa3bc"
             },
             "dist": {
                 "type": "zip",
@@ -3247,12 +3247,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/UserBundle.git",
-                "reference": "b06c5190cc0345dc3f459cb69e717930fe0a7119"
+                "reference": "923ee49a0f1185d75bf79410f79487943145193f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/b06c5190cc0345dc3f459cb69e717930fe0a7119",
-                "reference": "b06c5190cc0345dc3f459cb69e717930fe0a7119",
+                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/923ee49a0f1185d75bf79410f79487943145193f",
+                "reference": "923ee49a0f1185d75bf79410f79487943145193f",
                 "shasum": ""
             },
             "require": {

@@ -15,12 +15,12 @@ use Doctrine\Common\Util\Inflector;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\Role;
 
-use Pim\Bundle\ConfigBundle\Entity\Language;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Pim\Bundle\ProductBundle\Entity\ProductFamily;
 use Pim\Bundle\ProductBundle\Entity\ProductFamilyTranslation;
 use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+use Pim\Bundle\ConfigBundle\Entity\Locale;
 
 /**
  * Context of the website
@@ -47,7 +47,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function resetCurrentLocale()
     {
         foreach ($this->locales as $locale) {
-            $this->createLanguage($locale);
+            $this->createLocale($locale);
         }
     }
 
@@ -100,7 +100,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                     $attributes[$translation['attribute']] = $attribute;
                 }
 
-                $value = $this->createValue($attribute, $translation['value'], $this->getLocale($translation['locale']));
+                $value = $this->createValue($attribute, $translation['value'], $this->getLocaleCode($translation['locale']));
                 $product->addValue($value);
             }
         }
@@ -118,10 +118,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $languages = $this->listToArray($languages);
 
         foreach ($languages as $language) {
-            $language = $this->getLanguage($this->getLocale($language));
-            $pl = $product->getLanguage($language);
+            $language = $this->getLocale($this->getLocaleCode($language));
+            $pl = $product->getLocale($language);
             if (!$pl) {
-                $product->addLanguage($language, true);
+                $product->addLocale($language, true);
             }
         }
 
@@ -157,7 +157,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         foreach ($table->getHash() as $data) {
             $family      = $this->getFamily($data['family']);
             $translation = $this->createFamilyTranslation(
-                $family, $data['label'], $this->getLocale($data['language'])
+                $family, $data['label'], $this->getLocaleCode($data['language'])
             );
 
             $family->addTranslation($translation);
@@ -169,11 +169,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @When /^I switch the locale to "([^"]*)"$/
      */
-    public function iSwitchTheLocaleTo($language)
+    public function iSwitchTheLocaleTo($locale)
     {
-        $this->getPage('Product')->switchLocale(
-            $this->getLocale($language)
-        );
+        $this->getPage('Product')->switchLocale($this->getLocaleCode($locale));
     }
 
     /**
@@ -232,14 +230,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $langs     = array();
 
         foreach ($languages as $language) {
-            $langs[] = $this->getLanguage($this->getLocale($language));
+            $langs[] = $this->getLocale($this->getLocaleCode($language));
         }
 
         foreach ($products as $product) {
             foreach ($langs as $lang) {
-                $pl = $product->getLanguage($lang);
+                $pl = $product->getLocale($lang);
                 if (!$pl) {
-                    $product->addLanguage($lang);
+                    $product->addLocale($lang);
                 }
             }
         }
@@ -366,13 +364,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @Then /^I should see that the product is available in (.*)$/
      */
-    public function iShouldSeeThatTheProductIsAvailableIn($languages)
+    public function iShouldSeeLanguages($languages)
     {
         $languages = $this->listToArray($languages);
         foreach ($languages as $language) {
-            ;
-
-            if (null === $this->getPage('Product')->findLocaleLink($this->getLocale($language))) {
+            if (null === $this->getPage('Product')->findLocaleLink($this->getLocaleCode($language))) {
                 throw $this->createExpectationException(sprintf('
                     Expecting to see a locale link for "%s", but didn\'t', $language
                 ));
@@ -487,7 +483,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         if ($language) {
             try {
                 $field = $this->getPage($this->currentPage)->getFieldLocator(
-                    $field, $this->getLocale($language)
+                    $field, $this->getLocaleCode($language)
                 );
             } catch (\BadMethodCallException $e) {
                 // Use default $field if current page does not provide a getFieldLocator method
@@ -712,7 +708,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         return $value;
     }
 
-    private function getLocale($language)
+
+    private function getLocaleCode($language)
     {
         if ('default' === $language) {
             return $language;
@@ -761,26 +758,26 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getSession()->getPage()->clickLink('OK');
     }
 
-    private function getLanguage($code)
+    private function getLocale($code)
     {
         try {
-            $lang = $this->getEntityOrException('PimConfigBundle:Language', array(
+            $lang = $this->getEntityOrException('PimConfigBundle:Locale', array(
                 'code' => $code
             ));
         } catch (\InvalidArgumentException $e) {
-            $this->createLanguage($code);
+            $this->createLocale($code);
         }
 
         return $lang;
     }
 
-    private function createLanguage($code)
+    private function createLocale($code)
     {
-        $lang = new Language;
-        $lang->setCode($code);
+        $locale = new Locale;
+        $locale->setCode($code);
 
         $em = $this->getEntityManager();
-        $em->persist($lang);
+        $em->persist($locale);
         $em->flush();
     }
 

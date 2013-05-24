@@ -3,7 +3,7 @@ namespace Pim\Bundle\ConfigBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\ConfigBundle\Entity\Currency;
 
-use Pim\Bundle\ConfigBundle\Entity\Language;
+use Pim\Bundle\ConfigBundle\Entity\Locale;
 
 /**
  * Test related class
@@ -13,7 +13,7 @@ use Pim\Bundle\ConfigBundle\Entity\Language;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class LanguageTest extends \PHPUnit_Framework_TestCase
+class LocaleTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -21,8 +21,8 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $language = new Language();
-        $this->assertInstanceOf('Pim\Bundle\ConfigBundle\Entity\Language', $language);
+        $locale = new Locale();
+        $this->assertInstanceOf('Pim\Bundle\ConfigBundle\Entity\Locale', $locale);
     }
 
     /**
@@ -30,13 +30,13 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetId()
     {
-        $language = new Language();
-        $this->assertEmpty($language->getId());
+        $locale = new Locale();
+        $this->assertEmpty($locale->getId());
 
         // change value and assert new
         $newId = 5;
-        $language->setId($newId);
-        $this->assertEquals($newId, $language->getId());
+        $locale->setId($newId);
+        $this->assertEquals($newId, $locale->getId());
     }
 
     /**
@@ -44,13 +44,13 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetCode()
     {
-        $language = new Language();
-        $this->assertEmpty($language->getCode());
+        $locale = new Locale();
+        $this->assertEmpty($locale->getCode());
 
         // change value and assert new
         $newCode = 'fr_FR';
-        $language->setCode($newCode);
-        $this->assertEquals($newCode, $language->getCode());
+        $locale->setCode($newCode);
+        $this->assertEquals($newCode, $locale->getCode());
     }
 
     /**
@@ -58,13 +58,13 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetFallback()
     {
-        $language = new Language();
-        $this->assertEmpty($language->getFallback());
+        $locale = new Locale();
+        $this->assertEmpty($locale->getFallback());
 
         // change value and assert new
         $newFallback = 'fr_FR';
-        $language->setFallback($newFallback);
-        $this->assertEquals($newFallback, $language->getFallback());
+        $locale->setFallback($newFallback);
+        $this->assertEquals($newFallback, $locale->getFallback());
     }
 
     /**
@@ -72,9 +72,9 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetCurrencies()
     {
-        $language = new Language();
-        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $language->getCurrencies());
-        $this->assertCount(0, $language->getCurrencies());
+        $locale = new Locale();
+        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $locale->getCurrencies());
+        $this->assertCount(0, $locale->getCurrencies());
 
         // create currencies
         $listCurrencies = array('USD', 'EUR', 'GPB');
@@ -85,26 +85,26 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
 
         // Set currencies and assert
         $newCurrencies = array($currencyUs, $currencyFr);
-        $language->setCurrencies($newCurrencies);
-        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $language->getCurrencies());
-        $this->assertCount(2, $language->getCurrencies());
-        foreach ($language->getCurrencies() as $currency) {
+        $locale->setCurrencies($newCurrencies);
+        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $locale->getCurrencies());
+        $this->assertCount(2, $locale->getCurrencies());
+        foreach ($locale->getCurrencies() as $currency) {
             $this->assertTrue(in_array($currency, $newCurrencies));
         }
 
         // Add currency and assert
-        $language->addCurrency($currencyEn);
-        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $language->getCurrencies());
-        $this->assertCount(3, $language->getCurrencies());
-        foreach ($language->getCurrencies() as $currency) {
+        $locale->addCurrency($currencyEn);
+        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $locale->getCurrencies());
+        $this->assertCount(3, $locale->getCurrencies());
+        foreach ($locale->getCurrencies() as $currency) {
             $this->assertTrue(in_array($currency, array($currencyUs, $currencyFr, $currencyEn)));
         }
 
         // Remove currency and assert
-        $language->removeCurrency($currencyFr);
-        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $language->getCurrencies());
-        $this->assertCount(2, $language->getCurrencies());
-        foreach ($language->getCurrencies() as $currency) {
+        $locale->removeCurrency($currencyFr);
+        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $locale->getCurrencies());
+        $this->assertCount(2, $locale->getCurrencies());
+        foreach ($locale->getCurrencies() as $currency) {
             $this->assertTrue(in_array($currency, array($currencyUs, $currencyEn)));
         }
     }
@@ -128,13 +128,13 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetActivated()
     {
-        $language = new Language();
-        $this->assertTrue($language->getActivated());
+        $locale = new Locale();
+        $this->assertTrue($locale->getActivated());
 
         // change value and assert new
         $newActivated = false;
-        $language->setActivated($newActivated);
-        $this->assertFalse($language->getActivated());
+        $locale->setActivated($newActivated);
+        $this->assertFalse($locale->getActivated());
     }
 
     /**
@@ -142,9 +142,9 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      */
     public function testToString()
     {
-        $language = new Language();
+        $locale = new Locale();
         $code = 'en_US';
-        $language->setCode($code);
-        $this->assertEquals($code, $language->__toString());
+        $locale->setCode($code);
+        $this->assertEquals($code, $locale->__toString());
     }
 }
