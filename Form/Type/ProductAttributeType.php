@@ -106,7 +106,7 @@ class ProductAttributeType extends AttributeType
      */
     protected function addFieldDescription(FormBuilderInterface $builder)
     {
-        $builder->add('description', 'textarea');
+        $builder->add('description', 'textarea', array('required' => false));
     }
 
     /**
