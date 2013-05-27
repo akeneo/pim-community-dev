@@ -219,7 +219,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $this->setFlexibleAttributeValueOption($user, 'gender', $gender);
         $this->setFlexibleAttributeValue($user, 'website', $website);
         $this->addFlexibleAttributeValueOptions($user, 'hobby', $hobbies);
-        // $this->setFlexibleAttributeValue($user, 'last_visit', $lastVisit);
         $this->setFlexibleAttributeValueOption($user, 'cataloglocale', $locale);
         $this->setFlexibleAttributeValueOption($user, 'catalogscope', $scope);
 
@@ -671,6 +670,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      */
     public function getOrder()
     {
-        return 111;
+        return 112;
     }
 }
