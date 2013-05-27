@@ -44,6 +44,7 @@ class ProductController extends Controller
     public function indexAction(Request $request)
     {
         $this->getProductManager()->setLocale($this->getDataLocale());
+        $this->getProductManager()->setScope($this->getDataScope());
 
         /** @var $gridManager ProductDatagridManager */
         $gridManager = $this->get('pim_product.product_grid_manager');
@@ -298,7 +299,7 @@ class ProductController extends Controller
     {
         $dataScope = $this->getRequest()->get('dataScope');
         if ($dataScope === null) {
-            $dataScope = (string) $this->getUser()->getValue('catalogScope');
+            $dataScope = (string) $this->getUser()->getValue('catalogscope');
         }
         if (!$dataScope) {
             throw new \Exception('User must have a catalog scope defined');

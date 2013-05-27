@@ -1,14 +1,12 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
+use Pim\Bundle\ConfigBundle\Manager\ChannelManager;
+
 use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
-
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
-
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-
 use Oro\Bundle\GridBundle\Property\FieldProperty;
-
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -133,7 +131,20 @@ class ProductDatagridManager extends FlexibleDatagridManager
             $fieldsCollection->add($field);
         }
 
-        // add locale filter
+        $field = $this->createLocaleField();
+        $fieldsCollection->add($field);
+
+        $field = $this->createScopeField();
+        $fieldsCollection->add($field);
+    }
+
+    /**
+     * Create locale field description for datagrid
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createLocaleField()
+    {
         $activeLocaleCodes = $this->localeManager->getActiveCodes();
 
         $field = new FieldDescription();
@@ -154,9 +165,18 @@ class ProductDatagridManager extends FlexibleDatagridManager
             )
         );
 
-        $fieldsCollection->add($field);
+        return $field;
+    }
 
-        // add scopable filter
+    /**
+     * Create scope field description for datagrid
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createScopeField()
+    {
+        $channelChoices = $this->channelManager->getChannelChoices();
+
         $field = new FieldDescription();
         $field->setName('scope');
         $field->setOptions(
@@ -170,12 +190,12 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'filterable'  => true,
                 'show_filter' => true, //TODO : Must be false
                 'field_options' => array(
-                    'choices' => array('ecommerce', 'mobile')
+                        'choices' => $channelChoices
                 ),
             )
         );
 
-        $fieldsCollection->add($field);
+        return $field;
     }
 
     /**
@@ -229,8 +249,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
     {
         $this->flexibleManager = $flexibleManager;
 
-        $this->flexibleManager->setLocale($this->getDataLocale());
-        $this->flexibleManager->setScope('ecommerce');
+        $this->flexibleManager->setLocale($this->getLocaleFilterValue());
+        $this->flexibleManager->setScope($this->getScopeFilterValue());
     }
 
     /**
@@ -238,7 +258,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
      *
      * @return string
      */
-    public function getDataLocale()
+    public function getLocaleFilterValue()
     {
         $filtersArray = $this->parameters->get(ParametersInterface::FILTER_PARAMETERS);
         if (isset($filtersArray['locale']) && isset($filtersArray['locale']['value'])) {
@@ -251,6 +271,23 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
+     * Get scope value from parameters
+     *
+     * @return string
+     */
+    public function getScopeFilterValue()
+    {
+        $filtersArray = $this->parameters->get(ParametersInterface::FILTER_PARAMETERS);
+        if (isset($filtersArray['scope']) && isset($filtersArray['scope']['value'])) {
+            $dataScope = $filtersArray['scope']['value'];
+        } else {
+            $dataScope = $this->flexibleManager->getScope();
+        }
+
+        return $dataScope;
+    }
+
+    /**
      * Set locale manager
      *
      * @param LocaleManager $localeManager
@@ -260,6 +297,20 @@ class ProductDatagridManager extends FlexibleDatagridManager
     public function setLocaleManager(LocaleManager $localeManager)
     {
         $this->localeManager = $localeManager;
+
+        return $this;
+    }
+
+    /**
+     * Set channel manager
+     *
+     * @param ChannelManager $channelManager
+     *
+     * @return \Pim\Bundle\ProductBundle\Datagrid\ProductDatagridManager
+     */
+    public function setChannelManager(ChannelManager $channelManager)
+    {
+        $this->channelManager = $channelManager;
 
         return $this;
     }
