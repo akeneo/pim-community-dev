@@ -34,7 +34,7 @@ class LoadCurrencyData extends AbstractFixture implements OrderedFixtureInterfac
     /**
      * @staticvar multitype
      */
-    protected static $activatedCurrencies = array('EUR', 'USD', 'GPB');
+    protected static $activatedCurrencies = array('EUR', 'USD', 'GBP');
 
     /**
      * {@inheritdoc}
