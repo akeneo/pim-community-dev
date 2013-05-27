@@ -1,0 +1,7 @@
+{% block oro_region_updater_js %}
+    <script type="text/template" id="region-chooser-template">
+        <% _.each(regions, function(region, i) { %>
+            <option value="<%= region.get('code') %>"><%= region.get('name') %></option>
+        <% }); %>
+    </script>
+{% endblock oro_region_updater_js %}

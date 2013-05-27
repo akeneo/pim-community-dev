@@ -1,0 +1,6 @@
+entities_config:
+    Oro\Bundle\AddressBundle\Entity\Address:
+        flexible_manager:     oro_address.address.manager.flexible
+        flexible_class:       %oro_address.address.entity.class%
+        flexible_value_class: %oro_address.address.entity.value.class%
+        flexible_init_mode:   all_attributes

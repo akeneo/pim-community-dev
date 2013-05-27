@@ -1,0 +1,24 @@
+{
+    "name": "oro/address-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP Address Bundle",
+    "keywords": ["BAP", "Address"],
+    "homepage": "https://github.com/laboro/AddressBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.1.*",
+        "symfony/icu": "1.2.*@dev",
+        "symfony/intl": "2.3.*@dev",
+        "friendsofsymfony/rest-bundle": "0.11.*",
+        "friendsofsymfony/jsrouting-bundle": "1.1.*@dev",
+        "nelmio/api-doc-bundle": "dev-master",
+        "oro/flexible-entity-bundle": "dev-master",
+        "besimple/soap-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\AddressBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/AddressBundle",
+    "minimum-stability": "dev"
+}

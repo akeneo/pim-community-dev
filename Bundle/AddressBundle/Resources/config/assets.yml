@@ -1,0 +1,4 @@
+js:
+  - '@OroAddressBundle/Resources/public/js/views/region.updater.js'
+  - '@OroAddressBundle/Resources/public/js/models/region.updater.js'
+  - '@OroAddressBundle/Resources/public/js/collections/region.updater.js'

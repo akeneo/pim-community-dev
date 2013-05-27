@@ -1,0 +1,34 @@
+Oro\Bundle\AddressBundle\Entity\Address:
+    properties:
+        street:
+            - NotBlank: ~
+            - Length:
+                  max: 500
+
+        street2:
+            - Length:
+                  max: 500
+
+        city:
+            - NotBlank: ~
+            - Length:
+                  max: 255
+
+        postalCode:
+            - NotBlank: ~
+            - Length:
+                  max: 20
+
+        country:
+            - NotBlank: ~
+
+        firstName:
+            - Length:
+                  max: 255
+
+        lastName:
+            - Length:
+                  max: 255
+    constraints:
+        - Callback:
+            methods: [isStateValid]
