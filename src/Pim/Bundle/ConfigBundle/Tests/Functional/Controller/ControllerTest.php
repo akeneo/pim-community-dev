@@ -1,6 +1,10 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Tests\Functional\Controller;
 
+use Symfony\Component\DomCrawler\Form;
+
+use Symfony\Component\DomCrawler\Crawler;
+
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
@@ -31,11 +35,11 @@ abstract class ControllerTest extends WebTestCase
      * List of locales to test
      * @staticvar multitype:string
      */
-    protected static $locales = array('en');
+    protected static $locales = array('en_US');
 
     /**
      * @var \Symfony\Bundle\FrameworkBundle\Client
-     */
+    */
     protected $client;
 
     /**
@@ -46,7 +50,7 @@ abstract class ControllerTest extends WebTestCase
 
     /**
      * {@inheritdoc}
-     */
+    */
     protected function setUp()
     {
         parent::setUp();
@@ -57,13 +61,32 @@ abstract class ControllerTest extends WebTestCase
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected static function createClient(array $options = array(), array $server = array(), $followRedirects = true)
+    {
+        if (!isset($options['debug'])) {
+            $options['debug'] = false;
+        }
+
+        $client = parent::createClient($options, $server);
+        if ($followRedirects === true) {
+            $client->followRedirects();
+        }
+
+        return $client;
+    }
+
+    /**
      * Get object manager
+     *
+     * @static
      *
      * @return \Doctrine\Common\Persistence\ObjectManager
      */
-    protected function getStorageManager()
+    protected static function getStorageManager()
     {
-        return $this->getContainer()->get('doctrine.orm.entity_manager');
+        return static::getContainer()->get('doctrine.orm.entity_manager');
     }
 
     /**
@@ -78,15 +101,50 @@ abstract class ControllerTest extends WebTestCase
     /**
      * Get container
      *
+     * @static
+     *
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
-    protected function getContainer()
+    protected static function getContainer()
     {
         if (!static::$kernel) {
             throw new \Exception('Kernel not instanciate ! Please create client before call container');
         }
 
         return static::$kernel->getContainer();
+    }
+
+    /**
+     * Get translator component
+     *
+     * @return \Symfony\Bundle\FrameworkBundle\Translation\Translator
+     */
+    protected function getTranslator()
+    {
+        return static::getContainer()->get('translator');
+    }
+
+    /**
+     * Submit form and assert flashbag
+     * @param \Symfony\Component\DomCrawler\Form $form    Form crawler
+     * @param multitype:string                   $values  Form values
+     * @param string                             $message Flashbag message
+     */
+    protected function submitFormAndAssertFlashbag(Form $form, $values, $message)
+    {
+        $crawler = $this->client->submit($form, $values);
+        $this->assertFlashBagMessage($crawler, $message);
+    }
+
+    /**
+     * Assert flashbag message
+     * @param \Symfony\Component\DomCrawler\Crawler $crawler Form crawler
+     * @param string                                $message Flashbag message
+     */
+    protected function assertFlashBagMessage(Crawler $crawler, $message)
+    {
+        $i18nMessage = $this->getTranslator()->trans($message);
+        $this->assertCount(1, $crawler->filter('div.alert-success:contains("'. $i18nMessage .'")'));
     }
 
     /**
