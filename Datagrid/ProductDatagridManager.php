@@ -52,7 +52,12 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
         return array(
             new FieldProperty($fieldId),
-            new UrlProperty('edit_link', $this->router, 'pim_product_product_edit', array('id', 'dataLocale' => 'locale')),
+            new UrlProperty(
+                'edit_link',
+                $this->router,
+                'pim_product_product_edit',
+                array('id', 'dataLocale' => 'locale')
+            ),
             new UrlProperty('delete_link', $this->router, 'pim_product_product_remove', array('id')),
         );
     }
@@ -128,10 +133,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
             $fieldsCollection->add($field);
         }
 
+        // add locale filter
         $activeLocaleCodes = $this->localeManager->getActiveCodes();
 
         $field = new FieldDescription();
-        $field->setName('Locale');
+        $field->setName('locale');
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
@@ -144,6 +150,27 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'show_filter' => true, //TODO : Must be false
                 'field_options' => array(
                     'choices' => array_combine($activeLocaleCodes, $activeLocaleCodes)
+                ),
+            )
+        );
+
+        $fieldsCollection->add($field);
+
+        // add scopable filter
+        $field = new FieldDescription();
+        $field->setName('scope');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
+                'label'       => $this->translator->trans('Scope'),
+                'field_name'  => 'scope',
+                'filter_type' => FilterInterface::TYPE_CHOICE,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true, //TODO : Must be false
+                'field_options' => array(
+                    'choices' => array('ecommerce', 'mobile')
                 ),
             )
         );
