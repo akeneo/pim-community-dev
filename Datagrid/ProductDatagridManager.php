@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
+use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
+
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
@@ -27,6 +29,12 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
  */
 class ProductDatagridManager extends FlexibleDatagridManager
 {
+
+    /**
+     * @var LocaleManager
+     */
+    protected $localeManager;
+
     /**
      * get properties
      * @return array
@@ -120,6 +128,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
             $fieldsCollection->add($field);
         }
 
+        $activeLocaleCodes = $this->localeManager->getActiveCodes();
+
         $field = new FieldDescription();
         $field->setName('Locale');
         $field->setOptions(
@@ -133,7 +143,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'filterable'  => true,
                 'show_filter' => true, //TODO : Must be false
                 'field_options' => array(
-                    'choices' => array('en_US' => 'en_US', 'fr_FR' => 'fr_FR')
+                    'choices' => array_combine($activeLocaleCodes, $activeLocaleCodes)
                 ),
             )
         );
@@ -211,5 +221,19 @@ class ProductDatagridManager extends FlexibleDatagridManager
         }
 
         return $dataLocale;
+    }
+
+    /**
+     * Set locale manager
+     *
+     * @param LocaleManager $localeManager
+     *
+     * @return \Pim\Bundle\ProductBundle\Datagrid\ProductDatagridManager
+     */
+    public function setLocaleManager(LocaleManager $localeManager)
+    {
+        $this->localeManager = $localeManager;
+
+        return $this;
     }
 }
