@@ -2,7 +2,6 @@
 namespace Pim\Bundle\ConfigBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\ConfigBundle\Entity\Currency;
-
 use Pim\Bundle\ConfigBundle\Entity\Locale;
 
 /**
@@ -70,43 +69,17 @@ class LocaleTest extends \PHPUnit_Framework_TestCase
     /**
      * Test getter/setter for currencies property
      */
-    public function testGetSetCurrencies()
+    public function testGetSetDefaultCurrency()
     {
         $locale = new Locale();
-        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $locale->getCurrencies());
-        $this->assertCount(0, $locale->getCurrencies());
 
-        // create currencies
-        $listCurrencies = array('USD', 'EUR', 'GPB');
+        $currencyCode = 'USD';
+        $currencyUs = $this->createCurrency($currencyCode);
+        $this->assertNull($locale->getDefaultCurrency());
 
-        $currencyUs = $this->createCurrency('USD');
-        $currencyFr = $this->createCurrency('EUR');
-        $currencyEn = $this->createCurrency('GPB');
-
-        // Set currencies and assert
-        $newCurrencies = array($currencyUs, $currencyFr);
-        $locale->setCurrencies($newCurrencies);
-        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $locale->getCurrencies());
-        $this->assertCount(2, $locale->getCurrencies());
-        foreach ($locale->getCurrencies() as $currency) {
-            $this->assertTrue(in_array($currency, $newCurrencies));
-        }
-
-        // Add currency and assert
-        $locale->addCurrency($currencyEn);
-        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $locale->getCurrencies());
-        $this->assertCount(3, $locale->getCurrencies());
-        foreach ($locale->getCurrencies() as $currency) {
-            $this->assertTrue(in_array($currency, array($currencyUs, $currencyFr, $currencyEn)));
-        }
-
-        // Remove currency and assert
-        $locale->removeCurrency($currencyFr);
-        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $locale->getCurrencies());
-        $this->assertCount(2, $locale->getCurrencies());
-        foreach ($locale->getCurrencies() as $currency) {
-            $this->assertTrue(in_array($currency, array($currencyUs, $currencyEn)));
-        }
+        $locale->setDefaultCurrency($currencyUs);
+        $this->assertInstanceOf('Pim\Bundle\ConfigBundle\Entity\Currency', $locale->getDefaultCurrency());
+        $this->assertEquals($locale->getDefaultCurrency()->getCode(), $currencyCode);
     }
 
     /**

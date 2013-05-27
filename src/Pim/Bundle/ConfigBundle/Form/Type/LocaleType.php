@@ -46,12 +46,10 @@ class LocaleType extends AbstractType
 
         $builder->add('id', 'hidden');
 
-        // Add locale field and fallback field
         $this->addLocaleField($builder);
 
         $this->addFallbackField($builder);
 
-        // Add currency field
         $this->addCurrencyField($builder);
 
         $builder->add('activated', 'hidden');
@@ -67,9 +65,10 @@ class LocaleType extends AbstractType
             'code',
             'choice',
             array(
-                'choices' => $this->prepareLocaleList($this->locales),
-                'required' => true,
-                'preferred_choices' => array('en_EN', 'fr_FR', 'en_US')
+                'choices'           => $this->prepareLocaleList($this->locales),
+                'required'          => true,
+                'preferred_choices' => array('en_EN', 'fr_FR', 'en_US'),
+                'label'             => 'Locale'
             )
         );
     }
@@ -84,9 +83,10 @@ class LocaleType extends AbstractType
             'fallback',
             'choice',
             array(
-                'choices' => $this->prepareLocaleList($this->locales),
-                'required' => false,
-                'preferred_choices' => array('en_EN', 'fr_FR', 'en_US')
+                'choices'           => $this->prepareLocaleList($this->locales),
+                'required'          => false,
+                'preferred_choices' => array('en_EN', 'fr_FR', 'en_US'),
+                'label'             => 'Inherited locale'
             )
         );
     }
@@ -105,7 +105,6 @@ class LocaleType extends AbstractType
             $choices[$code] = $locale['label'];
         }
 
-        // Sort choices by alphabetical
         asort($choices);
 
         return $choices;
@@ -120,14 +119,13 @@ class LocaleType extends AbstractType
     protected function addCurrencyField(FormBuilderInterface $builder)
     {
         $builder->add(
-            'currencies',
+            'defaultCurrency',
             'entity',
             array(
-                'class' => 'Pim\Bundle\ConfigBundle\Entity\Currency',
-                'property' => 'code',
-                'multiple' => true,
+                'class'         => 'Pim\Bundle\ConfigBundle\Entity\Currency',
+                'property'      => 'code',
+                'multiple'      => false,
                 'query_builder' => function (EntityRepository $repository) {
-                    // prepare query to get activated currencies ordered by code
                     $query = $repository->createQueryBuilder('c');
                     $query->andwhere(
                         $query->expr()->eq('c.activated', true)
@@ -136,7 +134,8 @@ class LocaleType extends AbstractType
 
                     return $query;
                 },
-                'required' => true
+                'required'      => true,
+                'label'         => 'Default currency (to display)'
             )
         );
     }
