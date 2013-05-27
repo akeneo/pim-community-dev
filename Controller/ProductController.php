@@ -265,6 +265,8 @@ class ProductController extends Controller
     /**
      * Get data locale
      *
+     * @throws \Exception
+     *
      * @return string
      */
     protected function getDataLocale()
