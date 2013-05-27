@@ -158,7 +158,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'required'    => false,
                 'sortable'    => true,
                 'filterable'  => true,
-                'show_filter' => false, //TODO : Must be false
+                'show_column' => false,
+                'show_filter' => true, //TODO : Must be false
                 'field_options' => array(
                     'choices' => array_combine($activeLocaleCodes, $activeLocaleCodes)
                 ),
@@ -188,7 +189,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'required'    => false,
                 'sortable'    => true,
                 'filterable'  => true,
-                'show_filter' => false, //TODO : Must be false
+                'show_column' => false,
+                'show_filter' => true, //TODO : Must be false
                 'field_options' => array(
                     'choices' => $channelChoices
                 ),
