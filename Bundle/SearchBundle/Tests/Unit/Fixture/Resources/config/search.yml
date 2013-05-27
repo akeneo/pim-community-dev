@@ -1,0 +1,9 @@
+Oro\Bundle\SearchBundle\Tests\Unit\Fixture\Entity\Manufacturer:
+  fields:
+    -
+      name: products
+      relation_type: one-to-many
+      relation_fields:
+        -
+          name: name
+          target_type: text

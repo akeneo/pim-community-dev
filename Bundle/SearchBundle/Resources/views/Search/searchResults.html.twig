@@ -1,0 +1,80 @@
+{% extends bap.layout %}
+
+{% oro_title_set({params : {"%keyword%": searchString} }) %}
+
+{% block head_script %}
+    {{ parent() }}
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#search-result-grid'} %}
+    <script type="text/javascript">
+        $(function() {
+            // hide header
+            var searchDatagrid = Oro.Registry.getElement('datagrid', {{ datagrid.datagrid.name|json_encode|raw }});
+            searchDatagrid.header.$el.remove();
+        });
+    </script>
+{% endblock %}
+
+{% block page_container %}
+    {% block content %}
+        <div class="container-fluid search-header clearfix">
+            <h2>
+                {% trans %}Search results{% endtrans %}
+            </h2>
+            <form method="get" action="{{ path('oro_search_results') }}" class="form-inline search-form">
+                <input type="hidden" name="from" value="" />
+                <input type="text" id="search" class="span2 search" name="search" value="{{ searchString }}" />
+                <button type="submit" class="btn btn-search btn-primary">Search</button>
+            </form>
+        </div>
+
+        {% if '' in groupedResults|keys and groupedResults[''].count > 0 or groupedResults|length > 1 %}
+            <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td class="search-entity-types-column">
+                        {% for alias, type in groupedResults %}
+
+                            {% set selected = alias == from %}
+
+                            {% set label = '' %}
+                            {% if alias == '' %}
+                                {% set label = 'All' %}
+                            {% elseif 'label' in type.config|keys %}
+                                {% set label = type.config.label %}
+                            {% endif %}
+
+                            {% set entityIconClass = "icon-tag" %}
+                            {% if alias == '' %}
+                                {% set entityIconClass = "icon-search" %}
+                            {% elseif 'entity_icon_class' in type.config|keys %}
+                                {% set entityIconClass = type.config.entity_icon_class %}
+                            {% endif %}
+
+                            <div class="entity-type{% if selected %} selected{% endif %}">
+                                <i class="{{ entityIconClass }}"></i>
+                                {% if selected %}
+                                    {{ label|trans }} ({{ type.count }})
+                                    <div class="arrow"><i class="icon-chevron-right"></i></div>
+                                {% else %}
+                                    <a href="{{ path('oro_search_results', { from: alias, search: searchString }) }}">
+                                        {{ label|trans }} ({{ type.count }})
+                                    </a>
+                                {% endif %}
+                            </div>
+
+                        {% endfor %}
+                    </td>
+                    <td class="search-results-column">
+                        <div id="search-result-grid"></div>
+                    </td>
+                </tr>
+            </table>
+        {% else %}
+            <div class="search-no-results">
+                {% trans %}No results were found to match your search.{% endtrans %}
+                <br />
+                {% trans %}Try modifying your search criteria or creating a new ...{% endtrans %}
+            </div>
+        {% endif %}
+
+    {% endblock %}
+{% endblock %}

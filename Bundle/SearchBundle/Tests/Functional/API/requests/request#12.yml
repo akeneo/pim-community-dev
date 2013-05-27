@@ -1,0 +1,18 @@
+# offset test case
+request:
+    search: item
+    offset: 1
+    max_results: 1
+response:
+    records_count: 9
+    count: 1
+    rest:
+        data:
+            -
+                entity_name: Acme\Bundle\TestsBundle\Entity\Item
+                record_string: item2@mail.com
+    soap:
+        item:
+            -
+                entityName: Acme\Bundle\TestsBundle\Entity\Item
+                recordTitle: item2@mail.com

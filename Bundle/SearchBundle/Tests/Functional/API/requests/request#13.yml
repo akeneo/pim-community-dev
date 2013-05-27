@@ -1,0 +1,12 @@
+# offset test case
+request:
+    search: \"item1@mail.com\"
+    offset: 1
+    max_results: 3
+response:
+    records_count: 9
+    count: 3
+    rest:
+        data: ~
+    soap:
+        item: ~

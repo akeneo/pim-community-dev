@@ -1,0 +1,30 @@
+{
+    "name": "oro/search-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP Search Bundle",
+    "keywords": ["BAP"],
+    "homepage": "https://github.com/laboro/SearchBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.1.*",
+        "friendsofsymfony/rest-bundle": "0.11.*",
+        "nelmio/api-doc-bundle": "dev-master",
+        "knplabs/knp-paginator-bundle": "dev-master",
+        "jms/job-queue-bundle": "dev-master",
+        "jms/serializer-bundle": "0.12.*@dev",
+        "oro/flexible-entity-bundle": "dev-master",
+        "oro/ui-bundle": "dev-master",
+        "oro/soap-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\SearchBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/SearchBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

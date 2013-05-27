@@ -1,0 +1,15 @@
+# common test case
+request:
+    query: "from TestsBundle:Item where decimal floatValue != 10.50"
+    offset: ~
+    max_results: ~
+response:
+    records_count: 8
+    count: 8
+    rest:
+        data:
+            -
+                entity_name: Acme\Bundle\DemoFlexibleEntityBundle\Entity\Product
+                record_id: 1
+                record_title: sku-0
+                record_url: http://localhost.com/app_test.php/search/product/1

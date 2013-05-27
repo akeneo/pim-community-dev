@@ -1,0 +1,12 @@
+# offset test case
+request:
+    search: item
+    offset: 9
+    max_results: 100
+response:
+    records_count: 9
+    count: 0
+    rest:
+        data: ~
+    soap:
+        item: ~

@@ -1,0 +1,22 @@
+oro_search:
+    resource:     "@OroSearchBundle/Controller"
+    type:         annotation
+    prefix:       /search
+
+oro_search_api:
+    resource: Oro\Bundle\SearchBundle\Controller\Api\SearchController
+    type: rest
+    prefix: api/rest/{version}/
+    requirements:
+        version: latest|v1
+    defaults:
+        version: latest
+
+oro_advanced_search_api:
+    resource: Oro\Bundle\SearchBundle\Controller\Api\SearchAdvancedController
+    type: rest
+    prefix: api/rest/{version}/
+    requirements:
+        version: latest|v1
+    defaults:
+        version: latest

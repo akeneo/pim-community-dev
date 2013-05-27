@@ -1,0 +1,14 @@
+# common test case
+request:
+    query: "from TestsBundle:Item where stringValue ~ item5"
+    offset: ~
+    max_results: ~
+response:
+    records_count: 1
+    count: 1
+    rest:
+        data:
+            -
+                entity_name: Acme\Bundle\TestsBundle\Entity\Item
+                record_id: 5
+                record_string: item5@mail.com

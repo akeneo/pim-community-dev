@@ -1,0 +1,13 @@
+parameters:
+  oro_search.engine_orm:
+        pdo_mysql: Oro\Bundle\SearchBundle\Engine\Orm\PdoMysql
+        pdo_pgsql: Oro\Bundle\SearchBundle\Engine\Orm\PdoPgsql
+  oro_search.search.engine.class: Oro\Bundle\SearchBundle\Engine\Orm
+
+###
+# Add orm engine
+##
+services:
+    oro_search.search.engine:
+        class: %oro_search.search.engine.class%
+        arguments: [@doctrine.orm.entity_manager, @service_container, @oro_search.mapper, %oro_search.log_queries%]

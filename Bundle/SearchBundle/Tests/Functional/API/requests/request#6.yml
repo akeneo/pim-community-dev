@@ -1,0 +1,30 @@
+# max_results test case
+request:
+    search: item
+    offset: 0
+    max_results: 3
+response:
+    records_count: 9
+    count: 3
+    rest:
+        data:
+            -
+                entity_name: Acme\Bundle\TestsBundle\Entity\Item
+                record_string: item1@mail.com
+            -
+                entity_name: Acme\Bundle\TestsBundle\Entity\Item
+                record_string: item2@mail.com
+            -
+                entity_name: Acme\Bundle\TestsBundle\Entity\Item
+                record_string: item3@mail.com
+    soap:
+        item:
+            -
+                entityName: Acme\Bundle\TestsBundle\Entity\Item
+                recordTitle: item1@mail.com
+            -
+                entityName: Acme\Bundle\TestsBundle\Entity\Item
+                recordTitle: item2@mail.com
+            -
+                entityName: Acme\Bundle\TestsBundle\Entity\Item
+                recordTitle: item3@mail.com
