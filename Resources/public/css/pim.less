@@ -597,6 +597,52 @@ div.product-updated {
   }
 }
 
+/* Pim multiselect styles */
+button.pimmultiselect {
+  height: 32px;
+  padding: 0 10px;
+  color: @textColor;
+  &:hover {
+    color: @textColor;
+  }
+}
+.pimmultiselect.ui-multiselect-menu {
+  padding: 0;
+  border: 1px solid #ccc;
+  .ui-multiselect-hasfilter {
+    background-color: #f6f6f6;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    .ui-multiselect-filter {
+      width: auto;
+      input {
+        color: #999;
+        border-color: #d6d6d6;
+        font-size: 12px;
+        margin: 3px;
+        padding: 5px;
+      }
+    }
+  }
+  ul.ui-multiselect-checkboxes {
+    li {
+      border: none;
+      a {
+        padding-left: 10px;
+        text-align: left;
+        text-transform: uppercase;
+      }
+      label {
+        padding-left: 10px;
+      }
+    }
+  }
+  .ui-multiselect-footer {
+    border-top: 1px solid #ccc;
+  }
+}
+
+
 /* Grids */
 .grid th a {color: #666666; }
 .table-hover tbody tr:hover > td {background-color: #f2ebf8; }

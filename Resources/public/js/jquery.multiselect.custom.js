@@ -103,12 +103,10 @@
           .appendTo(menu);
 
         if (!$.isEmptyObject(o.buttons)) {
-          footerContainer = $('<div></div>');
+          footerContainer = $('<div>').addClass('ui-multiselect-footer');
           n = 0;
           for (i in o.buttons) {
-            bid = 'multiselect_button_' + ++n;
-            btn = $('<button id="' + bid + '">' + i + '</button>');
-            $(document).delegate('#' + bid, 'click', o.buttons[i]);
+            btn = $('<button>').html(i).on('click', o.buttons[i]);
             footerContainer.append(btn);
           }
           footerContainer.appendTo(menu);
