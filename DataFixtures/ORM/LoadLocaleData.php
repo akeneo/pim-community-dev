@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
+use Pim\Bundle\ConfigBundle\Entity\Currency;
+
 use Pim\Bundle\ConfigBundle\Entity\Locale;
 
 use Doctrine\Common\Persistence\ObjectManager;
@@ -42,19 +44,19 @@ class LoadLocaleData extends AbstractFixture implements OrderedFixtureInterface,
      */
     public function load(ObjectManager $manager)
     {
-        $locale = $this->createLocale('fr_FR', 'fr_FR', array('EUR'));
+        $locale = $this->createLocale('fr_FR', 'fr_FR', 'EUR');
         $manager->persist($locale);
 
-        $locale = $this->createLocale('fr_CA', 'fr_CA', array('CAD', 'EUR'), false);
+        $locale = $this->createLocale('fr_CA', 'fr_CA', 'CAD', false);
         $manager->persist($locale);
 
-        $locale = $this->createLocale('de_DE', 'de_DE', array('EUR'));
+        $locale = $this->createLocale('de_DE', 'de_DE', 'EUR');
         $manager->persist($locale);
 
-        $locale = $this->createLocale('en_US', 'en_GB', array('USD', 'EUR'));
+        $locale = $this->createLocale('en_US', 'en_GB', 'USD');
         $manager->persist($locale);
 
-        $locale = $this->createLocale('en_GB', 'en_GB', array('GBP', 'EUR', 'USD'));
+        $locale = $this->createLocale('en_GB', 'en_GB', 'GBP');
         $manager->persist($locale);
 
         $manager->flush();
@@ -62,14 +64,14 @@ class LoadLocaleData extends AbstractFixture implements OrderedFixtureInterface,
 
     /**
      * Create locale entity and persist it
-     * @param string  $code       Locale code
-     * @param string  $fallback   Locale fallback
-     * @param array   $currencies Currencies used
-     * @param boolean $activated  Define if locale is activated or not
+     * @param string  $code         Locale code
+     * @param string  $fallback     Locale fallback
+     * @param string  $currencyCode Currencies used
+     * @param boolean $activated    Define if locale is activated or not
      *
      * @return \Pim\Bundle\ConfigBundle\Entity\Locale
      */
-    protected function createLocale($code, $fallback, $currencies = array(), $activated = true)
+    protected function createLocale($code, $fallback, $currencyCode, $activated = true)
     {
         $locale = new Locale();
         $locale->setCode($code);
@@ -77,11 +79,8 @@ class LoadLocaleData extends AbstractFixture implements OrderedFixtureInterface,
         $locale->setActivated($activated);
 
         // prepare currencies
-        $localeCurrencies = array();
-        foreach ($currencies as $currencyCode) {
-            $localeCurrencies[] = $this->getReference('currency.'. $currencyCode);
-        }
-        $locale->setCurrencies($localeCurrencies);
+        $localeCurrency = $this->getReference('currency.'. $currencyCode);
+        $locale->setDefaultCurrency($localeCurrency);
 
         $this->setReference('locale.'. $code, $locale);
 
