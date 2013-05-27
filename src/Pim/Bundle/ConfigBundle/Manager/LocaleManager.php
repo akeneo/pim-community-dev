@@ -65,6 +65,18 @@ class LocaleManager
     }
 
     /**
+     * Get locale by code
+     *
+     * @param string $code
+     *
+     * @return Locale
+     */
+    public function getLocaleByCode($code)
+    {
+        return $this->objectManager->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => $code));
+    }
+
+    /**
      * Get active codes
      *
      * @return multitype:string
