@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ProductBundle\Controller;
 
+use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
+
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
 
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
@@ -176,7 +178,8 @@ class ProductController extends Controller
         $product             = $this->findProductOr404($id);
         $availableAttributes = new AvailableProductAttributes;
         $attributesForm      = $this->getAvailableProductAttributesForm(
-            $product->getAttributes(), $availableAttributes
+            $product->getAttributes(),
+            $availableAttributes
         );
         $attributesForm->bind($this->getRequest());
 
@@ -229,16 +232,21 @@ class ProductController extends Controller
      */
     public function removeProductValueAction($productId, $attributeId)
     {
-        $values = $this->getProductValueRepository()->findBy(array(
-            'entity'    => $productId,
-            'attribute' => $attributeId,
-        ));
+        $values = $this->getProductValueRepository()->findBy(
+            array(
+                'entity'    => $productId,
+                'attribute' => $attributeId,
+            )
+        );
 
         if (false === $this->checkValuesRemovability($values)) {
-            throw $this->createNotFoundException(sprintf(
-                'Could not find removable product attribute for product %d with id %d',
-                $productId, $attributeId
-            ));
+            throw $this->createNotFoundException(
+                sprintf(
+                    'Could not find removable product attribute for product %d with id %d',
+                    $productId,
+                    $attributeId
+                )
+            );
         }
 
         $em = $this->getEntityManager();
@@ -249,9 +257,7 @@ class ProductController extends Controller
 
         $this->addFlash('success', 'Attribute was successfully removed.');
 
-        return $this->redirect($this->generateUrl(
-            'pim_product_product_edit', array('id' => $productId)
-        ));
+        return $this->redirect($this->generateUrl('pim_product_product_edit', array('id' => $productId)));
     }
 
     /**
@@ -268,7 +274,17 @@ class ProductController extends Controller
     }
 
     /**
-     * Get data locale
+     * Get locale manager
+     *
+     * @return LocaleManager
+     */
+    protected function getLocaleManager()
+    {
+        return $this->container->get('pim_config.manager.locale');
+    }
+
+    /**
+     * Get data locale code
      *
      * @throws \Exception
      *
@@ -285,6 +301,21 @@ class ProductController extends Controller
         }
 
         return $dataLocale;
+    }
+
+    /**
+     * Get data currency code
+     *
+     * @throws \Exception
+     *
+     * @return string
+     */
+    protected function getDataCurrency()
+    {
+        $dataLocaleCode = $this->getDataLocale();
+        $dataLocale = $this->getLocaleManager()->getLocaleByCode($dataLocaleCode);
+
+        return $dataLocale->getDefaultCurrency();
     }
 
     /**
@@ -380,7 +411,7 @@ class ProductController extends Controller
                 sprintf('Product with id %d could not be found.', $id)
             );
         }
-        $this->getProductManager()->addMissingPrices($currencyManager, $product);
+        $this->getProductManager()->addMissingPrices($currencyManager, $product, $this->getDataCurrency());
 
         return $product;
     }
