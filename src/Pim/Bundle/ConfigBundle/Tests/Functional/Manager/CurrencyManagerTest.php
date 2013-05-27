@@ -72,8 +72,6 @@ class CurrencyManagerTest extends WebTestCase
         $currencies = $this->currencyManager->getActiveCodes();
         $expectedCurrencies = array('EUR', 'USD', 'GBP');
 
-        var_dump($currencies);
-
         $this->assertCount(3, $currencies);
         foreach ($currencies as $currency) {
             $this->assertContains($currency, $expectedCurrencies);
