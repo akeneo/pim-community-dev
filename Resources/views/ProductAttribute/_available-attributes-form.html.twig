@@ -12,6 +12,7 @@ $(function() {
         appendTo: '#attribute-buttons',
         buttons: {
             "{{ 'Save'|trans }}": function() {
+                $('#{{ form.attributes.vars.id }}').multiselect('close');
                 $('#{{ form.vars.id }}').submit();
             }
         }

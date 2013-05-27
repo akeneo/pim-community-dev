@@ -185,6 +185,8 @@ class ProductController extends Controller
 
         $this->getProductManager()->save($product);
 
+        $this->addFlash('success', 'Attributes are added to the product form.');
+
         return $this->redirect(
             $this->generateUrl('pim_product_product_edit', array('id' => $product->getId()))
         );
