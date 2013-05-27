@@ -32,6 +32,11 @@ class LoadCurrencyData extends AbstractFixture implements OrderedFixtureInterfac
     protected $container;
 
     /**
+     * @staticvar multitype
+     */
+    protected static $activatedCurrencies = array('EUR', 'USD', 'GPB');
+
+    /**
      * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
@@ -53,7 +58,8 @@ class LoadCurrencyData extends AbstractFixture implements OrderedFixtureInterfac
         $configCurrencies = Yaml::parse($pathfile);
 
         foreach ($configCurrencies['currencies'] as $currencyCode => $currencyName) {
-            $currency = $this->createCurrency($currencyCode);
+            $activated = in_array($currencyCode, self::$activatedCurrencies);
+            $currency = $this->createCurrency($currencyCode, $activated);
             $manager->persist($currency);
         }
 
