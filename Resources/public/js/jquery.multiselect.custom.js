@@ -45,7 +45,8 @@
       position: {},
       appendTo: "body",
       buttonPrependTo: null,
-      buttons: {}
+      buttons: {},
+      setButtonWidth: true
     },
 
     _create: function() {
@@ -443,8 +444,13 @@
 
     // set button width
     _setButtonWidth: function() {
-      var width = this.element.outerWidth();
       var o = this.options;
+
+      if (o.setButtonWidth !== true) {
+        return;
+      }
+
+      var width = this.element.outerWidth();
 
       if(/\d/.test(o.minWidth) && width < o.minWidth) {
         width = o.minWidth;
@@ -456,8 +462,15 @@
 
     // set menu width
     _setMenuWidth: function() {
-      var m = this.menu;
-      m.outerWidth(this.button.outerWidth());
+      var width = this.element.outerWidth();
+      var o = this.options;
+
+      if(/\d/.test(o.minWidth) && width < o.minWidth) {
+        width = o.minWidth;
+      }
+
+      // set widths
+      this.menu.outerWidth(width);
     },
 
     // move up or down within the menu

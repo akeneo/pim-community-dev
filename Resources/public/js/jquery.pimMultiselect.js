@@ -27,6 +27,8 @@
                 label: false,
                 placeholder: opts.placeholder
             });
+
+            $('.ui-multiselect-menu.pimmultiselect').find('input[type="search"]').width(opts.searchBoxWidth);
         });
     }
 
@@ -35,12 +37,14 @@
         header: '',
         height: 175,
         minWidth: 225,
+        searchBoxWidth: 207,
         classes: 'pimmultiselect',
         buttons: {},
         position: {
-            my: 'left top',
-            at: 'left bottom'
+            my: 'right top',
+            at: 'right bottom'
         },
+        setButtonWidth: false,
         placeholder: 'Search'
     };
 
