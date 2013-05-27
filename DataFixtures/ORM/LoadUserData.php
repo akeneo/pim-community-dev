@@ -83,7 +83,9 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
             $localeAttribute = $this->createAttributeWithOptions(
                 'oro_flexibleentity_simpleselect',
                 'cataloglocale',
-                self::getLocales()
+                self::getLocales(),
+                true,
+                'Catalog locale'
             );
             $this->persist($localeAttribute);
         }
@@ -92,7 +94,9 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
             $localeAttribute = $this->createAttributeWithOptions(
                 'oro_flexibleentity_simpleselect',
                 'catalogscope',
-                self::getScopes()
+                self::getScopes(),
+                true,
+                'Catalog scope'
             );
             $this->persist($localeAttribute);
         }
@@ -199,22 +203,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      *
      * @return User
      */
-    private function createUser(
-        $username,
-        $email,
-        $firstName,
-        $lastName,
-        $middleName,
-        $birthday,
-        $salary,
-        $company,
-        $website,
-        $gender,
-        array $hobbies,
-        $lastVisit,
-        $locale,
-        $scope
-    ) {
+    private function createUser($username, $email, $firstName, $lastName, $middleName, $birthday, $salary, $company, $website, $gender, array $hobbies, $lastVisit, $locale, $scope) {
         /** @var $user User */
         $user = $this->userManager->createFlexible();
 
@@ -378,20 +367,23 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     /**
      * Create an attribute with options
      *
-     * @param string $attributeType
-     * @param string $attributeCode
-     * @param array  $optionValues
+     * @param string  $attributeType
+     * @param string  $attributeCode
+     * @param array   $optionValues
+     * @param boolean $required
+     * @param mixed   $label
      *
      * @return AbstractAttribute
      */
-    private function createAttributeWithOptions(
-        $attributeType,
-        $attributeCode,
-        array $optionValues
-    ) {
+    private function createAttributeWithOptions($attributeType, $attributeCode, array $optionValues, $required = false, $label = false)
+    {
         $attribute = $this->createAttribute($attributeType, $attributeCode);
         foreach ($optionValues as $value) {
             $attribute->addOption($this->createAttributeOptionWithValue($value));
+            $attribute->setRequired($required);
+            if ($label) {
+                $attribute->setLabel($label);
+            }
         }
 
         return $attribute;
