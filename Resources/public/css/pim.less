@@ -179,7 +179,7 @@ form.form-signin {
       #gradient .vertical(#f4f4f4, #dcdcdc);
     }
   }
-  button.btn-submit {
+  button.btn-primary {
     height: auto;
     float: none;
   }
@@ -218,11 +218,12 @@ form.hidden {
 }
 
 .btn-primary {
-  .buttonBackground(#9e71c7, #71429a);
-}
-
-.btn-submit {
   .buttonBackground(#83c817, #519d0b);
+  &:focus,
+  &:active {
+    background-image: none;
+    border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+  }
 }
 
 a.return {
@@ -354,6 +355,9 @@ div.ui-dialog {
     right: 6px;
     height: 22px;
     width: 22px;
+    span.ui-button-text {
+      font-size: 0px;
+    }
   }
   form {
     margin: 0;
@@ -541,8 +545,11 @@ div.dropdown-menu.channel {
   max-width: 400px;
 }
 
-.form-horizontal .tab-content .tab-pane {
+.form-horizontal .tab-content {
   min-height: 300px;
+  .tab-pane {
+    min-height: 300px;
+  }
 }
 
 .product-title {

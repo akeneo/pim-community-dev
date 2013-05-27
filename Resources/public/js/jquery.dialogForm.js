@@ -35,7 +35,7 @@
             if (submitButton) {
                 formButtons.push({
                     text: submitButton,
-                    'class': 'btn btn-submit',
+                    'class': 'btn btn-primary',
                     click: function() {
                         $.ajax({
                             url: options.url,
