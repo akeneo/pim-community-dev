@@ -262,6 +262,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iVisitTheTab($tab)
     {
+        $this->getPage($this->currentPage)->visitTab($tab);
     }
 
     /**
@@ -361,6 +362,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $data) {
+            $data = array_merge(array(
+                'group' => null,
+            ), $data);
+
             $attribute = $this->createAttribute($data['label'], false);
             $attribute->setGroup($this->getGroup($data['group']));
 
@@ -760,7 +765,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iRemoveTheAttribute($field)
     {
-        if (null === $link = $this->getPage('Product')->getRemoveLinkFor($field)) {
+        if (null === $link = $this->getPage($this->currentPage)->getRemoveLinkFor($field)) {
             throw $this->createExpectationException(sprintf(
                 'Remove link on field "%s" should be displayed.', $field
             ));
