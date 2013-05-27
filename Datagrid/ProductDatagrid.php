@@ -29,7 +29,7 @@ class ProductDatagrid extends Datagrid
             $filterForm = $form->get($filterName);
             if ($filterForm->isValid()) {
                 $data = $filterForm->getData();
-                if ($filter->getName() !== 'locale' || $filter->getName() !== 'scope') {
+                if ($filter->getName() !== 'locale' && $filter->getName() !== 'scope') {
                     $filter->apply($this->query, $data);
                 }
             }

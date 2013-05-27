@@ -241,8 +241,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
     public function getDataLocale()
     {
         $filtersArray = $this->parameters->get(ParametersInterface::FILTER_PARAMETERS);
-        if (isset($filtersArray['Locale']) && isset($filtersArray['Locale']['value'])) {
-            $dataLocale = $filtersArray['Locale']['value'];
+        if (isset($filtersArray['locale']) && isset($filtersArray['locale']['value'])) {
+            $dataLocale = $filtersArray['locale']['value'];
         } else {
             $dataLocale = $this->flexibleManager->getLocale();
         }

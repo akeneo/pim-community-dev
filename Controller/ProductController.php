@@ -283,6 +283,26 @@ class ProductController extends Controller
     }
 
     /**
+     * Get data scope
+     *
+     * @throws \Exception
+     *
+     * @return string
+     */
+    protected function getDataScope()
+    {
+        $dataScope = $this->getRequest()->get('dataScope');
+        if ($dataScope === null) {
+            $dataScope = (string) $this->getUser()->getValue('catalogScope');
+        }
+        if (!$dataScope) {
+            throw new \Exception('User must have a catalog scope defined');
+        }
+
+        return $dataScope;
+    }
+
+    /**
      * Get the ProductAttribute entity repository
      *
      * @return Pim\Bundle\ProductBundle\Entity\Repository\ProductAttributeRepository
