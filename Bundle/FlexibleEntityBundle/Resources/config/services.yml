@@ -1,0 +1,91 @@
+parameters:
+    oro_flexibleentity.flexible_config: ~
+    oro_flexibleentity.registry.class:              Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry
+    oro_flexibleentity.attributetype.factory.class: Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory
+    oro_flexibleentity.value_form.value_subscriber.class: Oro\Bundle\FlexibleEntityBundle\Form\EventListener\FlexibleValueSubscriber
+
+services:
+    oro_flexibleentity.value_form.value_subscriber:
+        class: %oro_flexibleentity.value_form.value_subscriber.class%
+        arguments:
+            - @form.factory
+            - @oro_flexibleentity.attributetype.factory
+            - @oro_flexibleentity.registry
+
+    # manager registry
+    oro_flexibleentity.registry:
+        class: %oro_flexibleentity.registry.class%
+
+    oro_flexibleentity.attributetype.factory:
+        class: %oro_flexibleentity.attributetype.factory.class%
+        arguments: ["@service_container", ~]
+
+    # deal with translatable behavior
+    oro_flexibleentity.translatable_listener:
+        class: Oro\Bundle\FlexibleEntityBundle\EventListener\TranslatableListener
+        calls:
+            - [ setContainer, [ @service_container ] ]
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    # deal with translatable behavior
+    oro_flexibleentity.scopable_listener:
+        class: Oro\Bundle\FlexibleEntityBundle\EventListener\ScopableListener
+        calls:
+            - [ setContainer, [ @service_container ] ]
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    # deal with timestampable behavior
+    oro_flexibleentity.timestampable_listener:
+        class: Oro\Bundle\FlexibleEntityBundle\EventListener\TimestampableListener
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    # deal with required value behavior
+    oro_flexibleentity.has_required_value_listener:
+        class: Oro\Bundle\FlexibleEntityBundle\EventListener\RequiredValueListener
+        calls:
+            - [ setContainer, [ @service_container ] ]
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    # deal with default value behavior
+    oro_flexibleentity.listener.default_value_listener:
+        class: Oro\Bundle\FlexibleEntityBundle\EventListener\DefaultValueListener
+
+    # deal with flexible values initialization mode
+    oro_flexibleentity.listener.initialize_values_listener:
+        class: Oro\Bundle\FlexibleEntityBundle\EventListener\InitializeValuesListener
+        tags:
+            - { name: kernel.event_subscriber}
+
+    # Media form type
+    form.type.oro_media:
+        class: Oro\Bundle\FlexibleEntityBundle\Form\Type\MediaType
+        tags:
+            - { name: form.type, alias: oro_media }
+
+    # Price form type
+    form.type.oro_flexibleentity_price:
+        class: Oro\Bundle\FlexibleEntityBundle\Form\Type\PriceType
+        tags:
+            - { name: form.type, alias: oro_flexibleentity_price }
+
+    # Metric form type
+    form.type.oro_flexibleentity_metric:
+        class: Oro\Bundle\FlexibleEntityBundle\Form\Type\MetricType
+        tags:
+            - { name: form.type, alias: oro_flexibleentity_metric }
+
+    # Phone collection form type
+    form.type.oro_flexibleentity_phone_collection:
+        class: Oro\Bundle\FlexibleEntityBundle\Form\Type\PhoneCollectionType
+        tags:
+            - { name: form.type, alias: oro_flexibleentity_phone_collection }
+
+    # Email collection form type
+    form.type.oro_flexibleentity_email_collection:
+        class: Oro\Bundle\FlexibleEntityBundle\Form\Type\EmailCollectionType
+        tags:
+            - { name: form.type, alias: oro_flexibleentity_email_collection }
