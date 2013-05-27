@@ -7,6 +7,11 @@
 
     {% block content %}
 
+    {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
+        'form': attributesForm,
+        'action': path('pim_product_product_addproductattributes', {'id': product.id})
+    } %}
+
     <form method="POST" class="form-horizontal" action="{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
 
         <div class="navigation clearfix navbar-extra navbar-extra-right">
@@ -56,7 +61,7 @@
                                 </div>
                             </div>
                             <ul class="inline">
-                               <li>{{ 'Family'|trans }}: {{ form.vars.value.productFamily|default('N/A'|trans) }}</li>
+                               <li>{{ 'Family'|trans }}: {{ form.vars.value.productFamily|capitalize|default('N/A'|trans) }}</li>
                                <li>{{ 'Last update'|trans }}: {{ form.vars.value.updated|date("Y-m-d") }}</li>
                                <li>{{ 'Created'|trans }}: {{ form.vars.value.created|date("Y-m-d") }}</li>
                            </ul>
@@ -103,10 +108,6 @@
                         <div class="span10 tab-content">
 
                             <div id="attribute-buttons">
-                                {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
-                                    'form': attributesForm,
-                                    'action': path('pim_product_product_addproductattributes', {'id': product.id})
-                                } %}
                                 <div class="btn-group">
                                     <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                                         <i class="icon-cog"></i>
@@ -248,7 +249,7 @@
         });
 
         // Destroy Select2 where it's not necessary
-        $('#pim_available_product_attributes_attributes, #default_channel').select2('destroy');
+        $('#default_channel').select2('destroy');
 
         $('#default_channel').change(function() {
             $('.scopable').scopableField({ defaultScope: $(this).val() });
