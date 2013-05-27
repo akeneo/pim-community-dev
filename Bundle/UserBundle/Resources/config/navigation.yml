@@ -1,0 +1,68 @@
+oro_menu_config:
+    items:
+        system_tab:
+            label: 'System'
+            uri: '#'
+        user_list:
+            label: 'Users'
+            route: 'oro_user_index'
+            extras:
+                routes: ['/^oro_user_(?!role\w+|group\w+)\w+$/']
+        user_roles:
+            label: 'Roles'
+            route: 'oro_user_role_index'
+            extras:
+                routes: ['oro_user_role_*']
+        user_groups:
+            label: 'Groups'
+            route: 'oro_user_group_index'
+            extras:
+                routes: ['oro_user_group_*']
+        shortcut_new_user:
+            label: Create new user
+            route: oro_user_create
+            extras:
+                description: Create new user instance
+                isCustomAction: true
+        shortcut_list_users:
+            label: Show users list
+            route: oro_user_index
+            extras:
+                description: List of all system users
+                isCustomAction: true
+
+    tree:
+        application_menu:
+            children:
+                system_tab:
+                    children:
+                        user_list: ~
+                        user_roles: ~
+                        user_groups: ~
+
+        shortcuts:
+            children:
+                shortcut_new_user: ~
+                shortcut_list_users: ~
+
+oro_titles:
+    oro_user_view: %%username%% - Users
+    oro_user_update: %%username%% - Users
+    oro_user_create: Create User
+    oro_user_index: Users
+
+    oro_user_role_update: %%role%% - Roles
+    oro_user_role_create: Create Role
+    oro_user_role_index: Roles
+
+    oro_user_security_login: Login
+    oro_user_status_list: "User Status - Users"
+    oro_user_status_create: "Add Status - Users"
+
+    oro_user_reset_reset: Password Reset
+    oro_user_reset_request: Forgot Password
+    oro_user_reset_check_email: Password Reset - Check Email
+
+    oro_user_group_create: Create Group
+    oro_user_group_update: %%group%% - Groups
+    oro_user_group_index: Groups

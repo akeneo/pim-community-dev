@@ -1,0 +1,23 @@
+{% extends bap.layout is defined ? bap.layout : 'OroUserBundle::layout.html.twig' %}
+
+{% block content %}
+    <h2>{% trans %}User Statuses.{% endtrans %}
+        {% if user.currentStatus %}
+            {% trans %}Current Status{% endtrans %}: {{ user.currentStatus.status }}
+        {% endif %}
+    </h2>
+    {{ knp_pagination_render(statuses) }}
+    {% for status in statuses %}
+        <div class="alert {% if user.currentStatus == status %}alert-success{% endif %}">
+            <a href="{{ path('oro_user_status_delete', { id: status.id }) }}" class="close" type="button"><i class="icon-trash"></i></a>
+            {% if user.currentStatus != status %}
+                <a href="{{ path('oro_user_status_set_current', { id: status.id }) }}" class="close" type="button"><i class="icon-plus-sign"></i></a>
+            {% else %}
+                <a href="{{ path('oro_user_status_clear_current') }}" class="close" type="button"><i class="icon-minus-sign"></i></a>
+            {% endif %}
+            <p>{{ status.createdAt|date("m/d/Y H:m:s") }}</p>
+            <h3>{{ status.status }}</h3>
+        </div>
+    {% endfor %}
+    {{ knp_pagination_render(statuses) }}
+{% endblock %}

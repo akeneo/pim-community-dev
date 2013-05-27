@@ -1,0 +1,15 @@
+{% extends bap.layout is defined ? bap.layout : 'OroUserBundle::layout.html.twig' %}
+
+{% block content %}
+    <form action="{{ path('oro_user_status_create') }}" method="POST" class="form-status">
+        <fieldset>
+            <legend>Add status</legend>
+
+            {{ form_widget(form) }}
+
+            <div class="form-row">
+                <button class="btn btn-large btn-primary" type="submit">Save</button>
+            </div>
+        </fieldset>
+    </form>
+{% endblock %}

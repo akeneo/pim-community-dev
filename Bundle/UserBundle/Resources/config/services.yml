@@ -1,0 +1,307 @@
+parameters:
+    oro_user.manager.class:           Oro\Bundle\UserBundle\Entity\UserManager
+    oro_user.manager.flexible.class:  Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
+    oro_user.manager.api.class:       Oro\Bundle\SoapBundle\Entity\Manager\ApiFlexibleEntityManager
+    oro_user.status.manager.class:    Oro\Bundle\UserBundle\Entity\Manager\StatusManager
+    oro_user.entity.class:            Oro\Bundle\UserBundle\Entity\User
+    oro_user.entity.value.class:      Oro\Bundle\UserBundle\Entity\UserValue
+    oro_user.group.entity.class:      Oro\Bundle\UserBundle\Entity\Group
+    oro_user.role.entity.class:       Oro\Bundle\UserBundle\Entity\Role
+    oro_user.acl.entity.class:        Oro\Bundle\UserBundle\Entity\Acl
+    oro_user.security.provider.class: Oro\Bundle\UserBundle\Security\UserProvider
+    oro_user.security.login.class:    Oro\Bundle\UserBundle\EventListener\LoginSubscriber
+    oro_user.type.user.class:         Oro\Bundle\UserBundle\Form\Type\UserType
+    oro_user.type.user_value.class:   Oro\Bundle\UserBundle\Form\Type\UserValueType
+    oro_user.type.user.api.class:     Oro\Bundle\UserBundle\Form\Type\UserApiType
+    oro_user.type.reset.class:        Oro\Bundle\UserBundle\Form\Type\ResetType
+    oro_user.type.role.class:         Oro\Bundle\UserBundle\Form\Type\RoleType
+    oro_user.type.role.api.class:     Oro\Bundle\UserBundle\Form\Type\RoleApiType
+    oro_user.type.group.class:        Oro\Bundle\UserBundle\Form\Type\GroupType
+    oro_user.type.group.api.class:    Oro\Bundle\UserBundle\Form\Type\GroupApiType
+    oro_user.type.status.class:       Oro\Bundle\UserBundle\Form\Type\StatusType
+    oro_user.handler.user.class:      Oro\Bundle\UserBundle\Form\Handler\UserHandler
+    oro_user.handler.reset.class:     Oro\Bundle\UserBundle\Form\Handler\ResetHandler
+    oro_user.handler.role.class:      Oro\Bundle\UserBundle\Form\Handler\RoleHandler
+    oro_user.handler.group.class:     Oro\Bundle\UserBundle\Form\Handler\GroupHandler
+    oro_user.handler.status.class:    Oro\Bundle\UserBundle\Form\Handler\StatusHandler
+    oro_user.acl.reader.class:        Oro\Bundle\UserBundle\Acl\ResourceReader\Reader
+    oro_user.acl.config_reader.class: Oro\Bundle\UserBundle\Acl\ResourceReader\ConfigReader
+    oro_user.acl.pointcut.class:      Oro\Bundle\UserBundle\Acl\AclPointcut
+    oro_user.acl.interceptor.class:   Oro\Bundle\UserBundle\Acl\AclInterceptor
+    oro_user.acl.manager.class:       Oro\Bundle\UserBundle\Acl\Manager
+    oro_user.acl.manager.api.class:   Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+    oro_user.acl.twig.class:          Oro\Bundle\UserBundle\Twig\OroUserExtension
+    oro_user.user_menu.builder.class: Oro\Bundle\UserBundle\Menu\UserMenuBuilder
+    oro_user.role.listener.class:     Oro\Bundle\UserBundle\EventListener\RoleListener
+    oro_user.role.manager.class:      Oro\Bundle\UserBundle\Entity\Manager\RoleManager
+    oro_user.role.manager.api.class:  Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+    oro_user.group.manager.class:     Oro\Bundle\UserBundle\Entity\Manager\GroupManager
+    oro_user.group.manager.api.class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+    oro_user.attribute_type.user.class: Oro\Bundle\UserBundle\AttributeType\UserType
+    oro_user.form.type.user_select.class: Oro\Bundle\UserBundle\Form\Type\UserSelectType
+    oro_user.entity_with_image.subscriber.class: Oro\Bundle\UserBundle\Entity\EventListener\UploadedImageSubscriber
+
+services:
+    oro_user.manager.flexible:
+        class:                        "%oro_user.manager.flexible.class%"
+        arguments:                    [%oro_user.entity.class%, %oro_flexibleentity.flexible_config%, "@doctrine.orm.entity_manager", "@event_dispatcher", @oro_flexibleentity.attributetype.factory]
+        tags:
+            - { name: oro_flexibleentity_manager, entity: %oro_user.entity.class%}
+        calls:
+            - [ addAttributeType, ['oro_flexibleentity_text'] ]
+            - [ addAttributeType, ['oro_flexibleentity_textarea'] ]
+            - [ addAttributeType, ['oro_flexibleentity_money'] ]
+            - [ addAttributeType, ['oro_flexibleentity_simpleselect'] ]
+            - [ addAttributeType, ['oro_flexibleentity_multiselect'] ]
+            - [ addAttributeType, ['oro_flexibleentity_url'] ]
+
+    oro_user.manager:
+        class:                        %oro_user.manager.class%
+        arguments:                    [%oro_user.entity.class%, "@doctrine.orm.entity_manager", "@oro_user.manager.flexible", "@security.encoder_factory"]
+
+    oro_user.manager.api:
+        class: %oro_user.manager.api.class%
+        arguments:
+            - %oro_user.entity.class%
+            - @doctrine.orm.entity_manager
+            - @oro_user.manager.flexible
+
+    oro_user.security.provider:
+        class:                        %oro_user.security.provider.class%
+        public:                       false
+        arguments:                    ["@oro_user.manager"]
+
+    oro_user.security.login:
+        class:                        %oro_user.security.login.class%
+        arguments:                    ["@oro_user.manager"]
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onLogin }
+
+    oro_user.form.user:
+        class:                        Symfony\Component\Form\Form
+        factory_method:               createNamed
+        factory_service:              form.factory
+        arguments:                    ["oro_user_user_form", "oro_user_user", null]
+
+    oro_user.form.user.api:
+        class:                        Symfony\Component\Form\Form
+        factory_method:               createNamed
+        factory_service:              form.factory
+        arguments:                    ["user", "user", null]
+
+    oro_user.form.role:
+        class:                        Symfony\Component\Form\Form
+        factory_method:               createNamed
+        factory_service:              form.factory
+        arguments:                    ["oro_user_role_form", "oro_user_role"]
+
+    oro_user.form.role.api:
+        class:                        Symfony\Component\Form\Form
+        factory_method:               createNamed
+        factory_service:              form.factory
+        arguments:                    ["role", "role", null]
+
+    oro_user.form.group:
+        class:                        Symfony\Component\Form\Form
+        factory_method:               createNamed
+        factory_service:              form.factory
+        arguments:                    ["oro_user_group_form", "oro_user_group"]
+
+    oro_user.form.group.api:
+        class:                        Symfony\Component\Form\Form
+        factory_method:               createNamed
+        factory_service:              form.factory
+        arguments:                    ["group", "group", null]
+
+    oro_user.form.reset:
+        class:                        Symfony\Component\Form\Form
+        factory_method:               createNamed
+        factory_service:              form.factory
+        arguments:                    ["oro_user_reset_form", "oro_user_reset", null, { validation_groups: [ResetPassword, Default] }]
+
+    oro_user.form.type.user:
+        class:                        %oro_user.type.user.class%
+        arguments:                    [@oro_user.manager.flexible, "@oro_user.acl_manager", "@security.context"]
+        tags:
+            - { name: form.type, alias: oro_user_user }
+
+    oro_user.type.user_value:
+        class: %oro_user.type.user_value.class%
+        arguments:
+            - @oro_user.manager.flexible
+            - @oro_flexibleentity.value_form.value_subscriber
+        tags:
+            - { name: form.type, alias: oro_user_user_value }
+
+    oro_user.form.type.user.api:
+        class:                        %oro_user.type.user.api.class%
+        arguments:                    [@oro_user.manager.flexible, "@oro_user.acl_manager", "@security.context"]
+        tags:
+            - { name: form.type, alias: user }
+
+    oro_user.form.type.role:
+        class:                        %oro_user.type.role.class%
+        tags:
+            - { name: form.type, alias: oro_user_role }
+
+    oro_user.form.type.role.api:
+        class:                        %oro_user.type.role.api.class%
+        tags:
+            - { name: form.type, alias: role }
+
+    oro_user.form.type.group:
+        class:                        %oro_user.type.group.class%
+        tags:
+            - { name: form.type, alias: oro_user_group }
+
+    oro_user.form.type.group.api:
+        class:                        %oro_user.type.group.api.class%
+        tags:
+            - { name: form.type, alias: group }
+
+    oro_user.form.type.reset:
+        class:                        %oro_user.type.reset.class%
+        arguments:                    [%oro_user.entity.class%]
+        tags:
+            - { name: form.type, alias: oro_user_reset }
+
+    oro_user.form.handler.user:
+        class:                        %oro_user.handler.user.class%
+        scope:                        request
+        arguments:                    ["@oro_user.form.user", "@request", "@oro_user.manager"]
+
+    oro_user.form.handler.user.api:
+        class:                        %oro_user.handler.user.class%
+        scope:                        request
+        arguments:                    ["@oro_user.form.user.api", "@request", "@oro_user.manager"]
+
+    oro_user.form.handler.role:
+        class:                        %oro_user.handler.role.class%
+        scope:                        request
+        arguments:                    ["@oro_user.form.role", "@request", "@doctrine.orm.entity_manager"]
+
+    oro_user.form.handler.role.api:
+        class:                        %oro_user.handler.role.class%
+        scope:                        request
+        arguments:                    ["@oro_user.form.role.api", "@request", "@doctrine.orm.entity_manager"]
+
+    oro_user.form.handler.group:
+        class:                        %oro_user.handler.group.class%
+        scope:                        request
+        arguments:                    ["@oro_user.form.group", "@request", "@doctrine.orm.entity_manager"]
+
+    oro_user.form.handler.group.api:
+        class:                        %oro_user.handler.group.class%
+        scope:                        request
+        arguments:                    ["@oro_user.form.group.api", "@request", "@doctrine.orm.entity_manager"]
+
+    oro_user.form.handler.reset:
+        class:                        %oro_user.handler.reset.class%
+        scope:                        request
+        arguments:                    ["@oro_user.form.reset", "@request", "@oro_user.manager"]
+
+    oro_user.acl_reader:
+        class:                        %oro_user.acl.reader.class%
+        arguments:                    ["@kernel", "@annotation_reader"]
+
+    oro_user.acl_config_reader:
+        class:                        %oro_user.acl.config_reader.class%
+        arguments:                    ["%kernel.bundles%"]
+
+    oro_user.acl_pointcut:
+        class:                        %oro_user.acl.pointcut.class%
+        arguments:                    ["@annotation_reader", "@logger"]
+        tags:
+            - { name: jms_aop.pointcut, interceptor: oro_user.acl_interceptor }
+
+    oro_user.acl_interceptor:
+        class:                        %oro_user.acl.interceptor.class%
+        arguments:                    ["@service_container"]
+
+    oro_user.acl_manager:
+        class:                        %oro_user.acl.manager.class%
+        arguments:                    ["@doctrine.orm.entity_manager", "@oro_user.acl_reader", "@cache", "@security.context", "@oro_user.acl_config_reader"]
+
+    oro_user.acl_manager.api:
+        class:                        %oro_user.acl.manager.api.class%
+        arguments:                    [%oro_user.acl.entity.class%, @doctrine.orm.entity_manager]
+
+    oro_user.user_menu:
+        class:                        %oro_user.user_menu.builder.class%
+        arguments:
+            - @security.context
+        tags:
+            - { name: oro_menu.builder, alias: usermenu }
+
+    oro_user.role.listener:
+        class:                        %oro_user.role.listener.class%
+        tags:
+            - { name: doctrine.event_listener, event: preUpdate }
+
+    oro_user.twig.user_extension:
+        class:                        %oro_user.acl.twig.class%
+        arguments:                    ["@oro_user.acl_manager"]
+        tags:
+            - { name: twig.extension }
+
+    oro_user.form.type.status:
+        class:                        %oro_user.type.status.class%
+        tags:
+            - { name: form.type, alias: oro_user_status }
+
+    oro_user.form.status:
+        class:                        Symfony\Component\Form\Form
+        factory_method:               createNamed
+        factory_service:              form.factory
+        arguments:                    ["oro_user_status_form", "oro_user_status", null]
+
+    oro_user.form.handler.status:
+        class:                        %oro_user.handler.status.class%
+        scope:                        request
+        arguments:                    ["@oro_user.form.status", "@request", "@doctrine.orm.entity_manager", "@oro_user.manager"]
+
+    oro_user.status_manager:
+        class:                        %oro_user.status.manager.class%
+        arguments:                    ["@doctrine.orm.entity_manager", "@oro_user.manager"]
+
+    oro_user.role_manager:
+        class:                        %oro_user.role.manager.class%
+        arguments:                    ["@doctrine.orm.entity_manager"]
+
+    oro_user.role_manager.api:
+        class: %oro_user.role.manager.api.class%
+        arguments:
+            - %oro_user.role.entity.class%
+            - @doctrine.orm.entity_manager
+
+    oro_user.group_manager:
+        class:                        %oro_user.group.manager.class%
+        arguments:                    ["@doctrine.orm.entity_manager"]
+
+    oro_user.group_manager.api:
+        class: %oro_user.group.manager.api.class%
+        arguments:
+            - %oro_user.group.entity.class%
+            - @doctrine.orm.entity_manager
+
+    # Form type
+    oro_user.form.type.user_select:
+        class: %oro_user.form.type.user_select.class%
+        tags:
+            - { name: form.type, alias: oro_user_select }
+
+    # Flexible attribute
+    oro_user.attribute_type.user:
+        class: %oro_user.attribute_type.user.class%
+        arguments:
+            - "user"
+            - "oro_user_select"
+        tags:
+            - { name: oro_flexibleentity.attributetype, alias: oro_user_attribute_user }
+
+    oro_user.entity_with_image.subscriber:
+        class: %oro_user.entity_with_image.subscriber.class%
+        arguments:
+            - %kernel.root_dir%
+        tags:
+            - { name: doctrine.event_subscriber }

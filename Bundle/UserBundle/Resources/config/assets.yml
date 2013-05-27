@@ -1,0 +1,8 @@
+css:
+  - '@OroUserBundle/Resources/public/css/jquery-ui-1.10.2.custom.css'
+
+js:
+  - '@OroUIBundle/Resources/public/lib/jquery-ui-timepicker-addon.js'
+  - '@OroUIBundle/Resources/public/lib/bootstrap/js/bootstrap-scrollspy.js'
+  - '@OroUIBundle/Resources/public/js/form/collection.js'
+  - '@OroUserBundle/Resources/public/js/user.js'

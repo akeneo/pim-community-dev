@@ -1,0 +1,133 @@
+{% extends bap.layout is defined ? bap.layout : 'OroUserBundle::layout.html.twig' %}
+{% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
+
+{% set title = form.vars.value.id ? 'Update Role'|trans : 'New Role'|trans %}
+{% oro_title_set({params : { "%role%": form.vars.value.label } }) %}
+
+{% block head_script %}
+    {{ parent() }}
+
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#users-grid'} %}
+    {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
+
+    {% set listenerParameters = {
+        'columnName': 'has_role',
+        'selectors': {
+            'included': '#roleAppendUsers',
+            'excluded': '#roleRemoveUsers'
+        }
+    } %}
+    {% include 'OroGridBundle:Include:Listener/column_form.html.twig' with {'datagridView': datagrid, 'parameters': listenerParameters} %}
+
+    <script type="text/javascript">
+        $(function() {
+            $('#acl_tree').jstree({
+                "checkbox": {
+                    real_checkboxes: true,
+                    real_checkboxes_names: function (n) {
+                        return ['resource[' + n.data('id') + ']', 1]
+                    }
+                },
+                "plugins": ["themes", "html_data", "ui", "checkbox", "hotkeys"]
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block page_container %}
+    {% block content %}
+    {{ JSFV(form) }}
+    <form id="{{ form.name }}" action="{{ form.vars.value.id ? path('oro_user_role_update', { id: form.vars.value.id }) : path('oro_user_role_create') }}"
+        method="post" class="form-register scrollable-substructure">
+            <div class="container-fluid">
+                <div class="navigation clearfix navbar-extra">
+                    <div class="clearfix">
+                        <div class="pull-right">
+                            {% if form.vars.value.id and resource_granted('oro_user_user_delete') %}
+                            <div class="pull-left btn-group icons-holder">
+                                <a href="javascript: void(0);" class="btn icons-holder-text" id="btn-remove-role" data-id="{{ form.vars.value.id }}" data-message="{{ 'Are you sure you want to delete this Role?'|trans }}" title="{{ 'Delete role'|trans }}"><i class="icon-trash hide-text">{{ 'Remove'|trans }}</i>Delete</a>
+                            </div>
+                            <div class="pull-left">
+                                <div class="separator-btn"></div>
+                            </div>
+                            {% endif %}
+                            <div class="pull-left customer-info-top-actions">
+                                <div class="btn-group">
+                                    <a href="{{ path('oro_user_index') }}" class="btn back" title="{{ 'Cancel'|trans }}">{{ 'Cancel'|trans }}</a>
+                                </div>
+                                <div class="btn-group">
+                                    <button type="submit" class="btn btn-success" title="{{ 'Save role'|trans }}">{{ ' Save'|trans }}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pull-left">
+                            <div class="form-info form-info-edit clearfix">
+                                <div class="customer-content pull-left">
+                                    <div class="clearfix-oro oro-padding">
+                                        <div class="sub-title"><a href="{{ path('oro_user_role_index') }}">{{ 'Roles'|trans }}</a></div>
+                                        <span class="separator">/</span>
+                                        {% if form.vars.value.id %}
+                                            <h1 class="form-info-name">{{ form.vars.value.label }}</h1>
+                                        {% else %}
+                                            <h1 class="form-info-name">{{ title }}</h1>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layout-content">
+                <div id="navbarExample" class="navbar navbar-static scrollspy-nav">
+                    <div class="navbar-inner">
+                        <div class="container-fluid" style="width: auto;">
+                            <ul class="nav">
+                                <li class="active"><a href="#scroll-main">{{ 'General'|trans }}</a></li>
+                                <li><a href="#scroll-acl">{{ 'ACL'|trans }}</a></li>
+                                <li><a href="#scroll-ussers">{{ 'Users'|trans }}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <div data-spy="scroll" data-target="#navbarExample" data-offset="50" class="scrollspy container-fluid scrollable-container">
+                        <div class="usser-row">
+                            <h4 id="scroll-main" class="scrollspy-title">{{ 'General'|trans }}</h4>
+                            <div class="row-fluid row-fluid-divider">
+                                <fieldset class="form-horizontal span6">
+                                    {{ form_widget(form.appendUsers, {'id': 'roleAppendUsers'}) }}
+                                    {{ form_widget(form.removeUsers, {'id': 'roleRemoveUsers'}) }}
+                                    {{ form_row(form.role) }}
+                                    {{ form_row(form.label) }}
+                                </fieldset>
+                            </div>
+                        </div>
+
+                        <div class="usser-row">
+                            <h4 id="scroll-acl" class="scrollspy-title">{{ 'ACL'|trans }}</h4>
+                            <div class="row-fluid">
+                                <fieldset class="form-horizontal">
+                                    <div id="acl_tree">
+                                        {% include 'OroUserBundle:Role:_aclSubTree.html.twig' with {'resources': resources, 'hasId': form.vars.value.id ? true : false} %}
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+
+
+                        <div class="usser-row">
+                            <h4 id="scroll-ussers" class="scrollspy-title">{{ 'Users'|trans }}</h4>
+                            <div class="row-fluid">
+                                <fieldset class="form-horizontal">
+                                    <div id="users-grid"></div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{ form_rest(form) }}
+    </form>
+    {% endblock %}
+{% endblock %}

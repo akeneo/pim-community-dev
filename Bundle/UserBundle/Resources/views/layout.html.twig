@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+    <title>{{ oro_title_render() }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% if app.debug %}
+        <script type="text/javascript">localStorage.clear();</script>
+        <link rel="stylesheet/less" media="all" href="{{ asset('bundles/oroui/css/less/main.less') }}" />
+        <script type="text/javascript" src="{{ asset('bundles/oroui/lib/less-1.3.1.min.js') }}"></script>
+        <link rel="stylesheet" media="all" href="{{ asset('bundles/oroui/css/all.css') }}" />
+    {% else %}
+        {% stylesheets
+            'bundles/oroui/css/all.css'
+            'bundles/oroui/css/less/main.less'
+
+            debug=false
+            filter='cssrewrite,lessphp,yui_css'
+            output='css/oro.user.css'
+        %}
+        <link rel="stylesheet" media="all" href="{{ asset_url }}" />
+        {% endstylesheets %}
+    {% endif %}
+
+    {% javascripts
+        '@OroUIBundle/Resources/public/lib/jquery.min.js'
+        '@OroUIBundle/Resources/public/lib/bootstrap.min.js'
+        '@OroUIBundle/Resources/public/lib/bootstrap/js/bootstrap-tooltip.js'
+        '@OroUIBundle/Resources/public/lib/bootstrap/js/bootstrap-popover.js'
+        '@OroUIBundle/Resources/public/js/layout.js'
+        '@OroUserBundle/Resources/public/js/signin.js'
+
+        filter='?yui_js'
+        output='js/oro.user.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <!--[if lte IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <link href="{{ asset('bundles/oroui/css/ie.css') }}" rel="stylesheet" media="all" />
+    <script src="{{ asset('bundles/oroui/js/jquery.placeholder.js') }}"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            jQuery('input, textarea').placeholder();
+        });
+    </script>
+    <![endif]-->
+    <!--[if lte IE 7]>
+        <script src="{{ asset('bundles/oroui/js/ie.js') }}"></script>
+    <![endif]-->
+    {% endblock %}
+</head>
+<body class="{% block bodyClass %}{% endblock %}">
+    <div id="page">
+        <div id="top-page">
+            {% if app.session.flashbag.peekAll|length > 0 %}
+            <div class="row-fluid">
+                <div class="span12">
+                {% for type, messages in app.session.flashbag.all %}
+                    {% for message in messages %}
+                    <div class="alert{{ type ? ' alert-'~type : '' }} fade in">
+                    <a class="close" data-dismiss="alert" href="javascript: void(0);">×</a>
+                    {{ message|trans|raw }}
+                    </div>
+                    {% endfor %}
+                {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% block header %}
+            {% endblock header %}
+
+            {% block main %}
+                {% block content %}
+                {% endblock content %}
+            {% endblock main %}
+        </div>
+    </div>
+</body>
+</html>

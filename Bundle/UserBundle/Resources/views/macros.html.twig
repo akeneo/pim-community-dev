@@ -1,0 +1,28 @@
+{% macro time(time, format) -%}
+    <time datetime="{{ time.format(constant('DateTime::ISO8601')) }}">{{ time | localizeddate('short', 'short') }}</time>
+{%- endmacro %}
+
+{% macro date(time, format) -%}
+    <time datetime="{{ time.format(constant('DateTime::ISO8601')) }}">{{ time | localizeddate('short', 'none') }}</time>
+{%- endmacro %}
+
+{% macro collection_prototype(widget) %}
+    {% if widget.get('prototype') %}
+        {% set form = widget.get('prototype') %}
+        {% set name = widget.get('prototype').get('name') %}
+    {% else %}
+        {% set form = widget %}
+        {% set name = widget.get('full_name') %}
+    {% endif %}
+    <div data-content="{{ name }}">
+        <div class="row-oro">
+            {{ form_errors(form) }}
+            {% for child in form %}
+                {{ form_errors(child) }}
+                {{ form_widget(child) }}
+            {% endfor %}
+            {{ form_rest(form) }}
+            <button class="removeRow btn btn-action btn-link" type="button" data-related="{{ name }}">×</button>
+        </div>
+    </div>
+{% endmacro %}

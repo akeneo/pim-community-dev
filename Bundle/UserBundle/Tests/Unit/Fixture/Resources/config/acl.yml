@@ -1,0 +1,6 @@
+test_controller:
+  name: Test controller
+  description: Test description
+  parent: root
+  class: Oro\Bundle\UserBundle\Tests\Unit\Fixture\ConfigController\ConfigController
+  method: testAction

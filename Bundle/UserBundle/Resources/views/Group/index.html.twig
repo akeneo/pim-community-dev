@@ -1,0 +1,13 @@
+{% extends bap.layout is defined ? bap.layout : 'OroUserBundle::layout.html.twig' %}
+
+{% block head_script %}
+    {{ parent() }}
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#groups-grid'} %}
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <h1>{{ 'Groups'|trans }} <a class="btn btn-primary pull-right" href="{{ path('oro_user_group_create') }}" id="add-new-btn" title="{{ 'Create group'|trans }}">{{ 'Create group'|trans }}</a></h1>
+    </div>
+    <div id="groups-grid"></div>
+{% endblock %}

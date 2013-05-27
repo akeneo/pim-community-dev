@@ -1,0 +1,20 @@
+{% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
+{% for flashMessage in app.session.flashbag.get('success') %}
+<div class="alert alert-success">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{ flashMessage }}
+</div>
+{% endfor %}
+
+{{ JSFV(form) }}
+<form id="{{ form.getName() }}" action="{{ form.vars.value.id ? path('oro_user_group_update', { id: form.vars.value.id }) : path('oro_user_group_create') }}" method="post" class="form-register form-dialog">
+    <fieldset class="form-horizontal">
+        {{ form_widget(form) }}
+        <div class="widget-actions form-actions">
+            <div class="pull-right">
+                <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
+                <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
+            </div>
+        </div>
+    </fieldset>
+</form>

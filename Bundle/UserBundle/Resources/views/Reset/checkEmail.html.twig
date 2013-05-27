@@ -1,0 +1,19 @@
+{% extends 'OroUserBundle::layout.html.twig' %}
+
+{% block bodyClass %}login-page{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form action="" class="form-signin">
+        <div class="title-box">
+            <h1 class="oro-title"><a href="{{ path('oro_default') }}">{{ get_user_value('oro_ui.product_caption') }}</a></h1>
+            <span class="divider-vertical"></span>
+            <h2 class="title">{{ 'Check Email'|trans }}</h2>
+        </div>
+        <fieldset>
+            <h3 class="oro-justify">{{ 'An email has been sent to %email%. It contains a link you must click to reset your password.'|trans({ '%email%': email }) }}</h3>
+            <a href="{{ path('oro_default') }}">{{ 'Go to homepage'|trans }}</a>
+        </fieldset>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+template_controller:
+    name: Template controller
+    description: Actions from template controller
+    parent: root
+    class: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    method: templateAction
+oro_user:
+    name: User manipulation
+    description: User manipulation
+    parent: root

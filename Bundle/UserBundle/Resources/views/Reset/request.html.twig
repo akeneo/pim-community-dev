@@ -1,0 +1,32 @@
+{% extends 'OroUserBundle::layout.html.twig' %}
+
+{% block bodyClass %}login-page{% endblock %}
+
+{% block content %}
+<form action="{{ path('oro_user_reset_send_email') }}" method="post" class="form-signin">
+    <div class="title-box">
+        <h1 class="oro-title">Oro</h1>
+        <span class="divider-vertical"></span>
+        <h2 class="title">{{ 'Forgot Password'|trans }}</h2>
+    </div>
+
+    {% if invalid_username is defined %}
+    <div class="well-small-oro">
+        <div class="alert alert-error">
+            {{ 'The username or email address "%username%" does not exist.'|trans({ '%username%': invalid_username }) }}
+        </div>
+    </div>
+    {% endif %}
+
+    <fieldset class="oro-forgot-password">
+        <div class="input-prepend">
+            <span class="add-on">{{ 'Username or email'|trans }}</span>
+            <input type="text" id="prependedInput" class="span2" name="username" required="required" placeholder="{{ 'Username or Email'|trans }}" />
+        </div>
+        <div class="form-row">
+            <a href="{{ path('oro_user_security_login') }}" class="btn extra-btn-large btn-large">{{ 'Cancel'|trans }}</a>
+            <button type="submit" class="btn extra-submit btn-large btn-primary">{{ 'Request'|trans }}</button>
+        </div>
+    </fieldset>
+</form>
+{% endblock %}

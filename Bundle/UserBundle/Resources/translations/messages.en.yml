@@ -1,0 +1,81 @@
+change_password:
+    flash:
+        success: The password has been changed
+
+resetting:
+    flash:
+        success: The password has been successfully reset
+
+"%%username%% - View user - User Management": "%%username%% -View user - User Management"
+"%%username%% - Edit user - User Management": "%%username%% - Edit user - User Management"
+"New user - User Management": "New user - User Management"
+"Users - User Management": "Users - User Management"
+
+"Edit role - User management": "Edit role - User management"
+"Add role - User management": "Add role - User management"
+"Roles - User management": "Roles - User management"
+
+Login: Login
+"User Status - User Management": "User Status - User Management"
+"Add Status - User Management": "Add Status - User Management"
+
+"Password Reset": Password Reset
+"Forgot Password": "Forgot Password"
+"Password Reset - Check Email": "Password Reset - Check Email"
+
+"Acl Resources - User Management": "Acl Resources - User Management"
+
+"Edit group - User Management": "Edit group - User Management"
+"Add group - User Management": "Add group - User Management"
+"Groups - User Management": "Groups - User Management"
+"Group manipulation": "Group manipulation"
+"Create group": "Create group"
+"Create new group": "Create new group"
+"Edit group": "Edit group"
+"View group list": "View group list"
+"List of groups": "List of groups"
+"User manipulation": "User manipulation"
+"View user user": "View user user"
+"Generate new API key": "Generate new API key"
+"Create user user": "Create user user"
+"Edit user user": "Edit user user"
+"View list of user users": "View list of user users"
+"Reset user password": "Reset user password"
+"reset password": "reset password"
+"Oro Reset password page": "Oro Reset password page"
+"send reset mail": "send reset mail"
+"Request reset user password": "Request reset user password"
+"reset password check email": "reset password check email"
+"Tell the user to check his email provider": "Tell the user to check his email provider"
+"reset password": "reset password"
+"Reset user password": "Reset user password"
+"Role manipulation": "Role manipulation"
+"Create role": "Create role"
+"Create new role": "Create new role"
+"Edit role": "Edit role"
+"View role list": "View role list"
+"List of roles": "List of roles"
+"Oro Security": "Oro Security"
+"Login page": "Login page"
+"Oro Login page": "Oro Login page"
+"Login check": "Login check"
+"Oro Login check": "Oro Login check"
+"Logout": "Logout"
+"Oro Logout": "Oro Logout"
+"ACL manipulation": "ACL manipulation"
+"ACL manipulation from API": "ACL manipulation from API"
+"View ACL tree": "View ACL tree"
+"View ACL tree for a particular role": "View ACL tree for a particular role"
+"View ACL resource": "View ACL resource"
+"View user group": "View user group"
+"Remove group": "Remove group"
+"View group roles": "View group roles"
+"Remove user user": "Remove user user"
+"View user roles": "View user roles"
+"View user groups": "View user groups"
+"View user ACL": "View user ACL"
+"View role": "View role"
+"Remove role": "Remove role"
+"Template controller": "Template controller"
+"Actions from template controller": "Actions from template controller"
+"User manipulation": "User manipulation"

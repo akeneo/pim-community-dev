@@ -1,0 +1,6 @@
+# common test case
+request:
+    name: Group_1_%str%
+    roles: [1]
+response:
+    return: true

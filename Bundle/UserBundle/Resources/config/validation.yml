@@ -1,0 +1,66 @@
+Oro\Bundle\UserBundle\Entity\User:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: username
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email
+    properties:
+        username:
+            - NotBlank:     ~
+            - Length:
+                min:        3
+                max:        255
+        email:
+            - NotBlank:     ~
+            - Length:
+                min:        6
+                max:        255
+            - Email:        ~
+        plainPassword:
+            - NotBlank:
+                groups:     [Registration]
+            - Length:
+                min:        2
+        enabled:
+            - NotNull:      ~
+        roles:
+            - Count:
+                min:        1
+                minMessage: "You must select at least {{ limit }} role"
+                groups:     [User]
+        firstName:
+            - NotBlank:     ~
+            - Length:
+                max:        100
+        lastName:
+            - NotBlank:     ~
+            - Length:
+                max:        100
+        birthday:
+            - Date:         ~
+
+Oro\Bundle\UserBundle\Entity\Role:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: role
+    properties:
+        role:
+            - NotBlank:     ~
+            - Length:
+                max:        30
+            - Regex:
+                pattern: "/^[a-zA-Z0-9_]+$/"
+                message: "Role must be an alphanumeric value"
+        label:
+            - Length:
+                max:        30
+
+Oro\Bundle\UserBundle\Entity\Group:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
+    properties:
+        name:
+            - NotBlank:     ~
+            - Length:
+                max:        30
+        roles:
+            - Count:
+                min:        1
+                minMessage: "You must select at least {{ limit }} role"

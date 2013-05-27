@@ -1,0 +1,32 @@
+oro_user_bundle:
+    resource:     "@OroUserBundle/Controller"
+    type:         annotation
+    prefix:       /user
+
+oro_user_api_user:
+    resource:     "@OroUserBundle/Controller/Api/Rest/UserController.php"
+    type:         rest
+    prefix:       api/rest/{version}/
+    defaults:
+        version:  latest
+
+oro_user_api_role:
+    resource:     "@OroUserBundle/Controller/Api/Rest/RoleController.php"
+    type:         rest
+    prefix:       api/rest/{version}/
+    defaults:
+        version:  latest
+
+oro_user_api_group:
+    resource:     "@OroUserBundle/Controller/Api/Rest/GroupController.php"
+    type:         rest
+    prefix:       api/rest/{version}/
+    defaults:
+        version:  latest
+
+oro_user_api_acl:
+    resource:     "@OroUserBundle/Controller/Api/Rest/AclController.php"
+    type:         rest
+    prefix:       api/rest/{version}/
+    defaults:
+        version:  latest
