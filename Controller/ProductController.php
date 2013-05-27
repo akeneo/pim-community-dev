@@ -180,7 +180,6 @@ class ProductController extends Controller
         foreach ($availableAttributes->getAttributes() as $attribute) {
             $value = $this->getProductManager()->createFlexibleValue();
             $value->setAttribute($attribute);
-            $value->setData(null);
             $product->addValue($value);
         }
 
