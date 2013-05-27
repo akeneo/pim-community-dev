@@ -92,7 +92,7 @@ class ProductController extends Controller
         if ($this->get('pim_product.form.handler.simple_product')->process($entity)) {
             $this->get('session')->getFlashBag()->add('success', 'Product successfully saved');
 
-            $dataLocale = $entity->getActiveLanguages()->first()->getLanguage()->getCode();
+            $dataLocale = $entity->getActiveLocales()->first()->getLocale()->getCode();
             $url = $this->generateUrl(
                 'pim_product_product_edit',
                 array('id' => $entity->getId(), 'dataLocale' => $dataLocale)
@@ -183,11 +183,12 @@ class ProductController extends Controller
         foreach ($availableAttributes->getAttributes() as $attribute) {
             $value = $this->getProductManager()->createFlexibleValue();
             $value->setAttribute($attribute);
-            $value->setData(null);
             $product->addValue($value);
         }
 
         $this->getProductManager()->save($product);
+
+        $this->addFlash('success', 'Attributes are added to the product form.');
 
         return $this->redirect(
             $this->generateUrl('pim_product_product_edit', array('id' => $product->getId()))
@@ -219,8 +220,12 @@ class ProductController extends Controller
     /**
      * Remove an attribute value
      *
+     * @param int $productId
+     * @param int $attributeId
+     *
      * @Route("/{productId}/attributes/{attributeId}")
      * @Method("DELETE")
+     * @return array
      */
     public function removeProductValueAction($productId, $attributeId)
     {
@@ -335,7 +340,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Get the product value entity repository
+     * Get the Product Value repository
      *
      * @return Doctrine\ORM\EntityRepository
      */
@@ -380,6 +385,13 @@ class ProductController extends Controller
         return $product;
     }
 
+    /**
+     * Check if values can be removed
+     *
+     * @param array $values
+     *
+     * @return boolean
+     */
     private function checkValuesRemovability(array $values)
     {
         if (0 === count($values)) {
