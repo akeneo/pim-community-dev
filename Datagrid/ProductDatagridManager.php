@@ -1,6 +1,10 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
+
+use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+
 use Oro\Bundle\GridBundle\Property\FieldProperty;
 
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -115,6 +119,26 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
             $fieldsCollection->add($field);
         }
+
+        $field = new FieldDescription();
+        $field->setName('Locale');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
+                'label'       => $this->translator->trans('Data locale'),
+                'field_name'  => 'data_locale',
+                'filter_type' => FilterInterface::TYPE_CHOICE,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true, //TODO : Must be false
+                'field_options' => array(
+                    'choices' => array('en_US' => 'en_US', 'fr_FR' => 'fr_FR')
+                ),
+            )
+        );
+
+        $fieldsCollection->add($field);
     }
 
     /**
@@ -162,36 +186,30 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
-     * Override to add support for price and metric
-     *
-     * @param string $flexibleFieldType
-     *
-     * @return string
-     * @throws \LogicException
+     * {@inheritdoc}
      */
-    public function convertFlexibleTypeToFieldType($flexibleFieldType)
+    public function setFlexibleManager(FlexibleManager $flexibleManager)
     {
-        if (!isset(self::$typeMatches[$flexibleFieldType]['field'])) {
-            throw new \LogicException('Unknown flexible backend field type.');
-        }
+        $this->flexibleManager = $flexibleManager;
 
-        return self::$typeMatches[$flexibleFieldType]['field'];
+        $this->flexibleManager->setLocale($this->getDataLocale());
+        $this->flexibleManager->setScope('ecommerce');
     }
 
     /**
-     * Override to add support for price and metric
-     *
-     * @param string $flexibleFieldType
+     * Get data locale value from parameters
      *
      * @return string
-     * @throws \LogicException
      */
-    public function convertFlexibleTypeToFilterType($flexibleFieldType)
+    public function getDataLocale()
     {
-        if (!isset(self::$typeMatches[$flexibleFieldType]['filter'])) {
-            throw new \LogicException('Unknown flexible backend filter type.');
+        $filtersArray = $this->parameters->get(ParametersInterface::FILTER_PARAMETERS);
+        if (isset($filtersArray['Locale']) && isset($filtersArray['Locale']['value'])) {
+            $dataLocale = $filtersArray['Locale']['value'];
+        } else {
+            $dataLocale = 'en_US'; //TODO : get default locale in config file
         }
 
-        return self::$typeMatches[$flexibleFieldType]['filter'];
+        return $dataLocale;
     }
 }
