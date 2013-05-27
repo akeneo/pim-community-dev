@@ -88,6 +88,15 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
             $this->persist($localeAttribute);
         }
 
+        if (!$this->findAttribute('catalogscope')) {
+            $localeAttribute = $this->createAttributeWithOptions(
+                'oro_flexibleentity_simpleselect',
+                'catalogscope',
+                self::getScopes()
+            );
+            $this->persist($localeAttribute);
+        }
+
         $this->flush();
     }
 
@@ -124,6 +133,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $users = $this->userRepository->findAll();
         foreach ($users as $user) {
             $this->setFlexibleAttributeValueOption($user, 'cataloglocale', $this->generateLocale());
+            $this->setFlexibleAttributeValueOption($user, 'catalogscope', $this->generateScope());
             $this->persist($user);
         }
 
@@ -142,6 +152,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
             $hobbies = $this->generateHobbies();
             $lastVisit = $this->generateLastVisit();
             $locale    = $this->generateLocale();
+            $scope     = $this->generateScope();
 
             $user = $this->createUser(
                 $username,
@@ -156,7 +167,8 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
                 $gender,
                 $hobbies,
                 $lastVisit,
-                $locale
+                $locale,
+                $scope
             );
 
             $user->setPlainPassword(uniqid());
@@ -183,6 +195,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      * @param array     $hobbies
      * @param \DateTime $lastVisit
      * @param string    $locale
+     * @param string    $scope
      *
      * @return User
      */
@@ -199,7 +212,8 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $gender,
         array $hobbies,
         $lastVisit,
-        $locale
+        $locale,
+        $scope
     ) {
         /** @var $user User */
         $user = $this->userManager->createFlexible();
@@ -218,6 +232,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $this->addFlexibleAttributeValueOptions($user, 'hobby', $hobbies);
         // $this->setFlexibleAttributeValue($user, 'last_visit', $lastVisit);
         $this->setFlexibleAttributeValueOption($user, 'cataloglocale', $locale);
+        $this->setFlexibleAttributeValueOption($user, 'catalogscope', $scope);
 
         return $user;
     }
@@ -569,6 +584,16 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     }
 
     /**
+     * Generates a scope
+     *
+     * @return string
+     */
+    private function generateScope()
+    {
+        return 'ecommerce';
+    }
+
+    /**
      * Generates hobbies
      *
      * @return string
@@ -613,6 +638,16 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     private static function getLocales()
     {
         return array('fr_FR', 'fr_CA', 'de_DE', 'en_US', 'en_GB');
+    }
+
+    /**
+     * Get array of scopes
+     *
+     * @return array
+     */
+    private static function getScopes()
+    {
+        return array('ecommerce', 'mobile');
     }
 
     /**
