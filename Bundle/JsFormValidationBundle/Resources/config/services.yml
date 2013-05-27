@@ -1,0 +1,7 @@
+parameters:
+    oro_jsfv.generator.class: Oro\Bundle\JsFormValidationBundle\Generator\FormValidationScriptGenerator
+
+services:
+    jsfv.generator:
+        class: %oro_jsfv.generator.class%
+        arguments: [@service_container, @validator.mapping.class_metadata_factory]
