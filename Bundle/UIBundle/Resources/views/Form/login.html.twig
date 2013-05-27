@@ -1,0 +1,15 @@
+{% block form_row %}
+    {% spaceless %}
+        <div class="input-prepend{% if errors|length > 0 %} error{% endif %}">
+            <span class="add-on">{{ form_label(form, '' , { label_attr: label_attr|merge({ class: 'control-label' })}) }}</span>
+                {{ form_widget(form) }}
+                {{ form_errors(form) }}
+        </div>
+    {% endspaceless %}
+{% endblock form_row %}
+
+{% block form_label %}
+    {% spaceless %}
+        {{ label|trans({}, translation_domain) }}
+    {% endspaceless %}
+{% endblock form_label %}

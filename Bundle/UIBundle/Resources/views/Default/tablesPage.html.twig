@@ -1,0 +1,198 @@
+{% extends "OroUIBundle:Default:index.html.twig" %}
+{% block header %}
+{% endblock %}
+{% block content %}
+    <div class="container-fluid" >
+        <div class="popup-box">
+            <div class="clearfix">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Username</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr />
+        <div class="popup-box">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Username</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                    <td>@twitter</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr />
+        <div class="popup-box">
+            <h3>Table boardered/hover</h3>
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Username</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td rowspan="2">1</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                </tr>
+                <tr>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@TwBootstrap</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td colspan="2">Larry the Bird</td>
+                    <td>@twitter</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr />
+        <div class="popup-box">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Product</th>
+                    <th>Payment Taken</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="success">
+                    <td>1</td>
+                    <td>TB - Monthly</td>
+                    <td>01/04/2012</td>
+                    <td>Approved</td>
+                </tr>
+                <tr class="error">
+                    <td>2</td>
+                    <td>TB - Monthly</td>
+                    <td>02/04/2012</td>
+                    <td>Declined</td>
+                </tr>
+                <tr class="warning">
+                    <td>3</td>
+                    <td>TB - Monthly</td>
+                    <td>03/04/2012</td>
+                    <td>Pending</td>
+                </tr>
+                <tr class="info">
+                    <td>4</td>
+                    <td>TB - Monthly</td>
+                    <td>04/04/2012</td>
+                    <td>Call in to confirm</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr />
+        <div class="popup-box">
+        </div>
+        <div class="clearfix">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>Variable</th>
+                    <th>default</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <span>@tableBackground</span>
+                    </td>
+                    <td>
+                        <code>transparent; // overall background-color</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span  >@tableBackgroundAccent</span>
+                    </td>
+                    <td>
+                        <code>#f9f9f9; // for striping</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span  >@tableBackgroundHover</span>
+                    </td>
+                    <td>
+                        <code>#f5f5f5; // for hover</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>@tableBorder</span>
+                    </td>
+                    <td>
+                        <code>#ddd; // table and cell border</code>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock content %}

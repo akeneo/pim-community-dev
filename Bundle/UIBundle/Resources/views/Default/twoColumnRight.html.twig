@@ -1,0 +1,21 @@
+{% extends "OroUIBundle:Default:index.html.twig" %}
+{% block page_container %}
+    <div class="container-fluid">
+        <div class="row-fluid" id="wrapper">
+            <div class="span9">
+                {% block content %}
+                <div id="content" class="test-box alert alert-block">
+                    Content
+                </div>
+                {% endblock content %}
+            </div>
+            <div class="span3">
+                {% block sidebar %}
+                <div id="sidebar" class="test-box alert alert-success">
+                    Sidebar
+                </div>
+                {% endblock sidebar %}
+            </div>
+        </div>
+    </div>
+{% endblock page_container %}

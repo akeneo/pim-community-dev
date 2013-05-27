@@ -1,0 +1,54 @@
+{% extends 'OroNavigationBundle:Menu:dots_tabs.html.twig' %}
+
+{% block root %}
+    {% if item.hasChildren and options.depth is not sameas(0) and item.displayChildren %}
+
+        <div class="clearfix">
+            <div class="pin-bar clearfix">
+                <div class="pin-menus dropdown dropdown-close-prevent">
+                    <span class="oro-dropdown-toggle hide-text">...</span>
+                    <div class="dropdown-menu pull-right">
+                        <div class="tabbable tabs-left">
+                            {{ block('navbar_tabs') }}
+                            {{ block('navbar_tabs_content') }}
+                        </div>
+                    </div>
+                </div>
+                <div class="list-bar"></div>
+            </div>
+        </div>
+
+    {% endif %}
+        <script type="text/javascript">
+            $(document).ready(function() {
+                function trueWidthPinBar(){
+                    jQuery('div.list-bar li').each(function(){
+                        var _tempWidth = "auto";
+                        jQuery(this).find('div.pin-holder div').width(_tempWidth);
+                    });
+                    var _sizeStart = jQuery(window).width() -30 - 55;
+                    var _sizeEnd = jQuery('div.list-bar').width();
+                    if(_sizeStart < _sizeEnd){
+                        var _qty = jQuery('div.list-bar li').size();
+                        var _sizePaddings = (23 + 15) * _qty;
+                        var _mainPadding = jQuery('#main').innerWidth() - jQuery('#main').width();
+                        if(jQuery(window).width() < 980){
+                            var _size = 980 -30 - _mainPadding  - _sizePaddings;
+                        }else{
+                            var _size = jQuery(window).width() -30 - _mainPadding  - _sizePaddings;
+                        }
+                        var _tempWidth = _size / _qty;
+                        _tempWidth = _tempWidth < 40 ? 40 : _tempWidth;
+                        jQuery('div.list-bar li').each(function(){
+                            jQuery(this).find('div.pin-holder div').width(_tempWidth);
+                            jQuery(this).find('div.pin-holder div').addClass('pin-frame');
+                        });
+                    }
+                }
+                trueWidthPinBar()
+                jQuery(window).resize(function() {
+                    trueWidthPinBar()
+                });
+            });
+        </script>
+{% endblock %}

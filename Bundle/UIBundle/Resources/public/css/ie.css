@@ -1,0 +1,116 @@
+aside, nav, footer, header, section { display: block }
+.btn-large{
+    width: 112px;
+}
+* +html button.btn-large{
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+* +html .add-on{
+    margin-top: 1px;
+}
+header .dropdown-menu li > a{
+    filter: none !important;
+}
+.navbar-inner{
+    filter: none;
+}
+.btn-group{
+    display: inline;
+}
+.header-search .dropdown-toggle{
+    border-radius: 4px 0 0 4px;
+}
+.badge{
+    border-radius: 6px;
+}
+header .container{
+    width: 100%;
+}
+.header-search .btn-search{
+    border: 0 !important;
+    background-position: -2px -61px !important;
+}
+.header-search .btn-search:hover{
+    background-position: -2px -61px !important;
+}
+* +html .header-search .dropdown-menu input[type="text"]{
+    margin-top: -2px !important;
+}
+* +html .header-search .btn .caret{
+    margin-top: 5px;
+}
+* +html .header-search .btn {
+    line-height: 26px;
+}
+* +html .notifications .after{
+    background: url("../img/general-sprite.png") no-repeat 0 -106px;
+    width: 14px;
+    height: 14px;
+    float: left;
+    margin: 4px 10px 0 0;
+}
+* +html button.btn{
+    padding-top: 0;
+    line-height: 25px;
+}
+#page{
+    display: block;
+}
+.filter-box{
+    display: block;
+    zoom:1;
+}
+table.grid{
+    margin-bottom: 50px;
+}
+.filter-box .btn-group{
+    float: left;
+}
+.list-bar{
+}
+* +html .list-bar li{
+    display: inline;
+    float: left;
+    position: relative;
+    padding-right: 15px;
+}
+* +html .list-bar a.btn-close{
+    float: left;
+    position: absolute;
+    right: 5px;
+    top: 0;
+}
+*+html .caret{
+    position: relative;
+    top: -5px !important;
+    right: -2px;
+}
+#search-div.search-focus .btn-search{
+    height: 28px;
+    position: relative;
+    top: 1px;
+}
+
+.pin-bar .pin-menus{
+    margin: 0 -31px 0 0;
+}
+.pin-bar{
+    filter: none !important;
+}
+.pin-bar .list-bar{
+
+}
+.filter-list input[type="search"]{
+    width: 100px;
+}
+div.uploader input{
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+
+}
+.header-search .btn-search{
+    background:#262d33 url("../img/general-sprite.png") no-repeat 0 -176px;
+    filter: none;
+}
+

@@ -1,0 +1,22 @@
+{% extends 'OroNavigationBundle:Menu:horizontal_tabs.html.twig' %}
+
+{% block root %}
+    {% if item.hasChildren and options.depth is not sameas(0) and item.displayChildren %}
+
+        <div class="clearfix">
+            <div class="navbar application-menu">
+                <div class="cleearfix">
+                    <div class="container">
+                        <div class=" navbar-responsive-collapse">
+                            {{ block('navbar_tabs') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="clearfix application-menu">
+            {{ block('navbar_tabs_content') }}
+        </div>
+    {% endif %}
+{% endblock %}

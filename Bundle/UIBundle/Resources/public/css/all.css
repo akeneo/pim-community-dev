@@ -1,0 +1,123 @@
+#page{
+/*    display: table; need fix when create fotter at bottom
+    height: 100%; */
+    width: 100%;
+}
+#top-page{
+    width: 100%;
+}
+#footer{
+    display: table-footer-group;
+    width: 100%;
+}
+#footer-frame{
+    display: table-row;
+    height: 1%;
+}
+/* other style */
+.checkbox{
+    margin: 0;
+}
+.new-row input{
+    clear: both;
+    display: block;
+}
+.simple-page{
+    padding: 75px 0 0;
+}
+.test-box{
+    min-height: 500px;
+}
+.example{
+    border: 1px solid #000;
+    width: 12px;
+    height: 12px;
+    float: left;
+    margin: 3px 0 0 10px;
+}
+.ui-dialog{
+    position: absolute;
+}
+.ui-widget-content{
+    overflow: auto;
+}
+.ui-dialog .ui-dialog-titlebar{
+    position: relative;
+    padding-right: 30px;
+}
+.ui-dialog .ui-dialog-titlebar-close{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+.fr{
+    float:right;
+}
+.layout-content{
+    background: #fff;
+}
+.menu-row .tab-content{
+    float: left;
+}
+.menu-row .nav-tabs{
+    float: left;
+    margin: 0;
+    border: 0;
+}
+.menu-row .left-nav{
+    float: left;
+}
+.menu-row .right-nav > *{
+    float: left;
+    margin: 0 0 0 10px;
+}
+.menu-row .right-nav{
+    float:right;
+}
+.menu-row a.home{
+    float: left;
+    margin: 0 10px 0 0;
+    padding: 8px 12px;
+    font-size: 14px;
+}
+.menu-row.navbar{
+    width: 100%;
+    float: left;
+    height: 44px;
+}
+.clearfix-my:after{
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.form-signin .input-prepend{
+    margin-bottom: 10px;
+}
+.logo{
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+    float: left;
+    height: 40px;
+    line-height: 40px;
+}
+.logo a{
+    padding: 0 15px;
+    color: #fff;
+}
+.logo a:focus,
+.logo a:hover{
+    text-decoration: none;
+    color: #fff;
+}
+.wb{
+    background-color: #FFF;
+}
+.scroll-holder{
+    overflow: auto;
+    max-height: 575px;
+}
+#oro_user_group_form_roles{
+    height: 67px;
+}

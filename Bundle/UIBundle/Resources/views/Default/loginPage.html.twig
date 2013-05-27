@@ -1,0 +1,53 @@
+{% extends "OroUIBundle:Default:index.html.twig" %}
+{% block bodyClass %}
+    login-page
+{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <form class="form-signin">
+            <div class="title-box">
+                <h1 class="oro-title">Oro</h1>
+                <span class="divider-vertical"></span>
+                <h2 class="title">Login</h2>
+            </div>
+            <fieldset>
+                <div class="input-prepend">
+                    <span class="add-on">Username</span>
+                    <input type="text" placeholder="login" id="prependedInput" class="span2">
+                </div>
+                <div class="input-prepend">
+                    <span class="add-on">Password</span>
+                    <input type="password" placeholder="pass" id="prependedInput2" class="span2">
+                </div>
+                <div class="form-row">
+                    <label class="checkbox">
+                        <input type="checkbox" value="remember-me"> Remember me on this computer
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-large btn-primary">Log in</button>
+                <div class="form-row">
+                    <a href="#">Forgot your username?</a>
+                    <span class="divider-vertical">|</span>
+                    <a href="#">Forgot your password?</a>
+                </div>
+            </fieldset>
+        </form>
+        <script type="text/javascript">
+            jQuery(document).ready(function() {
+                function loginHeight(){
+                    var _myHeight = (jQuery(window).height() - jQuery('form.form-signin').height())/2 +"px";
+                    jQuery('form.form-signin').css({
+                        'margin-top' : _myHeight
+                    })
+                }
+                loginHeight()
+                jQuery(window).resize(function() {
+                    loginHeight()
+                });
+
+            });
+        </script>
+    </div>
+{% endblock content %}
