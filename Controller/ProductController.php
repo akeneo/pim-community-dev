@@ -279,17 +279,6 @@ class ProductController extends Controller
         return $dataLocale;
     }
 
-
-    /**
-     * Get dedicated PIM filesystem
-     *
-     * @return MediaManager
-     */
-    protected function getMediaManager()
-    {
-        return $this->container->get('pim_media_manager');
-    }
-
     /**
      * Get the ProductAttribute entity repository
      *
