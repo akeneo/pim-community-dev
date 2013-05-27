@@ -297,9 +297,7 @@ class ProductController extends Controller
      */
     protected function getProductAttributeRepository()
     {
-        return $this
-            ->getDoctrine()
-            ->getRepository('PimProductBundle:ProductAttribute');
+        return $this->getProductManager()->getAttributeRepository();
     }
 
     /**
@@ -324,9 +322,14 @@ class ProductController extends Controller
         return $this->getDoctrine()->getRepository('PimConfigBundle:Channel');
     }
 
+    /**
+     * Get the product value entity repository
+     *
+     * @return Doctrine\ORM\EntityRepository
+     */
     protected function getProductValueRepository()
     {
-        return $this->getDoctrine()->getRepository('PimProductBundle:ProductValue');
+        return $this->getProductManager()->getFlexibleValueRepository();
     }
 
     /**
