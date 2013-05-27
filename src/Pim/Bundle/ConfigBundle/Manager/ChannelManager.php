@@ -39,4 +39,24 @@ class ChannelManager
     {
         return $this->objectManager->getRepository('PimConfigBundle:Channel')->findBy($criterias);
     }
+
+    /**
+     * Get channel choices with criterias
+     * Allow to list channels in an array like array[<code>] = <label>
+     *
+     * @param multitype $criterias
+     *
+     * @return multitype:string
+     */
+    public function getChannelChoices($criterias = array())
+    {
+        $channels = $this->getChannels($criterias);
+
+        $choices = array();
+        foreach ($channels as $channel) {
+            $choices[$channel->getCode()] = $channel->getName();
+        }
+
+        return $choices;
+    }
 }
