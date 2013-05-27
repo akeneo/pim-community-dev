@@ -1,0 +1,15 @@
+<?php
+
+namespace Oro\Bundle\GridBundle\Datagrid;
+
+interface ResultRecordInterface
+{
+    /**
+     * Get value of record property by name
+     *
+     * @param string $name
+     * @return mixed
+     * @throws \LogicException When cannot get value
+     */
+    public function getValue($name);
+}
