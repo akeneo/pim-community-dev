@@ -107,7 +107,7 @@
           footerContainer = $('<div>').addClass('ui-multiselect-footer');
           n = 0;
           for (i in o.buttons) {
-            btn = $('<button>').html(i).on('click', o.buttons[i]);
+            btn = $('<a>').addClass('btn btn-small').html(i).on('click', o.buttons[i]);
             footerContainer.append(btn);
           }
           footerContainer.appendTo(menu);
