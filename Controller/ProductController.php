@@ -42,6 +42,8 @@ class ProductController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $this->getProductManager()->setLocale($this->getDataLocale());
+
         /** @var $gridManager ProductDatagridManager */
         $gridManager = $this->get('pim_product.product_grid_manager');
         $datagrid = $gridManager->getDatagrid();

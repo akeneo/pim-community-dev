@@ -52,7 +52,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
         return array(
             new FieldProperty($fieldId),
-            new UrlProperty('edit_link', $this->router, 'pim_product_product_edit', array('id')),
+            new UrlProperty('edit_link', $this->router, 'pim_product_product_edit', array('id', 'dataLocale' => 'locale')),
             new UrlProperty('delete_link', $this->router, 'pim_product_product_remove', array('id')),
         );
     }
@@ -217,7 +217,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         if (isset($filtersArray['Locale']) && isset($filtersArray['Locale']['value'])) {
             $dataLocale = $filtersArray['Locale']['value'];
         } else {
-            $dataLocale = 'en_US'; //TODO : get default locale in config file
+            $dataLocale = $this->flexibleManager->getLocale();
         }
 
         return $dataLocale;
