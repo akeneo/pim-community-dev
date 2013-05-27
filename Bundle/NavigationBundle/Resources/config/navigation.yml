@@ -1,0 +1,55 @@
+oro_menu_config:
+    templates:
+        navbar:
+            template: 'OroNavigationBundle:Menu:navbar.html.twig'
+        dropdown:
+            template: 'OroNavigationBundle:Menu:dropdown.html.twig'
+        horizontal_tabs:
+            template: 'OroNavigationBundle:Menu:horizontal_tabs.html.twig'
+        pinbar:
+            template: 'OroNavigationBundle:Menu:pinbar.html.twig'
+        favorite:
+            template: 'OroNavigationBundle:Menu:favorites.html.twig'
+        mostviewed:
+            template: 'OroNavigationBundle:Menu:mostviewed.html.twig'
+            rootClass: 'extra-list'
+        history:
+            template: 'OroNavigationBundle:Menu:history.html.twig'
+            rootClass: 'extra-list'
+            currentAsLink: false
+
+    items:
+        pinbar:
+            label: 'Pinbar'
+            extras:
+                icon: 'icon-folder-close'
+                maxItems: 10
+            uri: '#'
+        history:
+            label: 'History'
+            extras:
+                icon: 'icon-time'
+                activeIfFirstIsEmpty: true
+            uri: '#'
+        favorite:
+            label: 'Favorites'
+            extras:
+                icon: 'icon-star-empty'
+            uri: '#'
+        mostviewed:
+            label: 'Most Viewed'
+            extras:
+                icon: 'icon-flag'
+            uri: '#'
+
+    tree:
+        dots_menu:
+            children:
+                pinbar: ~
+                history: ~
+                favorite: ~
+                mostviewed: ~
+
+oro_titles:
+    oro_shortcut_actionslist: Shortcut Actions List
+    oro_pinbar_help: How To Use Pinbar

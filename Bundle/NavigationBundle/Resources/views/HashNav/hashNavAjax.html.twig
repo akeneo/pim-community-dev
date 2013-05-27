@@ -1,0 +1,23 @@
+<div id="head">
+    <div id="title">{{ oro_title_render() }}</div>
+    <div id="title-serialized">{{ oro_title_render_serialized()|raw }}</div>
+    {{ script|raw }}
+</div>
+<div id="main-menu">
+    {{ menu|raw }}
+</div>
+<div id="flash-messages">
+    {{ messages|raw }}
+</div>
+<div id="history-content">
+    {{ oro_menu_render('history') }}
+</div>
+<div id="mostviewed-content">
+    {{ oro_menu_render('mostviewed') }}
+</div>
+<div id="content">
+    {{ content|raw }}
+</div>
+<div id="pin-button-div">
+    {% if app.request.attributes.get('_route') == bap.start_route %}false{% else %}true{% endif %}
+</div>

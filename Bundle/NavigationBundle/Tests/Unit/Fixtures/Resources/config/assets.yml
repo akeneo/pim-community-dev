@@ -1,0 +1,6 @@
+css:
+  - 'first.css'
+  - 'second.css'
+js:
+  - 'first.js'
+  - 'second.js'
