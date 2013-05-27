@@ -3,19 +3,19 @@
 namespace Pim\Bundle\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Pim\Bundle\ConfigBundle\Entity\Language;
+use Pim\Bundle\ConfigBundle\Entity\Locale;
 
 /**
- * Product language
+ * Product locale
  *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ORM\Entity
- * @ORM\Table(name="pim_product_language")
+ * @ORM\Table(name="pim_product_locale")
  */
-class ProductLanguage
+class ProductLocale
 {
     /**
      * @ORM\Id
@@ -25,14 +25,14 @@ class ProductLanguage
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Product", inversedBy="languages")
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="locales")
      */
     protected $product;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ConfigBundle\Entity\Language")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale")
      */
-    protected $language;
+    protected $locale;
 
     /**
      * @ORM\Column(type="boolean")
@@ -56,19 +56,19 @@ class ProductLanguage
     }
 
     /**
-     * @param Language $language
+     * @param Locale $locale
      */
-    public function setLanguage(Language $language)
+    public function setLocale(Locale $locale)
     {
-        $this->language = $language;
+        $this->locale = $locale;
     }
 
     /**
-     * @return Language
+     * @return Locale
      */
-    public function getLanguage()
+    public function getLocale()
     {
-        return $this->language;
+        return $this->locale;
     }
 
     /**
@@ -92,7 +92,7 @@ class ProductLanguage
      */
     public function getCode()
     {
-        return $this->language->getCode();
+        return $this->locale->getCode();
     }
 
     /**
@@ -102,6 +102,6 @@ class ProductLanguage
      */
     public function fromLocale($locale)
     {
-        return $this->language->fromLocale($locale);
+        return $this->locale->fromLocale($locale);
     }
 }

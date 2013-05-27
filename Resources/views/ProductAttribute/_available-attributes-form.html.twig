@@ -1,13 +1,20 @@
-<div class="btn-group">
-    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-        <i class="icon-plus"></i> Add attributes
-        <span class="caret"></span>
-    </a>
-    <div class="dropdown-menu pull-right">
-        <form method="POST" action="{{ action }}">
-            {{ form_widget(form.attributes) }}
-            {{ form_widget(form._token) }}
-            <input type="submit" value="Add" class="btn btn-mini" title="Add attributes"/>
-        </form>
-    </div>
-</div>
+<form id="{{ form.vars.id }}" name="{{ form.vars.name }}" class="hidden" method="POST" action="{{ action }}">
+    {{ form_widget(form.attributes) }}
+    {{ form_widget(form._token) }}
+</form>
+<script>
+$(function() {
+    $('#{{ form.attributes.vars.id }}').select2('destroy');
+
+    $('#{{ form.attributes.vars.id }}').pimMultiselect({
+        title: "{{ 'Add attributes'|trans }}",
+        placeholder: "{{ 'Search'|trans }}",
+        appendTo: '#attribute-buttons',
+        buttons: {
+            "{{ 'Save'|trans }}": function() {
+                $('#{{ form.vars.id }}').submit();
+            }
+        }
+    });
+})
+</script>

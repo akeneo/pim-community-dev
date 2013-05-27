@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\ConfigBundle\Entity\Language;
+use Pim\Bundle\ConfigBundle\Entity\Locale;
 
 /**
  * Flexible product
@@ -21,7 +21,7 @@ use Pim\Bundle\ConfigBundle\Entity\Language;
  * @ORM\Table(name="pim_product")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductRepository")
  * @UniqueEntity("sku");
- * @Assert\Callback(methods={"isLanguagesValid"})
+ * @Assert\Callback(methods={"isLocalesValid"})
  */
 class Product extends AbstractEntityFlexible
 {
@@ -48,9 +48,9 @@ class Product extends AbstractEntityFlexible
     protected $productFamily;
 
     /**
-     * @ORM\OneToMany(targetEntity="ProductLanguage", mappedBy="product", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="ProductLocale", mappedBy="product", cascade={"persist", "remove"})
      */
-    protected $languages;
+    protected $locales;
 
     /**
      * Redefine constructor
@@ -59,7 +59,7 @@ class Product extends AbstractEntityFlexible
     {
         parent::__construct();
 
-        $this->languages = new ArrayCollection;
+        $this->locales = new ArrayCollection();
     }
 
     /**
@@ -111,90 +111,73 @@ class Product extends AbstractEntityFlexible
     }
 
     /**
-     * Get languages
+     * Get locales
      *
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    public function getLanguages()
+    public function getLocales()
     {
-        return $this->languages;
+        return $this->locales;
     }
 
     /**
-     * Get Language
-     *
-     * @param Language $language
-     *
-     * @return Language
-     */
-    public function getLanguage(Language $language)
-    {
-        return $this->languages->filter(
-            function ($l) use ($language) {
-                return $language === $l->getLanguage();
-            }
-        )
-        ->first();
-    }
-
-    /**
-     * Get a collection of active languages
+     * Get a collection of active locales
      *
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    public function getActiveLanguages()
+    public function getActiveLocales()
     {
-        return $this->languages->filter(
-            function ($language) {
-                return $language->isActive();
+        return $this->locales->filter(
+            function ($locale) {
+                return $locale->isActive();
             }
         );
     }
 
     /**
-     * Set languages
+     * Set locales
      *
-     * @param ArrayCollection $languages
+     * @param ArrayCollection $locales
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Product
      */
-    public function setLanguages($languages)
+    public function setLocales($locales)
     {
-        $this->languages = $languages;
+        $this->locales = $locales;
 
         return $this;
     }
 
     /**
-     * Add language
+     * Add locale
      *
-     * @param Language $language Language
-     * @param boolean  $active   Predicate for language activated or not
+     * @param Locale $locale Locale
+     * @param boolean  $active   Predicate for locale activated or not
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Product
      */
-    public function addLanguage(Language $language, $active = false)
+    public function addLocale(Locale $locale, $active = false)
     {
-        $pl = new ProductLanguage;
+        $pl = new ProductLocale();
         $pl->setProduct($this);
-        $pl->setLanguage($language);
+        $pl->setLocale($locale);
         $pl->setActive($active);
 
-        $this->languages->add($pl);
+        $this->locales->add($pl);
 
         return $this;
     }
 
     /**
-     * Remove language
+     * Remove locale
      *
-     * @param Language $language Language
+     * @param Locale $locale Locale
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Product
      */
-    public function removeLanguage(Language $language)
+    public function removeLocale(Locale $locale)
     {
-        $this->languages->removeElement($this->getLanguage($language));
+        $this->locales->removeElement($this->getLocale($locale));
 
         return $this;
     }
@@ -258,15 +241,15 @@ class Product extends AbstractEntityFlexible
     }
 
     /**
-     * Make sure that at least one language has been added to the product
+     * Make sure that at least one locale has been added to the product
      *
      * @param ExecutionContext $context Execution Context
      */
-    public function isLanguagesValid(ExecutionContext $context)
+    public function isLocalesValid(ExecutionContext $context)
     {
-        if ($this->languages->count() == 0) {
+        if ($this->locales->count() == 0) {
             $context->addViolationAtPath(
-                $context->getPropertyPath() . '.languages',
+                $context->getPropertyPath() . '.locales',
                 'Please specify at least one activated locale'
             );
         }

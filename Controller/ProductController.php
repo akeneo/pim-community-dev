@@ -14,6 +14,7 @@ use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use YsTools\BackUrlBundle\Annotation\BackUrl;
 use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
@@ -28,30 +29,6 @@ use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
  */
 class ProductController extends Controller
 {
-
-    /**
-     * Get product manager
-     *
-     * @return FlexibleManager
-     */
-    protected function getProductManager()
-    {
-        $pm = $this->container->get('product_manager');
-        $pm->setLocale($this->getDataLocale());
-
-        return $pm;
-    }
-
-    /**
-     * Get data locale
-     *
-     * @return string
-     */
-    protected function getDataLocale()
-    {
-        return $this->getRequest()->get('dataLocale', 'en_US');
-    }
-
     /**
      * List product attributes
      *
@@ -76,16 +53,6 @@ class ProductController extends Controller
         }
 
         return $this->render($view, array('datagrid' => $datagrid->createView()));
-    }
-
-    /**
-     * Get dedicated PIM filesystem
-     *
-     * @return MediaManager
-     */
-    protected function getMediaManager()
-    {
-        return $this->container->get('pim_media_manager');
     }
 
     /**
@@ -122,7 +89,7 @@ class ProductController extends Controller
         if ($this->get('pim_product.form.handler.simple_product')->process($entity)) {
             $this->get('session')->getFlashBag()->add('success', 'Product successfully saved');
 
-            $dataLocale = $entity->getActiveLanguages()->first()->getLanguage()->getCode();
+            $dataLocale = $entity->getActiveLocales()->first()->getLocale()->getCode();
             $url = $this->generateUrl(
                 'pim_product_product_edit',
                 array('id' => $entity->getId(), 'dataLocale' => $dataLocale)
@@ -247,6 +214,85 @@ class ProductController extends Controller
     }
 
     /**
+     * Remove an attribute value
+     *
+     * @param int $productId
+     * @param int $attributeId
+     *
+     * @Route("/{productId}/attributes/{attributeId}")
+     * @Method("DELETE")
+     * @return array
+     */
+    public function removeProductValueAction($productId, $attributeId)
+    {
+        $values = $this->getProductValueRepository()->findBy(array(
+            'entity'    => $productId,
+            'attribute' => $attributeId,
+        ));
+
+        if (false === $this->checkValuesRemovability($values)) {
+            throw $this->createNotFoundException(sprintf(
+                'Could not find removable product attribute for product %d with id %d',
+                $productId, $attributeId
+            ));
+        }
+
+        $em = $this->getEntityManager();
+        foreach ($values as $value) {
+            $em->remove($value);
+        }
+        $em->flush();
+
+        $this->addFlash('success', 'Attribute was successfully removed.');
+
+        return $this->redirect($this->generateUrl(
+            'pim_product_product_edit', array('id' => $productId)
+        ));
+    }
+
+    /**
+     * Get product manager
+     *
+     * @return FlexibleManager
+     */
+    protected function getProductManager()
+    {
+        $pm = $this->container->get('product_manager');
+        $pm->setLocale($this->getDataLocale());
+
+        return $pm;
+    }
+
+    /**
+     * Get data locale
+     *
+     * @return string
+     */
+    protected function getDataLocale()
+    {
+        $dataLocale = $this->getRequest()->get('dataLocale');
+        if ($dataLocale === null) {
+            $dataLocale = (string) $this->getUser()->getValue('cataloglocale');
+        }
+        if (!$dataLocale) {
+            throw new \Exception('User must have a catalog locale defined');
+        }
+
+        return $dataLocale;
+    }
+
+
+    /**
+     * Get dedicated PIM filesystem
+     *
+     * @return MediaManager
+     */
+    protected function getMediaManager()
+    {
+        return $this->container->get('pim_media_manager');
+    }
+
+    /**
      * Get the ProductAttribute entity repository
      *
      * @return Pim\Bundle\ProductBundle\Entity\Repository\ProductAttributeRepository
@@ -278,6 +324,16 @@ class ProductController extends Controller
     protected function getChannelRepository()
     {
         return $this->getDoctrine()->getRepository('PimConfigBundle:Channel');
+    }
+
+    /**
+     * Get the Product Value repository
+     *
+     * @return Doctrine\ORM\EntityRepository
+     */
+    protected function getProductValueRepository()
+    {
+        return $this->getDoctrine()->getRepository('PimProductBundle:ProductValue');
     }
 
     /**
@@ -314,5 +370,27 @@ class ProductController extends Controller
         $this->getProductManager()->addMissingPrices($currencyManager, $product);
 
         return $product;
+    }
+
+    /**
+     * Check if values can be removed
+     *
+     * @param array $values
+     *
+     * @return boolean
+     */
+    private function checkValuesRemovability(array $values)
+    {
+        if (0 === count($values)) {
+            return false;
+        }
+
+        foreach ($values as $value) {
+            if (!$value->isRemovable()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

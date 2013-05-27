@@ -7,11 +7,15 @@
 
     {% block content %}
 
+    {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
+        'form': attributesForm,
+        'action': path('pim_product_product_addproductattributes', {'id': product.id})
+    } %}
+
     <form method="POST" class="form-horizontal" action="{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
 
         <div class="navigation clearfix navbar-extra navbar-extra-right">
             <div class="row">
-                {% if form.vars.value.id %}
                 <div class="pull-right">
                     <div class="pull-right">
                         <div class="pull-left btn-group icons-holder">
@@ -40,14 +44,14 @@
                                         <span class="caret"></span>
                                     </span>
                                     <ul class="dropdown-menu">
-                                        {% for language in form.vars.value.getActiveLanguages() %}
+                                        {% for locale in form.vars.value.getActiveLocales() %}
                                             <li>
-                                                <a href="?dataLocale={{ language.code }}" title="{{ language.code|lower }}">
+                                                <a href="?dataLocale={{ locale.code }}" title="{{ locale.code|lower }}">
                                                     <span class="code">
-                                                        {% if language.code == dataLocale %}
+                                                        {% if locale.code == dataLocale %}
                                                             <i class="icon-asterisk"></i>
                                                         {% endif %}
-                                                        {{ language.code|upper }}
+                                                        {{ locale.code|upper }}
                                                     </span>
                                                     <span class="title">{{ form.vars.value.sku }}</span>
                                                 </a>
@@ -57,7 +61,7 @@
                                 </div>
                             </div>
                             <ul class="inline">
-                               <li>{{ 'Family'|trans }}: {{ form.vars.value.productFamily|default('N/A'|trans) }}</li>
+                               <li>{{ 'Family'|trans }}: {{ form.vars.value.productFamily|capitalize|default('N/A'|trans) }}</li>
                                <li>{{ 'Last update'|trans }}: {{ form.vars.value.updated|date("Y-m-d") }}</li>
                                <li>{{ 'Created'|trans }}: {{ form.vars.value.created|date("Y-m-d") }}</li>
                            </ul>
@@ -67,15 +71,6 @@
                 <div class="pull-right product-updated">
                     <span id="updated" class="label label-warning">{{ 'There are unsaved changes.'|trans }}</span>
                 </div>
-                {% else %}
-                <div class="pull-left">
-                    <div class="customer-info well-small">
-                        <div class="customer-content">
-                            <h1 class="usser-name">{{ title }}</h1>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
             </div>
         </div>
         <div class="layout-content">
@@ -113,10 +108,6 @@
                         <div class="span10 tab-content">
 
                             <div id="attribute-buttons">
-                                {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
-                                    'form': attributesForm,
-                                    'action': path('pim_product_product_addproductattributes', {'id': product.id})
-                                } %}
                                 <div class="btn-group">
                                     <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                                         <i class="icon-cog"></i>
@@ -148,6 +139,7 @@
                                 </div>
                             </div>
                             {% set attributeCode = '' %}
+                            {% set displayRemoveAttributeLink = true %}
                             {% for group in product.orderedGroups %}
                             <div id="tabs-{{ group.id }}" class="tab-pane{% if loop.index == 1 %} active{% endif %}">
                                 <h3>{{ group.name|trans }}</h3>
@@ -162,9 +154,18 @@
                                             {% if attributeCode != formValue.vars.value.attribute.code %}
                                                 </div>
                                                 <div class="{{ formValue.vars.value.attribute.scopable ? 'scopable' : '' }}{{ formValue.vars.value.attribute.attributeType == 'pim_product_price_collection' ? 'currency' : '' }}" data-field="{{ formValue.vars.value.attribute.code }}">
+                                                {% set displayRemoveAttributeLink = true %}
                                             {% endif %}
                                             <div class="control-group">
                                                 {{ form_widget(formValue, {'attr': {'data-scope': formValue.vars.value.scope}} ) }}
+                                                {% if displayRemoveAttributeLink %}
+                                                    {% if formValue.vars.value.isRemovable() %}
+                                                        <a href="{{ path('pim_product_product_removeproductvalue', {'productId': formValue.vars.value.entity.id, 'attributeId': formValue.vars.value.attribute.id}) }}"
+                                                           class="btn btn-action btn-link remove-attribute"
+                                                           data-method="DELETE" data-confirm="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': formValue.vars.value.attribute.label}) }}">×</a>
+                                                    {% endif %}
+                                                    {% set displayRemoveAttributeLink = false %}
+                                                {% endif %}
                                             </div>
                                             {% set attributeCode = formValue.vars.value.attribute.code %}
                                         {% endif %}
@@ -180,7 +181,7 @@
                     <div class="tab-pane" id="associations"></div>
 
                     <div class="tab-pane" id="localisations">
-                        {{ form_row(form.languages) }}
+                        {{ form_row(form.locales) }}
                     </div>
 
                     <div class="tab-pane" id="history"></div>
@@ -248,7 +249,7 @@
         });
 
         // Destroy Select2 where it's not necessary
-        $('#pim_available_product_attributes_attributes, #default_channel').select2('destroy');
+        $('#default_channel').select2('destroy');
 
         $('#default_channel').change(function() {
             $('.scopable').scopableField({ defaultScope: $(this).val() });

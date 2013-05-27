@@ -65,18 +65,18 @@
                                 {{ form_row(form.unique, { 'label': 'Unique value'|trans }) }}
 
                                 <div class="control-group">
-                                    <label class="control-label" for="limitLanguages">{{ 'Locale specific'|trans }}</label>
+                                    <label class="control-label" for="limitLocales">{{ 'Locale specific'|trans }}</label>
                                     <div class="controls">
-                                        <div id="limitLanguages-switch" class="switch switch-small" data-on-label="{{ 'Yes'|trans }}" data-off-label="{{ 'No'|trans }}">
-                                            <input type="checkbox" name="limitLanguages" />
+                                        <div id="limitLocales-switch" class="switch switch-small" data-on-label="{{ 'Yes'|trans }}" data-off-label="{{ 'No'|trans }}">
+                                            <input type="checkbox" name="limitLocales" />
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="control-group" style="display: none;">
-                                    {{ form_label(form.availableLanguages, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                    {{ form_label(form.availableLocales, null, { 'label_attr': {'class': 'control-label'} }) }}
                                     <div class="controls">
-                                        {{ form_widget(form.availableLanguages, {'attr' : { 'class': 'span4' }}) }}
+                                        {{ form_widget(form.availableLocales, {'attr' : { 'class': 'span4' }}) }}
                                     </div>
                                 </div>
 
