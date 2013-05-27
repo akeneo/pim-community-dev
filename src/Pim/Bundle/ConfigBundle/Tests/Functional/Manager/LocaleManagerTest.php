@@ -1,8 +1,6 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Tests\Functional\Manager;
 
-use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
-
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
@@ -17,17 +15,12 @@ class LocaleManagerTest extends WebTestCase
 {
 
     /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    protected $em;
-
-    /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
      */
     protected $container;
 
     /**
-     * @var LocaleManager
+     * @var Pim\Bundle\ConfigBundle\Manager\LocaleManager
      */
     protected $localeManager;
 
@@ -45,9 +38,7 @@ class LocaleManagerTest extends WebTestCase
 
         $this->container = static::$kernel->getContainer();
 
-        $this->em = $this->container->get('doctrine.orm.entity_manager');
-
-        $this->localeManager = new LocaleManager($this->em);
+        $this->localeManager = $this->container->get('pim_config.manager.locale');
     }
 
     /**

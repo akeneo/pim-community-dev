@@ -17,17 +17,12 @@ class CurrencyManagerTest extends WebTestCase
 {
 
     /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    protected $em;
-
-    /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
      */
     protected $container;
 
     /**
-     * @var CurrencyManager
+     * @var Pim\Bundle\ConfigBundle\Manager\CurrencyManager
      */
     protected $currencyManager;
 
@@ -45,9 +40,7 @@ class CurrencyManagerTest extends WebTestCase
 
         $this->container = static::$kernel->getContainer();
 
-        $this->em = $this->container->get('doctrine.orm.entity_manager');
-
-        $this->currencyManager = new CurrencyManager($this->em);
+        $this->currencyManager = $this->container->get('pim_config.manager.currency');
     }
 
     /**

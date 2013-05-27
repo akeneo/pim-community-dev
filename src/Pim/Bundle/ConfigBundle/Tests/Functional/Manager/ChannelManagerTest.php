@@ -1,8 +1,6 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Tests\Functional\Manager;
 
-use Pim\Bundle\ConfigBundle\Manager\ChannelManager;
-
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
@@ -17,17 +15,12 @@ class ChannelManagerTest extends WebTestCase
 {
 
     /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    protected $em;
-
-    /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
      */
     protected $container;
 
     /**
-     * @var ChannelManager
+     * @var Pim\Bundle\ConfigBundle\Manager\ChannelManager
      */
     protected $channelManager;
 
@@ -45,9 +38,7 @@ class ChannelManagerTest extends WebTestCase
 
         $this->container = static::$kernel->getContainer();
 
-        $this->em = $this->container->get('doctrine.orm.entity_manager');
-
-        $this->channelManager = new ChannelManager($this->em);
+        $this->channelManager = $this->container->get('pim_config.manager.channel');
     }
 
     /**
