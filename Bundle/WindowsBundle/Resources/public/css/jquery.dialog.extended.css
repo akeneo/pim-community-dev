@@ -1,0 +1,76 @@
+.ui-dialog-titlebar-buttonpane {
+    position: absolute;
+    top: 50%;
+    right: 0.3em;
+    margin-top: -10px;
+    height: 18px;
+}
+
+.ui-dialog-titlebar-buttonpane button {
+    border: none;
+}
+
+.ui-dialog-maximized,
+.ui-dialog-normal {
+    position: fixed;
+}
+
+.ui-dialog-maximized .ui-dialog-titlebar,
+.ui-dialog-minimized .ui-dialog-titlebar {
+    cursor: default;
+}
+
+.ui-dialog-minimized {
+    float: left;
+    margin: 1px;
+    width: 200px !important;
+    position: static !important;
+}
+
+.ui-dialog-minimized .ui-dialog-title {
+    overflow: hidden;
+}
+
+.ui-dialog-collapsed .ui-dialog-content,
+.ui-dialog-collapsed .ui-dialog-buttonpane,
+.ui-dialog-minimized .ui-dialog-content,
+.ui-dialog-minimized .ui-dialog-buttonpane {
+    display: none !important;
+}
+
+.ui-dialog-collapsed  .ui-dialog-titlebar,
+.ui-dialog-minimized .ui-dialog-titlebar {
+    white-space: nowrap;
+}
+
+.ui-dialog .ui-dialog-titlebar-buttonpane>a {
+    float: right;
+}
+
+.ui-dialog .ui-dialog-titlebar-maximize,
+.ui-dialog .ui-dialog-titlebar-minimize,
+.ui-dialog .ui-dialog-titlebar-restore {
+    width: 19px;
+    padding: 1px;
+    height: 18px;
+}
+
+.ui-dialog .ui-dialog-titlebar-maximize span,
+.ui-dialog .ui-dialog-titlebar-minimize span,
+.ui-dialog .ui-dialog-titlebar-restore span {
+    display: block;
+    margin: 1px;
+
+}
+.ui-dialog .ui-dialog-titlebar-maximize:hover,
+.ui-dialog .ui-dialog-titlebar-maximize:focus,
+.ui-dialog .ui-dialog-titlebar-minimize:hover,
+.ui-dialog .ui-dialog-titlebar-minimize:focus,
+.ui-dialog .ui-dialog-titlebar-restore:hover,
+.ui-dialog .ui-dialog-titlebar-restore:focus {
+    padding: 0;
+}
+
+.ui-dialog .ui-dialog-titlebar ::selection {
+    background-color: transparent;
+}

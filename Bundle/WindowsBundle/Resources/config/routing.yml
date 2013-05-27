@@ -1,0 +1,8 @@
+oro_windows_api:
+    resource: Oro\Bundle\WindowsBundle\Controller\Api\WindowsStateController
+    type: rest
+    prefix: api/rest/{version}/
+    requirements:
+        version: latest|v1
+    defaults:
+        version: latest

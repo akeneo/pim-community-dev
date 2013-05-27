@@ -1,0 +1,22 @@
+{% if states %}
+    <div style="display: none" id="widget-states-container">
+        {% for stateId, state in states %}
+            {% if state.url %}
+                <div id="widget-restored-state-{{ stateId|default("none") }}">
+
+                    {% render state.cleanUrl %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <script type="text/javascript">
+        $(function(){
+            {% for stateId, state in states %}
+            new Oro.widget.DialogView({
+                model: new Oro.widget.StateModel({{ {'data': state, 'id': stateId}|json_encode|raw }})
+            }).render();
+            {% endfor %}
+        });
+    </script>
+{% endif %}
