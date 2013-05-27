@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ProductBundle\Controller;
 
+use Pim\Bundle\ProductBundle\Manager\ProductManager;
+
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -10,7 +12,6 @@ use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Pim\Bundle\ProductBundle\Manager\MediaManager;
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Form\Type\ProductType;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -251,7 +252,7 @@ class ProductController extends Controller
     /**
      * Get product manager
      *
-     * @return FlexibleManager
+     * @return ProductManager
      */
     protected function getProductManager()
     {

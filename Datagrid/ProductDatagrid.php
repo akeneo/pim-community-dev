@@ -13,8 +13,11 @@ use Oro\Bundle\GridBundle\Datagrid\Datagrid;
  */
 class ProductDatagrid extends Datagrid
 {
+
     /**
-     * Apply filter data to ProxyQuery
+     * Override apply filter to build query without locale and scope which are defined by the flexible manager
+     *
+     * {@inheritdoc}
      */
     protected function applyFilters()
     {
