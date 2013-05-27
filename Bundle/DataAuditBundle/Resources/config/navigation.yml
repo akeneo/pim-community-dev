@@ -1,0 +1,15 @@
+oro_menu_config:
+    items:
+        audit_list:
+            label: 'Data Audit'
+            route: 'oro_dataaudit_index'
+
+    tree:
+        application_menu:
+            children:
+                system_tab:
+                    children:
+                        audit_list: ~
+
+oro_titles:
+    oro_dataaudit_index: Data Audit

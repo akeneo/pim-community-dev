@@ -1,0 +1,11 @@
+oro_dataaudit_bundle:
+    resource:     "@OroDataAuditBundle/Controller"
+    type:         annotation
+    prefix:       /audit
+
+oro_dataaudit_api_history:
+    resource:     "@OroDataAuditBundle/Controller/Api/Rest/AuditController.php"
+    type:         rest
+    prefix:       api/rest/{version}/
+    defaults:
+        version:  latest

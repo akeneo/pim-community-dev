@@ -1,0 +1,31 @@
+{
+    "name": "oro/data-audit-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP DataAudit Bundle",
+    "keywords": ["BAP"],
+    "homepage": "https://github.com/laboro/UserBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.1.*",
+        "stof/doctrine-extensions-bundle": "dev-master",
+        "friendsofsymfony/rest-bundle": "0.11.*",
+        "nelmio/api-doc-bundle": "dev-master",
+        "escapestudios/wsse-authentication-bundle": "2.1.x-dev",
+        "oro/ui-bundle": "dev-master",
+        "oro/flexible-entity-bundle": "dev-master",
+        "oro/user-bundle": "dev-master",
+        "oro/soap-bundle": "dev-master",
+        "oro/grid-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\DataAuditBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/DataAuditBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
