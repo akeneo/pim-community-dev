@@ -13,7 +13,9 @@ $(function() {
         buttons: {
             "{{ 'Save'|trans }}": function() {
                 $('#{{ form.attributes.vars.id }}').multiselect('close');
-                $('#{{ form.vars.id }}').submit();
+                if ($('#{{ form.attributes.vars.id }}').val() !== null) {
+                    $('#{{ form.vars.id }}').submit();
+                }
             }
         }
     });
