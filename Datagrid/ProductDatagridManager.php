@@ -90,8 +90,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         );
 
         foreach ($this->getFlexibleAttributes() as $attribute) {
-
-            $backendType   = $attribute->getBackendType();
+            $backendType = $attribute->getBackendType();
             if (in_array($backendType, $excludedBackend)) {
                 continue;
             }
