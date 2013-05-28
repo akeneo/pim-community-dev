@@ -10,7 +10,7 @@ $(function() {
 
     // Toogle accordion icon
     $(document).delegate('.accordion', 'show hide', function(e) {
-        $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-chevron-up icon-chevron-down');
+        $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-collapse icon-expand');
     });
 });
 
