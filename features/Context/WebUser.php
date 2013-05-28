@@ -129,6 +129,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             if (!$pl) {
                 $product->addLocale($language, true);
             }
+            $this->getProductManager()->save($product);
         }
 
         $this->getEntityManager()->flush();
@@ -235,32 +236,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->openPage('Attribute', array(
             'id' => $attribute->getId(),
         ));
-    }
-
-    /**
-     * @Given /^availabe languages are (.*)$/
-     */
-    public function availabeLanguagesAre($languages)
-    {
-        $languages = $this->listToArray($languages);
-        $em        = $this->getEntityManager();
-        $products  = $em->getRepository('PimProductBundle:Product')->findAll();
-        $langs     = array();
-
-        foreach ($languages as $language) {
-            $langs[] = $this->getLocale($this->getLocaleCode($language));
-        }
-
-        foreach ($products as $product) {
-            foreach ($langs as $lang) {
-                $pl = $product->getLocale($lang);
-                if (!$pl) {
-                    $product->addLocale($lang);
-                }
-            }
-        }
-
-        $em->flush();
     }
 
     /**
@@ -406,9 +381,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @When /^I select (.*) languages?$/
+     * @When /^I add (.*) languages?$/
      */
-    public function iSelectLanguages($languages)
+    public function iAddLanguages($languages)
     {
         $languages = $this->listToArray($languages);
         foreach ($languages as $language) {
