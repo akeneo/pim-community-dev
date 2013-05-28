@@ -2,14 +2,7 @@
 
 namespace Pim\Bundle\ProductBundle\Controller;
 
-use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
-
-use Pim\Bundle\ProductBundle\Manager\ProductManager;
-
-use Pim\Bundle\ProductBundle\Entity\ProductPrice;
-
 use Symfony\Component\HttpFoundation\Response;
-
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Pim\Bundle\ProductBundle\Manager\MediaManager;
 use Pim\Bundle\ProductBundle\Entity\Product;
@@ -21,6 +14,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use YsTools\BackUrlBundle\Annotation\BackUrl;
 use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
+use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
+use Pim\Bundle\ProductBundle\Manager\ProductManager;
+use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 
 /**
  * Product Controller

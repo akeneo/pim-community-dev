@@ -106,7 +106,6 @@ class ProductTypeTest extends TypeTestCase
     public function testFormCreate()
     {
         $this->assertField('sku', 'text');
-        $this->assertField('productFamily', 'text');
 
         $this->assertEquals($this->flexibleClass, $this->form->getConfig()->getDataClass());
 

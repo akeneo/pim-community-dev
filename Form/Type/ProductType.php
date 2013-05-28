@@ -23,9 +23,7 @@ class ProductType extends FlexibleType
     {
         parent::addEntityFields($builder);
 
-        $builder
-            ->add('sku', 'text', array('required' => true, 'read_only' => $builder->getData()->getId()))
-            ->add('productFamily');
+        $builder->add('sku', 'text', array('required' => true, 'read_only' => $builder->getData()->getId()));
         $this->addLocaleField($builder);
     }
 
