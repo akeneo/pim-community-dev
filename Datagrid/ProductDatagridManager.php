@@ -13,6 +13,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
+use Pim\Bundle\ProductBundle\Filter\FilterInterface as PimFilterInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
@@ -153,7 +154,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
                 'label'       => $this->translator->trans('Data locale'),
                 'field_name'  => 'data_locale',
-                'filter_type' => FilterInterface::TYPE_CHOICE,
+//                 'filter_type' => FilterInterface::TYPE_CHOICE,
+                'filter_type' => PimFilterInterface::TYPE_LOCALE,
                 'required'    => false,
                 'sortable'    => true,
                 'filterable'  => true,
