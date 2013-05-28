@@ -86,6 +86,11 @@ class ProductFamily implements Translatable
     protected $translations;
 
     /**
+     * @ORM\ManyToOne(targetEntity="ProductAttribute")
+     */
+    protected $attributeAsLabel;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -173,6 +178,18 @@ class ProductFamily implements Translatable
     }
 
     /**
+     * Check if family has an attribute
+     *
+     * @param \Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute
+     *
+     * @return boolean
+     */
+    public function hasAttribute(\Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute)
+    {
+        return $this->attributes->contains($attribute);
+    }
+
+    /**
      * Set label
      *
      * @param string $label
@@ -248,5 +265,22 @@ class ProductFamily implements Translatable
         $this->translations->removeElement($translation);
 
         return $this;
+    }
+
+    public function setAttributeAsLabel($attributeAsLabel)
+    {
+        $this->attributeAsLabel = $attributeAsLabel;
+    }
+
+    public function getAttributeAsLabel()
+    {
+        return $this->attributeAsLabel;
+    }
+
+    public function getAttributeAsLabelChoices()
+    {
+        return $this->attributes->filter(function ($attribute) {
+            return 'oro_flexibleentity_text' === $attribute->getAttributeType();
+        })->toArray();
     }
 }

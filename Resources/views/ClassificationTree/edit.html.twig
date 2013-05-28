@@ -15,18 +15,14 @@
     <div class="row-fluid">
         {% include 'PimProductBundle:ClassificationTree:_tree-management-sidebar.html.twig' %}
         
-        <div id="form-tab" class="span10">
-            <form action="{{ form.vars.value.id ?
-                path('pim_product_classificationtree_edit', { id: form.vars.value.id }) :
-                path('pim_product_classificationtree_create', { parent: parentId }) }}" method="POST" class="form-horizontal">
-                
-                <div class="row-fluid">
-                    <h3 class="pull-left">{{ title|trans }}</h3>
-                    <div class="pull-right">
-                        {% if form.vars.value.id %}
-                            <a class="btn" href="#" id="btn-delete-segment">{{ 'Delete' | trans }}</a>
-                        {% endif %}
-                        <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
+        <div class="tab-pane active" id="form-properties">
+            <div id="accordion1" class="accordion">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data=parent="#accordion1" href="#collapseOne">
+                            <i class="icon-collapse"></i>
+                            {{ "General Properties"|trans }}
+                        </a>
                     </div>
                 </div>
                 
@@ -43,69 +39,38 @@
                         </div>
                     </div>
                 </div>
-                
-                <div class="row-fluid tab-content">
-                    {% if form.vars.errors|length %}
-                        <div class="alert alert-error">
-                            {{ form_errors(form) }}
-                        </div>
-                    {% endif %}
-                    
-                    <div class="tab-pane active" id="form-properties">
-                        <div id="accordion1" class="accordion">
-                            <div class="accordion-group">
-                                <div class="accordion-heading">
-                                    <a class="accordion-toggle" data-toggle="collapse" data=parent="#accordion1" href="#collapseOne">
-                                        <i class="icon-chevron-up"></i>
-                                        {{ "General Properties"|trans }}
-                                    </a>
-                                </div>
-                                <div id="collapseOne" class="accordion-body in">
-                                    <div class="accordion-inner">
-                                        <div class="control-group">
-                                            {{ form_row(form.code) }}
-                                            {% if form.isDynamic is defined %}
-                                                {{ form_row(form.isDynamic) }}
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="accordion-group">
-                                <div class="accordion-heading">
-                                    <a class="accordion-toggle" data-toggle="collapse" data=parent="#accordion1" href="#collapseTwo">
-                                        <i class="icon-chevron-up"></i>
-                                        {{ "Node values"|trans }}
-                                    </a>
-                                </div>
-                                <div id="collapseTwo" class="accordion-body in">
-                                    <div class="accordion-inner">
-                                        <div class="control-group">
-                                            {{ form_row(form.title) }}
-                                        </div>
-                                    </div>
-                                </div>
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data=parent="#accordion1" href="#collapseTwo">
+                            <i class="icon-collapse"></i>
+                            {{ "Node values"|trans }}
+                        </a>
+                    </div>
+                    <div id="collapseTwo" class="accordion-body in">
+                        <div class="accordion-inner">
+                            <div class="control-group">
+                                {{ form_row(form.title) }}
                             </div>
                         </div>
                     </div>
-                    
-                    {% if parentId %}
-                    <div class="tab-pane" id="form-rules">
-                        <div id="accordion2" class="accordion">
-                            <div class="accordion-group">
-                                <div class="accordion-heading">
-                                    <a class="accordion-toggle" data-toggle="collapse" data=parent="#accordion2" href="#collapseThree">
-                                        <i class="icon-chevron-up"></i>
-                                        {{ "Rules"|trans }}
-                                    </a>
-                                </div>
-                                <div id="collapseThree" class="accordion-body in">
-                                    <div class="accordion-inner">
-                                        <div class="control-group">
-                                            Rules
-                                        </div>
-                                    </div>
-                                </div>
+                </div>
+            </div>
+        </div>
+        
+        {% if parentId %}
+        <div class="tab-pane" id="form-rules">
+            <div id="accordion2" class="accordion">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data=parent="#accordion2" href="#collapseThree">
+                            <i class="icon-collapse"></i>
+                            {{ "Rules"|trans }}
+                        </a>
+                    </div>
+                    <div id="collapseThree" class="accordion-body in">
+                        <div class="accordion-inner">
+                            <div class="control-group">
+                                Rules
                             </div>
                         </div>
                     </div>

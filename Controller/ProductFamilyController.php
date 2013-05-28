@@ -3,6 +3,7 @@ namespace Pim\Bundle\ProductBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Entity\ProductFamily;
 use Pim\Bundle\ProductBundle\Form\Type\ProductFamilyType;
@@ -100,7 +101,7 @@ class ProductFamilyController extends Controller
                 $this->getEntityManager()->persist($family);
                 $this->getEntityManager()->flush();
 
-                $this->addFlash('success', 'Product family successfully updated');
+                $this->addFlash('success', 'Product family successfully updated.');
 
                 return $this->redirect($this->generateUrl('pim_product_productfamily_edit', array('id' => $id)));
             }
@@ -161,14 +162,47 @@ class ProductFamilyController extends Controller
 
         $this->getEntityManager()->flush();
 
-        return $this->redirect(
-            $this->generateUrl(
-                'pim_product_productfamily_edit', array('id' => $family->getId())
-            )
-        );
+        return $this->redirectToProductFamilyAttributesTab($family->getId());
     }
 
-    public function findFamilyOr404($id)
+    /**
+     * @Route("/{familyId}/attribute/{attributeId}")
+     * @Method("DELETE")
+     */
+    public function removeProductAttribute($familyId, $attributeId)
+    {
+        $family    = $this->findFamilyOr404($familyId);
+        $attribute = $this->findAttributeOr404($attributeId);
+
+        if (false === $family->hasAttribute($attribute)) {
+            throw $this->createNotFoundException(sprintf(
+                'Attribute "%s" is not attached to "%s"',
+                $attribute, $family
+            ));
+        }
+
+        if ($attribute === $family->getAttributeAsLabel()) {
+            $this->addFlash('error', 'You cannot remove this attribute because it\'s used as label for the family.');
+
+            return $this->redirectToProductFamilyAttributesTab($family->getId());
+        }
+
+        $family->removeAttribute($attribute);
+        $this->getEntityManager()->flush();
+
+        $this->addFlash('success', 'The family is successfully updated.');
+
+        return $this->redirectToProductFamilyAttributesTab($family->getId());
+    }
+
+    protected function redirectToProductFamilyAttributesTab($id)
+    {
+        return $this->redirect(sprintf('%s#attributes', $this->generateUrl(
+            'pim_product_productfamily_edit', array('id' => $id)
+        )));
+    }
+
+    protected function findFamilyOr404($id)
     {
         $family = $this->getProductFamilyRepository()->findOneWithAttributes($id);
         if (!$family) {
@@ -180,14 +214,18 @@ class ProductFamilyController extends Controller
         return $family;
     }
 
-    /**
-     * Get entity manager
-     *
-     * @return \Doctrine\ORM\EntityManager
-     */
-    protected function getEntityManager()
+    protected function findAttributeOr404($id)
     {
-        return $this->getDoctrine()->getEntityManager();
+        $attribute = $this->getProductAttributeRepository()->findOneBy(array(
+            'id' => $id
+        ));
+        if (!$attribute) {
+            throw $this->createNotFoundException(sprintf(
+                'Couldn\'t find a product family with id %d', $id
+            ));
+        }
+
+        return $attribute;
     }
 
     /**

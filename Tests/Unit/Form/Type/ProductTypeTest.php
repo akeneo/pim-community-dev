@@ -44,6 +44,13 @@ class ProductTypeTest extends TypeTestCase
             array('addDynamicAttributesFields'),
             array($flexibleManager, 'text') // use text as value form alias
         );
+
+        $type = $this->getMock(
+            'Pim\Bundle\ProductBundle\Form\Type\ProductType',
+            array('addLocaleField'),
+            array($flexibleManager, 'text') // use text as value form alias
+        );
+
         $this->form = $this->factory->create($type, new Product());
     }
 
@@ -99,7 +106,6 @@ class ProductTypeTest extends TypeTestCase
     public function testFormCreate()
     {
         $this->assertField('sku', 'text');
-        $this->assertField('productFamily', 'text');
 
         $this->assertEquals($this->flexibleClass, $this->form->getConfig()->getDataClass());
 

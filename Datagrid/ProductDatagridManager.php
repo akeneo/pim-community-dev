@@ -1,14 +1,17 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
+use Pim\Bundle\ConfigBundle\Manager\ChannelManager;
+use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
+use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
+use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Oro\Bundle\GridBundle\Property\FieldProperty;
-
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-use Oro\Bundle\GridBundle\Filter\FilterInterface;
+use Pim\Bundle\ProductBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
@@ -23,6 +26,22 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
  */
 class ProductDatagridManager extends FlexibleDatagridManager
 {
+
+    /**
+     * @staticvar string
+     */
+    const LOCALE_FIELD_NAME = 'locale';
+
+    /**
+     * @staticvar string
+     */
+    const SCOPE_FIELD_NAME  = 'scope';
+
+    /**
+     * @var LocaleManager
+     */
+    protected $localeManager;
+
     /**
      * get properties
      * @return array
@@ -40,7 +59,12 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
         return array(
             new FieldProperty($fieldId),
-            new UrlProperty('edit_link', $this->router, 'pim_product_product_edit', array('id')),
+            new UrlProperty(
+                'edit_link',
+                $this->router,
+                'pim_product_product_edit',
+                array('id', 'dataLocale' => self::LOCALE_FIELD_NAME)
+            ),
             new UrlProperty('delete_link', $this->router, 'pim_product_product_remove', array('id')),
         );
     }
@@ -75,8 +99,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         );
 
         foreach ($this->getFlexibleAttributes() as $attribute) {
-
-            $backendType   = $attribute->getBackendType();
+            $backendType = $attribute->getBackendType();
             if (in_array($backendType, $excludedBackend)) {
                 continue;
             }
@@ -115,6 +138,72 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
             $fieldsCollection->add($field);
         }
+
+        $field = $this->createLocaleField();
+        $fieldsCollection->add($field);
+
+        $field = $this->createScopeField();
+        $fieldsCollection->add($field);
+    }
+
+    /**
+     * Create locale field description for datagrid
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createLocaleField()
+    {
+        $activeLocaleCodes = $this->localeManager->getActiveCodesWithUserLocale();
+
+        $field = new FieldDescription();
+        $field->setName(self::LOCALE_FIELD_NAME);
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
+                'label'       => $this->translator->trans('Data Locale'),
+                'field_name'  => 'data_locale',
+                'filter_type' => FilterInterface::TYPE_LOCALE,
+                'required'    => false,
+                'filterable'  => true,
+                'show_column' => false,
+                'show_filter' => true,
+                'field_options' => array(
+                    'choices' => array_combine($activeLocaleCodes, $activeLocaleCodes)
+                ),
+            )
+        );
+
+        return $field;
+    }
+
+    /**
+     * Create scope field description for datagrid
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createScopeField()
+    {
+        $channelChoices = $this->channelManager->getChannelChoiceWithUserChannel();
+
+        $field = new FieldDescription();
+        $field->setName(self::SCOPE_FIELD_NAME);
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
+                'label'       => $this->translator->trans('Scope'),
+                'field_name'  => 'scope',
+                'filter_type' => FilterInterface::TYPE_SCOPE,
+                'required'    => false,
+                'filterable'  => true,
+                'show_column' => false,
+                'show_filter' => true,
+                'field_options' => array(
+                    'choices' => $channelChoices
+                ),
+            )
+        );
+
+        return $field;
     }
 
     /**
@@ -162,36 +251,75 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
-     * Override to add support for price and metric
-     *
-     * @param string $flexibleFieldType
-     *
-     * @return string
-     * @throws \LogicException
+     * {@inheritdoc}
      */
-    public function convertFlexibleTypeToFieldType($flexibleFieldType)
+    public function setFlexibleManager(FlexibleManager $flexibleManager)
     {
-        if (!isset(self::$typeMatches[$flexibleFieldType]['field'])) {
-            throw new \LogicException('Unknown flexible backend field type.');
-        }
+        $this->flexibleManager = $flexibleManager;
 
-        return self::$typeMatches[$flexibleFieldType]['field'];
+        $this->flexibleManager->setLocale($this->getLocaleFilterValue());
+        $this->flexibleManager->setScope($this->getScopeFilterValue());
     }
 
     /**
-     * Override to add support for price and metric
-     *
-     * @param string $flexibleFieldType
+     * Get data locale value from parameters
      *
      * @return string
-     * @throws \LogicException
      */
-    public function convertFlexibleTypeToFilterType($flexibleFieldType)
+    public function getLocaleFilterValue()
     {
-        if (!isset(self::$typeMatches[$flexibleFieldType]['filter'])) {
-            throw new \LogicException('Unknown flexible backend filter type.');
+        $filtersArray = $this->parameters->get(ParametersInterface::FILTER_PARAMETERS);
+        if (isset($filtersArray[self::LOCALE_FIELD_NAME]) && isset($filtersArray[self::LOCALE_FIELD_NAME]['value'])) {
+            $dataLocale = $filtersArray[self::LOCALE_FIELD_NAME]['value'];
+        } else {
+            $dataLocale = $this->flexibleManager->getLocale();
         }
 
-        return self::$typeMatches[$flexibleFieldType]['filter'];
+        return $dataLocale;
+    }
+
+    /**
+     * Get scope value from parameters
+     *
+     * @return string
+     */
+    public function getScopeFilterValue()
+    {
+        $filtersArray = $this->parameters->get(ParametersInterface::FILTER_PARAMETERS);
+        if (isset($filtersArray[self::SCOPE_FIELD_NAME]) && isset($filtersArray[self::SCOPE_FIELD_NAME]['value'])) {
+            $dataScope = $filtersArray[self::SCOPE_FIELD_NAME]['value'];
+        } else {
+            $dataScope = $this->flexibleManager->getScope();
+        }
+
+        return $dataScope;
+    }
+
+    /**
+     * Set locale manager
+     *
+     * @param LocaleManager $localeManager
+     *
+     * @return \Pim\Bundle\ProductBundle\Datagrid\ProductDatagridManager
+     */
+    public function setLocaleManager(LocaleManager $localeManager)
+    {
+        $this->localeManager = $localeManager;
+
+        return $this;
+    }
+
+    /**
+     * Set channel manager
+     *
+     * @param ChannelManager $channelManager
+     *
+     * @return \Pim\Bundle\ProductBundle\Datagrid\ProductDatagridManager
+     */
+    public function setChannelManager(ChannelManager $channelManager)
+    {
+        $this->channelManager = $channelManager;
+
+        return $this;
     }
 }

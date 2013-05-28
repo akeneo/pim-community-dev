@@ -102,4 +102,39 @@ class ProductFamilyTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductFamily', $entity);
     }
+
+    public function testGetSetAttributeAsLabel()
+    {
+        $family    = new ProductFamily;
+        $attribute = $this->getAttributeMock();
+
+        $this->assertNull($family->getAttributeAsLabel());
+        $family->setAttributeAsLabel($attribute);
+        $this->assertEquals($attribute, $family->getAttributeAsLabel());
+    }
+
+    public function testGetAttributeAsLabelChoices()
+    {
+        $family  = new ProductFamily;
+        $name    = $this->getAttributeMock();
+        $address = $this->getAttributeMock();
+        $phone   = $this->getAttributeMock('phone');
+
+        $family->addAttribute($name);
+        $family->addAttribute($address);
+        $family->addAttribute($phone);
+
+        $this->assertEquals(array($name, $address), $family->getAttributeAsLabelChoices());
+    }
+
+    private function getAttributeMock($type = 'oro_flexibleentity_text')
+    {
+        $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute', array('getAttributeType'));
+
+        $attribute->expects($this->any())
+                  ->method('getAttributeType')
+                  ->will($this->returnValue($type));
+
+        return $attribute;
+    }
 }

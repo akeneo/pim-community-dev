@@ -239,7 +239,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     {
         $product = $this->getMock(
             'Pim\Bundle\ProductBundle\Entity\Product',
-            array('getValues', 'getActiveLocales', 'addValue', 'getSku')
+            array('getValues', 'getLocales', 'addValue', 'getSku')
         );
 
         $product->expects($this->any())

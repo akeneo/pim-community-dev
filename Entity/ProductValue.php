@@ -186,6 +186,54 @@ class ProductValue extends AbstractEntityFlexibleValue
         return $this;
     }
 
+    /**
+     * Add missing prices
+     *
+     * @param array $activeCurrencies the active currency codes
+     */
+    public function addMissingPrices($activeCurrencies)
+    {
+        $existingCurrencies = array();
+        foreach ($this->getPrices() as $price) {
+            $existingCurrencies[]= $price->getCurrency();
+        }
+        $newCurrencies = array_diff($activeCurrencies, $existingCurrencies);
+        foreach ($newCurrencies as $currency) {
+            $price = new ProductPrice();
+            $price->setCurrency($currency);
+            $this->addPrice($price);
+        }
+    }
+
+    /**
+     * Sort price, default currency is first
+     *
+     * @param string $defaultCurrencyCode
+     */
+    public function sortPrices($defaultCurrencyCode)
+    {
+        // get default price by currency
+        $defaultPrice = $this->getPrices()->filter(
+            function ($price) use ($defaultCurrencyCode) {
+                return ($price->getCurrency() === $defaultCurrencyCode);
+            }
+        );
+        $defaultPrice = $defaultPrice->first();
+        // sort prices
+        $prices = $this->getPrices();
+        $sortedPrices = new ArrayCollection();
+        $sortedPrices[]= $defaultPrice;
+        foreach ($prices as $price) {
+            if ($price->getCurrency() !== $defaultCurrencyCode) {
+                $sortedPrices[]= $price;
+            }
+        }
+        $this->setPrices($sortedPrices);
+    }
+
+    /**
+     * @return boolean
+     */
     public function isRemovable()
     {
         if (null === $this->entity || null === $this->entity->getProductFamily()) {
@@ -195,6 +243,9 @@ class ProductValue extends AbstractEntityFlexibleValue
         return !$this->entity->getProductFamily()->getAttributes()->contains($this->getAttribute());
     }
 
+    /**
+     * @return Product
+     */
     public function getEntity()
     {
         return $this->entity;

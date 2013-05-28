@@ -95,6 +95,69 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($otherGroup, next($groups));
     }
 
+    public function testSkuLabel()
+    {
+        $product = new Product();
+        $product->setSku('foo');
+        $this->assertEquals('foo', $product->getLabel());
+    }
+
+    public function testAttributeLabel()
+    {
+        $attributeAsLabel = $this->getAttributeMock();
+        $family           = $this->getFamilyMock($attributeAsLabel);
+        $value            = $this->getValueMock($attributeAsLabel, 'bar');
+
+        $product = new Product();
+        $product->setSku('foo');
+        $product->setProductFamily($family);
+        $product->addValue($value);
+
+        $this->assertEquals('bar', $product->getLabel());
+    }
+
+    public function testNullValuedAttributeLabel()
+    {
+        $attributeAsLabel = $this->getAttributeMock();
+        $family           = $this->getFamilyMock($attributeAsLabel);
+        $value            = $this->getValueMock($attributeAsLabel, null);
+
+        $product = new Product();
+        $product->setSku('foo');
+        $product->setProductFamily($family);
+        $product->addValue($value);
+
+        $this->assertEquals('foo', $product->getLabel());
+    }
+
+    public function testEmptyStringValuedAttributeLabel()
+    {
+        $attributeAsLabel = $this->getAttributeMock();
+        $family           = $this->getFamilyMock($attributeAsLabel);
+        $value            = $this->getValueMock($attributeAsLabel, '');
+
+        $product = new Product();
+        $product->setSku('foo');
+        $product->setProductFamily($family);
+        $product->addValue($value);
+
+        $this->assertEquals('foo', $product->getLabel());
+    }
+
+    public function testNullAttributeLabel()
+    {
+        $attribute = $this->getAttributeMock();
+        $family    = $this->getFamilyMock(null);
+        $value     = $this->getValueMock($attribute, 'bar');
+
+        $product = new Product();
+        $product->setSku('foo');
+        $product->setProductFamily($family);
+        $product->addValue($value);
+
+        $this->assertEquals('foo', $product->getLabel());
+    }
+
     private function getAttributeMock($group = null)
     {
         $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute', array('getGroup'));
@@ -106,12 +169,17 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         return $attribute;
     }
 
-    private function getValueMock($attribute)
+    private function getValueMock($attribute, $data = null)
     {
-        $value = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductValue', array('getAttribute'));
+        $value = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductValue', array('getAttribute', 'getData'));
+
         $value->expects($this->any())
               ->method('getAttribute')
               ->will($this->returnValue($attribute));
+
+        $value->expects($this->any())
+              ->method('getData')
+              ->will($this->returnValue($data));
 
         return $value;
     }
@@ -129,5 +197,16 @@ class ProductTest extends \PHPUnit_Framework_TestCase
               ->will($this->returnValue($name));
 
         return $group;
+    }
+
+    private function getFamilyMock($attributeAsLabel)
+    {
+        $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute', array('getAttributeAsLabel'));
+
+        $attribute->expects($this->any())
+                  ->method('getAttributeAsLabel')
+                  ->will($this->returnValue($attributeAsLabel));
+
+        return $attribute;
     }
 }

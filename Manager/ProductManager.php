@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ProductBundle\Manager;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 
 use Pim\Bundle\ConfigBundle\Manager\CurrencyManager;
@@ -69,7 +71,7 @@ class ProductManager extends FlexibleManager
     private function addMissingAttributeValues(Product $product)
     {
         $channels  = $this->getChannels();
-        $locales = $product->getActiveLocales();
+        $locales = $product->getLocales();
         $attributes = $product->getAttributes();
 
         if ($family = $product->getProductFamily()) {
@@ -127,24 +129,17 @@ class ProductManager extends FlexibleManager
     /**
      * Add missing prices (a price per currency)
      *
-     * @param CurrencyManager $manager the currency manager
-     * @param Product         $product the product
+     * @param CurrencyManager $manager         the currency manager
+     * @param Product         $product         the product
+     * @param Currency        $defaultCurrency the first to display
      */
-    public function addMissingPrices(CurrencyManager $manager, Product $product)
+    public function addMissingPrices(CurrencyManager $manager, Product $product, $defaultCurrency)
     {
         foreach ($product->getValues() as $value) {
             if ($value->getAttribute()->getAttributeType() === 'pim_product_price_collection') {
                 $activeCurrencies = $manager->getActiveCodes();
-                $existingCurrencies = array();
-                foreach ($value->getPrices() as $price) {
-                    $existingCurrencies[]= $price->getCurrency();
-                }
-                $newCurrencies = array_diff($activeCurrencies, $existingCurrencies);
-                foreach ($newCurrencies as $currency) {
-                    $price = new ProductPrice();
-                    $price->setCurrency($currency);
-                    $value->addPrice($price);
-                }
+                $value->addMissingPrices($activeCurrencies);
+                $value->sortPrices($defaultCurrency->getCode());
             }
         }
     }
