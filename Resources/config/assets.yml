@@ -1,0 +1,3 @@
+js:
+  - '@PimUIBundle/Resources/public/js/app/filter/localefilter.js'
+  - '@PimUIBundle/Resources/public/js/app/filter/scopefilter.js'
