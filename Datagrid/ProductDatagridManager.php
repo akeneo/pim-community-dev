@@ -28,6 +28,16 @@ class ProductDatagridManager extends FlexibleDatagridManager
 {
 
     /**
+     * @staticvar string
+     */
+    const LOCALE_FIELD_NAME = 'locale';
+
+    /**
+     * @staticvar string
+     */
+    const SCOPE_FIELD_NAME  = 'scope';
+
+    /**
      * @var LocaleManager
      */
     protected $localeManager;
@@ -53,7 +63,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'edit_link',
                 $this->router,
                 'pim_product_product_edit',
-                array('id', 'dataLocale' => 'locale')
+                array('id', 'dataLocale' => self::LOCALE_FIELD_NAME)
             ),
             new UrlProperty('delete_link', $this->router, 'pim_product_product_remove', array('id')),
         );
@@ -146,7 +156,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $activeLocaleCodes = $this->localeManager->getActiveCodesWithUserLocale();
 
         $field = new FieldDescription();
-        $field->setName('locale');
+        $field->setName(self::LOCALE_FIELD_NAME);
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
@@ -177,7 +187,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $channelChoices = $this->channelManager->getChannelChoices();
 
         $field = new FieldDescription();
-        $field->setName('scope');
+        $field->setName(self::SCOPE_FIELD_NAME);
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
@@ -261,8 +271,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
     public function getLocaleFilterValue()
     {
         $filtersArray = $this->parameters->get(ParametersInterface::FILTER_PARAMETERS);
-        if (isset($filtersArray['locale']) && isset($filtersArray['locale']['value'])) {
-            $dataLocale = $filtersArray['locale']['value'];
+        if (isset($filtersArray[self::LOCALE_FIELD_NAME]) && isset($filtersArray[self::LOCALE_FIELD_NAME]['value'])) {
+            $dataLocale = $filtersArray[self::LOCALE_FIELD_NAME]['value'];
         } else {
             $dataLocale = $this->flexibleManager->getLocale();
         }
@@ -278,8 +288,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
     public function getScopeFilterValue()
     {
         $filtersArray = $this->parameters->get(ParametersInterface::FILTER_PARAMETERS);
-        if (isset($filtersArray['scope']) && isset($filtersArray['scope']['value'])) {
-            $dataScope = $filtersArray['scope']['value'];
+        if (isset($filtersArray[self::SCOPE_FIELD_NAME]) && isset($filtersArray[self::SCOPE_FIELD_NAME]['value'])) {
+            $dataScope = $filtersArray[self::SCOPE_FIELD_NAME]['value'];
         } else {
             $dataScope = $this->flexibleManager->getScope();
         }
