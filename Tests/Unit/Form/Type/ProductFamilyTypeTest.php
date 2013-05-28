@@ -53,6 +53,7 @@ class ProductFamilyTypeTest extends TypeTestCase
     {
         // Assert fields
         $this->assertField('code', 'text');
+        $this->assertField('attributeAsLabel', 'choice');
 
         // Assert option class
         $this->assertEquals(

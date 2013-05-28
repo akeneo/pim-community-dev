@@ -21,6 +21,8 @@ class ProductFamilyType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $data = $builder->getData() ?: null;
+
         $builder
             ->add('code')
             ->add('name', 'pim_translatable_field', array(
@@ -28,6 +30,9 @@ class ProductFamilyType extends AbstractType
                 'translation_class' => 'Pim\\Bundle\\ProductBundle\\Entity\\ProductFamilyTranslation',
                 'entity_class'      => 'Pim\\Bundle\\ProductBundle\\Entity\\ProductFamily',
                 'property_path'     => 'translations'
+            ))
+            ->add('attributeAsLabel', 'choice', array(
+                'choices' => $data ? $data->getAttributeAsLabelChoices() : array(),
             ))
         ;
     }
