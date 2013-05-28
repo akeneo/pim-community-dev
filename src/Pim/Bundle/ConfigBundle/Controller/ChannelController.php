@@ -137,6 +137,8 @@ class ChannelController extends Controller
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
+            $this->get('session')->getFlashBag()->add('success', 'Channel successfully removed');
+
             return $this->redirect($this->generateUrl('pim_config_channel_index'));
         }
     }
