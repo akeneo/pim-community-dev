@@ -713,6 +713,18 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
+    /**
+     * @Given /^I choose "([^"]*)" as the label of the family$/
+     */
+    public function iChooseAsTheLabelOfTheFamily($attribute)
+    {
+        $this
+            ->getPage('Family edit')
+            ->selectAttributeAsLabel($attribute)
+            ->save()
+        ;
+    }
+
     private function openPage($page, array $options = array())
     {
         $this->currentPage = $page;

@@ -123,4 +123,11 @@ class FamilyEdit extends Page
             return $option->getText();
         }, $this->getElement('Attribute as label choices')->findAll('css', 'option'));
     }
+
+    public function selectAttributeAsLabel($attribute)
+    {
+        $this->getElement('Attribute as label choices')->selectOption($attribute);
+
+        return $this;
+    }
 }
