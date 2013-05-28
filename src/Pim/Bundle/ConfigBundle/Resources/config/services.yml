@@ -23,7 +23,7 @@ services:
         
     pim_config.manager.channel:
         class:     %pim_config.manager.channel.class%
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: [@doctrine.orm.entity_manager, @security.context]
 
     # Form
     pim_config.form.channel:

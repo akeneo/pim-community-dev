@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Manager;
 
+use Symfony\Component\Security\Core\SecurityContext;
+
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
@@ -20,12 +22,19 @@ class ChannelManager
     protected $objectManager;
 
     /**
-     * Constructor
-     * @param ObjectManager $objectManager
+     * @var \Symfony\Component\Security\Core\SecurityContext
      */
-    public function __construct(ObjectManager $objectManager)
+    protected $securityContext;
+
+    /**
+     * Constructor
+     * @param ObjectManager   $objectManager   the storage manager
+     * @param SecurityContext $securityContext the security context
+     */
+    public function __construct(ObjectManager $objectManager, SecurityContext $securityContext)
     {
         $this->objectManager = $objectManager;
+        $this->securityContext = $securityContext;
     }
 
     /**
@@ -58,5 +67,34 @@ class ChannelManager
         }
 
         return $choices;
+    }
+
+    /**
+     * Get channel choices with user channel code in first
+     *
+     * @return multitype:string
+     */
+    public function getChannelChoiceWithUserChannel()
+    {
+        $channelChoices  = $this->getChannelChoices();
+        $userChannelCode = $this->getUserChannelCode();
+        $userChannelValue = $channelChoices[$userChannelCode];
+
+        $newChannelChoices = array($userChannelCode => $userChannelValue);
+        unset($channelChoices[$userChannelCode]);
+
+        return array_merge($newChannelChoices, $channelChoices);
+    }
+
+    /**
+     * Get user channel code
+     *
+     * @return string
+     */
+    public function getUserChannelCode()
+    {
+        $user = $this->securityContext->getToken()->getUser();
+
+        return (string) $user->getValue('catalogscope');
     }
 }
