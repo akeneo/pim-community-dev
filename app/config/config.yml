@@ -167,7 +167,11 @@ oro_ui:
 oro_user:
     settings:
         name_format:
-          value:              %%last%%, %%first%%
+            value:              %%last%%, %%first%%
+
+oro_filter:
+    twig:
+        layout: PimUIBundle:Filter:layout.js.twig
 
 knp_gaufrette:
     adapters:
