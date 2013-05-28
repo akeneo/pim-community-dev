@@ -38,7 +38,7 @@
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
-                            <i class="icon-chevron-up"></i>
+                            <i class="icon-collapse"></i>
                             {{ "General Properties"|trans }}
                         </a>
                     </div>
@@ -54,7 +54,7 @@
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-                            <i class="icon-chevron-up"></i>
+                            <i class="icon-collapse"></i>
                             {{ "Locale values"|trans }}
                         </a>
                     </div>
@@ -85,14 +85,14 @@
                     {% if family.attributes|length > 0 %}
                         {% set attributeGroup = family.attributes.first.group %}
                         <tr class="group">
-                            <td colspan="2"><i class="icon-chevron-down"></i> {{ attributeGroup ? attributeGroup.name : 'Other'|trans }}</td>
+                            <td colspan="2"><i class="icon-expand"></i> {{ attributeGroup ? attributeGroup.name : 'Other'|trans }}</td>
                         </tr>
                         {% for attribute in family.attributes %}
                             {% if attribute.group != attributeGroup %}
                             </tbody>
                             <tbody>
                                 <tr class="group">
-                                    <td colspan="2"><i class="icon-chevron-down"></i> {{ attribute.group ? attribute.group.name : 'Other'|trans }}</td>
+                                    <td colspan="2"><i class="icon-expand"></i> {{ attribute.group ? attribute.group.name : 'Other'|trans }}</td>
                                 </tr>
                             {% endif %}
                             <tr>
@@ -125,7 +125,7 @@
             $('.group').click(function(event) {
                 event.preventDefault();
                 $(this).parent().find('tr:not(.group)').toggle();
-                $(this).find('i').toggleClass('icon-chevron-down').toggleClass('icon-chevron-up');
+                $(this).find('i').toggleClass('icon-expand').toggleClass('icon-collapse');
             });
 
             $('#pim_available_product_attributes_attributes').select2('destroy');
