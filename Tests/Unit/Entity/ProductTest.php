@@ -116,7 +116,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $product->getLabel());
     }
 
-    public function testNullAttributeLabel()
+    public function testNullValuedAttributeLabel()
     {
         $attributeAsLabel = $this->getAttributeMock();
         $family           = $this->getFamilyMock($attributeAsLabel);
@@ -130,11 +130,25 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo', $product->getLabel());
     }
 
-    public function testEmptyStringAttributeLabel()
+    public function testEmptyStringValuedAttributeLabel()
     {
         $attributeAsLabel = $this->getAttributeMock();
         $family           = $this->getFamilyMock($attributeAsLabel);
         $value            = $this->getValueMock($attributeAsLabel, '');
+
+        $product = new Product();
+        $product->setSku('foo');
+        $product->setProductFamily($family);
+        $product->addValue($value);
+
+        $this->assertEquals('foo', $product->getLabel());
+    }
+
+    public function testNullAttributeLabel()
+    {
+        $attribute = $this->getAttributeMock();
+        $family    = $this->getFamilyMock(null);
+        $value     = $this->getValueMock($attribute, 'bar');
 
         $product = new Product();
         $product->setSku('foo');

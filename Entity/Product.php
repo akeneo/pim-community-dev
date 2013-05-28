@@ -245,16 +245,15 @@ class Product extends AbstractEntityFlexible
 
     public function getLabel()
     {
-        if (!$this->productFamily) {
-            return $this->sku;
-        }
-
-        $attributeAsLabel = $this->productFamily->getAttributeAsLabel();
-        $value            = $this->getValue($attributeAsLabel->getCode());
-        if ($value) {
-            $data = $value->getData();
-            if (!empty($data)) {
-                return $data;
+        if ($this->productFamily) {
+            if ($attributeAsLabel = $this->productFamily->getAttributeAsLabel()) {
+                $value = $this->getValue($attributeAsLabel->getCode());
+                if ($value) {
+                    $data = $value->getData();
+                    if (!empty($data)) {
+                        return $data;
+                    }
+                }
             }
         }
 
