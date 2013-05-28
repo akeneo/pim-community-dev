@@ -14,22 +14,25 @@ Pim.Filter = Pim.Filter || {};
 Pim.Filter.LocaleFilter = Oro.Filter.SelectFilter.extend({
 
     /**
+     * @override
      * @property {Boolean}
+     * @see Oro.Filter.SelectFilter
      */
     contextSearch: false,
     
     /**
      * Filter template
      *
-     * @see Oro.Filter.SelectFilter
      * @override
      * @property
+     * @see Oro.Filter.SelectFilter
      */
     template: _.template(
         '<div class="btn filter-select filter-criteria-selector">' +
-            '<%= label %>: ' +
             '<select>' +
-                '<% _.each(options, function (hint, value) { %><option value="<%= value %>"><%= hint %></option><% }); %>' +
+                '<% _.each(options, function (hint, value) { %>' +
+                    '<option value="<%= value %>"><%= hint %></option>' +
+                '<% }); %>' +
             '</select>' +
         '</div>'
     ),
