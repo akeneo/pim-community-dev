@@ -184,6 +184,9 @@ class Product extends AbstractEntityFlexible
 
     /**
      * Get ordered group
+     *
+     * Group with negative sort order (Other) will be put at the end
+     *
      * @return string|number|multitype:
      */
     public function getOrderedGroups()
