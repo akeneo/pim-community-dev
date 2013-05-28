@@ -1,0 +1,6 @@
+services:
+    pim_grid.orm.filter.type.locale:
+        class:     Pim\Bundle\ProductBundle\Filter\ORM\LocaleFilter
+        arguments: ["@translator"]
+        tags:
+            - { name: oro_grid.filter.type, alias: pim_grid_orm_locale }
