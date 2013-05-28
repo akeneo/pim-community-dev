@@ -15,6 +15,10 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
  */
 class LocaleFilterType extends ChoiceFilterType
 {
+
+    /**
+     * @staticvar string
+     */
     const NAME = 'pim_type_locale_filter';
 
     /**
@@ -38,16 +42,10 @@ class LocaleFilterType extends ChoiceFilterType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $choices = array(
-            self::TYPE_CONTAINS => $this->translator->trans('label_type_contains', array(), 'OroFilterBundle'),
-            self::TYPE_NOT_CONTAINS => $this->translator->trans('label_type_not_contains', array(), 'OroFilterBundle'),
-        );
-
         $resolver->setDefaults(
             array(
                 'field_type' => 'choice',
                 'field_options' => array('choices' => array()),
-                'operator_choices' => $choices,
             )
         );
     }
