@@ -336,9 +336,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             $product = $this->getProduct($data['product']);
             $value   = $product->getValue($this->camelize($data['attribute']));
 
-            if ($value && false === $value->getScope()) {
-                $value->setScope($data['scope']);
-                $value->setData($data['value']);
+            if ($value) {
+                if (false === $value->getScope()) {
+                    $value->setScope($data['scope']);
+                }
+                if (null === $value->getData()) {
+                    $value->setData($data['value']);
+                }
             } else {
                 $attribute = $this->getAttribute($data['attribute']);
                 $value = $this->createValue($attribute, $data['value'], null, $data['scope']);
@@ -478,6 +482,19 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                     $attribute, $index + 1, $name
                 ));
             }
+        }
+    }
+
+    /**
+     * @Then /^the title of the product should be "([^"]*)"$/
+     */
+    public function theTitleOfTheProductShouldBe($title)
+    {
+        if ($title !== $actual = $this->getPage('Product')->getTitle()) {
+            throw $this->createExpectationException(sprintf(
+                'Expected product title "%s", actually saw "%s"',
+                $title, $actual
+            ));
         }
     }
 
@@ -723,6 +740,19 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             ->selectAttributeAsLabel($attribute)
             ->save()
         ;
+    }
+
+    /**
+     * @Given /^the attribute "([^"]*)" has been chosen as the family "([^"]*)" label$/
+     */
+    public function theAttributeHasBeenChosenAsTheFamilyLabel($attribute, $family)
+    {
+        $attribute = $this->getAttribute($attribute);
+        $family    = $this->getFamily($family);
+
+        $family->setAttributeAsLabel($attribute);
+
+        $this->getEntityManager()->flush();
     }
 
     private function openPage($page, array $options = array())

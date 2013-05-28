@@ -17,7 +17,7 @@ Feature: Set the attribute used as label
   Scenario: Fail to set a non-text attribute as the family label
     Given I am logged in as "admin"
     When I am on the "Bags" family page
-    Then eligible attributes as label should be Brand and Model
+    Then eligible attributes as label should be SKU, Brand and Model
 
   Scenario: Succesfully set a family attribute as the family label
     Given I am logged in as "admin"
@@ -35,7 +35,7 @@ Feature: Set the attribute used as label
       | bag-jean | Brand     | Levis |
     And I am logged in as "admin"
     When I am on the "bag-jean" product page
-    Then the product title should be "Product/Levis"
+    Then the title of the product should be "Products/Levis"
 
   Scenario: Fail to remove an attribute that is used as the family label
     Given the attribute "Brand" has been chosen as the family "Bags" label
