@@ -37,9 +37,11 @@ Feature: Set the attribute used as label
     When I am on the "bag-jean" product page
     Then the title of the product should be "Products/Levis"
 
+  @javascript
   Scenario: Fail to remove an attribute that is used as the family label
     Given the attribute "Brand" has been chosen as the family "Bags" label
     And I am logged in as "admin"
     When I am on the "Bags" family page
-    And I choose "Brand" as the label of the family
+    And I visit the "Attributes" tab
+    And I remove the "Brand" attribute
     Then I should see "You cannot remove this attribute because it's used as label for the family."
