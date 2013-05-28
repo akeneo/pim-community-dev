@@ -16,7 +16,7 @@
         $(document).dialogForm({ trigger: '#create-product', url: 'quickcreate' });
         $(function() {
             var datagrid = Oro.Registry.getElement('datagrid', 'products');
-            $(".product-title").append(datagrid.filters.locale.el);
+            $("#locale-switcher").append(datagrid.filters.locale.el);
         });
     </script>
 {% endblock %}
@@ -36,6 +36,8 @@
                         <div class="product-title clearfix-oro">
                             <div class="sub-title">{{ title }}</div>
                             <span class="separator">/</span>
+                            <div id="locale-switcher" class="btn-group sub-title">
+                            </div>
                         </div>
                     </div>
                 </div>
