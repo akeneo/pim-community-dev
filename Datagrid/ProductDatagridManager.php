@@ -160,11 +160,9 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
-                'label'       => $this->translator->trans('Data locale'),
                 'field_name'  => 'data_locale',
                 'filter_type' => FilterInterface::TYPE_LOCALE,
                 'required'    => false,
-                'sortable'    => true,
                 'filterable'  => true,
                 'show_column' => false,
                 'show_filter' => true,
@@ -193,9 +191,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
                 'label'       => $this->translator->trans('Scope'),
                 'field_name'  => 'scope',
-                'filter_type' => FilterInterface::TYPE_CHOICE,
+                'filter_type' => FilterInterface::TYPE_SCOPE,
                 'required'    => false,
-                'sortable'    => true,
                 'filterable'  => true,
                 'show_column' => false,
                 'show_filter' => true,

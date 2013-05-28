@@ -4,3 +4,9 @@ services:
         arguments: ["@translator"]
         tags:
             - { name: oro_grid.filter.type, alias: pim_grid_orm_locale }
+
+    pim_grid.orm.filter.type.scope:
+        class:     Pim\Bundle\ProductBundle\Filter\ORM\ScopeFilter
+        arguments: ["@translator"]
+        tags:
+            - { name: oro_grid.filter.type, alias: pim_grid_orm_scope }

@@ -18,4 +18,5 @@ interface FilterInterface extends OroFilterInterface
      * @staticvar string
      */
     const TYPE_LOCALE = 'pim_grid_orm_locale';
+    const TYPE_SCOPE  = 'pim_grid_orm_scope';
 }

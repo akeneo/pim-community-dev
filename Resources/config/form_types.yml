@@ -4,3 +4,9 @@ services:
         arguments: ["@translator"]
         tags:
             - { name: form.type, alias: pim_type_locale_filter }
+
+    pim_filter.form.type.filter.scope:
+        class:     Pim\Bundle\ProductBundle\Form\Type\Filter\ScopeFilterType
+        arguments: ["@translator"]
+        tags:
+            - { name: form.type, alias: pim_type_scope_filter }
