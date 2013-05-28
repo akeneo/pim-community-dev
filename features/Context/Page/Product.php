@@ -18,6 +18,7 @@ class Product extends Page
     protected $elements = array(
         'Locales dropdown'     => array('css' => '#locale-switcher'),
         'Available attributes' => array('css' => '#pim_available_product_attributes_attributes'),
+        'Title'                => array('css' => '.product-title'),
     );
 
     public function findLocaleLink($locale)
@@ -127,5 +128,10 @@ class Product extends Page
         ;
 
         return $controlGroupNode->find('css', 'a.remove-attribute');
+    }
+
+    public function getTitle()
+    {
+        return str_replace(' ', '', $this->getElement('Title')->getText());
     }
 }

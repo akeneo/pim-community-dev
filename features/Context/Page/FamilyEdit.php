@@ -14,9 +14,10 @@ class FamilyEdit extends Page
     protected $path = '/product/product-family/edit/{family_id}';
 
     protected $elements = array(
-        'Available attributes' => array('css' => '#pim_available_product_attributes_attributes'),
-        'Attributes'           => array('css' => '#attributes table'),
-        'Tabs'                 => array('css' => '#form-navbar'),
+        'Available attributes'       => array('css' => '#pim_available_product_attributes_attributes'),
+        'Attributes'                 => array('css' => '#attributes table'),
+        'Tabs'                       => array('css' => '#form-navbar'),
+        'Attribute as label choices' => array('css' => '#pim_product_family_attributeAsLabel'),
     );
 
     public function getAvailableAttribute($attribute, $group)
@@ -114,5 +115,19 @@ class FamilyEdit extends Page
     public function visitTab($tab)
     {
         $this->getElement('Tabs')->clickLink($tab);
+    }
+
+    public function getAttributeAsLabelOptions()
+    {
+        return array_map(function ($option) {
+            return $option->getText();
+        }, $this->getElement('Attribute as label choices')->findAll('css', 'option'));
+    }
+
+    public function selectAttributeAsLabel($attribute)
+    {
+        $this->getElement('Attribute as label choices')->selectOption($attribute);
+
+        return $this;
     }
 }
