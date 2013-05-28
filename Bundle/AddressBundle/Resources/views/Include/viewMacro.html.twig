@@ -1,0 +1,56 @@
+{% macro renderAddress(address) %}
+    {% import _self as __ %}
+
+    {% set fields = [
+        {label: "First name", data: "firstName"},
+        {label: "Last name", data: "lastName"},
+        {label: "Street", data: "street"},
+        {label: "Street 2", data: "street2"},
+        {label: "City", data: "city"},
+        {label: "State", data: "state"},
+        {label: "Country", data: "country"},
+        {label: "Zip/postal code", data: "postalCode"}
+    ] %}
+
+    {{ __.renderAddressView(address, fields) }}
+{% endmacro %}
+
+{% macro renderAddressView(address, fields, renderFlexibleAttributes) %}
+    {# Render flexible attributes by default #}
+    {% set renderFlexibleAttributes = renderFlexibleAttributes|default(true) %}
+
+    {# Render static attributes #}
+    {% for field in fields %}
+        {{ block('addressStaticAttribute') }}
+    {% endfor %}
+
+    {# Render flexible attributes #}
+    {% if (address.values is defined and renderFlexibleAttributes) %}
+        {% for attribute in address.values %}
+            {{ block('addressFlexibleAttribute') }}
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
+
+{% block addressStaticAttribute %}
+    {% set defaultValue = field.defaultValue|default('N/A') %}
+    <div class="control-group">
+        <label class="control-label">{{ field.label|trans|title }}</label>
+        <div class="controls">
+            <div class="clearfix-oro">
+                <p class="control-label">{{ attribute(address, field.data)|default(defaultValue) }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock addressStaticAttribute %}
+
+{% block addressFlexibleAttribute %}
+    <div class="control-group">
+        <label class="control-label">{{ attr.attribute.label|trans|title }}</label>
+        <div class="controls">
+            <div class="clearfix-oro">
+                <p class="control-label">{{ attr.__toString|default('N/A') }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock addressFlexibleAttribute %}
