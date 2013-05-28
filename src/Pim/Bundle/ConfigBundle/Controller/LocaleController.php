@@ -130,8 +130,29 @@ class LocaleController extends Controller
      */
     public function disableAction(Locale $locale)
     {
-        // Disable activated property
         $locale->setActivated(false);
+        $this->getEntityManager()->persist($locale);
+        $this->getEntityManager()->flush();
+
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            return $this->redirect($this->generateUrl('pim_config_locale_index'));
+        }
+    }
+
+    /**
+     * Enable locale
+     *
+     * @param Locale $locale
+     *
+     * @Route("/enable/{id}", requirements={"id"="\d+"})
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function enableAction(Locale $locale)
+    {
+        $locale->setActivated(true);
         $this->getEntityManager()->persist($locale);
         $this->getEntityManager()->flush();
 

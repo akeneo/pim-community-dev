@@ -2,46 +2,51 @@
 
 {% set title = form.vars.value.id ? 'Edit locale'|trans : 'Add locale'|trans %}
 
-{% block content %}
-<form class="form-horizontal" action="{{ form.vars.value.id ? 
-    path('pim_config_locale_edit', { id: form.vars.value.id }) : 
-    path('pim_config_locale_create') }}" method="POST" class="form-register">
-
-    <div class="row-fluid">
-        <div class="form-row">
-            <h3 class="pull-left">{{ title|trans }}</h3>
-            <button class="btn btn-primary pull-right" type="submit">{{ 'Save'|trans }}</button>
-            {% if form.vars.value.id %}
-                <a class="btn pull-right" href="#" id="btn-disable-locale">
-                    {{ "Disable" | trans }}
-                </a>
-            {% endif %}
-            <a class="pull-right return" href="{{ path('pim_config_locale_index') }}">
-                {{ "Back to list" | trans }}
-            </a>
-        </div>
-    </div>
+{% block page_container %}
+<div class="container-fluid">
     
-    <div class="row_fluid">
-        {% if form.vars.errors|length %}
-            <div class="alert alert-error">
-                {{ form_errors(form) }}
+    {% block content %}
+    <form class="form-horizontal" action="{{ form.vars.value.id ? 
+        path('pim_config_locale_edit', { id: form.vars.value.id }) : 
+        path('pim_config_locale_create') }}" method="POST" class="form-register">
+    
+        <div class="row-fluid">
+            <div class="form-row">
+                <h3 class="pull-left">{{ title|trans }}</h3>
+                <button class="btn btn-primary pull-right" type="submit">{{ 'Save'|trans }}</button>
+                {% if form.vars.value.id %}
+                    <a class="btn pull-right" href="#" id="btn-disable-locale">
+                        {% if form.vars.value.activated %} {{ "Disable" | trans }} {% else %} {{ "Enable" | trans }} {% endif %}
+                    </a>
+                {% endif %}
+                <a class="pull-right return" href="{{ path('pim_config_locale_index') }}">
+                    {{ "Back to list" | trans }}
+                </a>
             </div>
-        {% endif %}
+        </div>
         
-        {{ form_row(form.id) }}
-        
-        {{ form_row(form.code) }}
-        
-        {{ form_row(form.fallback) }}
-        
-        {{ form_row(form.currencies) }}
-        
-        {{ form_row(form.activated) }}
-        
-        {{ form_row(form._token) }}
-    </div>
-</form>
+        <div class="row_fluid">
+            {% if form.vars.errors|length %}
+                <div class="alert alert-error">
+                    {{ form_errors(form) }}
+                </div>
+            {% endif %}
+            
+            {{ form_row(form.id) }}
+            
+            {{ form_row(form.code) }}
+            
+            {{ form_row(form.fallback) }}
+            
+            {{ form_row(form.defaultCurrency) }}
+            
+            {{ form_row(form.activated) }}
+            
+            {{ form_row(form._token) }}
+        </div>
+    </form>
+    {% endblock %}
+</div>
 {% endblock %}
 
 {% block javascripts %}
@@ -55,14 +60,25 @@
         $('input.multiselect').select2({ tags: $(this).val() });
         $('#btn-disable-locale').click(function(event) {
             doAction = function() {
-                window.location.href = "{{ path('pim_config_locale_disable', { id: form.vars.value.id }) }}";
+                if ($('#pim_config_locale_form_activated').val() == '1') {
+                    window.location.href = "{{ path('pim_config_locale_disable', { id: form.vars.value.id }) }}";
+                } else {
+                    window.location.href = "{{ path('pim_config_locale_enable', { id: form.vars.value.id }) }}";
+                }
             };
             
             if (!_.isUndefined(Backbone.BootstrapModal)) {
-                confirm = new Backbone.BootstrapModal({
-                    title: "{{ 'Disable Confirmation' | trans }}",
-                    content: "{{ 'Are you sure you want to disable this item' | trans }}"
-                });
+                if ($('#pim_config_locale_form_activated').val() == '1') {
+                    confirm = new Backbone.BootstrapModal({
+                        title: "{{ 'Disable Confirmation' | trans }}",
+                        content: "{{ 'Are you sure you want to disable this item' | trans }}"
+                    });
+                } else {
+                    confirm = new Backbone.BootstrapModal({
+                        title: "{{ 'Enable Confirmation' | trans }}",
+                        content: "{{ 'Are you sure you want to enable this item' | trans }}"
+                    });
+                }
                 confirm.on('ok', doAction);
                 confirm.open();
             } else if (window.confirm(message)) {
