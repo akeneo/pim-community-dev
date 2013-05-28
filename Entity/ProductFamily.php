@@ -267,7 +267,7 @@ class ProductFamily implements Translatable
         return $this;
     }
 
-    public function setAttributeAsLabel(ProductAttribute $attributeAsLabel)
+    public function setAttributeAsLabel($attributeAsLabel)
     {
         $this->attributeAsLabel = $attributeAsLabel;
     }
