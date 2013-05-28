@@ -110,6 +110,16 @@
         },
         {
             "type": "vcs",
+            "url": "https://github.com/laboro/DataAuditBundle.git",
+            "branch": "master"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/laboro/JsFormValidationBundle.git",
+            "branch": "master"
+        },
+        {
+            "type": "vcs",
             "url": "https://github.com/laboro/SonataAdminBundle.git"
         }
     ],

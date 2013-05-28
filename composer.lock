@@ -2791,12 +2791,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/FlexibleEntityBundle.git",
-                "reference": "461c4e2dfa22411af49aca27e400f9dfdadaa3bc"
+                "reference": "763d3d08df8f4f48d2907bb04f61b7f32a2eb6cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/3338100f1d0a647e945dd0a8ef8f2e2bfd3435fb",
-                "reference": "3338100f1d0a647e945dd0a8ef8f2e2bfd3435fb",
+                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/763d3d08df8f4f48d2907bb04f61b7f32a2eb6cf",
+                "reference": "763d3d08df8f4f48d2907bb04f61b7f32a2eb6cf",
                 "shasum": ""
             },
             "require": {
