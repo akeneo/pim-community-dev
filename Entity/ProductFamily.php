@@ -172,6 +172,13 @@ class ProductFamily implements Translatable
         return $this->attributes;
     }
 
+    /**
+     * Check if family has an attribute
+     *
+     * @param \Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute
+     *
+     * @return boolean
+     */
     public function hasAttribute(\Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute)
     {
         return $this->attributes->contains($attribute);

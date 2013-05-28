@@ -23,13 +23,16 @@ class ProductFamilyType extends AbstractType
     {
         $builder
             ->add('code')
-            ->add('name', 'pim_translatable_field', array(
-                'field'             => 'label',
-                'translation_class' => 'Pim\\Bundle\\ProductBundle\\Entity\\ProductFamilyTranslation',
-                'entity_class'      => 'Pim\\Bundle\\ProductBundle\\Entity\\ProductFamily',
-                'property_path'     => 'translations'
-            ))
-        ;
+            ->add(
+                'name',
+                'pim_translatable_field',
+                array(
+                    'field'             => 'label',
+                    'translation_class' => 'Pim\\Bundle\\ProductBundle\\Entity\\ProductFamilyTranslation',
+                    'entity_class'      => 'Pim\\Bundle\\ProductBundle\\Entity\\ProductFamily',
+                    'property_path'     => 'translations'
+                )
+            );
     }
 
     /**
