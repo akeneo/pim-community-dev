@@ -32,9 +32,11 @@ class ProductFamilyType extends AbstractType
                 'property_path'     => 'translations'
             ))
             ->add('attributeAsLabel', 'entity', array(
-                'label'   => 'Attribute used as label',
-                'choices' => $data ? $data->getAttributeAsLabelChoices() : array(),
-                'class'   => 'Pim\Bundle\ProductBundle\Entity\ProductAttribute',
+                'required'    => false,
+                'empty_value' => 'SKU',
+                'label'       => 'Attribute used as label',
+                'choices'     => $data ? $data->getAttributeAsLabelChoices() : array(),
+                'class'       => 'Pim\Bundle\ProductBundle\Entity\ProductAttribute',
             ))
         ;
     }
