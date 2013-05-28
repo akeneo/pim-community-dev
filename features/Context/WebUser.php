@@ -41,6 +41,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     private $currentPage = null;
 
+    private $attributeTypes = array(
+        'text'     => 'oro_flexibleentity_text',
+        'number'   => 'oro_flexibleentity_number',
+        'textarea' => 'pim_product_textarea',
+    );
+
     /**
      * @BeforeScenario
      */
@@ -317,9 +323,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^the following product values:$/
+     * @Given /^the following product values?:$/
      */
-    public function theFollowingProductValues(TableNode $table)
+    public function theFollowingProductValue(TableNode $table)
     {
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $data) {
@@ -364,9 +370,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         foreach ($table->getHash() as $data) {
             $data = array_merge(array(
                 'group' => null,
+                'type'  => 'text',
             ), $data);
 
-            $attribute = $this->createAttribute($data['label'], false);
+            $attribute = $this->createAttribute($data['label'], false, $data['type']);
             $attribute->setGroup($this->getGroup($data['group']));
 
             if (isset($data['family']) && $data['family']) {
@@ -683,6 +690,29 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getSession()->getPage()->clickLink('OK');
     }
 
+    /**
+     * @Then /^eligible attributes as label should be (.*)$/
+     */
+    public function eligibleAttributesAsLabelShouldBe($attributes)
+    {
+        $expectedAttributes = $this->listToArray($attributes);
+        $options = $this->getPage('Family edit')->getAttributeAsLabelOptions();
+
+        if (count($expectedAttributes) !== $actual = count($options)) {
+            throw $this->createExpectationException(sprintf(
+                'Expected to see %d eligible attributes as label, actually saw %d:'."\n%s",
+                count($expectedAttributes), $actual, print_r($options, true)
+            ));
+        }
+
+        if ($expectedAttributes !== $options) {
+            throw $this->createExpectationException(sprintf(
+                'Expected to see eligible attributes as label %s, actually saw %s',
+                print_r($expectedAttributes, true), print_r($options, true)
+            ));
+        }
+    }
+
     private function openPage($page, array $options = array())
     {
         $this->currentPage = $page;
@@ -716,9 +746,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         return $product;
     }
 
-    private function createAttribute($label, $translatable = true)
+    private function createAttribute($label, $translatable = true, $type = 'text')
     {
-        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_text');
+        $attribute = $this->getProductManager()->createAttribute($this->getAttributeType($type));
         $attribute->setCode($this->camelize($label));
         $attribute->setLabel($label);
         $attribute->setTranslatable($translatable);
@@ -734,6 +764,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getProductManager()->getStorageManager()->persist($attribute);
 
         return $attribute;
+    }
+
+    private function getAttributeType($type)
+    {
+        return isset($this->attributeTypes[$type]) ? $this->attributeTypes[$type] : null;
     }
 
     private function createValue(ProductAttribute $attribute, $data = null, $locale = null, $scope = null)
