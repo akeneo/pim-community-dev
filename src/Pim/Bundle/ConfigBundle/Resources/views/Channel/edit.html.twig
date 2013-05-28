@@ -2,42 +2,47 @@
 
 {% set title = form.vars.value.id ? 'Edit channel'|trans : 'Add channel'|trans %}
 
-{% block content %}
-<form class="form-horizontal" action="{{ form.vars.value.id ? 
-    path('pim_config_channel_edit', { id: form.vars.value.id }) : 
-    path('pim_config_channel_create') }}" method="POST" class="form-register">
-
-    <div class="row-fluid">
-        <div class="form-row">
-            <h3 class="pull-left">{{ title|trans }}</h3>
-            <button class="btn btn-primary pull-right" type="submit">{{ 'Save'|trans }}</button>
-            {% if form.vars.value.id %}
-                <a class="btn pull-right" href="#" id="btn-delete-channel">
-                    {{ "Delete" | trans }}
-                </a>
-            {% endif %}
-            <a class="pull-right return" href="{{ path('pim_config_channel_index') }}">
-                {{ "Back to list" | trans }}
-            </a>
-        </div>
-    </div>
+{% block page_container %}
+<div class="container-fluid">
     
-    <div class="row_fluid">
-        {% if form.vars.errors|length %}
-            <div class="alert alert-error">
-                {{ form_errors(form) }}
+    {% block content %}
+    <form class="form-horizontal" action="{{ form.vars.value.id ? 
+        path('pim_config_channel_edit', { id: form.vars.value.id }) : 
+        path('pim_config_channel_create') }}" method="POST" class="form-register">
+    
+        <div class="row-fluid">
+            <div class="form-row">
+                <h3 class="pull-left">{{ title|trans }}</h3>
+                <button class="btn btn-primary pull-right" type="submit">{{ 'Save'|trans }}</button>
+                {% if form.vars.value.id %}
+                    <a class="btn pull-right" href="#" id="btn-delete-channel">
+                        {{ "Delete" | trans }}
+                    </a>
+                {% endif %}
+                <a class="pull-right return" href="{{ path('pim_config_channel_index') }}">
+                    {{ "Back to list" | trans }}
+                </a>
             </div>
-        {% endif %}
+        </div>
         
-        {{ form_row(form.id) }}
-        
-        {{ form_row(form.code) }}
-        
-        {{ form_row(form.name) }}
-        
-        {{ form_row(form._token) }}
-    </div>
-</form>
+        <div class="row_fluid">
+            {% if form.vars.errors|length %}
+                <div class="alert alert-error">
+                    {{ form_errors(form) }}
+                </div>
+            {% endif %}
+            
+            {{ form_row(form.id) }}
+            
+            {{ form_row(form.code) }}
+            
+            {{ form_row(form.name) }}
+            
+            {{ form_row(form._token) }}
+        </div>
+    </form>
+    {% endblock %}
+</div>
 {% endblock %}
 
 {% block javascripts %}

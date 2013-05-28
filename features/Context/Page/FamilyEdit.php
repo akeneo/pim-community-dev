@@ -11,11 +11,13 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  */
 class FamilyEdit extends Page
 {
-    protected $path = '/{locale}/product/product-family/edit/{family_id}';
+    protected $path = '/product/product-family/edit/{family_id}';
 
     protected $elements = array(
-        'Available attributes' => array('css' => '#pim_available_product_attributes_attributes'),
-        'Attributes'           => array('css' => '#attributes table'),
+        'Available attributes'       => array('css' => '#pim_available_product_attributes_attributes'),
+        'Attributes'                 => array('css' => '#attributes table'),
+        'Tabs'                       => array('css' => '#form-navbar'),
+        'Attribute as label choices' => array('css' => '#pim_product_family_attributeAsLabel'),
     );
 
     public function getAvailableAttribute($attribute, $group)
@@ -81,5 +83,51 @@ class FamilyEdit extends Page
     public function getFieldLocator($name, $locale)
     {
         return sprintf('pim_product_family_name_%s:%s', strtolower($name), $locale);
+    }
+
+    public function getRemoveLinkFor($attribute)
+    {
+        $attributeRow = $this
+            ->getElement('Attributes')
+            ->find('css', sprintf(
+                'tr:contains("%s")', $attribute
+            ));
+
+        if (!$attributeRow) {
+            throw new \RuntimeException(sprintf(
+                'Couldn\'t find the attribute row "%s" in the attributes table',
+                $attribute
+            ));
+        }
+
+        $removeLink = $attributeRow->find('css', 'a.remove-attribute');
+
+        if (!$removeLink) {
+            throw new \RuntimeException(sprintf(
+                'Couldn\'t find the attribute remove link for "%s" in the attributes table',
+                $attribute
+            ));
+        }
+
+        return $removeLink;
+    }
+
+    public function visitTab($tab)
+    {
+        $this->getElement('Tabs')->clickLink($tab);
+    }
+
+    public function getAttributeAsLabelOptions()
+    {
+        return array_map(function ($option) {
+            return $option->getText();
+        }, $this->getElement('Attribute as label choices')->findAll('css', 'option'));
+    }
+
+    public function selectAttributeAsLabel($attribute)
+    {
+        $this->getElement('Attribute as label choices')->selectOption($attribute);
+
+        return $this;
     }
 }

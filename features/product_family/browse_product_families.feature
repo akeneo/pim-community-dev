@@ -14,7 +14,6 @@ Feature: Browser product families
       | jewels     | english  | Jewels     |
       | smartphone | english  | Smartphone |
       | bags       | english  | Bags       |
-    And the current language is english
     And I am logged in as "admin"
     When I am on family page
     Then I should see the families Bags, Jewels and Smartphone

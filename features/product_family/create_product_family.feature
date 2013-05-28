@@ -4,8 +4,7 @@ Feature: Product family creation
   I need to be able to create a family
 
   Scenario: Succesfully create a family
-    Given the current language is english
-    And I am logged in as "admin"
+    Given I am logged in as "admin"
     When I am on the family creation page
     And I change the Code to "computer"
     And I change the default Label to "Computer"

@@ -1,7 +1,7 @@
 <?php
 namespace Oro\Bundle\MeasureBundle\Tests\Unit\DependencyInjection;
 
-use Pim\Bundle\ConfigBundle\DependencyInjection\LanguageConfiguration;
+use Pim\Bundle\ConfigBundle\DependencyInjection\LocaleConfiguration;
 
 /**
  * Test related class
@@ -11,7 +11,7 @@ use Pim\Bundle\ConfigBundle\DependencyInjection\LanguageConfiguration;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class LanguageConfigurationTest extends \PHPUnit_Framework_TestCase
+class LocaleConfigurationTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -19,7 +19,7 @@ class LanguageConfigurationTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetConfigTreeBuilder()
     {
-        $config = new LanguageConfiguration();
+        $config = new LocaleConfiguration();
         $this->assertInstanceOf(
             '\Symfony\Component\Config\Definition\Builder\TreeBuilder',
             $config->getConfigTreeBuilder()

@@ -9,11 +9,10 @@ Feature: Order product attributes
       | name    |
       | General |
     And the following product attribute:
-      | product | code        | group   |
-      | Car     | releaseDate | General |
-    And the current language is english
+      | product | label         | group   |
+      | Car     | Release Date | General |
     And I am logged in as "admin"
-    When I am on the "releaseDate" attribute page
+    When I am on the "Release date" attribute page
     And I change the attribute position to 40
     Then I should see "Attribute successfully saved"
 
@@ -24,15 +23,14 @@ Feature: Order product attributes
       | General |
       | Shape   |
     And the following product attributes:
-      | product | code         | position | group   |
-      | Car     | releaseDate  | 20       | General |
-      | Car     | manufacturer | 30       | General |
-      | Car     | fileUpload   | 10       | General |
-      | Car     | color        | 10       | Shape   |
-      | Car     | weight       | 30       | Shape   |
-      | Car     | height       | 20       | Shape   |
-    And the current language is english
+      | product | label        | position | group   |
+      | Car     | Release date | 20       | General |
+      | Car     | Manufacturer | 30       | General |
+      | Car     | File upload  | 10       | General |
+      | Car     | Color        | 10       | Shape   |
+      | Car     | Weight       | 30       | Shape   |
+      | Car     | Height       | 20       | Shape   |
     And I am logged in as "admin"
     When I am on the "Car" product page
-    Then attributes in group "General" should be fileUpload, releaseDate and manufacturer
-    And attributes in group "Shape" should be color, height and weight
+    Then attributes in group "General" should be File upload, Release date and Manufacturer
+    And attributes in group "Shape" should be Color, Height and Weight

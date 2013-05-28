@@ -3,9 +3,9 @@ oro_menu_config:
         pim_config_tab:
             label: 'Configuration'
             uri: '#'
-        pim_config_language:
-            label: 'Languages'
-            route: 'pim_config_language_index'
+        pim_config_locale:
+            label: 'Locales'
+            route: 'pim_config_locale_index'
         pim_config_currency:
             label: 'Currencies'
             route: 'pim_config_currency_index'
@@ -18,7 +18,7 @@ oro_menu_config:
             children:
                 pim_config_tab:
                     children:
-                        pim_config_language: ~
+                        pim_config_locale: ~
                         pim_config_currency: ~
                         pim_config_channel: ~
 

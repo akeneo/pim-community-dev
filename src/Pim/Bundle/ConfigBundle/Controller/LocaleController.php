@@ -5,26 +5,26 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Component\HttpFoundation\Request;
 
-use Pim\Bundle\ConfigBundle\Entity\Language;
+use Pim\Bundle\ConfigBundle\Entity\Locale;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
- * Language controller for configuration
+ * Locale controller for configuration
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @Route("/language")
+ * @Route("/locale")
  */
-class LanguageController extends Controller
+class LocaleController extends Controller
 {
 
     /**
-     * List languages
+     * List locales
      *
      * @param Request $request
      *
@@ -43,7 +43,7 @@ class LanguageController extends Controller
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder
             ->select('l')
-            ->from('PimConfigBundle:Language', 'l');
+            ->from('PimConfigBundle:Locale', 'l');
 
         /** @var $queryFactory QueryFactory */
         $queryFactory = $this->get('pim_config.datagrid.manager.locale.default_query_factory');
@@ -54,7 +54,7 @@ class LanguageController extends Controller
         $datagrid = $datagridManager->getDatagrid();
 
         $view = ('json' === $request->getRequestFormat()) ?
-            'OroGridBundle:Datagrid:list.json.php' : 'PimConfigBundle:Language:index.html.twig';
+            'OroGridBundle:Datagrid:list.json.php' : 'PimConfigBundle:Locale:index.html.twig';
 
         return $this->render($view, array('datagrid' => $datagrid->createView()));
     }
@@ -70,75 +70,96 @@ class LanguageController extends Controller
     }
 
     /**
-     * Get language repository
+     * Get locale repository
      *
      * @return \Doctrine\ORM\EntityRepository
      */
-    protected function getLanguageRepository()
+    protected function getLocaleRepository()
     {
-        return $this->getEntityManager()->getRepository('PimConfigBundle:Language');
+        return $this->getEntityManager()->getRepository('PimConfigBundle:Locale');
     }
 
     /**
-     * Create language
+     * Create locale
      *
      * @Route("/create")
-     * @Template("PimConfigBundle:Language:edit.html.twig")
+     * @Template("PimConfigBundle:Locale:edit.html.twig")
      *
      * @return array
      */
     public function createAction()
     {
-        $language = new Language();
+        $locale = new Locale();
 
-        return $this->editAction($language);
+        return $this->editAction($locale);
     }
 
     /**
-     * Edit language
+     * Edit locale
      *
-     * @param Language $language
+     * @param Locale $locale
      *
      * @Route("/edit/{id}", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Template
      *
      * @return array
      */
-    public function editAction(Language $language)
+    public function editAction(Locale $locale)
     {
-        if ($this->get('pim_config.form.handler.language')->process($language)) {
-            $this->get('session')->getFlashBag()->add('success', 'Language successfully saved');
+        if ($this->get('pim_config.form.handler.locale')->process($locale)) {
+            $this->get('session')->getFlashBag()->add('success', 'Locale successfully saved');
 
             return $this->redirect(
-                $this->generateUrl('pim_config_language_index')
+                $this->generateUrl('pim_config_locale_index')
             );
         }
 
         return array(
-            'form' => $this->get('pim_config.form.language')->createView()
+            'form' => $this->get('pim_config.form.locale')->createView()
         );
     }
 
     /**
-     * Disable language
+     * Disable locale
      *
-     * @param Language $language
+     * @param Locale $locale
      *
      * @Route("/disable/{id}", requirements={"id"="\d+"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function disableAction(Language $language)
+    public function disableAction(Locale $locale)
     {
-        // Disable activated property
-        $language->setActivated(false);
-        $this->getEntityManager()->persist($language);
+        $locale->setActivated(false);
+        $this->getEntityManager()->persist($locale);
         $this->getEntityManager()->flush();
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirect($this->generateUrl('pim_config_language_index'));
+            return $this->redirect($this->generateUrl('pim_config_locale_index'));
+        }
+    }
+
+    /**
+     * Enable locale
+     *
+     * @param Locale $locale
+     *
+     * @Route("/enable/{id}", requirements={"id"="\d+"})
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function enableAction(Locale $locale)
+    {
+        $locale->setActivated(true);
+        $this->getEntityManager()->persist($locale);
+        $this->getEntityManager()->flush();
+
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            return $this->redirect($this->generateUrl('pim_config_locale_index'));
         }
     }
 }

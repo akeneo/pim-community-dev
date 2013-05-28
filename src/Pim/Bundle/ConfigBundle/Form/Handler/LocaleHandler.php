@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Form\Handler;
 
-use Pim\Bundle\ConfigBundle\Entity\Language;
+use Pim\Bundle\ConfigBundle\Entity\Locale;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -10,14 +10,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
 
 /**
- * Form handler for language
+ * Form handler for locale
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class LanguageHandler
+class LocaleHandler
 {
 
     /**
@@ -50,19 +50,19 @@ class LanguageHandler
 
     /**
      * Process method for handler
-     * @param Language $language
+     * @param Locale $locale
      *
      * @return boolean
      */
-    public function process(Language $language)
+    public function process(Locale $locale)
     {
-        $this->form->setData($language);
+        $this->form->setData($locale);
 
         if ($this->request->getMethod() === 'POST') {
             $this->form->bind($this->request);
 
             if ($this->form->isValid()) {
-                $this->onSuccess($language);
+                $this->onSuccess($locale);
 
                 return true;
             }
@@ -73,11 +73,11 @@ class LanguageHandler
 
     /**
      * Call when form is valid
-     * @param Language $language
+     * @param Locale $locale
      */
-    protected function onSuccess(Language $language)
+    protected function onSuccess(Locale $locale)
     {
-        $this->manager->persist($language);
+        $this->manager->persist($locale);
         $this->manager->flush();
     }
 }

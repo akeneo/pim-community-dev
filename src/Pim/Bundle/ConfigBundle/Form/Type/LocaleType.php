@@ -12,21 +12,21 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 
 /**
- * Type for language form
+ * Type for locale form
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class LanguageType extends AbstractType
+class LocaleType extends AbstractType
 {
 
     /**
-     * List of existing languages
+     * List of existing locales
      * @var array
      */
-    protected $languages;
+    protected $locales;
 
     /**
      * Constructor
@@ -34,7 +34,7 @@ class LanguageType extends AbstractType
      */
     public function __construct($config = array())
     {
-        $this->languages = $config['languages'];
+        $this->locales = $config['locales'];
     }
 
     /**
@@ -46,12 +46,10 @@ class LanguageType extends AbstractType
 
         $builder->add('id', 'hidden');
 
-        // Add locale field and fallback field
         $this->addLocaleField($builder);
 
         $this->addFallbackField($builder);
 
-        // Add currency field
         $this->addCurrencyField($builder);
 
         $builder->add('activated', 'hidden');
@@ -67,9 +65,10 @@ class LanguageType extends AbstractType
             'code',
             'choice',
             array(
-                'choices' => $this->prepareLanguageList($this->languages),
-                'required' => true,
-                'preferred_choices' => array('en_EN', 'fr_FR', 'en_US')
+                'choices'           => $this->prepareLocaleList($this->locales),
+                'required'          => true,
+                'preferred_choices' => array('en_EN', 'fr_FR', 'en_US'),
+                'label'             => 'Locale'
             )
         );
     }
@@ -84,28 +83,28 @@ class LanguageType extends AbstractType
             'fallback',
             'choice',
             array(
-                'choices' => $this->prepareLanguageList($this->languages),
-                'required' => false,
-                'preferred_choices' => array('en_EN', 'fr_FR', 'en_US')
+                'choices'           => $this->prepareLocaleList($this->locales),
+                'required'          => false,
+                'preferred_choices' => array('en_EN', 'fr_FR', 'en_US'),
+                'label'             => 'Inherited locale'
             )
         );
     }
 
     /**
-     * Prepare language list
-     * @param array $languages
+     * Prepare locale list
+     * @param array $locales
      *
      * @return multitype:string
      */
-    protected function prepareLanguageList($languages = array())
+    protected function prepareLocaleList($locales = array())
     {
         $choices = array();
 
-        foreach ($languages as $code => $language) {
-            $choices[$code] = $language['label'];
+        foreach ($locales as $code => $locale) {
+            $choices[$code] = $locale['label'];
         }
 
-        // Sort choices by alphabetical
         asort($choices);
 
         return $choices;
@@ -120,14 +119,13 @@ class LanguageType extends AbstractType
     protected function addCurrencyField(FormBuilderInterface $builder)
     {
         $builder->add(
-            'currencies',
+            'defaultCurrency',
             'entity',
             array(
-                'class' => 'Pim\Bundle\ConfigBundle\Entity\Currency',
-                'property' => 'code',
-                'multiple' => true,
+                'class'         => 'Pim\Bundle\ConfigBundle\Entity\Currency',
+                'property'      => 'code',
+                'multiple'      => false,
                 'query_builder' => function (EntityRepository $repository) {
-                    // prepare query to get activated currencies ordered by code
                     $query = $repository->createQueryBuilder('c');
                     $query->andwhere(
                         $query->expr()->eq('c.activated', true)
@@ -136,7 +134,8 @@ class LanguageType extends AbstractType
 
                     return $query;
                 },
-                'required' => true
+                'required'      => true,
+                'label'         => 'Default currency (to display)'
             )
         );
     }
@@ -148,7 +147,7 @@ class LanguageType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\ConfigBundle\Entity\Language'
+                'data_class' => 'Pim\Bundle\ConfigBundle\Entity\Locale'
             )
         );
     }
@@ -158,6 +157,6 @@ class LanguageType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_config_language';
+        return 'pim_config_locale';
     }
 }

@@ -6,14 +6,14 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * Check language configuration
+ * Check locale configuration
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class LanguageConfiguration implements ConfigurationInterface
+class LocaleConfiguration implements ConfigurationInterface
 {
 
     /**
@@ -22,7 +22,7 @@ class LanguageConfiguration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('languages');
+        $rootNode = $treeBuilder->root('locales');
 
         $rootNode
             ->isRequired()
