@@ -4,7 +4,7 @@ namespace Pim\Bundle\ProductBundle\Filter;
 use Oro\Bundle\GridBundle\Filter\FilterInterface as OroFilterInterface;
 
 /**
- * Overriding OroFilterInteface
+ * Overriding OroFilterInterface
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

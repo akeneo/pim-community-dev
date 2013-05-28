@@ -2,7 +2,6 @@
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
 use Pim\Bundle\ConfigBundle\Manager\ChannelManager;
-
 use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
@@ -12,8 +11,7 @@ use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-use Oro\Bundle\GridBundle\Filter\FilterInterface;
-use Pim\Bundle\ProductBundle\Filter\FilterInterface as PimFilterInterface;
+use Pim\Bundle\ProductBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
@@ -154,7 +152,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
                 'label'       => $this->translator->trans('Data locale'),
                 'field_name'  => 'data_locale',
-                'filter_type' => PimFilterInterface::TYPE_LOCALE,
+                'filter_type' => FilterInterface::TYPE_LOCALE,
                 'required'    => false,
                 'sortable'    => true,
                 'filterable'  => true,
