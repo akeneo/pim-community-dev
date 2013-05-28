@@ -181,6 +181,12 @@ class ProductFamilyController extends Controller
             ));
         }
 
+        if ($attribute === $family->getAttributeAsLabel()) {
+            $this->addFlash('error', 'You cannot remove this attribute because it\'s used as label for the family.');
+
+            return $this->redirectToProductFamilyAttributesTab($family->getId());
+        }
+
         $family->removeAttribute($attribute);
         $this->getEntityManager()->flush();
 
