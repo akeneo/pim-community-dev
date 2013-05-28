@@ -11,11 +11,10 @@
 
         <div class="navigation clearfix navbar-extra navbar-extra-right">
             <div class="row">
-                {% if form.vars.value.id %}
                 <div class="pull-right">
                     <div class="pull-right">
                         <div class="pull-left btn-group icons-holder">
-                            <a class="btn" href="{{ path('pim_product_product_index') }}">{{ "Back to grid" | trans }}</a>
+                            <a class="btn" href="{{ path('pim_product_product_index') }}"><i class="icon-chevron-left"></i></a>
                         </div>
                         <div class="pull-left btn-group icons-holder">
                             <a href="javascript: void(0);" class="btn icons-holder-text" id="btn-delete-product" data-id="{{ form.vars.value.id }}" data-message="{{ 'Are you sure you want to delete this product ?'|trans }}" title="{{ 'Delete'|trans }}"><i class="icon-trash hide-text">{{ 'Remove'|trans }}</i>Delete</a>
@@ -40,10 +39,15 @@
                                         <span class="caret"></span>
                                     </span>
                                     <ul class="dropdown-menu">
-                                        {% for language in form.vars.value.getActiveLanguages() %}
+                                        {% for locale in form.vars.value.getActiveLocales() %}
                                             <li>
-                                                <a href="?dataLocale={{ language.code }}">
-                                                    <span class="code">{{ language.code|upper }}</span>
+                                                <a href="?dataLocale={{ locale.code }}" title="{{ locale.code|lower }}">
+                                                    <span class="code">
+                                                        {% if locale.code == dataLocale %}
+                                                            <i class="icon-asterisk"></i>
+                                                        {% endif %}
+                                                        {{ locale.code|upper }}
+                                                    </span>
                                                     <span class="title">{{ form.vars.value.sku }}</span>
                                                 </a>
                                             </li>
@@ -51,22 +55,17 @@
                                     </ul>
                                 </div>
                             </div>
-
                             <ul class="inline">
-                                <li><span id="updated" class="label label-warning">{{ 'There are unsaved changes.'|trans }}</span></li>
-                            </ul>
+                               <li>{{ 'Family'|trans }}: {{ form.vars.value.productFamily|default('N/A'|trans) }}</li>
+                               <li>{{ 'Last update'|trans }}: {{ form.vars.value.updated|date("Y-m-d") }}</li>
+                               <li>{{ 'Created'|trans }}: {{ form.vars.value.created|date("Y-m-d") }}</li>
+                           </ul>
                        </div>
                    </div>
                 </div>
-                {% else %}
-                <div class="pull-left">
-                    <div class="customer-info well-small">
-                        <div class="customer-content">
-                            <h1 class="usser-name">{{ title }}</h1>
-                        </div>
-                    </div>
+                <div class="pull-right product-updated">
+                    <span id="updated" class="label label-warning">{{ 'There are unsaved changes.'|trans }}</span>
                 </div>
-                {% endif %}
             </div>
         </div>
         <div class="layout-content">
@@ -110,22 +109,22 @@
                                 } %}
                                 <div class="btn-group">
                                     <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                        <i class="icon-settings"></i>
+                                        <i class="icon-cog"></i>
                                         <span class="caret"></span>
                                     </a>
                                     <div class="dropdown-menu channel pull-right">
                                         <h5>{{ 'Scope'|trans }}</h5>
                                         <div>
-                                            <label for="default_channel">{{ 'Default channel'|trans }}</label>
-                                            <select id="default_channel">
-                                                {% for channel in channels %}
-                                                    <option value="{{ channel.code }}" data-scope="{{ channel.code }}">{{ channel.name }}</option>
-                                                {% endfor %}
-                                            </select>
-                                            <div>
-                                                <a href="#" data-action="expand">{{ 'Expand all channels'|trans }}</a>
-                                                <a href="#" data-action="collapse">{{ 'Collapse all channels'|trans }}</a>
-                                            </div>
+                                            <span id="channel-controls">
+                                                <label for="default_channel">{{ 'Default channel'|trans }}</label>
+                                                <select id="default_channel">
+                                                    {% for channel in channels %}
+                                                        <option value="{{ channel.code }}" data-scope="{{ channel.code }}">{{ channel.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </span>
+                                            <a href="#" data-action="expand">{{ 'Expand all channels'|trans }}</a>
+                                            <a href="#" data-action="collapse">{{ 'Collapse all channels'|trans }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -139,6 +138,7 @@
                                 </div>
                             </div>
                             {% set attributeCode = '' %}
+                            {% set displayRemoveAttributeLink = true %}
                             {% for group in product.orderedGroups %}
                             <div id="tabs-{{ group.id }}" class="tab-pane{% if loop.index == 1 %} active{% endif %}">
                                 <h3>{{ group.name|trans }}</h3>
@@ -153,9 +153,18 @@
                                             {% if attributeCode != formValue.vars.value.attribute.code %}
                                                 </div>
                                                 <div class="{{ formValue.vars.value.attribute.scopable ? 'scopable' : '' }}{{ formValue.vars.value.attribute.attributeType == 'pim_product_price_collection' ? 'currency' : '' }}" data-field="{{ formValue.vars.value.attribute.code }}">
+                                                {% set displayRemoveAttributeLink = true %}
                                             {% endif %}
                                             <div class="control-group">
                                                 {{ form_widget(formValue, {'attr': {'data-scope': formValue.vars.value.scope}} ) }}
+                                                {% if displayRemoveAttributeLink %}
+                                                    {% if formValue.vars.value.isRemovable() %}
+                                                        <a href="{{ path('pim_product_product_removeproductvalue', {'productId': formValue.vars.value.entity.id, 'attributeId': formValue.vars.value.attribute.id}) }}"
+                                                           class="btn btn-action btn-link remove-attribute"
+                                                           data-method="DELETE" data-confirm="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': formValue.vars.value.attribute.label}) }}">×</a>
+                                                    {% endif %}
+                                                    {% set displayRemoveAttributeLink = false %}
+                                                {% endif %}
                                             </div>
                                             {% set attributeCode = formValue.vars.value.attribute.code %}
                                         {% endif %}
@@ -171,7 +180,7 @@
                     <div class="tab-pane" id="associations"></div>
 
                     <div class="tab-pane" id="localisations">
-                        {{ form_row(form.languages) }}
+                        {{ form_row(form.locales) }}
                     </div>
 
                     <div class="tab-pane" id="history"></div>

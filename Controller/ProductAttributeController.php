@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Controller;
 
+use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
+
 use Symfony\Component\HttpFoundation\Response;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
@@ -106,20 +108,18 @@ class ProductAttributeController extends Controller
         if ($this->get('pim_product.form.handler.attribute')->process($entity)) {
             $this->get('session')->getFlashBag()->add('success', 'Attribute successfully saved');
 
-            return $this->redirect(
-                $this->generateUrl('pim_product_productattribute_edit', array('id' => $entity->getId()))
-            );
+            return $this->redirect($this->generateUrl('pim_product_productattribute_index'));
         }
 
-        $em = $this->container->get('doctrine.orm.entity_manager');
-        $locales = $em->getRepository('PimConfigBundle:Language')->findBy(array('activated' => 1));
-        $disabledLocales = $em->getRepository('PimConfigBundle:Language')->findBy(array('activated' => 0));
+        $localeManager = $this->get('pim_config.manager.locale');
+        $locales = $localeManager->getActiveLocales();
+        $disabledLocales = $localeManager->getDisabledLocales();
 
         return array(
-            'form' => $this->get('pim_product.form.attribute')->createView(),
-            'locales' => $locales,
+            'form'            => $this->get('pim_product.form.attribute')->createView(),
+            'locales'         => $locales,
             'disabledLocales' => $disabledLocales,
-            'measures' => $this->container->getParameter('oro_measure.measures_config')
+            'measures'        => $this->container->getParameter('oro_measure.measures_config')
         );
     }
 
@@ -143,9 +143,9 @@ class ProductAttributeController extends Controller
         // Add custom fields to the form and set the entered data to the form
         $this->get('pim_product.form.handler.attribute')->preProcess($data['pim_product_attribute_form']);
 
-        $em = $this->container->get('doctrine.orm.entity_manager');
-        $locales = $em->getRepository('PimConfigBundle:Language')->findBy(array('activated' => 1));
-        $disabledLocales = $em->getRepository('PimConfigBundle:Language')->findBy(array('activated' => 0));
+        $localeManager = $this->get('pim_config.manager.locale');
+        $locales = $localeManager->getActiveLocales();
+        $disabledLocales = $localeManager->getDisabledLocales();
 
         return array(
             'form' => $this->get('pim_product.form.attribute')->createView(),

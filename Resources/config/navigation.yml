@@ -64,6 +64,6 @@ oro_titles:
     pim_config_currency_index:               Currencies
     pim_config_currency_create:              Currencies | Create
     pim_config_currency_edit:                Currencies | Edit
-    pim_config_language_index:               Languages
-    pim_config_language_create:              Languages | Create
-    pim_config_language_edit:                Languages | Edit
+    pim_config_locale_index:                 Locales
+    pim_config_locale_create:                Locales | Create
+    pim_config_locale_edit:                  Locales | Edit

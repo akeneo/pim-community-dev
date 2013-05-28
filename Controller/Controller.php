@@ -13,6 +13,11 @@ use Pim\Bundle\ProductBundle\Form\Type\AvailableProductAttributesType;
  */
 class Controller extends BaseController
 {
+    protected function getEntityManager()
+    {
+        return $this->getDoctrine()->getManager();
+    }
+
     /**
      * Get the AvailbleProductAttributes form
      *

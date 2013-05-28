@@ -185,4 +185,18 @@ class ProductValue extends AbstractEntityFlexibleValue
 
         return $this;
     }
+
+    public function isRemovable()
+    {
+        if (null === $this->entity || null === $this->entity->getProductFamily()) {
+            return true;
+        }
+
+        return !$this->entity->getProductFamily()->getAttributes()->contains($this->getAttribute());
+    }
+
+    public function getEntity()
+    {
+        return $this->entity;
+    }
 }

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ProductBundle\Entity;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
-use Pim\Bundle\ConfigBundle\Entity\Language;
+use Pim\Bundle\ConfigBundle\Entity\Locale;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Translatable;
@@ -59,7 +59,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     /**
      * @var string $description
      *
-     * @ORM\Column(name="description", type="string", length=255)
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
     protected $description;
 
@@ -100,12 +100,12 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     protected $useableAsGridFilter;
 
     /**
-     * @var $availableLanguages ArrayCollection
+     * @var $availableLocales ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Language")
-     * @ORM\JoinTable(name="pim_product_attribute_language")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale")
+     * @ORM\JoinTable(name="pim_product_attribute_locale")
      */
-    protected $availableLanguages;
+    protected $availableLocales;
 
     /**
      * @var integer $maxCharacters
@@ -264,7 +264,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
         $this->variant             = false;
         $this->useableAsGridColumn = false;
         $this->useableAsGridFilter = false;
-        $this->availableLanguages  = new ArrayCollection();
+        $this->availableLocales  = new ArrayCollection();
         $this->translations        = new ArrayCollection();
     }
 
@@ -273,8 +273,6 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      *
      * @ORM\PrePersist
      * @ORM\PreUpdate
-     *
-     * @return null
      */
     public function convertDefaultValueToTimestamp()
     {
@@ -287,13 +285,12 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * Convert defaultValue to DateTime if attribute type is date
      *
      * @ORM\PostLoad
-     *
-     * @return null
      */
     public function convertDefaultValueToDatetime()
     {
         if ($this->getDefaultValue()) {
-            if (strpos($this->getAttributeType(), 'DateType') !== false) {
+            // TODO : must be moved and avoid to use service name here
+            if ($this->getAttributeType() === 'oro_flexibleentity_date') {
                 $date = new \DateTime();
                 $date->setTimestamp(intval($this->getDefaultValue()));
 
@@ -307,13 +304,12 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      *
      * @ORM\PrePersist
      * @ORM\PreUpdate
-     *
-     * @return null
      */
     public function convertDefaultValueToInteger()
     {
         if ($this->getDefaultValue() !== null) {
-            if (strpos($this->getAttributeType(), 'BooleanType') !== false) {
+            // TODO : must be moved and avoid to use service name here
+            if ($this->getAttributeType() === 'oro_flexibleentity_integer') {
                 $this->setDefaultValue((int) $this->getDefaultValue());
             }
         }
@@ -323,17 +319,17 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      * Convert defaultValue to boolean if attribute type is boolean
      *
      * @ORM\PostLoad
-     *
-     * @return null
      */
     public function convertDefaultValueToBoolean()
     {
         if ($this->getDefaultValue() !== null) {
-            if (strpos($this->getAttributeType(), 'BooleanType') !== false) {
+            // TODO : must be moved and avoid to use service name here
+            if ($this->getAttributeType() === 'oro_flexibleentity_boolean') {
                 $this->setDefaultValue((bool) $this->getDefaultValue());
             }
         }
     }
+
 
     /**
      * To string
@@ -504,41 +500,41 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Add available language
+     * Add available locale
      *
-     * @param Language $availableLanguage
+     * @param Locale $availableLocale
      *
      * @return ProductAttribute
      */
-    public function addAvailableLanguage(Language $availableLanguage)
+    public function addAvailableLocale(Locale $availableLocale)
     {
-        $this->availableLanguages[] = $availableLanguage;
+        $this->availableLocales[] = $availableLocale;
 
         return $this;
     }
 
     /**
-     * Remove available language
+     * Remove available locale
      *
-     * @param Language $availableLanguage
+     * @param Locale $availableLocale
      *
      * @return ProductAttribute
      */
-    public function removeAvailableLanguage(Language $availableLanguage)
+    public function removeAvailableLocale(Locale $availableLocale)
     {
-        $this->availableLanguages->removeElement($availableLanguage);
+        $this->availableLocales->removeElement($availableLocale);
 
         return $this;
     }
 
     /**
-     * Get available languages
+     * Get available locales
      *
      * @return ArrayCollection|null
      */
-    public function getAvailableLanguages()
+    public function getAvailableLocales()
     {
-        return $this->availableLanguages->isEmpty() ? null : $this->availableLanguages;
+        return $this->availableLocales->isEmpty() ? null : $this->availableLocales;
     }
 
     /**

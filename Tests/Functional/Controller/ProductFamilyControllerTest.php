@@ -43,13 +43,10 @@ class ProductFamilyControllerTest extends ControllerTest
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      */
-    public function testIndex($locale)
+    public function testIndex()
     {
-        $uri = '/'. $locale .'/product/product-family/index';
+        $uri = '/product/product-family/index';
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -63,15 +60,12 @@ class ProductFamilyControllerTest extends ControllerTest
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      *
      * @return null
      */
-    public function testCreate($locale)
+    public function testCreate()
     {
-        $uri = '/'. $locale .'/product/product-family/create';
+        $uri = '/product/product-family/create';
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -111,18 +105,15 @@ class ProductFamilyControllerTest extends ControllerTest
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      * @depends testCreate
      *
      * @return null
      */
-    public function testEdit($locale)
+    public function testEdit()
     {
         // get product family entity
         $productFamily = $this->getRepository()->findOneBy(array('code' => self::FAMILY_CODE));
-        $uri = '/'. $locale .'/product/product-family/edit/'. $productFamily->getId();
+        $uri = '/product/product-family/edit/'. $productFamily->getId();
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -160,23 +151,20 @@ class ProductFamilyControllerTest extends ControllerTest
         $this->assertEquals(self::FAMILY_CODE, $family->getCode());
 
         // assert with unknown product family id and authentication
-        $uri = '/'. $locale .'/product/product-family/edit/0';
+        $uri = '/product/product-family/edit/0';
         $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      * @depends testEdit
      */
-    public function testRemove($locale)
+    public function testRemove()
     {
         // get product family entity
         $productFamily = $this->getRepository()->findOneBy(array());
-        $uri = '/'. $locale .'/product/product-family/remove/'. $productFamily->getId();
+        $uri = '/product/product-family/remove/'. $productFamily->getId();
 
         // assert without authentication
         $this->client->request('GET', $uri);

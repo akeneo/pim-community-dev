@@ -5,7 +5,7 @@ use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
-use Pim\Bundle\ConfigBundle\Entity\Language;
+use Pim\Bundle\ConfigBundle\Entity\Locale;
 
 /**
  * Test related class
@@ -149,24 +149,24 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get/add/remove availableLanguages property
+     * Test get/add/remove availableLocales property
      */
-    public function testGetAddRemoveAvailableLanguages()
+    public function testGetAddRemoveAvailableLocales()
     {
         $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getAvailableLanguages());
+        $this->assertNull($productAttribute->getAvailableLocales());
 
         // Change value and assert new
-        $newLanguage = new Language();
-        $productAttribute->addAvailableLanguage($newLanguage);
+        $newLocale = new Locale();
+        $productAttribute->addAvailableLocale($newLocale);
         $this->assertInstanceOf(
-            'Pim\Bundle\ConfigBundle\Entity\Language',
-            $productAttribute->getAvailableLanguages()->first()
+            'Pim\Bundle\ConfigBundle\Entity\Locale',
+            $productAttribute->getAvailableLocales()->first()
         );
-        $this->assertCount(1, $productAttribute->getAvailableLanguages());
+        $this->assertCount(1, $productAttribute->getAvailableLocales());
 
-        $productAttribute->removeAvailableLanguage($newLanguage);
-        $this->assertNull($productAttribute->getAvailableLanguages());
+        $productAttribute->removeAvailableLocale($newLocale);
+        $this->assertNull($productAttribute->getAvailableLocales());
     }
 
     /**

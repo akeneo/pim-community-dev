@@ -7,16 +7,16 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Event\DataEvent;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormEvents;
-use Pim\Bundle\ProductBundle\Entity\ProductLanguage;
+use Pim\Bundle\ProductBundle\Entity\ProductLocale;
 
 /**
- * Language form type
+ * Locale form type
  *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductLanguageType extends AbstractType
+class ProductLocaleType extends AbstractType
 {
     /**
      * {@inheritDoc}
@@ -29,7 +29,7 @@ class ProductLanguageType extends AbstractType
                 $form = $event->getForm();
                 $data = $event->getData();
 
-                if ($data instanceof ProductLanguage) {
+                if ($data instanceof ProductLocale) {
                     $form->add(
                         $builder->getFormFactory()->createNamed(
                             'active',
@@ -50,7 +50,7 @@ class ProductLanguageType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array('data_class' => 'Pim\Bundle\ProductBundle\Entity\ProductLanguage'));
+        $resolver->setDefaults(array('data_class' => 'Pim\Bundle\ProductBundle\Entity\ProductLocale'));
     }
 
     /**
@@ -58,6 +58,6 @@ class ProductLanguageType extends AbstractType
      */
     public function getName()
     {
-        return 'language';
+        return 'locale';
     }
 }

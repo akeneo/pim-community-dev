@@ -2,44 +2,44 @@ attributes_config:
     oro_flexibleentity_boolean:
         name: 'Yes/No'
         properties: [ 'defaultValue' ]
-        parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
+        parameters: [ 'translatable', 'scopable', 'availableLocales' ]
     oro_flexibleentity_date:
         name: 'Date'
         properties: [ 'defaultValue', 'dateType', 'dateMin', 'dateMax', 'searchable' ]
-        parameters: [ 'translatable', 'scopable', 'unique', 'availableLanguages' ]
+        parameters: [ 'translatable', 'scopable', 'unique', 'availableLocales' ]
     oro_flexibleentity_file:
         name: 'File'
         properties: [ 'allowedFileSources', 'maxFileSize', 'allowedFileExtensions' ]
-        parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
+        parameters: [ 'translatable', 'scopable', 'availableLocales' ]
     oro_flexibleentity_image:
         name: 'Image'
         properties: [ 'allowedFileSources', 'maxFileSize', 'allowedFileExtensions' ]
-        parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
+        parameters: [ 'translatable', 'scopable', 'availableLocales' ]
     oro_flexibleentity_metric:
         name: 'Metric'
         properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'metricFamily', 'defaultMetricUnit', 'searchable' ]
-        parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
+        parameters: [ 'translatable', 'scopable', 'availableLocales' ]
     pim_product_price_collection:
         name: 'Prices'
-        properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'searchable' ]
-        parameters: [ 'translatable', 'availableLanguages' ]
+        properties: [ 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'searchable' ]
+        parameters: [ 'translatable', 'availableLocales' ]
     oro_flexibleentity_number:
         name: 'Number'
         properties: [ 'defaultValue', 'numberMin', 'numberMax', 'decimalsAllowed', 'negativeAllowed', 'searchable' ]
-        parameters: [ 'translatable', 'scopable', 'unique', 'availableLanguages' ]
+        parameters: [ 'translatable', 'scopable', 'unique', 'availableLocales' ]
     pim_product_multiselect:
         name: 'Multiselect'
         properties: [ 'defaultValue', 'valueCreationAllowed', 'searchable', 'options' ]
-        parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
+        parameters: [ 'translatable', 'scopable', 'availableLocales' ]
     pim_product_simpleselect:
         name: 'Simple select'
         properties: [ 'defaultValue', 'valueCreationAllowed', 'searchable', 'options' ]
-        parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
+        parameters: [ 'translatable', 'scopable', 'availableLocales' ]
     pim_product_textarea:
         name: 'Textarea'
         properties: [ 'defaultValue', 'maxCharacters', 'wysiwygEnabled', 'searchable' ]
-        parameters: [ 'translatable', 'scopable', 'availableLanguages' ]
+        parameters: [ 'translatable', 'scopable', 'availableLocales' ]
     oro_flexibleentity_text:
         name: 'Text'
         properties: [ 'defaultValue', 'maxCharacters', 'validationRule', 'validationRegexp', 'searchable' ]
-        parameters: [ 'translatable', 'scopable', 'unique', 'availableLanguages' ]
+        parameters: [ 'translatable', 'scopable', 'unique', 'availableLocales' ]

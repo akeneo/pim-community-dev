@@ -77,10 +77,10 @@ class ProductAttributeHandler
      */
     public function process(ProductAttribute $entity)
     {
-        $languages = $this->manager->getRepository('PimConfigBundle:Language')->findBy(array('activated' => 1));
+        $locales = $this->manager->getRepository('PimConfigBundle:Locale')->findBy(array('activated' => 1));
         $locales = array();
-        foreach ($languages as $language) {
-            $locales[] = $language->getCode();
+        foreach ($locales as $locale) {
+            $locales[] = $locale->getCode();
         }
 
         foreach ($entity->getOptions() as $option) {

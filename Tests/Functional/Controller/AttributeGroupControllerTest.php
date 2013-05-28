@@ -39,13 +39,10 @@ class AttributeGroupControllerTest extends ControllerTest
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      */
-    public function testIndex($locale)
+    public function testIndex()
     {
-        $uri = '/'. $locale .'/product/attribute-group/index';
+        $uri = '/product/attribute-group/index';
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -59,15 +56,12 @@ class AttributeGroupControllerTest extends ControllerTest
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      *
      * @return null
      */
-    public function testCreate($locale)
+    public function testCreate()
     {
-        $uri = '/'. $locale .'/product/attribute-group/create';
+        $uri = '/product/attribute-group/create';
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -91,7 +85,7 @@ class AttributeGroupControllerTest extends ControllerTest
             }
         )->first()->form();
 
-	// FIXME: 
+	// FIXME:
         $this->markTestIncomplete(
           'This test needs to be redone to take the translation into account, as the name field is an
 	   array and not a field anymore'
@@ -114,18 +108,15 @@ class AttributeGroupControllerTest extends ControllerTest
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      * @depends testCreate
      *
      * @return null
      */
-    public function testEdit($locale)
+    public function testEdit()
     {
         // get attribute group entity
         $attributeGroup = $this->getRepository()->findOneBy(array('name' => self::GROUP_NAME));
-        $uri = '/'. $locale .'/product/attribute-group/edit/'. $attributeGroup->getId();
+        $uri = '/product/attribute-group/edit/'. $attributeGroup->getId();
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -155,7 +146,7 @@ class AttributeGroupControllerTest extends ControllerTest
             'pim_attribute_group_form[sort_order]' => self::GROUP_ORDER
         );
 
-	// FIXME: 
+	// FIXME:
         $this->markTestIncomplete(
           'This test needs to be redone to take the translation into account, as the name field is an
 	   array and not a field anymore'
@@ -170,23 +161,20 @@ class AttributeGroupControllerTest extends ControllerTest
         $this->assertEquals(self::GROUP_ORDER, $attributeGroup->getSortOrder());
 
         // assert with unknown attribute group id and authentication
-        $uri = '/'. $locale .'/product/attribute-group/edit/0';
+        $uri = '/product/attribute-group/edit/0';
         $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 
     /**
      * Test related action
-     * @param string $locale
-     *
-     * @dataProvider localeProvider
      * @depends testEdit
      */
-    public function testRemove($locale)
+    public function testRemove()
     {
         // get attribute group entity
         $attributeGroup = $this->getRepository()->findOneBy(array('name' =>self::GROUP_EDITED_NAME));
-        $uri = '/'. $locale .'/product/attribute-group/remove/'. $attributeGroup->getId();
+        $uri = '/product/attribute-group/remove/'. $attributeGroup->getId();
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);

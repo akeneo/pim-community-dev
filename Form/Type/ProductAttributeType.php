@@ -106,7 +106,7 @@ class ProductAttributeType extends AttributeType
      */
     protected function addFieldDescription(FormBuilderInterface $builder)
     {
-        $builder->add('description', 'textarea');
+        $builder->add('description', 'textarea', array('required' => false));
     }
 
     /**
@@ -224,14 +224,13 @@ class ProductAttributeType extends AttributeType
     }
 
     /**
-     * Override the parent's method to add a hidden field for sort order
      * @param FormBuilderInterface $builder
      *
      * @return void
      */
     protected function addPositionField(FormBuilderInterface $builder)
     {
-        $builder->add('sortOrder', 'hidden');
+        $builder->add('sortOrder', 'integer', array('label' => 'Position'));
     }
 
 
