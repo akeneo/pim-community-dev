@@ -339,16 +339,6 @@ class ProductController extends Controller
     }
 
     /**
-     * Get the ProductAttribute entity repository
-     *
-     * @return Pim\Bundle\ProductBundle\Entity\Repository\ProductAttributeRepository
-     */
-    protected function getProductAttributeRepository()
-    {
-        return $this->getProductManager()->getAttributeRepository();
-    }
-
-    /**
      * Get the AttributeGroup entity repository
      *
      * @return Pim\Bundle\ProductBundle\Entity\Repository\AttributeGroupRepository

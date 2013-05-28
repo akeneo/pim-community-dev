@@ -47,4 +47,19 @@ class Controller extends BaseController
     {
         $this->get('session')->getFlashBag()->add($type, $message);
     }
+
+    /**
+     * Get the ProductAttribute entity repository
+     *
+     * @return Pim\Bundle\ProductBundle\Entity\Repository\ProductAttributeRepository
+     */
+    protected function getProductAttributeRepository()
+    {
+        return $this->getProductManager()->getAttributeRepository();
+    }
+
+    protected function getProductManager()
+    {
+        return $this->get('product_manager');
+    }
 }
