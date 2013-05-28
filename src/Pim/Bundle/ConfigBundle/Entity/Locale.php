@@ -16,7 +16,7 @@ use Symfony\Component\Locale\Locale as SfLocale;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ORM\Table(name="pim_locale")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Pim\Bundle\ConfigBundle\Entity\Repository\LocaleRepository")
  * @UniqueEntity("code")
  */
 class Locale
