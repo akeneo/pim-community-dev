@@ -160,6 +160,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
+                'label'       => $this->translator->trans('Data Locale'),
                 'field_name'  => 'data_locale',
                 'filter_type' => FilterInterface::TYPE_LOCALE,
                 'required'    => false,
@@ -182,7 +183,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function createScopeField()
     {
-        $channelChoices = $this->channelManager->getChannelChoices();
+        $channelChoices = $this->channelManager->getChannelChoiceWithUserChannel();
 
         $field = new FieldDescription();
         $field->setName(self::SCOPE_FIELD_NAME);

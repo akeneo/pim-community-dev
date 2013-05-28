@@ -17,6 +17,7 @@
         $(function() {
             var datagrid = Oro.Registry.getElement('datagrid', 'products');
             $("#locale-switcher").append(datagrid.filters.locale.el);
+            $("#scope-switcher").append(datagrid.filters.scope.el);
         });
     </script>
 {% endblock %}
@@ -37,6 +38,7 @@
                             <div class="sub-title">{{ title }}</div>
                             <span class="separator">/</span>
                             <div id="locale-switcher" class="sub-title"></div>
+                            <div id="scope-switcher" class="sub-title"></div>
                         </div>
                     </div>
                 </div>
