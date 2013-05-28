@@ -52,6 +52,12 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     protected $options;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\AttributeOption")
+     * @ORM\JoinColumn(name="default_option_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $defaultOption;
+
+    /**
      * @ORM\Column(name="sort_order", type="integer")
      */
     protected $sortOrder = 0;
@@ -269,67 +275,100 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Convert defaultValue to UNIX timestamp if it is a DateTime object
+     * Get default value
      *
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
+     * @return mixed $defaultValue
      */
-    public function convertDefaultValueToTimestamp()
+    public function getDefaultValue()
     {
-        if ($this->getDefaultValue() instanceof \DateTime) {
-            $this->setDefaultValue($this->getDefaultValue()->format('U'));
+        if (is_null($this->defaultValue) && is_null($this->defaultOption)) {
+            return null;
         }
-    }
 
-    /**
-     * Convert defaultValue to DateTime if attribute type is date
-     *
-     * @ORM\PostLoad
-     */
-    public function convertDefaultValueToDatetime()
-    {
-        if ($this->getDefaultValue()) {
-            // TODO : must be moved and avoid to use service name here
-            if ($this->getAttributeType() === 'oro_flexibleentity_date') {
+        switch ($this->getBackendType()) {
+            case 'option':
+                return $this->getDefaultOption();
+            case 'options':
+                $option = new ArrayCollection();
+                $option[] = $this->getDefaultOption();
+
+                return $option;
+            case 'date':
                 $date = new \DateTime();
-                $date->setTimestamp(intval($this->getDefaultValue()));
+                $date->setTimestamp((int) $this->defaultValue);
 
-                $this->setDefaultValue($date);
-            }
+                return $date;
+            case 'boolean':
+                return (bool) $this->defaultValue;
+            default:
+                return $this->defaultValue;
         }
     }
 
     /**
-     * Convert defaultValue to integer if attribute type is boolean
+     * Set default value
      *
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
+     * @param mixed $defaultValue
+     *
+     * @return ProductAttribute
      */
-    public function convertDefaultValueToInteger()
+    public function setDefaultValue($defaultValue)
     {
-        if ($this->getDefaultValue() !== null) {
-            // TODO : must be moved and avoid to use service name here
-            if ($this->getAttributeType() === 'oro_flexibleentity_integer') {
-                $this->setDefaultValue((int) $this->getDefaultValue());
-            }
+        if (is_null($defaultValue)) {
+            $this->defaultValue = null;
+
+            return $this;
+        } elseif ($defaultValue instanceof ArrayCollection &&
+            $defaultValue->isEmpty()) {
+            $this->defaultOption = null;
+
+            return $this;
         }
+
+        switch ($this->getBackendType()) {
+            case 'option':
+                $this->setDefaultOption($defaultValue);
+                break;
+            case 'options':
+                $this->setDefaultOption($defaultValue->first());
+                break;
+            case 'date':
+                $this->defaultValue = $defaultValue->format('U');
+                break;
+            case 'boolean':
+                $this->defaultValue = (int) $defaultValue;
+                break;
+            default:
+                $this->defaultValue = $defaultValue;
+                break;
+        }
+
+        return $this;
     }
 
     /**
-     * Convert defaultValue to boolean if attribute type is boolean
+     * Get defaultOption
      *
-     * @ORM\PostLoad
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeOption
      */
-    public function convertDefaultValueToBoolean()
+    public function getDefaultOption()
     {
-        if ($this->getDefaultValue() !== null) {
-            // TODO : must be moved and avoid to use service name here
-            if ($this->getAttributeType() === 'oro_flexibleentity_boolean') {
-                $this->setDefaultValue((bool) $this->getDefaultValue());
-            }
-        }
+        return $this->defaultOption;
     }
 
+    /**
+     * Set defaultOption
+     *
+     * @param AttributeOption $option
+     *
+     * @return ProductAttribute
+     */
+    public function setDefaultOption(\Pim\Bundle\ProductBundle\Entity\AttributeOption $option = null)
+    {
+        $this->defaultOption = $option;
+
+        return $this;
+    }
 
     /**
      * To string
@@ -404,7 +443,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      *
      * @param string $variant
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttribute
+     * @return ProductAttribute
      */
     public function setVariant($variant)
     {
@@ -423,6 +462,12 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
         return $this->group;
     }
 
+    /**
+     * Get virtual group
+     * Returns a group named 'Other' if entity doesn't belong to a group
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
+     */
     public function getVirtualGroup()
     {
         if ($this->group) {
@@ -442,7 +487,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      *
      * @param AttributeGroup $group
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttribute
+     * @return ProductAttribute
      */
     public function setGroup(AttributeGroup $group = null)
     {
@@ -975,7 +1020,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      *
      * @param ProductAttributeTranslation $translation
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttribute
+     * @return ProductAttribute
      */
     public function addTranslation(ProductAttributeTranslation $translation)
     {
@@ -991,7 +1036,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      *
      * @param ProductAttributeTranslation $translation
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttribute
+     * @return ProductAttribute
      */
     public function removeTranslation(ProductAttributeTranslation $translation)
     {
@@ -1015,7 +1060,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      *
      * @param number $sortOrder
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttribute
+     * @return ProductAttribute
      */
     public function setSortOrder($sortOrder)
     {

@@ -250,7 +250,7 @@ class AttributeService
         $type = $attribute->getAttributeType();
         $fieldType = $this->factory->get($type)->getFormType();
 
-        if ($fieldType === 'entity' || $fieldType === 'oro_flexibleentity_metric') {
+        if ($type === 'oro_flexibleentity_metric') {
             $fieldType = 'text';
         } elseif ($type === 'pim_product_price_collection') {
             $fieldType = 'number';
@@ -259,6 +259,16 @@ class AttributeService
         }
 
         $options = array();
+
+        if ($fieldType === 'entity') {
+            $options['empty_value']   = null;
+            $options['class']         = 'PimProductBundle:AttributeOption';
+            $options['query_builder'] = function (EntityRepository $er) use ($attribute) {
+                return $er->createQueryBuilder('opt')->where('opt.attribute = '.$attribute->getId());
+            };
+            $options['expanded'] = false;
+            $options['multiple'] = $type === 'pim_product_multiselect';
+        }
 
         if ($type === 'oro_flexibleentity_date') {
             $fieldType = $attribute->getDateType() ? $attribute->getDateType() : 'datetime';

@@ -52,13 +52,13 @@ class ProductAttributeValidator
      * Violation message for missing default value of attribute option
      * @staticvar string
      */
-    const VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED = 'Default label must be specified for all options';
+    const VIOLATION_OPTION_DEFAULT_VALUE_REQUIRED = 'Default value must be specified for all options';
 
     /**
      * Violation message for duplicate default value of attribute option
      * @staticvar string
      */
-    const VIOLATION_DUPLICATE_OPTION_DEFAULT_VALUE = 'The default label must be different for each option';
+    const VIOLATION_DUPLICATE_OPTION_DEFAULT_VALUE = 'Default value must be different for each option';
 
     /**
      * Violation messages for invalid custom attribute values

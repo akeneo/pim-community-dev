@@ -35,6 +35,14 @@ class OptionMultiSelectType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
+    protected function prepareValueFormData(FlexibleValueInterface $value)
+    {
+        return $value->getData()->isEmpty() ? $value->getAttribute()->getDefaultValue() : $value->getData();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'pim_product_multiselect';
