@@ -514,28 +514,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         );
     }
 
-    private function createFamilyTranslation(ProductFamily $family, $content, $locale = 'default')
+    /**
+     * @Given /^the attribute "([^"]*)" has been removed from the "([^"]*)" family$/
+     */
+    public function theAttributeHasBeenRemovedFromTheFamily($attribute, $family)
     {
-        $translation = new ProductFamilyTranslation();
-        $translation->setContent($content);
-        $translation->setField('label');
-        $translation->setLocale($locale);
-        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\ProductFamily');
-        $translation->setForeignKey($family);
+        $attribute = $this->getAttribute($attribute);
+        $family    = $this->getFamily($family);
 
-        $em = $this->getEntityManager();
-        $em->persist($translation);
-        $em->flush();
+        $family->removeAttribute($attribute);
 
-        return $translation;
-    }
-
-    private function getInvalidValueFor($field)
-    {
-        switch ($field) {
-            case 'Family edit.Code':
-                return 'inv@lid';
-        }
+        $this->getEntityManager()->flush();
     }
 
     /**
@@ -658,6 +647,42 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->assertSession()->addressEquals($expectedAddress);
     }
 
+    /**
+     * @Then /^I should (not )?see a remove link next to the "([^"]*)" field$/
+     */
+    public function iShouldSeeARemoveLinkNextToTheField($not, $field)
+    {
+        $removeLink = $this->getPage('Product')->getRemoveLinkFor($field);
+        if (!$not) {
+            if (!$removeLink) {
+                throw $this->createExpectationException(sprintf(
+                    'Remove link on field "%s" should not be displayed.', $field
+                ));
+            }
+        } else {
+            if ($removeLink) {
+                throw $this->createExpectationException(sprintf(
+                    'Remove link on field "%s" should be displayed.', $field
+                ));
+            }
+        }
+    }
+
+    /**
+     * @When /^I remove the "([^"]*)" attribute$/
+     */
+    public function iRemoveTheAttribute($field)
+    {
+        if (null === $link = $this->getPage($this->currentPage)->getRemoveLinkFor($field)) {
+            throw $this->createExpectationException(sprintf(
+                'Remove link on field "%s" should be displayed.', $field
+            ));
+        }
+
+        $link->click();
+        $this->getSession()->getPage()->clickLink('OK');
+    }
+
     private function openPage($page, array $options = array())
     {
         $this->currentPage = $page;
@@ -725,7 +750,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         return $value;
     }
 
-
     private function getLocaleCode($language)
     {
         if ('default' === $language) {
@@ -741,38 +765,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         return $this->locales[$language];
     }
 
-    public function getProductFamily($code)
+    private function getProductFamily($code)
     {
         return $this->getEntityOrException('PimProductBundle:ProductFamily', array(
             'code' => $code
         ));
-    }
-
-    /**
-     * @Then /^I should not see a remove link next to the "([^"]*)" field$/
-     */
-    public function iShouldNotSeeARemoveLinkNextToTheField($field)
-    {
-        if ($this->getPage('Product')->getRemoveLinkFor($field)) {
-            throw $this->createExpectationException(sprintf(
-                'Remove link on field "%s" should not be displayed.', $field
-            ));
-        }
-    }
-
-    /**
-     * @When /^I remove the "([^"]*)" attribute$/
-     */
-    public function iRemoveTheAttribute($field)
-    {
-        if (null === $link = $this->getPage($this->currentPage)->getRemoveLinkFor($field)) {
-            throw $this->createExpectationException(sprintf(
-                'Remove link on field "%s" should be displayed.', $field
-            ));
-        }
-
-        $link->click();
-        $this->getSession()->getPage()->clickLink('OK');
     }
 
     private function getLocale($code)
@@ -838,6 +835,30 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
 
         return $entity;
+    }
+
+    private function createFamilyTranslation(ProductFamily $family, $content, $locale = 'default')
+    {
+        $translation = new ProductFamilyTranslation();
+        $translation->setContent($content);
+        $translation->setField('label');
+        $translation->setLocale($locale);
+        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\ProductFamily');
+        $translation->setForeignKey($family);
+
+        $em = $this->getEntityManager();
+        $em->persist($translation);
+        $em->flush();
+
+        return $translation;
+    }
+
+    private function getInvalidValueFor($field)
+    {
+        switch ($field) {
+            case 'Family edit.Code':
+                return 'inv@lid';
+        }
     }
 
     private function getProductManager()
