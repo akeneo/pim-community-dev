@@ -145,7 +145,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function createLocaleField()
     {
-        $activeLocaleCodes = $this->localeManager->getActiveCodes();
+        $activeLocaleCodes = $this->localeManager->getActiveCodesWithUserLocale();
 
         $field = new FieldDescription();
         $field->setName('locale');
@@ -154,7 +154,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
                 'label'       => $this->translator->trans('Data locale'),
                 'field_name'  => 'data_locale',
-//                 'filter_type' => FilterInterface::TYPE_CHOICE,
                 'filter_type' => PimFilterInterface::TYPE_LOCALE,
                 'required'    => false,
                 'sortable'    => true,
