@@ -46,15 +46,12 @@ class Locale
     protected $fallback;
 
     /**
-     * @var ArrayCollection
+     * @var Currency $defaultCurrency
      *
-     * @ORM\ManyToMany(targetEntity="Currency", inversedBy="locales")
-     * @ORM\JoinTable(name="pim_locale_currency",
-     *     joinColumns={@ORM\JoinColumn(name="locale_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="currency_id", referencedColumnName="id")}
-     * )
+     * @ORM\ManyToOne(targetEntity="Currency")
+     * @ORM\JoinColumn(name="default_currency_id", referencedColumnName="id")
      */
-    protected $currencies;
+    protected $defaultCurrency;
 
     /**
      * @var boolean $activated
@@ -69,7 +66,6 @@ class Locale
     public function __construct()
     {
         $this->activated = true;
-        $this->currencies = new ArrayCollection();
     }
 
     /**
@@ -179,53 +175,25 @@ class Locale
     }
 
     /**
-     * Get currencies
+     * Get default currency
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return Currency
      */
-    public function getCurrencies()
+    public function getDefaultCurrency()
     {
-        return $this->currencies;
+        return $this->defaultCurrency;
     }
 
     /**
      * Set currencies
      *
-     * @param array $currencies
-     *
-     * @return \Pim\Bundle\ConfigBundle\Entity\Locale
-     */
-    public function setCurrencies($currencies = array())
-    {
-        $this->currencies = new ArrayCollection($currencies);
-
-        return $this;
-    }
-
-    /**
-     * Add a currency to the collection
-     *
      * @param Currency $currency
      *
      * @return \Pim\Bundle\ConfigBundle\Entity\Locale
      */
-    public function addCurrency(Currency $currency)
+    public function setDefaultCurrency(Currency $currency)
     {
-        $this->currencies->add($currency);
-
-        return $this;
-    }
-
-    /**
-     * Remove a currency from the collection
-     *
-     * @param Currency $currency
-     *
-     * @return \Pim\Bundle\ConfigBundle\Entity\Locale
-     */
-    public function removeCurrency(Currency $currency)
-    {
-        $this->currencies->removeElement($currency);
+        $this->defaultCurrency = $currency;
 
         return $this;
     }

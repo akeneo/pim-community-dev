@@ -2791,12 +2791,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/FlexibleEntityBundle.git",
-                "reference": "461c4e2dfa22411af49aca27e400f9dfdadaa3bc"
+                "reference": "763d3d08df8f4f48d2907bb04f61b7f32a2eb6cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/3338100f1d0a647e945dd0a8ef8f2e2bfd3435fb",
-                "reference": "3338100f1d0a647e945dd0a8ef8f2e2bfd3435fb",
+                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/763d3d08df8f4f48d2907bb04f61b7f32a2eb6cf",
+                "reference": "763d3d08df8f4f48d2907bb04f61b7f32a2eb6cf",
                 "shasum": ""
             },
             "require": {
@@ -3053,12 +3053,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/SegmentationTreeBundle.git",
-                "reference": "d9d061d49d11aa1a222d66c2e87371a0f8e8c303"
+                "reference": "0795bdd41c36f8de3f04e993b18575ea7c7140bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/SegmentationTreeBundle/zipball/d9d061d49d11aa1a222d66c2e87371a0f8e8c303",
-                "reference": "d9d061d49d11aa1a222d66c2e87371a0f8e8c303",
+                "url": "https://api.github.com/repos/laboro/SegmentationTreeBundle/zipball/0795bdd41c36f8de3f04e993b18575ea7c7140bf",
+                "reference": "0795bdd41c36f8de3f04e993b18575ea7c7140bf",
                 "shasum": ""
             },
             "require": {
@@ -3095,7 +3095,7 @@
                 "source": "https://github.com/laboro/SegmentationTreeBundle/tree/master",
                 "issues": "https://github.com/laboro/SegmentationTreeBundle/issues"
             },
-            "time": "2013-05-22 21:05:14"
+            "time": "2013-05-24 21:09:14"
         },
         {
             "name": "oro/soap-bundle",

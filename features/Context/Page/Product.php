@@ -18,6 +18,9 @@ class Product extends Page
     protected $elements = array(
         'Locales dropdown'     => array('css' => '#locale-switcher'),
         'Available attributes' => array('css' => '#pim_available_product_attributes_attributes'),
+        'Title'                => array('css' => '.product-title'),
+        'Tabs'                 => array('css' => '#form-navbar'),
+        'Locales selector'     => array('css' => '#pim_product_locales'),
     );
 
     public function findLocaleLink($locale)
@@ -27,7 +30,7 @@ class Product extends Page
 
     public function selectLanguage($language)
     {
-        $this->findField(ucfirst($language))->check();
+        $this->getElement('Locales selector')->selectOption(ucfirst($language), true);
     }
 
     public function save()
@@ -127,5 +130,15 @@ class Product extends Page
         ;
 
         return $controlGroupNode->find('css', 'a.remove-attribute');
+    }
+
+    public function getTitle()
+    {
+        return str_replace(' ', '', $this->getElement('Title')->getText());
+    }
+
+    public function visitTab($tab)
+    {
+        $this->getElement('Tabs')->clickLink($tab);
     }
 }

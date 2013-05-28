@@ -78,3 +78,11 @@ services:
         scope: request
         arguments: [@pim_config.form.locale, @request, @doctrine.orm.entity_manager]
         
+    # Subscriber
+    pim_config.user_preferences_listener:
+        class: Pim\Bundle\ConfigBundle\EventListener\UserPreferencesListener
+        calls:
+            - [ setContainer, [ @service_container ] ]
+        tags:
+            - { name: doctrine.event_subscriber }
+        
