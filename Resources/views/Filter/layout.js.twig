@@ -1,0 +1,42 @@
+{% extends 'OroFilterBundle:Filter:layout.js.twig' %}
+
+{% block oro_type_text_filter_js %}
+    {{ parent() }}
+{% endblock %}
+
+{% block oro_type_number_filter_js %}
+    {{ parent() }}
+{% endblock %}
+
+{% block oro_type_date_range_filter_js %}
+    {{ parent() }}
+{% endblock %}
+
+{% block oro_type_datetime_range_filter_js %}
+    {{ parent() }}
+{% endblock %}
+
+{% block oro_type_choice_filter_js %}
+    {{ parent() }}
+{% endblock %}
+
+{% block oro_type_select_filter_js %}
+    {{ parent() }}
+{% endblock %}
+
+{% block oro_type_multiselect_filter_js %}
+    {{ parent() }}
+{% endblock %}
+
+{% block oro_type_boolean_filter_js %}
+    {{ parent() }}
+{% endblock %}
+
+{% block pim_type_locale_filter_js %}
+    Oro.createInstanceFromConstructor(Pim.Filter.LocaleFilter.extend({
+        'name':    {{ formView.vars.name|json_encode|raw }},
+        'label':   {{ formView.vars.label|json_encode|raw }},
+        'enabled': {{ formView.vars.show_filter|json_encode|raw }},
+        'options': {{ formView.children.value.vars.choices|oro_filter_choices|json_encode|raw }}
+    }))
+{% endblock %}
