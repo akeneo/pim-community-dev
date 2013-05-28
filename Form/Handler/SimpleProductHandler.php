@@ -75,9 +75,6 @@ class SimpleProductHandler
      */
     protected function onSuccess(Product $entity)
     {
-        foreach ($entity->getLocales() as $locale) {
-            $locale->setActive(true);
-        }
         $this->manager->save($entity);
     }
 }

@@ -44,7 +44,7 @@
                                         <span class="caret"></span>
                                     </span>
                                     <ul class="dropdown-menu">
-                                        {% for locale in form.vars.value.getActiveLocales() %}
+                                        {% for locale in form.vars.value.getLocales() %}
                                             <li>
                                                 <a href="?dataLocale={{ locale.code }}" title="{{ locale.code|lower }}">
                                                     <span class="code">
@@ -181,7 +181,9 @@
                     <div class="tab-pane" id="associations"></div>
 
                     <div class="tab-pane" id="localisations">
-                        {{ form_row(form.locales) }}
+                        <div class="span12 tab-content">
+                            {{ form_row(form.locales) }}
+                        </div>
                     </div>
 
                     <div class="tab-pane" id="history"></div>

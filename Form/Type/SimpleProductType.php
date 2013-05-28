@@ -27,18 +27,22 @@ class SimpleProductType extends FlexibleType
         $builder
             ->add('sku', 'text', array('required' => true))
             ->add('productFamily')
-            ->add('locales', 'entity', array(
-                'required' => true,
-                'multiple' => true,
-                'class' => 'Pim\Bundle\ConfigBundle\Entity\Locale',
-                'by_reference' => false,
-                'query_builder' => function (EntityRepository $repository) {
-                    return $repository->createQueryBuilder('l')->where('l.activated = 1')->orderBy('l.code');
-                }
-            ));
+            ->add(
+                'locales',
+                'entity',
+                array(
+                    'required' => true,
+                    'multiple' => true,
+                    'class' => 'Pim\Bundle\ConfigBundle\Entity\Locale',
+                    'by_reference' => false,
+                    'query_builder' => function (EntityRepository $repository) {
+                        return $repository->createQueryBuilder('l')->where('l.activated = 1')->orderBy('l.code');
+                    }
+                )
+            );
     }
 
-   /**
+    /**
      * {@inheritdoc}
      */
     public function getName()

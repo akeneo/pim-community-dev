@@ -71,7 +71,7 @@ class ProductManager extends FlexibleManager
     private function addMissingAttributeValues(Product $product)
     {
         $channels  = $this->getChannels();
-        $locales = $product->getActiveLocales();
+        $locales = $product->getLocales();
         $attributes = $product->getAttributes();
 
         if ($family = $product->getProductFamily()) {

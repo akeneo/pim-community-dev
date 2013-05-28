@@ -48,7 +48,14 @@ class Product extends AbstractEntityFlexible
     protected $productFamily;
 
     /**
-     * @ORM\OneToMany(targetEntity="ProductLocale", mappedBy="product", cascade={"persist", "remove"})
+     * @var ArrayCollection $locales
+     *
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale")
+     * @ORM\JoinTable(
+     *    name="pim_product_locale",
+     *    joinColumns={@ORM\JoinColumn(name="locale_id", referencedColumnName="id", onDelete="CASCADE")},
+     *    inverseJoinColumns={@ORM\JoinColumn(name="entity_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
      */
     protected $locales;
 
@@ -121,17 +128,29 @@ class Product extends AbstractEntityFlexible
     }
 
     /**
-     * Get a collection of active locales
+     * Add locale
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @param \Pim\Bundle\ConfigBundle\Entity\Locale $locale
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Product
      */
-    public function getActiveLocales()
+    public function addLocale(\Pim\Bundle\ConfigBundle\Entity\Locale $locale)
     {
-        return $this->locales->filter(
-            function ($locale) {
-                return $locale->isActive();
-            }
-        );
+        $this->locales[] = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Remove attributes
+     *
+     * @param \Pim\Bundle\ConfigBundle\Entity\Locale $locale
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Product
+     */
+    public function removeLocale(\Pim\Bundle\ConfigBundle\Entity\Locale $locale)
+    {
+        $this->locales->removeElement($locale);
     }
 
     /**
@@ -144,40 +163,6 @@ class Product extends AbstractEntityFlexible
     public function setLocales($locales)
     {
         $this->locales = $locales;
-
-        return $this;
-    }
-
-    /**
-     * Add locale
-     *
-     * @param Locale $locale Locale
-     * @param boolean  $active   Predicate for locale activated or not
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Product
-     */
-    public function addLocale(Locale $locale, $active = false)
-    {
-        $pl = new ProductLocale();
-        $pl->setProduct($this);
-        $pl->setLocale($locale);
-        $pl->setActive($active);
-
-        $this->locales->add($pl);
-
-        return $this;
-    }
-
-    /**
-     * Remove locale
-     *
-     * @param Locale $locale Locale
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Product
-     */
-    public function removeLocale(Locale $locale)
-    {
-        $this->locales->removeElement($this->getLocale($locale));
 
         return $this;
     }
