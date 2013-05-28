@@ -15,7 +15,7 @@ services:
     # Managers
     pim_config.manager.locale:
         class:     %pim_config.manager.locale.class%
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: [@doctrine.orm.entity_manager, @security.context]
     
     pim_config.manager.currency:
         class:     %pim_config.manager.currency.class%

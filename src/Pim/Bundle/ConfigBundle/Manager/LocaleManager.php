@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Manager;
 
+use Symfony\Component\Security\Core\SecurityContext;
+
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
@@ -20,12 +22,19 @@ class LocaleManager
     protected $objectManager;
 
     /**
-     * Constructor
-     * @param ObjectManager $objectManager
+     * @var \Symfony\Component\Security\Core\SecurityContext
      */
-    public function __construct(ObjectManager $objectManager)
+    protected $securityContext;
+
+    /**
+     * Constructor
+     * @param ObjectManager   $objectManager   the storage manager
+     * @param SecurityContext $securityContext the security context
+     */
+    public function __construct(ObjectManager $objectManager, SecurityContext $securityContext)
     {
         $this->objectManager = $objectManager;
+        $this->securityContext = $securityContext;
     }
 
     /**
@@ -77,5 +86,33 @@ class LocaleManager
         }
 
         return $codes;
+    }
+
+    /**
+     * Get active codes with user locale code in first
+     *
+     * @return multitype:string
+     */
+    public function getActiveCodesWithUserLocale()
+    {
+        $localeCodes = $this->getActiveCodes();
+        $userLocaleCode = $this->getUserLocaleCode();
+
+        unset($localeCodes[$userLocaleCode]);
+        array_unshift($localeCodes, $userLocaleCode);
+
+        return $localeCodes;
+    }
+
+    /**
+     * Get user locale code
+     *
+     * @return string
+     */
+    public function getUserLocaleCode()
+    {
+        $user = $this->securityContext->getToken()->getUser();
+
+        return (string) $user->getValue('cataloglocale');
     }
 }
