@@ -240,9 +240,9 @@ class ProductFamily implements Translatable
     /**
      * Add translation
      *
-     * @param AttributeGroupTranslation $translation
+     * @param ProductFamilyTranslation $translation
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductFamily
      */
     public function addTranslation(ProductFamilyTranslation $translation)
     {
@@ -256,9 +256,9 @@ class ProductFamily implements Translatable
     /**
      * Remove translation
      *
-     * @param AttributeGroupTranslation $translation
+     * @param ProductFamilyTranslation $translation
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductFamily
      */
     public function removeTranslation(ProductFamilyTranslation $translation)
     {
@@ -267,16 +267,25 @@ class ProductFamily implements Translatable
         return $this;
     }
 
+    /**
+     * @param ProductAttribute $attributeAsLabel
+     */
     public function setAttributeAsLabel($attributeAsLabel)
     {
         $this->attributeAsLabel = $attributeAsLabel;
     }
 
+    /**
+     * @return ProductAttribute
+     */
     public function getAttributeAsLabel()
     {
         return $this->attributeAsLabel;
     }
 
+    /**
+     * @return array
+     */
     public function getAttributeAsLabelChoices()
     {
         return $this->attributes->filter(function ($attribute) {
