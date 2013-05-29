@@ -126,11 +126,9 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $product->addValue($value);
 
             // product locales
-            $product->addLocale($this->getReference('locale.de_DE'), true);
-            $product->addLocale($this->getReference('locale.fr_FR'), true);
-            $product->addLocale($this->getReference('locale.en_US'), true);
-            $product->addLocale($this->getReference('locale.en_GB'));
-            $product->addLocale($this->getReference('locale.fr_CA'));
+            $product->addLocale($this->getReference('locale.de_DE'));
+            $product->addLocale($this->getReference('locale.fr_FR'));
+            $product->addLocale($this->getReference('locale.en_US'));
 
             // name
             foreach ($names as $locale => $data) {
