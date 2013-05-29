@@ -51,16 +51,16 @@ $(tree_id).jstree({
         "select_multiple_modifier" : false
     }
 })
-    .bind('trees_loaded.jstree', function (e, data) {
-        $('#'+data).select2();
+    .bind('trees_loaded.jstree', function (event, tree_select_id) {
+        $('#'+tree_select_id).select2();
     })
-    .bind('loaded.jstree', function(e, data) {
+    .bind('loaded.jstree', function(event, data) {
         $(tree_id).jstree('create', null, "last", { 
             "attr": { "class": "jstree-unclassified" },
             "data" : { "title": unclassifiedNodeTitle }
         }, false, true);
     })
-    .bind('select_node.jstree', function (e, data) {
+    .bind('select_node.jstree', function (event, data) {
         // TODO : Call list content and backbone filter on datagrid
         console.log('select node');
     })

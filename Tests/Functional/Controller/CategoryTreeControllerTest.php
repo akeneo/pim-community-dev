@@ -91,10 +91,6 @@ class CategoryTreeControllerTest extends ControllerTest
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
-        $hd = fopen('/home/romain/git/pim/test.txt', 'a+');
-        fwrite($hd, $crawler->text());
-        fclose($hd);
-
         // assert tree form well works
         $form = $crawler->filter('form')->reduce(
             function ($node, $i) {
