@@ -141,6 +141,10 @@ $(function() {
     });
 
     $(document).on('click', '#view-activity-btn', function (e) {
+        if ($(":ui-dialog").has('#historyDatagridGridTemplate').length) {
+            return false;
+        }
+
         var scrollable = $('.scrollable-container');
         var container = scrollable.length ? scrollable.get(scrollable.length - 1) : '#container';
         new Oro.widget.DialogView({
