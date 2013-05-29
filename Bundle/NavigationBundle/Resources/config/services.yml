@@ -16,7 +16,6 @@ parameters:
 
     oro_navigation.event.response_history.listener.class:      Oro\Bundle\NavigationBundle\Event\ResponseHistoryListener
     oro_navigation.event.response_hashnav.listener.class:      Oro\Bundle\NavigationBundle\Event\ResponseHashnavListener
-    oro_navigation.event.response_pagestate.listener.class:    Oro\Bundle\NavigationBundle\Event\ResponsePagestateListener
 
     oro_navigation.menu.matcher.voter.request:                 Oro\Bundle\NavigationBundle\Menu\Matcher\Voter\RequestVoter
     oro_navigation.menu.matcher.voter.routepattern:            Oro\Bundle\NavigationBundle\Menu\Matcher\Voter\RoutePatternVoter
@@ -238,12 +237,6 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onResponse }
         arguments:                    [@security.context, @templating]
-
-    kernel.listener.pagestate_response:
-        class: %oro_navigation.event.response_pagestate.listener.class%
-        tags:
-            - { name: kernel.event_listener, event: kernel.response, method: onResponse }
-        arguments:                    [@router, @templating, @security.context]
 
     oro_navigation.twig.hash_nav_extension:
         class:        %oro_navigation.twig_hash_nav_extension.class%
