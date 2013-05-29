@@ -30,6 +30,7 @@ parameters:
     oro_address.form.listener.address.class: Oro\Bundle\AddressBundle\Form\EventListener\BuildAddressFormListener
 
     oro_address.attribute.address.class: Oro\Bundle\AddressBundle\AttributeType\AddressType
+    oro_address.attribute.address_collection.class: Oro\Bundle\AddressBundle\AttributeType\AddressCollectionType
 
 services:
     oro_address.address.provider:
@@ -183,3 +184,18 @@ services:
             - "oro_address"
         tags:
             - { name: oro_flexibleentity.attributetype, alias: oro_address }
+
+
+    # Flexible attribute
+    oro_address.attribute_type.address_collection:
+        class: %oro_address.attribute.address_collection.class%
+        arguments:
+            - "address"
+            - "oro_address"
+        tags:
+            - { name: oro_flexibleentity.attributetype, alias: oro_address_collection }
+
+    oro_address.twig.hasAddress.extension:
+        class: %oro_address.twig.hasAddress.extension.class%
+        tags:
+            - { name: twig.extension }
