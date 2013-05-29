@@ -189,13 +189,9 @@ class ProductController extends Controller
         $this->getProductManager()->save($product);
 
         $this->addFlash('success', 'Attributes are added to the product form.');
+        $parameters = array('id' => $product->getId(), 'dataLocale' => $this->getDataLocale());
 
-        return $this->redirect(
-            $this->generateUrl(
-                'pim_product_product_edit',
-                array('id' => $product->getId(), 'dataLocale' => $this->getDataLocale())
-            )
-        );
+        return $this->redirect($this->generateUrl('pim_product_product_edit', $parameters));
     }
 
     /**
@@ -394,13 +390,21 @@ class ProductController extends Controller
     private function findProductOr404($id)
     {
         $product = $this->getProductManager()->localizedFind($id);
-        $currencyManager = $this->container->get('pim_config.manager.currency');
 
         if (!$product) {
             throw $this->createNotFoundException(
                 sprintf('Product with id %d could not be found.', $id)
             );
         }
+
+        $localeCode = $this->getProductManager()->getLocale();
+        if ($product->isEnabledForLocale($localeCode) === false) {
+            throw $this->createNotFoundException(
+                sprintf('Product with id %d is not enabled for locale %s', $id, $localeCode)
+            );
+        }
+
+        $currencyManager = $this->container->get('pim_config.manager.currency');
         $this->getProductManager()->addMissingPrices($currencyManager, $product, $this->getDataCurrency());
 
         return $product;
