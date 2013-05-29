@@ -1,6 +1,6 @@
 {% extends 'PimProductBundle::layout.html.twig' %}
 
-{% set title = 'Classification tree overview'|trans %}
+{% set title = 'Category tree overview'|trans %}
 
 {% block head_script %}
     {{ parent() }}
@@ -12,10 +12,10 @@
 {% endblock %}
 
 {% block page_container %}
-<div class="container-fluid classification">
+<div class="container-fluid category">
     {% block content %}
     <div class="row-fluid">
-        {% include 'PimProductBundle:ClassificationTree:_tree-management-sidebar.html.twig' %}
+        {% include 'PimProductBundle:CategoryTree:_tree-management-sidebar.html.twig' %}
         <div id="form-tab" class="span10">
             <h3>{{ title }}</h3>
             
@@ -25,7 +25,7 @@
         </div>
     </div>
     
-    {% include 'PimProductBundle:ClassificationTree:_js-handler.html.twig' %}
+    {% include 'PimProductBundle:CategoryTree:_js-handler.html.twig' %}
 {% endblock %}
 </div>
 {% endblock %}

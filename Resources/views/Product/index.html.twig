@@ -61,8 +61,8 @@
 <script type="text/javascript">
     var assetsPath = "{{ asset('bundles/pimproduct/') }}";
     var tree_id = "#tree";
-    var urlListTree = "{{ path('pim_product_classificationtree_listtree', { '_format': 'json' }) }}";
-    var urlChildren = "{{ path('pim_product_classificationtree_children', { '_format': 'json' }) }}";
+    var urlListTree = "{{ path('pim_product_categorytree_listtree', { '_format': 'json' }) }}";
+    var urlChildren = "{{ path('pim_product_categorytree_children', { '_format': 'json' }) }}";
     var unclassifiedNodeTitle = "{{ 'Unclassified node' | trans }}";
 </script>
 <script type="text/javascript" src="{{ asset('bundles/pimproduct/js/tree-view.jstree.js') }}"></script>

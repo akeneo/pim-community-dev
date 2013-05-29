@@ -1,20 +1,20 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Helper;
 
-use Pim\Bundle\ProductBundle\Entity\ProductSegment;
+use Pim\Bundle\ProductBundle\Entity\Category;
 
 /**
- * Segment helper
+ * Category helper
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class SegmentHelper
+class CategoryHelper
 {
     /**
-     * Format in array segment trees
+     * Format in array category trees
      *
      * @param ArrayCollection $trees
      *
@@ -36,24 +36,24 @@ class SegmentHelper
     }
 
     /**
-     * Format in array content segment
+     * Format in array content category
      *
-     * @param ArrayCollection $segments
+     * @param ArrayCollection $categories
      *
      * @return array
      * @static
      */
-    public static function childrenResponse($segments)
+    public static function childrenResponse($categories)
     {
         $return = array();
 
-        foreach ($segments as $segment) {
+        foreach ($categories as $category) {
             $return[] = array(
                 'attr' => array(
-                    'id' => 'node_'. $segment->getId()
+                    'id' => 'node_'. $category->getId()
                 ),
-                'data'  => $segment->getTitle(),
-                'state' => static::getState($segment)
+                'data'  => $category->getTitle(),
+                'state' => static::getState($category)
             );
         }
 
@@ -61,16 +61,16 @@ class SegmentHelper
     }
 
     /**
-     * Return the state of the segment (leaf if no children, closed otherwise)
+     * Return the state of the category (leaf if no children, closed otherwise)
      *
-     * @param ProductSegment $segment
+     * @param Category $category
      *
      * @return string
      * @static
      */
-    protected static function getState(ProductSegment $segment)
+    protected static function getState(Category $category)
     {
-        return $segment->hasChildren() ? 'closed' : 'leaf';
+        return $category->hasChildren() ? 'closed' : 'leaf';
     }
 
     /**

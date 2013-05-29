@@ -3,23 +3,23 @@ namespace Pim\Bundle\ProductBundle\Manager;
 
 use Oro\Bundle\SegmentationTreeBundle\Manager\SegmentManager;
 
-use Pim\Bundle\ProductBundle\Entity\ProductSegment;
+use Pim\Bundle\ProductBundle\Entity\Category;
 
 /**
- * Extends SegmentManager for classification tree
+ * Extends SegmentManager for category tree
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ProductSegmentManager extends SegmentManager
+class CategoryManager extends SegmentManager
 {
 
     /**
      * Get a new tree instance
      *
-     * @return ProductSegment
+     * @return Category
      */
     public function getTreeInstance()
     {

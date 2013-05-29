@@ -11,7 +11,7 @@ use Symfony\Component\Form\Forms;
 
 use Symfony\Component\DependencyInjection\Container;
 
-use Pim\Bundle\ProductBundle\Form\Type\ProductSegmentType;
+use Pim\Bundle\ProductBundle\Form\Type\CategoryType;
 
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
 
@@ -23,11 +23,11 @@ use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ProductSegmentTypeTest extends TypeTestCase
+class CategoryTypeTest extends TypeTestCase
 {
 
     /**
-     * @var ProductSegmentType
+     * @var CategoryType
      */
     protected $type;
 
@@ -59,7 +59,7 @@ class ProductSegmentTypeTest extends TypeTestCase
             ->getFormFactory();
 
         // Create form type
-        $this->type = new ProductSegmentType();
+        $this->type = new CategoryType();
         $this->form = $this->factory->create($this->type);
     }
 
@@ -97,10 +97,14 @@ class ProductSegmentTypeTest extends TypeTestCase
     protected function getSecurityContextMock()
     {
         $authManager = $this->getMock('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface');
-        $decisionManager = $this->getMock('Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface');
+        $decisionManager = $this->getMock(
+            'Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface'
+        );
 
         $securityContext = new SecurityContext($authManager, $decisionManager);
-        $securityContext->setToken($token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface'));
+        $securityContext->setToken(
+            $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')
+        );
 
         return $securityContext;
     }
@@ -116,12 +120,12 @@ class ProductSegmentTypeTest extends TypeTestCase
 
         // Assert option class
         $this->assertEquals(
-            'Pim\Bundle\ProductBundle\Entity\ProductSegment',
+            'Pim\Bundle\ProductBundle\Entity\Category',
             $this->form->getConfig()->getDataClass()
         );
 
         // Assert name
-        $this->assertEquals('pim_product_segment', $this->form->getName());
+        $this->assertEquals('pim_category', $this->form->getName());
     }
 
     /**

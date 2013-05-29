@@ -15,9 +15,9 @@ oro_menu_config:
         pim_enrich_attributegroup:
             label: 'Attribute groups'
             route: 'pim_product_attributegroup_create'
-        pim_enrich_classificationtree:
-            label: 'Classification trees'
-            route: 'pim_product_classificationtree_index'
+        pim_enrich_categorytree:
+            label: 'Category trees'
+            route: 'pim_product_categorytree_index'
 
     tree:
         application_menu:
@@ -29,7 +29,7 @@ oro_menu_config:
                         pim_enrich_attribute: ~
                         pim_enrich_attributegroup: ~
                         pim_enrich_exportprofile: ~
-                        pim_enrich_classificationtree: ~
+                        pim_enrich_categorytree: ~
 
 oro_titles:
     pim_default:                             Dashboard
@@ -37,12 +37,12 @@ oro_titles:
     pim_product_attributegroup_create:       Attribute groups | Create
     pim_product_attributegroup_edit:         Attribute groups | Edit
     pim_product_attributegroup_sort:         Attribute groups | Sort
-    pim_product_classificationtree_index:    Classification trees
-    pim_product_classificationtree_listtree: Classification trees | List
-    pim_product_classificationtree_manage:   Classification trees | Manage
-    pim_product_classificationtree_view:     Classification trees | View
-    pim_product_classificationtree_create:   Classification trees | Create
-    pim_product_classificationtree_edit:     Classification trees | Edit
+    pim_product_categorytree_index:          Category trees
+    pim_product_categorytree_listtree:       Category trees | List
+    pim_product_categorytree_manage:         Category trees | Manage
+    pim_product_categorytree_view:           Category trees | View
+    pim_product_categorytree_create:         Category trees | Create
+    pim_product_categorytree_edit:           Category trees | Edit
     pim_product_exportprofile_index:         Export profiles
     pim_product_exportprofile_create:        Export profiles | Create
     pim_product_exportprofile_edit:          Export profiles | Edit
