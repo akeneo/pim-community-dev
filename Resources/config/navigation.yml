@@ -15,9 +15,6 @@ oro_menu_config:
         pim_enrich_attributegroup:
             label: 'Attribute groups'
             route: 'pim_product_attributegroup_create'
-        pim_enrich_exportprofile:
-            label: 'Export profiles'
-            route: 'pim_product_exportprofile_index'
         pim_enrich_classificationtree:
             label: 'Classification trees'
             route: 'pim_product_classificationtree_index'
