@@ -51,10 +51,10 @@ $(tree_id).jstree({
         "select_multiple_modifier" : false
     }
 })
-    .bind('trees_loaded.jstree', function(e, data) {
-        $('#'+data).select2();
+    .bind('trees_loaded.jstree', function(event, tree_select_id) {
+        $('#'+tree_select_id).select2();
     })
-    .bind("remove.jstree", function (e, data) {
+    .bind("remove.jstree", function (event, data) {
         data.rslt.obj.each(function () {
             var id = $(this).attr("id").replace('node_', '');
             PimAjax.ajaxPost(id+'/remove', '');

@@ -51,7 +51,7 @@ $(tree_id).jstree({
         "select_multiple_modifier" : false
     }
 })
-    .bind('trees_loaded.jstree', function (e, data) {
+    .bind('trees_loaded.jstree', function (event, tree_select_id) {
         $('#'+tree_select_id).select2();
     })
     .bind('loaded.jstree', function(e, data) {

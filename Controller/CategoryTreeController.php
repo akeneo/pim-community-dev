@@ -199,7 +199,8 @@ class CategoryTreeController extends Controller
                 $this->getTreeManager()->getStorageManager()->persist($category);
                 $this->getTreeManager()->getStorageManager()->flush();
 
-                $this->get('session')->getFlashBag()->add('success', 'Category successfully saved');
+                $nodeType = $category->getParent() ? 'Category' : 'Tree';
+                $this->get('session')->getFlashBag()->add('success', $nodeType. ' successfully saved');
 
                 return $this->redirect($this->generateUrl('pim_product_categorytree_index'));
             }

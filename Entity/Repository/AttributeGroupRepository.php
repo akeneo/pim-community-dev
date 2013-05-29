@@ -1,5 +1,4 @@
 <?php
-
 namespace Pim\Bundle\ProductBundle\Entity\Repository;
 
 use Pim\Bundle\ProductBundle\Doctrine\EntityRepository;
@@ -16,4 +15,3 @@ class AttributeGroupRepository extends EntityRepository
         return $this->build()->orderBy('attribute_group.sortOrder');
     }
 }
-

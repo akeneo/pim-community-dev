@@ -53,8 +53,8 @@ class Product extends AbstractEntityFlexible
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale")
      * @ORM\JoinTable(
      *    name="pim_product_locale",
-     *    joinColumns={@ORM\JoinColumn(name="locale_id", referencedColumnName="id", onDelete="CASCADE")},
-     *    inverseJoinColumns={@ORM\JoinColumn(name="entity_id", referencedColumnName="id", onDelete="CASCADE")}
+     *    joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
+     *    inverseJoinColumns={@ORM\JoinColumn(name="locale_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
      */
     protected $locales;
@@ -142,7 +142,7 @@ class Product extends AbstractEntityFlexible
     }
 
     /**
-     * Remove attributes
+     * Remove locale
      *
      * @param \Pim\Bundle\ConfigBundle\Entity\Locale $locale
      *
@@ -151,6 +151,24 @@ class Product extends AbstractEntityFlexible
     public function removeLocale(\Pim\Bundle\ConfigBundle\Entity\Locale $locale)
     {
         $this->locales->removeElement($locale);
+    }
+
+    /**
+     * Check if product is activated on that locale
+     *
+     * @param string $localeCode
+     *
+     * @return boolean
+     */
+    public function isEnabledForLocale($localeCode)
+    {
+        $locales = $this->locales->filter(
+            function ($locale) use ($localeCode) {
+                return ($locale->getCode() === $localeCode);
+            }
+        );
+
+        return $locales->count() > 0;
     }
 
     /**
@@ -198,7 +216,9 @@ class Product extends AbstractEntityFlexible
             $this->getAttributes()
         );
         array_map(
-            function($group) { return (string) $group; },
+            function ($group) {
+                return (string) $group;
+            },
             $groups
         );
         $groups = array_unique($groups);
@@ -243,6 +263,9 @@ class Product extends AbstractEntityFlexible
         }
     }
 
+    /**
+     * @return \Oro\Bundle\FlexibleEntityBundle\Model\mixed|string
+     */
     public function getLabel()
     {
         if ($this->productFamily) {
