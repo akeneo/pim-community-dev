@@ -131,8 +131,7 @@ class ProductAttributeValidator
             'oro_flexibleentity_metric',
             'oro_flexibleentity_boolean'
         );
-        if (
-            in_array($productAttribute->getAttributeType(), $attributeType)
+        if (in_array($productAttribute->getAttributeType(), $attributeType)
             && $productAttribute->getUnique() === true) {
             $context->addViolation(self::VIOLATION_UNIQUE_ATT_TYPE);
         }

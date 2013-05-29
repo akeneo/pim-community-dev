@@ -61,9 +61,9 @@ class ProductFamilyController extends Controller
 
                 $this->addFlash('success', 'Product family successfully created');
 
-                return $this->redirect($this->generateUrl('pim_product_productfamily_edit', array(
-                    'id' => $family->getId()
-                )));
+                return $this->redirect(
+                    $this->generateUrl('pim_product_productfamily_edit', array('id' => $family->getId()))
+                );
             }
         }
 
@@ -237,5 +237,4 @@ class ProductFamilyController extends Controller
     {
         return $this->getEntityManager()->getRepository('PimProductBundle:ProductFamily');
     }
-
 }
