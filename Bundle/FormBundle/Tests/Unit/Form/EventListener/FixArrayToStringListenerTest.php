@@ -1,12 +1,12 @@
 <?php
 
-namespace Oro\Bundle\UIBundle\Tests\Unit\Form\Type;
+namespace Oro\Bundle\FormBundle\Tests\Unit\Form\Type;
 
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\Tests\FormInterface;
 
-use Oro\Bundle\UIBundle\Form\EventListener\FixArrayToStringListener;
+use Oro\Bundle\FormBundle\Form\EventListener\FixArrayToStringListener;
 
 class FixArrayToStringListenerTest extends \PHPUnit_Framework_TestCase
 {

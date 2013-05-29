@@ -1,0 +1,21 @@
+{
+    "name": "oro/form-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP Form Bundle",
+    "keywords": ["BAP", "Form"],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": ">=2.1"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\FormBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/FormBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

@@ -30,21 +30,23 @@ to existing entities of specified type.
 
 ```
 parameters:
-    oro_ui.date.class:                   Oro\Bundle\UIBundle\Form\Type\OroDateType
-    oro_ui.datetime.class:               Oro\Bundle\UIBundle\Form\Type\OroDateTimeType
-    oro_ui.type.entity_identifier.class: Oro\Bundle\UIBundle\Form\Type\EntityIdentifierType
+    oro_form.type.date.class:              Oro\Bundle\FormBundle\Form\Type\OroDateType
+    oro_form.type.datetime.class:          Oro\Bundle\FormBundle\Form\Type\OroDateTimeType
+    oro_form.type.entity_identifier.class: Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType
 
 services:
-    oro_ui.type.oro_date:
-        class: %oro_ui.date.class%
+    oro_form.type.date:
+        class: %oro_form.type.date.class%
         tags:
             - { name: form.type, alias: oro_date }
-    oro_ui.type.oro_datetime:
-        class: %oro_ui.datetime.class%
+
+    oro_form.type.datetime:
+        class: %oro_form.type.datetime.class%
         tags:
             - { name: form.type, alias: oro_datetime }
-    oro_ui.type.entity_identifier:
-        class: %oro_ui.type.entity_identifier.class%
+
+    oro_form.type.entity_identifier:
+        class: %oro_form.type.entity_identifier.class%
         tags:
             - { name: form.type, alias: oro_entity_identifier }
         arguments: ["@doctrine"]

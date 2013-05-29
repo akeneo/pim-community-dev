@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UIBundle\Form\Type;
+namespace Oro\Bundle\FormBundle\Form\Type;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;

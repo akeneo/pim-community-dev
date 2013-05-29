@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UIBundle\Form\EventListener;
+namespace Oro\Bundle\FormBundle\Form\EventListener;
 
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;

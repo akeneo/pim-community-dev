@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UIBundle\Tests\Unit\Form\Type;
+namespace Oro\Bundle\FormBundle\Tests\Unit\Form\Type;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -11,7 +11,7 @@ use Doctrine\ORM\AbstractQuery;
 
 use Symfony\Component\Form\Tests\FormIntegrationTestCase;
 
-use Oro\Bundle\UIBundle\Form\Type\EntityIdentifierType;
+use Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType;
 
 class EntityIdentifierTypeTest extends FormIntegrationTestCase
 {
@@ -38,7 +38,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->type = $this->getMockBuilder('Oro\Bundle\UIBundle\Form\Type\EntityIdentifierType')
+        $this->type = $this->getMockBuilder('Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType')
             ->setMethods(array('createEntitiesToIdsTransformer'))
             ->setConstructorArgs(array($this->getMockManagerRegistry()))
             ->getMock();
@@ -282,7 +282,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
                 $this->callback(
                     function ($transformer) use ($options) {
                         \PHPUnit_Framework_TestCase::assertInstanceOf(
-                            'Oro\Bundle\UIBundle\Form\DataTransformer\EntitiesToIdsTransformer',
+                            'Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer',
                             $transformer
                         );
                         \PHPUnit_Framework_TestCase::assertAttributeEquals(
@@ -412,7 +412,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
     {
         if (!$this->entitiesToIdsTransformer) {
             $this->entitiesToIdsTransformer =
-                $this->getMockBuilder('Oro\Bundle\UIBundle\Form\DataTransformer\EntitiesToIdsTransformer')
+                $this->getMockBuilder('Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer')
                     ->disableOriginalConstructor()
                     ->setMethods(array('transform', 'reverseTransform'))
                     ->getMockForAbstractClass();

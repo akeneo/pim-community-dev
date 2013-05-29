@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\UIBundle\Tests\Unit\Form\Type;
+namespace Oro\Bundle\FormBundle\Tests\Unit\Form\Type;
 
-use Oro\Bundle\UIBundle\Form\DataTransformer\ArrayToStringTransformer;
+use Oro\Bundle\FormBundle\Form\DataTransformer\ArrayToStringTransformer;
 
 class ArrayToStringTransformerTest extends \PHPUnit_Framework_TestCase
 {

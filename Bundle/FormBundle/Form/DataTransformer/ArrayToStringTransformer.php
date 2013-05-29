@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UIBundle\Form\DataTransformer;
+namespace Oro\Bundle\FormBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;

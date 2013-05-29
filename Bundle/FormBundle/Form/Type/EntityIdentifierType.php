@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UIBundle\Form\Type;
+namespace Oro\Bundle\FormBundle\Form\Type;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -11,9 +11,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Oro\Bundle\UIBundle\Form\DataTransformer\ArrayToStringTransformer;
-use Oro\Bundle\UIBundle\Form\DataTransformer\EntitiesToIdsTransformer;
-use Oro\Bundle\UIBundle\Form\EventListener\FixArrayToStringListener;
+use Oro\Bundle\FormBundle\Form\DataTransformer\ArrayToStringTransformer;
+use Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer;
+use Oro\Bundle\FormBundle\Form\EventListener\FixArrayToStringListener;
 
 class EntityIdentifierType extends AbstractType
 {
