@@ -267,7 +267,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
      * @param string           $field     Field to translate
      * @param string           $content   Translated content
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductSegmentTranslation
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation
      */
     public function createTranslation($attribute, $locale, $field, $content)
     {

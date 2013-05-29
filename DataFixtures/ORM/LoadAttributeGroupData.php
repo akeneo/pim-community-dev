@@ -161,7 +161,7 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
     }
 
     /**
-     * Translate a segment
+     * Translate a group
      *
      * @param string $reference Attribute group reference
      * @param string $locale    Locale used
