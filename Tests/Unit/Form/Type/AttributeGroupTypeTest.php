@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Type;
 
+use Symfony\Component\Security\Core\SecurityContext;
 use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 use Symfony\Component\Form\Forms;
@@ -65,10 +66,11 @@ class AttributeGroupTypeTest extends TypeTestCase
     protected function getLocaleManagerMock()
     {
         $objectManager = $this->getMockForAbstractClass('\Doctrine\Common\Persistence\ObjectManager');
+        $securityContext = $this->getSecurityContextMock();
 
         // create mock builder for locale manager and redefine constructor to set object manager
         $mockBuilder = $this->getMockBuilder('Pim\Bundle\ConfigBundle\Manager\LocaleManager')
-                            ->setConstructorArgs(array($objectManager));
+                            ->setConstructorArgs(array($objectManager, $securityContext));
 
         // create locale manager mock from mock builder previously create and redefine getActiveCodes method
         $localeManager = $mockBuilder->getMock(
@@ -80,6 +82,22 @@ class AttributeGroupTypeTest extends TypeTestCase
                       ->will($this->returnValue(array('en_US', 'fr_FR')));
 
         return $localeManager;
+    }
+
+    /**
+     * Create a security context mock
+     *
+     * @return \Symfony\Component\Security\Core\SecurityContext
+     */
+    protected function getSecurityContextMock()
+    {
+        $authManager = $this->getMock('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface');
+        $decisionManager = $this->getMock('Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface');
+
+        $securityContext = new SecurityContext($authManager, $decisionManager);
+        $securityContext->setToken($token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface'));
+
+        return $securityContext;
     }
 
     /**
