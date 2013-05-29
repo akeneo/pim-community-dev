@@ -103,7 +103,7 @@ class AddressBase extends AbstractEntityFlexible
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -119,14 +119,14 @@ class AddressBase extends AbstractEntityFlexible
     public function setStreet($street)
     {
         $this->street = $street;
-    
+
         return $this;
     }
 
     /**
      * Get street
      *
-     * @return string 
+     * @return string
      */
     public function getStreet()
     {
@@ -142,14 +142,14 @@ class AddressBase extends AbstractEntityFlexible
     public function setStreet2($street2)
     {
         $this->street2 = $street2;
-    
+
         return $this;
     }
 
     /**
      * Get street2
      *
-     * @return string 
+     * @return string
      */
     public function getStreet2()
     {
@@ -165,14 +165,14 @@ class AddressBase extends AbstractEntityFlexible
     public function setCity($city)
     {
         $this->city = $city;
-    
+
         return $this;
     }
 
     /**
      * Get city
      *
-     * @return string 
+     * @return string
      */
     public function getCity()
     {
@@ -188,7 +188,7 @@ class AddressBase extends AbstractEntityFlexible
     public function setState($state)
     {
         $this->state = $state;
-    
+
         return $this;
     }
 
@@ -238,14 +238,14 @@ class AddressBase extends AbstractEntityFlexible
     public function setPostalCode($postalCode)
     {
         $this->postalCode = $postalCode;
-    
+
         return $this;
     }
 
     /**
      * Get postal_code
      *
-     * @return string 
+     * @return string
      */
     public function getPostalCode()
     {
@@ -261,7 +261,7 @@ class AddressBase extends AbstractEntityFlexible
     public function setCountry($country)
     {
         $this->country = $country;
-    
+
         return $this;
     }
 
