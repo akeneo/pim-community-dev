@@ -10,7 +10,8 @@ $(tree_id).jstree({
             "url" : urlListTree
         },
         "auto_open_root" : true,
-        "node_label_field" : "title"
+        "node_label_field" : "title",
+        "no_tree_message" : window.no_tree_message
     },
     "themes" : {
         "dots" : true,
