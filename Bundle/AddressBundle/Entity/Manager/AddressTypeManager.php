@@ -25,8 +25,8 @@ class AddressTypeManager
     /**
      * Constructor
      *
-     * @param string $class Entity name
-     * @param ObjectManager $om Object manager
+     * @param string        $class Entity name
+     * @param ObjectManager $om    Object manager
      */
     public function __construct($class, ObjectManager $om)
     {
@@ -76,7 +76,7 @@ class AddressTypeManager
     /**
      * Finds one address type by the given criteria
      *
-     * @param  array $criteria
+     * @param  array       $criteria
      * @return AddressType
      */
     public function findAddressTypeBy(array $criteria)
