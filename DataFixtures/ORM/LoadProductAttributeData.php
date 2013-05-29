@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
@@ -143,6 +145,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
             $optionValue->setValue($size);
             $option->addOptionValue($optionValue);
         }
+        $attribute->setDefaultValue($attribute->getOptions()->last());
         $this->createTranslation($attribute, 'default', 'label', 'Size');
         $this->createTranslation($attribute, 'en_US', 'label', 'Size');
         $this->createTranslation($attribute, 'fr_FR', 'label', 'Taille');
@@ -191,6 +194,10 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
                 $option->addOptionValue($optionValue);
             }
         }
+        $defaultValues = new ArrayCollection();
+        $defaultValues->add($attribute->getOptions()->first());
+        $defaultValues->add($attribute->getOptions()->last());
+        $attribute->setDefaultValue($defaultValues);
         $this->createTranslation($attribute, 'default', 'label', 'Color');
         $this->createTranslation($attribute, 'en_US', 'label', 'Color');
         $this->createTranslation($attribute, 'fr_FR', 'label', 'Couleur');
@@ -216,6 +223,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
             $optionValue->setLocale('en_US');
             $option->addOptionValue($optionValue);
         }
+        $attribute->setDefaultValue($attribute->getOptions()->last());
         $this->createTranslation($attribute, 'default', 'label', 'Manufacturer');
         $this->createTranslation($attribute, 'en_US', 'label', 'Manufacturer');
         $this->createTranslation($attribute, 'fr_FR', 'label', 'Fabricant');
