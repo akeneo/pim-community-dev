@@ -95,4 +95,23 @@ class CategoryHelper
 
         return $return;
     }
+
+    /**
+     * Format path with a list of ids from tree to node
+     *
+     * @param ArrayCollection $categoryPath
+     *
+     * @return multitype:integer
+     * @static
+     */
+    public static function pathResponse($categoryPath)
+    {
+        $return = array();
+
+        foreach ($categoryPath as $category) {
+            $return[] = $category->getId();
+        }
+
+        return $return;
+    }
 }

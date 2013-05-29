@@ -202,7 +202,15 @@ class CategoryTreeController extends Controller
                 $nodeType = $category->getParent() ? 'Category' : 'Tree';
                 $this->get('session')->getFlashBag()->add('success', $nodeType. ' successfully saved');
 
-                return $this->redirect($this->generateUrl('pim_product_categorytree_index'));
+                $categoryPath = $this->getCategoryPath($category);
+                $categoryPathIds = CategoryHelper::pathResponse($categoryPath);
+
+                return $this->redirect(
+                    $this->generateUrl(
+                        'pim_product_categorytree_index',
+                        array('tree' => implode('|', $categoryPathIds))
+                    )
+                );
             }
         }
 
@@ -248,10 +256,22 @@ class CategoryTreeController extends Controller
     /**
      * Get category tree manager
      *
-     * @return \Oro\Bundle\SegmentationTreeBundle\Manager\SegmentManager
+     * @return \Pim\Bundle\ProductBundle\Manager\CategoryManager
      */
     protected function getTreeManager()
     {
         return $this->container->get('pim_product.category_manager');
+    }
+
+    /**
+     * Get category path
+     *
+     * @param Category $category
+     *
+     * @return multitype:integer
+     */
+    protected function getCategoryPath(Category $category)
+    {
+        return $this->getTreeManager()->getEntityRepository()->getPath($category);
     }
 }
