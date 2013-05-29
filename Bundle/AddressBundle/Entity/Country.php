@@ -97,7 +97,7 @@ class Country
     /**
      * Set iso2_code
      *
-     * @param string $iso2Code
+     * @param  string  $iso2Code
      * @return Country
      */
     public function setIso2Code($iso2Code)
@@ -120,7 +120,7 @@ class Country
     /**
      * Set iso3_code
      *
-     * @param string $iso3Code
+     * @param  string  $iso3Code
      * @return Country
      */
     public function setIso3Code($iso3Code)
@@ -143,7 +143,7 @@ class Country
     /**
      * Set country name
      *
-     * @param string $name
+     * @param  string  $name
      * @return Country
      */
     public function setName($name)

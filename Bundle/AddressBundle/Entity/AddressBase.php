@@ -113,7 +113,7 @@ class AddressBase extends AbstractEntityFlexible
     /**
      * Set street
      *
-     * @param string $street
+     * @param  string      $street
      * @return AddressBase
      */
     public function setStreet($street)
@@ -136,7 +136,7 @@ class AddressBase extends AbstractEntityFlexible
     /**
      * Set street2
      *
-     * @param string $street2
+     * @param  string      $street2
      * @return AddressBase
      */
     public function setStreet2($street2)
@@ -159,7 +159,7 @@ class AddressBase extends AbstractEntityFlexible
     /**
      * Set city
      *
-     * @param string $city
+     * @param  string      $city
      * @return AddressBase
      */
     public function setCity($city)
@@ -182,7 +182,7 @@ class AddressBase extends AbstractEntityFlexible
     /**
      * Set state
      *
-     * @param Region $state
+     * @param  Region      $state
      * @return AddressBase
      */
     public function setState($state)
@@ -209,7 +209,7 @@ class AddressBase extends AbstractEntityFlexible
     /**
      * Set state text
      *
-     * @param Region $stateText
+     * @param  Region      $stateText
      * @return AddressBase
      */
     public function setStateText($stateText)
@@ -232,7 +232,7 @@ class AddressBase extends AbstractEntityFlexible
     /**
      * Set postal_code
      *
-     * @param string $postalCode
+     * @param  string      $postalCode
      * @return AddressBase
      */
     public function setPostalCode($postalCode)
@@ -255,7 +255,7 @@ class AddressBase extends AbstractEntityFlexible
     /**
      * Set country
      *
-     * @param Country $country
+     * @param  Country     $country
      * @return AddressBase
      */
     public function setCountry($country)
@@ -385,6 +385,7 @@ class AddressBase extends AbstractEntityFlexible
             $this->getCountry(),
             $this->getPostalCode(),
         );
+
         return implode(' ', $data);
     }
 }
