@@ -22,8 +22,8 @@ parameters:
     metric_attribute_validator_class:   Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricAttributeValidator
 
     pim_product.attributes_config:      ~
-    pim_product.segment_class:          Pim\Bundle\ProductBundle\Entity\ProductSegment
-    pim_product.segment_manager_class:  Pim\Bundle\ProductBundle\Manager\ProductSegmentManager
+    pim_product.category_class:          Pim\Bundle\ProductBundle\Entity\Category
+    pim_product.category_manager_class:  Pim\Bundle\ProductBundle\Manager\CategoryManager
 
 services:
     # Managers
@@ -51,9 +51,9 @@ services:
             - [ addAttributeType, ['oro_flexibleentity_boolean'] ]
             - [ addAttributeType, ['oro_flexibleentity_date'] ]
 
-    pim_product.classification_tree_manager:
-        class:     %pim_product.segment_manager_class%
-        arguments: [@doctrine.orm.entity_manager, %pim_product.segment_class%]
+    pim_product.category_manager:
+        class:     %pim_product.category_manager_class%
+        arguments: [@doctrine.orm.entity_manager, %pim_product.category_class%]
 
     # Form
     pim_product.form.simple_product:

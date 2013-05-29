@@ -1,22 +1,22 @@
 <script type="text/javascript">
     var assetsPath = "{{ asset('bundles/pimproduct/') }}";
     var tree_id = "#tree";
-    var urlListTree = "{{ path('pim_product_classificationtree_listtree', { '_format': 'json' }) }}";
-    var urlChildren = "{{ path('pim_product_classificationtree_children', { '_format': 'json' }) }}";
+    var urlListTree = "{{ path('pim_product_categorytree_listtree', { '_format': 'json' }) }}";
+    var urlChildren = "{{ path('pim_product_categorytree_children', { '_format': 'json' }) }}";
     
     // define buttons actions
     $(".tree-toolbar button").click(function () {
         switch(this.id) {
-            case "segment-edit":
+            case "category-edit":
                 var node = $.jstree._focused().get_selected();
                 if(!$.jstree._focused()._get_node(node)) {
                     PimDialog.alert("{{ 'You must select a node.' | trans }}", "{{ 'Alert message' | trans }}");
                 } else {
-                    var segmentId = node.attr("id").replace('node_', '');
-                    window.location = "{{ path('pim_product_classificationtree_edit') }}/"+segmentId;
+                    var categoryId = node.attr("id").replace('node_', '');
+                    window.location = "{{ path('pim_product_categorytree_edit') }}/"+categoryId;
                 }
                 break;
-            case "segment-remove":
+            case "category-remove":
                 if(!$.jstree._focused()._get_node($.jstree._focused().get_selected())) {
                     PimDialog.alert("{{ 'You must select a node to remove.' | trans }}", "{{ 'Alert message' | trans }}");
                 } else {
@@ -36,15 +36,15 @@
     $(".tree-toolbar a").click(function() {
         switch (this.id) {
             case "tree-create":
-                window.location = "{{ path('pim_product_classificationtree_create') }}";
+                window.location = "{{ path('pim_product_categorytree_create') }}";
                 break;
-            case "segment-create":
+            case "category-create":
                 var node = $.jstree._focused().get_selected();
                 if(!$.jstree._focused()._get_node()) {
                     PimDialog.alert("{{ 'You must select a parent node.' | trans }}", "{{ 'Alert message' | trans }}");
                 } else {
                     var parentId = node.attr("id").replace('node_', '');
-                    window.location = "{{ path('pim_product_classificationtree_create') }}/"+parentId;
+                    window.location = "{{ path('pim_product_categorytree_create') }}/"+parentId;
                 }
                 break;
         }

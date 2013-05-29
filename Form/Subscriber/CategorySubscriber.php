@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Form subscriber for ProductSegment
+ * Form subscriber for Category
  * Allow to add field if working with node instead of a tree
  *
  * @author    Romain Monceau <romain@akeneo.com>
@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ProductSegmentSubscriber implements EventSubscriberInterface
+class CategorySubscriber implements EventSubscriberInterface
 {
 
     /**

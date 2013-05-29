@@ -9,7 +9,7 @@ namespace Pim\Bundle\ProductBundle\Tests\Functional\Controller;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ClassificationTreeControllerTest extends ControllerTest
+class CategoryTreeControllerTest extends ControllerTest
 {
 
     /**
@@ -50,19 +50,19 @@ class ClassificationTreeControllerTest extends ControllerTest
     /**
      * @staticvar string
      */
-    const SEGMENT_SAVED_MSG = 'Product segment successfully saved';
+    const CATEGORY_SAVED_MSG = 'Category successfully saved';
 
     /**
      * @staticvar string
      */
-    const SEGMENT_REMOVED_MSG = 'Product segment successfully removed';
+    const CATEGORY_REMOVED_MSG = 'Category successfully removed';
 
     /**
      * Test related action
      */
 //     public function testIndex()
 //     {
-//         $uri = '/product/classification-tree/index';
+//         $uri = '/product/category-tree/index';
 
 //         // assert without authentication
 //         $this->client->request('GET', $uri);
@@ -81,7 +81,7 @@ class ClassificationTreeControllerTest extends ControllerTest
      */
     public function testCreateTree()
     {
-        $uri = '/product/classification-tree/create';
+        $uri = '/product/category-tree/create';
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -91,36 +91,36 @@ class ClassificationTreeControllerTest extends ControllerTest
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
+        $hd = fopen('/home/romain/git/pim/test.txt', 'a+');
+        fwrite($hd, $crawler->text());
+        fclose($hd);
+
         // assert tree form well works
-        $crawler = $crawler->filter('form')->reduce(
+        $form = $crawler->filter('form')->reduce(
             function ($node, $i) {
                 if ($node->hasAttribute('action')) {
                     $action = $node->getAttribute('action');
-                    if (preg_match('#\/product\/classification-tree\/create#', $action)) {
+                    if (preg_match('#\/product\/category-tree\/create$#', $action)) {
                         return true;
                     }
                 }
 
                 return false;
             }
-        )->first();
-
-        // assert fields count
-        $this->assertCount(1, $crawler->filter('div > input'));
-        $form = $crawler->form();
+        )->first()->form();
 
         $values = array(
-            'pim_product_segment[code]'                 => self::TREE_CODE,
-            'pim_product_segment[title][title:default]' => self::TREE_TITLE
+            'pim_category[code]'                 => self::TREE_CODE,
+            'pim_category[title][title:default]' => self::TREE_TITLE
         );
 
-        $this->submitFormAndAssertFlashbag($form, $values, self::SEGMENT_SAVED_MSG);
+        $this->submitFormAndAssertFlashbag($form, $values, self::CATEGORY_SAVED_MSG);
 
         // assert entity well inserted
-        $segmentTree = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::TREE_CODE));
-        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductSegment', $segmentTree);
-        $this->assertEquals(self::TREE_CODE, $segmentTree->getCode());
-        $this->assertEquals(self::TREE_TITLE, $segmentTree->getTitle());
+        $categoryTree = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::TREE_CODE));
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Category', $categoryTree);
+        $this->assertEquals(self::TREE_CODE, $categoryTree->getCode());
+        $this->assertEquals(self::TREE_TITLE, $categoryTree->getTitle());
     }
 
     /**
@@ -134,7 +134,7 @@ class ClassificationTreeControllerTest extends ControllerTest
     {
         $tree = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::TREE_CODE));
 
-        $uri = '/product/classification-tree/create/'. $tree->getId();
+        $uri = '/product/category-tree/create/'. $tree->getId();
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -149,7 +149,7 @@ class ClassificationTreeControllerTest extends ControllerTest
             function ($node, $i) {
                 if ($node->hasAttribute('action')) {
                     $action = $node->getAttribute('action');
-                    if (preg_match('#\/product\/classification-tree\/create/[0-9]*#', $action)) {
+                    if (preg_match('#\/product\/category-tree\/create/[0-9]*#', $action)) {
                         return true;
                     }
                 }
@@ -163,19 +163,19 @@ class ClassificationTreeControllerTest extends ControllerTest
         $form = $crawler->form();
 
         $values = array(
-            'pim_product_segment[code]'                 => self::NODE_CODE,
-            'pim_product_segment[title][title:default]' => self::NODE_TITLE,
-            'pim_product_segment[isDynamic]'            => self::NODE_IS_DYNAMIC
+            'pim_category[code]'                 => self::NODE_CODE,
+            'pim_category[title][title:default]' => self::NODE_TITLE,
+            'pim_category[isDynamic]'            => self::NODE_IS_DYNAMIC
         );
 
-        $this->submitFormAndAssertFlashbag($form, $values, self::SEGMENT_SAVED_MSG);
+        $this->submitFormAndAssertFlashbag($form, $values, self::CATEGORY_SAVED_MSG);
 
         // assert entity well inserted
-        $segment = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::NODE_CODE));
-        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductSegment', $segment);
-        $this->assertEquals(self::NODE_CODE, $segment->getCode());
-        $this->assertEquals(self::NODE_TITLE, $segment->getTitle());
-        $this->assertEquals(self::NODE_IS_DYNAMIC, $segment->getIsDynamic());
+        $category = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::NODE_CODE));
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Category', $category);
+        $this->assertEquals(self::NODE_CODE, $category->getCode());
+        $this->assertEquals(self::NODE_TITLE, $category->getTitle());
+        $this->assertEquals(self::NODE_IS_DYNAMIC, $category->getIsDynamic());
     }
 
     /**
@@ -188,8 +188,8 @@ class ClassificationTreeControllerTest extends ControllerTest
     public function testEditTree()
     {
         // get tree
-        $segmentTree = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::TREE_CODE));
-        $uri = '/product/classification-tree/edit/'. $segmentTree->getId();
+        $categoryTree = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::TREE_CODE));
+        $uri = '/product/category-tree/edit/'. $categoryTree->getId();
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -204,7 +204,7 @@ class ClassificationTreeControllerTest extends ControllerTest
             function ($node, $i) {
                 if ($node->hasAttribute('action')) {
                     $action = $node->getAttribute('action');
-                    if (preg_match('#\/product\/classification-tree\/edit/[0-9]*$#', $action)) {
+                    if (preg_match('#\/product\/category-tree\/edit/[0-9]*$#', $action)) {
                         return true;
                     }
                 }
@@ -218,20 +218,20 @@ class ClassificationTreeControllerTest extends ControllerTest
         $form = $crawler->form();
 
         $values = array(
-            'pim_product_segment[code]'                 => self::TREE_EDITED_CODE,
-            'pim_product_segment[title][title:default]' => self::TREE_TITLE
+            'pim_category[code]'                 => self::TREE_EDITED_CODE,
+            'pim_category[title][title:default]' => self::TREE_TITLE
         );
 
-        $this->submitFormAndAssertFlashbag($form, $values, self::SEGMENT_SAVED_MSG);
+        $this->submitFormAndAssertFlashbag($form, $values, self::CATEGORY_SAVED_MSG);
 
         // assert entity well edited
         $tree = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::TREE_EDITED_CODE));
-        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductSegment', $tree);
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Category', $tree);
         $this->assertEquals(self::TREE_EDITED_CODE, $tree->getCode());
         $this->assertEquals(self::TREE_TITLE, $tree->getTitle());
 
         // assert with unknown tree id and authentication
-        $uri = '/product/classification-tree/edit/0';
+        $uri = '/product/category-tree/edit/0';
         $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
@@ -246,8 +246,8 @@ class ClassificationTreeControllerTest extends ControllerTest
     public function testEditNode()
     {
         // get node
-        $segmentNode = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::NODE_CODE));
-        $uri = '/product/classification-tree/edit/'. $segmentNode->getId();
+        $categoryNode = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::NODE_CODE));
+        $uri = '/product/category-tree/edit/'. $categoryNode->getId();
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -262,7 +262,7 @@ class ClassificationTreeControllerTest extends ControllerTest
             function ($node, $i) {
                 if ($node->hasAttribute('action')) {
                     $action = $node->getAttribute('action');
-                    if (preg_match('#\/product\/classification-tree\/edit/[0-9]*$#', $action)) {
+                    if (preg_match('#\/product\/category-tree\/edit/[0-9]*$#', $action)) {
                         return true;
                     }
                 }
@@ -276,16 +276,16 @@ class ClassificationTreeControllerTest extends ControllerTest
         $form = $crawler->form();
 
         $values = array(
-            'pim_product_segment[code]'                 => self::NODE_EDITED_CODE,
-            'pim_product_segment[title][title:default]' => self::NODE_TITLE,
-            'pim_product_segment[isDynamic]'            => self::NODE_IS_DYNAMIC
+            'pim_category[code]'                 => self::NODE_EDITED_CODE,
+            'pim_category[title][title:default]' => self::NODE_TITLE,
+            'pim_category[isDynamic]'            => self::NODE_IS_DYNAMIC
         );
 
-        $this->submitFormAndAssertFlashbag($form, $values, self::SEGMENT_SAVED_MSG);
+        $this->submitFormAndAssertFlashbag($form, $values, self::CATEGORY_SAVED_MSG);
 
         // assert entity well edited
         $node = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::NODE_EDITED_CODE));
-        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductSegment', $node);
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Category', $node);
         $this->assertEquals(self::NODE_EDITED_CODE, $node->getCode());
         $this->assertEquals(self::NODE_TITLE, $node->getTitle());
         $this->assertEquals(self::NODE_IS_DYNAMIC, $node->getIsDynamic());
@@ -299,7 +299,7 @@ class ClassificationTreeControllerTest extends ControllerTest
     {
         // get tree entity
         $tree = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::TREE_EDITED_CODE));
-        $uri = '/product/classification-tree/'. $tree->getId() .'/remove';
+        $uri = '/product/category-tree/'. $tree->getId() .'/remove';
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
@@ -308,7 +308,7 @@ class ClassificationTreeControllerTest extends ControllerTest
         // assert with authentication
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertFlashBagMessage($crawler, self::SEGMENT_REMOVED_MSG);
+        $this->assertFlashBagMessage($crawler, self::CATEGORY_REMOVED_MSG);
 
         // assert with unknown tree id (last removed) and authentication
         $this->client->request('GET', $uri, array(), array(), $this->server);
@@ -316,12 +316,12 @@ class ClassificationTreeControllerTest extends ControllerTest
     }
 
     /**
-     * Get classification tree manager
+     * Get category tree manager
      *
-     * @return \Pim\Bundle\ProductBundle\Model\ProductSegmentManager
+     * @return \Pim\Bundle\ProductBundle\Model\CategoryManager
      */
     protected function getTreeManager()
     {
-        return $this->getContainer()->get('pim_product.classification_tree_manager');
+        return $this->getContainer()->get('pim_product.category_manager');
     }
 }

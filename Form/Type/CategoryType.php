@@ -3,21 +3,21 @@ namespace Pim\Bundle\ProductBundle\Form\Type;
 
 use Oro\Bundle\SegmentationTreeBundle\Form\Type\AbstractSegmentType;
 
-use Pim\Bundle\ProductBundle\Form\Subscriber\ProductSegmentSubscriber;
+use Pim\Bundle\ProductBundle\Form\Subscriber\CategorySubscriber;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Type for product segment form
+ * Type for category form
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ProductSegmentType extends AbstractSegmentType
+class CategoryType extends AbstractSegmentType
 {
 
     /**
@@ -32,14 +32,14 @@ class ProductSegmentType extends AbstractSegmentType
             'pim_translatable_field',
             array(
                 'field'             => 'title',
-                'translation_class' => 'Pim\\Bundle\\ProductBundle\\Entity\\ProductSegmentTranslation',
-                'entity_class'      => 'Pim\\Bundle\\ProductBundle\\Entity\\ProductSegment',
+                'translation_class' => 'Pim\\Bundle\\ProductBundle\\Entity\\CategoryTranslation',
+                'entity_class'      => 'Pim\\Bundle\\ProductBundle\\Entity\\Category',
                 'property_path'     => 'translations'
             )
         );
 
         // Add isDynamic field is needed
-        $subscriber = new ProductSegmentSubscriber($builder->getFormFactory());
+        $subscriber = new CategorySubscriber($builder->getFormFactory());
         $builder->addEventSubscriber($subscriber);
     }
 
@@ -50,7 +50,7 @@ class ProductSegmentType extends AbstractSegmentType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\ProductBundle\Entity\ProductSegment'
+                'data_class' => 'Pim\Bundle\ProductBundle\Entity\Category'
             )
         );
     }
@@ -60,6 +60,6 @@ class ProductSegmentType extends AbstractSegmentType
      */
     public function getName()
     {
-        return 'pim_product_segment';
+        return 'pim_category';
     }
 }
