@@ -118,9 +118,9 @@ class LoadExportProfileData extends AbstractFixture implements OrderedFixtureInt
     }
 
     /**
-     * Translate a segment
+     * Translate an export profile
      *
-     * @param string $reference Attribute profile reference
+     * @param string $reference Export profile reference
      * @param string $locale    Locale used
      * @param string $name      Name translated in locale value linked
      */
