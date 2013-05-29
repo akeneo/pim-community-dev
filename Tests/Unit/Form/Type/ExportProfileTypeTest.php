@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Type;
 
+use Symfony\Component\Security\Core\SecurityContext;
+
 use Symfony\Component\DependencyInjection\Container;
 
 use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;

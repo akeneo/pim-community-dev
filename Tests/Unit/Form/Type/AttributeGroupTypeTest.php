@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Type;
 
 use Symfony\Component\Security\Core\SecurityContext;
-
 use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 use Symfony\Component\Form\Forms;
