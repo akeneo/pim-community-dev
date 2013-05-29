@@ -141,7 +141,7 @@ $(function() {
     });
 
     $(document).on('click', '#view-activity-btn', function (e) {
-        if ($(":ui-dialog").has('#historyDatagridGridTemplate').length) {
+        if ($(':ui-dialog').has('#historyDatagridGridTemplate').length) {
             return false;
         }
 
