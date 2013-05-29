@@ -1,4 +1,4 @@
-var jstree = $('#tree').jstree({
+$(tree_id).jstree({
     "core" : {
         "animation" : 200
     },
@@ -9,7 +9,8 @@ var jstree = $('#tree').jstree({
         "ajax" : {
             "url" : urlListTree
         },
-        "auto_open_root" : true
+        "auto_open_root" : true,
+        "node_label_field" : "title"
     },
     "themes" : {
         "dots" : true,
@@ -27,7 +28,7 @@ var jstree = $('#tree').jstree({
                 if (node && node != -1) {
                     id = node.attr("id").replace('node_','');
                 } else{
-                    id = 1;
+                    id = -1;
                 }
                 return {
                     "id" : id
@@ -50,13 +51,13 @@ var jstree = $('#tree').jstree({
         "select_multiple_modifier" : false
     }
 })
-    .bind('trees_loaded.jstree', function(e, tree_select_id) {
-        $('#'+tree_select_id).select2();
+    .bind('trees_loaded.jstree', function(e, data) {
+        $('#'+data).select2();
     })
     .bind("remove.jstree", function (e, data) {
         data.rslt.obj.each(function () {
             var id = $(this).attr("id").replace('node_', '');
-            $.post(id+'/remove');
+            PimAjax.ajaxPost(id+'/remove', '');
             data.inst.refresh();
         });
     })
