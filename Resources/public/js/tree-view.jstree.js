@@ -52,7 +52,7 @@ $(tree_id).jstree({
     }
 })
     .bind('trees_loaded.jstree', function (e, data) {
-        $('#'+tree_select_id).select2();
+        $('#'+data).select2();
     })
     .bind('loaded.jstree', function(e, data) {
         $(tree_id).jstree('create', null, "last", { 
