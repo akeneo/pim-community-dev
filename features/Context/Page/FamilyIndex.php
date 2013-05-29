@@ -11,7 +11,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  */
 class FamilyIndex extends Page
 {
-    protected $path = '/product/product-family/index';
+    protected $path = '/enrich/product-family/index';
 
     protected $elements = array(
         'List' => array('css' => '.resizable-sidebar ul'),

@@ -11,7 +11,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  */
 class Attribute extends Page
 {
-    protected $path = '/product/product-attribute/edit/{id}';
+    protected $path = '/enrich/product-attribute/edit/{id}';
 
     public function setPosition($position)
     {

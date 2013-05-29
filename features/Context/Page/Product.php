@@ -13,7 +13,7 @@ use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
  */
 class Product extends Page
 {
-    protected $path = '/product/{id}/edit';
+    protected $path = '/enrich/product/{id}/edit';
 
     protected $elements = array(
         'Locales dropdown'     => array('css' => '#locale-switcher'),
