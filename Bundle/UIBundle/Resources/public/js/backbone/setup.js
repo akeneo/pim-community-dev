@@ -13,7 +13,7 @@ $(function() {
     Backbone.basicSync = Backbone.sync;
     Backbone.sync = function(method, model, options) {
         if (!options || !_.has(options, 'error')) {
-            options['error'] = Oro.BackboneError.Modal;
+            options['error'] = Oro.BackboneError.Dispatch;
         }
 
         Backbone.basicSync(method, model, options);
