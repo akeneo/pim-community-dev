@@ -53,7 +53,7 @@
                                                         {% endif %}
                                                         {{ locale.code|upper }}
                                                     </span>
-                                                    <span class="title">{{ form.vars.value.sku }}</span>
+                                                    <span class="title">{{ product.label }}</span>
                                                 </a>
                                             </li>
                                         {% endfor %}
@@ -100,7 +100,7 @@
                             <ul class="nav nav-list">
                                 {% for group in product.orderedGroups %}
                                 <li class="tab{% if loop.index == 1 %} active{% endif %}">
-                                    <a href="#tabs-{{group.id}}" data-toggle="tab">{{ group.name|trans }}</a>
+                                    <a href="#tabs-{{group.id}}" data-toggle="tab">{{ group.name }}</a>
                                 </li>
                                 {% endfor %}
                             </ul>

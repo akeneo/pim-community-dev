@@ -25,6 +25,8 @@ parameters:
     pim_product.category_class:          Pim\Bundle\ProductBundle\Entity\Category
     pim_product.category_manager_class:  Pim\Bundle\ProductBundle\Manager\CategoryManager
 
+    pim_product.locale_listener.class:  Pim\Bundle\ProductBundle\EventListener\LocaleListener
+
 services:
     # Managers
     product_manager:
@@ -178,3 +180,11 @@ services:
         class: Pim\Bundle\ProductBundle\Twig\ProductExtension
         tags:
             - { name: twig.extension }
+
+    stof_doctrine_extensions.event_listener.locale:
+        class: %pim_product.locale_listener.class%
+        arguments:
+            - @security.context
+            - @stof_doctrine_extensions.listener.translatable
+        tags:
+            - { name: kernel.event_subscriber }
