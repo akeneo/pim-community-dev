@@ -12,6 +12,8 @@ services:
               datagrid_name: attributes
               entity_hint: attributes
               route_name: pim_product_productattribute_index
+        calls:
+            - [ setProductManager, [@product_manager] ]
 
     # Product grid manager
     pim_product.product_grid_manager:

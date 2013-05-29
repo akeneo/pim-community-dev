@@ -20,14 +20,14 @@ use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Entity(repositoryClass="Oro\Bundle\SegmentationTreeBundle\Entity\Repository\SegmentRepository")
+ * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductSegmentRepository")
  * @ORM\Table(
  *     name="pim_product_segment",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="pim_product_segment_code_uc", columns={"code"})}
  * )
  * @Gedmo\Tree(type="nested")
  * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\ProductSegmentTranslation")
- * @UniqueEntity("code")
+ * @UniqueEntity(fields="code", message="This code is already taken")
  */
 class ProductSegment extends AbstractSegment implements Translatable
 {
@@ -95,6 +95,14 @@ class ProductSegment extends AbstractSegment implements Translatable
      * @ORM\Column(name="is_dynamic", type="boolean")
      */
     protected $isDynamic = false;
+
+    /**
+     * @var datetime
+     *
+     * @Gedmo\Timestampable
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
 
     /**
      * @var ArrayCollection $translations
@@ -240,6 +248,16 @@ class ProductSegment extends AbstractSegment implements Translatable
         $this->isDynamic = $isDynamic;
 
         return $this;
+    }
+
+    /**
+     * Get created date
+     *
+     * @return datetime
+     */
+    public function getCreated()
+    {
+        return $this->created;
     }
 
     /**

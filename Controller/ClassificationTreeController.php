@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -51,7 +53,9 @@ class ClassificationTreeController extends Controller
     {
         $trees = $this->getTreeManager()->getTrees();
 
-        return array('trees' => $trees);
+        $treesResponse = SegmentHelper::treesResponse($trees);
+
+        return array('trees' => $treesResponse);
     }
 
     /**
@@ -66,7 +70,11 @@ class ClassificationTreeController extends Controller
      */
     public function childrenAction()
     {
-        $segment = $this->findSegment($this->getRequest()->get('id'));
+        try {
+            $segment = $this->findSegment($this->getRequest()->get('id'));
+        } catch (NotFoundHttpException $e) {
+            return array('data' => array());
+        }
 
         $segments = $this->getTreeManager()->getChildren($segment->getId());
 
@@ -218,8 +226,14 @@ class ClassificationTreeController extends Controller
      */
     public function removeAction(ProductSegment $segment)
     {
-        $this->getTreeManager()->remove($segment);
-        $this->getTreeManager()->getStorageManager()->flush();
+        $count = $this->getTreeManager()->getEntityRepository()->countProductsLinked($segment, false);
+
+        if ($count == 0) {
+            $this->getTreeManager()->remove($segment);
+            $this->getTreeManager()->getStorageManager()->flush();
+        } else {
+            return new JsonResponse('They are products in this category, but they will not be deleted', 500);
+        }
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new JsonResponse();
