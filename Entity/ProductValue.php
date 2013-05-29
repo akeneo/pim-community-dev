@@ -86,6 +86,20 @@ class ProductValue extends AbstractEntityFlexibleValue
     protected $prices;
 
     /**
+     * Remove an option
+     *
+     * @param AbstractEntityAttributeOption $option
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductValue
+     */
+    public function removeOption(AbstractEntityAttributeOption $option)
+    {
+        $this->options->removeElement($option);
+
+        return $this;
+    }
+
+    /**
      * Get media
      *
      * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
