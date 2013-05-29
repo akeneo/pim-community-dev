@@ -3,6 +3,8 @@
     var tree_id = "#tree";
     var urlListTree = "{{ path('pim_product_categorytree_listtree', { '_format': 'json' }) }}";
     var urlChildren = "{{ path('pim_product_categorytree_children', { '_format': 'json' }) }}";
+    var urlRemove   = "{{ path('pim_product_categorytree_remove', { 'id': 0 }) }}";
+    var urlRemove = urlRemove.replace(0, '#ID#');
     
     // define buttons actions
     $(".tree-toolbar button").click(function () {
@@ -17,6 +19,7 @@
                 }
                 break;
             case "category-remove":
+                var node = $.jstree._focused().get_selected();
                 if(!$.jstree._focused()._get_node($.jstree._focused().get_selected())) {
                     PimDialog.alert("{{ 'You must select a node to remove.' | trans }}", "{{ 'Alert message' | trans }}");
                 } else {
