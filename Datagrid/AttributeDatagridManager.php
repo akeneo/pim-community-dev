@@ -1,8 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
+use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Oro\Bundle\GridBundle\Property\FieldProperty;
-
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -21,6 +21,19 @@ use Oro\Bundle\GridBundle\Property\UrlProperty;
  */
 class AttributeDatagridManager extends DatagridManager
 {
+    /**
+     * @var ProductManager
+     */
+    protected $productManager;
+
+    /**
+     * @param ProductManager $manager
+     */
+    public function setProductManager(ProductManager $manager)
+    {
+        $this->productManager = $manager;
+    }
+
     /**
      * get properties
      * @return array
@@ -64,20 +77,7 @@ class AttributeDatagridManager extends DatagridManager
         );
         $fieldsCollection->add($field);
 
-        $field = new FieldDescription();
-        $field->setName('attributeType');
-        $field->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translator->trans('Type'),
-                'field_name'  => 'attributeType',
-                'filter_type' => FilterInterface::TYPE_STRING,
-                'required'    => false,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
-            )
-        );
+        $field = $this->createAttributeTypeField();
         $fieldsCollection->add($field);
 
         $field = new FieldDescription();
@@ -196,5 +196,52 @@ class AttributeDatagridManager extends DatagridManager
         );
 
         return array($clickAction, $editAction, $deleteAction);
+    }
+
+    /**
+     * Create attribute type field description for datagrid
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createAttributeTypeField()
+    {
+        $field = new FieldDescription();
+        $field->setName('attributeType');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => $this->translator->trans('Type'),
+                'field_name'  => 'attributeType',
+                'filter_type' => FilterInterface::TYPE_CHOICE,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+                'field_options' => array('choices' => $this->getAttributeTypeFieldOptions()),
+            )
+        );
+
+        return $field;
+    }
+
+    /**
+     * Get translated attribute types
+     *
+     * @return array
+     */
+    protected function getAttributeTypeFieldOptions()
+    {
+        $translator = $this->translator;
+        $attributeTypes = $this->productManager->getAttributeTypes();
+        $fieldOptions = array_combine($attributeTypes, $attributeTypes);
+        $fieldOptions = array_map(
+            function ($type) use ($translator) {
+                return $translator->trans($type);
+            },
+            $fieldOptions
+        );
+        asort($fieldOptions);
+
+        return $fieldOptions;
     }
 }
