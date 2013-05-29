@@ -237,5 +237,4 @@ class ProductFamilyController extends Controller
     {
         return $this->getEntityManager()->getRepository('PimProductBundle:ProductFamily');
     }
-
 }
