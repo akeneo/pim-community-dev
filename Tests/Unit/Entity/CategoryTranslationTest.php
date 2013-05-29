@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\ProductBundle\Entity\ProductSegmentTranslation;
+use Pim\Bundle\ProductBundle\Entity\CategoryTranslation;
 
 /**
  * Test related class
@@ -11,7 +11,7 @@ use Pim\Bundle\ProductBundle\Entity\ProductSegmentTranslation;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ProductSegmentTranslationTest extends \PHPUnit_Framework_TestCase
+class CategoryTranslationTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -19,8 +19,8 @@ class ProductSegmentTranslationTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $segment = new ProductSegmentTranslation();
+        $category = new CategoryTranslation();
 
-        $this->assertInstanceOf('\Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation', $segment);
+        $this->assertInstanceOf('\Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation', $category);
     }
 }

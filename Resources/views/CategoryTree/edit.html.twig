@@ -10,10 +10,10 @@
 {% endif %}
 
 {% block page_container %}
-<div class="container-fluid classification">
+<div class="container-fluid category">
     {% block content %}
     <div class="row-fluid">
-        {% include 'PimProductBundle:ClassificationTree:_tree-management-sidebar.html.twig' %}
+        {% include 'PimProductBundle:CategoryTree:_tree-management-sidebar.html.twig' %}
         
         <div id="form-tab" class="span10">
             <form action="{{ form.vars.value.id ?
@@ -29,7 +29,6 @@
                         <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
                     </div>
                 </div>
-                
                 
                 <div id="form-navbar" class="navbar navbar-static scrollspy-nav">
                     <div class="navbar-inner">
@@ -116,7 +115,7 @@
         </div>
     </div>
     
-    {% include 'PimProductBundle:ClassificationTree:_js-handler.html.twig' %}
+    {% include 'PimProductBundle:CategoryTree:_js-handler.html.twig' %}
     {% endblock %}
 </div>
 {% endblock %}
@@ -127,7 +126,6 @@
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.hotkeys.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.jstree.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/orosegmentationtree/js/lib/jstree/jquery.jstree.tree_selector.js') }}"></script>
-    
 {% endblock %}
 
 {% if form.vars.value.id %}
@@ -135,9 +133,9 @@
         {{ parent() }}
         <script type="text/javascript">
     $(function() {
-        $('#btn-delete-segment').click(function(event) {
+        $('#btn-delete-category').click(function(event) {
             doRemove = function() {
-                window.location.href = "{{ path('pim_product_classificationtree_remove', { id: form.vars.value.id }) }}";
+                window.location.href = "{{ path('pim_product_categorytree_remove', { id: form.vars.value.id }) }}";
             };
             PimDialog.confirm(
                 "{{ 'Are you sure you want to delete this item' | trans }}",

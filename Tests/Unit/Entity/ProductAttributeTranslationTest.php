@@ -19,8 +19,8 @@ class ProductAttributeTranslationTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $segment = new ProductAttributeTranslation();
+        $attribute = new ProductAttributeTranslation();
 
-        $this->assertInstanceOf('\Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation', $segment);
+        $this->assertInstanceOf('\Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation', $attribute);
     }
 }

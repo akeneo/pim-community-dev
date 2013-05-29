@@ -99,10 +99,14 @@ class ExportProfileTypeTest extends TypeTestCase
     protected function getSecurityContextMock()
     {
         $authManager = $this->getMock('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface');
-        $decisionManager = $this->getMock('Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface');
+        $decisionManager = $this->getMock(
+            'Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface'
+        );
 
         $securityContext = new SecurityContext($authManager, $decisionManager);
-        $securityContext->setToken($token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface'));
+        $securityContext->setToken(
+            $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')
+        );
 
         return $securityContext;
     }

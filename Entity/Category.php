@@ -20,22 +20,22 @@ use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductSegmentRepository")
+ * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\CategoryRepository")
  * @ORM\Table(
- *     name="pim_product_segment",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="pim_product_segment_code_uc", columns={"code"})}
+ *     name="pim_category",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="pim_category_code_uc", columns={"code"})}
  * )
  * @Gedmo\Tree(type="nested")
- * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\ProductSegmentTranslation")
+ * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\CategoryTranslation")
  * @UniqueEntity(fields="code", message="This code is already taken")
  */
-class ProductSegment extends AbstractSegment implements Translatable
+class Category extends AbstractSegment implements Translatable
 {
     /**
-     * @var ProductSegment $parent
+     * @var Category $parent
      *
      * @Gedmo\TreeParent
-     * @ORM\ManyToOne(targetEntity="ProductSegment", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $parent;
@@ -43,7 +43,7 @@ class ProductSegment extends AbstractSegment implements Translatable
     /**
      * @var \Doctrine\Common\Collections\Collection $children
      *
-     * @ORM\OneToMany(targetEntity="ProductSegment", mappedBy="parent", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Category", mappedBy="parent", cascade={"persist"})
      * @ORM\OrderBy({"left" = "ASC"})
      */
     protected $children;
@@ -53,8 +53,8 @@ class ProductSegment extends AbstractSegment implements Translatable
      *
      * @ORM\ManyToMany(targetEntity="Product")
      * @ORM\JoinTable(
-     *     name="pim_segment_product",
-     *     joinColumns={@ORM\JoinColumn(name="segment_id", referencedColumnName="id", onDelete="CASCADE")},
+     *     name="pim_category_product",
+     *     joinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="CASCADE")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
      */
@@ -79,15 +79,6 @@ class ProductSegment extends AbstractSegment implements Translatable
     protected $locale;
 
     /**
-     * Segment code
-     *
-     * @var string $code
-     *
-     * @ORM\Column(name="code", type="string", length=64)
-     */
-    protected $code;
-
-    /**
      * Define if a node is dynamic or not
      *
      * @var boolean $isDynamic
@@ -108,7 +99,7 @@ class ProductSegment extends AbstractSegment implements Translatable
      * @var ArrayCollection $translations
      *
      * @ORM\OneToMany(
-     *     targetEntity="ProductSegmentTranslation",
+     *     targetEntity="CategoryTranslation",
      *     mappedBy="foreignKey",
      *     cascade={"persist", "remove"}
      * )
@@ -151,11 +142,11 @@ class ProductSegment extends AbstractSegment implements Translatable
     }
 
     /**
-     * Add product to this segment node
+     * Add product to this category node
      *
      * @param Product $product
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductSegment
+     * @return \Pim\Bundle\ProductBundle\Entity\Category
      */
     public function addProduct(Product $product)
     {
@@ -165,11 +156,11 @@ class ProductSegment extends AbstractSegment implements Translatable
     }
 
     /**
-     * Remove product for this segment node
+     * Remove product for this category node
      *
      * @param Product $product
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductSegment
+     * @return \Pim\Bundle\ProductBundle\Entity\Category
      */
     public function removeProduct(Product $product)
     {
@@ -179,7 +170,7 @@ class ProductSegment extends AbstractSegment implements Translatable
     }
 
     /**
-     * Get products for this segment node
+     * Get products for this category node
      *
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
@@ -193,35 +184,11 @@ class ProductSegment extends AbstractSegment implements Translatable
      *
      * @param string $locale
      *
-     * @return ProductSegment
+     * @return \Pim\Bundle\ProductBundle\Entity\Category
      */
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get code
-     *
-     * @return string
-     */
-    public function getCode()
-    {
-        return $this->code;
-    }
-
-    /**
-     * Set code
-     *
-     * @param string $code
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductSegment
-     */
-    public function setCode($code)
-    {
-        $this->code = $code;
 
         return $this;
     }
@@ -241,7 +208,7 @@ class ProductSegment extends AbstractSegment implements Translatable
      *
      * @param boolean $isDynamic
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductSegment
+     * @return \Pim\Bundle\ProductBundle\Entity\Category
      */
     public function setIsDynamic($isDynamic)
     {
@@ -273,11 +240,11 @@ class ProductSegment extends AbstractSegment implements Translatable
     /**
      * Add translation
      *
-     * @param ProductSegmentTranslation $translation
+     * @param CategoryTranslation $translation
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductSegment
+     * @return \Pim\Bundle\ProductBundle\Entity\Category
      */
-    public function addTranslation(ProductSegmentTranslation $translation)
+    public function addTranslation(CategoryTranslation $translation)
     {
         if (!$this->translations->contains($translation)) {
             $this->translations->add($translation);
@@ -289,11 +256,11 @@ class ProductSegment extends AbstractSegment implements Translatable
     /**
      * Remove translation
      *
-     * @param ProductSegmentTranslation $translation
+     * @param CategoryTranslation $translation
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductSegment
+     * @return \Pim\Bundle\ProductBundle\Entity\Category
      */
-    public function removeTranslation(ProductSegmentTranslation $translation)
+    public function removeTranslation(CategoryTranslation $translation)
     {
         $this->translations->removeElement($translation);
 

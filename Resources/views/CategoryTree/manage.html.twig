@@ -1,12 +1,12 @@
 {% extends 'PimProductBundle::layout.html.twig' %}
 
-{% set title = 'Classification tree overview'|trans %}
+{% set title = 'Category tree overview'|trans %}
 
 {% block content %}
 
     <h1>{{ title }} 
         <a class="btn btn-primary pull-right" style="margin-left:10px;"
-            href="{{ path('pim_product_classificationtree_create') }}">{{ 'New tree'|trans }}</a>
+            href="{{ path('pim_product_categorytree_create') }}">{{ 'New tree'|trans }}</a>
     </h1>
 
     <table class="table table-bordered table-striped table-condensed">
@@ -23,29 +23,29 @@
             </tr>
         </thead>
         <tbody>
-        {% for segment in segments %}
+        {% for category in categories %}
             <tr>
                 <td>
-                    <a href="{{ path('pim_product_classificationtree_edit', { id: segment.id }) }}">
-                        {{ segment.code }}
+                    <a href="{{ path('pim_product_categorytree_edit', { id: category.id }) }}">
+                        {{ category.code }}
                     </a>
                 </td>
-                <td>{{ segment.title }}</td>
-                <td>{% if segment.parent %}{{ segment.parent.code }}{% endif %}</td>
-                <td>{{ segment.root == segment.id }}</td>
-                <td>{{ segment.isDynamic }}</td>
+                <td>{{ category.title }}</td>
+                <td>{% if category.parent %}{{ category.parent.code }}{% endif %}</td>
+                <td>{{ category.root == category.id }}</td>
+                <td>{{ category.isDynamic }}</td>
                 <td>
-                    <a href="{{ path('pim_product_classificationtree_create', { parent: segment.id }) }}">
+                    <a href="{{ path('pim_product_categorytree_create', { parent: category.id }) }}">
                         <i class="icon-file"></i>
                     </a>
                 </td>
                 <td>
-                    <a href="{{ path('pim_product_classificationtree_edit', { id: segment.id }) }}">
+                    <a href="{{ path('pim_product_categorytree_edit', { id: category.id }) }}">
                         <i class="icon-edit"></i>
                     </a>
                 </td>
                 <td>
-                    <a href="{{ path('pim_product_classificationtree_remove', { id: segment.id }) }}">
+                    <a href="{{ path('pim_product_categorytree_remove', { id: category.id }) }}">
                         <i class="icon-remove"></i>
                     </a>
                 </td>
