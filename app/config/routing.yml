@@ -5,7 +5,7 @@ pim_default:
 pim_product:
     resource: "@PimProductBundle/Controller/"
     type:     annotation
-    prefix:   /product/
+    prefix:   /enrich/
 
 pim_config:
     resource: "@PimConfigBundle/Controller/"
