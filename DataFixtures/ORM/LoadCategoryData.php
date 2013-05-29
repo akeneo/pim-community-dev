@@ -1,9 +1,9 @@
 <?php
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
-use Pim\Bundle\ProductBundle\Entity\ProductSegmentTranslation;
+use Pim\Bundle\ProductBundle\Entity\CategoryTranslation;
 
-use Pim\Bundle\ProductBundle\Entity\ProductSegment;
+use Pim\Bundle\ProductBundle\Entity\Category;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -16,14 +16,14 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 
 /**
- * Load data for classification tree
+ * Load data for category tree
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class LoadProductSegmentData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
+class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
@@ -58,27 +58,27 @@ class LoadProductSegmentData extends AbstractFixture implements OrderedFixtureIn
         $product5 = $this->getReference('product-sku-5');
 
         // create trees
-        $treeCatalog     = $this->createSegment('Master Catalog (default)');
-        $treeCollections = $this->createSegment('Collections (default)');
-        $treeColors      = $this->createSegment('Colors (default)');
-        $treeSales       = $this->createSegment('Europe Sales Catalog (default)');
+        $treeCatalog     = $this->createCategory('Master Catalog (default)');
+        $treeCollections = $this->createCategory('Collections (default)');
+        $treeColors      = $this->createCategory('Colors (default)');
+        $treeSales       = $this->createCategory('Europe Sales Catalog (default)');
 
-        // enrich master catalog with segments
-        $nodeBooks = $this->createSegment('Books (default)', $treeCatalog);
-        $nodeComputers = $this->createSegment('Computers (default)', $treeCatalog);
-        $nodeDesktops = $this->createSegment('Desktops (default)', $nodeComputers);
-        $nodeNotebooks = $this->createSegment('Notebooks (default)', $nodeComputers);
-        $nodeAccessories = $this->createSegment('Accessories (default)', $nodeComputers);
-        $nodeGames = $this->createSegment('Games (default)', $nodeComputers);
-        $nodeSoftware = $this->createSegment('Software (default)', $nodeComputers);
-        $nodeClothing = $this->createSegment('Apparels & Shoes (default)', $treeCatalog);
+        // enrich master catalog with categories
+        $nodeBooks       = $this->createCategory('Books (default)', $treeCatalog);
+        $nodeComputers   = $this->createCategory('Computers (default)', $treeCatalog);
+        $nodeDesktops    = $this->createCategory('Desktops (default)', $nodeComputers);
+        $nodeNotebooks   = $this->createCategory('Notebooks (default)', $nodeComputers);
+        $nodeAccessories = $this->createCategory('Accessories (default)', $nodeComputers);
+        $nodeGames       = $this->createCategory('Games (default)', $nodeComputers);
+        $nodeSoftware    = $this->createCategory('Software (default)', $nodeComputers);
+        $nodeClothing    = $this->createCategory('Apparels & Shoes (default)', $treeCatalog);
 
-        $nodeShirts = $this->createSegment('Shirts (default)', $nodeClothing, array($product5));
-        $nodeJeans  = $this->createSegment('Jeans (default)', $nodeClothing, array($product3, $product4));
-        $nodeShoes  = $this->createSegment('Shoes (default)', $nodeClothing, array($product1, $product2, $product3));
+        $nodeShirts = $this->createCategory('Shirts (default)', $nodeClothing, array($product5));
+        $nodeJeans  = $this->createCategory('Jeans (default)', $nodeClothing, array($product3, $product4));
+        $nodeShoes  = $this->createCategory('Shoes (default)', $nodeClothing, array($product1, $product2, $product3));
 
         // translate data in en_US
-        $locale = 'en_US';
+        $locale = $this->getReference('locale.en_US');
         $this->translate($treeCatalog, $locale, 'Master Catalog');
         $this->translate($treeCollections, $locale, 'Collections');
         $this->translate($treeColors, $locale, 'Colors');
@@ -100,7 +100,7 @@ class LoadProductSegmentData extends AbstractFixture implements OrderedFixtureIn
         $this->manager->flush();
 
         // translate data in fr_FR
-        $locale = 'fr_FR';
+        $locale = $this->getReference('locale.fr_FR');
         $this->translate($treeCatalog, $locale, 'Catalogue Principal');
         $this->translate($treeCollections, $locale, 'Collections');
         $this->translate($treeColors, $locale, 'Couleurs');
@@ -123,18 +123,18 @@ class LoadProductSegmentData extends AbstractFixture implements OrderedFixtureIn
     }
 
     /**
-     * Translate a segment
+     * Translate a category
      *
-     * @param ProductSegment $segment Segment
-     * @param string         $locale  Locale used
-     * @param string         $title   Title translated in locale value linked
+     * @param Category $category Category
+     * @param string   $locale   Locale used
+     * @param string   $title    Title translated in locale value linked
      */
-    protected function translate(ProductSegment $segment, $locale, $title)
+    protected function translate(Category $category, $locale, $title)
     {
-        $translation = $this->createTranslation($segment, $locale, $title);
-        $segment->addTranslation($translation);
+        $translation = $this->createTranslation($category, $locale, $title);
+        $category->addTranslation($translation);
 
-        $this->manager->persist($segment);
+        $this->manager->persist($category);
     }
 
     /**
@@ -144,46 +144,46 @@ class LoadProductSegmentData extends AbstractFixture implements OrderedFixtureIn
      * @param string         $locale Locale used
      * @param string         $title  Title translated in locale value linked
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductSegmentTranslation
+     * @return \Pim\Bundle\ProductBundle\Entity\CategoryTranslation
      */
     protected function createTranslation($entity, $locale, $title)
     {
-        $translation = new ProductSegmentTranslation();
+        $translation = new CategoryTranslation();
         $translation->setContent($title);
         $translation->setField('title');
         $translation->setForeignKey($entity);
         $translation->setLocale($locale);
-        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\ProductSegment');
+        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\Category');
 
         return $translation;
     }
 
     /**
-     * Create a Segment entity
+     * Create a Category entity
      *
-     * @param string         $title    Title of the segment
-     * @param ProductSegment $parent   Parent segment
-     * @param array          $products Products that should be associated to this segment
+     * @param string   $title    Title of the category
+     * @param Category $parent   Parent category
+     * @param array    $products Products that should be associated to this category
      *
-     * @return ItemSegment
+     * @return Category
      */
-    protected function createSegment($title, $parent = null, $products = array())
+    protected function createCategory($title, $parent = null, $products = array())
     {
-        $segment = new ProductSegment();
-        $segment->setCode($title);
-        $segment->setTitle($title);
-        $segment->setParent($parent);
+        $category = new Category();
+        $category->setCode($title);
+        $category->setTitle($title);
+        $category->setParent($parent);
 
-        $translation = $this->createTranslation($segment, 'default', $title);
-        $segment->addTranslation($translation);
+        $translation = $this->createTranslation($category, 'default', $title);
+        $category->addTranslation($translation);
 
         foreach ($products as $product) {
-            $segment->addProduct($product);
+            $category->addProduct($product);
         }
 
-        $this->manager->persist($segment);
+        $this->manager->persist($category);
 
-        return $segment;
+        return $category;
     }
 
     /**
