@@ -53,7 +53,9 @@ class ClassificationTreeController extends Controller
     {
         $trees = $this->getTreeManager()->getTrees();
 
-        return array('trees' => $trees);
+        $treesResponse = SegmentHelper::treesResponse($trees);
+
+        return array('trees' => $treesResponse);
     }
 
     /**

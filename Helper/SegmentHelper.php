@@ -13,6 +13,27 @@ use Pim\Bundle\ProductBundle\Entity\ProductSegment;
  */
 class SegmentHelper
 {
+    /**
+     * Format in array segment trees
+     *
+     * @param ArrayCollection $trees
+     *
+     * @return array
+     * @static
+     */
+    public static function treesResponse($trees)
+    {
+        $return = array();
+
+        foreach ($trees as $tree) {
+            $return[] = array(
+                'id' => $tree->getId(),
+                'title'  => $tree->getTitle()
+            );
+        }
+
+        return $return;
+    }
 
     /**
      * Format in array content segment
