@@ -17,4 +17,9 @@ class FamilyCreation extends Page
     {
         return sprintf('pim_product_family_name_%s:%s', strtolower($name), $locale);
     }
+
+    public function getUri()
+    {
+        return $this->path;
+    }
 }

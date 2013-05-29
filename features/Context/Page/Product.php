@@ -134,7 +134,14 @@ class Product extends Page
 
     public function getTitle()
     {
-        return str_replace(' ', '', $this->getElement('Title')->getText());
+        $titleElt = $this->getElement('Title');
+
+        return sprintf(
+            '%s%s%s',
+            $titleElt->find('css', '.sub-title')->getText(),
+            $titleElt->find('css', '.separator')->getText(),
+            $titleElt->find('css', '.usser-name')->getText()
+        );
     }
 
     public function visitTab($tab)

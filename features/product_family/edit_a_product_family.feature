@@ -16,7 +16,7 @@ Feature: Edit a product family
       | smartphone | english  | Smartphone |
       | bags       | english  | Bags       |
     And I am logged in as "admin"
-    When I am on family page
+    When I am on the families page
 
   Scenario: Successfully edit a product family
     Given I edit the "Bags" family
