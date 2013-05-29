@@ -2,16 +2,12 @@
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-
 use Doctrine\Common\DataFixtures\AbstractFixture;
-
 use Pim\Bundle\ProductBundle\Entity\ProductFamily;
-
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+use Pim\Bundle\ProductBundle\Entity\ProductFamilyTranslation;
 
 /**
  * Load fixtures for Product families
@@ -36,39 +32,70 @@ class LoadProductFamilyData extends AbstractFixture implements OrderedFixtureInt
             $this->getReference('product-attribute.shortDescription'),
             $this->getReference('product-attribute.color')
         );
+        $translations = array('default' => 'Mug (default)', 'en_US' => 'Mug', 'fr_FR' => 'Tasse');
+        $this->createProductFamily('mug', 'Mug', $attributes, $manager, $translations);
 
-        $this->createProductFamily(
-            'mug',
-            'Mug',
-            $attributes,
-            $manager
+        $attributes = array(
+            $this->getReference('product-attribute.name'),
+            $this->getReference('product-attribute.size'),
+            $this->getReference('product-attribute.shortDescription'),
+            $this->getReference('product-attribute.color')
         );
+        $translations = array('default' => 'Shirt (default)', 'en_US' => 'Shirt', 'fr_FR' => 'Chemise');
+        $this->createProductFamily('shirt', 'Chemise', $attributes, $manager, $translations);
     }
 
     /**
      * Create product family
-     * @param string        $name        Product family name
-     * @param string        $description Product family description
-     * @param array         $attributes  Product family attributes
-     * @param ObjectManager $manager     EntityManager
+     * @param string        $name         Product family name
+     * @param string        $description  Product family description
+     * @param array         $attributes   Product family attributes
+     * @param ObjectManager $manager      EntityManager
+     * @param array         $translations label translation
      *
      * @return \Pim\Bundle\ProductBundle\Entity\ProductFamily
      */
-    protected function createProductFamily($name, $description, $attributes, $manager)
+    protected function createProductFamily($name, $description, $attributes, $manager, $translations)
     {
-        $productFamily = new ProductFamily();
+        $family = new ProductFamily();
 
-        $productFamily->setCode($name);
-        $productFamily->setLabel($name);
+        $family->setCode($name);
+        $family->setLabel($name);
 
         foreach ($attributes as $attribute) {
-            $productFamily->addAttribute($attribute);
+            $family->addAttribute($attribute);
         }
 
-        $manager->persist($productFamily);
+        foreach ($translations as $locale => $label) {
+            $this->createTranslation($family, $locale, 'label', $label);
+        }
+
+        $manager->persist($family);
         $manager->flush();
 
-        return $productFamily;
+        return $family;
+    }
+
+    /**
+     * Create a translation entity
+     *
+     * @param ProductFamily $family  entity
+     * @param string        $locale  Locale used
+     * @param string        $field   Field to translate
+     * @param string        $content Translated content
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation
+     */
+    public function createTranslation($family, $locale, $field, $content)
+    {
+        $translation = new ProductFamilyTranslation();
+        $translation->setContent($content);
+        $translation->setField($field);
+        $translation->setForeignKey($family);
+        $translation->setLocale($locale);
+        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\ProductFamily');
+
+        $family->addTranslation($translation);
     }
 
     /**
