@@ -15,7 +15,11 @@
             {% endif %}
             <button class="btn btn-primary pull-right" type="submit">{{ 'Save'|trans }}</button>
             {% if form.vars.value.id %}
-                <a class="btn pull-right" href="{{ path('pim_product_attributegroup_remove', { id: form.vars.value.id }) }}">{{ 'Delete'|trans }}</a>
+                <a href="{{ path('pim_product_attributegroup_remove', {'id': form.vars.value.id}) }}"
+                    class="btn pull-right" data-method="DELETE"
+                    data-confirm="{{ 'Are you sure you want to remove the group %group%?'|trans({'%group%': form.vars.data.name}) }}">
+                    {{ 'Delete'|trans }}
+                </a>
             {% endif %}
         </h3>
     </div>

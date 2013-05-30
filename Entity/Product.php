@@ -44,6 +44,7 @@ class Product extends AbstractEntityFlexible
      * @var productFamily
      *
      * @ORM\ManyToOne(targetEntity="ProductFamily")
+     * @ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $productFamily;
 
