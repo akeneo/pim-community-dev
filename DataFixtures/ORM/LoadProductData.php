@@ -109,7 +109,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         for ($ind= 0; $ind < $nbProducts; $ind++) {
 
             // sku
-            $prodSku = 'sku-'.$ind;
+            $prodSku = 'sku-'.str_pad($ind, 3, '0', STR_PAD_LEFT);
             $product = $this->getProductManager()->createFlexible();
             $product->setSku($prodSku);
 
@@ -235,7 +235,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
     protected function persist(Product $product)
     {
         $this->getProductManager()->getStorageManager()->persist($product);
-        $this->addReference('product-'. $product->getSku(), $product);
+        $this->addReference('product.'. $product->getSku(), $product);
     }
 
     /**
