@@ -1,0 +1,56 @@
+oro_user_profile:
+    resource:  "@OroUserBundle/Controller/ProfileController.php"
+    type:      annotation
+    prefix:    /system/user
+
+oro_user_group:
+    resource:  "@OroUserBundle/Controller/GroupController.php"
+    type:      annotation
+    prefix:    /system
+
+oro_user_role:
+    resource:  "@OroUserBundle/Controller/RoleController.php"
+    type:      annotation
+    prefix:    /system
+
+oro_user_status:
+    resource:  "@OroUserBundle/Controller/StatusController.php"
+    type: annotation
+    prefix: /system
+
+oro_user_security:
+    resource:  "@OroUserBundle/Controller/SecurityController.php"
+    type:      annotation
+    prefix: /user
+
+oro_user_reset:
+    resource: "@OroUserBundle/Controller/ResetController.php"
+    type: annotation
+
+oro_user_api_profile:
+    resource:     "@OroUserBundle/Controller/Api/Rest/ProfileController.php"
+    type:         rest
+    prefix:       api/rest/{version}/
+    defaults:
+        version:  latest
+
+oro_user_api_role:
+    resource:     "@OroUserBundle/Controller/Api/Rest/RoleController.php"
+    type:         rest
+    prefix:       api/rest/{version}/
+    defaults:
+        version:  latest
+
+oro_user_api_group:
+    resource:     "@OroUserBundle/Controller/Api/Rest/GroupController.php"
+    type:         rest
+    prefix:       api/rest/{version}/
+    defaults:
+        version:  latest
+
+oro_user_api_acl:
+    resource:     "@OroUserBundle/Controller/Api/Rest/AclController.php"
+    type:         rest
+    prefix:       api/rest/{version}/
+    defaults:
+        version:  latest

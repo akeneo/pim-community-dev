@@ -15,5 +15,6 @@ Feature: Browser product families
       | smartphone | english  | Smartphone |
       | bags       | english  | Bags       |
     And I am logged in as "admin"
-    When I am on family page
-    Then I should see the families Bags, Jewels and Smartphone
+    When I am on the families page
+    Then I should be on the family creation page
+    And I should see the families Bags, Jewels and Smartphone
