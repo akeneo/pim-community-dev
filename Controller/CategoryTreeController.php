@@ -57,8 +57,11 @@ class CategoryTreeController extends Controller
         $selectNode = null;
 
         if ($selectNodeId != null) {
-            $selectNode = $this->findCategory($selectNodeId);
-            
+            try {
+                $selectNode = $this->findCategory($selectNodeId);
+            } catch (NotFoundException $e) {
+                $selectNode = null;
+            }
         }
 
         $trees = $this->getTreeManager()->getTrees();
@@ -87,7 +90,11 @@ class CategoryTreeController extends Controller
         $selectNode = null;
 
         if ($selectNodeId != null) {
-            $selectNode = $this->findCategory($selectNodeId);
+            try {
+                $selectNode = $this->findCategory($selectNodeId);
+            } catch (NotFoundException $e) {
+                $selectNode = null;
+            }
         }
 
         try {
