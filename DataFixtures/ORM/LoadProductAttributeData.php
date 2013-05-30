@@ -286,6 +286,6 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
      */
     public function getOrder()
     {
-        return 2;
+        return 20;
     }
 }

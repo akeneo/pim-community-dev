@@ -51,11 +51,11 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
         $this->manager = $manager;
 
         // get products
-        $product1 = $this->getReference('product-sku-1');
-        $product2 = $this->getReference('product-sku-2');
-        $product3 = $this->getReference('product-sku-3');
-        $product4 = $this->getReference('product-sku-4');
-        $product5 = $this->getReference('product-sku-5');
+        $product1 = $this->getReference('product.sku-001');
+        $product2 = $this->getReference('product.sku-002');
+        $product3 = $this->getReference('product.sku-003');
+        $product4 = $this->getReference('product.sku-004');
+        $product5 = $this->getReference('product.sku-005');
 
         // create trees
         $treeCatalog     = $this->createCategory('Master Catalog (default)');
@@ -191,6 +191,6 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function getOrder()
     {
-        return 4;
+        return 50;
     }
 }
