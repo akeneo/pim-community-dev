@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Property\FixedProperty;
+
 use Pim\Bundle\ConfigBundle\Manager\ChannelManager;
 use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
@@ -144,6 +146,85 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
         $field = $this->createScopeField();
         $fieldsCollection->add($field);
+
+        $field = $this->createCategoryField();
+        $fieldsCollection->add($field);
+
+        $field = $this->createFamilyField();
+        $fieldsCollection->add($field);
+    }
+
+    /**
+     * Create a family field and filter
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createFamilyField()
+    {
+        // get families
+        $em = $this->flexibleManager->getStorageManager();
+        $families = $em->getRepository('PimProductBundle:ProductFamily')->findAll();
+        $choices = array();
+        foreach ($families as $family) {
+            $choices[$family->getId()] = $family->getLabel();
+        }
+
+        $field = new FieldDescription();
+        $field->setName('family');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => 'Family',
+                'field_name'  => 'productFamily',
+                'filter_type' => FilterInterface::TYPE_CHOICE,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+                'field_options' => array(
+                    'choices' => $choices
+                ),
+            )
+        );
+
+        return $field;
+    }
+
+    /**
+     * Create a category field
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createCategoryField()
+    {
+        // get categories
+        $em = $this->flexibleManager->getStorageManager();
+        $categories = $em->getRepository('PimProductBundle:Category')->findAll();
+        $choices = array();
+        foreach ($categories as $category) {
+            $choices[$category->getId()] = $category->getTitle();
+        }
+
+        $field = new FieldDescription();
+        $field->setName('categories');
+        $field->setProperty(new FixedProperty('categories', 'categoryTitlesAsString'));
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
+                'label'       => 'Categories',
+                'field_name'  => 'categories',
+                'filter_type' => FilterInterface::TYPE_ENTITY,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+                'field_options' => array(
+                    'choices' => $choices,
+                ),
+            )
+        );
+
+        return $field;
     }
 
     /**

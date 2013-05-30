@@ -19,4 +19,5 @@ interface FilterInterface extends OroFilterInterface
      */
     const TYPE_LOCALE = 'pim_grid_orm_locale';
     const TYPE_SCOPE  = 'pim_grid_orm_scope';
+    const TYPE_ENTITY = 'pim_grid_orm_entity';
 }

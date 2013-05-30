@@ -100,13 +100,13 @@ class ProductFamily implements Translatable
     }
 
     /**
-     * Returns the code of the product family
+     * Returns the label of the product family
      *
      * @return string
      */
     public function __toString()
     {
-        return $this->code;
+        return $this->label;
     }
 
     /**
