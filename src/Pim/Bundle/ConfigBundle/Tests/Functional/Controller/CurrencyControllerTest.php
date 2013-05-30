@@ -17,7 +17,7 @@ class CurrencyControllerTest extends ControllerTest
      */
     public function testIndex()
     {
-        $uri = '/configuration/currency/index';
+        $uri = '/configuration/currency/';
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
@@ -66,29 +66,6 @@ class CurrencyControllerTest extends ControllerTest
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
-
-    /**
-     * Test related action
-     */
-//     public function testDisable()
-//     {
-//         // initialize authentication to call container and get currency entity
-//         $this->client = static::createClient();
-//         $currency = $this->getRepository()->findOneBy(array());
-//         $uri = '/configuration/currency/disable/'. $currency->getId();
-
-//         // assert without authentication
-//         $crawler = $this->client->request('GET', $uri);
-//         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
-
-//         // assert with authentication
-//         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
-//         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
-
-//         // assert with unknown currency id (last removed)
-//         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
-//         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
-//     }
 
     /**
      * Get tested entity repository
