@@ -58,6 +58,9 @@ class OroUIExtension extends Extension
     protected function changeOrders(array $positions)
     {
         foreach ($positions as $positionName => $positionBlocks) {
+            foreach ($positionBlocks as $blockName => $block) {
+                $positions[$positionName][$blockName]['name'] = $blockName;
+            }
             usort($positions[$positionName], array($this, "comparePositionBlocks"));
         }
 

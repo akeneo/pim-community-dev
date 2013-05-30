@@ -37,6 +37,7 @@ class PositionNode extends \Twig_Node
     public function compile(Twig_Compiler $compiler)
     {
         foreach ($this->blocks as $blockData) {
+            $compiler->raw('echo \'<div id = "block-' . $blockData['name'] . '" >\';');
             if (array_key_exists('template', $blockData)) {
                 $expr = new Twig_Node_Expression_Constant($blockData['template'], $this->line);
                 $block = new Twig_Node_Include($expr, null, true, $this->line, $this->tag);
@@ -47,6 +48,7 @@ class PositionNode extends \Twig_Node
                 $block = new RenderNode($expr, $attr, $attr, $this->line, $this->tag);
                 $block->compile($compiler);
             }
+            $compiler->raw('echo \'</div>\';');
         }
     }
 }
