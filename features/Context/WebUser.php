@@ -66,6 +66,22 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @BeforeScenario
+     */
+    public function resetAcl()
+    {
+        $acl = new \Oro\Bundle\UserBundle\Entity\Acl;
+        $acl->setId('root');
+        $acl->setName('root');
+        $acl->setDescription('root');
+        $acl->addAccessRole($this->getRoleOrCreate(User::ROLE_DEFAULT));
+
+        $em = $this->getEntityManager();
+        $em->persist($acl);
+        $em->flush();
+    }
+
+    /**
      * @param string $name
      *
      * @return Page
@@ -251,7 +267,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $em   = $this->getEntityManager();
         $user = new User;
-        $role = new Role(User::ROLE_DEFAULT);
+        $role = $this->getRoleOrCreate(User::ROLE_DEFAULT);
 
         $user->setUsername($username);
         $user->setEmail($username.'@example.com');
@@ -939,6 +955,22 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         return $this->getEntityOrException('PimProductBundle:ProductFamily', array(
             'code' => $code
         ));
+    }
+
+    private function getRoleOrCreate($label)
+    {
+        try {
+            $role = $this->getEntityOrException('OroUserBundle:Role', array(
+                'label' => $label
+            ));
+        } catch (\InvalidArgumentException $e) {
+            $role = new Role($label);
+            $em = $this->getEntityManager();
+            $em->persist($role);
+            $em->flush();
+        }
+
+        return $role;
     }
 
     private function getEntityOrException($namespace, array $criteria)
