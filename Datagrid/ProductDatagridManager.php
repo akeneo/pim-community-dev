@@ -161,13 +161,13 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function createFamilyField()
     {
+        // get families
         $em = $this->flexibleManager->getStorageManager();
         $families = $em->getRepository('PimProductBundle:ProductFamily')->findAll();
         $choices = array();
         foreach ($families as $family) {
             $choices[$family->getId()] = $family->getLabel();
         }
-        asort($choices);
 
         $field = new FieldDescription();
         $field->setName('family');
@@ -206,7 +206,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 $choices[$category->getId()] = $category->getTitle();
             }
         }
-        asort($choices);
 
         $field = new FieldDescription();
         $field->setName('categories');
