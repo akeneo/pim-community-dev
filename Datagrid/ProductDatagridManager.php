@@ -202,9 +202,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $categories = $em->getRepository('PimProductBundle:Category')->findAll();
         $choices = array();
         foreach ($categories as $category) {
-            if ($category->hasProducts()) {
-                $choices[$category->getId()] = $category->getTitle();
-            }
+            $choices[$category->getId()] = $category->getTitle();
         }
 
         $field = new FieldDescription();
