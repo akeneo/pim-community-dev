@@ -9,12 +9,20 @@ use Symfony\Bundle\TwigBundle\Node\RenderNode;
 
 class PositionNode extends \Twig_Node
 {
+    /**
+     * @var array Array of blocks in the position
+     */
     protected $blocks;
 
     protected $line;
 
     protected $tag;
 
+    /**
+     * @param array $blocks Array of blocks in the position
+     * @param array $line Line
+     * @param int   $tag twig tag
+     */
     public function __construct(array $blocks, $line, $tag)
     {
         parent::__construct(array(), array('value' => $blocks), $line);
@@ -23,6 +31,9 @@ class PositionNode extends \Twig_Node
         $this->tag = $tag;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function compile(Twig_Compiler $compiler)
     {
         foreach ($this->blocks as $blockData) {

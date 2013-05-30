@@ -5,8 +5,14 @@ use Oro\Bundle\UIBundle\Twig\Node\PositionNode;
 
 class PositionTokenParser extends \Twig_TokenParser
 {
+    /**
+     * @var array
+     */
     protected $positions;
 
+    /**
+     * @param array $positions Array with positions
+     */
     public function __construct(array $positions)
     {
         $this->positions = $positions;
@@ -22,7 +28,9 @@ class PositionTokenParser extends \Twig_TokenParser
         $name = $stream->expect(\Twig_Token::NAME_TYPE)->getValue();
         $stream->expect(\Twig_Token::BLOCK_END_TYPE);
 
-        return new PositionNode($this->positions[$name], $token->getLine(), $this->getTag());
+        if (isset($this->positions[$name])) {
+            return new PositionNode($this->positions[$name], $token->getLine(), $this->getTag());
+        }
     }
 
     /**
