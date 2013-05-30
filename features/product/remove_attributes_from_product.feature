@@ -11,7 +11,7 @@ Feature: Remove an attribute from a product
       | label | Group   | family  |
       | Model | General | vehicle |
     And the following product:
-      | sku    | family  |
+      | sku    | family  | 
       | kangoo | vehicle |
     And I am logged in as "admin"
     And I am on the "kangoo" product page
