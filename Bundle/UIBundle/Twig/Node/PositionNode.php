@@ -14,19 +14,23 @@ class PositionNode extends \Twig_Node
      */
     protected $blocks;
 
+    protected $wrapClassName;
+
     protected $line;
 
     protected $tag;
 
     /**
      * @param array $blocks Array of blocks in the position
+     * @param string $wrapClassName
      * @param array $line Line
      * @param int   $tag twig tag
      */
-    public function __construct(array $blocks, $line, $tag)
+    public function __construct(array $blocks, $wrapClassName, $line, $tag)
     {
         parent::__construct(array(), array('value' => $blocks), $line);
         $this->blocks = $blocks;
+        $this->wrapClassName = $wrapClassName;
         $this->line = $line;
         $this->tag = $tag;
     }
@@ -37,7 +41,7 @@ class PositionNode extends \Twig_Node
     public function compile(Twig_Compiler $compiler)
     {
         foreach ($this->blocks as $blockData) {
-            $compiler->raw('echo \'<div id = "block-' . $blockData['name'] . '" >\';');
+            $compiler->raw('echo \'<div id = "block-' . $blockData['name'] . '" class="' . $this->wrapClassName . '" >\';');
             if (array_key_exists('template', $blockData)) {
                 $expr = new Twig_Node_Expression_Constant($blockData['template'], $this->line);
                 $block = new Twig_Node_Include($expr, null, true, $this->line, $this->tag);

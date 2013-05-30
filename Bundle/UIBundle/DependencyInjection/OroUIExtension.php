@@ -26,6 +26,8 @@ class OroUIExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
+        $container->setParameter('oro_ui.wrap_class', $config['wrap_class']);
+
         $this->positionsConfig($container);
     }
 
