@@ -10,12 +10,16 @@ class PositionTokenParser extends \Twig_TokenParser
      */
     protected $positions;
 
+    protected $wrapClassName;
+
     /**
-     * @param array $positions Array with positions
+     * @param array  $positions Array with positions
+     * @param string $wrapClassName Wrapper css class
      */
-    public function __construct(array $positions)
+    public function __construct(array $positions, $wrapClassName)
     {
         $this->positions = $positions;
+        $this->wrapClassName = $wrapClassName;
     }
     /**
      * {@inheritDoc}
@@ -29,7 +33,7 @@ class PositionTokenParser extends \Twig_TokenParser
         $stream->expect(\Twig_Token::BLOCK_END_TYPE);
 
         if (isset($this->positions[$name])) {
-            return new PositionNode($this->positions[$name], $token->getLine(), $this->getTag());
+            return new PositionNode($this->positions[$name], $this->wrapClassName, $token->getLine(), $this->getTag());
         }
     }
 

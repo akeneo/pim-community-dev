@@ -8,9 +8,12 @@ class UiExtension extends \Twig_Extension
 {
     protected $positions;
 
-    public function __construct($positions)
+    protected $wrapClassName;
+
+    public function __construct($positions, $wrapClassName)
     {
         $this->positions = $positions;
+        $this->wrapClassName = $wrapClassName;
     }
 
     /**
@@ -19,7 +22,7 @@ class UiExtension extends \Twig_Extension
     public function getTokenParsers()
     {
         return array(
-            new PositionTokenParser($this->positions)
+            new PositionTokenParser($this->positions, $this->wrapClassName)
         );
     }
 
