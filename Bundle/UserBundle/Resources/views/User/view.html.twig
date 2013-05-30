@@ -1,5 +1,6 @@
 {% extends bap.layout is defined ? bap.layout : 'OroUserBundle::layout.html.twig' %}
 {% import 'OroUserBundle::macros.html.twig' as macros %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 {% set format = get_user_value('oro_user.name_format') %}
 
 {% oro_title_set({params : {"%username%": user.fullname(format)|default('N/A') }}) %}
@@ -148,15 +149,8 @@
                     <h4 id="scroll-attributes" class="scrollspy-title">{{ 'Additional data'|trans }}</h4>
                     <div class="row-fluid">
                         <div class="form-horizontal">
-                            {% for attr in user.values %}
-                            <div class="control-group">
-                                <label class="control-label">{{ attr.attribute.code|title }}</label>
-                                <div class="controls">
-                                    <div class="clearfix-oro">
-                                        <p class="control-label">{{ attr.__toString }}</p>
-                                    </div>
-                                </div>
-                            </div>
+                            {% for value in user|getAttributes() %}
+                                {{ UI.flexibleAttributeRow(value) }}
                             {% endfor %}
                         </div>
                     </div>
