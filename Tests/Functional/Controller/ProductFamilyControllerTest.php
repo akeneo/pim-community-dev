@@ -46,7 +46,7 @@ class ProductFamilyControllerTest extends ControllerTest
      */
     public function testIndex()
     {
-        $uri = '/product/product-family/index';
+        $uri = '/enrich/product-family/';
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -55,7 +55,7 @@ class ProductFamilyControllerTest extends ControllerTest
         // assert with authentication
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertCount(1, $crawler->filter('html:contains("mug")'));
+        $this->assertCount(1, $crawler->filter('html:contains("Mug")'));
     }
 
     /**
@@ -65,7 +65,7 @@ class ProductFamilyControllerTest extends ControllerTest
      */
     public function testCreate()
     {
-        $uri = '/product/product-family/create';
+        $uri = '/enrich/product-family/create';
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -80,7 +80,7 @@ class ProductFamilyControllerTest extends ControllerTest
             function ($node, $i) {
                 if ($node->hasAttribute('action')) {
                     $action = $node->getAttribute('action');
-                    if (preg_match('#\/product\/product-family\/create$#', $action)) {
+                    if (preg_match('#\/enrich\/product-family\/create$#', $action)) {
                         return true;
                     }
                 }
@@ -113,7 +113,7 @@ class ProductFamilyControllerTest extends ControllerTest
     {
         // get product family entity
         $productFamily = $this->getRepository()->findOneBy(array('code' => self::FAMILY_CODE));
-        $uri = '/product/product-family/edit/'. $productFamily->getId();
+        $uri = '/enrich/product-family/edit/'. $productFamily->getId();
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -128,7 +128,7 @@ class ProductFamilyControllerTest extends ControllerTest
             function ($node, $i) {
                 if ($node->hasAttribute('action')) {
                     $action = $node->getAttribute('action');
-                    if (preg_match('#\/product\/product-family\/edit/[0-9]*$#', $action)) {
+                    if (preg_match('#\/enrich\/product-family\/edit/[0-9]*$#', $action)) {
                         return true;
                     }
                 }
@@ -151,7 +151,7 @@ class ProductFamilyControllerTest extends ControllerTest
         $this->assertEquals(self::FAMILY_CODE, $family->getCode());
 
         // assert with unknown product family id and authentication
-        $uri = '/product/product-family/edit/0';
+        $uri = '/enrich/product-family/edit/0';
         $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
@@ -164,7 +164,7 @@ class ProductFamilyControllerTest extends ControllerTest
     {
         // get product family entity
         $productFamily = $this->getRepository()->findOneBy(array());
-        $uri = '/product/product-family/remove/'. $productFamily->getId();
+        $uri = '/enrich/product-family/remove/'. $productFamily->getId();
 
         // assert without authentication
         $this->client->request('GET', $uri);

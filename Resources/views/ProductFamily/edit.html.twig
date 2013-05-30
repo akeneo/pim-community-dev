@@ -115,7 +115,19 @@
     </div>
 {% endblock %}
 
-{% block javascript %}
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PimUIBundle/Resources/public/js/jquery.multiselect.custom.js'
+        '@PimUIBundle/Resources/public/js/jquery.pimMultiselect.js'
+
+        filter='?yui_js'
+        output='js/pim.multiselect.js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
     <script type="text/javascript">
         $(function() {
             var activeTab = $('[href=' + location.hash + ']');

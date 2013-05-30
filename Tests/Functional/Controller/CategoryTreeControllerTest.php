@@ -58,30 +58,13 @@ class CategoryTreeControllerTest extends ControllerTest
     const CATEGORY_REMOVED_MSG = 'Category successfully removed';
 
     /**
-     * Test related action
-     */
-//     public function testIndex()
-//     {
-//         $uri = '/product/category-tree/index';
-
-//         // assert without authentication
-//         $this->client->request('GET', $uri);
-//         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
-
-//         // assert with authentication
-//         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
-//         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-//         $this->assertCount(1, $crawler->filter('table.table:contains("Tree")'));
-//     }
-
-    /**
      * Test create action for a tree
      *
      * @return null
      */
     public function testCreateTree()
     {
-        $uri = '/product/category-tree/create';
+        $uri = '/enrich/category-tree/create';
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -96,7 +79,7 @@ class CategoryTreeControllerTest extends ControllerTest
             function ($node, $i) {
                 if ($node->hasAttribute('action')) {
                     $action = $node->getAttribute('action');
-                    if (preg_match('#\/product\/category-tree\/create$#', $action)) {
+                    if (preg_match('#\/enrich\/category-tree\/create$#', $action)) {
                         return true;
                     }
                 }
@@ -130,7 +113,7 @@ class CategoryTreeControllerTest extends ControllerTest
     {
         $tree = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::TREE_CODE));
 
-        $uri = '/product/category-tree/create/'. $tree->getId();
+        $uri = '/enrich/category-tree/create/'. $tree->getId();
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -145,7 +128,7 @@ class CategoryTreeControllerTest extends ControllerTest
             function ($node, $i) {
                 if ($node->hasAttribute('action')) {
                     $action = $node->getAttribute('action');
-                    if (preg_match('#\/product\/category-tree\/create/[0-9]*#', $action)) {
+                    if (preg_match('#\/enrich\/category-tree\/create/[0-9]*#', $action)) {
                         return true;
                     }
                 }
@@ -185,7 +168,7 @@ class CategoryTreeControllerTest extends ControllerTest
     {
         // get tree
         $categoryTree = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::TREE_CODE));
-        $uri = '/product/category-tree/edit/'. $categoryTree->getId();
+        $uri = '/enrich/category-tree/edit/'. $categoryTree->getId();
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -200,7 +183,7 @@ class CategoryTreeControllerTest extends ControllerTest
             function ($node, $i) {
                 if ($node->hasAttribute('action')) {
                     $action = $node->getAttribute('action');
-                    if (preg_match('#\/product\/category-tree\/edit/[0-9]*$#', $action)) {
+                    if (preg_match('#\/enrich\/category-tree\/edit/[0-9]*$#', $action)) {
                         return true;
                     }
                 }
@@ -227,7 +210,7 @@ class CategoryTreeControllerTest extends ControllerTest
         $this->assertEquals(self::TREE_TITLE, $tree->getTitle());
 
         // assert with unknown tree id and authentication
-        $uri = '/product/category-tree/edit/0';
+        $uri = '/enrich/category-tree/edit/0';
         $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
@@ -243,7 +226,7 @@ class CategoryTreeControllerTest extends ControllerTest
     {
         // get node
         $categoryNode = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::NODE_CODE));
-        $uri = '/product/category-tree/edit/'. $categoryNode->getId();
+        $uri = '/enrich/category-tree/edit/'. $categoryNode->getId();
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -258,7 +241,7 @@ class CategoryTreeControllerTest extends ControllerTest
             function ($node, $i) {
                 if ($node->hasAttribute('action')) {
                     $action = $node->getAttribute('action');
-                    if (preg_match('#\/product\/category-tree\/edit/[0-9]*$#', $action)) {
+                    if (preg_match('#\/enrich\/category-tree\/edit/[0-9]*$#', $action)) {
                         return true;
                     }
                 }
@@ -295,7 +278,7 @@ class CategoryTreeControllerTest extends ControllerTest
     {
         // get tree entity
         $tree = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::TREE_EDITED_CODE));
-        $uri = '/product/category-tree/'. $tree->getId() .'/remove';
+        $uri = '/enrich/category-tree/'. $tree->getId() .'/remove';
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);

@@ -16,7 +16,7 @@ class ProductAttributeControllerTest extends ControllerTest
      */
     public function testIndex()
     {
-        $uri = '/product/product-attribute/index';
+        $uri = '/enrich/product-attribute/';
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -33,7 +33,7 @@ class ProductAttributeControllerTest extends ControllerTest
      */
     public function testCreate()
     {
-        $uri = '/product/product-attribute/create';
+        $uri = '/enrich/product-attribute/create';
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -51,7 +51,7 @@ class ProductAttributeControllerTest extends ControllerTest
     {
         // initialize authentication to call container and get product attribute entity
         $productAttribute = $this->getRepository()->findOneBy(array());
-        $uri = '/product/product-attribute/edit/'. $productAttribute->getId();
+        $uri = '/enrich/product-attribute/edit/'. $productAttribute->getId();
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -62,7 +62,7 @@ class ProductAttributeControllerTest extends ControllerTest
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         // assert with unknown product attribute id and authentication
-        $uri = '/product/product-attribute/edit/0';
+        $uri = '/enrich/product-attribute/edit/0';
         $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
@@ -74,7 +74,7 @@ class ProductAttributeControllerTest extends ControllerTest
     {
         // initialize authentication to call container and get product attribute entity
         $productAttribute = $this->getRepository()->findOneBy(array());
-        $uri = '/product/product-attribute/remove/'. $productAttribute->getId();
+        $uri = '/enrich/product-attribute/remove/'. $productAttribute->getId();
 
         // assert without authentication
         $this->client->request('GET', $uri);
