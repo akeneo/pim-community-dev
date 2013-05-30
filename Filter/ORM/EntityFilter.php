@@ -50,6 +50,9 @@ class EntityFilter extends ChoiceFilter
         $this->applyFilterToClause($queryBuilder, $expression);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDefaultOptions()
     {
         return array_merge(

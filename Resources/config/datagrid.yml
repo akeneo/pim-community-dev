@@ -1,7 +1,6 @@
 parameters:
     pim_product.productattribute_grid_manager_class:  Pim\Bundle\ProductBundle\Datagrid\AttributeDatagridManager
     pim_product.product_grid_manager_class:           Pim\Bundle\ProductBundle\Datagrid\ProductDatagridManager
-    oro_grid.datagrid.class:       Pim\Bundle\ProductBundle\Datagrid\ProductDatagrid
 
 services:
     # Product attribute grid manager
