@@ -51,7 +51,7 @@ class Category extends AbstractSegment implements Translatable
     /**
      * @var \Doctrine\Common\Collections\Collection $products
      *
-     * @ORM\ManyToMany(targetEntity="Product")
+     * @ORM\ManyToMany(targetEntity="Product", inversedBy="categories")
      * @ORM\JoinTable(
      *     name="pim_category_product",
      *     joinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="CASCADE")},
@@ -153,6 +153,16 @@ class Category extends AbstractSegment implements Translatable
         $this->products[] = $product;
 
         return $this;
+    }
+
+    /**
+     * Predicate to know if a category has product(s) linked
+     *
+     * @return boolean
+     */
+    public function hasProducts()
+    {
+        return $this->products->count() !== 0;
     }
 
     /**
