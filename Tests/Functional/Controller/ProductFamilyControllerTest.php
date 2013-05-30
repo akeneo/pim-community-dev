@@ -93,16 +93,6 @@ class ProductFamilyControllerTest extends ControllerTest
             'pim_product_family[name][label:default]' => self::FAMILY_LABEL,
             'pim_product_family[code]'                => self::FAMILY_CODE,
         );
-/*
-        $crawler = $this->client->submit($form, $values);
-
-echo $this->client->getResponse()->getContent();
-die ();
-
-        $this->assertFlashBagMessage($crawler, $message);
-
-        die();
-*/
 
         $this->submitFormAndAssertFlashbag($form, $values, self::FAMILY_CREATED_MSG);
 
