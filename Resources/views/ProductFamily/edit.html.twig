@@ -8,9 +8,14 @@
 
     <div class="form-row">
         <h3>
-            Family - {{ family }}
+            Family - {{ family.label }}
             <button type="submit" class="btn btn-primary pull-right">{{ ' Save'|trans }}</button>
-            <a href="#" class="btn pull-right">{{ 'Delete'|trans }}</a>
+
+            <a href="{{ path('pim_product_productfamily_remove', {'id': family.id}) }}"
+                class="btn pull-right" data-method="DELETE"
+                data-confirm="{{ 'Are you sure you want to remove the family %family%?'|trans({'%family%': family.label}) }}">
+                {{ 'Delete'|trans }}
+            </a>
         </h3>
     </div>
 
@@ -115,7 +120,19 @@
     </div>
 {% endblock %}
 
-{% block javascript %}
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PimUIBundle/Resources/public/js/jquery.multiselect.custom.js'
+        '@PimUIBundle/Resources/public/js/jquery.pimMultiselect.js'
+
+        filter='?yui_js'
+        output='js/pim.multiselect.js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
     <script type="text/javascript">
         $(function() {
             var activeTab = $('[href=' + location.hash + ']');

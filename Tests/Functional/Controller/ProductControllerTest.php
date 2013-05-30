@@ -34,7 +34,7 @@ class ProductControllerTest extends ControllerTest
      */
     public function testIndex()
     {
-        $uri = '/product/index';
+        $uri = '/enrich/product/';
 
         // assert without authentication
         $this->client->request('GET', $uri);

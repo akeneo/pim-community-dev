@@ -2,11 +2,11 @@
 namespace Pim\Bundle\ProductBundle\Controller;
 
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * AttributeGroup controller
@@ -25,14 +25,12 @@ class AttributeGroupController extends Controller
      *
      * @return multitype
      *
-     * @Route("/index")
+     * @Route("/")
      * @Template()
      */
     public function indexAction()
     {
-        $groups = $this->getAttributeGroupRepository()->findAllOrderedBySortOrder();
-
-        return array('groups' => $groups);
+        return $this->redirect($this->generateUrl('pim_product_attributegroup_create'));
     }
 
     /**
@@ -120,6 +118,7 @@ class AttributeGroupController extends Controller
      * @param AttributeGroup $group
      *
      * @Route("/remove/{id}", requirements={"id"="\d+"})
+     * @Method("DELETE")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
