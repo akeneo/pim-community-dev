@@ -61,7 +61,11 @@ $(tree_id).jstree({
         }, false, true);
     })
     .bind('select_node.jstree', function (event, data) {
-        // TODO : Call list content and backbone filter on datagrid
-        console.log('select node');
+        var node = $.jstree._focused().get_selected();
+        var nodeId = node.attr('id').replace('node_','');
+        
+        var datagrid = Oro.Registry.getElement('datagrid', 'products');
+        datagrid.filters.categories.value.value = nodeId;
+        datagrid.filters.categories.trigger('update');
     })
     ;
