@@ -77,6 +77,11 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
         $nodeJeans  = $this->createCategory('Jeans (default)', $nodeClothing, array($product3, $product4));
         $nodeShoes  = $this->createCategory('Shoes (default)', $nodeClothing, array($product1, $product2, $product3));
 
+        $nodeClothingEu  = $this->createCategory('Apparels & Shoes (eu sales)', $treeSales);
+        $nodeShirtsEu = $this->createCategory('Shirts (eu sales)', $nodeClothingEu, array($product5));
+        $nodeJeansEu  = $this->createCategory('Jeans (eu sales)', $nodeClothingEu, array($product3, $product4));
+        $nodeShoesEu  = $this->createCategory('Shoes (eu sales)', $nodeClothingEu, array($product1));
+
         // translate data in en_US
         $locale = $this->getReference('locale.en_US');
         $this->translate($treeCatalog, $locale, 'Master Catalog');
@@ -96,6 +101,11 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
         $this->translate($nodeShirts, $locale, 'Shirts');
         $this->translate($nodeJeans, $locale, 'Jeans');
         $this->translate($nodeShoes, $locale, 'Shoes');
+
+        $this->translate($nodeClothingEu, $locale, 'Apparels & Shoes in Europe Sales');
+        $this->translate($nodeShirtsEu, $locale, 'Shirts');
+        $this->translate($nodeJeansEu, $locale, 'Jeans');
+        $this->translate($nodeShoesEu, $locale, 'Shoes');
 
         $this->manager->flush();
 
@@ -118,6 +128,11 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
         $this->translate($nodeShirts, $locale, 'Chemises');
         $this->translate($nodeJeans, $locale, 'Jeans');
         $this->translate($nodeShoes, $locale, 'Chaussures');
+
+        $this->translate($nodeClothingEu, $locale, 'Apparels & Shoes in Europe Sales in fr');
+        $this->translate($nodeShirtsEu, $locale, 'Shirts in fr');
+        $this->translate($nodeJeansEu, $locale, 'Jeans in fr');
+        $this->translate($nodeShoesEu, $locale, 'Shoes in fr');
 
         $this->manager->flush();
     }
