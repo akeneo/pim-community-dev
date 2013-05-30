@@ -203,6 +203,6 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
      */
     public function getOrder()
     {
-        return 5;
+        return 50;
     }
 }

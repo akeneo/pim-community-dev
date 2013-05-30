@@ -39,7 +39,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 
     /**
      * Get product manager
-     * @return \Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
+     * @return \Pim\Bundle\ProductBundle\Manager\ProductManager
      */
     protected function getProductManager()
     {
@@ -212,6 +212,14 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 
             $this->persist($product);
 
+            if ($ind % 20 === 0) {
+                $family = $this->getReference('family.mug');
+                $product->setProductFamily($family);
+            } else if ($ind % 17 === 0) {
+                $family = $this->getReference('family.shirt');
+                $product->setProductFamily($family);
+            }
+
             if (($ind % $batchSize) == 0) {
                 $this->getProductManager()->getStorageManager()->flush();
             }
@@ -235,6 +243,6 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function getOrder()
     {
-        return 3;
+        return 40;
     }
 }

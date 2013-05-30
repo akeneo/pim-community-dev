@@ -33,7 +33,7 @@ class LoadProductFamilyData extends AbstractFixture implements OrderedFixtureInt
             $this->getReference('product-attribute.color')
         );
         $translations = array('default' => 'Mug (default)', 'en_US' => 'Mug', 'fr_FR' => 'Tasse');
-        $this->createProductFamily('mug', 'Mug', $attributes, $manager, $translations);
+        $family = $this->createProductFamily('mug', 'Mug', $attributes, $manager, $translations);
 
         $attributes = array(
             $this->getReference('product-attribute.name'),
@@ -47,31 +47,34 @@ class LoadProductFamilyData extends AbstractFixture implements OrderedFixtureInt
 
     /**
      * Create product family
-     * @param string        $name         Product family name
-     * @param string        $description  Product family description
+     * @param string        $code         Product family code
+     * @param string        $label        Product family name
      * @param array         $attributes   Product family attributes
      * @param ObjectManager $manager      EntityManager
-     * @param array         $translations label translation
+     * @param array         $translations Label translation
      *
      * @return \Pim\Bundle\ProductBundle\Entity\ProductFamily
      */
-    protected function createProductFamily($name, $description, $attributes, $manager, $translations)
+    protected function createProductFamily($code, $label, $attributes, $manager, $translations)
     {
         $family = new ProductFamily();
 
-        $family->setCode($name);
-        $family->setLabel($name);
+        $family->setCode($code);
+        $family->setLabel($label);
 
         foreach ($attributes as $attribute) {
             $family->addAttribute($attribute);
         }
 
-        foreach ($translations as $locale => $label) {
-            $this->createTranslation($family, $locale, 'label', $label);
+        foreach ($translations as $locale => $translation) {
+            $this->createTranslation($family, $locale, 'label', $translation);
         }
+
 
         $manager->persist($family);
         $manager->flush();
+
+        $this->setReference('family.'. $code, $family);
 
         return $family;
     }
@@ -103,6 +106,6 @@ class LoadProductFamilyData extends AbstractFixture implements OrderedFixtureInt
      */
     public function getOrder()
     {
-        return 6;
+        return 30;
     }
 }

@@ -160,6 +160,6 @@ class LoadExportProfileData extends AbstractFixture implements OrderedFixtureInt
      */
     public function getOrder()
     {
-        return 6;
+        return 10;
     }
 }
