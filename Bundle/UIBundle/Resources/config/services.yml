@@ -3,6 +3,7 @@ parameters:
     oro_ui.datetime.class:               Oro\Bundle\UIBundle\Form\Type\OroDateTimeType
     oro_ui.type.entity_identifier.class: Oro\Bundle\UIBundle\Form\Type\EntityIdentifierType
     oro_ui.twig.ceil.class:              Oro\Bundle\UIBundle\Twig\CeilExtension
+    oro_ui.twig.extension.class:         Oro\Bundle\UIBundle\Twig\UiExtension
 
 services:
     oro_ui.type.oro_date:
@@ -23,5 +24,11 @@ services:
 
     oro_ui.twig.ceil_extension:
         class: %oro_ui.twig.ceil.class%
+        tags:
+            - { name: twig.extension }
+
+    oro_ui.twig.ui_extension:
+        class: %oro_ui.twig.extension.class%
+        arguments: [%oro_ui.positions%]
         tags:
             - { name: twig.extension }
