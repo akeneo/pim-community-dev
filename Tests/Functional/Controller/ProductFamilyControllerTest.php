@@ -167,17 +167,13 @@ class ProductFamilyControllerTest extends ControllerTest
         $uri = '/enrich/product-family/remove/'. $productFamily->getId();
 
         // assert without authentication
-        $this->client->request('GET', $uri);
+        $this->client->request('DELETE', $uri);
         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
         // assert with authentication
-        $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
+        $crawler = $this->client->request('DELETE', $uri, array(), array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertFlashBagMessage($crawler, self::FAMILY_REMOVED_MSG);
-
-        // assert with unknown product family id (last removed) and authentication
-        $this->client->request('GET', $uri, array(), array(), $this->server);
-        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 
     /**

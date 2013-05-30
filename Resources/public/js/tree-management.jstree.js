@@ -1,3 +1,33 @@
+
+var select_node_id = null;
+
+// Get the current node id from URL
+edit_url_pattern = /edit\/[0-9]+/;
+
+if (edit_url_pattern.test(window.location.pathname)) {
+    url_parts = window.location.pathname.split('/');
+    select_node_id = url_parts[url_parts.length-1];
+}
+
+// Case of return from save: the node id will be positionned on the node
+// request parameter
+node_param_pattern = /node=[0-9]+/;
+if (node_param_pattern.test(window.location.search)) {
+    search_parts = window.location.search.replace('?','').split('&');
+
+    node_param_pattern_strict = /^node=[0-9]+$/;
+    i = 0;
+    found_node = false;
+
+    while ( (i < search_parts.length) && !found_node) {
+        if (node_param_pattern_strict.test(search_parts[i])) {
+            param_node_parts = search_parts[i].split('=');
+            select_node_id = param_node_parts[param_node_parts.length - 1];
+            found_node = true;
+        }
+    }
+}
+
 $(tree_id).jstree({
     "core" : {
         "animation" : 200
@@ -7,7 +37,8 @@ $(tree_id).jstree({
     ],
     "tree_selector" : {
         "ajax" : {
-            "url" : urlListTree
+            "url" : urlListTree,
+            "parameters" : {"select_node_id" : window.select_node_id}
         },
         "auto_open_root" : true,
         "node_label_field" : "title",
@@ -32,7 +63,8 @@ $(tree_id).jstree({
                     id = -1;
                 }
                 return {
-                    "id" : id
+                    "id" : id,
+                    "select_node_id" : window.select_node_id
                 };
             }
         }
@@ -52,8 +84,10 @@ $(tree_id).jstree({
         "select_multiple_modifier" : false
     }
 })
-    .bind('trees_loaded.jstree', function(event, tree_select_id) {
-        $('#'+tree_select_id).select2();
+    .bind('loaded.jstree', function(event, data) {
+        if (event.namespace == 'jstree') {
+            data.inst.get_tree_select().select2();
+        }
     })
     .bind("remove.jstree", function (event, data) {
         data.rslt.obj.each(function () {

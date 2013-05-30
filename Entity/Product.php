@@ -44,6 +44,7 @@ class Product extends AbstractEntityFlexible
      * @var productFamily
      *
      * @ORM\ManyToOne(targetEntity="ProductFamily")
+     * @ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $productFamily;
 
@@ -58,6 +59,13 @@ class Product extends AbstractEntityFlexible
      * )
      */
     protected $locales;
+
+    /**
+     * @var ArrayCollection $categories
+     *
+     * @ORM\ManyToMany(targetEntity="Category", mappedBy="products")
+     */
+    protected $categories;
 
     /**
      * Redefine constructor
@@ -281,5 +289,30 @@ class Product extends AbstractEntityFlexible
         }
 
         return $this->sku;
+    }
+
+    /**
+     * Get the product categories
+     *
+     * @return ArrayCollection
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    /**
+     * Get a string with categories linked to product
+     *
+     * @return string
+     */
+    public function getCategoryTitlesAsString()
+    {
+        $titles = array();
+        foreach ($this->getCategories() as $category) {
+            $titles[] = $category->getTitle();
+        }
+
+        return implode(', ', $titles);
     }
 }

@@ -42,7 +42,9 @@ class CategoryTreeController extends Controller
     }
 
     /**
-     * List category trees
+     * List category trees. The select_node_id request parameter
+     * allow to send back the tree where the node belongs with a selected
+     * attribute
      *
      * @Route("/list-tree.{_format}", requirements={"_format"="json"})
      * @Template()
@@ -51,17 +53,31 @@ class CategoryTreeController extends Controller
      */
     public function listTreeAction()
     {
+        $selectNodeId = $this->getRequest()->get('select_node_id');
+        $selectNode = null;
+
+        if ($selectNodeId != null) {
+            try {
+                $selectNode = $this->findCategory($selectNodeId);
+            } catch (NotFoundHttpException $e) {
+                $selectNode = null;
+            }
+        }
+
         $trees = $this->getTreeManager()->getTrees();
 
-        $treesResponse = CategoryHelper::treesResponse($trees);
+        $treesResponse = CategoryHelper::treesResponse($trees, $selectNode);
 
         return array('trees' => $treesResponse);
     }
 
     /**
-     * List children of a category
+     * List children of a category.
+     * The parent category is provided via its id ('id' request parameter).
+     * The node category to select is given by 'select_node_id' request parameter.
      *
-     * @param Category $category
+     * If the node to select is not a direct child of the parent category, the tree
+     * is expanded until the selected node is found amongs the children
      *
      * @Route("/children.{_format}", requirements={"_format"="json"})
      * @Template()
@@ -70,15 +86,35 @@ class CategoryTreeController extends Controller
      */
     public function childrenAction()
     {
+        $selectNodeId = $this->getRequest()->get('select_node_id');
+        $selectNode = null;
+
+        if ($selectNodeId != null) {
+            try {
+                $selectNode = $this->findCategory($selectNodeId);
+            } catch (NotFoundHttpException $e) {
+                $selectNode = null;
+            }
+        }
+
         try {
             $category = $this->findCategory($this->getRequest()->get('id'));
         } catch (NotFoundHttpException $e) {
             return array('data' => array());
         }
 
-        $categories = $this->getTreeManager()->getChildren($category->getId());
+        if (($selectNode != null)
+            && (!$this->getTreeManager()->isAncestor($category, $selectNode))) {
+            $selectNode = null;
+        }
 
-        $data = CategoryHelper::childrenResponse($categories);
+        if ($selectNode != null) {
+            $categories = $this->getTreeManager()->getChildren($category->getId(), $selectNode->getId());
+            $data = CategoryHelper::childrenTreeResponse($categories, $selectNode);
+        } else {
+            $categories = $this->getTreeManager()->getChildren($category->getId());
+            $data = CategoryHelper::childrenResponse($categories);
+        }
 
         return array('data' => $data);
     }
@@ -202,7 +238,12 @@ class CategoryTreeController extends Controller
                 $nodeType = $category->getParent() ? 'Category' : 'Tree';
                 $this->get('session')->getFlashBag()->add('success', $nodeType. ' successfully saved');
 
-                return $this->redirect($this->generateUrl('pim_product_categorytree_index'));
+                return $this->redirect(
+                    $this->generateUrl(
+                        'pim_product_categorytree_index',
+                        array('node' => $category->getId())
+                    )
+                );
             }
         }
 
@@ -248,10 +289,22 @@ class CategoryTreeController extends Controller
     /**
      * Get category tree manager
      *
-     * @return \Oro\Bundle\SegmentationTreeBundle\Manager\SegmentManager
+     * @return \Pim\Bundle\ProductBundle\Manager\CategoryManager
      */
     protected function getTreeManager()
     {
         return $this->container->get('pim_product.category_manager');
+    }
+
+    /**
+     * Get category path
+     *
+     * @param Category $category
+     *
+     * @return multitype:integer
+     */
+    protected function getCategoryPath(Category $category)
+    {
+        return $this->getTreeManager()->getEntityRepository()->getPath($category);
     }
 }

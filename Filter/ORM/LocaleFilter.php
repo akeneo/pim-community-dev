@@ -17,6 +17,15 @@ class LocaleFilter extends ChoiceFilter
 {
 
     /**
+     * Override apply method to disable filtering apply in query
+     *
+     * {@inheritdoc}
+     */
+    public function apply($queryBuilder, $value)
+    {
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getDefaultOptions()

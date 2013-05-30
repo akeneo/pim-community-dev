@@ -121,6 +121,7 @@ class ProductFamilyController extends Controller
      * @param ProductFamily $entity
      *
      * @Route("/remove/{id}", requirements={"id"="\d+"})
+     * @Method("DELETE")
      *
      * @return array
      */
