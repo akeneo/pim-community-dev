@@ -19,8 +19,16 @@ body {
   color: @textColor;
 }
 
-#main {
+#main, .container-fluid {
   padding: 0;
+}
+
+h1 {
+  padding: 0 20px;
+}
+
+table.grid {
+  margin-bottom: 0;
 }
 
 header,
@@ -318,15 +326,16 @@ form .table-condensed input.span4 {
   height: auto;
 }
 
-.resizable-sidebar-handle {
-  background-color: #F5F5F5;
-  :hover {
-    background-color: #D0D0D0;
+.has-sidebar {
+  .sidebar-separator {
+    background-color: #f3f3f3;
+    &.collapsed:hover {
+      background-color: #D0D0D0;
+    }
   }
-}
-
-.resizable-content h3 {
-  margin-left: 10px;
+  .sidebar-controls {
+    background-color: #f7f7f7;
+  }
 }
 
 #sortable_options th {
