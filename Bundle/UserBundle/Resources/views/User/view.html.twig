@@ -1,5 +1,6 @@
 {% extends bap.layout is defined ? bap.layout : 'OroUserBundle::layout.html.twig' %}
 {% import 'OroUserBundle::macros.html.twig' as macros %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 {% set format = get_user_value('oro_user.name_format') %}
 
 {% oro_title_set({params : {"%username%": user.fullname(format)|default('N/A') }}) %}
@@ -149,14 +150,7 @@
                     <div class="row-fluid">
                         <div class="form-horizontal">
                             {% for value in user|getAttributes() %}
-                            <div class="control-group">
-                                <label class="control-label">{{ value.attribute.code|title }}</label>
-                                <div class="controls">
-                                    <div class="clearfix-oro">
-                                        <p class="control-label">{{ value.__toString }}</p>
-                                    </div>
-                                </div>
-                            </div>
+                                {{ UI.flexibleAttributeRow(value) }}
                             {% endfor %}
                         </div>
                     </div>
