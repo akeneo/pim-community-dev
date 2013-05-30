@@ -31,7 +31,7 @@ class CategoryTreeController extends Controller
     /**
      * Index action
      *
-     * @Route("/index")
+     * @Route("/")
      * @Template()
      *
      * @return array

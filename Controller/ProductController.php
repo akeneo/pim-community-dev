@@ -25,6 +25,8 @@ use Pim\Bundle\ProductBundle\Entity\ProductPrice;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
+ * @Route("/product")
+ *
  */
 class ProductController extends Controller
 {
@@ -33,7 +35,7 @@ class ProductController extends Controller
      *
      * @param Request $request the request
      *
-     * @Route("/index.{_format}",
+     * @Route("/.{_format}",
      *      requirements={"_format"="html|json"},
      *      defaults={"_format" = "html"}
      * )
@@ -115,7 +117,7 @@ class ProductController extends Controller
      * @param integer $id the product id
      *
      * @Route(
-     *     "{id}/edit",
+     *     "/{id}/edit",
      *     requirements={"id"="\d+"}
      * )
      * @Template

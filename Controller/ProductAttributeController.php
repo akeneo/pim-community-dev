@@ -45,7 +45,7 @@ class ProductAttributeController extends Controller
      * List product attributes
      * @param Request $request
      *
-     * @Route("/index.{_format}",
+     * @Route("/.{_format}",
      *      name="pim_product_productattribute_index",
      *      requirements={"_format"="html|json"},
      *      defaults={"_format" = "html"}

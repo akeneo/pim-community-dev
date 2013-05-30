@@ -24,16 +24,14 @@ class ProductFamilyController extends Controller
     /**
      * Index action
      *
-     * @Route("/index")
+     * @Route("/")
      * @Template()
      *
      * @return array
      */
     public function indexAction()
     {
-        $families = $this->getProductFamilyRepository()->findAllOrderedByName();
-
-        return array('families' => $families);
+        return $this->redirect($this->generateUrl('pim_product_productfamily_create'));
     }
 
     /**
@@ -44,7 +42,7 @@ class ProductFamilyController extends Controller
      *
      * @return array
      */
-    public function newAction()
+    public function createAction()
     {
         $family   = new ProductFamily;
         $form     = $this->createForm(new ProductFamilyType(), $family);

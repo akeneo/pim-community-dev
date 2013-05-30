@@ -25,14 +25,12 @@ class AttributeGroupController extends Controller
      *
      * @return multitype
      *
-     * @Route("/index")
+     * @Route("/")
      * @Template()
      */
     public function indexAction()
     {
-        $groups = $this->getAttributeGroupRepository()->findAllOrderedBySortOrder();
-
-        return array('groups' => $groups);
+        return $this->redirect($this->generateUrl('pim_product_attributegroup_create'));
     }
 
     /**
