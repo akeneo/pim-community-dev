@@ -27,7 +27,7 @@
     {# Render flexible attributes #}
     {% import 'OroUIBundle::macros.html.twig' as UI %}
     {% for value in address|getAttributes() %}
-        UI.flexibleAttributeRow(value)
+        {{ UI.flexibleAttributeRow(value) }}
     {% endfor %}
 {% endmacro %}
 
