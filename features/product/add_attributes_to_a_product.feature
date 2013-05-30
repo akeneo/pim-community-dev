@@ -4,7 +4,7 @@ Feature: Add attributes to a product
   I need to be able to add attributes to a product
 
   Background:
-    Given the "Car" product
+    Given a "Car" product available in english
     And the following attribute group:
       | name    |
       | General |

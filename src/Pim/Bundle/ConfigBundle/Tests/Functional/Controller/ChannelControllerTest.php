@@ -43,7 +43,7 @@ class ChannelControllerTest extends ControllerTest
      */
     public function testIndex()
     {
-        $uri = '/configuration/channel/index';
+        $uri = '/configuration/channel/';
 
         // assert without authentication
         $crawler = $this->client->request('GET', $uri);
@@ -56,6 +56,8 @@ class ChannelControllerTest extends ControllerTest
 
     /**
      * Test related action
+     *
+     * @return null
      */
     public function testCreate()
     {
@@ -99,6 +101,8 @@ class ChannelControllerTest extends ControllerTest
 
     /**
      * Test related action
+     *
+     * @return null
      */
     public function testEdit()
     {

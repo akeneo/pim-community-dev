@@ -42,7 +42,7 @@ class ChannelManagerTest extends WebTestCase
     }
 
     /**
-     * Test related class
+     * Test related method
      */
     public function testGetChannels()
     {
@@ -52,6 +52,21 @@ class ChannelManagerTest extends WebTestCase
         $this->assertCount(2, $channels);
         foreach ($channels as $channel) {
             $this->assertContains($channel->getCode(), $expectedChannels);
+        }
+    }
+
+    /**
+     * Test related method
+     */
+    public function testGetChannelChoices()
+    {
+        $channelChoices = $this->channelManager->getChannelChoices();
+        $expectedChannelChoices = array('ecommerce' => 'E-Commerce', 'mobile' => 'Mobile');
+
+        $this->assertCount(2, $channelChoices);
+        foreach ($channelChoices as $code => $name) {
+            $this->assertContains($name, $expectedChannelChoices);
+            $this->assertArrayHasKey($code, $expectedChannelChoices);
         }
     }
 }

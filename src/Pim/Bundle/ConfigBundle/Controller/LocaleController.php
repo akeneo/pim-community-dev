@@ -1,15 +1,13 @@
 <?php
+
 namespace Pim\Bundle\ConfigBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
-
 use Symfony\Component\HttpFoundation\Request;
-
-use Pim\Bundle\ConfigBundle\Entity\Locale;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Pim\Bundle\ConfigBundle\Entity\Locale;
 
 /**
  * Locale controller for configuration
@@ -22,14 +20,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
  */
 class LocaleController extends Controller
 {
-
     /**
      * List locales
      *
      * @param Request $request
      *
      * @Route(
-     *     "/index.{_format}",
+     *     "/.{_format}",
      *     requirements={"_format"="html|json"},
      *     defaults={"_format" = "html"}
      * )
