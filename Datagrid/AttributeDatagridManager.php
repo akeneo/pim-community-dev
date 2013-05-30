@@ -215,7 +215,7 @@ class AttributeDatagridManager extends DatagridManager
                 'field_name'  => 'attributeType',
                 'filter_type' => FilterInterface::TYPE_CHOICE,
                 'required'    => false,
-                'sortable'    => true,
+                'sortable'    => false,
                 'filterable'  => true,
                 'show_filter' => true,
                 'field_options' => array('choices' => $this->getAttributeTypeFieldOptions()),
