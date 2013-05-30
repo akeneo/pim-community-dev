@@ -147,6 +147,9 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field = $this->createScopeField();
         $fieldsCollection->add($field);
 
+        $field = $this->createCategoryField();
+        $fieldsCollection->add($field);
+
         $field = $this->createFamilyField();
         $fieldsCollection->add($field);
     }
@@ -175,11 +178,51 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'field_name'  => 'productFamily',
                 'filter_type' => FilterInterface::TYPE_CHOICE,
                 'required'    => false,
-                'sortable'    => false,
+                'sortable'    => true,
                 'filterable'  => true,
                 'show_filter' => true,
                 'field_options' => array(
                     'choices' => $choices
+                ),
+            )
+        );
+
+        return $field;
+    }
+
+    /**
+     * Create a category field
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createCategoryField()
+    {
+        // get categories
+        $em = $this->flexibleManager->getStorageManager();
+        $categories = $em->getRepository('PimProductBundle:Category')->findAll();
+        $choices = array();
+        foreach ($categories as $category) {
+            if ($category->hasProducts()) {
+                $choices[$category->getId()] = $category->getTitle();
+            }
+        }
+        asort($choices);
+
+        $field = new FieldDescription();
+        $field->setName('categories');
+        $field->setProperty(new FixedProperty('categories', 'categoryTitlesAsString'));
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
+                'label'       => 'Categories',
+                'field_name'  => 'categories',
+                'filter_type' => FilterInterface::TYPE_ENTITY,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+                'field_options' => array(
+                    'choices' => $choices,
                 ),
             )
         );
