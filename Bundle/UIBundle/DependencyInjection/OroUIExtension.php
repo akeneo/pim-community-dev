@@ -41,7 +41,7 @@ class OroUIExtension extends Extension
         foreach ($bundles as $bundle) {
             $reflection = new \ReflectionClass($bundle);
             if (is_file($file = dirname($reflection->getFilename()).'/Resources/config/positions.yml')) {
-                $positions += Yaml::parse(realpath($file));
+                $positions = array_merge_recursive($positions, Yaml::parse(realpath($file)));
             }
         }
 
