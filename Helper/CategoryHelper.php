@@ -1,6 +1,10 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Helper;
 
+use \RecursiveArrayIterator;
+
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Pim\Bundle\ProductBundle\Entity\Category;
 
 /**
@@ -14,21 +18,36 @@ use Pim\Bundle\ProductBundle\Entity\Category;
 class CategoryHelper
 {
     /**
-     * Format in array category trees
+     * Format in array category trees. The tree where is the select category
+     * will be selected (attribute selected at "true" in the response)
      *
-     * @param ArrayCollection $trees
+     * @param array    $trees
+     * @param Category $selectCategory
      *
      * @return array
      * @static
      */
-    public static function treesResponse($trees)
+    public static function treesResponse($trees, Category $selectCategory = null)
     {
         $return = array();
+        $selectedTreeId = -1;
 
-        foreach ($trees as $tree) {
+        if ($selectCategory != null) {
+            $selectedTreeId = $selectCategory->getRoot();
+        }
+
+        foreach ($trees as $i => $tree) {
+            $selectedTree = false;
+
+            if (($selectedTreeId == -1) && ($i == 0)
+                || ($tree->getId() == $selectedTreeId) ) {
+                $selectedTree = true;
+            }
+
             $return[] = array(
                 'id' => $tree->getId(),
-                'title'  => $tree->getTitle()
+                'title'  => $tree->getTitle(),
+                'selected' => $selectedTree ? "true" : "false"
             );
         }
 
@@ -36,28 +55,91 @@ class CategoryHelper
     }
 
     /**
-     * Format in array content category
-     *
-     * @param ArrayCollection $categories
+     * Format categories list into simple array with data formatted
+     * for JStree json_data plugin.
+     * 
+     * @param array $categories
      *
      * @return array
      * @static
      */
     public static function childrenResponse($categories)
     {
-        $return = array();
+        $result = array();
 
-        foreach ($categories as $category) {
-            $return[] = array(
+        foreach($categories as $category) {
+            $result[] = array(
                 'attr' => array(
                     'id' => 'node_'. $category->getId()
                 ),
                 'data'  => $category->getTitle(),
-                'state' => static::getState($category)
+                'state' => static::getState($category),
             );
-        }
+        } 
 
+        return $result;
+    }
+
+    /**
+     * Format categories tree into multi-dimensional arrays with attributes
+     * needed by JStree json_data plugin.
+     * 
+     * Optionnaly can generate a selected state for the provided selectCategory
+     *
+     * @param array $categories
+     * @param Category $selectCategory
+     *
+     * @return array
+     * @static
+     */
+    public static function childrenTreeResponse($categories, Category $selectCategory = null)
+    {
+        $return = static::formatCategory($categories, $selectCategory);
         return $return;
+    }
+
+    /**
+     * Format a node with its children to the format expected by jstree
+     *
+     * @see http://www.jstree.com/documentation/json_data
+     *
+     * @param array $categories
+     * @param Category $selectCategory
+     *
+     * @return array
+     * @static
+     */
+    protected static function formatCategory(array $categories, Category $selectCategory = null)
+    {
+        $result = array();
+        
+        foreach($categories as $category) {
+            $state = 'leaf';
+
+            if (count($category['__children']) > 0) {
+                $state = 'open';
+            } else {
+                if ($category['item']->hasChildren()) {
+                    $state = 'closed';
+                }
+            }
+
+            if ($category['item']->getId() == $selectCategory->getId()) {
+                $state .= ' toselect';
+            }
+
+            $result[] = array(
+                'attr' => array(
+                    'id' => 'node_'. $category['item']->getId()
+                ),
+                'data'  => $category['item']->getTitle(),
+                'state' => $state,
+                'children' => static::formatCategory($category['__children'], $selectCategory)
+            );
+        } 
+
+        return $result;
+        
     }
 
     /**
