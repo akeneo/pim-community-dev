@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Twig;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\FlexibleEntityBundle\Twig\FilterAttributesExtension;
 
 class FilterAttributesExtensionTest extends \PHPUnit_Framework_TestCase
@@ -55,7 +56,7 @@ class FilterAttributesExtensionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
 
         $result = $this->extension->getAttributes($this->entityMock, 'test attribute');
-        $this->assertInstanceOf('\PHPUnit_Framework_MockObject_MockObject',  $result);
+        $this->assertEquals($this->valuesMock, $result);
 
         $result = $this->extension->getAttributes($this->entityMock, array('test'), true);
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $result);
@@ -76,7 +77,7 @@ class FilterAttributesExtensionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(false));
 
         $result = $this->extension->getAttributes($this->entityMock, 'test attribute', true);
-        $this->assertInstanceOf('\PHPUnit_Framework_MockObject_MockObject', $result);
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $result);
         $this->assertEquals($this->valuesMock, $result);
     }
 
@@ -95,5 +96,81 @@ class FilterAttributesExtensionTest extends \PHPUnit_Framework_TestCase
 
         $result = $this->extension->getAttributes($this->entityMock, array(), true);
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $result);
+    }
+
+    public function testFilterScenario()
+    {
+        $valueMock1 = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface');
+        $attributeMock1 = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute');
+        $valueMock2 = clone $valueMock1;
+        $attributeMock2 = clone $attributeMock1;
+
+        $valueMock1->expects($this->once())
+            ->method('getAttribute')
+            ->will($this->returnValue($attributeMock1));
+
+        $valueMock2->expects($this->once())
+            ->method('getAttribute')
+            ->will($this->returnValue($attributeMock2));
+
+        $attributeMock1->expects($this->once())
+            ->method('getCode')
+            ->will($this->returnValue('codeNeeded'));
+
+        $attributeMock2->expects($this->once())
+            ->method('getCode')
+            ->will($this->returnValue('codeNotNeeded'));
+
+        $collection = new ArrayCollection(
+            array(
+                $valueMock1, $valueMock2
+            )
+        );
+
+        $this->entityMock->expects($this->once())
+            ->method('getValues')
+            ->will($this->returnValue($collection));
+
+        $result = $this->extension->getAttributes($this->entityMock, array('codeNeeded'));
+        $this->assertCount(1, $result);
+        $this->assertEquals($valueMock1, $result->first());
+    }
+
+    public function testFilterSkipScenario()
+    {
+        $valueMock1 = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface');
+        $attributeMock1 = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute');
+        $valueMock2 = clone $valueMock1;
+        $attributeMock2 = clone $attributeMock1;
+
+        $valueMock1->expects($this->once())
+            ->method('getAttribute')
+            ->will($this->returnValue($attributeMock1));
+
+        $valueMock2->expects($this->once())
+            ->method('getAttribute')
+            ->will($this->returnValue($attributeMock2));
+
+        $attributeMock1->expects($this->once())
+            ->method('getCode')
+            ->will($this->returnValue('codeNeeded'));
+
+        $attributeMock2->expects($this->once())
+            ->method('getCode')
+            ->will($this->returnValue('codeNotNeeded'));
+
+        $collection = new ArrayCollection(
+            array(
+                $valueMock1, $valueMock2
+            )
+        );
+
+        $this->entityMock->expects($this->once())
+            ->method('getValues')
+            ->will($this->returnValue($collection));
+
+        $result = $this->extension->getAttributes($this->entityMock, array('codeNotNeeded'), true);
+        $this->assertCount(1, $result);
+        $this->assertEquals($valueMock1, $result->first());
     }
 }

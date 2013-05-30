@@ -25,11 +25,9 @@
     {% endfor %}
 
     {# Render flexible attributes #}
-    {% if (address.values is defined and renderFlexibleAttributes) %}
-        {% for attribute in address.values %}
-            {{ block('addressFlexibleAttribute') }}
-        {% endfor %}
-    {% endif %}
+    {% for attribute in address|getAttributes() %}
+        {{ block('addressFlexibleAttribute') }}
+    {% endfor %}
 {% endmacro %}
 
 {% block addressStaticAttribute %}

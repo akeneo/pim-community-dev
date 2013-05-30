@@ -50,7 +50,7 @@ class HasAddressExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Twig_Filter_Method', $filters['hasAddress']);
     }
 
-    public function testHasAddressTrueScenario()
+    public function testHasAddressPositiveScenario()
     {
         $this->valueMock->expects($this->once())
             ->method('getData')
@@ -64,7 +64,7 @@ class HasAddressExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->extension->hasAddress($this->entityMock, 'address'));
     }
 
-    public function testHasAddressFalseScenario()
+    public function testHasAddressNegativeScenario()
     {
         $this->valueMock->expects($this->once())
             ->method('getData')
@@ -78,7 +78,7 @@ class HasAddressExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->extension->hasAddress($this->entityMock, 'address'));
     }
 
-    public function testHasAddressTrueScenarioWithoutCode()
+    public function testHasAddressPositiveScenarioWithoutCode()
     {
         $this->entityMock->expects($this->once())
             ->method('getValues')
@@ -94,7 +94,7 @@ class HasAddressExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->extension->hasAddress($this->entityMock));
     }
 
-    public function testHasAddressFalseScenarioWithoutCode()
+    public function testHasAddressNegativeScenarioWithoutCode()
     {
         $this->entityMock->expects($this->once())
             ->method('getValues')
