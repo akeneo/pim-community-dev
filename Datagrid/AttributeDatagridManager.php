@@ -11,6 +11,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
+use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 /**
  * Product attribute grid manager
@@ -220,6 +221,8 @@ class AttributeDatagridManager extends DatagridManager
                 'field_options' => array('choices' => $this->getAttributeTypeFieldOptions()),
             )
         );
+        $templateProperty = new TwigTemplateProperty($field, 'PimProductBundle:ProductAttribute:_field-type.html.twig');
+        $field->setProperty($templateProperty);
 
         return $field;
     }
