@@ -10,3 +10,9 @@ services:
         arguments: ["@translator"]
         tags:
             - { name: oro_grid.filter.type, alias: pim_grid_orm_scope }
+
+    pim_grid.orm.filter.type.entity:
+        class:     Pim\Bundle\ProductBundle\Filter\ORM\EntityFilter
+        arguments: ["@translator"]
+        tags:
+            - { name: oro_grid.filter.type, alias: pim_grid_orm_entity }
