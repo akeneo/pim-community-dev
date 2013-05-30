@@ -11,6 +11,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
+use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 /**
  * Currency datagrid manager
@@ -69,7 +70,7 @@ class CurrencyDatagridManager extends DatagridManager
         $field->setName('activated');
         $field->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
+                'type'        => FieldDescriptionInterface::TYPE_HTML,
                 'label'       => $this->translator->trans('Activated'),
                 'field_name'  => 'activated',
                 'filter_type' => FilterInterface::TYPE_BOOLEAN,
@@ -78,6 +79,9 @@ class CurrencyDatagridManager extends DatagridManager
                 'filterable'  => true,
                 'show_filter' => true,
             )
+        );
+        $field->setProperty(
+            new TwigTemplateProperty($field, 'PimConfigBundle:Currency:_field_activated.html.twig')
         );
         $fieldsCollection->add($field);
     }

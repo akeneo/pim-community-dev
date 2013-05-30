@@ -174,6 +174,50 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^the following currencies:$/
+     */
+    public function theFollowingCurrencies(TableNode $table)
+    {
+        $em = $this->getEntityManager();
+        foreach ($table->getHash() as $data) {
+            $currency = new \Pim\Bundle\ConfigBundle\Entity\Currency;
+            $currency->setCode($data['code']);
+            $currency->setActivated($data['activated'] === 'yes');
+
+            $em->persist($currency);
+        }
+        $em->flush();
+    }
+
+    /**
+     * @Then /^I should see activated currencies (.*)$/
+     */
+    public function iShouldSeeActivatedCurrencies($currencies)
+    {
+        foreach ($this->listToArray($currencies) as $currency) {
+            if (!$this->getPage('Currency index')->findActivatedCurrency($currency)) {
+                throw $this->createExpectationException(sprintf(
+                    'Activated currency "%s" is not displayed', $currency
+                ));
+            }
+        }
+    }
+
+    /**
+     * @Given /^I should see deactivated currency (.*)$/
+     */
+    public function iShouldSeeDeactivatedCurrencies($currencies)
+    {
+        foreach ($this->listToArray($currencies) as $currency) {
+            if (!$this->getPage('Currency index')->findDeactivatedCurrency($currency)) {
+                throw $this->createExpectationException(sprintf(
+                    'Activated currency "%s" is not displayed', $currency
+                ));
+            }
+        }
+    }
+
+    /**
      * @When /^I switch the locale to "([^"]*)"$/
      */
     public function iSwitchTheLocaleTo($locale)
@@ -236,6 +280,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->openPage('Attribute', array(
             'id' => $attribute->getId(),
         ));
+    }
+
+    /**
+     * @Given /^I am on the currencies page$/
+     */
+    public function iAmOnTheCurrenciesPage()
+    {
+        $this->openPage('Currency index');
+        $this->getSession()->wait(5000, '$("table.grid tbody tr").length > 0');
     }
 
     /**
