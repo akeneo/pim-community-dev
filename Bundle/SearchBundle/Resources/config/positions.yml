@@ -1,0 +1,3 @@
+top_block:
+    top_search_block:
+        action: OroSearchBundle:Search:searchBar
