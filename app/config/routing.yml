@@ -5,7 +5,7 @@ pim_default:
 pim_product:
     resource: "@PimProductBundle/Controller/"
     type:     annotation
-    prefix:   /product/
+    prefix:   /enrich/
 
 pim_config:
     resource: "@PimConfigBundle/Controller/"
@@ -25,8 +25,8 @@ oro_ui:
     resource: "@OroUIBundle/Resources/config/routing.yml"
     prefix:   /ui
 
-oro_user:
-    resource: "@OroUserBundle/Resources/config/routing.yml"
+oro_user_bundle:
+    resource: routing/user.yml
 
 oro_search:
     resource: "@OroSearchBundle/Resources/config/routing.yml"

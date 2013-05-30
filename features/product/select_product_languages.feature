@@ -4,16 +4,16 @@ Feature: Select product activated languages
   I need to be able to select product activated languages
 
   Background:
-    Given a "Car" product available in french and german
+    Given a "Car" product available in english and german
     And I am logged in as "admin"
     And I am on the "Car" product page
 
   Scenario: Successfully display activated languages for a product
     Given I visit the "Localisation" tab
-    Then I should see that the product is available in french and german
+    Then I should see that the product is available in english and german
 
   Scenario: Successfully select available languages for a product
     Given I visit the "Localisation" tab
-    When I add english language
+    When I add the french language
     And I save the product
     Then I should see that the product is available in french, english and german

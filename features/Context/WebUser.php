@@ -133,6 +133,25 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
 
         $this->getEntityManager()->flush();
+
+        return $product;
+    }
+
+    /**
+     * @Given /^the following product:$/
+     */
+    public function theFollowingProduct(TableNode $table)
+    {
+        $pm = $this->getProductManager();
+        foreach ($table->getHash() as $data) {
+            $data = array_merge(array(
+                'languages' => 'english',
+            ), $data);
+
+            $product = $this->aProductAvailableIn($data['sku'], $data['languages']);
+            $product->setProductFamily($this->getProductFamily($data['family']));
+            $pm->save($product);
+        }
     }
 
     /**
@@ -328,19 +347,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^the following product:$/
-     */
-    public function theFollowingProduct(TableNode $table)
-    {
-        $pm = $this->getProductManager();
-        foreach ($table->getHash() as $data) {
-            $product = $this->createProduct($data['sku']);
-            $product->setProductFamily($this->getProductFamily($data['family']));
-            $pm->save($product);
-        }
-    }
-
-    /**
      * @Given /^the following attributes:$/
      */
     public function theFollowingAttributes(TableNode $table)
@@ -381,9 +387,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @When /^I add (.*) languages?$/
+     * @When /^I add the (.*) languages?$/
      */
-    public function iAddLanguages($languages)
+    public function iAddTheLanguages($languages)
     {
         $languages = $this->listToArray($languages);
         foreach ($languages as $language) {
@@ -564,9 +570,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @When /^I am on family page$/
+     * @When /^I am on the families page$/
      */
-    public function iAmOnFamilyPage()
+    public function iAmOnTheFamiliesPage()
     {
         $this->openPage('Family index');
     }
@@ -577,6 +583,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheFamilyCreationPage()
     {
         $this->openPage('Family creation');
+    }
+
+    /**
+     * @Then /^I should be on the family creation page$/
+     */
+    public function iShouldBeOnTheFamilyCreationPage()
+    {
+        $this->assertSession()->addressEquals(sprintf(
+            '%s%s', rtrim($this->getMinkParameter('base_url'), '/'), $this->getPage('Family creation')->getUri()
+        ));
     }
 
     /**
