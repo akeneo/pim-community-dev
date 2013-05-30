@@ -6,8 +6,8 @@
 
     {% set currentGroup = group is defined ? group : null %}
 
-    <div class="row-fluid has-resizable-sidebar">
-        <div class="resizable-sidebar sidebar-list">
+    <div class="row-fluid has-sidebar">
+        <div class="sidebar-list">
             <form id="pim_product_attributegroup_sort" action="{{ path('pim_product_attributegroup_sort') }}" method="POST">
             <ul id="entities-sortable">
                 {% for group in groups %}
@@ -25,7 +25,7 @@
             </ul>
             </form>
         </div>
-        <div id="form-tab" class="resizable-content">
+        <div id="form-tab">
             {% block groupTab %}
             <h3>{{ title }}</h3>
             {% endblock groupTab %}
