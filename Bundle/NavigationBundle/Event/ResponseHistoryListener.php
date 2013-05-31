@@ -69,15 +69,9 @@ class ResponseHistoryListener
         if (!$this->matchRequest($response, $request)) {
             return false;
         }
-        //Remove hash navigation param from url
-        $url = preg_replace(
-            '/[\?&](' . ResponseHashnavListener::HASH_NAV_PARAM . '=1)/',
-            '',
-            $request->getRequestUri()
-        );
 
         $postArray = array(
-            'url'      => $url,
+            'url'      => $request->getRequestUri(),
             'user'     => $this->user,
         );
 

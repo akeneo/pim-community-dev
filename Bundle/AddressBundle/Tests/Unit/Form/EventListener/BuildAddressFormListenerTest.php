@@ -79,7 +79,7 @@ class BuildAddressFormListenerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $countryMock = $this->getMock('Oro\Bundle\AddressBundle\Entity\Country');
+        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')->disableOriginalConstructor()->getMock();
         $countryMock->expects($this->once())
             ->method('hasRegions')
             ->will($this->returnValue(true));
@@ -142,7 +142,7 @@ class BuildAddressFormListenerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $countryMock = $this->getMock('Oro\Bundle\AddressBundle\Entity\Country');
+        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')->disableOriginalConstructor()->getMock();
         $countryMock->expects($this->once())
             ->method('hasRegions')
             ->will($this->returnValue(true));
@@ -190,7 +190,7 @@ class BuildAddressFormListenerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $countryMock = $this->getMock('Oro\Bundle\AddressBundle\Entity\Country');
+        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')->disableOriginalConstructor()->getMock();
         $countryMock->expects($this->once())
             ->method('hasRegions')
             ->will($this->returnValue(true));

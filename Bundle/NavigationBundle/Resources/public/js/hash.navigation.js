@@ -95,7 +95,7 @@ Oro.Navigation = Backbone.Router.extend({
         this.encodedStateData = encodedStateData;
         this.url = page;
         if (!this.skipAjaxCall) {
-            this.loadPage(this.url);
+            this.loadPage();
         }
         this.skipAjaxCall = false;
     },
@@ -154,7 +154,7 @@ Oro.Navigation = Backbone.Router.extend({
             var i;
             if ((i = this.contentCacheUrls.indexOf(this.removePageStateParam(this.url))) !== -1) {
                 if (this.contentCache[i]) {
-                    this.handleResponse(this.contentCache[i], {skipMessages: true, skipMenuTabs: true, skipTriggerComplete: true});
+                    this.handleResponse(this.contentCache[i], {fromCache: true});
                     this.clearPageCache(i);
                     //this.reorderCache(i);
                     //this.afterRequest();
@@ -163,7 +163,6 @@ Oro.Navigation = Backbone.Router.extend({
             var pageUrl = this.baseUrl + this.url;
             $.ajax({
                 url: pageUrl,
-                data: {'is_hash_ajax' : 1}, //added to prevent browser caching of raw requests without hash nav
                 headers: { 'x-oro-hash-navigation': true },
                 beforeSend: function( xhr ) {
                     //remove standard ajax header because we already have a custom header sent
@@ -190,7 +189,7 @@ Oro.Navigation = Backbone.Router.extend({
      * @param data
      */
     savePageToCache: function(data) {
-        if (this.contentCacheUrls.length == this.maxCachedPages) {
+        if (this.contentCacheUrls.length === this.maxCachedPages) {
             this.clearPageCache(0);
         }
         var j = this.contentCacheUrls.indexOf(this.removePageStateParam(this.url));
@@ -213,7 +212,7 @@ Oro.Navigation = Backbone.Router.extend({
             this.contentCacheUrls[i - 1] = this.contentCacheUrls[i];
         }
         this.contentCacheUrls[this.contentCacheUrls.length - 1] = tempUrl;
-        for (var i = pos + 1; i < this.contentCache.length; i++) {
+        for (i = pos + 1; i < this.contentCache.length; i++) {
             this.contentCache[i - 1] = this.contentCache[i];
         }
         this.contentCache[this.contentCacheUrls.length - 1] = tempContent;
@@ -258,7 +257,7 @@ Oro.Navigation = Backbone.Router.extend({
         Oro.Events.bind(
             "grid_load:complete",
             function () {
-                this.processClicks('.grid-container ' + this.selectors.links)
+                this.processClicks($('.grid-container').find(this.selectors.links));
             },
             this
         );
@@ -290,7 +289,7 @@ Oro.Navigation = Backbone.Router.extend({
         Oro.Events.bind(
             "top_search_request:complete",
             function () {
-                this.processClicks(this.selectors.searchDropdown + ' ' + this.selectors.links);
+                this.processClicks($(this.selectors.searchDropdown).find(this.selectors.links));
             },
             this
         );
@@ -350,7 +349,7 @@ Oro.Navigation = Backbone.Router.extend({
      */
     handleResponse: function (data, options) {
         if (_.isUndefined(options)) {
-            var options = {};
+            options = {};
         }
         try {
             /**
@@ -359,7 +358,7 @@ Oro.Navigation = Backbone.Router.extend({
             document.getElementById('container').innerHTML = '';
             var redirectUrl = $(data).filter('#redirect').text();
             if (redirectUrl) {
-                urlParts = redirectUrl.split('url=');
+                var urlParts = redirectUrl.split('url=');
                 if (urlParts[1]) {
                     redirectUrl = urlParts[1];
                 }
@@ -377,7 +376,7 @@ Oro.Navigation = Backbone.Router.extend({
                 var js = '';
                 $(data).filter('#head').find('script:not([src])').each(function () {
                     js = js + this.outerHTML;
-                })
+                });
                 $(this.selectors.container).append(js);
                 /**
                  * Setting page title
@@ -391,25 +390,26 @@ Oro.Navigation = Backbone.Router.extend({
                     titleSerialized = $.parseJSON(titleSerialized);
                     $('.top-action-box .btn').filter('.minimize-button, .favorite-button').data('title', titleSerialized);
                 }
-                this.processClicks(this.selectors.menu + ' ' + this.selectors.links);
-                this.processClicks(this.selectors.container + ' ' + this.selectors.links);
-                this.processAnchors(this.selectors.container + ' ' + this.selectors.scrollLinks);
-                if (!options.skipMenuTabs) {
+                if (!options.fromCache) {
+                    this.processClicks($(this.selectors.menu).find(this.selectors.links));
+                    this.processClicks($(this.selectors.container).find(this.selectors.links));
+                    this.processAnchors($(this.selectors.container).find(this.selectors.scrollLinks));
                     this.updateMenuTabs(data);
-                }
-                this.processForms(this.selectors.container + ' ' + this.selectors.forms);
-                if (!options.skipMessages) {
+                    this.processForms($(this.selectors.container).find(this.selectors.forms));
                     this.updateMessages(data);
+                    this.processPinButton(data);
                 }
                 this.hideActiveDropdowns();
-                this.processPinButton(data);
+
             }
         }
         catch (err) {
-            console.log(err);
+            if (!_.isUndefined(console)) {
+                console.error(err);
+            }
             this.showError('', "Sorry, page was not loaded correctly");
         }
-        if (!options.skipTriggerComplete) {
+        if (!options.fromCache) {
             this.triggerCompleteEvent();
         }
     },
@@ -456,7 +456,8 @@ Oro.Navigation = Backbone.Router.extend({
      * @param data
      */
     processPinButton: function(data) {
-        if ($(data).filter(this.selectors.pinButton).html().indexOf("true") != - 1) {
+        var pinBar  = $(data).filter(this.selectors.pinButton).html();
+        if (pinBar && (pinBar.indexOf("true") !== - 1)) {
             $(this.selectors.pinButton).show();
         } else {
             $(this.selectors.pinButton).hide();
@@ -474,8 +475,8 @@ Oro.Navigation = Backbone.Router.extend({
         /**
          * Processing links for history and most viewed tabs
          */
-        this.processClicks(this.selectors.historyTab + ' ' + this.selectors.links + ', ' +
-            this.selectors.mostViewedTab + ' ' + this.selectors.links);
+        this.processClicks($(this.selectors.historyTab).find(this.selectors.links));
+        this.processClicks($(this.selectors.mostViewedTab).find(this.selectors.links));
     },
 
     /**
@@ -497,7 +498,7 @@ Oro.Navigation = Backbone.Router.extend({
      */
     processClicks: function (selector) {
         $(selector).not('.no-hash').on('click', _.bind(function (e) {
-            if (e.shiftKey || e.ctrlKey || e.metaKey || e.which == 2) {
+            if (e.shiftKey || e.ctrlKey || e.metaKey || e.which === 2) {
                 return true;
             }
             var target = e.currentTarget;
@@ -515,18 +516,36 @@ Oro.Navigation = Backbone.Router.extend({
         }, this));
     },
 
+    /**
+     * Manually process anchors to prevent changing urls hash. If anchor doesn't have click events attached assume it
+     * a standard anchor and emulate browser anchor scroll behaviour
+     *
+     * @param selector
+     */
     processAnchors: function(selector) {
-        $(selector).on('click', _.bind(function (e) {
-            var target = e.currentTarget;
-            if ($(target).is('a')) {
-                e.preventDefault();
-                var href = $(target).attr('href');
-                if (/^#\w/.test(href) && $(this.selectors.scrollSpy).length) {
-                    $(this.selectors.scrollSpy).scrollTop($(href).position().top + $(this.selectors.scrollSpy).scrollTop());
-                    $(target).blur();
+        $(selector).each(function() {
+            var href = $(this).attr('href');
+            var $href = /^#\w/.test(href) && $(href);
+            if ($href) {
+                var events = $._data($(this).get(0), 'events');
+                if (_.isUndefined(events) || !events.click) {
+                    $(this).on('click', function (e) {
+                        e.preventDefault();
+                        //finding parent div with scroll
+                        var scrollDiv = $href.parents().filter(function() {
+                            return $(this).get(0).scrollHeight > $(this).innerHeight();
+                        });
+                        if (!scrollDiv) {
+                            scrollDiv = $(window);
+                        } else {
+                            scrollDiv = scrollDiv.eq(0);
+                        }
+                        scrollDiv.scrollTop($href.position().top + scrollDiv.scrollTop());
+                        $(this).blur();
+                    });
                 }
             }
-        }, this))
+        });
     },
 
     /**
@@ -539,8 +558,7 @@ Oro.Navigation = Backbone.Router.extend({
             var target = e.currentTarget;
             e.preventDefault();
 
-            var url = '';
-            url = $(target).attr('action');
+            var url = $(target).attr('action');
             this.method = $(target).attr('method') ? $(target).attr('method') : "get";
 
             if (url) {
@@ -548,7 +566,7 @@ Oro.Navigation = Backbone.Router.extend({
                 Oro.Events.trigger("hash_navigation_request:form-start", target);
                 if (Oro.Registry.getElement('form_validate')) {
                     var data = $(target).serialize();
-                    if (this.method == 'get') {
+                    if (this.method === 'get') {
                         if (data) {
                             url += '?' + data;
                         }
@@ -572,7 +590,7 @@ Oro.Navigation = Backbone.Router.extend({
                 }
             }
             return false;
-        }, this))
+        }, this));
     },
 
     /**
@@ -587,7 +605,7 @@ Oro.Navigation = Backbone.Router.extend({
              */
             var urlParts = Backbone.history.fragment.split('|g/');
             url = urlParts[0].replace('url=', '');
-            if (urlParts[1] && (!_.isUndefined(includeGrid) && includeGrid == true)) {
+            if (urlParts[1] && (!_.isUndefined(includeGrid) && includeGrid === true)) {
                 url += '#g/' + urlParts[1];
             }
             if (!url) {
@@ -600,12 +618,12 @@ Oro.Navigation = Backbone.Router.extend({
     /**
      * Check if url is a 3d party link
      *
-     * @todo Implement check
      * @param url
      * @return {Boolean}
      */
     checkThirdPartyLink: function(url) {
-        return false;
+        var external = RegExp('^(https?:)?//(?!' + location.host + ')');
+        return (url.indexOf('http') !== -1) && external.test(url);
     },
 
     /**
@@ -616,14 +634,14 @@ Oro.Navigation = Backbone.Router.extend({
      */
     setLocation: function (url, options) {
         if (_.isUndefined(options)) {
-            var options = {};
+            options = {};
         }
         if (this.enabled && !this.checkThirdPartyLink(url)) {
             if (options.clearCache) {
                 this.clearPageCache();
             }
             url = url.replace(this.baseUrl, '').replace(/^(#\!?|\.)/, '').replace('#g/', '|g/');
-            if (url == this.url) {
+            if (url === this.url) {
                 this.loadPage();
             } else {
                 window.location.hash = '#url=' + url;

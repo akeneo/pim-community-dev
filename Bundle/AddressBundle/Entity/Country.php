@@ -3,8 +3,10 @@
 namespace Oro\Bundle\AddressBundle\Entity;
 
 use JMS\Serializer\Annotation\Exclude;
+
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
 /**
@@ -22,7 +24,7 @@ class Country
      * @ORM\Column(name="iso2_code", type="string", length=2)
      * @Soap\ComplexType("string", nillable=true)
      */
-    private $iso2Code;
+    protected $iso2Code;
 
     /**
      * @var string
@@ -30,7 +32,7 @@ class Country
      * @ORM\Column(name="iso3_code", type="string", length=3)
      * @Soap\ComplexType("string", nillable=true)
      */
-    private $iso3Code;
+    protected $iso3Code;
 
     /**
      * @var string
@@ -38,7 +40,7 @@ class Country
      * @ORM\Column(name="name", type="string", length=100)
      * @Soap\ComplexType("string", nillable=true)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var ArrayCollection
@@ -46,18 +48,20 @@ class Country
      * @ORM\OneToMany(targetEntity="Region", mappedBy="country", cascade={"ALL"}, fetch="EXTRA_LAZY")
      * @Exclude
      */
-    private $regions;
+    protected $regions;
 
     /**
-     * @param null|string $name
-     * @param null|string $iso2Code
-     * @param null|string $iso3Code
+     * @param null|string $name     [optional] Country name
+     * @param null|string $iso2Code [optional] ISO2 country code
+     * @param null|string $iso3Code [optional] ISO3 country code
      */
     public function __construct($name = null, $iso2Code = null, $iso3Code = null)
     {
-        $this->setName($name);
-        $this->setIso2Code($iso2Code);
-        $this->setIso3Code($iso3Code);
+        $this
+            ->setName($name)
+            ->setIso2Code($iso2Code)
+            ->setIso3Code($iso3Code)
+            ->setRegions(new ArrayCollection());
     }
 
     /**
@@ -93,20 +97,20 @@ class Country
     /**
      * Set iso2_code
      *
-     * @param string $iso2Code
+     * @param  string  $iso2Code
      * @return Country
      */
     public function setIso2Code($iso2Code)
     {
         $this->iso2Code = $iso2Code;
-    
+
         return $this;
     }
 
     /**
      * Get iso2_code
      *
-     * @return string 
+     * @return string
      */
     public function getIso2Code()
     {
@@ -116,20 +120,20 @@ class Country
     /**
      * Set iso3_code
      *
-     * @param string $iso3Code
+     * @param  string  $iso3Code
      * @return Country
      */
     public function setIso3Code($iso3Code)
     {
         $this->iso3Code = $iso3Code;
-    
+
         return $this;
     }
 
     /**
      * Get iso3_code
      *
-     * @return string 
+     * @return string
      */
     public function getIso3Code()
     {
@@ -139,20 +143,20 @@ class Country
     /**
      * Set country name
      *
-     * @param string $name
+     * @param  string  $name
      * @return Country
      */
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get country name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {

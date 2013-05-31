@@ -30,7 +30,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSync()
     {
-        $countryMock = $this->getMock('Oro\Bundle\AddressBundle\Entity\Country');
+        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')->disableOriginalConstructor()->getMock();
 
         $this->reader
             ->expects($this->exactly(2))
@@ -60,7 +60,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testArraySync()
     {
-        $countryMock = $this->getMock('Oro\Bundle\AddressBundle\Entity\Country');
+        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')->disableOriginalConstructor()->getMock();
         $data = array($countryMock);
 
         $this->writer

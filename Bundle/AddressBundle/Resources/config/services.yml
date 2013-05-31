@@ -31,6 +31,8 @@ parameters:
 
     oro_address.attribute.address.class: Oro\Bundle\AddressBundle\AttributeType\AddressType
 
+    oro_address.twig.hasAddress.extension.class: Oro\Bundle\AddressBundle\Twig\HasAddressExtension
+
 services:
     oro_address.address.provider:
         class: %oro_address.provider.address.class%
@@ -183,3 +185,8 @@ services:
             - "oro_address"
         tags:
             - { name: oro_flexibleentity.attributetype, alias: oro_address }
+
+    oro_address.twig.hasAddress.extension:
+        class: %oro_address.twig.hasAddress.extension.class%
+        tags:
+            - { name: twig.extension }

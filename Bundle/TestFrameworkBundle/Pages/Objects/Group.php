@@ -50,7 +50,7 @@ class Group extends Page implements Entity
 
     public function close()
     {
-        $this->byXPath("//button[@class ='ui-dialog-titlebar-close']")->click();
+        //$this->byXPath("//button[@class ='ui-dialog-titlebar-close']")->click();
         //support return to groups page only
         return new Groups($this->test, false);
     }

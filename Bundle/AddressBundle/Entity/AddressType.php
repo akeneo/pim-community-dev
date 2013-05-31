@@ -41,7 +41,7 @@ class AddressType
     /**
      * Set route
      *
-     * @param string $type
+     * @param  string      $type
      * @return AddressType
      */
     public function setType($type)

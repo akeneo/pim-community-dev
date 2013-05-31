@@ -33,7 +33,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     public function testToString()
     {
         $obj = new Address();
-        $country = $this->getMock('Oro\Bundle\AddressBundle\Entity\Country');
+        $country = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')->disableOriginalConstructor()->getMock();
         $country->expects($this->once())
             ->method('__toString')
             ->will($this->returnValue('Ukraine'));
@@ -61,7 +61,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
      */
     public function provider()
     {
-        $countryMock = $this->getMock('Oro\Bundle\AddressBundle\Entity\Country');
+        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')->disableOriginalConstructor()->getMock();
         $regionMock = $this->getMock('Oro\Bundle\AddressBundle\Entity\Region');
         return array(
             array('id', 1),
