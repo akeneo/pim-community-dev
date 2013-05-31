@@ -90,14 +90,14 @@
                     {% if family.attributes|length > 0 %}
                         {% set attributeGroup = family.attributes.first.group %}
                         <tr class="group">
-                            <td colspan="2"><i class="icon-expand"></i> {{ attributeGroup ? attributeGroup.name : 'Other'|trans }}</td>
+                            <td colspan="2"><i class="icon-collapse"></i> {{ attributeGroup ? attributeGroup.name : 'Other'|trans }}</td>
                         </tr>
                         {% for attribute in family.attributes %}
                             {% if attribute.group != attributeGroup %}
                             </tbody>
                             <tbody>
                                 <tr class="group">
-                                    <td colspan="2"><i class="icon-expand"></i> {{ attribute.group ? attribute.group.name : 'Other'|trans }}</td>
+                                    <td colspan="2"><i class="icon-collapse"></i> {{ attribute.group ? attribute.group.name : 'Other'|trans }}</td>
                                 </tr>
                             {% endif %}
                             <tr>
