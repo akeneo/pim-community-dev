@@ -50,9 +50,9 @@
                         </div>
                         <div class="clearfix">
                             <ul class="inline">
-                                <li>{{ 'Created'|trans }}: {{ user.createdAt ? macros.time(user.createdAt) : 'N/A' }}</li>
-                                <li>{{ 'Updated'|trans }}: {{ user.updatedAt ? macros.time(user.updatedAt) : 'N/A' }}</li>
-                                <li>{{ 'Last logged in'|trans }}: {{ user.lastLogin ? macros.time(user.lastLogin) : 'N/A' }}</li>
+                                <li>{{ 'Created'|trans }}: {{ user.createdAt ? UI.time(user.createdAt) : 'N/A' }}</li>
+                                <li>{{ 'Updated'|trans }}: {{ user.updatedAt ? UI.time(user.updatedAt) : 'N/A' }}</li>
+                                <li>{{ 'Last logged in'|trans }}: {{ user.lastLogin ? UI.time(user.lastLogin) : 'N/A' }}</li>
                                 <li>{{ 'Login count'|trans }}: {{ user.loginCount|default(0) }}</li>
                             </ul>
                         </div>
