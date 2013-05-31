@@ -4,7 +4,8 @@
     var urlListTree = "{{ path('pim_product_categorytree_listtree', { '_format': 'json' }) }}";
     var urlChildren = "{{ path('pim_product_categorytree_children', { '_format': 'json' }) }}";
     var urlRemove   = "{{ path('pim_product_categorytree_remove', { 'id': 0 }) }}";
-    var urlRemove = urlRemove.replace(0, '#ID#');
+    var urlRemove   = urlRemove.replace(0, '#ID#');
+    var urlIndex    = "{{ path('pim_product_categorytree_index') }}";
     
     // define buttons actions
     $(".tree-toolbar button").click(function () {
