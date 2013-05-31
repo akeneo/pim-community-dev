@@ -1,0 +1,3 @@
+oro_form_bundle:
+    resource: "@OroFormBundle/Controller"
+    type: annotation

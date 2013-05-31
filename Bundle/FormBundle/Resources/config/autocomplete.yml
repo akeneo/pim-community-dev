@@ -1,0 +1,28 @@
+parameters:
+    oro_form.autocomplete.doctrine.entity_search_factory.class:        Oro\Bundle\FormBundle\EntityAutocomplete\Doctrine\EntitySearchFactory
+    oro_form.autocomplete.doctrine.query_builder_search_factory.class: Oro\Bundle\FormBundle\EntityAutocomplete\Doctrine\QueryBuilderSearchFactory
+    oro_form.autocomplete.service_search_factory.class:                Oro\Bundle\FormBundle\EntityAutocomplete\ServiceSearchFactory
+    oro_form.autocomplete.search_registry.class:                       Oro\Bundle\FormBundle\EntityAutocomplete\SearchRegistry
+
+services:
+    oro_form.autocomplete.doctrine.entity_search_factory:
+        class: %oro_form.autocomplete.doctrine.entity_search_factory.class%
+        tags:
+            - { name: oro_form.autocomplete.search_factory, alias: doctrine_entity }
+        arguments: ["@doctrine"]
+
+    oro_form.autocomplete.doctrine.query_builder_search_factory:
+        class: %oro_form.autocomplete.doctrine.query_builder_search_factory.class%
+        tags:
+            - { name: oro_form.autocomplete.search_factory, alias: doctrine_query_builder }
+        arguments: ["@service_container"]
+
+    oro_form.autocomplete.service_search_factory:
+        class: %oro_form.autocomplete.service_search_factory.class%
+        tags:
+            - { name: oro_form.autocomplete.search_factory, alias: service }
+        arguments: ["@service_container"]
+
+    oro_form.autocomplete.search_registry:
+        class: %oro_form.autocomplete.search_registry.class%
+        arguments: [%oro_form.autocomplete.config%, []]
