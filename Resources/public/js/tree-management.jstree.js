@@ -1,10 +1,18 @@
 
 var select_node_id = null;
 
-// Get the current node id from URL
+// Get the current node id from URL when in edit form
 edit_url_pattern = /edit\/[0-9]+/;
 
 if (edit_url_pattern.test(window.location.pathname)) {
+    url_parts = window.location.pathname.split('/');
+    select_node_id = url_parts[url_parts.length-1];
+}
+
+// Get the current node id from URL when in create form
+create_url_pattern = /create\/[0-9]+/;
+
+if (create_url_pattern.test(window.location.pathname)) {
     url_parts = window.location.pathname.split('/');
     select_node_id = url_parts[url_parts.length-1];
 }
