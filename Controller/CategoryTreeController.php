@@ -274,7 +274,16 @@ class CategoryTreeController extends Controller
             $this->getTreeManager()->remove($category);
             $this->getTreeManager()->getStorageManager()->flush();
         } else {
-            return new JsonResponse('They are products in this category, but they will not be deleted', 500);
+            $errorMessage = 'They are products in this category, but they will not be deleted';
+            if ($this->getRequest()->isXmlHttpRequest()) {
+                return new JsonResponse($errorMessage, 400);
+            } else {
+                $this->get('session')->getFlashBag()->add('error', $errorMessage);
+
+                return $this->redirect(
+                    $this->generateUrl('pim_product_categorytree_index', array('node' => $category->getId()))
+                );
+            }
         }
 
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -282,7 +291,9 @@ class CategoryTreeController extends Controller
         } else {
             $this->get('session')->getFlashBag()->add('success', 'Category successfully removed');
 
-            return $this->redirect($this->generateUrl('pim_product_categorytree_index'));
+            return $this->redirect(
+                $this->generateUrl('pim_product_categorytree_index', array('node' => $category->getParent()->getId()))
+            );
         }
     }
 
