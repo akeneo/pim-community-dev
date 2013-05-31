@@ -70,7 +70,7 @@
                 $field.find('iframe.wysihtml5-sandbox, textarea').width(opts.wysihtml5.width);
                 $label.height(opts.wysihtml5.height);
             } else {
-                $label.height($field.height() - 10);
+                $label.height($field.children().first().height() - 10);
             }
 
             var $controls = $field.find('.controls').first();
