@@ -55,6 +55,11 @@ class CategoryTreeControllerTest extends ControllerTest
     /**
      * @staticvar string
      */
+    const TREE_SAVED_MSG = 'Tree successfully saved';
+
+    /**
+     * @staticvar string
+     */
     const CATEGORY_REMOVED_MSG = 'Category successfully removed';
 
     /**
@@ -75,7 +80,7 @@ class CategoryTreeControllerTest extends ControllerTest
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         // assert tree form well works
-        $form = $crawler->filter('form')->reduce(
+        $crawler = $crawler->filter('form')->reduce(
             function ($node, $i) {
                 if ($node->hasAttribute('action')) {
                     $action = $node->getAttribute('action');
@@ -86,14 +91,18 @@ class CategoryTreeControllerTest extends ControllerTest
 
                 return false;
             }
-        )->first()->form();
+        )->first();
+
+        // assert fields count
+        $this->assertCount(1, $crawler->filter('div > input'));
+        $form = $crawler->form();
 
         $values = array(
             'pim_category[code]'                 => self::TREE_CODE,
             'pim_category[title][title:default]' => self::TREE_TITLE
         );
 
-        $this->submitFormAndAssertFlashbag($form, $values, self::CATEGORY_SAVED_MSG);
+        $this->submitFormAndAssertFlashbag($form, $values, self::TREE_SAVED_MSG);
 
         // assert entity well inserted
         $categoryTree = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::TREE_CODE));
@@ -201,7 +210,7 @@ class CategoryTreeControllerTest extends ControllerTest
             'pim_category[title][title:default]' => self::TREE_TITLE
         );
 
-        $this->submitFormAndAssertFlashbag($form, $values, self::CATEGORY_SAVED_MSG);
+        $this->submitFormAndAssertFlashbag($form, $values, self::TREE_SAVED_MSG);
 
         // assert entity well edited
         $tree = $this->getTreeManager()->getEntityRepository()->findOneBy(array('code' => self::TREE_EDITED_CODE));

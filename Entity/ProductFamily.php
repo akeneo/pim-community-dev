@@ -106,7 +106,7 @@ class ProductFamily implements Translatable
      */
     public function __toString()
     {
-        return $this->label;
+        return ($this->label !== null) ? $this->label : $this->code;
     }
 
     /**
