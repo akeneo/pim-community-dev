@@ -63,7 +63,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      */
     public function loadAttributes()
     {
-        $this->assertHasRequiredAttributes(array('company', 'salary','gender'));
+        $this->assertHasRequiredAttributes(array('company', 'gender'));
 
         if (!$this->findAttribute('website')) {
             $websiteAttribute = $this->createAttribute('oro_flexibleentity_url', 'website');
@@ -165,7 +165,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
                 $lastName,
                 $middleName,
                 $birthday,
-                $salary,
                 $company,
                 $website,
                 $gender,
@@ -203,19 +202,17 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      *
      * @return User
      */
-    private function createUser($username, $email, $firstName, $lastName, $middleName, $birthday, $salary, $company, $website, $gender, array $hobbies, $lastVisit, $locale, $scope) {
+    private function createUser($username, $email, $firstName, $lastName, $middleName, $birthday, $company, $website, $gender, array $hobbies, $lastVisit, $locale, $scope) {
         /** @var $user User */
         $user = $this->userManager->createFlexible();
 
         $user->setEmail($email);
         $user->setUsername($username);
         $user->setFirstname($firstName);
-        //$user->setMiddlename($middleName);
         $user->setLastname($lastName);
         $user->setBirthday($birthday);
 
         $this->setFlexibleAttributeValue($user, 'company', $company);
-        $this->setFlexibleAttributeValue($user, 'salary', $salary);
         $this->setFlexibleAttributeValueOption($user, 'gender', $gender);
         $this->setFlexibleAttributeValue($user, 'website', $website);
         $this->addFlexibleAttributeValueOptions($user, 'hobby', $hobbies);

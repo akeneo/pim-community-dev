@@ -37,6 +37,7 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
+        return true;
         /**
          * @var Oro\Bundle\UserBundle\Entity\UserManager
          */
