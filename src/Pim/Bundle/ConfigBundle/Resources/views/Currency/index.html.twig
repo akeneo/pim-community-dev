@@ -4,7 +4,7 @@
 
 {% block head_script %}
     {{ parent() }}
-    
+
     {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#currency-grid'} %}
     {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
 {% endblock %}
@@ -13,11 +13,7 @@
 <div class="container-fluid">
     {% block content %}
     <div class="usser-row">
-        <h1>{{ title }}
-            <a class="btn btn-primary pull-right" 
-                href="{{ path('pim_config_currency_create') }}">{{ 'New currency'|trans }}</a>
-        </h1>
-    
+        <h1>{{ title }}</h1> 
         <div id="currency-grid"></div>
     </div>
     {% endblock %}

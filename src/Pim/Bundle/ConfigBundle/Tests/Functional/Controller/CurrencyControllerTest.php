@@ -29,45 +29,6 @@ class CurrencyControllerTest extends ControllerTest
     }
 
     /**
-     * Test related action
-     */
-    public function testCreate()
-    {
-        $uri = '/configuration/currency/create';
-
-        // assert without authentication
-        $crawler = $this->client->request('GET', $uri);
-        $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
-
-        // assert with authentication
-        $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-    }
-
-    /**
-     * Test related action
-     */
-    public function testEdit()
-    {
-        // initialize authentication to call container and get currency entity
-        $currency = $this->getRepository()->findOneBy(array());
-        $uri = '/configuration/currency/edit/'. $currency->getId();
-
-        // assert without authentication
-        $crawler = $this->client->request('GET', $uri);
-        $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
-
-        // assert with authentication
-        $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-
-        // assert with unknown currency id
-        $uri = '/configuration/currency/edit/0';
-        $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
-        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
-    }
-
-    /**
      * Get tested entity repository
      *
      * @return \Doctrine\Common\Persistence\ObjectRepository

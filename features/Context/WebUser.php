@@ -66,6 +66,22 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @BeforeScenario
+     */
+    public function resetAcl()
+    {
+        $acl = new \Oro\Bundle\UserBundle\Entity\Acl;
+        $acl->setId('root');
+        $acl->setName('root');
+        $acl->setDescription('root');
+        $acl->addAccessRole($this->getRoleOrCreate(User::ROLE_DEFAULT));
+
+        $em = $this->getEntityManager();
+        $em->persist($acl);
+        $em->flush();
+    }
+
+    /**
      * @param string $name
      *
      * @return Page
@@ -193,6 +209,74 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^the following currencies:$/
+     */
+    public function theFollowingCurrencies(TableNode $table)
+    {
+        $em = $this->getEntityManager();
+        foreach ($table->getHash() as $data) {
+            $currency = new \Pim\Bundle\ConfigBundle\Entity\Currency;
+            $currency->setCode($data['code']);
+            $currency->setActivated($data['activated'] === 'yes');
+
+            $em->persist($currency);
+        }
+        $em->flush();
+    }
+
+    /**
+     * @Then /^I should see activated currency (.*)$/
+     * @Then /^I should see activated currencies (.*)$/
+     */
+    public function iShouldSeeActivatedCurrencies($currencies)
+    {
+        foreach ($this->listToArray($currencies) as $currency) {
+            if (!$this->getPage('Currency index')->findActivatedCurrency($currency)) {
+                throw $this->createExpectationException(sprintf(
+                    'Currency "%s" is not activated.', $currency
+                ));
+            }
+        }
+    }
+
+    /**
+     * @Given /^I should see deactivated currency (.*)$/
+     * @Given /^I should see deactivated currencies (.*)$/
+     */
+    public function iShouldSeeDeactivatedCurrencies($currencies)
+    {
+        foreach ($this->listToArray($currencies) as $currency) {
+            if (!$this->getPage('Currency index')->findDeactivatedCurrency($currency)) {
+                throw $this->createExpectationException(sprintf(
+                    'Currency "%s" is not activated.', $currency
+                ));
+            }
+        }
+    }
+
+    /**
+     * @When /^I activate the (.*) currency$/
+     */
+    public function iActivateTheCurrency($currencies)
+    {
+        $this->getPage('Currency index')->activateCurrencies(
+            $this->listToArray($currencies)
+        );
+        $this->getSession()->wait(5000, '$("table.grid tbody tr").length > 0');
+    }
+
+    /**
+     * @When /^I deactivate the (.*) currency$/
+     */
+    public function iDeaactivateTheCurrency($currencies)
+    {
+        $this->getPage('Currency index')->deactivateCurrencies(
+            $this->listToArray($currencies)
+        );
+        $this->getSession()->wait(5000, '$("table.grid tbody tr").length > 0');
+    }
+
+    /**
      * @When /^I switch the locale to "([^"]*)"$/
      */
     public function iSwitchTheLocaleTo($locale)
@@ -207,7 +291,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $em   = $this->getEntityManager();
         $user = new User;
-        $role = new Role(User::ROLE_DEFAULT);
+        $role = $this->getRoleOrCreate(User::ROLE_DEFAULT);
 
         $user->setUsername($username);
         $user->setEmail($username.'@example.com');
@@ -255,6 +339,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->openPage('Attribute', array(
             'id' => $attribute->getId(),
         ));
+    }
+
+    /**
+     * @Given /^I am on the currencies page$/
+     */
+    public function iAmOnTheCurrenciesPage()
+    {
+        $this->openPage('Currency index');
+        $this->getSession()->wait(5000, '$("table.grid tbody tr").length > 0');
     }
 
     /**
@@ -886,6 +979,22 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         return $this->getEntityOrException('PimProductBundle:ProductFamily', array(
             'code' => $code
         ));
+    }
+
+    private function getRoleOrCreate($label)
+    {
+        try {
+            $role = $this->getEntityOrException('OroUserBundle:Role', array(
+                'label' => $label
+            ));
+        } catch (\InvalidArgumentException $e) {
+            $role = new Role($label);
+            $em = $this->getEntityManager();
+            $em->persist($role);
+            $em->flush();
+        }
+
+        return $role;
     }
 
     private function getEntityOrException($namespace, array $criteria)

@@ -57,6 +57,22 @@ class CurrencyController extends Controller
     }
 
     /**
+     * @Route("/{id}/toggle", requirements={"id"="\d+"})
+     */
+    public function toggleAction(Currency $currency)
+    {
+        $currency->toggleActivation();
+
+        $this->getEntityManager()->flush();
+
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            return $this->redirect($this->generateUrl('pim_config_currency_index'));
+        }
+    }
+
+    /**
      * Get entity manager
      *
      * @return \Doctrine\ORM\EntityManager
@@ -74,72 +90,5 @@ class CurrencyController extends Controller
     protected function getCurrencyRepository()
     {
         return $this->getEntityManager()->getRepository('PimConfigBundle:Currency');
-    }
-
-    /**
-     * Create currency
-     *
-     * @Route("/create")
-     * @Template("PimConfigBundle:Currency:edit.html.twig")
-     *
-     * @return array
-     */
-    public function createAction()
-    {
-        $currency = new Currency();
-
-        return $this->editAction($currency);
-    }
-
-    /**
-     * Edit currency
-     *
-     * @param Currency $currency
-     *
-     * @Route("/edit/{id}", requirements={"id"="\d+"}, defaults={"id"=0})
-     * @Template
-     *
-     * @return array
-     */
-    public function editAction(Currency $currency)
-    {
-        if ($this->get('pim_config.form.handler.currency')->process($currency)) {
-            $this->get('session')->getFlashBag()->add('success', 'Currency successfully saved');
-
-            return $this->redirect(
-                $this->generateUrl('pim_config_currency_index')
-            );
-        }
-
-        return array(
-            'form' => $this->get('pim_config.form.currency')->createView()
-        );
-    }
-
-    /**
-     * Disable currency
-     *
-     * @param Currency $currency
-     *
-     * @Route("/disable/{id}", requirements={"id"="\d+"})
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function disableAction(Currency $currency)
-    {
-        // Disable activated property if no locale associated
-        if ($currency->getLocales()->count() === 0) {
-            $currency->setActivated(false);
-            $this->getEntityManager()->persist($currency);
-            $this->getEntityManager()->flush();
-
-            if ($this->getRequest()->isXmlHttpRequest()) {
-                return new Response('', 204);
-            } else {
-                return $this->redirect($this->generateUrl('pim_config_currency_index'));
-            }
-        } else {
-            return new Response('Currency linked to locales. Can`\t be disabled', 500);
-        }
     }
 }
