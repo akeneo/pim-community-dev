@@ -26,6 +26,7 @@ twig:
     globals:
         bap:
             layout:           ::base.html.twig  # default layout across all Oro bundles
+            start_route:      pim_product_product_index
     form:
         resources:
             - 'PimUIBundle:Form:fields.html.twig'

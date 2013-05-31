@@ -3,8 +3,85 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "c72048ed7de7ed2cb6fa6386b30b0934",
+    "hash": "9358e7405837cc120e2b526ec843a90a",
     "packages": [
+        {
+            "name": "apy/jsfv-bundle",
+            "version": "dev-master",
+            "target-dir": "APY/JsFormValidationBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Abhoryo/APYJsFormValidationBundle.git",
+                "reference": "d8961b782b046616a80444414070fbf4ee924d31"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Abhoryo/APYJsFormValidationBundle/zipball/d8961b782b046616a80444414070fbf4ee924d31",
+                "reference": "d8961b782b046616a80444414070fbf4ee924d31",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "symfony/symfony": ">=2.1,<2.3-dev",
+                "willdurand/expose-translation-bundle": "dev-master"
+            },
+            "require-dev": {
+                "doctrine/doctrine-bundle": "*",
+                "doctrine/doctrine-fixtures-bundle": "*",
+                "doctrine/orm": "*",
+                "jms/aop-bundle": "*",
+                "jms/di-extra-bundle": "*",
+                "liip/functional-test-bundle": "*",
+                "sensio/framework-extra-bundle": "*",
+                "symfony/assetic-bundle": "2.*",
+                "symfony/browser-kit": "2.*",
+                "symfony/class-loader": "2.*",
+                "symfony/css-selector": "2.*",
+                "symfony/filesystem": "2.*",
+                "symfony/finder": "2.*",
+                "symfony/form": "2.*",
+                "symfony/http-kernel": "2.*",
+                "symfony/process": "2.*",
+                "symfony/twig-bundle": "2.*",
+                "symfony/validator": "2.*",
+                "symfony/yaml": "2.*",
+                "willdurand/expose-translation-bundle": "master-dev"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "APY\\JsFormValidationBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Yoann Petit",
+                    "email": "abhoryo@free.fr"
+                },
+                {
+                    "name": "Community contributions",
+                    "homepage": "https://github.com/Abhoryo/APYJsFormValidationBundle/graphs/contributors"
+                }
+            ],
+            "description": "Symfony2 Javascript Form Validation Bundle with localisation support",
+            "homepage": "https://github.com/Abhoryo/APYJsFormValidationBundle",
+            "keywords": [
+                "form",
+                "g11n",
+                "i18n",
+                "javascript",
+                "l10n",
+                "symfony",
+                "validation"
+            ],
+            "time": "2013-05-03 14:09:11"
+        },
         {
             "name": "ass/xmlsecurity",
             "version": "dev-master",
@@ -488,12 +565,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/collections.git",
-                "reference": "df2138bcb467533bfe6b3a01301d480aec008b93"
+                "reference": "3db3ab843ff76774bee4679d4cb3a10cffb0a935"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/collections/zipball/df2138bcb467533bfe6b3a01301d480aec008b93",
-                "reference": "df2138bcb467533bfe6b3a01301d480aec008b93",
+                "url": "https://api.github.com/repos/doctrine/collections/zipball/3db3ab843ff76774bee4679d4cb3a10cffb0a935",
+                "reference": "3db3ab843ff76774bee4679d4cb3a10cffb0a935",
                 "shasum": ""
             },
             "require": {
@@ -502,7 +579,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1.x-dev"
+                    "dev-master": "1.2.x-dev"
                 }
             },
             "autoload": {
@@ -547,7 +624,7 @@
                 "collections",
                 "iterator"
             ],
-            "time": "2013-03-17 14:01:33"
+            "time": "2013-05-26 05:21:22"
         },
         {
             "name": "doctrine/common",
@@ -555,12 +632,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/common.git",
-                "reference": "1459223adae87305d07c9ea5f742a7fd6c8a740e"
+                "reference": "2169b0ce1d253d448c60b7d40bbe4e4b5afe22fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/common/zipball/1459223adae87305d07c9ea5f742a7fd6c8a740e",
-                "reference": "1459223adae87305d07c9ea5f742a7fd6c8a740e",
+                "url": "https://api.github.com/repos/doctrine/common/zipball/2169b0ce1d253d448c60b7d40bbe4e4b5afe22fe",
+                "reference": "2169b0ce1d253d448c60b7d40bbe4e4b5afe22fe",
                 "shasum": ""
             },
             "require": {
@@ -608,7 +685,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
+                    "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -621,7 +698,7 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2013-05-21 02:44:34"
+            "time": "2013-05-27 19:11:46"
         },
         {
             "name": "doctrine/data-fixtures",
@@ -743,27 +820,28 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "v1.0.0",
+            "version": "1.1.x-dev",
             "target-dir": "Doctrine/Bundle/DoctrineBundle",
             "source": {
                 "type": "git",
-                "url": "git://github.com/doctrine/DoctrineBundle.git",
-                "reference": "v1.0.0"
+                "url": "https://github.com/doctrine/DoctrineBundle.git",
+                "reference": "78b3680da8ae38f87df83a100e2e3a6820dd6177"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/doctrine/DoctrineBundle/zipball/v1.0.0",
-                "reference": "v1.0.0",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/78b3680da8ae38f87df83a100e2e3a6820dd6177",
+                "reference": "78b3680da8ae38f87df83a100e2e3a6820dd6177",
                 "shasum": ""
             },
             "require": {
-                "doctrine/dbal": ">=2.2,<2.4-dev",
+                "doctrine/dbal": ">=2.2,<2.5-dev",
+                "jdorn/sql-formatter": ">=1.1,<2.0",
                 "php": ">=5.3.2",
                 "symfony/doctrine-bridge": "2.1.*",
                 "symfony/framework-bundle": "2.1.*"
             },
             "require-dev": {
-                "doctrine/orm": ">=2.2,<2.4-dev",
+                "doctrine/orm": ">=2.2,<2.5-dev",
                 "symfony/validator": "2.1.*",
                 "symfony/yaml": "2.1.*"
             },
@@ -773,7 +851,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -807,7 +885,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2012-09-07 14:18:21"
+            "time": "2013-01-12 14:40:52"
         },
         {
             "name": "doctrine/doctrine-fixtures-bundle",
@@ -998,12 +1076,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/doctrine2.git",
-                "reference": "425f375899b9b054867ea3a3cb752dabdd874651"
+                "reference": "9787b27518bf4e4da1523ced6bfca74e98397907"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/425f375899b9b054867ea3a3cb752dabdd874651",
-                "reference": "425f375899b9b054867ea3a3cb752dabdd874651",
+                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/9787b27518bf4e4da1523ced6bfca74e98397907",
+                "reference": "9787b27518bf4e4da1523ced6bfca74e98397907",
                 "shasum": ""
             },
             "require": {
@@ -1060,7 +1138,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2013-05-11 07:51:12"
+            "time": "2013-05-26 07:27:03"
         },
         {
             "name": "escapestudios/wsse-authentication-bundle",
@@ -1296,12 +1374,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/l3pp4rd/DoctrineExtensions.git",
-                "reference": "v2.3.6"
+                "reference": "15294fa034525c4cba3518317dfcfb3b4e182cab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/v2.3.6",
-                "reference": "v2.3.6",
+                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/15294fa034525c4cba3518317dfcfb3b4e182cab",
+                "reference": "15294fa034525c4cba3518317dfcfb3b4e182cab",
                 "shasum": ""
             },
             "require": {
@@ -1368,7 +1446,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2013-05-21 12:09:55"
+            "time": "2013-05-31 17:57:14"
         },
         {
             "name": "imagine/imagine",
@@ -1418,25 +1496,80 @@
             "time": "2012-12-13 18:31:18"
         },
         {
-            "name": "jms/aop-bundle",
-            "version": "1.0.0",
-            "target-dir": "JMS/AopBundle",
+            "name": "jdorn/sql-formatter",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/schmittjoh/JMSAopBundle",
-                "reference": "1.0.0"
+                "url": "https://github.com/jdorn/sql-formatter.git",
+                "reference": "v1.2.9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/schmittjoh/JMSAopBundle/zipball/1.0.0",
-                "reference": "1.0.0",
+                "url": "https://api.github.com/repos/jdorn/sql-formatter/zipball/v1.2.9",
+                "reference": "v1.2.9",
                 "shasum": ""
             },
             "require": {
-                "jms/cg": "1.0.0",
+                "php": ">=5.2.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.3.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "lib"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeremy Dorn",
+                    "email": "jeremy@jeremydorn.com",
+                    "homepage": "http://jeremydorn.com/"
+                }
+            ],
+            "description": "a PHP SQL highlighting library",
+            "homepage": "https://github.com/jdorn/sql-formatter/",
+            "keywords": [
+                "highlight",
+                "sql"
+            ],
+            "time": "2013-04-26 18:42:52"
+        },
+        {
+            "name": "jms/aop-bundle",
+            "version": "dev-master",
+            "target-dir": "JMS/AopBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/schmittjoh/JMSAopBundle.git",
+                "reference": "7018357f5bedf204979a88867a9da05973744422"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/schmittjoh/JMSAopBundle/zipball/7018357f5bedf204979a88867a9da05973744422",
+                "reference": "7018357f5bedf204979a88867a9da05973744422",
+                "shasum": ""
+            },
+            "require": {
+                "jms/cg": "1.*",
                 "symfony/framework-bundle": "2.*"
             },
             "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "JMS\\AopBundle": ""
@@ -1448,7 +1581,7 @@
             ],
             "authors": [
                 {
-                    "name": "Johannes Schmitt",
+                    "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -1459,26 +1592,31 @@
                 "annotations",
                 "aop"
             ],
-            "time": "2012-01-02 12:50:26"
+            "time": "2013-01-09 08:03:40"
         },
         {
             "name": "jms/cg",
-            "version": "1.0.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git://github.com/schmittjoh/cg-library.git",
-                "reference": "1.0.0"
+                "url": "https://github.com/schmittjoh/cg-library.git",
+                "reference": "75a519d83a33f6b893a25aef835a1e5fc166a6d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/schmittjoh/cg-library/zipball/1.0.0",
-                "reference": "1.0.0",
+                "url": "https://api.github.com/repos/schmittjoh/cg-library/zipball/75a519d83a33f6b893a25aef835a1e5fc166a6d7",
+                "reference": "75a519d83a33f6b893a25aef835a1e5fc166a6d7",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "CG\\": "src/"
@@ -1486,13 +1624,13 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "Apache"
+                "Apache2"
             ],
             "authors": [
                 {
-                    "name": "Johannes Schmitt",
+                    "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
+                    "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -1500,7 +1638,7 @@
             "keywords": [
                 "code generation"
             ],
-            "time": "2012-01-02 12:40:52"
+            "time": "2013-03-23 08:03:00"
         },
         {
             "name": "jms/di-extra-bundle",
@@ -1555,7 +1693,7 @@
             ],
             "authors": [
                 {
-                    "name": "Johannes Schmitt",
+                    "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -1576,12 +1714,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSJobQueueBundle.git",
-                "reference": "9ab6aeb518e7c8e5faa3c9ce5345597c817f0b4a"
+                "reference": "6f994f208c1a8905573cfb59165d7783ce6b623f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSJobQueueBundle/zipball/9ab6aeb518e7c8e5faa3c9ce5345597c817f0b4a",
-                "reference": "9ab6aeb518e7c8e5faa3c9ce5345597c817f0b4a",
+                "url": "https://api.github.com/repos/schmittjoh/JMSJobQueueBundle/zipball/6f994f208c1a8905573cfb59165d7783ce6b623f",
+                "reference": "6f994f208c1a8905573cfb59165d7783ce6b623f",
                 "shasum": ""
             },
             "require": {
@@ -1627,7 +1765,7 @@
             ],
             "authors": [
                 {
-                    "name": "Johannes Schmitt",
+                    "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -1639,7 +1777,7 @@
                 "job",
                 "queue"
             ],
-            "time": "2013-02-12 20:33:50"
+            "time": "2013-05-24 20:26:43"
         },
         {
             "name": "jms/metadata",
@@ -1678,7 +1816,7 @@
             ],
             "authors": [
                 {
-                    "name": "Johannes Schmitt",
+                    "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -1778,7 +1916,7 @@
             ],
             "authors": [
                 {
-                    "name": "Johannes Schmitt",
+                    "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -1802,12 +1940,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSSerializerBundle.git",
-                "reference": "ab2ca253c3e2fb12dfbe3f1048224661ebf25494"
+                "reference": "bc4c8ddf89c1daba6d24d696e261e088677f49af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/ab2ca253c3e2fb12dfbe3f1048224661ebf25494",
-                "reference": "ab2ca253c3e2fb12dfbe3f1048224661ebf25494",
+                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/bc4c8ddf89c1daba6d24d696e261e088677f49af",
+                "reference": "bc4c8ddf89c1daba6d24d696e261e088677f49af",
                 "shasum": ""
             },
             "require": {
@@ -1846,7 +1984,7 @@
             ],
             "authors": [
                 {
-                    "name": "Johannes Schmitt",
+                    "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -1861,7 +1999,7 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2013-03-14 09:30:30"
+            "time": "2013-05-29 14:42:59"
         },
         {
             "name": "knplabs/gaufrette",
@@ -2130,17 +2268,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpMenuBundle.git",
-                "reference": "a4d6b338e47920880d1c972143ef39ffb564665f"
+                "reference": "f090ba579745484f73e22877f0b59a6039645f65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpMenuBundle/zipball/a4d6b338e47920880d1c972143ef39ffb564665f",
-                "reference": "a4d6b338e47920880d1c972143ef39ffb564665f",
+                "url": "https://api.github.com/repos/KnpLabs/KnpMenuBundle/zipball/f090ba579745484f73e22877f0b59a6039645f65",
+                "reference": "f090ba579745484f73e22877f0b59a6039645f65",
                 "shasum": ""
             },
             "require": {
                 "knplabs/knp-menu": "2.0.*",
-                "symfony/framework-bundle": ">=2.0,<2.4-dev"
+                "symfony/framework-bundle": ">=2.0,<3.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -2175,7 +2313,7 @@
             "keywords": [
                 "menu"
             ],
-            "time": "2013-05-01 01:55:58"
+            "time": "2013-05-25 11:24:09"
         },
         {
             "name": "knplabs/knp-paginator-bundle",
@@ -2313,12 +2451,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafo/lessphp.git",
-                "reference": "dbb61d4beaafb0d708b79b008d0b708abeb4eae9"
+                "reference": "ff86f2941c3f3d67d56acad2f8902ca57c73b359"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafo/lessphp/zipball/dbb61d4beaafb0d708b79b008d0b708abeb4eae9",
-                "reference": "dbb61d4beaafb0d708b79b008d0b708abeb4eae9",
+                "url": "https://api.github.com/repos/leafo/lessphp/zipball/ff86f2941c3f3d67d56acad2f8902ca57c73b359",
+                "reference": "ff86f2941c3f3d67d56acad2f8902ca57c73b359",
                 "shasum": ""
             },
             "type": "library",
@@ -2346,7 +2484,7 @@
             ],
             "description": "lessphp is a compiler for LESS written in PHP.",
             "homepage": "http://leafo.net/lessphp/",
-            "time": "2013-05-07 23:46:12"
+            "time": "2013-05-22 17:52:29"
         },
         {
             "name": "liip/imagine-bundle",
@@ -2355,12 +2493,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "v0.10.0"
+                "reference": "v0.10.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/v0.10.0",
-                "reference": "v0.10.0",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/v0.10.1",
+                "reference": "v0.10.1",
                 "shasum": ""
             },
             "require": {
@@ -2400,7 +2538,7 @@
                 "image",
                 "imagine"
             ],
-            "time": "2013-05-17 08:18:26"
+            "time": "2013-05-29 19:37:03"
         },
         {
             "name": "monolog/monolog",
@@ -2527,95 +2665,53 @@
             "time": "2013-05-12 16:17:18"
         },
         {
-            "name": "oro/address-bundle",
+            "name": "oro/platform",
             "version": "dev-master",
-            "target-dir": "Oro/Bundle/AddressBundle",
             "source": {
                 "type": "git",
-                "url": "git@github.com:laboro/AddressBundle.git",
-                "reference": "622267e0e8117f20466118e246752bb28165e806"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laboro/AddressBundle/zipball/622267e0e8117f20466118e246752bb28165e806",
-                "reference": "622267e0e8117f20466118e246752bb28165e806",
-                "shasum": ""
+                "url": "git@gitlab.orocrm.com:platform/platform.git",
+                "reference": "eb92081d8e2916542b633c8cc8d117e203d95333"
             },
             "require": {
+                "apy/jsfv-bundle": "2.1.*@dev",
+                "ass/xmlsecurity": "dev-master",
                 "besimple/soap-bundle": "dev-master",
+                "besimple/soap-common": "dev-master",
+                "besimple/soap-server": "dev-master",
+                "ddeboer/data-import": "dev-master",
+                "doctrine/data-fixtures": "@dev",
+                "doctrine/doctrine-bundle": "1.1.*",
+                "doctrine/doctrine-fixtures-bundle": "@dev",
+                "doctrine/orm": ">=2.2.3,<2.5-dev",
+                "escapestudios/wsse-authentication-bundle": "2.1.x-dev",
                 "friendsofsymfony/jsrouting-bundle": "1.1.*@dev",
                 "friendsofsymfony/rest-bundle": "0.11.*",
-                "nelmio/api-doc-bundle": "dev-master",
-                "oro/flexible-entity-bundle": "dev-master",
-                "php": ">=5.3.3",
-                "symfony/icu": "1.2.*@dev",
-                "symfony/intl": "2.3.*@dev",
-                "symfony/symfony": "2.1.*"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-0": {
-                    "Oro\\Bundle\\AddressBundle": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "BAP Address Bundle",
-            "homepage": "https://github.com/laboro/AddressBundle",
-            "keywords": [
-                "Address",
-                "BAP"
-            ],
-            "support": {
-                "source": "https://github.com/laboro/AddressBundle/tree/master",
-                "issues": "https://github.com/laboro/AddressBundle/issues"
-            },
-            "time": "2013-05-17 08:56:09"
-        },
-        {
-            "name": "oro/bap",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:laboro/bap.git",
-                "reference": "59dcd5bb701bbba25417985b24ac386692bb7b88"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laboro/bap/zipball/59dcd5bb701bbba25417985b24ac386692bb7b88",
-                "reference": "59dcd5bb701bbba25417985b24ac386692bb7b88",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/doctrine-bundle": "1.0.*",
-                "doctrine/orm": ">=2.2.3,<2.4-dev",
+                "jms/aop-bundle": "dev-master",
                 "jms/di-extra-bundle": "1.3.*@dev",
+                "jms/job-queue-bundle": "dev-master",
+                "jms/serializer": "0.12.*@dev",
+                "jms/serializer-bundle": "0.12.*@dev",
+                "knplabs/knp-menu": "dev-master",
+                "knplabs/knp-menu-bundle": "dev-master",
+                "knplabs/knp-paginator-bundle": "dev-master",
                 "kriswallsmith/assetic": "1.1.*@dev",
-                "oro/address-bundle": "dev-master",
-                "oro/config-bundle": "dev-master",
-                "oro/data-flow-bundle": "dev-master",
-                "oro/filter-bundle": "dev-master",
-                "oro/flexible-entity-bundle": "dev-master",
-                "oro/grid-bundle": "dev-master",
-                "oro/measure-bundle": "dev-master",
-                "oro/navigation-bundle": "dev-master",
-                "oro/search-bundle": "dev-master",
-                "oro/segmentation-tree-bundle": "dev-master",
-                "oro/soap-bundle": "dev-master",
-                "oro/testframework-bundle": "dev-master",
-                "oro/ui-bundle": "dev-master",
-                "oro/user-bundle": "dev-master",
-                "oro/windows-bundle": "dev-master",
-                "php": ">=5.3.3",
+                "leafo/lessphp": "dev-master",
+                "liip/imagine-bundle": "dev-master",
+                "nelmio/api-doc-bundle": "dev-master",
                 "sensio/distribution-bundle": "2.1.*",
                 "sensio/framework-extra-bundle": "2.1.*",
                 "sensio/generator-bundle": "2.1.*",
-                "symfony/assetic-bundle": "2.1.*",
+                "sonata-project/admin-bundle": "2.1.x-dev",
+                "sonata-project/doctrine-orm-admin-bundle": "2.1.x-dev",
+                "stof/doctrine-extensions-bundle": "dev-master",
+                "symfony/assetic-bundle": "2.1.*@dev",
+                "symfony/icu": "1.2.*@dev",
+                "symfony/intl": "2.3.*@dev",
                 "symfony/monolog-bundle": "2.1.*",
                 "symfony/swiftmailer-bundle": "2.1.*",
                 "symfony/symfony": "2.1.*",
-                "twig/extensions": "1.0.*@dev"
+                "twig/extensions": "1.0.*@dev",
+                "willdurand/expose-translation-bundle": "0.2.*@dev"
             },
             "type": "library",
             "extra": {
@@ -2631,722 +2727,9 @@
             "license": [
                 "MIT"
             ],
-            "description": "BAP base bundles",
-            "homepage": "https://github.com/laboro/bap.git",
-            "support": {
-                "source": "https://github.com/laboro/bap/tree/master",
-                "issues": "https://github.com/laboro/bap/issues"
-            },
-            "time": "2013-05-16 15:49:44"
-        },
-        {
-            "name": "oro/config-bundle",
-            "version": "dev-master",
-            "target-dir": "Oro/Bundle/ConfigBundle",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:laboro/ConfigBundle.git",
-                "reference": "83574be9b888785a2c5fb1e48c80bb67f1e7555d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laboro/ConfigBundle/zipball/83574be9b888785a2c5fb1e48c80bb67f1e7555d",
-                "reference": "83574be9b888785a2c5fb1e48c80bb67f1e7555d",
-                "shasum": ""
-            },
-            "require": {
-                "oro/ui-bundle": "dev-master",
-                "oro/user-bundle": "dev-master",
-                "php": ">=5.3.3",
-                "symfony/symfony": "2.1.*"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Oro\\Bundle\\ConfigBundle": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "BAP Config Bundle",
-            "homepage": "https://github.com/laboro/ConfigBundle",
-            "keywords": [
-                "BAP"
-            ],
-            "support": {
-                "source": "https://github.com/laboro/ConfigBundle/tree/master",
-                "issues": "https://github.com/laboro/ConfigBundle/issues"
-            },
-            "time": "2013-04-16 16:24:13"
-        },
-        {
-            "name": "oro/data-flow-bundle",
-            "version": "dev-master",
-            "target-dir": "Oro/Bundle/DataFlowBundle",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:laboro/DataFlowBundle.git",
-                "reference": "492ced38ab61abf1002cf042a2b3686f83fcb226"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laboro/DataFlowBundle/zipball/492ced38ab61abf1002cf042a2b3686f83fcb226",
-                "reference": "492ced38ab61abf1002cf042a2b3686f83fcb226",
-                "shasum": ""
-            },
-            "require": {
-                "jms/serializer-bundle": "0.12.*@dev",
-                "php": ">=5.3.3",
-                "symfony/symfony": "2.1.*"
-            },
-            "require-dev": {
-                "doctrine/dbal": ">=2.2,<2.4-dev",
-                "doctrine/orm": ">=2.2.3,<2.4-dev"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Oro\\Bundle\\DataFlowBundle": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "BAP Flexible Entity Bundle",
-            "homepage": "https://github.com/laboro/DataFlowBundle",
-            "keywords": [
-                "BAP",
-                "Export",
-                "Import"
-            ],
-            "support": {
-                "source": "https://github.com/laboro/DataFlowBundle/tree/master",
-                "issues": "https://github.com/laboro/DataFlowBundle/issues"
-            },
-            "time": "2013-05-21 14:31:29"
-        },
-        {
-            "name": "oro/filter-bundle",
-            "version": "dev-master",
-            "target-dir": "Oro/Bundle/FilterBundle",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:laboro/FilterBundle.git",
-                "reference": "e963c2edfdeb6cbcb739416de0b265a95d38d603"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laboro/FilterBundle/zipball/e963c2edfdeb6cbcb739416de0b265a95d38d603",
-                "reference": "e963c2edfdeb6cbcb739416de0b265a95d38d603",
-                "shasum": ""
-            },
-            "require": {
-                "oro/ui-bundle": "dev-master",
-                "php": ">=5.3.3",
-                "symfony/symfony": ">=2.1"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Oro\\Bundle\\FilterBundle": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "BAP Filter Bundle",
-            "homepage": "https://github.com/laboro/FilterBundle",
-            "keywords": [
-                "BAP",
-                "Filter",
-                "UI",
-                "User Interface"
-            ],
-            "support": {
-                "source": "https://github.com/laboro/FilterBundle/tree/master",
-                "issues": "https://github.com/laboro/FilterBundle/issues"
-            },
-            "time": "2013-05-13 16:16:37"
-        },
-        {
-            "name": "oro/flexible-entity-bundle",
-            "version": "dev-master",
-            "target-dir": "Oro/Bundle/FlexibleEntityBundle",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:laboro/FlexibleEntityBundle.git",
-                "reference": "763d3d08df8f4f48d2907bb04f61b7f32a2eb6cf"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laboro/FlexibleEntityBundle/zipball/763d3d08df8f4f48d2907bb04f61b7f32a2eb6cf",
-                "reference": "763d3d08df8f4f48d2907bb04f61b7f32a2eb6cf",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3",
-                "stof/doctrine-extensions-bundle": "dev-master",
-                "symfony/symfony": "2.1.*"
-            },
-            "require-dev": {
-                "doctrine/dbal": ">=2.2,<2.4-dev",
-                "doctrine/orm": ">=2.2.3,<2.4-dev"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Oro\\Bundle\\FlexibleEntityBundle": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "BAP Flexible Entity Bundle",
-            "homepage": "https://github.com/laboro/FlexibleEntityBundle",
-            "keywords": [
-                "BAP"
-            ],
-            "support": {
-                "source": "https://github.com/laboro/FlexibleEntityBundle/tree/master",
-                "issues": "https://github.com/laboro/FlexibleEntityBundle/issues"
-            },
-            "time": "2013-05-16 17:21:49"
-        },
-        {
-            "name": "oro/grid-bundle",
-            "version": "dev-master",
-            "target-dir": "Oro/Bundle/GridBundle",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:laboro/GridBundle.git",
-                "reference": "a50d0acfc0873c077c5b799050ae98d81764ee35"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laboro/GridBundle/zipball/a50d0acfc0873c077c5b799050ae98d81764ee35",
-                "reference": "a50d0acfc0873c077c5b799050ae98d81764ee35",
-                "shasum": ""
-            },
-            "require": {
-                "oro/filter-bundle": "dev-master",
-                "oro/flexible-entity-bundle": "dev-master",
-                "oro/ui-bundle": "dev-master",
-                "php": ">=5.3.3",
-                "sonata-project/admin-bundle": "2.1.x-dev",
-                "sonata-project/doctrine-orm-admin-bundle": "2.1.x-dev",
-                "symfony/symfony": ">=2.1"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Oro\\Bundle\\GridBundle": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "BAP Grid Bundle",
-            "homepage": "https://github.com/laboro/GridBundle",
-            "keywords": [
-                "BAP",
-                "Grid",
-                "UI",
-                "User Interface"
-            ],
-            "support": {
-                "source": "https://github.com/laboro/GridBundle/tree/master",
-                "issues": "https://github.com/laboro/GridBundle/issues"
-            },
-            "time": "2013-05-22 12:07:37"
-        },
-        {
-            "name": "oro/measure-bundle",
-            "version": "dev-master",
-            "target-dir": "Oro/Bundle/MeasureBundle",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:laboro/MeasureBundle.git",
-                "reference": "3a3385d63fcfc94e1819d009e011a19f1183ee05"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laboro/MeasureBundle/zipball/3a3385d63fcfc94e1819d009e011a19f1183ee05",
-                "reference": "3a3385d63fcfc94e1819d009e011a19f1183ee05",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3",
-                "symfony/symfony": "2.1.*"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Oro\\Bundle\\MeasureBundle": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "BAP Measure Bundle",
-            "homepage": "https://github.com/laboro/MeasureBundle",
-            "keywords": [
-                "BAP",
-                "Convert",
-                "Measure"
-            ],
-            "support": {
-                "source": "https://github.com/laboro/MeasureBundle/tree/master",
-                "issues": "https://github.com/laboro/MeasureBundle/issues"
-            },
-            "time": "2013-05-13 15:33:40"
-        },
-        {
-            "name": "oro/navigation-bundle",
-            "version": "dev-master",
-            "target-dir": "Oro/Bundle/NavigationBundle",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:laboro/NavigationBundle.git",
-                "reference": "f15666051ecec9c21fffc0c495070548e47b384c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laboro/NavigationBundle/zipball/f15666051ecec9c21fffc0c495070548e47b384c",
-                "reference": "f15666051ecec9c21fffc0c495070548e47b384c",
-                "shasum": ""
-            },
-            "require": {
-                "friendsofsymfony/rest-bundle": "0.11.*",
-                "knplabs/knp-menu": "dev-master",
-                "knplabs/knp-menu-bundle": "dev-master",
-                "kriswallsmith/assetic": "1.1.*@dev",
-                "nelmio/api-doc-bundle": "dev-master",
-                "oro/ui-bundle": "dev-master",
-                "oro/user-bundle": "dev-master",
-                "php": ">=5.3.3",
-                "symfony/assetic-bundle": "2.1.*",
-                "symfony/symfony": "2.1.*"
-            },
-            "require-dev": {
-                "doctrine/data-fixtures": "@dev",
-                "doctrine/doctrine-fixtures-bundle": "@dev"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Oro\\Bundle\\NavigationBundle": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "BAP Navigation Bundle",
-            "homepage": "https://github.com/laboro/NavigationBundle",
-            "keywords": [
-                "BAP",
-                "History",
-                "Menu",
-                "Navigation",
-                "Pinbar",
-                "Shortcuts",
-                "UI",
-                "User Interface"
-            ],
-            "support": {
-                "source": "https://github.com/laboro/NavigationBundle/tree/master",
-                "issues": "https://github.com/laboro/NavigationBundle/issues"
-            },
-            "time": "2013-05-22 15:47:18"
-        },
-        {
-            "name": "oro/search-bundle",
-            "version": "dev-master",
-            "target-dir": "Oro/Bundle/SearchBundle",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:laboro/SearchBundle.git",
-                "reference": "6b86c458fe7bf4d792ead7964bbafd94523d010c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laboro/SearchBundle/zipball/6b86c458fe7bf4d792ead7964bbafd94523d010c",
-                "reference": "6b86c458fe7bf4d792ead7964bbafd94523d010c",
-                "shasum": ""
-            },
-            "require": {
-                "friendsofsymfony/rest-bundle": "0.11.*",
-                "jms/job-queue-bundle": "dev-master",
-                "jms/serializer-bundle": "0.12.*@dev",
-                "knplabs/knp-paginator-bundle": "dev-master",
-                "nelmio/api-doc-bundle": "dev-master",
-                "oro/flexible-entity-bundle": "dev-master",
-                "oro/soap-bundle": "dev-master",
-                "oro/ui-bundle": "dev-master",
-                "php": ">=5.3.3",
-                "symfony/symfony": "2.1.*"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Oro\\Bundle\\SearchBundle": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "BAP Search Bundle",
-            "homepage": "https://github.com/laboro/SearchBundle",
-            "keywords": [
-                "BAP"
-            ],
-            "support": {
-                "source": "https://github.com/laboro/SearchBundle/tree/master",
-                "issues": "https://github.com/laboro/SearchBundle/issues"
-            },
-            "time": "2013-05-17 14:42:03"
-        },
-        {
-            "name": "oro/segmentation-tree-bundle",
-            "version": "dev-master",
-            "target-dir": "Oro/Bundle/SegmentationTreeBundle",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:laboro/SegmentationTreeBundle.git",
-                "reference": "1514662de3a7ba118b8f69576ef9a266deabb1f0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laboro/SegmentationTreeBundle/zipball/1514662de3a7ba118b8f69576ef9a266deabb1f0",
-                "reference": "1514662de3a7ba118b8f69576ef9a266deabb1f0",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3",
-                "stof/doctrine-extensions-bundle": "dev-master",
-                "symfony/symfony": "2.1.*"
-            },
-            "require-dev": {
-                "doctrine/dbal": ">=2.2,<2.4-dev",
-                "doctrine/orm": ">=2.2.3,<2.4-dev"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Oro\\Bundle\\SegmentationTreeBundle": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "BAP Segmentation Tree Bundle",
-            "homepage": "https://github.com/laboro/SegmentationTreeBundle",
-            "keywords": [
-                "BAP",
-                "Segmentation",
-                "Tree"
-            ],
-            "support": {
-                "source": "https://github.com/laboro/SegmentationTreeBundle/tree/master",
-                "issues": "https://github.com/laboro/SegmentationTreeBundle/issues"
-            },
-            "time": "2013-05-31 14:39:00"
-        },
-        {
-            "name": "oro/soap-bundle",
-            "version": "dev-master",
-            "target-dir": "Oro/Bundle/SoapBundle",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:laboro/SoapBundle.git",
-                "reference": "46df8a99b14a8d557266bdd93cee1e428f0091c4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laboro/SoapBundle/zipball/46df8a99b14a8d557266bdd93cee1e428f0091c4",
-                "reference": "46df8a99b14a8d557266bdd93cee1e428f0091c4",
-                "shasum": ""
-            },
-            "require": {
-                "besimple/soap-bundle": "dev-master",
-                "besimple/soap-common": "dev-master",
-                "besimple/soap-server": "dev-master",
-                "oro/flexible-entity-bundle": "dev-master",
-                "php": ">=5.3.3",
-                "symfony/symfony": "2.1.*"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Oro\\Bundle\\SoapBundle": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "BAP Soap Bundle",
-            "homepage": "https://github.com/laboro/SoapBundle",
-            "keywords": [
-                "BAP"
-            ],
-            "support": {
-                "source": "https://github.com/laboro/SoapBundle/tree/master",
-                "issues": "https://github.com/laboro/SoapBundle/issues"
-            },
-            "time": "2013-05-22 12:13:26"
-        },
-        {
-            "name": "oro/testframework-bundle",
-            "version": "dev-master",
-            "target-dir": "Oro/Bundle/TestFrameworkBundle",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:laboro/TestFrameworkBundle.git",
-                "reference": "09b18d64de9538ab63cf55ef9bce58a872491c2c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laboro/TestFrameworkBundle/zipball/09b18d64de9538ab63cf55ef9bce58a872491c2c",
-                "reference": "09b18d64de9538ab63cf55ef9bce58a872491c2c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3",
-                "symfony/symfony": "2.1.*"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Oro\\Bundle\\TestFrameworkBundle": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "BAP TestFramework Bundle",
-            "homepage": "https://github.com/laboro/TestFrameworkBundle",
-            "keywords": [
-                "BAP",
-                "Framework",
-                "Test"
-            ],
-            "support": {
-                "source": "https://github.com/laboro/TestFrameworkBundle/tree/master",
-                "issues": "https://github.com/laboro/TestFrameworkBundle/issues"
-            },
-            "time": "2013-05-22 14:52:51"
-        },
-        {
-            "name": "oro/ui-bundle",
-            "version": "dev-master",
-            "target-dir": "Oro/Bundle/UIBundle",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:laboro/UIBundle.git",
-                "reference": "83147441417c4bc07385e0b19f2546b8221fb77a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laboro/UIBundle/zipball/83147441417c4bc07385e0b19f2546b8221fb77a",
-                "reference": "83147441417c4bc07385e0b19f2546b8221fb77a",
-                "shasum": ""
-            },
-            "require": {
-                "kriswallsmith/assetic": "1.1.*@dev",
-                "leafo/lessphp": "dev-master",
-                "php": ">=5.3.3",
-                "symfony/assetic-bundle": "2.1.*",
-                "symfony/framework-bundle": ">=2.1,<2.3-dev"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.0-alpha"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Oro\\Bundle\\UIBundle": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "BAP User Interface Bundle",
-            "homepage": "https://github.com/laboro/UIBundle",
-            "keywords": [
-                "BAP",
-                "UI",
-                "User Interface"
-            ],
-            "support": {
-                "source": "https://github.com/laboro/UIBundle/tree/master",
-                "issues": "https://github.com/laboro/UIBundle/issues"
-            },
-            "time": "2013-05-22 13:29:20"
-        },
-        {
-            "name": "oro/user-bundle",
-            "version": "dev-master",
-            "target-dir": "Oro/Bundle/UserBundle",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:laboro/UserBundle.git",
-                "reference": "923ee49a0f1185d75bf79410f79487943145193f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laboro/UserBundle/zipball/923ee49a0f1185d75bf79410f79487943145193f",
-                "reference": "923ee49a0f1185d75bf79410f79487943145193f",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/data-fixtures": "@dev",
-                "doctrine/doctrine-fixtures-bundle": "@dev",
-                "escapestudios/wsse-authentication-bundle": "2.1.x-dev",
-                "friendsofsymfony/rest-bundle": "0.11.*",
-                "jms/aop-bundle": "1.0.*",
-                "jms/serializer-bundle": "0.12.*@dev",
-                "liip/imagine-bundle": "dev-master",
-                "nelmio/api-doc-bundle": "dev-master",
-                "oro/flexible-entity-bundle": "dev-master",
-                "oro/grid-bundle": "dev-master",
-                "oro/navigation-bundle": "dev-master",
-                "oro/soap-bundle": "dev-master",
-                "oro/ui-bundle": "dev-master",
-                "php": ">=5.3.3",
-                "symfony/symfony": "2.1.*",
-                "ys-tools/back-url-bundle": "dev-master"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Oro\\Bundle\\UserBundle": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "BAP User Bundle",
-            "homepage": "https://github.com/laboro/UserBundle",
-            "keywords": [
-                "BAP"
-            ],
-            "support": {
-                "source": "https://github.com/laboro/UserBundle/tree/master",
-                "issues": "https://github.com/laboro/UserBundle/issues"
-            },
-            "time": "2013-05-22 15:48:56"
-        },
-        {
-            "name": "oro/windows-bundle",
-            "version": "dev-master",
-            "target-dir": "Oro/Bundle/WindowsBundle",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:laboro/WindowsBundle.git",
-                "reference": "4ab4ed6f342dec7e649f3b040babfc5db29267fa"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laboro/WindowsBundle/zipball/4ab4ed6f342dec7e649f3b040babfc5db29267fa",
-                "reference": "4ab4ed6f342dec7e649f3b040babfc5db29267fa",
-                "shasum": ""
-            },
-            "require": {
-                "friendsofsymfony/rest-bundle": "0.11.*",
-                "nelmio/api-doc-bundle": "dev-master",
-                "oro/ui-bundle": "dev-master",
-                "php": ">=5.3.3",
-                "symfony/symfony": "2.1.*"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Oro\\Bundle\\WindowsBundle": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "BAP Windows Bundle",
-            "homepage": "https://github.com/laboro/WindowsBundle",
-            "keywords": [
-                "BAP",
-                "UI",
-                "User Interface",
-                "Windows"
-            ],
-            "support": {
-                "source": "https://github.com/laboro/WindowsBundle/tree/master",
-                "issues": "https://github.com/laboro/WindowsBundle/issues"
-            },
-            "time": "2013-05-17 15:42:41"
+            "description": "Business Application Platform (BAP)",
+            "homepage": "git@gitlab.orocrm.com:platform.git",
+            "time": "2013-05-31 20:28:02"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -3382,7 +2765,7 @@
             ],
             "authors": [
                 {
-                    "name": "Johannes Schmitt",
+                    "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -3594,14 +2977,8 @@
             "target-dir": "Sonata/AdminBundle",
             "source": {
                 "type": "git",
-                "url": "https://github.com/laboro/SonataAdminBundle.git",
+                "url": "http://gitlab.orocrm.com/vendors/sonataadminbundle.git",
                 "reference": "583b9f20e52fb55796bb4e78019bf2d7c6f71753"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laboro/SonataAdminBundle/zipball/583b9f20e52fb55796bb4e78019bf2d7c6f71753",
-                "reference": "583b9f20e52fb55796bb4e78019bf2d7c6f71753",
-                "shasum": ""
             },
             "require": {
                 "doctrine/common": ">=2.2,<3.0",
@@ -3661,9 +3038,6 @@
                 "bootstrap",
                 "sonata"
             ],
-            "support": {
-                "source": "https://github.com/laboro/SonataAdminBundle/tree/2.1"
-            },
             "time": "2013-03-14 16:42:43"
         },
         {
@@ -4306,12 +3680,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "e9802047c02a673405f3dde51079d6ce412b8460"
+                "reference": "d52d9aeba099852108d25d2c312a83dce016a02d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/e9802047c02a673405f3dde51079d6ce412b8460",
-                "reference": "e9802047c02a673405f3dde51079d6ce412b8460",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/d52d9aeba099852108d25d2c312a83dce016a02d",
+                "reference": "d52d9aeba099852108d25d2c312a83dce016a02d",
                 "shasum": ""
             },
             "require": {
@@ -4386,7 +3760,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2013-05-20 22:28:52"
+            "time": "2013-05-27 06:45:55"
         },
         {
             "name": "twig/extensions",
@@ -4441,12 +3815,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "ba88c755579c06e7ccb5ee73c6e27e88a1fed114"
+                "reference": "fca6a9562dc032a7ba3ab8278b731b72efa8bd9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/ba88c755579c06e7ccb5ee73c6e27e88a1fed114",
-                "reference": "ba88c755579c06e7ccb5ee73c6e27e88a1fed114",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/fca6a9562dc032a7ba3ab8278b731b72efa8bd9c",
+                "reference": "fca6a9562dc032a7ba3ab8278b731b72efa8bd9c",
                 "shasum": ""
             },
             "require": {
@@ -4482,32 +3856,41 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-05-17 10:06:31"
+            "time": "2013-05-29 14:58:12"
         },
         {
-            "name": "ys-tools/back-url-bundle",
+            "name": "willdurand/expose-translation-bundle",
             "version": "dev-master",
-            "target-dir": "YsTools/BackUrlBundle",
+            "target-dir": "Bazinga/ExposeTranslationBundle",
             "source": {
                 "type": "git",
-                "url": "https://github.com/yshyshkin/BackUrl.git",
-                "reference": "c5e0c8bc4e72dae97ea579a7ea96ef2316a9cc06"
+                "url": "https://github.com/willdurand/BazingaExposeTranslationBundle.git",
+                "reference": "0.3.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yshyshkin/BackUrl/zipball/c5e0c8bc4e72dae97ea579a7ea96ef2316a9cc06",
-                "reference": "c5e0c8bc4e72dae97ea579a7ea96ef2316a9cc06",
+                "url": "https://api.github.com/repos/willdurand/BazingaExposeTranslationBundle/zipball/0.3.0",
+                "reference": "0.3.0",
                 "shasum": ""
             },
             "require": {
-                "doctrine/common": ">=2.1",
-                "php": ">=5.3.0",
-                "symfony/framework-bundle": "2.*"
+                "symfony/console": ">=2.0,<2.4-dev",
+                "symfony/finder": ">=2.0,<2.4-dev",
+                "symfony/framework-bundle": ">=2.0,<2.4-dev"
+            },
+            "require-dev": {
+                "symfony/browser-kit": ">=2.0,<2.4-dev",
+                "symfony/yaml": ">=2.0,<2.4-dev"
             },
             "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.2.x-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
-                    "YsTools\\BackUrlBundle": ""
+                    "Bazinga\\ExposeTranslationBundle": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -4516,16 +3899,17 @@
             ],
             "authors": [
                 {
-                    "name": "Yevhen Shyshkin",
-                    "email": "maniac.zhenya@gmail.com"
+                    "name": "William Durand",
+                    "email": "william.durand1@gmail.com",
+                    "homepage": "http://www.willdurand.fr"
                 }
             ],
-            "description": "Symfony 2 Back URL Annotation",
+            "description": "A pretty nice way to expose your translation messages to your JavaScript.",
             "keywords": [
-                "annotation",
-                "redirect"
+                "javascript",
+                "translation"
             ],
-            "time": "2013-04-24 16:17:41"
+            "time": "2013-05-24 09:08:10"
         },
         {
             "name": "zendframework/zend-code",
@@ -5108,12 +4492,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Behat.git",
-                "reference": "1f1bead31e96da5e30fd5d499d5cf66d29b68cf6"
+                "reference": "1dcb03bf2b1112bedca1a70f7b3f3a384c2a5cff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Behat/zipball/1f1bead31e96da5e30fd5d499d5cf66d29b68cf6",
-                "reference": "1f1bead31e96da5e30fd5d499d5cf66d29b68cf6",
+                "url": "https://api.github.com/repos/Behat/Behat/zipball/1dcb03bf2b1112bedca1a70f7b3f3a384c2a5cff",
+                "reference": "1dcb03bf2b1112bedca1a70f7b3f3a384c2a5cff",
                 "shasum": ""
             },
             "require": {
@@ -5167,7 +4551,7 @@
                 "Behat",
                 "Symfony2"
             ],
-            "time": "2013-05-12 14:53:31"
+            "time": "2013-05-23 13:47:04"
         },
         {
             "name": "behat/gherkin",
@@ -5346,12 +4730,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/MinkExtension.git",
-                "reference": "ef2c8639ebc254f0ff6e555b7834700caf5db9c4"
+                "reference": "52cee46976c26bd419c948e068d32724b562d616"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/MinkExtension/zipball/ef2c8639ebc254f0ff6e555b7834700caf5db9c4",
-                "reference": "ef2c8639ebc254f0ff6e555b7834700caf5db9c4",
+                "url": "https://api.github.com/repos/Behat/MinkExtension/zipball/52cee46976c26bd419c948e068d32724b562d616",
+                "reference": "52cee46976c26bd419c948e068d32724b562d616",
                 "shasum": ""
             },
             "require": {
@@ -5365,7 +4749,7 @@
             "type": "behat-extension",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -5392,7 +4776,7 @@
                 "test",
                 "web"
             ],
-            "time": "2013-04-29 09:26:13"
+            "time": "2013-05-29 08:06:28"
         },
         {
             "name": "behat/mink-selenium2-driver",
@@ -5569,12 +4953,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/BehatPageObjectExtension.git",
-                "reference": "v1.0.1"
+                "reference": "6692ad7237597d1f7acfdacf1c7bbb138f56e3a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/BehatPageObjectExtension/zipball/v1.0.1",
-                "reference": "v1.0.1",
+                "url": "https://api.github.com/repos/sensiolabs/BehatPageObjectExtension/zipball/6692ad7237597d1f7acfdacf1c7bbb138f56e3a9",
+                "reference": "6692ad7237597d1f7acfdacf1c7bbb138f56e3a9",
                 "shasum": ""
             },
             "require": {
@@ -5591,8 +4975,7 @@
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "SensioLabs\\Behat\\PageObjectExtension\\": "src/",
-                    "spec\\": "."
+                    "SensioLabs\\Behat\\PageObjectExtension\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -5616,7 +4999,7 @@
                 "Behat",
                 "page"
             ],
-            "time": "2013-05-13 09:33:29"
+            "time": "2013-05-24 08:09:10"
         }
     ],
     "aliases": [
@@ -5624,7 +5007,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "oro/bap": 20,
+        "oro/platform": 20,
         "ddeboer/data-import": 20,
         "knplabs/knp-gaufrette-bundle": 20,
         "kriswallsmith/assetic": 15,

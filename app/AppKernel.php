@@ -32,11 +32,13 @@ class AppKernel extends Kernel
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
             new Escape\WSSEAuthenticationBundle\EscapeWSSEAuthenticationBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
-            new YsTools\BackUrlBundle\YsToolsBackUrlBundle(),
+            new Bazinga\ExposeTranslationBundle\BazingaExposeTranslationBundle(),
+            new APY\JsFormValidationBundle\APYJsFormValidationBundle(),
 
             // BAP bundles
             new Oro\Bundle\FlexibleEntityBundle\OroFlexibleEntityBundle(),
             new Oro\Bundle\UIBundle\OroUIBundle(),
+            new Oro\Bundle\JsFormValidationBundle\OroJsFormValidationBundle(),
             new Oro\Bundle\SoapBundle\OroSoapBundle(),
             new Oro\Bundle\SearchBundle\OroSearchBundle(),
             new Oro\Bundle\DataFlowBundle\OroDataFlowBundle(),
@@ -48,6 +50,8 @@ class AppKernel extends Kernel
             new Oro\Bundle\FilterBundle\OroFilterBundle(),
             new Oro\Bundle\GridBundle\OroGridBundle(),
             new Oro\Bundle\WindowsBundle\OroWindowsBundle(),
+            new Oro\Bundle\AddressBundle\OroAddressBundle(),
+            new Oro\Bundle\DataAuditBundle\OroDataAuditBundle(),
 
             // BAP overrided bundles
             new Pim\Bundle\NavigationBundle\PimNavigationBundle(),

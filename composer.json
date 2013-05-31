@@ -13,7 +13,7 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "oro/bap": "dev-master",
+        "oro/platform": "dev-master",
         "ddeboer/data-import": "dev-master",
         "knplabs/knp-gaufrette-bundle": "dev-master",
         "kriswallsmith/assetic": "v1.1.0-alpha4"
@@ -32,95 +32,11 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/laboro/bap"
+            "url": "git@gitlab.orocrm.com:platform/platform.git"
         },
         {
             "type": "vcs",
-            "url": "https://github.com/laboro/AddressBundle",
-            "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/ConfigBundle",
-            "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/DataFlowBundle",
-            "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/FilterBundle"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/FlexibleEntityBundle",
-            "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/GridBundle",
-            "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/MeasureBundle",
-            "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/NavigationBundle",
-            "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/SearchBundle",
-            "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/SegmentationTreeBundle",
-            "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/SoapBundle",
-            "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/UIBundle",
-            "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/UserBundle",
-            "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/WindowsBundle",
-            "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/TestFrameworkBundle.git",
-            "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/DataAuditBundle.git",
-            "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/JsFormValidationBundle.git",
-            "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/SonataAdminBundle.git"
+            "url": "http://gitlab.orocrm.com/vendors/sonataadminbundle.git"
         }
     ],
     "scripts": {
