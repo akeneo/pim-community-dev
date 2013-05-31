@@ -1,10 +1,9 @@
 <?php
+
 namespace Pim\Bundle\ConfigBundle\Entity;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -47,7 +46,7 @@ class Currency
     /**
      * @var ArrayCollection $locales
      *
-     * @ORM\ManyToMany(targetEntity="Locale", mappedBy="currencies")
+     * @ORM\OneToMany(targetEntity="Locale", mappedBy="defaultCurrency")
      */
     protected $locales;
 
@@ -126,6 +125,11 @@ class Currency
     public function getActivated()
     {
         return $this->activated;
+    }
+
+    public function toggleActivation()
+    {
+        $this->activated = !$this->activated;
     }
 
     /**

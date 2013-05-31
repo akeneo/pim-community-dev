@@ -2,9 +2,7 @@
 namespace Pim\Bundle\ConfigBundle\Entity;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Locale\Locale as SfLocale;
 
@@ -48,7 +46,7 @@ class Locale
     /**
      * @var Currency $defaultCurrency
      *
-     * @ORM\ManyToOne(targetEntity="Currency")
+     * @ORM\ManyToOne(targetEntity="Currency", inversedBy="locales")
      * @ORM\JoinColumn(name="default_currency_id", referencedColumnName="id")
      */
     protected $defaultCurrency;

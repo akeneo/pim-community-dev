@@ -1,8 +1,8 @@
 <?php
+
 namespace Pim\Bundle\ConfigBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\ConfigBundle\Entity\Locale;
-
 use Pim\Bundle\ConfigBundle\Entity\Currency;
 
 /**
@@ -65,6 +65,16 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
         $newActivated = false;
         $currency->setActivated($newActivated);
         $this->assertFalse($currency->getActivated());
+    }
+
+    public function testToggleActivation()
+    {
+        $currency = new Currency();
+        $currency->toggleActivation();
+        $this->assertFalse($currency->getActivated());
+
+        $currency->toggleActivation();
+        $this->assertTrue($currency->getActivated());
     }
 
     /**
