@@ -1,6 +1,6 @@
 {% extends bap.layout is defined ? bap.layout : 'OroUserBundle::layout.html.twig' %}
 {% import 'OroUserBundle::macros.html.twig' as macros %}
-{% set format = get_user_value('oro_user.name_format') %}
+{% set format = oro_config_value('oro_user.name_format') %}
 
 {% oro_title_set({params : {"%username%": user.fullname(format)|default('N/A') }}) %}
 
