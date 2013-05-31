@@ -81,21 +81,17 @@ class CategoryTreeControllerTest extends ControllerTest
 
         // assert tree form well works
         $crawler = $crawler->filter('form')->reduce(
-                function ($node, $i) {
-                    if ($node->hasAttribute('action')) {
-                        $action = $node->getAttribute('action');
-                        if (preg_match('#\/enrich\/category-tree\/create$#', $action)) {
-                            return true;
-                        }
+            function ($node, $i) {
+                if ($node->hasAttribute('action')) {
+                    $action = $node->getAttribute('action');
+                    if (preg_match('#\/enrich\/category-tree\/create$#', $action)) {
+                        return true;
                     }
-
-                    return false;
                 }
-        )->first();
 
-        $handler = fopen('/home/romain/test.txt', 'a+');
-        fwrite($handler, $crawler->text());
-        fclose($handler);
+                return false;
+            }
+        )->first();
 
         // assert fields count
         $this->assertCount(1, $crawler->filter('div > input'));
