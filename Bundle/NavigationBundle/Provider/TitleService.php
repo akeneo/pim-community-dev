@@ -155,7 +155,10 @@ class TitleService implements TitleServiceInterface
      */
     public function setData(array $values)
     {
-        if (isset($values['titleTemplate']) && $this->getTemplate() == null) {
+        if (isset($values['titleTemplate'])
+            && ($this->getTemplate() == null
+            || (isset($values['force']) && $values['force']))
+        ) {
             $this->setTemplate($values['titleTemplate']);
         }
         if (isset($values['params'])) {
