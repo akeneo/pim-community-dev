@@ -23,7 +23,7 @@ class RoleManager
     /**
      * Get user query builder
      *
-     * @param  Role $role
+     * @param  Role         $role
      * @return QueryBuilder
      */
     public function getUserQueryBuilder(Role $role)

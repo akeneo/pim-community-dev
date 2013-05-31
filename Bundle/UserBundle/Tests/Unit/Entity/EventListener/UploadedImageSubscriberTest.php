@@ -170,7 +170,6 @@ class UploadedImageSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $fileName = md5(time()) . '.jpg';
 
-
         $imageFile = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
             ->disableOriginalConstructor()
             ->getMock();
@@ -220,6 +219,7 @@ class UploadedImageSubscriberTest extends \PHPUnit_Framework_TestCase
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
+
         return $uploadDir . DIRECTORY_SEPARATOR . $entity->getImage();
     }
 
@@ -252,6 +252,7 @@ class UploadedImageSubscriberTest extends \PHPUnit_Framework_TestCase
                 ->method('getEntityManager')
                 ->will($this->returnValue($em));
         }
+
         return $event;
     }
 

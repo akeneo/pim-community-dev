@@ -3,7 +3,6 @@
 namespace Oro\Bundle\UserBundle\Entity\EventListener;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
 
@@ -17,7 +16,7 @@ class UploadedImageSubscriber implements EventSubscriber
     /**
      * Define web root path.
      *
-     * @param string $kernelRootDir
+     * @param  string                    $kernelRootDir
      * @throws \InvalidArgumentException
      */
     public function __construct($kernelRootDir)
@@ -148,7 +147,7 @@ class UploadedImageSubscriber implements EventSubscriber
     /**
      * Get upload directory location in FS.
      *
-     * @param EntityUploadedImageInterface $entity
+     * @param  EntityUploadedImageInterface $entity
      * @return string
      */
     protected function getUploadRootDir(EntityUploadedImageInterface $entity)
@@ -174,7 +173,7 @@ class UploadedImageSubscriber implements EventSubscriber
     /**
      * Check for new image upload.
      *
-     * @param EntityUploadedImageInterface $entity
+     * @param  EntityUploadedImageInterface $entity
      * @return bool
      */
     protected function hasUploadedImage($entity)
@@ -184,8 +183,8 @@ class UploadedImageSubscriber implements EventSubscriber
 
     /**
      * Check if entity acceptable by subscriber.
-     * 
-     * @param object $entity
+     *
+     * @param  object $entity
      * @return bool
      */
     protected function isExpectedEntity($entity)

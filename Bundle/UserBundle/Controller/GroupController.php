@@ -90,7 +90,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @param Group $group
+     * @param  Group                    $group
      * @return GroupUserDatagridManager
      */
     protected function getGroupUserDatagridManager(Group $group)
@@ -99,6 +99,7 @@ class GroupController extends Controller
         $result = $this->get('oro_user.group_user_datagrid_manager');
         $result->setGroup($group);
         $result->getRouteGenerator()->setRouteParameters(array('id' => $group->getId()));
+
         return $result;
     }
 
