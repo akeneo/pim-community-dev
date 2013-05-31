@@ -1,6 +1,7 @@
 parameters:
     oro_form.type.date.class:              Oro\Bundle\FormBundle\Form\Type\OroDateType
     oro_form.type.datetime.class:          Oro\Bundle\FormBundle\Form\Type\OroDateTimeType
+    oro_form.type.combobox_local.class:    Oro\Bundle\FormBundle\Form\Type\OroComboboxLocalType
     oro_form.type.entity_identifier.class: Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType
 
 services:

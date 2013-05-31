@@ -1,0 +1,90 @@
+{% block oro_ticker_symbol_widget %}
+    <script type="text/javascript">
+        $(function() {
+            var cache = {};
+            $("#{{ id }}").typeahead({
+                source: function (request, process) {
+                    YAHOO = {
+                        Finance: {
+                            SymbolSuggest: {
+                                ssCallback: function (data) {
+                                    var result = $.map(data.ResultSet.Result, function (item) {
+                                        return item.name + " (" + item.symbol + ")";
+                                    });
+                                    $.each(data.ResultSet.Result, function (itemKey, item) {
+                                        cache[item.name + " (" + item.symbol + ")"] = item.symbol;
+                                    });
+                                    process(result)
+                                }
+                            }
+                        }
+                    };
+                    $.ajax({
+                        type: "GET",
+                        dataType: "jsonp",
+                        jsonp: "callback",
+                        jsonpCallback: "YAHOO.Finance.SymbolSuggest.ssCallback",
+                        data: {
+                            query: request
+                        },
+                        cache: true,
+                        url: "http://autoc.finance.yahoo.com/autoc"
+                    });
+                },
+                updater: function(item) {
+                    if (typeof cache[item] != 'undefined') {
+                        return cache[item];
+                    } else {
+                        return item;
+                    }
+                }
+            });
+        });
+    </script>
+
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block genemu_jqueryselect2_javascript %}
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            var $field = $('#{{ id }}');
+
+            {% block genemu_jqueryselect2_javascript_prototype %}
+                var select2Config = {{ configs|json_encode|raw }};
+
+                {% if configs.datasource is defined %}
+                    {{ block('oro_combobox_dataconfig_' ~ configs.datasource) }}
+                {% endif %}
+
+                $field.select2(select2Config);
+            {% endblock %}
+        });
+    </script>
+{% endblock %}
+
+{% block oro_combobox_dataconfig_grid %}
+    {% set url = configs.ajax.url is defined ? configs.ajax.url : path(configs.route, {'_format': 'json'}) %}
+
+    select2Config.ajax = {
+        'url': {{ url|json_encode|raw }},
+        'type': 'GET',
+        'data': function (query, page) {
+            return {
+                '{{ configs.grid.name }}[_pager][_page]': page,
+                '{{ configs.grid.name }}[_pager][_per_page]': {{ configs.grid.per_page|default(10) }},
+                '{{ configs.grid.name }}[_sort_by][{{ configs.grid.sort_by|default(configs.grid.property) }}]': "{{ configs.grid.sort_order|default('ASC') }}",
+                '{{ configs.grid.name }}[_filter][{{ configs.grid.property }}][type]': 1,
+                '{{ configs.grid.name }}[_filter][{{ configs.grid.property }}][value]': query
+            };
+        },
+        'results': function (data, page) {
+            return {
+                results: $.map(data.data, function(item) {
+                    return {'id': item.id, 'text': item.{{- configs.grid.property -}} };
+                }),
+                more: page*10 < data.options.totalRecords
+            };
+        }
+    }
+{% endblock %}

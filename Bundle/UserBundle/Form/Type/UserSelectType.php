@@ -1,7 +1,6 @@
 <?php
 namespace Oro\Bundle\UserBundle\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -11,12 +10,16 @@ class UserSelectType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'class' => 'OroUserBundle:User',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')
-                        ->orderBy('u.username', 'ASC');
-                },
-                'empty_value' => 'Choose a user...',
+                'configs' => array(
+                    'placeholder' => 'Choose a user...',
+                    'datasource' => 'grid',
+                    'route' => 'oro_user_index',
+                    'grid' => array(
+                        'name' => 'users',
+                        'property' => 'username'
+                    )
+                ),
+                'empty_value' => '',
                 'empty_data'  => null
             )
         );
@@ -24,7 +27,7 @@ class UserSelectType extends AbstractType
 
     public function getParent()
     {
-        return 'entity';
+        return 'genemu_jqueryselect2_hidden';
     }
 
     /**
