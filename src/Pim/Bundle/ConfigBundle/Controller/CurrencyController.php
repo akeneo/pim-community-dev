@@ -57,33 +57,6 @@ class CurrencyController extends Controller
     }
 
     /**
-     * Disable currency
-     *
-     * @param Currency $currency
-     *
-     * @Route("/disable/{id}", requirements={"id"="\d+"})
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function disableAction(Currency $currency)
-    {
-        // Disable activated property if no locale associated
-        if ($currency->getLocales()->count() === 0) {
-            $currency->setActivated(false);
-            $this->getEntityManager()->persist($currency);
-            $this->getEntityManager()->flush();
-
-            if ($this->getRequest()->isXmlHttpRequest()) {
-                return new Response('', 204);
-            } else {
-                return $this->redirect($this->generateUrl('pim_config_currency_index'));
-            }
-        } else {
-            return new Response('Currency linked to locales. Can`\t be disabled', 500);
-        }
-    }
-
-    /**
      * @Route("/{id}/toggle", requirements={"id"="\d+"})
      */
     public function toggleAction(Currency $currency)
