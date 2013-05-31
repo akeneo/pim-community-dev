@@ -225,6 +225,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Then /^I should see activated currency (.*)$/
      * @Then /^I should see activated currencies (.*)$/
      */
     public function iShouldSeeActivatedCurrencies($currencies)
@@ -232,7 +233,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         foreach ($this->listToArray($currencies) as $currency) {
             if (!$this->getPage('Currency index')->findActivatedCurrency($currency)) {
                 throw $this->createExpectationException(sprintf(
-                    'Activated currency "%s" is not displayed', $currency
+                    'Currency "%s" is not activated.', $currency
                 ));
             }
         }
@@ -240,16 +241,39 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     /**
      * @Given /^I should see deactivated currency (.*)$/
+     * @Given /^I should see deactivated currencies (.*)$/
      */
     public function iShouldSeeDeactivatedCurrencies($currencies)
     {
         foreach ($this->listToArray($currencies) as $currency) {
             if (!$this->getPage('Currency index')->findDeactivatedCurrency($currency)) {
                 throw $this->createExpectationException(sprintf(
-                    'Activated currency "%s" is not displayed', $currency
+                    'Currency "%s" is not activated.', $currency
                 ));
             }
         }
+    }
+
+    /**
+     * @When /^I activate the (.*) currency$/
+     */
+    public function iActivateTheCurrency($currencies)
+    {
+        $this->getPage('Currency index')->activateCurrencies(
+            $this->listToArray($currencies)
+        );
+        $this->getSession()->wait(5000, '$("table.grid tbody tr").length > 0');
+    }
+
+    /**
+     * @When /^I deactivate the (.*) currency$/
+     */
+    public function iDeaactivateTheCurrency($currencies)
+    {
+        $this->getPage('Currency index')->deactivateCurrencies(
+            $this->listToArray($currencies)
+        );
+        $this->getSession()->wait(5000, '$("table.grid tbody tr").length > 0');
     }
 
     /**

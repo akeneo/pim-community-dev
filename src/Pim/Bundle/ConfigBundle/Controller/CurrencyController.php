@@ -57,26 +57,6 @@ class CurrencyController extends Controller
     }
 
     /**
-     * Get entity manager
-     *
-     * @return \Doctrine\ORM\EntityManager
-     */
-    protected function getEntityManager()
-    {
-        return $this->getDoctrine()->getEntityManager();
-    }
-
-    /**
-     * Get currency repository
-     *
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    protected function getCurrencyRepository()
-    {
-        return $this->getEntityManager()->getRepository('PimConfigBundle:Currency');
-    }
-
-    /**
      * Disable currency
      *
      * @param Currency $currency
@@ -101,5 +81,41 @@ class CurrencyController extends Controller
         } else {
             return new Response('Currency linked to locales. Can`\t be disabled', 500);
         }
+    }
+
+    /**
+     * @Route("/{id}/toggle", requirements={"id"="\d+"})
+     */
+    public function toggleAction(Currency $currency)
+    {
+        $currency->toggleActivation();
+
+        $this->getEntityManager()->flush();
+
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            return $this->redirect($this->generateUrl('pim_config_currency_index'));
+        }
+    }
+
+    /**
+     * Get entity manager
+     *
+     * @return \Doctrine\ORM\EntityManager
+     */
+    protected function getEntityManager()
+    {
+        return $this->getDoctrine()->getEntityManager();
+    }
+
+    /**
+     * Get currency repository
+     *
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    protected function getCurrencyRepository()
+    {
+        return $this->getEntityManager()->getRepository('PimConfigBundle:Currency');
     }
 }

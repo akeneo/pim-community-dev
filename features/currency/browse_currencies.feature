@@ -26,4 +26,4 @@ Feature: Browse currencies
     Given I am on the currencies page
     When I deactivate the USD currency
     Then I should see activated currency EUR
-    And I should see deactivated currency GBP and USD
+    And I should see deactivated currencies GBP and USD
