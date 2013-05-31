@@ -1,36 +1,36 @@
 
-var select_node_id = null;
+var preselect_node_id = null;
 
 // Get the current node id from URL when in edit form
-edit_url_pattern = /edit\/[0-9]+/;
+var edit_url_pattern = /edit\/[0-9]+/;
 
 if (edit_url_pattern.test(window.location.pathname)) {
-    url_parts = window.location.pathname.split('/');
-    select_node_id = url_parts[url_parts.length-1];
+    var url_parts = window.location.pathname.split('/');
+    preselect_node_id = url_parts[url_parts.length-1];
 }
 
 // Get the current node id from URL when in create form
-create_url_pattern = /create\/[0-9]+/;
+var create_url_pattern = /create\/[0-9]+/;
 
 if (create_url_pattern.test(window.location.pathname)) {
-    url_parts = window.location.pathname.split('/');
-    select_node_id = url_parts[url_parts.length-1];
+    var url_parts = window.location.pathname.split('/');
+    preselect_node_id = url_parts[url_parts.length-1];
 }
 
 // Case of return from save: the node id will be positionned on the node
 // request parameter
-node_param_pattern = /node=[0-9]+/;
+var node_param_pattern = /node=[0-9]+/;
 if (node_param_pattern.test(window.location.search)) {
-    search_parts = window.location.search.replace('?','').split('&');
+    var search_parts = window.location.search.replace('?','').split('&');
 
-    node_param_pattern_strict = /^node=[0-9]+$/;
-    i = 0;
-    found_node = false;
+    var node_param_pattern_strict = /^node=[0-9]+$/;
+    var i = 0;
+    var found_node = false;
 
     while ( (i < search_parts.length) && !found_node) {
         if (node_param_pattern_strict.test(search_parts[i])) {
-            param_node_parts = search_parts[i].split('=');
-            select_node_id = param_node_parts[param_node_parts.length - 1];
+            var param_node_parts = search_parts[i].split('=');
+            preselect_node_id = param_node_parts[param_node_parts.length - 1];
             found_node = true;
         }
     }
@@ -46,11 +46,12 @@ $(tree_id).jstree({
     "tree_selector" : {
         "ajax" : {
             "url" : urlListTree,
-            "parameters" : {"select_node_id" : window.select_node_id}
+            "parameters" : {"select_node_id" : window.preselect_node_id}
         },
         "auto_open_root" : true,
         "node_label_field" : "title",
-        "no_tree_message" : window.no_tree_message
+        "no_tree_message" : window.no_tree_message,
+        "preselect_node_id" : window.preselect_node_id
     },
     "themes" : {
         "dots" : true,
@@ -72,7 +73,7 @@ $(tree_id).jstree({
                 }
                 return {
                     "id" : id,
-                    "select_node_id" : window.select_node_id
+                    "select_node_id" : window.preselect_node_id
                 };
             }
         }
