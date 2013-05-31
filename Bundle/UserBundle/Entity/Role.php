@@ -143,7 +143,7 @@ class Role implements RoleInterface
     /**
      * Add aclResources
      *
-     * @param  Acl $aclResources
+     * @param  Acl  $aclResources
      * @return Role
      */
     public function addAclResource(Acl $aclResources)

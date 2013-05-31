@@ -28,6 +28,8 @@ class OroConfigExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $this->configuration = new ContainerBuilder();
 
+        $this->configuration->setParameter('kernel.bundles', array());
+
         $loader = new OroConfigExtension();
         $config = $this->getEmptyConfig();
 
@@ -59,10 +61,10 @@ class OroConfigExtensionTest extends \PHPUnit_Framework_TestCase
     protected function getContainer(array $config = array())
     {
         $container = new ContainerBuilder();
+        $loader    = new OroConfigExtension();
+
         $container->addCompilerPass(new Compiler\ConfigPass());
-
-        $loader = new OroConfigExtension();
-
+        $container->setParameter('kernel.bundles', array());
         $loader->load($config, $container);
 
         $container->register('doctrine.orm.entity_manager', $this->getMockClass('Doctrine\Common\Persistence\ObjectManager'));

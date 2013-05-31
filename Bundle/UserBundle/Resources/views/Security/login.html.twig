@@ -13,7 +13,7 @@
 
     <form action="{{ path('oro_user_security_check') }}" method="post" class="form-signin">
         <div class="title-box">
-            <h1 class="oro-title" title="{{ get_user_value('oro_ui.application_title') }}">{{ get_user_value('oro_ui.application_name') }}</h1>
+            <h1 class="oro-title" title="{{ oro_config_value('oro_ui.application_title') }}">{{ oro_config_value('oro_ui.application_name') }}</h1>
             <span class="divider-vertical"></span>
             <h2 class="title">{{ 'Login'|trans }}</h2>
         </div>

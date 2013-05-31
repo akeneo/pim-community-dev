@@ -89,8 +89,8 @@
 
             {% block logo %}
             <h1 class="logo ">
-                <a href="{{ path('oro_default') }}" title="{{ get_user_value('oro_ui.application_title') }}">
-                    {{ get_user_value('oro_ui.application_name') }}
+                <a href="{{ path('oro_default') }}" title="{{ oro_config_value('oro_ui.application_title') }}">
+                    {{ oro_config_value('oro_ui.application_name') }}
                 </a>
             </h1>
             {% endblock logo %}

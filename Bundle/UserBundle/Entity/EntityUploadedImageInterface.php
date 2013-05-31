@@ -9,7 +9,7 @@ interface EntityUploadedImageInterface
     /**
      * Set image name.
      *
-     * @param string $image
+     * @param  string $image
      * @return object
      */
     public function setImage($image);

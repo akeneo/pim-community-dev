@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\UserBundle\Datagrid;
 
-use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\UserBundle\Entity\Role;
@@ -33,6 +32,7 @@ class RoleUserDatagridManager extends UserRelationDatagridManager
         if (!$this->role) {
             throw new \LogicException('Datagrid manager has no configured Role entity');
         }
+
         return $this->role;
     }
 
@@ -57,6 +57,7 @@ class RoleUserDatagridManager extends UserRelationDatagridManager
                 'show_filter' => true,
             )
         );
+
         return $fieldHasRole;
     }
 

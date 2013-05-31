@@ -4,7 +4,6 @@ namespace Oro\Bundle\UserBundle\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -12,7 +11,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserApi;
-use Oro\Bundle\UserBundle\Entity\UserManager;
 
 /**
  * @Acl(
@@ -43,7 +41,6 @@ class UserController extends Controller
 
     /**
      * @Route("/apigen/{id}", name="oro_user_apigen", requirements={"id"="\d+"})
-     * @Template
      * @Acl(
      *      id="oro_user_user_apigen",
      *      name="Generate new API key",
@@ -67,7 +64,7 @@ class UserController extends Controller
 
         return $this->getRequest()->isXmlHttpRequest()
             ? new JsonResponse($api->getApiKey())
-            : $this->forward('OroUserBundle:User:show', array('user' => $user));
+            : $this->forward('OroUserBundle:User:view', array('user' => $user));
     }
 
     /**
@@ -84,7 +81,7 @@ class UserController extends Controller
      */
     public function createAction()
     {
-        $user = $this->getManager()->createFlexible();
+        $user = $this->get('oro_user.manager')->createFlexible();
 
         return $this->updateAction($user);
     }
@@ -105,6 +102,7 @@ class UserController extends Controller
     {
         if ($this->get('oro_user.form.handler.user')->process($entity)) {
             $this->get('session')->getFlashBag()->add('success', 'User successfully saved');
+
             return $this->redirect($this->generateUrl('oro_user_index'));
         }
 
@@ -127,24 +125,12 @@ class UserController extends Controller
      *      parent="oro_user_user"
      * )
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        $datagrid = $this->get('oro_user.user_datagrid_manager')->getDatagrid();
-        $view     = 'json' == $request->getRequestFormat()
-            ? 'OroGridBundle:Datagrid:list.json.php'
-            : 'OroUserBundle:User:index.html.twig';
+        $view = $this->get('oro_user.user_datagrid_manager')->getDatagrid()->createView();
 
-        return $this->render(
-            $view,
-            array('datagrid' => $datagrid->createView())
-        );
-    }
-
-    /**
-     * @return UserManager
-     */
-    protected function getManager()
-    {
-        return $this->get('oro_user.manager');
+        return 'json' == $this->getRequest()->getRequestFormat()
+            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
+            : $this->render('OroUserBundle:User:index.html.twig', array('datagrid' => $view));
     }
 }
