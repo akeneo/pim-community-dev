@@ -133,8 +133,12 @@ class Page
     public function assertMessage($messageText, $message = '')
     {
         PHPUnit_Framework_Assert::assertTrue(
-            $this->isElementPresent("//div[contains(@class,'alert') and contains(., '{$messageText}')]"),
-            $message
+            $this->isElementPresent("//div[contains(@class,'alert') and not(contains(@class, 'alert-empty'))]"),
+            'Flash message is missing'
+        );
+        $actualResult = $this->byXPath("//div[contains(@class,'alert') and not(contains(@class, 'alert-empty'))]/div")->text();
+
+        PHPUnit_Framework_Assert::assertEquals($messageText, $actualResult, $message
         );
         return $this;
     }

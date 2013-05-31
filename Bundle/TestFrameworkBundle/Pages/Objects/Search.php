@@ -38,9 +38,9 @@ class Search extends Page
     public function result($filter)
     {
         if (!is_null($filter)) {
-            $result = $this->elements($this->using("xpath")->value("//div[@class= 'container-fluid']/div/h3/a[contains(., '{$filter}')]"));
+            $result = $this->elements($this->using("xpath")->value("//div[@id='oro_search_resultsDatagridBody']//tr//h1/a[contains(., '{$filter}')]"));
         } else {
-            $result = $this->elements($this->using("xpath")->value("//div[@class= 'container-fluid']/div/h3/a"));
+            $result = $this->elements($this->using("xpath")->value("//div[@id='oro_search_resultsDatagridBody']//tr//h1/a"));
         }
 
         return $result;
