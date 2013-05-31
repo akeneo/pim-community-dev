@@ -163,7 +163,7 @@ class ProductFamilyControllerTest extends ControllerTest
     public function testRemove()
     {
         // get product family entity
-        $productFamily = $this->getRepository()->findOneBy(array());
+        $productFamily = $this->getRepository()->findOneBy(array('code' => self::FAMILY_CODE));
         $uri = '/enrich/product-family/remove/'. $productFamily->getId();
 
         // assert without authentication
