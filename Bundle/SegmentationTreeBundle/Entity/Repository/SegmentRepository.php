@@ -55,13 +55,20 @@ class SegmentRepository extends NestedTreeRepository
                 $meta = $this->getClassMetadata();
                 $config = $this->listener->getConfiguration($this->_em, $meta->name);
 
+                $selectPath = $this->getPath($selectNode);
                 $qb = $this->getNodesHierarchyQueryBuilder($parent);
 
+                // Remove the node itself from his ancestor
+                array_pop($selectPath);
+
+                $ancestorsIds = array();
+
+                foreach ($selectPath as $ancestor) {
+                    $ancestorsIds[] = $ancestor->getId();
+                }
+
                 $qb->andWhere(
-                    $qb->expr()->orx(
-                        $qb->expr()->lt('node.' . $config['level'], $selectNode->getLevel()),
-                        $qb->expr()->eq('node.' . $config['parent'], $selectNode->getParent()->getId())
-                    )
+                    $qb->expr()->in('node.' . $config['parent'], $ancestorsIds)
                 );
                 $nodes = $qb->getQuery()->getResult();
                 $children = $this->buildTreeNode($nodes);
