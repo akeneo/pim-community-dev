@@ -2,40 +2,40 @@
 
 {% set title = 'Family'|trans %}
 
-{% block content %}
-
-    {% set currentFamily = family is defined ? family : null %}
-
-    <div class="row-fluid has-sidebar">
-        <div class="sidebar-list">
-            <ul>
-                {% for family in families %}
-                <li class="{{ family == currentFamily ? 'active' : '' }}"><a href="{{ path('pim_product_productfamily_edit', {'id': family.id}) }}">{{ family.label }}</a></li>
-                {% endfor %}
-                <li><a href="{{ path('pim_product_productfamily_create') }}" class="btn">{{ 'New family'|trans }}</a></li>
-            </ul>
-
+{% block page_container %}
+<div class="container-fluid">
+    {% block content %}
+        {% set currentFamily = family is defined ? family : null %}
+        <div class="row-fluid has-sidebar">
+            <div class="sidebar-list">
+                <ul>
+                    {% for family in families %}
+                    <li class="{{ family == currentFamily ? 'active' : '' }}"><a href="{{ path('pim_product_productfamily_edit', {'id': family.id}) }}">{{ family.label }}</a></li>
+                    {% endfor %}
+                    <li><a href="{{ path('pim_product_productfamily_create') }}" class="btn">{{ 'New family'|trans }}</a></li>
+                </ul>
+            </div>
+            <div id="form-tab">
+                {% block familyTab %}
+                <h3>{{ title }}</h3>
+                {% endblock familyTab %}
+            </div>
         </div>
-        <div id="form-tab">
-            {% block familyTab %}
-            <h3>{{ title }}</h3>
-            {% endblock familyTab %}
-        </div>
-    </div>
+    {% endblock %}
+</div>
+{% endblock %}
 
-    {% block javascripts %}
+{% block head_script_component %}
     {{ parent() }}
-
+    
     {% javascripts
         '@PimUIBundle/Resources/public/js/jquery.multiselect.custom.js'
         '@PimUIBundle/Resources/public/js/jquery.pimMultiselect.js'
-
+    
         filter='?yui_js'
         output='js/pim.multiselect.js'
         %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-
-    {% endblock %}
 
 {% endblock %}
