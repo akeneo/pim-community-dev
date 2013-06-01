@@ -26,6 +26,7 @@ twig:
     globals:
         bap:
             layout:           ::base.html.twig  # default layout across all Oro bundles
+            start_route:      pim_product_product_index
     form:
         resources:
             - 'PimUIBundle:Form:fields.html.twig'
@@ -130,8 +131,11 @@ stof_doctrine_extensions:
     orm:
         default:
             timestampable: true
-            tree: true
-            translatable: true
+            tree:          true
+            translatable:  true
+            loggable:      true
+    class:
+        loggable: Oro\Bundle\DataAuditBundle\EventListener\LoggableListener
 
 services:
     cache:
