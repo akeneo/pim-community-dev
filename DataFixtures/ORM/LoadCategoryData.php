@@ -76,6 +76,8 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
         $nodeShirts = $this->createCategory('Shirts (default)', $nodeClothing, array($product5));
         $nodeJeans  = $this->createCategory('Jeans (default)', $nodeClothing, array($product3, $product4));
         $nodeShoes  = $this->createCategory('Shoes (default)', $nodeClothing, array($product1, $product2, $product3));
+        $nodeFShoes  = $this->createCategory('Shoes Male (default)', $nodeShoes, array($product3));
+        $nodeMShoes  = $this->createCategory('Shoes Female (default)', $nodeShoes, array($product2));
 
         $nodeClothingEu  = $this->createCategory('Apparels & Shoes (eu sales)', $treeSales);
         $nodeShirtsEu = $this->createCategory('Shirts (eu sales)', $nodeClothingEu, array($product5));
@@ -101,6 +103,8 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
         $this->translate($nodeShirts, $locale, 'Shirts');
         $this->translate($nodeJeans, $locale, 'Jeans');
         $this->translate($nodeShoes, $locale, 'Shoes');
+        $this->translate($nodeFShoes, $locale, 'Shoes Male');
+        $this->translate($nodeMShoes, $locale, 'Shoes Female');
 
         $this->translate($nodeClothingEu, $locale, 'Apparels & Shoes in Europe Sales');
         $this->translate($nodeShirtsEu, $locale, 'Shirts');
