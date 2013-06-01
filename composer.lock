@@ -2670,7 +2670,7 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.orocrm.com:platform/platform.git",
-                "reference": "eb92081d8e2916542b633c8cc8d117e203d95333"
+                "reference": "509748c36db10182b598e4bde689e16cdfb8fa10"
             },
             "require": {
                 "apy/jsfv-bundle": "2.1.*@dev",
@@ -2729,7 +2729,7 @@
             ],
             "description": "Business Application Platform (BAP)",
             "homepage": "git@gitlab.orocrm.com:platform.git",
-            "time": "2013-05-31 20:28:02"
+            "time": "2013-06-01 18:05:45"
         },
         {
             "name": "phpcollection/phpcollection",
