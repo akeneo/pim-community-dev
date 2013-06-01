@@ -13,7 +13,7 @@
     <script type="text/javascript" src="{{ asset('bundles/orosegmentationtree/js/lib/jstree/jquery.jstree.tree_selector.js') }}"></script>
 
     <script type="text/javascript">
-        $(document).dialogForm({ trigger: '#create-product', url: 'quickcreate' });
+        $(document).dialogForm({ trigger: '#create-product', url: '{{ path('pim_product_product_quickcreate') }}' });
         $(function() {
             var datagrid = Oro.Registry.getElement('datagrid', 'products');
             $("#locale-switcher").append(datagrid.filters.locale.el);
