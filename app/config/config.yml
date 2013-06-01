@@ -131,8 +131,11 @@ stof_doctrine_extensions:
     orm:
         default:
             timestampable: true
-            tree: true
-            translatable: true
+            tree:          true
+            translatable:  true
+            loggable:      true
+    class:
+        loggable: Oro\Bundle\DataAuditBundle\EventListener\LoggableListener
 
 services:
     cache:
