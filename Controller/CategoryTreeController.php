@@ -269,6 +269,7 @@ class CategoryTreeController extends Controller
     public function removeAction(Category $category)
     {
         $count = $this->getTreeManager()->getEntityRepository()->countProductsLinked($category, false);
+        $parent = $category->getParent();
 
         if ($count == 0) {
             $this->getTreeManager()->remove($category);
@@ -290,10 +291,9 @@ class CategoryTreeController extends Controller
             return new JsonResponse();
         } else {
             $this->get('session')->getFlashBag()->add('success', 'Category successfully removed');
+            $params = ($parent !== null) ? array('node' => $parent->getId()) : array();
 
-            return $this->redirect(
-                $this->generateUrl('pim_product_categorytree_index', array('node' => $category->getParent()->getId()))
-            );
+            return $this->redirect($this->generateUrl('pim_product_categorytree_index', $params));
         }
     }
 
