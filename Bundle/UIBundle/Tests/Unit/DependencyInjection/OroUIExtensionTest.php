@@ -3,7 +3,6 @@
 namespace Oro\Bundle\UIBundle\Tests\Unit\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Yaml\Parser;
 
 use Oro\Bundle\UIBundle\DependencyInjection\OroUIExtension;
 
@@ -23,6 +22,23 @@ class OroUIExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('setParameter');
 
         $extension = new OroUIExtension();
-        $extension->load(array(), $this->container);
+
+        $extensionConfig = array(
+            array(
+                'position_blocks' => array(
+                    array(
+                        'name' => 'top_test_template',
+                        'remove' => true
+                    ),
+                    array(
+                        'name' => 'insert_template',
+                        'position' => 'new_position',
+                        'action' => 'test_action'
+                    ),
+                )
+            )
+        );
+
+        $extension->load($extensionConfig, $this->container);
     }
 }

@@ -44,6 +44,8 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('template')
                     ->end()
+                    ->scalarNode('order')
+                    ->end()
                 ->end()
             ->end()
             ->end();
