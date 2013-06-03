@@ -23,24 +23,8 @@ class ProductFamilyTypeTest extends TypeTestCase
      */
     public function setUp()
     {
-        $this->markTestIncomplete('Either drop this test class or find a neat way to add entity form type support');
+//         $this->markTestIncomplete('Either drop this test class or find a neat way to add entity form type support');
         parent::setUp();
-
-
-        // redefine form factory and builder to add translatable field
-        $this->builder->add('pim_translatable_field');
-        $this->factory = Forms::createFormFactoryBuilder()
-            ->addTypeExtension(
-                new FormTypeValidatorExtension(
-                    $this->getMock('Symfony\Component\Validator\ValidatorInterface')
-                )
-            )
-            ->addType(new TranslatableFieldType(
-                $this->getMock('Symfony\Component\Validator\ValidatorInterface'),
-                $this->getLocaleManagerMock(),
-                'en_US'
-            ))
-            ->getFormFactory();
 
         // Create form type
         $this->type = new ProductFamilyType();
