@@ -25,7 +25,7 @@ class SimpleProductType extends FlexibleType
         parent::addEntityFields($builder);
 
         $builder
-            ->add('sku', 'text', array('required' => true))
+            ->add('sku', 'text', array('required' => true, 'label' => 'SKU'))
             ->add('productFamily')
             ->add(
                 'locales',
