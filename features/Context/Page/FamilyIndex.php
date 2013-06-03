@@ -14,7 +14,7 @@ class FamilyIndex extends Page
     protected $path = '/enrich/product-family/';
 
     protected $elements = array(
-        'List' => array('css' => '.resizable-sidebar ul'),
+        'List' => array('css' => '.sidebar-list ul'),
     );
 
     public function getFamilies()
