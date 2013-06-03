@@ -30,10 +30,17 @@ class PositionTokenParser extends \Twig_TokenParser
         $stream = $parser->getStream();
 
         $name = $stream->expect(\Twig_Token::NAME_TYPE)->getValue();
+
+        $variables = null;
+        if ($stream->test(\Twig_Token::NAME_TYPE, 'with')) {
+            $stream->next();
+            $variables = $this->parser->getExpressionParser()->parseExpression();
+        }
+
         $stream->expect(\Twig_Token::BLOCK_END_TYPE);
 
         if (isset($this->positions[$name])) {
-            return new PositionNode($this->positions[$name], $this->wrapClassName, $token->getLine(), $this->getTag());
+            return new PositionNode($this->positions[$name], $variables, $this->wrapClassName, $token->getLine(), $this->getTag());
         }
     }
 
