@@ -9,6 +9,8 @@ use Symfony\Component\Form\FormInterface;
 
 class OroDateTimeType extends AbstractType
 {
+    const NAME = 'oro_datetime';
+
     /**
      * {@inheritdoc}
      */
@@ -82,6 +84,6 @@ class OroDateTimeType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_datetime';
+        return self::NAME;
     }
 }

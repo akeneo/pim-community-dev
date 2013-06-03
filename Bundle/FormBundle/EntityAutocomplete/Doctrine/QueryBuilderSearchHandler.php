@@ -37,14 +37,17 @@ class QueryBuilderSearchHandler implements SearchHandlerInterface
 
     /**
      * @param QueryBuilder $queryBuilder
-     * @param string $entityAlias
      * @param SearchPropertyConfig[] $searchProperties
+     * @param string $entityAlias
      */
-    public function __construct(QueryBuilder $queryBuilder, $entityAlias, array $searchProperties)
+    public function __construct(QueryBuilder $queryBuilder, array $searchProperties, $entityAlias = null)
     {
         $this->queryBuilder = $queryBuilder;
-        $this->entityAlias = $entityAlias;
         $this->searchPropertiesConfig = $searchProperties;
+        if (!$entityAlias) {
+            $entityAlias = reset($this->queryBuilder->getRootAliases());
+        }
+        $this->entityAlias = $entityAlias;
         $this->exprFactory = new Expr();
     }
 

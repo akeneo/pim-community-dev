@@ -67,4 +67,21 @@ class SearchPropertyConfig
             throw new \LogicException("Option '$name' of search property config has no value.");
         }
     }
+
+    /**
+     * Creates an instance of class
+     *
+     * @param array|string $config
+     * @return SearchPropertyConfig
+     * @throws \InvalidArgumentException
+     */
+    static public function create($config)
+    {
+        if (!is_string($config)) {
+            $config = array('property' => $config);
+        } elseif (!is_array($config)) {
+            throw new \InvalidArgumentException('$config must be a string or an array');
+        }
+        return new SearchPropertyConfig($config);
+    }
 }
