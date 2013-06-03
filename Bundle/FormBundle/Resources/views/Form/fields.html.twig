@@ -52,6 +52,11 @@
 
             {% block genemu_jqueryselect2_javascript_prototype %}
                 var select2Config = {{ configs|json_encode|raw }};
+                if ($field[0].tagName.toLowerCase() == 'input') {
+                    select2Config.initSelection = function(element, callback) {
+                        callback({'id': element.val(), 'text': element.data('title')});
+                    };
+                }
 
                 {% if configs.datasource is defined %}
                     {{ block('oro_combobox_dataconfig_' ~ configs.datasource) }}

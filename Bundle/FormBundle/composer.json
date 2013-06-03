@@ -6,7 +6,8 @@
     "license": "MIT",
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": ">=2.1"
+        "symfony/symfony": ">=2.1",
+        "genemu/form-bundle": "2.1.*"
     },
     "autoload": {
         "psr-0": { "Oro\\Bundle\\FormBundle": "" }
