@@ -25,7 +25,12 @@ class AttributeGroupControllerTest extends ControllerTest
     /**
      * @staticvar string
      */
-    const GROUP_EDITED_NAME = 'group edited name';
+    const GROUP_CODE = 'groupcode';
+
+    /**
+     * @staticvar string
+     */
+    const GROUP_EDITED_CODE = 'groupeditedcode';
 
     /**
      * @staticvar string
@@ -85,15 +90,10 @@ class AttributeGroupControllerTest extends ControllerTest
             }
         )->first()->form();
 
-        // FIXME:
-        $this->markTestIncomplete(
-            'This test needs to be redone to take the translation into account, as the name field is an array and not a field anymore'
-        );
-
-
         $values = array(
-            'pim_attribute_group_form[name]'       => self::GROUP_NAME,
-            'pim_attribute_group_form[sort_order]' => self::GROUP_ORDER
+            'pim_attribute_group_form[code]'               => self::GROUP_CODE,
+            'pim_attribute_group_form[name][name:default]' => self::GROUP_NAME,
+            'pim_attribute_group_form[sort_order]'         => self::GROUP_ORDER
         );
 
         $this->submitFormAndAssertFlashbag($form, $values, self::GROUP_SAVED_MSG);
@@ -114,7 +114,7 @@ class AttributeGroupControllerTest extends ControllerTest
     public function testEdit()
     {
         // get attribute group entity
-        $attributeGroup = $this->getRepository()->findOneBy(array('name' => self::GROUP_NAME));
+        $attributeGroup = $this->getRepository()->findOneBy(array('code' => self::GROUP_CODE));
         $uri = '/enrich/attribute-group/edit/'. $attributeGroup->getId();
 
         // assert without authentication
@@ -130,7 +130,7 @@ class AttributeGroupControllerTest extends ControllerTest
             function ($node, $i) {
                 if ($node->hasAttribute('action')) {
                     $action = $node->getAttribute('action');
-                    if (preg_match('#\/product\/attribute-group\/edit/[0-9]*$#', $action)) {
+                    if (preg_match('#\/enrich\/attribute-group\/edit/[0-9]*$#', $action)) {
                         return true;
                     }
                 }
@@ -140,22 +140,17 @@ class AttributeGroupControllerTest extends ControllerTest
         )->first()->form();
 
         $values = array(
-            'pim_attribute_group_form[id]'         => $attributeGroup->getId(),
-            'pim_attribute_group_form[name]'       => self::GROUP_EDITED_NAME,
-            'pim_attribute_group_form[sort_order]' => self::GROUP_ORDER
-        );
-
-        // FIXME:
-        $this->markTestIncomplete(
-            'This test needs to be redone to take the translation into account, as the name field is an array and not a field anymore'
+            'pim_attribute_group_form[code]'               => self::GROUP_EDITED_CODE,
+            'pim_attribute_group_form[name][name:default]' => self::GROUP_NAME,
+            'pim_attribute_group_form[sort_order]'         => self::GROUP_ORDER
         );
 
         $this->submitFormAndAssertFlashbag($form, $values, self::GROUP_SAVED_MSG);
 
         // assert entity well inserted
-        $attributeGroup = $this->getRepository()->findOneBy(array('name' => self::GROUP_EDITED_NAME));
+        $attributeGroup = $this->getRepository()->findOneBy(array('code' => self::GROUP_EDITED_CODE));
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $attributeGroup);
-        $this->assertEquals(self::GROUP_EDITED_NAME, $attributeGroup->getName());
+        $this->assertEquals(self::GROUP_EDITED_CODE, $attributeGroup->getCode());
         $this->assertEquals(self::GROUP_ORDER, $attributeGroup->getSortOrder());
 
         // assert with unknown attribute group id and authentication
@@ -171,20 +166,24 @@ class AttributeGroupControllerTest extends ControllerTest
     public function testRemove()
     {
         // get attribute group entity
-        $attributeGroup = $this->getRepository()->findOneBy(array('name' =>self::GROUP_EDITED_NAME));
+        $attributeGroup = $this->getRepository()->findOneBy(array('code' =>self::GROUP_EDITED_CODE));
         $uri = '/enrich/attribute-group/remove/'. $attributeGroup->getId();
 
         // assert without authentication
-        $crawler = $this->client->request('GET', $uri);
+        $crawler = $this->client->request('DELETE', $uri);
         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
 
-        // assert with authentication
+        // assert with incorrect method
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
+        $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+
+        // assert with authentication
+        $crawler = $this->client->request('DELETE', $uri, array(), array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertFlashBagMessage($crawler, self::GROUP_REMOVED_MSG);
 
         // assert with unknown attribute group id (last removed) and authentication
-        $this->client->request('GET', $uri, array(), array(), $this->server);
+        $this->client->request('DELETE', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 

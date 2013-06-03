@@ -1,19 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Type;
 
-use Symfony\Component\Security\Core\SecurityContext;
-
-use Symfony\Component\DependencyInjection\Container;
-
-use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
-
 use Pim\Bundle\ProductBundle\Tests\Entity\ObjectTestEntity;
-
-use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
-
-use Symfony\Component\Form\Forms;
-
-use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
 
 use Pim\Bundle\ProductBundle\Form\Type\ExportProfileType;
 
@@ -25,7 +13,7 @@ use Pim\Bundle\ProductBundle\Form\Type\ExportProfileType;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ExportProfileTypeTest extends TypeTestCase
+class ExportProfileTypeTest extends AbstractFormTypeTest
 {
 
     /**

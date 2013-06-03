@@ -1,9 +1,6 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Type;
 
-use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
-use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
-use Symfony\Component\Form\Forms;
 use Pim\Bundle\ProductBundle\Form\Type\ProductFamilyType;
 use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
 
@@ -15,7 +12,7 @@ use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ProductFamilyTypeTest extends TypeTestCase
+class ProductFamilyTypeTest extends AbstractFormTypeTest
 {
 
     /**
@@ -23,7 +20,7 @@ class ProductFamilyTypeTest extends TypeTestCase
      */
     public function setUp()
     {
-//         $this->markTestIncomplete('Either drop this test class or find a neat way to add entity form type support');
+        $this->markTestIncomplete('Either drop this test class or find a neat way to add entity form type support');
         parent::setUp();
 
         // Create form type
@@ -60,30 +57,5 @@ class ProductFamilyTypeTest extends TypeTestCase
         $formType = $this->form->get($name);
         $this->assertInstanceOf('\Symfony\Component\Form\Form', $formType);
         $this->assertEquals($type, $formType->getConfig()->getType()->getInnerType()->getName());
-    }
-
-    /**
-     * Create mock for locale manager
-     *
-     * @return \Pim\Bundle\ConfigBundle\Manager\LocaleManager
-     */
-    protected function getLocaleManagerMock()
-    {
-        $objectManager = $this->getMockForAbstractClass('\Doctrine\Common\Persistence\ObjectManager');
-
-        // create mock builder for locale manager and redefine constructor to set object manager
-        $mockBuilder = $this->getMockBuilder('Pim\Bundle\ConfigBundle\Manager\LocaleManager')
-                            ->setConstructorArgs(array($objectManager));
-
-        // create locale manager mock from mock builder previously create and redefine getActiveCodes method
-        $localeManager = $mockBuilder->getMock(
-            'Pim\Bundle\ConfigBundle\Manager\LocaleManager',
-            array('getActiveCodes')
-        );
-        $localeManager->expects($this->once())
-                      ->method('getActiveCodes')
-                      ->will($this->returnValue(array('en_US', 'fr_FR')));
-
-        return $localeManager;
     }
 }
