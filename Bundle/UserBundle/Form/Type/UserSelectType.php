@@ -19,15 +19,15 @@ class UserSelectType extends AbstractType
                         'property' => 'username'
                     )
                 ),
-                'empty_value' => '',
-                'empty_data'  => null
+                'autocompleter_alias' => 'test2',
+                'class' => 'OroUserBundle:User'
             )
         );
     }
 
     public function getParent()
     {
-        return 'genemu_jqueryselect2_hidden';
+        return 'oro_jqueryselect2_hidden';
     }
 
     /**

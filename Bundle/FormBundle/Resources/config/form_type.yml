@@ -4,13 +4,8 @@ parameters:
     oro_form.type.combobox_local.class:    Oro\Bundle\FormBundle\Form\Type\OroComboboxLocalType
     oro_form.type.entity_identifier.class: Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType
     oro_form.type.jqueryselect2_hidden.class: Oro\Bundle\FormBundle\Form\Type\OroJquerySelect2HiddenType
-    oro_form.transformer.entity_to_text.class: Oro\Bundle\FormBundle\DataTransformer\EntityToTextTransformer
 
 services:
-    oro_form.transformer.entity_to_text:
-        class: %oro_form.transformer.entity_to_text.class%
-
-    # Form types
     oro_form.type.date:
         class: %oro_form.type.date.class%
         tags:
@@ -25,6 +20,7 @@ services:
         class: %oro_form.type.jqueryselect2_hidden.class%
         arguments:
             - @oro_form.transformer.entity_to_text
+            - @doctrine.orm.entity_manager
         tags:
             - { name: form.type, alias: oro_jqueryselect2_hidden }
 

@@ -1,0 +1,6 @@
+parameters:
+    oro_form.transformer.entity_to_text.class: Oro\Bundle\FormBundle\DataTransformer\EntityToTextTransformer
+
+services:
+    oro_form.transformer.entity_to_text:
+        class: %oro_form.transformer.entity_to_text.class%
