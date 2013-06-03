@@ -1,10 +1,25 @@
 parameters:
+    oro_form.autocomplete.configuration.class:                         Oro\Bundle\FormBundle\EntityAutocomplete\Configuration
+    oro_form.autocomplete.search_registry.class:                       Oro\Bundle\FormBundle\EntityAutocomplete\SearchRegistry
+    oro_form.autocomplete.transformer.entity_to_text.class:            Oro\Bundle\FormBundle\EntityAutocomplete\Transformer\EntityToTextTransformer
+
     oro_form.autocomplete.doctrine.entity_search_factory.class:        Oro\Bundle\FormBundle\EntityAutocomplete\Doctrine\EntitySearchFactory
     oro_form.autocomplete.doctrine.query_builder_search_factory.class: Oro\Bundle\FormBundle\EntityAutocomplete\Doctrine\QueryBuilderSearchFactory
     oro_form.autocomplete.service_search_factory.class:                Oro\Bundle\FormBundle\EntityAutocomplete\ServiceSearchFactory
-    oro_form.autocomplete.search_registry.class:                       Oro\Bundle\FormBundle\EntityAutocomplete\SearchRegistry
+    oro_form.autocomplete.search_factory.class:                        Oro\Bundle\FormBundle\EntityAutocomplete\CompositeSearchFactory
 
 services:
+    oro_form.autocomplete.configuration:
+        class: %oro_form.autocomplete.configuration.class%
+        arguments: [%oro_form.autocomplete.config%]
+
+    oro_form.autocomplete.search_factory:
+        class: %oro_form.autocomplete.search_factory.class%
+
+    oro_form.autocomplete.transformer.entity_to_text:
+        class: %oro_form.autocomplete.transformer.entity_to_text.class%
+        arguments: ["@oro_form.autocomplete.configuration"]
+
     oro_form.autocomplete.doctrine.entity_search_factory:
         class: %oro_form.autocomplete.doctrine.entity_search_factory.class%
         tags:
@@ -22,7 +37,3 @@ services:
         tags:
             - { name: oro_form.autocomplete.search_factory, alias: service }
         arguments: ["@service_container"]
-
-    oro_form.autocomplete.search_registry:
-        class: %oro_form.autocomplete.search_registry.class%
-        arguments: [%oro_form.autocomplete.config%, []]

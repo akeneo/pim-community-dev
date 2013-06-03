@@ -1,0 +1,6 @@
+autocomplete_entities:
+    users:
+        type: doctrine_entity
+        options:
+            entity_name: OroUserBundle:Role
+        property: label

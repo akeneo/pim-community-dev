@@ -5,7 +5,7 @@ namespace Oro\Bundle\FormBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-use Oro\Bundle\FormBundle\DependencyInjection\Compiler\AddAutocompleteSearchFactororiesCompilerPass;
+use Oro\Bundle\FormBundle\DependencyInjection\Compiler\SearchFactoryCompilerPass;
 
 class OroFormBundle extends Bundle
 {
@@ -14,6 +14,6 @@ class OroFormBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new AddAutocompleteSearchFactororiesCompilerPass());
+        $container->addCompilerPass(new SearchFactoryCompilerPass());
     }
 }

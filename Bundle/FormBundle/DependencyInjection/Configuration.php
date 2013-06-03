@@ -4,6 +4,7 @@ namespace Oro\Bundle\FormBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 class Configuration implements ConfigurationInterface
 {
@@ -22,34 +23,35 @@ class Configuration implements ConfigurationInterface
                     ->fixXmlConfig('property', 'properties')
                     ->beforeNormalization()
                         ->always(function($value) {
-                            if (array_key_exists('property', $value)) {
-                                if (!isset($value['properties'])) {
-                                    if (!$value['property']) {
-                                        throw new \Exception('Option "property" cannot be not empty.');
-                                    } elseif (is_string($value['property'])) {
-                                        $value['properties'] = array($value['property'] => array());
-                                        unset($value['property']);
-                                    } else {
-                                        throw new \Exception('Option "property" must be a string.');
-                                    }
+                            if (isset($value['property']) && is_string($value['property'])) {
+                                if (empty($value['properties'])) {
+                                    $value['properties'] = array($value['property'] => array());
                                 } else {
-                                    throw new \Exception('Option "property" cannot be used with option "properties".');
+                                    throw new \Exception(
+                                        'Option "property" cannot be set with option "properties".'
+                                    );
                                 }
                             }
+                            unset($value['property']);
                             return $value;
                         })
                     ->end()
                     ->children()
-                        ->scalarNode('type')->end()
+                        ->scalarNode('type')->isRequired()->end()
                         ->arrayNode('options')
                             ->useAttributeAsKey('options')->prototype('variable')->end()
                         ->end()
+                        ->scalarNode('property')->end()
                         ->arrayNode('properties')
+                            ->isRequired()
+                            ->requiresAtLeastOneElement()
                             ->beforeNormalization()
                                 ->always(function($value) {
                                     foreach ($value as $k => $v) {
-                                        if (!isset($v['property']) && !is_numeric($k)) {
-                                            $value[$k]['property'] = $k;
+                                        if (!isset($v['name']) && !is_numeric($k)) {
+                                            $v['name'] = $k;
+                                            $value[] = $v;
+                                            unset($value[$k]);
                                         }
                                     }
                                     return $value;
@@ -58,12 +60,12 @@ class Configuration implements ConfigurationInterface
                             ->prototype('variable')
                                 ->beforeNormalization()
                                 ->ifString()
-                                    ->then(function($value) { return array('property' => $value); })
+                                    ->then(function($value) { return array('name' => $value); })
                                 ->end()
                                 ->validate()
                                     ->always(function($value) {
-                                        if (!isset($value['property'])) {
-                                            throw new \Exception('property is required option.');
+                                        if (!isset($value['name'])) {
+                                            throw new \Exception('name is required option.');
                                         }
                                         return $value;
                                     })
@@ -71,7 +73,11 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                         ->scalarNode('acl_resource')->end()
-                        ->scalarNode('route')->end()
+                        ->scalarNode('route')->defaultValue('oro_form_autocomplete_search')->end()
+                        ->scalarNode('view')
+                            ->cannotBeEmpty()
+                            ->defaultValue('OroFormBundle:EntityAutocomplete:search.json.twig')
+                        ->end()
                         ->scalarNode('url')->end()
                     ->end()
                 ->end()

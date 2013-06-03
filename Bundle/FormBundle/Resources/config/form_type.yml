@@ -6,6 +6,7 @@ parameters:
     oro_form.type.jqueryselect2_hidden.class: Oro\Bundle\FormBundle\Form\Type\OroJquerySelect2HiddenType
 
 services:
+    # Form types
     oro_form.type.date:
         class: %oro_form.type.date.class%
         tags:
@@ -19,7 +20,7 @@ services:
     oro_form.type.jqueryselect2_hidden:
         class: %oro_form.type.jqueryselect2_hidden.class%
         arguments:
-            - @oro_form.transformer.entity_to_text
+            - @oro_form.autocomplete.transformer.entity_to_text
             - @doctrine.orm.entity_manager
         tags:
             - { name: form.type, alias: oro_jqueryselect2_hidden }

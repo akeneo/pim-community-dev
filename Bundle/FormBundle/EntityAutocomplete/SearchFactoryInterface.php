@@ -7,9 +7,9 @@ interface SearchFactoryInterface
     /**
      * Creates search handler
      *
-     * @param array $config
+     * @param array $options
      * @return SearchHandlerInterface
      * @throws \RuntimeException When factory cannot create handler
      */
-    public function create(array $config);
+    public function create(array $options);
 }

@@ -5,7 +5,7 @@ namespace Oro\Bundle\FormBundle\EntityAutocomplete\Doctrine;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
 
-use Oro\Bundle\FormBundle\EntityAutocomplete\SearchPropertyConfig;
+use Oro\Bundle\FormBundle\EntityAutocomplete\Property;
 use Oro\Bundle\FormBundle\EntityAutocomplete\SearchHandlerInterface;
 
 class QueryBuilderSearchHandler implements SearchHandlerInterface
@@ -21,9 +21,9 @@ class QueryBuilderSearchHandler implements SearchHandlerInterface
     protected $entityAlias;
 
     /**
-     * @var SearchPropertyConfig[]
+     * @var array
      */
-    protected $searchPropertiesConfig;
+    protected $properties;
 
     /**
      * @var Expr
@@ -37,20 +37,19 @@ class QueryBuilderSearchHandler implements SearchHandlerInterface
 
     /**
      * @param QueryBuilder $queryBuilder
-     * @param SearchPropertyConfig[] $searchProperties
+     * @param Property[] $properties
      * @param string $entityAlias
      */
-    public function __construct(QueryBuilder $queryBuilder, array $searchProperties, $entityAlias = null)
+    public function __construct(QueryBuilder $queryBuilder, array $properties, $entityAlias = null)
     {
         $this->queryBuilder = $queryBuilder;
-        $this->searchPropertiesConfig = $searchProperties;
+        $this->properties = $properties;
         if (!$entityAlias) {
             $entityAlias = reset($this->queryBuilder->getRootAliases());
         }
         $this->entityAlias = $entityAlias;
         $this->exprFactory = new Expr();
     }
-
 
     /**
      * {@inheritdoc}
@@ -81,14 +80,14 @@ class QueryBuilderSearchHandler implements SearchHandlerInterface
         $whereSearchExpr = $this->exprFactory->orX();
         $havingSearchExpr = $this->exprFactory->orX();
 
-        foreach ($this->searchPropertiesConfig as $searchPropertyConfig) {
+        foreach ($this->properties as $property) {
             $expression = $this->createSearchPropertyExpression(
                 $queryBuilder,
-                $searchPropertyConfig,
+                $property,
                 $query
             );
 
-            if ($searchPropertyConfig->getOption('having', false)) {
+            if ($property->getOption('having', false)) {
                 $havingSearchExpr->add($expression);
             } else {
                 $whereSearchExpr->add($expression);
@@ -106,26 +105,26 @@ class QueryBuilderSearchHandler implements SearchHandlerInterface
 
     /**
      * @param QueryBuilder $queryBuilder
-     * @param SearchPropertyConfig $config
+     * @param Property $property
      * @param string $search
      * @return Expr\Base
      */
     protected function createSearchPropertyExpression(
         QueryBuilder $queryBuilder,
-        SearchPropertyConfig $config,
+        Property $property,
         $search
     ) {
-        $parameterName = $this->getUniqueParameterName($config);
-        $propertyPath = $this->getPropertyPath($config);
+        $parameterName = $this->getUniqueParameterName($property);
+        $propertyPath = $this->getPropertyPath($property);
 
-        switch ($config->getOperatorType()) {
-            case SearchPropertyConfig::OPERATOR_TYPE_START_WITH:
-                $result = $this->exprFactory->like($propertyPath, $parameterName);
+        switch ($property->getOperatorType()) {
+            case Property::OPERATOR_TYPE_START_WITH:
+                $result = $this->exprFactory->like($propertyPath, ':' . $parameterName);
                 $queryBuilder->setParameter($parameterName, $search . '%');
                 break;
 
-            case SearchPropertyConfig::OPERATOR_TYPE_CONTAINS: default:
-                $result = $this->exprFactory->like($propertyPath, $parameterName);
+            case Property::OPERATOR_TYPE_CONTAINS: default:
+                $result = $this->exprFactory->like($propertyPath, ':' . $parameterName);
                 $queryBuilder->setParameter($parameterName, '%' . $search . '%');
                 break;
         }
@@ -134,21 +133,21 @@ class QueryBuilderSearchHandler implements SearchHandlerInterface
     }
 
     /**
-     * @param SearchPropertyConfig $config
+     * @param Property $property
      * @return string
      */
-    protected function getUniqueParameterName(SearchPropertyConfig $config)
+    protected function getUniqueParameterName(Property $property)
     {
-        return $config->getProperty() . '_' . $config->getOperatorType() . '_' . $this->uniqueParametersCounter++;
+        return $property->getName() . '_' . $property->getOperatorType() . '_' . $this->uniqueParametersCounter++;
     }
 
     /**
-     * @param SearchPropertyConfig $config
+     * @param Property $property
      * @return string
      */
-    protected function getPropertyPath(SearchPropertyConfig $config)
+    protected function getPropertyPath(Property $property)
     {
-        return $config->getOption('entity_alias', $this->entityAlias) . '.' . $config->getProperty();
+        return $property->getOption('entity_alias', $this->entityAlias) . '.' . $property->getName();
     }
 
     /**
@@ -156,7 +155,7 @@ class QueryBuilderSearchHandler implements SearchHandlerInterface
      */
     protected function applySorting(QueryBuilder $queryBuilder)
     {
-        foreach ($this->searchPropertiesConfig as $searchPropertyConfig) {
+        foreach ($this->properties as $searchPropertyConfig) {
             $queryBuilder->addOrderBy(
                 $this->getPropertyPath($searchPropertyConfig),
                 $searchPropertyConfig->getOption('order', 'ASC')

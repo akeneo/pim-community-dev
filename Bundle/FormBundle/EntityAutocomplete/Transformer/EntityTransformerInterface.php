@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FormBundle\DataTransformer;
+namespace Oro\Bundle\FormBundle\EntityAutocomplete\Transformer;
 
 interface EntityTransformerInterface
 {

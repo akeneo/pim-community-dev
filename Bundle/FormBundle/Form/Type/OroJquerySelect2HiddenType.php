@@ -3,7 +3,7 @@
 namespace Oro\Bundle\FormBundle\Form\Type;
 
 use Doctrine\ORM\EntityManager;
-use Oro\Bundle\FormBundle\DataTransformer\EntityTransformerInterface;
+use Oro\Bundle\FormBundle\EntityAutocomplete\Transformer\EntityTransformerInterface;
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

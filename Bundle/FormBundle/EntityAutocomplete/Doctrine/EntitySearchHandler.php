@@ -6,7 +6,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr;
 
-use Oro\Bundle\FormBundle\EntityAutocomplete\SearchPropertyConfig;
+use Oro\Bundle\FormBundle\EntityAutocomplete\Property;
 use Oro\Bundle\FormBundle\EntityAutocomplete\SearchHandlerInterface;
 
 class EntitySearchHandler implements SearchHandlerInterface
@@ -19,12 +19,12 @@ class EntitySearchHandler implements SearchHandlerInterface
     /**
      * @param EntityManager $em
      * @param string $className
-     * @param SearchPropertyConfig[] $searchProperties
+     * @param Property[] $properties
      */
-    public function __construct(EntityManager $em, $className, array $searchProperties)
+    public function __construct(EntityManager $em, $className, array $properties)
     {
         $queryBuilder = $em->getRepository($className)->createQueryBuilder('e');
-        $this->queryBuilderSearchHandler = new QueryBuilderSearchHandler($queryBuilder, 'e', $searchProperties);
+        $this->queryBuilderSearchHandler = new QueryBuilderSearchHandler($queryBuilder, $properties, 'e');
     }
 
     /**

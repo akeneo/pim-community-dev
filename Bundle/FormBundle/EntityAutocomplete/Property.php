@@ -2,15 +2,10 @@
 
 namespace Oro\Bundle\FormBundle\EntityAutocomplete;
 
-class SearchPropertyConfig
+class Property
 {
     const OPERATOR_TYPE_CONTAINS = 'contains';
     const OPERATOR_TYPE_START_WITH = 'start_with';
-
-    /**
-     * @var string
-     */
-    protected $property;
 
     /**
      * @var string
@@ -28,9 +23,9 @@ class SearchPropertyConfig
     /**
      * @return string
      */
-    public function getProperty()
+    public function getName()
     {
-        return $this->getRequiredOption('property');
+        return $this->getRequiredOption('name');
     }
 
     /**
@@ -57,31 +52,14 @@ class SearchPropertyConfig
     /**
      * @param string $name
      * @return mixed
-     * @throws \LogicException
+     * @throws \RuntimeException
      */
     public function getRequiredOption($name)
     {
         if (array_key_exists($name, $this->options)) {
             return $this->options[$name];
         } else {
-            throw new \LogicException("Option '$name' of search property config has no value.");
+            throw new \RuntimeException("Property option \"$name\" is required.");
         }
-    }
-
-    /**
-     * Creates an instance of class
-     *
-     * @param array|string $config
-     * @return SearchPropertyConfig
-     * @throws \InvalidArgumentException
-     */
-    static public function create($config)
-    {
-        if (!is_string($config)) {
-            $config = array('property' => $config);
-        } elseif (!is_array($config)) {
-            throw new \InvalidArgumentException('$config must be a string or an array');
-        }
-        return new SearchPropertyConfig($config);
     }
 }

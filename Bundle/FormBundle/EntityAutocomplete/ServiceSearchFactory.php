@@ -22,19 +22,19 @@ class ServiceSearchFactory implements SearchFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create(array $config)
+    public function create(array $options)
     {
-        if (!isset($config['service'])) {
-            throw new \RuntimeException('Config option "service" is required');
+        if (!isset($options['options']['service'])) {
+            throw new \RuntimeException('Option "options.service" is required');
         }
 
-        $searchHandler = $this->container->get($config['service']);
+        $searchHandler = $this->container->get($options['options']['service']);
         if (!$searchHandler instanceof SearchHandlerInterface) {
             throw new \RuntimeException(
                 sprintf(
                     'Service "%s" must be an instance of %s\\SearchHandlerInterface',
                     __NAMESPACE__,
-                    $config['service']
+                    $options['options']['service']
                 )
             );
         }
