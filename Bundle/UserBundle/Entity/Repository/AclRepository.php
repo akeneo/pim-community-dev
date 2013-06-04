@@ -13,8 +13,8 @@ class AclRepository extends NestedTreeRepository
     /**
      * Get array with allowed acl resources for role array
      *
-     * @param  Role[] $roles
-     * @param  bool $useObjects
+     * @param  Role[]      $roles
+     * @param  bool        $useObjects
      * @return Acl[]|array
      */
     public function getAllowedAclResourcesForRoles(array $roles, $useObjects = false)
@@ -95,7 +95,7 @@ class AclRepository extends NestedTreeRepository
     /**
      * Get full node list with roles for acl resource
      *
-     * @param  Acl $acl
+     * @param  Acl   $acl
      * @return Acl[]
      */
     public function getFullNodeWithRoles(Acl $acl)
@@ -137,7 +137,7 @@ class AclRepository extends NestedTreeRepository
     /**
      * Get Acl array for role
      *
-     * @param  Role $role
+     * @param  Role  $role
      * @return array
      */
     public function getAclListWithRoles(Role $role)
@@ -160,7 +160,7 @@ class AclRepository extends NestedTreeRepository
     /**
      * Get Acl tree for role
      *
-     * @param  Role $role
+     * @param  Role  $role
      * @return array
      */
     public function getRoleAclTree(Role $role)

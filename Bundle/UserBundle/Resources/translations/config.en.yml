@@ -1,0 +1,12 @@
+entity:
+    user:
+        name:           Profile
+        description:    Represent user profile
+
+    role:
+        name:           Role
+        description:    User's role
+
+    group:
+        name:           Group
+        description:    Group of roles

@@ -684,7 +684,7 @@ class User extends AbstractEntityFlexible implements
     /**
      * Set confirmation token.
      *
-     * @param string $token
+     * @param  string $token
      * @return User
      */
     public function setConfirmationToken($token)
@@ -781,7 +781,7 @@ class User extends AbstractEntityFlexible implements
     /**
      * Pass a string, get the desired Role object or null
      *
-     * @param  string $roleName Role name
+     * @param  string    $roleName Role name
      * @return Role|null
      */
     public function getRole($roleName)
@@ -803,7 +803,7 @@ class User extends AbstractEntityFlexible implements
      *
      *         $securityContext->isGranted('ROLE_USER');
      *
-     * @param Role|string $role
+     * @param  Role|string               $role
      * @return boolean
      * @throws \InvalidArgumentException
      */
@@ -818,13 +818,14 @@ class User extends AbstractEntityFlexible implements
                 '$role must be an instance of Oro\Bundle\UserBundle\Entity\Role or a string'
             );
         }
-        return (bool)$this->getRole($roleName);
+
+        return (bool) $this->getRole($roleName);
     }
 
     /**
      * Adds a Role to the Collection.
      *
-     * @param Role $role
+     * @param  Role $role
      * @return User
      */
     public function addRole(Role $role)
@@ -839,7 +840,7 @@ class User extends AbstractEntityFlexible implements
     /**
      * Remove the Role object from collection
      *
-     * @param Role|string $role
+     * @param  Role|string               $role
      * @throws \InvalidArgumentException
      */
     public function removeRole($role)
@@ -862,7 +863,7 @@ class User extends AbstractEntityFlexible implements
      * Pass an array or Collection of Role objects and re-set roles collection with new Roles.
      * Type hinted array due to interface.
      *
-     * @param  array|Collection $roles Array of Role objects
+     * @param  array|Collection          $roles Array of Role objects
      * @return User
      * @throws \InvalidArgumentException
      */
@@ -886,7 +887,7 @@ class User extends AbstractEntityFlexible implements
     /**
      * Directly set the Collection of Roles.
      *
-     * @param  Collection $collection
+     * @param  Collection                $collection
      * @return User
      * @throws \InvalidArgumentException
      */
@@ -928,7 +929,7 @@ class User extends AbstractEntityFlexible implements
     }
 
     /**
-     * @param string $name
+     * @param  string $name
      * @return bool
      */
     public function hasGroup($name)
@@ -937,7 +938,7 @@ class User extends AbstractEntityFlexible implements
     }
 
     /**
-     * @param Group $group
+     * @param  Group $group
      * @return User
      */
     public function addGroup(Group $group)
@@ -950,7 +951,7 @@ class User extends AbstractEntityFlexible implements
     }
 
     /**
-     * @param Group $group
+     * @param  Group $group
      * @return User
      */
     public function removeGroup(Group $group)
@@ -1105,7 +1106,7 @@ class User extends AbstractEntityFlexible implements
     /**
      * Get the relative directory path to user avatar
      *
-     * @param  bool $forWeb
+     * @param  bool   $forWeb
      * @return string
      */
     public function getUploadDir($forWeb = false)

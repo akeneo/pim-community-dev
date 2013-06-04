@@ -4,73 +4,71 @@
     * indexer_item - indexer item Oro\Bundle\SearchBundle\Query\Result\Item
 #}
 {% set user = entity %}
-{% set format = get_user_value('oro_user.name_format') %}
+{% set format = oro_config_value('oro_user.name_format') %}
 
 {% import 'OroUserBundle::macros.html.twig' as macros %}
 
 <div class="customer-info well-small">
     {% if user %}
-        <div class="visual">
-            <a href="{{ indexer_item.recordUrl }}">
-                <img src="{{ user.imagePath ? user.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-usser.png') }}" alt="{{ user.fullname(format) }}"/>
-            </a>
+    <div class="visual">
+        <a href="{{ indexer_item.recordUrl }}">
+            <img src="{{ user.imagePath ? user.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-usser.png') }}" alt="{{ user.fullname(format) }}" />
+        </a>
+    </div>
+    <div class="clearfix">
+        <div class="pull-right">
+            <div class="sub-title">{{ 'User'|trans }}</div>
         </div>
-        <div class="clearfix">
-            <div class="pull-right">
-                <div class="sub-title">{{ 'User'|trans }}</div>
-            </div>
-            <div class="customer-content pull-left">
-                <div class="clearfix">
-                    <div class="pull-left">
-                        <h1 class="usser-name">
-                            <a href="{{ indexer_item.recordUrl }}">{{ user.fullname(format)|default('N/A') }}</a>
-                        </h1>
-                    </div>
-                    <div class="status-enabled pull-left">
-                        {% if user.enabled %}
-                            <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled"></i>{{ 'Active'|trans }}</div>
-                        {% else %}
-                            <div class="badge badge-enabled status-disabled"><i class="icon-status-disabled"></i>{{ 'Inactive'|trans }}</div>
-                        {% endif %}
-                    </div>
+        <div class="customer-content pull-left">
+            <div class="clearfix">
+                <div class="pull-left">
+                    <h1 class="usser-name">
+                        <a href="{{ indexer_item.recordUrl }}">{{ user.fullname(format)|default('N/A') }}</a>
+                    </h1>
                 </div>
-                <div class="clearfix">
-                    <ul class="inline">
-                        <li>{{ 'Created'|trans }}: {{ user.createdAt ? macros.time(user.createdAt) : 'N/A' }}</li>
-                        <li>{{ 'Updated'|trans }}: {{ user.updatedAt ? macros.time(user.updatedAt) : 'N/A' }}</li>
-                        <li>{{ 'Last logged in'|trans }}: {{ user.lastLogin ? macros.time(user.lastLogin) : 'N/A' }}</li>
-                        <li>{{ 'Login count'|trans }}: {{ user.loginCount|default(0) }}</li>
-                    </ul>
+                <div class="status-enabled pull-left">
+                    {% if user.enabled %}
+                    <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled"></i>{{ 'Active'|trans }}</div>
+                    {% else %}
+                    <div class="badge badge-enabled status-disabled"><i class="icon-status-disabled"></i>{{ 'Inactive'|trans }}</div>
+                    {% endif %}
                 </div>
             </div>
+            <div class="clearfix">
+                <ul class="inline">
+                    <li>{{ 'Created'|trans }}: {{ user.createdAt ? macros.time(user.createdAt) : 'N/A' }}</li>
+                    <li>{{ 'Updated'|trans }}: {{ user.updatedAt ? macros.time(user.updatedAt) : 'N/A' }}</li>
+                    <li>{{ 'Last logged in'|trans }}: {{ user.lastLogin ? macros.time(user.lastLogin) : 'N/A' }}</li>
+                    <li>{{ 'Login count'|trans }}: {{ user.loginCount|default(0) }}</li>
+                </ul>
+            </div>
         </div>
+    </div>
     {% else %}
-        <div class="visual">
-            <img src="{{ asset('bundles/oroui/img/info-usser.png') }}" alt="{{ indexer_item.recordTitle }}"/>
+    <div class="visual">
+        <img src="{{ asset('bundles/oroui/img/info-usser.png') }}" alt="{{ indexer_item.recordTitle }}" />
+    </div>
+    <div class="clearfix">
+        <div class="pull-right">
+            <div class="sub-title">{{ 'User'|trans }}</div>
         </div>
-        <div class="clearfix">
-            <div class="pull-right">
-                <div class="sub-title">{{ 'User'|trans }}</div>
-            </div>
-            <div class="customer-content pull-left">
-                <div class="clearfix">
-                    <div class="pull-left">
-                        <h1 class="usser-name">
-                            {{ indexer_item.recordTitle }}
-                        </h1>
-                    </div>
-                </div>
-                <div class="clearfix">
-                    <ul class="inline">
-                        <li>{{ 'Created'|trans }}: N/A</li>
-                        <li>{{ 'Updated'|trans }}: N/A</li>
-                        <li>{{ 'Last logged in'|trans }}: N/A</li>
-                        <li>{{ 'Login count'|trans }}: N/A</li>
-                    </ul>
+        <div class="customer-content pull-left">
+            <div class="clearfix">
+                <div class="pull-left">
+                    <h1 class="usser-name">
+                        {{ indexer_item.recordTitle }}
+                    </h1>
                 </div>
             </div>
+            <div class="clearfix">
+                <ul class="inline">
+                    <li>{{ 'Created'|trans }}: N/A</li>
+                    <li>{{ 'Updated'|trans }}: N/A</li>
+                    <li>{{ 'Last logged in'|trans }}: N/A</li>
+                    <li>{{ 'Login count'|trans }}: N/A</li>
+                </ul>
+            </div>
         </div>
+    </div>
     {% endif %}
 </div>
-
-

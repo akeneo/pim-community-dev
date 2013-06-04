@@ -35,7 +35,7 @@ class Reader
      */
     public function getResources($directory = '')
     {
-        if (!$directory){
+        if (!$directory) {
             $directories = $this->getScanDirectories();
             if (!$directories) {
                 return array();

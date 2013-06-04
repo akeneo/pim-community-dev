@@ -1,0 +1,14 @@
+Oro\Bundle\UserBundle\Entity\User:
+    icon_class:                         icon-user
+    name:                               entity.user.name
+    description:                        entity.user.description
+
+Oro\Bundle\UserBundle\Entity\Role:
+    icon_class:                         icon-signal
+    name:                               entity.role.name
+    description:                        entity.role.description
+
+Oro\Bundle\UserBundle\Entity\Group:
+    icon_class:                         icon-home
+    name:                               entity.group.name
+    description:                        entity.group.description

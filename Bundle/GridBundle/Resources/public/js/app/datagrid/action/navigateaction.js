@@ -31,6 +31,8 @@ Oro.Datagrid.Action.NavigateAction = Oro.Datagrid.Action.ModelAction.extend({
             this.useDirectLauncherLink = options.useDirectLauncherLink;
         }
 
+        this.on('preExecute', _.bind(this._preExecuteSubscriber, this));
+
         if (this.useDirectLauncherLink) {
             this.launcherOptions = _.extend({
                 link: this.getLink(),
@@ -43,10 +45,15 @@ Oro.Datagrid.Action.NavigateAction = Oro.Datagrid.Action.ModelAction.extend({
      * Execute redirect
      */
     execute: function() {
-        if (Oro.hashNavigationEnabled()) {
-            Oro.Navigation.prototype.setLocation(this.getLink());
-        } else {
-            window.location.href = this.getLink();
-        }
+        window.location.href = this.getLink();
+    },
+
+    /**
+     * Trigger global event
+     *
+     * @private
+     */
+    _preExecuteSubscriber: function(action, options) {
+        Oro.Events.trigger('grid_action:navigateAction:preExecute', action, options);
     }
 });

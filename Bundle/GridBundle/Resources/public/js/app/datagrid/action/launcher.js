@@ -166,6 +166,9 @@ Oro.Datagrid.Action.Launcher = Backbone.View.extend({
         this.trigger('click', this);
         if (this.runAction) {
             this.action.run();
+
+            //  skip launcher functionality, if action was executed
+            return false;
         }
         return this.onClickReturnValue;
     },

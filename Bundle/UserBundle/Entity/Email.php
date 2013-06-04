@@ -67,7 +67,7 @@ class Email
     /**
      * Set user
      *
-     * @param  User $user
+     * @param  User  $user
      * @return Email
      */
     public function setUser(User $user = null)

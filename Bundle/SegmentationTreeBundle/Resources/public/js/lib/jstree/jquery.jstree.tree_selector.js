@@ -15,12 +15,15 @@
             this.get_container()
                 // Create the tree toolbar and load trees in tree selector
                 .bind("init.jstree", $.proxy(function () {
+                    var _this = this;
                     var settings = this._get_settings().tree_selector;
                     this.data.tree_selector.ajax = settings.ajax;
                     this.data.tree_selector.data = settings.data;
                     this.data.tree_selector.auto_open_root = settings.auto_open_root;
-                    this.data.tree_selector.no_tree_message = settings.no_tree_message;
                     this.data.tree_selector.node_label_field = settings.node_label_field;
+                    this.data.tree_selector.no_tree_message = settings.no_tree_message;
+                    this.data.tree_selector.preselect_node_id = settings.preselect_node_id;
+
 
                     var tree_toolbar = $('<div>', {
                         id: 'tree_toolbar'
@@ -34,9 +37,8 @@
                     });
                     tree_select.addClass('jstree-tree-select');
 
-                    var this_jstree = this;
                     tree_select.bind('change', function() {
-                        this_jstree.switch_tree();
+                        _this.switch_tree();
                     });
 
                     tree_toolbar.html(tree_select);
@@ -46,14 +48,25 @@
 
                 }, this))
                 // Rewrite the root node to link it to the selected tree
-                .bind("loaded.jstree", $.proxy(function () {
-                    this.switch_tree();
+                .bind("loaded.jstree", $.proxy(function (event, data) {
+                    if (event.namespace == 'jstree') {
+                        this.switch_tree();
+                    }
+                // Select the node marked as "toselect" from the server
 
                 }, this))
-                /*
-                .bind("load_node.jstree", $.proxy(function (e,data) {
-                    alert("load node event");
-                }, this))*/
+                .bind("clean_node.jstree", $.proxy(function (e, data) {
+                    // Switch to node clicked when requested by the data for this node
+                    var _this = this;
+                    if (data.rslt.obj) {
+                        $.each(data.rslt.obj, function (index, node) {
+                            if ($(node).hasClass('toselect')) {
+                                _this.select_node($(node));
+                                $(node).removeClass('toselect');
+                            }
+                        });
+                    }
+                }, this))
                 ;
         },
         defaults : {
@@ -61,7 +74,9 @@
             data : false,
             tree_selector_buttons : false,
             no_tree_message : false,
-            node_label_field : 'code'
+            node_label_field : 'code',
+            preselect_node_id : false
+
         },
         _fn : {
             refresh : function (obj) {
@@ -70,17 +85,19 @@
                 return this.__call_old();
             },
             switch_tree : function () {
+                var  _this = this;
+
                 // Create new root node, place it into the tree and
                 // open it if setup to auto_open_root
                 var selected_tree = this.get_tree_select().find(':selected');
                 var root_node_id = $(selected_tree).attr('value');
 
-                if (!root_node_id) {
+                if (!root_node_id || (root_node_id === -1)) {
                     return null;
                 }
 
                 root_node = this._prepare_node(
-                    root_node_id,
+                    'node_' + root_node_id,
                     selected_tree.text()
                 );
 
@@ -93,11 +110,17 @@
                 if (this.data.tree_selector.auto_open_root) {
                     this.open_node(root_node);
                 }
+
+                if (this.data.tree_selector.preselect_node_id === root_node_id) {
+                    this.select_node(root_node);
+                }
+
             },
             get_tree_select : function () {
                 return $("#" + tree_select_id);
             },
             load_trees: function () {
+                var _this = this;
                 var trees;
 
                 if (this.data.tree_selector.data) {
@@ -111,7 +134,7 @@
                 this.get_tree_select().empty();
 
                 // In case of no tree loaded, display the no_tree_message
-                // if set up
+                // if it has been set up
                 if (trees.length === 0 && this.data.tree_selector.no_tree_message) {
                     var no_tree_option = $('<option>', {
                         text: this.data.tree_selector.no_tree_message,
@@ -119,29 +142,31 @@
                         disabled: true,
                         selected: true
                     });
+                    this.get_container_ul().empty();
                     this.get_tree_select().append(no_tree_option);
+
                 }
 
-                var this_jstree = this;
                 $.each(trees, function (index, tree) {
-                    var option_text = tree[this_jstree.data.tree_selector.node_label_field];
+                    var option_text = tree[_this.data.tree_selector.node_label_field];
 
                     var option = $('<option>', {
                         value: tree.id,
                         text: option_text
                     });
 
-                    if (index === 0) {
+                    if (tree.selected == "true") {
                         option.prop('defaultSelected', true);
-                        this_jstree._get_settings().json_data.data = [
+                        _this._get_settings().json_data.data = [
                             {
                                 "data": option_text,
                                 "state": "closed",
-                                "attr" : { "id" : tree.id}
+                                "attr" : { "id" : 'node_' + tree.id}
                             }
                         ];
                     }
-                    this_jstree.get_tree_select().append(option);
+
+                    _this.get_tree_select().append(option);
                 });
 
                 this.get_container().trigger('trees_loaded.jstree', tree_select_id);
@@ -153,12 +178,14 @@
             },
             _load_ajax_trees: function () {
                 var trees_url = this.data.tree_selector.ajax.url;
+                var trees_url_parameters = this.data.tree_selector.ajax.parameters;
                 var trees = [];
 
                 $.ajax({
                     url: trees_url,
                     async: false,
-                    dataType: 'json'
+                    dataType: 'json',
+                    data: trees_url_parameters
                 }).done( function(ajax_trees) {
                     trees = ajax_trees;
                 });

@@ -8,7 +8,6 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Annotation\Acl as AclAnnotation;
 use Symfony\Component\Translation\MessageCatalogue;
 
-
 class ManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**

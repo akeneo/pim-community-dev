@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\UserBundle\Datagrid;
 
-use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
@@ -33,6 +32,7 @@ class GroupUserDatagridManager extends UserRelationDatagridManager
         if (!$this->group) {
             throw new \LogicException('Datagrid manager has no configured Group entity');
         }
+
         return $this->group;
     }
 
@@ -57,6 +57,7 @@ class GroupUserDatagridManager extends UserRelationDatagridManager
                 'show_filter' => true,
             )
         );
+
         return $fieldHasGroup;
     }
 

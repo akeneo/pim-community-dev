@@ -11,7 +11,7 @@ class GroupRepository extends EntityRepository
     /**
      * Get user query builder
      *
-     * @param  Group $group
+     * @param  Group        $group
      * @return QueryBuilder
      */
     public function getUserQueryBuilder(Group $group)
