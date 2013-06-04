@@ -6,10 +6,19 @@ use Metadata\PropertyMetadata as BasePropertyMetadata;
 
 class PropertyMetadata extends BasePropertyMetadata
 {
+    /**
+     * @var bool
+     */
     public $isCollection = false;
 
+    /**
+     * @var bool
+     */
     public $method = false;
 
+    /**
+     * {@inheritdoc}
+     */
     public function serialize()
     {
         return serialize(array(
@@ -19,6 +28,9 @@ class PropertyMetadata extends BasePropertyMetadata
         ));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function unserialize($str)
     {
         list(
@@ -30,4 +42,3 @@ class PropertyMetadata extends BasePropertyMetadata
         parent::unserialize($parentStr);
     }
 }
-

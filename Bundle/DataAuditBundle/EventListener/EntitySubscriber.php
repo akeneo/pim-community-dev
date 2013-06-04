@@ -17,12 +17,19 @@ class EntitySubscriber implements EventSubscriber
 
     protected $loggableManager;
 
+    /**
+     * @param LoggableManager       $loggableManager
+     * @param ExtendMetadataFactory $metadataFactory
+     */
     public function __construct(LoggableManager $loggableManager, ExtendMetadataFactory $metadataFactory)
     {
         $this->metadataFactory = $metadataFactory;
         $this->loggableManager = $loggableManager;
     }
 
+    /**
+     * @return array
+     */
     public function getSubscribedEvents()
     {
         return array(
@@ -32,11 +39,17 @@ class EntitySubscriber implements EventSubscriber
         );
     }
 
+    /**
+     * @param OnFlushEventArgs $event
+     */
     public function onFlush(OnFlushEventArgs $event)
     {
         $this->loggableManager->handleLoggable($event->getEntityManager());
     }
 
+    /**
+     * @param LoadClassMetadataEventArgs $event
+     */
     public function loadClassMetadata(LoadClassMetadataEventArgs $event)
     {
         if ($metadata = $this->metadataFactory->extendLoadMetadataForClass($event->getClassMetadata())) {
@@ -44,6 +57,9 @@ class EntitySubscriber implements EventSubscriber
         }
     }
 
+    /**
+     * @param LifecycleEventArgs $event
+     */
     public function postPersist(LifecycleEventArgs $event)
     {
         $this->loggableManager->handlePostPersist($event->getEntity(), $event->getEntityManager());

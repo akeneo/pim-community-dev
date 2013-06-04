@@ -17,7 +17,6 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
 
-
 class LoggableManager
 {
     /**
@@ -96,7 +95,7 @@ class LoggableManager
     }
 
     /**
-     * @param ClassMetadata $metadata
+     * @param \Oro\Bundle\DataAuditBundle\Metadata\ClassMetadata $metadata
      */
     public function addConfig(ClassMetadata $metadata)
     {
@@ -135,7 +134,7 @@ class LoggableManager
         if (is_string($username)) {
             $this->username = $username;
         } elseif (is_object($username) && method_exists($username, 'getUsername')) {
-            $this->username = (string)$username->getUsername();
+            $this->username = (string) $username->getUsername();
         } else {
             throw new \InvalidArgumentException("Username must be a string, or object should have method: getUsername");
         }
@@ -167,6 +166,10 @@ class LoggableManager
         }
     }
 
+    /**
+     * @param $entity
+     * @param EntityManager $em
+     */
     public function handlePostPersist($entity, EntityManager $em)
     {
         $this->em = $em;
@@ -175,9 +178,6 @@ class LoggableManager
         $oid = spl_object_hash($entity);
 
         if ($this->pendingLogEntryInserts && array_key_exists($oid, $this->pendingLogEntryInserts)) {
-            $meta       = $this->getConfig(get_class($entity));
-            $entityMeta = $this->em->getClassMetadata(get_class($entity));
-
             $logEntry     = $this->pendingLogEntryInserts[$oid];
             $logEntryMeta = $em->getClassMetadata(get_class($logEntry));
 
@@ -192,13 +192,11 @@ class LoggableManager
             unset($this->pendingLogEntryInserts[$oid]);
         }
 
-
         if ($this->pendingRelatedObjects && array_key_exists($oid, $this->pendingRelatedObjects)) {
             $identifiers = $uow->getEntityIdentifier($entity);
 
             foreach ($this->pendingRelatedObjects[$oid] as $props) {
                 $logEntry              = $props['log'];
-                $logEntryMeta          = $em->getClassMetadata(get_class($logEntry));
                 $oldData               = $data = $logEntry->getData();
                 $data[$props['field']] = $identifiers;
                 $logEntry->setData($data);
@@ -212,6 +210,9 @@ class LoggableManager
         }
     }
 
+    /**
+     * @param PersistentCollection $collection
+     */
     protected function calculateCollectionData(PersistentCollection $collection)
     {
         $ownerEntity = $collection->getOwner();
@@ -415,7 +416,7 @@ class LoggableManager
                 }
 
                 $data = array_merge(
-                    (array)$logEntry->getData(),
+                    (array) $logEntry->getData(),
                     array(
                         $entity->getAttribute()->getCode() => array(
                             'old' => $oldData,
@@ -435,7 +436,6 @@ class LoggableManager
 
         return false;
     }
-
 
     /**
      * @param $logEntityMeta
@@ -462,7 +462,7 @@ class LoggableManager
 
     /**
      * @param $entity
-     * @param null $entityMeta
+     * @param  null  $entityMeta
      * @return mixed
      */
     public function getIdentifier($entity, $entityMeta = null)

@@ -23,4 +23,3 @@ services:
               entity_hint:                      history
               route_name:                       oro_dataaudit_history
               query_entity_alias:               a
-

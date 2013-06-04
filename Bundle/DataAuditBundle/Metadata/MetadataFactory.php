@@ -5,7 +5,7 @@
  */
 namespace Oro\Bundle\DataAuditBundle\Metadata;
 
-class MetadataFactory 
+class MetadataFactory
 {
 
 }

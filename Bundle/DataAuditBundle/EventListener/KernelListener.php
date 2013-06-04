@@ -10,16 +10,29 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class KernelListener implements EventSubscriberInterface
 {
+    /**
+     * @var \Symfony\Component\Security\Core\SecurityContextInterface
+     */
     private $securityContext;
 
+    /**
+     * @var \Oro\Bundle\DataAuditBundle\Loggable\LoggableManager
+     */
     private $loggableManager;
 
+    /**
+     * @param LoggableManager          $loggableManager
+     * @param SecurityContextInterface $securityContext
+     */
     public function __construct(LoggableManager $loggableManager, SecurityContextInterface $securityContext = null)
     {
         $this->loggableManager = $loggableManager;
         $this->securityContext = $securityContext;
     }
 
+    /**
+     * @param GetResponseEvent $event
+     */
     public function onKernelRequest(GetResponseEvent $event)
     {
         if (null === $this->securityContext) {
@@ -32,6 +45,9 @@ class KernelListener implements EventSubscriberInterface
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function getSubscribedEvents()
     {
         return array(

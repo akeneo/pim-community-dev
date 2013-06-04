@@ -22,11 +22,19 @@ class AnnotationDriver implements DriverInterface
 
     protected $em;
 
+    /**
+     * @param Reader $reader
+     */
     public function __construct(Reader $reader)
     {
         $this->reader = $reader;
     }
 
+    /**
+     * @param  DoctrineClassMetadata     $doctrineClassMetadata
+     * @return null|ClassMetadata
+     * @throws \InvalidArgumentException
+     */
     public function extendLoadMetadataForClass(DoctrineClassMetadata $doctrineClassMetadata)
     {
         if ($doctrineClassMetadata->isMappedSuperclass
@@ -58,6 +66,9 @@ class AnnotationDriver implements DriverInterface
         return $classMetadata;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function loadMetadataForClass(\ReflectionClass $class)
     {
         $classMetadata = new ClassMetadata($class->getName());
