@@ -105,7 +105,7 @@ class Manager implements ManagerInterface
     /**
      * Search Acl resource by id
      *
-     * @param  string $id
+     * @param string $id
      *
      * @return Acl
      */
@@ -117,7 +117,7 @@ class Manager implements ManagerInterface
     /**
      * Get ACL Resources list
      *
-     * @param  bool        $useObjects [optional] Use objects (true by default) or plain ids in response
+     * @param bool $useObjects [optional] Use objects (true by default) or plain ids in response
      *
      * @return array|Acl[]
      */
@@ -144,8 +144,8 @@ class Manager implements ManagerInterface
     /**
      * Check permissions for resource for user.
      *
-     * @param  int  $aclResourceId ACL resource id
-     * @param  User $user          [optional] User instance
+     * @param int  $aclResourceId ACL resource id
+     * @param User $user          [optional] User instance
      *
      * @return bool
      */
@@ -158,9 +158,9 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * @param  string $class
-     * @param  string $method
-     * @param  User   $user   [optional]
+     * @param string $class
+     * @param string $method
+     * @param User   $user   [optional]
      *
      * @return bool
      */
@@ -206,8 +206,8 @@ class Manager implements ManagerInterface
     /**
      * get array of resource ids allowed for user
      *
-     * @param  User        $user
-     * @param  bool        $useObjects [optional]
+     * @param User $user
+     * @param bool $useObjects [optional]
      *
      * @return array|Acl[]
      */
@@ -232,7 +232,7 @@ class Manager implements ManagerInterface
     /**
      * Get roles for ACL resource from cache. If cache file does not exists - create new one.
      *
-     * @param  string $aclId
+     * @param string $aclId
      *
      * @return array
      */
@@ -293,7 +293,7 @@ class Manager implements ManagerInterface
     /**
      * Get Acl tree for role
      *
-     * @param  Role  $role
+     * @param Role $role
      *
      * @return array
      */
@@ -305,7 +305,7 @@ class Manager implements ManagerInterface
     /**
      * Get Acl list for role
      *
-     * @param  Role  $role
+     * @param Role $role
      *
      * @return array
      */
@@ -432,8 +432,8 @@ class Manager implements ManagerInterface
     /**
      * Set a parent for db ACL resource
      *
-     * @param  array $resources
-     * @param  Acl   $bdResource
+     * @param array $resources
+     * @param Acl   $bdResource
      *
      * @return array
      */
@@ -462,7 +462,7 @@ class Manager implements ManagerInterface
     /**
      * Create new db ACL resource from annotation data
      *
-     * @param  AnnotationAcl $resource
+     * @param AnnotationAcl $resource
      *
      * @return Acl
      */
@@ -479,7 +479,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * @param  Acl   $acl [optional]
+     * @param Acl $acl [optional]
      *
      * @return array
      */
@@ -504,7 +504,7 @@ class Manager implements ManagerInterface
      * If user was not set in parameters, then user takes from Security Context.
      * If user was not logged and was not set in parameters, then return IS_AUTHENTICATED_ANONYMOUSLY role
      *
-     * @param  User  $user [optional]
+     * @param User $user [optional]
      *
      * @return array
      */
@@ -555,8 +555,8 @@ class Manager implements ManagerInterface
     /**
      * Check is grant access for roles to the acl resource roles
      *
-     * @param  array $roles
-     * @param  array $aclRoles
+     * @param array $roles
+     * @param array $aclRoles
      *
      * @return bool
      */
@@ -589,8 +589,8 @@ class Manager implements ManagerInterface
     /**
      * Add ACL resource for Role
      *
-     * @param  Acl  $acl
-     * @param  Role $role
+     * @param Acl  $acl
+     * @param Role $role
      *
      * @return True if ACL has been added, false otherwise
      */

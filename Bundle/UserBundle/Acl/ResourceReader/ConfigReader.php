@@ -99,7 +99,8 @@ class ConfigReader
      *
      * @return array
      */
-    protected function parseAclConfigFile($directory){
+    protected function parseAclConfigFile($directory)
+    {
         if (is_file($file = dirname($directory) . '/Resources/config/acl.yml')) {
             return Yaml::parse(realpath($file));
         }

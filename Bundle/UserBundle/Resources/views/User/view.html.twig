@@ -1,7 +1,6 @@
 {% extends bap.layout is defined ? bap.layout : 'OroUserBundle::layout.html.twig' %}
-{% import 'OroUserBundle::macros.html.twig' as macros %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
-{% set format = get_user_value('oro_user.name_format') %}
+{% set format = oro_config_value('oro_user.name_format') %}
 
 {% oro_title_set({params : {"%username%": user.fullname(format)|default('N/A') }}) %}
 
@@ -51,9 +50,9 @@
                         </div>
                         <div class="clearfix">
                             <ul class="inline">
-                                <li>{{ 'Created'|trans }}: {{ user.createdAt ? macros.time(user.createdAt) : 'N/A' }}</li>
-                                <li>{{ 'Updated'|trans }}: {{ user.updatedAt ? macros.time(user.updatedAt) : 'N/A' }}</li>
-                                <li>{{ 'Last logged in'|trans }}: {{ user.lastLogin ? macros.time(user.lastLogin) : 'N/A' }}</li>
+                                <li>{{ 'Created'|trans }}: {{ user.createdAt ? UI.time(user.createdAt) : 'N/A' }}</li>
+                                <li>{{ 'Updated'|trans }}: {{ user.updatedAt ? UI.time(user.updatedAt) : 'N/A' }}</li>
+                                <li>{{ 'Last logged in'|trans }}: {{ user.lastLogin ? UI.time(user.lastLogin) : 'N/A' }}</li>
                                 <li>{{ 'Login count'|trans }}: {{ user.loginCount|default(0) }}</li>
                             </ul>
                         </div>
@@ -108,7 +107,7 @@
                                 <label class="control-label">{{ 'Birthday'|trans }}</label>
                                 <div class="controls">
                                     <div class="clearfix-oro">
-                                        <p class="control-label">{{ user.birthday ? macros.date(user.birthday) : 'N/A' }}</p>
+                                        <p class="control-label">{{ user.birthday ? UI.date(user.birthday) : 'N/A' }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -160,17 +159,3 @@
     </div>
 </div>
 {% endblock content %}
-
-{% block head_script %}
-    {{ parent() }}
-
-    {% javascripts
-    '@OroUIBundle/Resources/public/lib/bootstrap/js/bootstrap-scrollspy.js'
-    '@OroUserBundle/Resources/public/js/user.js'
-
-    filter='?yui_js'
-    output='js/oro.user.show.js'
-    %}
-    <script src="{{ asset_url }}" type="text/javascript"></script>
-    {% endjavascripts %}
-{% endblock %}

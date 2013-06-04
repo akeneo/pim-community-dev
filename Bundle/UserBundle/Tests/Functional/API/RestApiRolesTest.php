@@ -52,8 +52,8 @@ class RestApiRolesTest extends WebTestCase
 
     /**
      * @depends testApiCreateRole
-     * @param array $request
-     * @return int $roleId
+     * @param  array $request
+     * @return int   $roleId
      */
     public function testApiGetRoleById($request)
     {
@@ -69,13 +69,14 @@ class RestApiRolesTest extends WebTestCase
         $this->client->request('GET', 'http://localhost/api/rest/latest/roles' .'/'. $roleId);
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
+
         return $roleId;
     }
 
     /**
      * @depends testApiGetRoleById
      * @depends testApiCreateRole
-     * @param int $roleId
+     * @param int   $roleId
      * @param array $request
      */
     public function testApiUpdateRole($roleId, $request)

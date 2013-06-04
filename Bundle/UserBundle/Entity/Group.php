@@ -104,7 +104,7 @@ class Group
     /**
      * Pass a string, get the desired Role object or null
      *
-     * @param string $roleName Role name
+     * @param  string    $roleName Role name
      * @return Role|null
      */
     public function getRole($roleName)
@@ -120,7 +120,7 @@ class Group
     }
 
     /**
-     * @param Role|string $role
+     * @param  Role|string               $role
      * @return boolean
      * @throws \InvalidArgumentException
      */
@@ -135,13 +135,14 @@ class Group
                 '$role must be an instance of Oro\Bundle\UserBundle\Entity\Role or a string'
             );
         }
-        return (bool)$this->getRole($roleName);
+
+        return (bool) $this->getRole($roleName);
     }
 
     /**
      * Adds a Role to the Collection
      *
-     * @param Role $role
+     * @param  Role  $role
      * @return Group
      */
     public function addRole(Role $role)
@@ -156,7 +157,7 @@ class Group
     /**
      * Remove the Role object from collection
      *
-     * @param Role|string $role
+     * @param  Role|string               $role
      * @return Group
      * @throws \InvalidArgumentException
      */
@@ -174,13 +175,14 @@ class Group
         if ($roleObject) {
             $this->roles->removeElement($roleObject);
         }
+
         return $this;
     }
 
     /**
      * Set new Roles collection
      *
-     * @param  array|Collection $roles
+     * @param  array|Collection          $roles
      * @return Group
      * @throws \InvalidArgumentException
      */

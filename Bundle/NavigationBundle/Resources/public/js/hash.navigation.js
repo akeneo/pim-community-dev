@@ -262,6 +262,18 @@ Oro.Navigation = Backbone.Router.extend({
             this
         );
         /**
+         * Processing navigate action execute
+         */
+        Oro.Events.bind(
+            "grid_action:navigateAction:preExecute",
+            function (action, options) {
+                this.setLocation(action.getLink());
+
+                options.doExecute = false;
+            },
+            this
+        );
+        /**
          * Checking for grid route and updating it's state
          */
         Oro.Events.bind(

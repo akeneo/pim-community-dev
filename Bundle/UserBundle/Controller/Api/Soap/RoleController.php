@@ -103,8 +103,8 @@ class RoleController extends SoapController
     /**
      * Link ACL resource to role
      *
-     * @param int    $id       Role id
-     * @param string $resource ACL resource id
+     * @param  int    $id       Role id
+     * @param  string $resource ACL resource id
      * @return string
      *
      * @Soap\Method("addAclToRole")
@@ -123,8 +123,8 @@ class RoleController extends SoapController
     /**
      * Unlink ACL resource from role
      *
-     * @param int    $id       Role id
-     * @param string $resource ACL resource id
+     * @param  int    $id       Role id
+     * @param  string $resource ACL resource id
      * @return string
      *
      * @Soap\Method("removeAclFromRole")
@@ -143,8 +143,8 @@ class RoleController extends SoapController
     /**
      * Link ACL resources to role
      *
-     * @param int   $id        Role id
-     * @param array $resources Array of ACL resource ids
+     * @param  int    $id        Role id
+     * @param  array  $resources Array of ACL resource ids
      * @return string
      *
      * @Soap\Method("addAclsToRole")
@@ -163,8 +163,8 @@ class RoleController extends SoapController
     /**
      * Unlink ACL resources from role
      *
-     * @param int   $id        Role id
-     * @param array $resources Array of ACL resource ids
+     * @param  int    $id        Role id
+     * @param  array  $resources Array of ACL resource ids
      * @return string
      *
      * @Soap\Method("removeAclsFromRole")
