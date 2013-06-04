@@ -42,6 +42,7 @@ class StatusHandler
     public function __construct(FormInterface $form, Request $request, ObjectManager $em, UserManager $um)
     {
         $this->form = $form;
+
         $this->request = $request;
         $this->em = $em;
         $this->um = $um;

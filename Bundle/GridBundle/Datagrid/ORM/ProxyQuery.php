@@ -223,7 +223,6 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
 
         // Apply orderBy before change select, because it can contain some expressions from select as aliases
         $this->applyOrderByParameters($qb);
-
         $selectExpressions = array('DISTINCT ' . $this->getIdFieldFQN());
         // We must leave expressions used in having
         $selectExpressions = array_merge($selectExpressions, $this->selectWhitelist);
