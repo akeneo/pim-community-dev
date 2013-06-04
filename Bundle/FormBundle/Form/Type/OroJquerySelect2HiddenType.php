@@ -5,6 +5,7 @@ namespace Oro\Bundle\FormBundle\Form\Type;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\FormBundle\EntityAutocomplete\Configuration;
 use Oro\Bundle\FormBundle\EntityAutocomplete\Property;
+use Oro\Bundle\FormBundle\EntityAutocomplete\Transformer\EntityToTextTransformer;
 use Oro\Bundle\FormBundle\EntityAutocomplete\Transformer\EntityTransformerInterface;
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 use Symfony\Component\Form\AbstractType;
@@ -16,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class OroJquerySelect2HiddenType extends AbstractType
 {
     /**
-     * @var EntityToIdTransformer
+     * @var EntityTransformerInterface
      */
     protected $entityTransformer;
 
@@ -30,9 +31,9 @@ class OroJquerySelect2HiddenType extends AbstractType
      */
     protected $configuration;
 
-    public function __construct(EntityTransformerInterface $entityTransformer, EntityManager $em, Configuration $configuration)
+    public function __construct(EntityManager $em, Configuration $configuration)
     {
-        $this->entityTransformer = $entityTransformer;
+        $this->entityTransformer = new EntityToTextTransformer();
         $this->em = $em;
         $this->configuration = $configuration;
     }
@@ -77,10 +78,10 @@ class OroJquerySelect2HiddenType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         parent::buildView($view, $form, $options);
-        $title = $this->entityTransformer->transform($options['autocomplete_alias'], $form->getData());
 
         // Prepare required options based on autocomplete configuration
         $autocompleteOptions = $this->configuration->getAutocompleteOptions($options['autocomplete_alias']);
+        $title = $this->entityTransformer->transform($form->getData(), $autocompleteOptions['properties']);
         $configs = array_key_exists('form_options', $autocompleteOptions) ? $autocompleteOptions['form_options'] : array();
         $configs['route'] = $autocompleteOptions['route'];
 

@@ -2,14 +2,16 @@
 
 namespace Oro\Bundle\FormBundle\EntityAutocomplete\Transformer;
 
+use Oro\Bundle\FormBundle\EntityAutocomplete\Property;
+
 interface EntityTransformerInterface
 {
     /**
      * Transform entity to string based on autocompleter configuration.
      *
-     * @param string $alias
      * @param object $value
+     * @param Property[] $properties
      * @return string
      */
-    public function transform($alias, $value);
+    public function transform($value, array $properties);
 }

@@ -11,6 +11,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
+use Oro\Bundle\FormBundle\EntityAutocomplete\Transformer\EntityToTextTransformer;
+use Oro\Bundle\FormBundle\EntityAutocomplete\Property;
 use Oro\Bundle\FormBundle\EntityAutocomplete\SearchFactoryInterface;
 use Oro\Bundle\FormBundle\EntityAutocomplete\Configuration;
 use Oro\Bundle\UserBundle\Acl\Manager;
@@ -53,7 +55,7 @@ class EntityAutocompleteController extends Controller
         }
 
         return $this->render($options['view'], array(
-                'results' => $this->transformEntities($name, $results),
+                'results' => $this->transformEntities($results, $options['properties']),
                 'options' => $options,
                 'query' => $query,
                 'page' => $page,
@@ -63,15 +65,19 @@ class EntityAutocompleteController extends Controller
         );
     }
 
-    protected function transformEntities($name, array $entities)
+    /**
+     * @param array $entities
+     * @param Property[] $properties
+     * @return array
+     */
+    protected function transformEntities(array $entities, array $properties)
     {
         $result = array();
-        /** @var $transformer \Oro\Bundle\FormBundle\EntityAutocomplete\Transformer\EntityTransformerInterface */
-        $transformer = $this->get('oro_form.autocomplete.transformer.entity_to_text');
+        $transformer = new EntityToTextTransformer();
         foreach ($entities as $entity) {
             $result[] = array(
                 'id' => $entity->getId(),
-                'text' => $transformer->transform($name, $entity)
+                'text' => $transformer->transform($entity, $properties)
             );
         }
         return $result;

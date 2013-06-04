@@ -3,38 +3,19 @@
 namespace Oro\Bundle\FormBundle\EntityAutocomplete\Transformer;
 
 use Oro\Bundle\FormBundle\EntityAutocomplete\Property;
-use Oro\Bundle\FormBundle\EntityAutocomplete\Configuration;
 
 class EntityToTextTransformer implements EntityTransformerInterface
 {
     /**
-     * @var Configuration
-     */
-    protected $configuration;
-
-    /**
-     * @param Configuration $configuration
-     */
-    public function __construct(Configuration $configuration)
-    {
-        $this->configuration = $configuration;
-    }
-
-    /**
-     * @param string $alias
      * @param mixed $value
+     * @param Property[] $properties
      * @return string
      */
-    public function transform($alias, $value)
+    public function transform($value, array $properties)
     {
-        $options = $this->configuration->getAutocompleteOptions($alias);
-        if (!$value || !is_array($options) || !array_key_exists('properties', $options) || !is_array($options['properties'])) {
-            return '';
-        }
-
         $data = array();
-        /** @var $property Property */
-        foreach ($options['properties'] as $property) {
+
+        foreach ($properties as $property) {
             $data[] = $this->getPropertyValue($property->getName(), $value);
         }
 
