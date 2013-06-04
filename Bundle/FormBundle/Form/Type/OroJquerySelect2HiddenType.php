@@ -42,7 +42,7 @@ class OroJquerySelect2HiddenType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('autocomplete_alias', 'class'));
+        $resolver->setRequired(array('autocomplete_alias'));
         $resolver->setDefaults(
             array(
                 'empty_value' => '',
@@ -60,7 +60,8 @@ class OroJquerySelect2HiddenType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $modelTransformer = new EntityToIdTransformer($this->em, $options['class']);
+        $autocompleteOptions = $this->configuration->getAutocompleteOptions($options['autocomplete_alias']);
+        $modelTransformer = new EntityToIdTransformer($this->em, $autocompleteOptions['entity_class']);
         $builder->addModelTransformer($modelTransformer);
 
         parent::buildForm($builder, $options);
@@ -76,10 +77,9 @@ class OroJquerySelect2HiddenType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         parent::buildView($view, $form, $options);
-
-
         $title = $this->entityTransformer->transform($options['autocomplete_alias'], $form->getData());
 
+        // Prepare required options based on autocomplete configuration
         $autocompleteOptions = $this->configuration->getAutocompleteOptions($options['autocomplete_alias']);
         $configs = $autocompleteOptions['form_options'];
         $configs['route'] = $autocompleteOptions['route'];

@@ -13,8 +13,7 @@ class UserSelectType extends AbstractType
                 'configs' => array(
                     'placeholder' => 'Choose a user...'
                 ),
-                'autocomplete_alias' => 'users',
-                'class' => 'OroUserBundle:User'
+                'autocomplete_alias' => 'users'
             )
         );
     }
