@@ -29,8 +29,8 @@ class EntitySearchFactory implements SearchFactoryInterface
         $entityManagerName = isset($options['options']['entity_manager'])
             ? $options['options']['entity_manager'] : null;
 
-        if (!isset($options['options']['entity_name'])) {
-            throw new \RuntimeException('Option "options.entity_name" is required');
+        if (!isset($options['entity_class'])) {
+            throw new \RuntimeException('Option "entity_class" is required');
         }
 
         if (!isset($options['properties'])) {
@@ -39,7 +39,7 @@ class EntitySearchFactory implements SearchFactoryInterface
 
         return new EntitySearchHandler(
             $this->managerRegistry->getManager($entityManagerName),
-            $options['options']['entity_name'],
+            $options['entity_class'],
             $options['properties']
         );
     }

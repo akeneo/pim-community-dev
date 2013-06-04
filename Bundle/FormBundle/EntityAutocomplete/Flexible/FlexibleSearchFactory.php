@@ -47,10 +47,10 @@ class FlexibleSearchFactory implements SearchFactoryInterface
                 );
             }
         } else {
-            if (!isset($options['options']['entity_class'])) {
-                throw new \RuntimeException('Option "options.entity_class" is required');
+            if (!isset($options['entity_class'])) {
+                throw new \RuntimeException('Option "entity_class" is required');
             }
-            $flexibleManager = $this->flexibleManagerRegistry->getManager($options['options']['entity_class']);
+            $flexibleManager = $this->flexibleManagerRegistry->getManager($options['entity_class']);
         }
 
         if (!isset($options['properties'])) {

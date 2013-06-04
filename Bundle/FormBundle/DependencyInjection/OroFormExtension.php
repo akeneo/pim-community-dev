@@ -11,7 +11,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class OroFormExtension extends Extension
 {
-    const BUNDLE_CONFIG_FILE = 'form.yml';
+    const AUTOCOMPLETE_CONFIG_FILE = 'autocomplete.yml';
 
     /**
      * {@inheritDoc}
@@ -27,7 +27,7 @@ class OroFormExtension extends Extension
         $container->setParameter('oro_form.autocomplete.config', $config['autocomplete_entities']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('autocomplete.yml');
+        $loader->load('autocomplete_services.yml');
         $loader->load('form_type.yml');
     }
 
@@ -42,7 +42,7 @@ class OroFormExtension extends Extension
         $bundleConfigs = array();
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
             $reflection = new \ReflectionClass($bundle);
-            $file = dirname($reflection->getFilename()) . '/Resources/config/' . self::BUNDLE_CONFIG_FILE;
+            $file = dirname($reflection->getFilename()) . '/Resources/config/' . self::AUTOCOMPLETE_CONFIG_FILE;
             if (is_file($file)) {
                 $file = realpath($file);
                 $bundleConfigs[] = Yaml::parse($file);
