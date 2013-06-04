@@ -69,7 +69,7 @@ class PageFilteredGrid extends PageGrid
         //select criteria
         if ($condition != '') {
             //expand condition list
-            $criteria->element($this->using('xpath')->value("/div/div/div/button[@class ='btn dropdown-toggle']"))->click();
+            $criteria->element($this->using('xpath')->value("div/div/div/button[@class ='btn dropdown-toggle']"))->click();
 
             $criteria->element($this->using('xpath')->value("div/div/div/ul/li/a[text()='{$condition}']"))->click();
         }
