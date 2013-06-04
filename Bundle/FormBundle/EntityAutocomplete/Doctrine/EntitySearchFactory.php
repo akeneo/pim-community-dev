@@ -26,16 +26,16 @@ class EntitySearchFactory implements SearchFactoryInterface
      */
     public function create(array $options)
     {
-        $entityManagerName = isset($options['options']['entity_manager'])
-            ? $options['options']['entity_manager'] : null;
+        if (!isset($options['properties'])) {
+            throw new \RuntimeException('Option "properties" is required');
+        }
 
         if (!isset($options['entity_class'])) {
             throw new \RuntimeException('Option "entity_class" is required');
         }
 
-        if (!isset($options['properties'])) {
-            throw new \RuntimeException('Option "properties" is required');
-        }
+        $entityManagerName = isset($options['options']['entity_manager'])
+            ? $options['options']['entity_manager'] : null;
 
         return new EntitySearchHandler(
             $this->managerRegistry->getManager($entityManagerName),

@@ -35,6 +35,10 @@ class FlexibleSearchFactory implements SearchFactoryInterface
      */
     public function create(array $options)
     {
+        if (!isset($options['properties'])) {
+            throw new \RuntimeException('Option "properties" is required');
+        }
+
         if (isset($options['options']['flexible_manager'])) {
             $flexibleManager = $this->container->get($options['options']['flexible_manager']);
             if (!$flexibleManager instanceof FlexibleManager) {
@@ -51,10 +55,6 @@ class FlexibleSearchFactory implements SearchFactoryInterface
                 throw new \RuntimeException('Option "entity_class" is required');
             }
             $flexibleManager = $this->flexibleManagerRegistry->getManager($options['entity_class']);
-        }
-
-        if (!isset($options['properties'])) {
-            throw new \RuntimeException('Option "properties" is required');
         }
 
         return new FlexibleSearchHandler(

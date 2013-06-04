@@ -23,8 +23,9 @@ class EntitySearchHandler implements SearchHandlerInterface
      */
     public function __construct(EntityManager $em, $className, array $properties)
     {
-        $queryBuilder = $em->getRepository($className)->createQueryBuilder('e');
-        $this->queryBuilderSearchHandler = new QueryBuilderSearchHandler($queryBuilder, $properties, 'e');
+        $repository = $em->getRepository($className);
+        $queryBuilder = $repository->createQueryBuilder('e');
+        $this->queryBuilderSearchHandler = $this->createQueryBuilderSearchHandler($queryBuilder, $properties, 'e');
     }
 
     /**
@@ -33,5 +34,16 @@ class EntitySearchHandler implements SearchHandlerInterface
     public function search($search, $firstResult, $maxResults)
     {
         return $this->queryBuilderSearchHandler->search($search, $firstResult, $maxResults);
+    }
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param Property[] $properties
+     * @param string $entityAlias
+     * @return QueryBuilderSearchHandler
+     */
+    protected function createQueryBuilderSearchHandler(QueryBuilder $queryBuilder, array $properties, $entityAlias)
+    {
+        return new QueryBuilderSearchHandler($queryBuilder, $properties, $entityAlias);
     }
 }
