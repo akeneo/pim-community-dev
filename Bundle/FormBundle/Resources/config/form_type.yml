@@ -22,6 +22,7 @@ services:
         arguments:
             - @oro_form.autocomplete.transformer.entity_to_text
             - @doctrine.orm.entity_manager
+            - @oro_form.autocomplete.configuration
         tags:
             - { name: form.type, alias: oro_jqueryselect2_hidden }
 

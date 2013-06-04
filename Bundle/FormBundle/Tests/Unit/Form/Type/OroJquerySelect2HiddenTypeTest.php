@@ -34,7 +34,7 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $resolver->expects($this->once())
             ->method('setRequired')
-            ->with(array('autocompleter_alias', 'class'))
+            ->with(array('autocomplete_alias', 'class'))
             ->will($this->returnSelf());
 
         $resolver->expects($this->once())
@@ -76,7 +76,7 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
     public function testBuildView()
     {
         $data = null;
-        $options = array('autocompleter_alias' => 'test');
+        $options = array('autocomplete_alias' => 'test');
         $title = 'Test Value';
         $view = $this->getMockBuilder('Symfony\Component\Form\FormView')
             ->disableOriginalConstructor()
@@ -86,7 +86,7 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $this->entityTransformer->expects($this->once())
             ->method('transform')
-            ->with($options['autocompleter_alias'], $data)
+            ->with($options['autocomplete_alias'], $data)
             ->will($this->returnValue($title));
         $this->type->buildView($view, $form, $options);
 

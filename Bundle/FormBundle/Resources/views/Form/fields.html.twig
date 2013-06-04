@@ -68,6 +68,26 @@
     </script>
 {% endblock %}
 
+{% block oro_combobox_dataconfig_autocomplete %}
+    {% set url = configs.ajax.url is defined ? configs.ajax.url : path(configs.route) %}
+
+    select2Config.ajax = {
+        'url': {{ url|json_encode|raw }},
+        'type': 'GET',
+        'data': function (query, page) {
+            return {
+                'page': page,
+                'per_page': {{ configs.per_page|default(10) }},
+                'name': "{{ configs.autocomplete_alias }}",
+                'query': query
+            };
+        },
+        'results': function (data, page) {
+            return data;
+        }
+    }
+{% endblock %}
+
 {% block oro_combobox_dataconfig_grid %}
     {% set url = configs.ajax.url is defined ? configs.ajax.url : path(configs.route, {'_format': 'json'}) %}
 

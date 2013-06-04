@@ -3,6 +3,8 @@
 namespace Oro\Bundle\FormBundle\Form\Type;
 
 use Doctrine\ORM\EntityManager;
+use Oro\Bundle\FormBundle\EntityAutocomplete\Configuration;
+use Oro\Bundle\FormBundle\EntityAutocomplete\Property;
 use Oro\Bundle\FormBundle\EntityAutocomplete\Transformer\EntityTransformerInterface;
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 use Symfony\Component\Form\AbstractType;
@@ -23,10 +25,16 @@ class OroJquerySelect2HiddenType extends AbstractType
      */
     protected $em;
 
-    public function __construct(EntityTransformerInterface $entityTransformer, EntityManager $em)
+    /**
+     * @var Configuration
+     */
+    protected $configuration;
+
+    public function __construct(EntityTransformerInterface $entityTransformer, EntityManager $em, Configuration $configuration)
     {
         $this->entityTransformer = $entityTransformer;
         $this->em = $em;
+        $this->configuration = $configuration;
     }
 
     /**
@@ -34,7 +42,7 @@ class OroJquerySelect2HiddenType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('autocompleter_alias', 'class'));
+        $resolver->setRequired(array('autocomplete_alias', 'class'));
         $resolver->setDefaults(
             array(
                 'empty_value' => '',
@@ -69,11 +77,35 @@ class OroJquerySelect2HiddenType extends AbstractType
     {
         parent::buildView($view, $form, $options);
 
-        $title = $this->entityTransformer->transform($options['autocompleter_alias'], $form->getData());
+
+        $title = $this->entityTransformer->transform($options['autocomplete_alias'], $form->getData());
+
+        $autocompleteOptions = $this->configuration->getAutocompleteOptions($options['autocomplete_alias']);
+        $configs = $autocompleteOptions['form_options'];
+        $configs['route'] = $autocompleteOptions['route'];
+
+        $properties = array();
+        /** @var Property $property */
+        foreach ($autocompleteOptions['properties'] as $property) {
+            $properties[] = $property->getName();
+        }
+        $configs['properties'] = $properties;
+
+        $configs['autocomplete_alias'] = $options['autocomplete_alias'];
+        if (isset($autocompleteOptions['url'])) {
+            $configs = array_replace_recursive(
+                $configs,
+                array(
+                    'ajax' => array('url' => $autocompleteOptions['url'])
+                )
+            );
+        }
+
         $view->vars = array_replace_recursive(
             $view->vars,
             array(
-                'attr' => array('data-title' => $title)
+                'attr' => array('data-title' => $title),
+                'configs' => $configs
             )
         );
     }
