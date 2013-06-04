@@ -91,14 +91,26 @@ class EntityToTextTransformerTest extends \PHPUnit_Framework_TestCase
                 'test second'
             ),
 
-            'value object, properties unknown' => array(
+            'value object method, properties unknown' => array(
                 $this->getValueObjectMock(array('getName' => 'test')), array('properties' => array($this->getPropertyMock('unknown'))), ''
             ),
-            'value object, one property' => array(
+            'value object method, one property' => array(
                 $this->getValueObjectMock(array('getName' => 'test')), array('properties' => array($this->getPropertyMock('name'))), 'test'
             ),
-            'value object, more than one property' => array(
+            'value object method, more than one property' => array(
                 $this->getValueObjectMock(array('getName' => 'test', 'getSecondName' => 'second')),
+                array('properties' => array($this->getPropertyMock('name'), $this->getPropertyMock('second_name'))),
+                'test second'
+            ),
+
+            'value object property, properties unknown' => array(
+                (object)array('name' => 'test'), array('properties' => array($this->getPropertyMock('unknown'))), ''
+            ),
+            'value object property, one property' => array(
+                (object)array('name' => 'test'), array('properties' => array($this->getPropertyMock('name'))), 'test'
+            ),
+            'value object property, more than one property' => array(
+                (object)array('name' => 'test', 'second_name' => 'second'),
                 array('properties' => array($this->getPropertyMock('name'), $this->getPropertyMock('second_name'))),
                 'test second'
             ),

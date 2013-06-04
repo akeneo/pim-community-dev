@@ -49,8 +49,12 @@ class EntityToTextTransformer implements EntityTransformerInterface
     protected function getPropertyValue($name, $value)
     {
         $method = 'get' . str_replace(' ', '', str_replace('_', ' ', ucwords($name)));
-        if (is_object($value) && method_exists($value, $method)) {
-            return $value->$method();
+        if (is_object($value)) {
+            if (method_exists($value, $method)) {
+                return $value->$method();
+            } elseif (isset($value->$name)) {
+                return $value->$name;
+            }
         } elseif (is_array($value) && array_key_exists($name, $value)) {
             return $value[$name];
         }
