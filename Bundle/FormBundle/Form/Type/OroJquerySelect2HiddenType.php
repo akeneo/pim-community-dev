@@ -81,7 +81,7 @@ class OroJquerySelect2HiddenType extends AbstractType
 
         // Prepare required options based on autocomplete configuration
         $autocompleteOptions = $this->configuration->getAutocompleteOptions($options['autocomplete_alias']);
-        $configs = $autocompleteOptions['form_options'];
+        $configs = array_key_exists('form_options', $autocompleteOptions) ? $autocompleteOptions['form_options'] : array();
         $configs['route'] = $autocompleteOptions['route'];
 
         $properties = array();
