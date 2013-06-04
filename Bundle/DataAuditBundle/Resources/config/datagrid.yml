@@ -10,8 +10,7 @@ services:
               datagrid_name:                    audit
               entity_name:                      Oro\Bundle\DataAuditBundle\Entity\Audit
               entity_hint:                      audit
-              route_name:
-
+              route_name:                       oro_dataaudit_index
               query_entity_alias:               a
 
     oro_dataaudit.history.datagrid.manager:
