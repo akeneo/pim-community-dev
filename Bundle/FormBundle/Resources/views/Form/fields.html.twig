@@ -73,7 +73,6 @@
 
     select2Config.ajax = {
         'url': {{ url|json_encode|raw }},
-        'type': 'GET',
         'data': function (query, page) {
             return {
                 'page': page,
@@ -93,7 +92,6 @@
 
     select2Config.ajax = {
         'url': {{ url|json_encode|raw }},
-        'type': 'GET',
         'data': function (query, page) {
             return {
                 '{{ configs.grid.name }}[_pager][_page]': page,
