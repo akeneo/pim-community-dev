@@ -97,16 +97,16 @@
         'data': function (query, page) {
             return {
                 '{{ configs.grid.name }}[_pager][_page]': page,
-                '{{ configs.grid.name }}[_pager][_per_page]': {{ configs.grid.per_page|default(10) }},
-                '{{ configs.grid.name }}[_sort_by][{{ configs.grid.sort_by|default(configs.grid.property) }}]': "{{ configs.grid.sort_order|default('ASC') }}",
-                '{{ configs.grid.name }}[_filter][{{ configs.grid.property }}][type]': 1,
-                '{{ configs.grid.name }}[_filter][{{ configs.grid.property }}][value]': query
+                '{{ configs.grid.name }}[_pager][_per_page]': {{ configs.per_page|default(10) }},
+                '{{ configs.grid.name }}[_sort_by][{{ configs.grid.sort_by|default(configs.properties[0]) }}]': "{{ configs.grid.sort_order|default('ASC') }}",
+                '{{ configs.grid.name }}[_filter][{{ configs.properties[0] }}][type]': 1,
+                '{{ configs.grid.name }}[_filter][{{ configs.properties[0] }}][value]': query
             };
         },
         'results': function (data, page) {
             return {
                 results: $.map(data.data, function(item) {
-                    return {'id': item.id, 'text': item.{{- configs.grid.property -}} };
+                    return {'id': item.id, 'text': item.{{- configs.properties[0] -}} };
                 }),
                 more: page*10 < data.options.totalRecords
             };
