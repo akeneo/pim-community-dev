@@ -19,7 +19,7 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->entityTransformer = $this->getMockBuilder('Oro\Bundle\FormBundle\DataTransformer\EntityTransformerInterface')
+        $this->entityTransformer = $this->getMockBuilder('Oro\Bundle\FormBundle\EntityAutocomplete\Transformer\EntityTransformerInterface')
             ->getMock();
         $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
