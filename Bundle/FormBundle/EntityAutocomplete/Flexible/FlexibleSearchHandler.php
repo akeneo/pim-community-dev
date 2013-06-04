@@ -47,14 +47,14 @@ class FlexibleSearchHandler implements SearchHandlerInterface
         $rootAlias = 'e';
         $queryBuilder = $this->repository->createFlexibleQueryBuilder($rootAlias);
 
-        $attributes = $this->repository->getCodeToAttributes($this->getPropertyNames());
+        $attributes = $this->repository->getCodeToAttributes(array());
         $searchFields = array();
 
         foreach ($this->properties as $property) {
             $propertyName = $property->getName();
             if (empty($attributes[$propertyName])) {
                 // simple property
-                $searchFields[] = $property->getOption('entity_alias', $rootAlias) . $propertyName;
+                $searchFields[] = $property->getOption('entity_alias', $rootAlias) . '.' . $propertyName;
                 continue;
             }
             /** @var $attribute AbstractAttribute */
@@ -78,19 +78,5 @@ class FlexibleSearchHandler implements SearchHandlerInterface
         }
 
         return $queryBuilder->getQuery()->execute();
-    }
-
-    /**
-     * Get codes of attributes
-     *
-     * @return array
-     */
-    protected function getPropertyNames()
-    {
-        $result = array();
-        foreach ($this->properties as $property) {
-            $result[] = $property->getName();
-        }
-        return $result;
     }
 }
