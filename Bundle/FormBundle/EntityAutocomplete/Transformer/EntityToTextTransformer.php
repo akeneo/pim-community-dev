@@ -28,6 +28,9 @@ class EntityToTextTransformer implements EntityTransformerInterface
     public function transform($alias, $value)
     {
         $options = $this->configuration->getAutocompleteOptions($alias);
+        if (!$value || !is_array($options) || !array_key_exists('properties', $options) || !is_array($options['properties'])) {
+            return '';
+        }
 
         $data = array();
         /** @var $property Property */
@@ -35,19 +38,21 @@ class EntityToTextTransformer implements EntityTransformerInterface
             $data[] = $this->getPropertyValue($property->getName(), $value);
         }
 
-        return implode(' ', $data);
+        return trim(implode(' ', $data));
     }
 
     /**
      * @param string $name
-     * @param object $object
+     * @param object $value
      * @return string
      */
-    protected function getPropertyValue($name, $object)
+    protected function getPropertyValue($name, $value)
     {
         $method = 'get' . str_replace(' ', '', str_replace('_', ' ', ucwords($name)));
-        if (method_exists($object, $method)) {
-            return $object->$method();
+        if (is_object($value) && method_exists($value, $method)) {
+            return $value->$method();
+        } elseif (is_array($value) && array_key_exists($name, $value)) {
+            return $value[$name];
         }
         return '';
     }
