@@ -29,6 +29,10 @@ class QueryBuilderSearchFactory implements SearchFactoryInterface
      */
     public function create(array $options)
     {
+        if (!isset($options['properties'])) {
+            throw new \RuntimeException('Option "properties" is required');
+        }
+
         if (!isset($options['options']['query_builder_service'])) {
             throw new \RuntimeException('Option "options.query_builder_service" is required');
         }
@@ -41,10 +45,6 @@ class QueryBuilderSearchFactory implements SearchFactoryInterface
                     $options['options']['query_builder_service']
                 )
             );
-        }
-
-        if (!isset($options['properties'])) {
-            throw new \RuntimeException('Option "properties" is required');
         }
 
         $queryEntityAlias = isset($options['options']['query_entity_alias'])

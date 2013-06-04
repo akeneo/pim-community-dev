@@ -31,11 +31,6 @@ class QueryBuilderSearchHandler implements SearchHandlerInterface
     protected $exprFactory;
 
     /**
-     * @var int
-     */
-    private $uniqueParametersCounter = 0;
-
-    /**
      * @param QueryBuilder $queryBuilder
      * @param Property[] $properties
      * @param string $entityAlias
