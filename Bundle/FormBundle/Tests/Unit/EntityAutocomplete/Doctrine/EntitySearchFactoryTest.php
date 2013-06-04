@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FormBundle\Tests\Unit\EntityAutocomplete\Transformer;
+namespace Oro\Bundle\FormBundle\Tests\Unit\EntityAutocomplete\Doctrine;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityRepository;
@@ -10,6 +10,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\FormBundle\EntityAutocomplete\Property;
 use Oro\Bundle\FormBundle\EntityAutocomplete\Doctrine\EntitySearchFactory;
 use Oro\Bundle\FormBundle\EntityAutocomplete\Doctrine\EntitySearchHandler;
+
+use Oro\Bundle\FormBundle\Tests\Unit\MockHelper;
 
 class EntitySearchFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -79,10 +81,10 @@ class EntitySearchFactoryTest extends \PHPUnit_Framework_TestCase
         array $expectEntityRepositoryCalls,
         array $expectQueryBuilderCalls
     ) {
-        $this->addMockExpectedCalls($this->managerRegistry, $expectManagerRegistryCalls);
-        $this->addMockExpectedCalls($this->entityManager, $expectEntityManagerCalls);
-        $this->addMockExpectedCalls($this->entityRepository, $expectEntityRepositoryCalls);
-        $this->addMockExpectedCalls($this->queryBuilder, $expectQueryBuilderCalls);
+        MockHelper::addMockExpectedCalls($this->managerRegistry, $expectManagerRegistryCalls, $this);
+        MockHelper::addMockExpectedCalls($this->entityManager, $expectEntityManagerCalls, $this);
+        MockHelper::addMockExpectedCalls($this->entityRepository, $expectEntityRepositoryCalls, $this);
+        MockHelper::addMockExpectedCalls($this->queryBuilder, $expectQueryBuilderCalls, $this);
 
         $searchHandler = $this->factory->create($options);
 
@@ -178,17 +180,26 @@ class EntitySearchFactoryTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    protected function getMockEntityManager()
+    /**
+     * @return EntityManager|\PHPUnit_Framework_MockObject_MockObject
+     */
+    public function getMockEntityManager()
     {
         return $this->entityManager;
     }
 
-    protected function getMockEntityRepository()
+    /**
+     * @return EntityRepository|\PHPUnit_Framework_MockObject_MockObject
+     */
+    public function getMockEntityRepository()
     {
         return $this->entityRepository;
     }
 
-    protected function getMockQueryBuilder()
+    /**
+     * @return QueryBuilder|\PHPUnit_Framework_MockObject_MockObject
+     */
+    public function getMockQueryBuilder()
     {
         return $this->queryBuilder;
     }
@@ -200,28 +211,5 @@ class EntitySearchFactoryTest extends \PHPUnit_Framework_TestCase
     protected function createProperty($name)
     {
         return new Property(array('name' => $name));
-    }
-
-    /**
-     * @param \PHPUnit_Framework_MockObject_MockObject $mock
-     * @param array $expectedCalls
-     */
-    private function addMockExpectedCalls($mock, array $expectedCalls)
-    {
-        $index = 0;
-        if ($expectedCalls) {
-            foreach ($expectedCalls as $expectedCall) {
-                list($method, $arguments, $result) = $expectedCall;
-
-                $methodExpectation = $mock->expects($this->at($index++))->method($method);
-                $methodExpectation = call_user_func_array(array($methodExpectation, 'with'), $arguments);
-                if (is_string($result) && method_exists($this, $result)) {
-                    $result = $this->$result();
-                }
-                $methodExpectation->will($this->returnValue($result));
-            }
-        } else {
-            $mock->expects($this->never())->method($this->anything());
-        }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FormBundle\Tests\Unit\EntityAutocomplete\Transformer;
+namespace Oro\Bundle\FormBundle\Tests\Unit\EntityAutocomplete\Doctrine;
 
 use Doctrine\ORM\QueryBuilder;
 
@@ -9,6 +9,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Oro\Bundle\FormBundle\EntityAutocomplete\Property;
 use Oro\Bundle\FormBundle\EntityAutocomplete\Doctrine\QueryBuilderSearchHandler;
 use Oro\Bundle\FormBundle\EntityAutocomplete\Doctrine\QueryBuilderSearchFactory;
+
+use Oro\Bundle\FormBundle\Tests\Unit\MockHelper;
 
 class QueryBuilderSearchFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -50,8 +52,8 @@ class QueryBuilderSearchFactoryTest extends \PHPUnit_Framework_TestCase
         array $expectQueryBuilderCalls,
         array $expectedAttributes
     ) {
-        $this->addMockExpectedCalls($this->container, $expectContainerCalls);
-        $this->addMockExpectedCalls($this->queryBuilder, $expectQueryBuilderCalls);
+        MockHelper::addMockExpectedCalls($this->container, $expectContainerCalls, $this);
+        MockHelper::addMockExpectedCalls($this->queryBuilder, $expectQueryBuilderCalls, $this);
 
         $searchHandler = $this->factory->create($options);
 
@@ -127,7 +129,7 @@ class QueryBuilderSearchFactoryTest extends \PHPUnit_Framework_TestCase
         $expectedException,
         $expectedExceptionMessage
     ) {
-        $this->addMockExpectedCalls($this->container, $expectContainerCalls);
+        MockHelper::addMockExpectedCalls($this->container, $expectContainerCalls, $this);
         $this->setExpectedException($expectedException, $expectedExceptionMessage);
         $this->factory->create($options);
     }
@@ -168,7 +170,7 @@ class QueryBuilderSearchFactoryTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    protected function getMockQueryBuilder()
+    public function getMockQueryBuilder()
     {
         return $this->queryBuilder;
     }
@@ -180,28 +182,5 @@ class QueryBuilderSearchFactoryTest extends \PHPUnit_Framework_TestCase
     protected function createProperty($name)
     {
         return new Property(array('name' => $name));
-    }
-
-    /**
-     * @param \PHPUnit_Framework_MockObject_MockObject $mock
-     * @param array $expectedCalls
-     */
-    private function addMockExpectedCalls($mock, array $expectedCalls)
-    {
-        $index = 0;
-        if ($expectedCalls) {
-            foreach ($expectedCalls as $expectedCall) {
-                list($method, $arguments, $result) = $expectedCall;
-
-                $methodExpectation = $mock->expects($this->at($index++))->method($method);
-                $methodExpectation = call_user_func_array(array($methodExpectation, 'with'), $arguments);
-                if (is_string($result) && method_exists($this, $result)) {
-                    $result = $this->$result();
-                }
-                $methodExpectation->will($this->returnValue($result));
-            }
-        } else {
-            $mock->expects($this->never())->method($this->anything());
-        }
     }
 }
