@@ -11,9 +11,20 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
      */
     protected $type;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|Doctrine\ORM\EntityManager
+     */
     protected $em;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|Oro\Bundle\FormBundle\EntityAutocomplete\Transformer\EntityTransformerInterface
+     */
     protected $entityTransformer;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|Oro\Bundle\FormBundle\EntityAutocomplete\Configuration
+     */
+    protected $configuration;
 
     protected function setUp()
     {
@@ -24,7 +35,10 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
         $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->type = new OroJquerySelect2HiddenType($this->entityTransformer, $this->em);
+        $this->configuration = $this->getMockBuilder('Oro\Bundle\FormBundle\EntityAutocomplete\Configuration')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->type = new OroJquerySelect2HiddenType($this->entityTransformer, $this->em, $this->configuration);
     }
 
     public function testSetDefaultOptions()
@@ -34,7 +48,7 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $resolver->expects($this->once())
             ->method('setRequired')
-            ->with(array('autocomplete_alias', 'class'))
+            ->with(array('autocomplete_alias'))
             ->will($this->returnSelf());
 
         $resolver->expects($this->once())
@@ -53,6 +67,11 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildForm()
     {
+        $this->configuration->expects($this->once())
+            ->method('getAutocompleteOptions')
+            ->with('test')
+            ->will($this->returnValue(array('entity_class' => 'TestBundle:Test')));
+
         $builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
             ->disableOriginalConstructor()
             ->getMock();
@@ -70,14 +89,25 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
         $this->em->expects($this->once())
             ->method('getClassMetadata')
             ->will($this->returnValue($metadata));
-        $this->type->buildForm($builder, array('class' => 'TestBundle:Test'));
+        $this->type->buildForm($builder, array('autocomplete_alias' => 'test'));
     }
 
-    public function testBuildView()
+    /**
+     * @dataProvider optionsDataProvider
+     * @param array $options
+     * @param array $expected
+     */
+    public function testBuildView($autocompleteOptions, $expected)
     {
         $data = null;
         $options = array('autocomplete_alias' => 'test');
         $title = 'Test Value';
+
+        $this->configuration->expects($this->once())
+            ->method('getAutocompleteOptions')
+            ->with('test')
+            ->will($this->returnValue($autocompleteOptions));
+
         $view = $this->getMockBuilder('Symfony\Component\Form\FormView')
             ->disableOriginalConstructor()
             ->getMock();
@@ -95,6 +125,42 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('array', $view->vars['attr']);
         $this->assertArrayHasKey('data-title', $view->vars['attr']);
         $this->assertEquals($title, $view->vars['attr']['data-title']);
+        $this->assertArrayHasKey('configs', $view->vars);
+        $this->assertEquals($expected, $view->vars['configs']);
+    }
+
+    public function optionsDataProvider()
+    {
+        return array(
+            array(
+                array(
+                    'route' => 'test_route',
+                    'properties' => array($this->getPropertyMock('property')),
+                    'url' => '/test',
+                    'form_options' => array('ajax' => array('type' => 'jsonp'))
+                ),
+                array(
+                    'route' => 'test_route',
+                    'properties' => array('property'),
+                    'autocomplete_alias' => 'test',
+                    'ajax' => array(
+                        'url' => '/test',
+                        'type' => 'jsonp'
+                    )
+                )
+            )
+        );
+    }
+
+    protected function getPropertyMock($name)
+    {
+        $mock = $this->getMockBuilder('Oro\Bundle\FormBundle\EntityAutocomplete\Property')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mock->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue($name));
+        return $mock;
     }
 
     public function testGetName()
