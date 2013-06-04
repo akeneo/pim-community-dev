@@ -1,6 +1,13 @@
-top_block:
-    top_test_template:
-        template: OroUIBundle::test.html.twig
+placeholders:
+  top_block:
+    label: test block
+    items:
+      block_1: ~
+      block2:
         order: 10
-    top_search_block:
-        action: OroSearchBundle:Search:searchBar
+
+items:
+  block_1:
+    template: OroUIBundle::test.html.twig
+  block2:
+    action: OroSearchBundle:Search:searchBar

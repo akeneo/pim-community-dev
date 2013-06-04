@@ -40,21 +40,50 @@ class OroUIExtension extends Extension
     protected function placeholdersConfig(array $config, ContainerBuilder $container)
     {
         $placeholders = array();
+        $items = array();
         $bundles = $container->getParameter('kernel.bundles');
         foreach ($bundles as $bundle) {
             $reflection = new \ReflectionClass($bundle);
             if (is_file($file = dirname($reflection->getFilename()) . '/Resources/config/placeholders.yml')) {
-                $placeholders = array_merge_recursive($placeholders, Yaml::parse(realpath($file)));
+                $placeholderData = Yaml::parse(realpath($file));
+                if (isset($placeholderData['placeholders'])) {
+                    $placeholders = array_merge_recursive($placeholders, $placeholderData['placeholders']);
+                }
+                if (isset($placeholderData['items'])) {
+                    $items = array_merge_recursive($items, $placeholderData['items']);
+                }
             }
         }
 
-        $placeholders = $this->changeOrders($placeholders);
+        $placeholders = $this->changeOrders($this->addItemsToPlaceholders($placeholders, $items));
 
-        if (isset($config['placeholders_blocks']) && count($config['placeholders_blocks'])) {
+        /*if (isset($config['placeholders_blocks']) && count($config['placeholders_blocks'])) {
             $placeholders = $this->overwritePlaceholders($config['placeholders_blocks'], $placeholders);
-        }
+        }*/
 
         $container->setParameter('oro_ui.placeholders', $placeholders);
+    }
+
+    protected function addItemsToPlaceholders(array $placeholders, array $items)
+    {
+        foreach ($placeholders as $placeholderName => $placeholder) {
+            foreach ($placeholder['items'] as $itemName => $itemData) {
+                if (!isset($items[$itemName])) {
+                    unset($placeholders[$placeholderName]['items'][$itemName]);
+                } else {
+                    if (!is_array($itemData)) {
+                        $itemData = array();
+                    }
+                    $placeholders[$placeholderName]['items'][$itemName] = array_merge(
+                        $itemData,
+                        $items[$itemName],
+                        array('name' => $itemName)
+                    );
+                }
+            }
+        }
+
+        return $placeholders;
     }
 
     /**
@@ -65,7 +94,7 @@ class OroUIExtension extends Extension
      *
      * @return array
      */
-    protected function overwritePlaceholders($blocks, $placeholders)
+    /*protected function overwritePlaceholders($blocks, $placeholders)
     {
         foreach ($blocks as $block) {
             if (isset($block['remove']) && $block['remove']) {
@@ -76,7 +105,7 @@ class OroUIExtension extends Extension
         }
 
         return $this->changeOrders($placeholders);
-    }
+    }*/
 
     /**
      * Update block data
@@ -86,13 +115,13 @@ class OroUIExtension extends Extension
      *
      * @return array
      */
-    protected function updateBlock($block, $placeholders)
+    /*protected function updateBlock($block, $placeholders)
     {
         $placeholders = $this->removeBlock($block['name'], $placeholders);
         $placeholders[$block['placeholder']][] = $block;
 
         return $placeholders;
-    }
+    }*/
 
     /**
      * Remove block info
@@ -102,7 +131,7 @@ class OroUIExtension extends Extension
      *
      * @return array mixed
      */
-    protected function removeBlock($blockName, $placeholders)
+    /*protected function removeBlock($blockName, $placeholders)
     {
         foreach ($placeholders as $placeholderId => $blocks) {
             foreach ($blocks as $blockId => $block) {
@@ -113,7 +142,7 @@ class OroUIExtension extends Extension
         }
 
         return $placeholders;
-    }
+    }*/
 
     /**
      * Change placeholders block order
@@ -124,13 +153,8 @@ class OroUIExtension extends Extension
      */
     protected function changeOrders(array $placeholders)
     {
-        foreach ($placeholders as $placeholderName => $placeholderBlocks) {
-            foreach ($placeholderBlocks as $blockName => $block) {
-                if (!isset($placeholders[$placeholderName][$blockName]['name'])) {
-                    $placeholders[$placeholderName][$blockName]['name'] = $blockName;
-                }
-            }
-            usort($placeholders[$placeholderName], array($this, "comparePlaceholderBlocks"));
+        foreach ($placeholders as $placeholderName => $placeholderData) {
+            usort($placeholders[$placeholderName]["items"], array($this, "comparePlaceholderBlocks"));
         }
 
         return $placeholders;
@@ -146,8 +170,8 @@ class OroUIExtension extends Extension
      */
     protected function comparePlaceholderBlocks($a, $b)
     {
-        $aOrder = isset($a['order']) ? $a['order'] : 0;
-        $bOrder = isset($b['order']) ? $b['order'] : 0;
+        $aOrder = isset($a['order']) ? $a['order'] : 1;
+        $bOrder = isset($b['order']) ? $b['order'] : 1;
 
         if ($aOrder == $bOrder) {
 
