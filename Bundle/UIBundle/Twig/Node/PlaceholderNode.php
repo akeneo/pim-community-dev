@@ -7,7 +7,7 @@ use \Twig_Node_Expression_Constant;
 use \Twig_Node_Include;
 use Symfony\Bundle\TwigBundle\Node\RenderNode;
 
-class PositionNode extends \Twig_Node
+class PlaceholderNode extends \Twig_Node
 {
     /**
      * @var array Array of blocks in the position
@@ -26,7 +26,7 @@ class PositionNode extends \Twig_Node
      * @param array $blocks Array of blocks in the position
      * @param       $variables
      * @param string $wrapClassName
-     * @param array $line Line
+     * @param int   $line Line
      * @param int   $tag twig tag
      */
     public function __construct(array $blocks, $variables, $wrapClassName, $line, $tag)
