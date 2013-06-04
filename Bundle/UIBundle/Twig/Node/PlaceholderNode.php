@@ -10,9 +10,9 @@ use Symfony\Bundle\TwigBundle\Node\RenderNode;
 class PlaceholderNode extends \Twig_Node
 {
     /**
-     * @var array Array of blocks in the position
+     * @var array Array with placeholder data
      */
-    protected $blocks;
+    protected $placeholder;
 
     protected $variables;
 
@@ -23,16 +23,16 @@ class PlaceholderNode extends \Twig_Node
     protected $tag;
 
     /**
-     * @param array $blocks Array of blocks in the position
-     * @param       $variables
-     * @param string $wrapClassName
+     * @param array $placeholder Array with placeholder data
+     * @param       $variables Additional placeholder data
+     * @param string $wrapClassName css class name for items wrapper
      * @param int   $line Line
      * @param int   $tag twig tag
      */
-    public function __construct(array $blocks, $variables, $wrapClassName, $line, $tag)
+    public function __construct(array $placeholder, $variables, $wrapClassName, $line, $tag)
     {
-        parent::__construct(array(), array('value' => $blocks), $line);
-        $this->blocks = $blocks;
+        parent::__construct(array(), array('value' => $placeholder['items']), $line);
+        $this->placeholder = $placeholder;
         $this->wrapClassName = $wrapClassName;
         $this->line = $line;
         $this->tag = $tag;
@@ -44,14 +44,21 @@ class PlaceholderNode extends \Twig_Node
      */
     public function compile(Twig_Compiler $compiler)
     {
-        foreach ($this->blocks as $blockData) {
+        /*if (isset($this->placeholder['label'])) {
+            $compiler
+                ->write('echo \'<div>\';')
+                ->write('echo $this->env->getExtension(\'translator\')->getTranslator()->trans("' . $this->placeholder['label'] . '");')
+                ->write("echo '</div>';\n")
+            ;
+        }*/
+        foreach ($this->placeholder['items'] as $item) {
             //$compiler->raw('echo \'<div id = "block-' . $blockData['name'] . '" class="' . $this->wrapClassName . '" >\';');
-            if (array_key_exists('template', $blockData)) {
-                $expr = new Twig_Node_Expression_Constant($blockData['template'], $this->line);
+            if (array_key_exists('template', $item)) {
+                $expr = new Twig_Node_Expression_Constant($item['template'], $this->line);
                 $block = new Twig_Node_Include($expr, $this->variables, true, $this->line, $this->tag);
                 $block->compile($compiler);
-            } elseif (array_key_exists('action', $blockData)) {
-                $expr = new Twig_Node_Expression_Constant($blockData['action'], $this->line);
+            } elseif (array_key_exists('action', $item)) {
+                $expr = new Twig_Node_Expression_Constant($item['action'], $this->line);
                 $attr = new Twig_Node_Expression_Constant(array(), $this->line);
                 if ($this->variables == null) {
                     $attributes = $attr;
