@@ -24,6 +24,6 @@ class UiExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetTokenParsers()
     {
         $parsers = $this->extension->getTokenParsers();
-        $this->assertTrue($parsers[0] instanceof \Oro\Bundle\UIBundle\Twig\Parser\PositionTokenParser);
+        $this->assertTrue($parsers[0] instanceof \Oro\Bundle\UIBundle\Twig\Parser\PlaceholderTokenParser);
     }
 }

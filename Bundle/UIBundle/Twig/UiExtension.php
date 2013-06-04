@@ -2,17 +2,17 @@
 
 namespace Oro\Bundle\UIBundle\Twig;
 
-use Oro\Bundle\UIBundle\Twig\Parser\PositionTokenParser;
+use Oro\Bundle\UIBundle\Twig\Parser\PlaceholderTokenParser;
 
 class UiExtension extends \Twig_Extension
 {
-    protected $positions;
+    protected $placeholders;
 
     protected $wrapClassName;
 
-    public function __construct($positions, $wrapClassName)
+    public function __construct($placeholders, $wrapClassName)
     {
-        $this->positions = $positions;
+        $this->placeholders = $placeholders;
         $this->wrapClassName = $wrapClassName;
     }
 
@@ -22,7 +22,7 @@ class UiExtension extends \Twig_Extension
     public function getTokenParsers()
     {
         return array(
-            new PositionTokenParser($this->positions, $this->wrapClassName)
+            new PlaceholderTokenParser($this->placeholders, $this->wrapClassName)
         );
     }
 

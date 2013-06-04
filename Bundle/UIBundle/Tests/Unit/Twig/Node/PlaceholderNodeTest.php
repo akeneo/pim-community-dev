@@ -1,9 +1,9 @@
 <?php
 namespace Oro\Bundle\UIBundle\Tests\Unit\Twig\Node;
 
-use Oro\Bundle\UIBundle\Twig\Node\PositionNode;
+use Oro\Bundle\UIBundle\Twig\Node\PlaceholderNode;
 
-class PositionNodeTest extends \PHPUnit_Framework_TestCase
+class PlaceholderNodeTest extends \PHPUnit_Framework_TestCase
 {
     protected $compiler;
 
@@ -14,7 +14,7 @@ class PositionNodeTest extends \PHPUnit_Framework_TestCase
     protected $tag;
 
     /**
-     * @var \Oro\Bundle\UIBundle\Twig\Node\PositionNode
+     * @var \Oro\Bundle\UIBundle\Twig\Node\PlaceholderNode
      */
     protected $node;
 
@@ -39,7 +39,7 @@ class PositionNodeTest extends \PHPUnit_Framework_TestCase
 
         $this->tag = 'test_tag';
 
-        $this->node = new PositionNode(
+        $this->node = new PlaceholderNode(
             $this->blocks,
             $this->variables,
             $this->wrapClassName,
@@ -76,7 +76,7 @@ class PositionNodeTest extends \PHPUnit_Framework_TestCase
 
         $this->node->compile($this->compiler);
 
-        $nodeWoVariables = new PositionNode(
+        $nodeWoVariables = new PlaceholderNode(
             array(array('action' => 'some_action')),
             null,
             $this->wrapClassName,
