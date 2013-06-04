@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\FormBundle\EntityAutocomplete\Flexible;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\QueryBuilder;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
@@ -63,7 +64,12 @@ class FlexibleSearchHandler implements SearchHandlerInterface
             $searchFields[] = $joinAlias . '.' . $attribute->getBackendType();
             $joinCondition = $queryBuilder->prepareAttributeJoinCondition($attribute, $joinAlias);
             $joinExpr = $rootAlias . '.' . $attribute->getBackendStorage();
-            $queryBuilder->leftJoin($joinExpr, $joinAlias, $joinCondition);
+            $queryBuilder->leftJoin($joinExpr, $joinAlias, 'WITH', $joinCondition);
+            $queryBuilder->addAttributeOrderBy($attribute, 'ASC');
+        }
+
+        foreach ($searchFields as $field) {
+            $queryBuilder->addOrderBy($field);
         }
 
         if ($search && $searchFields) {
@@ -77,6 +83,17 @@ class FlexibleSearchHandler implements SearchHandlerInterface
             $queryBuilder->setParameter('search', '%' . $search. '%');
         }
 
-        return $queryBuilder->getQuery()->execute();
+        if (null !== $perPage) {
+            $queryBuilder->setFirstResult($page * $perPage)->setMaxResults($perPage);
+            $paginator = new Paginator($queryBuilder->getQuery(), $fetchJoinCollection = true);
+            $results = array();
+            foreach ($paginator as $entity) {
+                $results[] = $entity;
+            }
+        } else {
+            $results = $queryBuilder->getQuery()->execute();
+        }
+
+        return $results;
     }
 }
