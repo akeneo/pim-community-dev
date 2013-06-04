@@ -98,20 +98,20 @@ class EntityToIdTransformerTest extends \PHPUnit_Framework_TestCase
             $self->assertEquals($repository, $pRepository);
             $self->assertEquals(1, $pId);
 
-            $query = $this->getMockBuilder('Doctrine\ORM\AbstractQuery')
+            $query = $self->getMockBuilder('Doctrine\ORM\AbstractQuery')
                 ->disableOriginalConstructor()
                 ->setMethods(array('execute'))
                 ->getMockForAbstractClass();
-            $query->expects($this->once())
+            $query->expects($self->once())
                 ->method('execute')
-                ->will($this->returnValue($entity));
+                ->will($self->returnValue($entity));
 
-            $qb = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
+            $qb = $self->getMockBuilder('Doctrine\ORM\QueryBuilder')
                 ->disableOriginalConstructor()
                 ->getMock();
-            $qb->expects($this->once())
+            $qb->expects($self->once())
                 ->method('getQuery')
-                ->will($this->returnValue($query));
+                ->will($self->returnValue($query));
             return $qb;
         };
 
