@@ -2,11 +2,12 @@
 
 namespace Oro\Bundle\DataAuditBundle\EventListener;
 
-use Oro\Bundle\DataAuditBundle\Loggable\LoggableManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+
+use Oro\Bundle\DataAuditBundle\Loggable\LoggableManager;
 
 class KernelListener implements EventSubscriberInterface
 {

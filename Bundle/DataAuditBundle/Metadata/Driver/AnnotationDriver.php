@@ -17,7 +17,7 @@ use Oro\Bundle\DataAuditBundle\Metadata\PropertyMetadata;
 class AnnotationDriver implements DriverInterface
 {
     /**
-     * Annotation reader use full class pass for parsing
+     * Annotation reader uses a full class pass for parsing
      */
     const LOGGABLE  = 'Oro\\Bundle\\DataAuditBundle\\Metadata\\Annotation\\Loggable';
     const VERSIONED = 'Oro\\Bundle\\DataAuditBundle\\Metadata\\Annotation\\Versioned';

@@ -43,7 +43,7 @@ class LoggableManager
     /**
      * @var array
      */
-    protected $configs = [];
+    protected $configs = array();
 
     /**
      * @var string
@@ -135,7 +135,7 @@ class LoggableManager
         if (is_string($username)) {
             $this->username = $username;
         } elseif (is_object($username) && method_exists($username, 'getUsername')) {
-            $this->username = (string) $username->getUsername();
+            $this->username = (string)$username->getUsername();
         } else {
             throw new \InvalidArgumentException("Username must be a string, or object should have method: getUsername");
         }
@@ -147,8 +147,7 @@ class LoggableManager
     public function handleLoggable(EntityManager $em)
     {
         $this->em = $em;
-
-        $uow = $em->getUnitOfWork();
+        $uow      = $em->getUnitOfWork();
 
         foreach (array_merge($uow->getScheduledCollectionUpdates(), $uow->getScheduledCollectionDeletions())
                  as $collection
@@ -228,14 +227,14 @@ class LoggableManager
                 $oldData = array_reduce(
                     $collection->getSnapshot(),
                     function ($result, $item) use ($method) {
-                        return $result . ($result ? ', ': '') . $item->{$method}();
+                        return $result . ($result ? ', ' : '') . $item->{$method}();
                     }
                 );
 
                 $newData = array_reduce(
                     $collection->toArray(),
                     function ($result, $item) use ($method) {
-                        return $result . ($result ? ', ': '') . $item->{$method}();
+                        return $result . ($result ? ', ' : '') . $item->{$method}();
                     }
                 );
 
@@ -417,7 +416,7 @@ class LoggableManager
                 }
 
                 $data = array_merge(
-                    (array) $logEntry->getData(),
+                    (array)$logEntry->getData(),
                     array(
                         $entity->getAttribute()->getCode() => array(
                             'old' => $oldData,
@@ -463,10 +462,10 @@ class LoggableManager
 
     /**
      * @param $entity
-     * @param  null  $entityMeta
+     * @param  null $entityMeta
      * @return mixed
      */
-    public function getIdentifier($entity, $entityMeta = null)
+    protected function getIdentifier($entity, $entityMeta = null)
     {
         $entityMeta      = $entityMeta ? $entityMeta : $this->em->getClassMetadata(get_class($entity));
         $identifierField = $entityMeta->getSingleIdentifierFieldName($entityMeta);

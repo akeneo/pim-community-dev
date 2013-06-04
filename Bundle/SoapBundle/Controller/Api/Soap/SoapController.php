@@ -91,7 +91,6 @@ abstract class SoapController extends ContainerAware implements
     protected function processForm($entity)
     {
         $this->fixRequestAttributes($entity);
-
         if (!$this->getFormHandler()->process($entity)) {
             throw new \SoapFault('BAD_REQUEST', $this->getFormErrors($this->getForm()));
         }
@@ -128,7 +127,6 @@ abstract class SoapController extends ContainerAware implements
      */
     protected function fixRequestAttributes($entity)
     {
-
         $request = $this->container->get('request');
         $entityData = $request->get($this->getForm()->getName());
         if (!is_object($entityData)) {
@@ -150,6 +148,7 @@ abstract class SoapController extends ContainerAware implements
                 $data[preg_replace('/[^\w+]+/i', '', $field)] = $value;
             }
         }
+
         $request->request->set($this->getForm()->getName(), $data);
     }
 }

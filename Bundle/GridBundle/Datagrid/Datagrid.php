@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\GridBundle\Datagrid;
 
-use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
