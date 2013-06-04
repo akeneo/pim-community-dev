@@ -56,6 +56,7 @@ class GroupHandler
                 $appendUsers = $this->form->get('appendUsers')->getData();
                 $removeUsers = $this->form->get('removeUsers')->getData();
                 $this->onSuccess($entity, $appendUsers, $removeUsers);
+
                 return true;
             }
         }
@@ -66,7 +67,7 @@ class GroupHandler
     /**
      * "Success" form handler
      *
-     * @param Group $entity
+     * @param Group  $entity
      * @param User[] $appendUsers
      * @param User[] $removeUsers
      */
@@ -81,7 +82,7 @@ class GroupHandler
     /**
      * Append users to group
      *
-     * @param Group $group
+     * @param Group  $group
      * @param User[] $users
      */
     protected function appendUsers(Group $group, array $users)
@@ -96,7 +97,7 @@ class GroupHandler
     /**
      * Remove users from group
      *
-     * @param Group $group
+     * @param Group  $group
      * @param User[] $users
      */
     protected function removeUsers(Group $group, array $users)

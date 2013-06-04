@@ -13,6 +13,6 @@ services:
 
     oro_config.twig.config_extension:
         class:                        %oro_config.twig_extension.class%
-        arguments:                    ["@oro_config.user"]
+        arguments:                    ["@oro_config.user", %oro_config.entities%]
         tags:
             - { name: twig.extension }

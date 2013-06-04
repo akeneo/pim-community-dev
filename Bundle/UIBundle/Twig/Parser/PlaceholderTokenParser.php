@@ -1,24 +1,24 @@
 <?php
 namespace Oro\Bundle\UIBundle\Twig\Parser;
 
-use Oro\Bundle\UIBundle\Twig\Node\PositionNode;
+use Oro\Bundle\UIBundle\Twig\Node\PlaceholderNode;
 
-class PositionTokenParser extends \Twig_TokenParser
+class PlaceholderTokenParser extends \Twig_TokenParser
 {
     /**
      * @var array
      */
-    protected $positions;
+    protected $placeholders;
 
     protected $wrapClassName;
 
     /**
-     * @param array  $positions Array with positions
+     * @param array  $placeholders Array with placeholders
      * @param string $wrapClassName Wrapper css class
      */
-    public function __construct(array $positions, $wrapClassName)
+    public function __construct(array $placeholders, $wrapClassName)
     {
-        $this->positions = $positions;
+        $this->placeholders = $placeholders;
         $this->wrapClassName = $wrapClassName;
     }
     /**
@@ -39,8 +39,14 @@ class PositionTokenParser extends \Twig_TokenParser
 
         $stream->expect(\Twig_Token::BLOCK_END_TYPE);
 
-        if (isset($this->positions[$name])) {
-            return new PositionNode($this->positions[$name], $variables, $this->wrapClassName, $token->getLine(), $this->getTag());
+        if (isset($this->placeholders[$name])) {
+            return new PlaceholderNode(
+                $this->placeholders[$name],
+                $variables,
+                $this->wrapClassName,
+                $token->getLine(),
+                $this->getTag()
+            );
         }
     }
 
@@ -49,7 +55,7 @@ class PositionTokenParser extends \Twig_TokenParser
      */
     public function getTag()
     {
-        return 'position';
+        return 'placeholder';
     }
 
 }

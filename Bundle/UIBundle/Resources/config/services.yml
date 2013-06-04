@@ -29,6 +29,6 @@ services:
 
     oro_ui.twig.ui_extension:
         class: %oro_ui.twig.extension.class%
-        arguments: [%oro_ui.positions%, %oro_ui.wrap_class%]
+        arguments: [%oro_ui.placeholders%, %oro_ui.wrap_class%]
         tags:
             - { name: twig.extension }

@@ -3,6 +3,7 @@ parameters:
     oro_flexibleentity.registry.class:              Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry
     oro_flexibleentity.attributetype.factory.class: Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory
     oro_flexibleentity.value_form.value_subscriber.class: Oro\Bundle\FlexibleEntityBundle\Form\EventListener\FlexibleValueSubscriber
+    oro_flexibleentity.filterAttributes.twig.extension.class: Oro\Bundle\FlexibleEntityBundle\Twig\FilterAttributesExtension
 
 services:
     oro_flexibleentity.value_form.value_subscriber:
@@ -89,3 +90,8 @@ services:
         class: Oro\Bundle\FlexibleEntityBundle\Form\Type\EmailCollectionType
         tags:
             - { name: form.type, alias: oro_flexibleentity_email_collection }
+
+    oro_flexibleentity.filterAttributes.twig.extension:
+        class: %oro_flexibleentity.filterAttributes.twig.extension.class%
+        tags:
+            - { name: twig.extension }

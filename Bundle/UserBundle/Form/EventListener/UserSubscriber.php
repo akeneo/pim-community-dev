@@ -124,7 +124,7 @@ class UserSubscriber implements EventSubscriberInterface
     /**
      * Returns true if passed user is currently authenticated
      *
-     * @param User $user
+     * @param  User $user
      * @return bool
      */
     protected function isCurrentUser(User $user)
@@ -134,6 +134,7 @@ class UserSubscriber implements EventSubscriberInterface
         if ($user->getId() && is_object($currentUser)) {
             return $currentUser->getId() == $user->getId();
         }
+
         return false;
     }
 }

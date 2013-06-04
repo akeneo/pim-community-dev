@@ -1,23 +1,23 @@
 <?php
 namespace Oro\Bundle\UIBundle\Tests\Unit\Twig\Parser;
 
-use Oro\Bundle\UIBundle\Twig\Parser\PositionTokenParser;
+use Oro\Bundle\UIBundle\Twig\Parser\PlaceholderTokenParser;
 
-class PositionTokenParserTest extends \PHPUnit_Framework_TestCase
+class PlaceholderTokenParserTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Oro\Bundle\UIBundle\Twig\Parser\PositionTokenParser
+     * @var \Oro\Bundle\UIBundle\Twig\Parser\PlaceholderTokenParser
      */
-    private $parser;
+    private $placeholder;
 
     public function setUp()
     {
-        $this->parser = new PositionTokenParser(array('test_position' => array()), 'test_class');
+        $this->placeholder = new PlaceholderTokenParser(array('test_position' => array()), 'test_class');
     }
 
     public function testParse()
     {
-        $startToken = new \Twig_Token(\Twig_Token::NAME_TYPE, 'position', 12);
+        $startToken = new \Twig_Token(\Twig_Token::NAME_TYPE, 'placeholder', 12);
 
         $stream = new \Twig_TokenStream(
             array(
@@ -48,11 +48,11 @@ class PositionTokenParserTest extends \PHPUnit_Framework_TestCase
             ->method('parseExpression')
             ->will($this->returnValue(null));
 
-        $this->parser->setParser($parser);
+        $this->placeholder->setParser($parser);
 
-        $resultNode = $this->parser->parse($startToken);
+        $resultNode = $this->placeholder->parse($startToken);
         $this->assertEquals(12, $resultNode->getLine());
-        $this->assertEquals('position', $resultNode->getNodeTag());
+        $this->assertEquals('placeholder', $resultNode->getNodeTag());
     }
 }
 

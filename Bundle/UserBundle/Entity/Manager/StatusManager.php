@@ -28,7 +28,7 @@ class StatusManager
     }
 
     /**
-     * @param  User $user
+     * @param  User     $user
      * @return Status[]
      */
     public function getUserStatuses(User $user)
@@ -39,9 +39,9 @@ class StatusManager
     /**
      * Delete user status
      *
-     * @param  User $user
+     * @param  User   $user
      * @param  Status $status
-     * @param  bool $reloadUser
+     * @param  bool   $reloadUser
      * @return bool
      */
     public function deleteStatus(User $user, Status $status, $reloadUser = true)
@@ -66,9 +66,9 @@ class StatusManager
     /**
      * Set status as current
      *
-     * @param User $user
+     * @param User   $user
      * @param Status $status
-     * @param bool $reloadUser
+     * @param bool   $reloadUser
      */
     public function setCurrentStatus(User $user, Status $status = null, $reloadUser = true)
     {

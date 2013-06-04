@@ -11,9 +11,15 @@ class ConfigExtension extends \Twig_Extension
      */
     protected $userConfigManager;
 
-    public function __construct(UserConfigManager $userConfigManager)
+    /**
+     * @var array
+     */
+    protected $entityOutput;
+
+    public function __construct(UserConfigManager $userConfigManager, $entityOutput = array())
     {
         $this->userConfigManager = $userConfigManager;
+        $this->entityOutput      = $entityOutput;
     }
 
     /**
@@ -24,7 +30,8 @@ class ConfigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'get_user_value' => new \Twig_Function_Method($this, 'getUserValue'),
+            'oro_config_value'  => new \Twig_Function_Method($this, 'getUserValue'),
+            'oro_config_entity' => new \Twig_Function_Method($this, 'getEntityOutput'),
         );
     }
 
@@ -37,6 +44,28 @@ class ConfigExtension extends \Twig_Extension
         return $this->userConfigManager->get($name);
     }
 
+    /**
+     * Get entity output config (if any provided).
+     * Provided parameters:
+     *  "icon"        - path to entity icon, relative to web dir
+     *  "name"        - custom entity name
+     *  "description" - entity description
+     *
+     * @param  string $class FQCN of the entity
+     * @return array
+     */
+    public function getEntityOutput($class)
+    {
+        $default = explode('\\', $class);
+
+        return isset($this->entityOutput[$class])
+            ? $this->entityOutput[$class]
+            : array(
+                'icon'        => '',
+                'name'        => end($default),
+                'description' => 'No description'
+            );
+    }
 
     /**
      * Returns the name of the extension.

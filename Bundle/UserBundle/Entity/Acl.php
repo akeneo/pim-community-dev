@@ -275,7 +275,7 @@ class Acl
     /**
      * Set lft
      *
-     * @param integer $lft
+     * @param  integer $lft
      * @return Acl
      */
     public function setLft($lft)
@@ -416,7 +416,7 @@ class Acl
     /**
      * Set new access roles collection
      *
-     * @param Collection $roles
+     * @param  Collection $roles
      * @return Acl
      */
     public function setAccessRoles(Collection $roles)
