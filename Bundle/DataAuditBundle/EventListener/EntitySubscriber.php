@@ -13,8 +13,14 @@ use Oro\Bundle\DataAuditBundle\Metadata\ExtendMetadataFactory;
 
 class EntitySubscriber implements EventSubscriber
 {
+    /**
+     * @var ExtendMetadataFactory
+     */
     protected $metadataFactory;
 
+    /**
+     * @var LoggableManager
+     */
     protected $loggableManager;
 
     /**

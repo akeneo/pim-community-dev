@@ -2,10 +2,11 @@
 
 namespace Oro\Bundle\DataAuditBundle\Loggable;
 
-use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 use Doctrine\Common\Collections\Collection;
+
+use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\EntityManager;
 
 use Oro\Bundle\UserBundle\Entity\User;
@@ -57,12 +58,12 @@ class LoggableManager
     /**
      * @var array
      */
-    protected $pendingLogEntryInserts;
+    protected $pendingLogEntityInserts;
 
     /**
      * @var array
      */
-    protected $pendingRelatedObjects;
+    protected $pendingRelatedEntities;
 
     /**
      * @var array
@@ -89,13 +90,13 @@ class LoggableManager
      *
      * @return string
      */
-    protected function getLogEntryClass()
+    protected function getLogEntityClass()
     {
         return $this->logEntityClass;
     }
 
     /**
-     * @param \Oro\Bundle\DataAuditBundle\Metadata\ClassMetadata $metadata
+     * @param ClassMetadata $metadata
      */
     public function addConfig(ClassMetadata $metadata)
     {
@@ -105,7 +106,7 @@ class LoggableManager
     /**
      * @param $name
      * @return ClassMetadata
-     * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
+     * @throws InvalidParameterException
      */
     public function getConfig($name)
     {
@@ -177,8 +178,8 @@ class LoggableManager
 
         $oid = spl_object_hash($entity);
 
-        if ($this->pendingLogEntryInserts && array_key_exists($oid, $this->pendingLogEntryInserts)) {
-            $logEntry     = $this->pendingLogEntryInserts[$oid];
+        if ($this->pendingLogEntityInserts && array_key_exists($oid, $this->pendingLogEntityInserts)) {
+            $logEntry     = $this->pendingLogEntityInserts[$oid];
             $logEntryMeta = $em->getClassMetadata(get_class($logEntry));
 
             $id = $this->getIdentifier($entity);
@@ -189,13 +190,13 @@ class LoggableManager
 
             $uow->setOriginalEntityProperty(spl_object_hash($logEntry), 'objectId', $id);
 
-            unset($this->pendingLogEntryInserts[$oid]);
+            unset($this->pendingLogEntityInserts[$oid]);
         }
 
-        if ($this->pendingRelatedObjects && array_key_exists($oid, $this->pendingRelatedObjects)) {
+        if ($this->pendingRelatedEntities && array_key_exists($oid, $this->pendingRelatedEntities)) {
             $identifiers = $uow->getEntityIdentifier($entity);
 
-            foreach ($this->pendingRelatedObjects[$oid] as $props) {
+            foreach ($this->pendingRelatedEntities[$oid] as $props) {
                 $logEntry              = $props['log'];
                 $oldData               = $data = $logEntry->getData();
                 $data[$props['field']] = $identifiers;
@@ -206,7 +207,7 @@ class LoggableManager
                 ));
                 $uow->setOriginalEntityProperty(spl_object_hash($logEntry), 'objectId', $data);
             }
-            unset($this->pendingRelatedObjects[$oid]);
+            unset($this->pendingRelatedEntities[$oid]);
         }
     }
 
@@ -265,7 +266,7 @@ class LoggableManager
             $meta       = $this->getConfig(get_class($entity));
             $entityMeta = $this->em->getClassMetadata(get_class($entity));
 
-            $logEntryMeta = $this->em->getClassMetadata($this->getLogEntryClass());
+            $logEntryMeta = $this->em->getClassMetadata($this->getLogEntityClass());
             /** @var Audit $logEntry */
             $logEntry = $logEntryMeta->newInstance();
 
@@ -294,7 +295,7 @@ class LoggableManager
             $entityId = $this->getIdentifier($entity);
 
             if (!$entityId && $action === self::ACTION_CREATE) {
-                $this->pendingLogEntryInserts[spl_object_hash($entity)] = $logEntry;
+                $this->pendingLogEntityInserts[spl_object_hash($entity)] = $logEntry;
             }
 
             $logEntry->setObjectId($entityId);
@@ -319,7 +320,7 @@ class LoggableManager
                         $value = $this->getIdentifier($value);
 
                         if (!is_array($value) && !$value) {
-                            $this->pendingRelatedObjects[$oid][] = array(
+                            $this->pendingRelatedEntities[$oid][] = array(
                                 'log'   => $logEntry,
                                 'field' => $field
                             );

@@ -2,6 +2,11 @@
 
 namespace Oro\Bundle\DataAuditBundle\Metadata\Driver;
 
+use Doctrine\Common\Annotations\Reader;
+
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\ClassMetadata as DoctrineClassMetadata;
+
 use Metadata\Driver\DriverInterface;
 
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation\Loggable;
@@ -9,17 +14,22 @@ use Oro\Bundle\DataAuditBundle\Metadata\Annotation\Versioned;
 use Oro\Bundle\DataAuditBundle\Metadata\ClassMetadata;
 use Oro\Bundle\DataAuditBundle\Metadata\PropertyMetadata;
 
-use Doctrine\Common\Annotations\Reader;
-use Doctrine\ORM\Mapping\ClassMetadata as DoctrineClassMetadata;
-
 class AnnotationDriver implements DriverInterface
 {
-    const LOGGABLE = 'Oro\\Bundle\\DataAuditBundle\\Metadata\\Annotation\\Loggable';
-
+    /**
+     * Annotation reader use full class pass for parsing
+     */
+    const LOGGABLE  = 'Oro\\Bundle\\DataAuditBundle\\Metadata\\Annotation\\Loggable';
     const VERSIONED = 'Oro\\Bundle\\DataAuditBundle\\Metadata\\Annotation\\Versioned';
 
+    /**
+     * @var Reader
+     */
     protected $reader;
 
+    /**
+     * @var EntityManager
+     */
     protected $em;
 
     /**
@@ -31,6 +41,8 @@ class AnnotationDriver implements DriverInterface
     }
 
     /**
+     * Merge DoctrineClassMetadata and DataAuditClassMetadata
+     *
      * @param  DoctrineClassMetadata     $doctrineClassMetadata
      * @return null|ClassMetadata
      * @throws \InvalidArgumentException

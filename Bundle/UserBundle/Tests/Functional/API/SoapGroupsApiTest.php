@@ -26,7 +26,7 @@ class SoapGroupsApiTest extends WebTestCase
             "http://localhost/api/soap",
             array(
                 'location' => 'http://localhost/api/soap',
-                'soap_version' => SOAP_1_1
+                'soap_version' => SOAP_1_2
             )
         );
     }

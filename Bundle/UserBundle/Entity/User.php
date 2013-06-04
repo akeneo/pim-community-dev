@@ -215,7 +215,7 @@ class User extends AbstractEntityFlexible implements
      * )
      * @Soap\ComplexType("int[]", nillable=true)
      * @Exclude
-     * @Oro\Versioned(method="getLabel")
+     * @Oro\Versioned("getLabel")
      */
     protected $roles;
 

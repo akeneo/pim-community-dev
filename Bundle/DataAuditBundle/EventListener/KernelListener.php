@@ -11,12 +11,12 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 class KernelListener implements EventSubscriberInterface
 {
     /**
-     * @var \Symfony\Component\Security\Core\SecurityContextInterface
+     * @var SecurityContextInterface
      */
     private $securityContext;
 
     /**
-     * @var \Oro\Bundle\DataAuditBundle\Loggable\LoggableManager
+     * @var LoggableManager
      */
     private $loggableManager;
 

@@ -9,7 +9,7 @@ use Oro\Bundle\DataAuditBundle\Metadata\Driver\AnnotationDriver;
 class ExtendMetadataFactory
 {
     /**
-     * @var Driver\AnnotationDriver
+     * @var AnnotationDriver
      */
     protected $driver;
 
@@ -27,7 +27,6 @@ class ExtendMetadataFactory
      */
     public function extendLoadMetadataForClass(ClassMetadata $metadata)
     {
-        return  $this->driver->extendLoadMetadataForClass($metadata);
-
+        return $this->driver->extendLoadMetadataForClass($metadata);
     }
 }
