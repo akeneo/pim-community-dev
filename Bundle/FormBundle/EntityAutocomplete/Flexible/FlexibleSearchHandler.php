@@ -43,7 +43,7 @@ class FlexibleSearchHandler implements SearchHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function search($search, $page, $perPage)
+    public function search($search, $firstResult, $maxResults)
     {
         $rootAlias = 'e';
         $queryBuilder = $this->repository->createFlexibleQueryBuilder($rootAlias);
@@ -83,17 +83,9 @@ class FlexibleSearchHandler implements SearchHandlerInterface
             $queryBuilder->setParameter('search', '%' . $search. '%');
         }
 
-        if (null !== $perPage) {
-            $queryBuilder->setFirstResult($page * $perPage)->setMaxResults($perPage);
-            $paginator = new Paginator($queryBuilder->getQuery(), $fetchJoinCollection = true);
-            $results = array();
-            foreach ($paginator as $entity) {
-                $results[] = $entity;
-            }
-        } else {
-            $results = $queryBuilder->getQuery()->execute();
-        }
+        $queryBuilder->setFirstResult($firstResult * $maxResults)->setMaxResults($maxResults);
+        $paginator = new Paginator($queryBuilder->getQuery(), true);
 
-        return $results;
+        return $paginator->getIterator()->getArrayCopy();
     }
 }

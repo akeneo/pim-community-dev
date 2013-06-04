@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\FormBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\HttpException;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,8 +27,16 @@ class EntityAutocompleteController extends Controller
     {
         $name = $request->get('name');
         $query = $request->get('query');
-        $page = $request->get('page', 0);
-        $perPage = $request->get('per_page', 50) + 1;
+        $page = intval($request->get('page', 1));
+        $perPage = intval($request->get('per_page', 50));
+
+        if ($page < 1) {
+            throw new HttpException(400, 'Parameter "page" must be greater than 1');
+        }
+
+        if ($perPage <= 0) {
+            throw new HttpException(400, 'Parameter "per_page" must be greater than 0');
+        }
 
         $options = $this->getConfiguration()->getAutocompleteOptions($name);
         $searchHandler = $this->getSearchFactory()->create($options);
@@ -35,7 +45,8 @@ class EntityAutocompleteController extends Controller
             throw new AccessDeniedException('Access denied.');
         }
 
-        $results = $searchHandler->search($query, $page, $perPage);
+        $perPage = $perPage + 1;
+        $results = $searchHandler->search($query, ($page - 1) * $perPage, $perPage);
         $hasMore = count($results) == $perPage;
         if ($hasMore) {
             $results = array_slice($results, 0, $perPage - 1);

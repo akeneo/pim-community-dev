@@ -8,9 +8,9 @@ interface SearchHandlerInterface
      * Search and return results using search string ($search), page number ($page) and page size ($perPage).
      *
      * @param string $search
-     * @param int $page
-     * @param int $perPage
+     * @param int $firstResult
+     * @param int $maxResults
      * @return array
      */
-    public function search($search, $page, $perPage);
+    public function search($search, $firstResult, $maxResults);
 }

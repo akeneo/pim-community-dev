@@ -30,8 +30,8 @@ class EntitySearchHandler implements SearchHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function search($search, $page, $perPage)
+    public function search($search, $firstResult, $maxResults)
     {
-        return $this->queryBuilderSearchHandler->search($search, $page, $perPage);
+        return $this->queryBuilderSearchHandler->search($search, $firstResult, $maxResults);
     }
 }

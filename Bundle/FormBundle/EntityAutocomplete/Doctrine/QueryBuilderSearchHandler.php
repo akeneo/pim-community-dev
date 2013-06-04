@@ -54,12 +54,12 @@ class QueryBuilderSearchHandler implements SearchHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function search($search, $page, $perPage)
+    public function search($search, $firstResult, $maxResults)
     {
         $queryBuilder = $this->getApplyQueryBuilder();
         $this->applyFiltering($queryBuilder, $search);
         $this->applySorting($queryBuilder);
-        $this->applyPagination($queryBuilder, $page, $perPage);
+        $this->applyPagination($queryBuilder, $firstResult, $maxResults);
         return $this->getResults($queryBuilder);
     }
 
@@ -124,17 +124,13 @@ class QueryBuilderSearchHandler implements SearchHandlerInterface
 
     /**
      * @param QueryBuilder $queryBuilder
-     * @param int $page
-     * @param int $perPage
+     * @param int $firstResult
+     * @param int $maxResults
      */
-    protected function applyPagination(QueryBuilder $queryBuilder, $page, $perPage)
+    protected function applyPagination(QueryBuilder $queryBuilder, $firstResult, $maxResults)
     {
-        if (null !== $perPage) {
-            $queryBuilder->setFirstResult($page * $perPage);
-            $queryBuilder->setMaxResults($perPage);
-        } else {
-            $queryBuilder->setFirstResult($page);
-        }
+        $queryBuilder->setFirstResult($firstResult * $maxResults);
+        $queryBuilder->setMaxResults($maxResults);
     }
 
     /**
