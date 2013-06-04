@@ -44,8 +44,7 @@ class Group extends Page implements Entity
         $this->byXPath("//button[contains(., 'Save')]")->click();
         $this->waitPageToLoad();
         $this->waitForAjax();
-        return $this;
-        //return new Groups($this->test, false);
+        return new Groups($this->test, false);
     }
 
     public function close()
