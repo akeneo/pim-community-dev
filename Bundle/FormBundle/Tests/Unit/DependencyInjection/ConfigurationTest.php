@@ -48,7 +48,8 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                             'foo_name' => array(
                                 'type' => 'foo_type',
                                 'property' => 'bar',
-                                'properties' => array()
+                                'properties' => array(),
+                                'entity_class' => 'FooClassName'
                             )
                         )
                     )
@@ -61,7 +62,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                                 array('name' => 'bar')
                             ),
                             'options' => array(),
-                            'route' => 'oro_form_autocomplete_search'
+                            'form_options' => array(),
+                            'entity_class' => 'FooClassName',
+                            'route' => 'oro_form_autocomplete_search',
+                            'view' => 'OroFormBundle:EntityAutocomplete:search.json.twig'
                         )
                     )
                 )
@@ -77,7 +81,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                                     'bar' => null,
                                     'baz' => null
                                 ),
-                                'route' => 'oro_form_autocomplete_search'
+                                'entity_class' => 'FooClassName'
                             )
                         )
                     )
@@ -91,7 +95,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                                 array('name' => 'baz'),
                             ),
                             'options' => array(),
-                            'route' => 'oro_form_autocomplete_search'
+                            'form_options' => array(),
+                            'entity_class' => 'FooClassName',
+                            'route' => 'oro_form_autocomplete_search',
+                            'view' => 'OroFormBundle:EntityAutocomplete:search.json.twig'
                         )
                     )
                 )
@@ -105,7 +112,8 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                                 'properties' => array(
                                     array('name' => 'bar', 'bar' => 'baz'),
                                     array('name' => 'baz', 'baz' => 'bar')
-                                )
+                                ),
+                                'entity_class' => 'FooClassName'
                             )
                         )
                     )
@@ -119,7 +127,68 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                                 array('name' => 'baz', 'baz' => 'bar')
                             ),
                             'options' => array(),
-                            'route' => 'oro_form_autocomplete_search'
+                            'form_options' => array(),
+                            'entity_class' => 'FooClassName',
+                            'route' => 'oro_form_autocomplete_search',
+                            'view' => 'OroFormBundle:EntityAutocomplete:search.json.twig'
+                        )
+                    )
+                )
+            ),
+            'custom_route' => array(
+                array(
+                    array(
+                        'autocomplete_entities' => array(
+                            'foo_name' => array(
+                                'type' => 'foo_type',
+                                'property' => 'bar',
+                                'entity_class' => 'FooClassName',
+                                'route' => 'custom_route',
+                            )
+                        )
+                    )
+                ),
+                array(
+                    'autocomplete_entities' => array(
+                        'foo_name' => array(
+                            'type' => 'foo_type',
+                            'properties' => array(
+                                array('name' => 'bar')
+                            ),
+                            'options' => array(),
+                            'form_options' => array(),
+                            'entity_class' => 'FooClassName',
+                            'route' => 'custom_route',
+                            'view' => 'OroFormBundle:EntityAutocomplete:search.json.twig'
+                        )
+                    )
+                )
+            ),
+            'custom_view' => array(
+                array(
+                    array(
+                        'autocomplete_entities' => array(
+                            'foo_name' => array(
+                                'type' => 'foo_type',
+                                'property' => 'bar',
+                                'entity_class' => 'FooClassName',
+                                'view' => 'custom_view',
+                            )
+                        )
+                    )
+                ),
+                array(
+                    'autocomplete_entities' => array(
+                        'foo_name' => array(
+                            'type' => 'foo_type',
+                            'properties' => array(
+                                array('name' => 'bar')
+                            ),
+                            'options' => array(),
+                            'form_options' => array(),
+                            'entity_class' => 'FooClassName',
+                            'route' => 'oro_form_autocomplete_search',
+                            'view' => 'custom_view'
                         )
                     )
                 )
@@ -152,6 +221,20 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 ),
                 'Symfony\Component\Config\Definition\Exception\InvalidConfigurationException',
                 'The child node "type" at path "oro_form.autocomplete_entities.foo_name" must be configured.'
+            ),
+            'entity_class required' => array(
+                array(
+                    array(
+                        'autocomplete_entities' => array(
+                            'foo_name' => array(
+                                'type' => 'foo',
+                                'property' => 'bar'
+                            )
+                        )
+                    )
+                ),
+                'Symfony\Component\Config\Definition\Exception\InvalidConfigurationException',
+                'The child node "entity_class" at path "oro_form.autocomplete_entities.foo_name" must be configured.'
             ),
             'properties required' => array(
                 array(
