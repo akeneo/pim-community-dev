@@ -4,9 +4,6 @@ namespace Oro\Bundle\FormBundle\EntityAutocomplete;
 
 class Property
 {
-    const OPERATOR_TYPE_CONTAINS = 'contains';
-    const OPERATOR_TYPE_START_WITH = 'start_with';
-
     /**
      * @var string
      */
@@ -26,14 +23,6 @@ class Property
     public function getName()
     {
         return $this->getRequiredOption('name');
-    }
-
-    /**
-     * @return string
-     */
-    public function getOperatorType()
-    {
-        return $this->getOption('operator_type', self::OPERATOR_TYPE_CONTAINS);
     }
 
     /**

@@ -26,7 +26,7 @@ class QueryBuilderSearchHandler implements SearchHandlerInterface
     protected $properties;
 
     /**
-     * @var Expr
+     * @var ExpressionFactory
      */
     protected $exprFactory;
 
@@ -48,7 +48,7 @@ class QueryBuilderSearchHandler implements SearchHandlerInterface
             $entityAlias = reset($this->queryBuilder->getRootAliases());
         }
         $this->entityAlias = $entityAlias;
-        $this->exprFactory = new Expr();
+        $this->exprFactory = new ExpressionFactory();
     }
 
     /**
@@ -73,72 +73,31 @@ class QueryBuilderSearchHandler implements SearchHandlerInterface
 
     /**
      * @param QueryBuilder $queryBuilder
-     * @param string $query
-     */
-    protected function applyFiltering(QueryBuilder $queryBuilder, $query)
-    {
-        $whereSearchExpr = $this->exprFactory->orX();
-        $havingSearchExpr = $this->exprFactory->orX();
-
-        foreach ($this->properties as $property) {
-            $expression = $this->createSearchPropertyExpression(
-                $queryBuilder,
-                $property,
-                $query
-            );
-
-            if ($property->getOption('having', false)) {
-                $havingSearchExpr->add($expression);
-            } else {
-                $whereSearchExpr->add($expression);
-            }
-        }
-
-        if ($whereSearchExpr->count()) {
-            $queryBuilder->andWhere($whereSearchExpr);
-        }
-
-        if ($havingSearchExpr->count()) {
-            $queryBuilder->andHaving($havingSearchExpr);
-        }
-    }
-
-    /**
-     * @param QueryBuilder $queryBuilder
-     * @param Property $property
      * @param string $search
-     * @return Expr\Base
      */
-    protected function createSearchPropertyExpression(
-        QueryBuilder $queryBuilder,
-        Property $property,
-        $search
-    ) {
-        $parameterName = $this->getUniqueParameterName($property);
-        $propertyPath = $this->getPropertyPath($property);
-
-        switch ($property->getOperatorType()) {
-            case Property::OPERATOR_TYPE_START_WITH:
-                $result = $this->exprFactory->like($propertyPath, ':' . $parameterName);
-                $queryBuilder->setParameter($parameterName, $search . '%');
-                break;
-
-            case Property::OPERATOR_TYPE_CONTAINS: default:
-                $result = $this->exprFactory->like($propertyPath, ':' . $parameterName);
-                $queryBuilder->setParameter($parameterName, '%' . $search . '%');
-                break;
+    protected function applyFiltering(QueryBuilder $queryBuilder, $search)
+    {
+        $propertiesPath = $this->getPropertiesPath();
+        if (count($propertiesPath) == 1) {
+            $searchExpr = $propertiesPath[0];
+        } else {
+            $searchExpr = $this->exprFactory->multipleConcat($propertiesPath, ' ');
         }
 
-        return $result;
+        $queryBuilder->andWhere($this->exprFactory->like($searchExpr, ':search'));
+        $queryBuilder->setParameter('search', '%' . $search . '%');
     }
 
     /**
-     * @param Property $property
-     * @return string
+     * @return array
      */
-    protected function getUniqueParameterName(Property $property)
+    protected function getPropertiesPath()
     {
-        return $property->getName() . '_' . $property->getOperatorType() . '_' . $this->uniqueParametersCounter++;
+        $result = array();
+        foreach ($this->properties as $property) {
+            $result[] = $this->getPropertyPath($property);
+        }
+        return $result;
     }
 
     /**
