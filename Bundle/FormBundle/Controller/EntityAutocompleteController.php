@@ -32,8 +32,12 @@ class EntityAutocompleteController extends Controller
         $page = intval($request->get('page', 1));
         $perPage = intval($request->get('per_page', 50));
 
-        if ($page < 1) {
-            throw new HttpException(400, 'Parameter "page" must be greater than 1');
+        if (!$name) {
+            throw new HttpException(400, 'Parameter "name" is required');
+        }
+
+        if ($page <= 0) {
+            throw new HttpException(400, 'Parameter "page" must be greater than 0');
         }
 
         if ($perPage <= 0) {
@@ -54,7 +58,9 @@ class EntityAutocompleteController extends Controller
             $results = array_slice($results, 0, $perPage - 1);
         }
 
-        return $this->render($options['view'], array(
+        return $this->render(
+            $options['view'],
+            array(
                 'results' => $this->transformEntities($results, $options['properties']),
                 'options' => $options,
                 'query' => $query,
