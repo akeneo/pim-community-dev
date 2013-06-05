@@ -76,7 +76,7 @@ autocomplete_entities: # Root element
 
 #### Controller
 
-Controller and action that handles autocomplete search requests by default is Oro\Bundle\FormBundle\Controller\EntityAutocompleteController::searchAction.
+Controller and action that handles autocomplete search requests by default is **Controller \ EntityAutocompleteController::searchAction**.
 It can be configured via option **route** or **url**.
 
 Autocomplete search request can contain next next parameters:
@@ -108,7 +108,7 @@ Autocomplete search request can contain next next parameters:
 
 #### Search Handler
 
-Implements **Oro\Bundle\FormBundle\EntityAutocomplete\SearchHandlerInterface** and used by controller to
+Implements **EntityAutocomplete \ SearchHandlerInterface** and used by controller to
 handle search requests of autocomplete widgets.
 
 Default search handlers are:
@@ -126,14 +126,19 @@ You can define your own search handler. To make it supported by default autocomp
 
 #### Search Handler Factory
 
-Implements **Oro\Bundle\FormBundle\EntityAutocomplete\SearchFactoryInterface** and used by controller to
+Implements **EntityAutocomplete \ SearchFactoryInterface** and used by controller to
 create search handler.
 
-Custom search factory can be added via configuration:
+Custom search factory can be added in configuration using tag **oro_form.autocomplete.search_factory**:
 
 ```yml
-    custom_search_factory:
-        class: %custom_search_factory.class%
-        tags:
-            - { name: oro_form.autocomplete.search_factory, alias: some_unique_name }
+custom_search_factory:
+    class: %custom_search_factory.class%
+    tags:
+        - { name: oro_form.autocomplete.search_factory, alias: some_unique_name }
 ```
+
+**TODOS**
+
+* Improve **doctrine_query_builder** factory to support services that can be used like factories for QueryBuilder.
+* Encapsulate transformation of search results into output format in distinct area apart from controller.
