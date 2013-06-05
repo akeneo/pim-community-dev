@@ -138,7 +138,7 @@ custom_search_factory:
         - { name: oro_form.autocomplete.search_factory, alias: some_unique_name }
 ```
 
-**TODOS**
+#### TODOS
 
 * Improve **doctrine_query_builder** factory to support services that can be used like factories for QueryBuilder.
 * Encapsulate transformation of search results into output format in distinct area apart from controller.
