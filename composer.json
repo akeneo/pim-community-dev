@@ -31,7 +31,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/laboro/platform.git"
+            "url": "git@github.com:laboro/platform-dev.git"
         },
         {
             "type": "vcs",
