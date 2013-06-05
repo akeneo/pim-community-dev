@@ -21,6 +21,7 @@ class PlaceholderTokenParser extends \Twig_TokenParser
         $this->placeholders = $placeholders;
         $this->wrapClassName = $wrapClassName;
     }
+
     /**
      * {@inheritDoc}
      */
@@ -57,5 +58,4 @@ class PlaceholderTokenParser extends \Twig_TokenParser
     {
         return 'placeholder';
     }
-
 }
