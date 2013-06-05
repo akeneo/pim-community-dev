@@ -9,7 +9,7 @@ Autocomplete consists of next components:
 * Autocomplete Configuration
 * Controller
 * Search Handler
-* Search Handler Factory
+* Search Factory
 
 #### Form Type Configuration
 
@@ -79,11 +79,11 @@ autocomplete_entities: # Root element
 Controller and action that handles autocomplete search requests by default is **Controller \ EntityAutocompleteController::searchAction**.
 It can be configured via option **route** or **url**.
 
-Autocomplete search request can contain next next parameters:
+Autocomplete search request can contain next parameters:
 * **name** - name of autocomplete configuration, cannot be empty;
 * **query** - search query string;
-* **page** - index of results page;
-* **per_page** - number of result items on page;
+* **page** - index of results page, must be greater than 0;
+* **per_page** - number of result items on page, must be greater than 0;
 
 **Example of Response**
 
@@ -104,7 +104,7 @@ Autocomplete search request can contain next next parameters:
 ```
 
 * **results** - contain an array of objects, each object has id and text properties
-* **more** - TRUE when has other results to show on next page, otherwise FALSE
+* **more** - TRUE when other can be shown on next page, otherwise FALSE
 
 #### Search Handler
 
@@ -114,20 +114,22 @@ handle search requests of autocomplete widgets.
 Default search handlers are:
 
 **EntityAutocomplete \ Doctrine \ EntitySearchHandler** (doctrine_entity)
-Requires **entity_class** and **properties** options,
-handles search based on default **Doctrine\ORM\QueryBuilder** created from corresponding Doctrine entity repository.
+
+ * requires **entity_class** and **properties** options
+ * handles search based on default **Doctrine\ORM\QueryBuilder** created from corresponding Doctrine entity repository.
 
 **EntityAutocomplete \ Doctrine \ QueryBuilderSearchHandler** (doctrine_query_builder)
-Requires **query_builder_service** and **properties** options,
-which must be a reference to existing service of **Doctrine\ORM\QueryBuilder** type
+
+ * requires **query_builder_service** and **properties** options, which must be a reference to existing service of **Doctrine\ORM\QueryBuilder** type
 
 **EntityAutocomplete \ Flexible \ FlexibleSearchHandler** (flexible)
-Requires **properties** option and
-either **flexible_manager** or **entity_class** option, handles search based on query builder of corresponding flexible entity repository.
 
-You can define your own search handler. To make it supported by default autocomplete controller it must a registered factory with unique name.
+ * requires **properties** option and either **flexible_manager** or **entity_class** option
+ * handles search based on query builder of corresponding flexible entity repository.
 
-#### Search Handler Factory
+You can define your own search handler. To make it supported by default autocomplete controller corresponding search factory must be added.
+
+#### Search Factory
 
 Implements **EntityAutocomplete \ SearchFactoryInterface** and used by controller to
 create search handler.
