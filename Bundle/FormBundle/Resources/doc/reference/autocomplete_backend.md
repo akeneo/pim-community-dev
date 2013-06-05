@@ -132,11 +132,20 @@ create search handler.
 Custom search factory can be added in configuration using tag **oro_form.autocomplete.search_factory**:
 
 ```yml
-custom_search_factory:
-    class: %custom_search_factory.class%
+foo_search_factory:
+    class: %foo_search_factory.class%
     tags:
-        - { name: oro_form.autocomplete.search_factory, alias: some_unique_name }
+        - { name: oro_form.autocomplete.search_factory, alias: foo_type }
 ```
+
+Right after this definition was added to container, autocomplete configuration can support new type:
+
+```yml
+autocomplete_entities:
+    foo_name:
+        type: foo_type
+        entity_class: FooEntityClassName
+        property: bar
 
 #### TODOS
 
