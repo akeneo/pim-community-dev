@@ -92,8 +92,8 @@ class ObjectMapper
      */
     public function getEntityConfig($entity)
     {
-        if (isset($this->mappingConfig[(string)$entity])) {
-            return $this->mappingConfig[(string)$entity];
+        if (isset($this->mappingConfig[(string) $entity])) {
+            return $this->mappingConfig[(string) $entity];
         }
 
         return false;
@@ -333,6 +333,7 @@ class ObjectMapper
             $objectData[AbstractAttributeType::BACKEND_TYPE_TEXT][Indexer::TEXT_ALL_DATA_FIELD] .= " " . $value;
             $objectData[AbstractAttributeType::BACKEND_TYPE_TEXT][$alias . '_' . $attribute] = $value;
         }
+
         return $objectData;
     }
 

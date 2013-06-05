@@ -12,7 +12,6 @@ use JMS\JobQueueBundle\Entity\Job;
 use Oro\Bundle\SearchBundle\Query\Query;
 use Oro\Bundle\SearchBundle\Query\Result\Item as ResultItem;
 use Oro\Bundle\SearchBundle\Entity\Item;
-use Oro\Bundle\SearchBundle\Engine\Indexer;
 use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
 
 class Orm extends AbstractEngine
