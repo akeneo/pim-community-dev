@@ -113,13 +113,16 @@ handle search requests of autocomplete widgets.
 
 Default search handlers are:
 
-* **EntityAutocomplete \ Doctrine \ EntitySearchHandler** (doctrine_entity) - requires **entity_class** and **properties** options,
+* **EntityAutocomplete \ Doctrine \ EntitySearchHandler** (doctrine_entity)
+Requires **entity_class** and **properties** options,
 handles search based on default **Doctrine\ORM\QueryBuilder** created from corresponding Doctrine entity repository.
 
-* **EntityAutocomplete \ Doctrine \ QueryBuilderSearchHandler** (doctrine_query_builder) - requires **query_builder_service** and **properties** options,
+* **EntityAutocomplete \ Doctrine \ QueryBuilderSearchHandler** (doctrine_query_builder)
+Requires **query_builder_service** and **properties** options,
 which must be a reference to existing service of **Doctrine\ORM\QueryBuilder** type
 
-* **EntityAutocomplete \ Flexible \ FlexibleSearchHandler** (flexible) - requires **properties** option and
+* **EntityAutocomplete \ Flexible \ FlexibleSearchHandler** (flexible)
+Requires **properties** option and
 either **flexible_manager** or **entity_class** option, handles search based on query builder of corresponding flexible entity repository.
 
 You can define your own search handler. To make it supported by default autocomplete controller it must a registered factory with unique name.
