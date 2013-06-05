@@ -1,9 +1,8 @@
-Form Components
----------------
+Form Components Overview
+------------------------
 
 This article describes all form components that are stored in OroUIBundle.
-Form components it is form types, data transformers and event listeners.
-
+Form components are form types, data transformers and event listeners.
 
 ### Form Types
 
@@ -51,12 +50,12 @@ services:
         tags:
             - { name: form.type, alias: oro_entity_identifier }
         arguments: ["@doctrine"]
-        
+
     oro_form.type.jqueryselect2_hidden:
         class: %oro_form.type.jqueryselect2_hidden.class%
         arguments:
             - @doctrine.orm.entity_manager
             - @oro_form.autocomplete.configuration
         tags:
-            - { name: form.type, alias: oro_jqueryselect2_hidden }        
+            - { name: form.type, alias: oro_jqueryselect2_hidden }
 ```
