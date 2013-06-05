@@ -12,7 +12,16 @@ class PlaceholderTokenParserTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->placeholder = new PlaceholderTokenParser(array('test_position' => array()), 'test_class');
+        $this->placeholder = new PlaceholderTokenParser(
+            array(
+                 'test_position' => array(
+                     'items' => array(
+                         'test_item' => array()
+                     )
+                 )
+            ),
+            'test_class'
+        );
     }
 
     public function testParse()
@@ -51,6 +60,7 @@ class PlaceholderTokenParserTest extends \PHPUnit_Framework_TestCase
         $this->placeholder->setParser($parser);
 
         $resultNode = $this->placeholder->parse($startToken);
+
         $this->assertEquals(12, $resultNode->getLine());
         $this->assertEquals('placeholder', $resultNode->getNodeTag());
     }
