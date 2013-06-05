@@ -25,16 +25,18 @@ class OroUIExtensionTest extends \PHPUnit_Framework_TestCase
 
         $extensionConfig = array(
             array(
-                'placeholders_blocks' => array(
-                    array(
-                        'name' => 'top_test_template',
-                        'remove' => true
-                    ),
-                    array(
-                        'name' => 'insert_template',
-                        'placeholder' => 'new_position',
-                        'action' => 'test_action'
-                    ),
+                'placeholders_items' => array(
+                    'top_block' => array(
+                        'items' => array(
+                            'top_test_template' => array(
+                                'remove' => true
+                            ),
+                            'insert_template' => array(
+                                'order' => 100
+                            ),
+                        )
+                    )
+
                 )
             )
         );
