@@ -146,6 +146,7 @@ autocomplete_entities:
         type: foo_type
         entity_class: FooEntityClassName
         property: bar
+```
 
 #### TODOS
 
