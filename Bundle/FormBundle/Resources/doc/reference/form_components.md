@@ -9,7 +9,7 @@ Form components are form types, data transformers and event listeners.
 * **Form / Type / OroDateType** (name = oro_date) - encapsulates date element logic;
 * **Form / Type / OroDateTimeType** (name = oro_datetime) - encapsulates datetime element logic;
 * **Form / Type / EntityIdentifierType** (name = oro_entity_identifier) - converts string or array of entity IDs to existing entities of specified type.
-* **Form / Type / OroJquerySelect2HiddenType** (name = oro_jqueryselect2_hidden) - supports autocompletition
+* **Form / Type / OroJquerySelect2HiddenType** (name = oro_jqueryselect2_hidden) - supports autocompletition ([more details](./autocomplete_form_type.md))
 
 ### Data Transformers
 
