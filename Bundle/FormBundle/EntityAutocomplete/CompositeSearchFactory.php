@@ -2,21 +2,21 @@
 
 namespace Oro\Bundle\FormBundle\EntityAutocomplete;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 class CompositeSearchFactory implements SearchFactoryInterface
 {
     /**
      * @var SearchFactoryInterface[]
      */
-    protected $factories;
+    protected $factories = array();
 
     /**
      * @param SearchFactoryInterface[] $factories
      */
     public function __construct(array $factories = array())
     {
-        $this->factories = $factories;
+        foreach ($factories as $type => $factory) {
+            $this->addSearchFactory($type, $factory);
+        }
     }
 
     /**
@@ -33,10 +33,15 @@ class CompositeSearchFactory implements SearchFactoryInterface
      */
     public function create(array $options)
     {
+        if (!isset($options['type'])) {
+            throw new \RuntimeException('Option "type" is required');
+        }
+
         $type = $options['type'];
+
         if (!isset($this->factories[$type])) {
             throw new \RuntimeException(
-                "Autocomplete factory for type \"$type\" is not registered"
+                "Autocomplete search factory for type \"$type\" is not registered"
             );
         }
 

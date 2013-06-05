@@ -26,7 +26,7 @@ class OroFormExtension extends Extension
 
         $container->setParameter('oro_form.autocomplete.config', $config['autocomplete_entities']);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('autocomplete_services.yml');
         $loader->load('form_type.yml');
     }
