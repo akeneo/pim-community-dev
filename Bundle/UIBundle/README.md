@@ -60,11 +60,11 @@ oro_ui:
 To render placeholder content in twig template we need to put
 
 ```html
-   {% placeholder <placeholder_name> %}
+{% placeholder <placeholder_name> %}
 ```
 
 Additional options can be passed to all placeholder child items using 'with' e.g.
 
 ```html
-    {% placeholder <placeholder_name> with {'form' : form} %}
+{% placeholder <placeholder_name> with {'form' : form} %}
 ```
