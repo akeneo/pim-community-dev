@@ -76,6 +76,36 @@ autocomplete_entities: # Root element
 
 #### Controller
 
+Controller and action that handles autocomplete search requests by default is Oro\Bundle\FormBundle\Controller\EntityAutocompleteController::searchAction.
+It can be configured via option **route** or **url**.
+
+Autocomplete search request can contain next next parameters:
+* **name** - name of autocomplete configuration, cannot be empty;
+* **query** - search query string;
+* **page** - index of results page;
+* **per_page** - number of result items on page;
+
+**Example of Response**
+
+```json
+{
+    "results": [{
+        "id": 1,
+        "text": "foo"
+    }, {
+       "id": 2,
+       "text": "bar"
+    }, {
+        "id": 2,
+        "text": "baz"
+     }],
+    "more": false
+}
+```
+
+* **results** - contain an array of objects, each object has id and text properties
+* **more** - TRUE when has other results to show on next page, otherwise FALSE
+
 #### Search Handler
 
 #### Search Handler Factory
