@@ -2,9 +2,10 @@
 
 namespace Oro\Bundle\SearchBundle\Controller\Api;
 
-use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+
+use FOS\Rest\Util\Codes;
+use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 
@@ -28,17 +29,16 @@ class SearchController extends FOSRestController
      */
     public function getAction()
     {
-        $view = new View();
-
-        return $this->get('fos_rest.view_handler')->handle(
-            $view->setData(
+        return $this->handleView(
+            $this->view(
                 $this->get('oro_search.index')->simpleSearch(
                     $this->getRequest()->get('search'),
                     (int) $this->getRequest()->get('offset'),
                     (int) $this->getRequest()->get('max_results'),
                     $this->getRequest()->get('from')
-                )->toSearchResultData()
-            )
+                )->toSearchResultData(),
+                Codes::HTTP_OK
+            )->setTemplate('OroSearchBundle:Api:results.html.twig')
         );
     }
 }

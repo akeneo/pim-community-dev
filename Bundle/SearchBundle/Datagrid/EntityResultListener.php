@@ -23,7 +23,7 @@ class EntityResultListener
 
     /**
      * @param RegistryInterface $doctrineRegistry
-     * @param string $datagridName
+     * @param string            $datagridName
      */
     public function __construct(RegistryInterface $doctrineRegistry, $datagridName)
     {
@@ -75,29 +75,31 @@ class EntityResultListener
     }
 
     /**
-     * @param string $entityName
+     * @param  string        $entityName
      * @return ClassMetadata
      */
     protected function getEntityMetadata($entityName)
     {
         /** @var $entityManager EntityManager */
         $entityManager = $this->doctrineRegistry->getManager();
+
         return $entityManager->getMetadataFactory()->getMetadataFor($entityName);
     }
 
     /**
-     * @param string $entityName
+     * @param  string $entityName
      * @return string
      */
     protected function getEntityIdentifier($entityName)
     {
         $idFields = $this->getEntityMetadata($entityName)->getIdentifierFieldNames();
+
         return current($idFields);
     }
 
     /**
-     * @param string $entityName
-     * @param array $entityIds
+     * @param  string $entityName
+     * @param  array  $entityIds
      * @return array
      */
     protected function getEntities($entityName, array $entityIds)

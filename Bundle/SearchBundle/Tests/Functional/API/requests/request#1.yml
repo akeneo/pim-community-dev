@@ -82,4 +82,3 @@ response:
                 entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 recordTitle: item8@mail.com
                 recordUrl: http://localhost/search/
-
