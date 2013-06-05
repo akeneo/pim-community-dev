@@ -158,7 +158,7 @@ class GridTest extends \PHPUnit_Extensions_Selenium2TestCase
             $sortedColumnOrder = $columnOrder;
             rsort($sortedColumnOrder);
 
-        $this->assertTrue($columnOrder === $sortedColumnOrder, print_r(array('expected' => $sortedColumnOrder, 'actual' => $columnOrder) , true));
+        $this->assertTrue($columnOrder === $sortedColumnOrder, print_r(array('expected' => $sortedColumnOrder, 'actual' => $columnOrder), true));
 
         //test ascending order
         $columnOrder = $users->sortBy($columnName, 'asc')->getColumn($columnId);
@@ -174,7 +174,7 @@ class GridTest extends \PHPUnit_Extensions_Selenium2TestCase
             $sortedColumnOrder = $columnOrder;
             sort($sortedColumnOrder);
 
-        $this->assertTrue($columnOrder === $sortedColumnOrder, print_r(array('expected' => $sortedColumnOrder, 'actual' => $columnOrder) , true));
+        $this->assertTrue($columnOrder === $sortedColumnOrder, print_r(array('expected' => $sortedColumnOrder, 'actual' => $columnOrder), true));
     }
 
     /**

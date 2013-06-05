@@ -83,8 +83,13 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
      * @param EventDispatcherInterface $eventDispatcher      Event dispatcher
      * @param AttributeTypeFactory     $attributeTypeFactory Attribute type factory
      */
-    public function __construct($flexibleName, $flexibleConfig, ObjectManager $storageManager, EventDispatcherInterface $eventDispatcher, AttributeTypeFactory $attributeTypeFactory)
-    {
+    public function __construct(
+        $flexibleName,
+        $flexibleConfig,
+        ObjectManager $storageManager,
+        EventDispatcherInterface $eventDispatcher,
+        AttributeTypeFactory $attributeTypeFactory
+    ) {
         $this->flexibleName         = $flexibleName;
         $this->flexibleConfig       = $flexibleConfig['entities_config'][$flexibleName];
         $this->storageManager       = $storageManager;

@@ -460,7 +460,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
 
             return implode(', ', $items);
 
-        } else if (is_object($data)) {
+        } elseif (is_object($data)) {
 
             return $data->__toString();
         }

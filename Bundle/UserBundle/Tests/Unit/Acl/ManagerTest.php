@@ -343,8 +343,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
                          'description' => 'description_test 1',
                     )
                 )
-            )
-        ));
+            )));
 
         $this->configApiReader->expects($this->once())
             ->method('getConfigResources')
