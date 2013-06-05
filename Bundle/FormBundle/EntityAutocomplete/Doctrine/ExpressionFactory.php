@@ -18,14 +18,18 @@ class ExpressionFactory extends Expr
     public function multipleConcat(array $parts, $joinLiteral = null)
     {
         if (count($parts) < 2) {
-            throw new \InvalidArgumentException('$fields contain be less then 2 elements.');
+            throw new \InvalidArgumentException('$fields elements count cannot be less then 2');
         }
-        $concatArguments = array();
-        foreach ($parts as $expr) {
-            if ($concatArguments && $joinLiteral) {
-                $concatArguments[] = $this->literal($joinLiteral);
+        if ($joinLiteral) {
+            $concatArguments = array();
+            foreach ($parts as $expr) {
+                if ($concatArguments && $joinLiteral) {
+                    $concatArguments[] = $this->literal($joinLiteral);
+                }
+                $concatArguments[] = $expr;
             }
-            $concatArguments[] = $expr;
+        } else {
+            $concatArguments = $parts;
         }
         $result = $this->concat($concatArguments[0], $concatArguments[1]);
         foreach (array_slice($concatArguments, 2) as $argument) {

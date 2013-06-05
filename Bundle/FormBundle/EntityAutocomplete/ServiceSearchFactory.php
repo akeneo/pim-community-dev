@@ -33,8 +33,8 @@ class ServiceSearchFactory implements SearchFactoryInterface
             throw new \RuntimeException(
                 sprintf(
                     'Service "%s" must be an instance of %s\\SearchHandlerInterface',
-                    __NAMESPACE__,
-                    $options['options']['service']
+                    $options['options']['service'],
+                    __NAMESPACE__
                 )
             );
         }
