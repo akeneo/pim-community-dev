@@ -40,7 +40,8 @@ class QueryBuilderSearchHandler implements SearchHandlerInterface
         $this->queryBuilder = $queryBuilder;
         $this->properties = $properties;
         if (!$entityAlias) {
-            $entityAlias = reset($this->queryBuilder->getRootAliases());
+            $rootAliases = $this->queryBuilder->getRootAliases();
+            $entityAlias = $rootAliases[0];
         }
         $this->entityAlias = $entityAlias;
         $this->exprFactory = new ExpressionFactory();
