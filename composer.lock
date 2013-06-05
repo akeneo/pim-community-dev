@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "6ae5253eca96cd789ae0941a2482071b",
+    "hash": "501b7f308fe6ab670bfe7a3f9da962e5",
     "packages": [
         {
             "name": "apy/jsfv-bundle",
@@ -2380,12 +2380,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kriswallsmith/assetic.git",
-                "reference": "1b4b9ab32355b0d377b8baba73d37ab9872ab60b"
+                "reference": "426d4cf7d980a6563a58a1f6aa2351225fbaef77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kriswallsmith/assetic/zipball/1b4b9ab32355b0d377b8baba73d37ab9872ab60b",
-                "reference": "1b4b9ab32355b0d377b8baba73d37ab9872ab60b",
+                "url": "https://api.github.com/repos/kriswallsmith/assetic/zipball/426d4cf7d980a6563a58a1f6aa2351225fbaef77",
+                "reference": "426d4cf7d980a6563a58a1f6aa2351225fbaef77",
                 "shasum": ""
             },
             "require": {
@@ -2443,7 +2443,7 @@
                 "compression",
                 "minification"
             ],
-            "time": "2013-06-04 03:51:00"
+            "time": "2013-06-05 16:37:34"
         },
         {
             "name": "leafo/lessphp",
@@ -2669,13 +2669,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/orocrm/platform.git",
-                "reference": "09d275389dbdcb2df1d45552af828b0a16940d2e"
+                "url": "git@github.com:laboro/platform.git",
+                "reference": "4d4a5059ba7c3620f11165fd81c256cff2bdb085"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orocrm/platform/zipball/09d275389dbdcb2df1d45552af828b0a16940d2e",
-                "reference": "09d275389dbdcb2df1d45552af828b0a16940d2e",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/4d4a5059ba7c3620f11165fd81c256cff2bdb085",
+                "reference": "4d4a5059ba7c3620f11165fd81c256cff2bdb085",
                 "shasum": ""
             },
             "require": {
@@ -2730,13 +2730,16 @@
                     "Oro\\Bundle": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Business Application Platform (BAP)",
-            "homepage": "https://github.com/orocrm/platform.git",
-            "time": "2013-06-04 11:16:16"
+            "homepage": "https://github.com/laboro/platform.git",
+            "support": {
+                "source": "https://github.com/laboro/platform/tree/master",
+                "issues": "https://github.com/laboro/platform/issues"
+            },
+            "time": "2013-06-05 14:55:34"
         },
         {
             "name": "phpcollection/phpcollection",
