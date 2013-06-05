@@ -36,7 +36,16 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        ["OroUIBundle", "OroUserBundle", "OroGridBundle", "OroNavigationBundle", "OroWindowsBundle", "OroFilterBundle", "OroSegmentationTreeBundle", "PimUIBundle", "PimProductBundle"]
+    bundles:
+        - OroUIBundle
+        - OroUserBundle
+        - OroGridBundle
+        - OroNavigationBundle
+        - OroWindowsBundle
+        - OroFilterBundle
+        - OroSegmentationTreeBundle
+        - PimUIBundle
+        - PimProductBundle
 
     #java: /usr/bin/java
     filters:
@@ -103,6 +112,9 @@ fos_rest:
             xml: fos_rest.decoder.xml
     routing_loader:
         default_format: json
+
+fos_js_routing:
+    routes_to_expose:          [oro_*, pim_*]
 
 oro_search:
     engine:                   orm

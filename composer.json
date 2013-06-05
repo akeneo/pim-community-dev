@@ -15,8 +15,7 @@
         "php": ">=5.3.3",
         "oro/platform": "dev-master",
         "ddeboer/data-import": "dev-master",
-        "knplabs/knp-gaufrette-bundle": "dev-master",
-        "kriswallsmith/assetic": "v1.1.0-alpha4"
+        "knplabs/knp-gaufrette-bundle": "dev-master"
     },
     "require-dev": {
         "behat/behat": "2.4.*",
@@ -32,11 +31,11 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@gitlab.orocrm.com:platform/platform.git"
+            "url": "https://github.com/laboro/platform.git"
         },
         {
             "type": "vcs",
-            "url": "http://gitlab.orocrm.com/vendors/sonataadminbundle.git"
+            "url": "https://github.com/laboro/SonataAdminBundle.git"
         }
     ],
     "scripts": {
