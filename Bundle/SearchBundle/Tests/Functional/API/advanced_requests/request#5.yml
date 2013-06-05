@@ -9,7 +9,7 @@ response:
     rest:
         data:
             -
-                entity_name: Acme\Bundle\DemoFlexibleEntityBundle\Entity\Product
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 record_id: 1
                 record_title: sku-0
                 record_url: http://localhost.com/app_test.php/search/product/1

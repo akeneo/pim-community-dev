@@ -9,76 +9,76 @@ response:
     rest:
         data:
             -
-                entity_name: Acme\Bundle\TestsBundle\Entity\Item
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 record_string: item9@mail.com
                 record_url: http://localhost/search/
             -
-                entity_name: Acme\Bundle\TestsBundle\Entity\Item
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 record_string: item1@mail.com
                 record_url: http://localhost/search/
             -
-                entity_name: Acme\Bundle\TestsBundle\Entity\Item
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 record_string: item2@mail.com
                 record_url: http://localhost/search/
             -
-                entity_name: Acme\Bundle\TestsBundle\Entity\Item
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 record_string: item3@mail.com
                 record_url: http://localhost/search/
             -
-                entity_name: Acme\Bundle\TestsBundle\Entity\Item
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 record_string: item4@mail.com
                 record_url: http://localhost/search/
             -
-                entity_name: Acme\Bundle\TestsBundle\Entity\Item
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 record_string: item5@mail.com
                 record_url: http://localhost/search/
             -
-                entity_name: Acme\Bundle\TestsBundle\Entity\Item
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 record_string: item6@mail.com
                 record_url: http://localhost/search/
             -
-                entity_name: Acme\Bundle\TestsBundle\Entity\Item
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 record_string: item7@mail.com
                 record_url: http://localhost/search/
             -
-                entity_name: Acme\Bundle\TestsBundle\Entity\Item
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 record_string: item8@mail.com
                 record_url: http://localhost/search/
     soap:
         item:
             -
-                entityName: Acme\Bundle\TestsBundle\Entity\Item
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 recordTitle: item9@mail.com
                 recordUrl: http://localhost/search/
             -
-                entityName: Acme\Bundle\TestsBundle\Entity\Item
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 recordTitle: item1@mail.com
                 recordUrl: http://localhost/search/
             -
-                entityName: Acme\Bundle\TestsBundle\Entity\Item
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 recordTitle: item2@mail.com
                 recordUrl: http://localhost/search/
             -
-                entityName: Acme\Bundle\TestsBundle\Entity\Item
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 recordTitle: item3@mail.com
                 recordUrl: http://localhost/search/
             -
-                entityName: Acme\Bundle\TestsBundle\Entity\Item
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 recordTitle: item4@mail.com
                 recordUrl: http://localhost/search/
             -
-                entityName: Acme\Bundle\TestsBundle\Entity\Item
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 recordTitle: item5@mail.com
                 recordUrl: http://localhost/search/
             -
-                entityName: Acme\Bundle\TestsBundle\Entity\Item
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 recordTitle: item6@mail.com
                 recordUrl: http://localhost/search/
             -
-                entityName: Acme\Bundle\TestsBundle\Entity\Item
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 recordTitle: item7@mail.com
                 recordUrl: http://localhost/search/
             -
-                entityName: Acme\Bundle\TestsBundle\Entity\Item
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 recordTitle: item8@mail.com
                 recordUrl: http://localhost/search/

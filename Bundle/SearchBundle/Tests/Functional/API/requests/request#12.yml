@@ -9,10 +9,10 @@ response:
     rest:
         data:
             -
-                entity_name: Acme\Bundle\TestsBundle\Entity\Item
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 record_string: item2@mail.com
     soap:
         item:
             -
-                entityName: Acme\Bundle\TestsBundle\Entity\Item
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 recordTitle: item2@mail.com
