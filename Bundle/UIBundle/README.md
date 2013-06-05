@@ -41,15 +41,18 @@ placeholders:
 ```
 
 Any configuration defined in bundle placeholders.yml file can be overridden in app/config/config.yml file.
-For example, to remove item from placeholder such config should be added:
 
 ```yaml
 oro_ui:
     placeholder_items:
         <placeholder_name>:
-            -
-               name: <item_name>
-               remove: true
+            items:
+                <item_name>:
+                    remove: true   # remove item from placeholder
+        <another_placeholder_name>:
+            items:
+                <item_name>:
+                    order: 200     # change item order in placeholder
 ```
 
 ### Rendering placeholders
