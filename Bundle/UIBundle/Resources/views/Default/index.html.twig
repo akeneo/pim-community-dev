@@ -81,7 +81,6 @@
     {% endblock %}
 </head>
 <body class="{% block bodyClass %}{% endblock %}">
-{% placeholder top_block with {'dqwqd':'wefwef'} %}
 <div id="page">
     <div id="top-page">
         {% block header %}
@@ -426,7 +425,6 @@
 {% else %}
 {# Template for hash tag navigation#}
 {% include 'OroNavigationBundle:HashNav:hashNavAjax.html.twig'
-    with {'script':
-('head_script'), 'messages':block('messages'), 'content': block('page_container'), 'menu': block('application_menu')}
+    with {'script': block('head_script'), 'messages': block('messages'), 'content': block('page_container'), 'menu': block('application_menu')}
 %}
 {% endif %}
