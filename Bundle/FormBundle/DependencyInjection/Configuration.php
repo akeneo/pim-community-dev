@@ -22,19 +22,21 @@ class Configuration implements ConfigurationInterface
                 ->prototype('array')
                     ->fixXmlConfig('property', 'properties')
                     ->beforeNormalization()
-                        ->always(function($value) {
-                            if (isset($value['property']) && is_string($value['property'])) {
-                                if (empty($value['properties'])) {
-                                    $value['properties'] = array($value['property'] => array());
-                                } else {
-                                    throw new \Exception(
-                                        'Option "property" cannot be set with option "properties".'
-                                    );
+                        ->always(
+                            function ($value) {
+                                if (isset($value['property']) && is_string($value['property'])) {
+                                    if (empty($value['properties'])) {
+                                        $value['properties'] = array($value['property'] => array());
+                                    } else {
+                                        throw new \Exception(
+                                            'Option "property" cannot be set with option "properties".'
+                                        );
+                                    }
                                 }
+                                unset($value['property']);
+                                return $value;
                             }
-                            unset($value['property']);
-                            return $value;
-                        })
+                        )
                     ->end()
                     ->children()
                         ->arrayNode('form_options')
@@ -49,29 +51,37 @@ class Configuration implements ConfigurationInterface
                             ->isRequired()
                             ->requiresAtLeastOneElement()
                             ->beforeNormalization()
-                                ->always(function($value) {
-                                    foreach ($value as $k => $v) {
-                                        if (!isset($v['name']) && !is_numeric($k)) {
-                                            $v['name'] = $k;
-                                            $value[] = $v;
-                                            unset($value[$k]);
+                                ->always(
+                                    function ($value) {
+                                        foreach ($value as $k => $v) {
+                                            if (!isset($v['name']) && !is_numeric($k)) {
+                                                $v['name'] = $k;
+                                                $value[] = $v;
+                                                unset($value[$k]);
+                                            }
                                         }
+                                        return $value;
                                     }
-                                    return $value;
-                                })
+                                )
                             ->end()
                             ->prototype('variable')
                                 ->beforeNormalization()
                                 ->ifString()
-                                    ->then(function($value) { return array('name' => $value); })
+                                    ->then(
+                                        function ($value) {
+                                            return array('name' => $value);
+                                        }
+                                    )
                                 ->end()
                                 ->validate()
-                                    ->always(function($value) {
-                                        if (!isset($value['name'])) {
-                                            throw new \Exception('name is required option.');
+                                    ->always(
+                                        function ($value) {
+                                            if (!isset($value['name'])) {
+                                                throw new \Exception('name is required option.');
+                                            }
+                                            return $value;
                                         }
-                                        return $value;
-                                    })
+                                    )
                                 ->end()
                             ->end()
                         ->end()

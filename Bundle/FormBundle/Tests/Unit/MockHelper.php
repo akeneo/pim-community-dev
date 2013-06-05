@@ -9,7 +9,7 @@ class MockHelper
      * @param array $expectedCalls
      * @param object|null $callbacksContext
      */
-    static public function addMockExpectedCalls(
+    public static function addMockExpectedCalls(
         \PHPUnit_Framework_MockObject_MockObject $mock,
         array $expectedCalls,
         $callbacksContext = null

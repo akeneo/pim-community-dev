@@ -32,6 +32,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($processedConfig, $processor->processConfiguration($configuration, $configs));
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @return array
+     */
     public function processDataProvider()
     {
         return array(
