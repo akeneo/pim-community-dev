@@ -17,6 +17,12 @@ services:
         tags:
             - { name: form.type, alias: oro_datetime }
 
+    oro_form.type.entity_identifier:
+        class: %oro_form.type.entity_identifier.class%
+        tags:
+            - { name: form.type, alias: oro_entity_identifier }
+        arguments: ["@doctrine"]
+
     oro_form.type.jqueryselect2_hidden:
         class: %oro_form.type.jqueryselect2_hidden.class%
         arguments:
@@ -24,9 +30,3 @@ services:
             - @oro_form.autocomplete.configuration
         tags:
             - { name: form.type, alias: oro_jqueryselect2_hidden }
-
-    oro_form.type.entity_identifier:
-        class: %oro_form.type.entity_identifier.class%
-        tags:
-            - { name: form.type, alias: oro_entity_identifier }
-        arguments: ["@doctrine"]
