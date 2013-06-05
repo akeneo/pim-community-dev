@@ -51,24 +51,26 @@ class PlaceholderNode extends \Twig_Node
                 ->write("echo '</div>';\n")
             ;
         }*/
-        foreach ($this->placeholder['items'] as $item) {
-            //$compiler->raw('echo \'<div id = "block-' . $blockData['name'] . '" class="' . $this->wrapClassName . '" >\';');
-            if (array_key_exists('template', $item)) {
-                $expr = new Twig_Node_Expression_Constant($item['template'], $this->line);
-                $block = new Twig_Node_Include($expr, $this->variables, true, $this->line, $this->tag);
-                $block->compile($compiler);
-            } elseif (array_key_exists('action', $item)) {
-                $expr = new Twig_Node_Expression_Constant($item['action'], $this->line);
-                $attr = new Twig_Node_Expression_Constant(array(), $this->line);
-                if ($this->variables == null) {
-                    $attributes = $attr;
-                } else {
-                    $attributes = $this->variables;
+        if (isset($this->placeholder['items']) && count($this->placeholder['items'])) {
+            foreach ($this->placeholder['items'] as $item) {
+                //$compiler->raw('echo \'<div id = "block-' . $blockData['name'] . '" class="' . $this->wrapClassName . '" >\';');
+                if (array_key_exists('template', $item)) {
+                    $expr = new Twig_Node_Expression_Constant($item['template'], $this->line);
+                    $block = new Twig_Node_Include($expr, $this->variables, true, $this->line, $this->tag);
+                    $block->compile($compiler);
+                } elseif (array_key_exists('action', $item)) {
+                    $expr = new Twig_Node_Expression_Constant($item['action'], $this->line);
+                    $attr = new Twig_Node_Expression_Constant(array(), $this->line);
+                    if ($this->variables == null) {
+                        $attributes = $attr;
+                    } else {
+                        $attributes = $this->variables;
+                    }
+                    $block = new RenderNode($expr, $attributes, $attr, $this->line, $this->tag);
+                    $block->compile($compiler);
                 }
-                $block = new RenderNode($expr, $attributes, $attr, $this->line, $this->tag);
-                $block->compile($compiler);
+                //$compiler->raw('echo \'</div>\';');
             }
-            //$compiler->raw('echo \'</div>\';');
         }
     }
 }
