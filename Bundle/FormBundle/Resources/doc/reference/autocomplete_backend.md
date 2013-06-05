@@ -23,14 +23,16 @@ autocomplete fields.
 
 ```yml
 autocomplete_entities: # Root element
-    simple_users:
-        type: doctrine_entity
+    simple_users: # unique name of autocomplete configuration
+        type: doctrine_entity # type of autocomplete search request handler
         entity_class: FooEntityClassName
-        property: username
+        property: username # property that will be displayed and searched by
+
     users_multiple_properties:
         type: doctrine_entity
         entity_class: FooEntityClassName
         properties: [firstName, lastName]
+
     users_custom_query_builder:
         type: doctrine_query_builder
         options:
@@ -38,12 +40,14 @@ autocomplete_entities: # Root element
             query_entity_alias: e # optional, entity alias in query
         entity_class: FooEntityClassName
         properties: [firstName, lastName]
+
     users_flexible:
         type: flexible
         entity_class: FooEntityClassName
         properties:
             - name: firstName
             - name: lastName
+
     users_custom_service:
         type: service
         options:
