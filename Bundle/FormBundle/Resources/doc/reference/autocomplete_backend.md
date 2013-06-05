@@ -108,4 +108,32 @@ Autocomplete search request can contain next next parameters:
 
 #### Search Handler
 
+Implements **Oro\Bundle\FormBundle\EntityAutocomplete\SearchHandlerInterface** and used by controller to
+handle search requests of autocomplete widgets.
+
+Default search handlers are:
+
+* **EntityAutocomplete \ Doctrine \ EntitySearchHandler** (doctrine_entity) - requires **entity_class** and **properties** options,
+handles search based on default **Doctrine\ORM\QueryBuilder** created from corresponding Doctrine entity repository.
+
+* **EntityAutocomplete \ Doctrine \ QueryBuilderSearchHandler** (doctrine_query_builder) - requires **query_builder_service** and **properties** options,
+which must be a reference to existing service of **Doctrine\ORM\QueryBuilder** type
+
+* **EntityAutocomplete \ Flexible \ FlexibleSearchHandler** (flexible) - requires **properties** option and
+either **flexible_manager** or **entity_class** option, handles search based on query builder of corresponding flexible entity repository.
+
+You can define your own search handler. To make it supported by default autocomplete controller it must a registered factory with unique name.
+
 #### Search Handler Factory
+
+Implements **Oro\Bundle\FormBundle\EntityAutocomplete\SearchFactoryInterface** and used by controller to
+create search handler.
+
+Custom search factory can be added via configuration:
+
+```yml
+    custom_search_factory:
+        class: %custom_search_factory.class%
+        tags:
+            - { name: oro_form.autocomplete.search_factory, alias: some_unique_name }
+```
