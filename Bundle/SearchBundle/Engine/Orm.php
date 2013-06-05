@@ -96,9 +96,11 @@ class Orm extends AbstractEngine
                 $item->setChanged(!$realtime);
 
                 $this->reindexJob();
+
+                $this->em->persist($item);
             }
 
-            $this->em->flush();
+            $this->em->flush($item);
 
             return $id;
         }
@@ -128,14 +130,9 @@ class Orm extends AbstractEngine
             );
 
             if (!$item) {
-                $item = new Item();
-
-                $entityConfig = $this->mapper->getEntityConfig(get_class($entity));
-                if ($entityConfig) {
-                    $alias = $entityConfig['alias'];
-                } else {
-                    $alias = get_class($entity);
-                }
+                $item   = new Item();
+                $config = $this->mapper->getEntityConfig($name);
+                $alias  = $config ? $config['alias'] : $name;
 
                 $item->setEntity($name)
                      ->setRecordId($entity->getId())
@@ -152,7 +149,7 @@ class Orm extends AbstractEngine
             }
 
             $this->em->persist($item);
-            $this->em->flush();
+            $this->em->flush($item);
 
             return $item->getId();
         }
