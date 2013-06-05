@@ -89,17 +89,30 @@ class SegmentManager
 
 
     /**
-     * Get all children for a parent segment id
+     * Get all direct children for a parent segment id.
+     * If the $selectNodeId is provided, all the children
+     * level needed to provides the selectNode are returned
      *
      * @param integer $parentId
+     * @param integer $selectNodeId
      *
      * @return ArrayCollection
      */
-    public function getChildren($parentId)
+    public function getChildren($parentId, $selectNodeId = false)
     {
+        $children = array();
+
         $entityRepository = $this->getEntityRepository();
 
-        return $entityRepository->getChildrenByParentId($parentId);
+        if ($selectNodeId === false) {
+            $children = $entityRepository->getChildrenByParentId($parentId);
+        } else {
+            $children = $entityRepository->getChildrenTreeByParentId($parentId, $selectNodeId);
+        }
+
+        return $children;
+
+
     }
 
     /**
@@ -275,5 +288,29 @@ class SegmentManager
 
         $this->removeTree($rootSegment);
 
+    }
+
+    /**
+     * Check is a parent node is an ancestor of a child node
+     *
+     * @param Segment $parentNode
+     * @param Segment $childNode
+     */
+    public function isAncestor(AbstractSegment $parentNode, AbstractSegment $childNode)
+    {
+        $childPath = $this->getEntityRepository()->getPath($childNode);
+        //Removing last part of the path as it's the node itself
+        //which cannot be is own ancestor
+        array_pop($childPath); 
+        $i = 0;
+        $parentFound = false;
+
+        while ( ($i < count($childPath))
+                && (!$parentFound) ) {
+            $parentFound = ($childPath[$i]->getId() === $parentNode->getId());
+            $i++;
+        }
+
+        return $parentFound;
     }
 }

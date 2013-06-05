@@ -48,6 +48,7 @@ class PageGrid extends Page
         $pager->value($page);
         //simulate lost focus
         $this->keysSpecial('enter');
+        $this->waitForAjax();
         $pagerLabel->click();
         $this->waitForAjax();
         return $this;
