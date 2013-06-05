@@ -97,15 +97,6 @@ class ObjectMapperTest extends \PHPUnit_Framework_TestCase
     {
         $this->container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
 
-        $this->translator = $this->getMockBuilder('Symfony\Component\Translation\Translator')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->translator->expects($this->any())
-            ->method('trans')
-            ->will($this->returnValue('translated string'));
-
-
         $manufacturer = new Manufacturer();
         $manufacturer->setName('adidas');
 
@@ -137,7 +128,6 @@ class ObjectMapperTest extends \PHPUnit_Framework_TestCase
             ->method('generate')
             ->will($this->returnValue('http://example.com'));
         $params = array(
-            'translator'   => $this->translator,
             'test_manager' => $this->flexibleManager,
             'router'       => $this->route,
         );
@@ -145,7 +135,6 @@ class ObjectMapperTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with(
                 $this->logicalOr(
-                    $this->equalTo('translator'),
                     $this->equalTo('test_manager'),
                     $this->equalTo('router')
                 )
@@ -158,7 +147,7 @@ class ObjectMapperTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $this->mapper = new ObjectMapper($this->container, $this->translator, $this->mappingConfig);
+        $this->mapper = new ObjectMapper($this->container, $this->mappingConfig);
     }
 
     public function testMapObject()
@@ -203,14 +192,15 @@ class ObjectMapperTest extends \PHPUnit_Framework_TestCase
     public function testGetEntitiesLabels()
     {
         $data = $this->mapper->getEntitiesLabels();
+
         $this->assertEquals('test_product', $data[1]['alias']);
-        $this->assertEquals('translated string', $data[1]['label']);
+        $this->assertEquals('Oro\Bundle\SearchBundle\Tests\Unit\Fixture\Entity\Product', $data[1]['class']);
     }
 
     public function testGetMappingConfig()
     {
         $mapping = $this->mappingConfig;
-        $mapping['Oro\Bundle\SearchBundle\Tests\Unit\Fixture\Entity\Product']['label'] = 'translated string';
+
         $this->assertEquals($mapping, $this->mapper->getMappingConfig());
     }
 

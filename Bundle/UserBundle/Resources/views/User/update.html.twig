@@ -1,6 +1,6 @@
 {% extends bap.layout is defined ? bap.layout : 'OroUserBundle::layout.html.twig' %}
 {% import 'OroUserBundle::macros.html.twig' as macros %}
-{% set format = get_user_value('oro_user.name_format') %}
+{% set format = oro_config_value('oro_user.name_format') %}
 {% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
 
 {% set title = form.vars.value.id ? form.vars.value.fullname(format)|default('N/A') ~ ' - ' ~ 'Update User'|trans : 'New User'|trans %}
@@ -35,7 +35,7 @@
                     <div class="pull-right usser-info-state">
                         <ul class="inline-decorate">
                             {% if form.vars.value.id %}
-                                <li><a class="no-hash" href="{{ path('oro_dataaudit_history', {entity:'Oro_Bundle_UserBundle_Entity_User', id: form.vars.value.id}) }}" id="view-activity-btn" title="{{ form.vars.value }} - {{ 'Change History'|trans }}">{{ 'Change History'|trans }}</a></li>
+                            <li><a class="no-hash" href="{{ path('oro_dataaudit_history', {entity:'Oro_Bundle_UserBundle_Entity_User', id: form.vars.value.id}) }}" id="view-activity-btn" title="{{ form.vars.value }} - {{ 'Change History'|trans }}">{{ 'Change History'|trans }}</a></li>
                             {% endif %}
                         </ul>
                     </div>
@@ -90,19 +90,19 @@
             </div>
             <div class="clearfix">
                 {% if form_errors(form) %}
-                    <div class="customer-info-actions container-fluid well-small">
-                        <div class="pull-left alert alert-error">
-                            <button class="close" type="button" data-dismiss="alert">×</button>
-                            {{ form_errors(form) }}
-                        </div>
+                <div class="customer-info-actions container-fluid well-small">
+                    <div class="pull-left alert alert-error">
+                        <button class="close" type="button" data-dismiss="alert">×</button>
+                        {{ form_errors(form) }}
                     </div>
+                </div>
                 {% endif %}
                 <div data-spy="scroll" data-target="#navbarExample" data-offset="50" class="scrollspy container-fluid scrollable-container">
                     <div class="usser-row">
                         <h4 id="scroll-main" class="scrollspy-title">{{ 'General'|trans }}</h4>
                         <div class="row-fluid row-fluid-divider">
                             <fieldset class="form-horizontal span6">
-                                <h5 class="usser-fiedset"><span>Basic Information</span></h5>
+                                <h5 class="usser-fiedset"><span>{{ 'Basic Information'|trans }}</span></h5>
                                 {{ form_row(form.enabled) }}
                                 {{ form_row(form.username) }}
                                 {% if form.plainPassword is defined %}
@@ -114,7 +114,7 @@
                                 {{ form_row(form.imageFile) }}
                             </fieldset>
                             <fieldset class="form-horizontal span6">
-                                <h5 class="usser-fiedset"><span>Contact Information</span></h5>
+                                <h5 class="usser-fiedset"><span>{{ 'Contact Information'|trans }}</span></h5>
                                 {{ form_row(form.email) }}
 
                                 <div class="control-group">

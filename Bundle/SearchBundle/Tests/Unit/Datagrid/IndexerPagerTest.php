@@ -193,9 +193,9 @@ class SearchPagerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param boolean $expected
-     * @param int $page
-     * @param int $maxPerPage
-     * @param int $totalCount
+     * @param int     $page
+     * @param int     $maxPerPage
+     * @param int     $totalCount
      *
      * @dataProvider haveToPaginateDataProvider
      */

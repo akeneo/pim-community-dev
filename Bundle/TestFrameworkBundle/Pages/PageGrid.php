@@ -40,12 +40,16 @@ class PageGrid extends Page
     public function changePage($page = 1)
     {
         $pager = $this->byXPath("{$this->filtersPath}//div[contains(@class,'pagination')]/ul//input");
+        $pagerLabel = $this->byXPath("{$this->filtersPath}//div[contains(@class,'pagination')]/label[@class = 'dib' and text() = 'Page:']");
         //set focus
         $pager->click();
         //clear field
         $this->clearInput($pager);
         $pager->value($page);
+        //simulate lost focus
         $this->keysSpecial('enter');
+        $this->waitForAjax();
+        $pagerLabel->click();
         $this->waitForAjax();
         return $this;
     }

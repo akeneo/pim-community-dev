@@ -80,10 +80,13 @@
                 rowActions: {
                     {% for action in datagrid.rowActions %}
                         {{ action.name|json_encode|raw }}:
+                        {% set currentOptions = action.options %}
                         {% if action.type == constant(actionTypePrefix ~ 'TYPE_DELETE') %}
-                            Oro.Datagrid.Action.DeleteAction.extend({{ action.options|json_encode|raw }})
+                            Oro.Datagrid.Action.DeleteAction.extend({{ currentOptions|json_encode|raw }})
                         {% else %}
-                            Oro.Datagrid.Action.NavigateAction.extend({{ action.options|json_encode|raw }})
+                            {# merge additional options to navigateAction to use execute method #}
+                            {% set currentOptions = currentOptions|merge({'launcherOptions': {'onClickReturnValue': false, 'runAction': true, 'className': 'no-hash'}}) %}
+                            Oro.Datagrid.Action.NavigateAction.extend({{ currentOptions|json_encode|raw }})
                         {% endif %}
                         {% if not loop.last %},{% endif %}
                     {% endfor %}

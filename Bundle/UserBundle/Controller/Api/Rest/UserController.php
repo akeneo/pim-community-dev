@@ -16,7 +16,6 @@ use Oro\Bundle\UserBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiFlexibleEntityManager;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\FlexibleRestController;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @NamePrefix("oro_api_")
@@ -41,8 +40,8 @@ class UserController extends FlexibleRestController implements ClassResourceInte
      */
     public function cgetAction()
     {
-        $page = (int)$this->getRequest()->get('page', 1);
-        $limit = (int)$this->getRequest()->get('limit', self::ITEMS_PER_PAGE);
+        $page = (int) $this->getRequest()->get('page', 1);
+        $limit = (int) $this->getRequest()->get('limit', self::ITEMS_PER_PAGE);
 
         return $this->handleGetListRequest($page, $limit);
     }

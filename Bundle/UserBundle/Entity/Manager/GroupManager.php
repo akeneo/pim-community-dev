@@ -23,7 +23,7 @@ class GroupManager
     /**
      * Get user query builder
      *
-     * @param  Group $role
+     * @param  Group        $role
      * @return QueryBuilder
      */
     public function getUserQueryBuilder(Group $group)

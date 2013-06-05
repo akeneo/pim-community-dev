@@ -94,7 +94,7 @@ class RoleController extends Controller
     }
 
     /**
-     * @param Role $role
+     * @param  Role                    $role
      * @return RoleUserDatagridManager
      */
     protected function getRoleUserDatagridManager(Role $role)
@@ -103,6 +103,7 @@ class RoleController extends Controller
         $result = $this->get('oro_user.role_user_datagrid_manager');
         $result->setRole($role);
         $result->getRouteGenerator()->setRouteParameters(array('id' => $role->getId()));
+
         return $result;
     }
 

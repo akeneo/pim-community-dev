@@ -197,6 +197,7 @@ class UserType extends FlexibleType
                     } else {
                         $user = null;
                     }
+
                     return $user && $user->getId()
                         ? array('User', 'Default')
                         : array('Registration', 'User', 'Default');

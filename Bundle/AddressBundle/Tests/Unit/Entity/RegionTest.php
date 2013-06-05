@@ -19,7 +19,7 @@ class RegionTest extends \PHPUnit_Framework_TestCase
      */
     public function testCountrySetter()
     {
-        $countryMock = $this->getMock('Oro\Bundle\AddressBundle\Entity\Country');
+        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')->disableOriginalConstructor()->getMock();
 
         $obj = new Region();
         $obj->setCountry($countryMock);

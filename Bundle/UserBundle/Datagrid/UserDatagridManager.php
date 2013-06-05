@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\UserBundle\Datagrid;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
@@ -142,7 +141,6 @@ class UserDatagridManager extends FlexibleDatagridManager
             )
         );
         $fieldsCollection->add($fieldUpdated);
-
 
         $fieldStatus = new FieldDescription();
         $fieldStatus->setName('enabled');

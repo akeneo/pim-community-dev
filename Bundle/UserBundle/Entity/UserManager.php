@@ -69,8 +69,8 @@ class UserManager implements UserProviderInterface
     /**
      * Updates a user
      *
-     * @param User $user
-     * @param bool $flush Whether to flush the changes (default true)
+     * @param  User              $user
+     * @param  bool              $flush Whether to flush the changes (default true)
      * @throws \RuntimeException
      */
     public function updateUser(User $user, $flush = true)
@@ -207,7 +207,7 @@ class UserManager implements UserProviderInterface
      * It is strongly discouraged to use this method manually as it bypasses
      * all ACL checks.
      *
-     * @param  SecurityUserInterface $user
+     * @param  SecurityUserInterface    $user
      * @return User
      * @throws UnsupportedUserException if a User Instance is given which is not managed by this UserManager
      *                                  (so another Manager could try managing it)
@@ -241,7 +241,7 @@ class UserManager implements UserProviderInterface
      * It is strongly discouraged to call this method manually as it bypasses
      * all ACL checks.
      *
-     * @param  string $username
+     * @param  string                    $username
      * @return User
      * @throws UsernameNotFoundException if user not found
      */

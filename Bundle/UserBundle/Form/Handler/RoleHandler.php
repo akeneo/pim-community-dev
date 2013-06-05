@@ -56,6 +56,7 @@ class RoleHandler
                 $appendUsers = $this->form->get('appendUsers')->getData();
                 $removeUsers = $this->form->get('removeUsers')->getData();
                 $this->onSuccess($entity, $appendUsers, $removeUsers);
+
                 return true;
             }
         }
@@ -66,7 +67,7 @@ class RoleHandler
     /**
      * "Success" form handler
      *
-     * @param Role $entity
+     * @param Role   $entity
      * @param User[] $appendUsers
      * @param User[] $removeUsers
      */
@@ -81,7 +82,7 @@ class RoleHandler
     /**
      * Append users to role
      *
-     * @param Role $role
+     * @param Role   $role
      * @param User[] $users
      */
     protected function appendUsers(Role $role, array $users)
@@ -96,7 +97,7 @@ class RoleHandler
     /**
      * Remove users from role
      *
-     * @param Role $role
+     * @param Role   $role
      * @param User[] $users
      */
     protected function removeUsers(Role $role, array $users)

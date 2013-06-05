@@ -1,0 +1,44 @@
+{% macro renderAddress(address) %}
+    {% import _self as __ %}
+
+    {% set fields = [
+        {label: "First name", data: "firstName"},
+        {label: "Last name", data: "lastName"},
+        {label: "Street", data: "street"},
+        {label: "Street 2", data: "street2"},
+        {label: "City", data: "city"},
+        {label: "State", data: "state"},
+        {label: "Country", data: "country"},
+        {label: "Zip/postal code", data: "postalCode"}
+    ] %}
+
+    {{ __.renderAddressView(address, fields) }}
+{% endmacro %}
+
+{% macro renderAddressView(address, fields, renderFlexibleAttributes) %}
+    {# Render flexible attributes by default #}
+    {% set renderFlexibleAttributes = renderFlexibleAttributes|default(true) %}
+
+    {# Render static attributes #}
+    {% for field in fields %}
+        {{ block('addressStaticAttribute') }}
+    {% endfor %}
+
+    {# Render flexible attributes #}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    {% for value in address|getAttributes() %}
+        {{ UI.flexibleAttributeRow(value) }}
+    {% endfor %}
+{% endmacro %}
+
+{% block addressStaticAttribute %}
+    {% set defaultValue = field.defaultValue|default('N/A') %}
+    <div class="control-group">
+        <label class="control-label">{{ field.label|trans|title }}</label>
+        <div class="controls">
+            <div class="clearfix-oro">
+                <p class="control-label">{{ attribute(address, field.data)|default(defaultValue) }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock addressStaticAttribute %}

@@ -1,7 +1,6 @@
 <?php
 namespace Oro\Bundle\SearchBundle\Engine;
 
-use Symfony\Component\Translation\Translator;
 use Symfony\Component\Form\Util\PropertyPath;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -16,26 +15,14 @@ class ObjectMapper
     private $mappingConfig;
 
     /**
-     * @var \Symfony\Component\Translation\Translator
-     */
-    private $translator;
-
-    /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     * @var ContainerInterface
      */
     protected $container;
 
-    public function __construct(ContainerInterface $container, Translator $translator, $mappingConfig)
+    public function __construct(ContainerInterface $container, $mappingConfig)
     {
         $this->mappingConfig = $mappingConfig;
-        $this->translator = $translator;
-        $this->container = $container;
-
-        foreach ($this->mappingConfig as $entity => $config) {
-            if (isset($this->mappingConfig[$entity]['label'])) {
-                $this->mappingConfig[$entity]['label'] = $translator->trans($config['label']);
-            }
-        }
+        $this->container     = $container;
     }
 
     /**
@@ -47,17 +34,18 @@ class ObjectMapper
     }
 
     /**
-     * Get array with entities aliases and labels
+     * Get array with entity aliases
      *
      * @return array
      */
     public function getEntitiesLabels()
     {
         $entities = array();
-        foreach ($this->mappingConfig as $mappingEntity) {
+
+        foreach ($this->mappingConfig as $class => $mappingEntity) {
             $entities[] = array(
                 'alias' => isset($mappingEntity['alias']) ? $mappingEntity['alias'] : '',
-                'label' => isset($mappingEntity['label']) ? $mappingEntity['label'] : '',
+                'class' => $class,
             );
         }
 
@@ -76,8 +64,8 @@ class ObjectMapper
     {
         if ($this->getEntityConfig($entity)) {
             $entityConfig = $this->getEntityConfig($entity);
-            if (isset($entityConfig[$parameter])) {
 
+            if (isset($entityConfig[$parameter])) {
                 return $entityConfig[$parameter];
             }
         }
@@ -104,8 +92,8 @@ class ObjectMapper
      */
     public function getEntityConfig($entity)
     {
-        if (isset($this->mappingConfig[(string)$entity])) {
-            return $this->mappingConfig[(string)$entity];
+        if (isset($this->mappingConfig[(string) $entity])) {
+            return $this->mappingConfig[(string) $entity];
         }
 
         return false;
@@ -345,6 +333,7 @@ class ObjectMapper
             $objectData[AbstractAttributeType::BACKEND_TYPE_TEXT][Indexer::TEXT_ALL_DATA_FIELD] .= " " . $value;
             $objectData[AbstractAttributeType::BACKEND_TYPE_TEXT][$alias . '_' . $attribute] = $value;
         }
+
         return $objectData;
     }
 
@@ -362,8 +351,6 @@ class ObjectMapper
         if ($attributeType != AbstractAttributeType::BACKEND_TYPE_OPTION) {
             $objectData[$attributeType][$attribute] = $value;
         }
-
-        //$objectData[AbstractAttributeType::BACKEND_TYPE_TEXT][$alias . '_' . $attribute] = $value;
 
         return $objectData;
     }

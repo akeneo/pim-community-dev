@@ -8,8 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class ResponseHashnavListener
 {
-    const HASH_NAV_PARAM = 'is_hash_ajax';
-
     /**
      * @var \Symfony\Component\Security\Core\SecurityContextInterface
      */
@@ -48,7 +46,6 @@ class ResponseHashnavListener
                 $location = $request->getUri();
                 $isFullRedirect = true;
             }
-            $location = preg_replace('/[\?&](' . self::HASH_NAV_PARAM . '=1)/', '', $location);
             if ($location) {
                 $event->setResponse(
                     $this->templating->renderResponse(

@@ -36,9 +36,9 @@ class AddressManager implements StorageInterface
     /**
      * Constructor
      *
-     * @param string $class Entity name
-     * @param ObjectManager $om Object manager
-     * @param FlexibleManager $fm Proxy for methods of flexible manager
+     * @param string          $class Entity name
+     * @param ObjectManager   $om    Object manager
+     * @param FlexibleManager $fm    Proxy for methods of flexible manager
      */
     public function __construct($class, ObjectManager $om, $fm)
     {
@@ -64,8 +64,8 @@ class AddressManager implements StorageInterface
     /**
      * Updates an address
      *
-     * @param AddressBase $address
-     * @param bool $flush Whether to flush the changes (default true)
+     * @param  AddressBase       $address
+     * @param  bool              $flush   Whether to flush the changes (default true)
      * @throws \RuntimeException
      */
     public function updateAddress(AddressBase $address, $flush = true)
@@ -90,7 +90,7 @@ class AddressManager implements StorageInterface
     /**
      * Finds one address by the given criteria
      *
-     * @param  array $criteria
+     * @param  array       $criteria
      * @return AddressBase
      */
     public function findAddressBy(array $criteria)
@@ -141,22 +141,23 @@ class AddressManager implements StorageInterface
     /**
      * Returns basic query instance to get collection with all user instances
      *
-     * @param int $limit
-     * @param int $offset
+     * @param  int       $limit
+     * @param  int       $offset
      * @return Paginator
      */
     public function getListQuery($limit = 10, $offset = 1)
     {
         /** @var FlexibleEntityRepository $repository */
         $repository = $this->fm->getFlexibleRepository();
+
         return $repository->findByWithAttributesQB(array(), null, array('id' => 'ASC'), $limit, $offset);
     }
 
     /**
      * Provide proxy method calls to flexible manager
      *
-     * @param string $name
-     * @param array $args
+     * @param  string            $name
+     * @param  array             $args
      * @return mixed
      * @throws \RuntimeException
      */

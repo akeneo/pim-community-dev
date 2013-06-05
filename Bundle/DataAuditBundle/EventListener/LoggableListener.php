@@ -207,7 +207,9 @@ class LoggableListener extends BaseListener
                     $newData = implode(
                         ', ',
                         $newData->map(function ($item) {
-                            return $item->getOptionValue()->getValue();
+                            return $item instanceof AbstractEntityAttributeOption
+                                ? $item->getOptionValue()->getValue()
+                                : (string) $item;
                         })->toArray()
                     );
                 }
@@ -222,8 +224,8 @@ class LoggableListener extends BaseListener
                     (array) $logEntry->getData(),
                     array(
                         $object->getAttribute()->getCode() => array(
-                            'old' => $oldData,
-                            'new' => $newData,
+                            'old' => is_object($oldData) && method_exists($oldData, '__toString') ? (string) $oldData : $oldData,
+                            'new' => is_object($newData) && method_exists($newData, '__toString') ? (string) $newData : $newData,
                         )
                     )
                 );

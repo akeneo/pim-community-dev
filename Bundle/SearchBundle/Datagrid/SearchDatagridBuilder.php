@@ -10,13 +10,14 @@ use Oro\Bundle\SearchBundle\Datagrid\IndexerPager;
 class SearchDatagridBuilder extends AbstractDatagridBuilder
 {
     /**
-     * @param ProxyQueryInterface $query
+     * @param  ProxyQueryInterface $query
      * @return PagerInterface
      */
     protected function createPager(ProxyQueryInterface $query)
     {
         $pager = new IndexerPager();
         $pager->setQuery($query);
+
         return $pager;
     }
 }

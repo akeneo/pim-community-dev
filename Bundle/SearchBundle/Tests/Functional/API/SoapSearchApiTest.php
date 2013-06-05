@@ -17,7 +17,7 @@ class SoapSearchApiTest extends WebTestCase
 
     protected $client = null;
 
-    static protected $hasLoaded = false;
+    protected static $hasLoaded = false;
 
     public function setUp()
     {
@@ -43,7 +43,7 @@ class SoapSearchApiTest extends WebTestCase
 
     /**
      * @param string $request
-     * @param array $response
+     * @param array  $response
      *
      * @dataProvider requestsApi
      */

@@ -44,13 +44,12 @@ class Group extends Page implements Entity
         $this->byXPath("//button[contains(., 'Save')]")->click();
         $this->waitPageToLoad();
         $this->waitForAjax();
-        return $this;
-        //return new Groups($this->test, false);
+        return new Groups($this->test, false);
     }
 
     public function close()
     {
-        $this->byXPath("//button[@class ='ui-dialog-titlebar-close']")->click();
+        //$this->byXPath("//button[@class ='ui-dialog-titlebar-close']")->click();
         //support return to groups page only
         return new Groups($this->test, false);
     }

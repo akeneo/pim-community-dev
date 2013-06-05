@@ -26,3 +26,14 @@
         </div>
     </div>
 {% endmacro %}
+
+{% macro flexibleAttributeRow(value) %}
+    <div class="control-group">
+        <label class="control-label">{{ value.attribute.label|trans|title }}</label>
+        <div class="controls">
+            <div class="clearfix-oro">
+                <p class="control-label">{{ value.__toString|default('N/A') }}</p>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
