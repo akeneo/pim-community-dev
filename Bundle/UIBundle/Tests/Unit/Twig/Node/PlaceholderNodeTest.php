@@ -25,12 +25,19 @@ class PlaceholderNodeTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->blocks = array(
-            array(
-                'action' => 'some_action'
-            ),
-            array(
-                'template' => 'some_template'
+            'items' => array(
+                'some_action' => array(
+                    array(
+                        'action' => 'some_action'
+                    ),
+                ),
+                'some_template' =>array(
+                    array(
+                        'template' => 'some_template'
+                    )
+                )
             )
+
         );
 
         $this->line = array(12);
@@ -77,7 +84,7 @@ class PlaceholderNodeTest extends \PHPUnit_Framework_TestCase
         $this->node->compile($this->compiler);
 
         $nodeWoVariables = new PlaceholderNode(
-            array(array('action' => 'some_action')),
+            array('items' => array('some_action' => array('action' => 'some_action'))),
             null,
             $this->wrapClassName,
             $this->line,
