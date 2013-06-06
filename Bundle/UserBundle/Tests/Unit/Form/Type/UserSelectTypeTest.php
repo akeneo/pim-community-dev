@@ -32,7 +32,7 @@ class UserSelectTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetParent()
     {
-        $this->assertEquals('entity', $this->type->getParent());
+        $this->assertEquals('oro_jqueryselect2_hidden', $this->type->getParent());
     }
 
     public function testGetName()

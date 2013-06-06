@@ -112,10 +112,8 @@ class UserConfigManagerTest extends ConfigManagerTest
                     switch ($param['recordId']) {
                         case 1:
                             return $configUser;
-
                         case 2:
                             return $configGroup;
-
                         case 3:
                             return null;
                     }

@@ -1,0 +1,7 @@
+autocomplete_entities:
+    users:
+        type: service
+        options:
+            service: test_bundle.autocomplete.users_search_handler
+        property: username
+        entity_class: Oro\Bundle\FormBundle\Tests\Functional\TestBundle\Entity\User
