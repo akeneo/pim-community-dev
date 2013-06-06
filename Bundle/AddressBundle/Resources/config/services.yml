@@ -12,6 +12,7 @@ parameters:
 
     oro_address.type.address.class: Oro\Bundle\AddressBundle\Form\Type\AddressType
     oro_address.type.address_value.class: Oro\Bundle\AddressBundle\Form\Type\AddressValueType
+    oro_address.type.address_collection.class: Oro\Bundle\AddressBundle\Form\Type\AddressCollectionType
     oro_address.type.address_api.class: Oro\Bundle\AddressBundle\Form\Type\AddressApiType
     oro_address.type.address_api_value.class: Oro\Bundle\AddressBundle\Form\Type\AddressApiValueType
     oro_address.handler.address.class: Oro\Bundle\AddressBundle\Form\Handler\AddressHandler
@@ -106,6 +107,11 @@ services:
         tags:
             - { name: form.type, alias: oro_address_value }
 
+    oro_address.type.address_collection:
+        class: %oro_address.type.address_collection.class%
+        tags:
+             - { name: form.type, alias: oro_address_collection }
+
     oro_address.form.type.address.api:
         class: %oro_address.type.address_api.class%
         arguments:
@@ -187,20 +193,13 @@ services:
         tags:
             - { name: oro_flexibleentity.attributetype, alias: oro_address }
 
-
-    # Flexible attribute
     oro_address.attribute_type.address_collection:
         class: %oro_address.attribute.address_collection.class%
         arguments:
-            - "address"
-            - "oro_address"
+            - "multiAddress"
+            - "oro_address_collection"
         tags:
             - { name: oro_flexibleentity.attributetype, alias: oro_address_collection }
-
-    oro_address.twig.hasAddress.extension:
-        class: %oro_address.twig.hasAddress.extension.class%
-        tags:
-            - { name: twig.extension }
 
     oro_address.twig.hasAddress.extension:
         class: %oro_address.twig.hasAddress.extension.class%

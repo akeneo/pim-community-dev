@@ -63,3 +63,32 @@
     {{ form_row(form.country) }}
     {{ form_row(form.postalCode) }}
 {%  endblock oro_address_widget %}
+
+{% macro address_collection_prototype(widget) %}
+    {% if widget.get('prototype') %}
+        {% set form = widget.get('prototype') %}
+        {% set name = widget.get('prototype').get('name') %}
+    {% else %}
+        {% set form = widget %}
+        {% set name = widget.get('full_name') %}
+    {% endif %}
+    <div data-content="{{ name }}">
+        <div class="row-oro oro-multiselect-holder">
+            {{ form_errors(form) }}
+            {{ block('oro_address_widget') }}
+            <button class="removeRow btn btn-action btn-link" type="button" data-related="{{ name }}">×</button>
+        </div>
+    </div>
+{% endmacro %}
+
+{% block oro_address_collection_widget %}
+    {% spaceless %}
+        {% set prototype = _self.address_collection_prototype(form.multiAddress) %}
+        <div class="row-oro">
+            <div class="collection-fields-list" data-prototype="{{ prototype|escape }}">
+                {{ prototype|replace({'__name__': '0'})|raw }}
+            </div>
+            <a class="btn add-list-item" href="javascript: void(0);"><i class="icon-plus"></i>{{ 'Add'|trans }}</a>
+        </div>
+    {% endspaceless %}
+{%  endblock oro_address_collection_widget %}

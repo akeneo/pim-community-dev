@@ -2,12 +2,10 @@
 
 namespace Oro\Bundle\AddressBundle\Form\Type;
 
-use Oro\Bundle\AddressBundle\Form\Type\AddressBookType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\CollectionAbstract;
 
-class AdressCollectionType extends CollectionAbstract
+class AddressCollectionType extends CollectionAbstract
 {
     /**
      * {@inheritdoc}
@@ -17,11 +15,10 @@ class AdressCollectionType extends CollectionAbstract
         parent::buildForm($builder, $options);
 
         $builder->add(
-            'collection',
+            'multiAddress',
             'collection',
             array(
-                'type'           => new AddressBookType(),
-
+                'type'           => 'oro_address',
                 'allow_add'      => true,
                 'allow_delete'   => true,
                 'by_reference'   => false,

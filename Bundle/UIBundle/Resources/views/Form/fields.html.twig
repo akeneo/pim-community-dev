@@ -173,29 +173,25 @@
 {% endblock form_label %}
 
 {% block oro_flexibleentity_email_collection_widget %}
-    {% spaceless %}
-        {% from 'OroUIBundle::macros.html.twig' import collection_prototype as collection  %}
-        <div class="row-oro">
-            <div class="collection-fields-list" data-prototype="{{ collection(form.collection)|escape }}">
-                {% for field in form.collection.children %}
-                    {{ collection(field) }}
-                {% endfor %}
-            </div>
-            <a class="btn add-list-item" href="javascript: void(0);"><i class="icon-plus"></i>{{ 'Add'|trans }}</a>
-        </div>
-    {% endspaceless %}
+    {% set subform = form.collection %}
+    {{ block('collection_render') }}
 {%  endblock oro_flexibleentity_email_collection_widget %}
 
 {% block oro_flexibleentity_phone_collection_widget %}
+    {% set subform = form.collection %}
+    {{ block('collection_render') }}
+{%  endblock oro_flexibleentity_phone_collection_widget %}
+
+{% block collection_render %}
     {% spaceless %}
         {% from 'OroUIBundle::macros.html.twig' import collection_prototype as collection  %}
         <div class="row-oro">
-            <div class="collection-fields-list" data-prototype="{{ collection(form.collection)|escape }}">
-                {% for field in form.collection.children %}
+            <div class="collection-fields-list" data-prototype="{{ collection(subform)|escape }}">
+                {% for field in subform.children %}
                     {{ collection(field) }}
                 {% endfor %}
             </div>
             <a class="btn add-list-item" href="javascript: void(0);"><i class="icon-plus"></i>{{ 'Add'|trans }}</a>
         </div>
     {% endspaceless %}
-{%  endblock oro_flexibleentity_phone_collection_widget %}
+{% endblock %}
