@@ -301,7 +301,7 @@ class SegmentManager
         $childPath = $this->getEntityRepository()->getPath($childNode);
         //Removing last part of the path as it's the node itself
         //which cannot be is own ancestor
-        array_pop($childPath); 
+        array_pop($childPath);
         $i = 0;
         $parentFound = false;
 
