@@ -57,7 +57,7 @@ class CategoryHelper
     /**
      * Format categories list into simple array with data formatted
      * for JStree json_data plugin.
-     * 
+     *
      * @param array $categories
      *
      * @return array
@@ -72,10 +72,10 @@ class CategoryHelper
                 'attr' => array(
                     'id' => 'node_'. $category->getId()
                 ),
-                'data'  => $category->getTitle(),
-                'state' => static::getState($category),
+                'data'  => $category->getTitle() .' ('. $category->getProductsCount() .')',
+                'state' => static::getState($category)
             );
-        } 
+        }
 
         return $result;
     }
@@ -83,7 +83,7 @@ class CategoryHelper
     /**
      * Format categories tree into multi-dimensional arrays with attributes
      * needed by JStree json_data plugin.
-     * 
+     *
      * Optionnaly can generate a selected state for the provided selectCategory
      *
      * @param array $categories
@@ -95,6 +95,7 @@ class CategoryHelper
     public static function childrenTreeResponse($categories, Category $selectCategory = null)
     {
         $return = static::formatCategory($categories, $selectCategory);
+
         return $return;
     }
 
@@ -112,7 +113,7 @@ class CategoryHelper
     protected static function formatCategory(array $categories, Category $selectCategory = null)
     {
         $result = array();
-        
+
         foreach($categories as $category) {
             $state = 'leaf';
 
@@ -136,10 +137,10 @@ class CategoryHelper
                 'state' => $state,
                 'children' => static::formatCategory($category['__children'], $selectCategory)
             );
-        } 
+        }
 
         return $result;
-        
+
     }
 
     /**
