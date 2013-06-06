@@ -209,6 +209,25 @@ class Product extends AbstractEntityFlexible
         );
     }
 
+    public function getValues()
+    {
+        $_values = new ArrayCollection();
+
+        foreach ($this->values as $value) {
+            $attribute = $value->getAttribute();
+            $key = $value->getAttribute()->getCode();
+            if ($attribute->getTranslatable()) {
+                $key .= '_'.$value->getLocale();
+            }
+            if ($attribute->getScopable()) {
+                $key .= '_'.$value->getScope();
+            }
+            $_values[$key] = $value;
+        }
+
+        return $_values;
+    }
+
     /**
      * Get ordered group
      *
