@@ -1,0 +1,3 @@
+scripts_after:
+    window_bundle_js:
+        template: OroWindowsBundle:Include:javascript.html.twig

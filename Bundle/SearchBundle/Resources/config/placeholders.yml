@@ -1,13 +1,9 @@
 placeholders:
-  top_block:
-    label: test block
-    items:
-      block_1: ~
-      block2:
-        order: 10
+    navbar:
+        items:
+            search:
+                order: 200
 
 items:
-  block_1:
-    template: OroUIBundle::test.html.twig
-  block2:
-    action: OroSearchBundle:Search:searchBar
+   search:
+        action: OroSearchBundle:Search:searchBar

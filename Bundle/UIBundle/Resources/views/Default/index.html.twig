@@ -1,56 +1,60 @@
 {% if not oro_is_hash_navigation() %}
-<!DOCTYPE html>
-<html>
-<head>
-    {% block head %}
-        <title>{{ oro_title_render() }}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!DOCTYPE html>
+    <html>
+    <head>
+        {% block head %}
+            <title>{{ oro_title_render() }}</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        {% block head_style %}
-        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
-            {% if env is defined  and env == 'devjs' %}
-                <script type="text/javascript">localStorage.clear();</script>
-                <link rel="stylesheet/less" media="all" href="{{ asset('bundles/oroui/css/less/main.less') }}" />
-                <script type="text/javascript" src="{{ asset('bundles/oroui/lib/less-1.3.1.min.js') }}"></script>
-                <link rel="stylesheet" media="all" href="{{ asset('bundles/oroui/css/all.css') }}" />
-                <link rel="stylesheet" media="all" href="{{ asset('bundles/oroui/css/jquery-ui.grid.css') }}" />
-            {% else %}
-                {% stylesheets
+            {% block head_style %}
+                <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+                {% if env is defined  and env == 'devjs' %}
+                    <script type="text/javascript">localStorage.clear();</script>
+                    <link rel="stylesheet/less" media="all" href="{{ asset('bundles/oroui/css/less/main.less') }}" />
+                    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/less-1.3.1.min.js') }}"></script>
+                    <link rel="stylesheet" media="all" href="{{ asset('bundles/oroui/css/all.css') }}" />
+                    <link rel="stylesheet" media="all" href="{{ asset('bundles/oroui/css/jquery-ui.grid.css') }}" />
+                {% else %}
+                    {% stylesheets
                     'bundles/oroui/css/all.css'
                     'bundles/oroui/css/less/main.less'
 
                     debug=false
                     filter='cssrewrite, lessphp, yui_css'
                     output='css/oro.all.css'
-                %}
+                    %}
+                    <link rel="stylesheet" media="all" href="{{ asset_url }}" />
+                    {% endstylesheets %}
+                {% endif %}
+                {% oro_css filter='cssrewrite, lessphp, ?yui_css' output='css/oro.css' %}
                 <link rel="stylesheet" media="all" href="{{ asset_url }}" />
-                {% endstylesheets %}
-            {% endif %}
-            {% oro_css filter='cssrewrite, lessphp, ?yui_css' output='css/oro.css' %}
-                <link rel="stylesheet" media="all" href="{{ asset_url }}" />
-            {% endoro_css %}
-        {% endblock %}
+                {% endoro_css %}
+                {% placeholder head_style %}
+            {% endblock %}
 
-        {% block script %}
-            {# JS assetics #}
-            {% oro_js filter='?yui_js' output='js/oro.all.js' %}
-            <script type="text/javascript" src="{{ asset_url }}"></script>
-            {% endoro_js %}
+            {% block script %}
+                {% placeholder scripts_before %}
 
-            {# Add translations, include only common domains translations until BAP-768 is not implemented #}
-            <script type="text/javascript" src="{{ url('bazinga_exposetranslation_js', { 'domain_name': 'messages' }) }}"></script>
-            <script type="text/javascript" src="{{ url('bazinga_exposetranslation_js', { 'domain_name': 'validators' }) }}"></script>
+                {# JS assetics #}
+                {% oro_js filter='?yui_js' output='js/oro.all.js' %}
+                <script type="text/javascript" src="{{ asset_url }}"></script>
+                {% endoro_js %}
 
-            <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.jstree.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('bundles/orosegmentationtree/js/lib/jstree/jquery.jstree.tree_selector.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.hotkeys.js') }}"></script>
-            {% if app.debug %}
-                <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-                <script type="text/javascript">
-                    Oro.debug = true;
-                </script>
-            {% endif %}
-            <!--[if lte IE 9]>
+
+                {# Add translations, include only common domains translations until BAP-768 is not implemented #}
+                <script type="text/javascript" src="{{ url('bazinga_exposetranslation_js', { 'domain_name': 'messages' }) }}"></script>
+                <script type="text/javascript" src="{{ url('bazinga_exposetranslation_js', { 'domain_name': 'validators' }) }}"></script>
+
+                <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.jstree.js') }}"></script>
+                <script type="text/javascript" src="{{ asset('bundles/orosegmentationtree/js/lib/jstree/jquery.jstree.tree_selector.js') }}"></script>
+                <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.hotkeys.js') }}"></script>
+                {% if app.debug %}
+                    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+                    <script type="text/javascript">
+                        Oro.debug = true;
+                    </script>
+                {% endif %}
+                <!--[if lte IE 9]>
                 <link href="{{ asset('bundles/oroui/css/ie.css') }}" rel="stylesheet" media="all" />
                 <script src="{{ asset('bundles/oroui/lib/html5.js') }}"></script>
                 <script src="{{ asset('bundles/oroui/lib/jquery/jquery.placeholder.js') }}"></script>
@@ -59,374 +63,142 @@
                         jQuery('input[placeholder], textarea[placeholder]').placeholder();
                     });
                 </script>
-            <![endif]-->
-            <!--[if lte IE 7]>
+                <![endif]-->
+                <!--[if lte IE 7]>
                 <script src="{{ asset ('bundles/oroui/js/ie.js') }}"></script>
-            <![endif]-->
-            {% block hash_nav %}
-            <script type="text/javascript">
-                $(function() {
-                    if (Oro.hashNavigationEnabled()) {
-                        new Oro.Navigation({baseUrl : '{{ app.request.getSchemeAndHttpHost() }}'});
-                        if (!Backbone.History.started) {
-                            Backbone.history.start();
-                        }
-                    }
-                })
-            </script>
-            {% endblock %}
-            {% block head_script %}
+                <![endif]-->
+                {% block hash_nav %}
+                    <script type="text/javascript">
+                        $(function() {
+                            if (Oro.hashNavigationEnabled()) {
+                                new Oro.Navigation({baseUrl : '{{ app.request.getSchemeAndHttpHost() }}'});
+                                if (!Backbone.History.started) {
+                                    Backbone.history.start();
+                                }
+                            }
+                        })
+                    </script>
+                {% endblock %}
+                {% placeholder scripts_after %}
+                {% block head_script %}
+                {% endblock %}
             {% endblock %}
         {% endblock %}
-    {% endblock %}
-</head>
-<body class="{% block bodyClass %}{% endblock %}">
-{% placeholder top_block %}
-<div id="page">
-    <div id="top-page">
-        {% block header %}
-        <header class="navbar">
-            <div class="navbar-inner"><div class="container">
-
-            {% block logo %}
-            <h1 class="logo ">
-                <a href="{{ path('oro_default') }}" title="{{ oro_config_value('oro_ui.application_title') }}">
-                    {{ oro_config_value('oro_ui.application_name') }}
-                </a>
-            </h1>
-            {% endblock logo %}
-            <div class="navbar-responsive-collapse">
-            {% block shortcuts %}
-            <ul class="nav pull-left shortcuts">
-                <li class="divider-vertical extra-divider"></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Shortcuts</a>
-                    <ul class="dropdown-menu">
-                        <li class="nav-header nav-header-title">Shortcuts</li>
-                        <li class="divider"></li>
-                        <li class="dark">
-                            <form class="form-inline">
-                                <input type="text" placeholder="Enter shortcut action" class="input-large">
-                                <button class="btn btn-primary" type="submit">Go</button>
-                                <div class="clearfix">
-                                    <div class="extra-small">Example: Create New Customer, Search 'John Doe' <a href="#">Learn more</a></div>
-                                </div>
-                            </form>
-                        </li>
-                        <li class="divider"></li>
-                        <div class="nav-header">Your custom actions</div>
-                        <li><a href="#">New Customer</a></li>
-                        <li class="border-t"><a href="#">New Order</a></li>
-                        <li class="border-t"><a href="#">New Lead</a></li>
-                        <li class="border-t"><a href="#">New Calendar Event</a></li>
-                        <li class="border-t"><a href="#">New Task</a></li>
-                    </ul>
-                </li>
-            </ul>
-            {% endblock shortcuts %}
-            {% block searchbar %}
-            <div class="input-append input-prepend pull-left header-search">
-                <div class="btn-group">
-                    <button data-toggle="dropdown" class="btn dropdown-toggle">
-                        All
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">category</a></li>
-                        <li><a href="#">just project</a></li>
-                    </ul>
-                </div>
-                <input type="text" id="appendedDropdownButton" class="span2" />
-                <button type="button" class="btn btn-search">Search</button>
-            </div>
-            <script type="text/javascript">
-                jQuery(document).ready(function() {
-                    jQuery('div.header-search > input:text').focusin(function(){
-                        jQuery(this).parent().addClass('header-search-focused');
-                    }).focusout(function(){
-                        jQuery(this).parent().removeClass('header-search-focused');
-                    });
-                });
-            </script>
-            {% endblock searchbar %}
-            {% block section_top_right %}
-            <ul class="nav pull-right">
-                {% block user_menu %}
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">bettyusser <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Account</a></li>
-                            <li><a href="#">Admin</a></li>
-                            <li><a href="#">Settings</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Log out</a></li>
-                        </ul>
-                    </li>
-                {% endblock user_menu %}
-                {# Disabled notification icon till it will be implemented
-                {% block notifications %}
-                <li class="divider-vertical small-divider"></li>
-                <li><a class="notifications" href="#"><i class="icon-bullhorn"></i><span class="badge badge-important">1</span></a></li>
-                {% endblock notifications %}
-                #}
-                {% block help %}
-                <li class="divider-vertical small-divider"></li>
-                <li><a class="help no-hash" href="http://www.orocrm.com/" target="_blank"><i class="icon-question-sign" title="{{ 'Get help'|trans }}"></i></a></li>
-                {% endblock help %}
-            </ul>
-            {% endblock section_top_right %}
-
-            </div>
-            </div>
-            </div>
-
-        </header>
-        {% endblock header %}
-        {% block main %}
-        <div id="main" >
-            {% block right_panel %}{% endblock right_panel %}
-            {% block left_panel %}{% endblock left_panel %}
-                {% block pin_bar %}
-                    <div class="clearfix">
-                        <div class="pin-bar clearfix">
-                            <div class="pin-menus dropdown dropdown-close-prevent">
-                                <span class="oro-dropdown-toggle hide-text">...</span>
-                                <div class="dropdown-menu pull-right">
-                                    <div class="tabbable tabs-left">
-                                        <ul class="nav nav-tabs">
-                                            <li class="active" id="pinbar-tab"><a data-toggle="tab" href="#pinbar-content"><i class="icon-folder-close"></i>Tabs</a></li>
-                                            <li id="history-tab"><a data-toggle="tab"  href="#history-content"><i class="icon-time"></i>History</a></li>
-                                            <li id="favorite-tab"><a data-toggle="tab"  href="#favorite-content"><i class="icon-star-empty"></i>Favorites</a></li>
-                                            <li id="mostviewed-tab"><a data-toggle="tab"  href="#mostviewed-content"><i class="icon-flag"></i>Most Viewed</a></li>
-                                        </ul>
-                                        <div class="tab-content">
-                                            <div id="pinbar-content" class="tab-pane active">
-                                                <ul class="extra-list">
-                                                    <li><button data-dismiss="alert" class="close" type="button">&times;</button><a href="#">Sales filtered Wednesday</a></li>
-                                                    <li><button data-dismiss="alert" class="close" type="button">&times;</button><a href="#">Sales filtered Tuesday</a></li>
-                                                    <li><button data-dismiss="alert" class="close" type="button">&times;</button><a href="#">Sales filtered Thursday</a></li>
-                                                    <li><button data-dismiss="alert" class="close" type="button">&times;</button><a href="#">Sales filtered Friday</a></li>
-                                                    <li><button data-dismiss="alert" class="close" type="button">&times;</button><a href="#">Sales filtered Friday</a></li>
-                                                    <li><button data-dismiss="alert" class="close" type="button">&times;</button><a href="#">Sales filtered Friday</a></li>
-                                                    <li><button data-dismiss="alert" class="close" type="button">&times;</button><a href="#">Sales filtered Friday</a></li>
-                                                    <li><button data-dismiss="alert" class="close" type="button">&times;</button><a href="#">Sales filtered Friday</a></li>
-                                                    <li><button data-dismiss="alert" class="close" type="button">&times;</button><a href="#">Sales filtered Friday</a></li>
-                                                    <li><button data-dismiss="alert" class="close" type="button">&times;</button><a href="#">Sales filtered Friday</a></li>
-                                                    <li><button data-dismiss="alert" class="close" type="button">&times;</button><a href="#">Sales filtered Friday</a></li>
-                                                    <li><button data-dismiss="alert" class="close" type="button">&times;</button><a href="#">Sales filtered Saturday</a></li>
-                                                    <li><button data-dismiss="alert" class="close" type="button">&times;</button><a href="#">Sales filtered Tuesday</a></li>
-                                                    <li><button data-dismiss="alert" class="close" type="button">&times;</button><a href="#">Sales filtered Thursday</a></li>
-                                                    <li><button data-dismiss="alert" class="close" type="button">&times;</button><a href="#">Sales filtered Friday</a></li>
-                                                    <li><button data-dismiss="alert" class="close" type="button">&times;</button><a href="#">Sales filtered Saturday</a></li>
-                                                </ul>
-                                            </div>
-                                            <div id="history-content" class="tab-pane">
-                                                {{ oro_menu_render('history', {'maxItems': 10}) }}
-                                            </div>
-                                            <div id="favorite-content" class="tab-pane">
-                                                <ul class="extra-list">
-                                                    <li>Favorites item</li>
-                                                </ul>
-                                            </div>
-                                            <div id="mostviewed-content" class="tab-pane">
-                                                {{ oro_menu_render('mostviewed', {'maxItems': 10}) }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="list-bar">
-                                <ul class="">
-                                    <li>
-                                        <div class="pin-holder">
-                                            <a class="btn-close" href="#">close</a>
-                                            <div><a href="#" title="Yoav asked to do this">Yoav asked to do this</a></div>
-                                        </div>
-                                    </li>
-                                    <li class="active">
-                                        <div class="pin-holder">
-                                            <a class="btn-close" href="#">close</a>
-                                            <div><a href="#" title="Finish this before lea">Finish this before lea</a></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="pin-holder">
-                                            <a class="btn-close" href="#">close</a>
-                                            <div><a href="#" title="Jary asked to do this">Jary asked to do this</a></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="pin-holder">
-                                            <a class="btn-close" href="#">close</a>
-                                            <div><a href="#" title="Yoav asked to do this">Yoav asked to do this</a></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="pin-holder">
-                                            <a class="btn-close" href="#">close</a>
-                                            <div><a href="#" title="Portland Office">Portland Office</a></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="pin-holder">
-                                            <a class="btn-close" href="#">close</a>
-                                            <div><a href="#" title="Yoav asked to do this">Yoav asked to do this</a></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="pin-holder">
-                                            <a class="btn-close" href="#">close</a>
-                                            <div><a href="#" title="Finish this before lea">Finish this before lea</a></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="pin-holder">
-                                            <a class="btn-close" href="#">close</a>
-                                            <div><a href="#" title="Yoav asked to do this">Yoav asked to do this</a></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="pin-holder">
-                                            <a class="btn-close" href="#">close</a>
-                                            <div><a href="#" title="Portland Office">Portland Office</a></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="pin-holder">
-                                            <a class="btn-close" href="#">close</a>
-                                            <div><a href="#" title="Yoav asked to do this">Yoav asked to do this</a></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="pin-holder">
-                                            <a class="btn-close" href="#">close</a>
-                                            <div><a href="#" title="Portland Office">Portland Office</a></div>
-                                        </div>
-                                    </li>
-
-
-                                </ul>
-                                <script type="text/javascript">
-                                    $(document).ready(function() {
-                                        function trueWidthPinBar(){
-                                            jQuery('div.list-bar li').each(function(){
-                                                var _tempWidth = "auto";
-                                                jQuery(this).find('div.pin-holder div').width(_tempWidth);
-                                            });
-                                            var _sizeStart = jQuery(window).width() -30 - 55;
-                                            var _sizeEnd = jQuery('div.list-bar').width();
-                                            if(_sizeStart < _sizeEnd){
-                                                var _qty = jQuery('div.list-bar li').size();
-                                                var _sizePaddings = (23 + 15) * _qty;
-                                                var _mainPadding = jQuery('#main').innerWidth() - jQuery('#main').width();
-                                                if(jQuery(window).width() < 980){
-                                                    var _size = 980 -30 - _mainPadding  - _sizePaddings;
-                                                }else{
-                                                    var _size = jQuery(window).width() -30 - _mainPadding  - _sizePaddings;
-                                                }
-                                                var _tempWidth = _size / _qty;
-                                                _tempWidth = _tempWidth < 40 ? 40 : _tempWidth;
-                                                jQuery('div.list-bar li').each(function(){
-                                                    jQuery(this).find('div.pin-holder div').width(_tempWidth);
-                                                    jQuery(this).find('div.pin-holder div').addClass('pin-frame');
-                                                });
-                                            }
-                                        }
-                                        trueWidthPinBar()
-                                        jQuery(window).resize(function() {
-                                            trueWidthPinBar()
-                                        });
-                                    });
-                                </script>
-                            </div>
+    </head>
+    <body class="{% block bodyClass %}{% endblock %}">
+    {% placeholder after_body_start %}
+    <div id="page">
+        <div id="top-page">
+            {% block header %}
+                <header class="navbar">
+                    <div class="navbar-inner"><div class="container">
+                        {% placeholder header_logo %}
+                        <div class="navbar-responsive-collapse">
+                            {% placeholder navbar %}
+                            <ul class="nav pull-right">
+                                {% placeholder user_menu %}
+                                {# Disabled notification icon till it will be implemented
+                                {% block notifications %}
+                                <li class="divider-vertical small-divider"></li>
+                                <li><a class="notifications" href="#"><i class="icon-bullhorn"></i><span class="badge badge-important">1</span></a></li>
+                                {% endblock notifications %}
+                                #}
+                            </ul>
                         </div>
                     </div>
-                {% endblock pin_bar %}
-                <div id="main-menu">
+                    </div>
+
+                </header>
+            {% endblock header %}
+            {% block main %}
+                <div id="main" >
+                    {% block right_panel %}{% endblock right_panel %}
+                    {% block left_panel %}{% endblock left_panel %}
+                    {% placeholder pinbar %}
                     {% block application_menu %}
+                        <div id="main-menu">
+                            {% placeholder application_menu %}
+                        </div>
                     {% endblock application_menu %}
-                </div>
-                {% block pin_button %}
-                {% endblock pin_button %}
-                <div id="flash-messages">
-                    {% block messages %}
-                        {% set allMessages = {'empty': ['']} %}
-                        {% if app.session.flashbag.peekAll|length > 0 %}
-                            {% set allMessages = allMessages|merge(app.session.flashbag.all) %}
-                        {% endif %}
-                        <div class="flash-messages-frame"
-                                {% if allMessages|length < 2 %}style="display:none"{% endif %}>
-                            <div class="flash-messages-holder">
-                            {% for type, messages in allMessages %}
-                                {% for message in messages %}
-                                    <div class="alert{{ type ? ' alert-'~type : '' }} fade in top-messages ">
-                                        <a class="close" data-dismiss="alert" href="#">&times;</a>
-                                        <div class="message">{{ message|trans|raw }}</div>
-                                    </div>
-                                {% endfor %}
-                            {% endfor %}
+                    {% placeholder pin_button %}
+                    <div id="flash-messages">
+                        {% block messages %}
+                            {% set allMessages = {'empty': ['']} %}
+                            {% if app.session.flashbag.peekAll|length > 0 %}
+                                {% set allMessages = allMessages|merge(app.session.flashbag.all) %}
+                            {% endif %}
+                            <div class="flash-messages-frame"
+                                 {% if allMessages|length < 2 %}style="display:none"{% endif %}>
+                                <div class="flash-messages-holder">
+                                    {% for type, messages in allMessages %}
+                                        {% for message in messages %}
+                                            <div class="alert{{ type ? ' alert-'~type : '' }} fade in top-messages ">
+                                                <a class="close" data-dismiss="alert" href="#">&times;</a>
+                                                <div class="message">{{ message|trans|raw }}</div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </div>
                             </div>
-                        </div>
-                    {% endblock messages %}
-                </div>
-            <div class="hash-loading-mask"></div>
-            <div id="container" class="scrollable-container">
-                {% block page_container %}
-                {% block content %}
-                    <div class="container" style="background: #fff">
-                        <div class="row">
-                            <div class="span4">
-                                <hr />
-                                <h3>Layout pages</h3>
-                                <ul>
-                                    <li><a href="{{ path('oro_ui_1column') }}">1 column </a></li>
-                                    <li><a href="{{ path('oro_ui_1column_toolbar') }}">1 column with toolbar</a></li>
-                                    <li><a href="{{ path('oro_ui_1column_menu') }}">1 column with menu</a></li>
-                                    <li><a href="{{ path('oro_ui_grid_page') }}">grid page</a></li>
-                                    <li><a href="{{ path('oro_ui_grid_without_bar_page') }}">grid page without bar</a></li>
-                                    <li><a href="{{ path('oro_ui_2columns_left') }}">2 columns - left</a></li>
-                                    <li><a href="{{ path('oro_ui_2columns_right') }}">2 columns - right</a></li>
-                                    <li><a href="{{ path('oro_ui_3columns') }}">3 columns</a></li>
-                                </ul>
-                                <h3>Static pages</h3>
-                                <ul>
-                                    <li><a href="{{ path('oro_ui_forgot_password') }}">Forgot password</a></li>
-                                    <li><a href="{{ path('oro_ui_login') }}">Login page</a></li>
-                                    <li><a href="{{ path('oro_ui_registration') }}">Registration page</a></li>
-                                    <li><a href="{{ path('oro_ui_404') }}">404</a></li>
-                                    <li><a href="{{ path('oro_ui_503') }}">503</a></li>
-                                </ul>
-                                <h3>Example pages</h3>
-                                <ul>
-                                    <li><a href="{{ path('oro_ui_form_elements') }}">Form elements</a></li>
-                                    <li><a href="{{ path('oro_ui_form_horizontal') }}">Form Horizontal</a></li>
-                                    <li><a href="{{ path('oro_ui_messages') }}">System messages</a></li>
-                                    <li><a href="{{ path('oro_ui_title_bar') }}">Entity Title Bar</a></li>
-                                    <li><a href="{{ path('oro_ui_buttons') }}">Buttons</a></li>
-                                    <li><a href="#">Print page</a></li>
-                                    <li><a href="{{ path('oro_ui_tables') }}">Tables</a></li>
-                                    <li><a href="{{ path('oro_ui_general_elements') }}">General elements</a></li>
-                                </ul>
-                                <h3>Js use page</h3>
-                                <ul>
-                                    <li><a href="{{ path('oro_ui_dialog_styled') }}">jQuery Dialog styled</a></li>
-                                </ul>
-                            </div>
-                        </div>
+                        {% endblock messages %}
                     </div>
-                {% endblock content %}
-                {% endblock page_container %}
-            </div>
+                    <div class="hash-loading-mask"></div>
+                    <div id="container" class="scrollable-container">
+                        {% block page_container %}
+                            {% block content %}
+                                <div class="container" style="background: #fff">
+                                    <div class="row">
+                                        <div class="span4">
+                                            <hr />
+                                            <h3>Layout pages</h3>
+                                            <ul>
+                                                <li><a href="{{ path('oro_ui_1column') }}">1 column </a></li>
+                                                <li><a href="{{ path('oro_ui_1column_toolbar') }}">1 column with toolbar</a></li>
+                                                <li><a href="{{ path('oro_ui_1column_menu') }}">1 column with menu</a></li>
+                                                <li><a href="{{ path('oro_ui_grid_page') }}">grid page</a></li>
+                                                <li><a href="{{ path('oro_ui_grid_without_bar_page') }}">grid page without bar</a></li>
+                                                <li><a href="{{ path('oro_ui_2columns_left') }}">2 columns - left</a></li>
+                                                <li><a href="{{ path('oro_ui_2columns_right') }}">2 columns - right</a></li>
+                                                <li><a href="{{ path('oro_ui_3columns') }}">3 columns</a></li>
+                                            </ul>
+                                            <h3>Static pages</h3>
+                                            <ul>
+                                                <li><a href="{{ path('oro_ui_forgot_password') }}">Forgot password</a></li>
+                                                <li><a href="{{ path('oro_ui_login') }}">Login page</a></li>
+                                                <li><a href="{{ path('oro_ui_registration') }}">Registration page</a></li>
+                                                <li><a href="{{ path('oro_ui_404') }}">404</a></li>
+                                                <li><a href="{{ path('oro_ui_503') }}">503</a></li>
+                                            </ul>
+                                            <h3>Example pages</h3>
+                                            <ul>
+                                                <li><a href="{{ path('oro_ui_form_elements') }}">Form elements</a></li>
+                                                <li><a href="{{ path('oro_ui_form_horizontal') }}">Form Horizontal</a></li>
+                                                <li><a href="{{ path('oro_ui_messages') }}">System messages</a></li>
+                                                <li><a href="{{ path('oro_ui_title_bar') }}">Entity Title Bar</a></li>
+                                                <li><a href="{{ path('oro_ui_buttons') }}">Buttons</a></li>
+                                                <li><a href="#">Print page</a></li>
+                                                <li><a href="{{ path('oro_ui_tables') }}">Tables</a></li>
+                                                <li><a href="{{ path('oro_ui_general_elements') }}">General elements</a></li>
+                                            </ul>
+                                            <h3>Js use page</h3>
+                                            <ul>
+                                                <li><a href="{{ path('oro_ui_dialog_styled') }}">jQuery Dialog styled</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endblock content %}
+                        {% endblock page_container %}
+                    </div>
+                </div>
+            {% endblock main %}
         </div>
-        {% endblock main %}
     </div>
-</div>
-</body>
-</html>
+    </body>
+    </html>
 {% else %}
-{# Template for hash tag navigation#}
-{% include 'OroNavigationBundle:HashNav:hashNavAjax.html.twig'
-    with {'script':
-('head_script'), 'messages':block('messages'), 'content': block('page_container'), 'menu': block('application_menu')}
-%}
+    {# Template for hash tag navigation#}
+    {% include 'OroNavigationBundle:HashNav:hashNavAjax.html.twig'
+    with {'script': block('head_script'), 'messages':block('messages'), 'content': block('page_container'), 'menu': block('application_menu')}
+    %}
 {% endif %}
