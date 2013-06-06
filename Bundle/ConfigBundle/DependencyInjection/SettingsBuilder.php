@@ -35,12 +35,10 @@ class SettingsBuilder
                     $child->scalarNode('value')->defaultValue($setting['value']);
 
                     break;
-
                 case 'boolean':
                     $child->booleanNode('value')->defaultValue((bool) $setting['value']);
 
                     break;
-
                 case 'array':
                     $child->arrayNode('value');
 

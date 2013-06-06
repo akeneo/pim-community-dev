@@ -23,36 +23,39 @@ class ResultProvider
     /**
      * Returns grouped search results
      *
-     * @param string $string
+     * @param  string $string
      * @return array
      */
     public function getGroupedResults($string)
     {
-        $result = $this->indexer->simpleSearch($string);
+        $search = $this->indexer->simpleSearch($string);
 
         // empty key array contains all data
-        $groupedResults = array(
+        $result = array(
             '' => array(
                 'count'  => 0,
+                'class'  => '',
                 'config' => array()
             )
         );
 
         /** @var $item Item */
-        foreach ($result->getElements() as $item) {
-            $entityConfig = $item->getEntityConfig();
-            $alias = $entityConfig['alias'];
-            if (!isset($groupedResults[$alias])) {
-                $groupedResults[$alias] = array(
+        foreach ($search->getElements() as $item) {
+            $config = $item->getEntityConfig();
+            $alias  = $config['alias'];
+
+            if (!isset($result[$alias])) {
+                $result[$alias] = array(
                     'count'  => 0,
-                    'config' => $entityConfig,
+                    'class'  => $item->getEntityName(),
+                    'config' => $config,
                 );
             }
 
-            $groupedResults[$alias]['count']++;
-            $groupedResults['']['count']++;
+            $result[$alias]['count']++;
+            $result['']['count']++;
         }
 
-        return $groupedResults;
+        return $result;
     }
 }

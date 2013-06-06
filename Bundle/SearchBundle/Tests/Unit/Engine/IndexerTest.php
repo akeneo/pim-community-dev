@@ -16,21 +16,12 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
     protected $om;
     protected $repository;
     protected $connector;
-    protected $translator;
 
     public function setUp()
     {
         if (!interface_exists('Doctrine\Common\Persistence\ObjectManager')) {
             $this->markTestSkipped('Doctrine Common has to be installed for this test to run.');
         }
-
-        $this->translator =  $this->getMockBuilder('Symfony\Component\Translation\Translator')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->translator->expects($this->any())
-            ->method('trans')
-            ->will($this->returnValue('translated test product'));
 
         $this->om = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
@@ -111,7 +102,6 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
         $this->indexService = new Indexer(
             $this->om,
             $this->connector,
-            $this->translator,
             $this->mapper
         );
     }

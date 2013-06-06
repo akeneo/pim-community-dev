@@ -40,8 +40,7 @@ class MeasureManagerTest extends \PHPUnit_Framework_TestCase
     {
         try {
             $this->measureManager->getUnitSymbolsForFamily('LENGTH');
-        }
-        catch (\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             $this->assertEquals('Undefined measure family "LENGTH"', $e->getMessage());
             return;
         }

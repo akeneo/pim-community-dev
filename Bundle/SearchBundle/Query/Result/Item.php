@@ -216,11 +216,10 @@ class Item
     public function toArray()
     {
         return array(
-            'entity_name' => $this->entityName,
-            'record_id' => $this->recordId,
+            'entity_name'   => $this->entityName,
+            'record_id'     => $this->recordId,
             'record_string' => $this->getRecordTitle(),
-            'record_url' => $this->getRecordUrl(),
-            'entity_type' => $this->entityConfig['label'],
+            'record_url'    => $this->getRecordUrl(),
         );
     }
 }

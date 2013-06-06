@@ -48,6 +48,7 @@ class PageGrid extends Page
         $pager->value($page);
         //simulate lost focus
         $this->keysSpecial('enter');
+        $this->waitForAjax();
         $pagerLabel->click();
         $this->waitForAjax();
         return $this;
@@ -218,7 +219,10 @@ class PageGrid extends Page
      */
     public function getColumn($columnId)
     {
-        $columnData = $this->elements($this->using('xpath')->value("{$this->gridPath}//table/tbody/tr/td[{$columnId}]"));
+        $columnData = $this->elements(
+            $this->using('xpath')
+                ->value("{$this->gridPath}//table/tbody/tr/td[not(contains(@style, 'display: none;'))][{$columnId}]")
+        );
         $rowData = array();
         foreach ($columnData as $value) {
             $rowData[] = $value->text();

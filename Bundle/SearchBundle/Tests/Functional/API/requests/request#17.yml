@@ -9,28 +9,28 @@ response:
     rest:
         data:
             -
-                entity_name: Acme\Bundle\TestsBundle\Entity\Item
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 record_string: item6@mail.com
             -
-                entity_name: Acme\Bundle\TestsBundle\Entity\Item
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 record_string: item7@mail.com
             -
-                entity_name: Acme\Bundle\TestsBundle\Entity\Item
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 record_string: item8@mail.com
             -
-                entity_name: Acme\Bundle\TestsBundle\Entity\Item
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 record_string: item9@mail.com
     soap:
         item:
             -
-                entityName: Acme\Bundle\TestsBundle\Entity\Item
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 recordTitle: item6@mail.com
             -
-                entityName: Acme\Bundle\TestsBundle\Entity\Item
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 recordTitle: item7@mail.com
             -
-                entityName: Acme\Bundle\TestsBundle\Entity\Item
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 recordTitle: item8@mail.com
             -
-                entityName: Acme\Bundle\TestsBundle\Entity\Item
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 recordTitle: item9@mail.com

@@ -1,30 +1,26 @@
-<form method="get" action="{{ path('oro_search_results') }}" style="margin: 0" autocomplete="off" id="top-search-form" class="search-form"
-      data-ajax-action="{{ path('oro_api_get_search') }}">
+<form method="get" action="{{ path('oro_search_results') }}" style="margin: 0" autocomplete="off" id="top-search-form" class="search-form">
     <div id="search-div" class="input-append input-prepend pull-left header-search">
         <div class="btn-group">
             <button data-toggle="dropdown" class="btn dropdown-toggle" id="search-bar-button">
-                All
+                {% trans %}All{% endtrans %}
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" id="search-bar-dropdown">
                 <li data-alias="">
-                    <a href="#">{% trans %}All{% endtrans %}</a>
+                    <a href="javascript: void(0);">{% trans %}All{% endtrans %}</a>
                 </li>
                 {% for entity in entities %}
-                    <li data-alias="{{ entity.alias }}">
-                        <a href="#">{{ entity.label }}</a>
-                    </li>
+                <li data-alias="{{ entity.alias }}">
+                    <a href="javascript: void(0);">{{ oro_config_entity(entity.class).name|trans({}, 'config') }}</a>
+                </li>
                 {% endfor %}
             </ul>
         </div>
         <div class="header-search-frame">
             <input type="hidden" name="from" id="search-bar-from" value=""/>
             <input type="text" id="search-bar-search" class="span2 search" placeholder="" name="search" value=""/>
-            <button type="submit" class="btn btn-search">Search</button>
-            <div class="custom-dropdown" id="search-dropdown">
-                <ul>
-                </ul>
-            </div>
+            <button type="submit" class="btn btn-search">{% trans %}Search{% endtrans %}</button>
+            <div class="custom-dropdown" id="search-dropdown"></div>
         </div>
     </div>
 </form>

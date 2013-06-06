@@ -3,47 +3,48 @@
 namespace Oro\Bundle\SearchBundle\Engine;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Translation\Translator;
 
 use Oro\Bundle\SearchBundle\Query\Query;
 use Oro\Bundle\SearchBundle\Query\Parser;
+use Oro\Bundle\SearchBundle\Query\Result;
 use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
+use Oro\Bundle\SearchBundle\Engine\AbstractEngine;
 
 class Indexer
 {
-    const TEXT_ALL_DATA_FIELD = 'all_text';
+    const TEXT_ALL_DATA_FIELD   = 'all_text';
 
-    const RELATION_ONE_TO_ONE = 'one-to-one';
+    const RELATION_ONE_TO_ONE   = 'one-to-one';
     const RELATION_MANY_TO_MANY = 'many-to-many';
-    const RELATION_MANY_TO_ONE = 'many-to-one';
-    const RELATION_ONE_TO_MANY = 'one-to-many';
+    const RELATION_MANY_TO_ONE  = 'many-to-one';
+    const RELATION_ONE_TO_MANY  = 'one-to-many';
 
     /**
-     * @var \Oro\Bundle\SearchBundle\Engine\AbstractEngine
+     * @var AbstractEngine
      */
     protected $adapter;
 
     /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
+     * @var ObjectManager
      */
-    private $em;
+    protected $em;
 
     /**
-     * @var \Symfony\Component\Translation\Translator
-     */
-    private $translator;
-
-    /**
-     * @var \Oro\Bundle\SearchBundle\Engine\ObjectMapper
+     * @var ObjectMapper
      */
     protected $mapper;
 
-    public function __construct(ObjectManager $em, $adapter, Translator $translator, ObjectMapper $mapper)
+    /**
+     *
+     * @param ObjectManager  $em
+     * @param AbstractEngine $adapter
+     * @param ObjectMapper   $mapper
+     */
+    public function __construct(ObjectManager $em, AbstractEngine $adapter, ObjectMapper $mapper)
     {
-        $this->mapper = $mapper;
+        $this->em      = $em;
         $this->adapter = $adapter;
-        $this->em = $em;
-        $this->translator = $translator;
+        $this->mapper  = $mapper;
     }
 
     /**
@@ -57,13 +58,12 @@ class Indexer
     }
 
     /**
-     * @param string  $searchString
-     * @param integer $offset
-     * @param integer $maxResults
-     * @param string  $from
-     * @param integer $page
-     *
-     * @return \Oro\Bundle\SearchBundle\Query\Result
+     * @param  string  $searchString
+     * @param  integer $offset
+     * @param  integer $maxResults
+     * @param  string  $from
+     * @param  integer $page
+     * @return Result
      */
     public function simpleSearch($searchString, $offset = 0, $maxResults = 0, $from = null, $page = 0)
     {
@@ -95,7 +95,7 @@ class Indexer
     /**
      * Get query builder with select instance
      *
-     * @return \Oro\Bundle\SearchBundle\Query\Query
+     * @return Query
      */
     public function select()
     {
@@ -110,9 +110,8 @@ class Indexer
     /**
      * Run query with query builder
      *
-     * @param \Oro\Bundle\SearchBundle\Query\Query $query
-     *
-     * @return \Oro\Bundle\SearchBundle\Query\Result
+     * @param  Query  $query
+     * @return Result
      */
     public function query(Query $query)
     {
@@ -122,9 +121,8 @@ class Indexer
     /**
      * Advanced search from API
      *
-     * @param string $searchString
-     *
-     * @return \Oro\Bundle\SearchBundle\Query\Result
+     * @param  string $searchString
+     * @return Result
      */
     public function advancedSearch($searchString)
     {

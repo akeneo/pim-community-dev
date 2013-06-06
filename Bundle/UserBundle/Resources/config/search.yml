@@ -1,32 +1,30 @@
 Oro\Bundle\UserBundle\Entity\User:
-    alias: oro_user
-    label: Users
-    flexible_manager: oro_user.manager.flexible
-    title_fields: [username]
+    alias:                          oro_user
+    flexible_manager:               oro_user.manager.flexible
+    title_fields:                   [username]
     route:
-        name: oro_user_view
+        name:                       oro_user_view
         parameters:
-            id: id
-    search_template: OroUserBundle:User:searchResult.html.twig
-    entity_icon_class: icon-user
+            id:                     id
+    search_template:                OroUserBundle:Search:result.html.twig
     fields:
         -
-            name: username
-            target_type: text
-            target_fields: [username]
+            name:                   username
+            target_type:            text
+            target_fields:          [username]
         -
-            name: email
-            target_type: text
-            target_fields: [email]
+            name:                   email
+            target_type:            text
+            target_fields:          [email]
         -
-            name: firstName
-            target_type: text
-            target_fields: [firstName]
+            name:                   firstName
+            target_type:            text
+            target_fields:          [firstName]
         -
-            name: lastName
-            target_type: text
-            target_fields: [lastName]
+            name:                   lastName
+            target_type:            text
+            target_fields:          [lastName]
         -
-            name: birthday
-            target_type: birthday
-            target_fields: [birthday]
+            name:                   birthday
+            target_type:            birthday
+            target_fields:          [birthday]
