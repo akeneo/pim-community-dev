@@ -16,7 +16,7 @@
     <div class="row-fluid" id="attribute-container">
         <div id="attribute-group-list" class="sidebar-list">
             <ul>
-                <li data-id="0">{{ 'All'|trans }}</li>
+                <li data-id="0" class="selected">{{ 'All'|trans }}</li>
             {% for group in groups %}
                 <li data-id="{{ group.id }}">{{ group }}</li>
             {% endfor %}

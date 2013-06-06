@@ -5,6 +5,10 @@ $(function() {
 		e.preventDefault();
 		$('#attribute-group-list li.selected').removeClass('selected');
 		$(this).addClass('selected');
+
+        var datagrid = Oro.Registry.getElement('datagrid', 'attributes');
+        datagrid.filters.group.value.value = $(this).data('id');
+        datagrid.filters.group.trigger('update');
 	});
 
 	var addBtn = $('<a href="{{ path('pim_product_attributegroup_create') }}">')

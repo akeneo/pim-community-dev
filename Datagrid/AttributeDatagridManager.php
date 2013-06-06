@@ -112,6 +112,45 @@ class AttributeDatagridManager extends DatagridManager
             )
         );
         $fieldsCollection->add($field);
+
+        $field = $this->createGroupField();
+        $fieldsCollection->add($field);
+    }
+
+    /**
+     * Create a group field and filter
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createGroupField()
+    {
+        // get groups
+        $em = $this->productManager->getStorageManager();
+        $groups = $em->getRepository('PimProductBundle:AttributeGroup')->findAll();
+        $choices = array();
+        foreach ($groups as $group) {
+            $choices[$group->getId()] = $group->getName();
+        }
+
+        $field = new FieldDescription();
+        $field->setName('group');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => 'Group',
+                'field_name'  => 'group',
+                'filter_type' => FilterInterface::TYPE_CHOICE,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+                'field_options' => array(
+                    'choices' => $choices
+                ),
+            )
+        );
+
+        return $field;
     }
 
     /**
