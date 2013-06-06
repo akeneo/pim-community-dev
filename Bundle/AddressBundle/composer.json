@@ -8,8 +8,6 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.1.*",
-        "symfony/icu": "1.2.*@dev",
-        "symfony/intl": "2.3.*@dev",
         "friendsofsymfony/rest-bundle": "0.11.*",
         "friendsofsymfony/jsrouting-bundle": "1.1.*@dev",
         "nelmio/api-doc-bundle": "dev-master",
