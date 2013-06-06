@@ -152,20 +152,6 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $this->getProductManager()->getStorageManager()->persist($attribute);
         $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
 
-        // attribute weight
-        $attributeCode = 'weight';
-        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_metric');
-        $attribute->setCode($attributeCode);
-        $attribute->setLabel('Weight');
-        $attribute->setDescription(ucfirst($attributeCode .' description'));
-        $attribute->setUseableAsGridColumn(true);
-        $attribute->setMetricFamily('Weight');
-        $this->createTranslation($attribute, 'default', 'label', 'Weight');
-        $this->createTranslation($attribute, 'en_US', 'label', 'Weight');
-        $this->createTranslation($attribute, 'fr_FR', 'label', 'Poids');
-        $this->getProductManager()->getStorageManager()->persist($attribute);
-        $this->addReference($referencePrefix. $attribute->getCode(), $attribute);
-
         // attribute color and translated options
         $attributeCode = 'color';
         $attribute = $this->getProductManager()->createAttribute('pim_product_multiselect');
