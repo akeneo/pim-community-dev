@@ -275,12 +275,14 @@ class Product extends AbstractEntityFlexible
     /**
      * @return \Oro\Bundle\FlexibleEntityBundle\Model\mixed|string
      */
-    public function getLabel()
+    public function getLabel($locale = null)
     {
         if ($this->productFamily) {
             if ($attributeAsLabel = $this->productFamily->getAttributeAsLabel()) {
-                $value = $this->getValue($attributeAsLabel->getCode());
-                if ($value) {
+                if ($locale) {
+                    $this->setLocale($locale);
+                }
+                if ($value = $this->getValue($attributeAsLabel->getCode())) {
                     $data = $value->getData();
                     if (!empty($data)) {
                         return $data;
