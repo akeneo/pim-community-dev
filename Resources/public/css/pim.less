@@ -329,7 +329,7 @@ form .table-condensed input.span4 {
   height: auto;
 }
 
-.has-sidebar {
+.sidebarized {
   .sidebar-separator {
     background-color: #f3f3f3;
     i {
@@ -339,6 +339,27 @@ form .table-condensed input.span4 {
   .sidebar-controls {
     background-color: #f7f7f7;
     i {
+      cursor: pointer;
+    }
+    button {
+      background-color: #f3f3f3;
+      display:block;
+      float:left;
+      border: 0px;
+      border-right: 1px solid #d3d3d3;
+      color:#000;
+      text-decoration:none;
+    }
+    .btn-group .dropdown-toggle {
+      border-radius: 0px;
+      .caret {
+        vertical-align: middle;
+      }
+    }
+    li {
+      text-align: left;
+    }
+    a {
       cursor: pointer;
     }
   }
@@ -689,43 +710,10 @@ button.pimmultiselect {
 
 /* Tree */
 .product-list h3 {margin:0px;}
-.tree-sidebar {min-height:100%; min-height:500px; border-right: #F5F5F5 7px solid;}
 
 .jstree-default {
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-
-.tree-toolbar {
-  background-color: #f3f3f3;
-  display: table;
-  width: 100%;
-  border-top: 1px solid #d3d3d3;
-  margin-top: 5%;
-}
-
-.btn-tree-toolbar {
-  background-color: #f3f3f3;
-  display:block;
-  float:left;
-  border: 0px;
-  border-right: 1px solid #d3d3d3;
-  color:#000;
-  text-decoration:none;
-}
-
-.tree-toolbar .btn-group .dropdown-toggle {
-  border-bottom-right-radius: 0px;
-  border-top-right-radius: 0px;
-}
-
-.tree-toolbar .btn-group .dropdown-toggle .caret {
-  vertical-align: bottom;
-}
-
-#sidebar-collapse {
-  float: right;
-  border: 0px;
+  height: 100%;
+  overflow: auto;
 }
 
 #tree_toolbar {
