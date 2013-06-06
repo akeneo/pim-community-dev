@@ -50,7 +50,7 @@
             <directory>../src/Pim</directory>
             <exclude>
                 <!-- exclude demo used load sample data -->
-                <directory>../src/Pim/DemoBundle</directory>
+                <directory>../src/Pim/Bundle/DemoBundle</directory>
                 <directory>../src/*/*Bundle/Resources</directory>
                 <directory>../src/*/*Bundle/Tests</directory>
                 <directory>../src/*/Bundle/*Bundle/Resources</directory>
