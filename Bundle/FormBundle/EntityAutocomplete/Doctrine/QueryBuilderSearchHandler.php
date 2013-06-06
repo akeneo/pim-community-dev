@@ -125,7 +125,7 @@ class QueryBuilderSearchHandler implements SearchHandlerInterface
      */
     protected function applyPagination(QueryBuilder $queryBuilder, $firstResult, $maxResults)
     {
-        $queryBuilder->setFirstResult($firstResult * $maxResults);
+        $queryBuilder->setFirstResult($firstResult);
         $queryBuilder->setMaxResults($maxResults);
     }
 

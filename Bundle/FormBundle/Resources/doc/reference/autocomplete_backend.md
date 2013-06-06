@@ -66,11 +66,12 @@ autocomplete_entities: # Root element
         type: doctrine_entity
         form_options:
             datasource: autocomplete
-        options: ~
+        options: []
         entity_class: FooEntityClassName
         properties:
             - name: username
         route: oro_form_autocomplete_search
+        acl_resource: ~
         view: OroFormBundle:EntityAutocomplete:search.json.twig
 ```
 
@@ -104,7 +105,7 @@ Autocomplete search request can contain next parameters:
 ```
 
 * **results** - contain an array of objects, each object has id and text properties
-* **more** - TRUE when other can be shown on next page, otherwise FALSE
+* **more** - TRUE when other results can be shown on next page, otherwise FALSE
 
 #### Search Handler
 

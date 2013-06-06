@@ -1,8 +1,7 @@
 parameters:
     oro_form.autocomplete.configuration.class:                         Oro\Bundle\FormBundle\EntityAutocomplete\Configuration
-    oro_form.autocomplete.search_registry.class:                       Oro\Bundle\FormBundle\EntityAutocomplete\SearchRegistry
 
-    oro_form.autocomplete.search_factory.class:                        Oro\Bundle\FormBundle\EntityAutocomplete\CompositeSearchFactory
+    oro_form.autocomplete.composite_search_factory.class:              Oro\Bundle\FormBundle\EntityAutocomplete\CompositeSearchFactory
     oro_form.autocomplete.doctrine.entity_search_factory.class:        Oro\Bundle\FormBundle\EntityAutocomplete\Doctrine\EntitySearchFactory
     oro_form.autocomplete.doctrine.query_builder_search_factory.class: Oro\Bundle\FormBundle\EntityAutocomplete\Doctrine\QueryBuilderSearchFactory
     oro_form.autocomplete.flexible.search_factory.class:               Oro\Bundle\FormBundle\EntityAutocomplete\Flexible\FlexibleSearchFactory
@@ -14,7 +13,7 @@ services:
         arguments: [%oro_form.autocomplete.config%]
 
     oro_form.autocomplete.search_factory:
-        class: %oro_form.autocomplete.search_factory.class%
+        class: %oro_form.autocomplete.composite_search_factory.class%
 
     oro_form.autocomplete.doctrine.entity_search_factory:
         class: %oro_form.autocomplete.doctrine.entity_search_factory.class%

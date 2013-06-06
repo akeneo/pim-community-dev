@@ -15,7 +15,7 @@ Form components are form types, data transformers and event listeners.
 
 * **Form / DataTransformer / ArrayToStringTransformer** - converts array to string and back;
 * **Form / DataTransformer / EntitiesToIdsTransformer** - converts entity IDs to entities and back.
-* **Form / DataTransformer / EntitiesToIdsTransformer** - converts entity ID to entity and back.
+* **Form / DataTransformer / EntityToIdTransformer** - converts entity ID to entity and back.
 
 
 ### Event Subscribers

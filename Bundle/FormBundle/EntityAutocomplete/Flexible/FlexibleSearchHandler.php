@@ -83,7 +83,7 @@ class FlexibleSearchHandler implements SearchHandlerInterface
             $queryBuilder->setParameter('search', '%' . $search. '%');
         }
 
-        $queryBuilder->setFirstResult($firstResult * $maxResults)->setMaxResults($maxResults);
+        $queryBuilder->setFirstResult($firstResult)->setMaxResults($maxResults);
         $paginator = new Paginator($queryBuilder->getQuery(), true);
 
         return $paginator->getIterator()->getArrayCopy();
