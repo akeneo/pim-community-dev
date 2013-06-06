@@ -368,6 +368,7 @@ Oro.Navigation = Backbone.Router.extend({
              * Clearing content area with native js, prevents freezing of firefox with firebug enabled
              */
             document.getElementById('container').innerHTML = '';
+            data = $.trim(data);
             var redirectUrl = $(data).filter('#redirect').text();
             if (redirectUrl) {
                 var urlParts = redirectUrl.split('url=');
