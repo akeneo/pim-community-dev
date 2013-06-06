@@ -159,6 +159,7 @@
                                                     {% if formValue.vars.value.isRemovable() %}
                                                         <a href="{{ path('pim_product_product_removeproductvalue', {'productId': formValue.vars.value.entity.id, 'attributeId': formValue.vars.value.attribute.id}) }}"
                                                            class="btn btn-action btn-link remove-attribute"
+                                                           title="Remove this attribute"
                                                            data-method="DELETE" data-confirm="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': formValue.vars.value.attribute.label}) }}">×</a>
                                                     {% endif %}
                                                     {% set displayRemoveAttributeLink = false %}
