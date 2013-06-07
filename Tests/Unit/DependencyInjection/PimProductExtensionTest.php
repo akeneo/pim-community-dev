@@ -1,5 +1,5 @@
 <?php
-namespace Pim\Bundle\ProductBundle\DependencyInjection\Tests\Unit;
+namespace Pim\Bundle\ProductBundle\Tests\Unit\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
