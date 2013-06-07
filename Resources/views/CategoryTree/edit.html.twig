@@ -35,9 +35,6 @@
                         <div class="row-fluid">
                             <ul class="nav">
                                 <li class="active"><a href="#form-properties" data-toggle="tab">{{ 'Properties'|trans }}</a></li>
-                                {% if parentId %}
-                                    <li><a href="#form-rules" data-toggle="tab">{{ 'Rules'|trans }}</a></li>
-                                {% endif %}
                             </ul>
                         </div>
                     </div>
@@ -87,28 +84,6 @@
                             </div>
                         </div>
                     </div>
-                    
-                    {% if parentId %}
-                    <div class="tab-pane" id="form-rules">
-                        <div id="accordion2" class="accordion">
-                            <div class="accordion-group">
-                                <div class="accordion-heading">
-                                    <a class="accordion-toggle" data-toggle="collapse" data=parent="#accordion2" href="#collapseThree">
-                                        <i class="icon-collapse"></i>
-                                        {{ "Rules"|trans }}
-                                    </a>
-                                </div>
-                                <div id="collapseThree" class="accordion-body in">
-                                    <div class="accordion-inner">
-                                        <div class="control-group">
-                                            Rules
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
                 </div>
                 {{ form_rest(form) }}
             </form>
