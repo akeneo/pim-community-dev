@@ -382,17 +382,11 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
      */
     public function findWithLocalizedValuesAndSortedAttributes($id)
     {
-        $qb = $this->findByWithAttributesQB(array(), array('id' => $id));
-
-        return $qb
-            ->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->isNull('Value.locale'),
-                    $qb->expr()->eq('Value.locale', $qb->expr()->literal($this->getLocale()))
-                )
-            )
+        return $this
+            ->findByWithAttributesQB(array(), array('id' => $id))
             ->orderBy('Attribute.sortOrder')
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
     }
 }
