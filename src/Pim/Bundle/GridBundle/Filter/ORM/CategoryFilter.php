@@ -7,8 +7,6 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
 use Doctrine\ORM\Query\Expr;
 
-use Oro\Bundle\GridBundle\Filter\ORM\ChoiceFilter;
-
 /**
  * Overriding of Choice filter to link an entity with another one having many to many join
  *
@@ -17,7 +15,7 @@ use Oro\Bundle\GridBundle\Filter\ORM\ChoiceFilter;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class CategoryFilter extends ChoiceFilter
+class CategoryFilter extends EntityFilter
 {
 
     /**
@@ -73,7 +71,8 @@ class CategoryFilter extends ChoiceFilter
     public function getDefaultOptions()
     {
         return array(
-            'form_type' => CategoryFilterType::NAME
+            'form_type' => CategoryFilterType::NAME,
+            'mapped_property' => 'id'
         );
     }
 }
