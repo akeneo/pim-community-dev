@@ -14,7 +14,10 @@ placeholders:
         items:
             add_update_delete:
                 order: 100
-
+    head_style:
+        label: Head styles
+    head_script:
+            label: Head scripts
 items:
    logo:
         template: OroUIBundle:Default:logo.html.twig

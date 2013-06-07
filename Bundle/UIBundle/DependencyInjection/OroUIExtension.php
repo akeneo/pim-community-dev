@@ -76,18 +76,20 @@ class OroUIExtension extends Extension
     protected function addItemsToPlaceholders(array $placeholders, array $items)
     {
         foreach ($placeholders as $placeholderName => $placeholder) {
-            foreach ($placeholder['items'] as $itemName => $itemData) {
-                if (!isset($items[$itemName])) {
-                    unset($placeholders[$placeholderName]['items'][$itemName]);
-                } else {
-                    if (!is_array($itemData)) {
-                        $itemData = array();
+            if (isset($placeholder['items']) && count($placeholder['items'])) {
+                foreach ($placeholder['items'] as $itemName => $itemData) {
+                    if (!isset($items[$itemName])) {
+                        unset($placeholders[$placeholderName]['items'][$itemName]);
+                    } else {
+                        if (!is_array($itemData)) {
+                            $itemData = array();
+                        }
+                        $placeholders[$placeholderName]['items'][$itemName] = array_merge(
+                            $itemData,
+                            $items[$itemName],
+                            array('name' => $itemName)
+                        );
                     }
-                    $placeholders[$placeholderName]['items'][$itemName] = array_merge(
-                        $itemData,
-                        $items[$itemName],
-                        array('name' => $itemName)
-                    );
                 }
             }
         }
@@ -143,7 +145,9 @@ class OroUIExtension extends Extension
     protected function changeOrders(array $placeholders)
     {
         foreach ($placeholders as $placeholderName => $placeholderData) {
-            usort($placeholders[$placeholderName]['items'], array($this, "comparePlaceholderBlocks"));
+            if (isset($placeholders[$placeholderName]['items']) ) {
+                usort($placeholders[$placeholderName]['items'], array($this, "comparePlaceholderBlocks"));
+            }
         }
 
         return $placeholders;
