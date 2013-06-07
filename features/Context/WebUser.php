@@ -204,6 +204,24 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^the product family "([^"]*)" has the following attribute:$/
+     */
+    public function theProductFamilyHasTheFollowingAttribute($family, TableNode $table)
+    {
+        $family = $this->getFamily($family);
+
+        foreach ($table->getHash() as $data) {
+            $attribute = $this->getAttribute($data['label']);
+            $family->addAttribute($attribute);
+            if ('yes' === $data['attribute as label']) {
+                $family->setAttributeAsLabel($attribute);
+            }
+        }
+
+        $this->getEntityManager()->flush();
+    }
+
+    /**
      * @Given /^the following family translations:$/
      */
     public function theFollowingFamilyTranslations(TableNode $table)
@@ -236,6 +254,19 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             $em->persist($currency);
         }
         $em->flush();
+    }
+
+
+    /**
+     * @Given /^the product "([^"]*)" belongs to the family "([^"]*)"$/
+     */
+    public function theProductBelongsToTheFamily($product, $family)
+    {
+        $product = $this->getProduct($product);
+        $family  = $this->getFamily($family);
+
+        $product->setProductFamily($family);
+        $this->getEntityManager()->flush();
     }
 
     /**
@@ -296,6 +327,20 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iSwitchTheLocaleTo($locale)
     {
         $this->getPage('Product')->switchLocale($this->getLocaleCode($locale));
+    }
+
+    /**
+     * @Then /^the locale switcher should contain the following items:$/
+     */
+    public function theLocaleSwitcherShouldContainTheFollowingItems(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            if (!$this->getPage('Product')->findLocale($data['locale'], $data['label'])) {
+                throw $this->createExpectationException(sprintf(
+                    'Could not find locale "%s %s" in the locale switcher', $data['locale'], $data['label']
+                ));
+            }
+        }
     }
 
     /**

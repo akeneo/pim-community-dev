@@ -38,3 +38,17 @@ Feature: Switch product locale
     When I change the name to "ordinateur portable"
     And I save the product
     Then the product name should be "ordinateur portable"
+
+  Scenario: Succesfully display translated product label in the locale switcher
+    Given the following family:
+      | code       |
+      | technology |
+    And the product family "technology" has the following attribute:
+      | label | attribute as label |
+      | name  | yes                |
+    And the product "Computer" belongs to the family "Technology"
+    And I am on the "Computer" product page
+    Then the locale switcher should contain the following items:
+      | locale | label      |
+      | en_US  | computer   |
+      | fr_FR  | ordinateur |

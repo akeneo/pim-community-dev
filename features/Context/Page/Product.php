@@ -43,6 +43,13 @@ class Product extends Page
         $this->getElement('Locales dropdown')->clickLink(strtolower($locale));
     }
 
+    public function findLocale($locale, $label)
+    {
+        return $this->getElement('Locales dropdown')->find('css', sprintf(
+            'a:contains("%s"):contains("%s")', strtoupper($locale), $label
+        ));
+    }
+
     public function getFieldAt($group, $position)
     {
         $fields = $this->getFieldsForGroup($group);
