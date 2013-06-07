@@ -6,7 +6,7 @@
 
     {% set currentGroup = group is defined ? group : null %}
 
-    <div class="row-fluid has-sidebar">
+    <div id="group-container" class="row-fluid">
         <div class="sidebar-list">
             <form id="pim_product_attributegroup_sort" action="{{ path('pim_product_attributegroup_sort') }}" method="POST">
             <ul id="entities-sortable">
@@ -19,9 +19,6 @@
                         <a href="{{ path('pim_product_attributegroup_edit', {'id': group.id}) }}">{{ group.name }}</a>
                     </li>
                 {% endfor %}
-                <li>
-                    <a id="attributegroup-create" class="btn btn-small" href="{{ path('pim_product_attributegroup_create') }}">{{ 'New group'|trans }}</a>
-                </li>
             </ul>
             </form>
         </div>
@@ -34,13 +31,6 @@
 
     <script type="text/javascript">
         $(function() {
-            $('#entities-sortable').sortable({
-                handle: '.handle',
-                containment: 'parent',
-                tolerance: 'pointer',
-                update: updateSortOrder
-            });
-
             function updateSortOrder() {
                 var num = 0;
                 $('#entities-sortable').find('li').each(function() {
@@ -54,6 +44,15 @@
                     data: $('#pim_product_attributegroup_sort').serialize()
                 });
             }
+
+            $('#entities-sortable').sortable({
+                handle: '.handle',
+                containment: 'parent',
+                tolerance: 'pointer',
+                update: updateSortOrder
+            });
+
+            $('#group-container').sidebarize({ buttons: ['<a href="{{ path('pim_product_attributegroup_create') }}"><i class="icon-plus-sign"></i></a>'] });
         });
     </script>
 

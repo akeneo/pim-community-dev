@@ -1,11 +1,7 @@
 <script type="text/javascript">
 $(function() {
 
-	$('#attribute-group-list li').on('click', function(e) {
-		e.preventDefault();
-		$('#attribute-group-list li.selected').removeClass('selected');
-		$(this).addClass('selected');
-
+	$('#attribute-group-list li').on('click', function() {
         var datagrid = Oro.Registry.getElement('datagrid', 'attributes');
         datagrid.filters.group.value.value = $(this).data('id');
         datagrid.filters.group.trigger('update');
@@ -15,7 +11,7 @@ $(function() {
 		.html($('<i>', { class: 'icon-plus-sign' }));
 
 	var editBtn = $('<button>').html($('<i>', { class: 'icon-edit' })).on('click', function() {
-		var $selected = $('#attribute-group-list li.selected').first();
+		var $selected = $('#attribute-group-list li.active').first();
 		if ($selected.length < 1) {
 			PimDialog.alert("{{ 'You must select an attribute group to edit.'|trans }}", "{{ 'Alert message'|trans }}");
 		} else {
@@ -27,7 +23,7 @@ $(function() {
 	});
 
 	var deleteBtn = $('<button>').html($('<i>', { class: 'icon-trash' })).on('click', function() {
-		var $selected = $('#attribute-group-list').find('li.selected').first();
+		var $selected = $('#attribute-group-list').find('li.active').first();
 		if ($selected.length < 1) {
 			PimDialog.alert("{{ 'You must select an attribute group to delete.'|trans }}", "{{ 'Alert message'|trans }}");
 		} else {
@@ -49,6 +45,6 @@ $(function() {
 		}
 	});
 
-	$('#attribute-container').sidebarize({ controlsPosition: 'top', buttons: [ addBtn, editBtn, deleteBtn ] });
+	$('#attribute-container').sidebarize({ buttons: [ addBtn, editBtn, deleteBtn ] });
 });
 </script>
