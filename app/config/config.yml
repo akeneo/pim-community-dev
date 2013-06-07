@@ -187,7 +187,7 @@ oro_user:
 
 oro_filter:
     twig:
-        layout: PimUIBundle:Filter:layout.js.twig
+        layout: PimFilterBundle:Filter:pim-layout.js.twig
 
 knp_gaufrette:
     adapters:
