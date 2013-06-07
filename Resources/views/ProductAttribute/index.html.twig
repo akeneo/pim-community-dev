@@ -1,6 +1,6 @@
 {% extends 'PimProductBundle::layout.html.twig' %}
 
-{% set title = 'Attributes overview'|trans %}
+{% set title = 'Attributes'|trans %}
 
 {% block head_script %}
     {{ parent() }}
@@ -12,14 +12,21 @@
 {% block page_container %}
 <div class="container-fluid">
     {% block content %}
-    <div class="usser-row">
-        <h1>{{ title }}
-            <a class="btn btn-primary pull-right" style="margin-left:10px;"
-                href="{{ path('pim_product_productattribute_create') }}">{{ 'New attribute'|trans }}</a>
-        </h1>
-    
-        <div id="attribute-grid"></div>
+    <div class="navigation clearfix navbar-extra navbar-extra-right">
+        <div class="row-fluid">
+            <div class="pull-right">
+                <a class="btn btn-primary pull-right" href="{{ path('pim_product_productattribute_create') }}">{{ 'New attribute'|trans }}</a>
+            </div>
+            <div class="pull-left">
+                <div class="navbar-content pull-left">
+                    <div class="navbar-title clearfix-oro">
+                        <div class="sub-title">{{ title }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <div id="attribute-grid"></div>
     {% endblock %}
 </div>
 {% endblock %}
