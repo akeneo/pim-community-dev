@@ -46,7 +46,7 @@
                                                     {% endif %}
                                                     {{ locale.code|upper }}
                                                 </span>
-                                                <span class="title">{{ product.label }}</span>
+                                                <span class="title">{{ product.label(locale.code) }}</span>
                                             </a>
                                         </li>
                                     {% endfor %}
