@@ -1,0 +1,28 @@
+{% extends bap.layout is defined ? bap.layout : 'OroUserBundle::layout.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set format = oro_config_value('oro_user.name_format') %}
+
+{% block content %}
+<div class="layout-content">
+    <div class="navigation clearfix navbar-extra navbar-extra-right">
+        <div class="row">
+            <div class="pull-right">
+                <div class="pull-right">
+                    {% block navButtons %}
+                    {% endblock navButtons %}
+                </div>
+                {% placeholder change_history_block with {entity:'Oro_Bundle_UserBundle_Entity_User', id: user.id, title: user} %}
+            </div>
+            <div class="span9">
+            {% block pageHeader %}
+            {% endblock pageHeader %}
+            </div>
+        </div>
+    </div>
+    <div class="layout-content">
+        {% block scroll_data %}
+            {{ UI.scrollData(id, data) }}
+        {% endblock scroll_data %}
+    </div>
+</div>
+{% endblock content %}

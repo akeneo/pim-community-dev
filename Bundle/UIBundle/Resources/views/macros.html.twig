@@ -28,12 +28,94 @@
 {% endmacro %}
 
 {% macro flexibleAttributeRow(value) %}
-    <div class="control-group">
-        <label class="control-label">{{ value.attribute.label|trans|title }}</label>
-        <div class="controls">
+    {{ _self.attibuteRow(value.attribute.label, value.__toString|default('N/A')) }}
+{% endmacro %}
+
+{% macro attibuteRow(title, value, additionalData) %}
+        {% macro attribute_data(value, additionalData) %}
             <div class="clearfix-oro">
-                <p class="control-label">{{ value.__toString|default('N/A') }}</p>
+                {% if value.value is not defined  %}
+                    <p class="control-label">{{ value }}</p>
+                {% else %}
+                    <p class="control-label">{{ value.value }} <strong>{{ value.hint|trans }}</strong></p>
+                {% endif %}
             </div>
+            {% if additionalData|length %}
+                {% for data in additionalData.data %}
+                    <div class="clearfix-oro">
+                        <p class="control-label">{{ attribute(data, additionalData.field) }}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endmacro %}
+        {{ _self.renderAttribute(title, _self.attribute_data(value, additionalData)) }}
+{% endmacro %}
+
+{% macro renderAttribute(title, data) %}
+    <div class="control-group">
+        <label class="control-label">{{ title|trans }}</label>
+        <div class="controls">
+            {{ data|raw }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro button(path, iClass, title, label, aClass) %}
+    <div class="pull-left btn-group icons-holder">
+        <a href="{{ path }}" class="btn back icons-holder-text {{ aClass }}" title="{{ title|trans }}">
+            <i class="{{ iClass }} hide-text" >{{ label|trans }}</i>{{ label|trans }}
+        </a>
+    </div>
+{% endmacro %}
+
+{% macro deleteButton(parameters) %}
+    <div class="pull-left btn-group icons-holder">
+        <a href="javascript: void(0);" class="btn icons-holder-text {{ parameters.aCss is defined? parameters.aCss : '' }}"
+           id="btn-remove-user" data-id="{{ parameters.dataId }}"
+           data-message="{{ parameters.dataMessage|trans }}"
+           title="{{ parameters.title|trans }}">
+            <i class="icon-trash hide-text">{{ parameters.label|trans }}</i>{{ parameters.label|trans }}
+        </a>
+    </div>
+{% endmacro %}
+
+{% macro scrollSubblock(title, data) %}
+    <div class="form-horizontal span6">
+        {% if title|length %}<h5 class="usser-fiedset"><span>{{ title|trans }}</span></h5>{% endif %}
+        {% for dataBlock in data %}
+            {{ dataBlock|raw }}
+        {% endfor %}
+    </div>
+{% endmacro %}
+
+{% macro scrollBlock(blockId, title, subblocks) %}
+    <div class="usser-row">
+        <h4 id="{{ blockId }}" class="scrollspy-title">{{ title|trans }}</h4>
+        <div class="row-fluid">
+            {% for subblock in subblocks %}
+                {{ _self.scrollSubblock(subblock.title|length ? subblock.title : null, subblock.data) }}
+            {% endfor %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro scrollData(dataTarget, data) %}
+    <div id="{{ dataTarget }}" class="navbar navbar-static scrollspy-nav">
+        <div class="navbar-inner">
+            <div class="container-fluid" style="width: auto;">
+                <ul class="nav">
+                    {% for navElement in data %}
+                        <li {% if navElement.class is defined %}class="{{ navElement.class }}"{% endif %}><a href="#scroll-{{ loop.index }}">{{ navElement.title|trans }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix">
+        <div data-spy="scroll" data-target="#{{ dataTarget }}" data-offset="50" class="scrollspy container-fluid scrollable-container">
+            {% for scrollBlock in data %}
+                {{ _self.scrollBlock("scroll-" ~ loop.index, scrollBlock.title, scrollBlock.subblocks) }}
+            {% endfor %}
         </div>
     </div>
 {% endmacro %}
