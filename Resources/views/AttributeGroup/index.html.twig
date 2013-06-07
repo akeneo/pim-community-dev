@@ -1,7 +1,5 @@
 {% extends 'PimProductBundle::layout.html.twig' %}
 
-{% set title = 'Groups overview'|trans %}
-
 {% block content %}
 
     {% set currentGroup = group is defined ? group : null %}
@@ -24,10 +22,24 @@
         </div>
         <div id="form-tab">
             {% block groupTab %}
-            <h3>{{ title }}</h3>
             {% endblock groupTab %}
         </div>
     </div>
+
+{% endblock %}
+
+{% block head_script_component %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PimUIBundle/Resources/public/js/jquery.multiselect.custom.js'
+        '@PimUIBundle/Resources/public/js/jquery.pimMultiselect.js'
+
+        filter='?yui_js'
+        output='js/pim.multiselect.js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 
     <script type="text/javascript">
         $(function() {
@@ -55,5 +67,4 @@
             $('#group-container').sidebarize({ buttons: ['<a href="{{ path('pim_product_attributegroup_create') }}"><i class="icon-plus-sign"></i></a>'] });
         });
     </script>
-
 {% endblock %}
