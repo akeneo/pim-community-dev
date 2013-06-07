@@ -150,6 +150,7 @@ class ProductManager extends FlexibleManager
                 $activeCurrencies = $manager->getActiveCodes();
                 $value->addMissingPrices($activeCurrencies);
                 $value->sortPrices($defaultCurrency->getCode());
+                $value->removeDisabledPrices($activeCurrencies);
             }
         }
     }
