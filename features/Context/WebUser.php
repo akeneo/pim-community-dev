@@ -82,6 +82,20 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @BeforeScenario
+     */
+    public function resetChannels()
+    {
+        $channel = new \Pim\Bundle\ConfigBundle\Entity\Channel;
+        $channel->setCode('ecommerce');
+        $channel->setName('ecommerce');
+
+        $em = $this->getEntityManager();
+        $em->persist($channel);
+        $em->flush();
+    }
+
+    /**
      * @param string $name
      *
      * @return Page
@@ -165,7 +179,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             ), $data);
 
             $product = $this->aProductAvailableIn($data['sku'], $data['languages']);
-            $product->setProductFamily($this->getProductFamily($data['family']));
+            $product->setProductFamily($this->getFamily($data['family']));
             $pm->save($product);
         }
     }
@@ -309,6 +323,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $catalogLocaleValue->setData('en_US');
         $user->addValue($catalogLocaleValue);
 
+        $um = $this->getContainer()->get('oro_user.manager.flexible');
+        $catalogScopeAttribute = $um->createAttribute('oro_flexibleentity_text');
+        $catalogScopeAttribute->setCode('catalogscope');
+        $catalogScopeAttribute->setLabel('catalogscope');
+        $em->persist($catalogScopeAttribute);
+
+        $catalogScopeValue = $um->createFlexibleValue();
+        $catalogScopeValue->setAttribute($catalogScopeAttribute);
+        $catalogScopeValue->setData('ecommerce');
+        $user->addValue($catalogScopeValue);
+
         $this->getEntityManager()->persist($role);
         $this->getUserManager()->updateUser($user);
 
@@ -394,7 +419,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             $attribute->setGroup($this->getGroup($data['group']));
 
             if ($family = $data['family']) {
-                $family = $this->getProductFamily($family);
+                $family = $this->getFamily($family);
                 $family->addAttribute($attribute);
             }
 
@@ -924,13 +949,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
 
         return $this->locales[$language];
-    }
-
-    private function getProductFamily($code)
-    {
-        return $this->getEntityOrException('PimProductBundle:ProductFamily', array(
-            'code' => $code
-        ));
     }
 
     private function getLocale($code)

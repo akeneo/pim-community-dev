@@ -18,7 +18,7 @@ class Product extends Page
     protected $elements = array(
         'Locales dropdown'     => array('css' => '#locale-switcher'),
         'Available attributes' => array('css' => '#pim_available_product_attributes_attributes'),
-        'Title'                => array('css' => '.product-title'),
+        'Title'                => array('css' => '.navbar-title'),
         'Tabs'                 => array('css' => '#form-navbar'),
         'Locales selector'     => array('css' => '#pim_product_locales'),
     );
@@ -136,11 +136,16 @@ class Product extends Page
     {
         $titleElt = $this->getElement('Title');
 
+        $subtitle  = $titleElt->find('css', '.sub-title');
+        $separator = $titleElt->find('css', '.separator');
+        $name      = $titleElt->find('css', '.product-name');
+
+        if (!$subtitle || !$separator || !$name) {
+            throw new \Exception('Could not find product title');
+        }
+
         return sprintf(
-            '%s%s%s',
-            $titleElt->find('css', '.sub-title')->getText(),
-            $titleElt->find('css', '.separator')->getText(),
-            $titleElt->find('css', '.usser-name')->getText()
+            '%s%s%s', $subtitle->getText(), $separator->getText(), $name->getText()
         );
     }
 
