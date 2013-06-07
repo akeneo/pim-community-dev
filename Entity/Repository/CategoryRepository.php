@@ -2,6 +2,7 @@
 namespace Pim\Bundle\ProductBundle\Entity\Repository;
 
 use Pim\Bundle\ProductBundle\Entity\Category;
+use Doctrine\Common\Collections\Collection;
 
 use Oro\Bundle\SegmentationTreeBundle\Entity\Repository\SegmentRepository;
 
@@ -72,5 +73,51 @@ class CategoryRepository extends SegmentRepository
            ->setParameter('nodeId', $category->getId());
 
         return $qb;
+    }
+
+
+
+    /**
+     * Create a query builder to get a tree filled with noded only down to the provided nodes
+     * 
+     * @param Category        $parent The parent node
+     * @param ArrayCollection $categories The categories that should be included in the tree with their ancestors and
+     *                          their siblings
+     */
+    protected function getLimitedHierarchyQueryBuilder(Category $parent = null, Collection $categories)
+    {
+        $meta = $this->getClassMetadata();
+        $config = $this->listener->getConfiguration($this->_em, $meta->name);
+
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('node')
+            ->from($config['useObjectClass'], 'node')
+
+        $root = $this->findOneBy(array('id' => $categories[0]->getRoot()));
+
+        $qb = $this->getNodesHierarchyQueryBuilder($root);
+
+        foreach ($categories as $category) {
+            $qb->andWhere(
+                $qb->expr()->orx(
+                    $qb->expr()->lt('node.' . $config['level'], $category->getLevel()),
+                    $qb->expr()->eq('node.' . $config['parent'], $category->getParent()->getId())
+                )
+            );
+            break;
+        }
+        print_r($qb->getDQL());
+
+        return $qb;
+    }
+
+    public function getLimitedHierarchy(Category $parent = null, Collection $categories)
+    {
+        $qb = $this->getLimitedHierarchyQueryBuilder($parent, $categories);
+        $nodes = $qb->getQuery()->getArrayResult();
+
+        print_r($this->buildTreeArray($nodes));
+
+        return $nodes;
     }
 }

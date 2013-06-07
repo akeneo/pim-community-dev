@@ -258,6 +258,30 @@ class ProductController extends Controller
         return $this->redirect($this->generateUrl('pim_product_product_edit', array('id' => $productId)));
     }
 
+   /**
+     * List categories associated with the provided product
+     *
+     * @param Product $product
+     *
+     * @Route("/list-categories/{id}", requirements={"id"="\d+"})
+     * @Template()
+     *
+     * @return array
+     *
+     */
+    public function listCategoriesAction(Product $product)
+    {
+        $categories = null;
+
+        if (is_object($product)) {
+            $categories = $product->getCategories();
+        }
+
+        $trees = $this->getTreeManager()->getEntityRepository()->getLimitedHierarchy(null, $categories);
+
+        return array('trees' => $trees);
+    }
+
     /**
      * Get product manager
      *
@@ -270,6 +294,17 @@ class ProductController extends Controller
 
         return $pm;
     }
+
+    /**
+     * Get category tree manager
+     *
+     * @return \Pim\Bundle\ProductBundle\Manager\CategoryManager
+     */
+    protected function getTreeManager()
+    {
+        return $this->container->get('pim_product.category_manager');
+    }
+ 
 
     /**
      * Get locale manager
