@@ -1,4 +1,16 @@
 services:
+    pim_grid.orm.filter.type.category:
+        class:     Pim\Bundle\GridBundle\Filter\ORM\CategoryFilter
+        arguments: ["@translator"]
+        tags:
+            - { name: oro_grid.filter.type, alias: pim_grid_orm_category }
+
+    pim_grid.orm.filter.type.entity:
+        class:     Pim\Bundle\GridBundle\Filter\ORM\EntityFilter
+        arguments: ["@translator"]
+        tags:
+            - { name: oro_grid.filter.type, alias: pim_grid_orm_entity }
+
     pim_grid.orm.filter.type.locale:
         class:     Pim\Bundle\GridBundle\Filter\ORM\LocaleFilter
         arguments: ["@translator"]
@@ -10,9 +22,3 @@ services:
         arguments: ["@translator"]
         tags:
             - { name: oro_grid.filter.type, alias: pim_grid_orm_scope }
-
-    pim_grid.orm.filter.type.entity:
-        class:     Pim\Bundle\GridBundle\Filter\ORM\EntityFilter
-        arguments: ["@translator"]
-        tags:
-            - { name: oro_grid.filter.type, alias: pim_grid_orm_entity }

@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\GridBundle\Filter\ORM;
 
+use Pim\Bundle\FilterBundle\Form\Type\Filter\CategoryFilterType;
+
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
 use Doctrine\ORM\Query\Expr;
@@ -15,7 +17,7 @@ use Oro\Bundle\GridBundle\Filter\ORM\ChoiceFilter;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class EntityFilter extends ChoiceFilter
+class CategoryFilter extends ChoiceFilter
 {
 
     /**
@@ -51,11 +53,27 @@ class EntityFilter extends ChoiceFilter
     /**
      * {@inheritdoc}
      */
+    public function getOperator($type)
+    {
+        $type = (int)$type;
+
+        $operatorTypes = array(
+            CategoryFilterType::TYPE_CONTAINS     => 'IN',
+            CategoryFilterType::TYPE_NOT_CONTAINS => 'NOT IN',
+            CategoryFilterType::TYPE_UNCLASSIFIED => 'UNCLASSIFIED',
+            CategoryFilterType::TYPE_CLASSIFIED   => 'CLASSIFIED'
+        );
+
+        return isset($operatorTypes[$type]) ? $operatorTypes[$type] : 'IN';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDefaultOptions()
     {
-        return array_merge(
-            parent::getDefaultOptions(),
-            array('mapped_property' => 'id')
+        return array(
+            'form_type' => CategoryFilterType::NAME
         );
     }
 }
