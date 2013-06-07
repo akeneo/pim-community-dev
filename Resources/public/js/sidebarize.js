@@ -121,6 +121,11 @@
 
             prepareControls($element, opts);
 
+            $element.find('.sidebar-list li').on('click', function() {
+                $element.find('.sidebar-list li').removeClass('active');
+                $(this).addClass('active');
+            });
+
             $(window).on('resize', function() {
                 adjustHeight($element, opts);
                 adjustWidth($element, opts);
@@ -139,7 +144,7 @@
     $.fn.sidebarize.defaults = {
         sidebarPercentage: 15,
         controlsHeight: 22,
-        controlsPosition: 'bottom',
+        controlsPosition: 'top',
         heightCompensator: 2,
         collapseIcon: 'icon-chevron-left',
         expandIcon: 'icon-chevron-right',
