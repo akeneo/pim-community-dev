@@ -1,4 +1,10 @@
 services:
+    pim_filter.form.type.filter.category:
+        class:     Pim\Bundle\FilterBundle\Form\Type\Filter\CategoryFilterType
+        arguments: ["@translator"]
+        tags:
+            - { name: form.type, alias: pim_type_category_filter }
+
     pim_filter.form.type.filter.entity:
         class:     Pim\Bundle\FilterBundle\Form\Type\Filter\EntityFilterType
         arguments: ["@translator"]
