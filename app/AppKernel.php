@@ -52,7 +52,7 @@ class AppKernel extends Kernel
             new Oro\Bundle\WindowsBundle\OroWindowsBundle(),
             new Oro\Bundle\AddressBundle\OroAddressBundle(),
             new Oro\Bundle\DataAuditBundle\OroDataAuditBundle(),
-            // new Oro\Bundle\FormBundle\OroFormBundle(),
+            new Oro\Bundle\FormBundle\OroFormBundle(),
 
             // BAP overrided bundles
             new Pim\Bundle\NavigationBundle\PimNavigationBundle(),
