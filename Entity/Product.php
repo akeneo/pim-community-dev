@@ -1,15 +1,14 @@
 <?php
-
 namespace Pim\Bundle\ProductBundle\Entity;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\ExecutionContext;
 use Symfony\Component\Validator\Constraints as Assert;
-
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\ConfigBundle\Entity\Locale;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Flexible product
@@ -22,6 +21,7 @@ use Pim\Bundle\ConfigBundle\Entity\Locale;
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductRepository")
  * @UniqueEntity("sku");
  * @Assert\Callback(methods={"isLocalesValid"})
+ * @Gedmo\Loggable(logEntryClass="Oro\Bundle\DataAuditBundle\Entity\Audit")
  */
 class Product extends AbstractEntityFlexible
 {
@@ -30,6 +30,7 @@ class Product extends AbstractEntityFlexible
      *
      * @ORM\Column(name="sku", type="string", length=255, unique=true)
      * @Assert\NotNull()
+     * @Gedmo\Versioned
      */
     protected $sku;
 

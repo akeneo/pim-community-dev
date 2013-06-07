@@ -12,10 +12,10 @@
 {% block page_container %}
 <div class="container-fluid category">
     {% block content %}
-    <div class="row-fluid">
-        {% include 'PimProductBundle:CategoryTree:_tree-management-sidebar.html.twig' %}
+    <div id="category-tree-container" class="row-fluid">
+        <div id="tree"></div>
         
-        <div id="form-tab" class="span10">
+        <div id="form-tab">
             <form action="{{ form.vars.value.id ?
                 path('pim_product_categorytree_edit', { id: form.vars.value.id }) :
                 path('pim_product_categorytree_create', { parent: parentId }) }}" method="POST" class="form-horizontal">

@@ -103,7 +103,11 @@ $(tree_id).jstree({
             var id = $(this).attr("id").replace('node_', '');
             var url = urlRemove.replace("#ID#", id);
             PimAjax.ajaxPost(url, '');
-            data.inst.refresh();
+            if (PimAjax.isSuccessfull() == true) {
+                var parentNode = data.inst._get_parent();
+                id = parentNode.attr("id").replace('node_', '');
+            }
+            window.location = urlIndex+"?node="+id;
         });
     })
     ;
