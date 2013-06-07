@@ -64,7 +64,7 @@ class ProductAttributeTypeTest extends AbstractFormTypeTest
         $this->assertField('useableAsGridColumn', 'checkbox');
         $this->assertField('useableAsGridFilter', 'checkbox');
 
-        $this->assertField('group', 'text');
+        $this->assertField('group', 'choice');
 
         $this->assertAttributeType();
 

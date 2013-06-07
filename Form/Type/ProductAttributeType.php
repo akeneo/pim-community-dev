@@ -143,7 +143,14 @@ class ProductAttributeType extends AttributeType
      */
     protected function addFieldAttributeGroup(FormBuilderInterface $builder)
     {
-        $builder->add('group');
+        $builder->add('group',
+            'choice',
+            array(
+                'required' => false,
+                'multiple' => false,
+                'empty_value' => 'Other'
+            )
+        );
     }
 
     /**
