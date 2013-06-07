@@ -120,7 +120,7 @@ class ProductController extends Controller
      *     "/{id}/edit",
      *     requirements={"id"="\d+"}
      * )
-     * @Template
+     * @Template("PimProductBundle:Product:edit.html.twig")
      *
      * @return array
      */

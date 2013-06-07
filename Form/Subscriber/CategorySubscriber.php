@@ -61,7 +61,7 @@ class CategorySubscriber implements EventSubscriberInterface
 
         $form = $event->getForm();
         $form->add(
-            $this->factory->createNamed('isDynamic', 'checkbox', $data->getIsDynamic(), array('required' => false))
+            $this->factory->createNamed('isDynamic', 'hidden', $data->getIsDynamic(), array('required' => false))
         );
     }
 }

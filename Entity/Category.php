@@ -190,6 +190,16 @@ class Category extends AbstractSegment implements Translatable
     }
 
     /**
+     * Get products count
+     *
+     * @return number
+     */
+    public function getProductsCount()
+    {
+        return $this->products->count();
+    }
+
+    /**
      * Define locale used by entity
      *
      * @param string $locale

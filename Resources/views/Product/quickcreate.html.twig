@@ -1,5 +1,7 @@
 <form id="pim_product_product_quickcreate" method="POST" class="form-horizontal" data-title="{{ 'Create a new product'|trans }}" data-button-submit="{{ 'Create'|trans }}"  data-button-cancel="{{ 'Cancel'|trans }}" action="{{ path('pim_product_product_quickcreate', { dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
 
+    {{ JSFV(form) }}
+
     {% if form.vars.errors|length %}
         <div class="alert alert-error">
             {{ form_errors(form) }}

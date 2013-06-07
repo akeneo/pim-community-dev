@@ -13,7 +13,7 @@
     <script type="text/javascript" src="{{ asset('bundles/orosegmentationtree/js/lib/jstree/jquery.jstree.tree_selector.js') }}"></script>
 
     <script type="text/javascript">
-        $(document).dialogForm({ trigger: '#create-product', url: 'quickcreate' });
+        $(document).dialogForm({ trigger: '#create-product', url: '{{ path('pim_product_product_quickcreate') }}' });
         $(function() {
             var datagrid = Oro.Registry.getElement('datagrid', 'products');
             $("#locale-switcher").append(datagrid.filters.locale.el);
@@ -31,15 +31,13 @@
             <div class="pull-right">
                 <a id="create-product" class="btn btn-primary pull-right" href="{{ path('pim_product_product_create') }}">{{ 'New product'|trans }}</a>
             </div>
-            <div class="pull-left form-horizontal">
-                <div class="customer-info well-small" style="padding-left: 21px;">
-                    <div class="customer-content pull-left">
-                        <div class="product-title clearfix-oro">
-                            <div class="sub-title">{{ title }}</div>
-                            <span class="separator">/</span>
-                            <div id="locale-switcher" class="sub-title"></div>
-                            <div id="scope-switcher" class="sub-title"></div>
-                        </div>
+            <div class="pull-left">
+                <div class="navbar-content pull-left">
+                    <div class="navbar-title products-title clearfix-oro">
+                        <div class="sub-title">{{ title }}</div>
+                        <span class="separator">/</span>
+                        <div id="locale-switcher" class="sub-title"></div>
+                        <div id="scope-switcher" class="sub-title"></div>
                     </div>
                 </div>
             </div>

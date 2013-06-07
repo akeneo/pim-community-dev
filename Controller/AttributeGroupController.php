@@ -129,6 +129,15 @@ class AttributeGroupController extends Controller
 
         $this->get('session')->getFlashBag()->add('success', 'Group successfully removed');
 
+        $request = $this->getRequest();
+
+        if ($request->get('_redirectBack')) {
+            $referer = $request->headers->get('referer');
+            if ($referer) {
+                return $this->redirect($referer);
+            }
+        }
+
         return $this->redirect($this->generateUrl('pim_product_attributegroup_index'));
     }
 

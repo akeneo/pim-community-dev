@@ -4,7 +4,7 @@
     {% include 'PimProductBundle:ProductAttribute:form.html.twig' with { 'form': form, 'locales': locales, 'disabledLocales': disabledLocales } %}
 {% endblock %}
 
-{% block javascripts %}
+{% block head_script_component %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('bundles/pimui/js/bootstrap-datetimepicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.bootstrap-modal.js') }}"></script>

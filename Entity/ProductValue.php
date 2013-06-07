@@ -5,6 +5,7 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Value for a product attribute
@@ -15,6 +16,7 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption
  *
  * @ORM\Table(name="pim_product_value")
  * @ORM\Entity
+ * @Gedmo\Loggable(logEntryClass="Oro\Bundle\DataAuditBundle\Entity\Audit")
  */
 class ProductValue extends AbstractEntityFlexibleValue
 {
