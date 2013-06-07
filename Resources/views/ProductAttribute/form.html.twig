@@ -2,18 +2,34 @@
 <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ form.vars.value.id ?
     path('pim_product_productattribute_edit', { id: form.vars.value.id }) :
     path('pim_product_productattribute_create') }}" method="POST" class="form-register">
-    <div class="row-fluid">
-        <div class="form-row">
-            <h3 class="pull-left">{{ title|trans }}</h3>
-            <button class="btn btn-primary pull-right" type="submit">{{ 'Save'|trans }}</button>
-            {% if form.vars.value.id %}
-                <a class="btn pull-right" href="#" id="btn-delete-attribute">
-                    {{ "Delete" | trans }}
-                </a>
-            {% endif %}
-            <a class="pull-right return" href="{{ path('pim_product_productattribute_index') }}">
-                {{ "Back to list" | trans }}
-            </a>
+    <div class="navigation clearfix navbar-extra navbar-extra-right">
+        <div class="row-fluid">
+            <div class="pull-right">
+                <div class="pull-right">
+                    <div class="btn-group icons-holder">
+                        <a class="btn" href="{{ path('pim_product_productattribute_index') }}" title="{{ 'Back to grid' | trans }}"><i class="icon-chevron-left"></i></a>
+                    </div>
+                    <div class="btn-group icons-holder">
+                        <a href="javascript: void(0);" class="btn icons-holder-text" id="btn-delete-attribute" data-id="{{ form.vars.value.id }}" data-message="{{ 'Are you sure you want to delete this attribute ?'|trans }}" title="{{ 'Delete'|trans }}"><i class="icon-trash hide-text">{{ 'Remove'|trans }}</i>Delete</a>
+                    </div>
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary"><i class="hide-text">Save </i> {{ ' Save'|trans }}</button>
+                    </div>
+                </div>
+            </div>
+            <div class="pull-left">
+                <div class="navbar-content pull-left">
+                    <div class="navbar-title clearfix-oro">
+                        <div class="sub-title">{{ 'Attributes'|trans }}</div>
+                        <span class="separator">/</span>
+                        <div class="sub-title">{{ form.vars.value.id ? form.vars.value.code : 'New attribute'|trans }}</div>
+                    </div>
+                    <ul class="inline">
+                       <li>{{ 'Last update'|trans }}: {{ form.vars.value.updated|date("Y-m-d") }}</li>
+                       <li>{{ 'Created'|trans }}: {{ form.vars.value.created|date("Y-m-d") }}</li>
+                   </ul>
+               </div>
+            </div>
         </div>
     </div>
     <div id="form-navbar" class="navbar navbar-static scrollspy-nav">
