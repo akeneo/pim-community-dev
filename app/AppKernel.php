@@ -52,7 +52,7 @@ class AppKernel extends Kernel
             new Oro\Bundle\WindowsBundle\OroWindowsBundle(),
             new Oro\Bundle\AddressBundle\OroAddressBundle(),
             new Oro\Bundle\DataAuditBundle\OroDataAuditBundle(),
-            new Oro\Bundle\FormBundle\OroFormBundle(),
+            // new Oro\Bundle\FormBundle\OroFormBundle(),
 
             // BAP overrided bundles
             new Pim\Bundle\NavigationBundle\PimNavigationBundle(),
@@ -62,6 +62,8 @@ class AppKernel extends Kernel
             new Pim\Bundle\ProductBundle\PimProductBundle(),
             new Pim\Bundle\ConfigBundle\PimConfigBundle(),
             new Pim\Bundle\TranslationBundle\PimTranslationBundle(),
+            new Pim\Bundle\FilterBundle\PimFilterBundle(),
+            new Pim\Bundle\GridBundle\PimGridBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
