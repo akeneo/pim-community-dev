@@ -14,9 +14,10 @@
 {% block page_container %}
 <div class="container-fluid category">
     {% block content %}
-    <div class="row-fluid">
-        {% include 'PimProductBundle:CategoryTree:_tree-management-sidebar.html.twig' %}
-        <div id="form-tab" class="span10">
+    <div id="category-tree-container" class="row-fluid">
+        <div id="tree"></div>
+
+        <div id="form-tab">
             <h3>{{ title }}</h3>
             
             <div id="list">

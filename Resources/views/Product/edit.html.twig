@@ -15,57 +15,49 @@
     <form method="POST" class="form-horizontal" action="{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
 
         <div class="navigation clearfix navbar-extra navbar-extra-right">
-            <div class="row">
+            <div class="row-fluid">
                 <div class="pull-right">
                     <div class="pull-right">
-                        <div class="pull-left btn-group icons-holder">
-                            <a class="btn" href="{{ path('pim_product_product_index') }}"><i class="icon-chevron-left"></i></a>
+                        <div class="btn-group icons-holder">
+                            <a class="btn" href="{{ path('pim_product_product_index') }}" title="{{ 'Back to grid' | trans }}"><i class="icon-chevron-left"></i></a>
                         </div>
-                        <div class="pull-left btn-group icons-holder">
+                        <div class="btn-group icons-holder">
                             <a href="javascript: void(0);" class="btn icons-holder-text" id="btn-delete-product" data-id="{{ form.vars.value.id }}" data-message="{{ 'Are you sure you want to delete this product ?'|trans }}" title="{{ 'Delete'|trans }}"><i class="icon-trash hide-text">{{ 'Remove'|trans }}</i>Delete</a>
                         </div>
-                        <div class="pull-left customer-info-top-actions">
-                            <div class="btn-group">
-                                <a href="{{ path('pim_product_product_index') }}" class="btn">{{ 'Cancel'|trans }}</a>
-                                <button type="submit" class="btn btn-primary"><i class="icon-ok icon-white hide-text">Save </i> {{ ' Save'|trans }}</button>
-                            </div>
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-primary"><i class="hide-text">Save </i> {{ ' Save'|trans }}</button>
                         </div>
                     </div>
                 </div>
                 <div class="pull-left">
-                    <div class="customer-info well-small" style="padding-left: 21px;">
-                        <div class="customer-content pull-left">
-                            <div class="product-title clearfix-oro">
-                                <div class="sub-title">{{ 'Products'|trans }}</div>
-                                <span class="separator">/</span>
-                                <div id="locale-switcher" class="btn-group sub-title">
-                                    <span class="usser-name dropdown-toggle" data-toggle="dropdown">
-                                        {{ product.label }}
-                                        <span class="caret"></span>
-                                    </span>
-                                    <ul class="dropdown-menu">
-                                        {% for locale in form.vars.value.getLocales() %}
-                                            <li>
-                                                <a href="?dataLocale={{ locale.code }}" title="{{ locale.code|lower }}">
-                                                    <span class="code">
-                                                        {% if locale.code == dataLocale %}
-                                                            <i class="icon-bullet"></i>
-                                                        {% endif %}
-                                                        {{ locale.code|upper }}
-                                                    </span>
-                                                    <span class="title">{{ product.label(locale.code) }}</span>
-                                                </a>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
+                    <div class="navbar-content pull-left">
+                        <div class="navbar-title clearfix-oro">
+                            <div class="sub-title">{{ 'Products'|trans }}</div>
+                            <span class="separator">/</span>
+                            <div id="locale-switcher" class="btn-group sub-title">
+                                <span class="product-name dropdown-toggle" data-toggle="dropdown">{{ product.label }}<span class="caret"></span></span>
+                                <ul class="dropdown-menu">
+                                    {% for locale in form.vars.value.getLocales() %}
+                                        <li>
+                                            <a href="?dataLocale={{ locale.code }}" title="{{ locale.code|lower }}">
+                                                <span class="code">
+                                                    {% if locale.code == dataLocale %}
+                                                        <i class="icon-bullet"></i>
+                                                    {% endif %}
+                                                    {{ locale.code|upper }}
+                                                </span>
+                                                <span class="title">{{ product.label(locale.code) }}</span>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
                             </div>
-                            <ul class="inline">
-                               <li>{{ 'Family'|trans }}: {{ form.vars.value.productFamily|capitalize|default('N/A'|trans) }}</li>
-                               <li>{{ 'Last update'|trans }}: {{ form.vars.value.updated|date("Y-m-d") }}</li>
-                               <li>{{ 'Created'|trans }}: {{ form.vars.value.created|date("Y-m-d") }}</li>
-                           </ul>
-                       </div>
+                        </div>
+                        <ul class="inline">
+                           <li>{{ 'Family'|trans }}: {{ form.vars.value.productFamily|capitalize|default('N/A'|trans) }}</li>
+                           <li>{{ 'Last update'|trans }}: {{ form.vars.value.updated|date("Y-m-d") }}</li>
+                           <li>{{ 'Created'|trans }}: {{ form.vars.value.created|date("Y-m-d") }}</li>
+                       </ul>
                    </div>
                 </div>
                 <div class="pull-right product-updated">
@@ -73,6 +65,7 @@
                 </div>
             </div>
         </div>
+
         <div class="layout-content">
 
                 <div id="form-navbar" class="navbar navbar-static scrollspy-nav">
@@ -80,10 +73,7 @@
                         <div class="row-fluid">
                             <ul class="nav">
                                 <li class="active"><a href="#attributes" data-toggle="tab">{{ 'Attributes' | trans }}</a></li>
-                                <li class=""><a href="#variants" data-toggle="tab">{{ 'Variants' | trans }}</a></li>
-                                <li class=""><a href="#associations" data-toggle="tab">{{ 'Associations' | trans }}</a></li>
                                 <li class=""><a href="#localisations" data-toggle="tab">{{ 'Localisations' | trans }}</a></li>
-                                <li class=""><a href="#history" data-toggle="tab">{{ 'History' | trans }}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -96,7 +86,7 @@
                         </div>
                     {% endif %}
                     <div class="tab-pane active" id="attributes">
-                        <div class="span2">
+                        <div class="tab-groups">
                             <ul class="nav nav-list">
                                 {% for group in product.orderedGroups %}
                                 <li class="tab{% if loop.index == 1 %} active{% endif %}">
@@ -105,8 +95,7 @@
                                 {% endfor %}
                             </ul>
                         </div>
-                        <div class="span10 tab-content">
-
+                        <div class="tab-content">
                             <div id="attribute-buttons">
                                 <div class="btn-group">
                                     <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -162,6 +151,7 @@
                                                     {% if formValue.vars.value.isRemovable() %}
                                                         <a href="{{ path('pim_product_product_removeproductvalue', {'productId': formValue.vars.value.entity.id, 'attributeId': formValue.vars.value.attribute.id}) }}"
                                                            class="btn btn-action btn-link remove-attribute"
+                                                           title="Remove this attribute"
                                                            data-method="DELETE" data-confirm="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': formValue.vars.value.attribute.label}) }}">×</a>
                                                     {% endif %}
                                                     {% set displayRemoveAttributeLink = false %}

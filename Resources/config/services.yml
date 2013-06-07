@@ -49,9 +49,9 @@ services:
             - [ addAttributeType, ['pim_product_simpleselect'] ]
             - [ addAttributeType, ['oro_flexibleentity_file'] ]
             - [ addAttributeType, ['oro_flexibleentity_image'] ]
-            - [ addAttributeType, ['oro_flexibleentity_metric'] ]
             - [ addAttributeType, ['oro_flexibleentity_boolean'] ]
             - [ addAttributeType, ['oro_flexibleentity_date'] ]
+            - [ addAttributeType, ['oro_flexibleentity_metric'] ]
 
     pim_product.category_manager:
         class:     %pim_product.category_manager_class%

@@ -69,13 +69,19 @@ class ProductAttributeController extends Controller
         $gridManager = $this->get('pim_product.productattribute_grid_manager');
         $datagrid = $gridManager->getDatagrid();
 
+        $em = $this->getDoctrine()->getEntityManager();
+        $attributeGroups = $em->getRepository('PimProductBundle:AttributeGroup')->findAll();
+
         if ('json' == $request->getRequestFormat()) {
             $view = 'OroGridBundle:Datagrid:list.json.php';
         } else {
             $view = 'PimProductBundle:ProductAttribute:index.html.twig';
         }
 
-        return $this->render($view, array('datagrid' => $datagrid->createView()));
+        return $this->render($view, array(
+            'datagrid' => $datagrid->createView(),
+            'groups' => $attributeGroups
+        ));
     }
 
     /**

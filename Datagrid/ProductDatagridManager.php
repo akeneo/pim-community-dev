@@ -182,7 +182,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'filterable'  => true,
                 'show_filter' => true,
                 'field_options' => array(
-                    'choices' => $choices
+                    'choices'  => $choices,
+                    'multiple' => true
                 ),
             )
         );

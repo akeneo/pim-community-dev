@@ -41,7 +41,7 @@ class ProductManager extends FlexibleManager
      *   1) Persist and flush the entity as usual
      *   2)
      *     2.1) Force the reloading of the object (to be sure all values are loaded)
-     *     2.2) Add missing scope and locale values for each attribute
+     *     2.2) Add missing and remove redundant scope and locale values for each attribute
      *     2.3) Reflush to save these new values
      *
      * @param Product $product
@@ -53,7 +53,7 @@ class ProductManager extends FlexibleManager
         $this->storageManager->flush();
 
         $this->storageManager->refresh($product);
-        $this->addMissingAttributeValues($product);
+        $this->ensureRequiredAttributeValues($product);
         $this->storageManager->flush();
     }
 
@@ -68,7 +68,7 @@ class ProductManager extends FlexibleManager
      *
      * @return null
      */
-    private function addMissingAttributeValues(Product $product)
+    private function ensureRequiredAttributeValues(Product $product)
     {
         $channels  = $this->getChannels();
         $locales = $product->getLocales();
@@ -107,11 +107,21 @@ class ProductManager extends FlexibleManager
             }
 
             $missingValues = array_diff($requiredValues, $existingValues);
+
+            $redundantValues = array_diff($existingValues, $requiredValues);
+
             foreach ($missingValues as $value) {
                 $value = explode(':', $value);
                 $scope = $value[0] === '' ? null : $value[0];
                 $locale = $value[1] === '' ? null : $value[1];
                 $this->addProductValue($product, $attribute, $locale, $scope);
+            }
+
+            foreach ($redundantValues as $value) {
+                $value = explode(':', $value);
+                $scope = $value[0] === '' ? null : $value[0];
+                $locale = $value[1] === '' ? null : $value[1];
+                $this->removeProductValue($product, $attribute, $locale, $scope);
             }
         }
     }
@@ -164,6 +174,36 @@ class ProductManager extends FlexibleManager
         $value->setAttribute($attribute);
 
         $product->addValue($value);
+    }
+
+    /**
+     * Remove a redundant value from the product
+     *
+     * @param Product   $product
+     * @param Attribute $attribute
+     * @param string    $locale
+     * @param string    $scope
+     *
+     * @return null
+     */
+    private function removeProductValue(Product $product, $attribute, $locale = null, $scope = null)
+    {
+        $values = $product->getValues();
+        $values = $values->filter(
+            function($value) use ($attribute, $locale, $scope) {
+                if ($value->getAttribute() === $attribute
+                    && $value->getScope() === $scope
+                    && $value->getLocale() === $locale) {
+                    return true;
+                }
+
+                return false;
+            }
+        );
+        foreach ($values as $value) {
+            $product->removeValue($value);
+            $value->setEntity(null);
+        }
     }
 
     /**
