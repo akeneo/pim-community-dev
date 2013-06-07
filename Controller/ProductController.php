@@ -126,14 +126,14 @@ class ProductController extends Controller
      */
     public function editAction($id)
     {
-        $product = $this->findProductOr404($id);
-        $request = $this->getRequest();
-
-        // create form
-        $form     = $this->createForm('pim_product', $product);
+        $product  = $this->findProductOr404($id);
+        $request  = $this->getRequest();
         $channels = $this->getChannelRepository()->findAll();
+        $form     = $this->createForm('pim_product', $product, array(
+            'currentLocale' => $this->getDataLocale(),
+        ));
 
-        if ($request->getMethod() == 'POST') {
+        if ($request->getMethod() === 'POST') {
             $form->bind($request);
 
             if ($form->isValid()) {
