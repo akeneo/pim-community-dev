@@ -38,7 +38,6 @@
                 <ul class="nav">
                     <li class="active"><a href="#form-parameters">{{ 'Parameters'|trans }}</a></li>
                     <li><a href="#form-values">{{ 'Values'|trans }}</a></li>
-                    <li><a href="#form-rules">{{ 'Rules'|trans }}</a></li>
 
                     {% if form.groups is defined %}
                     <li><a href="#scroll-groups">{{ 'Groups'|trans }}</a></li>
@@ -80,6 +79,8 @@
 
                                 {{ form_row(form.unique, { 'label': 'Unique value'|trans }) }}
 
+                                {{ form_row(form.required) }}
+
                                 <div class="control-group">
                                     <label class="control-label" for="limitLocales">{{ 'Locale specific'|trans }}</label>
                                     <div class="controls">
@@ -92,7 +93,7 @@
                                 <div class="control-group" style="display: none;">
                                     {{ form_label(form.availableLocales, null, { 'label_attr': {'class': 'control-label'} }) }}
                                     <div class="controls">
-                                        {{ form_widget(form.availableLocales, {'attr' : { 'class': 'span4' }}) }}
+                                        {{ form_widget(form.availableLocales, {'attr' : { 'class': 'input-large' }}) }}
                                     </div>
                                 </div>
 
@@ -124,11 +125,12 @@
                                 <div class="control-group">
                                     {{ form_label(form.group, 'Attribute group'|trans, { 'label_attr': {'class': 'control-label'} }) }}
                                     <div class="controls">
-                                        {{ form_widget(form.group, { 'attr': { 'class': 'span4', 'data-placeholder': 'Choose a group'|trans }}) }}
+                                        {{ form_widget(form.group, { 'attr': { 'class': 'input-large', 'data-placeholder': 'Choose a group'|trans }}) }}
                                     </div>
                                 </div>
 
-                                {{ form_row(form.variant, { 'label': 'Variants behavior when edited'|trans }) }}
+                                {# form_row(form.variant, { 'label': 'Variants behavior when edited'|trans }) #}
+                                {# form_row(form.smart) #}
 
                                 {% if form.searchable is defined %}
                                     {{ form_row(form.searchable) }}
@@ -245,26 +247,6 @@
                         </div>
                         {% form_theme form 'PimUIBundle:Form:fields.html.twig' %}
                     {% endif %}
-                </div>
-            </div>
-
-            <div id="form-rules">
-                <h3 class="scrollspy-title">{{ "Rules"|trans }}</h3>
-                <div id="accordion3" class="accordion">
-                    <div class="accordion-group">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle" data-toggle="collapse" data=parent="#accordion3" href="#collapseSix">
-                                <i class="icon-collapse"></i>
-                                {{ "Rules"|trans }}
-                            </a>
-                        </div>
-                        <div id="collapseSix" class="accordion-body in">
-                            <div class="accordion-inner">
-                                {{ form_row(form.required) }}
-                                {{ form_row(form.smart) }}
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

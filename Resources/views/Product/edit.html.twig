@@ -124,7 +124,7 @@
                             <div class="control-group">
                                 {{ form_label(form.sku, null, { 'label_attr': {'class': 'control-label'} }) }}
                                 <div class="controls">
-                                    {{ form_widget(form.sku, {'attr' : { 'class': 'span4' } }) }}
+                                    {{ form_widget(form.sku, {'attr' : { 'class': 'input-large' } }) }}
                                 </div>
                             </div>
                             {% set attributeCode = '' %}
@@ -222,11 +222,6 @@
         $('button[type="submit"]').click(function(event) {
             $('#pim_available_product_attributes_attributes').removeAttr('required');
             $(window).unbind('beforeunload');
-        });
-
-        $('.tab-pan .control-group .select2-container').each(function() {
-            $(this).addClass('span4');
-            $(this).attr('style', 'margin-left:0px');
         });
 
         $('#btn-delete-product').click(function(event) {
