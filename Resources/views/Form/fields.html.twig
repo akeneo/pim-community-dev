@@ -77,12 +77,12 @@
 {% block widget_attributes %}
 {% if attr.class is defined %}
     {% if attr.class != 'noswitch' %}
-        {% set class = attr.class ~ ' span4' %}
+        {% set class = attr.class ~ ' input-large' %}
     {% else %}
         {% set class = attr.class %}
     {% endif %}
 {% else %}
-    {% set class = 'span4' %}
+    {% set class = 'input-large' %}
 {% endif %}
 {% set attr = attr|merge({'class': class }) %}
 {% spaceless %}

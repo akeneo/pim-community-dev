@@ -58,10 +58,6 @@
                 });
             }
 
-            $form.find('.span4').each(function() {
-                $(this).removeClass('span4').addClass('span10');
-            });
-
             $dialog = $form.dialog({
                 title: formTitle,
                 modal: true,
