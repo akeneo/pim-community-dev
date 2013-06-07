@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Filter\ORM;
 
-use Pim\Bundle\ProductBundle\Form\Type\Filter\LocaleFilterType;
+use Pim\Bundle\FilterBundle\Form\Type\Filter\LocaleFilterType;
 
 use Oro\Bundle\GridBundle\Filter\ORM\ChoiceFilter;
 
