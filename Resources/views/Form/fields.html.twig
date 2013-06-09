@@ -24,12 +24,14 @@
             </tr>
         </thead>
         <tbody>
-            {% for translation in form %}
-                <td>
-                    {{ form_errors(translation) }}
-                    {{ form_widget(translation) }}
-                </td>
-            {% endfor %}
+            <tr>
+                {% for translation in form %}
+                    <td>
+                        {{ form_errors(translation) }}
+                        {{ form_widget(translation) }}
+                    </td>
+                {% endfor %}
+            </tr>
         </tbody>
     </table>
 {% endblock %}
