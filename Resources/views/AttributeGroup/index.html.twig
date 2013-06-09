@@ -9,7 +9,7 @@
             <form id="pim_product_attributegroup_sort" action="{{ path('pim_product_attributegroup_sort') }}" method="POST">
             <ul id="entities-sortable">
                 {% for group in groups %}
-                    <li class="{{ group == currentGroup ? 'active' : '' }}">
+                    <li class="{{ group == currentGroup ? 'active' : '' }}" data-id="{{ group.id }}">
                         <span class="handle">
                             <i class="icon-list"></i>
                             <input name="{{ group.id }}" type="hidden" value="{{ group.sortOrder }}">
@@ -41,30 +41,5 @@
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
-    <script type="text/javascript">
-        $(function() {
-            function updateSortOrder() {
-                var num = 0;
-                $('#entities-sortable').find('li').each(function() {
-                    $(this).find('.handle input').val(num);
-                    num++;
-                });
-
-                $.ajax({
-                    url: '{{ path('pim_product_attributegroup_sort') }}',
-                    type: 'POST',
-                    data: $('#pim_product_attributegroup_sort').serialize()
-                });
-            }
-
-            $('#entities-sortable').sortable({
-                handle: '.handle',
-                containment: 'parent',
-                tolerance: 'pointer',
-                update: updateSortOrder
-            });
-
-            $('#group-container').sidebarize({ buttons: ['<a href="{{ path('pim_product_attributegroup_create') }}"><i class="icon-plus-sign"></i></a>'] });
-        });
-    </script>
+    {% include 'PimProductBundle:AttributeGroup:_js-handler.html.twig' %}
 {% endblock %}

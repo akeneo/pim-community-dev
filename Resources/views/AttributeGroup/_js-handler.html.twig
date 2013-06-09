@@ -1,0 +1,67 @@
+<script type="text/javascript">
+$(function() {
+
+    var activeTab = $('[href=' + location.hash + ']');
+    activeTab && activeTab.tab('show');
+
+    function updateSortOrder() {
+        var num = 0;
+        $('#entities-sortable').find('li').each(function() {
+            $(this).find('.handle input').val(num);
+            num++;
+        });
+
+        $.ajax({
+            url: '{{ path('pim_product_attributegroup_sort') }}',
+            type: 'POST',
+            data: $('#pim_product_attributegroup_sort').serialize()
+        });
+    }
+
+    $('#entities-sortable').sortable({
+        handle: '.handle',
+        containment: 'parent',
+        tolerance: 'pointer',
+        update: updateSortOrder
+    });
+
+	var addBtn = $('<a href="{{ path('pim_product_attributegroup_create') }}">')
+		.html($('<i>', { class: 'icon-plus-sign' }));
+
+	var editBtn = $('<button>').html($('<i>', { class: 'icon-edit' })).on('click', function() {
+		var $selected = $('#entities-sortable li.active').first();
+		if ($selected.length < 1) {
+			PimDialog.alert("{{ 'You must select an attribute group to edit.'|trans }}", "{{ 'Alert message'|trans }}");
+		} else {
+			if ($selected.data('id') == 0) {
+				return;
+			}
+            window.location = "{{ path('pim_product_attributegroup_edit') }}/" + $selected.data('id');
+		}
+	});
+
+	var deleteBtn = $('<button>').html($('<i>', { class: 'icon-trash' })).on('click', function() {
+		var $selected = $('#entities-sortable').find('li.active').first();
+		if ($selected.length < 1) {
+			PimDialog.alert("{{ 'You must select an attribute group to delete.'|trans }}", "{{ 'Alert message'|trans }}");
+		} else {
+			if ($selected.data('id') == 0) {
+				return;
+			}
+	        var doRemove = function() {
+                var action = "{{ path('pim_product_attributegroup_remove', { 'id': 0 }) }}".replace(0, $selected.data('id'));
+                var form = $('<form>').attr({ 'method': 'POST', 'action': action });
+                var input = $('<input>', { type: 'hidden', name: '_method', value: 'DELETE' }).appendTo(form);
+                form.submit();
+	        }
+            PimDialog.confirm(
+                "{{ 'Are you sure you want to delete this attribute group?' | trans }}",
+                "{{ 'Delete Confirmation' | trans }}",
+                doRemove
+            );
+		}
+	});
+
+	$('#group-container').sidebarize({ buttons: [ addBtn, editBtn, deleteBtn ] });
+});
+</script>
