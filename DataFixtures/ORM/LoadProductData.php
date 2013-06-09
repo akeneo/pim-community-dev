@@ -1,6 +1,12 @@
 <?php
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
+use Oro\Bundle\DataAuditBundle\Entity\Audit;
+
+use Oro\Bundle\UserBundle\Entity\User;
+
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -44,6 +50,19 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
     protected function getProductManager()
     {
         return $this->container->get('product_manager');
+    }
+
+    /**
+     * Get default admin user
+     *
+     * @return User
+     */
+    protected function getAdminUser()
+    {
+        $em = $this->container->get('doctrine.orm.entity_manager');
+        $user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => 'admin'));
+
+        return $user;
     }
 
     /**
@@ -208,7 +227,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             if ($ind % 20 === 0) {
                 $family = $this->getReference('family.mug');
                 $product->setProductFamily($family);
-            } else if ($ind % 17 === 0) {
+            } elseif ($ind % 17 === 0) {
                 $family = $this->getReference('family.shirt');
                 $product->setProductFamily($family);
             }
@@ -218,6 +237,22 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             }
         }
 
+        $this->getProductManager()->getStorageManager()->flush();
+
+        // prepare user and data audit RODO : we should inject the user ?
+        $user = $this->getAdminUser();
+        $products = $this->getProductManager()->getFlexibleRepository()->findAll();
+        foreach ($products as $product) {
+            $logEntry = new Audit();
+            $logEntry->setAction('create');
+            $logEntry->setObjectClass(get_class($product));
+            $logEntry->setLoggedAt();
+            $logEntry->setUser($user);
+            $logEntry->setVersion(1);
+            $logEntry->setObjectName(get_class($product));
+            $logEntry->setObjectId($product->getId());
+            $this->getProductManager()->getStorageManager()->persist($logEntry);
+        }
         $this->getProductManager()->getStorageManager()->flush();
     }
 
@@ -236,6 +271,6 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function getOrder()
     {
-        return 40;
+        return 140;
     }
 }
