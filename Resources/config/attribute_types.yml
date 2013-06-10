@@ -1,21 +1,37 @@
 services:
     pim_product.attributetype.textarea:
         class: Pim\Bundle\ProductBundle\AttributeType\TextAreaType
-        arguments: ["text", "textarea"]
+        arguments:
+            - "text"
+            - "textarea"
+            - @oro_flexibleentity.form.validator.constraint_guesser
         tags:
             - { name: oro_flexibleentity.attributetype, alias: pim_product_textarea }
+
     pim_product.attributetype.multiselect:
         class: Pim\Bundle\ProductBundle\AttributeType\OptionMultiSelectType
-        arguments: ["options", "entity"]
+        arguments:
+            - "options"
+            - "entity"
+            - @oro_flexibleentity.form.validator.constraint_guesser
         tags:
             - { name: oro_flexibleentity.attributetype, alias: pim_product_multiselect }
+
     pim_product.attributetype.simpleselect:
         class: Pim\Bundle\ProductBundle\AttributeType\OptionSimpleSelectType
-        arguments: ["option", "entity"]
+        arguments:
+            - "options"
+            - "entity"
+            - @oro_flexibleentity.form.validator.constraint_guesser
         tags:
             - { name: oro_flexibleentity.attributetype, alias: pim_product_simpleselect }
+
     pim_product.attributetype.pricecollection:
         class: Pim\Bundle\ProductBundle\AttributeType\PriceCollectionType
-        arguments: ["prices", "pim_product_price_collection", @pim_config.manager.currency]
+        arguments:
+            - "prices"
+            - "pim_product_price_collection"
+            - @oro_flexibleentity.form.validator.constraint_guesser
+            - @pim_config.manager.currency
         tags:
             - { name: oro_flexibleentity.attributetype, alias: pim_product_price_collection }
