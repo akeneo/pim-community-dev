@@ -107,7 +107,7 @@ abstract class AbstractFlexibleManagerTest extends AbstractOrmTest
         $this->container->setParameter('oro_flexibleentity.flexible_config', $this->flexibleConfig);
 
         // prepare attribute type factory
-        $attType = new TextType('varchar', 'text');
+        $attType = new TextType('varchar', 'text', $this->getMock('Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesser'));
         $this->container->set('oro_flexibleentity.attributetype.text', $attType);
         $attTypes = array('oro_flexibleentity_text' => 'oro_flexibleentity.attributetype.text');
         $this->attributeTypeFactory = new AttributeTypeFactory($this->container, $attTypes);
