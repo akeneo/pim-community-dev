@@ -300,6 +300,10 @@ th label {
   text-align: center;
 }
 
+.table-striped tbody>tr:nth-child(even)>td {
+  background-color: @backgroundColor-white;
+}
+
 .has-switch > div.switch-off, .has-switch > div.switch-on {
   height: auto;
 }
@@ -446,7 +450,6 @@ div.ui-dialog {
     position: relative;
     float: right;
     top: 4px;
-    margin-bottom:20px;
   }
 }
 
