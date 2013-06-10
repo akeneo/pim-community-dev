@@ -43,6 +43,9 @@ class CategoryFilter extends EntityFilter
                 $data['value']
             );
         } else if ('UNCLASSIFIED' == $operator) {
+            // FIXME : Waiting for doctrine 2 fix -> http://www.doctrine-project.org/jira/browse/DDC-1858
+            // For now we use a non-performing but working query
+
             // create subrequest with classified node
             $fieldRoot = $this->createFieldExpression('root', 'c');
             $exprAnd = $this->getExpressionFactory()->eq($fieldRoot, $data['value'][0]);
