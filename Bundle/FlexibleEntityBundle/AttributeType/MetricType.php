@@ -4,6 +4,7 @@ namespace Oro\Bundle\FlexibleEntityBundle\AttributeType;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Oro\Bundle\MeasureBundle\Manager\MeasureManager;
+use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 
 /**
  * Metric attribute type
@@ -23,9 +24,9 @@ class MetricType extends AbstractAttributeType
      * @param string         $formType    the form type
      * @param MeasureManager $manager     The measure manager
      */
-    public function __construct($backendType, $formType, MeasureManager $manager)
+    public function __construct($backendType, $formType, ConstraintGuesserInterface $constraintGuesser, MeasureManager $manager)
     {
-        parent::__construct($backendType, $formType);
+        parent::__construct($backendType, $formType, $constraintGuesser);
 
         $this->manager = $manager;
     }
@@ -43,13 +44,14 @@ class MetricType extends AbstractAttributeType
      */
     protected function prepareValueFormOptions(FlexibleValueInterface $value)
     {
-        return array(
-            'label'        => $value->getAttribute()->getLabel(),
-            'required'     => $value->getAttribute()->getRequired(),
-            'units'        => $this->manager->getUnitSymbolsForFamily(
-                $value->getAttribute()->getMetricFamily()
-            ),
-            'default_unit' => $value->getAttribute()->getDefaultMetricUnit(),
+        return array_merge(
+            parent::prepareValueFormOptions($value),
+            array(
+                'units'        => $this->manager->getUnitSymbolsForFamily(
+                    $value->getAttribute()->getMetricFamily()
+                ),
+                'default_unit' => $value->getAttribute()->getDefaultMetricUnit(),
+            )
         );
     }
 }
