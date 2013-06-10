@@ -132,6 +132,17 @@ class ToolsAPI
     }
 
     /**
+     * Convert json to array
+     *
+     * @param $json
+     * @return array
+     */
+    public static function jsonToArray($json)
+    {
+        return json_decode($json, true);
+    }
+
+    /**
      * @param $length
      * @return string
      */

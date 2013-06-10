@@ -1,7 +1,7 @@
 <?php
 namespace Oro\Bundle\FlexibleEntityBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Util\ClassUtils;
 
 /**
  * A registry which knows all flexible entity managers
@@ -41,7 +41,7 @@ class FlexibleManagerRegistry
      * @param FlexibleManager $manager    the manager
      * @param string          $entityFQCN the FQCN
      *
-     * @return ManagerRegistry
+     * @return FlexibleManagerRegistry
      */
     public function addManager($managerId, FlexibleManager $manager, $entityFQCN)
     {
@@ -80,6 +80,7 @@ class FlexibleManagerRegistry
      */
     public function getManager($entityFQCN)
     {
-        return $this->entityToManager[$entityFQCN];
+        $realClassName = ClassUtils::getRealClass($entityFQCN);
+        return $this->entityToManager[$realClassName];
     }
 }

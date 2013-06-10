@@ -135,7 +135,7 @@ if (typeof Oro !== "undefined") {
  */
 function initLayout() {
     if ($.isPlainObject($.uniform)) {
-        $('input:file, select').uniform();
+        $('input:file, select:not(.select2-offscreen)').uniform();
     }
 
     if (typeof($.datepicker) != 'undefined') {

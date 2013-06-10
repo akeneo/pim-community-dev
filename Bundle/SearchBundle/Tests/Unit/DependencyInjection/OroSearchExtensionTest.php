@@ -67,10 +67,8 @@ class OroSearchExtensionTest extends \PHPUnit_Framework_TestCase
                 'entities_config' => array(
                     'Oro\Bundle\DataBundle\Entity\Product' => array(
                         'alias'             => 'test_alias',
-                        'label'             => 'test product',
                         'search_template'   => 'test_temaplte',
-                        'entity_icon_class' => 'test_icon_class',
-                        'fields' => array(
+                        'fields'            => array(
                             array(
                                 'name'          => 'name',
                                 'target_type'   => 'string',

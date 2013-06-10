@@ -1,0 +1,30 @@
+Oro\Bundle\TestFrameworkBundle\Entity\Item:
+    label: Test Search Bundle Item
+    alias: TestsBundle:Item
+    route:
+        name: oro_search_results
+    fields:
+        -
+            name: stringValue
+            target_type: text
+            target_fields: [stringValue, all_data]
+        -
+            name: integerValue
+            target_type: integer
+            target_fields: [integerValue, all_data]
+        -
+            name: decimalValue
+            target_type: decimal
+            target_fields: [decimalValue, all_data]
+        -
+            name: floatValue
+            target_type: decimal
+            target_fields: [floatValue, all_data]
+        -
+            name: datetimeValue
+            target_type: datetime
+            target_fields: [datetimeValue, all_data]
+        -
+            name: blobValue
+            target_type: text
+            target_fields: [blobValue, all_data]

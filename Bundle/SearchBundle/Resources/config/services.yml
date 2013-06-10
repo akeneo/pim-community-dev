@@ -7,25 +7,26 @@ parameters:
 
 services:
     oro_search.index:
-        class:        %oro_search.index.class%
-        arguments:    [@doctrine.orm.entity_manager, @oro_search.search.engine, @translator, @oro_search.mapper]
+        class:                        %oro_search.index.class%
+        arguments:                    ["@doctrine.orm.entity_manager", "@oro_search.search.engine", "@oro_search.mapper"]
 
     oro_search.index_listener:
-        class:        %oro_search.index_listener.class%
-        arguments:    [@service_container, %oro_search.entities_config%]
+        class:                        %oro_search.index_listener.class%
+        arguments:                    ["@service_container", %oro_search.realtime_update%, %oro_search.entities_config%]
         tags:
             - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postUpdate }
             - { name: doctrine.event_listener, event: preRemove }
 
     oro_search.twig.search_extension:
-        class:        %oro_search.twig_extension.class%
+        class:                        %oro_search.twig_extension.class%
         tags:
             - { name: twig.extension }
 
     oro_search.mapper:
-        class:        %oro_search.mapper.class%
-        arguments:    [@service_container, @translator, %oro_search.entities_config%]
+        class:                        %oro_search.mapper.class%
+        arguments:                    ["@service_container", %oro_search.entities_config%]
 
     oro_search.result_provider:
-        class:        %oro_search.result_provider.class%
-        arguments:    [@oro_search.index]
+        class:                        %oro_search.result_provider.class%
+        arguments:                    ["@oro_search.index"]

@@ -35,7 +35,7 @@ class CountryTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetParent()
     {
-        $this->assertEquals('entity', $this->type->getParent());
+        $this->assertEquals('genemu_jqueryselect2_entity', $this->type->getParent());
     }
 
     public function testGetName()

@@ -60,10 +60,12 @@
     </div>
 {% endmacro %}
 
-{% macro button(path, iClass, title, label, aClass) %}
+{% macro button(parameters) %}
     <div class="pull-left btn-group icons-holder">
-        <a href="{{ path }}" class="btn back icons-holder-text {{ aClass }}" title="{{ title|trans }}">
-            <i class="{{ iClass }} hide-text" >{{ label|trans }}</i>{{ label|trans }}
+        <a href="{{ parameters.path }}"
+           class="btn back icons-holder-text {{ parameters.aClass is defined? parameters.aClass : '' }}"
+           title="{{ parameters.title|trans }}">
+            <i class="{{ parameters.iClass }} hide-text" >{{ parameters.label|trans }}</i>{{ parameters.label|trans }}
         </a>
     </div>
 {% endmacro %}
@@ -82,8 +84,8 @@
     </div>
 {% endmacro %}
 
-{% macro scrollSubblock(title, data) %}
-    <div class="form-horizontal span6">
+{% macro scrollSubblock(title, data, cols) %}
+    <div class="form-horizontal {% if cols > 1 %}span6{% endif %}">
         {% if title|length %}<h5 class="usser-fiedset"><span>{{ title|trans }}</span></h5>{% endif %}
         {% for dataBlock in data %}
             {{ dataBlock|raw }}
@@ -92,11 +94,12 @@
 {% endmacro %}
 
 {% macro scrollBlock(blockId, title, subblocks) %}
+    {% set cols = subblocks|length %}
     <div class="usser-row">
         <h4 id="{{ blockId }}" class="scrollspy-title">{{ title|trans }}</h4>
-        <div class="row-fluid {% if subblocks|length > 1 %}row-fluid-divider{% endif %}">
+        <div class="row-fluid {% if cols > 1 %}row-fluid-divider{% endif %}">
             {% for subblock in subblocks %}
-                {{ _self.scrollSubblock(subblock.title|length ? subblock.title : null, subblock.data) }}
+                {{ _self.scrollSubblock(subblock.title|length ? subblock.title : null, subblock.data, cols) }}
             {% endfor %}
         </div>
     </div>

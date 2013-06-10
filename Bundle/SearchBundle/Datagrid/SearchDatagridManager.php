@@ -13,7 +13,6 @@ use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Oro\Bundle\GridBundle\Property\CallbackProperty;
 use Oro\Bundle\GridBundle\Datagrid\ResultRecordInterface;
 use Oro\Bundle\SearchBundle\Query\Result\Item;
-use Oro\Bundle\GridBundle\Action\ActionInterface;
 
 class SearchDatagridManager extends DatagridManager
 {
@@ -83,6 +82,7 @@ class SearchDatagridManager extends DatagridManager
                 /** @var $indexerItem Item */
                 if ($record->getValue('entity')) {
                     $indexerItem = $record->getValue('indexer_item');
+
                     return $indexerItem->getRecordUrl();
                 }
 

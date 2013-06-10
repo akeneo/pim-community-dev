@@ -47,7 +47,7 @@ class ConfigExtension extends \Twig_Extension
     /**
      * Get entity output config (if any provided).
      * Provided parameters:
-     *  "icon"        - path to entity icon, relative to web dir
+     *  "icon_class"  - CSS class name for icon element
      *  "name"        - custom entity name
      *  "description" - entity description
      *
@@ -61,7 +61,7 @@ class ConfigExtension extends \Twig_Extension
         return isset($this->entityOutput[$class])
             ? $this->entityOutput[$class]
             : array(
-                'icon'        => '',
+                'icon_class'  => '',
                 'name'        => end($default),
                 'description' => 'No description'
             );

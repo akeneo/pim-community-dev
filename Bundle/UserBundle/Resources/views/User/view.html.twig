@@ -15,9 +15,9 @@
 {% endmacro %}
 
 {% block navButtons %}
-    {{ UI.button(path('oro_user_index'), 'icon-chevron-left ', 'Back', 'Back') }}
+    {{ UI.button({'path' : path('oro_user_index'), 'iClass' : 'icon-chevron-left ', 'title' : 'Back', 'label' : 'Back'}) }}
     {% if resource_granted('oro_user_user_update') %}
-        {{ UI.button(path('oro_user_update', { id: user.id }), 'icon-edit', 'Edit user', 'Edit') }}
+        {{ UI.button({'path' : path('oro_user_update', { id: user.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}
     {% endif %}
     {% if resource_granted('oro_user_user_delete') and user.id!=app.user.id %}
         {{ UI.deleteButton({

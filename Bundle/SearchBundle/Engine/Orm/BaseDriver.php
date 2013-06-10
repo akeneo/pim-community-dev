@@ -22,7 +22,7 @@ abstract class BaseDriver
     protected $em;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $em
+     * @param \Doctrine\ORM\EntityManager         $em
      * @param \Doctrine\ORM\Mapping\ClassMetadata $class
      */
     public function initRepo(EntityManager $em, ClassMetadata $class)
@@ -83,7 +83,7 @@ abstract class BaseDriver
         $qb = $this->getRequestQB($query, false);
         $qb->select($qb->expr()->countDistinct('search.id'));
 
-        return (int)$qb->getQuery()->getSingleScalarResult();
+        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
     /**
