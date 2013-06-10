@@ -1,8 +1,8 @@
 <?php
+
 namespace Pim\Bundle\GridBundle\Filter\ORM;
 
 use Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType;
-
 use Oro\Bundle\GridBundle\Filter\ORM\ChoiceFilter;
 
 /**

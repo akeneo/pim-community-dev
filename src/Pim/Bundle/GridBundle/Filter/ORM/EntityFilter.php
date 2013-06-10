@@ -1,10 +1,9 @@
 <?php
+
 namespace Pim\Bundle\GridBundle\Filter\ORM;
 
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-
 use Doctrine\ORM\Query\Expr;
-
 use Oro\Bundle\GridBundle\Filter\ORM\ChoiceFilter;
 
 /**
