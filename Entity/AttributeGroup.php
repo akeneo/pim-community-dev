@@ -71,6 +71,7 @@ class AttributeGroup implements TimestampableInterface, Translatable
      * @var ArrayCollection $attributes
      *
      * @ORM\OneToMany(targetEntity="ProductAttribute", mappedBy="group")
+     * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $attributes;
 

@@ -161,6 +161,41 @@ class ProductAttributeController extends Controller
     }
 
     /**
+     * Edit ProductAttribute sort order
+     *
+     * @param Request $request
+     *
+     * @Route("/sort")
+     *
+     * @return Response
+     */
+    public function sortAction(Request $request)
+    {
+        if (!$request->isXmlHttpRequest() || $request->getMethod() !== 'POST') {
+            return $this->redirect($this->generateUrl('pim_product_productattribute_index'));
+        }
+
+        $data = $request->request->all();
+
+        $em = $this->getEntityManager();
+
+        if (!empty($data)) {
+            foreach ($data as $id => $sort) {
+                $attribute = $this->getProductAttributeRepository()->find((int) $id);
+                if ($attribute) {
+                    $attribute->setSortOrder((int) $sort);
+                    $em->persist($attribute);
+                }
+            }
+            $em->flush();
+
+            return new Response(1);
+        }
+
+        return new Response(0);
+    }
+
+    /**
      * Remove attribute
      *
      * @param Attribute $entity
