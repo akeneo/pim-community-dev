@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Form\Type;
 
-use Pim\Bundle\ConfigBundle\Form\Subscriber\LocaleFallbackSubscriber;
+use Pim\Bundle\ConfigBundle\Form\Subscriber\LocaleSubscriber;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -53,54 +53,11 @@ class LocaleType extends AbstractType
 
         $builder->add('id', 'hidden');
 
-        $this->addLocaleField($builder);
-
-        $this->addFallbackField($builder);
-
         $this->addCurrencyField($builder);
 
         $builder->add('activated', 'hidden');
 
-        $factory = $builder->getFormFactory();
-        $subscriber = new LocaleFallbackSubscriber($factory, $this->getLocalesUsedAsFallback());
-        $builder->addEventSubscriber($subscriber);
-    }
-
-    /**
-     * Add locale field
-     * @param FormBuilderInterface $builder
-     */
-    protected function addLocaleField(FormBuilderInterface $builder)
-    {
-        $builder->add(
-            'code',
-            'choice',
-            array(
-                'choices'           => $this->prepareLocaleList($this->locales),
-                'required'          => true,
-                'preferred_choices' => array('en_EN', 'fr_FR', 'en_US'),
-                'label'             => 'Locale'
-            )
-        );
-    }
-
-    /**
-     * Add fallback field
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFallbackField(FormBuilderInterface $builder)
-    {
-        $builder->add(
-            'fallback',
-            'choice',
-            array(
-                'choices'           => $this->prepareFallbackLocaleList($this->locales),
-                'required'          => false,
-                'preferred_choices' => array('en_EN', 'fr_FR', 'en_US'),
-                'label'             => 'Inherited locale',
-                'attr'              => array('data-placeholder' => 'Choose a locale')
-            )
-        );
+        $this->addSubscriber($builder);
     }
 
     /**
@@ -123,57 +80,13 @@ class LocaleType extends AbstractType
     }
 
     /**
-     * Prepare fallback locale list
-     * @param array $locales
-     *
-     * @return multitype:string
-     */
-    protected function prepareFallbackLocaleList($locales = array())
-    {
-        $choices = array();
-
-        $localesWithFallback = $this->getLocalesWithFallback();
-        $unavailableLocales = array();
-
-        foreach ($localesWithFallback as $locale) {
-            $unavailableLocales[] = $locale->getCode();
-        }
-
-        foreach ($locales as $code => $locale) {
-            if (!in_array($code, $unavailableLocales)) {
-                $choices[$code] = $locale['label'];
-            }
-        }
-
-        asort($choices);
-
-        return $choices;
-    }
-
-    /**
      * Find all locales that have fallback defined
      *
-     * @return array
+     * @return array:string
      */
     protected function getLocalesWithFallback()
     {
         return $this->em->getRepository('PimConfigBundle:Locale')->findWithFallback();
-    }
-
-    /**
-     * Get all locales used as fallback
-     *
-     * @return array
-     */
-    protected function getLocalesUsedAsFallback()
-    {
-        $locales = $this->getLocalesWithFallback();
-        $fallbackLocales = array();
-        foreach ($locales as $locale) {
-            $fallbackLocales[] = $locale->getFallback();
-        }
-
-        return $fallbackLocales;
     }
 
     /**
@@ -204,6 +117,28 @@ class LocaleType extends AbstractType
                 'label'         => 'Default currency (to display)'
             )
         );
+    }
+
+    /**
+     * Add event subscriber
+     * @param FormBuilderInterface $builder
+     *
+     * @return void
+     */
+    protected function addSubscriber(FormBuilderInterface $builder)
+    {
+        $factory = $builder->getFormFactory();
+
+        $locales = $this->prepareLocaleList($this->locales);
+
+        $existingLocales = array_map(function ($locale) {
+            return $locale->getCode();
+        }, $this->em->getRepository('PimConfigBundle:Locale')->findAll());
+
+        $localesWithFallback = $this->getLocalesWithFallback();
+
+        $subscriber = new LocaleSubscriber($factory, $locales, $existingLocales, $localesWithFallback);
+        $builder->addEventSubscriber($subscriber);
     }
 
     /**

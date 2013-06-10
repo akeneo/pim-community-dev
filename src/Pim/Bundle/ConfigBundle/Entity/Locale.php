@@ -5,6 +5,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Locale\Locale as SfLocale;
+use Pim\Bundle\ConfigBundle\Validator\Constraints as PimAssert;
 
 /**
  * Locale entity
@@ -16,6 +17,7 @@ use Symfony\Component\Locale\Locale as SfLocale;
  * @ORM\Table(name="pim_locale")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ConfigBundle\Entity\Repository\LocaleRepository")
  * @UniqueEntity("code")
+ * @PimAssert\ValidLocaleFallback
  */
 class Locale
 {
