@@ -150,9 +150,13 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
      */
     protected function prepareValueFormConstraints(FlexibleValueInterface $value)
     {
-        return array(
-            'constraints' => $this->constraintGuesser->guessConstraints($value->getAttribute()),
-        );
+        if ($this->constraintGuesser->supportAttribute($attribute = $value->getAttribute())) {
+            return array(
+                'constraints' => $this->constraintGuesser->guessConstraints($attribute),
+            );
+        }
+
+        return array();
     }
 
     /**

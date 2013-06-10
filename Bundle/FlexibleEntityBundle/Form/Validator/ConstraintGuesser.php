@@ -13,6 +13,11 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
  */
 class ConstraintGuesser implements ConstraintGuesserInterface
 {
+    public function supportAttribute(AbstractAttribute $attribute)
+    {
+        return true;
+    }
+
     public function guessConstraints(AbstractAttribute $attribute)
     {
         $constraints = array();
