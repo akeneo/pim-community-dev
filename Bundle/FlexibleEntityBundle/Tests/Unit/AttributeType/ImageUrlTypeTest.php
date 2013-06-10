@@ -2,17 +2,17 @@
 
 namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\AttributeType;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\EmailType;
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\ImageUrlType;
 
-class EmailTypeTest extends AttributeTypeTest
+class ImageUrlTypeTest extends AttributeTypeTest
 {
-    protected $name = 'oro_flexibleentity_email';
+    protected $name = 'oro_flexibleentity_imageurl';
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->target = new EmailType('text', 'email', $this->guesser);
+        $this->target = new ImageUrlType('varchar', 'text', $this->guesser);
     }
 
     public function testBuildValueFormType()
@@ -25,7 +25,7 @@ class EmailTypeTest extends AttributeTypeTest
 
         $factory->expects($this->once())
             ->method('createNamed')
-            ->with('foo', 'email', 'bar', array(
+            ->with('foo', 'text', 'bar', array(
                 'constraints' => array('constraints'),
                 'label'       => null,
                 'required'    => null,
@@ -36,12 +36,12 @@ class EmailTypeTest extends AttributeTypeTest
 
     public function testGetBackendType()
     {
-        $this->assertEquals('text', $this->target->getBackendType());
+        $this->assertEquals('varchar', $this->target->getBackendType());
     }
 
     public function testGetFormType()
     {
-        $this->assertEquals('email', $this->target->getFormType());
+        $this->assertEquals('text', $this->target->getFormType());
     }
 
     public function testBuildAttributeFormType()

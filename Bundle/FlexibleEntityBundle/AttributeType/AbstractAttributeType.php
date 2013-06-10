@@ -6,6 +6,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeInterface;
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 
 /**
  * Abstract attribute type
@@ -62,10 +63,11 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
      * @param string              $backendType the backend type
      * @param string              $formType    the form type
      */
-    public function __construct($backendType, $formType)
+    public function __construct($backendType, $formType, ConstraintGuesserInterface $constraintGuesser)
     {
-        $this->backendType = $backendType;
-        $this->formType    = $formType;
+        $this->backendType       = $backendType;
+        $this->formType          = $formType;
+        $this->constraintGuesser = $constraintGuesser;
     }
 
     /**
@@ -95,11 +97,13 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     {
         $name    = $this->prepareValueFormName($value);
         $type    = $this->prepareValueFormAlias($value);
-        $options = $this->prepareValueFormOptions($value);
         $data    = $this->prepareValueFormData($value);
-        $form    = $factory->createNamed($name, $type, $data, $options);
+        $options = array_merge(
+            $this->prepareValueFormConstraints($value),
+            $this->prepareValueFormOptions($value)
+        );
 
-        return $form;
+        return $factory->createNamed($name, $type, $data, $options);
     }
 
     /**
@@ -135,29 +139,20 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
      */
     protected function prepareValueFormOptions(FlexibleValueInterface $value)
     {
-        $options = array(
-            'label'       => $value->getAttribute()->getLabel(),
-            'required'    => $value->getAttribute()->getRequired(),
-            'constraints' => array()
+        return array(
+            'label'    => $value->getAttribute()->getLabel(),
+            'required' => $value->getAttribute()->getRequired(),
         );
+    }
 
-        if ($options['required']) {
-            $options['constraints'][] = new Constraints\NotBlank();
-        }
-
-        switch ($value->getAttribute()->getBackendType()) {
-            case self::BACKEND_TYPE_DATE:
-                $options['constraints'][] = new Constraints\Date();
-                break;
-            case self::BACKEND_TYPE_DATE:
-                $options['constraints'][] = new Constraints\Date();
-                break;
-            case self::BACKEND_TYPE_DATETIME:
-                $options['constraints'][] = new Constraints\DateTime();
-                break;
-        }
-
-        return $options;
+    /**
+     * Guess the constraints to apply on the form
+     */
+    protected function prepareValueFormConstraints(FlexibleValueInterface $value)
+    {
+        return array(
+            'constraints' => $this->constraintGuesser->guessConstraints($value->getAttribute()),
+        );
     }
 
     /**
