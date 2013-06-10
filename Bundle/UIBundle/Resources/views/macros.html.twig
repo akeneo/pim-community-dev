@@ -73,6 +73,9 @@
         <a href="javascript: void(0);" class="btn icons-holder-text {{ parameters.aCss is defined? parameters.aCss : '' }}"
            id="btn-remove-user" data-id="{{ parameters.dataId }}"
            data-message="{{ parameters.dataMessage|trans }}"
+           {% if (parameters.dataUrl is defined) %}
+           data-url="{{ parameters.dataUrl  }}"
+           {% endif %}
            title="{{ parameters.title|trans }}">
             <i class="icon-trash hide-text">{{ parameters.label|trans }}</i>{{ parameters.label|trans }}
         </a>
@@ -91,7 +94,7 @@
 {% macro scrollBlock(blockId, title, subblocks) %}
     <div class="usser-row">
         <h4 id="{{ blockId }}" class="scrollspy-title">{{ title|trans }}</h4>
-        <div class="row-fluid">
+        <div class="row-fluid {% if subblocks|length > 1 %}row-fluid-divider{% endif %}">
             {% for subblock in subblocks %}
                 {{ _self.scrollSubblock(subblock.title|length ? subblock.title : null, subblock.data) }}
             {% endfor %}
