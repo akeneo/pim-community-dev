@@ -1,6 +1,10 @@
 <?php
 namespace Pim\Bundle\GridBundle\Filter\ORM;
 
+use Doctrine\ORM\Query\Expr\From;
+
+use Doctrine\ORM\QueryBuilder;
+
 use Pim\Bundle\FilterBundle\Form\Type\Filter\CategoryFilterType;
 
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -21,7 +25,7 @@ class CategoryFilter extends EntityFilter
     /**
      * {@inheritdoc}
      */
-    public function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $data)
+    public function filter(ProxyQueryInterface $proxyQuery, $alias, $field, $data)
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -31,12 +35,36 @@ class CategoryFilter extends EntityFilter
         $operator = $this->getOperator($data['type']);
 
         $associations = array($this->getOption('field_mapping'));
-        $newAlias = $queryBuilder->entityJoin($associations);
+        $newAlias = $proxyQuery->entityJoin($associations);
 
         if ('IN' == $operator) {
             $expression = $this->getExpressionFactory()->in(
                 $this->createFieldExpression($this->getOption('mapped_property'), $newAlias),
                 $data['value']
+            );
+        } else if ('UNCLASSIFIED' == $operator) {
+            // create subrequest with classified node
+            $fieldRoot = $this->createFieldExpression('root', 'c');
+            $exprAnd = $this->getExpressionFactory()->eq($fieldRoot, $data['value'][0]);
+            $qb = clone $proxyQuery->getQueryBuilder();
+            $qb->select('p.id')->distinct()
+               ->from('PimProductBundle:Product', 'p')
+               ->leftJoin('p.categories', 'c')
+               ->andWhere($exprAnd);
+
+            // get classified product ids
+            $results = $qb->getQuery()->getArrayResult();
+            $productIds = array();
+            foreach ($results as $resId) {
+                $productIds[] = $resId['id'];
+            }
+
+            $fieldProduct = $this->createFieldExpression('id', $alias);
+            $expression = $this->getExpressionFactory()->notIn($fieldProduct, $productIds);
+        } else if ('CLASSIFIED' == $operator) {
+            $expression = $this->getExpressionFactory()->eq(
+                $this->createFieldExpression('root', $newAlias),
+                $data['value'][0]
             );
         } else {
             $expression = $this->getExpressionFactory()->notIn(
@@ -45,7 +73,7 @@ class CategoryFilter extends EntityFilter
             );
         }
 
-        $this->applyFilterToClause($queryBuilder, $expression);
+        $this->applyFilterToClause($proxyQuery, $expression);
     }
 
     /**
@@ -58,8 +86,8 @@ class CategoryFilter extends EntityFilter
         $operatorTypes = array(
             CategoryFilterType::TYPE_CONTAINS     => 'IN',
             CategoryFilterType::TYPE_NOT_CONTAINS => 'NOT IN',
-            CategoryFilterType::TYPE_UNCLASSIFIED => 'UNCLASSIFIED',
-            CategoryFilterType::TYPE_CLASSIFIED   => 'CLASSIFIED'
+            CategoryFilterType::TYPE_CLASSIFIED   => 'CLASSIFIED',
+            CategoryFilterType::TYPE_UNCLASSIFIED => 'UNCLASSIFIED'
         );
 
         return isset($operatorTypes[$type]) ? $operatorTypes[$type] : 'IN';
