@@ -1,14 +1,11 @@
 <?php
+
 namespace Pim\Bundle\GridBundle\Filter\ORM;
 
 use Doctrine\ORM\Query\Expr\From;
-
 use Doctrine\ORM\QueryBuilder;
-
 use Pim\Bundle\FilterBundle\Form\Type\Filter\CategoryFilterType;
-
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-
 use Doctrine\ORM\Query\Expr;
 
 /**
