@@ -318,6 +318,7 @@ Oro.Navigation = Backbone.Router.extend({
         );
 
         this.processForms(this.selectors.forms);
+        this.processAnchors($(this.selectors.container).find(this.selectors.scrollLinks));
 
         this.loadingMask = new Oro.LoadingMask();
         this.renderLoadingMask();
