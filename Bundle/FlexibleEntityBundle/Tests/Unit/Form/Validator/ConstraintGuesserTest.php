@@ -1,0 +1,78 @@
+<?php
+
+namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Form\Validator;
+
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Symfony\Component\Validator\Constraints;
+use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesser;
+
+/**
+ * @author    Gildas Quemener <gildas.quemener@gmail.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class ConstraintGuesserTest extends \PHPUnit_Framework_TestCase
+{
+    public function setUp()
+    {
+        $this->target = new ConstraintGuesser;
+    }
+
+    public function testInstanceOfContraintGuesserInterface()
+    {
+        $this->assertInstanceOf('Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface', $this->target);
+    }
+
+    public function testGuessNotBlankConstraints()
+    {
+        $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\NotBlank', $this->target->guessConstraints(
+            $this->getAttributeMock(array('required' => true))
+        ));
+    }
+
+    public function testGuessDateConstraints()
+    {
+        $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\Date', $this->target->guessConstraints(
+            $this->getAttributeMock(array('backendType' => AbstractAttributeType::BACKEND_TYPE_DATE))
+        ));
+    }
+
+    public function testGuessDateTimeConstraints()
+    {
+        $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\DateTime', $this->target->guessConstraints(
+            $this->getAttributeMock(array('backendType' => AbstractAttributeType::BACKEND_TYPE_DATETIME))
+        ));
+    }
+
+    private function getAttributeMock(array $options)
+    {
+        $options = array_merge(array(
+            'required'    => false,
+            'backendType' => null,
+        ), $options);
+
+        $attribute = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute');
+
+        $attribute->expects($this->any())
+            ->method('getBackendType')
+            ->will($this->returnValue($options['backendType']));
+
+        $attribute->expects($this->any())
+            ->method('getRequired')
+            ->will($this->returnValue($options['required']));
+
+        return $attribute;
+    }
+
+    private function assertContainsInstanceOf($class, $constraints)
+    {
+        foreach ($constraints as $constraint) {
+            if ($constraint instanceof $class) {
+                return true;
+            }
+        }
+
+        throw new \Exception(sprintf('Expecting constraints to contain instance of "%s"', $class));
+    }
+}
+
