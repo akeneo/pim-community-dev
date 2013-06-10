@@ -27,6 +27,8 @@ parameters:
 
     pim_product.locale_listener.class:  Pim\Bundle\ProductBundle\EventListener\LocaleListener
 
+    pim_product.audit_manager_class:    Pim\Bundle\ProductBundle\Manager\AuditManager
+
 services:
     # Managers
     product_manager:
@@ -52,6 +54,11 @@ services:
             - [ addAttributeType, ['oro_flexibleentity_boolean'] ]
             - [ addAttributeType, ['oro_flexibleentity_date'] ]
             - [ addAttributeType, ['oro_flexibleentity_metric'] ]
+
+    pim_product.audit_manager:
+        class: %pim_product.audit_manager_class%
+        arguments:
+            - @doctrine.orm.entity_manager
 
     pim_product.category_manager:
         class:     %pim_product.category_manager_class%
