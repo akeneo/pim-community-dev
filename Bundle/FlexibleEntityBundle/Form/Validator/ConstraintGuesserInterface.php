@@ -11,6 +11,7 @@ use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
  */
 interface ConstraintGuesserInterface
 {
+    public function supportAttribute(AbstractAttribute $attribute);
     public function guessConstraints(AbstractAttribute $attribute);
 }
 
