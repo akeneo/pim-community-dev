@@ -1,7 +1,7 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\AttributeType;
 
-use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 
 /**
