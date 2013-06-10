@@ -1,12 +1,10 @@
 <?php
+
 namespace Pim\Bundle\GridBundle\Filter\ORM;
 
 use Pim\Bundle\FilterBundle\Form\Type\Filter\CategoryFilterType;
-
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-
 use Doctrine\ORM\Query\Expr;
-
 use Oro\Bundle\GridBundle\Filter\ORM\ChoiceFilter;
 
 /**

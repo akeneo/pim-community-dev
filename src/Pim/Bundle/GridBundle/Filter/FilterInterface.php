@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\GridBundle\Filter;
 
 use Oro\Bundle\GridBundle\Filter\FilterInterface as OroFilterInterface;
