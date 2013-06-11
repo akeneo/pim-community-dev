@@ -22,7 +22,7 @@ class RangeGuesserTest extends ConstraintGuesserTest
         $this->assertInstanceOf('Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface', $this->target);
     }
 
-    public function testSupportIntegerAndMetricAttribute()
+    public function testSupportAttribute()
     {
         $this->assertTrue($this->target->supportAttribute(
             $this->getAttributeMock(array(
