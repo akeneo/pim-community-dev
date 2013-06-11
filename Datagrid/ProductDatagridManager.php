@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
+use Pim\Bundle\ConfigBundle\Manager\CurrencyManager;
+
 use Oro\Bundle\GridBundle\Property\FixedProperty;
 
 use Pim\Bundle\ConfigBundle\Manager\ChannelManager;
@@ -43,6 +45,16 @@ class ProductDatagridManager extends FlexibleDatagridManager
      * @var LocaleManager
      */
     protected $localeManager;
+
+    /**
+     * @var ChannelManager
+     */
+    protected $channelManager;
+
+    /**
+     * @var CurrencyManager
+     */
+    protected $currencyManager;
 
     /**
      * get properties
@@ -91,6 +103,9 @@ class ProductDatagridManager extends FlexibleDatagridManager
             )
         );
         $fieldsCollection->add($fieldSku);
+
+        $field = $this->createCurrencyField();
+        $fieldsCollection->add($field);
 
         // TODO : until we'll have related backend type in grid bundle
         $excludedBackend = array(
@@ -155,6 +170,31 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
+     * Create a currency field and filter
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createCurrencyField()
+    {
+        $field = new FieldDescription();
+        $field->setName('currency');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_DECIMAL,
+                'label'       => $this->translator->trans('Currency'),
+                'field_name'  => 'currency',
+                'filter_type' => FilterInterface::TYPE_CURRENCY,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true
+            )
+        );
+
+        return $field;
+    }
+
+    /**
      * Create a family field and filter
      *
      * @return \Oro\Bundle\GridBundle\Field\FieldDescription
@@ -174,7 +214,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => 'Family',
+                'label'       => $this->translator->trans('Family'),
                 'field_name'  => 'productFamily',
                 'filter_type' => FilterInterface::TYPE_CHOICE,
                 'required'    => false,
@@ -212,7 +252,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
-                'label'       => 'Categories',
+                'label'       => $this->translator->trans('Categories'),
                 'field_name'  => 'categories',
                 'filter_type' => FilterInterface::TYPE_ENTITY,
                 'required'    => false,
@@ -401,6 +441,20 @@ class ProductDatagridManager extends FlexibleDatagridManager
     public function setChannelManager(ChannelManager $channelManager)
     {
         $this->channelManager = $channelManager;
+
+        return $this;
+    }
+
+    /**
+     * Set currency manager
+     *
+     * @param CurrencyManager $currencyManager
+     *
+     * @return \Pim\Bundle\ProductBundle\Datagrid\ProductDatagridManager
+     */
+    public function setCurrencyManager(CurrencyManager $currencyManager)
+    {
+        $this->currencyManager = $currencyManager;
 
         return $this;
     }

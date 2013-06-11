@@ -27,3 +27,4 @@ services:
         calls:
             - [ setLocaleManager, [@pim_config.manager.locale] ]
             - [ setChannelManager, [@pim_config.manager.channel] ]
+            - [ setCurrencyManager, [@pim_config.manager.currency] ]
