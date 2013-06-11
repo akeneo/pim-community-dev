@@ -14,7 +14,7 @@ abstract class AttributeTypeTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->guesser = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesser');
+        $this->guesser = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser');
         $this->guesser->expects($this->any())
             ->method('supportAttribute')
             ->will($this->returnValue(true));
