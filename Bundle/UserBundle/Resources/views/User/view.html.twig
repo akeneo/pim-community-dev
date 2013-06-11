@@ -38,37 +38,36 @@
 
     {% set id = 'user-profile' %}
     {% set data =
-            [
-                {
-                    'title': 'General',
-                    'class': 'active',
-                    'subblocks': [
-                        {
-                            'title': 'Basic Information',
-                            'data': [
-                                UI.attibuteRow('User name', user.username),
-                                UI.attibuteRow('First name', user.firstname),
-                                UI.attibuteRow('Last name', user.lastname),
-                                UI.attibuteRow('Birthday', user.birthday ? UI.date(user.birthday) : 'N/A'),
-                                UI.renderAttribute('API key', _self.api_data_block(user))
-                            ]
-                        },
-
-                        {
-                            'title': 'Contact Information',
-                            'data': [
-                                UI.attibuteRow('Email', {value: user.email, hint: 'Primary'}, user.emails|length ? {data: user.emails, field:'email'} : {})
-                            ]
-                        }
-                    ]
-                },
-                {
-                    'title': 'Additional data',
-                    'subblocks': [
-                        {'title': null, 'data': attributes}
-                    ]
-                }
-            ]
+        [
+            {
+                'title': 'General',
+                'class': 'active',
+                'subblocks': [
+                    {
+                        'title': 'Basic Information',
+                        'data': [
+                            UI.attibuteRow('User name', user.username),
+                            UI.attibuteRow('First name', user.firstname),
+                            UI.attibuteRow('Last name', user.lastname),
+                            UI.attibuteRow('Birthday', user.birthday ? UI.date(user.birthday) : 'N/A'),
+                            UI.renderAttribute('API key', _self.api_data_block(user))
+                        ]
+                    },
+                    {
+                        'title': 'Contact Information',
+                        'data': [
+                            UI.attibuteRow('Email', {value: user.email, hint: 'Primary'}, user.emails|length ? {data: user.emails, field:'email'} : {})
+                        ]
+                    }
+                ]
+            },
+            {
+                'title': 'Additional data',
+                'subblocks': [
+                    {'title': null, 'data': attributes}
+                ]
+            }
+        ]
     %}
     {{ parent() }}
 {% endblock scroll_data %}

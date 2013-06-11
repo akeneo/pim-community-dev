@@ -1,175 +1,105 @@
-{% extends bap.layout is defined ? bap.layout : 'OroUserBundle::layout.html.twig' %}
-{% import 'OroUserBundle::macros.html.twig' as macros %}
+{% extends 'OroUIBundle:actions:edit.html.twig' %}
 {% set format = oro_config_value('oro_user.name_format') %}
 {% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
 
 {% set title = form.vars.value.id ? form.vars.value.fullname(format)|default('N/A') ~ ' - ' ~ 'Update User'|trans : 'New User'|trans %}
 {% oro_title_set({params : {"%username%": form.vars.value.fullname(format)|default('N/A') }}) %}
 
-{% block page_container %}
-    {% block content %}
-    {{ JSFV(form) }}
-    <form id="{{ form.name }}" action="{{ form.vars.value.id ? path('oro_user_update', { id: form.vars.value.id}) : path('oro_user_create') }}" {{ form_enctype(form) }}
-        method="post" data-collect="true" class="scrollable-substructure">
-        <div class="navigation clearfix navbar-extra navbar-extra-right">
-            <div class="row">
-                <div class="pull-right">
-                    <div class="pull-right">
-                        {% if form.vars.value.id and resource_granted('oro_user_user_delete') and  form.vars.value.id!=app.user.id %}
-                        <div class="pull-left btn-group icons-holder">
-                            <a href="javascript: void(0);" class="btn icons-holder-text" id="btn-remove-user" data-id="{{ form.vars.value.id }}" data-message="{{ 'Are you sure you want to delete this user?'|trans }}" title="{{ 'Delete user'|trans }}"><i class="icon-trash hide-text">{{ 'Remove'|trans }}</i>Delete</a>
-                        </div>
-                        <div class="pull-left">
-                            <div class="separator-btn"></div>
-                        </div>
-                        {% endif %}
-                        <div class="pull-left customer-info-top-actions">
-                            <div class="btn-group">
-                                <a href="{{ path('oro_user_index') }}" class="btn back">{{ 'Cancel'|trans }}</a>
-                            </div>
-                            <div class="btn-group">
-                                <button type="submit" class="btn btn-success">{{ ' Save'|trans }}</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="pull-right usser-info-state">
-                        <ul class="inline-decorate">
-                            {% if form.vars.value.id %}
-                            <li><a class="no-hash" href="{{ path('oro_dataaudit_history', {entity:'Oro_Bundle_UserBundle_Entity_User', id: form.vars.value.id}) }}" id="view-activity-btn" title="{{ form.vars.value }} - {{ 'Change History'|trans }}">{{ 'Change History'|trans }}</a></li>
-                            {% endif %}
-                        </ul>
-                    </div>
+{% block navButtons %}
+    {% if form.vars.value.id and resource_granted('oro_user_user_delete') and  form.vars.value.id!=app.user.id %}
+        {{ UI.deleteButton({
+        aCss: 'no-hash', dataId: form.vars.value.id, dataMessage: 'Are you sure you want to delete this user?', title: 'Delete user', label: 'Delete'
+        }) }}
+        {{ UI.buttonSeparator() }}
+    {% endif %}
+    {{ UI.button(path('oro_user_index'), 'back', 'Cancel', 'Cancel') }}
+    {{ UI.buttonType('submit', 'btn-success', 'Save') }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% if form.vars.value.id %}
+        {% include 'OroUserBundle:User:user_block.html.twig' with {'user': form.vars.value, 'showEnabled': false } %}
+    {% else %}
+        {% include 'OroUIBundle::page_title_block.html.twig' %}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block scroll_data %}
+    {% set id = 'user-profile' %}
+
+    {% set scrollBlocks = [{
+            'title': 'General',
+            'class': 'active',
+            'subblocks': [
+                {
+                    'title': '',
+                    'data': [
+                        form_row(form.enabled),
+                        form_row(form.username),
+                        form.plainPassword is defined ? form_row(form.plainPassword) : '',
+                        form_row(form.firstName),
+                        form_row(form.lastName),
+                        form_row(form.birthday),
+                        form_row(form.imageFile)
+                    ]
+                },
+                {
+                    'title': '',
+                    'data': [
+                        form_row(form.email),
+                        UI.collectionField(form.emails, 'Additional emails', 'Add another email')
+                    ]
+                }
+            ]
+        }]
+
+    %}
+
+    {% if form.groups is defined or form.rolesCollection is defined %}
+        {% macro userRoles(form) %}
+            {% if form.rolesCollection is defined %}
+                <div class="form-horizontal" id="roles-list">
+                    {{ form_row(form.rolesCollection, { attr: { class: 'horizontal' } }) }}
                 </div>
-                {% if form.vars.value.id %}
-                <div class="span9">
-                    <div class="customer-info well-small">
-                        <div class="visual"><img src="{{ form.vars.value.imagePath ? form.vars.value.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-usser.png') }}" alt="{{ form.vars.value.fullname(format) }}"/></div>
-                        <div class="customer-content pull-left">
-                            <div class="clearfix-oro">
-                                <div class="sub-title"><a href="{{ path('oro_user_index') }}">{{ 'Users'|trans }}</a></div>
-                                <span class="separator">/</span>
-                                <h1 class="usser-name">{{ form.vars.value.fullname(format)|default('N/A') }}</h1>
-                            </div>
-                            <ul class="inline">
-                                <li>{{ 'Created'|trans }}: {{ form.vars.value.createdAt ? macros.time(form.vars.value.createdAt) : 'N/A' }}</li>
-                                <li>{{ 'Updated'|trans }}: {{ form.vars.value.updatedAt ? macros.time(form.vars.value.updatedAt) : 'N/A' }}</li>
-                                <li>{{ 'Last logged in'|trans }}: {{ form.vars.value.lastLogin ? macros.time(form.vars.value.lastLogin) : 'N/A' }}</li>
-                                <li>{{ 'Login count'|trans }}: {{ form.vars.value.loginCount|default(0) }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                {% else %}
-                <div class="pull-left">
-                    <div class="container-fluid">
-                        <div class="container-fluid">
-                            <h1 class="oro-subtitle">{{ title }}</h1>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-            </div>
-        </div>
-        <div class="layout-content">
-            <div id="navbarExample" class="navbar navbar-static scrollspy-nav">
-                <div class="navbar-inner">
-                    <div class="container-fluid" style="width: auto;">
-                        <ul class="nav">
-                            <li class="active"><a href="#scroll-main">{{ 'General'|trans }}</a></li>
+            {% endif %}
+        {% endmacro %}
+        {% set scrollBlocks = scrollBlocks|merge(
+            [{
+                'title': 'Groups and Roles',
+                'subblocks': [
+                    {
+                        'title': '',
+                        'data': [
+                            form.rolesCollection is defined ? form_row(form.groups, { attr: { class: 'horizontal' } }) : null,
+                            _self.userRoles(form)
+                        ]
+                    }
+                ]
+            }]
+        ) %}
+    {% endif %}
 
-                            {% if form.groups is defined or form.rolesCollection is defined %}
-                            <li><a href="#scroll-roles-groups">{{ 'Groups and Roles'|trans }}</a></li>
-                            {% endif %}
+    {% if form.values is defined %}
+        {% set scrollBlocks = scrollBlocks|merge(
+            [{
+                'title': 'Additional data',
+                'subblocks': [{
+                    'title': '',
+                    'useSpan': false,
+                    'data': [
+                        form_row(form.values)
+                    ]
+                }]
+            }]
+        ) %}
+    {% endif %}
 
-                            {% if form.values  is defined %}
-                            <li><a href="#scroll-attributes">{{ 'Additional data'|trans }}</a></li>
-                            {% endif %}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="clearfix">
-                {% if form_errors(form) %}
-                <div class="customer-info-actions container-fluid well-small">
-                    <div class="pull-left alert alert-error">
-                        <button class="close" type="button" data-dismiss="alert">×</button>
-                        {{ form_errors(form) }}
-                    </div>
-                </div>
-                {% endif %}
-                <div data-spy="scroll" data-target="#navbarExample" data-offset="50" class="scrollspy container-fluid scrollable-container">
-                    <div class="usser-row">
-                        <h4 id="scroll-main" class="scrollspy-title">{{ 'General'|trans }}</h4>
-                        <div class="row-fluid row-fluid-divider">
-                            <fieldset class="form-horizontal span6">
-                                <h5 class="usser-fiedset"><span>{{ 'Basic Information'|trans }}</span></h5>
-                                {{ form_row(form.enabled) }}
-                                {{ form_row(form.username) }}
-                                {% if form.plainPassword is defined %}
-                                    {{ form_row(form.plainPassword) }}
-                                {% endif %}
-                                {{ form_row(form.firstName) }}
-                                {{ form_row(form.lastName) }}
-                                {{ form_row(form.birthday) }}
-                                {{ form_row(form.imageFile) }}
-                            </fieldset>
-                            <fieldset class="form-horizontal span6">
-                                <h5 class="usser-fiedset"><span>{{ 'Contact Information'|trans }}</span></h5>
-                                {{ form_row(form.email) }}
-
-                                <div class="control-group">
-                                    <label for="selectAccountName" class="control-label">{{ 'Additional emails'|trans }}:</label>
-                                    <div class="controls">
-                                        <div class="row-oro">
-                                            <div class="collection-fields-list" data-prototype="{{ macros.collection_prototype(form.emails)|escape }}">
-                                                {% for emailField in form.emails.children %}
-                                                    {{ macros.collection_prototype(emailField) }}
-                                                {% endfor %}
-                                            </div>
-                                            <a class="btn add-list-item" href="javascript: void(0);">{{ 'Add another email'|trans }}</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
-                    </div>
-
-                    {% if form.groups is defined or form.rolesCollection is defined %}
-                    <div class="usser-row">
-                        <h4 id="scroll-roles-groups" class="scrollspy-title">{{ 'Groups and Roles'|trans }}</h4>
-                        <div class="row-fluid">
-                            {% if form.groups is defined %}
-                            <fieldset class="form-horizontal">
-                                {{ form_row(form.groups, { attr: { class: 'horizontal' } }) }}
-                            </fieldset>
-                            {% endif %}
-
-                            {% if form.rolesCollection is defined %}
-                            <fieldset class="form-horizontal" id="roles-list">
-                                {{ form_row(form.rolesCollection, { attr: { class: 'horizontal' } }) }}
-                            </fieldset>
-                            {% endif %}
-                        </div>
-                    </div>
-                    {% endif %}
-
-                    {% if form.values is defined %}
-                    <div class="usser-row">
-                        <h4 id="scroll-attributes" class="scrollspy-title">{{ 'Additional data'|trans }}</h4>
-                        <div class="row-fluid">
-                            <fieldset class="form-horizontal" id="attributes-list">
-                                {{ form_row(form.values) }}
-                            </fieldset>
-                        </div>
-                    </div>
-                    {% endif %}
-
-                    <div class="hide">
-                        {{ form_rest(form) }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-    {% endblock content %}
-{% endblock %}
+    {% set data =
+        {
+            'formErrors': form_errors(form)? form_errors(form) : null,
+            'scrollBlocks': scrollBlocks,
+            'hiddenData': form_rest(form)
+        }
+    %}
+    {{ parent() }}
+{% endblock scroll_data %}
