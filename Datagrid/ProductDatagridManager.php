@@ -1,12 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
-use Pim\Bundle\ConfigBundle\Manager\CurrencyManager;
-
 use Oro\Bundle\GridBundle\Property\FixedProperty;
-
-use Pim\Bundle\ConfigBundle\Manager\ChannelManager;
-use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Oro\Bundle\GridBundle\Property\FieldProperty;
