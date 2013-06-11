@@ -186,6 +186,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'filter_type' => FilterInterface::TYPE_CURRENCY,
                 'required'    => false,
                 'sortable'    => true,
+                'show_column' => false,
                 'filterable'  => true,
                 'show_filter' => true
             )
