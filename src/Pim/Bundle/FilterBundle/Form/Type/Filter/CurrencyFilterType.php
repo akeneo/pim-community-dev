@@ -48,8 +48,6 @@ class CurrencyFilterType extends NumberFilterType
         parent::buildForm($builder, $options);
 
         $builder->add('currency', 'choice', $this->createCurrencyOptions($options));
-//         $builder->add('type', $options['operator_type'], $this->createOperatorOptions($options));
-//         $builder->add('value', $options['field_type'], $this->createFieldOptions($options));
     }
 
     /**
