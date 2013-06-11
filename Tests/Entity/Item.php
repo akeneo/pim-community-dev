@@ -1,12 +1,10 @@
 <?php
+
 namespace Pim\Bundle\TranslationBundle\Tests\Entity;
 
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslatableEntity;
-
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Gedmo\Translatable\Translatable;
-
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**

@@ -1,8 +1,8 @@
 <?php
+
 namespace Pim\Bundle\TranslationBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\TranslationBundle\Tests\Entity\ItemTranslation;
-
 use Pim\Bundle\TranslationBundle\Tests\Entity\Item;
 
 /**
