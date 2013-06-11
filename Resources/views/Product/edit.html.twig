@@ -55,8 +55,8 @@
                         </div>
                         <ul class="inline">
                            <li>{{ 'Family'|trans }}: {{ form.vars.value.productFamily|capitalize|default('N/A'|trans) }}</li>
-                           <li>{{ 'Last update'|trans }}: {{ form.vars.value.updated|date("Y-m-d") }}</li>
-                           <li>{{ 'Created'|trans }}: {{ form.vars.value.created|date("Y-m-d") }}</li>
+                           <li>{{ 'Last update'|trans }}: {{ updated.loggedAt|date("Y-m-d h:i:s") }} {{ 'by' | trans }} {{ updated.user.username }}</li>
+                           <li>{{ 'Created'|trans }}: {{ created.loggedAt|date("Y-m-d h:i:s") }} {{ 'by' | trans }} {{ created.user.username }}</li>
                        </ul>
                    </div>
                 </div>

@@ -207,6 +207,8 @@ class ProductValue extends AbstractEntityFlexibleValue
      * Add missing prices
      *
      * @param array $activeCurrencies the active currency codes
+     *
+     * @return ProductValue
      */
     public function addMissingPrices($activeCurrencies)
     {
@@ -220,12 +222,34 @@ class ProductValue extends AbstractEntityFlexibleValue
             $price->setCurrency($currency);
             $this->addPrice($price);
         }
+
+        return $this;
+    }
+
+    /**
+     * Remove disabled prices
+     *
+     * @param array $activeCurrencies the active currency codes
+     *
+     * @return ProductValue
+     */
+    public function removeDisabledPrices($activeCurrencies)
+    {
+        foreach ($this->getPrices() as $price) {
+            if (!in_array($price->getCurrency(), $activeCurrencies)) {
+                $this->removePrice($price);
+            }
+        }
+
+        return $this;
     }
 
     /**
      * Sort price, default currency is first
      *
      * @param string $defaultCurrencyCode
+     *
+     * @return ProductValue
      */
     public function sortPrices($defaultCurrencyCode)
     {
@@ -246,6 +270,8 @@ class ProductValue extends AbstractEntityFlexibleValue
             }
         }
         $this->setPrices($sortedPrices);
+
+        return $this;
     }
 
     /**

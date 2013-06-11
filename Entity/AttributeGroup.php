@@ -71,6 +71,7 @@ class AttributeGroup implements TimestampableInterface, Translatable
      * @var ArrayCollection $attributes
      *
      * @ORM\OneToMany(targetEntity="ProductAttribute", mappedBy="group")
+     * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $attributes;
 
@@ -269,6 +270,7 @@ class AttributeGroup implements TimestampableInterface, Translatable
     public function addAttribute(\Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute)
     {
         $this->attributes[] = $attribute;
+        $attribute->setGroup($this);
 
         return $this;
     }
@@ -283,6 +285,7 @@ class AttributeGroup implements TimestampableInterface, Translatable
     public function removeAttribute(\Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute)
     {
         $this->attributes->removeElement($attribute);
+        $attribute->setGroup(null);
 
         return $this;
     }
@@ -295,6 +298,18 @@ class AttributeGroup implements TimestampableInterface, Translatable
     public function getAttributes()
     {
         return $this->attributes;
+    }
+
+    /**
+     * Check if the group has an attribute
+     *
+     * @param \Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute
+     *
+     * @return boolean
+     */
+    public function hasAttribute(\Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute)
+    {
+        return $this->attributes->contains($attribute);
     }
 
     /**

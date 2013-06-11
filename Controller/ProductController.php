@@ -153,12 +153,16 @@ class ProductController extends Controller
             }
         }
 
+        $auditManager = $this->container->get('pim_product.audit_manager');
+
         return array(
             'form'           => $form->createView(),
             'dataLocale'     => $this->getDataLocale(),
             'channels'       => $channels,
             'attributesForm' => $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
             'product'        => $product,
+            'created'        => $auditManager->getFirstLogEntry($product),
+            'updated'        => $auditManager->getLastLogEntry($product),
         );
     }
 
