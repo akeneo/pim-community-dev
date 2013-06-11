@@ -79,32 +79,57 @@
     </div>
 {% endmacro %}
 
-{% macro scrollSubblock(title, data) %}
-    <div class="form-horizontal span6">
+{% macro buttonType(type, class, label) %}
+    <div class="btn-group">
+        <button type="{{ type }}" class="btn {{ class }}"> {{ label|trans }}</button>
+    </div>
+{% endmacro %}
+
+{% macro buttonSeparator() %}
+    <div class="pull-left">
+        <div class="separator-btn"></div>
+    </div>
+{% endmacro %}
+
+{% macro scrollSubblock(title, data, isForm, useSpan) %}
+    {% if useSpan is not defined or useSpan == true %}
+        {% set span = 'span6' %}
+    {% else %}
+        {% set span = '' %}
+    {% endif %}
+    {% if isForm is defined and isForm == true %}
+        <fieldset class="form-horizontal {{ span }}">
+    {% else %}
+        <div class="form-horizontal {{ span }}">
+    {% endif %}
         {% if title|length %}<h5 class="usser-fiedset"><span>{{ title|trans }}</span></h5>{% endif %}
         {% for dataBlock in data %}
             {{ dataBlock|raw }}
         {% endfor %}
-    </div>
+    {% if isForm is defined and isForm == true %}
+        </fieldset>
+    {% else %}
+        </div>
+    {% endif %}
 {% endmacro %}
 
-{% macro scrollBlock(blockId, title, subblocks) %}
+{% macro scrollBlock(blockId, title, subblocks, isForm) %}
     <div class="usser-row">
         <h4 id="{{ blockId }}" class="scrollspy-title">{{ title|trans }}</h4>
         <div class="row-fluid">
             {% for subblock in subblocks %}
-                {{ _self.scrollSubblock(subblock.title|length ? subblock.title : null, subblock.data) }}
+                {{ _self.scrollSubblock(subblock.title|length ? subblock.title : null, subblock.data, isForm, subblock.useSpan is defined ? subblock.useSpan : true) }}
             {% endfor %}
         </div>
     </div>
 {% endmacro %}
 
-{% macro scrollData(dataTarget, data) %}
+{% macro scrollData(dataTarget, data, isForm) %}
     <div id="{{ dataTarget }}" class="navbar navbar-static scrollspy-nav">
         <div class="navbar-inner">
             <div class="container-fluid" style="width: auto;">
                 <ul class="nav">
-                    {% for navElement in data %}
+                    {% for navElement in data.scrollBlocks %}
                         <li {% if navElement.class is defined %}class="{{ navElement.class }}"{% endif %}><a href="#scroll-{{ loop.index }}">{{ navElement.title|trans }}</a></li>
                     {% endfor %}
                 </ul>
@@ -112,10 +137,39 @@
         </div>
     </div>
     <div class="clearfix">
+        {% if data.formErrors is defined and data.formErrors | length%}
+            <div class="customer-info-actions container-fluid well-small">
+                <div class="pull-left alert alert-error">
+                    <button class="close" type="button" data-dismiss="alert">×</button>
+                    {{ data.formErrors|raw }}
+                </div>
+            </div>
+        {% endif %}
         <div data-spy="scroll" data-target="#{{ dataTarget }}" data-offset="50" class="scrollspy container-fluid scrollable-container">
-            {% for scrollBlock in data %}
-                {{ _self.scrollBlock("scroll-" ~ loop.index, scrollBlock.title, scrollBlock.subblocks) }}
+            {% for scrollBlock in data.scrollBlocks %}
+                {{ _self.scrollBlock("scroll-" ~ loop.index, scrollBlock.title, scrollBlock.subblocks, isForm) }}
             {% endfor %}
+            {% if data.hiddenData is defined %}
+                <div class="hide">
+                    {{ data.hiddenData|raw }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro collectionField(field, label, buttonCaption) %}
+    <div class="control-group">
+        <label for="selectAccountName" class="control-label">{{ label|trans }}:</label>
+        <div class="controls">
+            <div class="row-oro">
+                <div class="collection-fields-list" data-prototype="{{ _self.collection_prototype(field)|escape }}">
+                    {% for emailField in field.children %}
+                        {{ _self.collection_prototype(emailField) }}
+                    {% endfor %}
+                </div>
+                <a class="btn add-list-item" href="javascript: void(0);">{{ buttonCaption|trans }}</a>
+            </div>
         </div>
     </div>
 {% endmacro %}
