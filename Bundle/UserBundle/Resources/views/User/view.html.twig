@@ -28,12 +28,12 @@
 
 {% block pageHeader %}
     {% set breadcrumbs = {
-        'entity': user,
-        'indexPath': path('oro_user_index'),
+        'entity':      user,
+        'indexPath':   path('oro_user_index'),
         'indexLabel': 'Users',
         'entityTitle': user.fullname(format)|default('N/A'),
-        'hasAvatar': true,
-        'imagePath': user.imagePath,
+        'hasAvatar':   true,
+        'imagePath':   user.imagePath,
     }
     %}
     {{ parent() }}

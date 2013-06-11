@@ -1,4 +1,4 @@
-{% extends 'OroUIBundle:actions:edit.html.twig' %}
+{% extends 'OroUIBundle:actions:update.html.twig' %}
 {% set format = oro_config_value('oro_user.name_format') %}
 {% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
 
@@ -6,52 +6,67 @@
 {% oro_title_set({params : {"%username%": form.vars.value.fullname(format)|default('N/A') }}) %}
 
 {% block navButtons %}
-    {% if form.vars.value.id and resource_granted('oro_user_user_delete') and  form.vars.value.id!=app.user.id %}
-        {{ UI.deleteButton({
-        aCss: 'no-hash', dataId: form.vars.value.id, dataMessage: 'Are you sure you want to delete this user?', title: 'Delete user', label: 'Delete'
-        }) }}
-        {{ UI.buttonSeparator() }}
-    {% endif %}
-    {{ UI.button(path('oro_user_index'), 'back', 'Cancel', 'Cancel') }}
-    {{ UI.buttonType('submit', 'btn-success', 'Save') }}
+{% if form.vars.value.id and resource_granted('oro_user_user_delete') and  form.vars.value.id!=app.user.id %}
+    {{ UI.deleteButton({
+    aCss: 'no-hash', dataId: form.vars.value.id, dataMessage: 'Are you sure you want to delete this user?', title: 'Delete user', label: 'Delete'
+    }) }}
+    {{ UI.buttonSeparator() }}
+{% endif %}
+{{ UI.button({'path' : path('oro_user_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
+{{ UI.buttonType({'type': 'submit', 'class': 'btn-success', 'label': 'Save'}) }}
 {% endblock navButtons %}
 
 {% block pageHeader %}
     {% if form.vars.value.id %}
-        {% include 'OroUserBundle:User:user_block.html.twig' with {'user': form.vars.value, 'showEnabled': false } %}
+        {% set breadcrumbs = {
+        'entity':      form.vars.value,
+        'indexPath':   path('oro_user_index'),
+        'indexLabel': 'Users',
+        'entityTitle': form.vars.value.fullname(format)|default('N/A'),
+        'hasAvatar':   true,
+        'imagePath':   form.vars.value.imagePath,
+        }
+        %}
+        {{ parent() }}
     {% else %}
         {% include 'OroUIBundle::page_title_block.html.twig' %}
     {% endif %}
 {% endblock pageHeader %}
 
+{% block stats %}
+    {{ parent() }}
+    <li>{{ 'Last logged in'|trans }}: {{ form.vars.value.lastLogin ? UI.time(form.vars.value.lastLogin) : 'N/A' }}</li>
+    <li>{{ 'Login count'|trans }}: {{ form.vars.value.loginCount|default(0) }}</li>
+{% endblock stats %}
+
 {% block scroll_data %}
     {% set id = 'user-profile' %}
 
     {% set scrollBlocks = [{
-            'title': 'General',
-            'class': 'active',
-            'subblocks': [
-                {
-                    'title': '',
-                    'data': [
-                        form_row(form.enabled),
-                        form_row(form.username),
-                        form.plainPassword is defined ? form_row(form.plainPassword) : '',
-                        form_row(form.firstName),
-                        form_row(form.lastName),
-                        form_row(form.birthday),
-                        form_row(form.imageFile)
-                    ]
-                },
-                {
-                    'title': '',
-                    'data': [
-                        form_row(form.email),
-                        UI.collectionField(form.emails, 'Additional emails', 'Add another email')
-                    ]
-                }
-            ]
-        }]
+    'title': 'General',
+    'class': 'active',
+    'subblocks': [
+    {
+    'title': '',
+    'data': [
+    form_row(form.enabled),
+    form_row(form.username),
+    form.plainPassword is defined ? form_row(form.plainPassword) : '',
+    form_row(form.firstName),
+    form_row(form.lastName),
+    form_row(form.birthday),
+    form_row(form.imageFile)
+    ]
+    },
+    {
+    'title': '',
+    'data': [
+    form_row(form.email),
+    UI.collectionField(form.emails, 'Additional emails', 'Add another email')
+    ]
+    }
+    ]
+    }]
 
     %}
 
@@ -64,42 +79,42 @@
             {% endif %}
         {% endmacro %}
         {% set scrollBlocks = scrollBlocks|merge(
-            [{
-                'title': 'Groups and Roles',
-                'subblocks': [
-                    {
-                        'title': '',
-                        'data': [
-                            form.rolesCollection is defined ? form_row(form.groups, { attr: { class: 'horizontal' } }) : null,
-                            _self.userRoles(form)
-                        ]
-                    }
-                ]
-            }]
+        [{
+        'title': 'Groups and Roles',
+        'subblocks': [
+        {
+        'title': '',
+        'data': [
+        form.rolesCollection is defined ? form_row(form.groups, { attr: { class: 'horizontal' } }) : null,
+        _self.userRoles(form)
+        ]
+        }
+        ]
+        }]
         ) %}
     {% endif %}
 
     {% if form.values is defined %}
         {% set scrollBlocks = scrollBlocks|merge(
-            [{
-                'title': 'Additional data',
-                'subblocks': [{
-                    'title': '',
-                    'useSpan': false,
-                    'data': [
-                        form_row(form.values)
-                    ]
-                }]
-            }]
+        [{
+        'title': 'Additional data',
+        'subblocks': [{
+        'title': '',
+        'useSpan': false,
+        'data': [
+        form_row(form.values)
+        ]
+        }]
+        }]
         ) %}
     {% endif %}
 
     {% set data =
-        {
-            'formErrors': form_errors(form)? form_errors(form) : null,
-            'scrollBlocks': scrollBlocks,
-            'hiddenData': form_rest(form)
-        }
+    {
+    'formErrors': form_errors(form)? form_errors(form) : null,
+    'scrollBlocks': scrollBlocks,
+    'hiddenData': form_rest(form)
+    }
     %}
     {{ parent() }}
 {% endblock scroll_data %}

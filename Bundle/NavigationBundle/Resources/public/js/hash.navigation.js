@@ -614,13 +614,15 @@ Oro.Navigation = Backbone.Router.extend({
     getHashUrl: function (includeGrid) {
         var url = this.url;
         if (!url) {
-            /**
-             * Get real url part from the hash without grid state
-             */
-            var urlParts = Backbone.history.fragment.split('|g/');
-            url = urlParts[0].replace('url=', '');
-            if (urlParts[1] && (!_.isUndefined(includeGrid) && includeGrid === true)) {
-                url += '#g/' + urlParts[1];
+            if (Backbone.history.fragment) {
+                /**
+                 * Get real url part from the hash without grid state
+                 */
+                var urlParts = Backbone.history.fragment.split('|g/');
+                url = urlParts[0].replace('url=', '');
+                if (urlParts[1] && (!_.isUndefined(includeGrid) && includeGrid === true)) {
+                    url += '#g/' + urlParts[1];
+                }
             }
             if (!url) {
                 url = window.location.pathname + window.location.search;
