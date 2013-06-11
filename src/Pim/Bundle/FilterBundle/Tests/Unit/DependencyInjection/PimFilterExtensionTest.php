@@ -48,14 +48,16 @@ class PimFilterExtensionTest extends \PHPUnit_Framework_TestCase
     public function testLoad()
     {
         $expectedFilters = array(
+            'pim_filter.form.type.filter.category',
+            'pim_filter.form.type.filter.currency',
             'pim_filter.form.type.filter.entity',
             'pim_filter.form.type.filter.locale',
             'pim_filter.form.type.filter.scope'
         );
 
         $this->extension->load($this->configs, $this->containerBuilder);
+        $this->assertCount(6, $this->containerBuilder->getServiceIds());
 
-        $this->assertCount(5, $this->containerBuilder->getServiceIds());
         foreach ($expectedFilters as $expectedFilter) {
             $this->assertContains($expectedFilter, $this->containerBuilder->getServiceIds());
         }
