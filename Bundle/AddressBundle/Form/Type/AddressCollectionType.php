@@ -2,23 +2,19 @@
 
 namespace Oro\Bundle\AddressBundle\Form\Type;
 
-use Symfony\Component\Form\FormBuilderInterface;
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\CollectionAbstract;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class AddressCollectionType extends CollectionAbstract
+class AddressCollectionType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        parent::buildForm($builder, $options);
-
-        $builder->add(
-            'multiAddress',
-            'collection',
+        $resolver->setDefaults(
             array(
-                'type'           => 'oro_address',
+                'type'           => 'oro_address_typed',
                 'allow_add'      => true,
                 'allow_delete'   => true,
                 'by_reference'   => false,
@@ -27,6 +23,14 @@ class AddressCollectionType extends CollectionAbstract
                 'label'          => ' '
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return 'collection';
     }
 
     /**

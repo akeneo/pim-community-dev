@@ -386,6 +386,8 @@ class AddressBase extends AbstractEntityFlexible
             $this->getPostalCode(),
         );
 
-        return implode(' ', $data);
+        $str = implode(' ', $data);
+        $check = trim(str_replace(',', '', $str));
+        return empty($check) ? '' : $str;
     }
 }
