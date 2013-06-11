@@ -122,6 +122,12 @@ class LocaleSubscriber implements EventSubscriberInterface
     {
         $choices = $this->locales;
 
+        foreach ($choices as $code => $label) {
+            if (!in_array($code, $this->existingLocales)) {
+                unset($choices[$code]);
+            }
+        }
+
         foreach ($this->localesWithFallback as $locale) {
             unset($choices[$locale->getCode()]);
         }
