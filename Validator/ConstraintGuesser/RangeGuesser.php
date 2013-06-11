@@ -25,11 +25,15 @@ class RangeGuesser implements ConstraintGuesserInterface
     public function guessConstraints(AbstractAttribute $attribute)
     {
         $constraints = array();
-
-        if ($attribute->getNumberMin() || $attribute->getNumberMax()) {
+        $min = $attribute->getNumberMin();
+        $max = $attribute->getNumberMax();
+        if ($min || $max) {
+            if (false === $attribute->getNegativeAllowed()) {
+                $min = 0;
+            }
             $constraints[] = new Assert\Range(array(
-                'min' => $attribute->getNumberMin(),
-                'max' => $attribute->getNumberMax(),
+                'min' => $min,
+                'max' => $max,
             ));
         }
 

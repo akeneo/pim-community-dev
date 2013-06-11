@@ -50,6 +50,20 @@ class RangeGuesserTest extends ConstraintGuesserTest
         ));
     }
 
+    public function testGuessNegativeNotAllowedConstraint()
+    {
+        $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
+            'backendType'     => AbstractAttributeType::BACKEND_TYPE_INTEGER,
+            'negativeAllowed' => false,
+            'numberMin'       => 100,
+        )));
+
+        $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\Range', $constraints);
+        $this->assertConstraintsConfiguration('Symfony\Component\Validator\Constraints\Range', $constraints, array(
+            'min' => 0,
+        ));
+    }
+
     public function testGuessMaxConstraint()
     {
         $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
