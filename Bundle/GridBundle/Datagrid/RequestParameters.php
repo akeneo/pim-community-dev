@@ -109,4 +109,21 @@ class RequestParameters implements ParametersInterface
 
         return $result;
     }
+
+    /**
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->getRequest()->getLocale();
+    }
+
+    /**
+     * @return string
+     */
+    public function getScope()
+    {
+        $rootValue = $this->getRootParameterValue();
+        return isset($rootValue[self::SCOPE_PARAMETER]) ? $rootValue[self::SCOPE_PARAMETER] : null;
+    }
 }

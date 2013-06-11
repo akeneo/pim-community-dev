@@ -306,7 +306,7 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
      *
      * @return string
      */
-    protected function getRootAlias()
+    public function getRootAlias()
     {
         if (!$this->rootAlias) {
             $this->rootAlias = current($this->getQueryBuilder()->getRootAliases());
