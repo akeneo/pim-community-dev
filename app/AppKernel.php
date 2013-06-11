@@ -56,14 +56,16 @@ class AppKernel extends Kernel
 
             // BAP overrided bundles
             new Pim\Bundle\NavigationBundle\PimNavigationBundle(),
+            new Pim\Bundle\FilterBundle\PimFilterBundle(),
+            new Pim\Bundle\GridBundle\PimGridBundle(),
+            new Pim\Bundle\UserBundle\PimUserBundle(),
 
             // PIM bundles
             new Pim\Bundle\UIBundle\PimUIBundle(),
             new Pim\Bundle\ProductBundle\PimProductBundle(),
             new Pim\Bundle\ConfigBundle\PimConfigBundle(),
             new Pim\Bundle\TranslationBundle\PimTranslationBundle(),
-            new Pim\Bundle\FilterBundle\PimFilterBundle(),
-            new Pim\Bundle\GridBundle\PimGridBundle(),
+
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
