@@ -7,6 +7,7 @@
                 <span class="separator">/</span>
                 <h1 class="usser-name">{{ user.fullname(format)|default('N/A') }}</h1>
             </div>
+            {% if  showEnabled is not defined or showEnabled == true %}
             <div class="status-enabled pull-left">
                 {% if user.enabled %}
                     <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled"></i>{{ 'Active'|trans }}</div>
@@ -14,6 +15,7 @@
                     <div class="badge badge-enabled status-disabled"><i class="icon-status-disabled"></i>{{ 'Inactive'|trans }}</div>
                 {% endif %}
             </div>
+            {% endif %}
         </div>
         <div class="clearfix">
             <ul class="inline">

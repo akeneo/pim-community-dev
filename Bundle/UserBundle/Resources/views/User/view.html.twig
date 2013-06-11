@@ -63,7 +63,8 @@
     {% endfor %}
 
     {% set id = 'user-profile' %}
-    {% set data =
+    {% set data = {
+        'scrollBlocks':
             [
                 {
                     'title': 'General',
@@ -79,7 +80,6 @@
                                 UI.renderAttribute('API key', _self.api_data_block(user))
                             ]
                         },
-
                         {
                             'title': 'Contact Information',
                             'data': [
@@ -95,6 +95,7 @@
                     ]
                 }
             ]
+        }
     %}
     {{ parent() }}
 {% endblock scroll_data %}
