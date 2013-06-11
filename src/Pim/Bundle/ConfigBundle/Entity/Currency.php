@@ -39,7 +39,7 @@ class Currency
     /**
      * @var boolean $activated
      *
-     * @ORM\Column(name="is_activate", type="boolean")
+     * @ORM\Column(name="is_activated", type="boolean")
      */
     protected $activated;
 

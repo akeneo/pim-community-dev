@@ -44,7 +44,7 @@ class CategoryFilterType extends ChoiceFilterType
      */
     public function getParent()
     {
-        return ChoiceFilterType::NAME;
+        return parent::getName();
     }
 
     /**
