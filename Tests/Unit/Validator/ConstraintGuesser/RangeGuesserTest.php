@@ -35,6 +35,12 @@ class RangeGuesserTest extends ConstraintGuesserTest
                 'backendType' => AbstractAttributeType::BACKEND_TYPE_METRIC
             ))
         ));
+
+        $this->assertTrue($this->target->supportAttribute(
+            $this->getAttributeMock(array(
+                'backendType' => AbstractAttributeType::BACKEND_TYPE_PRICE
+            ))
+        ));
     }
 
     public function testGuessMinConstraint()

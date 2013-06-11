@@ -16,7 +16,11 @@ class TypeGuesser implements ConstraintGuesserInterface
 {
     public function supportAttribute(AbstractAttribute $attribute)
     {
-        return AbstractAttributeType::BACKEND_TYPE_INTEGER === $attribute->getBackendType();
+        return in_array($attribute->getBackendType(), array(
+            AbstractAttributeType::BACKEND_TYPE_INTEGER,
+            AbstractAttributeType::BACKEND_TYPE_METRIC,
+            AbstractAttributeType::BACKEND_TYPE_PRICE,
+        ));
     }
 
     public function guessConstraints(AbstractAttribute $attribute)

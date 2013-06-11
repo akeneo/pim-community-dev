@@ -19,6 +19,7 @@ class RangeGuesser implements ConstraintGuesserInterface
         return in_array($attribute->getBackendType(), array(
             AbstractAttributeType::BACKEND_TYPE_INTEGER,
             AbstractAttributeType::BACKEND_TYPE_METRIC,
+            AbstractAttributeType::BACKEND_TYPE_PRICE,
         ));
     }
 
