@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
+use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 
@@ -20,6 +22,22 @@ class LocaleFilterType extends ChoiceFilterType
      * @staticvar string
      */
     const NAME = 'pim_type_locale_filter';
+
+    /**
+     * @var LocaleManager
+     */
+    protected $localeManager;
+
+    /**
+     * @param TranslatorInterface $translator
+     * @param LocaleManager       $localeManager
+     */
+    public function __construct(TranslatorInterface $translator, LocaleManager $localeManager)
+    {
+        parent::__construct($translator);
+
+        $this->localeManager = $localeManager;
+    }
 
     /**
      * {@inheritdoc}
@@ -42,10 +60,13 @@ class LocaleFilterType extends ChoiceFilterType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $codes = $this->localeManager->getActiveCodesWithUserLocale();
+        $localeChoices = array_combine($codes, $codes);
+
         $resolver->setDefaults(
             array(
                 'field_type' => 'choice',
-                'field_options' => array('choices' => array()),
+                'field_options' => array('choices' => $localeChoices)
             )
         );
     }

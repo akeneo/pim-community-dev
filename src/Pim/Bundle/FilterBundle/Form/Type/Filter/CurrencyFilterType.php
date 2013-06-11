@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
+use Pim\Bundle\ConfigBundle\Manager\CurrencyManager;
 use Symfony\Component\Form\FormBuilderInterface;
-
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 
 /**
@@ -23,6 +23,22 @@ class CurrencyFilterType extends NumberFilterType
      * @staticvar string
      */
     const NAME = 'pim_type_currency_filter';
+
+    /**
+     * @var CurrencyManager
+     */
+    protected $currencyManager;
+
+    /**
+     * @param TranslatorInterface $translator
+     * @param CurrencyManager     $currencyManager
+     */
+    public function __construct(TranslatorInterface $translator, CurrencyManager $currencyManager)
+    {
+        parent::__construct($translator);
+
+        $this->currencyManager = $currencyManager;
+    }
 
     /**
      * {@inheritdoc}
@@ -82,20 +98,23 @@ class CurrencyFilterType extends NumberFilterType
             self::TYPE_LESS_THAN => $this->translator->trans('label_type_less_than', array(), 'OroFilterBundle'),
         );
 
-        $currencyChoices = array(
-            'EUR' => '€',
-            'USD' => '$'
-        );
+        $codes = $this->currencyManager->getActiveCodes();
+        $currencyChoices = array_combine($codes, $codes);
 
-        $resolver->setDefaults(
+        return $resolver->setDefaults(
             array(
                 'field_type' => 'number',
                 'operator_choices' => $operatorChoices,
+                'operator_type' => 'choice',
+                'operator_options' => array(),
                 'currency_choices' => $currencyChoices,
+                'currency_type' => 'choice',
                 'currency_options' => array(),
                 'data_type' => self::DATA_DECIMAL,
                 'formatter_options' => array()
             )
         );
+
+        return $resolver;
     }
 }
