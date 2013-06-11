@@ -4,7 +4,7 @@ services:
         arguments:
             - "text"
             - "textarea"
-            - @oro_flexibleentity.form.validator.constraint_guesser
+            - @oro_flexibleentity.validator.attribute_constraint_guesser
         tags:
             - { name: oro_flexibleentity.attributetype, alias: pim_product_textarea }
 
@@ -13,7 +13,7 @@ services:
         arguments:
             - "options"
             - "entity"
-            - @oro_flexibleentity.form.validator.constraint_guesser
+            - @oro_flexibleentity.validator.attribute_constraint_guesser
         tags:
             - { name: oro_flexibleentity.attributetype, alias: pim_product_multiselect }
 
@@ -22,7 +22,7 @@ services:
         arguments:
             - "options"
             - "entity"
-            - @oro_flexibleentity.form.validator.constraint_guesser
+            - @oro_flexibleentity.validator.attribute_constraint_guesser
         tags:
             - { name: oro_flexibleentity.attributetype, alias: pim_product_simpleselect }
 
@@ -31,7 +31,7 @@ services:
         arguments:
             - "prices"
             - "pim_product_price_collection"
-            - @oro_flexibleentity.form.validator.constraint_guesser
+            - @oro_flexibleentity.validator.attribute_constraint_guesser
             - @pim_config.manager.currency
         tags:
             - { name: oro_flexibleentity.attributetype, alias: pim_product_price_collection }
