@@ -47,6 +47,6 @@ class ProductAttributeRepository extends EntityRepository
      */
     public function findAllGrouped()
     {
-        return $this->createQueryBuilder('a')->where('a.group > 0')->orderBy('a.label')->getQuery()->getResult();
+        return $this->createQueryBuilder('a')->where('a.group IS NOT NULL')->orderBy('a.label')->getQuery()->getResult();
     }
 }
