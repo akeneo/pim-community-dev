@@ -2,15 +2,12 @@
 
 namespace Pim\Bundle\GridBundle\Filter\ORM;
 
+use Oro\Bundle\GridBundle\Filter\ORM\ChoiceFilter;
 use Doctrine\ORM\Query\Expr\From;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\CategoryFilterType;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Doctrine\ORM\Query\Expr;
-<<<<<<< HEAD
-=======
-use Oro\Bundle\GridBundle\Filter\ORM\ChoiceFilter;
->>>>>>> master
 
 /**
  * Overriding of Choice filter to link an entity with another one having many to many join
