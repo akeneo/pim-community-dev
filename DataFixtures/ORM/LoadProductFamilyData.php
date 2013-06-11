@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;

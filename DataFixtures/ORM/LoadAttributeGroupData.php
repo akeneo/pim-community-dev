@@ -1,22 +1,15 @@
 <?php
+
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
 use Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation;
-
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
-
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-
 use Doctrine\Common\DataFixtures\AbstractFixture;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

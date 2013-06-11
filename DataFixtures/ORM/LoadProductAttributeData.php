@@ -1,8 +1,8 @@
 <?php
+
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;

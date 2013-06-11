@@ -1,12 +1,10 @@
 <?php
+
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
-
 use Oro\Bundle\UserBundle\Entity\User;
-
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Doctrine\Common\Persistence\ObjectManager;

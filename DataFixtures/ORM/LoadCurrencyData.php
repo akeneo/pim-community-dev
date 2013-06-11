@@ -1,18 +1,13 @@
 <?php
+
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
 use Symfony\Component\Yaml\Yaml;
-
 use Pim\Bundle\ConfigBundle\Entity\Currency;
-
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-
 use Doctrine\Common\DataFixtures\AbstractFixture;
 
 /**

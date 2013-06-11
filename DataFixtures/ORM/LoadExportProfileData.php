@@ -1,20 +1,14 @@
 <?php
+
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
 use Pim\Bundle\ProductBundle\Entity\ExportProfileTranslation;
-
 use Pim\Bundle\ProductBundle\Entity\ExportProfile;
-
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-
 use Doctrine\Common\DataFixtures\AbstractFixture;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
