@@ -16,7 +16,10 @@ class RangeGuesser implements ConstraintGuesserInterface
 {
     public function supportAttribute(AbstractAttribute $attribute)
     {
-        return AbstractAttributeType::BACKEND_TYPE_INTEGER === $attribute->getBackendType();
+        return in_array($attribute->getBackendType(), array(
+            AbstractAttributeType::BACKEND_TYPE_INTEGER,
+            AbstractAttributeType::BACKEND_TYPE_METRIC,
+        ));
     }
 
     public function guessConstraints(AbstractAttribute $attribute)
