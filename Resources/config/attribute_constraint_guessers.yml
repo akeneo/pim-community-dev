@@ -38,9 +38,9 @@ services:
         tags:
             - { name: pim.attribute_constraint_guesser }
 
-    pim.attribute_constraint_guesser.type:
+    pim.attribute_constraint_guesser.not_decimal:
         public: false
-        class: Pim\Bundle\ProductBundle\Validator\ConstraintGuesser\TypeGuesser
+        class: Pim\Bundle\ProductBundle\Validator\ConstraintGuesser\NotDecimalGuesser
         tags:
             - { name: pim.attribute_constraint_guesser }
 
