@@ -60,8 +60,8 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * Constructor
      *
-     * @param string              $backendType the backend type
-     * @param string              $formType    the form type
+     * @param string $backendType the backend type
+     * @param string $formType    the form type
      */
     public function __construct($backendType, $formType, ConstraintGuesserInterface $constraintGuesser)
     {
@@ -174,7 +174,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function buildAttributeFormType(FormFactoryInterface $factory, AbstractAttribute $attribute)
+    public function buildAttributeFormTypes(FormFactoryInterface $factory, AbstractAttribute $attribute)
     {
         // TODO will be used to build attribute create / edit form for attribute management, cf BAP-650
 
