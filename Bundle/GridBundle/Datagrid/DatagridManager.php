@@ -38,6 +38,11 @@ abstract class DatagridManager implements DatagridManagerInterface
     protected $translator;
 
     /**
+     * @var string
+     */
+    protected $translationDomain;
+
+    /**
      * @var ValidatorInterface
      */
     protected $validator;
@@ -102,6 +107,14 @@ abstract class DatagridManager implements DatagridManagerInterface
     public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTranslationDomain($translationDomain)
+    {
+        $this->translationDomain = $translationDomain;
     }
 
     /**
@@ -384,5 +397,15 @@ abstract class DatagridManager implements DatagridManagerInterface
     protected function getDefaultPager()
     {
         return array();
+    }
+
+    /**
+     * @param string $id
+     * @param array $parameters
+     * @return string
+     */
+    protected function translate($id, array $parameters = array())
+    {
+        return $this->translator->trans($id, $parameters, $this->translationDomain);
     }
 }

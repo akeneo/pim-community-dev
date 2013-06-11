@@ -5,20 +5,25 @@ namespace Oro\Bundle\GridBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Config\Definition\Exception\InvalidDefinitionException;
 
+use Oro\Bundle\GridBundle\DependencyInjection\OroGridExtension;
+
 class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
 {
-    const QUERY_FACTORY_ATTRIBUTE    = 'query_factory';
-    const ROUTE_GENERATOR_ATTRIBUTE  = 'route_generator';
-    const DATAGRID_BUILDER_ATTRIBUTE = 'datagrid_builder';
-    const LIST_BUILDER_ATTRIBUTE     = 'list_builder';
-    const PARAMETERS_ATTRIBUTE       = 'parameters';
-    const TRANSLATOR_ATTRIBUTE       = 'translator';
-    const VALIDATOR_ATTRIBUTE        = 'validator';
-    const ROUTER_ATTRIBUTE           = 'router';
+    const QUERY_FACTORY_ATTRIBUTE      = 'query_factory';
+    const ROUTE_GENERATOR_ATTRIBUTE    = 'route_generator';
+    const DATAGRID_BUILDER_ATTRIBUTE   = 'datagrid_builder';
+    const LIST_BUILDER_ATTRIBUTE       = 'list_builder';
+    const PARAMETERS_ATTRIBUTE         = 'parameters';
+    const TRANSLATOR_ATTRIBUTE         = 'translator';
+    const TRANSLATION_DOMAIN_ATTRIBUTE = 'translation_domain';
+    const VALIDATOR_ATTRIBUTE          = 'validator';
+    const ROUTER_ATTRIBUTE             = 'router';
+    const ENTITY_HINT_ATTRIBUTE        = 'entity_hint';
 
     /**
      * {@inheritDoc}
@@ -34,7 +39,10 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
      */
     protected function applyConfigurationFromAttributes()
     {
-        $keys = array(
+        $this->definition->addMethodCall('setName', array($this->getMandatoryAttribute('datagrid_name')));
+
+        // add services
+        $serviceKeys = array(
             self::QUERY_FACTORY_ATTRIBUTE,
             self::ROUTE_GENERATOR_ATTRIBUTE,
             self::DATAGRID_BUILDER_ATTRIBUTE,
@@ -45,7 +53,7 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
             self::ROUTER_ATTRIBUTE,
         );
 
-        foreach ($keys as $key) {
+        foreach ($serviceKeys as $key) {
             $method = 'set' . $this->camelize($key);
             if (!$this->hasAttribute($key) || $this->definition->hasMethodCall($method)) {
                 continue;
@@ -54,10 +62,19 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
             $this->definition->addMethodCall($method, array(new Reference($this->getAttribute($key))));
         }
 
-        $this->definition->addMethodCall('setName', array($this->getMandatoryAttribute('datagrid_name')));
+        // add other attributes
+        $attributeKeys = array(
+            self::ENTITY_HINT_ATTRIBUTE,
+            self::TRANSLATION_DOMAIN_ATTRIBUTE
+        );
 
-        if ($this->hasAttribute('entity_hint')) {
-            $this->definition->addMethodCall('setEntityHint', array($this->getAttribute('entity_hint')));
+        foreach ($attributeKeys as $key) {
+            $method = 'set' . $this->camelize($key);
+            if (!$this->hasAttribute($key) || $this->definition->hasMethodCall($method)) {
+                continue;
+            }
+
+            $this->definition->addMethodCall($method, array($this->getAttribute($key)));
         }
     }
 
@@ -68,6 +85,7 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
     {
         $this->definition->setScope(ContainerInterface::SCOPE_PROTOTYPE);
 
+        // add default services
         $defaultAddServices = array(
             self::QUERY_FACTORY_ATTRIBUTE    => array($this, 'getDefaultQueryFactoryServiceId'),
             self::ROUTE_GENERATOR_ATTRIBUTE  => array($this, 'getDefaultRouteGeneratorServiceId'),
@@ -79,14 +97,27 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
             self::ROUTER_ATTRIBUTE           => 'router',
         );
 
-        foreach ($defaultAddServices as $attribute => $serviceId) {
+        foreach ($defaultAddServices as $attribute => $parameterId) {
             $method = 'set' . $this->camelize($attribute);
 
             if (!$this->definition->hasMethodCall($method)) {
-                if (is_callable($serviceId)) {
-                    $serviceId = call_user_func($serviceId);
+                if (is_callable($parameterId)) {
+                    $parameterId = call_user_func($parameterId);
                 }
-                $this->definition->addMethodCall($method, array(new Reference($serviceId)));
+                $this->definition->addMethodCall($method, array(new Reference($parameterId)));
+            }
+        }
+
+        // add default parameters
+        $defaultAddParameters = array(
+            self::TRANSLATION_DOMAIN_ATTRIBUTE => OroGridExtension::PARAMETER_TRANSLATION_DOMAIN
+        );
+
+        foreach ($defaultAddParameters as $attribute => $parameterId) {
+            $method = 'set' . $this->camelize($attribute);
+
+            if (!$this->definition->hasMethodCall($method)) {
+                $this->definition->addMethodCall($method, array(new Parameter($parameterId)));
             }
         }
     }
