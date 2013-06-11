@@ -39,5 +39,5 @@ interface AttributeTypeInterface
      *
      * @return FormInterface the form
      */
-    public function buildAttributeFormType(FormFactoryInterface $factory, AbstractAttribute $attribute);
+    public function buildAttributeFormTypes(FormFactoryInterface $factory, AbstractAttribute $attribute);
 }
