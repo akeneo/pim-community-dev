@@ -42,21 +42,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
     const SCOPE_FIELD_NAME  = 'scope';
 
     /**
-     * @var LocaleManager
-     */
-    protected $localeManager;
-
-    /**
-     * @var ChannelManager
-     */
-    protected $channelManager;
-
-    /**
-     * @var CurrencyManager
-     */
-    protected $currencyManager;
-
-    /**
      * get properties
      * @return array
      */
@@ -276,8 +261,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function createLocaleField()
     {
-        $activeLocaleCodes = $this->localeManager->getActiveCodesWithUserLocale();
-
         $field = new FieldDescription();
         $field->setName(self::LOCALE_FIELD_NAME);
         $field->setOptions(
@@ -289,10 +272,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'required'    => false,
                 'filterable'  => true,
                 'show_column' => false,
-                'show_filter' => true,
-                'field_options' => array(
-                    'choices' => array_combine($activeLocaleCodes, $activeLocaleCodes)
-                ),
+                'show_filter' => true
             )
         );
 
@@ -306,8 +286,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function createScopeField()
     {
-        $channelChoices = $this->channelManager->getChannelChoiceWithUserChannel();
-
         $field = new FieldDescription();
         $field->setName(self::SCOPE_FIELD_NAME);
         $field->setOptions(
@@ -319,10 +297,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'required'    => false,
                 'filterable'  => true,
                 'show_column' => false,
-                'show_filter' => true,
-                'field_options' => array(
-                    'choices' => $channelChoices
-                ),
+                'show_filter' => true
             )
         );
 
@@ -416,47 +391,5 @@ class ProductDatagridManager extends FlexibleDatagridManager
         }
 
         return $dataScope;
-    }
-
-    /**
-     * Set locale manager
-     *
-     * @param LocaleManager $localeManager
-     *
-     * @return \Pim\Bundle\ProductBundle\Datagrid\ProductDatagridManager
-     */
-    public function setLocaleManager(LocaleManager $localeManager)
-    {
-        $this->localeManager = $localeManager;
-
-        return $this;
-    }
-
-    /**
-     * Set channel manager
-     *
-     * @param ChannelManager $channelManager
-     *
-     * @return \Pim\Bundle\ProductBundle\Datagrid\ProductDatagridManager
-     */
-    public function setChannelManager(ChannelManager $channelManager)
-    {
-        $this->channelManager = $channelManager;
-
-        return $this;
-    }
-
-    /**
-     * Set currency manager
-     *
-     * @param CurrencyManager $currencyManager
-     *
-     * @return \Pim\Bundle\ProductBundle\Datagrid\ProductDatagridManager
-     */
-    public function setCurrencyManager(CurrencyManager $currencyManager)
-    {
-        $this->currencyManager = $currencyManager;
-
-        return $this;
     }
 }

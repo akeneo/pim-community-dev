@@ -24,7 +24,3 @@ services:
               entity_hint: products
               flexible: true
               route_name: pim_product_product_index
-        calls:
-            - [ setLocaleManager, [@pim_config.manager.locale] ]
-            - [ setChannelManager, [@pim_config.manager.channel] ]
-            - [ setCurrencyManager, [@pim_config.manager.currency] ]
