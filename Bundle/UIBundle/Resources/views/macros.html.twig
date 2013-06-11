@@ -68,6 +68,16 @@
     </div>
 {% endmacro %}
 
+{% macro addButton(parameters) %}
+    <a href="{{ parameters.path }}"
+       class="btn btn-primary pull-right {{ parameters.aClass is defined? parameters.aClass : '' }}"
+       {% if parameters.title is defined %}
+            title="{{ parameters.title|trans }}">
+       {% endif %}
+       {{ parameters.label|trans }}
+    </a>
+{% endmacro %}
+
 {% macro deleteButton(parameters) %}
     <div class="pull-left btn-group icons-holder">
         <a href="javascript: void(0);" class="btn icons-holder-text {{ parameters.aCss is defined? parameters.aCss : '' }}"
@@ -127,6 +137,9 @@
     </div>
 {% endmacro %}
 
+{% macro gridBlock(gridId) %}
+    <div id="{{ gridId }}"></div>
+{% endmacro %}
 {% macro scrollData(dataTarget, data, isForm) %}
     <div id="{{ dataTarget }}" class="navbar navbar-static scrollspy-nav">
         <div class="navbar-inner">
