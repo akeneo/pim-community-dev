@@ -60,6 +60,12 @@ interface DatagridManagerInterface
     public function setTranslator(TranslatorInterface $translator);
 
     /**
+     * @param string $translationDomain
+     * @return void
+     */
+    public function setTranslationDomain($translationDomain);
+
+    /**
      * @param ValidatorInterface $validator
      * @return void
      */
