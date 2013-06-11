@@ -1,8 +1,8 @@
 <?php
+
 namespace Pim\Bundle\GridBundle\Tests\Unit\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-
 use Pim\Bundle\GridBundle\DependencyInjection\PimGridExtension;
 
 /**

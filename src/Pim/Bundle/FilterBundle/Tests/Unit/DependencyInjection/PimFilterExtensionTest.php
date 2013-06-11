@@ -1,8 +1,8 @@
 <?php
+
 namespace Pim\Bundle\FilterBundle\Tests\Unit\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-
 use Pim\Bundle\FilterBundle\DependencyInjection\PimFilterExtension;
 
 /**
@@ -28,7 +28,7 @@ class PimFilterExtensionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @var ContainerBuilder
-     */
+    */
     protected $containerBuilder;
 
     /**
@@ -48,9 +48,9 @@ class PimFilterExtensionTest extends \PHPUnit_Framework_TestCase
     public function testLoad()
     {
         $expectedFilters = array(
-            'pim_filter.form.type.filter.entity',
-            'pim_filter.form.type.filter.locale',
-            'pim_filter.form.type.filter.scope'
+                'pim_filter.form.type.filter.entity',
+                'pim_filter.form.type.filter.locale',
+                'pim_filter.form.type.filter.scope'
         );
 
         $this->extension->load($this->configs, $this->containerBuilder);
