@@ -23,70 +23,54 @@ class RegisterAttributeConstraintGuessersPassTest extends \PHPUnit_Framework_Tes
 
     public function testProcessUnknownAttributeConstraintGuesserService()
     {
-        $container = $this->getContainerBuilderMock(array(
-            'hasDefinition' => array(
-                'with'   => 'oro_flexibleentity.validator.attribute_constraint_guesser',
-                'return' => false
-            ),
-            'getDefinition' => array('expectation' => $this->never()),
-        ));
+        $container = $this->getContainerBuilderMock();
 
         $this->target->process($container);
     }
 
     public function testProcessTaggedAttributeConstraintGuessersService()
     {
-        $container = $this->getContainerBuilderMock(array(
-            'hasDefinition' => array(
-                'with'   => 'oro_flexibleentity.validator.attribute_constraint_guesser',
-                'return' => true
-            ),
-            'getDefinition' => array(
-                'with'   => 'oro_flexibleentity.validator.attribute_constraint_guesser',
-                'return' => $this->getDefinitionMock(array(
-                    'addMethodCall' => array(
-                        'expectation' => $this->exactly(2),
-                    )
-                ))
-            ),
-            'findTaggedServiceIds' => array(
-                'with'   => 'pim.attribute_constraint_guesser',
-                'return' => array(
-                    'pim.attribute_constraint_guesser.foo',
-                    'pim.attribute_constraint_guesser.bar',
-                )
-            ),
+        $definition = $this->getDefinitionMock();
+        $container  = $this->getContainerBuilderMock($definition, array(
+            'pim.attribute_constraint_guesser.foo',
+            'pim.attribute_constraint_guesser.bar',
         ));
+
+        $definition->expects($this->exactly(2))
+            ->method('addMethodCall')
+            ->with('addConstraintGuesser', $this->anything());
 
         $this->target->process($container);
     }
 
-    public function __call($name, $arguments)
+    private function getContainerBuilderMock($definition = null, array $taggedServices = array())
     {
-        preg_match('/^get(.*)Mock$/', $name, $matches);
-        $classes = array(
-            'ContainerBuilder' => 'Symfony\Component\DependencyInjection\ContainerBuilder',
-            'Definition'       => 'Symfony\Component\DependencyInjection\Definition',
-        );
-        $options = $arguments[0];
-        $mock = $this->getMock($classes[$matches[1]], array_keys($options));
+        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
 
-        foreach ($options as $name => $data) {
-            $data = array_merge(array(
-                'return'      => null,
-                'with'        => null,
-                'expectation' => $this->any(),
-            ), $data);
+        $container->expects($this->any())
+            ->method('hasDefinition')
+            ->with('oro_flexibleentity.validator.attribute_constraint_guesser')
+            ->will($this->returnValue(null !== $definition));
 
-            $method = $mock->expects($data['expectation'])
-                ->method($name);
-            if ($data['with']) {
-               $method->with($data['with']);
-            }
-            $method->will($this->returnValue($data['return']));
+        if ($definition) {
+            $container->expects($this->any())
+                ->method('getDefinition')
+                ->will($this->returnValue($definition));
+
+            $container->expects($this->any())
+                ->method('findTaggedServiceIds')
+                ->with('pim.attribute_constraint_guesser')
+                ->will($this->returnValue($taggedServices));
+        } else {
+            $container->expects($this->never())
+                ->method('getDefinition');
         }
 
-        return $mock;
+        return $container;
+    }
+
+    private function getDefinitionMock()
+    {
+        return $this->getMock('Symfony\Component\DependencyInjection\Definition');
     }
 }
-
