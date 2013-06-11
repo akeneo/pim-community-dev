@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
+use Pim\Bundle\ConfigBundle\Manager\ChannelManager;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 
@@ -20,6 +22,22 @@ class ScopeFilterType extends ChoiceFilterType
      * @staticvar string
      */
     const NAME = 'pim_type_scope_filter';
+
+    /**
+     * @var ChannelManager
+     */
+    protected $channelManager;
+
+    /**
+     * @param TranslatorInterface $translator
+     * @param ChannelManager      $channelManager
+     */
+    public function __construct(TranslatorInterface $translator, ChannelManager $channelManager)
+    {
+        parent::__construct($translator);
+
+        $this->channelManager = $channelManager;
+    }
 
     /**
      * {@inheritdoc}
@@ -42,10 +60,12 @@ class ScopeFilterType extends ChoiceFilterType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $scopeChoices = $this->channelManager->getChannelChoiceWithUserChannel();
+
         $resolver->setDefaults(
             array(
                 'field_type' => 'choice',
-                'field_options' => array('choices' => array()),
+                'field_options' => array('choices' => $scopeChoices),
             )
         );
     }

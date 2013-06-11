@@ -49,6 +49,7 @@ class PimGridExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $expectedFilters = array(
             'pim_grid.orm.filter.type.category',
+            'pim_grid.orm.filter.type.currency',
             'pim_grid.orm.filter.type.entity',
             'pim_grid.orm.filter.type.locale',
             'pim_grid.orm.filter.type.scope'
@@ -56,7 +57,7 @@ class PimGridExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->extension->load($this->configs, $this->containerBuilder);
 
-        $this->assertCount(5, $this->containerBuilder->getServiceIds());
+        $this->assertCount(6, $this->containerBuilder->getServiceIds());
         foreach ($expectedFilters as $expectedFilter) {
             $this->assertContains($expectedFilter, $this->containerBuilder->getServiceIds());
         }

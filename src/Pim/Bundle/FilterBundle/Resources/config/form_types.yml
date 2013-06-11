@@ -5,6 +5,12 @@ services:
         tags:
             - { name: form.type, alias: pim_type_category_filter }
 
+    pim_filter.form.type.filter.currency:
+        class:     Pim\Bundle\FilterBundle\Form\Type\Filter\CurrencyFilterType
+        arguments: [@translator, @pim_config.manager.currency]
+        tags:
+            - { name: form.type, alias: pim_type_currency_filter }
+
     pim_filter.form.type.filter.entity:
         class:     Pim\Bundle\FilterBundle\Form\Type\Filter\EntityFilterType
         arguments: ["@translator"]
@@ -13,12 +19,12 @@ services:
 
     pim_filter.form.type.filter.locale:
         class:     Pim\Bundle\FilterBundle\Form\Type\Filter\LocaleFilterType
-        arguments: ["@translator"]
+        arguments: [@translator, @pim_config.manager.locale]
         tags:
             - { name: form.type, alias: pim_type_locale_filter }
 
     pim_filter.form.type.filter.scope:
         class:     Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType
-        arguments: ["@translator"]
+        arguments: [@translator, @pim_config.manager.channel]
         tags:
             - { name: form.type, alias: pim_type_scope_filter }

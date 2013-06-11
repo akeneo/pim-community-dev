@@ -20,4 +20,3 @@ class PimNavigationExtension extends Extension
         $loader->load('services.yml');
     }
 }
-
