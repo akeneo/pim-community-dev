@@ -30,7 +30,6 @@ class OroGridExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('setParameter')
             ->will($this->returnCallback(array($this, 'setParameterCallback')));
 
-
         $gridExtension = new OroGridExtension();
         $configs = array();
         $gridExtension->load($configs, $container);

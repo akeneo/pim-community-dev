@@ -230,7 +230,16 @@ abstract class DatagridManager implements DatagridManagerInterface
      */
     protected function createQuery()
     {
-        return $this->queryFactory->createQuery();
+        $query = $this->queryFactory->createQuery();
+        $this->prepareQuery($query);
+        return $query;
+    }
+
+    /**
+     * @param ProxyQueryInterface $query
+     */
+    protected function prepareQuery(ProxyQueryInterface $query)
+    {
     }
 
     /**
@@ -272,7 +281,6 @@ abstract class DatagridManager implements DatagridManagerInterface
      */
     protected function configureFields(FieldDescriptionCollection $fieldCollection)
     {
-
     }
 
     /**
@@ -402,10 +410,15 @@ abstract class DatagridManager implements DatagridManagerInterface
     /**
      * @param string $id
      * @param array $parameters
+     * @param string $domain
      * @return string
      */
-    protected function translate($id, array $parameters = array())
+    protected function translate($id, array $parameters = array(), $domain = null)
     {
-        return $this->translator->trans($id, $parameters, $this->translationDomain);
+        if (!$domain) {
+            $domain = $this->translationDomain;
+        }
+
+        return $this->translator->trans($id, $parameters, $domain);
     }
 }
