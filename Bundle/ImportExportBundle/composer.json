@@ -2,20 +2,14 @@
     "name": "oro/importexport-bundle",
     "type": "symfony-bundle",
     "description": "BAP ImportExport Bundle",
-    "keywords": ["BAP", "UI", "User Interface", "Import", "Export"],
-    "homepage": "https://github.com/laboro/ImportExportBundle",
+    "keywords": ["BAP", "Data", "Import", "Export"],
     "license": "MIT",
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": ">=2.1",
-        "oro/flexible-entity-bundle": "dev-master"
+        "oro/flexible-entity-bundle": "dev-master",
+        "ddeboer/data-import": "dev-master"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/SonataAdminBundle.git"
-        }
-    ],
     "autoload": {
         "psr-0": { "Oro\\Bundle\\ImportExportBundle": "" }
     },
