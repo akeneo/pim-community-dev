@@ -124,6 +124,6 @@ class RequestParameters implements ParametersInterface
     public function getScope()
     {
         $rootValue = $this->getRootParameterValue();
-        return isset($rootValue[self::SCOPE_PARAMETER]) ? $rootValue[self::SCOPE_PARAMETER] : 'ecommerce';
+        return isset($rootValue[self::SCOPE_PARAMETER]) ? $rootValue[self::SCOPE_PARAMETER] : null;
     }
 }

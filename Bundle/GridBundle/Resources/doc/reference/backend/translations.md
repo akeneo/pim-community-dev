@@ -25,14 +25,16 @@ services:
 
 **Default translation domain configuration**
 
-Also default translation domain can be customized in configuration or as container parameter.
+Default translation domain can be customized in main configuration.
 
 ```
 oro_grid:
     translation_domain: acme_datagrid
+```
 
-# OR
+Another way to customize default translation domain is to set it as parameter in some specific bundle configuration.
 
+```
 parameters:
     oro_grid.translation.translation_domain: acme_datagrid
 ```
