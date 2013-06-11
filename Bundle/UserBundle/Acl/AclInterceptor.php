@@ -51,6 +51,7 @@ class AclInterceptor implements MethodInterceptorInterface
 
     public function intercept(MethodInvocation $method)
     {
+        return $method->proceed();
         $this->logger->info(
             sprintf('User invoked class: "%s", Method: "%s".', $method->reflection->class, $method->reflection->name)
         );

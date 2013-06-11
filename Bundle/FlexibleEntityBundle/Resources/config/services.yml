@@ -1,10 +1,10 @@
 parameters:
-    oro_flexibleentity.flexible_config:                         ~
-    oro_flexibleentity.registry.class:                          Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry
-    oro_flexibleentity.attributetype.factory.class:             Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory
-    oro_flexibleentity.value_form.value_subscriber.class:       Oro\Bundle\FlexibleEntityBundle\Form\EventListener\FlexibleValueSubscriber
-    oro_flexibleentity.filterAttributes.twig.extension.class:   Oro\Bundle\FlexibleEntityBundle\Twig\FilterAttributesExtension
-    oro_flexibleentity.form.validator.constraint_guesser.class: Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesser
+    oro_flexibleentity.flexible_config:                               ~
+    oro_flexibleentity.registry.class:                                Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry
+    oro_flexibleentity.attributetype.factory.class:                   Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory
+    oro_flexibleentity.value_form.value_subscriber.class:             Oro\Bundle\FlexibleEntityBundle\Form\EventListener\FlexibleValueSubscriber
+    oro_flexibleentity.filterAttributes.twig.extension.class:         Oro\Bundle\FlexibleEntityBundle\Twig\FilterAttributesExtension
+    oro_flexibleentity.validator.attribute_constraint_guesser.class: Oro\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser
 
 services:
     oro_flexibleentity.value_form.value_subscriber:
@@ -97,6 +97,6 @@ services:
         tags:
             - { name: twig.extension }
 
-    oro_flexibleentity.form.validator.constraint_guesser:
-        class: %oro_flexibleentity.form.validator.constraint_guesser.class%
+    oro_flexibleentity.validator.attribute_constraint_guesser:
+        class: %oro_flexibleentity.validator.attribute_constraint_guesser.class%
         public: false
