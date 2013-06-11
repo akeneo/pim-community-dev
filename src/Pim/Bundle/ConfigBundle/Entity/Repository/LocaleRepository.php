@@ -30,4 +30,15 @@ class LocaleRepository extends EntityRepository
     {
         return parent::findOneBy($criteria, $orderBy);
     }
+
+    /**
+     * Find locales that have a fallback locale defined
+     *
+     * @return array
+     */
+    public function findWithFallback()
+    {
+        return $this->createQueryBuilder('l')
+            ->where('l.fallback IS NOT NULL')->orderBy('l.code')->getQuery()->getResult();
+    }
 }
