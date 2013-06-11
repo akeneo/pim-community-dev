@@ -177,8 +177,33 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
      */
     public function buildAttributeFormTypes(FormFactoryInterface $factory, AbstractAttribute $attribute)
     {
-        // TODO will be used to build attribute create / edit form for attribute management, cf BAP-650
+        $properties = $this->defineCustomAttributeProperties($attribute);
 
-        return null;
+        $types = array();
+
+        foreach ($properties as $property) {
+            $fieldType = isset($property['fieldType']) ? $property['fieldType'] : 'text';
+            $data      = isset($property['data'])      ? $property['data']      : null;
+            $options   = isset($property['options'])   ? $property['options']   : array();
+
+            $types[] = $factory->createNamed($property['name'], $fieldType, $data, $options);
+        }
+
+        return $types;
+    }
+
+    /**
+     * Define custom properties used in attribute form
+     *
+     * Each property must be an array with a 'name' key that matches the name of the property
+     * Optional 'fieldType', 'data' and 'options' keys can be provided for field customization
+     *
+     * @param AbstractAttribute $attribute Attribute entity
+     *
+     * @return array:array:multitype $properties an array of custom properties
+     */
+    protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
+    {
+        return array();
     }
 }
