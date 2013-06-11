@@ -214,7 +214,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
                 'label'       => 'Categories',
                 'field_name'  => 'categories',
-                'filter_type' => FilterInterface::TYPE_ENTITY,
+                'filter_type' => FilterInterface::TYPE_CATEGORY,
                 'required'    => false,
                 'sortable'    => true,
                 'filterable'  => true,
