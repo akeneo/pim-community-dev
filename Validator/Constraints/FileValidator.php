@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ProductBundle\Validator\Constraints;
 
+use Symfony\Component\HttpFoundation\File\File as FileObject;
 use Symfony\Component\Validator\Constraints\FileValidator as BaseFileValidator;
 use Symfony\Component\Validator\Constraint;
 
@@ -16,11 +17,13 @@ class FileValidator extends BaseFileValidator
     {
         parent::validate($value, $constraint);
 
-        $file = new \SplFileInfo($value);
-        if (!in_array($file->getExtension(), $constraint->allowedExtensions)) {
-            $this->context->addViolation($constraint->allowedExtensionsMessage, array(
-                '{{ extensions }}' => $constraint->allowedExtensions,
-            ));
+        if ($constraint->allowedExtensions) {
+            $file = !$value instanceof FileObject ? new FileObject($value) : $value;
+            if (!in_array($file->getExtension(), $constraint->allowedExtensions)) {
+                $this->context->addViolation($constraint->allowedExtensionsMessage, array(
+                    '{{ extensions }}' => $constraint->allowedExtensions,
+                ));
+            }
         }
     }
 }
