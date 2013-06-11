@@ -359,7 +359,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
      *
      * @return string
      */
-    public function getLocaleFilterValue()
+    protected function getLocaleFilterValue()
     {
         $filtersArray = $this->parameters->get(ParametersInterface::FILTER_PARAMETERS);
         if (isset($filtersArray[self::LOCALE_FIELD_NAME]) && isset($filtersArray[self::LOCALE_FIELD_NAME]['value'])) {
@@ -376,7 +376,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
      *
      * @return string
      */
-    public function getScopeFilterValue()
+    protected function getScopeFilterValue()
     {
         $filtersArray = $this->parameters->get(ParametersInterface::FILTER_PARAMETERS);
         if (isset($filtersArray[self::SCOPE_FIELD_NAME]) && isset($filtersArray[self::SCOPE_FIELD_NAME]['value'])) {
