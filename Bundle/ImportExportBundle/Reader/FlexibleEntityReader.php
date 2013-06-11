@@ -39,7 +39,7 @@ class FlexibleEntityReader implements ReaderInterface
     /**
      * @var int
      */
-    protected $batchSize = 1000;
+    protected $batchSize = 100;
 
     /**
      * @var \Iterator
@@ -86,6 +86,9 @@ class FlexibleEntityReader implements ReaderInterface
      */
     public function current()
     {
+        if (!$this->pageIterator) {
+            return null;
+        }
         return $this->pageIterator->current();
     }
 
@@ -94,6 +97,9 @@ class FlexibleEntityReader implements ReaderInterface
      */
     public function next()
     {
+        if (!$this->pageIterator) {
+            return null;
+        }
         $this->pageIterator->next();
         if (!$this->pageIterator->valid() && $this->hasNextPage()) {
             $this->pageIndex += 1;
@@ -106,6 +112,9 @@ class FlexibleEntityReader implements ReaderInterface
      */
     public function key()
     {
+        if (!$this->pageIterator) {
+            return null;
+        }
         if ($this->pageIterator->valid() || $this->hasNextPage()) {
             return $this->pageIterator->key() + $this->pageIndex * $this->batchSize;
         } else {
@@ -118,6 +127,9 @@ class FlexibleEntityReader implements ReaderInterface
      */
     public function valid()
     {
+        if (!$this->pageIterator) {
+            return false;
+        }
         return $this->pageIterator->valid() || $this->hasNextPage();
     }
 
@@ -141,7 +153,8 @@ class FlexibleEntityReader implements ReaderInterface
         if (0 == $this->pageIndex && $this->pageIterator) {
             $this->pageIterator->rewind();
         } else {
-            $this->pageIterator = $this->getPageIterator(0);
+            $this->pageIndex = 0;
+            $this->pageIterator = $this->getPageIterator($this->pageIndex);
         }
     }
 
@@ -165,7 +178,8 @@ class FlexibleEntityReader implements ReaderInterface
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $this->flexibleRepository->createQueryBuilder('o');
-        return $queryBuilder->select('count(o.id)')->getQuery()->getSingleScalarResult();
+        $queryBuilder->resetDQLPart('join');
+        return (int)$queryBuilder->select('count(o.id)')->getQuery()->getSingleScalarResult();
     }
 
     /**
