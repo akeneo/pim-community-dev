@@ -5,18 +5,18 @@ namespace Pim\Bundle\ProductBundle\Tests\Unit\Validator;
 use Symfony\Component\Validator\Constraints;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\ProductBundle\Tests\Unit\Validator\ConstraintGuesser\ConstraintGuesserTest;
-use Pim\Bundle\ProductBundle\Validator\ChainedConstraintGuesser;
+use Pim\Bundle\ProductBundle\Validator\ChainedAttributeConstraintGuesser;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChainedConstraintGuesserTest extends ConstraintGuesserTest
+class ChainedAttributeConstraintGuesserTest extends ConstraintGuesserTest
 {
     public function setUp()
     {
-        $this->target = new ChainedConstraintGuesser;
+        $this->target = new ChainedAttributeConstraintGuesser;
     }
 
     public function testInstanceOfContraintGuesserInterface()

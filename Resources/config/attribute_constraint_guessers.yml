@@ -1,5 +1,5 @@
 parameters:
-    oro_flexibleentity.validator.attribute_constraint_guesser.class: Pim\Bundle\ProductBundle\Validator\ChainedConstraintGuesser
+    oro_flexibleentity.validator.attribute_constraint_guesser.class: Pim\Bundle\ProductBundle\Validator\ChainedAttributeConstraintGuesser
 
 services:
     pim.attribute_constraint_guesser.email:
