@@ -20,7 +20,7 @@ services:
     pim_product.attributetype.simpleselect:
         class: Pim\Bundle\ProductBundle\AttributeType\OptionSimpleSelectType
         arguments:
-            - "options"
+            - "option"
             - "entity"
             - @oro_flexibleentity.validator.attribute_constraint_guesser
         tags:
