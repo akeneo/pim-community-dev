@@ -19,6 +19,7 @@ interface FilterInterface extends OroFilterInterface
      * @staticvar string
      */
     const TYPE_CATEGORY = 'pim_grid_orm_category';
+    const TYPE_CURRENCY = 'pim_grid_orm_currency';
     const TYPE_ENTITY   = 'pim_grid_orm_entity';
     const TYPE_LOCALE   = 'pim_grid_orm_locale';
     const TYPE_SCOPE    = 'pim_grid_orm_scope';
