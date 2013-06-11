@@ -97,14 +97,14 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
             self::ROUTER_ATTRIBUTE           => 'router',
         );
 
-        foreach ($defaultAddServices as $attribute => $parameterId) {
+        foreach ($defaultAddServices as $attribute => $serviceId) {
             $method = 'set' . $this->camelize($attribute);
 
             if (!$this->definition->hasMethodCall($method)) {
-                if (is_callable($parameterId)) {
-                    $parameterId = call_user_func($parameterId);
+                if (is_callable($serviceId)) {
+                    $serviceId = call_user_func($serviceId);
                 }
-                $this->definition->addMethodCall($method, array(new Reference($parameterId)));
+                $this->definition->addMethodCall($method, array(new Reference($serviceId)));
             }
         }
 

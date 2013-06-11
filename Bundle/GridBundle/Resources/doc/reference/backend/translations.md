@@ -4,7 +4,7 @@ Translations
 OroGridBundle provides translation mechanism which can translate localized information (column and row action labels).
 
 DatagridManager contains translator object and translation domain and provides method _translate_
-which use translator object to perform translation.
+which use translator object to perform translation. Default translation domain is "datagrid".
 
 #### Configuration
 
