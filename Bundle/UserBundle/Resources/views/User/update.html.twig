@@ -1,4 +1,4 @@
-{% extends 'OroUIBundle:actions:edit.html.twig' %}
+{% extends 'OroUIBundle:actions:update.html.twig' %}
 {% set format = oro_config_value('oro_user.name_format') %}
 {% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
 
@@ -13,16 +13,31 @@
         {{ UI.buttonSeparator() }}
     {% endif %}
     {{ UI.button({'path' : path('oro_user_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
-    {{ UI.buttonType('submit', 'btn-success', 'Save') }}
+    {{ UI.buttonType({'type': 'submit', 'class': 'btn-success', 'label': 'Save'}) }}
 {% endblock navButtons %}
 
 {% block pageHeader %}
     {% if form.vars.value.id %}
-        {% include 'OroUserBundle:User:user_block.html.twig' with {'user': form.vars.value, 'showEnabled': false } %}
+        {% set breadcrumbs = {
+            'entity':      form.vars.value,
+            'indexPath':   path('oro_user_index'),
+            'indexLabel': 'Users',
+            'entityTitle': form.vars.value.fullname(format)|default('N/A'),
+            'hasAvatar':   true,
+            'imagePath':   form.vars.value.imagePath,
+        }
+        %}
+        {{ parent() }}
     {% else %}
         {% include 'OroUIBundle::page_title_block.html.twig' %}
     {% endif %}
 {% endblock pageHeader %}
+
+{% block stats %}
+    {{ parent() }}
+    <li>{{ 'Last logged in'|trans }}: {{ form.vars.value.lastLogin ? UI.time(form.vars.value.lastLogin) : 'N/A' }}</li>
+    <li>{{ 'Login count'|trans }}: {{ form.vars.value.loginCount|default(0) }}</li>
+{% endblock stats %}
 
 {% block scroll_data %}
     {% set id = 'user-profile' %}

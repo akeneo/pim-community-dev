@@ -97,9 +97,11 @@
     </div>
 {% endmacro %}
 
-{% macro buttonType(type, class, label) %}
+{% macro buttonType(parameters) %}
     <div class="btn-group">
-        <button type="{{ type }}" class="btn {{ class }}"> {{ label|trans }}</button>
+        <button type="{{ parameters.type }}" class="btn {% if (parameters.class is defined) %}{{ parameters.class }}{% endif %}">
+            {{ parameters.label|trans }}
+        </button>
     </div>
 {% endmacro %}
 
@@ -115,7 +117,7 @@
     {% else %}
         {% set span = '' %}
     {% endif %}
-        {% if isForm is defined and isForm == true %}
+    {% if isForm is defined and isForm == true %}
         <fieldset class="form-horizontal {{ span }}">
     {% else %}
         <div class="form-horizontal {% if cols > 1 %}{{ span }}{% endif %}">
