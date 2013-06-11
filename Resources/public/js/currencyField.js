@@ -17,7 +17,7 @@
     }
 
     function getFields(el) {
-        return $(el).find('>.control-group .control-group>.controls>.control-group');
+        return $(el).find('>.control-group .control-group');
     }
 
     function prepareFields(el) {
@@ -106,8 +106,6 @@
         } else {
             opts = $.extend({}, $.fn.currencyField.defaults, options);
         }
-
-        $('.span4').removeClass('span4').addClass('input-large');
 
         return this.each(function() {
             if (!$(this).hasClass('currencyfield')) {

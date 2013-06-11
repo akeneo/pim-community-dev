@@ -24,12 +24,14 @@
             </tr>
         </thead>
         <tbody>
-            {% for translation in form %}
-                <td>
-                    {{ form_errors(translation) }}
-                    {{ form_widget(translation) }}
-                </td>
-            {% endfor %}
+            <tr>
+                {% for translation in form %}
+                    <td>
+                        {{ form_errors(translation) }}
+                        {{ form_widget(translation) }}
+                    </td>
+                {% endfor %}
+            </tr>
         </tbody>
     </table>
 {% endblock %}
@@ -77,12 +79,12 @@
 {% block widget_attributes %}
 {% if attr.class is defined %}
     {% if attr.class != 'noswitch' %}
-        {% set class = attr.class ~ ' span4' %}
+        {% set class = attr.class ~ ' input-large' %}
     {% else %}
         {% set class = attr.class %}
     {% endif %}
 {% else %}
-    {% set class = 'span4' %}
+    {% set class = 'input-large' %}
 {% endif %}
 {% set attr = attr|merge({'class': class }) %}
 {% spaceless %}

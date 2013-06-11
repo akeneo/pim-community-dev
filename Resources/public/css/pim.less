@@ -262,27 +262,6 @@ a.accordion-toggle {
   float: none;
 }
 
-.sidebar-list {
-  ul {
-    margin: 10px 0 0 0;
-    li {
-      list-style: none;
-      cursor: pointer;
-      line-height: 35px;
-      padding: 0 10px;
-      a {
-        color: #444444;
-      }
-      a:hover {
-        text-decoration: none;
-      }
-    }
-    li.active {
-      background-color: #eeeeee;
-    }
-  }
-}
-
 .groups {
   margin: 10px 0;
   thead {
@@ -317,19 +296,19 @@ th label {
   text-align: center;
 }
 
-.table-condensed td {
+.table-condensed:not(.grid) td {
   text-align: center;
 }
 
-form .table-condensed input.span4 {
-  width: 100%;
+.table-striped tbody>tr:nth-child(even)>td {
+  background-color: @backgroundColor-white;
 }
 
 .has-switch > div.switch-off, .has-switch > div.switch-on {
   height: auto;
 }
 
-.has-sidebar {
+.sidebarized {
   .sidebar-separator {
     background-color: #f3f3f3;
     i {
@@ -340,6 +319,59 @@ form .table-condensed input.span4 {
     background-color: #f7f7f7;
     i {
       cursor: pointer;
+    }
+    button {
+      background-color: #f3f3f3;
+      display:block;
+      float:left;
+      border: 0px;
+      border-right: 1px solid #d3d3d3;
+      color:#000;
+      text-decoration:none;
+    }
+    .btn-group .dropdown-toggle {
+      border-radius: 0px;
+      .caret {
+        vertical-align: middle;
+      }
+    }
+    li {
+      text-align: left;
+    }
+    a {
+      cursor: pointer;
+    }
+  }
+  .sidebar-content {
+    background-color: #fcfcfc;
+    .sidebar-list {
+      ul {
+        margin: 0;
+        li {
+          padding: 0 10px;
+          list-style: none;
+          cursor: pointer;
+          line-height: 35px;
+          &:hover {
+            background-color: #fafafa;
+          }
+          &.active, &.active:hover {
+            background-color: #f2ebf8;
+          }
+          a {
+            display: block;
+            color: #444444;
+            &:hover {
+              text-decoration: none;
+            }
+          }
+          span.handle {
+            cursor: move;
+            padding-right: 5px;
+            float: left;
+          }
+        }
+      }
     }
   }
 }
@@ -419,7 +451,6 @@ div.ui-dialog {
     position: relative;
     float: right;
     top: 4px;
-    margin-bottom:20px;
   }
 }
 
@@ -568,9 +599,18 @@ div.dropdown-menu.channel {
   }
 }
 
-.product-title {
-  line-height: 33px;
-}
+.navbar-extra {padding: 10px;}
+.navbar-content {line-height: 18px;}
+.navbar-content .sub-title {font-size: 17px; color: #999; float: left;}
+.navbar-content .separator {float: left; padding: 0 3px; color: #999; font-size: 18px; }
+.navbar-content ul.inline li {padding: 0 10px; border-left: 1px solid #e6e6e6; font-size: 11px; line-height: 14px;}
+.navbar-content .product-name {margin: 0 10px 5px 0; font-size: 19px; line-height: 22px; float: left; font: bold 17px/18px 'HelveticaNeue bold',Arial,Helvetica,sans-serif;}
+.navbar-content ul.inline { color: #777; }
+.navbar-content .locale-switcher, .navbar-content .scope-switcher {height: 30px;}
+.navbar-title { line-height: 28px; }
+.products-title { line-height: 33px; }
+.tab-groups {float:left; min-width: 120px;}
+#localisations {margin-top:20px;}
 
 #locale-switcher {
   span.dropdown-toggle {
@@ -619,6 +659,10 @@ div.product-updated {
     text-shadow: none;
   }
 }
+
+.scopablefield .input-prepend label, .currencyfield .input-prepend label { padding-right: 10px; border-right-width: 0px;}
+.currencyfield>.control-group .control-group:first-of-type .input-prepend { margin-left: 20px; }
+.pimmultiselect.ui-multiselect-menu .ui-multiselect-footer a {margin: 5px;}
 
 /* Pim multiselect styles */
 button.pimmultiselect {
@@ -685,43 +729,10 @@ button.pimmultiselect {
 
 /* Tree */
 .product-list h3 {margin:0px;}
-.tree-sidebar {min-height:100%; min-height:500px; border-right: #F5F5F5 7px solid;}
 
 .jstree-default {
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-
-.tree-toolbar {
-  background-color: #f3f3f3;
-  display: table;
-  width: 100%;
-  border-top: 1px solid #d3d3d3;
-  margin-top: 5%;
-}
-
-.btn-tree-toolbar {
-  background-color: #f3f3f3;
-  display:block;
-  float:left;
-  border: 0px;
-  border-right: 1px solid #d3d3d3;
-  color:#000;
-  text-decoration:none;
-}
-
-.tree-toolbar .btn-group .dropdown-toggle {
-  border-bottom-right-radius: 0px;
-  border-top-right-radius: 0px;
-}
-
-.tree-toolbar .btn-group .dropdown-toggle .caret {
-  vertical-align: bottom;
-}
-
-#sidebar-collapse {
-  float: right;
-  border: 0px;
+  height: 100%;
+  overflow: auto;
 }
 
 #tree_toolbar {

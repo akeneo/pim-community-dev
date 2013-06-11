@@ -42,13 +42,14 @@
         var totalWidth = $(window).width();
         $element.outerWidth(totalWidth);
 
+        var contentWidth;
         if ($element.children().first().is(':visible')) {
             var sidebarWidth = Math.floor(totalWidth * opts.sidebarPercentage/100);
-            var contentWidth = Math.floor(totalWidth - sidebarWidth - opts.separatorWidth);
+            contentWidth = Math.floor(totalWidth - sidebarWidth - opts.separatorWidth);
 
             $element.children().first().outerWidth(sidebarWidth);
         } else {
-            var contentWidth = Math.floor(totalWidth - opts.collapsedSeparatorWidth);
+            contentWidth = Math.floor(totalWidth - opts.collapsedSeparatorWidth);
         }
 
         $element.children().last().outerWidth(contentWidth);
@@ -59,10 +60,14 @@
 
         var $collapseButton = $('<i>').addClass(opts.collapseIcon).on('click', function() {
             collapse($element, opts);
-        }).appendTo($controls);
+        }).appendTo($controls).css({ 'float': 'right', 'margin-top': 3 });
 
         var $sidebar = $element.children().first();
-        $sidebar.append($controls);
+        if (opts.controlsPosition === 'top') {
+            $sidebar.prepend($controls);
+        } else {
+            $sidebar.append($controls);
+        }
 
         var $separator = $('<div>').addClass('sidebar-separator expanded').css(opts.separatorCss);
         $separator.height('100%').insertAfter($sidebar).on('dblclick', function() {
@@ -75,7 +80,17 @@
 
         var $expandButton = $('<i>').addClass(opts.expandIcon).on('click', function() {
             expand($element, opts);
-        }).css({ 'position': 'absolute', 'bottom': 10 }).appendTo($separator).hide();
+        }).css({ 'position': 'absolute' }).appendTo($separator).hide();
+
+        if (opts.controlsPosition === 'top') {
+            $expandButton.css('top', 5);
+        } else {
+            $expandButton.css('bottom', 5);
+        }
+
+        for (var i in opts.buttons) {
+            $(opts.buttons[i]).css({ 'float': 'left' }).appendTo($controls);
+        }
     }
 
     $.fn.sidebarize = function(options) {
@@ -106,6 +121,11 @@
 
             prepareControls($element, opts);
 
+            $element.find('.sidebar-list li').on('click', function() {
+                $element.find('.sidebar-list li').removeClass('active');
+                $(this).addClass('active');
+            });
+
             $(window).on('resize', function() {
                 adjustHeight($element, opts);
                 adjustWidth($element, opts);
@@ -119,11 +139,12 @@
             // Fix the issue with scrollable-container not having the right initial height
             setTimeout(triggerResize, 200);
         });
-    }
+    };
 
     $.fn.sidebarize.defaults = {
-        sidebarPercentage: 18,
+        sidebarPercentage: 15,
         controlsHeight: 22,
+        controlsPosition: 'top',
         heightCompensator: 2,
         collapseIcon: 'icon-chevron-left',
         expandIcon: 'icon-chevron-right',
@@ -138,11 +159,13 @@
             'float': 'left',
             'width': '7px',
             'border': '1px solid #ddd'
-        }
+        },
+        buttons: {}
     };
 
 })(jQuery);
 
 $(function () {
+    "use strict";
     $('.has-sidebar').sidebarize();
 });

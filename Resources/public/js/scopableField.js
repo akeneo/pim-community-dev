@@ -158,8 +158,6 @@
             opts = $.extend({}, $.fn.scopableField.defaults, options);
         }
 
-        $('.span4').removeClass('span4').addClass('input-large');
-
         return this.each(function() {
             if (!$(this).hasClass('scopablefield')) {
                 showTitle(this, opts);
