@@ -49,9 +49,9 @@ class OptionSimpleRadioTypeTest extends AttributeTypeTest
         $this->assertEquals('email', $this->target->getFormType());
     }
 
-    public function testBuildAttributeFormType()
+    public function testBuildAttributeFormTypes()
     {
-        $this->assertNull($this->target->buildAttributeFormType(
+        $this->assertEquals(array(), $this->target->buildAttributeFormTypes(
             $this->getFormFactoryMock(),
             $this->getAttributeMock(null, null)
         ));
