@@ -62,13 +62,12 @@ class AttributeServiceTest extends WebTestCase
         static::$kernel = static::createKernel(array('environment' => 'dev'));
         static::$kernel->boot();
 
-        $this->config = static::$kernel->getContainer()->getParameter('pim_product.attributes_config');
         $this->manager = static::$kernel->getContainer()->get('product_manager');
         $this->localeManager = static::$kernel->getContainer()->get('pim_config.manager.locale');
         $this->factory = static::$kernel->getContainer()
             ->get('oro_flexibleentity.attributetype.factory');
 
-        $this->service = new AttributeService($this->config, $this->manager, $this->localeManager, $this->factory);
+        $this->service = new AttributeService($this->manager, $this->localeManager, $this->factory);
     }
 
     /**
@@ -95,31 +94,12 @@ class AttributeServiceTest extends WebTestCase
         return new ExecutionContext($globalContext, 'currentValue', 'foo.bar', 'Group', 'ClassName', 'propertyName');
     }
 
-    /**
-     * Test attribute configuration file
-     */
-    public function testAttributeConfig()
-    {
-        $this->assertArrayHasKey('attributes_config', $this->config);
-        foreach ($this->config['attributes_config'] as $type => $options) {
-            $this->assertInternalType('string', $type);
-
-            $this->assertArrayHasKey('name', $options);
-            $this->assertArrayHasKey('properties', $options);
-            $this->assertArrayHasKey('parameters', $options);
-
-            $this->assertInternalType('string', $options['name']);
-            $this->assertInternalType('array', $options['properties']);
-            $this->assertInternalType('array', $options['parameters']);
-        }
-    }
-
    /**
      * Test createAttributeFromFormData method
      */
     public function testCreateAttributeFromFormData()
     {
-        $data = array('attributeType' => 'oro_flexibleentity_metric');
+        $data = array('attributeType' => 'pim_product_metric');
         $attribute = $this->service->createAttributeFromFormData($data);
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductAttribute', $attribute);
 
@@ -142,75 +122,6 @@ class AttributeServiceTest extends WebTestCase
         $data = $this->service->prepareFormData($data);
         $this->assertNotEmpty($data);
         $this->assertArrayHasKey('options', $data);
-    }
-
-    /**
-     * Test getPropertyFields method
-     */
-    public function testGetPropertyFields()
-    {
-        $attributeTypes = array_keys($this->config['attributes_config']);
-
-        foreach ($attributeTypes as $type) {
-            $attribute = $this->createProductAttribute($type);
-            $fields = $this->service->getPropertyFields($attribute);
-
-            $this->assertNotEmpty($fields);
-            foreach ($fields as $field) {
-                $this->assertArrayHasKey('name', $field);
-            }
-        }
-
-        // Test custom cases = with attribute type missing and with DateType
-        $attribute = $this->createProductAttribute();
-        $fields = $this->service->getPropertyFields($attribute);
-        $this->assertEmpty($fields);
-
-        $attribute = $this->createProductAttribute('oro_flexibleentity_date');
-        $attribute->setDateType('date');
-        $fields = $this->service->getPropertyFields($attribute);
-        $this->assertNotEmpty($fields);
-
-        $attribute = $this->createProductAttribute('oro_flexibleentity_date');
-        $attribute->setDateType('time');
-        $fields = $this->service->getPropertyFields($attribute);
-        $this->assertNotEmpty($fields);
-    }
-
-    /**
-     * Test getParameterFields method
-     */
-    public function testGetParameterFields()
-    {
-        $attributeTypes = array_keys($this->config['attributes_config']);
-
-        $numOfParams = 0;
-        foreach ($this->config['attributes_config'] as $item) {
-            $i = count($item['parameters']);
-            $numOfParams = $i > $numOfParams ? $i : $numOfParams;
-        }
-
-        foreach ($attributeTypes as $type) {
-            $attribute = $this->createProductAttribute($type);
-            $fields = $this->service->getParameterFields($attribute);
-
-            $this->assertNotEmpty($fields);
-            $this->assertCount($numOfParams, $fields);
-            foreach ($fields as $field) {
-                $this->assertArrayHasKey('name', $field);
-            }
-        }
-
-        // Test case with attribute type missing
-        $attribute = $this->createProductAttribute();
-        $fields = $this->service->getParameterFields($attribute);
-        $this->assertNotEmpty($fields);
-        $this->assertCount($numOfParams, $fields);
-        foreach ($fields as $field) {
-            $this->assertArrayHasKey('options', $field);
-            $this->assertTrue($field['options']['disabled']);
-            $this->assertTrue($field['options']['read_only']);
-        }
     }
 
     /**
