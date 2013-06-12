@@ -3,7 +3,7 @@ namespace Pim\Bundle\ProductBundle\Helper;
 
 use \RecursiveArrayIterator;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 use Pim\Bundle\ProductBundle\Entity\Category;
 
@@ -116,6 +116,9 @@ class CategoryHelper
 
         foreach($categories as $category) {
             $state = 'leaf';
+            if (!is_object($category['item'])) {
+                print_r($category['item']);
+            }
 
             if (count($category['__children']) > 0) {
                 $state = 'open';
@@ -125,7 +128,8 @@ class CategoryHelper
                 }
             }
 
-            if ($category['item']->getId() == $selectCategory->getId()) {
+            if (($selectCategory != null) &&
+                ($category['item']->getId() == $selectCategory->getId())) {
                 $state .= ' toselect';
             }
 
@@ -196,5 +200,82 @@ class CategoryHelper
         }
 
         return $return;
+    }
+
+    public static function listCategoriesResponse(array $categories, Collection $selectedCategories = null)
+    {
+        $selectedIds = array();
+
+        foreach($selectedCategories as $selectedCategory) {
+            $selectedIds[] = $selectedCategory->getId();
+        }
+
+        return static::formatCategoryAndCount($categories, $selectedIds, true);
+    }
+
+    /**
+     * Format a node with its children to the format expected by jstree.
+     * If count is true, the state will contain a count attribute representing
+     * the number of selected children
+     *
+     * @see http://www.jstree.com/documentation/json_data
+     *
+     * @param array    $categories
+     * @param array    $selectedCategoriesIds
+     * @param boolean  $count
+     *
+     * @return array
+     * @static
+     */
+    protected static function formatCategoryAndCount(array $categories, $selectedIds = null, $count = false)
+    {
+        $result = array();
+
+        foreach($categories as $category) {
+            $state = 'leaf';
+
+            if (count($category['__children']) > 0) {
+                $state = 'open';
+            } else {
+                if ($category['item']->hasChildren()) {
+                    $state = 'closed';
+                }
+            }
+
+            if (in_array($category['item']->getId(), $selectedIds)) {
+                $state .= ' jstree-checked';
+            }
+
+            $children = static::formatCategoryAndCount($category['__children'], $selectedIds, $count);
+
+            $selectedChildrenCount = 0;
+
+            foreach ($children as $child) {
+                $selectedChildrenCount += $child['selectedChildrenCount'];
+                if (preg_match('/checked/', $child['state'])) {
+                    $selectedChildrenCount ++;
+                }
+            }
+           
+            $title = $category['item']->getTitle();
+
+            if ($selectedChildrenCount > 0) {
+                $title = '<strong>'.$title.'</strong>';
+            }
+
+
+            $result[] = array(
+                'attr' => array(
+                    'id' => 'node_'. $category['item']->getId()
+                ),
+                'data'  => $title,
+                'state' => $state,
+                'children' => $children,
+                'selectedChildrenCount' => $selectedChildrenCount
+            );
+        }
+
+        return $result;
+
     }
 }

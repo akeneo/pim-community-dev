@@ -4,6 +4,7 @@ namespace Pim\Bundle\ProductBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+use Pim\Bundle\ProductBundle\Entity\Category;
 use Pim\Bundle\ProductBundle\Manager\MediaManager;
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Form\Type\ProductType;
@@ -12,11 +13,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use YsTools\BackUrlBundle\Annotation\BackUrl;
 use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
+use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
 
 /**
  * Product Controller
@@ -258,28 +261,56 @@ class ProductController extends Controller
         return $this->redirect($this->generateUrl('pim_product_product_edit', array('id' => $productId)));
     }
 
-   /**
-     * List categories associated with the provided product
+    /**
+     * Display a form with categories to the product and allow to manage
+     * associations.
      *
      * @param Product $product
      *
-     * @Route("/list-categories/{id}", requirements={"id"="\d+"})
+     * @Route("/associate-categories/{id}", requirements={"id"="\d+"})
+     * @Template()
+     *
+     * @return array
+     */
+    public function associateCategoriesAction(Product $product)
+    {
+        $trees = $this->getTreeManager()->getEntityRepository()->getProductsCountByTree($product);
+        
+        return array('trees'=>$trees, 'product' => $product);
+    }
+
+
+    /**
+     * List categories associated with the provided product and descending from the category
+     * defined by the parent parameter.
+     *
+     * @param Product  $product
+     * @param Category $parent The parent category
+     *
+     * httpparam include_category if true, will include the parentCategory in the response
+     *
+     * @Route("/list-categories/product/{id}/parent/{category_id}.{_format}", requirements={"id"="\d+", "category_id"="\d+", "_format"="json"})
+     * @ParamConverter("parent", class="PimProductBundle:Category", options={"id" = "category_id"})
      * @Template()
      *
      * @return array
      *
      */
-    public function listCategoriesAction(Product $product)
+    public function listCategoriesAction(Product $product, Category $parent)
     {
         $categories = null;
 
-        if (is_object($product)) {
+        $includeParent = $this->getRequest()->get('include_parent', false);
+        $includeParent = ($includeParent === 'true');
+
+        if ($product != null) {
             $categories = $product->getCategories();
         }
+        $trees = $this->getTreeManager()->getEntityRepository()->getMatchingHierarchy($parent, $categories, $includeParent);
 
-        $trees = $this->getTreeManager()->getEntityRepository()->getLimitedHierarchy(null, $categories);
+        $treesData = CategoryHelper::listCategoriesResponse($trees, $categories);
 
-        return array('trees' => $trees);
+        return array('trees' => $treesData);
     }
 
     /**

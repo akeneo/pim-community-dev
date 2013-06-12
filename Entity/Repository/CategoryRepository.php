@@ -2,6 +2,7 @@
 namespace Pim\Bundle\ProductBundle\Entity\Repository;
 
 use Pim\Bundle\ProductBundle\Entity\Category;
+use Pim\Bundle\ProductBundle\Entity\Product;
 use Doctrine\Common\Collections\Collection;
 
 use Oro\Bundle\SegmentationTreeBundle\Entity\Repository\SegmentRepository;
@@ -78,46 +79,82 @@ class CategoryRepository extends SegmentRepository
 
 
     /**
-     * Create a query builder to get a tree filled with noded only down to the provided nodes
+     * Create a query builder to get a tree filled with nodes only down to the provided nodes
      * 
-     * @param Category        $parent The parent node
-     * @param ArrayCollection $categories The categories that should be included in the tree with their ancestors and
-     *                          their siblings
+     * @param Category   $parent      The parent node
+     * @param Collection $categories  The categories that should be included in the tree with their ancestors and
+     *                                their siblings
+     * @param boolean    $includeNode If true, will include the parent node in the response
      */
-    protected function getLimitedHierarchyQueryBuilder(Category $parent = null, Collection $categories)
+    protected function getMatchingHierarchyQueryBuilder(Category $parent = null, Collection $categories, $includeNode = false)
     {
         $meta = $this->getClassMetadata();
         $config = $this->listener->getConfiguration($this->_em, $meta->name);
 
         $qb = $this->_em->createQueryBuilder();
         $qb->select('node')
-            ->from($config['useObjectClass'], 'node')
+            ->from($config['useObjectClass'], 'node');
 
-        $root = $this->findOneBy(array('id' => $categories[0]->getRoot()));
+        $qb = $this->getNodesHierarchyQueryBuilder($parent, false, array(), $includeNode);
 
-        $qb = $this->getNodesHierarchyQueryBuilder($root);
+        $categoriesCondition = $qb->expr()->orx();
 
         foreach ($categories as $category) {
-            $qb->andWhere(
-                $qb->expr()->orx(
-                    $qb->expr()->lt('node.' . $config['level'], $category->getLevel()),
-                    $qb->expr()->eq('node.' . $config['parent'], $category->getParent()->getId())
-                )
+            $categoryCondition = $qb->expr()->orx(
+                $qb->expr()->andx(
+                    $qb->expr()->lt('node.' . $config['left'], $category->getLeft()),
+                    $qb->expr()->gt('node.' . $config['right'], $category->getRight())
+                ),
+                $qb->expr()->eq('node.' . $config['parent'], $category->getParent()->getId())
             );
-            break;
+            $categoriesCondition->add( $categoryCondition );
         }
-        print_r($qb->getDQL());
-
+        $qb->andWhere($categoriesCondition);
         return $qb;
     }
 
-    public function getLimitedHierarchy(Category $parent = null, Collection $categories)
+    public function getMatchingHierarchy(Category $parent = null, Collection $categories, $includeNode = false)
     {
-        $qb = $this->getLimitedHierarchyQueryBuilder($parent, $categories);
-        $nodes = $qb->getQuery()->getArrayResult();
+        $qb = $this->getMatchingHierarchyQueryBuilder($parent, $categories, $includeNode);
+        $nodes = $qb->getQuery()->getResult();
 
-        print_r($this->buildTreeArray($nodes));
+        return $this->buildTreeNode($nodes);
+    }
+   
+    /**
+     * Return the number of times the product is present in each tree
+     *
+     * @param Product $product The product to look for in the trees
+     *
+     * @return array Each row of the array has the format:'tree'=>treeObject, 'productsCount'=>integer
+     */
+    public function getProductsCountByTree(Product $product)
+    {
+        $meta = $this->getClassMetadata();
+        $config = $this->listener->getConfiguration($this->_em, $meta->name);
 
-        return $nodes;
+        $nodeTable = $config['useObjectClass'];
+
+        $dql = "SELECT tree, COUNT(product.id)".
+               "  FROM $nodeTable tree".
+               "  JOIN $nodeTable category".
+               "  WITH category.root = tree.id".
+               "  LEFT JOIN category.products product".
+               " WHERE (product.id = :productId OR product.id IS NULL)".
+               " GROUP BY tree.id";
+
+        $query = $this->_em->createQuery($dql);
+        $query->setParameter('productId', $product->getId());
+
+        $rawTrees = $query->getResult();
+        $trees = array();
+        $treeKeys = array('tree','productsCount');
+
+        foreach($rawTrees as $rawTree) {
+            $trees[] = array_combine($treeKeys, $rawTree);
+        }
+
+        return $trees;
+        
     }
 }
