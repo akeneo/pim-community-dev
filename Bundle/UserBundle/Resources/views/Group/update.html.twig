@@ -1,14 +1,14 @@
-{% extends bap.layout is defined ? bap.layout : 'OroUserBundle::layout.html.twig' %}
+{% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
 
 {% set title = form.vars.value.id ? 'Update Group'|trans : 'Create Group'|trans %}
 {% oro_title_set({params : { "%group%": form.vars.value.name } }) %}
-
+{% set gridId = 'users-grid' %}
+{% set formAction = form.vars.value.id ? path('oro_user_group_update', { 'id': form.vars.value.id}) : path('oro_user_group_create') %}
 {% block head_script %}
     {{ parent() }}
 
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#users-grid'} %}
-    {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
+    {% include 'OroCRMAccountBundle:Account:remove.confirm.js.twig' %}
 
     {% set listenerParameters = {
         'columnName': 'has_group',
@@ -17,89 +17,86 @@
             'excluded': '#groupRemoveUsers'
         }
     } %}
-    {% include 'OroGridBundle:Include:Listener/column_form.html.twig' with {'datagridView': datagrid, 'parameters': listenerParameters} %}
+
+    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId, 'parameters': listenerParameters} %}
 {% endblock %}
 
-{% block page_container %}
-    {% block content %}
-    {{ JSFV(form) }}
-    <form id="{{ form.getName() }}" action="{{ form.vars.value.id ? path('oro_user_group_update', { id: form.vars.value.id}) : path('oro_user_group_create') }}"
-        method="post" class="form-register scrollable-substructure">
-        <div class="container-fluid">
-            <div class="navigation clearfix navbar-extra">
-                <div class="row">
-                    <div class="pull-right">
-                        {% if form.vars.value.id and resource_granted('oro_user_user_delete') %}
-                            <div class="pull-left btn-group icons-holder">
-                                <a href="javascript: void(0);" class="btn icons-holder-text" id="btn-remove-group" data-id="{{ form.vars.value.id }}" data-message="{{ 'Are you sure you want to delete this Group?'|trans }}" title="{{ 'Delete group'|trans }}"><i class="icon-trash hide-text">{{ 'Remove'|trans }}</i>Delete</a>
-                            </div>
-                            <div class="pull-left">
-                                <div class="separator-btn"></div>
-                            </div>
-                        {% endif %}
-                        <div class="pull-left customer-info-top-actions">
-                            <div class="btn-group">
-                                <a href="{{ path('oro_user_index') }}" class="btn back" title="{{ 'Cancel'|trans }}">{{ 'Cancel'|trans }}</a>
-                            </div>
-                            <div class="btn-group">
-                                <button type="submit" class="btn btn-success" title="{{ 'Save group'|trans }}">{{ ' Save'|trans }}</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="pull-left">
-                        <div class="form-info clearfix">
-                            <div class="customer-content pull-left">
-                                <div class="clearfix-oro oro-padding">
-                                    <div class="sub-title"><div class="sub-title"><a href="{{ path('oro_user_group_index') }}">{{ 'Groups'|trans }}</a></div></div>
-                                    <span class="separator">/</span>
-                                    {% if form.vars.value.id %}
-                                        <h1 class="form-info-name">{{ form.vars.value.name }}</h1>
-                                    {% else %}
-                                        <h1 class="form-info-name">{{ title }}</h1>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="layout-content">
-            <div id="groupsroll" class="navbar navbar-static scrollspy-nav">
-                <div class="navbar-inner">
-                    <div class="container-fluid" style="width: auto;">
-                        <ul class="nav">
-                            <li><a href="#scroll-main">{{ 'General'|trans }}</a></li>
-                            <li><a href="#scroll-ussers">{{ 'Users'|trans }}</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="clearfix">
-                <div data-spy="scroll" data-target="#groupsroll" data-offset="10" class="scrollspy container-fluid scrollable-container">
-                    <div class="usser-row">
-                        <h4 id="scroll-main" class="scrollspy-title">{{ 'General'|trans }}</h4>
-                        <div class="row-fluid row-fluid-divider">
-                            <fieldset class="form-horizontal span6">
-                                {{ form_widget(form.appendUsers, {'id': 'groupAppendUsers'}) }}
-                                {{ form_widget(form.removeUsers, {'id': 'groupRemoveUsers'}) }}
-                                {{ form_row(form.name) }}
-                                {{ form_row(form.roles) }}
-                            </fieldset>
-                        </div>
-                    </div>
+{% block navButtons %}
+    {% if form.vars.value.id and resource_granted('oro_user_group_remove') %}
+        {{ UI.deleteButton({
+            'dataUrl': path('oro_api_delete_group', {'id': form.vars.value.id}),
+            'dataRedirect': path('oro_user_group_index'),
+            'aCss': 'no-hash remove-button',
+            'dataId': form.vars.value.id,
+            'id': 'btn-remove-group',
+            'dataMessage': 'Are you sure you want to delete this group?',
+            'title': 'Delete group',
+            'label': 'Delete'
+        })
+        }}
+        {{ UI.buttonSeparator() }}
+    {% endif %}
+    {{ UI.button({'path' : path('oro_user_group_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
+    {{ UI.buttonType({'type': 'submit', 'class': 'btn-success', 'label': 'Save'}) }}
+{% endblock navButtons %}
 
-                    <div class="usser-row">
-                        <h4 id="scroll-ussers" class="scrollspy-title">{{ 'Users'|trans }}</h4>
-                        <div class="row-fluid">
-                            <fieldset class="form-horizontal">
-                                <div id="users-grid"></div>
-                            </fieldset>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{ form_rest(form) }}
-    {% endblock %}
-{% endblock %}
+{% block pageHeader %}
+    {% if form.vars.value.id %}
+        {% set breadcrumbs = {
+            'entity':      form.vars.value,
+            'indexPath':   path('oro_user_group_index'),
+            'indexLabel': 'Groups',
+            'entityTitle': form.vars.value.name,
+            'hasAvatar':   false,
+        }
+        %}
+        {{ parent() }}
+    {% else %}
+        {% include 'OroUIBundle::page_title_block.html.twig' %}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block scroll_data %}
+    {% set id = 'group-profile' %}
+
+    {% set scrollBlocks = [{
+            'title': 'General',
+            'class': 'active',
+            'subblocks': [
+                {
+                    'title': '',
+                    'data': [
+                        form_widget(form.appendUsers, {'id': 'groupAppendUsers'}),
+                        form_widget(form.removeUsers, {'id': 'groupRemoveUsers'}),
+                        form_row(form.name),
+                        form_row(form.roles)
+                    ]
+                }
+            ]
+        }]
+    %}
+
+    {% set scrollBlocks = scrollBlocks|merge(
+        [{
+            'title' : 'Users',
+            'subblocks':
+            [
+                {
+                    'title' : null,
+                    'useSpan': false,
+                    'data' : [UI.gridBlock(gridId)]
+                }
+            ]
+        }]
+    )
+    %}
+
+    {% set data =
+        {
+            'formErrors': form_errors(form)? form_errors(form) : null,
+            'scrollBlocks': scrollBlocks,
+            'hiddenData': form_rest(form)
+        }
+    %}
+    {{ parent() }}
+{% endblock scroll_data %}

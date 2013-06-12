@@ -10,12 +10,14 @@
                     {% block navButtons %}
                     {% endblock navButtons %}
                 </div>
-                {# {% placeholder change_history_block with {entity:'Oro_Bundle_UserBundle_Entity_User', id: user.id, title: user} %} #}
+                {% if (entity is defined and entityClass is defined) %}
+                    {% placeholder change_history_block with {'entity': entityClass, 'id': entity.id, 'title': entity } %}
+                {% endif %}
             </div>
             <div class="span9">
             {% block pageHeader %}
                 <div class="customer-info {% if (breadcrumbs.hasAvatar is not defined) %}customer-simple{% endif %} well-small">
-                    {% if (breadcrumbs.hasAvatar is defined) %}
+                    {% if breadcrumbs.hasAvatar is defined and breadcrumbs.hasAvatar %}
                         <div class="visual">
                             <img src="{{ breadcrumbs.imagePath ? breadcrumbs.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-usser.png') }}" alt="{{ breadcrumbs.entityTitle }}"/>
                         </div>
