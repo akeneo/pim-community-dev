@@ -1,7 +1,7 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% set format = oro_config_value('oro_user.name_format') %}
-{% oro_title_set({params : {"%username%": user.fullname(format)|default('N/A') }}) %}
-
+{% oro_title_set({params : {"%username%": entity.fullname(format)|default('N/A') }}) %}
+{% set entityClass = 'Oro_Bundle_UserBundle_Entity_User' %}
 {% macro api_data_block(user) %}
 <div class="horizontal">
     <strong class="label label-info">{{ user.api ? user.api.apiKey : 'N/A' }}</strong>
@@ -17,23 +17,30 @@
 {% block navButtons %}
     {{ UI.button({'path' : path('oro_user_index'), 'iClass' : 'icon-chevron-left ', 'title' : 'Back', 'label' : 'Back'}) }}
     {% if resource_granted('oro_user_user_update') %}
-        {{ UI.button({'path' : path('oro_user_update', { id: user.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}
+        {{ UI.button({'path' : path('oro_user_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}
     {% endif %}
-    {% if resource_granted('oro_user_user_delete') and user.id!=app.user.id %}
+    {% if resource_granted('oro_user_user_delete') and entity.id!=app.user.id %}
         {{ UI.deleteButton({
-        aCss: 'no-hash', dataId: 'btn-remove-user', dataMessage: 'Are you sure you want to delete this user?', title: 'Delete user', label: 'Delete'
+            'dataUrl': path('oro_api_delete_user', {'id': entity.id}),
+            'dataRedirect': path('oro_user_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-user',
+            'dataId': entity.id,
+            'dataMessage': 'Are you sure you want to delete this user?',
+            'title': 'Delete user',
+            'label': 'Delete'
         }) }}
     {% endif %}
 {% endblock navButtons %}
 
 {% block pageHeader %}
     {% set breadcrumbs = {
-        'entity':      user,
+        'entity':      entity,
         'indexPath':   path('oro_user_index'),
         'indexLabel': 'Users',
-        'entityTitle': user.fullname(format)|default('N/A'),
+        'entityTitle': entity.fullname(format)|default('N/A'),
         'hasAvatar':   true,
-        'imagePath':   user.imagePath,
+        'imagePath':   entity.imagePath,
     }
     %}
     {{ parent() }}
@@ -42,7 +49,7 @@
 {% block breadcrumbs %}
     {{ parent() }}
     <div class="status-enabled pull-left">
-        {% if user.enabled %}
+        {% if entity.enabled %}
             <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled"></i>{{ 'Active'|trans }}</div>
         {% else %}
             <div class="badge badge-enabled status-disabled"><i class="icon-status-disabled"></i>{{ 'Inactive'|trans }}</div>
@@ -52,13 +59,13 @@
 
 {% block stats %}
     {{ parent() }}
-    <li>{{ 'Last logged in'|trans }}: {{ user.lastLogin ? UI.time(user.lastLogin) : 'N/A' }}</li>
-    <li>{{ 'Login count'|trans }}: {{ user.loginCount|default(0) }}</li>
+    <li>{{ 'Last logged in'|trans }}: {{ entity.lastLogin ? UI.time(entity.lastLogin) : 'N/A' }}</li>
+    <li>{{ 'Login count'|trans }}: {{ entity.loginCount|default(0) }}</li>
 {% endblock stats %}
 
 {% block scroll_data %}
     {% set attributes = {} %}
-    {% for value in user|getAttributes() %}
+    {% for value in entity|getAttributes() %}
         {% set attributes = attributes | merge([UI.flexibleAttributeRow(value)]) %}
     {% endfor %}
 
@@ -73,17 +80,17 @@
                         {
                             'title': 'Basic Information',
                             'data': [
-                                UI.attibuteRow('User name', user.username),
-                                UI.attibuteRow('First name', user.firstname),
-                                UI.attibuteRow('Last name', user.lastname),
-                                UI.attibuteRow('Birthday', user.birthday ? UI.date(user.birthday) : 'N/A'),
-                                UI.renderAttribute('API key', _self.api_data_block(user))
+                                UI.attibuteRow('User name', entity.username),
+                                UI.attibuteRow('First name', entity.firstname),
+                                UI.attibuteRow('Last name', entity.lastname),
+                                UI.attibuteRow('Birthday', entity.birthday ? UI.date(entity.birthday) : 'N/A'),
+                                UI.renderAttribute('API key', _self.api_data_block(entity))
                             ]
                         },
                         {
                             'title': 'Contact Information',
                             'data': [
-                                UI.attibuteRow('Email', {value: user.email, hint: 'Primary'}, user.emails|length ? {data: user.emails, field:'email'} : {})
+                                UI.attibuteRow('Email', {value: entity.email, hint: 'Primary'}, entity.emails|length ? {data: entity.emails, field:'email'} : {})
                             ]
                         }
                     ]

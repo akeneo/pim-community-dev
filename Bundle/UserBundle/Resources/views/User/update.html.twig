@@ -4,11 +4,20 @@
 
 {% set title = form.vars.value.id ? form.vars.value.fullname(format)|default('N/A') ~ ' - ' ~ 'Update User'|trans : 'New User'|trans %}
 {% oro_title_set({params : {"%username%": form.vars.value.fullname(format)|default('N/A') }}) %}
+{% set entityClass = 'Oro_Bundle_UserBundle_Entity_User' %}
+{% set formAction = form.vars.value.id ? path('oro_user_update', { id: form.vars.value.id}) : path('oro_user_create') %}
 
 {% block navButtons %}
     {% if form.vars.value.id and resource_granted('oro_user_user_delete') and  form.vars.value.id!=app.user.id %}
         {{ UI.deleteButton({
-        aCss: 'no-hash', dataId: form.vars.value.id, dataMessage: 'Are you sure you want to delete this user?', title: 'Delete user', label: 'Delete'
+            'dataUrl': path('oro_api_delete_user', {'id': form.vars.value.id}),
+            'dataRedirect': path('oro_user_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-user',
+            'dataId':  form.vars.value.id,
+            'dataMessage': 'Are you sure you want to delete this user?',
+            'title': 'Delete user',
+            'label': 'Delete'
         }) }}
         {{ UI.buttonSeparator() }}
     {% endif %}
