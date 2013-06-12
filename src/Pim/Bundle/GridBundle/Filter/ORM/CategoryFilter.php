@@ -53,7 +53,7 @@ class CategoryFilter extends ChoiceFilter
      */
     public function getOperator($type)
     {
-        $type = (int)$type;
+        $type = (int) $type;
 
         $operatorTypes = array(
             CategoryFilterType::TYPE_CONTAINS     => 'IN',
