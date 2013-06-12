@@ -27,26 +27,13 @@ class EntityPropertiesTransformerTest extends \PHPUnit_Framework_TestCase
     public function testConstructor()
     {
         $this->transformer = new EntityPropertiesTransformer(
-            array('foo', array('name' => 'bar'), new Property(array('name' => 'baz')))
+            array('foo', new Property(array('name' => 'bar')))
         );
         $this->assertAttributeEquals(
-            array(
-                new Property(array('name' => 'foo')),
-                new Property(array('name' => 'bar')),
-                new Property(array('name' => 'baz'))
-            ),
-            'properties',
+            array('foo', 'bar'),
+            'propertyNames',
             $this->transformer
         );
-    }
-
-    /**
-     * @setExpectedException InvalidArgumentException
-     * @setExpectedExceptionMessage $properties must contain instances of Oro\Bundle\FormBundle\EntityAutocomplete\Property
-     */
-    public function testConstructorException()
-    {
-        $this->transformer = new EntityPropertiesTransformer(array(new \stdClass()));
     }
 
     /**
@@ -59,7 +46,7 @@ class EntityPropertiesTransformerTest extends \PHPUnit_Framework_TestCase
                 null, array(), array()
             ),
             'no value, properties' => array(
-                null, array($this->getPropertyMock('name')), array()
+                null, array('name'), array()
             ),
             'value array, no properties' => array(
                 array('name' => 'test'), array(), array('id' => null)
@@ -72,49 +59,54 @@ class EntityPropertiesTransformerTest extends \PHPUnit_Framework_TestCase
             ),
             'value array, properties unknown and id' => array(
                 array('id' => 1, 'name' => 'test'),
-                array($this->getPropertyMock('unknown')),
+                array('unknown'),
                 array('id' => 1, 'unknown' => null)
             ),
             'value array, one property' => array(
                 array('name' => 'test'),
-                array($this->getPropertyMock('name')),
+                array('name'),
                 array('id' => null, 'name' => 'test')
             ),
             'value array, more than one property' => array(
                 array('name' => 'test', 'second_name' => 'second'),
-                array($this->getPropertyMock('name'), $this->getPropertyMock('second_name')),
+                array('name', 'second_name'),
                 array('id' => null, 'name' => 'test', 'second_name' => 'second')
             ),
             'value object method, properties unknown' => array(
                 $this->getValueObjectMock(array('getName' => 'test')),
-                array($this->getPropertyMock('unknown')),
+                array('unknown'),
                 array('id' => null, 'unknown' => null)
             ),
             'value object method, one property' => array(
                 $this->getValueObjectMock(array('getName' => 'test')),
-                array($this->getPropertyMock('name')),
+                array('name'),
                 array('id' => null, 'name' => 'test')
             ),
             'value object method, more than one property' => array(
                 $this->getValueObjectMock(array('getName' => 'test', 'getSecondName' => 'second')),
-                array($this->getPropertyMock('name'), $this->getPropertyMock('second_name')),
+                array('name', 'second_name'),
                 array('id' => null, 'name' => 'test', 'second_name' => 'second')
             ),
 
             'value object property, properties unknown' => array(
                 (object)array('name' => 'test'),
-                array($this->getPropertyMock('unknown')),
+                array('unknown'),
                 array('id' => null, 'unknown' => null)
             ),
             'value object property, one property' => array(
                 (object)array('name' => 'test'),
-                array($this->getPropertyMock('name')),
+                array('name'),
                 array('id' => null, 'name' => 'test')
             ),
             'value object property, more than one property' => array(
                 (object)array('name' => 'test', 'second_name' => 'second'),
-                array($this->getPropertyMock('name'), $this->getPropertyMock('second_name')),
+                array('name', 'second_name'),
                 array('id' => null, 'name' => 'test', 'second_name' => 'second')
+            ),
+            'value object flexible property' => array(
+                (object)array('name' => $this->getFlexibleValueMock('test')),
+                array('name'),
+                array('id' => null, 'name' => 'test')
             ),
         );
     }
@@ -132,14 +124,13 @@ class EntityPropertiesTransformerTest extends \PHPUnit_Framework_TestCase
         return $mock;
     }
 
-    protected function getPropertyMock($name)
+    protected function getFlexibleValueMock($data)
     {
-        $mock = $this->getMockBuilder('Oro\Bundle\FormBundle\EntityAutocomplete\Property')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $mock->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue($name));
-        return $mock;
+        $result = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface');
+
+        $result->expects($this->any())->method('getData')
+            ->will($this->returnValue($data));
+
+        return $result;
     }
 }

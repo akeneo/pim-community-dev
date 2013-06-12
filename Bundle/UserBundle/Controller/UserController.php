@@ -2,11 +2,15 @@
 
 namespace Oro\Bundle\UserBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
+use Oro\Bundle\FormBundle\EntityAutocomplete;
 
 use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -143,17 +147,76 @@ class UserController extends Controller
      *      parent="oro_user_user"
      * )
      */
-    public function autocompleteAction()
+    public function autocompleteAction(Request $request)
     {
         $query = $this->getRequest()->get('q');
         $page = (int)$this->getRequest()->get('page', 1);
+        $perPage = intval($request->get('per_page', 50));
+
+        if ($page <= 0) {
+            throw new HttpException(400, 'Parameter "page" must be greater than 0');
+        }
+
+        if ($perPage <= 0) {
+            throw new HttpException(400, 'Parameter "per_page" must be greater than 0');
+        }
+
+        $search = $this->createAutocompleteSearchHandler(array('firstName', 'lastName', 'username', 'email'));
+
+        $perPage = $perPage + 1;
+
+        /** @var User[] $users */
+        $users = $search->search($query, ($page - 1) * $perPage, $perPage);
+        $hasMore = count($users) == $perPage;
+        if ($hasMore) {
+            $users = array_slice($users, 0, $perPage - 1);
+        }
+
+        /** @var \Liip\ImagineBundle\Imagine\Cache\CacheManager $cacheManager  */
+        $cacheManager = $this->container->get('liip_imagine.cache.manager');
+
+        $results = array();
+        foreach ($users as $user) {
+            $results[] = array(
+                'id' => $user->getId(),
+                'username' => $user->getUsername(),
+                'firstName' => $user->getFirstname(),
+                'lastName' => $user->getLastname(),
+                'email' => $user->getEmail(),
+                'avatar' => $user->getImageFile() ?
+                    $cacheManager->getBrowserPath($user->getImageFile(), 'avatar_med') : null
+            );
+        }
 
         $data = array(
-            'results' => array(
-                array('id' => 1, 'username' => 'admin', 'first_name' => 'Test', 'last_name' => 'User', 'email' => 'admin@test.com', 'avatar' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAcCAYAAAB75n/uAAAC70lEQVR42u2V3UtTYRzHu+mFwCwK+gO6CEryPlg7yiYx50vDqUwjFIZDSYUk2ZTmCysHvg9ZVggOQZiRScsR4VwXTjEwdKZWk8o6gd5UOt0mbev7g/PAkLONIOkiBx+25/v89vuc85zn2Q5Fo9F95UDwnwhS5HK5TyqVRv8m1JN6k+AiC+fn54cwbgFNIrTQ/J9IqDcJJDGBHsgDgYBSq9W6ysvLPf39/SSUUU7zsQ1yc3MjmN90OBzfRkZG1umzQqGIxPSTkIBjgdDkaGNjoza2kcFgUCE/QvMsq6io2PV6vQu1tbV8Xl7etkql2qqvr/+MbDE/Pz8s9OP2Cjhwwmw29+4R3Kec1WZnZ4fn5uamc3Jyttra2qbH8ero6JgdHh5+CvFHq9X6JZHgzODgoCVW0NPTY0N+ltU2Nzdv4GqXsYSrPp+vDw80aLFYxru6uhyQ/rDb7a8TCVJDodB1jUazTVlxcXGQ5/mbyE+z2u7u7veY38BVT3Z2djopm5qa6isrK/tQWVn5qb29fSGR4DC4PDAwMEsZHuArjGnyGKutq6v7ajQaF6urq9/MzMz0QuSemJiwQDwGkR0POhhXgILjNTU1TaWlpTxlOp1uyWQyaUjMajMzM8Nut/tJQUHBOpZppbCwkM/KytrBznuL9xDVxBMo8KXHYnu6qKjIivmrbIy67x6Px4Yd58W672ApfzY0NCyNjo7OZmRkiAv8fr+O47iwmABXtoXaG3uykF6vX7bZbF6cgZWqqiqezYkKcNtmjO+CF2AyhufgjsvlMiU7vXEF+4C4ALf9CwdrlVAqlcFkTdRqdQSHLUDgBEeSCrArAsiGwENs0XfJBE6ncxm1D8Aj/B6tigkkJSUlmxSwLYhMDeRsyyUCd+lHrWxtbe2aTCbbZTn1ZD92F0Cr8GBfgnsgDZwDt8EzMBmHMXBLqD0PDMAh9Gql3iRIESQSIAXp4CRIBZeEjIvDFZAm1J4C6UK9ROiZcvCn/+8FvwHtDdJEaRY+oQAAAABJRU5ErkJggg==')
-            ),
-            'more' => false
+            'results' => $results,
+            'more' => $hasMore
         );
+
         return new JsonResponse($data);
+    }
+
+    /**
+     * @param array $searchProperties
+     * @return EntityAutocomplete\SearchHandlerInterface
+     */
+    protected function createAutocompleteSearchHandler(array $searchProperties)
+    {
+        return $this->get('oro_form.autocomplete.doctrine.entity_search_factory')
+            ->create(
+                array(
+                    'properties' => array_map(array($this, 'createAutocompleteProperty'), $searchProperties),
+                    'entity_class' => 'Oro\\Bundle\\UserBundle\\Entity\\User'
+                )
+            );
+    }
+
+    /**
+     * @param string $propertyName
+     * @return EntityAutocomplete\Property
+     */
+    protected function createAutocompleteProperty($propertyName)
+    {
+        return new EntityAutocomplete\Property(array('name' => $propertyName));
     }
 }

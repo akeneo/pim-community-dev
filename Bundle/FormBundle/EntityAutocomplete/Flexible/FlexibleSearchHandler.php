@@ -65,7 +65,6 @@ class FlexibleSearchHandler implements SearchHandlerInterface
             $joinCondition = $queryBuilder->prepareAttributeJoinCondition($attribute, $joinAlias);
             $joinExpr = $rootAlias . '.' . $attribute->getBackendStorage();
             $queryBuilder->leftJoin($joinExpr, $joinAlias, 'WITH', $joinCondition);
-            $queryBuilder->addAttributeOrderBy($attribute, 'ASC');
         }
 
         foreach ($searchFields as $field) {

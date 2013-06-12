@@ -2,34 +2,27 @@
 
 namespace Oro\Bundle\FormBundle\EntityAutocomplete\Transformer;
 
+use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Oro\Bundle\FormBundle\EntityAutocomplete\Property;
 
 class EntityPropertiesTransformer implements EntityTransformerInterface
 {
     /**
-     * @var Property[] $properties
+     * @var array $properties
      */
-    protected $properties;
+    protected $propertyNames;
 
     /**
-     * @param Property[] $properties
+     * @param array|Property[] $properties
      */
     public function __construct(array $properties)
     {
-        $this->properties = array();
+        $this->propertyNames = array();
         foreach ($properties as $property) {
-            if (is_string($property)) {
-                $property = array('name' => $property);
+            if ($property instanceof Property) {
+                $property = $property->getName();
             }
-            if (is_array($property)) {
-                $property = new Property($property);
-            }
-            if (!$property instanceof Property) {
-                throw new \InvalidArgumentException(
-                    '$properties must contain instances of Oro\\Bundle\\FormBundle\\EntityAutocomplete\\Property'
-                );
-            }
-            $this->properties[] = $property;
+            $this->propertyNames[] = $property;
         }
     }
 
@@ -46,8 +39,7 @@ class EntityPropertiesTransformer implements EntityTransformerInterface
             'id' => $this->getPropertyValue($this->getIdPropertyName($value), $value)
         );
 
-        foreach ($this->properties as $property) {
-            $name = $property->getName();
+        foreach ($this->propertyNames as $name) {
             $data[$name] = $this->getPropertyValue($name, $value);
         }
 
@@ -73,16 +65,23 @@ class EntityPropertiesTransformer implements EntityTransformerInterface
      */
     protected function getPropertyValue($name, $value)
     {
-        $method = 'get' . str_replace(' ', '', str_replace('_', ' ', ucwords($name)));
+        $result = null;
+
         if (is_object($value)) {
+            $method = 'get' . str_replace(' ', '', str_replace('_', ' ', ucwords($name)));
             if (method_exists($value, $method)) {
-                return $value->$method();
+                $result = $value->$method();
             } elseif (isset($value->$name)) {
-                return $value->$name;
+                $result = $value->$name;
             }
         } elseif (is_array($value) && array_key_exists($name, $value)) {
-            return $value[$name];
+            $result = $value[$name];
         }
-        return null;
+
+        if ($result instanceof FlexibleValueInterface) {
+            $result = $result->getData();
+        }
+
+        return $result;
     }
 }
