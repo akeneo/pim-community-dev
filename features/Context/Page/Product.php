@@ -88,10 +88,6 @@ class Product extends Page
         $label = $this->find('css', sprintf('label:contains("%s")', $name));
 
         if (!$label) {
-            $label = $this->find('css', sprintf('label:contains("%s")', strtolower($name)));
-        }
-
-        if (!$label) {
             throw new ElementNotFoundException(
                 $this->getSession(), 'form label ', 'value', $name
             );
