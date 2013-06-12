@@ -1,32 +1,22 @@
 <?php
 namespace Pim\Bundle\ProductBundle\AttributeType;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\TextAreaType as OroTextAreaType;
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\NumberType as OroNumberType;
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Symfony\Component\Form\FormFactoryInterface;
 
 /**
- * Text area attribute type
+ * Number attribute type
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class TextAreaType extends OroTextAreaType
+class NumberType extends OroNumberType
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function prepareValueFormAlias(FlexibleValueInterface $value)
-    {
-        if ($value->getAttribute()->getWysiwygEnabled()) {
-            return 'pim_wysiwyg';
-        }
 
-        return parent::prepareValueFormAlias($value);
-    }
-
-    /**
+   /**
      * {@inheritdoc}
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
@@ -34,14 +24,22 @@ class TextAreaType extends OroTextAreaType
         $properties = array(
             array(
                 'name' => 'defaultValue',
-                'fieldType' => 'textarea'
+                'fieldType' => 'number'
             ),
             array(
-                'name' => 'maxCharacters',
-                'fieldType' => 'integer'
+                'name' => 'numberMin',
+                'fieldType' => 'number'
             ),
             array(
-                'name' => 'wysiwygEnabled',
+                'name' => 'numberMax',
+                'fieldType' => 'number'
+            ),
+            array(
+                'name' => 'decimalsAllowed',
+                'fieldType' => 'checkbox'
+            ),
+            array(
+                'name' => 'negativeAllowed',
                 'fieldType' => 'checkbox'
             ),
             array(
@@ -68,8 +66,8 @@ class TextAreaType extends OroTextAreaType
                 'name' => 'unique',
                 'fieldType' => 'pim_product_unique',
                 'options' => array(
-                    'disabled' => true,
-                    'read_only' => true
+                    'disabled' => (bool) $attribute->getId(),
+                    'read_only' => (bool) $attribute->getId()
                 )
             )
         );
@@ -82,6 +80,6 @@ class TextAreaType extends OroTextAreaType
      */
     public function getName()
     {
-        return 'pim_product_textarea';
+        return 'pim_product_number';
     }
 }
