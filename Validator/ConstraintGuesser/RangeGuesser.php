@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\ProductBundle\Validator\ConstraintGuesser;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\ProductBundle\Validator\Constraints\Range;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -20,6 +20,7 @@ class RangeGuesser implements ConstraintGuesserInterface
             AbstractAttributeType::BACKEND_TYPE_INTEGER,
             AbstractAttributeType::BACKEND_TYPE_METRIC,
             AbstractAttributeType::BACKEND_TYPE_PRICE,
+            'prices'
         ));
     }
 
@@ -32,7 +33,7 @@ class RangeGuesser implements ConstraintGuesserInterface
             if (false === $attribute->getNegativeAllowed()) {
                 $min = 0;
             }
-            $constraints[] = new Assert\Range(array(
+            $constraints[] = new Range(array(
                 'min' => $min,
                 'max' => $max,
             ));
