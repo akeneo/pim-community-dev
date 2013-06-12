@@ -11,10 +11,11 @@ class AclCheck extends Page
         parent::__construct($testCase);
     }
 
-    public function checkFor403($currentUrl)
+    public function assertAcl($url, $title = '403 - Forbidden')
     {
-        $this->url($currentUrl);
-        $this->assertTitle('403 - Forbidden', 'Page is allowed to User, ACL do not work');
+        $this->url($url);
+        $this->waitPageToLoad();
+        $this->assertTitle($title, 'Page title is not that was expected');
         return $this;
     }
 }
