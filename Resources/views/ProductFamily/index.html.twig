@@ -1,23 +1,19 @@
 {% extends 'PimProductBundle::layout.html.twig' %}
 
-{% set title = 'Family'|trans %}
-
 {% block page_container %}
 <div class="container-fluid">
     {% block content %}
         {% set currentFamily = family is defined ? family : null %}
-        <div class="row-fluid has-sidebar">
+        <div id="family-container" class="row-fluid">
             <div class="sidebar-list">
                 <ul>
                     {% for family in families %}
                     <li class="{{ family == currentFamily ? 'active' : '' }}"><a href="{{ path('pim_product_productfamily_edit', {'id': family.id}) }}">{{ family.label }}</a></li>
                     {% endfor %}
-                    <li><a href="{{ path('pim_product_productfamily_create') }}" class="btn">{{ 'New family'|trans }}</a></li>
                 </ul>
             </div>
             <div id="form-tab">
                 {% block familyTab %}
-                <h3>{{ title }}</h3>
                 {% endblock familyTab %}
             </div>
         </div>
@@ -38,4 +34,11 @@
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
+    <script type="text/javascript">
+    $(function() {
+        "use strict";
+
+        $('#family-container').sidebarize({ buttons: ['<a href="{{ path('pim_product_productfamily_create') }}"><i class="icon-plus-sign"></i></a>'] });
+    });
+    </script>
 {% endblock %}

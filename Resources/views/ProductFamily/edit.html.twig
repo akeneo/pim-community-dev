@@ -9,7 +9,7 @@
 
     <div class="form-row">
         <h3>
-            Family - {{ family.label }}
+            {{ title }} - {{ family.label }}
             <button type="submit" class="btn btn-primary pull-right">{{ ' Save'|trans }}</button>
 
             <a href="{{ path('pim_product_productfamily_remove', {'id': family.id}) }}"
@@ -128,7 +128,6 @@
         $(function() {
         
             var activeTab = $('[href=' + location.hash + ']');
-            console.log(activeTab);
             activeTab && activeTab.tab('show');
 
             $('.group').click(function(event) {
@@ -136,13 +135,7 @@
                 $(this).parent().find('tr:not(.group)').toggle();
                 $(this).find('i').toggleClass('icon-expand').toggleClass('icon-collapse');
             });
-
-            $('#pim_available_product_attributes_attributes').select2('destroy');
-            $('#pim_available_product_attributes_attributes').css('width', 'auto');
             
-            $('.dropdown-menu').find('form').click(function (event) {
-                event.stopPropagation();
-            });
         });
     </script>
 {% endblock %}

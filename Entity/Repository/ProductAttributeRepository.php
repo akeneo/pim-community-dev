@@ -39,4 +39,14 @@ class ProductAttributeRepository extends EntityRepository
 
         return $qb;
     }
+
+   /**
+     * Find all product attributes that belong to a group
+     *
+     * @return array
+     */
+    public function findAllGrouped()
+    {
+        return $this->createQueryBuilder('a')->where('a.group IS NOT NULL')->orderBy('a.label')->getQuery()->getResult();
+    }
 }

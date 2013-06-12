@@ -8,6 +8,7 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\PriceType;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
+use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\ConfigBundle\Manager\CurrencyManager;
 
 /**
@@ -31,9 +32,9 @@ class PriceCollectionType extends AbstractAttributeType
      * @param string          $formType    the form type
      * @param CurrencyManager $manager     the currency manager
      */
-    public function __construct($backendType, $formType, CurrencyManager $manager)
+    public function __construct($backendType, $formType, ConstraintGuesserInterface $constraintGuesser, CurrencyManager $manager)
     {
-        parent::__construct($backendType, $formType);
+        parent::__construct($backendType, $formType, $constraintGuesser);
 
         $this->currencyManager = $manager;
     }
@@ -50,6 +51,19 @@ class PriceCollectionType extends AbstractAttributeType
         $options['by_reference'] = false;
 
         return $options;
+    }
+
+    protected function prepareValueFormConstraints(FlexibleValueInterface $value)
+    {
+        if ($this->constraintGuesser->supportAttribute($attribute = $value->getAttribute())) {
+            return array(
+                'options' => array(
+                    'constraints' => $this->constraintGuesser->guessConstraints($attribute),
+                )
+            );
+        }
+
+        return array();
     }
 
     /**

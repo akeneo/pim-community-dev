@@ -52,6 +52,34 @@ class ProductType extends FlexibleType
     }
 
     /**
+     * Add entity fieldsto form builder
+     *
+     * @param FormBuilderInterface $builder
+     */
+    public function addDynamicAttributesFields(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add(
+            'values',
+            new LocalizedCollectionType,
+            array(
+                'type'               => $this->valueFormAlias,
+                'allow_add'          => true,
+                'allow_delete'       => true,
+                'by_reference'       => false,
+                'cascade_validation' => true,
+                'currentLocale'      => $options['currentLocale'],
+            )
+        );
+    }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'currentLocale' => null
+        ));
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getName()

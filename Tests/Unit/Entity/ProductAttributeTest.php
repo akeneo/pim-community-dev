@@ -406,7 +406,7 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
 
         // Change value and assert new
         $extensions = array('jpg', 'png', 'gif');
-        $productAttribute->setAllowedFileExtensions($extensions);
+        $productAttribute->setAllowedFileExtensions(' jpg, png,gif');
         $this->assertEquals($extensions, $productAttribute->getAllowedFileExtensions());
     }
 

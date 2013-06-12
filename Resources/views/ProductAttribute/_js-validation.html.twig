@@ -69,8 +69,7 @@ $(function() {
            'preprocess',
             $('#' + formName).serialize(),
             function(data) {
-                $('#' + formName).remove();
-                $('#main').append($(data));
+                $('#' + formName).replaceWith($(data));
                 $('#' + formName + ' div.alert').remove();
                 initializeForm();
             }
@@ -177,12 +176,16 @@ $(function() {
             handle: '.handle',
             containment: 'parent',
             tolerance: 'pointer',
-            update: updateSortOrder
-        });
+            update: updateSortOrder,
+            helper: function(e, tr) {
+                var $originals = tr.children();
+                var $helper = tr.clone();
+                $helper.children().each(function(index) {
+                    $(this).width($originals.eq(index).width());
+                });
 
-        // Set width on each table cell to prevent them from being resized when sorted
-        $optionList.find('tr.att-option td').each(function() {
-            $(this).css('width', $(this).width());
+                return $helper;
+            }
         });
     }
 

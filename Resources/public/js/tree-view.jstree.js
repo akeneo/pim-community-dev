@@ -56,7 +56,7 @@ $(tree_id).jstree({
     })
     .bind('loaded.jstree', function(event, data) {
         $(tree_id).jstree('create', null, "last", { 
-            "attr": { "class": "jstree-unclassified" },
+            "attr": { "class": "jstree-unclassified", "id": "node_0" },
             "data" : { "title": unclassifiedNodeTitle }
         }, false, true);
     })
@@ -65,7 +65,15 @@ $(tree_id).jstree({
         var nodeId = node.attr('id').replace('node_','');
         
         var datagrid = Oro.Registry.getElement('datagrid', 'products');
-        datagrid.filters.categories.value.value = nodeId;
+        
+        if (nodeId != 0) {
+            datagrid.filters.categories.value.type = filterInType;
+            datagrid.filters.categories.value.value = nodeId;
+        } else {
+            var selected_tree = data.inst.get_tree_select().find(':selected');
+            datagrid.filters.categories.value.type = filterUnclassifiedType;
+            datagrid.filters.categories.value.value = $(selected_tree).attr('value');
+        }
         datagrid.filters.categories.trigger('update');
     })
     ;

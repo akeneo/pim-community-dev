@@ -2,6 +2,7 @@
 namespace Pim\Bundle\ProductBundle\Controller;
 
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -60,20 +61,19 @@ class AttributeGroupController extends Controller
      */
     public function editAction(AttributeGroup $group)
     {
-        $groups = $this->getAttributeGroupRepository()->findAllOrderedBySortOrder();
-
         if ($this->get('pim_product.form.handler.attribute_group')->process($group)) {
             $this->get('session')->getFlashBag()->add('success', 'Group successfully saved');
 
-            return $this->redirect(
-                $this->generateUrl('pim_product_attributegroup_edit', array('id' => $group->getId()))
-            );
+            return $this->redirectToAttributeGroupAttributesTab($group->getId());
         }
+
+        $groups = $this->getAttributeGroupRepository()->findAllOrderedBySortOrder();
 
         return array(
             'groups' => $groups,
             'group'  => $group,
-            'form'   => $this->get('pim_product.form.attribute_group')->createView()
+            'form'   => $this->get('pim_product.form.attribute_group')->createView(),
+            'attributesForm' => $this->getAvailableProductAttributesForm($this->getGroupedAttributes())->createView()
         );
     }
 
@@ -88,7 +88,7 @@ class AttributeGroupController extends Controller
      */
     public function sortAction(Request $request)
     {
-        if ($request->getMethod() !== 'POST') {
+        if (!$request->isXmlHttpRequest() || $request->getMethod() !== 'POST') {
             return $this->redirect($this->generateUrl('pim_product_attributegroup_index'));
         }
 
@@ -142,6 +142,93 @@ class AttributeGroupController extends Controller
     }
 
     /**
+     * Add attributes to a group
+     *
+     * @param int $id The group id to add attributes to
+     *
+     * @return Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route("/{id}/attributes", requirements={"id"="\d+", "_method"="POST"})
+     *
+     */
+    public function addProductAttributes($id)
+    {
+        $group              = $this->findGroupOr404($id);
+        $availableAttributes = new AvailableProductAttributes;
+
+        $attributesForm      = $this->getAvailableProductAttributesForm(
+            $this->getGroupedAttributes(), $availableAttributes
+        );
+
+        $attributesForm->bind($this->getRequest());
+
+        foreach ($availableAttributes->getAttributes() as $attribute) {
+            $group->addAttribute($attribute);
+        }
+
+        $this->getEntityManager()->flush();
+
+        return $this->redirectToAttributeGroupAttributesTab($group->getId());
+    }
+
+    /**
+     * @Route("/{groupId}/attribute/{attributeId}")
+     * @Method("DELETE")
+     */
+    public function removeProductAttribute($groupId, $attributeId)
+    {
+        $group    = $this->findGroupOr404($groupId);
+        $attribute = $this->findAttributeOr404($attributeId);
+
+        if (false === $group->hasAttribute($attribute)) {
+            throw $this->createNotFoundException(sprintf(
+                'Attribute "%s" is not attached to "%s"',
+                $attribute, $group
+            ));
+        }
+
+        $group->removeAttribute($attribute);
+        $this->getEntityManager()->flush();
+
+        $this->addFlash('success', 'The group is successfully updated.');
+
+        return $this->redirectToAttributeGroupAttributesTab($group->getId());
+    }
+
+    protected function redirectToAttributeGroupAttributesTab($id)
+    {
+        return $this->redirect(sprintf('%s#attributes', $this->generateUrl(
+            'pim_product_attributegroup_edit', array('id' => $id)
+        )));
+    }
+
+    protected function findGroupOr404($id)
+    {
+        $group = $this->getAttributeGroupRepository()->findOne($id);
+        if (!$group) {
+            throw $this->createNotFoundException(sprintf(
+                'Couldn\'t find an attribute group with id %d', $id
+            ));
+        }
+
+        return $group;
+    }
+
+    protected function findAttributeOr404($id)
+    {
+        $attribute = $this->getProductAttributeRepository()->findOneBy(array(
+            'id' => $id
+        ));
+        if (!$attribute) {
+            throw $this->createNotFoundException(sprintf(
+                'Couldn\'t find an attribute group with id %d', $id
+            ));
+        }
+
+        return $attribute;
+    }
+
+    /**
      * Get entity manager
      *
      * @return \Doctrine\ORM\EntityManager
@@ -159,5 +246,15 @@ class AttributeGroupController extends Controller
     protected function getAttributeGroupRepository()
     {
         return $this->getEntityManager()->getRepository('PimProductBundle:AttributeGroup');
+    }
+
+    /**
+     * Get attributes that belong to a group
+     *
+     * @return array
+     */
+    protected function getGroupedAttributes()
+    {
+        return $this->getProductAttributeRepository()->findAllGrouped();
     }
 }

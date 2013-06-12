@@ -67,7 +67,7 @@ class CategoryHelper
     {
         $result = array();
 
-        foreach($categories as $category) {
+        foreach ($categories as $category) {
             $result[] = array(
                 'attr' => array(
                     'id' => 'node_'. $category->getId()
@@ -114,7 +114,7 @@ class CategoryHelper
     {
         $result = array();
 
-        foreach($categories as $category) {
+        foreach ($categories as $category) {
             $state = 'leaf';
             if (!is_object($category['item'])) {
                 print_r($category['item']);

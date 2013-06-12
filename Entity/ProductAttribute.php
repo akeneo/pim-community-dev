@@ -973,20 +973,19 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      */
     public function getAllowedFileExtensions()
     {
-        return $this->allowedFileExtensions ? explode(',', $this->allowedFileExtensions) : array();
+        return $this->allowedFileExtensions ? array_map('trim', explode(',', $this->allowedFileExtensions)) : array();
     }
 
     /**
      * Set allowedFileExtensions
      *
-     * @param array $allowedFileExtensions
+     * @param string $allowedFileExtensions
      *
      * @return ProductAttribute
      */
     public function setAllowedFileExtensions($allowedFileExtensions)
     {
-        $this->allowedFileExtensions = is_array($allowedFileExtensions)
-            ? implode(',', $allowedFileExtensions) : $allowedFileExtensions;
+        $this->allowedFileExtensions = $allowedFileExtensions;
 
         return $this;
     }

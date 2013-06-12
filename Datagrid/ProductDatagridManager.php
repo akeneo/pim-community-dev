@@ -2,9 +2,6 @@
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
 use Oro\Bundle\GridBundle\Property\FixedProperty;
-
-use Pim\Bundle\ConfigBundle\Manager\ChannelManager;
-use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Oro\Bundle\GridBundle\Property\FieldProperty;
@@ -13,7 +10,7 @@ use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-use Pim\Bundle\ProductBundle\Filter\FilterInterface;
+use Pim\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
@@ -38,11 +35,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
      * @staticvar string
      */
     const SCOPE_FIELD_NAME  = 'scope';
-
-    /**
-     * @var LocaleManager
-     */
-    protected $localeManager;
 
     /**
      * get properties
@@ -91,6 +83,9 @@ class ProductDatagridManager extends FlexibleDatagridManager
             )
         );
         $fieldsCollection->add($fieldSku);
+
+        $field = $this->createCurrencyField();
+        $fieldsCollection->add($field);
 
         // TODO : until we'll have related backend type in grid bundle
         $excludedBackend = array(
@@ -155,6 +150,32 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
+     * Create a currency field and filter
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createCurrencyField()
+    {
+        $field = new FieldDescription();
+        $field->setName('currency');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_DECIMAL,
+                'label'       => $this->translator->trans('Currency'),
+                'field_name'  => 'currency',
+                'filter_type' => FilterInterface::TYPE_CURRENCY,
+                'required'    => false,
+                'sortable'    => true,
+                'show_column' => false,
+                'filterable'  => true,
+                'show_filter' => true
+            )
+        );
+
+        return $field;
+    }
+
+    /**
      * Create a family field and filter
      *
      * @return \Oro\Bundle\GridBundle\Field\FieldDescription
@@ -174,7 +195,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => 'Family',
+                'label'       => $this->translator->trans('Family'),
                 'field_name'  => 'productFamily',
                 'filter_type' => FilterInterface::TYPE_CHOICE,
                 'required'    => false,
@@ -212,9 +233,9 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
-                'label'       => 'Categories',
+                'label'       => $this->translator->trans('Categories'),
                 'field_name'  => 'categories',
-                'filter_type' => FilterInterface::TYPE_ENTITY,
+                'filter_type' => FilterInterface::TYPE_CATEGORY,
                 'required'    => false,
                 'sortable'    => true,
                 'filterable'  => true,
@@ -235,8 +256,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function createLocaleField()
     {
-        $activeLocaleCodes = $this->localeManager->getActiveCodesWithUserLocale();
-
         $field = new FieldDescription();
         $field->setName(self::LOCALE_FIELD_NAME);
         $field->setOptions(
@@ -248,10 +267,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'required'    => false,
                 'filterable'  => true,
                 'show_column' => false,
-                'show_filter' => true,
-                'field_options' => array(
-                    'choices' => array_combine($activeLocaleCodes, $activeLocaleCodes)
-                ),
+                'show_filter' => true
             )
         );
 
@@ -265,8 +281,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function createScopeField()
     {
-        $channelChoices = $this->channelManager->getChannelChoiceWithUserChannel();
-
         $field = new FieldDescription();
         $field->setName(self::SCOPE_FIELD_NAME);
         $field->setOptions(
@@ -278,10 +292,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'required'    => false,
                 'filterable'  => true,
                 'show_column' => false,
-                'show_filter' => true,
-                'field_options' => array(
-                    'choices' => $channelChoices
-                ),
+                'show_filter' => true
             )
         );
 
@@ -348,7 +359,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
      *
      * @return string
      */
-    public function getLocaleFilterValue()
+    protected function getLocaleFilterValue()
     {
         $filtersArray = $this->parameters->get(ParametersInterface::FILTER_PARAMETERS);
         if (isset($filtersArray[self::LOCALE_FIELD_NAME]) && isset($filtersArray[self::LOCALE_FIELD_NAME]['value'])) {
@@ -365,7 +376,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
      *
      * @return string
      */
-    public function getScopeFilterValue()
+    protected function getScopeFilterValue()
     {
         $filtersArray = $this->parameters->get(ParametersInterface::FILTER_PARAMETERS);
         if (isset($filtersArray[self::SCOPE_FIELD_NAME]) && isset($filtersArray[self::SCOPE_FIELD_NAME]['value'])) {
@@ -375,33 +386,5 @@ class ProductDatagridManager extends FlexibleDatagridManager
         }
 
         return $dataScope;
-    }
-
-    /**
-     * Set locale manager
-     *
-     * @param LocaleManager $localeManager
-     *
-     * @return \Pim\Bundle\ProductBundle\Datagrid\ProductDatagridManager
-     */
-    public function setLocaleManager(LocaleManager $localeManager)
-    {
-        $this->localeManager = $localeManager;
-
-        return $this;
-    }
-
-    /**
-     * Set channel manager
-     *
-     * @param ChannelManager $channelManager
-     *
-     * @return \Pim\Bundle\ProductBundle\Datagrid\ProductDatagridManager
-     */
-    public function setChannelManager(ChannelManager $channelManager)
-    {
-        $this->channelManager = $channelManager;
-
-        return $this;
     }
 }
