@@ -41,4 +41,14 @@ class LocaleRepository extends EntityRepository
         return $this->createQueryBuilder('l')
             ->where('l.fallback IS NOT NULL')->orderBy('l.code')->getQuery()->getResult();
     }
+
+    /**
+     * Return a query builder for activated locales
+     *
+     * @return Doctrine\ORM\QueryBuilder
+     */
+    public function getActivatedLocales()
+    {
+        return $this->createQueryBuilder('l')->where('l.activated = 1')->orderBy('l.code');
+    }
 }
