@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
+use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+
 use Pim\Bundle\GridBundle\Property\CurrencyProperty;
 
 use Oro\Bundle\GridBundle\Property\FixedProperty;
@@ -88,45 +90,17 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $excludedBackend = array(
             AbstractAttributeType::BACKEND_TYPE_MEDIA
         );
-
         foreach ($this->getFlexibleAttributes() as $attribute) {
             $backendType = $attribute->getBackendType();
             if (in_array($backendType, $excludedBackend)) {
                 continue;
             }
 
-            if (!$attribute->getUseableAsGridColumn()) {
+            if (!$attribute->getUseableAsGridColumn() && !$attribute->getUseableAsGridFilter()) {
                 continue;
             }
 
-            $attributeType = $this->convertFlexibleTypeToFieldType($backendType);
-            $filterType    = $this->convertFlexibleTypeToFilterType($backendType);
-
-            $field = new FieldDescription();
-            $field->setName($attribute->getCode());
-            $field->setOptions(
-                array(
-                    'type'          => $attributeType,
-                    'label'         => $attribute->getLabel(),
-                    'field_name'    => $attribute->getCode(),
-                    'filter_type'   => $filterType,
-                    'required'      => false,
-                    'sortable'      => true,
-                    'filterable'    => $attribute->getUseableAsGridFilter(),
-                    'flexible_name' => $this->flexibleManager->getFlexibleName(),
-                    'show_filter'   => $attribute->getUseableAsGridFilter()
-                )
-            );
-
-            if ($attributeType == FieldDescriptionInterface::TYPE_OPTIONS) {
-                $field->setOption('multiple', true);
-            }
-
-            if (!$attribute->getUseableAsGridFilter()) {
-                $field->setOption('filter_type', false);
-                $field->setOption('filterable', false);
-            }
-
+            $field = $this->createFlexibleField($attribute);
             $fieldsCollection->add($field);
         }
 
@@ -141,6 +115,20 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
         $field = $this->createFamilyField();
         $fieldsCollection->add($field);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getFlexibleFieldOptions(AbstractAttribute $attribute, array $options = array())
+    {
+        $result = parent::getFlexibleFieldOptions($attribute, $options);
+
+        $result['filterable'] = $attribute->getUseableAsGridFilter();
+        $result['show_filter'] = $attribute->getUseableAsGridFilter();
+        $result['show_column'] = $attribute->getUseableAsGridColumn();
+
+        return $result;
     }
 
     /**
