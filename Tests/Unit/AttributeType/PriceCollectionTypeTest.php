@@ -58,10 +58,10 @@ class PriceCollectionTypeTest extends AttributeTypeTest
 
     public function testBuildAttributeFormTypes()
     {
-        $this->assertEquals(array(), $this->target->buildAttributeFormTypes(
+        $this->assertEquals(9, count($this->target->buildAttributeFormTypes(
             $this->getFormFactoryMock(),
             $this->getAttributeMock(null, null)
-        ));
+        )));
     }
 }
 
