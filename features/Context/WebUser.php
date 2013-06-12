@@ -427,7 +427,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iAmOnTheProductPage($product)
     {
-        $product           = $this->getProduct($product);
+        $product = $this->getProduct($product);
         $this->openPage('Product', array(
             'id' => $product->getId(),
         ));
@@ -544,9 +544,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^the following attributes:$/
+     * @Given /^the following attributes?:$/
      */
-    public function theFollowingAttributes(TableNode $table)
+    public function theFollowingAttribute(TableNode $table)
     {
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $data) {
@@ -941,6 +941,42 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $family->setAttributeAsLabel($attribute);
 
         $this->getEntityManager()->flush();
+    }
+
+    /**
+     * @When /^I select the attribute type "([^"]*)"$/
+     */
+    public function iSelectTheAttributeType($type)
+    {
+        $this
+            ->getPage('Attribute creation')
+            ->selectAttributeType($type)
+        ;
+
+        $this->getSession()->wait(2000);
+    }
+
+    /**
+     * @Given /^I am on the attribute creation page$/
+     */
+    public function iAmOnTheAttributeCreationPage()
+    {
+        $this->openPage('Attribute creation');
+    }
+
+    /**
+     * @Then /^I should see the (.*) fields?$/
+     */
+    public function iShouldSeeTheFields($fields)
+    {
+        $fields = $this->listToArray($fields);
+        foreach ($fields as $field) {
+            if (!$this->getPage('Attribute')->findField($field)) {
+                throw $this->createExpectationException(sprintf(
+                    'Expecting to see field "%s".', $field
+                ));
+            }
+        }
     }
 
     private function openPage($page, array $options = array())
