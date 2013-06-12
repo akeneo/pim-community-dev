@@ -5,8 +5,7 @@ namespace Oro\Bundle\FormBundle\Form\Type;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\FormBundle\EntityAutocomplete\Configuration;
 use Oro\Bundle\FormBundle\EntityAutocomplete\Property;
-use Oro\Bundle\FormBundle\EntityAutocomplete\Transformer\EntityToTextTransformer;
-use Oro\Bundle\FormBundle\EntityAutocomplete\Transformer\EntityTransformerInterface;
+use Oro\Bundle\FormBundle\EntityAutocomplete\Transformer\EntityPropertiesTransformer;
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,10 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class OroJquerySelect2HiddenType extends AbstractType
 {
-    /**
-     * @var EntityTransformerInterface
-     */
-    protected $entityTransformer;
 
     /**
      * @var EntityManager
@@ -33,7 +28,6 @@ class OroJquerySelect2HiddenType extends AbstractType
 
     public function __construct(EntityManager $em, Configuration $configuration)
     {
-        $this->entityTransformer = new EntityToTextTransformer();
         $this->em = $em;
         $this->configuration = $configuration;
     }
@@ -81,7 +75,7 @@ class OroJquerySelect2HiddenType extends AbstractType
 
         // Prepare required options based on autocomplete configuration
         $autocompleteOptions = $this->configuration->getAutocompleteOptions($options['autocomplete_alias']);
-        $title = $this->entityTransformer->transform($form->getData(), $autocompleteOptions['properties']);
+
         $configs = array_key_exists('form_options', $autocompleteOptions) ? $autocompleteOptions['form_options'] : array();
         $configs['route'] = $autocompleteOptions['route'];
 
@@ -105,10 +99,23 @@ class OroJquerySelect2HiddenType extends AbstractType
         $view->vars = array_replace_recursive(
             $view->vars,
             array(
-                'attr' => array('data-title' => $title),
+                'attr' => array(
+                    'encoded-data' => $this->encodeEntity($form->getData(), $autocompleteOptions['properties'])
+                ),
                 'configs' => $configs
             )
         );
+    }
+
+    /**
+     * @param mixed $entity
+     * @param array $properties
+     * @return string
+     */
+    protected function encodeEntity($entity, array $properties)
+    {
+        $entityTransformer = new EntityPropertiesTransformer($properties);
+        return json_encode($entityTransformer->transform($entity));
     }
 
     /**

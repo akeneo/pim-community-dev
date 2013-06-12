@@ -19,9 +19,9 @@ class EntityAutocompleteControllerTest extends WebTestCase
         $this->assertEquals(
             array(
                 'results' => array(
-                    array('id' => 1, 'text' => 'User #1'),
-                    array('id' => 2, 'text' => 'User #2'),
-                    array('id' => 3, 'text' => 'User #3')
+                    array('id' => 1, 'username' => 'User #1'),
+                    array('id' => 2, 'username' => 'User #2'),
+                    array('id' => 3, 'username' => 'User #3')
                 ),
                 'more' => true
             ),

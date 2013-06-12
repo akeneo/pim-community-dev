@@ -87,11 +87,12 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider optionsDataProvider
+     * @param array $data
      * @param array $autocompleteOptions
      * @param array $expectedConfigs
-     * @param string $expectedTitle
+     * @param string $expectedEncodedData
      */
-    public function testBuildView($data, array $autocompleteOptions, array $expectedConfigs, $expectedTitle)
+    public function testBuildView(array $data, array $autocompleteOptions, array $expectedConfigs, $expectedEncodedData)
     {
         $options = array('autocomplete_alias' => 'test');
 
@@ -113,8 +114,8 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('array', $view->vars);
         $this->assertArrayHasKey('attr', $view->vars);
         $this->assertInternalType('array', $view->vars['attr']);
-        $this->assertArrayHasKey('data-title', $view->vars['attr']);
-        $this->assertEquals($expectedTitle, $view->vars['attr']['data-title']);
+        $this->assertArrayHasKey('encoded-data', $view->vars['attr']);
+        $this->assertEquals($expectedEncodedData, $view->vars['attr']['encoded-data']);
         $this->assertArrayHasKey('configs', $view->vars);
         $this->assertEquals($expectedConfigs, $view->vars['configs']);
     }
@@ -139,7 +140,7 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
                         'type' => 'jsonp'
                     )
                 ),
-                'Test Value'
+                json_encode(array('id' => null, 'property' => 'Test Value'))
             )
         );
     }

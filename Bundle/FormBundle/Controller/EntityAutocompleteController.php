@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-use Oro\Bundle\FormBundle\EntityAutocomplete\Transformer\EntityToTextTransformer;
+use Oro\Bundle\FormBundle\EntityAutocomplete\Transformer\EntityPropertiesTransformer;
 use Oro\Bundle\FormBundle\EntityAutocomplete\Property;
 use Oro\Bundle\FormBundle\EntityAutocomplete\SearchFactoryInterface;
 use Oro\Bundle\FormBundle\EntityAutocomplete\Configuration;
@@ -79,12 +79,9 @@ class EntityAutocompleteController extends Controller
     protected function transformEntities(array $entities, array $properties)
     {
         $result = array();
-        $transformer = new EntityToTextTransformer();
+        $transformer = new EntityPropertiesTransformer($properties);
         foreach ($entities as $entity) {
-            $result[] = array(
-                'id' => $entity->getId(),
-                'text' => $transformer->transform($entity, $properties)
-            );
+            $result[] = $transformer->transform($entity);
         }
         return $result;
     }
