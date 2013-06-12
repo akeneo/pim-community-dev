@@ -9,7 +9,10 @@
         }
     ],
     "autoload": {
-        "psr-0": { "": "src/", "Context": "features/" }
+        "psr-0": {
+            "": "src/", "Context": "features/",
+            "Oro\\Bundle": "/home/gildas/projects/Oro/platform/src/"
+        }
     },
     "require": {
         "php": ">=5.3.3",
