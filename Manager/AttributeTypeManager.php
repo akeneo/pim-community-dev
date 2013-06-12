@@ -1,5 +1,5 @@
 <?php
-namespace Pim\Bundle\ProductBundle\Service;
+namespace Pim\Bundle\ProductBundle\Manager;
 
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
@@ -11,19 +11,19 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * Attribute Service
+ * Attribute type manager
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class AttributeService
+class AttributeTypeManager
 {
     /**
      * @var ProductManager
      */
-    protected $manager;
+    protected $productManager;
 
     /**
      * @var LocaleManager
@@ -38,13 +38,13 @@ class AttributeService
     /**
      * Constructor
      *
-     * @param ProductManager       $manager       Product manager
-     * @param LocaleManager        $localeManager Locale manager
-     * @param AttributeTypeFactory $factory       Attribute type factory
+     * @param ProductManager       $productManager Product manager
+     * @param LocaleManager        $localeManager  Locale manager
+     * @param AttributeTypeFactory $factory        Attribute type factory
      */
-    public function __construct(ProductManager $manager, LocaleManager $localeManager, AttributeTypeFactory $factory)
+    public function __construct(ProductManager $productManager, LocaleManager $localeManager, AttributeTypeFactory $factory)
     {
-        $this->manager = $manager;
+        $this->productManager = $productManager;
         $this->localeManager = $localeManager;
         $this->factory = $factory;
     }
@@ -63,9 +63,9 @@ class AttributeService
         }
 
         if (gettype($data) === 'array' && isset($data['attributeType'])) {
-            return $this->manager->createAttribute($data['attributeType']);
+            return $this->productManager->createAttribute($data['attributeType']);
         } elseif (gettype($data) === 'array' && isset($data['id'])) {
-            return $this->manager->getAttributeRepository()->find($data['id']);
+            return $this->productManager->getAttributeRepository()->find($data['id']);
         } else {
             return null;
         }
@@ -111,7 +111,7 @@ class AttributeService
      */
     public function getAttributeTypes()
     {
-        $types = $this->manager->getAttributeTypes();
+        $types = $this->productManager->getAttributeTypes();
         $choice = array();
         foreach ($types as $type) {
             $choice[$type]= $type;

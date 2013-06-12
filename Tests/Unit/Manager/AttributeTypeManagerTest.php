@@ -1,11 +1,11 @@
 <?php
-namespace Pim\Bundle\ProductBundle\Tests\Unit\Service;
+namespace Pim\Bundle\ProductBundle\Tests\Unit\Manager;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
-use Pim\Bundle\ProductBundle\Service\AttributeService;
+use Pim\Bundle\ProductBundle\Manager\AttributeTypeManager;
 use Symfony\Component\Validator\GlobalExecutionContext;
 use Symfony\Component\Validator\ExecutionContext;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -18,7 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class AttributeServiceTest extends WebTestCase
+class AttributeTypeManagerTest extends WebTestCase
 {
     /**
      * @var ExecutionContext
@@ -26,9 +26,9 @@ class AttributeServiceTest extends WebTestCase
     protected $executionContext;
 
     /**
-     * @var AttributeService
+     * @var AttributeTypeManager
      */
-    protected $service;
+    protected $attTypeManager;
 
     /**
      * @var array Attributes config
@@ -38,7 +38,7 @@ class AttributeServiceTest extends WebTestCase
     /**
      * @var ProductManager
      */
-    protected $manager;
+    protected $productManager;
 
     /**
      * @var Pim\Bundle\ConfigBundle\Manager\LocaleManager
@@ -62,12 +62,12 @@ class AttributeServiceTest extends WebTestCase
         static::$kernel = static::createKernel(array('environment' => 'dev'));
         static::$kernel->boot();
 
-        $this->manager = static::$kernel->getContainer()->get('product_manager');
+        $this->productManager = static::$kernel->getContainer()->get('product_manager');
         $this->localeManager = static::$kernel->getContainer()->get('pim_config.manager.locale');
         $this->factory = static::$kernel->getContainer()
             ->get('oro_flexibleentity.attributetype.factory');
 
-        $this->service = new AttributeService($this->manager, $this->localeManager, $this->factory);
+        $this->attTypeManager = new AttributeTypeManager($this->productManager, $this->localeManager, $this->factory);
     }
 
     /**
@@ -100,16 +100,16 @@ class AttributeServiceTest extends WebTestCase
     public function testCreateAttributeFromFormData()
     {
         $data = array('attributeType' => 'pim_product_metric');
-        $attribute = $this->service->createAttributeFromFormData($data);
+        $attribute = $this->attTypeManager->createAttributeFromFormData($data);
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductAttribute', $attribute);
 
         $attribute = $this->createProductAttribute('pim_product_price_collection');
-        $newAttribute = $this->service->createAttributeFromFormData($attribute);
+        $newAttribute = $this->attTypeManager->createAttributeFromFormData($attribute);
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductAttribute', $newAttribute);
         $this->assertEquals($attribute, $newAttribute);
 
         $attribute = 'ImageType';
-        $newAttribute = $this->service->createAttributeFromFormData($attribute);
+        $newAttribute = $this->attTypeManager->createAttributeFromFormData($attribute);
         $this->assertNull($newAttribute);
     }
 
@@ -119,7 +119,7 @@ class AttributeServiceTest extends WebTestCase
     public function testPrepareFormData()
     {
         $data = array('attributeType' => 'pim_product_multiselect');
-        $data = $this->service->prepareFormData($data);
+        $data = $this->attTypeManager->prepareFormData($data);
         $this->assertNotEmpty($data);
         $this->assertArrayHasKey('options', $data);
     }
@@ -129,7 +129,7 @@ class AttributeServiceTest extends WebTestCase
      */
     public function testGetAttributeTypes()
     {
-        $types = $this->service->getAttributeTypes();
+        $types = $this->attTypeManager->getAttributeTypes();
         $this->assertNotEmpty($types);
         foreach ($types as $type) {
             $this->assertNotEmpty($type);
@@ -145,6 +145,6 @@ class AttributeServiceTest extends WebTestCase
      */
     protected function createProductAttribute($type = null)
     {
-        return $this->manager->createAttribute($type);
+        return $this->productManager->createAttribute($type);
     }
 }

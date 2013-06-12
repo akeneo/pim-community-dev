@@ -2,7 +2,7 @@
 namespace Pim\Bundle\ProductBundle\Form\Subscriber;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Pim\Bundle\ProductBundle\Service\AttributeService;
+use Pim\Bundle\ProductBundle\Manager\AttributeTypeManager;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Event\DataEvent;
 use Symfony\Component\Form\FormEvent;
@@ -24,10 +24,10 @@ use Oro\Bundle\FlexibleEntityBundle\Form\EventListener\AttributeTypeSubscriber;
 class AddAttributeTypeRelatedFieldsSubscriber extends AttributeTypeSubscriber
 {
     /**
-     * Attribute service
-     * @var AttributeService
+     * Attribute type manager
+     * @var AttributeTypeManager
      */
-    protected $service;
+    protected $attTypeManager;
 
     /**
      * Attribute type factory
@@ -44,12 +44,12 @@ class AddAttributeTypeRelatedFieldsSubscriber extends AttributeTypeSubscriber
     /**
      * Constructor
      *
-     * @param AttributeService     $service        Attribute service
+     * @param AttributeTypeManager $attTypeManager Attribute type manager
      * @param AttributeTypeFactory $attTypeFactory Attribute type factory
      */
-    public function __construct(AttributeService $service = null, AttributeTypeFactory $attTypeFactory = null)
+    public function __construct(AttributeTypeManager $attTypeManager = null, AttributeTypeFactory $attTypeFactory = null)
     {
-        $this->service = $service;
+        $this->attTypeManager = $attTypeManager;
         $this->attTypeFactory = $attTypeFactory;
     }
 
@@ -103,7 +103,7 @@ class AddAttributeTypeRelatedFieldsSubscriber extends AttributeTypeSubscriber
             return;
         }
 
-        $attribute = $this->service->createAttributeFromFormData($data);
+        $attribute = $this->attTypeManager->createAttributeFromFormData($data);
 
         $this->customizeForm($event->getForm(), $attribute);
     }
