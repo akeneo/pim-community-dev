@@ -75,8 +75,6 @@ class CurrencyFilter extends NumberFilter
         return $data;
     }
 
-    // TODO : Redefine parseData method
-
     /**
      * {@inheritdoc}
      */
