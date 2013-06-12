@@ -22,4 +22,13 @@ class Roles extends PageFilteredGrid
         $this->waitForAjax();
         return new Role($this->test);
     }
+
+    public function open($roleName = array())
+    {
+        $this->getEntity($roleName)->click();
+        $this->waitPageToLoad();
+        $this->waitForAjax();
+
+        return new Role($this->test);
+    }
 }
