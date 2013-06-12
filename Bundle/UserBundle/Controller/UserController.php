@@ -149,7 +149,7 @@ class UserController extends Controller
      */
     public function autocompleteAction(Request $request)
     {
-        $query = $this->getRequest()->get('q');
+        $query = $this->getRequest()->get('query');
         $page = (int)$this->getRequest()->get('page', 1);
         $perPage = intval($request->get('per_page', 50));
 

@@ -14,7 +14,8 @@ class UserSelectType extends AbstractType
                     'datasource' => 'user',
                     'placeholder' => 'Choose a user...',
                     'route' => 'oro_user_autocomplete',
-                    'properties' => array('first_name', 'last_name')
+                    'properties' => array('firstName', 'lastName'),
+                    'width' => '400px'
                 ),
                 'entity_class' => 'Oro\Bundle\UserBundle\Entity\User'
                 //'autocomplete_alias' => 'users'

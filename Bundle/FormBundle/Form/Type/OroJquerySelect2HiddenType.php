@@ -16,7 +16,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class OroJquerySelect2HiddenType extends AbstractType
 {
-
     /**
      * @var EntityManager
      */
@@ -40,10 +39,6 @@ class OroJquerySelect2HiddenType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'configs' => array(
-                    'allowClear' => true,
-                    'minimumInputLength' => 1
-                ),
                 'empty_value' => '',
                 'empty_data' => null,
                 'data_class' => null
@@ -56,7 +51,7 @@ class OroJquerySelect2HiddenType extends AbstractType
      *
      * @param FormBuilderInterface $builder
      * @param array $options
-     * @throws \Symfony\Component\OptionsResolver\Exception\MissingOptionsException
+     * @throws MissingOptionsException
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -90,7 +85,7 @@ class OroJquerySelect2HiddenType extends AbstractType
         $view->vars = array_replace_recursive(
             $view->vars,
             array(
-                'attr' => array('data-title' => $this->encodeEntity($form->getData(), $configs['properties'])),
+                'attr' => array('data-entity' => $this->encodeEntity($form->getData(), $configs['properties'])),
                 'configs' => $configs
             )
         );
@@ -101,7 +96,7 @@ class OroJquerySelect2HiddenType extends AbstractType
      *
      * @param array $options
      * @return array
-     * @throws \Symfony\Component\OptionsResolver\Exception\MissingOptionsException
+     * @throws MissingOptionsException
      */
     protected function getConfigs($options)
     {
@@ -135,6 +130,13 @@ class OroJquerySelect2HiddenType extends AbstractType
             throw new MissingOptionsException('Missing required "configs.properties" option');
         } elseif (!is_array($configs['properties'])) {
             $configs['properties'] = array($configs['properties']);
+        }
+
+        if (!array_key_exists('minimumInputLength', $configs)) {
+            $configs['minimumInputLength'] = 1;
+        }
+        if (!array_key_exists('allowClear', $configs)) {
+            $configs['allowClear'] = true;
         }
 
         return $configs;
