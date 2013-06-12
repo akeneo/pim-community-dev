@@ -45,16 +45,51 @@
     {{ form_widget(form) }}
 {% endblock %}
 
+{% block genemu_jqueryselect2_country_row %}
+    {{ block('genemu_jqueryselect2_row') }}
+{% endblock %}
+
+{% block genemu_jqueryselect2_choice_row %}
+    {{ block('genemu_jqueryselect2_row') }}
+{% endblock %}
+
+{% block genemu_jqueryselect2_entity_row %}
+    {{ block('genemu_jqueryselect2_row') }}
+{% endblock %}
+
+{% block oro_jqueryselect2_hidden_row %}
+    {{ block('genemu_jqueryselect2_row') }}
+{% endblock %}
+
+{% block genemu_jqueryselect2_row %}
+    {{ form_row(form) }}
+    {{ form_javascript(form) }}
+{% endblock %}
+
 {% block genemu_jqueryselect2_javascript %}
     <script type="text/javascript">
-        jQuery(document).ready(function($) {
+        (function() {
             var $field = $('#{{ id }}');
 
             {% block genemu_jqueryselect2_javascript_prototype %}
                 var select2Config = {{ configs|json_encode|raw }};
+
                 if ($field[0].tagName.toLowerCase() == 'input') {
+                    var getTitle = function (data) {
+                        if (!data) {
+                            return '';
+                        } else {
+                            var result = [];
+                            var properties = select2Config.properties;
+                            for (var i = 0; i < properties.length; i++) {
+                                result.push(data[properties[i]]);
+                            }
+                            return data.join(' ');
+                        }
+                    };
+
                     select2Config.initSelection = function(element, callback) {
-                        callback({'id': element.val(), 'text': element.data('title')});
+                        callback({'id': element.val(), 'text': getTitle(element.data('selected'))});
                     };
                 }
 
@@ -64,7 +99,7 @@
 
                 $field.select2(select2Config);
             {% endblock %}
-        });
+        })();
     </script>
 {% endblock %}
 
@@ -108,6 +143,41 @@
                 }),
                 more: page*10 < data.options.totalRecords
             };
+        }
+    }
+{% endblock %}
+
+{% block oro_combobox_dataconfig_user %}
+    {% set url = configs.ajax.url is defined ? configs.ajax.url : path(configs.route) %}
+
+    var hilightSelection = function (str, selection) {
+        return str.replace(new RegExp(selection.term, 'ig'), '<b>$&</b>');
+    };
+    var formatResult = function(object, container, query) {
+        return '<img src="' + object.avatar + '"/> '
+            + hilightSelection(object.first_name, query) + ' '
+            + hilightSelection(object.last_name, query) + ' ('
+            + hilightSelection(object.username, query) + ')<div>'
+            + hilightSelection(object.email, query) + '</div>';
+    };
+    var formatSelection = function(object, container, query) {
+        return '<img src="' + object.avatar + '"/> ' + object.first_name + ' ' + object.last_name;
+    };
+
+    select2Config.formatResult = formatResult;
+    select2Config.formatSelection = formatSelection;
+    select2Config.escapeMarkup = function(m) { return m; };
+    select2Config.ajax = {
+        'url': {{ url|json_encode|raw }},
+        'data': function (query, page) {
+            return {
+                'page': page,
+                'per_page': {{ configs.per_page|default(10) }},
+                'q': query
+            };
+        },
+        'results': function (data, page) {
+            return data;
         }
     }
 {% endblock %}

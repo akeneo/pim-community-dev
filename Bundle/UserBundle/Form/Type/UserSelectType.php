@@ -11,9 +11,13 @@ class UserSelectType extends AbstractType
         $resolver->setDefaults(
             array(
                 'configs' => array(
-                    'placeholder' => 'Choose a user...'
+                    'datasource' => 'user',
+                    'placeholder' => 'Choose a user...',
+                    'route' => 'oro_user_autocomplete',
+                    'properties' => array('first_name', 'last_name')
                 ),
-                'autocomplete_alias' => 'users'
+                'entity_class' => 'Oro\Bundle\UserBundle\Entity\User'
+                //'autocomplete_alias' => 'users'
             )
         );
     }

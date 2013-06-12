@@ -11,6 +11,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class OroJquerySelect2HiddenType extends AbstractType
@@ -37,9 +38,12 @@ class OroJquerySelect2HiddenType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('autocomplete_alias'));
         $resolver->setDefaults(
             array(
+                'configs' => array(
+                    'allowClear' => true,
+                    'minimumInputLength' => 1
+                ),
                 'empty_value' => '',
                 'empty_data' => null,
                 'data_class' => null
@@ -52,11 +56,19 @@ class OroJquerySelect2HiddenType extends AbstractType
      *
      * @param FormBuilderInterface $builder
      * @param array $options
+     * @throws \Symfony\Component\OptionsResolver\Exception\MissingOptionsException
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $autocompleteOptions = $this->configuration->getAutocompleteOptions($options['autocomplete_alias']);
-        $modelTransformer = new EntityToIdTransformer($this->em, $autocompleteOptions['entity_class']);
+        if (array_key_exists('autocomplete_alias', $options)) {
+            $autocompleteOptions = $this->configuration->getAutocompleteOptions($options['autocomplete_alias']);
+            $entityClass = $autocompleteOptions['entity_class'];
+        } elseif (array_key_exists('entity_class', $options)) {
+            $entityClass = $options['entity_class'];
+        } else {
+            throw new MissingOptionsException('Option "autocomplete_alias" or "entity_class" must be defined.');
+        }
+        $modelTransformer = new EntityToIdTransformer($this->em, $entityClass);
         $builder->addModelTransformer($modelTransformer);
 
         parent::buildForm($builder, $options);
@@ -73,38 +85,59 @@ class OroJquerySelect2HiddenType extends AbstractType
     {
         parent::buildView($view, $form, $options);
 
-        // Prepare required options based on autocomplete configuration
-        $autocompleteOptions = $this->configuration->getAutocompleteOptions($options['autocomplete_alias']);
-
-        $configs = array_key_exists('form_options', $autocompleteOptions) ? $autocompleteOptions['form_options'] : array();
-        $configs['route'] = $autocompleteOptions['route'];
-
-        $properties = array();
-        /** @var Property $property */
-        foreach ($autocompleteOptions['properties'] as $property) {
-            $properties[] = $property->getName();
-        }
-        $configs['properties'] = $properties;
-
-        $configs['autocomplete_alias'] = $options['autocomplete_alias'];
-        if (isset($autocompleteOptions['url'])) {
-            $configs = array_replace_recursive(
-                $configs,
-                array(
-                    'ajax' => array('url' => $autocompleteOptions['url'])
-                )
-            );
-        }
+        $configs = $this->getConfigs($options);
 
         $view->vars = array_replace_recursive(
             $view->vars,
             array(
-                'attr' => array(
-                    'encoded-data' => $this->encodeEntity($form->getData(), $autocompleteOptions['properties'])
-                ),
+                'attr' => array('data-title' => $this->encodeEntity($form->getData(), $configs['properties'])),
                 'configs' => $configs
             )
         );
+    }
+
+    /**
+     * Prepare required options based on autocomplete configuration.
+     *
+     * @param array $options
+     * @return array
+     * @throws \Symfony\Component\OptionsResolver\Exception\MissingOptionsException
+     */
+    protected function getConfigs($options)
+    {
+        if (array_key_exists('autocomplete_alias', $options)) {
+            $autocompleteOptions = $this->configuration->getAutocompleteOptions($options['autocomplete_alias']);
+            $configs = array_key_exists('form_options', $autocompleteOptions) ? $autocompleteOptions['form_options'] : array();
+            $configs['route'] = $autocompleteOptions['route'];
+
+            $properties = array();
+            /** @var Property $property */
+            foreach ($autocompleteOptions['properties'] as $property) {
+                $properties[] = $property->getName();
+            }
+            $configs['properties'] = $properties;
+
+            $configs['autocomplete_alias'] = $options['autocomplete_alias'];
+            if (isset($autocompleteOptions['url'])) {
+                $configs = array_replace_recursive(
+                    $configs,
+                    array(
+                        'ajax' => array('url' => $autocompleteOptions['url'])
+                    )
+                );
+            }
+        } elseif (array_key_exists('configs', $options)) {
+            $configs = $options['configs'];
+        } else {
+            $configs = array();
+        }
+        if (!array_key_exists('properties', $configs)) {
+            throw new MissingOptionsException('Missing required "configs.properties" option');
+        } elseif (!is_array($configs['properties'])) {
+            $configs['properties'] = array($configs['properties']);
+        }
+
+        return $configs;
     }
 
     /**
