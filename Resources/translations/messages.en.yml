@@ -106,7 +106,7 @@
 'Datemin': 'Min date'
 'Datemax': 'Max date'
 'Defaultcurrency': 'Default currency'
-'Metricfamily': 'Metric Family'
+'Metricfamily': 'Metric family'
 'Defaultmetricunit': 'Default metric unit'
 'Allowedfilesources': 'Allowed file sources'
 'Maxfilesize': 'Max file size'
