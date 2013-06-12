@@ -1,3 +1,9 @@
-scripts_after:
-    window_bundle_js:
+placeholders:
+    scripts_after:
+        items:
+            window_bundle_js:
+                order: 200
+
+items:
+   window_bundle_js:
         template: OroWindowsBundle:Include:javascript.html.twig
