@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
+use Pim\Bundle\GridBundle\Property\CurrencyProperty;
+
 use Oro\Bundle\GridBundle\Property\FixedProperty;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
@@ -37,6 +39,17 @@ class ProductDatagridManager extends FlexibleDatagridManager
     const SCOPE_FIELD_NAME  = 'scope';
 
     /**
+     * Define constructor to add new price type
+     */
+    public function __construct()
+    {
+        self::$typeMatches['prices'] = array(
+            'field'  => FieldDescriptionInterface::TYPE_OPTIONS,
+            'filter' => FilterInterface::TYPE_CURRENCY
+        );
+    }
+
+    /**
      * get properties
      * @return array
      */
@@ -68,31 +81,12 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $fieldSku = new FieldDescription();
-        $fieldSku->setName('sku');
-        $fieldSku->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translator->trans('Sku'),
-                'field_name'  => 'sku',
-                'filter_type' => FilterInterface::TYPE_STRING,
-                'required'    => false,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
-            )
-        );
-        $fieldsCollection->add($fieldSku);
-
-        $field = $this->createCurrencyField();
+        $field = $this->createSkuField();
         $fieldsCollection->add($field);
 
         // TODO : until we'll have related backend type in grid bundle
         $excludedBackend = array(
-            AbstractAttributeType::BACKEND_TYPE_MEDIA,
-            AbstractAttributeType::BACKEND_TYPE_METRIC,
-            AbstractAttributeType::BACKEND_TYPE_PRICE,
-            'prices'
+            AbstractAttributeType::BACKEND_TYPE_MEDIA
         );
 
         foreach ($this->getFlexibleAttributes() as $attribute) {
@@ -150,25 +144,24 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
-     * Create a currency field and filter
+     * Create a sku field and filter
      *
      * @return \Oro\Bundle\GridBundle\Field\FieldDescription
      */
-    protected function createCurrencyField()
+    protected function createSkuField()
     {
         $field = new FieldDescription();
-        $field->setName('prices');
-//         $field->setProperty(new FixedProperty('prices', 'pricesAsString'));
+        $field->setName('sku');
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translator->trans('Price'),
-                'field_name'  => 'prices',
-                'filter_type' => FilterInterface::TYPE_CURRENCY,
+                'label'       => $this->translator->trans('Sku'),
+                'field_name'  => 'sku',
+                'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
-                'sortable'    => false,
+                'sortable'    => true,
                 'filterable'  => true,
-                'show_filter' => true
+                'show_filter' => true,
             )
         );
 
