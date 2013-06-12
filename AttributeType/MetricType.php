@@ -39,10 +39,16 @@ class MetricType extends OroMetricType
                 'fieldType' => 'checkbox'
             ),
             array(
-                'name' => 'metricFamily'
+                'name' => 'metricFamily',
+                'options' => array(
+                    'required' => true
+                )
             ),
             array(
-                'name' => 'defaultMetricUnit'
+                'name' => 'defaultMetricUnit',
+                'options' => array(
+                    'required' => true
+                )
             ),
             array(
                 'name' => 'searchable',

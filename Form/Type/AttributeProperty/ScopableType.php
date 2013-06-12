@@ -29,6 +29,8 @@ class ScopableType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
+            'required' => true,
+            'empty_value' => false,
             'choices' => array(
                 0 => 'Global',
                 1 => 'Channel'
