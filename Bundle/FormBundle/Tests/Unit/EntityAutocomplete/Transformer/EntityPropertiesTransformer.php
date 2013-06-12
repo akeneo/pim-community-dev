@@ -24,6 +24,31 @@ class EntityPropertiesTransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $this->transformer->transform($value));
     }
 
+    public function testConstructor()
+    {
+        $this->transformer = new EntityPropertiesTransformer(
+            array('foo', array('name' => 'bar'), new Property(array('name' => 'baz')))
+        );
+        $this->assertAttributeEquals(
+            array(
+                new Property(array('name' => 'foo')),
+                new Property(array('name' => 'bar')),
+                new Property(array('name' => 'baz'))
+            ),
+            'properties',
+            $this->transformer
+        );
+    }
+
+    /**
+     * @setExpectedException InvalidArgumentException
+     * @setExpectedExceptionMessage $properties must contain instances of Oro\Bundle\FormBundle\EntityAutocomplete\Property
+     */
+    public function testConstructorException()
+    {
+        $this->transformer = new EntityPropertiesTransformer(array(new \stdClass()));
+    }
+
     /**
      * @return array
      */

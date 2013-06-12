@@ -16,7 +16,21 @@ class EntityPropertiesTransformer implements EntityTransformerInterface
      */
     public function __construct(array $properties)
     {
-        $this->properties = $properties;
+        $this->properties = array();
+        foreach ($properties as $property) {
+            if (is_string($property)) {
+                $property = array('name' => $property);
+            }
+            if (is_array($property)) {
+                $property = new Property($property);
+            }
+            if (!$property instanceof Property) {
+                throw new \InvalidArgumentException(
+                    '$properties must contain instances of Oro\\Bundle\\FormBundle\\EntityAutocomplete\\Property'
+                );
+            }
+            $this->properties[] = $property;
+        }
     }
 
     /**
