@@ -10,7 +10,7 @@ use Oro\Bundle\GridBundle\Filter\ORM\NumberFilter;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\CurrencyFilterType;
 
 /**
- * Currency filter for products
+ * Currency filter related to flexible entities
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -33,7 +33,7 @@ class CurrencyFilter extends NumberFilter
     /**
      * {@inheritdoc}
      */
-    public function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $data)
+    public function filter(ProxyQueryInterface $proxyQuery, $alias, $field, $data)
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -46,17 +46,17 @@ class CurrencyFilter extends NumberFilter
         $newAlias = 'ValuePrices';
 
         // Apply clause on currency code
-        $paramCurrency = $this->getNewParameterName($queryBuilder);
+        $paramCurrency = $this->getNewParameterName($proxyQuery);
         $exprEq = $this->createCompareFieldExpression('currency', $newAlias, '=', $paramCurrency);
-        $queryBuilder->setParameter($paramCurrency, $currency);
+        $proxyQuery->setParameter($paramCurrency, $currency);
 
         // Apply clause on operator and value
-        $paramValue = $this->getNewParameterName($queryBuilder);
+        $paramValue = $this->getNewParameterName($proxyQuery);
         $exprCmp = $this->createCompareFieldExpression('data', $newAlias, $operator, $paramValue);
-        $queryBuilder->setParameter($paramValue, $data['value']);
+        $proxyQuery->setParameter($paramValue, $data['value']);
 
         $expression = $this->getExpressionFactory()->andX($exprEq, $exprCmp);
-        $this->applyFilterToClause($queryBuilder, $expression);
+        $this->applyFilterToClause($proxyQuery, $expression);
     }
 
     /**
