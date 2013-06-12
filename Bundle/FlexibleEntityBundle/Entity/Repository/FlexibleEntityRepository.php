@@ -386,7 +386,6 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
             ->findByWithAttributesQB(array(), array('id' => $id))
             ->orderBy('Attribute.sortOrder')
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
 }

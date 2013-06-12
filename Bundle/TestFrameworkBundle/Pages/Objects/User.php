@@ -190,4 +190,14 @@ class User extends Page implements Entity
         $this->waitForAjax();
         return new Users($this->test, false);
     }
+
+    public function viewInfo($userName)
+    {
+        $this->byXPath("//ul[@class='nav pull-right']//a[@class='dropdown-toggle']")->click();
+        $this->waitForAjax();
+        $this->byXpath("//ul[@class='dropdown-menu']//a[contains(., 'My User')]")->click();
+        $this->waitPageToLoad();
+        $this->assertElementPresent("//div[label[text() = 'User name']]//div/p[text() = '$userName']");
+        return $this;
+    }
 }
