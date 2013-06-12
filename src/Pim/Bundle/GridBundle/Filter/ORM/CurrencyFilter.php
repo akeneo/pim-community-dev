@@ -68,7 +68,7 @@ class CurrencyFilter extends NumberFilter
     {
         $data = parent::parseData($data);
 
-        if (!is_array($data) || !array_key_exists('currency', $data)) {
+        if (!is_array($data) || !array_key_exists('currency', $data) || !is_string($data['currency'])) {
             return false;
         }
 
