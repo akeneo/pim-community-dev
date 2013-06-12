@@ -3,6 +3,7 @@ namespace Pim\Bundle\ProductBundle\AttributeType;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Price;
 
+use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\PriceType;
 
 use Doctrine\ORM\EntityRepository;
@@ -28,9 +29,10 @@ class PriceCollectionType extends AbstractAttributeType
     /**
      * Constructor
      *
-     * @param string          $backendType the backend type
-     * @param string          $formType    the form type
-     * @param CurrencyManager $manager     the currency manager
+     * @param string                     $backendType       the backend type
+     * @param string                     $formType          the form type
+     * @param ConstraintGuesserInterface $constraintGuesser the constraint guesser
+     * @param CurrencyManager            $manager           the currency manager
      */
     public function __construct($backendType, $formType, ConstraintGuesserInterface $constraintGuesser, CurrencyManager $manager)
     {
@@ -51,6 +53,61 @@ class PriceCollectionType extends AbstractAttributeType
         $options['by_reference'] = false;
 
         return $options;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
+    {
+        $properties = array(
+            array(
+                'name' => 'numberMin',
+                'fieldType' => 'number'
+            ),
+            array(
+                'name' => 'numberMax',
+                'fieldType' => 'number'
+            ),
+            array(
+                'name' => 'decimalsAllowed',
+                'fieldType' => 'checkbox'
+            ),
+            array(
+                'name' => 'negativeAllowed',
+                'fieldType' => 'checkbox'
+            ),
+            array(
+                'name' => 'searchable',
+                'fieldType' => 'checkbox'
+            ),
+            array(
+                'name' => 'translatable',
+                'fieldType' => 'pim_product_translatable'
+            ),
+            array(
+                'name' => 'availableLocales',
+                'fieldType' => 'pim_product_available_locales'
+            ),
+            array(
+                'name' => 'scopable',
+                'fieldType' => 'pim_product_scopable',
+                'options' => array(
+                    'disabled' => true,
+                    'read_only' => true
+                )
+            ),
+            array(
+                'name' => 'unique',
+                'fieldType' => 'pim_product_unique',
+                'options' => array(
+                    'disabled' => true,
+                    'read_only' => true
+                )
+            )
+        );
+
+        return $properties;
     }
 
     /**
