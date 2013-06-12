@@ -17,9 +17,9 @@ Feature: Display available field options
       | File          | Allowed file source, Max file size, Allowed file extensions                                                                  |
       | Image         | Allowed file source, Max file size, Allowed file extensions                                                                  |
       | Metric        | Default value, Min number, Max number, Allow decimals, Allow negative values, Metric family, Default metric unit, Searchable |
-      | Prices        | Min number, Max number, Allow decimals, Allow negative values, Searchable                                                    |
+      | Price         | Min number, Max number, Allow decimals, Allow negative values, Searchable                                                    |
       | Number        | Default value, Min number, Max number, Allow decimals, Allow negative values, Searchable                                     |
-      | Multiselect   | Default value, Allow automatic value creation, Searchable, options                                                           |
-      | Simple select | Default value, Allow automatic value creation, Searchable, options                                                           |
+      | Multi select  | Default value, Allow automatic value creation, Searchable                                                                    |
+      | Simple select | Default value, Allow automatic value creation, Searchable                                                                    |
       | Text Area     | Default value, Max characters, WYSIWYG enabled, Searchable                                                                   |
       | Text          | Default value, Max characters, Validation rule, Searchable                                                                   |
