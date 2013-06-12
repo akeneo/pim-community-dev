@@ -50,8 +50,8 @@ class RangeGuesserTest extends ConstraintGuesserTest
             'numberMin'   => 100,
         )));
 
-        $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\Range', $constraints);
-        $this->assertConstraintsConfiguration('Symfony\Component\Validator\Constraints\Range', $constraints, array(
+        $this->assertContainsInstanceOf('Pim\Bundle\ProductBundle\Validator\Constraints\Range', $constraints);
+        $this->assertConstraintsConfiguration('Pim\Bundle\ProductBundle\Validator\Constraints\Range', $constraints, array(
             'min' => 100,
         ));
     }
