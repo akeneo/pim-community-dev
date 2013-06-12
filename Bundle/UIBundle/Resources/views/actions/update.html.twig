@@ -1,6 +1,5 @@
-{% extends bap.layout is defined ? bap.layout : 'OroUserBundle::layout.html.twig' %}
+{% extends bap.layout%}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
-{% set format = oro_config_value('oro_user.name_format') %}
 
 {% block page_container %}
     {% block content %}
@@ -14,7 +13,7 @@
                             {% block navButtons %}
                             {% endblock navButtons %}
                         </div>
-                        {% if (entityClass is defined) %}
+                        {% if (entityClass is defined and form.vars.value.id) %}
                             {% placeholder change_history_block with {'entity': entityClass, 'id': form.vars.value.id, 'title': form.vars.value } %}
                         {% endif %}
                     </div>
