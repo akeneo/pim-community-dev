@@ -90,6 +90,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $excludedBackend = array(
             AbstractAttributeType::BACKEND_TYPE_MEDIA
         );
+        // create flexible columns
         foreach ($this->getFlexibleAttributes() as $attribute) {
             $backendType = $attribute->getBackendType();
             if (in_array($backendType, $excludedBackend)) {
