@@ -187,6 +187,6 @@
 'pim_product_simpleselect'     : '__Simple select'
 'pim_product_file'             : '__File'
 'pim_product_image'            : '__Image'
-'pim_product_boolean'          : '__Boolean'
+'pim_product_boolean'          : '__Yes/No'
 'pim_product_date'             : '__Date'
 'pim_product_metric'           : '__Metric'
