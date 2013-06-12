@@ -1,7 +1,7 @@
 {% set title = form.vars.value.id ? 'Edit attribute'|trans : 'Add attribute'|trans %}
-<form id="{{ form.vars.id }}" class="form-horizontal" action="{{ form.vars.value.id ?
+<form id="{{ form.vars.id }}" class="form-horizontal form-register" action="{{ form.vars.value.id ?
     path('pim_product_productattribute_edit', { id: form.vars.value.id }) :
-    path('pim_product_productattribute_create') }}" method="POST" class="form-register">
+    path('pim_product_productattribute_create') }}" method="POST">
     <div class="navigation clearfix navbar-extra navbar-extra-right">
         <div class="row-fluid">
             <div class="pull-right">
@@ -63,7 +63,7 @@
                 <div id="accordion1" class="accordion">
                     <div class="accordion-group">
                         <div class="accordion-heading">
-                            <a class="accordion-toggle" data-toggle="collapse" data=parent="#accordion1" href="#collapseOne">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
                                 <i class="icon-collapse"></i>
                                 {{ "General parameters"|trans }}
                             </a>
@@ -85,7 +85,7 @@
                                     <label class="control-label" for="limitLocales">{{ 'Locale specific'|trans }}</label>
                                     <div class="controls">
                                         <div id="limitLocales-switch" class="switch switch-small" data-on-label="{{ 'Yes'|trans }}" data-off-label="{{ 'No'|trans }}">
-                                            <input type="checkbox" name="limitLocales" />
+                                            <input type="checkbox" name="limitLocales">
                                         </div>
                                     </div>
                                 </div>
@@ -115,7 +115,7 @@
                     </div>
                     <div class="accordion-group">
                         <div class="accordion-heading">
-                            <a class="accordion-toggle" data-toggle="collapse" data=parent="#accordion1" href="#collapseTwo">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseTwo">
                                 <i class="icon-collapse"></i>
                                 {{ "Backend parameters"|trans }}
                             </a>
@@ -151,7 +151,7 @@
                 <div id="accordion2" class="accordion">
                     <div class="accordion-group">
                         <div class="accordion-heading">
-                            <a class="accordion-toggle" data-toggle="collapse" data=parent="#accordion2" href="#collapseThree">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
                                 <i class="icon-collapse"></i>
                                 {{ "Label translations"|trans }}
                             </a>
@@ -164,7 +164,7 @@
                     </div>
                     <div class="accordion-group">
                         <div class="accordion-heading">
-                            <a class="accordion-toggle" data-toggle="collapse" data=parent="#accordion2" href="#collapseFour">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
                                 <i class="icon-collapse"></i>
                                 {{ "Description"|trans }}
                             </a>
@@ -181,7 +181,7 @@
                         {% form_theme form 'PimProductBundle:Form:simple_layout.html.twig' %}
                         <div class="accordion-group">
                             <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data=parent="#accordion2" href="#collapseFive">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFive">
                                     <i class="icon-collapse"></i>
                                     {{ "Options"|trans }}
                                 </a>

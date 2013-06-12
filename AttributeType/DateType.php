@@ -20,23 +20,12 @@ class DateType extends OroDateType
     {
         $fieldType = $attribute->getDateType() ?: 'datetime';
 
-        if ($fieldType === 'date') {
-            $format = 'dd/MM/yyyy';
-        } elseif ($fieldType === 'time') {
-            $format = 'hh:mm';
-        } else {
-            $format = 'dd/MM/yyyy hh:mm';
-        }
-
         $properties = array(
             array(
                 'name' => 'defaultValue',
                 'fieldType' => $fieldType,
                 'options' => array(
-                    'widget' => 'single_text',
-                    'attr' => array(
-                        'data-format' => $format
-                    )
+                    'widget' => 'single_text'
                 )
             ),
             array(
@@ -55,20 +44,14 @@ class DateType extends OroDateType
                 'name' => 'dateMin',
                 'fieldType' => $fieldType,
                 'options' => array(
-                    'widget' => 'single_text',
-                    'attr' => array(
-                        'data-format' => $format
-                    )
+                    'widget' => 'single_text'
                 )
             ),
             array(
                 'name' => 'dateMax',
                 'fieldType' => $fieldType,
                 'options' => array(
-                    'widget' => 'single_text',
-                    'attr' => array(
-                        'data-format' => $format
-                    )
+                    'widget' => 'single_text'
                 )
             ),
             array(
