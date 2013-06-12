@@ -6,6 +6,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeInterface;
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 
 /**
  * Abstract attribute type
@@ -59,13 +60,14 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * Constructor
      *
-     * @param string              $backendType the backend type
-     * @param string              $formType    the form type
+     * @param string $backendType the backend type
+     * @param string $formType    the form type
      */
-    public function __construct($backendType, $formType)
+    public function __construct($backendType, $formType, ConstraintGuesserInterface $constraintGuesser)
     {
-        $this->backendType = $backendType;
-        $this->formType    = $formType;
+        $this->backendType       = $backendType;
+        $this->formType          = $formType;
+        $this->constraintGuesser = $constraintGuesser;
     }
 
     /**
@@ -95,11 +97,13 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     {
         $name    = $this->prepareValueFormName($value);
         $type    = $this->prepareValueFormAlias($value);
-        $options = $this->prepareValueFormOptions($value);
         $data    = $this->prepareValueFormData($value);
-        $form    = $factory->createNamed($name, $type, $data, $options);
+        $options = array_merge(
+            $this->prepareValueFormConstraints($value),
+            $this->prepareValueFormOptions($value)
+        );
 
-        return $form;
+        return $factory->createNamed($name, $type, $data, $options);
     }
 
     /**
@@ -135,29 +139,24 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
      */
     protected function prepareValueFormOptions(FlexibleValueInterface $value)
     {
-        $options = array(
-            'label'       => $value->getAttribute()->getLabel(),
-            'required'    => $value->getAttribute()->getRequired(),
-            'constraints' => array()
+        return array(
+            'label'    => $value->getAttribute()->getLabel(),
+            'required' => $value->getAttribute()->getRequired(),
         );
+    }
 
-        if ($options['required']) {
-            $options['constraints'][] = new Constraints\NotBlank();
+    /**
+     * Guess the constraints to apply on the form
+     */
+    protected function prepareValueFormConstraints(FlexibleValueInterface $value)
+    {
+        if ($this->constraintGuesser->supportAttribute($attribute = $value->getAttribute())) {
+            return array(
+                'constraints' => $this->constraintGuesser->guessConstraints($attribute),
+            );
         }
 
-        switch ($value->getAttribute()->getBackendType()) {
-            case self::BACKEND_TYPE_DATE:
-                $options['constraints'][] = new Constraints\Date();
-                break;
-            case self::BACKEND_TYPE_DATE:
-                $options['constraints'][] = new Constraints\Date();
-                break;
-            case self::BACKEND_TYPE_DATETIME:
-                $options['constraints'][] = new Constraints\DateTime();
-                break;
-        }
-
-        return $options;
+        return array();
     }
 
     /**
@@ -175,10 +174,35 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function buildAttributeFormType(FormFactoryInterface $factory, AbstractAttribute $attribute)
+    public function buildAttributeFormTypes(FormFactoryInterface $factory, AbstractAttribute $attribute)
     {
-        // TODO will be used to build attribute create / edit form for attribute management, cf BAP-650
+        $properties = $this->defineCustomAttributeProperties($attribute);
 
-        return null;
+        $types = array();
+
+        foreach ($properties as $property) {
+            $fieldType = isset($property['fieldType']) ? $property['fieldType'] : 'text';
+            $data      = isset($property['data'])      ? $property['data']      : null;
+            $options   = isset($property['options'])   ? $property['options']   : array();
+
+            $types[] = $factory->createNamed($property['name'], $fieldType, $data, $options);
+        }
+
+        return $types;
+    }
+
+    /**
+     * Define custom properties used in attribute form
+     *
+     * Each property must be an array with a 'name' key that matches the name of the property
+     * Optional 'fieldType', 'data' and 'options' keys can be provided for field customization
+     *
+     * @param AbstractAttribute $attribute Attribute entity
+     *
+     * @return array:array:multitype $properties an array of custom properties
+     */
+    protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
+    {
+        return array();
     }
 }

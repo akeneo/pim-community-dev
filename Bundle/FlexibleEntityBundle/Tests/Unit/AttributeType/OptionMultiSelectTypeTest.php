@@ -2,17 +2,17 @@
 
 namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\AttributeType;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\EmailType;
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\OptionMultiSelectType;
 
-class EmailTypeTest extends AttributeTypeTest
+class OptionMultiSelectTypeTest extends AttributeTypeTest
 {
-    protected $name = 'oro_flexibleentity_email';
+    protected $name = 'oro_flexibleentity_multiselect';
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->target = new EmailType('text', 'email', $this->guesser);
+        $this->target = new OptionMultiSelectType('text', 'email', $this->guesser);
     }
 
     public function testBuildValueFormType()
@@ -29,6 +29,11 @@ class EmailTypeTest extends AttributeTypeTest
                 'constraints' => array('constraints'),
                 'label'       => null,
                 'required'    => null,
+                'empty_value' => false,
+                'class'       => 'OroFlexibleEntityBundle:AttributeOption',
+                'expanded'    => false,
+                'multiple'    => true,
+                'query_builder' => function () {},
             ));
 
         $this->target->buildValueFormType($factory, $value);

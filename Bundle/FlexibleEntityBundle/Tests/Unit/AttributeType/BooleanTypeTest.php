@@ -2,17 +2,17 @@
 
 namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\AttributeType;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\EmailType;
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\BooleanType;
 
-class EmailTypeTest extends AttributeTypeTest
+class BooleanTypeTest extends AttributeTypeTest
 {
-    protected $name = 'oro_flexibleentity_email';
+    protected $name = 'oro_flexibleentity_boolean';
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->target = new EmailType('text', 'email', $this->guesser);
+        $this->target = new BooleanType('text', 'email', $this->guesser);
     }
 
     public function testBuildValueFormType()

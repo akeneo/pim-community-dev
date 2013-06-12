@@ -2,17 +2,22 @@
 
 namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\AttributeType;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\EmailType;
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\DateTimeType;
 
-class EmailTypeTest extends AttributeTypeTest
+/**
+ * @author    Gildas Quemener <gildas.quemener@gmail.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class DateTimeTypeTest extends AttributeTypeTest
 {
-    protected $name = 'oro_flexibleentity_email';
+    protected $name  = 'oro_flexibleentity_datetime';
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->target = new EmailType('text', 'email', $this->guesser);
+        $this->target = new DateTimeType('integer', 'date', $this->guesser);
     }
 
     public function testBuildValueFormType()
@@ -25,10 +30,12 @@ class EmailTypeTest extends AttributeTypeTest
 
         $factory->expects($this->once())
             ->method('createNamed')
-            ->with('foo', 'email', 'bar', array(
+            ->with('foo', 'date', 'bar', array(
                 'constraints' => array('constraints'),
                 'label'       => null,
                 'required'    => null,
+                'widget'      => 'single_text',
+                'input'       => 'datetime',
             ));
 
         $this->target->buildValueFormType($factory, $value);
@@ -36,12 +43,12 @@ class EmailTypeTest extends AttributeTypeTest
 
     public function testGetBackendType()
     {
-        $this->assertEquals('text', $this->target->getBackendType());
+        $this->assertEquals('integer', $this->target->getBackendType());
     }
 
     public function testGetFormType()
     {
-        $this->assertEquals('email', $this->target->getFormType());
+        $this->assertEquals('date', $this->target->getFormType());
     }
 
     public function testBuildAttributeFormTypes()

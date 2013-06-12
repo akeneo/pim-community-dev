@@ -2,42 +2,6 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="" >
         <body>
-            <trans-unit id="oro_grid.button.filter">
-                <source>oro_grid.button.filter</source>
-                <target>Filter</target>
-            </trans-unit>
-            <trans-unit id="oro_grid.button.reset">
-                <source>oro_grid.button.reset</source>
-                <target>Reset</target>
-            </trans-unit>
-            <trans-unit id="oro_grid.link.sort_desc">
-                <source>oro_grid.link.sort_desc</source>
-                <target>Sort descending</target>
-            </trans-unit>
-            <trans-unit id="oro_grid.link.sort_asc">
-                <source>oro_grid.link.sort_asc</source>
-                <target>Sort ascending</target>
-            </trans-unit>
-            <trans-unit id="oro_grid.list_results_count">
-                <source>oro_grid.list_results_count</source>
-                <target>1 result|%count% results</target>
-            </trans-unit>
-            <trans-unit id="oro_grid.label_per_page">
-                <source>oro_grid.label_per_page</source>
-                <target>Per page</target>
-            </trans-unit>
-            <trans-unit id="oro_grid.all_elements">
-                <source>oro_grid.all_elements</source>
-                <target>All elements</target>
-            </trans-unit>
-            <trans-unit id="oro_grid.label_export_download">
-                <source>oro_grid.label_export_download</source>
-                <target>Download</target>
-            </trans-unit>
-            <trans-unit id="oro_grid.btn_batch">
-                <source>oro_grid.btn_batch</source>
-                <target>OK</target>
-            </trans-unit>
             <trans-unit id="oro_grid.no_data_hint">
                 <source>oro_grid.no_data_hint %entityHint%</source>
                 <target>No %entityHint% were found to match your search.
