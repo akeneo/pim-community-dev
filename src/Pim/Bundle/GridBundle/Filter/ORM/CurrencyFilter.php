@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\GridBundle\Filter\ORM;
 
+
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\ORM\NumberFilter;
@@ -31,9 +33,49 @@ class CurrencyFilter extends NumberFilter
     /**
      * {@inheritdoc}
      */
-    public function apply($queryBuilder, $value)
+    public function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $data)
     {
+        $data = $this->parseData($data);
+        if (!$data) {
+            return;
+        }
+
+        $operator = $this->getOperator($data['type']);
+        $currency = $data['currency'];
+
+        $newAlias = 'ValuePrices';
+
+        // Apply clause on currency code
+        $paramCurrency = $this->getNewParameterName($queryBuilder);
+        $exprEq = $this->createCompareFieldExpression('currency', $newAlias, '=', $paramCurrency);
+        $queryBuilder->setParameter($paramCurrency, $currency);
+
+        // Apply clause on operator and value
+        $paramValue = $this->getNewParameterName($queryBuilder);
+        $exprCmp = $this->createCompareFieldExpression('data', $newAlias, $operator, $paramValue);
+        $queryBuilder->setParameter($paramValue, $data['value']);
+
+        $expression = $this->getExpressionFactory()->andX($exprEq, $exprCmp);
+        $this->applyFilterToClause($queryBuilder, $expression);
     }
+
+    /**
+     * Overriden to validate currency option
+     *
+     * {@inheritdoc}
+     */
+    public function parseData($data)
+    {
+        $data = parent::parseData($data);
+
+        if (!is_array($data) || !array_key_exists('currency', $data)) {
+            return false;
+        }
+
+        return $data;
+    }
+
+    // TODO : Redefine parseData method
 
     /**
      * {@inheritdoc}
