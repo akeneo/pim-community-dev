@@ -1,9 +1,9 @@
 {% macro time(time, format) -%}
-<time datetime="{{ time.format(constant('DateTime::ISO8601')) }}">{{ time | localizeddate('short', 'short') }}</time>
+    <time datetime="{{ time.format(constant('DateTime::ISO8601')) }}">{{ time | localizeddate('short', 'short') }}</time>
 {%- endmacro %}
 
 {% macro date(time, format) -%}
-<time datetime="{{ time.format(constant('DateTime::ISO8601')) }}">{{ time | localizeddate('short', 'none') }}</time>
+    <time datetime="{{ time.format(constant('DateTime::ISO8601')) }}">{{ time | localizeddate('short', 'none') }}</time>
 {%- endmacro %}
 
 {% macro collection_prototype(widget) %}
@@ -27,30 +27,48 @@
     </div>
 {% endmacro %}
 
+{#
+    Render flexible attribute row
+    Parameters:
+        value - flexible attribute
+#}
 {% macro flexibleAttributeRow(value) %}
     {{ _self.attibuteRow(value.attribute.label, value.__toString|default('N/A')) }}
 {% endmacro %}
 
+{#
+    Render attribute row
+    Parameters:
+        title - attribute title
+        value - attribute value
+        additionalData - array with additional data
+#}
 {% macro attibuteRow(title, value, additionalData) %}
-        {% macro attribute_data(value, additionalData) %}
-            <div class="clearfix-oro">
-                {% if value.value is not defined  %}
-                    <p class="control-label">{{ value }}</p>
-                {% else %}
-                    <p class="control-label">{{ value.value }} <strong>{{ value.hint|trans }}</strong></p>
-                {% endif %}
-            </div>
-            {% if additionalData|length %}
-                {% for data in additionalData.data %}
-                    <div class="clearfix-oro">
-                        <p class="control-label">{{ attribute(data, additionalData.field) }}</p>
-                    </div>
-                {% endfor %}
+    {% macro attribute_data(value, additionalData) %}
+        <div class="clearfix-oro">
+            {% if value.value is not defined  %}
+                <p class="control-label">{{ value }}</p>
+            {% else %}
+                <p class="control-label">{{ value.value }} <strong>{{ value.hint|trans }}</strong></p>
             {% endif %}
-        {% endmacro %}
-        {{ _self.renderAttribute(title, _self.attribute_data(value, additionalData)) }}
+        </div>
+        {% if additionalData|length %}
+            {% for data in additionalData.data %}
+                <div class="clearfix-oro">
+                    <p class="control-label">{{ attribute(data, additionalData.field) }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endmacro %}
+    {{ _self.renderAttribute(title, _self.attribute_data(value, additionalData)) }}
 {% endmacro %}
 
+{#
+    Render attribute row with custom data block
+    Parameters:
+        title - row title
+        data - row data
+#}
 {% macro renderAttribute(title, data) %}
     <div class="control-group">
         <label class="control-label">{{ title|trans }}</label>
@@ -60,38 +78,87 @@
     </div>
 {% endmacro %}
 
-{% macro button(path, iClass, title, label, aClass) %}
+{#
+    Create the button
+    Parameters - array:
+        [
+            'path' - button url
+            'aClass' - additional button class
+            'dataMessage' - message before delete record
+            'title' - button title
+            'iClass' - css class for 'i' tag (icon)
+            'label' - button label
+        ]
+#}
+{% macro button(parameters) %}
     <div class="pull-left btn-group icons-holder">
-        <a href="{{ path }}" class="btn back icons-holder-text {{ aClass }}" title="{{ title|trans }}">
-            <i class="{{ iClass }} hide-text" >{{ label|trans }}</i>{{ label|trans }}
+        <a href="{{ parameters.path }}"
+           class="btn back icons-holder-text {{ parameters.aClass is defined? parameters.aClass : '' }}"
+           title="{{ parameters.title|trans }}">
+            {% if parameters.iClass is defined %}
+                <i class="{{ parameters.iClass }} hide-text" >{{ parameters.label|trans }}</i>
+            {% endif %}
+            {{ parameters.label|trans }}
         </a>
     </div>
 {% endmacro %}
 
+{#
+    Add button
+    Parameters - array:
+        [
+            'path' - button url
+            'aClass' - additional button class
+            'dataMessage' - message before delete record
+            'title' - button title
+            'label' - button label
+        ]
+#}
 {% macro addButton(parameters) %}
     <a href="{{ parameters.path }}"
        class="btn btn-primary pull-right {{ parameters.aClass is defined? parameters.aClass : '' }}"
-       {% if parameters.title is defined %}
-            title="{{ parameters.title|trans }}">
-       {% endif %}
-       {{ parameters.label|trans }}
+            {% if parameters.title is defined %}
+       title="{{ parameters.title|trans }}">
+        {% endif %}
+        {{ parameters.label|trans }}
     </a>
 {% endmacro %}
 
+{#
+    Delete button with javascript handler
+    Parameters - array:
+        [
+            'aCss' - additional css class for 'a' tag
+            'dataId' - data-id parameter
+            'dataMessage' - message before delete record
+            'dataUrl' - data-url parameter
+            'title' - button title
+            'label' - button label
+        ]
+#}
 {% macro deleteButton(parameters) %}
     <div class="pull-left btn-group icons-holder">
         <a href="javascript: void(0);" class="btn icons-holder-text {{ parameters.aCss is defined? parameters.aCss : '' }}"
            id="btn-remove-user" data-id="{{ parameters.dataId }}"
            data-message="{{ parameters.dataMessage|trans }}"
-           {% if (parameters.dataUrl is defined) %}
-           data-url="{{ parameters.dataUrl  }}"
-           {% endif %}
+                {% if (parameters.dataUrl is defined) %}
+                    data-url="{{ parameters.dataUrl  }}"
+                {% endif %}
            title="{{ parameters.title|trans }}">
             <i class="icon-trash hide-text">{{ parameters.label|trans }}</i>{{ parameters.label|trans }}
         </a>
     </div>
 {% endmacro %}
 
+{#
+    Button macros with custom button type
+    Parameters - array:
+        [
+            'type' - button type
+            'class' - additional button css classes
+            'label' - label of button
+        ]
+#}
 {% macro buttonType(parameters) %}
     <div class="btn-group">
         <button type="{{ parameters.type }}" class="btn {% if (parameters.class is defined) %}{{ parameters.class }}{% endif %}">
@@ -100,13 +167,25 @@
     </div>
 {% endmacro %}
 
+{#
+    Separator between buttons
+#}
 {% macro buttonSeparator() %}
     <div class="pull-left">
         <div class="separator-btn"></div>
     </div>
 {% endmacro %}
 
-{% macro scrollSubblock(title, data, isForm, useSpan) %}
+{#
+    Create scroll sub block for scroll block
+    Parameters:
+        title - title of sub block
+        data - array with data fields (i.e. form_row() or attibuteRow() data)
+        cols - number of columns
+        isForm - flag what scroll block mut contain the form
+        useSpan - flag to indicate is subblock must have span6 css class or not
+#}
+{% macro scrollSubblock(title, data, cols, isForm, useSpan) %}
     {% if useSpan is not defined or useSpan == true %}
         {% set span = 'span6' %}
     {% else %}
@@ -115,12 +194,12 @@
     {% if isForm is defined and isForm == true %}
         <fieldset class="form-horizontal {{ span }}">
     {% else %}
-        <div class="form-horizontal {{ span }}">
+        <div class="form-horizontal {% if cols > 1 %}{{ span }}{% endif %}">
     {% endif %}
-        {% if title|length %}<h5 class="usser-fiedset"><span>{{ title|trans }}</span></h5>{% endif %}
-        {% for dataBlock in data %}
-            {{ dataBlock|raw }}
-        {% endfor %}
+    {% if title|length %}<h5 class="usser-fiedset"><span>{{ title|trans }}</span></h5>{% endif %}
+    {% for dataBlock in data %}
+        {{ dataBlock|raw }}
+    {% endfor %}
     {% if isForm is defined and isForm == true %}
         </fieldset>
     {% else %}
@@ -128,20 +207,52 @@
     {% endif %}
 {% endmacro %}
 
+{#
+    Create scroll block for scroll data area
+    Parameters:
+        blockId - id of block
+        title - block title
+        'subblocks' - array with scroll sub blocks:
+            [
+                'title' - title of sub block
+                'data' - array with data fields (i.e. form_row() or attibuteRow() data)
+            ]
+        isForm - flag what scroll block mut contain the form
+#}
 {% macro scrollBlock(blockId, title, subblocks, isForm) %}
+    {% set cols = subblocks|length %}
     <div class="usser-row">
         <h4 id="{{ blockId }}" class="scrollspy-title">{{ title|trans }}</h4>
-        <div class="row-fluid {% if subblocks|length > 1 %}row-fluid-divider{% endif %}">
+        <div class="row-fluid {% if cols > 1 %}row-fluid-divider{% endif %}">
             {% for subblock in subblocks %}
-                {{ _self.scrollSubblock(subblock.title|length ? subblock.title : null, subblock.data, isForm, subblock.useSpan is defined ? subblock.useSpan : true) }}
+                {{ _self.scrollSubblock(subblock.title|length ? subblock.title : null, subblock.data, cols, isForm, subblock.useSpan is defined ? subblock.useSpan : true) }}
             {% endfor %}
         </div>
     </div>
 {% endmacro %}
 
-{% macro gridBlock(gridId) %}
-    <div id="{{ gridId }}"></div>
-{% endmacro %}
+{#
+    Create scroll blocks (like in view or update pages)
+    Parameters:
+        dataTarget - id of scroll block
+        data - array with scroll data blocks
+        isForm - flag what scroll block mut contain the form
+    data parameter structure:
+        [
+            'scrollBlocks' - array of blocks. each block consist of:
+                [
+                    'title' - title of scroll block
+                    'class' - additional css class for scroll block menu item
+                    'subblocks' - array with scroll sub blocks:
+                        [
+                            'title' - title of sub block
+                            'data' - array with data fields (i.e. form_row() or attibuteRow() data)
+                        ]
+                ]
+            'formErrors' - errors from the form
+            'hiddenData' - additional data (hidden fields from the form)
+        ]
+#}
 {% macro scrollData(dataTarget, data, isForm) %}
     <div id="{{ dataTarget }}" class="navbar navbar-static scrollspy-nav">
         <div class="navbar-inner">
@@ -176,6 +287,13 @@
     </div>
 {% endmacro %}
 
+{#
+    Create collection field block
+    Parameters:
+        field - form collection field
+        label - label of block
+        buttonCaption - Caption of add entity button
+#}
 {% macro collectionField(field, label, buttonCaption) %}
     <div class="control-group">
         <label for="selectAccountName" class="control-label">{{ label|trans }}:</label>
@@ -190,4 +308,13 @@
             </div>
         </div>
     </div>
+{% endmacro %}
+
+{#
+    Render data grid div
+    Parameters:
+        gridId - datagrid div id
+#}
+{% macro gridBlock(gridId) %}
+    <div id="{{ gridId }}"></div>
 {% endmacro %}

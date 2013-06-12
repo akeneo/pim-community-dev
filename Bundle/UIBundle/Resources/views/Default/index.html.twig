@@ -186,8 +186,8 @@
     </body>
     </html>
 {% else %}
-    {# Template for hash tag navigation#}
-    {% include 'OroNavigationBundle:HashNav:hashNavAjax.html.twig'
+{# Template for hash tag navigation#}
+{% include 'OroNavigationBundle:HashNav:hashNavAjax.html.twig'
     with {'script': block('head_script'), 'messages':block('messages'), 'content': block('page_container'), 'menu': block('application_menu')}
     %}
 {% endif %}
