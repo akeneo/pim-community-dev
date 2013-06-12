@@ -13,7 +13,6 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\ImageType as OroImageType;
  */
 class ImageType extends OroImageType
 {
-
     /**
      * {@inheritdoc}
      */

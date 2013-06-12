@@ -13,7 +13,6 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\MetricType as OroMetricType;
  */
 class MetricType extends OroMetricType
 {
-
     /**
      * {@inheritdoc}
      */

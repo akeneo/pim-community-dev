@@ -13,7 +13,6 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\FileType as OroFileType;
  */
 class FileType extends OroFileType
 {
-
     /**
      * {@inheritdoc}
      */

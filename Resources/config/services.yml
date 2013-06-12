@@ -9,7 +9,7 @@ parameters:
 
     product_attribute_type_class:       Pim\Bundle\ProductBundle\Form\Type\ProductAttributeType
     product_attribute_handler_class:    Pim\Bundle\ProductBundle\Form\Handler\ProductAttributeHandler
-    product_attribute_subscriber_class: Pim\Bundle\ProductBundle\Form\Subscriber\ProductAttributeSubscriber
+    add_attribute_type_related_fields_subscriber_class: Pim\Bundle\ProductBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
 
     attribute_group_entity_class:       Pim\Bundle\ProductBundle\Entity\AttributeGroup
     attribute_group_handler_class:      Pim\Bundle\ProductBundle\Form\Handler\AttributeGroupHandler
@@ -187,7 +187,7 @@ services:
 
     # Subscribers
     pim_product.form.subscriber.attribute:
-        class: %product_attribute_subscriber_class%
+        class: %add_attribute_type_related_fields_subscriber_class%
         arguments: [@pim_product.attribute_service, @oro_flexibleentity.attributetype.factory]
 
     # Validators

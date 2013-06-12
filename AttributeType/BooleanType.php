@@ -13,7 +13,6 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\BooleanType as OroBooleanType;
  */
 class BooleanType extends OroBooleanType
 {
-
     /**
      * {@inheritdoc}
      */

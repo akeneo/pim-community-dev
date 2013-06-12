@@ -13,7 +13,6 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\DateType as OroDateType;
  */
 class DateType extends OroDateType
 {
-
     /**
      * {@inheritdoc}
      */

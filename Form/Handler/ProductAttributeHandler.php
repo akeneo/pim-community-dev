@@ -18,7 +18,6 @@ use Symfony\Component\Form\FormInterface;
  */
 class ProductAttributeHandler
 {
-
     /**
      * @var FormInterface
      */

@@ -15,7 +15,6 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 class NumberType extends OroNumberType
 {
-
    /**
      * {@inheritdoc}
      */

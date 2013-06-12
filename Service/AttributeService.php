@@ -20,7 +20,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class AttributeService
 {
-
     /**
      * @var ProductManager
      */

@@ -21,9 +21,8 @@ use Oro\Bundle\FlexibleEntityBundle\Form\EventListener\AttributeTypeSubscriber;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ProductAttributeSubscriber extends AttributeTypeSubscriber
+class AddAttributeTypeRelatedFieldsSubscriber extends AttributeTypeSubscriber
 {
-
     /**
      * Attribute service
      * @var AttributeService

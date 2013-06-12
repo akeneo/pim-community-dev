@@ -15,7 +15,6 @@ use Pim\Bundle\ProductBundle\Form\Type\AttributeOptionType;
  */
 class OptionsType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */

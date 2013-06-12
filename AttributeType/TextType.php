@@ -13,7 +13,6 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\TextType as OroTextType;
  */
 class TextType extends OroTextType
 {
-
     /**
      * {@inheritdoc}
      */

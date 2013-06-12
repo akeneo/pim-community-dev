@@ -26,7 +26,7 @@ class OptionSimpleSelectType extends AbstractAttributeType
         $options['empty_value']   = false;
         $options['class']         = 'PimProductBundle:AttributeOption';
         $options['query_builder'] = function (EntityRepository $er) use ($attribute) {
-            return $er->createQueryBuilder('opt')->where('opt.attribute = '.$attribute->getId());
+            return $er->findAllForAttribute($attribute);
         };
         $options['expanded'] = false;
         $options['multiple'] = false;
@@ -47,7 +47,7 @@ class OptionSimpleSelectType extends AbstractAttributeType
                     'empty_value'   => new AttributeOption(),
                     'class'         => 'PimProductBundle:AttributeOption',
                     'query_builder' => function (EntityRepository $er) use ($attribute) {
-                        return $er->createQueryBuilder('opt')->where('opt.attribute = '.(int) $attribute->getId());
+                        return $er->findAllForAttribute($attribute);
                     },
                     'expanded'      => false,
                     'multiple'      => false

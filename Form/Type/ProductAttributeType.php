@@ -3,7 +3,7 @@ namespace Pim\Bundle\ProductBundle\Form\Type;
 
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeType;
 
-use Pim\Bundle\ProductBundle\Form\Subscriber\ProductAttributeSubscriber;
+use Pim\Bundle\ProductBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
 use Pim\Bundle\ProductBundle\Service\AttributeService;
 
 use Symfony\Component\Form\FormEvent;
@@ -32,17 +32,17 @@ class ProductAttributeType extends AttributeType
 
     /**
      * Attribute subscriber
-     * @var ProductAttributeSubscriber
+     * @var AddAttributeTypeRelatedFieldsSubscriber
      */
     private $subscriber;
 
     /**
      * Constructor
      *
-     * @param AttributeService           $service
-     * @param ProductAttributeSubscriber $subscriber
+     * @param AttributeService                        $service    Attrobute service
+     * @param AddAttributeTypeRelatedFieldsSubscriber $subscriber Subscriber to add attribute type related fields
      */
-    public function __construct(AttributeService $service = null, ProductAttributeSubscriber $subscriber = null)
+    public function __construct(AttributeService $service = null, AddAttributeTypeRelatedFieldsSubscriber $subscriber = null)
     {
         $this->service = $service;
         $this->subscriber = $subscriber;
