@@ -93,79 +93,14 @@
 {% endspaceless %}
 {% endblock widget_attributes %}
 
-{% block datetime_widget %}
-{% spaceless %}
-    {% if widget == 'single_text' %}
-        <div class="input-append picker-datetime">
-            <input type="text"{% if attr['data-format'] is defined %} data-format="{{ attr['data-format'] }}"{% endif %}{% if value is not empty %} value="{{ value|date('d/m/Y H:i') }}"{% endif %}>
-            <span class="add-on">
-                <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-            </span>
-        </div>
-        {% set type = 'hidden' %}
-        {{ block('form_widget_simple') }}
-    {% else %}
-        <div {{ block('widget_container_attributes') }}>
-            {{ form_errors(form.date) }}
-            {{ form_errors(form.time) }}
-            {{ form_widget(form.date) }}
-            {{ form_widget(form.time) }}
-        </div>
-    {% endif %}
-{% endspaceless %}
-{% endblock datetime_widget %}
-
-{% block date_widget %}
-{% spaceless %}
-    {% if widget == 'single_text' %}
-        <div class="input-append picker-date">
-            <input type="text"{% if attr['data-format'] is defined %} data-format="{{ attr['data-format'] }}"{% endif %}{% if value is not empty %} value="{{ value|date('d/m/Y') }}"{% endif %}>
-            <span class="add-on">
-                <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-            </span>
-        </div>
-        {% set type = 'hidden' %}
-        {{ block('form_widget_simple') }}
-    {% else %}
-        <div {{ block('widget_container_attributes') }}>
-            {{ date_pattern|replace({
-                '{{ year }}':  form_widget(form.year),
-                '{{ month }}': form_widget(form.month),
-                '{{ day }}':   form_widget(form.day),
-            })|raw }}
-        </div>
-    {% endif %}
-{% endspaceless %}
-{% endblock date_widget %}
-
-{% block time_widget %}
-{% spaceless %}
-    {% if widget == 'single_text' %}
-        <div class="input-append picker-time">
-            <input type="text"{% if attr['data-format'] is defined %} data-format="{{ attr['data-format'] }}"{% endif %}{% if value is not empty %} value="{{ value|date('H:i') }}"{% endif %}>
-            <span class="add-on">
-                <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-            </span>
-        </div>
-        {% set type = 'hidden' %}
-        {{ block('form_widget_simple') }}
-    {% else %}
-        {% set vars = widget == 'text' ? { 'attr': { 'size': 1 }} : {} %}
-        <div {{ block('widget_container_attributes') }}>
-            {{ form_widget(form.hour, vars) }}:{{ form_widget(form.minute, vars) }}{% if with_seconds %}:{{ form_widget(form.second, vars) }}{% endif %}
-        </div>
-    {% endif %}
-{% endspaceless %}
-{% endblock time_widget %}
-
 {% block checkbox_widget %}
 {% spaceless %}
     {% if attr.class is defined and attr.class == 'noswitch' %}
-        <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+        <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %}>
     {% else %}
         <div class="switch switch-small" data-on-label="{% if attr['data-on-label'] is defined %}{{ attr['data-on-label']|trans }}{% else %}{{ 'Yes'|trans }}{% endif %}" data-off-label="{% if attr['data-off-label'] is defined %}{{ attr['data-off-label']|trans }}{% else %}{{ 'No'|trans }}{% endif %}">
             {% if required %}{% set required = false %}{% endif %}
-            <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+            <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %}>
         </div>
     {% endif %}
 {% endspaceless %}
