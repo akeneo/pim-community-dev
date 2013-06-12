@@ -157,16 +157,16 @@ class ProductDatagridManager extends FlexibleDatagridManager
     protected function createCurrencyField()
     {
         $field = new FieldDescription();
-        $field->setName('currency');
+        $field->setName('prices');
+//         $field->setProperty(new FixedProperty('prices', 'pricesAsString'));
         $field->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_DECIMAL,
-                'label'       => $this->translator->trans('Currency'),
-                'field_name'  => 'currency',
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => $this->translator->trans('Price'),
+                'field_name'  => 'prices',
                 'filter_type' => FilterInterface::TYPE_CURRENCY,
                 'required'    => false,
-                'sortable'    => true,
-                'show_column' => false,
+                'sortable'    => false,
                 'filterable'  => true,
                 'show_filter' => true
             )
