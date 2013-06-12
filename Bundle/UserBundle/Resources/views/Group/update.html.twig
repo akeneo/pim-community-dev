@@ -8,8 +8,6 @@
 {% block head_script %}
     {{ parent() }}
 
-    {% include 'OroCRMAccountBundle:Account:remove.confirm.js.twig' %}
-
     {% set listenerParameters = {
         'columnName': 'has_group',
         'selectors': {
