@@ -54,7 +54,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute name
         $attributeCode = 'name';
-        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_text');
+        $attribute = $this->getProductManager()->createAttribute('pim_product_text');
         $attribute->setCode($attributeCode);
         $attribute->setLabel('Name');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
@@ -114,7 +114,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute release date
         $attributeCode = 'releaseDate';
-        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_date');
+        $attribute = $this->getProductManager()->createAttribute('pim_product_date');
         $attribute->setCode($attributeCode);
         $attribute->setLabel('Release date');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
@@ -218,7 +218,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute file upload
         $attributeCode = 'fileUpload';
-        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_file');
+        $attribute = $this->getProductManager()->createAttribute('pim_product_file');
         $attribute->setCode($attributeCode);
         $attribute->setLabel('File upload');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
@@ -231,7 +231,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
 
         // attribute image upload
         $attributeCode = 'imageUpload';
-        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_image');
+        $attribute = $this->getProductManager()->createAttribute('pim_product_image');
         $attribute->setCode($attributeCode);
         $attribute->setLabel('Image upload');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
