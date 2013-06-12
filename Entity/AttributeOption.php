@@ -54,6 +54,6 @@ class AttributeOption extends AbstractEntityAttributeOption
     {
         $value = $this->getOptionValue();
 
-        return ($value and $value->getValue()) ? $value->getValue() : $this->getDefaultValue();
+        return ($value and $value->getValue()) ? $value->getValue() : (string) $this->getDefaultValue();
     }
 }

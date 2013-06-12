@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Oro\Bundle\FlexibleEntityBundle\Form\EventListener\AttributeTypeSubscriber;
 
 /**
@@ -30,6 +31,12 @@ class ProductAttributeSubscriber extends AttributeTypeSubscriber
     protected $service;
 
     /**
+     * Attribute type factory
+     * @var AttributeTypeFactory
+     */
+    protected $attTypeFactory;
+
+    /**
      * Form factory
      * @var FormFactoryInterface
      */
@@ -38,11 +45,13 @@ class ProductAttributeSubscriber extends AttributeTypeSubscriber
     /**
      * Constructor
      *
-     * @param AttributeService $service
+     * @param AttributeService     $service        Attribute service
+     * @param AttributeTypeFactory $attTypeFactory Attribute type factory
      */
-    public function __construct(AttributeService $service = null)
+    public function __construct(AttributeService $service = null, AttributeTypeFactory $attTypeFactory = null)
     {
         $this->service = $service;
+        $this->attTypeFactory = $attTypeFactory;
     }
 
     /**
@@ -103,17 +112,16 @@ class ProductAttributeSubscriber extends AttributeTypeSubscriber
     /**
      * Customize the attribute form
      *
-     * @param Form             $form
-     * @param ProductAttribute $attribute
+     * @param Form             $form      ProductAttribute form
+     * @param ProductAttribute $attribute ProductAttribute entity
      */
     private function customizeForm($form, ProductAttribute $attribute)
     {
-        foreach ($this->service->getParameterFields($attribute) as $field) {
-            $form->add($this->factory->createNamed($field['name'], $field['fieldType'], $field['data'], $field['options']));
-        }
+        $attTypeClass = $this->attTypeFactory->get($attribute->getAttributeType());
+        $fields = $attTypeClass->buildAttributeFormTypes($this->factory, $attribute);
 
-        foreach ($this->service->getPropertyFields($attribute) as $field) {
-            $form->add($this->factory->createNamed($field['name'], $field['fieldType'], $field['data'], $field['options']));
+        foreach ($fields as $field) {
+            $form->add($field);
         }
     }
 }
