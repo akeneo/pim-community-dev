@@ -41,4 +41,11 @@ interface ProxyQueryInterface extends BaseProxyQueryInterface
      * @param mixed $value
      */
     public function setParameter($name, $value);
+
+    /**
+     * Gets the root alias of the query
+     *
+     * @return string
+     */
+    public function getRootAlias();
 }

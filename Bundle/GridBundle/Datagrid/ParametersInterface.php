@@ -8,6 +8,7 @@ interface ParametersInterface
     const SORT_PARAMETERS       = '_sort_by';
     const PAGER_PARAMETERS      = '_pager';
     const ADDITIONAL_PARAMETERS = '_parameters';
+    const SCOPE_PARAMETER       = '_scope';
 
     /**
      * Get parameter value from parameters container
@@ -29,4 +30,14 @@ interface ParametersInterface
      * @return array
      */
     public function toArray();
+
+    /**
+     * @return string
+     */
+    public function getLocale();
+
+    /**
+     * @return string
+     */
+    public function getScope();
 }

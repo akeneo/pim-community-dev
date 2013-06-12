@@ -38,6 +38,11 @@ abstract class DatagridManager implements DatagridManagerInterface
     protected $translator;
 
     /**
+     * @var string
+     */
+    protected $translationDomain;
+
+    /**
      * @var ValidatorInterface
      */
     protected $validator;
@@ -102,6 +107,14 @@ abstract class DatagridManager implements DatagridManagerInterface
     public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTranslationDomain($translationDomain)
+    {
+        $this->translationDomain = $translationDomain;
     }
 
     /**
@@ -217,7 +230,16 @@ abstract class DatagridManager implements DatagridManagerInterface
      */
     protected function createQuery()
     {
-        return $this->queryFactory->createQuery();
+        $query = $this->queryFactory->createQuery();
+        $this->prepareQuery($query);
+        return $query;
+    }
+
+    /**
+     * @param ProxyQueryInterface $query
+     */
+    protected function prepareQuery(ProxyQueryInterface $query)
+    {
     }
 
     /**
@@ -259,7 +281,6 @@ abstract class DatagridManager implements DatagridManagerInterface
      */
     protected function configureFields(FieldDescriptionCollection $fieldCollection)
     {
-
     }
 
     /**
@@ -384,5 +405,20 @@ abstract class DatagridManager implements DatagridManagerInterface
     protected function getDefaultPager()
     {
         return array();
+    }
+
+    /**
+     * @param string $id
+     * @param array $parameters
+     * @param string $domain
+     * @return string
+     */
+    protected function translate($id, array $parameters = array(), $domain = null)
+    {
+        if (!$domain) {
+            $domain = $this->translationDomain;
+        }
+
+        return $this->translator->trans($id, $parameters, $domain);
     }
 }
