@@ -86,7 +86,16 @@ class CategoryTreeController extends Controller
      */
     public function childrenAction()
     {
+        try {
+            $parent = $this->findCategory($this->getRequest()->get('id'));
+        } catch (NotFoundHttpException $e) {
+            return array('data' => array());
+        }
+
         $selectNodeId = $this->getRequest()->get('select_node_id');
+        $withProductsCount = $this->getRequest()->get('with_products_count', false);
+        $includeParent = $this->getRequest()->get('include_parent', false);
+
         $selectNode = null;
 
         if ($selectNodeId != null) {
@@ -97,23 +106,28 @@ class CategoryTreeController extends Controller
             }
         }
 
-        try {
-            $category = $this->findCategory($this->getRequest()->get('id'));
-        } catch (NotFoundHttpException $e) {
-            return array('data' => array());
-        }
 
         if (($selectNode != null)
-            && (!$this->getTreeManager()->isAncestor($category, $selectNode))) {
+            && (!$this->getTreeManager()->isAncestor($parent, $selectNode))) {
             $selectNode = null;
         }
 
+        // FIXME: Simplify and use a single helper method able to manage both cases
         if ($selectNode != null) {
-            $categories = $this->getTreeManager()->getChildren($category->getId(), $selectNode->getId());
-            $data = CategoryHelper::childrenTreeResponse($categories, $selectNode);
+            $categories = $this->getTreeManager()->getChildren($parent->getId(), $selectNode->getId());
+            if ($includeParent) {
+                $data = CategoryHelper::childrenTreeResponse($categories, $selectNode, $withProductsCount, $parent);
+            } else {
+                $data = CategoryHelper::childrenTreeResponse($categories, $selectNode, $withProductsCount);
+            }
+
         } else {
-            $categories = $this->getTreeManager()->getChildren($category->getId());
-            $data = CategoryHelper::childrenResponse($categories);
+            $categories = $this->getTreeManager()->getChildren($parent->getId());
+            if ($includeParent) {
+                $data = CategoryHelper::childrenResponse($categories, $withProductsCount, $parent);
+            } else {
+                $data = CategoryHelper::childrenResponse($categories, $withProductsCount);
+            }
         }
 
         return array('data' => $data);

@@ -4,12 +4,15 @@ var jsTreeConfig = {
         "html_titles" : true
     },
     "plugins" : [
-         "themes", "json_data", "ui", "crrm", "types","checkbox"
+         "themes", "json_data", "ui", "types","checkbox"
     ],
     "checkbox" : {
         "two_state" : true,
         "real_checkboxes" : true,
-        "override_ui" : true
+        "override_ui" : true,
+        "real_checkboxes_names" : function (n) {
+            return ["category_" + n[0].id, 1];
+        }
     },
     "themes" : {
         "dots" : true,
@@ -89,6 +92,8 @@ function switchTree(treeId) {
 
 function initTree(treeId) {
     var tree = $('#tree-' + treeId);
+    var applyOnTree = $('#apply-on-tree-' + treeId);
+    applyOnTree.val(1);
     tree.jstree(window.jsTreeConfig);
 }
 

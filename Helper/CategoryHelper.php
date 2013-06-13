@@ -58,22 +58,41 @@ class CategoryHelper
      * Format categories list into simple array with data formatted
      * for JStree json_data plugin.
      *
-     * @param array $categories
+     * @param array $categories Data to format into an array
+     * @param array $withProductsCount Add product count for each category in its title 
+     * @param array $parent If not null, will include this node as a parent node of the data
      *
      * @return array
      * @static
      */
-    public static function childrenResponse($categories)
+    public static function childrenResponse($categories, $withProductsCount = false, Category $parent = null)
     {
         $result = array();
 
         foreach ($categories as $category) {
+            $title = $category->getTitle();
+
+            if ($withProductsCount) {
+                $title .= '('.$category->getProductsCount().')';
+            }
+
             $result[] = array(
                 'attr' => array(
                     'id' => 'node_'. $category->getId()
                 ),
-                'data'  => $category->getTitle() .' ('. $category->getProductsCount() .')',
+                'data'  => $title,
                 'state' => static::getState($category)
+            );
+        }
+
+        if ($parent != null) {
+            $result = array(
+                'attr' => array(
+                    'id' => 'node_' . $parent->getId()
+                ),
+                'data' => $parent->getTitle(),
+                'state' => static::getState($parent),
+                'children' => $result
             );
         }
 
@@ -92,11 +111,22 @@ class CategoryHelper
      * @return array
      * @static
      */
-    public static function childrenTreeResponse($categories, Category $selectCategory = null)
+    public static function childrenTreeResponse($categories, Category $selectCategory = null, Category $parent = null)
     {
-        $return = static::formatCategory($categories, $selectCategory);
+        $result = static::formatCategory($categories, $selectCategory);
 
-        return $return;
+        if ($parent != null) {
+            $result = array(
+                'attr' => array(
+                    'id' => 'node_' . $parent->getId()
+                ),
+                'data' => $parent->getTitle(),
+                'state' => static::getState($parent),
+                'children' => $result
+            );
+        }
+
+        return $result;
     }
 
     /**
@@ -110,15 +140,12 @@ class CategoryHelper
      * @return array
      * @static
      */
-    protected static function formatCategory(array $categories, Category $selectCategory = null)
+    protected static function formatCategory(array $categories, Category $selectCategory = null, $withProductsCount = false)
     {
         $result = array();
 
         foreach ($categories as $category) {
             $state = 'leaf';
-            if (!is_object($category['item'])) {
-                print_r($category['item']);
-            }
 
             if (count($category['__children']) > 0) {
                 $state = 'open';
@@ -131,6 +158,12 @@ class CategoryHelper
             if (($selectCategory != null) &&
                 ($category['item']->getId() == $selectCategory->getId())) {
                 $state .= ' toselect';
+            }
+
+            $title = $category['item']->getTitle();
+
+            if ($withProductsCount) {
+                $title .= '('.$category->getProductsCount().')';
             }
 
             $result[] = array(

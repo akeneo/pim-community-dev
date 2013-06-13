@@ -73,7 +73,8 @@ $(tree_id).jstree({
                 }
                 return {
                     "id" : id,
-                    "select_node_id" : window.preselect_node_id
+                    "select_node_id" : window.preselect_node_id,
+                    "with_products_count" : "true"
                 };
             }
         }

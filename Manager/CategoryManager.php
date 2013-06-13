@@ -38,4 +38,17 @@ class CategoryManager extends SegmentManager
 
         return $entityRepository->getChildren(null, true, 'created', 'DESC');
     }
+
+    /**
+     * Get a collection of categories based on the array of id provided
+     * 
+     * @param array $categoriesIds
+     *
+     * @return Collection of categories
+     */
+    public function getCategoriesByIds($categoriesIds)
+    {
+        return $this->getEntityRepository()->getCategoriesByIds($categoriesIds);
+
+    }
 }

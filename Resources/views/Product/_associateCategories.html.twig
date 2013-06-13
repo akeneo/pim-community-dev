@@ -1,0 +1,31 @@
+<div id="trees-list">
+    <ul>
+        {% for tree in trees %}
+            {% set aClass = "" %}
+            {% if (tree['productsCount'] > 0) %}
+                {% set aClass = "tree-has-product" %}
+            {% endif %}
+            <li><a class="{{ aClass }}" href="#" id="tree-link-{{ tree['tree'].id }}">{{ tree['tree'].title }} ({{ tree['productsCount'] }})</a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div id="trees">
+    {% for tree in trees %}
+        <input type="hidden" id="apply-on-tree-{{ tree['tree'].id }}" name="apply_on_tree_{{ tree['tree'].id }}" value="0"/>
+        <div id="tree-{{ tree['tree'].id }}"></div>
+    {% endfor %}
+
+</div>
+
+<script type="text/javascript">
+    var assetsPath = "{{ asset('bundles/pimproduct/') }}";
+    var urlCheckedCategories = "{{ path('pim_product_product_listcategories',{'id':product.id, 'category_id':1,  '_format': 'json' }) }}";
+    var urlChildren = "{{ path('pim_product_categorytree_children', { '_format': 'json' }) }}"
+    {% if trees %}
+        {% set firstTree = trees|first %}
+        var preSelectedTree = '{{ firstTree['tree'].id }}' ;
+    {% endif %}
+</script>
+
+<script type="text/javascript" src="{{ asset('bundles/pimproduct/js/tree-associate.jstree.js') }}"></script>

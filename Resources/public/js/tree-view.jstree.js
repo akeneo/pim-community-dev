@@ -31,7 +31,8 @@ $(tree_id).jstree({
                     id = -1;
                 }
                 return {
-                    "id" : id
+                    "id" : id,
+                    "with_products_count" : "true"
                 };
             }
         }

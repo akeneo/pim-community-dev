@@ -4,6 +4,7 @@ namespace Pim\Bundle\ProductBundle\Entity\Repository;
 use Pim\Bundle\ProductBundle\Entity\Category;
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\SegmentationTreeBundle\Entity\Repository\SegmentRepository;
 
@@ -100,13 +101,25 @@ class CategoryRepository extends SegmentRepository
         $categoriesCondition = $qb->expr()->orx();
 
         foreach ($categories as $category) {
-            $categoryCondition = $qb->expr()->orx(
-                $qb->expr()->andx(
-                    $qb->expr()->lt('node.' . $config['left'], $category->getLeft()),
-                    $qb->expr()->gt('node.' . $config['right'], $category->getRight())
-                ),
-                $qb->expr()->eq('node.' . $config['parent'], $category->getParent()->getId())
-            );
+            $categoryLeft = $category->getLeft();
+            $categoryRight = $category->getRight();
+            $categoryParent = $category->getParent();
+
+            if ($categoryParent != null) {
+                $categoryCondition = $qb->expr()->orx(
+                    $qb->expr()->andx(
+                        $qb->expr()->lt('node.' . $config['left'], $categoryLeft),
+                        $qb->expr()->gt('node.' . $config['right'], $categoryRight)
+                    ),
+                    $qb->expr()->eq('node.' . $config['parent'], $categoryParent->getId())
+                );
+            } else {
+                $categoryCondition = $qb->expr()->andx(
+                    $qb->expr()->lt('node.' . $config['left'], $categoryLeft),
+                    $qb->expr()->gt('node.' . $config['right'], $categoryRight)
+                );
+            }
+                
             $categoriesCondition->add( $categoryCondition );
         }
         $qb->andWhere($categoriesCondition);
@@ -156,5 +169,34 @@ class CategoryRepository extends SegmentRepository
 
         return $trees;
         
+    }
+
+    /**
+     * Get a collection of categories based on the array of id provided
+     * 
+     * @param array $categoriesIds
+     *
+     * @return Collection of categories
+     */
+    public function getCategoriesByIds(array $categoriesIds = array())
+    {
+        if (count($categoriesIds) === 0) {
+            return new ArrayCollection();
+        }
+
+        $meta = $this->getClassMetadata();
+        $config = $this->listener->getConfiguration($this->_em, $meta->name);
+
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('node')
+            ->from($config['useObjectClass'], 'node')
+            ->where('node.id IN(:categoriesIds)');
+
+        $qb->setParameter('categoriesIds',$categoriesIds);
+
+        $result = $qb->getQuery()->getResult();
+        $result = new ArrayCollection($result);
+
+        return $result;
     }
 }

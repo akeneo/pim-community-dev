@@ -38,17 +38,22 @@ class ProductManager extends FlexibleManager
 
     /**
      * Save a product in two phases :
-     *   1) Persist and flush the entity as usual
+     *   1) Persist and flush the entity as usual and associate it to the provided categories
+     *      associated with the provided tree
      *   2)
      *     2.1) Force the reloading of the object (to be sure all values are loaded)
      *     2.2) Add missing and remove redundant scope and locale values for each attribute
      *     2.3) Reflush to save these new values
      *
-     * @param Product $product
+     * @param Product         $product
+     * @param ArrayCollection $categories
      */
-    public function save(Product $product)
+    public function save(Product $product, ArrayCollection $categories = null, array $onlyTree = null)
     {
         $this->handleMedia($product);
+
+        $this->setCategories($product, $categories, $onlyTree);
+
         $this->storageManager->persist($product);
         $this->storageManager->flush();
 
@@ -242,5 +247,35 @@ class ProductManager extends FlexibleManager
             $value->getScope(),
             time()
         );
+    }
+
+    /**
+     * Set the list of categories for a product. The categories not beloging
+     * to the array params are removed from product.
+     * The onlyTrees parameter allow to limit the scope of the removing or setting
+     * of categories to specific trees
+     *
+     * @param Product         $product
+     * @param ArrayCollection $categories
+     * @param array           $onlyTrees
+     */
+    public function setCategories(Product $product, ArrayCollection $categories, array $onlyTrees = null)
+    {
+        // Remove current categories
+        $currentCategories = $product->getCategories();
+        foreach ($currentCategories as $currentCategory) {
+            if ($onlyTrees != null && 
+               in_array($currentCategory->getRoot(), $onlyTrees)) {
+                $currentCategory->removeProduct($product);
+            }
+        }
+
+        // Add new categories
+        foreach ($categories as $category) {
+            if ($onlyTrees != null && 
+               in_array($category->getRoot(), $onlyTrees)) {
+                $category->addProduct($product);
+            }
+        }
     }
 }

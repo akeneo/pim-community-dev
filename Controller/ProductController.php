@@ -33,6 +33,10 @@ use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
  */
 class ProductController extends Controller
 {
+
+    const CATEGORY_PREFIX = "category_node_";
+    const TREE_APPLY_PREFIX = "apply_on_tree_";
+
     /**
      * List product attributes
      *
@@ -132,6 +136,8 @@ class ProductController extends Controller
         $product  = $this->findProductOr404($id);
         $request  = $this->getRequest();
         $channels = $this->getChannelRepository()->findAll();
+        $trees    = $this->getCategoryManager()->getEntityRepository()->getProductsCountByTree($product);
+
         $form     = $this->createForm(
             'pim_product',
             $product,
@@ -142,10 +148,14 @@ class ProductController extends Controller
             $form->bind($request);
 
             if ($form->isValid()) {
-                $this->getProductManager()->save($product);
+                $categoriesData = $this->getCategoriesData($request->request->all());
+                print_r($categoriesData);
+                $categories = $this->getCategoryManager()->getCategoriesByIds($categoriesData['categories']);
+
+                $this->getProductManager()->save($product, $categories, $categoriesData['trees']);
 
                 $this->addFlash('success', 'Product successfully saved');
-
+                
                 return $this->redirect(
                     $this->generateUrl(
                         'pim_product_product_edit',
@@ -166,10 +176,46 @@ class ProductController extends Controller
             'channels'       => $channels,
             'attributesForm' => $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
             'product'        => $product,
+            'trees'          => $trees,
             'created'        => $auditManager->getFirstLogEntry($product),
             'updated'        => $auditManager->getLastLogEntry($product),
         );
     }
+
+    /**
+     * Generate an array composed of an array of categories ids
+     * from category_id_* params and an array of tree ids from
+     * apply_to_tree_* params
+     *
+     * @param array $requestParameters
+     *
+     * @return array of categories data structured of two arrays
+     *      categories, trees
+     */
+     protected function getCategoriesData(array $requestParameters)
+     {
+        $categories = array();
+        $trees = array();
+
+        foreach ($requestParameters as $key => $value) {
+            if ($value === "1") {
+                if (strpos($key, static::CATEGORY_PREFIX) === 0) {
+                    
+                    $catId = (int) str_replace(STATIC::CATEGORY_PREFIX, '', $key);
+                    if ($catId > 0) {
+                        $categories[] = $catId;
+                    }
+                } else if (strpos($key, static::TREE_APPLY_PREFIX) === 0) {
+                    $treeId = (int) str_replace(STATIC::TREE_APPLY_PREFIX, '', $key);
+                    if ($treeId > 0) {
+                        $trees[] = $treeId;
+                    }
+                }
+            }
+        }
+
+        return array('categories' => $categories, "trees" => $trees);
+     }
 
     /**
      * Add attributes to product
@@ -268,25 +314,6 @@ class ProductController extends Controller
     }
 
     /**
-     * Display a form with categories to the product and allow to manage
-     * associations.
-     *
-     * @param Product $product
-     *
-     * @Route("/associate-categories/{id}", requirements={"id"="\d+"})
-     * @Template()
-     *
-     * @return array
-     */
-    public function associateCategoriesAction(Product $product)
-    {
-        $trees = $this->getTreeManager()->getEntityRepository()->getProductsCountByTree($product);
-        
-        return array('trees'=>$trees, 'product' => $product);
-    }
-
-
-    /**
      * List categories associated with the provided product and descending from the category
      * defined by the parent parameter.
      *
@@ -312,7 +339,7 @@ class ProductController extends Controller
         if ($product != null) {
             $categories = $product->getCategories();
         }
-        $trees = $this->getTreeManager()->getEntityRepository()->getMatchingHierarchy($parent, $categories, $includeParent);
+        $trees = $this->getCategoryManager()->getEntityRepository()->getMatchingHierarchy($parent, $categories, $includeParent);
 
         $treesData = CategoryHelper::listCategoriesResponse($trees, $categories);
 
@@ -337,7 +364,7 @@ class ProductController extends Controller
      *
      * @return \Pim\Bundle\ProductBundle\Manager\CategoryManager
      */
-    protected function getTreeManager()
+    protected function getCategoryManager()
     {
         return $this->container->get('pim_product.category_manager');
     }

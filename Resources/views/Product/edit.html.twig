@@ -73,6 +73,7 @@
                         <div class="row-fluid">
                             <ul class="nav">
                                 <li class="active"><a href="#attributes" data-toggle="tab">{{ 'Attributes' | trans }}</a></li>
+                                <li class=""><a href="#categories" data-toggle="tab">{{ 'Categories' | trans }}</a></li>
                                 <li class=""><a href="#localisations" data-toggle="tab">{{ 'Localisations' | trans }}</a></li>
                             </ul>
                         </div>
@@ -176,6 +177,10 @@
                         </div>
                     </div>
 
+                    <div class="tab-pane" id="categories">
+                       {% include 'PimProductBundle:Product:_associateCategories.html.twig' %} 
+                    </div>
+
                     <div class="tab-pane" id="history"></div>
 
                     {{ form_row(form.id) }}
@@ -191,10 +196,14 @@
     {{ parent() }}
 
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.bootstrap-modal.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.cookie.js') }}"></script>  
+    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.hotkeys.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.jstree.js') }}"></script>
 
     {% javascripts
         '@PimUIBundle/Resources/public/js/jquery.multiselect.custom.js'
         '@PimUIBundle/Resources/public/js/jquery.pimMultiselect.js'
+
 
         filter='?yui_js'
         output='js/pim.multiselect.js'
