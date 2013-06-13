@@ -11,9 +11,28 @@ use Pim\Bundle\ProductBundle\Validator\Constraints\Range;
  */
 class RangeTest extends \PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        $this->target = new Range(array('min' => 0));
+    }
     public function testExtendsRangeConstraint()
     {
-        $this->assertInstanceOf('Symfony\Component\Validator\Constraints\Range', new Range(array('min' => 0)));
+        $this->assertInstanceOf('Symfony\Component\Validator\Constraints\Range', $this->target);
+    }
+
+    public function testMinDateMessage()
+    {
+        $this->assertEquals('This date should be {{ limit }} or after.', $this->target->minDateMessage);
+    }
+
+    public function testMaxDateMessage()
+    {
+        $this->assertEquals('This date should be {{ limit }} or before.', $this->target->maxDateMessage);
+    }
+
+    public function testValidDateMessage()
+    {
+        $this->assertEquals('This value is not a valid date.', $this->target->invalidDateMessage);
     }
 }
 

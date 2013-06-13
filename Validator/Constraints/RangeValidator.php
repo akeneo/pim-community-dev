@@ -15,11 +15,32 @@ class RangeValidator extends BaseRangeValidator
 {
     public function validate($value, Constraint $constraint)
     {
-        if ($value instanceof ProductPrice) {
-            $data = $value->getData();
+        if ($value instanceof \DateTime) {
+            if ($constraint->min && $value < $constraint->min) {
+                $this->context->addViolation(
+                    $constraint->minDateMessage,
+                    array(
+                        '{{ limit }}' => $constraint->min->format('Y-m-d')
+                    )
+                );
+            }
+
+            if ($constraint->max && $value > $constraint->max) {
+                $this->context->addViolation(
+                    $constraint->maxDateMessage,
+                    array(
+                        '{{ limit }}' => $constraint->max->format('Y-m-d')
+                    )
+                );
+            }
+            return;
         }
 
-        parent::validate($data, $constraint);
+        if ($value instanceof ProductPrice) {
+            $value = $value->getData();
+        }
+
+        parent::validate($value, $constraint);
     }
 }
 
