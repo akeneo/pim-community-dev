@@ -1,31 +1,18 @@
 <?php
 namespace Pim\Bundle\ProductBundle\AttributeType;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\TextAreaType as OroTextAreaType;
-use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\BooleanType as OroBooleanType;
 
 /**
- * Text area attribute type
+ * Boolean attribute type
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class TextAreaType extends OroTextAreaType
+class BooleanType extends OroBooleanType
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function prepareValueFormAlias(FlexibleValueInterface $value)
-    {
-        if ($value->getAttribute()->getWysiwygEnabled()) {
-            return 'pim_wysiwyg';
-        }
-
-        return parent::prepareValueFormAlias($value);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -34,18 +21,6 @@ class TextAreaType extends OroTextAreaType
         $properties = array(
             array(
                 'name' => 'defaultValue',
-                'fieldType' => 'textarea'
-            ),
-            array(
-                'name' => 'maxCharacters',
-                'fieldType' => 'integer'
-            ),
-            array(
-                'name' => 'wysiwygEnabled',
-                'fieldType' => 'checkbox'
-            ),
-            array(
-                'name' => 'searchable',
                 'fieldType' => 'checkbox'
             ),
             array(
@@ -82,6 +57,6 @@ class TextAreaType extends OroTextAreaType
      */
     public function getName()
     {
-        return 'pim_product_textarea';
+        return 'pim_product_boolean';
     }
 }

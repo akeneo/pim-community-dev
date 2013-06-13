@@ -4,6 +4,8 @@ namespace Pim\Bundle\ProductBundle\AttributeType;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\ProductBundle\Entity\AttributeOption;
 
 /**
  * Simple options (select) attribute type
@@ -24,12 +26,72 @@ class OptionSimpleSelectType extends AbstractAttributeType
         $options['empty_value']   = false;
         $options['class']         = 'PimProductBundle:AttributeOption';
         $options['query_builder'] = function (EntityRepository $er) use ($attribute) {
-            return $er->createQueryBuilder('opt')->where('opt.attribute = '.$attribute->getId());
+            return $er->findAllForAttribute($attribute);
         };
         $options['expanded'] = false;
         $options['multiple'] = false;
 
         return $options;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
+    {
+        $properties = array(
+            array(
+                'name' => 'defaultValue',
+                'fieldType' => 'entity',
+                'options' => array(
+                    'empty_value'   => new AttributeOption(),
+                    'class'         => 'PimProductBundle:AttributeOption',
+                    'query_builder' => function (EntityRepository $er) use ($attribute) {
+                        return $er->findAllForAttribute($attribute);
+                    },
+                    'expanded'      => false,
+                    'multiple'      => false
+                )
+            ),
+            array(
+                'name' => 'valueCreationAllowed',
+                'fieldType' => 'checkbox'
+            ),
+            array(
+                'name' => 'searchable',
+                'fieldType' => 'checkbox'
+            ),
+            array(
+                'name' => 'options',
+                'fieldType' => 'pim_product_options'
+            ),
+            array(
+                'name' => 'translatable',
+                'fieldType' => 'pim_product_translatable'
+            ),
+            array(
+                'name' => 'availableLocales',
+                'fieldType' => 'pim_product_available_locales'
+            ),
+            array(
+                'name' => 'scopable',
+                'fieldType' => 'pim_product_scopable',
+                'options' => array(
+                    'disabled' => (bool) $attribute->getId(),
+                    'read_only' => (bool) $attribute->getId()
+                )
+            ),
+            array(
+                'name' => 'unique',
+                'fieldType' => 'pim_product_unique',
+                'options' => array(
+                    'disabled' => true,
+                    'read_only' => true
+                )
+            )
+        );
+
+        return $properties;
     }
 
     /**

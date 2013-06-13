@@ -1,48 +1,58 @@
 <?php
 namespace Pim\Bundle\ProductBundle\AttributeType;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\TextAreaType as OroTextAreaType;
-use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\DateType as OroDateType;
 
 /**
- * Text area attribute type
+ * Date attribute type
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class TextAreaType extends OroTextAreaType
+class DateType extends OroDateType
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function prepareValueFormAlias(FlexibleValueInterface $value)
-    {
-        if ($value->getAttribute()->getWysiwygEnabled()) {
-            return 'pim_wysiwyg';
-        }
-
-        return parent::prepareValueFormAlias($value);
-    }
-
     /**
      * {@inheritdoc}
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
+        $fieldType = $attribute->getDateType() ?: 'datetime';
+
         $properties = array(
             array(
                 'name' => 'defaultValue',
-                'fieldType' => 'textarea'
+                'fieldType' => $fieldType,
+                'options' => array(
+                    'widget' => 'single_text'
+                )
             ),
             array(
-                'name' => 'maxCharacters',
-                'fieldType' => 'integer'
+                'name' => 'dateType',
+                'fieldType' => 'choice',
+                'options' => array(
+                    'required' => true,
+                    'choices' => array(
+                        'date' => 'Date',
+                        'time' => 'Time',
+                        'datetime' => 'Datetime'
+                    )
+                )
             ),
             array(
-                'name' => 'wysiwygEnabled',
-                'fieldType' => 'checkbox'
+                'name' => 'dateMin',
+                'fieldType' => $fieldType,
+                'options' => array(
+                    'widget' => 'single_text'
+                )
+            ),
+            array(
+                'name' => 'dateMax',
+                'fieldType' => $fieldType,
+                'options' => array(
+                    'widget' => 'single_text'
+                )
             ),
             array(
                 'name' => 'searchable',
@@ -66,11 +76,7 @@ class TextAreaType extends OroTextAreaType
             ),
             array(
                 'name' => 'unique',
-                'fieldType' => 'pim_product_unique',
-                'options' => array(
-                    'disabled' => true,
-                    'read_only' => true
-                )
+                'fieldType' => 'pim_product_unique'
             )
         );
 
@@ -82,6 +88,6 @@ class TextAreaType extends OroTextAreaType
      */
     public function getName()
     {
-        return 'pim_product_textarea';
+        return 'pim_product_date';
     }
 }

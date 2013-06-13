@@ -1,31 +1,18 @@
 <?php
 namespace Pim\Bundle\ProductBundle\AttributeType;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\TextAreaType as OroTextAreaType;
-use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\FileType as OroFileType;
 
 /**
- * Text area attribute type
+ * File attribute type
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class TextAreaType extends OroTextAreaType
+class FileType extends OroFileType
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function prepareValueFormAlias(FlexibleValueInterface $value)
-    {
-        if ($value->getAttribute()->getWysiwygEnabled()) {
-            return 'pim_wysiwyg';
-        }
-
-        return parent::prepareValueFormAlias($value);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -33,20 +20,27 @@ class TextAreaType extends OroTextAreaType
     {
         $properties = array(
             array(
-                'name' => 'defaultValue',
-                'fieldType' => 'textarea'
+                'name' => 'allowedFileSources',
+                'fieldType' => 'choice',
+                'options' => array(
+                    'required' => true,
+                    'choices' => array(
+                        'upload' => 'Upload',
+                        'external' => 'External'
+                    )
+                )
             ),
             array(
-                'name' => 'maxCharacters',
+                'name' => 'maxFileSize',
                 'fieldType' => 'integer'
             ),
             array(
-                'name' => 'wysiwygEnabled',
-                'fieldType' => 'checkbox'
-            ),
-            array(
-                'name' => 'searchable',
-                'fieldType' => 'checkbox'
+                'name' => 'allowedFileExtensions',
+                'data' => implode(',', $attribute->getAllowedFileExtensions()),
+                'options' => array(
+                    'by_reference' => false,
+                    'attr' => array('class' => 'multiselect')
+                )
             ),
             array(
                 'name' => 'translatable',
@@ -82,6 +76,6 @@ class TextAreaType extends OroTextAreaType
      */
     public function getName()
     {
-        return 'pim_product_textarea';
+        return 'pim_product_file';
     }
 }

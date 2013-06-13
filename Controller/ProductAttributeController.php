@@ -94,7 +94,7 @@ class ProductAttributeController extends Controller
      */
     public function createAction()
     {
-        $attribute = $this->getProductManager()->createAttribute('oro_flexibleentity_date');
+        $attribute = $this->getProductManager()->createAttribute('pim_product_text');
 
         return $this->editAction($attribute);
     }

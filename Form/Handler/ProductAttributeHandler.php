@@ -3,7 +3,7 @@ namespace Pim\Bundle\ProductBundle\Form\Handler;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\AttributeOptionValue;
-use Pim\Bundle\ProductBundle\Service\AttributeService;
+use Pim\Bundle\ProductBundle\Manager\AttributeTypeManager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
@@ -18,7 +18,6 @@ use Symfony\Component\Form\FormInterface;
  */
 class ProductAttributeHandler
 {
-
     /**
      * @var FormInterface
      */
@@ -35,23 +34,23 @@ class ProductAttributeHandler
     protected $manager;
 
     /**
-     * @var AttributeService
+     * @var AttributeTypeManager
      */
-    protected $service;
+    protected $attTypeManager;
 
     /**
      * Constructor for handler
-     * @param FormInterface    $form    Form called
-     * @param Request          $request Web request
-     * @param ObjectManager    $manager Storage manager
-     * @param AttributeService $service Attribute service
+     * @param FormInterface        $form           Form called
+     * @param Request              $request        Web request
+     * @param ObjectManager        $manager        Storage manager
+     * @param AttributeTypeManager $attTypeManager Attribute type manager
      */
-    public function __construct(FormInterface $form, Request $request, ObjectManager $manager, AttributeService $service)
+    public function __construct(FormInterface $form, Request $request, ObjectManager $manager, AttributeTypeManager $attTypeManager)
     {
         $this->form    = $form;
         $this->request = $request;
         $this->manager = $manager;
-        $this->service = $service;
+        $this->attTypeManager = $attTypeManager;
     }
 
     /**
@@ -60,11 +59,11 @@ class ProductAttributeHandler
      */
     public function preProcess($data)
     {
-        $attribute = $this->service->createAttributeFromFormData($data);
+        $attribute = $this->attTypeManager->createAttributeFromFormData($data);
 
         $this->form->setData($attribute);
 
-        $data = $this->service->prepareFormData($data);
+        $data = $this->attTypeManager->prepareFormData($data);
 
         $this->form->bind($data);
     }

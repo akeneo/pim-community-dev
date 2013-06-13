@@ -2,13 +2,14 @@
 namespace Pim\Bundle\ProductBundle\Form\Subscriber;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Pim\Bundle\ProductBundle\Service\AttributeService;
+use Pim\Bundle\ProductBundle\Manager\AttributeTypeManager;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Event\DataEvent;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Oro\Bundle\FlexibleEntityBundle\Form\EventListener\AttributeTypeSubscriber;
 
 /**
@@ -20,14 +21,19 @@ use Oro\Bundle\FlexibleEntityBundle\Form\EventListener\AttributeTypeSubscriber;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ProductAttributeSubscriber extends AttributeTypeSubscriber
+class AddAttributeTypeRelatedFieldsSubscriber extends AttributeTypeSubscriber
 {
+    /**
+     * Attribute type manager
+     * @var AttributeTypeManager
+     */
+    protected $attTypeManager;
 
     /**
-     * Attribute service
-     * @var AttributeService
+     * Attribute type factory
+     * @var AttributeTypeFactory
      */
-    protected $service;
+    protected $attTypeFactory;
 
     /**
      * Form factory
@@ -38,11 +44,13 @@ class ProductAttributeSubscriber extends AttributeTypeSubscriber
     /**
      * Constructor
      *
-     * @param AttributeService $service
+     * @param AttributeTypeManager $attTypeManager Attribute type manager
+     * @param AttributeTypeFactory $attTypeFactory Attribute type factory
      */
-    public function __construct(AttributeService $service = null)
+    public function __construct(AttributeTypeManager $attTypeManager = null, AttributeTypeFactory $attTypeFactory = null)
     {
-        $this->service = $service;
+        $this->attTypeManager = $attTypeManager;
+        $this->attTypeFactory = $attTypeFactory;
     }
 
     /**
@@ -95,7 +103,7 @@ class ProductAttributeSubscriber extends AttributeTypeSubscriber
             return;
         }
 
-        $attribute = $this->service->createAttributeFromFormData($data);
+        $attribute = $this->attTypeManager->createAttributeFromFormData($data);
 
         $this->customizeForm($event->getForm(), $attribute);
     }
@@ -103,17 +111,16 @@ class ProductAttributeSubscriber extends AttributeTypeSubscriber
     /**
      * Customize the attribute form
      *
-     * @param Form             $form
-     * @param ProductAttribute $attribute
+     * @param Form             $form      ProductAttribute form
+     * @param ProductAttribute $attribute ProductAttribute entity
      */
     private function customizeForm($form, ProductAttribute $attribute)
     {
-        foreach ($this->service->getParameterFields($attribute) as $field) {
-            $form->add($this->factory->createNamed($field['name'], $field['fieldType'], $field['data'], $field['options']));
-        }
+        $attTypeClass = $this->attTypeFactory->get($attribute->getAttributeType());
+        $fields = $attTypeClass->buildAttributeFormTypes($this->factory, $attribute);
 
-        foreach ($this->service->getPropertyFields($attribute) as $field) {
-            $form->add($this->factory->createNamed($field['name'], $field['fieldType'], $field['data'], $field['options']));
+        foreach ($fields as $field) {
+            $form->add($field);
         }
     }
 }

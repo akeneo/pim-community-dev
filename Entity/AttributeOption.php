@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  *
  * @ORM\Table(name="pim_product_attribute_option")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\AttributeOptionRepository")
  */
 class AttributeOption extends AbstractEntityAttributeOption
 {
@@ -54,6 +54,6 @@ class AttributeOption extends AbstractEntityAttributeOption
     {
         $value = $this->getOptionValue();
 
-        return ($value and $value->getValue()) ? $value->getValue() : $this->getDefaultValue();
+        return ($value and $value->getValue()) ? $value->getValue() : (string) $this->getDefaultValue();
     }
 }

@@ -3,8 +3,8 @@ namespace Pim\Bundle\ProductBundle\Form\Type;
 
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeType;
 
-use Pim\Bundle\ProductBundle\Form\Subscriber\ProductAttributeSubscriber;
-use Pim\Bundle\ProductBundle\Service\AttributeService;
+use Pim\Bundle\ProductBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
+use Pim\Bundle\ProductBundle\Manager\AttributeTypeManager;
 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -25,26 +25,26 @@ class ProductAttributeType extends AttributeType
 {
 
     /**
-     * Attribute service
-     * @var AttributeService
+     * Attribute type manager
+     * @var AttributeTypeManager
      */
-    private $service;
+    private $attTypeManager;
 
     /**
      * Attribute subscriber
-     * @var ProductAttributeSubscriber
+     * @var AddAttributeTypeRelatedFieldsSubscriber
      */
     private $subscriber;
 
     /**
      * Constructor
      *
-     * @param AttributeService           $service
-     * @param ProductAttributeSubscriber $subscriber
+     * @param AttributeTypeManager                    $attTypeManager Attribute type manager
+     * @param AddAttributeTypeRelatedFieldsSubscriber $subscriber     Subscriber to add attribute type related fields
      */
-    public function __construct(AttributeService $service = null, ProductAttributeSubscriber $subscriber = null)
+    public function __construct(AttributeTypeManager $attTypeManager = null, AddAttributeTypeRelatedFieldsSubscriber $subscriber = null)
     {
-        $this->service = $service;
+        $this->attTypeManager = $attTypeManager;
         $this->subscriber = $subscriber;
     }
 
@@ -249,7 +249,7 @@ class ProductAttributeType extends AttributeType
      */
     public function getAttributeTypeChoices()
     {
-        return $this->service->getAttributeTypes();
+        return $this->attTypeManager->getAttributeTypes();
     }
 
     /**
