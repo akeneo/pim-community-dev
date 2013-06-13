@@ -1,5 +1,6 @@
 {% set title = form.vars.value.id ? 'Edit export profile'|trans : 'Add export profile'|trans %}
 
+{{ JSFV(form) }}
 <form action="{{ form.vars.value.id ?
     path('pim_product_exportprofile_edit', { id: form.vars.value.id }) :
     path('pim_product_exportprofile_create') }}" method="POST" class="form-horizontal">
@@ -55,7 +56,7 @@
                 </div>
             </div>
         </div>
-        
+
         {{ form_row(form._token) }}
 
     </div>

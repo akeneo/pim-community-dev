@@ -3,6 +3,7 @@
 {% set title = 'New family'|trans %}
 
 {% block familyTab %}
+{{ JSFV(form) }}
 <form action="{{ path('pim_product_productfamily_create') }}" method="POST" class="form-horizontal">
 
     {{ form_row(form._token) }}

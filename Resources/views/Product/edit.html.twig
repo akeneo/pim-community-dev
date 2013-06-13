@@ -1,5 +1,4 @@
 {% extends 'PimProductBundle::layout.html.twig' %}
-
 {% set title = form.vars.value.id ? 'Edit product'|trans : 'Add product'|trans %}
 
 {% block page_container %}
@@ -12,6 +11,7 @@
         'action': path('pim_product_product_addproductattributes', {'id': product.id, 'dataLocale': dataLocale})
     } %}
 
+    {{ JSFV(form) }}
     <form method="POST" class="form-horizontal" action="{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
 
         <div class="navigation clearfix navbar-extra navbar-extra-right">
