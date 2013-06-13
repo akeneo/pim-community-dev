@@ -2,7 +2,7 @@
     <ul class="nav nav-list">
         {% for tree in trees %}
             {% set aClass = "" %}
-            {% set iClass = "" %}
+            {% set iClass = "icon-tick-off" %}
             {% if (tree['productsCount'] > 0) %}
                 {% set aClass = "tree-has-product" %}
                 {% set iClass = "icon-tick" %}
