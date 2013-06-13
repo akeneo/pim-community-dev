@@ -84,7 +84,6 @@
         [
             'path' - button url
             'aClass' - additional button class
-            'dataMessage' - message before delete record
             'title' - button title
             'iClass' - css class for 'i' tag (icon)
             'label' - button label
@@ -104,12 +103,11 @@
 {% endmacro %}
 
 {#
-    Add button
+    Create 'add' button
     Parameters - array:
         [
             'path' - button url
             'aClass' - additional button class
-            'dataMessage' - message before delete record
             'title' - button title
             'label' - button label
         ]
@@ -131,6 +129,7 @@
             'aCss' - additional css class for 'a' tag
             'dataId' - data-id parameter
             'dataMessage' - message before delete record
+            'dataRedirect' - url to redirect after delete
             'dataUrl' - data-url parameter
             'title' - button title
             'label' - button label
