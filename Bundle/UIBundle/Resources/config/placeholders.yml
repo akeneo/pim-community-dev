@@ -17,7 +17,7 @@ placeholders:
     head_style:
         label: Head styles
     head_script:
-            label: Head scripts
+        label: Head scripts
 items:
    logo:
         template: OroUIBundle:Default:logo.html.twig

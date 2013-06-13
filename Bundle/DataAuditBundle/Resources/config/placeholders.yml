@@ -4,7 +4,6 @@ placeholders:
         items:
           change_history_link: ~
 
-
 items:
     change_history_link:
         template: OroDataAuditBundle::change_history_link.html.twig
