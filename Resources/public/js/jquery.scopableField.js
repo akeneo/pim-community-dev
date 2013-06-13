@@ -10,8 +10,9 @@
     "use strict";
 
     function showTitle(el, opts) {
-        var title = opts.title || $(el).find('label').first().html();
-        var $title = $('<label>').addClass('control-label').html(title);
+        var $originalLabel = $(el).find('label').first();
+        var title = opts.title || $originalLabel.html();
+        var $title = $('<label>').addClass($originalLabel.attr('class')).html(title);
         $(el).find('>label').remove();
         $(el).prepend($title);
     }

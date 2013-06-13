@@ -10,9 +10,9 @@
     "use strict";
 
     function showTitle(el, opts) {
-        var title = $(el).find('label').first().html();
-        $(el).find('label').first().remove();
-        var $title = $('<label>').addClass('control-label').html(title);
+        var $originalLabel = $(el).find('label').first();
+        var $title = $('<label>').addClass($originalLabel.attr('class')).html($originalLabel.html());
+        $originalLabel.remove();
         $(el).prepend($title);
     }
 
@@ -41,7 +41,7 @@
             var $field = $fields[i].field;
             var $label = $fields[i].label;
 
-            $label.addClass('add-on');
+            $label.addClass('add-on').children().remove();
 
             var $controls = $field.find('.controls').first();
             $controls.addClass('input-prepend').prepend($label);
