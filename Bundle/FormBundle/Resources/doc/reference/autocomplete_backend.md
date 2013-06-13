@@ -65,7 +65,7 @@ autocomplete_entities: # Root element
     users_all_default_configs:
         type: doctrine_entity
         form_options:
-            datasource: autocomplete
+            extra_config: autocomplete
         options: []
         entity_class: FooEntityClassName
         properties:

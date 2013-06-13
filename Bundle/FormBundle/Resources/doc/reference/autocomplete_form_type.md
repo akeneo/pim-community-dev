@@ -33,7 +33,7 @@ autocomplete_entities:
     users:
         type: flexible
         form_options:
-            datasource: grid
+            extra_config: grid
             grid:
                 name: users
                 sort_by: sort_field_name
@@ -50,7 +50,7 @@ autocomplete_entities:
     users:
         type: flexible
         form_options:
-            datasource: grid
+            extra_config: grid
             grid:
                 name: users
         route: oro_user_index
@@ -61,6 +61,6 @@ autocomplete_entities:
 Where *route* is route of grid action, *form_options.grid.name* is grid name defined in DatagridManager configuration.
 
 #### Adding custom data source
-First of all form_options.datasource options must be set to new data source name. Then create form theme and define oro_combobox_dataconfig_<datasource>
+First of all form_options.extra_config options must be set to new data source name. Then create form theme and define oro_combobox_dataconfig_<extra_config>
 block, in which set select2Config JS object options, which is used to configure Select2 element.
 For example you may want to define request parameters for your controller, or transform response data to Select2 format.

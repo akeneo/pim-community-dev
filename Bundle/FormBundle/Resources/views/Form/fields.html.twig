@@ -90,8 +90,8 @@
                 {% endif %}
 
                 var select2Config = {{ configs|json_encode|raw }};
-                {% if configs.datasource is defined %}
-                    {{ block('oro_combobox_dataconfig_' ~ configs.datasource) }}
+                {% if configs.extra_config is defined %}
+                    {{ block('oro_combobox_dataconfig_' ~ configs.extra_config) }}
                 {% endif %}
 
                 if ($field.length && $field[0].tagName.toLowerCase() === 'input') {
