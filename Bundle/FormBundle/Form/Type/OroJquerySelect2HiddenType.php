@@ -148,10 +148,13 @@ class OroJquerySelect2HiddenType extends AbstractType
         } else {
             $configs = array();
         }
-        if (!array_key_exists('properties', $configs)) {
-            throw new MissingOptionsException('Missing required "configs.properties" option');
-        } elseif (!is_array($configs['properties'])) {
-            $configs['properties'] = array($configs['properties']);
+
+        if (array_key_exists('properties', $configs)) {
+            if (!is_array($configs['properties'])) {
+                $configs['properties'] = array($configs['properties']);
+            }
+        } else {
+            $configs['properties'] = array();
         }
 
         if (!array_key_exists('minimumInputLength', $configs)) {

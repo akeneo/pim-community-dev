@@ -279,27 +279,6 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @expectedException \Symfony\Component\OptionsResolver\Exception\MissingOptionsException
-     * @expectedExceptionMessage Missing required "configs.properties" option
-     */
-    public function testBuildViewException()
-    {
-        $options = array();
-
-        $view = $this->getMockBuilder('Symfony\Component\Form\FormView')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
-            ->disableOriginalConstructor()
-            ->setMethods(array('getData'))
-            ->getMock();
-        $form->expects($this->never())
-            ->method('getData');
-
-        $this->type->buildView($view, $form, $options);
-    }
-
     public function testBuildViewEntityEncoding()
     {
         $options = array('configs' => array('properties' => 'property1'), 'autocomplete_transformer' => null);
