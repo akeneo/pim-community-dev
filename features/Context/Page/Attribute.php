@@ -25,4 +25,3 @@ class Attribute extends Page
         $this->pressButton('Save');
     }
 }
-

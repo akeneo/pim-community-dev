@@ -70,14 +70,49 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function resetAcl()
     {
-        $acl = new \Oro\Bundle\UserBundle\Entity\Acl;
-        $acl->setId('root');
-        $acl->setName('root');
-        $acl->setDescription('root');
-        $acl->addAccessRole($this->getRoleOrCreate(User::ROLE_DEFAULT));
+        $root = new \Oro\Bundle\UserBundle\Entity\Acl;
+        $root
+            ->setId('root')
+            ->setName('root')
+            ->setDescription('root')
+            ->addAccessRole($this->getRoleOrCreate(User::ROLE_DEFAULT))
+            ->addAccessRole($this->getRoleOrCreate('ROLE_SUPER_ADMIN'));
+
+        $oroSecurity = new \Oro\Bundle\UserBundle\Entity\Acl;
+        $oroSecurity
+            ->setId('oro_security')
+            ->setName('Oro Security')
+            ->setDescription('Oro security')
+            ->setParent($root)
+            ->addAccessRole($this->getRoleOrCreate('IS_AUTHENTICATED_ANONYMOUSLY'));
+
+        $oroLogin = new \Oro\Bundle\UserBundle\Entity\Acl();
+        $oroLogin
+            ->setId('oro_login')
+            ->setName('Login page')
+            ->setDescription('Oro Login page')
+            ->setParent($oroSecurity);
+
+        $oroLoginCheck = new \Oro\Bundle\UserBundle\Entity\Acl();
+        $oroLoginCheck
+            ->setId('oro_login_check')
+            ->setName('Login check')
+            ->setDescription('Oro Login check')
+            ->setParent($oroSecurity);
+
+        $oroLogout = new \Oro\Bundle\UserBundle\Entity\Acl();
+        $oroLogout
+            ->setId('oro_logout')
+            ->setName('Logout')
+            ->setDescription('Oro Logout')
+            ->setParent($oroSecurity);
 
         $em = $this->getEntityManager();
-        $em->persist($acl);
+        $em->persist($root);
+        $em->persist($oroSecurity);
+        $em->persist($oroLogin);
+        $em->persist($oroLoginCheck);
+        $em->persist($oroLogout);
         $em->flush();
     }
 
@@ -350,12 +385,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $em   = $this->getEntityManager();
         $user = new User;
-        $role = $this->getRoleOrCreate(User::ROLE_DEFAULT);
 
         $user->setUsername($username);
         $user->setEmail($username.'@example.com');
         $user->setPlainPassword($password = $username.'pass');
-        $user->addRole($role);
+        $user->addRole($this->getRoleOrCreate(User::ROLE_DEFAULT));
+        $user->addRole($this->getRoleOrCreate(User::ROLE_ANONYMOUS));
 
         $um = $this->getContainer()->get('oro_user.manager.flexible');
         $catalogLocaleAttribute = $um->createAttribute('oro_flexibleentity_text');
@@ -379,7 +414,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $catalogScopeValue->setData('ecommerce');
         $user->addValue($catalogScopeValue);
 
-        $this->getEntityManager()->persist($role);
         $this->getUserManager()->updateUser($user);
 
         $this
@@ -393,7 +427,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iAmOnTheProductPage($product)
     {
-        $product           = $this->getProduct($product);
+        $product = $this->getProduct($product);
         $this->openPage('Product', array(
             'id' => $product->getId(),
         ));
@@ -510,9 +544,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^the following attributes:$/
+     * @Given /^the following attributes?:$/
      */
-    public function theFollowingAttributes(TableNode $table)
+    public function theFollowingAttribute(TableNode $table)
     {
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $data) {
@@ -907,6 +941,42 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $family->setAttributeAsLabel($attribute);
 
         $this->getEntityManager()->flush();
+    }
+
+    /**
+     * @When /^I select the attribute type "([^"]*)"$/
+     */
+    public function iSelectTheAttributeType($type)
+    {
+        $this
+            ->getPage('Attribute creation')
+            ->selectAttributeType($type)
+        ;
+
+        $this->getSession()->wait(2000);
+    }
+
+    /**
+     * @Given /^I am on the attribute creation page$/
+     */
+    public function iAmOnTheAttributeCreationPage()
+    {
+        $this->openPage('Attribute creation');
+    }
+
+    /**
+     * @Then /^I should see the (.*) fields?$/
+     */
+    public function iShouldSeeTheFields($fields)
+    {
+        $fields = $this->listToArray($fields);
+        foreach ($fields as $field) {
+            if (!$this->getPage('Attribute')->findField($field)) {
+                throw $this->createExpectationException(sprintf(
+                    'Expecting to see field "%s".', $field
+                ));
+            }
+        }
     }
 
     private function openPage($page, array $options = array())
