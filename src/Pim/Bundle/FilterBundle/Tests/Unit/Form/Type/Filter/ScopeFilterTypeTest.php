@@ -4,7 +4,7 @@ namespace Pim\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
-use Pim\Bundle\FilterBundle\Form\Type\Filter\CategoryFilterType;
+use Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType;
 use Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter\ChoiceFilterTypeTest;
 
 /**
@@ -15,13 +15,21 @@ use Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter\ChoiceFilterTypeTest;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class CategoryFilterTypeTest extends ChoiceFilterTypeTest
+class ScopeFilterTypeTest extends ChoiceFilterTypeTest
 {
 
     /**
-     * @var CategoryFilterType
+     * @var ScopeFilterType
      */
     protected $type;
+
+    /**
+     * @staticvar array
+     */
+    protected static $channelChoices = array(
+        'ecommerce' => 'E-Commerce',
+        'mobile'    => 'Mobile'
+    );
 
     /**
      * {@inheritdoc}
@@ -31,9 +39,29 @@ class CategoryFilterTypeTest extends ChoiceFilterTypeTest
         parent::setUp();
 
         $translator = $this->createMockTranslator();
-        $this->type = new CategoryFilterType($translator);
+        $channelManager = $this->createMockChannelManager();
+
+        $this->type = new ScopeFilterType($translator, $channelManager);
         $this->factory->addType(new FilterType($translator));
         $this->factory->addType(new ChoiceFilterType($translator));
+    }
+
+    /**
+     * Create mock channel manager
+     *
+     * @return Pim\Bundle\ConfigBundle\Manager\ChannelManager
+     */
+    protected function createMockChannelManager()
+    {
+        $channelManager = $this->getMockBuilder('Pim\Bundle\ConfigBundle\Manager\ChannelManager')
+                               ->disableOriginalConstructor()
+                               ->getMock();
+
+        $channelManager->expects($this->any())
+                       ->method('getChannelChoiceWithUserChannel')
+                       ->will($this->returnValue(self::$channelChoices));
+
+        return $channelManager;
     }
 
     /**
@@ -49,7 +77,7 @@ class CategoryFilterTypeTest extends ChoiceFilterTypeTest
      */
     public function testGetName()
     {
-        $this->assertEquals(CategoryFilterType::NAME, $this->type->getName());
+        $this->assertEquals(ScopeFilterType::NAME, $this->type->getName());
         $this->assertEquals(ChoiceFilterType::NAME, $this->type->getParent());
     }
 
@@ -62,19 +90,7 @@ class CategoryFilterTypeTest extends ChoiceFilterTypeTest
             array(
                 'defaultOptions' => array(
                     'field_type' => 'choice',
-                    'field_options' => array('choices' => array()),
-                    'operator_choices' => array(
-                        CategoryFilterType::TYPE_CONTAINS => 'label_type_contains',
-                        CategoryFilterType::TYPE_NOT_CONTAINS => 'label_type_not_contains',
-                        CategoryFilterType::TYPE_CLASSIFIED => 'label_type_contains',
-                        CategoryFilterType::TYPE_UNCLASSIFIED => 'label_type_contains'
-                    ),
-                    'type_values' => array(
-                        'contains' => CategoryFilterType::TYPE_CONTAINS,
-                        'notContains' => CategoryFilterType::TYPE_NOT_CONTAINS,
-                        'classified' => CategoryFilterType::TYPE_CLASSIFIED,
-                        'unclassified' => CategoryFilterType::TYPE_UNCLASSIFIED
-                    )
+                    'field_options' => array('choices' => self::$channelChoices)
                 )
             )
         );
