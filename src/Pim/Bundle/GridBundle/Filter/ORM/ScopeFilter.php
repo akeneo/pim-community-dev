@@ -34,4 +34,12 @@ class ScopeFilter extends ChoiceFilter
             'form_type' => ScopeFilterType::NAME
         );
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function parseData($data)
+    {
+        return false;
+    }
 }

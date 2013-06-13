@@ -34,4 +34,12 @@ class LocaleFilter extends ChoiceFilter
             'form_type' => LocaleFilterType::NAME
         );
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function parseData($data)
+    {
+        return false;
+    }
 }

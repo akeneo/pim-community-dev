@@ -20,7 +20,7 @@ class EntityFilter extends ChoiceFilter
     /**
      * {@inheritdoc}
      */
-    public function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $data)
+    public function filter(ProxyQueryInterface $proxyQuery, $alias, $field, $data)
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -30,7 +30,7 @@ class EntityFilter extends ChoiceFilter
         $operator = $this->getOperator($data['type']);
 
         $associations = array($this->getOption('field_mapping'));
-        $newAlias = $queryBuilder->entityJoin($associations);
+        $newAlias = $proxyQuery->entityJoin($associations);
 
         if ('IN' == $operator) {
             $expression = $this->getExpressionFactory()->in(
@@ -44,7 +44,7 @@ class EntityFilter extends ChoiceFilter
             );
         }
 
-        $this->applyFilterToClause($queryBuilder, $expression);
+        $this->applyFilterToClause($proxyQuery, $expression);
     }
 
     /**

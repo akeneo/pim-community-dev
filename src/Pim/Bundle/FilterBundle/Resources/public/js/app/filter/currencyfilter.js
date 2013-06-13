@@ -13,7 +13,6 @@ Pim.Filter = Pim.Filter || {};
  */
 Pim.Filter.CurrencyFilter = Oro.Filter.NumberFilter.extend({
 
-
     /**
      * @inheritDoc
      */
@@ -48,6 +47,23 @@ Pim.Filter.CurrencyFilter = Oro.Filter.NumberFilter.extend({
             currency: this._getInputValue(this.criteriaValueSelectors.currency)
         };
     },
+
+    /**
+     * @inheritDoc
+     */
+    _getCriteriaHint: function() {
+        var value = this._getDisplayValue();
+        if (!value.value) {
+            return this.defaultCriteriaHint;
+        } else if (_.has(this.choices, value.type) && _.has(this.currencies, value.currency)) {
+            return this.choices[value.type] + ' ' + value.value + ' ' + value.currency;
+        } else if (_.has(this.choices, value.type)) {
+            return this.choices[value.type] + ' ' + value.value;
+        }
+        else {
+            return value.value;
+        }
+    },
     
     /**
      * @inheritDoc
@@ -72,7 +88,7 @@ Pim.Filter.CurrencyFilter = Oro.Filter.NumberFilter.extend({
                 
                 '<div class="btn-group">' +
                     '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
-                        'Action' +
+                        'Currency' +
                         '<span class="caret"></span>' +
                     '</button>' +
                     '<ul class="dropdown-menu">' +

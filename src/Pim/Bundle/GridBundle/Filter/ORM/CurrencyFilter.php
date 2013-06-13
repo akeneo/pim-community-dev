@@ -2,13 +2,15 @@
 
 namespace Pim\Bundle\GridBundle\Filter\ORM;
 
+
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\ORM\NumberFilter;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\CurrencyFilterType;
 
 /**
- * Currency filter for products
+ * Currency filter related to flexible entities
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -31,8 +33,46 @@ class CurrencyFilter extends NumberFilter
     /**
      * {@inheritdoc}
      */
-    public function apply($queryBuilder, $value)
+    public function filter(ProxyQueryInterface $proxyQuery, $alias, $field, $data)
     {
+        $data = $this->parseData($data);
+        if (!$data) {
+            return;
+        }
+
+        $operator = $this->getOperator($data['type']);
+        $currency = $data['currency'];
+
+        $newAlias = 'ValuePrices';
+
+        // Apply clause on currency code
+        $paramCurrency = $this->getNewParameterName($proxyQuery);
+        $exprEq = $this->createCompareFieldExpression('currency', $newAlias, '=', $paramCurrency);
+        $proxyQuery->setParameter($paramCurrency, $currency);
+
+        // Apply clause on operator and value
+        $paramValue = $this->getNewParameterName($proxyQuery);
+        $exprCmp = $this->createCompareFieldExpression('data', $newAlias, $operator, $paramValue);
+        $proxyQuery->setParameter($paramValue, $data['value']);
+
+        $expression = $this->getExpressionFactory()->andX($exprEq, $exprCmp);
+        $this->applyFilterToClause($proxyQuery, $expression);
+    }
+
+    /**
+     * Overriden to validate currency option
+     *
+     * {@inheritdoc}
+     */
+    public function parseData($data)
+    {
+        $data = parent::parseData($data);
+
+        if (!is_array($data) || !array_key_exists('currency', $data) || !is_string($data['currency'])) {
+            return false;
+        }
+
+        return $data;
     }
 
     /**
@@ -49,7 +89,7 @@ class CurrencyFilter extends NumberFilter
                 break;
             case FieldDescriptionInterface::TYPE_INTEGER:
             default:
-                $formOptions['data_type'] = NumberFilterType::DATA_DECIMAL;
+                $formOptions['data_type'] = NumberFilterType::DATA_INTEGER;
         }
 
         return array($formType, $formOptions);
