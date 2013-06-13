@@ -40,20 +40,20 @@ class IndexerSearchHandlerTest extends \PHPUnit_Framework_TestCase
             ->with(self::TEST_SEARCH_STRING, self::TEST_FIRST_RESULT, self::TEST_MAX_RESULTS, self::TEST_ENTITY_ALIAS)
             ->will($this->returnValue($result));
 
-        $resultProvider = $this->getMock(
-            'Oro\Bundle\SearchBundle\Provider\ResultProvider',
+        $resultFormatter = $this->getMock(
+            'Oro\Bundle\SearchBundle\Formatter\ResultFormatter',
             array('getOrderedResultEntities'),
             array(),
             '',
             false
         );
-        $resultProvider->expects($this->once())
+        $resultFormatter->expects($this->once())
             ->method('getOrderedResultEntities')
             ->with($this->testElements)
             ->will($this->returnValue($this->testResult));
 
         // test
-        $searchHandler = new IndexerSearchHandler($indexer, $resultProvider, self::TEST_ENTITY_ALIAS);
+        $searchHandler = new IndexerSearchHandler($indexer, $resultFormatter, self::TEST_ENTITY_ALIAS);
         $result = $searchHandler->search(self::TEST_SEARCH_STRING, self::TEST_FIRST_RESULT, self::TEST_MAX_RESULTS);
 
         $this->assertEquals($this->testResult, $result);
