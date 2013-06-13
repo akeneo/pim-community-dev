@@ -77,63 +77,6 @@ class CategoryRepository extends SegmentRepository
         return $qb;
     }
 
-
-
-    /**
-     * Create a query builder to get a tree filled with nodes only down to the provided nodes
-     * 
-     * @param Category   $parent      The parent node
-     * @param Collection $categories  The categories that should be included in the tree with their ancestors and
-     *                                their siblings
-     * @param boolean    $includeNode If true, will include the parent node in the response
-     */
-    protected function getMatchingHierarchyQueryBuilder(Category $parent = null, Collection $categories, $includeNode = false)
-    {
-        $meta = $this->getClassMetadata();
-        $config = $this->listener->getConfiguration($this->_em, $meta->name);
-
-        $qb = $this->_em->createQueryBuilder();
-        $qb->select('node')
-            ->from($config['useObjectClass'], 'node');
-
-        $qb = $this->getNodesHierarchyQueryBuilder($parent, false, array(), $includeNode);
-
-        $categoriesCondition = $qb->expr()->orx();
-
-        foreach ($categories as $category) {
-            $categoryLeft = $category->getLeft();
-            $categoryRight = $category->getRight();
-            $categoryParent = $category->getParent();
-
-            if ($categoryParent != null) {
-                $categoryCondition = $qb->expr()->orx(
-                    $qb->expr()->andx(
-                        $qb->expr()->lt('node.' . $config['left'], $categoryLeft),
-                        $qb->expr()->gt('node.' . $config['right'], $categoryRight)
-                    ),
-                    $qb->expr()->eq('node.' . $config['parent'], $categoryParent->getId())
-                );
-            } else {
-                $categoryCondition = $qb->expr()->andx(
-                    $qb->expr()->lt('node.' . $config['left'], $categoryLeft),
-                    $qb->expr()->gt('node.' . $config['right'], $categoryRight)
-                );
-            }
-                
-            $categoriesCondition->add( $categoryCondition );
-        }
-        $qb->andWhere($categoriesCondition);
-        return $qb;
-    }
-
-    public function getMatchingHierarchy(Category $parent = null, Collection $categories, $includeNode = false)
-    {
-        $qb = $this->getMatchingHierarchyQueryBuilder($parent, $categories, $includeNode);
-        $nodes = $qb->getQuery()->getResult();
-
-        return $this->buildTreeNode($nodes);
-    }
-   
     /**
      * Return the number of times the product is present in each tree
      *
@@ -163,7 +106,7 @@ class CategoryRepository extends SegmentRepository
         $trees = array();
         $treeKeys = array('tree','productsCount');
 
-        foreach($rawTrees as $rawTree) {
+        foreach ($rawTrees as $rawTree) {
             $trees[] = array_combine($treeKeys, $rawTree);
         }
 
@@ -192,11 +135,40 @@ class CategoryRepository extends SegmentRepository
             ->from($config['useObjectClass'], 'node')
             ->where('node.id IN(:categoriesIds)');
 
-        $qb->setParameter('categoriesIds',$categoriesIds);
+        $qb->setParameter('categoriesIds', $categoriesIds);
 
         $result = $qb->getQuery()->getResult();
         $result = new ArrayCollection($result);
 
         return $result;
+    }
+
+    /**
+     * Get a tree filled with children and their parents
+     *
+     * @param Category $root Tree root category
+     * @param array $parentsIds
+     *
+     * return array
+     */
+    public function getTreeFromParents(Category $root, array $parentsIds)
+    {
+        if (count($parentsIds) === 0) {
+            return array();
+        }
+
+        $meta = $this->getClassMetadata();
+        $config = $this->listener->getConfiguration($this->_em, $meta->name);
+
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('node')
+            ->from($config['useObjectClass'], 'node')
+            ->where('node.id IN (:parentsIds) OR node.parent IN (:parentsIds)');
+
+        $qb->setParameter('parentsIds', $parentsIds);
+
+        $nodes = $qb->getQuery()->getResult();
+
+        return $this->buildTreeNode($nodes);
     }
 }

@@ -73,7 +73,7 @@ class CategoryHelper
             $title = $category->getTitle();
 
             if ($withProductsCount) {
-                $title .= '('.$category->getProductsCount().')';
+                $title .= ' ('.$category->getProductsCount().')';
             }
 
             $result[] = array(
@@ -105,15 +105,21 @@ class CategoryHelper
      *
      * Optionnaly can generate a selected state for the provided selectCategory
      *
-     * @param array $categories
+     * @param array    $categories
      * @param Category $selectCategory
+     * @param array    $withProductsCount Add product count for each category in its title 
+     * @param Category $parent
      *
      * @return array
      * @static
      */
-    public static function childrenTreeResponse($categories, Category $selectCategory = null, Category $parent = null)
-    {
-        $result = static::formatCategory($categories, $selectCategory);
+    public static function childrenTreeResponse (
+        $categories,
+        Category $selectCategory = null,
+        $withProductsCount = false,
+        Category $parent = null
+    ) {
+        $result = static::formatCategory($categories, $selectCategory, $withProductsCount);
 
         if ($parent != null) {
             $result = array(
@@ -140,8 +146,11 @@ class CategoryHelper
      * @return array
      * @static
      */
-    protected static function formatCategory(array $categories, Category $selectCategory = null, $withProductsCount = false)
-    {
+    protected static function formatCategory (
+        array $categories,
+        Category $selectCategory = null,
+        $withProductsCount = false
+    ) {
         $result = array();
 
         foreach ($categories as $category) {
@@ -163,16 +172,16 @@ class CategoryHelper
             $title = $category['item']->getTitle();
 
             if ($withProductsCount) {
-                $title .= '('.$category->getProductsCount().')';
+                $title .= ' ('.$category['item']->getProductsCount().')';
             }
 
             $result[] = array(
                 'attr' => array(
                     'id' => 'node_'. $category['item']->getId()
                 ),
-                'data'  => $category['item']->getTitle(),
+                'data'  => $title,
                 'state' => $state,
-                'children' => static::formatCategory($category['__children'], $selectCategory)
+                'children' => static::formatCategory($category['__children'], $selectCategory, $withProductsCount)
             );
         }
 
@@ -239,7 +248,7 @@ class CategoryHelper
     {
         $selectedIds = array();
 
-        foreach($selectedCategories as $selectedCategory) {
+        foreach ($selectedCategories as $selectedCategory) {
             $selectedIds[] = $selectedCategory->getId();
         }
 
@@ -264,7 +273,7 @@ class CategoryHelper
     {
         $result = array();
 
-        foreach($categories as $category) {
+        foreach ($categories as $category) {
             $state = 'leaf';
 
             if (count($category['__children']) > 0) {

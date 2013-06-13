@@ -110,8 +110,6 @@ class ProductController extends Controller
             return new Response(json_encode($response));
         }
 
-        $request = $this->getRequest();
-
         return array(
             'form'       => $this->get('pim_product.form.simple_product')->createView(),
             'dataLocale' => $this->getDataLocale()
@@ -192,8 +190,8 @@ class ProductController extends Controller
      * @return array of categories data structured of two arrays
      *      categories, trees
      */
-     protected function getCategoriesData(array $requestParameters)
-     {
+    protected function getCategoriesData(array $requestParameters)
+    {
         $categories = array();
         $trees = array();
 
@@ -201,12 +199,12 @@ class ProductController extends Controller
             if ($value === "1") {
                 if (strpos($key, static::CATEGORY_PREFIX) === 0) {
                     
-                    $catId = (int) str_replace(STATIC::CATEGORY_PREFIX, '', $key);
+                    $catId = (int) str_replace(static::CATEGORY_PREFIX, '', $key);
                     if ($catId > 0) {
                         $categories[] = $catId;
                     }
-                } else if (strpos($key, static::TREE_APPLY_PREFIX) === 0) {
-                    $treeId = (int) str_replace(STATIC::TREE_APPLY_PREFIX, '', $key);
+                } elseif (strpos($key, static::TREE_APPLY_PREFIX) === 0) {
+                    $treeId = (int) str_replace(static::TREE_APPLY_PREFIX, '', $key);
                     if ($treeId > 0) {
                         $trees[] = $treeId;
                     }
@@ -215,7 +213,7 @@ class ProductController extends Controller
         }
 
         return array('categories' => $categories, "trees" => $trees);
-     }
+    }
 
     /**
      * Add attributes to product
@@ -322,7 +320,8 @@ class ProductController extends Controller
      *
      * httpparam include_category if true, will include the parentCategory in the response
      *
-     * @Route("/list-categories/product/{id}/parent/{category_id}.{_format}", requirements={"id"="\d+", "category_id"="\d+", "_format"="json"})
+     * @Route("/list-categories/product/{id}/parent/{category_id}.{_format}",
+     *        requirements={"id"="\d+", "category_id"="\d+", "_format"="json"})
      * @ParamConverter("parent", class="PimProductBundle:Category", options={"id" = "category_id"})
      * @Template()
      *
@@ -339,7 +338,7 @@ class ProductController extends Controller
         if ($product != null) {
             $categories = $product->getCategories();
         }
-        $trees = $this->getCategoryManager()->getEntityRepository()->getMatchingHierarchy($parent, $categories, $includeParent);
+        $trees = $this->getCategoryManager()->getFilledTree($parent, $categories);
 
         $treesData = CategoryHelper::listCategoriesResponse($trees, $categories);
 

@@ -4,6 +4,7 @@ namespace Pim\Bundle\ProductBundle\Manager;
 use Oro\Bundle\SegmentationTreeBundle\Manager\SegmentManager;
 
 use Pim\Bundle\ProductBundle\Entity\Category;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Extends SegmentManager for category tree
@@ -49,6 +50,37 @@ class CategoryManager extends SegmentManager
     public function getCategoriesByIds($categoriesIds)
     {
         return $this->getEntityRepository()->getCategoriesByIds($categoriesIds);
+
+    }
+
+    /**
+     * Provides a tree filled up to the categories provided, with all their ancestors
+     * and ancestors sibligns are filled too, in order to be able to display the tree
+     * directly without loading other data.
+     *
+     * @param Category $root Tree root category
+     * @param Collection $categories
+     *
+     * return array Multi-dimensional array representing the tree
+     */
+    public function getFilledTree(Category $root, Collection $categories)
+    {
+        $parentsIds = array();
+
+        foreach ($categories as $category) {
+            $categoryParentsIds = array();
+            $path = $this->getEntityRepository()->getPath($category);
+
+            if ($path[0]->getId() === $root->getId()) {
+                foreach ($path as $pathItem) {
+                    $categoryParentsIds[] = $pathItem->getId();
+                }
+            }
+            $parentsIds = array_merge($parentsIds, $categoryParentsIds);
+        }
+        $parentsIds = array_unique($parentsIds);
+
+        return $this->getEntityRepository()->getTreeFromParents($root, $parentsIds);
 
     }
 }
