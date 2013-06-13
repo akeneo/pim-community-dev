@@ -63,13 +63,25 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
         $this->type->setDefaultOptions($resolver);
     }
 
-    public function testBuildForm()
+    public function testBuildFormAutocompleteOptions()
     {
         $this->configuration->expects($this->once())
             ->method('getAutocompleteOptions')
             ->with('test')
             ->will($this->returnValue(array('entity_class' => 'TestBundle:Test')));
 
+        $builder = $this->assertEntityToIdTransformer();
+        $this->type->buildForm($builder, array('autocomplete_alias' => 'test'));
+    }
+
+    public function testBuildFormEntityClass()
+    {
+        $builder = $this->assertEntityToIdTransformer();
+        $this->type->buildForm($builder, array('entity_class' => 'test'));
+    }
+
+    public function assertEntityToIdTransformer()
+    {
         $builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
             ->disableOriginalConstructor()
             ->getMock();
@@ -87,19 +99,29 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
         $this->em->expects($this->once())
             ->method('getClassMetadata')
             ->will($this->returnValue($metadata));
-        $this->type->buildForm($builder, array('autocomplete_alias' => 'test'));
+        return $builder;
     }
 
     /**
-     * @dataProvider optionsDataProvider
-     * @param array $data
-     * @param array $autocompleteOptions
-     * @param array $expectedConfigs
-     * @param string $expectedEncodedData
+     * @expectedException Symfony\Component\OptionsResolver\Exception\MissingOptionsException
+     * @expectedExceptionMessage Option "autocomplete_alias" or "entity_class" must be defined.
      */
-    public function testBuildView(array $data, array $autocompleteOptions, array $expectedConfigs, $expectedEncodedData)
+    public function testBuildFormException()
     {
-        $options = array('autocomplete_transformer' => null);
+        $builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->type->buildForm($builder, array());
+    }
+
+    /**
+     * @dataProvider autocompleteOptionsDataProvider
+     * @param array $autocompleteOptions
+     * @param array $expected
+     */
+    public function testBuildViewAutocompleteOptions($autocompleteOptions, $expected)
+    {
+        $options = array('autocomplete_alias' => 'test');
 
         $this->configuration->expects($this->once())
             ->method('getAutocompleteOptions')
@@ -113,41 +135,200 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->setMethods(array('getData'))
             ->getMock();
-        $form->expects($this->once())->method('getData')->will($this->returnValue($data));
+        $form->expects($this->once())
+            ->method('getData')
+            ->will($this->returnValue(null));
+
         $this->type->buildView($view, $form, $options);
 
-        $this->assertInternalType('array', $view->vars);
-        $this->assertArrayHasKey('attr', $view->vars);
-        $this->assertInternalType('array', $view->vars['attr']);
-        $this->assertArrayHasKey('encoded-data', $view->vars['attr']);
-        $this->assertEquals($expectedEncodedData, $view->vars['attr']['encoded-data']);
-        $this->assertArrayHasKey('configs', $view->vars);
-        $this->assertEquals($expectedConfigs, $view->vars['configs']);
+        $this->assertEquals($expected, $view->vars);
     }
 
-    public function optionsDataProvider()
+    public function autocompleteOptionsDataProvider()
+    {
+        return array(
+            'simple' => array(
+                array(
+                    'route' => 'test_route',
+                    'properties' => array($this->getPropertyMock('property1')),
+                ),
+                array(
+                    'value' => null, 'attr' => array(),
+                    'configs' => array(
+                        'route' => 'test_route',
+                        'properties' => array('property1'),
+                        'autocomplete_alias' => 'test',
+                        'minimumInputLength' => 1,
+                        'allowClear' => true
+                    )
+                )
+            ),
+            'default values reset' => array(
+                array(
+                    'route' => 'test_route',
+                    'properties' => array($this->getPropertyMock('property1')),
+                    'form_options' => array(
+                        'minimumInputLength' => 10,
+                        'allowClear' => false
+                    )
+                ),
+                array(
+                    'value' => null, 'attr' => array(),
+                    'configs' => array(
+                        'route' => 'test_route',
+                        'properties' => array('property1'),
+                        'autocomplete_alias' => 'test',
+                        'minimumInputLength' => 10,
+                        'allowClear' => false
+                    )
+                )
+            ),
+            'no route' => array(
+                array(
+                    'properties' => array($this->getPropertyMock('property1')),
+                    'url' => '/test'
+                ),
+                array(
+                    'value' => null, 'attr' => array(),
+                    'configs' => array(
+                        'ajax' => array(
+                            'url' => '/test'
+                        ),
+                        'properties' => array('property1'),
+                        'autocomplete_alias' => 'test',
+                        'minimumInputLength' => 1,
+                        'allowClear' => true
+                    )
+                )
+            ),
+            'no route with ajax properties' => array(
+                array(
+                    'properties' => array($this->getPropertyMock('property1')),
+                    'url' => '/test',
+                    'form_options' => array(
+                        'ajax' => array(
+                            'type' => 'jsonp'
+                        )
+                    )
+                ),
+                array(
+                    'value' => null, 'attr' => array(),
+                    'configs' => array(
+                        'ajax' => array(
+                            'url' => '/test',
+                            'type' => 'jsonp'
+                        ),
+                        'properties' => array('property1'),
+                        'autocomplete_alias' => 'test',
+                        'minimumInputLength' => 1,
+                        'allowClear' => true
+                    )
+                )
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider configsOptionsDataProvider
+     * @param array $options
+     * @param array $expected
+     */
+    public function testBuildViewWithConfigs($options, $expected)
+    {
+        $view = $this->getMockBuilder('Symfony\Component\Form\FormView')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getData'))
+            ->getMock();
+        $form->expects($this->once())
+            ->method('getData')
+            ->will($this->returnValue(null));
+
+        $this->type->buildView($view, $form, $options);
+
+        $this->assertEquals($expected, $view->vars);
+    }
+
+    public function configsOptionsDataProvider()
     {
         return array(
             array(
-                array('properties' => 'Test Value'),
+                array('configs' => array('properties' => array('property1'))),
                 array(
-                    'route' => 'test_route',
-                    'properties' => array($this->getPropertyMock('property')),
-                    'url' => '/test',
-                    'form_options' => array('ajax' => array('type' => 'jsonp'))
-                ),
-                array(
-                    'route' => 'test_route',
-                    'properties' => array('property'),
-                    'autocomplete_alias' => 'test',
-                    'ajax' => array(
-                        'url' => '/test',
-                        'type' => 'jsonp'
+                    'value' => null, 'attr' => array(),
+                    'configs' => array(
+                        'properties' => array('property1'),
+                        'minimumInputLength' => 1,
+                        'allowClear' => true
                     )
-                ),
-                json_encode(array('id' => null, 'properties' => 'Test Value'))
+                )
+            ),
+            array(
+                array('configs' => array('properties' => 'property1')),
+                array(
+                    'value' => null, 'attr' => array(),
+                    'configs' => array(
+                        'properties' => array('property1'),
+                        'minimumInputLength' => 1,
+                        'allowClear' => true
+                    )
+                )
             )
         );
+    }
+
+    /**
+     * @expectedException \Symfony\Component\OptionsResolver\Exception\MissingOptionsException
+     * @expectedExceptionMessage Missing required "configs.properties" option
+     */
+    public function testBuildViewException()
+    {
+        $options = array();
+
+        $view = $this->getMockBuilder('Symfony\Component\Form\FormView')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getData'))
+            ->getMock();
+        $form->expects($this->never())
+            ->method('getData');
+
+        $this->type->buildView($view, $form, $options);
+    }
+
+    public function testBuildViewEntityEncoding()
+    {
+        $options = array('configs' => array('properties' => 'property1'), 'autocomplete_transformer' => null);
+
+        $view = $this->getMockBuilder('Symfony\Component\Form\FormView')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getData'))
+            ->getMock();
+        $form->expects($this->exactly(2))
+            ->method('getData')
+            ->will($this->returnValue(array('id' => 10, 'property1' => 'value1', 'property2' => 'value2')));
+
+        $this->type->buildView($view, $form, $options);
+
+        $expected = array(
+            'value' => null,
+            'attr' => array(
+                'data-entity' => '{"id":10,"property1":"value1"}'
+            ),
+            'configs' => array(
+                'properties' => array('property1'),
+                'minimumInputLength' => 1,
+                'allowClear' => true
+            )
+        );
+        $this->assertEquals($expected, $view->vars);
     }
 
     protected function getPropertyMock($name)
