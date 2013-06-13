@@ -55,8 +55,8 @@ class LocaleFilterTypeTest extends ChoiceFilterTypeTest
     protected function createMockLocaleManager()
     {
         $localeManager = $this->getMockBuilder('Pim\Bundle\ConfigBundle\Manager\LocaleManager')
-                             ->disableOriginalConstructor()
-                             ->getMock();
+                              ->disableOriginalConstructor()
+                              ->getMock();
 
         $localeManager->expects($this->any())
                       ->method('getActiveCodesWithUserLocale')

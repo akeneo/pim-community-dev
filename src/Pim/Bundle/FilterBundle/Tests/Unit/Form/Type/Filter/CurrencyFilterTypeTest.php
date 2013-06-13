@@ -127,7 +127,7 @@ class CurrencyFilterTypeTest extends NumberFilterTypeTest
                     array('type' => CurrencyFilterType::TYPE_EQUAL, 'value' => 12345.6789, 'currency' => 'EUR'),
                 'viewData' => array(
                     'value' =>
-                        array('type' => CurrencyFilterType::TYPE_EQUAL, 'value' => '12,345.68', 'currency' => 'EUR'),
+                        array('type' => CurrencyFilterType::TYPE_EQUAL, 'value' => '12,345.68', 'currency' => 'EUR')
                 ),
                 'customOptions' => array(
                     'field_options' => array('grouping' => true, 'precision' => 2)
@@ -140,62 +140,43 @@ class CurrencyFilterTypeTest extends NumberFilterTypeTest
                     array('type' => CurrencyFilterType::TYPE_EQUAL, 'value' => 12345.68, 'currency' => 'USD'),
                 'viewData' => array(
                     'value' =>
-                        array('type' => CurrencyFilterType::TYPE_EQUAL, 'value' => '12,345.68', 'currency' => 'USD'),
+                        array('type' => CurrencyFilterType::TYPE_EQUAL, 'value' => '12,345.68', 'currency' => 'USD')
                 ),
                 'customOptions' => array(
                     'field_options' => array('grouping' => true, 'precision' => 2)
-                ),
+                )
             ),
             'integer' => array(
-                'bindData' => array('type' => CurrencyFilterType::TYPE_GREATER_EQUAL, 'value' => '12345.67890', 'currency' => 'USD'),
-                'formData' => array('type' => CurrencyFilterType::TYPE_GREATER_EQUAL, 'value' => 12345, 'currency' => 'USD'),
+                'bindData' =>
+                    array('type' => CurrencyFilterType::TYPE_LESS_THAN, 'value' => '12345.67890', 'currency' => 'USD'),
+                'formData' =>
+                    array('type' => CurrencyFilterType::TYPE_LESS_THAN, 'value' => 12345, 'currency' => 'USD'),
                 'viewData' => array(
-                    'value' => array('type' => CurrencyFilterType::TYPE_GREATER_EQUAL, 'value' => '12345', 'currency' => 'USD'),
+                    'value' =>
+                        array('type' => CurrencyFilterType::TYPE_LESS_THAN, 'value' => '12345', 'currency' => 'USD'),
                     'formatter_options' => array(
                         'decimals' => 0,
                         'grouping' => false,
                         'orderSeparator' => '',
-                        'decimalSeparator' => '.',
+                        'decimalSeparator' => '.'
                     )
                 ),
                 'customOptions' => array(
                     'field_type' => 'integer',
                     'data_type' => CurrencyFilterType::DATA_INTEGER
-                ),
+                )
             ),
-//             'money' => array(
-//                 'bindData' => array('type' => NumberFilterType::TYPE_EQUAL, 'value' => '12345.67890'),
-//                 'formData' => array(
-//                     'type' => NumberFilterType::TYPE_EQUAL,
-//                     'value' => 12345.6789
-//                 ),
-//                 'viewData' => array(
-//                     'value' => array('type' => NumberFilterType::TYPE_EQUAL, 'value' => '12345.68'),
-//                     'formatter_options' => array(
-//                         'decimals' => 4,
-//                         'grouping' => true,
-//                         'orderSeparator' => ' ',
-//                         'decimalSeparator' => '.',
-//                     )
-//                 ),
-//                 'customOptions' => array(
-//                     'field_type' => 'money',
-//                     'data_type' => NumberFilterType::DATA_DECIMAL,
-//                     'formatter_options' => array(
-//                         'decimals' => 4,
-//                         'orderSeparator' => ' '
-//                     )
-//                 ),
-//             ),
             'invalid format' => array(
-                'bindData' => array('type' => CurrencyFilterType::TYPE_EQUAL, 'value' => 'abcd.67890', 'currency' => 'EUR'),
+                'bindData' =>
+                    array('type' => CurrencyFilterType::TYPE_EQUAL, 'value' => 'abcd.67890', 'currency' => 'EUR'),
                 'formData' => array('type' => CurrencyFilterType::TYPE_EQUAL, 'currency' => 'EUR'),
                 'viewData' => array(
-                    'value' => array('type' => CurrencyFilterType::TYPE_EQUAL, 'value' => 'abcd.67890', 'currency' => 'EUR'),
+                    'value' =>
+                        array('type' => CurrencyFilterType::TYPE_EQUAL, 'value' => 'abcd.67890', 'currency' => 'EUR')
                 ),
                 'customOptions' => array(
                     'field_type' => 'money'
-                ),
+                )
             )
         );
     }
