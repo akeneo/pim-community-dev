@@ -88,6 +88,7 @@
     }
 
     function expand(el, opts, force) {
+        $(el).addClass('expanded').removeClass('collapsed');
         var $fields = getFields(el);
 
         $fields.find('label span').remove();
@@ -103,6 +104,7 @@
     }
 
     function collapse(el, opts, force) {
+        $(el).addClass('collapsed').removeClass('expanded');
         var $fields = getFields(el);
 
         $fields.find('label span').remove();
