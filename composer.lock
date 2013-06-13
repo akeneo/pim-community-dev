@@ -2670,12 +2670,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/platform.git",
-                "reference": "9d284922fbb3b60b5eeddad62b3dc608a5ca9c1a"
+                "reference": "c8e8386676563d7e8d8ea29894a01e959a79ec01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/platform/zipball/9d284922fbb3b60b5eeddad62b3dc608a5ca9c1a",
-                "reference": "9d284922fbb3b60b5eeddad62b3dc608a5ca9c1a",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/c8e8386676563d7e8d8ea29894a01e959a79ec01",
+                "reference": "c8e8386676563d7e8d8ea29894a01e959a79ec01",
                 "shasum": ""
             },
             "require": {
