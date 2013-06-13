@@ -19,6 +19,11 @@ class CurrencyFilterTest extends FilterTestCase
 {
 
     /**
+     * @var CurrencyFilter
+     */
+    protected $model;
+
+    /**
      * {@inheritdoc}
      */
     protected function createTestFilter()
