@@ -1,6 +1,10 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
+use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+
+use Pim\Bundle\GridBundle\Property\CurrencyProperty;
+
 use Oro\Bundle\GridBundle\Property\FixedProperty;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
@@ -37,6 +41,17 @@ class ProductDatagridManager extends FlexibleDatagridManager
     const SCOPE_FIELD_NAME  = 'scope';
 
     /**
+     * Define constructor to add new price type
+     */
+    public function __construct()
+    {
+        self::$typeMatches['prices'] = array(
+            'field'  => FieldDescriptionInterface::TYPE_OPTIONS,
+            'filter' => FilterInterface::TYPE_CURRENCY
+        );
+    }
+
+    /**
      * get properties
      * @return array
      */
@@ -68,71 +83,25 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $fieldSku = new FieldDescription();
-        $fieldSku->setName('sku');
-        $fieldSku->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translator->trans('Sku'),
-                'field_name'  => 'sku',
-                'filter_type' => FilterInterface::TYPE_STRING,
-                'required'    => false,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
-            )
-        );
-        $fieldsCollection->add($fieldSku);
-
-        $field = $this->createCurrencyField();
+        $field = $this->createSkuField();
         $fieldsCollection->add($field);
 
         // TODO : until we'll have related backend type in grid bundle
         $excludedBackend = array(
-            AbstractAttributeType::BACKEND_TYPE_MEDIA,
-            AbstractAttributeType::BACKEND_TYPE_METRIC,
-            AbstractAttributeType::BACKEND_TYPE_PRICE,
-            'prices'
+            AbstractAttributeType::BACKEND_TYPE_MEDIA
         );
-
+        // create flexible columns
         foreach ($this->getFlexibleAttributes() as $attribute) {
             $backendType = $attribute->getBackendType();
             if (in_array($backendType, $excludedBackend)) {
                 continue;
             }
 
-            if (!$attribute->getUseableAsGridColumn()) {
+            if (!$attribute->getUseableAsGridColumn() && !$attribute->getUseableAsGridFilter()) {
                 continue;
             }
 
-            $attributeType = $this->convertFlexibleTypeToFieldType($backendType);
-            $filterType    = $this->convertFlexibleTypeToFilterType($backendType);
-
-            $field = new FieldDescription();
-            $field->setName($attribute->getCode());
-            $field->setOptions(
-                array(
-                    'type'          => $attributeType,
-                    'label'         => $attribute->getLabel(),
-                    'field_name'    => $attribute->getCode(),
-                    'filter_type'   => $filterType,
-                    'required'      => false,
-                    'sortable'      => true,
-                    'filterable'    => $attribute->getUseableAsGridFilter(),
-                    'flexible_name' => $this->flexibleManager->getFlexibleName(),
-                    'show_filter'   => $attribute->getUseableAsGridFilter()
-                )
-            );
-
-            if ($attributeType == FieldDescriptionInterface::TYPE_OPTIONS) {
-                $field->setOption('multiple', true);
-            }
-
-            if (!$attribute->getUseableAsGridFilter()) {
-                $field->setOption('filter_type', false);
-                $field->setOption('filterable', false);
-            }
-
+            $field = $this->createFlexibleField($attribute);
             $fieldsCollection->add($field);
         }
 
@@ -150,25 +119,38 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
-     * Create a currency field and filter
+     * {@inheritdoc}
+     */
+    protected function getFlexibleFieldOptions(AbstractAttribute $attribute, array $options = array())
+    {
+        $result = parent::getFlexibleFieldOptions($attribute, $options);
+
+        $result['filterable'] = $attribute->getUseableAsGridFilter();
+        $result['show_filter'] = $attribute->getUseableAsGridFilter();
+        $result['show_column'] = $attribute->getUseableAsGridColumn();
+
+        return $result;
+    }
+
+    /**
+     * Create a sku field and filter
      *
      * @return \Oro\Bundle\GridBundle\Field\FieldDescription
      */
-    protected function createCurrencyField()
+    protected function createSkuField()
     {
         $field = new FieldDescription();
-        $field->setName('currency');
+        $field->setName('sku');
         $field->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_DECIMAL,
-                'label'       => $this->translator->trans('Currency'),
-                'field_name'  => 'currency',
-                'filter_type' => FilterInterface::TYPE_CURRENCY,
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => $this->translator->trans('Sku'),
+                'field_name'  => 'sku',
+                'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
                 'sortable'    => true,
-                'show_column' => false,
                 'filterable'  => true,
-                'show_filter' => true
+                'show_filter' => true,
             )
         );
 
