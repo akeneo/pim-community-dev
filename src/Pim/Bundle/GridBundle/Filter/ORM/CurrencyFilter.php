@@ -89,7 +89,7 @@ class CurrencyFilter extends NumberFilter
                 break;
             case FieldDescriptionInterface::TYPE_INTEGER:
             default:
-                $formOptions['data_type'] = NumberFilterType::DATA_DECIMAL;
+                $formOptions['data_type'] = NumberFilterType::DATA_INTEGER;
         }
 
         return array($formType, $formOptions);

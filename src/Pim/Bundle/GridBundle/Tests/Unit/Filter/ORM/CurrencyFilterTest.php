@@ -3,7 +3,6 @@
 namespace Pim\Bundle\GridBundle\Tests\Unit\Filter\ORM;
 
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-
 use Pim\Bundle\FilterBundle\Form\Type\Filter\CurrencyFilterType;
 use Pim\Bundle\GridBundle\Filter\ORM\CurrencyFilter;
 use Oro\Bundle\GridBundle\Tests\Unit\Filter\ORM\FilterTestCase;
@@ -95,21 +94,7 @@ class CurrencyFilterTest extends FilterTestCase
             'not_alphanumeric_currency' => array(
                 'data' => array('value' => 5, 'currency' => 5),
                 'expectProxyQueryCalls' => array()
-            ),
-//             'equals' => array(
-//                 'data' => array('value' => 25, 'currency' => 'EUR', 'type' => '='),
-//                 'expectProxyQueryCalls' => array(
-//                     array('getUniqueParameterId', array(), 'p1'),
-//                     array('andWhere',
-//                         array(
-//                             $this->getExpressionFactory()->eq(
-//                                 self::TEST_ALIAS .'.'. self::TEST_FIELD,
-//                                 ':'. self::TEST_NAME .'_p1'
-//                             )
-//                         ), null),
-//                     array('setParameter', array(self::TEST_NAME .'_p1', 25), null)
-//                 )
-//             )
+            )
         );
     }
 
@@ -153,6 +138,11 @@ class CurrencyFilterTest extends FilterTestCase
     }
 
     /**
+     * Test related method
+     *
+     * @param array $options                options passed to filter
+     * @param array $expectedRenderSettings expected result
+     *
      * @dataProvider getRenderSettingsDataProvider
      */
     public function testGetRenderSettings($options, $expectedRenderSettings)
