@@ -14,6 +14,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\Options;
 
 class OroJquerySelect2HiddenType extends AbstractType
 {
@@ -38,14 +39,27 @@ class OroJquerySelect2HiddenType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(
-            array(
-                'empty_value' => '',
-                'empty_data' => null,
-                'data_class' => null,
-                'autocomplete_transformer' => null
-            )
+        $defaults = array(
+            'allowClear'         => true,
+            'minimumInputLength' => 1,
         );
+        $resolver
+            ->setNormalizers(
+                array(
+                    'configs' => function (Options $options, $configs) use ($defaults) {
+                        return array_merge_recursive($defaults, $configs);
+                    },
+                )
+            )
+            ->setDefaults(
+                array(
+                    'empty_value' => '',
+                    'empty_data' => null,
+                    'data_class' => null,
+                    'autocomplete_transformer' => null,
+                    'configs' => $defaults
+                )
+            );
     }
 
     /**

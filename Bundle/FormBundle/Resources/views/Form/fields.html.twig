@@ -72,75 +72,31 @@
             var $field = $('#{{ id }}');
 
             {% block genemu_jqueryselect2_javascript_prototype %}
+                {% set url = '' %}
+                {% if configs.ajax.url is defined %}
+                    {% set url = configs.ajax.url %}
+                {% elseif configs.route is defined %}
+                    {% set url = path(configs.route) %}
+                {% endif %}
+
+                {% if configs.placeholder is defined %}
+                    {% set configs = configs|merge({'placeholder': configs.placeholder|trans({}) }) %}
+                {% endif %}
+                {% if configs.result_template_twig is defined %}
+                    {% set configs = configs|merge({'result_template': include(configs.result_template_twig) }) %}
+                {% endif %}
+                {% if configs.selection_template_twig is defined %}
+                    {% set configs = configs|merge({'selection_template': include(configs.selection_template_twig) }) %}
+                {% endif %}
+
                 var select2Config = {{ configs|json_encode|raw }};
-
-                var getTitle = function (data, properties) {
-                    if (!data) {
-                        return '';
-                    } else {
-                        var result = [];
-                        for (var i = 0; i < properties.length; i++) {
-                            result.push(data[properties[i]]);
-                        }
-                        return result.join(' ');
-                    }
-                };
-
-                var highlightSelection = function (str, selection) {
-                    return str && selection ? str.replace(new RegExp(selection.term, 'ig'), '<b>$&</b>') : str;
-                };
-
-                var initSelection = function(element, callback) {
-                    callback(element.data('entity'));
-                };
-
-                var formatResult = function (object, container, query) {
-                    if (typeof select2Config.template != 'undefined') {
-                        var tpl = _.template(select2Config.template);
-                        return tpl(object);
-                    } else if (typeof object._html != 'undefined') {
-                        return object._html;
-                    } else {
-                        return highlightSelection(getTitle(object, select2Config.properties), query);
-                    }
-                };
-                var formatSelection = formatResult;
-
-                var ajax = null;
-                if ($field.length && $field[0].tagName.toLowerCase() === 'input') {
-                    {% set url = '' %}
-                    {% if configs.ajax.url is defined %}
-                        {% set url = configs.ajax.url %}
-                    {% elseif configs.route is defined %}
-                        {% set url = path(configs.route) %}
-                    {% endif %}
-                    ajax = {
-                        'url': {{ url|json_encode|raw }},
-                        'data': function (query, page) {
-                            return {
-                                'page': page,
-                                'per_page': {{ configs.per_page|default(10) }},
-                                'query': query
-                            };
-                        },
-                        'results': function (data, page) {
-                            return data;
-                        }
-                    };
-                }
-
                 {% if configs.datasource is defined %}
                     {{ block('oro_combobox_dataconfig_' ~ configs.datasource) }}
                 {% endif %}
 
-                if ($field.length && $field[0].tagName.toLowerCase() == 'input') {
-                    if (ajax) {
-                        select2Config.ajax = ajax;
-                    }
-                    select2Config.initSelection = initSelection;
-                    select2Config.formatResult = formatResult;
-                    select2Config.formatSelection = formatSelection;
-                    select2Config.escapeMarkup = function(m) { return m; };
+                if ($field.length && $field[0].tagName.toLowerCase() === 'input') {
+                    var configurator = new OroSelect2Config(select2Config, {{ url|json_encode|raw }}, {{ configs.per_page|default(10) }});
+                    select2Config = configurator.getConfig();
                 }
 
                 $field.select2(select2Config);
@@ -150,21 +106,26 @@
 {% endblock %}
 
 {% block oro_combobox_dataconfig_autocomplete %}
-    if (ajax) {
-        ajax.data = function (query, page) {
+    {% set url = configs.ajax.url is defined ? configs.ajax.url : path(configs.route) %}
+    select2Config.ajax = {
+        'url': {{ url|json_encode|raw }},
+        'data': function (query, page) {
             return {
                 'page': page,
                 'per_page': {{ configs.per_page|default(10) }},
                 'name': "{{ configs.autocomplete_alias }}",
                 'query': query
             };
-        };
-    }
+        },
+        'results': function (data, page) {
+            return data;
+        }
+    };
 {% endblock %}
 
 {% block oro_combobox_dataconfig_grid %}
     {% set url = configs.ajax.url is defined ? configs.ajax.url : path(configs.route, {'_format': 'json'}) %}
-    ajax = {
+    select2Config.ajax = {
         'url': {{ url|json_encode|raw }},
         'data': function (query, page) {
             return {
@@ -183,23 +144,5 @@
                 more: page*10 < data.options.totalRecords
             };
         }
-    };
-{% endblock %}
-
-{% block oro_combobox_dataconfig_user %}
-    formatResult = function(object, container, query) {
-    var highlight = function(str) {
-    return highlightSelection(str, query);
-    };
-    var avatar = object.avatar ? object.avatar : {{ asset('bundles/oroui/img/info-usser.png')|json_encode|raw }};
-    return '<img src="' + avatar + '" width="16" height="16" /> '
-    + highlight(object.firstName) + ' '
-    + highlight(object.lastName)
-    + ' - '+ highlight(object.email)
-    + ' (' + highlight(object.username) + ')';
-    };
-    formatSelection = function(object, container, query) {
-    var avatar = object.avatar ? object.avatar : {{ asset('bundles/oroui/img/info-usser.png')|json_encode|raw }};
-    return '<img src="' + avatar + '" width="16" height="16" /> ' + object.firstName + ' ' + object.lastName;
     };
 {% endblock %}

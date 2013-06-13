@@ -40,8 +40,8 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $resolver->expects($this->once())
-            ->method('setRequired')
-            ->with(array('autocomplete_alias'))
+            ->method('setNormalizers')
+            ->with($this->isType('array'))
             ->will($this->returnSelf());
 
         $resolver->expects($this->once())
@@ -50,7 +50,12 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
                 array(
                     'empty_value' => '',
                     'empty_data' => null,
-                    'data_class' => null
+                    'data_class' => null,
+                    'autocomplete_transformer' => null,
+                    'configs' => array(
+                        'allowClear'         => true,
+                        'minimumInputLength' => 1,
+                    )
                 )
             )
             ->will($this->returnSelf());
@@ -94,7 +99,7 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildView(array $data, array $autocompleteOptions, array $expectedConfigs, $expectedEncodedData)
     {
-        $options = array('autocomplete_alias' => 'test');
+        $options = array('autocomplete_transformer' => null);
 
         $this->configuration->expects($this->once())
             ->method('getAutocompleteOptions')
@@ -124,7 +129,7 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                array('property' => 'Test Value'),
+                array('properties' => 'Test Value'),
                 array(
                     'route' => 'test_route',
                     'properties' => array($this->getPropertyMock('property')),
@@ -140,7 +145,7 @@ class OroJquerySelect2HiddenTypeTest extends \PHPUnit_Framework_TestCase
                         'type' => 'jsonp'
                     )
                 ),
-                json_encode(array('id' => null, 'property' => 'Test Value'))
+                json_encode(array('id' => null, 'properties' => 'Test Value'))
             )
         );
     }

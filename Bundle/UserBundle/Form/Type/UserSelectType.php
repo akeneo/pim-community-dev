@@ -25,15 +25,15 @@ class UserSelectType extends AbstractType
         $resolver->setDefaults(
             array(
                 'configs' => array(
-                    'datasource' => 'user',
+                    'width' => '400px',
                     'placeholder' => 'Choose a user...',
                     'route' => 'oro_user_autocomplete',
                     'properties' => array('firstName', 'lastName'),
-                    'width' => '400px'
+                    'result_template_twig' => 'OroUserBundle:Js:userResult.html.twig',
+                    'selection_template_twig' => 'OroUserBundle:Js:userSelection.html.twig'
                 ),
                 'entity_class' => 'Oro\Bundle\UserBundle\Entity\User',
-                'autocomplete_transformer' => $this->transformer,
-                //'autocomplete_alias' => 'users'
+                'autocomplete_transformer' => $this->transformer
             )
         );
     }
