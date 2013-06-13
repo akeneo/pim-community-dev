@@ -88,7 +88,7 @@ Pim.Filter.CurrencyFilter = Oro.Filter.NumberFilter.extend({
                 
                 '<div class="btn-group">' +
                     '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
-                        'Action' +
+                        'Currency' +
                         '<span class="caret"></span>' +
                     '</button>' +
                     '<ul class="dropdown-menu">' +
