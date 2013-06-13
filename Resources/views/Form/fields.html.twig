@@ -1,4 +1,4 @@
-{% extends 'form_div_layout.html.twig' %}
+{% extends 'OroUIBundle:Form:fields.html.twig' %}
 
 {% block pim_wysiwyg_widget %}
     {{ block('textarea_widget') }}
@@ -55,26 +55,6 @@
 
     {% endspaceless %}
 {% endblock %}
-
-{% block form_row %}
-{% spaceless %}
-{% if compound %}
-    <div>
-        {{ form_label(form) }}
-        {{ form_errors(form) }}
-        {{ form_widget(form) }}
-    </div>
-{% else %}
-    <div class="control-group{% if errors|length > 0 %} error{%  endif %}{% if attr.class is defined %} {{ attr.class }}{% endif %}">
-        {{ form_label(form, null, { label_attr: label_attr|merge({ class: 'control-label' })}) }}
-        <div class="controls">
-            {{ form_errors(form) }}
-            {{ form_widget(form) }}
-        </div>
-    </div>
-{% endif %}
-{% endspaceless %}
-{% endblock form_row %}
 
 {% block widget_attributes %}
 {% if attr.class is defined %}
