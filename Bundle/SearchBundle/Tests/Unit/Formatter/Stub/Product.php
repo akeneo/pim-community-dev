@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\SearchBundle\Tests\Unit\Provider\Stub;
+namespace Oro\Bundle\SearchBundle\Tests\Unit\Formatter\Stub;
 
 class Product
 {

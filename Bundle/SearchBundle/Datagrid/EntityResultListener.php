@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\SearchBundle\Datagrid;
 
-use Oro\Bundle\SearchBundle\Provider\ResultProvider;
+use Oro\Bundle\SearchBundle\Formatter\ResultFormatter;
 
 use Oro\Bundle\GridBundle\EventDispatcher\ResultDatagridEvent;
 use Oro\Bundle\SearchBundle\Query\Result\Item;
@@ -15,18 +15,18 @@ class EntityResultListener
     protected $datagridName;
 
     /**
-     * @var ResultProvider
+     * @var ResultFormatter
      */
-    protected $resultProvider;
+    protected $resultFormatter;
 
     /**
-     * @param ResultProvider $resultProvider
+     * @param ResultFormatter $resultFormatter
      * @param string $datagridName
      */
-    public function __construct(ResultProvider $resultProvider, $datagridName)
+    public function __construct(ResultFormatter $resultFormatter, $datagridName)
     {
-        $this->resultProvider = $resultProvider;
-        $this->datagridName   = $datagridName;
+        $this->resultFormatter = $resultFormatter;
+        $this->datagridName    = $datagridName;
     }
 
     /**
@@ -40,7 +40,7 @@ class EntityResultListener
 
         /** @var $rows Item[] */
         $rows = $event->getRows();
-        $entities = $this->resultProvider->getResultEntities($rows);
+        $entities = $this->resultFormatter->getResultEntities($rows);
 
         // add entities to result rows
         $resultRows = array();

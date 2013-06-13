@@ -318,5 +318,5 @@ services:
         class: %oro_form.autocomplete.indexer_search_handler.class%
         arguments:
             - @oro_search.index
-            - @oro_search.result_provider
+            - @oro_search.formatter.result_formatter
             - "oro_user"

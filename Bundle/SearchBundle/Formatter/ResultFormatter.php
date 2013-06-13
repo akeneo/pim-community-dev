@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\SearchBundle\Provider;
+namespace Oro\Bundle\SearchBundle\Formatter;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
@@ -8,13 +8,8 @@ use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Oro\Bundle\SearchBundle\Engine\Indexer;
 use Oro\Bundle\SearchBundle\Query\Result\Item;
 
-class ResultProvider
+class ResultFormatter
 {
-    /**
-     * @var Indexer
-     */
-    protected $indexer;
-
     /**
      * @var EntityManager
      */
@@ -22,51 +17,10 @@ class ResultProvider
 
     /**
      * @param EntityManager $entityManager
-     * @param Indexer $indexer
      */
-    public function __construct(EntityManager $entityManager, Indexer $indexer)
+    public function __construct(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->indexer       = $indexer;
-    }
-
-    /**
-     * Returns grouped search results
-     *
-     * @param string $string
-     * @return array
-     */
-    public function getGroupedResults($string)
-    {
-        $search = $this->indexer->simpleSearch($string);
-
-        // empty key array contains all data
-        $result = array(
-            '' => array(
-                'count'  => 0,
-                'class'  => '',
-                'config' => array()
-            )
-        );
-
-        /** @var $item Item */
-        foreach ($search->getElements() as $item) {
-            $config = $item->getEntityConfig();
-            $alias  = $config['alias'];
-
-            if (!isset($result[$alias])) {
-                $result[$alias] = array(
-                    'count'  => 0,
-                    'class'  => $item->getEntityName(),
-                    'config' => $config,
-                );
-            }
-
-            $result[$alias]['count']++;
-            $result['']['count']++;
-        }
-
-        return $result;
     }
 
     /**

@@ -128,6 +128,11 @@ Default search handlers are:
  * requires **properties** option and either **flexible_manager** or **entity_class** option
  * handles search based on query builder of corresponding flexible entity repository.
 
+**EntityAutocomplete \ SearchIndexer \ IndexerSearchHandler**
+
+ * requires **entity_alias** that represents entity search alias
+ * handles search based on search index implemented in OroSearchBundle
+
 You can define your own search handler. To make it supported by default autocomplete controller corresponding search factory must be added.
 
 #### Search Factory

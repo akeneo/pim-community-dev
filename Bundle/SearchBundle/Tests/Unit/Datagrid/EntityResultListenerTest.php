@@ -38,19 +38,19 @@ class EntityResultListenerTest extends \PHPUnit_Framework_TestCase
     {
         $datagrid = $this->getDatagridMock('random_datagrid_name');
 
-        $resultProvider = $this->getMock(
-            'Oro\Bundle\SearchBundle\Provider\ResultProvider',
+        $resultFormatter = $this->getMock(
+            'Oro\Bundle\SearchBundle\Formatter\ResultFormatter',
             array('getResultEntities'),
             array(),
             '',
             false
         );
-        $resultProvider->expects($this->never())
+        $resultFormatter->expects($this->never())
             ->method('getResultEntities');
 
         $event = new ResultDatagridEvent($datagrid);
 
-        $eventListener = new EntityResultListener($resultProvider, self::TEST_DATAGRID_NAME);
+        $eventListener = new EntityResultListener($resultFormatter, self::TEST_DATAGRID_NAME);
         $eventListener->processResult($event);
     }
 
@@ -78,14 +78,14 @@ class EntityResultListenerTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $resultProvider = $this->getMock(
-            'Oro\Bundle\SearchBundle\Provider\ResultProvider',
+        $resultFormatter = $this->getMock(
+            'Oro\Bundle\SearchBundle\Formatter\ResultFormatter',
             array('getResultEntities'),
             array(),
             '',
             false
         );
-        $resultProvider->expects($this->once())
+        $resultFormatter->expects($this->once())
             ->method('getResultEntities')
             ->with($providerItems)
             ->will($this->returnValue($providerEntities));
@@ -94,7 +94,7 @@ class EntityResultListenerTest extends \PHPUnit_Framework_TestCase
         $event->setRows($providerItems);
 
         // test
-        $eventListener = new EntityResultListener($resultProvider, self::TEST_DATAGRID_NAME);
+        $eventListener = new EntityResultListener($resultFormatter, self::TEST_DATAGRID_NAME);
         $eventListener->processResult($event);
 
         $expectedRows = array(
