@@ -1,4 +1,5 @@
 {% set title = form.vars.value.id ? 'Edit attribute'|trans : 'Add attribute'|trans %}
+{{ JSFV(form) }}
 <form id="{{ form.vars.id }}" class="form-horizontal form-register" action="{{ form.vars.value.id ?
     path('pim_product_productattribute_edit', { id: form.vars.value.id }) :
     path('pim_product_productattribute_create') }}" method="POST">

@@ -53,9 +53,11 @@ $(tree_id).jstree({
     }
 })
     .bind('trees_loaded.jstree', function (event, tree_select_id) {
-        $('#'+tree_select_id).select2();
+        if (event.namespace == 'jstree') {
+            $('#'+tree_select_id).select2();
+        }
     })
-    .bind('loaded.jstree', function(event, data) {
+    .bind('after_tree_loaded.jstree', function (root_node_id) {
         $(tree_id).jstree('create', null, "last", { 
             "attr": { "class": "jstree-unclassified", "id": "node_0" },
             "data" : { "title": unclassifiedNodeTitle }
