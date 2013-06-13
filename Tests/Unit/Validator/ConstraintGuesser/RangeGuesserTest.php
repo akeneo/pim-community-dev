@@ -41,6 +41,18 @@ class RangeGuesserTest extends ConstraintGuesserTest
                 'backendType' => AbstractAttributeType::BACKEND_TYPE_PRICE
             ))
         ));
+
+        $this->assertTrue($this->target->supportAttribute(
+            $this->getAttributeMock(array(
+                'backendType' => AbstractAttributeType::BACKEND_TYPE_DATE
+            ))
+        ));
+
+        $this->assertTrue($this->target->supportAttribute(
+            $this->getAttributeMock(array(
+                'backendType' => AbstractAttributeType::BACKEND_TYPE_DATETIME
+            ))
+        ));
     }
 
     public function testGuessMinConstraint()
@@ -64,8 +76,8 @@ class RangeGuesserTest extends ConstraintGuesserTest
             'numberMin'       => 100,
         )));
 
-        $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\Range', $constraints);
-        $this->assertConstraintsConfiguration('Symfony\Component\Validator\Constraints\Range', $constraints, array(
+        $this->assertContainsInstanceOf('Pim\Bundle\ProductBundle\Validator\Constraints\Range', $constraints);
+        $this->assertConstraintsConfiguration('Pim\Bundle\ProductBundle\Validator\Constraints\Range', $constraints, array(
             'min' => 0,
         ));
     }
@@ -77,8 +89,8 @@ class RangeGuesserTest extends ConstraintGuesserTest
             'numberMax'   => 300,
         )));
 
-        $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\Range', $constraints);
-        $this->assertConstraintsConfiguration('Symfony\Component\Validator\Constraints\Range', $constraints, array(
+        $this->assertContainsInstanceOf('Pim\Bundle\ProductBundle\Validator\Constraints\Range', $constraints);
+        $this->assertConstraintsConfiguration('Pim\Bundle\ProductBundle\Validator\Constraints\Range', $constraints, array(
             'max' => 300
         ));
     }
@@ -91,8 +103,8 @@ class RangeGuesserTest extends ConstraintGuesserTest
             'numberMax'   => 300,
         )));
 
-        $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\Range', $constraints);
-        $this->assertConstraintsConfiguration('Symfony\Component\Validator\Constraints\Range', $constraints, array(
+        $this->assertContainsInstanceOf('Pim\Bundle\ProductBundle\Validator\Constraints\Range', $constraints);
+        $this->assertConstraintsConfiguration('Pim\Bundle\ProductBundle\Validator\Constraints\Range', $constraints, array(
             'min' => 100,
             'max' => 300
         ));
@@ -105,5 +117,18 @@ class RangeGuesserTest extends ConstraintGuesserTest
         )));
 
         $this->assertEquals(0, count($constraints));
+    }
+
+    public function testGuessMinDateConstraint()
+    {
+        $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
+            'backendType' => AbstractAttributeType::BACKEND_TYPE_DATE,
+            'dateMin'     => '2012-01-01',
+        )));
+
+        $this->assertContainsInstanceOf('Pim\Bundle\ProductBundle\Validator\Constraints\Range', $constraints);
+        $this->assertConstraintsConfiguration('Pim\Bundle\ProductBundle\Validator\Constraints\Range', $constraints, array(
+            'min' => '2012-01-01',
+        ));
     }
 }

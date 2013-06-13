@@ -20,19 +20,31 @@ class RangeGuesser implements ConstraintGuesserInterface
             AbstractAttributeType::BACKEND_TYPE_INTEGER,
             AbstractAttributeType::BACKEND_TYPE_METRIC,
             AbstractAttributeType::BACKEND_TYPE_PRICE,
-            'prices'
+            'prices',
+            AbstractAttributeType::BACKEND_TYPE_DATE,
+            AbstractAttributeType::BACKEND_TYPE_DATETIME,
         ));
     }
 
     public function guessConstraints(AbstractAttribute $attribute)
     {
         $constraints = array();
-        $min = $attribute->getNumberMin();
-        $max = $attribute->getNumberMax();
-        if ($min || $max) {
+
+        if (in_array($attribute->getBackendType(), array(
+            AbstractAttributeType::BACKEND_TYPE_DATE,
+            AbstractAttributeType::BACKEND_TYPE_DATETIME,
+        ))) {
+            $min = $attribute->getDateMin();
+            $max = $attribute->getDateMax();
+        } else {
+            $min = $attribute->getNumberMin();
+            $max = $attribute->getNumberMax();
             if (false === $attribute->getNegativeAllowed()) {
                 $min = 0;
             }
+        }
+
+        if (null !== $min || null !== $max) {
             $constraints[] = new Range(array(
                 'min' => $min,
                 'max' => $max,
