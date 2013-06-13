@@ -312,3 +312,11 @@ services:
     oro_user.entity_autocomplete.transformer:
         class: %oro_user.entity_autocomplete.transformer.class%
         arguments: [@liip_imagine.cache.manager]
+
+    # autocomplete search handler
+    oro_user.autocomplete.search_handler.user:
+        class: %oro_form.autocomplete.indexer_search_handler.class%
+        arguments:
+            - @oro_search.index
+            - @oro_search.result_provider
+            - "oro_user"

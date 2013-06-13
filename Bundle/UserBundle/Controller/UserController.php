@@ -161,7 +161,10 @@ class UserController extends Controller
             throw new HttpException(400, 'Parameter "per_page" must be greater than 0');
         }
 
-        $search = $this->createAutocompleteSearchHandler(array('firstName', 'lastName', 'username', 'email'));
+        // $search = $this->createAutocompleteSearchHandler(array('firstName', 'lastName', 'username', 'email'));
+
+        /** @var $search EntityAutocomplete\SearchHandlerInterface */
+        $search = $this->get('oro_user.autocomplete.search_handler.user');
 
         $perPage = $perPage + 1;
 
@@ -192,6 +195,7 @@ class UserController extends Controller
      * @param array $searchProperties
      * @return EntityAutocomplete\SearchHandlerInterface
      */
+    /*
     protected function createAutocompleteSearchHandler(array $searchProperties)
     {
         return $this->get('oro_form.autocomplete.doctrine.entity_search_factory')
@@ -202,6 +206,7 @@ class UserController extends Controller
                 )
             );
     }
+    */
 
     /**
      * @param string $propertyName

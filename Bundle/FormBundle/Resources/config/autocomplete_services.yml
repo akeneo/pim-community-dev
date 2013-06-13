@@ -7,6 +7,8 @@ parameters:
     oro_form.autocomplete.flexible.search_factory.class:               Oro\Bundle\FormBundle\EntityAutocomplete\Flexible\FlexibleSearchFactory
     oro_form.autocomplete.service_search_factory.class:                Oro\Bundle\FormBundle\EntityAutocomplete\ServiceSearchFactory
 
+    oro_form.autocomplete.indexer_search_handler.class:                Oro\Bundle\FormBundle\EntityAutocomplete\SearchIndexer\IndexerSearchHandler
+
 services:
     oro_form.autocomplete.configuration:
         class: %oro_form.autocomplete.configuration.class%
