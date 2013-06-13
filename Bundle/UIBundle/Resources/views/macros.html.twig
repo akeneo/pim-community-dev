@@ -244,7 +244,7 @@
         isForm - flag what scroll block mut contain the form
     data parameter structure:
         [
-            'scrollBlocks' - array of blocks. each block consist of:
+            'dataBlocks' - array of blocks. each block consist of:
                 [
                     'title' - title of scroll block
                     'class' - additional css class for scroll block menu item
@@ -263,7 +263,7 @@
         <div class="navbar-inner">
             <div class="container-fluid" style="width: auto;">
                 <ul class="nav">
-                    {% for navElement in data.scrollBlocks %}
+                    {% for navElement in data.dataBlocks %}
                         <li {% if navElement.class is defined %}class="{{ navElement.class }}"{% endif %}><a href="#scroll-{{ loop.index }}">{{ navElement.title|trans }}</a></li>
                     {% endfor %}
                 </ul>
@@ -280,7 +280,7 @@
             </div>
         {% endif %}
         <div data-spy="scroll" data-target="#{{ dataTarget }}" data-offset="50" class="scrollspy container-fluid scrollable-container">
-            {% for scrollBlock in data.scrollBlocks %}
+            {% for scrollBlock in data.dataBlocks %}
                 {{ _self.scrollBlock("scroll-" ~ loop.index, scrollBlock.title, scrollBlock.subblocks, isForm) }}
             {% endfor %}
             {% if data.hiddenData is defined %}

@@ -54,10 +54,10 @@
     {% endif %}
 {% endblock pageHeader %}
 
-{% block scroll_data %}
+{% block content_data %}
     {% set id = 'group-profile' %}
 
-    {% set scrollBlocks = [{
+    {% set dataBlocks = [{
             'title': 'General',
             'class': 'active',
             'subblocks': [
@@ -74,7 +74,7 @@
         }]
     %}
 
-    {% set scrollBlocks = scrollBlocks|merge(
+    {% set dataBlocks = dataBlocks|merge(
         [{
             'title' : 'Users',
             'subblocks':
@@ -92,9 +92,9 @@
     {% set data =
         {
             'formErrors': form_errors(form)? form_errors(form) : null,
-            'scrollBlocks': scrollBlocks,
+            'dataBlocks': dataBlocks,
             'hiddenData': form_rest(form)
         }
     %}
     {{ parent() }}
-{% endblock scroll_data %}
+{% endblock content_data %}
