@@ -39,6 +39,9 @@ OroSelect2Config.prototype.getConfig = function () {
 OroSelect2Config.prototype.format = function (jsTemplate) {
     var self = this;
     return function (object, container, query) {
+        if ($.isEmptyObject(object)) {
+            return undefined;
+        }
         var result = '';
         var highlight = function (str) {
             return self.highlightSelection(str, query);

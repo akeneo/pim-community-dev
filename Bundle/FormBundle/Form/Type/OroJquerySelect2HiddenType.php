@@ -98,19 +98,17 @@ class OroJquerySelect2HiddenType extends AbstractType
 
         $configs = $this->getConfigs($options);
 
-        $view->vars = array_replace_recursive(
-            $view->vars,
-            array(
-                'attr' => array(
-                    'data-entity' => $this->encodeEntity(
-                        $form->getData(),
-                        $configs['properties'],
-                        $options['autocomplete_transformer']
-                    )
-                ),
-                'configs' => $configs
-            )
-        );
+        $vars = array('configs' => $configs);
+        if ($form->getData()) {
+            $vars['attr'] = array(
+                'data-entity' => $this->encodeEntity(
+                    $form->getData(),
+                    $configs['properties'],
+                    $options['autocomplete_transformer']
+                )
+            );
+        }
+        $view->vars = array_replace_recursive($view->vars, $vars);
     }
 
     /**
