@@ -46,12 +46,12 @@ OroSelect2Config.prototype.format = function (jsTemplate) {
         var highlight = function (str) {
             return self.highlightSelection(str, query);
         };
-        if (jsTemplate) {
+        if (object._html !== undefined) {
+            result = object._html;
+        } else if (jsTemplate) {
             object.highlight = highlight;
             var tpl = _.template(jsTemplate);
             result = tpl(object);
-        } else if (object._html !== undefined) {
-            result = object._html;
         } else {
             result = highlight(self.getTitle(object, self.config.properties));
         }
