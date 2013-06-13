@@ -29,7 +29,6 @@ twig:
             start_route:      pim_product_product_index
     form:
         resources:
-            - 'OroUIBundle:Form:fields.html.twig'
             - 'PimUIBundle:Form:fields.html.twig'
 
 # Assetic Configuration
