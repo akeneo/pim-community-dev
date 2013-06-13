@@ -1,17 +1,8 @@
-{% extends bap.layout is defined ? bap.layout : 'OroUserBundle::layout.html.twig' %}
-
-{% block head_script %}
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set gridId = 'users-grid' %}
+{% block content %}
+    {% set pageTitle = 'Users' %}
+    {% set buttons = [UI.addButton({'path' : path('oro_user_create'), 'title' : 'Create user', 'label' : 'Create user'})] %}
     {{ parent() }}
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#users-grid'} %}
-{% endblock %}
-
-{% block page_container %}
-    {% block content %}
-    <div class="usser-row">
-        <div class="container-fluid">
-            <h1>{{ 'Users'|trans }} <a class="btn btn-primary pull-right" href="{{ path('oro_user_create') }}" title="{{ 'Create user'|trans }}">{{ 'Create user'|trans }}</a></h1>
-        </div>
-        <div id="users-grid"></div>
-    </div>
-    {% endblock %}
 {% endblock %}

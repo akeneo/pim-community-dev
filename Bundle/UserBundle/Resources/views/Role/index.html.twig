@@ -1,15 +1,8 @@
-{% extends bap.layout is defined ? bap.layout : 'OroUserBundle::layout.html.twig' %}
-
-{% block head_script %}
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set gridId = 'roles-grid' %}
+{% block content %}
+    {% set pageTitle = 'Roles' %}
+    {% set buttons = [UI.addButton({'path' : path('oro_user_role_create'), 'title' : 'Create role', 'label' : 'Create role'})] %}
     {{ parent() }}
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#roles-grid'} %}
-{% endblock %}
-
-{% block page_container %}
-    {% block content %}
-    <div class="container-fluid">
-        <h1>{{ 'Roles'|trans }} <a class="btn btn-primary pull-right" href="{{ path('oro_user_role_create') }}" title="{{ 'Create role'|trans }}">{{ 'Create role'|trans }}</a></h1>
-    </div>
-    <div id="roles-grid"></div>
-    {% endblock %}
 {% endblock %}

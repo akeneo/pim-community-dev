@@ -1,8 +1,15 @@
 parameters:
     oro_ui.twig.ceil.class:              Oro\Bundle\UIBundle\Twig\CeilExtension
+    oro_ui.twig.extension.class:         Oro\Bundle\UIBundle\Twig\UiExtension
 
 services:
     oro_ui.twig.ceil_extension:
         class: %oro_ui.twig.ceil.class%
+        tags:
+            - { name: twig.extension }
+
+    oro_ui.twig.ui_extension:
+        class: %oro_ui.twig.extension.class%
+        arguments: [%oro_ui.placeholders%, %oro_ui.wrap_class%]
         tags:
             - { name: twig.extension }

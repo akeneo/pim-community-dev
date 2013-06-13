@@ -32,7 +32,7 @@ $(document).ready(function () {
             return false;
         }
         // clear value after search
-        $(this).find('.search').val('').blur();
+        //$(this).find('.search').val('').blur();
         SearchByTagClose();
     });
 
