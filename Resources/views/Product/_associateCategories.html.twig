@@ -1,21 +1,31 @@
-<div id="trees-list">
-    <ul>
+<div id="trees-list" class="tab-groups">
+    <ul class="nav nav-list">
         {% for tree in trees %}
             {% set aClass = "" %}
+            {% set iClass = "icon-tick-off" %}
             {% if (tree['productsCount'] > 0) %}
                 {% set aClass = "tree-has-product" %}
+                {% set iClass = "icon-tick" %}
             {% endif %}
-            <li><a class="{{ aClass }}" href="#" id="tree-link-{{ tree['tree'].id }}">{{ tree['tree'].title }} ({{ tree['productsCount'] }})</a></li>
+            <li>
+                <a class="{{ aClass }}" href="#" id="tree-link-{{ tree['tree'].id }}">
+                    <i class="{{ iClass }}"></i>{{ tree['tree'].title }} ({{ tree['productsCount'] }})
+                </a>
+            </li>
         {% endfor %}
     </ul>
 </div>
 
-<div id="trees">
-    {% for tree in trees %}
-        <input type="hidden" id="apply-on-tree-{{ tree['tree'].id }}" name="apply_on_tree_{{ tree['tree'].id }}" value="0"/>
-        <div id="tree-{{ tree['tree'].id }}"></div>
-    {% endfor %}
-
+<div class="tab-content">
+    <div id="trees">
+        {% for tree in trees %}
+            <div class="tree" data-tree-id="{{ tree['tree'].id }}">
+                <h3>{{ tree['tree'].title }}</h3>
+                <input type="hidden" id="apply-on-tree-{{ tree['tree'].id }}" name="apply_on_tree_{{ tree['tree'].id }}" value="0"/>
+                <div id="tree-{{ tree['tree'].id }}"></div>
+            </div>
+        {% endfor %}
+    </div>
 </div>
 
 <script type="text/javascript">
