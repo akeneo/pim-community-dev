@@ -35,7 +35,7 @@ services:
     oro_search.datagrid_results.entity_result_listener:
         class: %oro_search.datagrid_results.entity_result_listener.class%
         arguments:
-            - @doctrine
+            - @oro_search.result_provider
             - %oro_search.datagrid_results.datagrid_name%
         tags:
             - name: kernel.event_listener

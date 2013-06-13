@@ -29,4 +29,4 @@ services:
 
     oro_search.result_provider:
         class:                        %oro_search.result_provider.class%
-        arguments:                    ["@oro_search.index"]
+        arguments:                    ["@doctrine.orm.entity_manager", "@oro_search.index"]

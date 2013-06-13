@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\SearchBundle\Tests\Unit\Datagrid\Stub;
+namespace Oro\Bundle\SearchBundle\Tests\Unit\Provider\Stub;
 
-class Product
+class Category
 {
     /**
      * @var int
@@ -22,6 +22,6 @@ class Product
      */
     public static function getEntityName()
     {
-        return 'Product';
+        return 'Category';
     }
 }
