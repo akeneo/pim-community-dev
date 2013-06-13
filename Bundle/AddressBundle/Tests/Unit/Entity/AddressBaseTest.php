@@ -57,8 +57,11 @@ class AddressBaseTest extends \PHPUnit_Framework_TestCase
     public function testStateText()
     {
         $obj = new AddressBase();
-        $obj->setState('state');
-        $this->assertEquals('state', $obj->getState());
+        $region = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Region')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $obj->setState($region);
+        $this->assertEquals($region, $obj->getState());
         $obj->setStateText('text state');
         $this->assertEquals('text state', $obj->getState());
     }

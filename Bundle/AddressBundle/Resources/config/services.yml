@@ -64,7 +64,7 @@ services:
             - @event_dispatcher
             - @oro_flexibleentity.attributetype.factory
         tags:
-            - { name: oro_flexibleentity_manager, entity: %oro_address.address.entity.class%}
+            - { name: oro_flexibleentity_manager, entity: %oro_address.typed_address.entity.class%}
         calls:
             - [ addAttributeType, ['oro_flexibleentity_text'] ]
 
