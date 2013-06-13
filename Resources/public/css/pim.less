@@ -511,6 +511,7 @@ form .scopable {
   }
 }
 
+
 form .currency {
   margin-bottom: 10px;
   .control-group {
@@ -544,7 +545,7 @@ form .currency {
       font-weight: normal;
       background-color: #fbfbfb;
       padding-top: 4px;
-      width: 100px;
+      width: 50px;
       margin-bottom: 0;
       border-radius: 0;
       float: left;
@@ -558,8 +559,21 @@ form .currency {
         height: 100%;
       }
     }
+    &>.control-group:not(:first-of-type) {
+      .control-label, input {
+        border-top: 0;
+      }
+    }
     input {
       border-radius: 0;
+    }
+  }
+  &.collapsed .controls {
+     .control-label {
+      border-bottom-left-radius: 3px;
+    }
+    input {
+      border-bottom-right-radius: 3px;
     }
   }
 }
