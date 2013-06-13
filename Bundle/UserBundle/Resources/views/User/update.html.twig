@@ -48,10 +48,10 @@
     <li>{{ 'Login count'|trans }}: {{ form.vars.value.loginCount|default(0) }}</li>
 {% endblock stats %}
 
-{% block scroll_data %}
+{% block content_data %}
     {% set id = 'user-profile' %}
 
-    {% set scrollBlocks = [{
+    {% set dataBlocks = [{
     'title': 'General',
     'class': 'active',
     'subblocks': [
@@ -87,7 +87,7 @@
                 </div>
             {% endif %}
         {% endmacro %}
-        {% set scrollBlocks = scrollBlocks|merge(
+        {% set dataBlocks = dataBlocks|merge(
         [{
         'title': 'Groups and Roles',
         'subblocks': [
@@ -104,7 +104,7 @@
     {% endif %}
 
     {% if form.values is defined %}
-        {% set scrollBlocks = scrollBlocks|merge(
+        {% set dataBlocks = dataBlocks|merge(
         [{
         'title': 'Additional data',
         'subblocks': [{
@@ -121,9 +121,9 @@
     {% set data =
     {
     'formErrors': form_errors(form)? form_errors(form) : null,
-    'scrollBlocks': scrollBlocks,
+    'dataBlocks': dataBlocks,
     'hiddenData': form_rest(form)
     }
     %}
     {{ parent() }}
-{% endblock scroll_data %}
+{% endblock content_data %}

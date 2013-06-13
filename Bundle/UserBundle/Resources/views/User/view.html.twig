@@ -63,7 +63,7 @@
     <li>{{ 'Login count'|trans }}: {{ entity.loginCount|default(0) }}</li>
 {% endblock stats %}
 
-{% block scroll_data %}
+{% block content_data %}
     {% set attributes = {} %}
     {% for value in entity|getAttributes() %}
         {% set attributes = attributes | merge([UI.flexibleAttributeRow(value)]) %}
@@ -71,7 +71,7 @@
 
     {% set id = 'user-profile' %}
     {% set data = {
-    'scrollBlocks':
+    'dataBlocks':
     [
     {
     'title': 'General',
@@ -105,4 +105,4 @@
     }
     %}
     {{ parent() }}
-{% endblock scroll_data %}
+{% endblock content_data %}
