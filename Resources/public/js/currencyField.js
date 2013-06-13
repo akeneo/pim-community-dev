@@ -17,7 +17,7 @@
     }
 
     function getFields(el) {
-        return $(el).find('>.control-group .control-group');
+        return $(el).find('>.control-group .control-group .control-group');
     }
 
     function prepareFields(el) {
@@ -58,6 +58,7 @@
     }
 
     function expand(el, opts) {
+        $(el).addClass('expanded').removeClass('collapsed');
         var $fields = getFields(el);
 
         $fields.find('label span').remove();
@@ -67,6 +68,7 @@
     }
 
     function collapse(el, opts) {
+        $(el).addClass('collapsed').removeClass('expanded');
         var $fields = getFields(el);
         $fields.hide();
 
