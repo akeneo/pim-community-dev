@@ -971,7 +971,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $fields = $this->listToArray($fields);
         foreach ($fields as $field) {
-            if (!$this->getPage('Attribute')->findField($field)) {
+            if (!$this->getPage('Attribute creation')->findField($field)) {
                 throw $this->createExpectationException(sprintf(
                     'Expecting to see field "%s".', $field
                 ));
