@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Oro\Bundle\FormBundle\EntityAutocomplete\Configuration;
 use Oro\Bundle\FormBundle\EntityAutocomplete\Property;
 use Oro\Bundle\FormBundle\EntityAutocomplete\Transformer\EntityPropertiesTransformer;
+use Oro\Bundle\FormBundle\EntityAutocomplete\Transformer\EntityTransformerInterface;
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -41,7 +42,8 @@ class OroJquerySelect2HiddenType extends AbstractType
             array(
                 'empty_value' => '',
                 'empty_data' => null,
-                'data_class' => null
+                'data_class' => null,
+                'autocomplete_transformer' => null
             )
         );
     }
@@ -85,7 +87,13 @@ class OroJquerySelect2HiddenType extends AbstractType
         $view->vars = array_replace_recursive(
             $view->vars,
             array(
-                'attr' => array('data-entity' => $this->encodeEntity($form->getData(), $configs['properties'])),
+                'attr' => array(
+                    'data-entity' => $this->encodeEntity(
+                        $form->getData(),
+                        $configs['properties'],
+                        $options['autocomplete_transformer']
+                    )
+                ),
                 'configs' => $configs
             )
         );
@@ -145,11 +153,14 @@ class OroJquerySelect2HiddenType extends AbstractType
     /**
      * @param mixed $entity
      * @param array $properties
+     * @param EntityTransformerInterface|null $entityTransformer
      * @return string
      */
-    protected function encodeEntity($entity, array $properties)
+    protected function encodeEntity($entity, array $properties, EntityTransformerInterface $entityTransformer = null)
     {
-        $entityTransformer = new EntityPropertiesTransformer($properties);
+        if (null == $entityTransformer) {
+            $entityTransformer = new EntityPropertiesTransformer($properties);
+        }
         return json_encode($entityTransformer->transform($entity));
     }
 

@@ -172,20 +172,12 @@ class UserController extends Controller
             $users = array_slice($users, 0, $perPage - 1);
         }
 
-        /** @var \Liip\ImagineBundle\Imagine\Cache\CacheManager $cacheManager  */
-        $cacheManager = $this->container->get('liip_imagine.cache.manager');
+        /** @var \Oro\Bundle\UserBundle\EntityAutocomplete\Transformer\UserTransformer $transformer */
+        $transformer = $this->container->get('oro_user.entity_autocomplete.transformer');
 
         $results = array();
         foreach ($users as $user) {
-            $results[] = array(
-                'id' => $user->getId(),
-                'username' => $user->getUsername(),
-                'firstName' => $user->getFirstname(),
-                'lastName' => $user->getLastname(),
-                'email' => $user->getEmail(),
-                'avatar' => $user->getImageFile() ?
-                    $cacheManager->getBrowserPath($user->getImageFile(), 'avatar_med') : null
-            );
+            $results[] = $transformer->transform($user);
         }
 
         $data = array(

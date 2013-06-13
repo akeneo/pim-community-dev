@@ -40,6 +40,7 @@ parameters:
     oro_user.attribute_type.user.class: Oro\Bundle\UserBundle\AttributeType\UserType
     oro_user.form.type.user_select.class: Oro\Bundle\UserBundle\Form\Type\UserSelectType
     oro_user.entity_with_image.subscriber.class: Oro\Bundle\UserBundle\Entity\EventListener\UploadedImageSubscriber
+    oro_user.entity_autocomplete.transformer.class: Oro\Bundle\UserBundle\EntityAutocomplete\Transformer\UserTransformer
 
 services:
     oro_user.manager.flexible:
@@ -287,6 +288,7 @@ services:
     # Form type
     oro_user.form.type.user_select:
         class: %oro_user.form.type.user_select.class%
+        arguments: [@oro_user.entity_autocomplete.transformer]
         tags:
             - { name: form.type, alias: oro_user_select }
 
@@ -306,3 +308,7 @@ services:
             - %kernel.root_dir%
         tags:
             - { name: doctrine.event_subscriber }
+
+    oro_user.entity_autocomplete.transformer:
+        class: %oro_user.entity_autocomplete.transformer.class%
+        arguments: [@liip_imagine.cache.manager]
