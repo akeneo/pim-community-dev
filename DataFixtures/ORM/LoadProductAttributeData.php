@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
+use BeSimple\SoapCommon\Type\KeyValue\DateTime;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
@@ -75,6 +77,8 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setUseableAsGridColumn(true);
         $attribute->setUseableAsGridFilter(true);
+        $attribute->setNumberMin(1);
+        $attribute->setNumberMax(500);
         $this->createTranslation($attribute, 'default', 'label', 'Price');
         $this->createTranslation($attribute, 'en_US', 'label', 'Price');
         $this->createTranslation($attribute, 'fr_FR', 'label', 'Prix');
@@ -91,6 +95,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attribute->setScopable(true);
         $attribute->setUseableAsGridColumn(true);
         $attribute->setUseableAsGridFilter(true);
+        $attribute->setMaxCharacters(100);
         $this->createTranslation($attribute, 'default', 'label', 'Short description');
         $this->createTranslation($attribute, 'en_US', 'label', 'Short description');
         $this->createTranslation($attribute, 'fr_FR', 'label', 'Description courte');
@@ -120,6 +125,8 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setUseableAsGridColumn(true);
         $attribute->setUseableAsGridFilter(true);
+        $attribute->setDateMin(new \DateTime('2012-01-01'));
+        $attribute->setDateMax(new \DateTime('2014-01-01'));
         $this->createTranslation($attribute, 'default', 'label', 'Release date');
         $this->createTranslation($attribute, 'en_US', 'label', 'Release date');
         $this->createTranslation($attribute, 'fr_FR', 'label', 'Date de sortie');
@@ -223,6 +230,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
         $attribute->setLabel('File upload');
         $attribute->setDescription(ucfirst($attributeCode .' description'));
         $attribute->setUseableAsGridColumn(true);
+        $attribute->setMaxFileSize(2000);
         $this->createTranslation($attribute, 'default', 'label', 'File upload');
         $this->createTranslation($attribute, 'en_US', 'label', 'File upload');
         $this->createTranslation($attribute, 'fr_FR', 'label', 'Fichier téléchargé');
