@@ -69,7 +69,6 @@ var jsTreeConfig = {
     }
 };
 
-var preSelectedTree = 1;
 var currentTree = -1;
 
 function switchTree(treeId) {
@@ -78,10 +77,10 @@ function switchTree(treeId) {
     var treeLink = $('#tree-link-' + treeId);
 
     $('#trees').find('div').hide(0);
-    $('#trees-list').find('a').removeClass('product-selected-tree');
+    $('#trees-list').find('li').removeClass('active');
 
-    treeLink.addClass('product-selected-tree');
-    
+    treeLink.parent().addClass('active');
+    $(".tree[data-tree-id="+treeId+"]").show(0);
     tree.show(0);
 
     // If empty, load the associated jstree
