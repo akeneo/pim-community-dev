@@ -55,8 +55,8 @@ class CategoryFilterType extends ChoiceFilterType
         $operators = array(
             self::TYPE_CONTAINS     => $this->translator->trans('label_type_contains', array(), 'OroFilterBundle'),
             self::TYPE_NOT_CONTAINS => $this->translator->trans('label_type_not_contains', array(), 'OroFilterBundle'),
-            self::TYPE_CLASSIFIED   => $this->translator->trans('label_type_contains', array(), 'PimFilterBundle'),
-            self::TYPE_UNCLASSIFIED => $this->translator->trans('label_type_contains', array(), 'PimFilterBundle')
+            self::TYPE_CLASSIFIED   => $this->translator->trans('label_type_contains', array(), 'OroFilterBundle'),
+            self::TYPE_UNCLASSIFIED => $this->translator->trans('label_type_contains', array(), 'OroFilterBundle')
         );
 
         $typeValues = array(

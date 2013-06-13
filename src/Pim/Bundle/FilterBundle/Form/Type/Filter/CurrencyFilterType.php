@@ -95,7 +95,7 @@ class CurrencyFilterType extends NumberFilterType
                 $this->translator->trans('label_type_greater_equal', array(), 'OroFilterBundle'),
             self::TYPE_GREATER_THAN => $this->translator->trans('label_type_greater_than', array(), 'OroFilterBundle'),
             self::TYPE_LESS_EQUAL => $this->translator->trans('label_type_less_equal', array(), 'OroFilterBundle'),
-            self::TYPE_LESS_THAN => $this->translator->trans('label_type_less_than', array(), 'OroFilterBundle'),
+            self::TYPE_LESS_THAN => $this->translator->trans('label_type_less_than', array(), 'OroFilterBundle')
         );
 
         $codes = $this->currencyManager->getActiveCodes();
@@ -114,7 +114,5 @@ class CurrencyFilterType extends NumberFilterType
                 'formatter_options' => array()
             )
         );
-
-        return $resolver;
     }
 }

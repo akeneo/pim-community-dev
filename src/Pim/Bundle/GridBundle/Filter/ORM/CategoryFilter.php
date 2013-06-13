@@ -35,12 +35,12 @@ class CategoryFilter extends EntityFilter
         $associations = array($this->getOption('field_mapping'));
         $newAlias = $proxyQuery->entityJoin($associations);
 
-        if ('IN' == $operator) {
+        if ('IN' === $operator) {
             $expression = $this->getExpressionFactory()->in(
                 $this->createFieldExpression($this->getOption('mapped_property'), $newAlias),
                 $data['value']
             );
-        } else if ('UNCLASSIFIED' == $operator) {
+        } elseif ('UNCLASSIFIED' === $operator) {
             // FIXME : Waiting for doctrine 2 fix -> http://www.doctrine-project.org/jira/browse/DDC-1858
             // For now we use a non-performing but working query
 
@@ -62,7 +62,7 @@ class CategoryFilter extends EntityFilter
 
             $fieldProduct = $this->createFieldExpression('id', $alias);
             $expression = $this->getExpressionFactory()->notIn($fieldProduct, $productIds);
-        } else if ('CLASSIFIED' == $operator) {
+        } elseif ('CLASSIFIED' === $operator) {
             $expression = $this->getExpressionFactory()->eq(
                 $this->createFieldExpression('root', $newAlias),
                 $data['value'][0]
@@ -82,7 +82,7 @@ class CategoryFilter extends EntityFilter
      */
     public function getOperator($type)
     {
-        $type = (int)$type;
+        $type = (int) $type;
 
         $operatorTypes = array(
             CategoryFilterType::TYPE_CONTAINS     => 'IN',
@@ -97,11 +97,29 @@ class CategoryFilter extends EntityFilter
     /**
      * {@inheritdoc}
      */
+    public function parseData($data)
+    {
+        if (!is_array($data) || !array_key_exists('value', $data) || !is_numeric($data['value'])) {
+            return false;
+        }
+
+        if (!is_array($data['value'])) {
+            $data['value'] = array($data['value']);
+        }
+
+        $data['type'] = isset($data['type']) ? $data['type'] : null;
+
+        return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDefaultOptions()
     {
-        return array(
-            'form_type' => CategoryFilterType::NAME,
-            'mapped_property' => 'id'
+        return array_merge(
+            parent::getDefaultOptions(),
+            array('form_type' => CategoryFilterType::NAME)
         );
     }
 }
