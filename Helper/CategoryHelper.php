@@ -58,9 +58,9 @@ class CategoryHelper
      * Format categories list into simple array with data formatted
      * for JStree json_data plugin.
      *
-     * @param array $categories Data to format into an array
-     * @param array $withProductsCount Add product count for each category in its title 
-     * @param array $parent If not null, will include this node as a parent node of the data
+     * @param array $categories        Data to format into an array
+     * @param array $withProductsCount Add product count for each category in its title
+     * @param array $parent            If not null, will include this node as a parent node of the data
      *
      * @return array
      * @static
@@ -105,20 +105,16 @@ class CategoryHelper
      *
      * Optionnaly can generate a selected state for the provided selectCategory
      *
-     * @param array    $categories
-     * @param Category $selectCategory
-     * @param array    $withProductsCount Add product count for each category in its title 
-     * @param Category $parent
+     * @param array    $categories        categories
+     * @param Category $selectCategory    select category
+     * @param array    $withProductsCount Add product count for each category in its title
+     * @param Category $parent            parent
      *
      * @return array
      * @static
      */
-    public static function childrenTreeResponse (
-        $categories,
-        Category $selectCategory = null,
-        $withProductsCount = false,
-        Category $parent = null
-    ) {
+    public static function childrenTreeResponse ($categories, Category $selectCategory = null, $withProductsCount = false, Category $parent = null)
+    {
         $result = static::formatCategory($categories, $selectCategory, $withProductsCount);
 
         if ($parent != null) {
@@ -138,19 +134,17 @@ class CategoryHelper
     /**
      * Format a node with its children to the format expected by jstree
      *
-     * @see http://www.jstree.com/documentation/json_data
-     *
-     * @param array $categories
+     * @param array    $categories
      * @param Category $selectCategory
+     * @param boolean  $withProductsCount
+     *
+     * @see http://www.jstree.com/documentation/json_data
      *
      * @return array
      * @static
      */
-    protected static function formatCategory (
-        array $categories,
-        Category $selectCategory = null,
-        $withProductsCount = false
-    ) {
+    protected static function formatCategory (array $categories, Category $selectCategory = null, $withProductsCount = false)
+    {
         $result = array();
 
         foreach ($categories as $category) {
@@ -244,6 +238,12 @@ class CategoryHelper
         return $return;
     }
 
+    /**
+     * @param array      $categories
+     * @param Collection $selectedCategories
+     *
+     * @return Ambigous <multitype:, multitype:multitype:multitype:string  string multitype: unknown  >
+     */
     public static function listCategoriesResponse(array $categories, Collection $selectedCategories = null)
     {
         $selectedIds = array();
@@ -260,11 +260,11 @@ class CategoryHelper
      * If count is true, the state will contain a count attribute representing
      * the number of selected children
      *
-     * @see http://www.jstree.com/documentation/json_data
+     * @param array   $categories
+     * @param array   $selectedIds
+     * @param boolean $count
      *
-     * @param array    $categories
-     * @param array    $selectedCategoriesIds
-     * @param boolean  $count
+     * @see http://www.jstree.com/documentation/json_data
      *
      * @return array
      * @static
@@ -298,7 +298,7 @@ class CategoryHelper
                     $selectedChildrenCount ++;
                 }
             }
-           
+
             $title = $category['item']->getTitle();
 
             if ($selectedChildrenCount > 0) {

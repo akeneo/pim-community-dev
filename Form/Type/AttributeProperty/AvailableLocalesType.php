@@ -29,14 +29,16 @@ class AvailableLocalesType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'required' => false,
-            'multiple' => true,
-            'class' => 'Pim\Bundle\ConfigBundle\Entity\Locale',
-            'query_builder' => function (EntityRepository $repository) {
-                return $repository->getActivatedLocales();
-            }
-        ));
+        $resolver->setDefaults(
+            array(
+                'required' => false,
+                'multiple' => true,
+                'class' => 'Pim\Bundle\ConfigBundle\Entity\Locale',
+                'query_builder' => function (EntityRepository $repository) {
+                    return $repository->getActivatedLocales();
+                }
+            )
+        );
     }
 
     /**

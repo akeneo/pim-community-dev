@@ -42,7 +42,7 @@ class CategoryManager extends SegmentManager
 
     /**
      * Get a collection of categories based on the array of id provided
-     * 
+     *
      * @param array $categoriesIds
      *
      * @return Collection of categories
@@ -58,10 +58,10 @@ class CategoryManager extends SegmentManager
      * and ancestors sibligns are filled too, in order to be able to display the tree
      * directly without loading other data.
      *
-     * @param Category $root Tree root category
-     * @param Collection $categories
+     * @param Category   $root       Tree root category
+     * @param Collection $categories categories
      *
-     * return array Multi-dimensional array representing the tree
+     * @return array Multi-dimensional array representing the tree
      */
     public function getFilledTree(Category $root, Collection $categories)
     {

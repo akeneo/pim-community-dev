@@ -171,6 +171,8 @@ class ProductFamilyController extends Controller
      *
      * @Route("/{familyId}/attribute/{attributeId}")
      * @Method("DELETE")
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeProductAttribute($familyId, $attributeId)
     {
@@ -199,6 +201,8 @@ class ProductFamilyController extends Controller
      * Return to attributes tab
      *
      * @param integer $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     protected function redirectToProductFamilyAttributesTab($id)
     {

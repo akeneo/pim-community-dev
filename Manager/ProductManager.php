@@ -47,6 +47,7 @@ class ProductManager extends FlexibleManager
      *
      * @param Product         $product
      * @param ArrayCollection $categories
+     * @param boolean         $onlyTree
      */
     public function save(Product $product, ArrayCollection $categories = null, array $onlyTree = null)
     {
@@ -198,7 +199,7 @@ class ProductManager extends FlexibleManager
     {
         $values = $product->getValues();
         $values = $values->filter(
-            function($value) use ($attribute, $locale, $scope) {
+            function ($value) use ($attribute, $locale, $scope) {
                 if ($value->getAttribute() === $attribute
                     && $value->getScope() === $scope
                     && $value->getLocale() === $locale) {
@@ -266,7 +267,7 @@ class ProductManager extends FlexibleManager
         // Remove current categories
         $currentCategories = $product->getCategories();
         foreach ($currentCategories as $currentCategory) {
-            if ($onlyTrees != null && 
+            if ($onlyTrees != null &&
                in_array($currentCategory->getRoot(), $onlyTrees)) {
                 $currentCategory->removeProduct($product);
             }
@@ -274,7 +275,7 @@ class ProductManager extends FlexibleManager
 
         // Add new categories
         foreach ($categories as $category) {
-            if ($onlyTrees != null && 
+            if ($onlyTrees != null &&
                in_array($category->getRoot(), $onlyTrees)) {
                 $category->addProduct($product);
             }

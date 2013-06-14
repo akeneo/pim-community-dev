@@ -111,12 +111,12 @@ class CategoryRepository extends SegmentRepository
         }
 
         return $trees;
-        
+
     }
 
     /**
      * Get a collection of categories based on the array of id provided
-     * 
+     *
      * @param array $categoriesIds
      *
      * @return Collection of categories
@@ -146,10 +146,10 @@ class CategoryRepository extends SegmentRepository
     /**
      * Get a tree filled with children and their parents
      *
-     * @param Category $root Tree root category
-     * @param array $parentsIds
+     * @param Category $root       the root
+     * @param array    $parentsIds parent ids
      *
-     * return array
+     * @return array
      */
     public function getTreeFromParents(Category $root, array $parentsIds)
     {

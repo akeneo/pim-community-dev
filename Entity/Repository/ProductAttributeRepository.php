@@ -30,7 +30,8 @@ class ProductAttributeRepository extends EntityRepository
             $ids = array_map(
                 function ($attribute) {
                     return $attribute->getId();
-                }, $attributes
+                },
+                $attributes
             );
 
             $qb->where($qb->expr()->notIn('a.id', $ids));
@@ -40,7 +41,7 @@ class ProductAttributeRepository extends EntityRepository
         return $qb;
     }
 
-   /**
+    /**
      * Find all product attributes that belong to a group
      *
      * @return array

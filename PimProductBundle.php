@@ -16,6 +16,9 @@ use Pim\Bundle\ProductBundle\DependencyInjection\Compiler\RegisterAttributeConst
  */
 class PimProductBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);

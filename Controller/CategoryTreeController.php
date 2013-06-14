@@ -155,7 +155,7 @@ class CategoryTreeController extends Controller
     /**
      * List products associated with the provided category
      *
-     * @param Request $request Request (category_id)
+     * @param Category $category
      *
      * @Route("/list-items.{_format}/{id}", requirements={"_format"="json", "id"="\d+"})
      * @Template()

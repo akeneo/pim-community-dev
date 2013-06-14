@@ -181,6 +181,7 @@ class AttributeGroupController extends Controller
      * @Route("/{groupId}/attribute/{attributeId}")
      * @Method("DELETE")
      *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeProductAttribute($groupId, $attributeId)
     {
@@ -205,6 +206,8 @@ class AttributeGroupController extends Controller
      * Redirect to attribute tab
      *
      * @param integer $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     protected function redirectToAttributeGroupAttributesTab($id)
     {

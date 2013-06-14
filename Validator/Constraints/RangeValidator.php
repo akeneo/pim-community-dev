@@ -7,12 +7,17 @@ use Symfony\Component\Validator\Constraint;
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 
 /**
+ * Constraint
+ *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class RangeValidator extends BaseRangeValidator
 {
+    /**
+     * {@inheritdoc}
+     */
     public function validate($value, Constraint $constraint)
     {
         if ($value instanceof \DateTime) {
@@ -33,6 +38,7 @@ class RangeValidator extends BaseRangeValidator
                     )
                 );
             }
+
             return;
         }
 
@@ -43,4 +49,3 @@ class RangeValidator extends BaseRangeValidator
         parent::validate($value, $constraint);
     }
 }
-
