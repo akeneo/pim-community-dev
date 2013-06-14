@@ -42,8 +42,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private $currentPage = null;
 
     private $attributeTypes = array(
-        'text'     => 'oro_flexibleentity_text',
-        'number'   => 'oro_flexibleentity_number',
+        'text'     => 'pim_product_text',
+        'number'   => 'pim_product_number',
         'textarea' => 'pim_product_textarea',
     );
 
