@@ -141,9 +141,9 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     public static function providerUniqueConstraintInvalid()
     {
         return array(
-            array('oro_flexibleentity_text', 'code1', true, true, false, false, true),
-            array('oro_flexibleentity_text', 'code2', true, false, false, false, true),
-            array('oro_flexibleentity_text', 'code3', true, true, false, false, false),
+            array('pim_product_text', 'code1', true, true, false, false, true),
+            array('pim_product_text', 'code2', true, false, false, false, true),
+            array('pim_product_text', 'code3', true, true, false, false, false),
         );
     }
 
@@ -190,10 +190,10 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
             array('pim_product_price_collection', 'code2', true, false, false, false, false),
             array('pim_product_multiselect', 'code4', true, false, false, false, false),
             array('pim_product_simpleselect', 'code6', true, false, false, false, false),
-            array('oro_flexibleentity_image', 'code7', true, false, false, false, false),
-            array('oro_flexibleentity_file', 'code8', true, false, false, false, false),
-            array('oro_flexibleentity_metric', 'code9', true, false, false, false, false),
-            array('oro_flexibleentity_boolean', 'code10', true, false, false, false, false),
+            array('pim_product_image', 'code7', true, false, false, false, false),
+            array('pim_product_file', 'code8', true, false, false, false, false),
+            array('pim_product_metric', 'code9', true, false, false, false, false),
+            array('pim_product_boolean', 'code10', true, false, false, false, false),
         );
     }
 
@@ -207,12 +207,12 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array('pim_product_price_collection', 'code1', true, true, false, false, false),
-            array('oro_flexibleentity_metric', 'code2', true, true, false, false, false),
-            array('oro_flexibleentity_metric', 'code3', true, false, false, false, true),
-            array('oro_flexibleentity_metric', 'code4', true, true, false, false, true),
-            array('oro_flexibleentity_metric', ' ', true, false, false, false, false),
-            array('oro_flexibleentity_metric', '#code', true, false, false, false, false),
-            array('oro_flexibleentity_metric', null, true, false, false, false, false),
+            array('pim_product_metric', 'code2', true, true, false, false, false),
+            array('pim_product_metric', 'code3', true, false, false, false, true),
+            array('pim_product_metric', 'code4', true, true, false, false, true),
+            array('pim_product_metric', ' ', true, false, false, false, false),
+            array('pim_product_metric', '#code', true, false, false, false, false),
+            array('pim_product_metric', null, true, false, false, false, false),
         );
     }
 
@@ -250,10 +250,10 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array('pim_product_price_collection', 'code1', false, false, false, false, false),
-            array('oro_flexibleentity_text', 'code2', true, false, false, false, false),
-            array('oro_flexibleentity_text', 'code3', true, false, false, true, false),
-            array('oro_flexibleentity_text', 'code4', true, false, true, false, false),
-            array('oro_flexibleentity_text', 'code5', true, false, true, true, false),
+            array('pim_product_text', 'code2', true, false, false, false, false),
+            array('pim_product_text', 'code3', true, false, false, true, false),
+            array('pim_product_text', 'code4', true, false, true, false, false),
+            array('pim_product_text', 'code5', true, false, true, true, false),
         );
     }
 
@@ -335,16 +335,14 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     public static function providerNoPropertyViolations()
     {
         return array(
-            array('oro_flexibleentity_date', 'code1',
+            array('pim_product_date', 'code1',
                 array('defaultValue' => new \DateTime('+1 month'), 'dateType' => 'datetime', 'dateMin' => new \DateTime('now'), 'dateMax' => new \DateTime('+1 year'))),
-            array('oro_flexibleentity_integer', 'code2',
-                array('defaultValue' => 10, 'numberMin' => 1, 'numberMax' => 100.1, 'decimalsAllowed' => true, 'negativeAllowed' => false)),
             array('pim_product_price_collection', 'code3',
                 array('defaultValue' => 9.99, 'numberMin' => 0.01, 'numberMax' => 1000000, 'decimalsAllowed' => true,
                     'negativeAllowed' => false)),
-            array('oro_flexibleentity_number', 'code4',
+            array('pim_product_number', 'code4',
                 array('defaultValue' => -10, 'numberMin' => -100, 'numberMax' => 100, 'decimalsAllowed' => false, 'negativeAllowed' => true)),
-            array('oro_flexibleentity_number', 'code4',
+            array('pim_product_number', 'code4',
                 array('numberMin' => 1.1, 'numberMax' => 2.2, 'decimalsAllowed' => true, 'negativeAllowed' => true)),
             array('pim_product_multiselect', 'code5',
                 array('valueCreationAllowed' => true)),
@@ -352,22 +350,22 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
                 array('defaultValue' => 'test value')),
             array('pim_product_textarea', 'code7',
                 array('defaultValue' => 'test value', 'maxCharacters' => 200, 'wysiwygEnabled' => true)),
-            array('oro_flexibleentity_metric', 'code8',
+            array('pim_product_metric', 'code8',
                 array('defaultValue' => 20, 'numberMin' => -273, 'numberMax' => 1000, 'decimalsAllowed' => false,
                     'negativeAllowed' => true, 'metricFamily' => 'temperature', 'defaultMetricUnit' => 'C')),
-            array('oro_flexibleentity_file', 'code9',
+            array('pim_product_file', 'code9',
                 array('allowedFileSources' => 'all', 'maxFileSize' => 10000)),
-            array('oro_flexibleentity_image', 'code10',
+            array('pim_product_image', 'code10',
                 array('allowedFileSources' => 'upload', 'maxFileSize' => null)),
-            array('oro_flexibleentity_text', 'code11',
+            array('pim_product_text', 'code11',
                 array('defaultValue' => 'Test123', 'maxCharacters' => 100, 'validationRule' => 'regexp', 'validationRegexp' => '#[[:alnum:]]#')),
-            array('oro_flexibleentity_text', 'code12',
+            array('pim_product_text', 'code12',
                 array('defaultValue' => 'user@sub.domain.museum', 'validationRule' => 'email')),
-            array('oro_flexibleentity_text', 'code13',
+            array('pim_product_text', 'code13',
                 array('defaultValue' => 'http://symfony.com/', 'validationRule' => 'url')),
-            array('oro_flexibleentity_text', 'code14',
+            array('pim_product_text', 'code14',
                 array('defaultValue' => 'value', 'maxCharacters' => 10)),
-            array('oro_flexibleentity_boolean', 'code15',
+            array('pim_product_boolean', 'code15',
                 array('defaultValue' => true))
         );
     }
@@ -401,26 +399,17 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     public static function providerManyPropertyViolations()
     {
         return array(
-            array('oro_flexibleentity_date', 'code1', array(
+            array('pim_product_date', 'code1', array(
                 'defaultValue' => new \DateTime('now'), 'dateType' => 'H:i',
                 'dateMin' => new \DateTime('+1 day'), 'dateMax' => new \DateTime('-1 day')), 3),
-            array('oro_flexibleentity_date', 'code2',
+            array('pim_product_date', 'code2',
                 array('defaultValue' => new \DateTime('now'), 'dateType' => 'date',
                     'dateMin' => null, 'dateMax' => new \DateTime('-1 day')), 1),
-            array('oro_flexibleentity_date', 'code3',
+            array('pim_product_date', 'code3',
                 array('defaultValue' => date('d/m/Y'), 'dateType' => 'time',
                     'dateMin' => new \DateTime('-1 day'), 'dateMax' => new \DateTime('-1 day')), 2),
-            array('oro_flexibleentity_date', 'code4', array(
+            array('pim_product_date', 'code4', array(
                 'dateType' => 'date', 'dateMin' => 1, 'dateMax' => 2), 2),
-            array('oro_flexibleentity_integer', 'code5',
-                array('defaultValue' => -10, 'numberMin' => 1.5, 'numberMax' => -2,
-                    'negativeAllowed' => false), 3),
-            array('oro_flexibleentity_integer', 'code6',
-                array('defaultValue' => -2, 'numberMin' => -1, 'numberMax' => 2,
-                    'negativeAllowed' => true), 1),
-            array('oro_flexibleentity_integer', 'code7',
-                array('defaultValue' => 10, 'numberMin' => -1, 'numberMax' => 5,
-                    'negativeAllowed' => false), 2),
             array('pim_product_price_collection', 'code8',
                 array('defaultValue' => 9.999, 'numberMin' => -0.01, 'numberMax' => 1000000,
                     'decimalsAllowed' => true, 'negativeAllowed' => false), 1),
@@ -430,35 +419,35 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
                 array('defaultValue' => 0, 'numberMax' => -1, 'negativeAllowed' => false), 2),
             array('pim_product_price_collection', 'code11',
                 array('defaultValue' => -1, 'negativeAllowed' => false), 1),
-            array('oro_flexibleentity_number', 'code12',
+            array('pim_product_number', 'code12',
                 array('defaultValue' => -100, 'numberMin' => -10.111111, 'numberMax' => null,
                     'decimalsAllowed' => false, 'negativeAllowed' => true), 2),
             array('pim_product_textarea', 'code13',
                 array('defaultValue' => 'test value', 'maxCharacters' => 5,
                     'wysiwygEnabled' => true), 1),
-            array('oro_flexibleentity_metric', 'code14',
+            array('pim_product_metric', 'code14',
                 array('defaultValue' => 0, 'numberMin' => -2, 'numberMax' => -1,
                     'decimalsAllowed' => true, 'negativeAllowed' => false,
                     'metricFamily' => 'temperature', 'defaultMetricUnit' => 'C'), 3),
-            array('oro_flexibleentity_file', 'code15',
+            array('pim_product_file', 'code15',
                 array('allowedFileSources' => 'other', 'maxFileSize' => -1, 'defaultValue' => 1), 3),
-            array('oro_flexibleentity_text', 'code16',
+            array('pim_product_text', 'code16',
                 array('defaultValue' => 'Test123', 'maxCharacters' => '',
                     'validationRule' => 'regexp', 'validationRegexp' => ''), 3),
-            array('oro_flexibleentity_text', 'code17',
+            array('pim_product_text', 'code17',
                 array('defaultValue' => 'Test123', 'maxCharacters' => 1,
                     'validationRule' => 'text', 'validationRegexp' => '/[^0-9]/'), 3),
-            array('oro_flexibleentity_text', 'code18',
+            array('pim_product_text', 'code18',
                 array('defaultValue' => '_', 'validationRule' => 'regexp',
                     'validationRegexp' => '#[[:alnum:]]#'), 1),
-            array('oro_flexibleentity_text', 'code19',
+            array('pim_product_text', 'code19',
                 array('defaultValue' => 'email', 'validationRule' => 'email'), 1),
-            array('oro_flexibleentity_text', 'code20',
+            array('pim_product_text', 'code20',
                 array('defaultValue' => 'www.test.com', 'validationRule' => 'url'), 1),
-            array('oro_flexibleentity_text', 'code21',
+            array('pim_product_text', 'code21',
                 array('validationRule' => 'text'), 1),
-            array('oro_flexibleentity_boolean', 'code22', array('defaultValue' => 5), 1),
-            array('oro_flexibleentity_metric', 'code23',
+            array('pim_product_boolean', 'code22', array('defaultValue' => 5), 1),
+            array('pim_product_metric', 'code23',
                 array('defaultValue' => 0.1, 'numberMin' => 0, 'numberMax' => 2,
                     'decimalsAllowed' => false, 'negativeAllowed' => false,
                     'metricFamily' => 'temperature', 'defaultMetricUnit' => 'C'), 1)

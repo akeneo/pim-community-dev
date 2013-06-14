@@ -39,7 +39,7 @@ class ValidMetricAttributeValidator extends ConstraintValidator
      */
     public function validate($entity, Constraint $constraint)
     {
-        if ($entity->getAttributeType() == 'oro_flexibleentity_metric') {
+        if ($entity->getAttributeType() == 'pim_product_metric') {
             $type = $entity->getMetricFamily();
             $unit = $entity->getDefaultMetricUnit();
 

@@ -126,10 +126,10 @@ class ProductAttributeValidator
             'pim_product_price_collection',
             'pim_product_multiselect',
             'pim_product_simpleselect',
-            'oro_flexibleentity_image',
-            'oro_flexibleentity_file',
-            'oro_flexibleentity_metric',
-            'oro_flexibleentity_boolean'
+            'pim_product_image',
+            'pim_product_file',
+            'pim_product_metric',
+            'pim_product_boolean'
         );
         if (in_array($productAttribute->getAttributeType(), $attributeType)
             && $productAttribute->getUnique() === true) {
@@ -199,30 +199,26 @@ class ProductAttributeValidator
         self::isDefaultValueValid($productAttribute, $context);
 
         switch($productAttribute->getAttributeType()) {
-            case 'oro_flexibleentity_date':
+            case 'pim_product_date':
                 self::isDateTypeValid($productAttribute, $context);
                 self::isDateMinValid($productAttribute, $context);
                 self::isDateMaxValid($productAttribute, $context);
                 break;
-            case 'oro_flexibleentity_integer':
-                self::isNumberMinValid($productAttribute, $context);
-                self::isNumberMaxValid($productAttribute, $context);
-                break;
             case 'pim_product_price_collection':
-            case 'oro_flexibleentity_number':
-            case 'oro_flexibleentity_metric':
+            case 'pim_product_number':
+            case 'pim_product_metric':
                 self::isNumberMinValid($productAttribute, $context);
                 self::isNumberMaxValid($productAttribute, $context);
                 break;
             case 'pim_product_textarea':
                 self::isMaxCharactersValid($productAttribute, $context);
                 break;
-            case 'oro_flexibleentity_file':
-            case 'oro_flexibleentity_image':
+            case 'pim_product_file':
+            case 'pim_product_image':
                 self::isAllowedFileSourcesValid($productAttribute, $context);
                 self::isMaxFileSizeValid($productAttribute, $context);
                 break;
-            case 'oro_flexibleentity_text':
+            case 'pim_product_text':
                 self::isMaxCharactersValid($productAttribute, $context);
                 self::isValidationRuleValid($productAttribute, $context);
                 break;
@@ -246,8 +242,8 @@ class ProductAttributeValidator
         $value = $productAttribute->getDefaultValue();
         if ($value !== null) {
             $exclusions = array(
-                'oro_flexibleentity_image',
-                'oro_flexibleentity_file'
+                'pim_product_image',
+                'pim_product_file'
             );
 
             if (in_array($productAttribute->getAttributeType(), $exclusions)) {
@@ -257,7 +253,7 @@ class ProductAttributeValidator
             }
 
             switch ($productAttribute->getAttributeType()) {
-                case 'oro_flexibleentity_date':
+                case 'pim_product_date':
                     if (!$value instanceof \Datetime) {
                         break;
                     }
@@ -273,21 +269,9 @@ class ProductAttributeValidator
                     }
 
                     return;
-                case 'oro_flexibleentity_integer':
-                    if ($productAttribute->getNegativeAllowed() === false && $value < 0) {
-                        break;
-                    }
-                    if ($productAttribute->getNumberMin() !== null && $value < $productAttribute->getNumberMin()) {
-                        break;
-                    }
-                    if ($productAttribute->getNumberMax() !== null && $value > $productAttribute->getNumberMax()) {
-                        break;
-                    }
-
-                    return;
                 case 'pim_product_price_collection':
-                case 'oro_flexibleentity_number':
-                case 'oro_flexibleentity_metric':
+                case 'pim_product_number':
+                case 'pim_product_metric':
                     if ($productAttribute->getNegativeAllowed() === false && $value < 0) {
                         break;
                     }
@@ -310,7 +294,7 @@ class ProductAttributeValidator
                     }
 
                     return;
-                case 'oro_flexibleentity_text':
+                case 'pim_product_text':
                     if ($productAttribute->getMaxCharacters() !== null) {
                         if (strlen($value) > $productAttribute->getMaxCharacters()) {
                             break;
@@ -338,7 +322,7 @@ class ProductAttributeValidator
                     }
 
                     return;
-                case 'oro_flexibleentity_boolean':
+                case 'pim_product_boolean':
                     if ($value !== (bool) $value) {
                         break;
                     }
