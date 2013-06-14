@@ -60,8 +60,11 @@ class CategoryFilter extends EntityFilter
                 $productIds[] = $resId['id'];
             }
 
+
             $fieldProduct = $this->createFieldExpression('id', $alias);
-            $expression = $this->getExpressionFactory()->notIn($fieldProduct, $productIds);
+            if (count($productIds) > 0) {
+                $expression = $this->getExpressionFactory()->notIn($fieldProduct, $productIds);
+            }
         } elseif ('CLASSIFIED' === $operator) {
             $expression = $this->getExpressionFactory()->eq(
                 $this->createFieldExpression('root', $newAlias),
