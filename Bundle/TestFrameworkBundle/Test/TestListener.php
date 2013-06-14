@@ -125,7 +125,7 @@ class TestListener implements \PHPUnit_Framework_TestListener
                     }
                 }
 
-                proc_terminate ($this->pid, SIGKILL);
+                proc_terminate ($this->pid);
                 $this->pid = null;
             }
         }

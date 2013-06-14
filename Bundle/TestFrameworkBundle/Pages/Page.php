@@ -18,7 +18,7 @@ class Page
     public function __construct($testCase, $redirect = true)
     {
         $this->test = $testCase;
-
+        $this->currentWindow()->size(array('width' => viewportWIDTH, 'height' => viewportHEIGHT));
         if (!is_null($this->redirectUrl) && $redirect) {
             $this->test->url($this->redirectUrl);
             $this->waitPageToLoad();
@@ -35,7 +35,7 @@ class Page
     {
         if (preg_match('/open(.*)/i', "{$name}", $result) > 0) {
             $class = __NAMESPACE__ . '\\Objects\\' . $result[1];
-            return new $class($this);
+            return new $class($this->test);
         }
 
         if (method_exists($this, $name)) {
