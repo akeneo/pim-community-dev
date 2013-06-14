@@ -32,8 +32,8 @@ class LocaleDatagridManager extends DatagridManager
         $fieldId->setName('id');
         $fieldId->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                'required'    => true,
+                'type'     => FieldDescriptionInterface::TYPE_INTEGER,
+                'required' => true,
             )
         );
 
@@ -54,7 +54,7 @@ class LocaleDatagridManager extends DatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translator->trans('Code'),
+                'label'       => $this->translate('Code'),
                 'field_name'  => 'code',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
@@ -70,7 +70,7 @@ class LocaleDatagridManager extends DatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translator->trans('Fallback'),
+                'label'       => $this->translate('Fallback'),
                 'field_name'  => 'fallback',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
@@ -86,7 +86,7 @@ class LocaleDatagridManager extends DatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
-                'label'       => $this->translator->trans('Activated'),
+                'label'       => $this->translate('Activated'),
                 'field_name'  => 'activated',
                 'filter_type' => FilterInterface::TYPE_BOOLEAN,
                 'required'    => false,
@@ -108,7 +108,7 @@ class LocaleDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'         => $this->translator->trans('Edit'),
+                'label'         => $this->translate('Edit'),
                 'icon'          => 'edit',
                 'link'          => 'edit_link',
                 'runOnRowClick' => true,
@@ -121,7 +121,7 @@ class LocaleDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'         => $this->translator->trans('Edit'),
+                'label'         => $this->translate('Edit'),
                 'icon'          => 'edit',
                 'link'          => 'edit_link',
                 'backUrl'       => true
@@ -133,7 +133,7 @@ class LocaleDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'root',
             'options'      => array(
-                'label' => $this->translator->trans('Disable'),
+                'label' => $this->translate('Disable'),
                 'icon'  => 'trash',
                 'link'  => 'disable_link'
             )

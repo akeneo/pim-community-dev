@@ -32,8 +32,8 @@ class ChannelDatagridManager extends DatagridManager
         $fieldId->setName('id');
         $fieldId->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                'required'    => true,
+                'type'     => FieldDescriptionInterface::TYPE_INTEGER,
+                'required' => true,
             )
         );
 
@@ -54,7 +54,7 @@ class ChannelDatagridManager extends DatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translator->trans('Code'),
+                'label'       => $this->translate('Code'),
                 'field_name'  => 'code',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
@@ -70,7 +70,7 @@ class ChannelDatagridManager extends DatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translator->trans('Name'),
+                'label'       => $this->translate('Name'),
                 'field_name'  => 'name',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
@@ -92,7 +92,7 @@ class ChannelDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'         => $this->translator->trans('Edit'),
+                'label'         => $this->translate('Edit'),
                 'icon'          => 'edit',
                 'link'          => 'edit_link',
                 'backUrl'       => true,
@@ -105,7 +105,7 @@ class ChannelDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => $this->translator->trans('Edit'),
+                'label'   => $this->translate('Edit'),
                 'icon'    => 'edit',
                 'link'    => 'edit_link',
                 'backUrl' => true
@@ -117,7 +117,7 @@ class ChannelDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'root',
             'options'      => array(
-                'label' => $this->translator->trans('Delete'),
+                'label' => $this->translate('Delete'),
                 'icon'  => 'trash',
                 'link'  => 'delete_link'
             )
