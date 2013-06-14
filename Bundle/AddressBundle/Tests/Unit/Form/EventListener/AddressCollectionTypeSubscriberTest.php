@@ -32,7 +32,7 @@ class AddressCollectionTypeSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function testPreSetNotEmpty()
     {
-        $addresses = $this->getMockBuilder('Doctrine\Common\Collections\ArrayCollection')
+        $addresses = $this->getMockBuilder('Doctrine\Common\Collections\Collection')
             ->disableOriginalConstructor()
             ->getMock();
         $addresses->expects($this->once())
@@ -45,7 +45,7 @@ class AddressCollectionTypeSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function testPreSetEmpty()
     {
-        $addresses = $this->getMockBuilder('Doctrine\Common\Collections\ArrayCollection')
+        $addresses = $this->getMockBuilder('Doctrine\Common\Collections\Collection')
             ->disableOriginalConstructor()
             ->getMock();
         $addresses->expects($this->once())
@@ -63,17 +63,17 @@ class AddressCollectionTypeSubscriberTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $addressEmpty->expects($this->once())
-            ->method('__toString')
-            ->will($this->returnValue(''));
+            ->method('isEmpty')
+            ->will($this->returnValue(true));
         $addressNotEmpty = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\TypedAddress')
             ->disableOriginalConstructor()
             ->getMock();
         $addressNotEmpty->expects($this->once())
-            ->method('__toString')
-            ->will($this->returnValue('123'));
+            ->method('isEmpty')
+            ->will($this->returnValue(false));
 
         $iterator = new \ArrayIterator(array($addressEmpty, $addressNotEmpty));
-        $addresses = $this->getMockBuilder('Doctrine\Common\Collections\ArrayCollection')
+        $addresses = $this->getMockBuilder('Doctrine\Common\Collections\Collection')
             ->disableOriginalConstructor()
             ->getMock();
         $addresses->expects($this->once())
@@ -150,7 +150,7 @@ class AddressCollectionTypeSubscriberTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($data));
         $event->expects($this->once())
             ->method('setData')
-            ->will($this->returnValue($expected));
+            ->with($expected);
         $this->subscriber->preBind($event);
     }
 
@@ -165,6 +165,13 @@ class AddressCollectionTypeSubscriberTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array('key' => 'value', 'test' => array(array(), array('k' => 'v'))), array('key' => 'value', 'test' => array(array('k' => 'v')))
+            ),
+            array(
+                array('key' => 'value', 'test' => array(array(array()), array('k' => 'v'))), array('key' => 'value', 'test' => array(array('k' => 'v')))
+            ),
+            array(
+                array('key' => 'value', 'test' => array(array(array('k2' => 'v')), array('k' => 'v'))),
+                array('key' => 'value', 'test' => array(array(array('k2' => 'v')), array('k' => 'v')))
             ),
         );
     }

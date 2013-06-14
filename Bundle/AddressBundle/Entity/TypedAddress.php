@@ -5,6 +5,7 @@ namespace Oro\Bundle\AddressBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 use JMS\Serializer\Annotation\Exclude;
+use Oro\Bundle\AddressBundle\Entity\AddressType;
 
 /**
  * Address
@@ -18,8 +19,8 @@ class TypedAddress extends AddressBase
     /**
      * @var integer
      *
-     * @ORM\Column(name="type", type="integer", nullable=true)
-     * @Soap\ComplexType("int", nillable=true)
+     * @ORM\ManyToOne(targetEntity="AddressType")
+     * @Soap\ComplexType("string", nillable=true)
      */
     protected $type;
 
@@ -32,7 +33,7 @@ class TypedAddress extends AddressBase
     protected $values;
 
     /**
-     * @param int $type
+     * @param AddressType $type
      * @return TypedAddress
      */
     public function setType($type)
@@ -43,7 +44,7 @@ class TypedAddress extends AddressBase
     }
 
     /**
-     * @return int
+     * @return AddressType
      */
     public function getType()
     {

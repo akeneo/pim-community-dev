@@ -7,7 +7,7 @@ use Oro\Bundle\AddressBundle\Entity\AddressBase;
 class AddressBaseTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @dataProvider provider
+     * @dataProvider propertiesDataProvider
      * @param string $property
      * @param mixed $value
      */
@@ -17,6 +17,31 @@ class AddressBaseTest extends \PHPUnit_Framework_TestCase
 
         call_user_func_array(array($obj, 'set' . ucfirst($property)), array($value));
         $this->assertEquals($value, call_user_func_array(array($obj, 'get' . ucfirst($property)), array()));
+    }
+
+    /**
+     * Data provider with entity properties
+     *
+     * @return array
+     */
+    public function propertiesDataProvider()
+    {
+        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')->disableOriginalConstructor()->getMock();
+        $regionMock = $this->getMock('Oro\Bundle\AddressBundle\Entity\Region');
+        return array(
+            array('id', 1),
+            array('lastName', 'last name'),
+            array('firstName', 'first_name'),
+            array('street', 'street'),
+            array('street2', 'street2'),
+            array('city', 'city'),
+            array('state', $regionMock),
+            array('stateText', 'test state'),
+            array('postalCode', '12345'),
+            array('country', $countryMock),
+            array('created', new \DateTime()),
+            array('updated', new \DateTime()),
+        );
     }
 
     public function testBeforeSave()
@@ -129,28 +154,30 @@ class AddressBaseTest extends \PHPUnit_Framework_TestCase
         $obj->isStateValid($context);
     }
 
-    /**
-     * Data provider
-     *
-     * @return array
-     */
-    public function provider()
+    public function testIsEmpty()
     {
-        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')->disableOriginalConstructor()->getMock();
-        $regionMock = $this->getMock('Oro\Bundle\AddressBundle\Entity\Region');
-        return array(
-            array('id', 1),
-            array('lastName', 'last name'),
-            array('firstName', 'first_name'),
-            array('street', 'street'),
-            array('street2', 'street2'),
-            array('city', 'city'),
-            array('state', $regionMock),
-            array('stateText', 'test state'),
-            array('postalCode', '12345'),
-            array('country', $countryMock),
-            array('created', new \DateTime()),
-            array('updated', new \DateTime()),
-        );
+        $obj = new AddressBase();
+        $this->assertTrue($obj->isEmpty());
+    }
+
+    /**
+     * @dataProvider propertiesDataProvider
+     * @param string $property
+     * @param mixed $value
+    */
+    public function testIsNotEmpty($property, $value)
+    {
+        $obj = new AddressBase();
+        call_user_func_array(array($obj, 'set' . ucfirst($property)), array($value));
+        $this->assertFalse($obj->isEmpty());
+    }
+
+    public function testIsNotEmptyFlexible()
+    {
+        $value = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue');
+
+        $obj = new AddressBase();
+        $obj->addValue($value);
+        $this->assertFalse($obj->isEmpty());
     }
 }

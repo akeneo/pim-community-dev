@@ -8,10 +8,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class AddressTypedType extends AddressType
 {
-    const TYPE_SHIPPING = 1;
-    const TYPE_BILLING = 2;
-    const TYPE_OTHER = 3;
-
     /**
      * {@inheritdoc}
      */
@@ -19,23 +15,15 @@ class AddressTypedType extends AddressType
     {
         $builder->add(
             'type',
-            'choice',
+            'entity',
             array(
-                'choices' => $this->getChoices(),
+                'class' => 'OroAddressBundle:AddressType',
+                'property' => 'type',
                 'required' => false,
-                'empty_value' => 'Choose type...',
+                'empty_value' => 'Choose type...'
             )
         );
         parent::addEntityFields($builder);
-    }
-
-    protected function getChoices()
-    {
-        return array(
-            self::TYPE_SHIPPING => 'Shipping address',
-            self::TYPE_BILLING => 'Billing address',
-            self::TYPE_OTHER => 'Other'
-        );
     }
 
     /**

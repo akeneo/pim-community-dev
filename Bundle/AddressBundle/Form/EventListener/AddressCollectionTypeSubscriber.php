@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\AddressBundle\Form\EventListener;
 
+use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\AddressBundle\Entity\TypedAddress;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class AddressCollectionTypeSubscriber implements EventSubscriberInterface
@@ -46,7 +46,7 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
 
         $method = $this->getMethodName();
         if ($data && method_exists($data, $method)) {
-            /** @var ArrayCollection $addresses */
+            /** @var Collection $addresses */
             $addresses = $data->$method();
             if ($addresses->isEmpty()) {
                 $addresses->add(new TypedAddress());
@@ -65,11 +65,11 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
 
         $method = $this->getMethodName();
         if ($data && method_exists($data, $method)) {
-            /** @var ArrayCollection $addresses */
+            /** @var Collection $addresses */
             $addresses = $data->$method();
+            /** @var TypedAddress $item */
             foreach ($addresses as $item) {
-                $str = (string)$item;
-                if (empty($str)) {
+                if ($item->isEmpty()) {
                     $addresses->removeElement($item);
                 }
             }
@@ -91,8 +91,7 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
         $addresses = array();
         if ($data && array_key_exists($this->property, $data)) {
             foreach ($data[$this->property] as $addressRow) {
-                $str = implode('', $addressRow);
-                if (!empty($str)) {
+                if (!$this->isArrayEmpty($addressRow)) {
                     $addresses[] = $addressRow;
                 }
             }
@@ -104,6 +103,26 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
             unset($data[$this->property]);
         }
         $event->setData($data);
+    }
+
+    /**
+     * Check if array is empty
+     *
+     * @param array $array
+     * @return bool
+     */
+    protected function isArrayEmpty($array)
+    {
+        foreach ($array as $val) {
+            if (is_array($val)) {
+                if (!$this->isArrayEmpty($val)) {
+                    return false;
+                }
+            } elseif (!empty($val)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\AddressBundle\Tests\Unit\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 use Oro\Bundle\AddressBundle\Form\Type\AddressTypedType;
 
 class AddressTypedTypeTest extends \PHPUnit_Framework_TestCase
@@ -44,12 +42,8 @@ class AddressTypedTypeTest extends \PHPUnit_Framework_TestCase
             ->method('add')
             ->with(
                 'type',
-                'choice',
-                array(
-                    'choices' => array(1 => 'Shipping address', 2 => 'Billing address', 3 => 'Other'),
-                    'required' => false,
-                    'empty_value' => 'Choose type...'
-                )
+                'entity',
+                $this->isType('array')
             );
         $this->type->addEntityFields($builder);
     }
