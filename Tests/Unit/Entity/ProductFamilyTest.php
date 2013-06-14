@@ -127,7 +127,7 @@ class ProductFamilyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array($name, $address), $family->getAttributeAsLabelChoices());
     }
 
-    private function getAttributeMock($type = 'oro_flexibleentity_text')
+    private function getAttributeMock($type = 'pim_product_text')
     {
         $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute', array('getAttributeType'));
 

@@ -290,7 +290,7 @@ class ProductFamily implements Translatable
     {
         return $this->attributes->filter(
             function ($attribute) {
-                return 'oro_flexibleentity_text' === $attribute->getAttributeType();
+                return 'pim_product_text' === $attribute->getAttributeType();
             }
         )->toArray();
     }
