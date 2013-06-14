@@ -4,6 +4,13 @@ namespace Oro\Bundle\ImportExportBundle\ItemConverter;
 
 abstract class AbstractItemConverter implements ItemConverterInterface
 {
+    const HEADER_TEMPLATE = '%property%_%index%_%parameter%';
+
+    /**
+     * @var int
+     */
+    protected $index;
+
     /**
      * @param string $property
      * @param array $input
@@ -15,7 +22,24 @@ abstract class AbstractItemConverter implements ItemConverterInterface
             return $input;
         }
 
+        $this->index = 0;
+
         return $this->processConversion($property, $input);
+    }
+
+    /**
+     * @param string $property
+     * @param string $parameter
+     * @param int $index
+     * @return string
+     */
+    protected function getHeaderText($property, $parameter, $index)
+    {
+        return str_replace(
+            array('%property%', '%parameter%', '%index%'),
+            array($property, $parameter, $index),
+            self::HEADER_TEMPLATE
+        );
     }
 
     /**
