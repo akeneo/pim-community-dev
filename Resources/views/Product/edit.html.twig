@@ -213,6 +213,10 @@
 
     <script type="text/javascript">
     $(function() {
+        var activeTab = $('[href=' + location.hash + ']');
+        activeTab && activeTab.tab('show');
+
+
         var updated = false;
 
         $('#updated').css('display', 'none');
