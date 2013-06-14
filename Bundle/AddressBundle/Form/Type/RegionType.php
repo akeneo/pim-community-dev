@@ -53,7 +53,7 @@ class RegionType extends AbstractType
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['country_field'] = $form->getAttribute(self::COUNTRY_OPTION_KEY);
+        $view->vars['country_field'] = $form->getConfig()->getAttribute(self::COUNTRY_OPTION_KEY);
     }
 
     /**

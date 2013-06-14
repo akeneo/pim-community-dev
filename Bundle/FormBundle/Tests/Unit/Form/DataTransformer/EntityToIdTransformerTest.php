@@ -175,7 +175,7 @@ class EntityToIdTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Form\Exception\FormException
+     * @expectedException Oro\Bundle\FormBundle\Form\Exception\FormException
      * @expectedExceptionMessage Cannot get id property path of entity. "TestClass" has composite primary key.
      */
     public function testPropertyConstructionException()

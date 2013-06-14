@@ -59,13 +59,18 @@ class RegionTypeTest extends \PHPUnit_Framework_TestCase
     public function testFinishView()
     {
         $formViewMock = $this->getMock('Symfony\Component\Form\FormView');
+        $formConfigMock = $this->getMock('Symfony\Component\Form\FormConfigInterface');
+        $formConfigMock->expects($this->once())
+            ->method('getAttribute')
+            ->with($this->equalTo(RegionType::COUNTRY_OPTION_KEY))
+            ->will($this->returnValue(''));
+
         $formMock = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
         $formMock->expects($this->once())
-            ->method('getAttribute')
-            ->with($this->equalTo(RegionType::COUNTRY_OPTION_KEY))
-            ->will($this->returnValue(''));
+            ->method('getConfig')
+            ->will($this->returnValue($formConfigMock));
 
         $this->type->finishView($formViewMock, $formMock, array());
     }

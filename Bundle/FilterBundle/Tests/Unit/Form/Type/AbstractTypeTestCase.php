@@ -122,7 +122,7 @@ abstract class AbstractTypeTestCase extends FormIntegrationTestCase
     ) {
         $form = $this->factory->create($this->getTestFormType(), null, $customOptions);
 
-        $form->bind($bindData);
+        $form->submit($bindData);
 
         $this->assertTrue($form->isSynchronized());
         $this->assertEquals($formData, $form->getData());

@@ -1,7 +1,7 @@
 <?php
 namespace Oro\Bundle\SearchBundle\Engine;
 
-use Symfony\Component\Form\Util\PropertyPath;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
@@ -175,9 +175,8 @@ class ObjectMapper
      */
     public function getFieldValue($objectOrArray, $fieldName)
     {
-        $propertyPath = new PropertyPath($fieldName);
-
-        return $propertyPath->getValue($objectOrArray);
+        $propertyAccessor = PropertyAccess::getPropertyAccessor();
+        return $propertyAccessor->getValue($objectOrArray, $fieldName);
     }
 
     /**
