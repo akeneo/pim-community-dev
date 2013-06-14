@@ -57,7 +57,7 @@ $(tree_id).jstree({
         }
     })
     .bind('after_tree_loaded.jstree', function (root_node_id) {
-        $(tree_id).jstree('create', null, "last", { 
+        $(tree_id).jstree('create', root_node_id, "last", { 
             "attr": { "class": "jstree-unclassified", "id": "node_0" },
             "data" : { "title": unclassifiedNodeTitle }
         }, false, true);
