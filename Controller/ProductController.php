@@ -147,13 +147,12 @@ class ProductController extends Controller
 
             if ($form->isValid()) {
                 $categoriesData = $this->getCategoriesData($request->request->all());
-                print_r($categoriesData);
                 $categories = $this->getCategoryManager()->getCategoriesByIds($categoriesData['categories']);
 
                 $this->getProductManager()->save($product, $categories, $categoriesData['trees']);
 
                 $this->addFlash('success', 'Product successfully saved');
-                
+
                 return $this->redirect(
                     $this->generateUrl(
                         'pim_product_product_edit',
@@ -198,7 +197,7 @@ class ProductController extends Controller
         foreach ($requestParameters as $key => $value) {
             if ($value === "1") {
                 if (strpos($key, static::CATEGORY_PREFIX) === 0) {
-                    
+
                     $catId = (int) str_replace(static::CATEGORY_PREFIX, '', $key);
                     if ($catId > 0) {
                         $categories[] = $catId;
@@ -367,7 +366,7 @@ class ProductController extends Controller
     {
         return $this->container->get('pim_product.category_manager');
     }
- 
+
 
     /**
      * Get locale manager
