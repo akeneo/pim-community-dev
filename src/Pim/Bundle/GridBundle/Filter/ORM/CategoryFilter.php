@@ -38,7 +38,7 @@ class CategoryFilter extends EntityFilter
         if ('IN' === $operator) {
             $expression = $this->getExpressionFactory()->in(
                 $this->createFieldExpression($this->getOption('mapped_property'), $newAlias),
-                $data['value']
+                $data['value'][0]
             );
         } elseif ('UNCLASSIFIED' === $operator) {
             // FIXME : Waiting for doctrine 2 fix -> http://www.doctrine-project.org/jira/browse/DDC-1858
@@ -60,7 +60,6 @@ class CategoryFilter extends EntityFilter
                 $productIds[] = $resId['id'];
             }
 
-
             $fieldProduct = $this->createFieldExpression('id', $alias);
             if (count($productIds) > 0) {
                 $expression = $this->getExpressionFactory()->notIn($fieldProduct, $productIds);
@@ -70,14 +69,18 @@ class CategoryFilter extends EntityFilter
                 $this->createFieldExpression('root', $newAlias),
                 $data['value'][0]
             );
+
+            $this->applyFilterToClause($proxyQuery, $expression);
         } else {
             $expression = $this->getExpressionFactory()->notIn(
                 $this->createFieldExpression($this->getOption('mapped_property'), $newAlias),
-                $data['value']
+                $data['value'][0]
             );
         }
 
-        $this->applyFilterToClause($proxyQuery, $expression);
+        if (isset($expression)) {
+            $this->applyFilterToClause($proxyQuery, $expression);
+        }
     }
 
     /**
