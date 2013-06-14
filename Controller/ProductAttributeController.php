@@ -78,10 +78,7 @@ class ProductAttributeController extends Controller
             $view = 'PimProductBundle:ProductAttribute:index.html.twig';
         }
 
-        return $this->render($view, array(
-            'datagrid' => $datagrid->createView(),
-            'groups' => $attributeGroups
-        ));
+        return $this->render($view, array('datagrid' => $datagrid->createView(), 'groups' => $attributeGroups));
     }
 
     /**

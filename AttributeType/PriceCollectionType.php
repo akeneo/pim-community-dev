@@ -55,6 +55,9 @@ class PriceCollectionType extends AbstractAttributeType
         return $options;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function prepareValueFormConstraints(FlexibleValueInterface $value)
     {
         if ($this->constraintGuesser->supportAttribute($attribute = $value->getAttribute())) {

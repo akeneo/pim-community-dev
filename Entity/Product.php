@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity;
 
+use JMS\Serializer\Handler\ArrayCollectionHandler;
+
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\ExecutionContext;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -209,6 +211,11 @@ class Product extends AbstractEntityFlexible
         );
     }
 
+    /**
+     * Get values
+     *
+     * @return ArrayCollection
+     */
     public function getValues()
     {
         $_values = new ArrayCollection();
@@ -292,6 +299,10 @@ class Product extends AbstractEntityFlexible
     }
 
     /**
+     * Get product label
+     *
+     * @param string $locale
+     *
      * @return \Oro\Bundle\FlexibleEntityBundle\Model\mixed|string
      */
     public function getLabel($locale = null)

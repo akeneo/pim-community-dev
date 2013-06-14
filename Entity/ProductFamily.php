@@ -206,7 +206,7 @@ class ProductFamily implements Translatable
     /**
      * Get the label
      *
-     * return string
+     * @return string
      */
     public function getLabel()
     {
@@ -288,8 +288,10 @@ class ProductFamily implements Translatable
      */
     public function getAttributeAsLabelChoices()
     {
-        return $this->attributes->filter(function ($attribute) {
-            return 'oro_flexibleentity_text' === $attribute->getAttributeType();
-        })->toArray();
+        return $this->attributes->filter(
+            function ($attribute) {
+                return 'oro_flexibleentity_text' === $attribute->getAttributeType();
+            }
+        )->toArray();
     }
 }

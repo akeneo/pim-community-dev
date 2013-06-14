@@ -15,7 +15,7 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 class NumberType extends OroNumberType
 {
-   /**
+    /**
      * {@inheritdoc}
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)

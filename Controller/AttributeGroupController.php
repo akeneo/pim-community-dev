@@ -157,7 +157,8 @@ class AttributeGroupController extends Controller
         $availableAttributes = new AvailableProductAttributes;
 
         $attributesForm      = $this->getAvailableProductAttributesForm(
-            $this->getGroupedAttributes(), $availableAttributes
+            $this->getGroupedAttributes(),
+            $availableAttributes
         );
 
         $attributesForm->bind($this->getRequest());
@@ -172,8 +173,14 @@ class AttributeGroupController extends Controller
     }
 
     /**
+     * Remove a product attribute
+     *
+     * @param integer $groupId
+     * @param integer $attributeId
+     *
      * @Route("/{groupId}/attribute/{attributeId}")
      * @Method("DELETE")
+     *
      */
     public function removeProductAttribute($groupId, $attributeId)
     {
@@ -181,10 +188,9 @@ class AttributeGroupController extends Controller
         $attribute = $this->findAttributeOr404($attributeId);
 
         if (false === $group->hasAttribute($attribute)) {
-            throw $this->createNotFoundException(sprintf(
-                'Attribute "%s" is not attached to "%s"',
-                $attribute, $group
-            ));
+            throw $this->createNotFoundException(
+                sprintf('Attribute "%s" is not attached to "%s"', $attribute, $group)
+            );
         }
 
         $group->removeAttribute($attribute);
@@ -195,34 +201,49 @@ class AttributeGroupController extends Controller
         return $this->redirectToAttributeGroupAttributesTab($group->getId());
     }
 
+    /**
+     * Redirect to attribute tab
+     *
+     * @param integer $id
+     */
     protected function redirectToAttributeGroupAttributesTab($id)
     {
-        return $this->redirect(sprintf('%s#attributes', $this->generateUrl(
-            'pim_product_attributegroup_edit', array('id' => $id)
-        )));
+        $url = $this->generateUrl('pim_product_attributegroup_edit', array('id' => $id));
+
+        return $this->redirect(sprintf('%s#attributes', $url));
     }
 
+    /**
+     * Find the group
+     *
+     * @param integer $id
+     *
+     * @return Group
+     */
     protected function findGroupOr404($id)
     {
         $group = $this->getAttributeGroupRepository()->findOne($id);
         if (!$group) {
-            throw $this->createNotFoundException(sprintf(
-                'Couldn\'t find an attribute group with id %d', $id
-            ));
+            throw $this->createNotFoundException(
+                sprintf('Couldn\'t find an attribute group with id %d', $id)
+            );
         }
 
         return $group;
     }
 
+    /**
+     * Find the attribute
+     *
+     * @param integer $id
+     *
+     * @return Attribute
+     */
     protected function findAttributeOr404($id)
     {
-        $attribute = $this->getProductAttributeRepository()->findOneBy(array(
-            'id' => $id
-        ));
+        $attribute = $this->getProductAttributeRepository()->findOneBy(array('id' => $id));
         if (!$attribute) {
-            throw $this->createNotFoundException(sprintf(
-                'Couldn\'t find an attribute group with id %d', $id
-            ));
+            throw $this->createNotFoundException(sprintf('Couldn\'t find an attribute group with id %d', $id));
         }
 
         return $attribute;
