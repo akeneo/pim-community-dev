@@ -33,19 +33,25 @@ class UrlProperty extends AbstractProperty
     protected $isAbsolute;
 
     /**
+     * @var string
+     */
+    protected $anchor;
+
+    /**
      * @param string $name
      * @param Router $router
      * @param string $routeName
      * @param array $placeholders
      * @param bool $isAbsolute
      */
-    public function __construct($name, Router $router, $routeName, array $placeholders = array(), $isAbsolute = false)
+    public function __construct($name, Router $router, $routeName, array $placeholders = array(), $isAbsolute = false, $anchor = null)
     {
         $this->name = $name;
         $this->router = $router;
         $this->routeName = $routeName;
         $this->placeholders = $placeholders;
         $this->isAbsolute = $isAbsolute;
+        $this->anchor = $anchor;
     }
 
     /**
@@ -53,7 +59,8 @@ class UrlProperty extends AbstractProperty
      */
     public function getValue(ResultRecordInterface $record)
     {
-        return $this->router->generate($this->routeName, $this->getParameters($record), $this->isAbsolute);
+        $route  = $this->router->generate($this->routeName, $this->getParameters($record), $this->isAbsolute);
+        return $route . $this->anchor;
     }
 
     /**
