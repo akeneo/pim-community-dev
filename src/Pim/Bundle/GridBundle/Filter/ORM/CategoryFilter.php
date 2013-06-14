@@ -44,7 +44,7 @@ class CategoryFilter extends EntityFilter
             // FIXME : Waiting for doctrine 2 fix -> http://www.doctrine-project.org/jira/browse/DDC-1858
             // For now we use a non-performing but working query
 
-            // create subrequest with classified node
+            // create sub-query with classified node
             $fieldRoot = $this->createFieldExpression('root', 'c');
             $exprAnd = $this->getExpressionFactory()->eq($fieldRoot, $data['value'][0]);
             $qb = clone $proxyQuery->getQueryBuilder();
