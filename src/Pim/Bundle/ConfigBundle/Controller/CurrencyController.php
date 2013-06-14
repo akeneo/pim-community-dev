@@ -57,7 +57,11 @@ class CurrencyController extends Controller
     }
 
     /**
+     * @param Currency $currency
+     *
      * @Route("/{id}/toggle", requirements={"id"="\d+"})
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function toggleAction(Currency $currency)
     {

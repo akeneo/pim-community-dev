@@ -40,10 +40,6 @@ class LocaleTypeTest extends TypeTestCase
 
         // initialize locale configuration
         $config = $this->initializeConfiguration();
-
-        // Create form type
-//         $this->type = new LocaleType($config);
-//         $this->form = $this->factory->create($this->type);
     }
 
     /**
@@ -62,38 +58,6 @@ class LocaleTypeTest extends TypeTestCase
     }
 
     /**
-     * Test build of form with form type
-     */
-    public function testFormCreate()
-    {
-        // Assert fields
-//         $this->assertField('id', 'hidden');
-//         $this->assertField('code', 'locale');
-//         $this->assertField('activated', 'hidden');
-
-//         // Assert option class
-//         $this->assertEquals(
-//             'Pim\Bundle\ConfigBundle\Entity\Locale',
-//             $this->form->getConfig()->getDataClass()
-//         );
-
-//         // Assert name
-//         $this->assertEquals('pim_config_locale', $this->form->getName());
-    }
-
-    /**
-     * Assert field name and type
-     * @param string $name Field name
-     * @param string $type Field type alias
-     */
-    protected function assertField($name, $type)
-    {
-//         $formType = $this->form->get($name);
-//         $this->assertInstanceOf('\Symfony\Component\Form\Form', $formType);
-//         $this->assertEquals($type, $formType->getConfig()->getType()->getInnerType()->getName());
-    }
-
-    /**
      * Data provider for success validation of form
      * @return multitype:multitype:multitype:mixed
      *
@@ -105,30 +69,5 @@ class LocaleTypeTest extends TypeTestCase
             array(array('id' => 5, 'code' => 'en_US', 'fallback' => 'en', 'activated' => true)),
             array(array('id' => null, 'code' => 'fr_CH', 'fallback' => 'fr', 'activated' => true))
         );
-    }
-
-    /**
-     * Test bind data
-     * @param array $formData
-     *
-     * @dataProvider successProvider
-     */
-    public function testBindValidData($formData)
-    {
-        // create tested object
-//         $object = new ObjectTestEntity('\Pim\Bundle\ConfigBundle\Entity\Locale', $formData);
-
-//         // bind data and assert data transformer
-//         $this->form->bind($formData);
-//         $this->assertTrue($this->form->isSynchronized());
-//         $this->assertEquals($object->getTestedEntity(), $this->form->getData());
-
-//         // assert view renderer
-//         $view = $this->form->createView();
-//         $children = $view->getChildren();
-
-//         foreach (array_keys($formData) as $key) {
-//             $this->assertArrayHasKey($key, $children);
-//         }
     }
 }

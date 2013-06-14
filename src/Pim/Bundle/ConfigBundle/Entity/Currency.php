@@ -127,6 +127,9 @@ class Currency
         return $this->activated;
     }
 
+    /**
+     * Toggle activation
+     */
     public function toggleActivation()
     {
         $this->activated = !$this->activated;
