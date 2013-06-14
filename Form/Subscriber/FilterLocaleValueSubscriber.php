@@ -7,6 +7,8 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 
 /**
+ * Filter locale value subscriber
+ *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -15,11 +17,17 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
 {
     protected $currentLocale;
 
+    /**
+     * @param string $currentLocale
+     */
     public function __construct($currentLocale)
     {
         $this->currentLocale = $currentLocale;
     }
 
+    /**
+     * @return multitype:string
+     */
     public static function getSubscribedEvents()
     {
         return array(
@@ -27,6 +35,9 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
         );
     }
 
+    /**
+     * @param FormEvent $event
+     */
     public function preSetData(FormEvent $event)
     {
         $data = $event->getData();
@@ -45,11 +56,21 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
         }
     }
 
+    /**
+     * @param Attribute $attribute
+     *
+     * @return boolean
+     */
     private function isTranslatable($attribute)
     {
         return $attribute && $attribute->getTranslatable();
     }
 
+    /**
+     * @param Value $value
+     *
+     * @return boolean
+     */
     private function isInCurrentLocale($value)
     {
         return $value->getLocale() && $value->getLocale() === $this->currentLocale;

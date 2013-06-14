@@ -55,6 +55,7 @@ class ProductType extends FlexibleType
      * Add entity fieldsto form builder
      *
      * @param FormBuilderInterface $builder
+     * @param array                $options
      */
     public function addDynamicAttributesFields(FormBuilderInterface $builder, array $options)
     {
@@ -72,11 +73,12 @@ class ProductType extends FlexibleType
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'currentLocale' => null
-        ));
+        $resolver->setDefaults(array('currentLocale' => null));
     }
 
     /**

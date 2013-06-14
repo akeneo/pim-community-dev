@@ -72,7 +72,7 @@ class ProductFamilyController extends Controller
     /**
      * Edit product family
      *
-     * @param ProductFamily $family
+     * @param integer $id
      *
      * @Route(
      *     "/edit/{id}",
@@ -148,7 +148,8 @@ class ProductFamilyController extends Controller
         $family              = $this->findFamilyOr404($id);
         $availableAttributes = new AvailableProductAttributes;
         $attributesForm      = $this->getAvailableProductAttributesForm(
-            $family->getAttributes()->toArray(), $availableAttributes
+            $family->getAttributes()->toArray(),
+            $availableAttributes
         );
 
         $attributesForm->bind($this->getRequest());
@@ -163,6 +164,11 @@ class ProductFamilyController extends Controller
     }
 
     /**
+     * Remove product attribute
+     *
+     * @param integer $familyId
+     * @param integer $attributeId
+     *
      * @Route("/{familyId}/attribute/{attributeId}")
      * @Method("DELETE")
      */
@@ -172,10 +178,7 @@ class ProductFamilyController extends Controller
         $attribute = $this->findAttributeOr404($attributeId);
 
         if (false === $family->hasAttribute($attribute)) {
-            throw $this->createNotFoundException(sprintf(
-                'Attribute "%s" is not attached to "%s"',
-                $attribute, $family
-            ));
+            throw $this->createNotFoundException(sprintf('Attribute "%s" is not attached to "%s"', $attribute, $family));
         }
 
         if ($attribute === $family->getAttributeAsLabel()) {
@@ -192,34 +195,47 @@ class ProductFamilyController extends Controller
         return $this->redirectToProductFamilyAttributesTab($family->getId());
     }
 
+    /**
+     * Return to attributes tab
+     *
+     * @param integer $id
+     */
     protected function redirectToProductFamilyAttributesTab($id)
     {
-        return $this->redirect(sprintf('%s#attributes', $this->generateUrl(
-            'pim_product_productfamily_edit', array('id' => $id)
-        )));
+        $url = $this->generateUrl('pim_product_productfamily_edit', array('id' => $id));
+
+        return $this->redirect(sprintf('%s#attributes', $url));
     }
 
+    /**
+     * Find family
+     *
+     * @param integer $id
+     *
+     * @return Family
+     */
     protected function findFamilyOr404($id)
     {
         $family = $this->getProductFamilyRepository()->findOneWithAttributes($id);
         if (!$family) {
-            throw $this->createNotFoundException(sprintf(
-                'Couldn\'t find a product family with id %d', $id
-            ));
+            throw $this->createNotFoundException(sprintf('Couldn\'t find a product family with id %d', $id));
         }
 
         return $family;
     }
 
+    /**
+     * Find attribute
+     *
+     * @param integer $id
+     *
+     * @return Attribute
+     */
     protected function findAttributeOr404($id)
     {
-        $attribute = $this->getProductAttributeRepository()->findOneBy(array(
-            'id' => $id
-        ));
+        $attribute = $this->getProductAttributeRepository()->findOneBy(array('id' => $id));
         if (!$attribute) {
-            throw $this->createNotFoundException(sprintf(
-                'Couldn\'t find a product family with id %d', $id
-            ));
+            throw $this->createNotFoundException(sprintf('Couldn\'t find a product family with id %d', $id));
         }
 
         return $attribute;
