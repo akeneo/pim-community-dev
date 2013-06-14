@@ -52,7 +52,9 @@ class ProductManager extends FlexibleManager
     {
         $this->handleMedia($product);
 
-        $this->setCategories($product, $categories, $onlyTree);
+        if ($categories != null) {
+            $this->setCategories($product, $categories, $onlyTree);
+        }
 
         $this->storageManager->persist($product);
         $this->storageManager->flush();
@@ -259,7 +261,7 @@ class ProductManager extends FlexibleManager
      * @param ArrayCollection $categories
      * @param array           $onlyTrees
      */
-    public function setCategories(Product $product, ArrayCollection $categories, array $onlyTrees = null)
+    public function setCategories(Product $product, ArrayCollection $categories = null, array $onlyTrees = null)
     {
         // Remove current categories
         $currentCategories = $product->getCategories();
