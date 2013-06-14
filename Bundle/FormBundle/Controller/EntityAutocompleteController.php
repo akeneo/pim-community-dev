@@ -3,18 +3,14 @@
 namespace Oro\Bundle\FormBundle\Controller;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
-
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-use Oro\Bundle\FormBundle\EntityAutocomplete\Transformer\EntityPropertiesTransformer;
-use Oro\Bundle\FormBundle\EntityAutocomplete\Property;
-use Oro\Bundle\FormBundle\EntityAutocomplete\SearchFactoryInterface;
-use Oro\Bundle\FormBundle\EntityAutocomplete\Configuration;
+use Oro\Bundle\FormBundle\EntityAutocomplete\SearchHandlerInterface;
 use Oro\Bundle\UserBundle\Acl\Manager;
 
 /**
@@ -44,69 +40,8 @@ class EntityAutocompleteController extends Controller
             throw new HttpException(400, 'Parameter "per_page" must be greater than 0');
         }
 
-        $options = $this->getConfiguration()->getAutocompleteOptions($name);
-        $searchHandler = $this->getSearchFactory()->create($options);
+        $searchHandler = $this->get('oro_form.autocomplete.search_registry')->getSearchHandler($name);
 
-        if (isset($options['acl_resource']) && !$this->getAclManager()->isResourceGranted($options['acl_resource'])) {
-            throw new AccessDeniedException('Access denied.');
-        }
-
-        $perPage = $perPage + 1;
-        $results = $searchHandler->search($query, ($page - 1) * $perPage, $perPage);
-        $hasMore = count($results) == $perPage;
-        if ($hasMore) {
-            $results = array_slice($results, 0, $perPage - 1);
-        }
-
-        return $this->render(
-            $options['view'],
-            array(
-                'results' => $this->transformEntities($results, $options['properties']),
-                'options' => $options,
-                'query' => $query,
-                'page' => $page,
-                'perPage' => $perPage - 1,
-                'hasMore' => $hasMore,
-            )
-        );
-    }
-
-    /**
-     * @param array $entities
-     * @param Property[] $properties
-     * @return array
-     */
-    protected function transformEntities(array $entities, array $properties)
-    {
-        $result = array();
-        $transformer = new EntityPropertiesTransformer($properties);
-        foreach ($entities as $entity) {
-            $result[] = $transformer->transform($entity);
-        }
-        return $result;
-    }
-
-    /**
-     * @return SearchFactoryInterface
-     */
-    protected function getSearchFactory()
-    {
-        return $this->get('oro_form.autocomplete.search_factory');
-    }
-
-    /**
-     * @return Configuration
-     */
-    protected function getConfiguration()
-    {
-        return $this->get('oro_form.autocomplete.configuration');
-    }
-
-    /**
-     * @return Manager
-     */
-    public function getAclManager()
-    {
-        return $this->container->get('oro_user.acl_manager');
+        return new JsonResponse($searchHandler->search($query, $page, $perPage));
     }
 }

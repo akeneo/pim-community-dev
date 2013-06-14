@@ -73,7 +73,7 @@ class EntityToIdTransformer implements DataTransformerInterface
             return $meta->getSingleIdentifierFieldName();
         } catch (MappingException $e) {
             throw new FormException(
-                "Cannot get id property path of entity. \"$this->className\" has composite primary key."
+                "Cannot get id property path of entity. \"$className\" has composite primary key."
             );
         }
     }

@@ -5,12 +5,19 @@ namespace Oro\Bundle\FormBundle\EntityAutocomplete;
 interface SearchHandlerInterface
 {
     /**
-     * Search and return results using search string ($search), page number ($page) and page size ($perPage).
+     * Gets search results, that includes found items and any additional information.
      *
-     * @param string $search
-     * @param int $firstResult
-     * @param int $maxResults
+     * @param string $query
+     * @param int $page
+     * @param int $perPage
      * @return array
      */
-    public function search($search, $firstResult, $maxResults);
+    public function search($query, $page, $perPage);
+
+    /**
+     * Gets entity name that is handled by search
+     *
+     * @return mixed
+     */
+    public function getEntityName();
 }

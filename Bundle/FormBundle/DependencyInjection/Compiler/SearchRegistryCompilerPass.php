@@ -7,19 +7,19 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
-class SearchFactoryCompilerPass implements CompilerPassInterface
+class SearchRegistryCompilerPass implements CompilerPassInterface
 {
     /**
      * @param ContainerBuilder $container
      */
     public function process(ContainerBuilder $container)
     {
-        $definition = $container->getDefinition('oro_form.autocomplete.search_factory');
+        $definition = $container->getDefinition('oro_form.autocomplete.search_registry');
 
-        foreach ($container->findTaggedServiceIds('oro_form.autocomplete.search_factory') as $id => $attributes) {
+        foreach ($container->findTaggedServiceIds('oro_form.autocomplete.search_handler') as $id => $attributes) {
             foreach ($attributes as $eachTag) {
                 $name = !empty($eachTag['alias']) ? $eachTag['alias'] : $id;
-                $definition->addMethodCall('addSearchFactory', array($name, new Reference(new Reference($id))));
+                $definition->addMethodCall('addSearchHandler', array($name, new Reference($id)));
             }
         }
     }
