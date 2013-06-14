@@ -2,6 +2,9 @@
 namespace Pim\Bundle\ProductBundle\Entity\Repository;
 
 use Pim\Bundle\ProductBundle\Entity\Category;
+use Pim\Bundle\ProductBundle\Entity\Product;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\SegmentationTreeBundle\Entity\Repository\SegmentRepository;
 
@@ -72,5 +75,100 @@ class CategoryRepository extends SegmentRepository
            ->setParameter('nodeId', $category->getId());
 
         return $qb;
+    }
+
+    /**
+     * Return the number of times the product is present in each tree
+     *
+     * @param Product $product The product to look for in the trees
+     *
+     * @return array Each row of the array has the format:'tree'=>treeObject, 'productsCount'=>integer
+     */
+    public function getProductsCountByTree(Product $product)
+    {
+        $meta = $this->getClassMetadata();
+        $config = $this->listener->getConfiguration($this->_em, $meta->name);
+
+        $nodeTable = $config['useObjectClass'];
+
+        $dql = "SELECT tree, COUNT(product.id)".
+               "  FROM $nodeTable tree".
+               "  JOIN $nodeTable category".
+               "  WITH category.root = tree.id".
+               "  LEFT JOIN category.products product".
+               " WHERE (product.id = :productId OR product.id IS NULL)".
+               " GROUP BY tree.id";
+
+        $query = $this->_em->createQuery($dql);
+        $query->setParameter('productId', $product->getId());
+
+        $rawTrees = $query->getResult();
+        $trees = array();
+        $treeKeys = array('tree','productsCount');
+
+        foreach ($rawTrees as $rawTree) {
+            $trees[] = array_combine($treeKeys, $rawTree);
+        }
+
+        return $trees;
+        
+    }
+
+    /**
+     * Get a collection of categories based on the array of id provided
+     * 
+     * @param array $categoriesIds
+     *
+     * @return Collection of categories
+     */
+    public function getCategoriesByIds(array $categoriesIds = array())
+    {
+        if (count($categoriesIds) === 0) {
+            return new ArrayCollection();
+        }
+
+        $meta = $this->getClassMetadata();
+        $config = $this->listener->getConfiguration($this->_em, $meta->name);
+
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('node')
+            ->from($config['useObjectClass'], 'node')
+            ->where('node.id IN(:categoriesIds)');
+
+        $qb->setParameter('categoriesIds', $categoriesIds);
+
+        $result = $qb->getQuery()->getResult();
+        $result = new ArrayCollection($result);
+
+        return $result;
+    }
+
+    /**
+     * Get a tree filled with children and their parents
+     *
+     * @param Category $root Tree root category
+     * @param array $parentsIds
+     *
+     * return array
+     */
+    public function getTreeFromParents(Category $root, array $parentsIds)
+    {
+        if (count($parentsIds) === 0) {
+            return array();
+        }
+
+        $meta = $this->getClassMetadata();
+        $config = $this->listener->getConfiguration($this->_em, $meta->name);
+
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('node')
+            ->from($config['useObjectClass'], 'node')
+            ->where('node.id IN (:parentsIds) OR node.parent IN (:parentsIds)');
+
+        $qb->setParameter('parentsIds', $parentsIds);
+
+        $nodes = $qb->getQuery()->getResult();
+
+        return $this->buildTreeNode($nodes);
     }
 }

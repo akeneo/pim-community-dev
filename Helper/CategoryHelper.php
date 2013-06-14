@@ -3,7 +3,7 @@ namespace Pim\Bundle\ProductBundle\Helper;
 
 use \RecursiveArrayIterator;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 use Pim\Bundle\ProductBundle\Entity\Category;
 
@@ -58,22 +58,41 @@ class CategoryHelper
      * Format categories list into simple array with data formatted
      * for JStree json_data plugin.
      *
-     * @param array $categories
+     * @param array $categories Data to format into an array
+     * @param array $withProductsCount Add product count for each category in its title 
+     * @param array $parent If not null, will include this node as a parent node of the data
      *
      * @return array
      * @static
      */
-    public static function childrenResponse($categories)
+    public static function childrenResponse($categories, $withProductsCount = false, Category $parent = null)
     {
         $result = array();
 
         foreach ($categories as $category) {
+            $title = $category->getTitle();
+
+            if ($withProductsCount) {
+                $title .= ' ('.$category->getProductsCount().')';
+            }
+
             $result[] = array(
                 'attr' => array(
                     'id' => 'node_'. $category->getId()
                 ),
-                'data'  => $category->getTitle() .' ('. $category->getProductsCount() .')',
+                'data'  => $title,
                 'state' => static::getState($category)
+            );
+        }
+
+        if ($parent != null) {
+            $result = array(
+                'attr' => array(
+                    'id' => 'node_' . $parent->getId()
+                ),
+                'data' => $parent->getTitle(),
+                'state' => static::getState($parent),
+                'children' => $result
             );
         }
 
@@ -86,17 +105,34 @@ class CategoryHelper
      *
      * Optionnaly can generate a selected state for the provided selectCategory
      *
-     * @param array $categories
+     * @param array    $categories
      * @param Category $selectCategory
+     * @param array    $withProductsCount Add product count for each category in its title 
+     * @param Category $parent
      *
      * @return array
      * @static
      */
-    public static function childrenTreeResponse($categories, Category $selectCategory = null)
-    {
-        $return = static::formatCategory($categories, $selectCategory);
+    public static function childrenTreeResponse (
+        $categories,
+        Category $selectCategory = null,
+        $withProductsCount = false,
+        Category $parent = null
+    ) {
+        $result = static::formatCategory($categories, $selectCategory, $withProductsCount);
 
-        return $return;
+        if ($parent != null) {
+            $result = array(
+                'attr' => array(
+                    'id' => 'node_' . $parent->getId()
+                ),
+                'data' => $parent->getTitle(),
+                'state' => static::getState($parent),
+                'children' => $result
+            );
+        }
+
+        return $result;
     }
 
     /**
@@ -110,8 +146,11 @@ class CategoryHelper
      * @return array
      * @static
      */
-    protected static function formatCategory(array $categories, Category $selectCategory = null)
-    {
+    protected static function formatCategory (
+        array $categories,
+        Category $selectCategory = null,
+        $withProductsCount = false
+    ) {
         $result = array();
 
         foreach ($categories as $category) {
@@ -125,17 +164,24 @@ class CategoryHelper
                 }
             }
 
-            if ($category['item']->getId() == $selectCategory->getId()) {
+            if (($selectCategory != null) &&
+                ($category['item']->getId() == $selectCategory->getId())) {
                 $state .= ' toselect';
+            }
+
+            $title = $category['item']->getTitle();
+
+            if ($withProductsCount) {
+                $title .= ' ('.$category['item']->getProductsCount().')';
             }
 
             $result[] = array(
                 'attr' => array(
                     'id' => 'node_'. $category['item']->getId()
                 ),
-                'data'  => $category['item']->getTitle(),
+                'data'  => $title,
                 'state' => $state,
-                'children' => static::formatCategory($category['__children'], $selectCategory)
+                'children' => static::formatCategory($category['__children'], $selectCategory, $withProductsCount)
             );
         }
 
@@ -196,5 +242,82 @@ class CategoryHelper
         }
 
         return $return;
+    }
+
+    public static function listCategoriesResponse(array $categories, Collection $selectedCategories = null)
+    {
+        $selectedIds = array();
+
+        foreach ($selectedCategories as $selectedCategory) {
+            $selectedIds[] = $selectedCategory->getId();
+        }
+
+        return static::formatCategoryAndCount($categories, $selectedIds, true);
+    }
+
+    /**
+     * Format a node with its children to the format expected by jstree.
+     * If count is true, the state will contain a count attribute representing
+     * the number of selected children
+     *
+     * @see http://www.jstree.com/documentation/json_data
+     *
+     * @param array    $categories
+     * @param array    $selectedCategoriesIds
+     * @param boolean  $count
+     *
+     * @return array
+     * @static
+     */
+    protected static function formatCategoryAndCount(array $categories, $selectedIds = null, $count = false)
+    {
+        $result = array();
+
+        foreach ($categories as $category) {
+            $state = 'leaf';
+
+            if (count($category['__children']) > 0) {
+                $state = 'open';
+            } else {
+                if ($category['item']->hasChildren()) {
+                    $state = 'closed';
+                }
+            }
+
+            if (in_array($category['item']->getId(), $selectedIds)) {
+                $state .= ' jstree-checked';
+            }
+
+            $children = static::formatCategoryAndCount($category['__children'], $selectedIds, $count);
+
+            $selectedChildrenCount = 0;
+
+            foreach ($children as $child) {
+                $selectedChildrenCount += $child['selectedChildrenCount'];
+                if (preg_match('/checked/', $child['state'])) {
+                    $selectedChildrenCount ++;
+                }
+            }
+           
+            $title = $category['item']->getTitle();
+
+            if ($selectedChildrenCount > 0) {
+                $title = '<strong>'.$title.'</strong>';
+            }
+
+
+            $result[] = array(
+                'attr' => array(
+                    'id' => 'node_'. $category['item']->getId()
+                ),
+                'data'  => $title,
+                'state' => $state,
+                'children' => $children,
+                'selectedChildrenCount' => $selectedChildrenCount
+            );
+        }
+
+        return $result;
+
     }
 }

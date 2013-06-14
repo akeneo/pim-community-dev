@@ -4,6 +4,7 @@ namespace Pim\Bundle\ProductBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+use Pim\Bundle\ProductBundle\Entity\Category;
 use Pim\Bundle\ProductBundle\Manager\MediaManager;
 use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Form\Type\ProductType;
@@ -12,11 +13,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use YsTools\BackUrlBundle\Annotation\BackUrl;
 use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Pim\Bundle\ProductBundle\Entity\ProductPrice;
+use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
 
 /**
  * Product Controller
@@ -30,6 +33,10 @@ use Pim\Bundle\ProductBundle\Entity\ProductPrice;
  */
 class ProductController extends Controller
 {
+
+    const CATEGORY_PREFIX = "category_node_";
+    const TREE_APPLY_PREFIX = "apply_on_tree_";
+
     /**
      * List product attributes
      *
@@ -103,8 +110,6 @@ class ProductController extends Controller
             return new Response(json_encode($response));
         }
 
-        $request = $this->getRequest();
-
         return array(
             'form'       => $this->get('pim_product.form.simple_product')->createView(),
             'dataLocale' => $this->getDataLocale()
@@ -129,6 +134,8 @@ class ProductController extends Controller
         $product  = $this->findProductOr404($id);
         $request  = $this->getRequest();
         $channels = $this->getChannelRepository()->findAll();
+        $trees    = $this->getCategoryManager()->getEntityRepository()->getProductsCountByTree($product);
+
         $form     = $this->createForm(
             'pim_product',
             $product,
@@ -139,10 +146,14 @@ class ProductController extends Controller
             $form->bind($request);
 
             if ($form->isValid()) {
-                $this->getProductManager()->save($product);
+                $categoriesData = $this->getCategoriesData($request->request->all());
+                print_r($categoriesData);
+                $categories = $this->getCategoryManager()->getCategoriesByIds($categoriesData['categories']);
+
+                $this->getProductManager()->save($product, $categories, $categoriesData['trees']);
 
                 $this->addFlash('success', 'Product successfully saved');
-
+                
                 return $this->redirect(
                     $this->generateUrl(
                         'pim_product_product_edit',
@@ -163,9 +174,45 @@ class ProductController extends Controller
             'channels'       => $channels,
             'attributesForm' => $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
             'product'        => $product,
+            'trees'          => $trees,
             'created'        => $auditManager->getFirstLogEntry($product),
             'updated'        => $auditManager->getLastLogEntry($product),
         );
+    }
+
+    /**
+     * Generate an array composed of an array of categories ids
+     * from category_id_* params and an array of tree ids from
+     * apply_to_tree_* params
+     *
+     * @param array $requestParameters
+     *
+     * @return array of categories data structured of two arrays
+     *      categories, trees
+     */
+    protected function getCategoriesData(array $requestParameters)
+    {
+        $categories = array();
+        $trees = array();
+
+        foreach ($requestParameters as $key => $value) {
+            if ($value === "1") {
+                if (strpos($key, static::CATEGORY_PREFIX) === 0) {
+                    
+                    $catId = (int) str_replace(static::CATEGORY_PREFIX, '', $key);
+                    if ($catId > 0) {
+                        $categories[] = $catId;
+                    }
+                } elseif (strpos($key, static::TREE_APPLY_PREFIX) === 0) {
+                    $treeId = (int) str_replace(static::TREE_APPLY_PREFIX, '', $key);
+                    if ($treeId > 0) {
+                        $trees[] = $treeId;
+                    }
+                }
+            }
+        }
+
+        return array('categories' => $categories, "trees" => $trees);
     }
 
     /**
@@ -265,6 +312,40 @@ class ProductController extends Controller
     }
 
     /**
+     * List categories associated with the provided product and descending from the category
+     * defined by the parent parameter.
+     *
+     * @param Product  $product
+     * @param Category $parent The parent category
+     *
+     * httpparam include_category if true, will include the parentCategory in the response
+     *
+     * @Route("/list-categories/product/{id}/parent/{category_id}.{_format}",
+     *        requirements={"id"="\d+", "category_id"="\d+", "_format"="json"})
+     * @ParamConverter("parent", class="PimProductBundle:Category", options={"id" = "category_id"})
+     * @Template()
+     *
+     * @return array
+     *
+     */
+    public function listCategoriesAction(Product $product, Category $parent)
+    {
+        $categories = null;
+
+        $includeParent = $this->getRequest()->get('include_parent', false);
+        $includeParent = ($includeParent === 'true');
+
+        if ($product != null) {
+            $categories = $product->getCategories();
+        }
+        $trees = $this->getCategoryManager()->getFilledTree($parent, $categories);
+
+        $treesData = CategoryHelper::listCategoriesResponse($trees, $categories);
+
+        return array('trees' => $treesData);
+    }
+
+    /**
      * Get product manager
      *
      * @return ProductManager
@@ -276,6 +357,17 @@ class ProductController extends Controller
 
         return $pm;
     }
+
+    /**
+     * Get category tree manager
+     *
+     * @return \Pim\Bundle\ProductBundle\Manager\CategoryManager
+     */
+    protected function getCategoryManager()
+    {
+        return $this->container->get('pim_product.category_manager');
+    }
+ 
 
     /**
      * Get locale manager
