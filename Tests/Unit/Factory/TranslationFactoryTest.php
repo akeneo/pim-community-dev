@@ -46,6 +46,13 @@ class TranslationFactoryTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @param string $translationClass
+     * @param string $entityClass
+     * @param string $field
+     *
+     * @return \Pim\Bundle\TranslationBundle\Factory\TranslationFactory
+     */
     public function getTargetedClass($translationClass, $entityClass, $field)
     {
         return new TranslationFactory($translationClass, $entityClass, $field);

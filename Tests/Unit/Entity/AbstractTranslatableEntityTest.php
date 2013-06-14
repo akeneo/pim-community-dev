@@ -76,6 +76,8 @@ class AbstractTranslatableEntityTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Assert translatable entity
+     *
+     * @param Item $entity
      */
     protected function assertEntity($entity)
     {
@@ -84,6 +86,8 @@ class AbstractTranslatableEntityTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Assert translation
+     *
+     * @param ItemTranslation $translation
      */
     protected function assertTranslation($translation)
     {

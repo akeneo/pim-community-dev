@@ -37,9 +37,9 @@ class TranslatableFieldType extends AbstractType
     protected $defaultLocale;
 
     /**
-     * Define constructor with container injection
-     *
-     * @param ContainerInterface $container
+     * @param ValidatorInterface $validator
+     * @param LocaleManager      $localeManager
+     * @param unknown_type       $defaultLocale
      */
     public function __construct(ValidatorInterface $validator, LocaleManager $localeManager, $defaultLocale)
     {
@@ -65,9 +65,7 @@ class TranslatableFieldType extends AbstractType
             throw new FormException('must provide a field');
         }
 
-        $translationFactory = new TranslationFactory(
-            $options['translation_class'], $options['entity_class'], $options['field']
-        );
+        $translationFactory = new TranslationFactory($options['translation_class'], $options['entity_class'], $options['field']);
 
         $subscriber = new AddTranslatableFieldSubscriber(
             $builder->getFormFactory(),

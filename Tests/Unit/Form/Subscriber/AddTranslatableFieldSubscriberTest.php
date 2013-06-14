@@ -46,6 +46,9 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
         $target->preSetData($event);
     }
 
+    /**
+     * @return multitype:multitype:string multitype:string
+     */
     public static function preSetDataProvider()
     {
         return array(
@@ -61,6 +64,9 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $requiredLocale
+     * @param array  $locales
+     *
      * @test
      * @dataProvider preSetDataProvider
      */
@@ -92,11 +98,13 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
                             $this->equalTo(sprintf('name:%s', $locale)),
                             $this->equalTo('text'),
                             $this->equalTo(''),
-                            $this->equalTo(array(
-                                'label'         => $locale,
-                                'required'      => in_array($locale, array($requiredLocale)),
-                                'property_path' => false,
-                            ))
+                            $this->equalTo(
+                                array(
+                                    'label'         => $locale,
+                                    'required'      => in_array($locale, array($requiredLocale)),
+                                    'property_path' => false,
+                                )
+                            )
                         )
                         ->will($this->returnValue($field = $this->getFormMock()));
 
@@ -139,8 +147,12 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $requiredLocale
+     * @param array  $locales
+     *
      * @test
      * @dataProvider preSetDataProvider
+     *
      */
     public function itShouldAddTranslationIfContentIsProvidedAfterBinding($requiredLocale, $locales)
     {
@@ -179,6 +191,16 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
         $target->postBind($event);
     }
 
+    /**
+     * @param string             $field
+     * @param string             $widget
+     * @param string             $requiredLocale
+     * @param array              $locales
+     * @param FormFactory        $formFactory
+     * @param TranslationFactory $translationFactory
+     *
+     * @return \Pim\Bundle\TranslationBundle\Form\Subscriber\AddTranslatableFieldSubscriber
+     */
     protected function getTargetedClass($field = null, $widget = null, $requiredLocale = null, array $locales = array(), $formFactory = null, $translationFactory = null)
     {
         return new AddTranslatableFieldSubscriber(
@@ -192,39 +214,52 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @return Mock
+     */
     protected function getFormFactoryMock()
     {
         return $this
             ->getMockBuilder('Symfony\Component\Form\FormFactory')
             ->disableOriginalConstructor()
             ->setMethods(array('createNamed'))
-            ->getMock()
-        ;
+            ->getMock();
     }
 
+    /**
+     * @return Mock
+     */
     protected function getValidatorMock()
     {
         return $this->getMock('Symfony\Component\Validator\ValidatorInterface');
     }
 
+    /**
+     * @return Mock
+     */
     protected function getTranslationFactoryMock()
     {
         return $this
             ->getMockBuilder('Pim\Bundle\TranslationBundle\Factory\TranslationFactory')
             ->disableOriginalConstructor()
             ->setMethods(array('createTranslation'))
-            ->getMock()
-        ;
+            ->getMock();
     }
 
+    /**
+     * @param Form  $form
+     * @param array $parentData
+     * @param array $data
+     *
+     * @return Mock
+     */
     protected function getEventMock($form, $parentData = null, array $data = null)
     {
         $event = $this
             ->getMockBuilder('Symfony\Component\Form\Event\DataEvent')
             ->disableOriginalConstructor()
             ->setMethods(array('getData', 'getForm'))
-            ->getMock()
-        ;
+            ->getMock();
 
         $event->expects($this->any())
               ->method('getData')
@@ -247,14 +282,16 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
         return $event;
     }
 
+    /**
+     * @return Mock
+     */
     protected function getFormMock()
     {
         $config = $this
             ->getMockBuilder('Symfony\Component\Form\FormConfigBuilder')
             ->disableOriginalConstructor()
             ->setMethods(array('getCompound', 'getDataMapper', 'getEventDispatcher'))
-            ->getMock()
-        ;
+            ->getMock();
 
         $config->expects($this->any())
                ->method('getCompound')
@@ -272,25 +309,40 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('Symfony\Component\Form\Form')
             ->setConstructorArgs(array($config))
             ->setMethods(array('getParent', 'getData', 'add', 'get', 'addError'))
-            ->getMock()
-        ;
+            ->getMock();
     }
 
+    /**
+     * @return Mock
+     */
     protected function getDataMapperMock()
     {
         return $this->getMock('Symfony\Component\Form\DataMapperInterface');
     }
 
+    /**
+     * @return Mock
+     */
     protected function getEventDispatcherMock()
     {
         return $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
     }
 
+    /**
+     * @return Mock
+     */
     protected function getTranslatableEntityMock()
     {
         return $this->getMock('Pim\Bundle\TranslationBundle\Entity\AbstractTranslatableEntity');
     }
 
+    /**
+     * @param string $field
+     * @param string $locale
+     * @param string $content
+     *
+     * @return Mock
+     */
     protected function getTranslationMock($field, $locale, $content = null)
     {
         $translation = $this->getMock('Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation');
