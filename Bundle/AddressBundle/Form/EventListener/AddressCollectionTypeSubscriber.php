@@ -68,10 +68,15 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
             /** @var Collection $addresses */
             $addresses = $data->$method();
             /** @var TypedAddress $item */
+            $hasDefault = false;
             foreach ($addresses as $item) {
+                $hasDefault = $hasDefault || $item->isDefault();
                 if ($item->isEmpty()) {
                     $addresses->removeElement($item);
                 }
+            }
+            if (!$addresses->isEmpty() && !$hasDefault) {
+                $addresses->first()->setDefault(true);
             }
         }
     }

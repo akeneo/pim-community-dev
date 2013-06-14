@@ -21,6 +21,14 @@ class AddressTypedType extends AddressType
                 'empty_value' => 'Choose type...'
             )
         );
+        $builder->add(
+            'default',
+            'checkbox',
+            array(
+                'label' => 'Default',
+                'required' => false
+            )
+        );
         parent::addEntityFields($builder);
     }
 

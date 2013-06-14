@@ -25,6 +25,14 @@ class TypedAddress extends AddressBase
     protected $type;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_default", type="boolean", nullable=true)
+     * @Soap\ComplexType("boolean", nillable=true)
+     */
+    protected $default;
+
+    /**
      * @var \Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexibleValue[]
      *
      * @ORM\OneToMany(targetEntity="Oro\Bundle\AddressBundle\Entity\Value\AddressValue", mappedBy="entity", cascade={"persist", "remove"}, orphanRemoval=true)
@@ -49,5 +57,21 @@ class TypedAddress extends AddressBase
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @param bool $default
+     */
+    public function setDefault($default)
+    {
+        $this->default = $default;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDefault()
+    {
+        return $this->default;
     }
 }
