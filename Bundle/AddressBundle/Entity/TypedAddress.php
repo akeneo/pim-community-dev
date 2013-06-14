@@ -17,7 +17,7 @@ use Oro\Bundle\AddressBundle\Entity\AddressType;
 class TypedAddress extends AddressBase
 {
     /**
-     * @var integer
+     * @var AddressType
      *
      * @ORM\ManyToOne(targetEntity="AddressType")
      * @Soap\ComplexType("string", nillable=true)
