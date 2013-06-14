@@ -67,7 +67,7 @@ class AttributeDatagridManager extends DatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translator->trans('Name'),
+                'label'       => $this->translate('Name'),
                 'field_name'  => 'label',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
@@ -86,7 +86,7 @@ class AttributeDatagridManager extends DatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
-                'label'       => $this->translator->trans('Scopable'),
+                'label'       => $this->translate('Scopable'),
                 'field_name'  => 'scopable',
                 'filter_type' => FilterInterface::TYPE_BOOLEAN,
                 'required'    => false,
@@ -102,7 +102,7 @@ class AttributeDatagridManager extends DatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
-                'label'       => $this->translator->trans('Translatable'),
+                'label'       => $this->translate('Translatable'),
                 'field_name'  => 'translatable',
                 'filter_type' => FilterInterface::TYPE_BOOLEAN,
                 'required'    => false,
@@ -137,7 +137,7 @@ class AttributeDatagridManager extends DatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => 'Group',
+                'label'       => $this->translate('Group'),
                 'field_name'  => 'group',
                 'filter_type' => FilterInterface::TYPE_CHOICE,
                 'required'    => false,
@@ -156,46 +156,6 @@ class AttributeDatagridManager extends DatagridManager
     /**
      * {@inheritdoc}
      */
-    protected function getListFields()
-    {
-        return $this->getFieldDescriptionCollection()->getElements();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getFilters()
-    {
-        $fields = array();
-        /** @var $fieldDescription FieldDescription */
-        foreach ($this->getFieldDescriptionCollection() as $fieldDescription) {
-            if ($fieldDescription->isFilterable()) {
-                $fields[] = $fieldDescription;
-            }
-        }
-
-        return $fields;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getSorters()
-    {
-        $fields = array();
-        /** @var $fieldDescription FieldDescription */
-        foreach ($this->getFieldDescriptionCollection() as $fieldDescription) {
-            if ($fieldDescription->isSortable()) {
-                $fields[] = $fieldDescription;
-            }
-        }
-
-        return $fields;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function getRowActions()
     {
         $clickAction = array(
@@ -203,7 +163,7 @@ class AttributeDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'         => $this->translator->trans('Edit'),
+                'label'         => $this->translate('Edit'),
                 'icon'          => 'edit',
                 'link'          => 'edit_link',
                 'runOnRowClick' => true,
@@ -216,7 +176,7 @@ class AttributeDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => $this->translator->trans('Edit'),
+                'label'   => $this->translate('Edit'),
                 'icon'    => 'edit',
                 'link'    => 'edit_link',
                 'backUrl' => true
@@ -228,7 +188,7 @@ class AttributeDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => $this->translator->trans('Delete'),
+                'label'   => $this->translate('Delete'),
                 'icon'    => 'trash',
                 'link'    => 'delete_link',
                 'backUrl' => true
@@ -250,7 +210,7 @@ class AttributeDatagridManager extends DatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translator->trans('Type'),
+                'label'       => $this->translate('Type'),
                 'field_name'  => 'attributeType',
                 'filter_type' => FilterInterface::TYPE_CHOICE,
                 'required'    => false,

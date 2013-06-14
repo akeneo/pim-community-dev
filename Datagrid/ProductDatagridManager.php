@@ -144,7 +144,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translator->trans('Sku'),
+                'label'       => $this->translate('Sku'),
                 'field_name'  => 'sku',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
@@ -177,7 +177,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translator->trans('Family'),
+                'label'       => $this->translate('Family'),
                 'field_name'  => 'productFamily',
                 'filter_type' => FilterInterface::TYPE_CHOICE,
                 'required'    => false,
@@ -215,7 +215,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
-                'label'       => $this->translator->trans('Categories'),
+                'label'       => $this->translate('Categories'),
                 'field_name'  => 'categories',
                 'filter_type' => FilterInterface::TYPE_CATEGORY,
                 'required'    => false,
@@ -243,7 +243,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
-                'label'       => $this->translator->trans('Data Locale'),
+                'label'       => $this->translate('Data Locale'),
                 'field_name'  => 'data_locale',
                 'filter_type' => FilterInterface::TYPE_LOCALE,
                 'required'    => false,
@@ -268,7 +268,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
-                'label'       => $this->translator->trans('Scope'),
+                'label'       => $this->translate('Scope'),
                 'field_name'  => 'scope',
                 'filter_type' => FilterInterface::TYPE_SCOPE,
                 'required'    => false,
@@ -291,7 +291,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'         => $this->translator->trans('Edit'),
+                'label'         => $this->translate('Edit'),
                 'icon'          => 'edit',
                 'link'          => 'edit_link',
                 'backUrl'       => true,
@@ -304,7 +304,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => $this->translator->trans('Edit'),
+                'label'   => $this->translate('Edit'),
                 'icon'    => 'edit',
                 'link'    => 'edit_link',
                 'backUrl' => true
@@ -316,7 +316,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => $this->translator->trans('Delete'),
+                'label'   => $this->translate('Delete'),
                 'icon'    => 'trash',
                 'link'    => 'delete_link'
             )
