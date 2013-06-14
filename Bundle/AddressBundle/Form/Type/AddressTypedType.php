@@ -2,9 +2,7 @@
 
 namespace Oro\Bundle\AddressBundle\Form\Type;
 
-use Oro\Bundle\UserBundle\Form\EventListener\PatchSubscriber;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class AddressTypedType extends AddressType
 {
