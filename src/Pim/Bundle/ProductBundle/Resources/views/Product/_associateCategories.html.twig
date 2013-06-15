@@ -1,0 +1,41 @@
+<div id="trees-list" class="tab-groups">
+    <ul class="nav nav-list">
+        {% for tree in trees %}
+            {% set aClass = "" %}
+            {% set iClass = "icon-tick-off" %}
+            {% if (tree['productsCount'] > 0) %}
+                {% set aClass = "tree-has-product" %}
+                {% set iClass = "icon-tick" %}
+            {% endif %}
+            <li>
+                <a class="{{ aClass }}" href="#" id="tree-link-{{ tree['tree'].id }}">
+                    <i class="{{ iClass }}"></i>{{ tree['tree'].title }} ({{ tree['productsCount'] }})
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="tab-content">
+    <div id="trees">
+        {% for tree in trees %}
+            <div class="tree" data-tree-id="{{ tree['tree'].id }}">
+                <h3>{{ tree['tree'].title }}</h3>
+                <input type="hidden" id="apply-on-tree-{{ tree['tree'].id }}" name="apply_on_tree_{{ tree['tree'].id }}" value="0"/>
+                <div id="tree-{{ tree['tree'].id }}"></div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script type="text/javascript">
+    var assetsPath = "{{ asset('bundles/pimproduct/') }}";
+    var urlCheckedCategories = "{{ path('pim_product_product_listcategories',{'id':product.id, 'category_id':1,  '_format': 'json' }) }}";
+    var urlChildren = "{{ path('pim_product_categorytree_children', { '_format': 'json' }) }}"
+    {% if trees %}
+        {% set firstTree = trees|first %}
+        var preSelectedTree = '{{ firstTree['tree'].id }}' ;
+    {% endif %}
+</script>
+
+<script type="text/javascript" src="{{ asset('bundles/pimproduct/js/tree-associate.jstree.js') }}"></script>

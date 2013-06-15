@@ -1,0 +1,6 @@
+Pim\Bundle\ProductBundle\Entity\ProductAttribute:
+    constraints:
+        - Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricAttribute: ~
+        - Callback:
+            methods:
+                - [Pim\Bundle\ProductBundle\Validator\ProductAttributeValidator, isValid]
