@@ -7,6 +7,8 @@
 @color-header_bottom: #7225ad;
 @color-dialogHeader_top: #8c62b6;
 @color-dialogHeader_bottom: #673f8f;
+@color-grey_tab: #fafafa;
+@color-purple_hover: #f2ebf8;
 
 @backgroundColor-white: #fff;
 
@@ -27,6 +29,8 @@ h1 {
   padding: 0 20px;
 }
 
+a { color: @color-purple_dark; }
+
 table.grid {
   margin-bottom: 0;
 }
@@ -36,6 +40,10 @@ header,
 .header-search .btn-group.open .btn.dropdown-toggle {
   #gradient .vertical(@color-header_top, @color-header_bottom);
   border-bottom: @border-purple;
+}
+
+header .dropdown-menu li>a, header .dropdown-menu li>a:hover, header .dropdown-menu li>a:focus {
+  color: @color-purple_dark;
 }
 
 header .extra-divider, .navbar .small-divider {
@@ -68,6 +76,10 @@ header .shortcuts .dropdown > a {
     }
 }
 
+header h1.logo { padding: 0px; }
+
+/* Pin bar and menus ************************************************************************************************/
+
 .pin-bar {
   background-color: @color-purple_dark;
   background-image: none;
@@ -88,7 +100,22 @@ header .shortcuts .dropdown > a {
   &.open {
     background-color: lighten(@color-purple_dark, 10%);
   }
+  .tabbable {
+    background-color: @color-grey_tab;
+    >ul.nav-tabs {
+      li {
+        a { background-color: @color-grey_tab; }
+        a:hover { background-color: @color-purple_hover; }
+      }
+      li.active {
+        a { background-color: @color-purple_hover;; }
+      }
+    }
+    .tab-content {border-left: 0px;}
+  }
 }
+
+/* application menu *************************************************************************************************/
 
 .application-menu {
   background-color: #fff;
@@ -126,30 +153,31 @@ header .shortcuts .dropdown > a {
       }
     }
   }
+
   .tab-content {
     overflow-y: hidden;
     background-color: @backgroundColor-white + #111;
     .box-shadow(0px 1px 3px rgba(20, 20, 20, 0.25));
     > .tab-pane > .nav {
       a {
+        color: @textColor;
         font-weight: normal;
-        color: @textColor + #222;
       }
       .active a,
       a:hover {
         color: @textColor;
-        font-weight: bold;
-        background-color: @backgroundColor-white;
+        background-color: #efefef;
       }
       .current a,
       > li > a:focus {
         color: @textColor;
-        font-weight: bold;
-        background-color: @backgroundColor-white;
+        background-color: #efefef;
       }
     }
   }
 }
+
+/* nav bar **********************************************************************************************************/
 
 i.icon-home {
   .icon-home();
@@ -166,6 +194,12 @@ i.icon-home {
   background-color: transparent;
   padding: 0;
 }
+
+/* Messages *********************************************************************************************************/
+
+#flash-messages .top-messages { margin: 5px; }
+
+/* Login Form *******************************************************************************************************/
 
 form.form-signin {
   .title-box {
@@ -214,6 +248,8 @@ form.form-signin {
   }
 }
 
+/* Basic Form *******************************************************************************************************/
+
 .form-row {
   button.btn {
     height: 32px;
@@ -248,7 +284,7 @@ a.return {
 }
 
 .scrollspy-title {
-  background-color: #FAFAFA;
+  background-color: @color-grey_tab;
   padding: 10px;
   margin-top: 0;
 }
@@ -312,6 +348,8 @@ th label {
   height: auto;
 }
 
+/* Collapsable sidebar **********************************************************************************************/
+
 .sidebarized {
   .sidebar-separator {
     background-color: #f3f3f3;
@@ -357,10 +395,10 @@ th label {
           cursor: pointer;
           line-height: 35px;
           &:hover {
-            background-color: #fafafa;
+            background-color: @color-grey_tab;
           }
           &.active, &.active:hover {
-            background-color: #f2ebf8;
+            background-color: @color-purple_hover;
           }
           a {
             display: block;
@@ -380,9 +418,7 @@ th label {
   }
 }
 
-#sortable_options th {
-  text-align: center;
-}
+/* Dialog ***********************************************************************************************************/
 
 div.ui-dialog {
   &:focus {
@@ -414,7 +450,7 @@ div.ui-dialog {
     margin: 0;
   }
   .ui-dialog-buttonpane {
-    background-color: #fafafa;
+    background-color: @color-grey_tab;
     background-image: none;
     border-top: none;
     >div.ui-dialog-buttonset>button {
@@ -422,6 +458,12 @@ div.ui-dialog {
       margin: 10px 8px 12px 0;
     }
   }
+}
+
+/* Attribute Form ***************************************************************************************************/
+
+#sortable_options th {
+  text-align: center;
 }
 
 /* Product edit form - common */
@@ -433,7 +475,7 @@ div.ui-dialog {
     > .active > a {
       font-weight: bold;
       color: #000000;
-      background-color: #f2ebf8;
+      background-color: @color-purple_hover;
       text-shadow: none;
     }
     > li {
@@ -443,14 +485,14 @@ div.ui-dialog {
       border-bottom: 1px solid #e5e5e5;
       > a {
         color: #000000;
-        background-color: #fafafa;
+        background-color: @color-grey_tab;
       }
     }
   }
   .tab-content {
     border-left: 1px solid #BBBBBB;
     .tab-pane h3 {
-      background-color: #fafafa;
+      background-color: @color-grey_tab;
       border-bottom: 1px solid #e5e5e5;
       margin-top: 0;
       padding-left: 20px;
@@ -773,7 +815,7 @@ button.pimmultiselect {
 
 /* Grids */
 .grid th a {color: #666666; }
-.table-hover tbody tr:hover > td {background-color: #f2ebf8; }
+.table-hover tbody tr:hover > td {background-color: @color-purple_hover; }
 #pim_product_product_quickcreate label {text-align: left; width: 200px;}
 #pim_product_product_quickcreate .select2-search-field, #pim_product_product_quickcreate .select2-container {width: 314px;}
 #pim_product_product_quickcreate input {width: 300px;}
