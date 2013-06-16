@@ -1,0 +1,125 @@
+{% extends 'OroUIBundle:Form:fields.html.twig' %}
+
+{% block form_label %}
+    {% spaceless %}
+        {% if not compound %}
+            {% set label_attr = label_attr|merge({'for': id}) %}
+        {% endif %}
+        {% if required %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+        {% endif %}
+        {% if label is empty %}
+            {% set label = name|humanize %}
+        {% endif %}
+        {% set isRadioLabel = form.parent.vars.expanded|default(false) and checked is defined %}
+        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{% if required and not isRadioLabel %}<em>*</em>{% endif %}{{ label|trans({}, translation_domain) }}</label>
+    {% endspaceless %}
+{% endblock form_label %}
+
+{% block pim_wysiwyg_widget %}
+    {{ block('textarea_widget') }}
+    <script type="text/javascript">
+        $('#{{ form.vars.id }}').wysihtml5({
+            events: {
+                change: function() {
+                   $('#{{ form.vars.id }}').trigger('change');
+                }
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block pim_translatable_field_row %}
+    {{ form_errors(form) }}
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                {% for translation in form %}
+                    <th>{{ form_label(translation) }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for translation in form %}
+                    <td>
+                        {{ form_errors(translation) }}
+                        {{ form_widget(translation) }}
+                    </td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block oro_media_row %}
+    {% spaceless %}
+
+    {{ form_errors(form) }}
+    {{ form_row(form.file) }}
+
+    {% if form.vars.value %}
+    <div style="clear: both;">
+        <ul class="unstyled">
+            <li>
+                <a href="{{ asset(form.vars.value.filePath) }}" rel="lightbox">{{ form.vars.value.originalFilename }}</a>
+                {{ form_widget(form.removed, {attr: {style: 'margin: 4px;'}}) }} Remove
+            </li>
+        </ul>
+    </div>
+    {% endif %}
+
+    {% endspaceless %}
+{% endblock %}
+
+{% block widget_attributes %}
+{% if attr.class is defined %}
+    {% if attr.class != 'noswitch' %}
+        {% set class = attr.class ~ ' input-large' %}
+    {% else %}
+        {% set class = attr.class %}
+    {% endif %}
+{% else %}
+    {% set class = 'input-large' %}
+{% endif %}
+{% set attr = attr|merge({'class': class }) %}
+{% spaceless %}
+    id="{{ id }}" name="{{ full_name }}"{% if read_only %} readonly="readonly"{% endif %}{% if disabled %} disabled="disabled"{% endif %}{% if required %} required="required"{% endif %}{% if max_length %} maxlength="{{ max_length }}"{% endif %}{% if pattern %} pattern="{{ pattern }}"{% endif %}
+    {% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
+{% endspaceless %}
+{% endblock widget_attributes %}
+
+{% block checkbox_widget %}
+{% spaceless %}
+    {% if attr.class is defined and attr.class == 'noswitch' %}
+        <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %}>
+    {% else %}
+        <div class="switch switch-small" data-on-label="{% if attr['data-on-label'] is defined %}{{ attr['data-on-label']|trans }}{% else %}{{ 'Yes'|trans }}{% endif %}" data-off-label="{% if attr['data-off-label'] is defined %}{{ attr['data-off-label']|trans }}{% else %}{{ 'No'|trans }}{% endif %}">
+            {% if required %}{% set required = false %}{% endif %}
+            <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %}>
+        </div>
+    {% endif %}
+{% endspaceless %}
+{% endblock checkbox_widget %}
+
+{% block oro_flexibleentity_metric_widget %}
+{% spaceless %}
+    {{ form_widget(form.unit) }}
+    {{ form_widget(form.data) }}
+{% endspaceless %}
+{% endblock oro_flexibleentity_metric_widget %}
+
+{% block pim_product_price_collection_widget %}
+    {% for child in form.children %}
+        {{ form_widget(child) }}
+    {% endfor %}
+{% endblock pim_product_price_collection_widget %}
+
+{% block pim_product_price_widget %}
+{% spaceless %}
+    {{ form_widget(form.currency) }}
+    {{ form_row(form.data, {label:currencySymbol(form.currency.vars.value)} ) }}
+{% endspaceless %}
+{% endblock pim_product_price_widget %}
+
+
