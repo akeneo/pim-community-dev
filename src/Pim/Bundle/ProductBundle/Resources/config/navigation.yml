@@ -3,6 +3,8 @@ oro_menu_config:
         pim_enrich_tab:
             label: 'Enrich'
             uri: '#'
+            extras:
+                position: 10
         pim_enrich_product:
             label: 'Products'
             route: 'pim_product_product_index'

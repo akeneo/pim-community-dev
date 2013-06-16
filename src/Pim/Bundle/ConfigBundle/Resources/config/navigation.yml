@@ -1,8 +1,5 @@
 oro_menu_config:
     items:
-        pim_config_tab:
-            label: 'Configuration'
-            uri: '#'
         pim_config_locale:
             label: 'Locales'
             route: 'pim_config_locale_index'
@@ -16,9 +13,9 @@ oro_menu_config:
     tree:
         application_menu:
             children:
-                pim_config_tab:
+                system_tab:
                     children:
+                        pim_config_channel: ~
                         pim_config_locale: ~
                         pim_config_currency: ~
-                        pim_config_channel: ~
 
