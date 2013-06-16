@@ -1,11 +1,10 @@
 <?php
-
 namespace Pim\Bundle\UIBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Pim User Interface Bundle
+ * Override OroUIBundle
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
@@ -14,4 +13,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimUIBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return 'OroUIBundle';
+    }
 }

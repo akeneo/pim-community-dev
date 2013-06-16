@@ -4,7 +4,7 @@ namespace Pim\Bundle\UserBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Override OroFilterBundle
+ * Override OroUserBundle
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
