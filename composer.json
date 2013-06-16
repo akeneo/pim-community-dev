@@ -8,7 +8,8 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.1.*",
-        "fzaninotto/faker": "~1.2"
+        "fzaninotto/faker": "~1.2",
+        "nelmio/alice": "1.2.*"
     },
     "require-dev": {
         "doctrine/dbal": ">=2.2,<2.4-dev",
