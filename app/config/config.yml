@@ -42,9 +42,10 @@ assetic:
         - OroUIBundle
         - OroUserBundle
         - OroGridBundle
-        - OroFilterBundle
         - OroNavigationBundle
         - OroWindowsBundle
+        - OroFilterBundle
+        - OroSegmentationTreeBundle
         - PimUIBundle
         - PimProductBundle
 
