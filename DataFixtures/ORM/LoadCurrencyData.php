@@ -44,13 +44,7 @@ class LoadCurrencyData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
-        $pathfile = realpath(__DIR__ .'/../../../ConfigBundle/Resources/config/pim_currencies.yml');
-
-        if (!$pathfile) {
-            throw new \Exception('pim_currencies.yml file not found');
-        }
-
-        $configCurrencies = Yaml::parse($pathfile);
+        $configCurrencies = $this->container->getParameter('pim_config.currencies');
 
         foreach ($configCurrencies['currencies'] as $currencyCode => $currencyName) {
             $activated = in_array($currencyCode, self::$activatedCurrencies);
