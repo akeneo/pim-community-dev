@@ -1,0 +1,27 @@
+{
+    "name": "akeneo/DemoBundle",
+    "type": "symfony-bundle",
+    "description": "Demo Bundle",
+    "keywords": ["Demo", "Data", "Generator"],
+    "homepage": "https://github.com/akeneo/DemoBundle",
+    "license": "OSL",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.1.*",
+        "fzaninotto/faker": "~1.2"
+    },
+    "require-dev": {
+        "doctrine/dbal": ">=2.2,<2.4-dev",
+        "doctrine/orm": ">=2.2.3,<2.4-dev"
+    },
+    "autoload": {
+        "psr-0": { "Pim\\Bundle\\DemoBundle": "" }
+    },
+    "target-dir": "Pim/Bundle/DemoBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
