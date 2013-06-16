@@ -46,35 +46,35 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
         $sm = $fm->getStorageManager();
 
         $attr = $fm
-            ->createAttribute('pim_product_text')
+            ->createAttribute('oro_flexibleentity_text')
             ->setCode('company')
             ->setLabel('Company');
 
         $sm->persist($attr);
 
         $attr = $fm
-            ->createAttribute('pim_product_money')
+            ->createAttribute('oro_flexibleentity_money')
             ->setCode('salary')
             ->setLabel('Salary');
 
         $sm->persist($attr);
 
         $attr = $fm
-            ->createAttribute('pim_product_textarea')
+            ->createAttribute('oro_flexibleentity_textarea')
             ->setCode('address')
             ->setLabel('Address');
 
         $sm->persist($attr);
 
         $attr = $fm
-            ->createAttribute('pim_product_text')
+            ->createAttribute('oro_flexibleentity_text')
             ->setCode('middlename')
             ->setLabel('Middlename');
 
         $sm->persist($attr);
 
         $attr = $fm
-            ->createAttribute('pim_product_simpleselect')
+            ->createAttribute('oro_flexibleentity_simpleselect')
             ->setCode('gender')
             ->setLabel('Gender')
             ->addOption(
