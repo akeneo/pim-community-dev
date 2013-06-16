@@ -5,25 +5,28 @@ imports:
 framework:
     #esi:             ~
     translator:      { fallback: %locale% }
+    default_locale:  %locale%
     secret:          %secret%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
-        strict_requirements: %kernel.debug%
+        strict_requirements: "%kernel.debug%"
     form:            true
     csrf_protection: true
     validation:      { enable_annotations: true }
     templating:      { engines: ['twig', 'php'] } #assets_version: SomeVersionScheme
-    default_locale:  %locale%
-    trust_proxy_headers: false # Should Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
+    trust_proxy_headers: false # Deprecated in 2.0; will be removed in 2.3 (used trusted_proxies instead)
     trusted_proxies: ~
     session:
-        name: BAPID
+        cookie_lifetime:      43200
+        name:                 BAPID
 
 # Twig Configuration
 twig:
-    debug:            %kernel.debug%
-    strict_variables: %kernel.debug%
+    debug:                    "%kernel.debug%"
+    strict_variables:         "%kernel.debug%"
+    exception_controller:     "FOS\RestBundle\Controller\ExceptionController::showAction"
     globals:
+        env: %kernel.environment%
         bap:
             layout:           ::base.html.twig  # default layout across all Oro bundles
             start_route:      pim_product_product_index
@@ -33,16 +36,15 @@ twig:
 
 # Assetic Configuration
 assetic:
-    debug:          %kernel.debug%
-    use_controller: false
+    debug:                    false
+    use_controller:           false
     bundles:
         - OroUIBundle
         - OroUserBundle
         - OroGridBundle
+        - OroFilterBundle
         - OroNavigationBundle
         - OroWindowsBundle
-        - OroFilterBundle
-        - OroSegmentationTreeBundle
         - PimUIBundle
         - PimProductBundle
 
@@ -56,35 +58,31 @@ assetic:
             jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
         yui_js:
             jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
-        #closure:
-        #    jar: %kernel.root_dir%/Resources/java/compiler.jar
 
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:   %database_driver%
-        host:     %database_host%
-        port:     %database_port%
-        dbname:   %database_name%
-        user:     %database_user%
-        password: %database_password%
-        charset:  UTF8
+        driver:               "%database_driver%"
+        host:                 "%database_host%"
+        port:                 "%database_port%"
+        dbname:               "%database_name%"
+        user:                 "%database_user%"
+        password:             "%database_password%"
+        charset:              UTF8
 
     orm:
-        auto_generate_proxy_classes: %kernel.debug%
-        auto_mapping: true
+        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_mapping:         true
         resolve_target_entities:
             Symfony\Component\Security\Core\User\UserInterface: Oro\Bundle\UserBundle\Entity\User
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: %mailer_transport%
-    host:      %mailer_host%
-    username:  %mailer_user%
-    password:  %mailer_password%
-    spool:     { type: memory }
-
-# following conf comes from BAP
+    transport:                "%mailer_transport%"
+    host:                     "%mailer_host%"
+    username:                 "%mailer_user%"
+    password:                 "%mailer_password%"
+    spool:                    { type: memory }
 
 knp_paginator:
     page_range:               5         # default page range used in pagination control
@@ -94,7 +92,7 @@ knp_paginator:
         sort_direction_name:  direction # sort direction query parameter name
         distinct:             true      # ensure distinct results, useful when ORM queries are using GROUP BY statements
     template:
-        pagination:           pagination: OroUIBundle::pager.html.twig
+        pagination:           OroUIBundle::pager.html.twig
 
 fos_rest:
     view:
@@ -115,10 +113,6 @@ fos_rest:
 fos_js_routing:
     routes_to_expose:          [oro_*, pim_*]
 
-oro_search:
-    engine:                   orm
-    realtime_update:          true
-
 be_simple_soap:
     cache:
         type:                 disk
@@ -130,28 +124,23 @@ be_simple_soap:
             binding:          rpc-literal
             resource:         "%kernel.root_dir%/../app/config/soap.yml"
             resource_type:    yml
-        demo:
-            namespace:        http://symfony.loc/Api/1.0/
-            binding:          rpc-literal
-            resource:         "%kernel.root_dir%/../src/Pim/Bundle/UIBundle/Resources/config/soap.yml"
-            resource_type:    yml
 
 stof_doctrine_extensions:
     default_locale: %default_locale%
     translation_fallback: true
     orm:
         default:
-            timestampable: true
-            tree:          true
-            translatable:  true
-            loggable:      true
+            timestampable:    true
+            translatable:     true
+            tree:             true
+            loggable:         true
     class:
-        loggable: Oro\Bundle\DataAuditBundle\EventListener\LoggableListener
+        loggable:             Oro\Bundle\DataAuditBundle\EventListener\LoggableListener
 
 services:
     cache:
-        class: Doctrine\Common\Cache\PhpFileCache
-        arguments: [%kernel.cache_dir%]
+        class:                Doctrine\Common\Cache\PhpFileCache
+        arguments:            [%kernel.cache_dir%]
     twig.extension.intl:
          class: Twig_Extensions_Extension_Intl
          tags:
@@ -159,6 +148,7 @@ services:
 
 escape_wsse_authentication:
     authentication_provider_class: Oro\Bundle\UserBundle\Security\WsseUserProvider
+    authentication_listener_class: Oro\Bundle\UserBundle\Security\WsseAuthListener
 
 liip_imagine:
     filter_sets:
@@ -175,15 +165,15 @@ oro_search:
 oro_ui:
     settings:
         application_name:
-            value: "ORO CRM"
+            value: "Akeneo"
         application_title:
-            value: "ORO CRM"
+            value: "Akeneo"
 
 oro_user:
     settings:
         name_format:
-            value:              %%last%%, %%first%%
-
+          value:              %%last%%, %%first%%
+          
 oro_filter:
     twig:
         layout: PimFilterBundle:Filter:pim-layout.js.twig
@@ -198,3 +188,4 @@ knp_gaufrette:
         pim:
             adapter: pim_adapter
             alias:   pim_filesystem
+
