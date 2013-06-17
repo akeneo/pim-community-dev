@@ -1,0 +1,180 @@
+<?php
+
+namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
+
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\Persistence\ObjectManager;
+
+/**
+ * Load required user data for PIM
+ *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
+{
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
+     * @var UserManager
+     */
+    protected $userManager;
+
+    /**
+     * @var FlexibleEntityRepository
+     */
+    protected $userRepository;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container      = $container;
+        $this->userManager    = $container->get('oro_user.manager');
+        $this->userRepository = $this->userManager->getFlexibleRepository();
+    }
+
+    /**
+     * Load sample user group data
+     *
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     */
+    public function load(ObjectManager $manager)
+    {
+        $attribute = $this->createAttributeWithOptions(
+            'oro_flexibleentity_simpleselect',
+            'cataloglocale',
+            self::getLocales(),
+            true,
+            'Catalog locale'
+        );
+        $this->userManager->getStorageManager()->persist($attribute);
+
+        $attribute = $this->createAttributeWithOptions(
+            'oro_flexibleentity_simpleselect',
+            'catalogscope',
+            self::getScopes(),
+            true,
+            'Catalog scope'
+        );
+        $this->userManager->getStorageManager()->persist($attribute);
+
+        $this->userManager->getStorageManager()->flush();
+    }
+
+    /**
+     * Create an attribute
+     *
+     * @param string $attributeType
+     * @param string $attributeCode
+     *
+     * @return AbstractAttribute
+     */
+    private function createAttribute($attributeType, $attributeCode)
+    {
+        $result = $this->userManager->createAttribute($attributeType);
+        $result->setCode($attributeCode);
+        $result->setLabel($attributeCode);
+
+        return $result;
+    }
+
+    /**
+     * Create an attribute option with value
+     *
+     * @param string $value
+     *
+     * @return AbstractAttributeOption
+     */
+    private function createAttributeOptionWithValue($value)
+    {
+        $option = $this->userManager->createAttributeOption();
+        $optionValue = $this->userManager->createAttributeOptionValue()->setValue($value);
+        $option->addOptionValue($optionValue);
+
+        return $option;
+    }
+
+    /**
+     * Create an attribute with options
+     *
+     * @param string  $attributeType
+     * @param string  $attributeCode
+     * @param array   $optionValues
+     * @param boolean $required
+     * @param mixed   $label
+     *
+     * @return AbstractAttribute
+     */
+    private function createAttributeWithOptions($attributeType, $attributeCode, array $optionValues, $required = false, $label = false)
+    {
+        $attribute = $this->createAttribute($attributeType, $attributeCode);
+        foreach ($optionValues as $value) {
+            $attribute->addOption($this->createAttributeOptionWithValue($value));
+            $attribute->setRequired($required);
+            if ($label) {
+                $attribute->setLabel($label);
+            }
+        }
+
+        return $attribute;
+    }
+
+    /**
+     * Get array of locales
+     *
+     * @return array
+     */
+    private static function getLocales()
+    {
+        return array('fr_FR', 'fr_CA', 'de_DE', 'en_US', 'en_GB');
+    }
+
+    /**
+     * Get array of scopes
+     *
+     * @return array
+     */
+    private static function getScopes()
+    {
+        return array('ecommerce', 'mobile');
+    }
+
+    /**
+     * Generates a locale
+     *
+     * @return string
+     */
+    private function generateLocale()
+    {
+        return 'en_US';
+    }
+
+    /**
+     * Generates a scope
+     *
+     * @return string
+     */
+    private function generateScope()
+    {
+        return 'ecommerce';
+    }
+
+    /**
+     * Get the order of this fixture
+     *
+     * @return integer
+     */
+    public function getOrder()
+    {
+        return 111;
+    }
+}
