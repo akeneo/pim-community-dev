@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\DataAuditBundle\Metadata;
 
-use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\ClassMetadata as DoctrineClassMetadata;
 
 use Oro\Bundle\DataAuditBundle\Metadata\Driver\AnnotationDriver;
 
@@ -22,10 +22,10 @@ class ExtendMetadataFactory
     }
 
     /**
-     * @param  ClassMetadata      $metadata
+     * @param  DoctrineClassMetadata $metadata
      * @return null|ClassMetadata
      */
-    public function extendLoadMetadataForClass(ClassMetadata $metadata)
+    public function extendLoadMetadataForClass(DoctrineClassMetadata $metadata)
     {
         return $this->driver->extendLoadMetadataForClass($metadata);
     }

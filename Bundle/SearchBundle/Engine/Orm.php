@@ -152,7 +152,7 @@ class Orm extends AbstractEngine
             }
 
             $this->em->persist($item);
-            $this->em->flush();
+            $this->em->flush($item);
 
             return $item->getId();
         }

@@ -15,6 +15,7 @@ services:
         arguments:    [@service_container, %oro_search.entities_config%]
         tags:
             - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postUpdate }
             - { name: doctrine.event_listener, event: preRemove }
 
     oro_search.twig.search_extension:

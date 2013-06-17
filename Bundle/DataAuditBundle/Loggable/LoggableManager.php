@@ -58,17 +58,17 @@ class LoggableManager
     /**
      * @var array
      */
-    protected $pendingLogEntityInserts;
+    protected $pendingLogEntityInserts = array();
 
     /**
      * @var array
      */
-    protected $pendingRelatedEntities;
+    protected $pendingRelatedEntities = array();
 
     /**
      * @var array
      */
-    protected $collectionLogData;
+    protected $collectionLogData = array();
 
     /**
      * Stack of logged flexible entities
@@ -83,16 +83,6 @@ class LoggableManager
     public function __construct($logEntityClass)
     {
         $this->logEntityClass = $logEntityClass;
-    }
-
-    /**
-     * Get the LogEntry class
-     *
-     * @return string
-     */
-    protected function getLogEntityClass()
-    {
-        return $this->logEntityClass;
     }
 
     /**
@@ -365,6 +355,16 @@ class LoggableManager
                 );
             }
         }
+    }
+
+    /**
+     * Get the LogEntry class
+     *
+     * @return string
+     */
+    protected function getLogEntityClass()
+    {
+        return $this->logEntityClass;
     }
 
     /**

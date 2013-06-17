@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\DataAuditBundle\Tests\DependencyInjection;
+namespace Oro\Bundle\DataAuditBundle\Tests\Unit\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Yaml\Parser;
