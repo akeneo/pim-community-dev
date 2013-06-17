@@ -18,7 +18,7 @@ class Page
     public function __construct($testCase, $redirect = true)
     {
         $this->test = $testCase;
-        $this->currentWindow()->size(array('width' => viewportWIDTH, 'height' => viewportHEIGHT));
+        $this->currentWindow()->size(array('width' => intval(viewportWIDTH), 'height' => intval(viewportHEIGHT)));
         if (!is_null($this->redirectUrl) && $redirect) {
             $this->test->url($this->redirectUrl);
             $this->waitPageToLoad();
