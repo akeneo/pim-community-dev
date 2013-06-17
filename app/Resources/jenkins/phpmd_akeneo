@@ -18,4 +18,4 @@ else
   OUTPUT_FORMAT=$2
 fi
 
-php -d "include_path=$NEW_INCLUDE_PATH" $ORIGINAL_PHPMD $1 $OUTPUT_FORMAT $SCRIPT_DIR/phpmd.xml --exclude $EXCLUDE_PATTERN $3 $4
+php -d "include_path=$NEW_INCLUDE_PATH" $ORIGINAL_PHPMD $1 $OUTPUT_FORMAT $SCRIPT_DIR/phpmd.xml --exclude $EXCLUDE_PATTERN --strict $3 $4
