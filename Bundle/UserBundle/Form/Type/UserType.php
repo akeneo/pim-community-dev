@@ -160,7 +160,7 @@ class UserType extends FlexibleType
      *
      * @param FormBuilderInterface $builder
      */
-    public function addDynamicAttributesFields(FormBuilderInterface $builder)
+    public function addDynamicAttributesFields(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
             'values',

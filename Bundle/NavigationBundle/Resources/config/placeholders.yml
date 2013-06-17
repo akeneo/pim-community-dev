@@ -1,0 +1,72 @@
+placeholders:
+    scripts_before:
+        label: Scripts Before
+        items:
+            dot_menu_js:
+                order: 100
+            pinbar_js:
+                order: 200
+            assets_js:
+                order: 300
+    scripts_after:
+        label: Scripts After
+        items:
+            navigationItem:
+                order: 100
+    head_style:
+        items:
+            assets_css:
+                order: 100
+    hash_nav:
+        label: Hash Navigation
+        items:
+            hashNavigation:
+                order: 100
+    navbar:
+        label: Navigation Bar
+        items:
+            shortcuts:
+                order: 100
+    user_menu:
+        items:
+            menu_user:
+                order: 100
+    application_menu:
+        label: Application Menu
+        items:
+            application_menu:
+                order: 100
+    pinbar:
+        label: Pinbar
+        items:
+            dots_menu:
+                order: 100
+    pin_button:
+        label: Pinbar buttons
+        items:
+            pin_button:
+                order: 100
+
+items:
+   assets_js:
+        template: OroNavigationBundle:Assets:oro_js.html.twig
+   assets_css:
+        template: OroNavigationBundle:Assets:oro_css.html.twig
+   hashNavigation:
+        template: OroNavigationBundle:HashNav:script.js.twig
+   dot_menu_js:
+        template: OroNavigationBundle:Js:dot.menu.js.twig
+   pinbar_js:
+        template: OroNavigationBundle:Js:pinbar.js.twig
+   navigationItem:
+        template: OroNavigationBundle:Js:navigationItem.html.twig
+   shortcuts:
+        template: OroNavigationBundle:Shortcut:shortcuts.html.twig
+   menu_user:
+        template: OroNavigationBundle:Menu:menuProfile.html.twig
+   application_menu:
+        template: OroNavigationBundle:ApplicationMenu:applicationMenu.html.twig
+   dots_menu:
+        template: OroNavigationBundle:ApplicationMenu:dotsMenu.html.twig
+   pin_button:
+        template: OroNavigationBundle:ApplicationMenu:pinButton.html.twig

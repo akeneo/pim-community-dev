@@ -165,9 +165,9 @@ class EntityResultListenerTest extends \PHPUnit_Framework_TestCase
     /**
      * Prepare repository for specific entity
      *
-     * @param string $entityName
-     * @param array $entities
-     * @param array $entityIds
+     * @param  string           $entityName
+     * @param  array            $entities
+     * @param  array            $entityIds
      * @return EntityRepository
      */
     protected function prepareEntityRepository($entityName, array $entities, array $entityIds)

@@ -1,0 +1,35 @@
+{#
+    Available variables:
+    * entity       - user entity Oro\Bundle\UserBundle\Entity\User
+    * indexer_item - indexer item Oro\Bundle\SearchBundle\Query\Result\Item
+#}
+{% extends 'OroSearchBundle:Search:searchResultItem.html.twig' %}
+{% import 'OroUserBundle::macros.html.twig' as macros %}
+
+{% set format = oro_config_value('oro_user.name_format') %}
+{% set entity_output = oro_config_entity('Oro\\Bundle\\UserBundle\\Entity\\User') %}
+{% set showImage = true %}
+
+{% if entity %}
+    {% set imagePath = entity.imagePath %}
+    {% set recordUrl = indexer_item.recordUrl %}
+    {% block additional_info %}
+        <div class="status-enabled pull-left">
+            {% if entity.enabled %}
+                <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled"></i>{{ 'Active'|trans }}</div>
+            {% else %}
+                <div class="badge badge-enabled status-disabled"><i class="icon-status-disabled"></i>{{ 'Inactive'|trans }}</div>
+            {% endif %}
+        </div>
+    {% endblock %}
+{% endif %}
+
+{% set title = entity.fullname(format)|default('N/A') %}
+{% set entityType = entity_output.name|trans({}, 'config') %}
+
+{% set entityInfo = [
+    {'title': 'Created', 'value': entity.createdAt ? macros.time(entity.createdAt) : 'N/A'},
+    {'title': 'Updated', 'value': entity.updatedAt ? macros.time(entity.updatedAt) : 'N/A'},
+    {'title': 'Last logged in', 'value': entity.lastLogin ? macros.time(entity.lastLogin) : 'N/A'},
+    {'title': 'Login count', 'value': entity.loginCount|default(0)}
+] %}

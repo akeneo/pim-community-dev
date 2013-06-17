@@ -1,27 +1,15 @@
 parameters:
-    oro_ui.date.class:                   Oro\Bundle\UIBundle\Form\Type\OroDateType
-    oro_ui.datetime.class:               Oro\Bundle\UIBundle\Form\Type\OroDateTimeType
-    oro_ui.type.entity_identifier.class: Oro\Bundle\UIBundle\Form\Type\EntityIdentifierType
     oro_ui.twig.ceil.class:              Oro\Bundle\UIBundle\Twig\CeilExtension
+    oro_ui.twig.extension.class:         Oro\Bundle\UIBundle\Twig\UiExtension
 
 services:
-    oro_ui.type.oro_date:
-        class: %oro_ui.date.class%
-        tags:
-            - { name: form.type, alias: oro_date }
-
-    oro_ui.type.oro_datetime:
-        class: %oro_ui.datetime.class%
-        tags:
-            - { name: form.type, alias: oro_datetime }
-
-    oro_ui.type.entity_identifier:
-        class: %oro_ui.type.entity_identifier.class%
-        tags:
-            - { name: form.type, alias: oro_entity_identifier }
-        arguments: ["@doctrine"]
-
     oro_ui.twig.ceil_extension:
         class: %oro_ui.twig.ceil.class%
+        tags:
+            - { name: twig.extension }
+
+    oro_ui.twig.ui_extension:
+        class: %oro_ui.twig.extension.class%
+        arguments: [%oro_ui.placeholders%, %oro_ui.wrap_class%]
         tags:
             - { name: twig.extension }

@@ -14,17 +14,26 @@ class IndexListener
     protected $container;
 
     /**
+     * @var bool
+     */
+    protected $realtime;
+
+    /**
      * @var array
      */
     protected $entities;
 
     /**
+     * Unfortunately, can't use AbstractEngine as a parameter here due to circular reference
+     *
      * @param ContainerInterface $container
+     * @param bool               $realtime  Realtime update flag
      * @param array              $entities  Entities config array from search.yml
      */
-    public function __construct(ContainerInterface $container, $entities)
+    public function __construct(ContainerInterface $container, $realtime, $entities)
     {
         $this->container = $container;
+        $this->realtime  = $realtime;
         $this->entities  = $entities;
     }
 
@@ -38,9 +47,7 @@ class IndexListener
 
         // process only "indexed" entities
         if (isset($this->entities[get_class($entity)])) {
-            $this->container
-                 ->get('oro_search.search.engine')
-                 ->save($entity, $this->container->getParameter('oro_search.realtime_update'));
+            $this->container->get('oro_search.search.engine')->save($entity, $this->realtime);
         }
     }
 
@@ -54,9 +61,7 @@ class IndexListener
 
         // process only "indexed" entities
         if (isset($this->entities[get_class($entity)])) {
-            $this->container
-                 ->get('oro_search.search.engine')
-                 ->delete($entity, $this->container->getParameter('oro_search.realtime_update'));
+            $this->container->get('oro_search.search.engine')->delete($entity, $this->realtime);
         }
     }
 

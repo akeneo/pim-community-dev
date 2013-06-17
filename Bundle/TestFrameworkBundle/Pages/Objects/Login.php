@@ -13,7 +13,6 @@ class Login extends Page
         }
         parent::__construct($testCase);
 
-        $this->currentWindow()->maximize();
         if (array_key_exists('remember', $args)) {
             $this->byId('remember_me')->click();
         }

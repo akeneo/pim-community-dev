@@ -1,5 +1,13 @@
 oro_menu_config:
     templates:
+        application_menu:
+            template: 'OroNavigationBundle:Menu:application_menu.html.twig'
+            currentClass: 'active'
+            ancestorClass: 'active'
+        dots_menu:
+            template: 'OroNavigationBundle:Menu:dots_menu.html.twig'
+        shortcuts:
+            template: 'OroNavigationBundle:Menu:shortcuts.html.twig'
         navbar:
             template: 'OroNavigationBundle:Menu:navbar.html.twig'
         dropdown:
@@ -19,6 +27,13 @@ oro_menu_config:
             currentAsLink: false
 
     items:
+        home:
+            name: 'Home'
+            label: ''
+            extras:
+                icon: 'icon-home icon-white'
+                position: 1
+            route: 'oro_default'
         pinbar:
             label: 'Pinbar'
             extras:
@@ -43,12 +58,21 @@ oro_menu_config:
             uri: '#'
 
     tree:
+        application_menu:
+            type: application_menu
+            children:
+                home: ~
+
         dots_menu:
+            type: dots_menu
             children:
                 pinbar: ~
                 history: ~
                 favorite: ~
                 mostviewed: ~
+
+        shortcuts:
+            type: shortcuts
 
 oro_titles:
     oro_shortcut_actionslist: Shortcut Actions List

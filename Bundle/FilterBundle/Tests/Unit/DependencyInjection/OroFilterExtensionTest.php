@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Oro\Bundle\FilterBundle\DependencyInjection\OroFilterExtension;
 
-class OroGridExtensionTest extends \PHPUnit_Framework_TestCase
+class OroFilterExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var array

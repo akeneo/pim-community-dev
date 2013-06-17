@@ -93,7 +93,7 @@ class IndexerPager implements PagerInterface
     }
 
     /**
-     * @param int $page
+     * @param  int  $page
      * @return void
      */
     public function setPage($page)
@@ -164,7 +164,7 @@ class IndexerPager implements PagerInterface
      *
      * @deprecated Should not be used
      *
-     * @param integer $nbLinks The maximum number of page numbers to return
+     * @param  integer $nbLinks The maximum number of page numbers to return
      * @return array
      */
     public function getLinks($nbLinks = null)

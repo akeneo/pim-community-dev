@@ -9,5 +9,5 @@ response:
     rest:
         data:
             -
-                entity_name: Acme\Bundle\TestsBundle\Entity\Item
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
                 record_string: item1@mail.com

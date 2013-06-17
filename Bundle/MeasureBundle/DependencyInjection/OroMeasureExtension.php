@@ -60,7 +60,6 @@ class OroMeasureExtension extends Extension
 
         $manager = $container
             ->getDefinition('oro_measure.manager')
-            ->addMethodCall('setMeasureConfig', $config)
-        ;
+            ->addMethodCall('setMeasureConfig', $config);
     }
 }

@@ -29,7 +29,7 @@ class IndexerQuery implements ProxyQueryInterface
 
     /**
      * @param Indexer $indexer
-     * @param Query $query
+     * @param Query   $query
      */
     public function __construct(Indexer $indexer, Query $query)
     {
@@ -124,8 +124,8 @@ class IndexerQuery implements ProxyQueryInterface
     /**
      * Adds sorting order
      *
-     * @param array $parentAssociationMappings
-     * @param array $fieldMapping
+     * @param array  $parentAssociationMappings
+     * @param array  $fieldMapping
      * @param string $direction
      *
      * @deprecated Can't proxy this method, use setOrderBy instead
@@ -135,8 +135,8 @@ class IndexerQuery implements ProxyQueryInterface
     }
 
     /**
-     * @param array $parentAssociationMappings
-     * @param array $fieldMapping
+     * @param  array $parentAssociationMappings
+     * @param  array $fieldMapping
      * @return mixed
      *
      * @deprecated Can't proxy this method, use setOrderBy instead
@@ -146,7 +146,7 @@ class IndexerQuery implements ProxyQueryInterface
     }
 
     /**
-     * @param mixed $sortOrder
+     * @param  mixed $sortOrder
      * @return void
      *
      * @deprecated Can't proxy this method, use setOrderBy instead
@@ -174,7 +174,7 @@ class IndexerQuery implements ProxyQueryInterface
     }
 
     /**
-     * @param array $associationMappings
+     * @param  array $associationMappings
      * @return mixed
      *
      * @deprecated Not allowed for indexer query
@@ -187,7 +187,7 @@ class IndexerQuery implements ProxyQueryInterface
      * Set query parameter
      *
      * @param string $name
-     * @param mixed $value
+     * @param mixed  $value
      *
      * @deprecated Not allowed for indexer query
      */
@@ -198,13 +198,24 @@ class IndexerQuery implements ProxyQueryInterface
     /**
      * Adds select part to internal whitelist
      *
-     * @param string $select
-     * @param bool $addToWhitelist
+     * @param  string              $select
+     * @param  bool                $addToWhitelist
      * @return ProxyQueryInterface
      *
      * @deprecated Not allowed for indexer query
      */
     public function addSelect($select = null, $addToWhitelist = false)
+    {
+    }
+
+    /**
+     * Gets the root alias of the query
+     *
+     * @return string
+     *
+     * @deprecated Not allowed for indexer query
+     */
+    public function getRootAlias()
     {
     }
 }

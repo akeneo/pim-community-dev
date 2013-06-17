@@ -1,0 +1,3 @@
+oro_form:
+    resource: "@OroFormBundle/Resources/config/routing.yml"
+    prefix:   /

@@ -52,7 +52,7 @@ class FlexibleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->addEntityFields($builder);
-        $this->addDynamicAttributesFields($builder);
+        $this->addDynamicAttributesFields($builder, $options);
     }
 
     /**
@@ -70,7 +70,7 @@ class FlexibleType extends AbstractType
      *
      * @param FormBuilderInterface $builder
      */
-    public function addDynamicAttributesFields(FormBuilderInterface $builder)
+    public function addDynamicAttributesFields(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
             'values',

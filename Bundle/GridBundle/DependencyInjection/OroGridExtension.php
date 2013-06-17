@@ -10,6 +10,8 @@ use Symfony\Component\Config\Definition\Processor;
 
 class OroGridExtension extends Extension
 {
+    const PARAMETER_TRANSLATION_DOMAIN = 'oro_grid.translation.translation_domain';
+
     /**
      * {@inheritdoc}
      */
@@ -17,6 +19,8 @@ class OroGridExtension extends Extension
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
+
+        $container->setParameter(self::PARAMETER_TRANSLATION_DOMAIN, $config[Configuration::TRANSLATION_DOMAIN_NODE]);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
