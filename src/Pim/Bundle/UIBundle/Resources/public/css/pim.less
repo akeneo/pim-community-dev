@@ -332,6 +332,7 @@ span.handle {
       border-bottom: 1px solid #d8d8d8;
       background-color: #ffffff;
       font-weight: bold;
+      cursor: pointer;
     }
     tr {
       border-bottom: 1px solid #ebebeb;
@@ -594,6 +595,11 @@ form .scopable {
         top: -4px;
         padding: 4px 5px;
         height: 100%;
+        i {
+          padding-left: 3px;
+          font-size: 16px;
+          line-height: 18px;
+        }
       }
     }
     ul.wysihtml5-toolbar {
@@ -659,6 +665,11 @@ form .currency {
         top: -4px;
         padding: 4px 5px;
         height: 100%;
+        i {
+          padding-left: 3px;
+          font-size: 16px;
+          line-height: 18px;
+        }
       }
     }
     &>.control-group:not(:first-of-type) {
@@ -875,13 +886,13 @@ button.pimmultiselect {
 }
 
 /* Icons */
-i {
-  &.icon-caret-down-gray { .icon-caret-down-gray(); }
-  &.icon-caret-right { .icon-caret-right(); }
+[class^="fa-icon-"] {
+  margin: 0 3px;
 }
 
-.icon-expand { .icon-expand(); }
-.icon-collapse { .icon-collapse(); }
+.fa-icon-collapse-alt, .fa-icon-expand-alt {
+  font-size: 14px;
+}
 
 .ui-multiselect-menu.select-filter-widget .ui-multiselect-checkboxes label.ui-state-active {
   background-color: @color-purple_light;
