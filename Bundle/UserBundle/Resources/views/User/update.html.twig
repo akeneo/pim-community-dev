@@ -10,14 +10,14 @@
 {% block navButtons %}
     {% if form.vars.value.id and resource_granted('oro_user_user_delete') and  form.vars.value.id!=app.user.id %}
         {{ UI.deleteButton({
-        'dataUrl': path('oro_api_delete_user', {'id': form.vars.value.id}),
-        'dataRedirect': path('oro_user_index'),
-        'aCss': 'no-hash remove-button',
-        'id': 'btn-remove-user',
-        'dataId':  form.vars.value.id,
-        'dataMessage': 'Are you sure you want to delete this user?',
-        'title': 'Delete user',
-        'label': 'Delete'
+            'dataUrl': path('oro_api_delete_user', {'id': form.vars.value.id}),
+            'dataRedirect': path('oro_user_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-user',
+            'dataId':  form.vars.value.id,
+            'dataMessage': 'Are you sure you want to delete this user?',
+            'title': 'Delete user',
+            'label': 'Delete'
         }) }}
         {{ UI.buttonSeparator() }}
     {% endif %}
@@ -28,12 +28,12 @@
 {% block pageHeader %}
     {% if form.vars.value.id %}
         {% set breadcrumbs = {
-        'entity':      form.vars.value,
-        'indexPath':   path('oro_user_index'),
-        'indexLabel': 'Users',
-        'entityTitle': form.vars.value.fullname(format)|default('N/A'),
-        'hasAvatar':   true,
-        'imagePath':   form.vars.value.imagePath,
+            'entity':      form.vars.value,
+            'indexPath':   path('oro_user_index'),
+            'indexLabel': 'Users',
+            'entityTitle': form.vars.value.fullname(format)|default('N/A'),
+            'hasAvatar':   true,
+            'imagePath':   form.vars.value.imagePath,
         }
         %}
         {{ parent() }}
@@ -52,30 +52,30 @@
     {% set id = 'user-profile' %}
 
     {% set dataBlocks = [{
-    'title': 'General',
-    'class': 'active',
-    'subblocks': [
-    {
-    'title': '',
-    'data': [
-    form_row(form.enabled),
-    form_row(form.username),
-    form.plainPassword is defined ? form_row(form.plainPassword) : '',
-    form_row(form.firstName),
-    form_row(form.lastName),
-    form_row(form.birthday),
-    form_row(form.imageFile)
-    ]
-    },
-    {
-    'title': '',
-    'data': [
-    form_row(form.email),
-    UI.collectionField(form.emails, 'Additional emails', 'Add another email')
-    ]
-    }
-    ]
-    }]
+            'title': 'General',
+            'class': 'active',
+            'subblocks': [
+                {
+                    'title': '',
+                    'data': [
+                        form_row(form.enabled),
+                        form_row(form.username),
+                        form.plainPassword is defined ? form_row(form.plainPassword) : '',
+                        form_row(form.firstName),
+                        form_row(form.lastName),
+                        form_row(form.birthday),
+                        form_row(form.imageFile)
+                    ]
+                },
+                {
+                    'title': '',
+                    'data': [
+                        form_row(form.email),
+                        UI.collectionField(form.emails, 'Additional emails', 'Add another email')
+                    ]
+                }
+            ]
+        }]
 
     %}
 
@@ -88,42 +88,42 @@
             {% endif %}
         {% endmacro %}
         {% set dataBlocks = dataBlocks|merge(
-        [{
-        'title': 'Groups and Roles',
-        'subblocks': [
-        {
-        'title': '',
-        'data': [
-        form.rolesCollection is defined ? form_row(form.groups, { attr: { class: 'horizontal' } }) : null,
-        _self.userRoles(form)
-        ]
-        }
-        ]
-        }]
+            [{
+                'title': 'Groups and Roles',
+                'subblocks': [
+                    {
+                        'title': '',
+                        'data': [
+                            form.rolesCollection is defined ? form_row(form.groups, { attr: { class: 'horizontal' } }) : null,
+                            _self.userRoles(form)
+                        ]
+                    }
+                ]
+            }]
         ) %}
     {% endif %}
 
     {% if form.values is defined %}
         {% set dataBlocks = dataBlocks|merge(
-        [{
-        'title': 'Additional data',
-        'subblocks': [{
-        'title': '',
-        'useSpan': false,
-        'data': [
-        form_row(form.values)
-        ]
-        }]
-        }]
+            [{
+                'title': 'Additional data',
+                'subblocks': [{
+                    'title': '',
+                    'useSpan': false,
+                    'data': [
+                        form_row(form.values)
+                    ]
+                }]
+            }]
         ) %}
     {% endif %}
 
     {% set data =
-    {
-    'formErrors': form_errors(form)? form_errors(form) : null,
-    'dataBlocks': dataBlocks,
-    'hiddenData': form_rest(form)
-    }
+        {
+            'formErrors': form_errors(form)? form_errors(form) : null,
+            'dataBlocks': dataBlocks,
+            'hiddenData': form_rest(form)
+        }
     %}
     {{ parent() }}
 {% endblock content_data %}

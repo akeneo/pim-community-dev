@@ -1,9 +1,9 @@
 {% macro time(time, format) -%}
-    <time datetime="{{ time.format(constant('DateTime::ISO8601')) }}">{{ time | localizeddate('short', 'short') }}</time>
+<time datetime="{{ time.format(constant('DateTime::ISO8601')) }}">{{ time | localizeddate('short', 'short') }}</time>
 {%- endmacro %}
 
 {% macro date(time, format) -%}
-    <time datetime="{{ time.format(constant('DateTime::ISO8601')) }}">{{ time | localizeddate('short', 'none') }}</time>
+<time datetime="{{ time.format(constant('DateTime::ISO8601')) }}">{{ time | localizeddate('short', 'none') }}</time>
 {%- endmacro %}
 
 {% macro collection_prototype(widget) %}
@@ -44,23 +44,23 @@
         additionalData - array with additional data
 #}
 {% macro attibuteRow(title, value, additionalData) %}
-    {% macro attribute_data(value, additionalData) %}
-        <div class="clearfix-oro">
-            {% if value.value is not defined  %}
-                <p class="control-label">{{ value }}</p>
-            {% else %}
-                <p class="control-label">{{ value.value }} <strong>{{ value.hint|trans }}</strong></p>
+        {% macro attribute_data(value, additionalData) %}
+            <div class="clearfix-oro">
+                {% if value.value is not defined  %}
+                    <p class="control-label">{{ value }}</p>
+                {% else %}
+                    <p class="control-label">{{ value.value }} <strong>{{ value.hint|trans }}</strong></p>
+                {% endif %}
+            </div>
+            {% if additionalData|length %}
+                {% for data in additionalData.data %}
+                    <div class="clearfix-oro">
+                        <p class="control-label">{{ attribute(data, additionalData.field) }}</p>
+                    </div>
+                {% endfor %}
             {% endif %}
-        </div>
-        {% if additionalData|length %}
-            {% for data in additionalData.data %}
-                <div class="clearfix-oro">
-                    <p class="control-label">{{ attribute(data, additionalData.field) }}</p>
-                </div>
-            {% endfor %}
-        {% endif %}
-    {% endmacro %}
-    {{ _self.renderAttribute(title, _self.attribute_data(value, additionalData)) }}
+        {% endmacro %}
+        {{ _self.renderAttribute(title, _self.attribute_data(value, additionalData)) }}
 {% endmacro %}
 
 {#
@@ -115,10 +115,10 @@
 {% macro addButton(parameters) %}
     <a href="{{ parameters.path }}"
        class="btn btn-primary pull-right {{ parameters.aClass is defined? parameters.aClass : '' }}"
-            {% if parameters.title is defined %}
-       title="{{ parameters.title|trans }}">
-        {% endif %}
-        {{ parameters.label|trans }}
+       {% if parameters.title is defined %}
+            title="{{ parameters.title|trans }}">
+       {% endif %}
+       {{ parameters.label|trans }}
     </a>
 {% endmacro %}
 
@@ -138,18 +138,18 @@
 {% macro deleteButton(parameters) %}
     <div class="pull-left btn-group icons-holder">
         <a href="javascript: void(0);" class="btn icons-holder-text {{ parameters.aCss is defined? parameters.aCss : '' }}"
-                {% if (parameters.id is defined) %}
-                    id="{{ parameters.id }}"
-                {% endif %}
+           {% if (parameters.id is defined) %}
+                id="{{ parameters.id }}"
+           {% endif %}
            data-id="{{ parameters.dataId }}"
            data-message="{{ parameters.dataMessage|trans }}"
            data-url="{{ parameters.dataUrl  }}"
            data-redirect="{{ parameters.dataRedirect  }}"
-                {% if (parameters.title is defined) %}
-                    title="{{ parameters.title|trans }}"
-                {% endif %}
-                >
-            <i class="icon-trash hide-text">{{ parameters.label|trans }}</i>{{ parameters.label|trans }}
+           {% if (parameters.title is defined) %}
+                title="{{ parameters.title|trans }}"
+           {% endif %}
+           >
+           <i class="icon-trash hide-text">{{ parameters.label|trans }}</i>{{ parameters.label|trans }}
         </a>
     </div>
 {% endmacro %}
