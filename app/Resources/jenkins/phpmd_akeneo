@@ -10,10 +10,12 @@ ORIGINAL_PHPMD=`which phpmd`
 
 DEFAULT_OUTPUT_FORMAT='text'
 
+EXCLUDE_PATTERN="*/Tests/*"
+
 if [ -z $2 ]; then
   OUTPUT_FORMAT=$DEFAULT_OUTPUT_FORMAT
 else
   OUTPUT_FORMAT=$2
 fi
 
-php -d "include_path=$NEW_INCLUDE_PATH" $ORIGINAL_PHPMD $1 $OUTPUT_FORMAT $SCRIPT_DIR/phpmd.xml
+php -d "include_path=$NEW_INCLUDE_PATH" $ORIGINAL_PHPMD $1 $OUTPUT_FORMAT $SCRIPT_DIR/phpmd.xml --exclude $EXCLUDE_PATTERN
