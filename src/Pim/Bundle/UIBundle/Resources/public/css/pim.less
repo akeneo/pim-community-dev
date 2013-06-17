@@ -76,7 +76,15 @@ header .shortcuts .dropdown > a {
     }
 }
 
-header h1.logo { padding: 0px; }
+header h1.logo {
+  padding: 0px;
+  a {
+    padding: 0px;
+    img {
+      vertical-align: top;
+    }
+  }
+}
 
 /* Pin bar and menus ************************************************************************************************/
 
@@ -302,6 +310,10 @@ a.accordion-toggle {
   float: none;
 }
 
+span.handle {
+  cursor: move;
+}
+
 .groups {
   margin: 10px 0;
   thead {
@@ -408,7 +420,6 @@ th label {
             }
           }
           span.handle {
-            cursor: move;
             padding-right: 5px;
             float: left;
           }
@@ -462,8 +473,13 @@ div.ui-dialog {
 
 /* Attribute Form ***************************************************************************************************/
 
-#sortable_options th {
-  text-align: center;
+#sortable_options {
+  th {
+    text-align: center;
+  }
+  td.handle {
+    line-height: 30px;
+  }
 }
 
 /* Product edit form - common */
