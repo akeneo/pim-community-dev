@@ -1,0 +1,13 @@
+model: Oro\Bundle\EntityConfigBundle\Entity\ConfigValue
+tags: [ crud ]
+fixtures:
+    extend_class:
+        scope:                  extend
+        code:                   class
+        value:                  Extend\Entity\AcmeDemoBundleEntityAccount
+        entity:                 entity_account
+    extend_is_extend:
+        scope:                  extend
+        code:                   is_extend
+        value:                  true
+        entity:                 entity_account

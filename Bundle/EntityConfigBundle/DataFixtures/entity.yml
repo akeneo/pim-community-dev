@@ -1,0 +1,5 @@
+model: Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity
+tags: [ setup ]
+fixtures:
+    entity_user:
+        className:          Oro\Bundle\UserBundle\Entity\User

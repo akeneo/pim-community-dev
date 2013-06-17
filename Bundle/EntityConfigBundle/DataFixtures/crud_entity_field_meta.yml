@@ -1,0 +1,28 @@
+model: Oro\Bundle\EntityConfigBundle\Entity\ConfigValue
+tags: [ crud ]
+fixtures:
+    phone_field_extend_is_extend:
+        scope:                  extend
+        field:                  phone_field
+        code:                   is_extend
+        value:                  true
+    phone_field_extend_type:
+        scope:                  extend
+        field:                  phone_field
+        code:                   type
+        value:                  string
+    phone_field_extend_length:
+        scope:                  extend
+        field:                  phone_field
+        code:                   length
+        value:                  255
+    phone_field_extend_nullable:
+        scope:                  extend
+        field:                  phone_field
+        code:                   nullable
+        value:                  true
+    phone_field_extend_default_value:
+        scope:                  extend
+        field:                  phone_field
+        code:                   default_value
+        value:                  '+380'

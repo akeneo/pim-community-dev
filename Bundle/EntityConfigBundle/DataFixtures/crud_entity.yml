@@ -1,0 +1,5 @@
+model: Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity
+tags: [ crud ]
+fixtures:
+    entity_account:
+        className:          Acme\DemoBundle\Entity\Account

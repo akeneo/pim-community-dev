@@ -1,0 +1,10 @@
+model: Oro\Bundle\EntityConfigBundle\Entity\ConfigField
+tags: [ setup ]
+fixtures:
+    name_field:
+        code:                   name
+        entity:                 entity_user
+
+    firstname_field:
+        code:                   firstname
+        entity:                 entity_user

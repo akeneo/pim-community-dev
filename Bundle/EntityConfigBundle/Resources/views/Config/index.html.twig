@@ -1,0 +1,33 @@
+<h1>Entity list</h1>
+
+<table class="records_list">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Extend</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td><a href="{{ path('flex_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+            <td>{{ entity.className }}</td>
+            <td>{{ entity.extend }}</td>
+            <td>
+                <ul>
+                    <li><a href="{{ path('flex_show', { 'id': entity.id }) }}">show</a></li>
+                    <li><a href="{{ path('flex_edit', { 'id': entity.id }) }}">edit</a></li>
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<ul>
+    <li>
+        <a href="{{ path('flex_new') }}">Create a new entry</a>
+    </li>
+</ul>

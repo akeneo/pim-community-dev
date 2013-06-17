@@ -1,0 +1,14 @@
+model: Oro\Bundle\EntityConfigBundle\Entity\ConfigField
+tags: [ crud ]
+fixtures:
+    name_field:
+        code:                   name
+        entity:                 entity_account
+
+    description_field:
+        code:                   description
+        entity:                 entity_account
+
+    phone_field:
+        code:                   phone
+        entity:                 entity_account
