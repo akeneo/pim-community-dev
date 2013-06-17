@@ -87,10 +87,12 @@ class ConfigBackendManager
             $entityConfigRepo = $this->em()->getRepository(ConfigEntity::ENTITY_NAME);
             /** @var ConfigEntity $entity */
             $entity = $entityConfigRepo->findOneBy(array('className' => $className));
-            if ($entity && null !== $this->configCache) {
+            if ($entity) {
                 $config = EntityConfig::fromEntity($entity);
-                $this->configCache->putConfigInCache($config);
 
+                if (null !== $this->configCache) {
+                    $this->configCache->putConfigInCache($config);
+                }
                 return $config;
             } else {
                 return null;

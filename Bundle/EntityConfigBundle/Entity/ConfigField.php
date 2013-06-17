@@ -26,7 +26,7 @@ class ConfigField
     /**
      * @var ConfigEntity
      *
-     * @ORM\ManyToOne(targetEntity="ConfigEntity")
+     * @ORM\ManyToOne(targetEntity="ConfigEntity", inversedBy="fields")
      * @ORM\JoinColumns({
      *      @ORM\JoinColumn(name="entity_id", referencedColumnName="id")
      * })

@@ -13,6 +13,11 @@ class ConfigProvider implements ConfigProviderInterface
     protected $configManager;
 
     /**
+     * @var array|EntityConfig[]
+     */
+    protected $configs = array();
+
+    /**
      * @param ConfigBackendManager $configManager
      */
     public function __construct(ConfigBackendManager $configManager)
@@ -27,10 +32,14 @@ class ConfigProvider implements ConfigProviderInterface
      */
     public function getConfig($className, $scope)
     {
-        if ($config = $this->configManager->getConfig($className)) {
-            return $config->cloneFilteredByScope($scope);
-        }
+        if (isset($this->configs[$className])) {
+            return $this->configs[$className];
+        } else {
+            if ($config = $this->configManager->getConfig($className)) {
+                return $this->configs[$className] = $config->cloneFilteredByScope($scope);
+            }
 
-        return null;
+            return null;
+        }
     }
 }

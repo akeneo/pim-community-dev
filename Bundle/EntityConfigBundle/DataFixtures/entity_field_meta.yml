@@ -1,5 +1,4 @@
 model: Oro\Bundle\EntityConfigBundle\Entity\ConfigValue
-tags: [ setup ]
 fixtures:
     name_field_ui_label:
         scope:                  ui
