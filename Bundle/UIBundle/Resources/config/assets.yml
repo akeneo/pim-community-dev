@@ -24,6 +24,8 @@ js:
   - '@OroUIBundle/Resources/public/lib/backbone.bootstrap-modal.js'
   - '@OroUIBundle/Resources/public/js/backbone/bootstrap-modal.js'
 
+  - '@OroUIBundle/Resources/public/js/remove.confirm.js'
+
   - '@OroUIBundle/Resources/public/js/backbone/setup.js'
 
   - '@FOSJsRoutingBundle/Resources/public/js/router.js'

@@ -214,11 +214,8 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
         $this->entityAlias = $alias;
         $qb = new FlexibleQueryBuilder($this->_em);
 
-        // TODO : grid integration, find a smart way to inject locale and scope in repo then qb
-        $locale = ($this->getLocale() !== null) ? $this->getLocale() : 'en_US';
-        $scope = ($this->getScope() !== null) ? $this->getScope() : 'ecommerce';
-        $qb->setLocale($locale);
-        $qb->setScope($scope);
+        $qb->setLocale($this->getLocale());
+        $qb->setScope($this->getScope());
 
         $qb->select($alias, 'Value', 'Attribute', 'ValueOption', 'AttributeOptionValue')
             ->from($this->_entityName, $this->entityAlias);
@@ -386,7 +383,6 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
             ->findByWithAttributesQB(array(), array('id' => $id))
             ->orderBy('Attribute.sortOrder')
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
 }

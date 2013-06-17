@@ -4,8 +4,10 @@ namespace Oro\Bundle\GridBundle\Tests\Unit\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\Parameter;
 
 use Oro\Bundle\GridBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
+use Oro\Bundle\GridBundle\DependencyInjection\OroGridExtension;
 
 class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTest
 {
@@ -78,6 +80,8 @@ class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTest
                             'setTranslator' => array(new Reference('translator')),
                             'setValidator' => array(new Reference('validator')),
                             'setRouter' => array(new Reference('router')),
+                            'setTranslationDomain'
+                                => array(new Parameter(OroGridExtension::PARAMETER_TRANSLATION_DOMAIN)),
                         )
                     ),
                     'test.user_grid.manager.default_query_factory' => array(
@@ -170,6 +174,7 @@ class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTest
                                     'translator' => 'translator_service',
                                     'validator' => 'validator_service',
                                     'router' => 'router_service',
+                                    'translation_domain' => 'translation_domain_parameter'
                                 )
                             )
                         )
@@ -186,6 +191,7 @@ class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTest
                             'setTranslator' => array(new Reference('translator_service')),
                             'setValidator' => array(new Reference('validator_service')),
                             'setRouter' => array(new Reference('router_service')),
+                            'setTranslationDomain' => array(new Parameter('translation_domain_parameter')),
                         )
                     )
                 )

@@ -14,9 +14,9 @@ abstract class AbstractQueryFactory implements QueryFactoryInterface
      */
     protected $queryBuilder;
 
-
     /**
      * @return ProxyQueryInterface
+     * @throws \LogicException
      */
     public function createQuery()
     {

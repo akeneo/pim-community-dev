@@ -6,3 +6,4 @@ js:
   - '@OroUIBundle/Resources/public/lib/bootstrap/js/bootstrap-scrollspy.js'
   - '@OroUIBundle/Resources/public/js/form/collection.js'
   - '@OroUserBundle/Resources/public/js/user.js'
+  - '@OroUserBundle/Resources/public/js/status.js'

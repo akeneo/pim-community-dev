@@ -216,6 +216,7 @@ services:
         arguments:
             - "address"
             - "oro_address"
+            - @oro_flexibleentity.validator.attribute_constraint_guesser
         tags:
             - { name: oro_flexibleentity.attributetype, alias: oro_address }
 

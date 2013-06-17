@@ -296,6 +296,7 @@ services:
         arguments:
             - "user"
             - "oro_user_select"
+            - @oro_flexibleentity.validator.attribute_constraint_guesser
         tags:
             - { name: oro_flexibleentity.attributetype, alias: oro_user_attribute_user }
 
