@@ -33,7 +33,7 @@ class ProductAttributeController extends Controller
      */
     protected function getProductManager()
     {
-        $pm = $this->container->get('product_manager');
+        $pm = $this->container->get('pim_product.manager.product');
         // force data locale if provided
         $dataLocale = $this->getRequest()->get('dataLocale');
         $pm->setLocale($dataLocale);
@@ -62,11 +62,11 @@ class ProductAttributeController extends Controller
             ->where("a.entityType = 'Pim\Bundle\ProductBundle\Entity\Product'");
 
         /** @var $queryFactory QueryFactory */
-        $queryFactory = $this->get('pim_product.productattribute_grid_manager.default_query_factory');
+        $queryFactory = $this->get('pim_product.datagrid.manager.productattribute.default_query_factory');
         $queryFactory->setQueryBuilder($queryBuilder);
 
         /** @var $gridManager AttributeDatagridManager */
-        $gridManager = $this->get('pim_product.productattribute_grid_manager');
+        $gridManager = $this->get('pim_product.datagrid.manager.productattribute');
         $datagrid = $gridManager->getDatagrid();
 
         $em = $this->getDoctrine()->getEntityManager();

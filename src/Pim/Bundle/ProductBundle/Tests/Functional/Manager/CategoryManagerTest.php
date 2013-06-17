@@ -21,7 +21,7 @@ class CategoryManagerTest extends WebTestCase
     {
         static::$kernel = static::createKernel();
         static::$kernel->boot();
-        $manager = static::$kernel->getContainer()->get('pim_product.category_manager');
+        $manager = static::$kernel->getContainer()->get('pim_product.manager.category');
 
         $this->assertInstanceOf('Oro\Bundle\SegmentationTreeBundle\Manager\SegmentManager', $manager);
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Manager\CategoryManager', $manager);
