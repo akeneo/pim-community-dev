@@ -1,7 +1,7 @@
 {% extends 'PimProductBundle::layout.html.twig' %}
 
 {% set parentId %}{{ form.vars.value.parent ? form.vars.value.parent.id : null }}{% endset %}
-{% set type = parentId ? 'node' : 'tree' %}
+{% set type = parentId ? 'category' : 'tree' %}
 {% set action = form.vars.value.id ? 'Edit' : 'Add' %}
 
 {% set title = action|trans ~ ' ' ~ type|trans %}
@@ -21,14 +21,10 @@
                 path('pim_product_categorytree_edit', { id: form.vars.value.id }) :
                 path('pim_product_categorytree_create', { parent: parentId }) }}" method="POST" class="form-horizontal">
 
-                <div class="row-fluid">
-                    <h3 class="pull-left">{{ title|trans }}</h3>
-                    <div class="pull-right">
-                        {% if form.vars.value.id %}
-                            <a class="btn" href="#" id="btn-delete-category">{{ 'Delete' | trans }}</a>
-                        {% endif %}
-                        <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
-                    </div>
+                <div class="form-row">
+                    <h3>{{ title|trans }}
+                        <button class="btn btn-primary pull-right" type="submit">{{ 'Save'|trans }}</button>
+                    </h3>
                 </div>
 
                 <div id="form-navbar" class="navbar navbar-static scrollspy-nav">
