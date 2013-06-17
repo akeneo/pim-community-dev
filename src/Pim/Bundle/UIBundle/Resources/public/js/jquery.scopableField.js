@@ -181,8 +181,8 @@
         toggleOnUpdate: false,
         defaultScope: null,
         title: null,
-        expandIcon: 'icon-caret-right',
-        collapseIcon: 'icon-caret-down-gray',
+        expandIcon: 'fa-icon-caret-right',
+        collapseIcon: 'fa-icon-caret-down',
         wysihtml5: {
             width: 523,
             height: 192

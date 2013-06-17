@@ -11,7 +11,7 @@
                     {% for group in groups %}
                         <li class="{{ group == currentGroup ? 'active' : '' }}" data-id="{{ group.id }}">
                             <span class="handle">
-                                <i class="icon-list"></i>
+                                <i class="fa-icon-reorder"></i>
                                 <input name="{{ group.id }}" type="hidden" value="{{ group.sortOrder }}">
                             </span>
                             <a href="{{ path('pim_product_attributegroup_edit', {'id': group.id}) }}">{{ group.name }}</a>

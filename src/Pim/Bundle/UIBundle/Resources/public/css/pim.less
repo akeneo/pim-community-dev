@@ -76,7 +76,15 @@ header .shortcuts .dropdown > a {
     }
 }
 
-header h1.logo { padding: 0px; }
+header h1.logo {
+  padding: 0px;
+  a {
+    padding: 0px;
+    img {
+      vertical-align: top;
+    }
+  }
+}
 
 /* Pin bar and menus ************************************************************************************************/
 
@@ -302,6 +310,10 @@ a.accordion-toggle {
   float: none;
 }
 
+span.handle {
+  cursor: move;
+}
+
 .groups {
   margin: 10px 0;
   thead {
@@ -320,6 +332,7 @@ a.accordion-toggle {
       border-bottom: 1px solid #d8d8d8;
       background-color: #ffffff;
       font-weight: bold;
+      cursor: pointer;
     }
     tr {
       border-bottom: 1px solid #ebebeb;
@@ -408,7 +421,6 @@ th label {
             }
           }
           span.handle {
-            cursor: move;
             padding-right: 5px;
             float: left;
           }
@@ -462,8 +474,13 @@ div.ui-dialog {
 
 /* Attribute Form ***************************************************************************************************/
 
-#sortable_options th {
-  text-align: center;
+#sortable_options {
+  th {
+    text-align: center;
+  }
+  td.handle {
+    line-height: 30px;
+  }
 }
 
 /* Product edit form - common */
@@ -578,6 +595,11 @@ form .scopable {
         top: -4px;
         padding: 4px 5px;
         height: 100%;
+        i {
+          padding-left: 3px;
+          font-size: 16px;
+          line-height: 18px;
+        }
       }
     }
     ul.wysihtml5-toolbar {
@@ -643,6 +665,11 @@ form .currency {
         top: -4px;
         padding: 4px 5px;
         height: 100%;
+        i {
+          padding-left: 3px;
+          font-size: 16px;
+          line-height: 18px;
+        }
       }
     }
     &>.control-group:not(:first-of-type) {
@@ -859,13 +886,13 @@ button.pimmultiselect {
 }
 
 /* Icons */
-i {
-  &.icon-caret-down-gray { .icon-caret-down-gray(); }
-  &.icon-caret-right { .icon-caret-right(); }
+[class^="fa-icon-"] {
+  margin: 0 3px;
 }
 
-.icon-expand { .icon-expand(); }
-.icon-collapse { .icon-collapse(); }
+.fa-icon-collapse-alt, .fa-icon-expand-alt {
+  font-size: 14px;
+}
 
 .ui-multiselect-menu.select-filter-widget .ui-multiselect-checkboxes label.ui-state-active {
   background-color: @color-purple_light;
