@@ -209,7 +209,7 @@ Oro.Filter.SelectFilter = Oro.Filter.AbstractFilter.extend({
      */
     _setDropdownWidth: function() {
         if (!this.minimumWidth) {
-            this.minimumWidth = this.selectWidget.getMinimumDropdownWidth() + 12;
+            this.minimumWidth = this.selectWidget.getMinimumDropdownWidth() + 22;
         }
         var widget = this.selectWidget.getWidget();
         var filterWidth = this.$(this.containerSelector).width();
