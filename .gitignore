@@ -14,3 +14,4 @@ composer.phar
 /bin
 behat.yml
 app/phpunit.xml
+

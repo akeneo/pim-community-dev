@@ -1,0 +1,26 @@
+parameters:
+    pim_product.productattribute_grid_manager_class:  Pim\Bundle\ProductBundle\Datagrid\AttributeDatagridManager
+    pim_product.product_grid_manager_class:           Pim\Bundle\ProductBundle\Datagrid\ProductDatagridManager
+
+services:
+    # Product attribute grid manager
+    pim_product.productattribute_grid_manager:
+        class: "%pim_product.productattribute_grid_manager_class%"
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: attributes
+              entity_hint: attributes
+              route_name: pim_product_productattribute_index
+        calls:
+            - [ setProductManager, [@product_manager] ]
+
+    # Product grid manager
+    pim_product.product_grid_manager:
+        class: "%pim_product.product_grid_manager_class%"
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: products
+              entity_name: Pim\Bundle\ProductBundle\Entity\Product
+              entity_hint: products
+              flexible: true
+              route_name: pim_product_product_index

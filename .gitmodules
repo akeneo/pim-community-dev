@@ -1,12 +1,4 @@
-[submodule "src/Pim/Bundle/UIBundle"]
-    path = src/Pim/Bundle/UIBundle
-    url = git@github.com:akeneo/UIBundle.git
-[submodule "src/Pim/Bundle/ProductBundle"]
-    path = src/Pim/Bundle/ProductBundle
-    url = git@github.com:akeneo/ProductBundle.git
 [submodule "src/Pim/Bundle/DemoBundle"]
     path = src/Pim/Bundle/DemoBundle
     url = git@github.com:akeneo/DemoBundle.git
-[submodule "src/Pim/Bundle/TranslationBundle"]
-    path = src/Pim/Bundle/TranslationBundle
-    url = git@github.com:akeneo/TranslationBundle.git
+

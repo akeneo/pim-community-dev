@@ -131,9 +131,12 @@ class LocaleType extends AbstractType
 
         $locales = $this->prepareLocaleList($this->locales);
 
-        $existingLocales = array_map(function ($locale) {
-            return $locale->getCode();
-        }, $this->em->getRepository('PimConfigBundle:Locale')->findAll());
+        $existingLocales = array_map(
+            function ($locale) {
+                return $locale->getCode();
+            },
+            $this->em->getRepository('PimConfigBundle:Locale')->findAll()
+        );
 
         $localesWithFallback = $this->getLocalesWithFallback();
 

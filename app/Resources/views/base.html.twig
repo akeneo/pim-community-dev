@@ -1,5 +1,4 @@
 {% extends "OroUIBundle:Default:index.html.twig" %}
-{% use ':Default:components.html.twig' %}
 
 {% block head_script %}
     {{ parent() }}
@@ -10,12 +9,6 @@
     {{ parent() }}
     {{ block('head_style_component') }}
 {% endblock %}
-
-{% block logo %}
-    <h1 class="logo">
-        <a href="{{ path('pim_default') }}">Akeneo</a>
-    </h1>
-{% endblock logo %}
 
 {% block messages %}
     {% set allMessages = {'empty': ['']} %}

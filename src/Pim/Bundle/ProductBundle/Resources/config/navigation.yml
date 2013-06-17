@@ -1,0 +1,68 @@
+oro_menu_config:
+    items:
+        pim_enrich_tab:
+            label: 'Enrich'
+            uri: '#'
+            extras:
+                position: 10
+        pim_enrich_product:
+            label: 'Products'
+            route: 'pim_product_product_index'
+        pim_enrich_attribute:
+            label: 'Attributes'
+            route: 'pim_product_productattribute_index'
+        pim_enrich_family:
+            label: 'Families'
+            route: 'pim_product_productfamily_index'
+        pim_enrich_attributegroup:
+            label: 'Attribute groups'
+            route: 'pim_product_attributegroup_index'
+        pim_enrich_categorytree:
+            label: 'Category trees'
+            route: 'pim_product_categorytree_index'
+
+    tree:
+        application_menu:
+            children:
+                pim_enrich_tab:
+                    children:
+                        pim_enrich_product: ~
+                        pim_enrich_family: ~
+                        pim_enrich_attribute: ~
+                        pim_enrich_attributegroup: ~
+                        pim_enrich_exportprofile: ~
+                        pim_enrich_categorytree: ~
+
+oro_titles:
+    pim_default:                             Dashboard
+    pim_product_attributegroup_index:        Attribute groups
+    pim_product_attributegroup_create:       Attribute groups | Create
+    pim_product_attributegroup_edit:         Attribute groups | Edit
+    pim_product_attributegroup_sort:         Attribute groups | Sort
+    pim_product_categorytree_index:          Category trees
+    pim_product_categorytree_listtree:       Category trees | List
+    pim_product_categorytree_manage:         Category trees | Manage
+    pim_product_categorytree_view:           Category trees | View
+    pim_product_categorytree_create:         Category trees | Create
+    pim_product_categorytree_edit:           Category trees | Edit
+    pim_product_exportprofile_index:         Export profiles
+    pim_product_exportprofile_create:        Export profiles | Create
+    pim_product_exportprofile_edit:          Export profiles | Edit
+    pim_product_productattribute_index:      Product attributes
+    pim_product_productattribute_create:     Product attributes | Create
+    pim_product_productattribute_edit:       Product attributes | Edit
+    pim_product_product_index:               Products
+    pim_product_product_create:              Products | Create
+    pim_product_product_edit:                Products | Edit
+    pim_product_productfamily_index:         Product families
+    pim_product_productfamily_create:        Product families | Create
+    pim_product_productfamily_edit:          Product families | Edit
+    pim_config_channel_index:                Channels
+    pim_config_channel_create:               Channels | Create
+    pim_config_channel_edit:                 Channels | Edit
+    pim_config_currency_index:               Currencies
+    pim_config_currency_create:              Currencies | Create
+    pim_config_currency_edit:                Currencies | Edit
+    pim_config_locale_index:                 Locales
+    pim_config_locale_create:                Locales | Create
+    pim_config_locale_edit:                  Locales | Edit

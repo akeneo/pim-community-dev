@@ -67,6 +67,9 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($currency->getActivated());
     }
 
+    /**
+     * Test related method
+     */
     public function testToggleActivation()
     {
         $currency = new Currency();

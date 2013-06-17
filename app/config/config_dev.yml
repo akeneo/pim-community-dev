@@ -20,7 +20,8 @@ monolog:
             level: info
 
 assetic:
-    use_controller: true
+    use_controller: false
+    debug:          true
 
 #swiftmailer:
 #    delivery_address: me@example.com
