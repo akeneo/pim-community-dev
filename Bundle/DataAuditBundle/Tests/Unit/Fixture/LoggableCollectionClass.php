@@ -11,7 +11,7 @@ use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
  * @ORM\Table
  * @Oro\Loggable
  */
-class LoggableCollectionClass 
+class LoggableCollectionClass
 {
     /**
      * @ORM\Id
@@ -32,7 +32,6 @@ class LoggableCollectionClass
     {
         return $this->id;
     }
-
 
     /**
      * @param mixed $name

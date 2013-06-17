@@ -125,7 +125,7 @@ class LoggableManager
         if (is_string($username)) {
             $this->username = $username;
         } elseif (is_object($username) && method_exists($username, 'getUsername')) {
-            $this->username = (string)$username->getUsername();
+            $this->username = (string) $username->getUsername();
         } else {
             throw new \InvalidArgumentException("Username must be a string, or object should have method: getUsername");
         }
@@ -416,7 +416,7 @@ class LoggableManager
                 }
 
                 $data = array_merge(
-                    (array)$logEntry->getData(),
+                    (array) $logEntry->getData(),
                     array(
                         $entity->getAttribute()->getCode() => array(
                             'old' => $oldData,
@@ -462,7 +462,7 @@ class LoggableManager
 
     /**
      * @param $entity
-     * @param  null $entityMeta
+     * @param  null  $entityMeta
      * @return mixed
      */
     protected function getIdentifier($entity, $entityMeta = null)

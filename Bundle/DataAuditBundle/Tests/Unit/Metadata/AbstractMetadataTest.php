@@ -36,7 +36,6 @@ abstract class AbstractMetadataTest extends OrmTestCase
         ));
         $this->em->getConfiguration()->setMetadataDriverImpl($metadataDriver);
 
-
         $this->loggableAnnotationDriver = new \Oro\Bundle\DataAuditBundle\Metadata\Driver\AnnotationDriver(new AnnotationReader());
     }
 }

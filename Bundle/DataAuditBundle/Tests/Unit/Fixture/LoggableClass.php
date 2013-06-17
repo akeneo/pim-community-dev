@@ -11,7 +11,7 @@ use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
  * @ORM\Table
  * @Oro\Loggable
  */
-class LoggableClass 
+class LoggableClass
 {
     /**
      * @ORM\Id
