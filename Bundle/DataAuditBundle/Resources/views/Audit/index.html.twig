@@ -1,17 +1,7 @@
-{% extends bap.layout %}
-
-{% block head_script %}
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set gridId = 'audit-grid' %}
+{% block content %}
+    {% set pageTitle = 'Data Audit' %}
     {{ parent() }}
-
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#audit-grid'} %}
-    {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
-{% endblock %}
-
-{% block page_container %}
-    <div class="container-fluid">
-        {% block content %}
-            <h1>{{ 'Data Audit'|trans }}</h1>
-            <div id="audit-grid"></div>
-        {% endblock %}
-    </div>
 {% endblock %}

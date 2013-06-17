@@ -1,0 +1,9 @@
+placeholders:
+    navbar:
+        items:
+            search:
+                order: 200
+
+items:
+   search:
+        action: OroSearchBundle:Search:searchBar

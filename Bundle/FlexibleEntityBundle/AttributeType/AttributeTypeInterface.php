@@ -32,12 +32,12 @@ interface AttributeTypeInterface
     public function buildValueFormType(FormFactoryInterface $factory, FlexibleValueInterface $value);
 
     /**
-     * Build form type for attribute
+     * Build form types for custom properties of an attribute
      *
      * @param FormFactoryInterface $factory   the form factory
      * @param AbstractAttribute    $attribute the attribute
      *
      * @return FormInterface the form
      */
-    public function buildAttributeFormType(FormFactoryInterface $factory, AbstractAttribute $attribute);
+    public function buildAttributeFormTypes(FormFactoryInterface $factory, AbstractAttribute $attribute);
 }

@@ -207,4 +207,15 @@ class IndexerQuery implements ProxyQueryInterface
     public function addSelect($select = null, $addToWhitelist = false)
     {
     }
+
+    /**
+     * Gets the root alias of the query
+     *
+     * @return string
+     *
+     * @deprecated Not allowed for indexer query
+     */
+    public function getRootAlias()
+    {
+    }
 }

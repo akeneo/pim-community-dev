@@ -41,6 +41,12 @@ class Role extends Page implements Entity
         return $this->label->value();
     }
 
+    public function selectAcl($aclName)
+    {
+        $this->byXPath("//div[@id='acl_tree']//a[contains(., '$aclName')]/ins[@class='jstree-checkbox']")->click();
+        return $this;
+    }
+
     public function save()
     {
         $this->byXPath("//button[contains(., 'Save')]")->click();
