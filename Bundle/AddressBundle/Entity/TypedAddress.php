@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 use JMS\Serializer\Annotation\Exclude;
 use Oro\Bundle\AddressBundle\Entity\AddressType;
+use Symfony\Component\Validator\ExecutionContext;
 
 /**
  * Address
@@ -27,10 +28,10 @@ class TypedAddress extends AddressBase
     /**
      * @var boolean
      *
-     * @ORM\Column(name="is_default", type="boolean", nullable=true)
+     * @ORM\Column(name="is_primary", type="boolean", nullable=true)
      * @Soap\ComplexType("boolean", nillable=true)
      */
-    protected $default;
+    protected $primary;
 
     /**
      * @var \Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexibleValue[]
@@ -60,18 +61,18 @@ class TypedAddress extends AddressBase
     }
 
     /**
-     * @param bool $default
+     * @param bool $primary
      */
-    public function setDefault($default)
+    public function setPrimary($primary)
     {
-        $this->default = $default;
+        $this->primary = $primary;
     }
 
     /**
      * @return bool
      */
-    public function isDefault()
+    public function isPrimary()
     {
-        return $this->default;
+        return $this->primary;
     }
 }

@@ -22,10 +22,10 @@ class AddressTypedType extends AddressType
             )
         );
         $builder->add(
-            'default',
+            'primary',
             'checkbox',
             array(
-                'label' => 'Default',
+                'label' => 'Primary',
                 'required' => false
             )
         );

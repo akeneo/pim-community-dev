@@ -68,15 +68,10 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
             /** @var Collection $addresses */
             $addresses = $data->$method();
             /** @var TypedAddress $item */
-            $hasDefault = false;
             foreach ($addresses as $item) {
-                $hasDefault = $hasDefault || $item->isDefault();
                 if ($item->isEmpty()) {
                     $addresses->removeElement($item);
                 }
-            }
-            if (!$addresses->isEmpty() && !$hasDefault) {
-                $addresses->first()->setDefault(true);
             }
         }
     }
@@ -94,15 +89,24 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
         }
 
         $addresses = array();
+        $hasPrimary = false;
+        // Remove all empty addresses
         if ($data && array_key_exists($this->property, $data)) {
             foreach ($data[$this->property] as $addressRow) {
                 if (!$this->isArrayEmpty($addressRow)) {
+                    $hasPrimary = $hasPrimary || (array_key_exists('primary', $addressRow) && $addressRow['primary']);
                     $addresses[] = $addressRow;
                 }
             }
         }
 
+        // Set first non empty address for new item as primary
         if ($addresses) {
+            if (!$data['id'] && !$hasPrimary) {
+                $first = array_shift($addresses);
+                $first['primary'] = true;
+                array_unshift($addresses, $first);
+            }
             $data[$this->property] = $addresses;
         } else {
             unset($data[$this->property]);
