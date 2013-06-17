@@ -77,22 +77,18 @@
     </target>
 
     <target name="phpmd" description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
-        <exec executable="phpmd">
+        <exec executable="${basedir}/app/Resources/jenkins/phpmd_akeneo">
             <arg path="${basedir}/src/Pim" />
             <arg value="text" />
-            <arg value="${basedir}/app/Resources/jenkins/phpmd.xml" />
-            <arg value="--ignore=${basedir}/src/*/Tests/*.php,${basedir}/src/*Tests/Files/*" />
         </exec>
     </target>
 
     <target name="phpmd-ci" description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
-        <exec executable="phpmd">
+        <exec executable="${basedir}/app/Resources/jenkins/phpmd_akeneo">
             <arg path="${basedir}/src/Pim" />
             <arg value="xml" />
-            <arg value="${basedir}/app/Resources/jenkins/phpmd.xml" />
             <arg value="--reportfile" />
             <arg value="${basedir}/app/build/logs/pmd.xml" />
-            <arg value="--ignore=${basedir}/src/*/Tests/*.php,${basedir}/src/*Tests/Files/*" />
         </exec>
     </target>
 
