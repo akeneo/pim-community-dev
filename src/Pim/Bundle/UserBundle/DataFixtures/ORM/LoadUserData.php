@@ -1,6 +1,5 @@
 <?php
-
-namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
+namespace Pim\Bundle\UserBundle\DataFixtures\ORM;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -53,7 +52,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $users = $this->userRepository->findAll();
         foreach ($users as $user) {
             $this->setFlexibleAttributeValueOption($user, 'cataloglocale', 'en_US');
-            $this->setFlexibleAttributeValueOption($user, 'catalogscope', 'mobile');
+            $this->setFlexibleAttributeValueOption($user, 'catalogscope', 'default');
             $this->persist($user);
         }
 

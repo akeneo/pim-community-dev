@@ -1,6 +1,5 @@
 <?php
-
-namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
+namespace Pim\Bundle\UserBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -135,7 +134,7 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
      */
     private static function getLocales()
     {
-        return array('fr_FR', 'fr_CA', 'de_DE', 'en_US', 'en_GB');
+        return array('en_US');
     }
 
     /**
@@ -145,7 +144,7 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
      */
     private static function getScopes()
     {
-        return array('ecommerce', 'mobile');
+        return array('default');
     }
 
     /**
@@ -165,7 +164,7 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
      */
     private function generateScope()
     {
-        return 'ecommerce';
+        return 'default';
     }
 
     /**
