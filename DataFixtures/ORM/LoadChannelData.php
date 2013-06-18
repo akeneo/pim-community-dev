@@ -1,5 +1,4 @@
 <?php
-
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
 use Pim\Bundle\ConfigBundle\Entity\Channel;
@@ -76,6 +75,6 @@ class LoadChannelData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function getOrder()
     {
-        return 0;
+        return 5;
     }
 }

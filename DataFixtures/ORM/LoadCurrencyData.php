@@ -1,5 +1,4 @@
 <?php
-
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
 use Symfony\Component\Yaml\Yaml;
@@ -27,11 +26,6 @@ class LoadCurrencyData extends AbstractFixture implements OrderedFixtureInterfac
     protected $container;
 
     /**
-     * @staticvar multitype
-     */
-    protected static $activatedCurrencies = array('EUR', 'USD', 'GBP');
-
-    /**
      * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
@@ -44,11 +38,14 @@ class LoadCurrencyData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
-        $configCurrencies = $this->container->getParameter('pim_config.currencies');
+        $activatedCurrencies = array('GBP', 'CAD');
 
-        foreach ($configCurrencies['currencies'] as $currencyCode => $currencyName) {
-            $activated = in_array($currencyCode, self::$activatedCurrencies);
-            $currency = $this->createCurrency($currencyCode, $activated);
+        foreach ($activatedCurrencies as $code) {
+
+            $currency = $manager->getRepository('PimConfigBundle:Currency')->findOneBy(array('code' => $code));
+            $currency->setActivated(true);
+            $this->setReference('currency.'. $code, $currency);
+
             $manager->persist($currency);
         }
 
@@ -56,28 +53,10 @@ class LoadCurrencyData extends AbstractFixture implements OrderedFixtureInterfac
     }
 
     /**
-     * Create currency entity and persist it
-     * @param string  $code      Currency code
-     * @param boolean $activated Define if currency is activated or not
-     *
-     * @return \Pim\Bundle\ConfigBundle\Entity\Currency
-     */
-    protected function createCurrency($code, $activated = false)
-    {
-        $currency = new Currency();
-        $currency->setCode($code);
-        $currency->setActivated($activated);
-
-        $this->setReference('currency.'. $code, $currency);
-
-        return $currency;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getOrder()
     {
-        return 0;
+        return 5;
     }
 }

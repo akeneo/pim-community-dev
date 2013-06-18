@@ -76,11 +76,11 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         $scopeMobile    = $this->getReference('channel.mobile');
 
         // force in english because product is translatable
-        $locale = $this->getReference('locale.en_US');
+        $locale = $manager->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => 'en_US'));
         $this->getProductManager()->setLocale($locale->getCode());
 
         // get currency
-        $currencyUSD = $this->getReference('currency.USD');
+        $currencyUSD = $manager->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => 'USD'));
 
         // get attributes by reference
         $attName        = $this->getReference('product-attribute.name');
@@ -136,9 +136,9 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $product->addValue($value);
 
             // product locales
-            $product->addLocale($this->getReference('locale.de_DE'));
-            $product->addLocale($this->getReference('locale.fr_FR'));
-            $product->addLocale($this->getReference('locale.en_US'));
+            $product->addLocale($manager->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => 'de_DE')));
+            $product->addLocale($manager->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => 'fr_FR')));
+            $product->addLocale($manager->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => 'en_US')));
 
             // name
             foreach ($names as $locale => $data) {

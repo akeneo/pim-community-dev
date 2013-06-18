@@ -1,5 +1,4 @@
 <?php
-
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
 use Pim\Bundle\ConfigBundle\Entity\Currency;
@@ -42,16 +41,13 @@ class LoadLocaleData extends AbstractFixture implements OrderedFixtureInterface,
         $locale = $this->createLocale('fr_FR', null, 'EUR');
         $manager->persist($locale);
 
-        $locale = $this->createLocale('fr_CA', null, 'CAD', false);
-        $manager->persist($locale);
-
         $locale = $this->createLocale('de_DE', null, 'EUR');
         $manager->persist($locale);
 
-        $locale = $this->createLocale('en_US', null, 'USD');
+        $locale = $this->createLocale('en_GB', null, 'GBP');
         $manager->persist($locale);
 
-        $locale = $this->createLocale('en_GB', null, 'GBP');
+        $locale = $this->createLocale('fr_CA', 'fr_FR', 'CAD', false);
         $manager->persist($locale);
 
         $manager->flush();
@@ -87,6 +83,6 @@ class LoadLocaleData extends AbstractFixture implements OrderedFixtureInterface,
      */
     public function getOrder()
     {
-        return 10;
+        return 5;
     }
 }
