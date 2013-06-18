@@ -42,7 +42,7 @@ class AnnotationDriver implements DriverInterface
 
     /**
      * Merge DoctrineClassMetadata and DataAuditClassMetadata
-     * @param  DoctrineClassMetadata $doctrineClassMetadata
+     * @param  DoctrineClassMetadata     $doctrineClassMetadata
      * @return null|ClassMetadata
      * @throws \InvalidArgumentException
      */
