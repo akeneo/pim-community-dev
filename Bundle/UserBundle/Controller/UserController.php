@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\FormBundle\EntityAutocomplete;
+use Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler;
 
 use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -150,70 +150,11 @@ class UserController extends Controller
     public function autocompleteAction(Request $request)
     {
         $query = $this->getRequest()->get('query');
-        $page = (int)$this->getRequest()->get('page', 1);
-        $perPage = intval($request->get('per_page', 50));
+        $page = $this->getRequest()->get('page', 1);
+        $perPage = $request->get('per_page', 50);
 
-        if ($page <= 0) {
-            throw new HttpException(400, 'Parameter "page" must be greater than 0');
-        }
-
-        if ($perPage <= 0) {
-            throw new HttpException(400, 'Parameter "per_page" must be greater than 0');
-        }
-
-        // $search = $this->createAutocompleteSearchHandler(array('firstName', 'lastName', 'username', 'email'));
-
-        /** @var $search EntityAutocomplete\SearchHandlerInterface */
-        $search = $this->get('oro_user.autocomplete.search_handler.user');
-
-        $perPage = $perPage + 1;
-
-        /** @var User[] $users */
-        $users = $search->search($query, ($page - 1) * $perPage, $perPage);
-        $hasMore = count($users) == $perPage;
-        if ($hasMore) {
-            $users = array_slice($users, 0, $perPage - 1);
-        }
-
-        /** @var \Oro\Bundle\UserBundle\EntityAutocomplete\Transformer\UserTransformer $transformer */
-        $transformer = $this->container->get('oro_user.entity_autocomplete.transformer');
-
-        $results = array();
-        foreach ($users as $user) {
-            $results[] = $transformer->transform($user);
-        }
-
-        $data = array(
-            'results' => $results,
-            'more' => $hasMore
-        );
-
-        return new JsonResponse($data);
-    }
-
-    /**
-     * @param array $searchProperties
-     * @return EntityAutocomplete\SearchHandlerInterface
-     */
-    /*
-    protected function createAutocompleteSearchHandler(array $searchProperties)
-    {
-        return $this->get('oro_form.autocomplete.doctrine.entity_search_factory')
-            ->create(
-                array(
-                    'properties' => array_map(array($this, 'createAutocompleteProperty'), $searchProperties),
-                    'entity_class' => 'Oro\\Bundle\\UserBundle\\Entity\\User'
-                )
-            );
-    }
-    */
-
-    /**
-     * @param string $propertyName
-     * @return EntityAutocomplete\Property
-     */
-    protected function createAutocompleteProperty($propertyName)
-    {
-        return new EntityAutocomplete\Property(array('name' => $propertyName));
+        /** @var $search UserSearchHandler */
+        $search = $this->get('oro_user.autocomplete.user.search_handler');
+        return new JsonResponse($search->search($query, $page, $perPage));
     }
 }

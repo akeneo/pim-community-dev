@@ -1,11 +1,12 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\EntityAutocomplete\Transformer;
+namespace Oro\Bundle\UserBundle\Autocomplete;
 
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Oro\Bundle\FormBundle\EntityAutocomplete\Transformer\EntityPropertiesTransformer;
 
-class UserTransformer extends EntityPropertiesTransformer
+use Oro\Bundle\FormBundle\Autocomplete\SearchHandler;
+
+class UserSearchHandler extends SearchHandler
 {
     const IMAGINE_AVATAR_FILTER = 'avatar_med';
 
@@ -14,18 +15,21 @@ class UserTransformer extends EntityPropertiesTransformer
      */
     protected $cacheManager;
 
-    public function __construct(CacheManager $cacheManager)
+    /**
+     * @param CacheManager $cacheManager
+     */
+    public function __construct(CacheManager $cacheManager, $userEntityName, array $properties)
     {
         $this->cacheManager = $cacheManager;
-        parent::__construct(array('username', 'firstName', 'lastName', 'email'));
+        parent::__construct($userEntityName, $properties);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function transform($user)
+    public function convertItem($user)
     {
-        $result = parent::transform($user);
+        $result = parent::convertItem($user);
         $result['avatar'] = null;
 
         $imagePath = $this->getPropertyValue('imagePath', $user);

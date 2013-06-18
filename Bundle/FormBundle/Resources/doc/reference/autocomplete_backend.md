@@ -72,12 +72,12 @@ autocomplete_entities: # Root element
             - name: username
         route: oro_form_autocomplete_search
         acl_resource: ~
-        view: OroFormBundle:EntityAutocomplete:search.json.twig
+        view: OroFormBundle:Autocomplete:search.json.twig
 ```
 
 #### Controller
 
-Controller and action that handles autocomplete search requests by default is **Controller \ EntityAutocompleteController::searchAction**.
+Controller and action that handles autocomplete search requests by default is **Controller \ AutocompleteController::searchAction**.
 It can be configured via option **route** or **url**.
 
 Autocomplete search request can contain next parameters:
@@ -109,26 +109,26 @@ Autocomplete search request can contain next parameters:
 
 #### Search Handler
 
-Implements **EntityAutocomplete \ SearchHandlerInterface** and used by controller to
+Implements **Autocomplete \ SearchHandlerInterface** and used by controller to
 handle search requests of autocomplete widgets.
 
 Default search handlers are:
 
-**EntityAutocomplete \ Doctrine \ EntitySearchHandler** (doctrine_entity)
+**Autocomplete \ Doctrine \ EntitySearchHandler** (doctrine_entity)
 
  * requires **entity_class** and **properties** options
  * handles search based on default **Doctrine\ORM\QueryBuilder** created from corresponding Doctrine entity repository.
 
-**EntityAutocomplete \ Doctrine \ QueryBuilderSearchHandler** (doctrine_query_builder)
+**Autocomplete \ Doctrine \ QueryBuilderSearchHandler** (doctrine_query_builder)
 
  * requires **query_builder_service** and **properties** options, which must be a reference to existing service of **Doctrine\ORM\QueryBuilder** type
 
-**EntityAutocomplete \ Flexible \ FlexibleSearchHandler** (flexible)
+**Autocomplete \ Flexible \ FlexibleSearchHandler** (flexible)
 
  * requires **properties** option and either **flexible_manager** or **entity_class** option
  * handles search based on query builder of corresponding flexible entity repository.
 
-**EntityAutocomplete \ SearchIndexer \ IndexerSearchHandler**
+**Autocomplete \ SearchIndexer \ IndexerSearchHandler**
 
  * requires **entity_alias** that represents entity search alias
  * handles search based on search index implemented in OroSearchBundle
@@ -137,7 +137,7 @@ You can define your own search handler. To make it supported by default autocomp
 
 #### Search Factory
 
-Implements **EntityAutocomplete \ SearchFactoryInterface** and used by controller to
+Implements **Autocomplete \ SearchFactoryInterface** and used by controller to
 create search handler.
 
 Custom search factory can be added in configuration using tag **oro_form.autocomplete.search_factory**:

@@ -1,7 +1,0 @@
-autocomplete_entities:
-    users:
-        type: flexible
-        form_options:
-            extra_config: autocomplete
-        entity_class: Oro\Bundle\UserBundle\Entity\User
-        property: username

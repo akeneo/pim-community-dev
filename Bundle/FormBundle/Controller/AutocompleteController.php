@@ -10,13 +10,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-use Oro\Bundle\FormBundle\EntityAutocomplete\SearchHandlerInterface;
-use Oro\Bundle\UserBundle\Acl\Manager;
+use Oro\Bundle\FormBundle\Autocomplete\SearchHandlerInterface;
 
 /**
  * @Route("/autocomplete")
  */
-class EntityAutocompleteController extends Controller
+class AutocompleteController extends Controller
 {
     /**
      * @Route("/search", name="oro_form_autocomplete_search")
@@ -40,6 +39,7 @@ class EntityAutocompleteController extends Controller
             throw new HttpException(400, 'Parameter "per_page" must be greater than 0');
         }
 
+        /** @var SearchHandlerInterface $searchHandler */
         $searchHandler = $this->get('oro_form.autocomplete.search_registry')->getSearchHandler($name);
 
         return new JsonResponse($searchHandler->search($query, $page, $perPage));

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FormBundle\EntityAutocomplete;
+namespace Oro\Bundle\FormBundle\Autocomplete;
 
 class SearchRegistry
 {
@@ -30,5 +30,14 @@ class SearchRegistry
         }
 
         return $this->searchHandlers[$name];
+    }
+
+    /**
+     * @param string $name
+     * @return boolean
+     */
+    public function hasSearchHandler($name)
+    {
+        return isset($this->searchHandlers[$name]);
     }
 }

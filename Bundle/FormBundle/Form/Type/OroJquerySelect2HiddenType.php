@@ -2,36 +2,36 @@
 
 namespace Oro\Bundle\FormBundle\Form\Type;
 
-use Doctrine\ORM\EntityManager;
-use Oro\Bundle\FormBundle\EntityAutocomplete\Configuration;
-use Oro\Bundle\FormBundle\EntityAutocomplete\Property;
-use Oro\Bundle\FormBundle\EntityAutocomplete\Transformer\EntityPropertiesTransformer;
-use Oro\Bundle\FormBundle\EntityAutocomplete\Transformer\EntityTransformerInterface;
-use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\Exception\FormException;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\DataTransformerInterface;
+
+use Doctrine\ORM\EntityManager;
+
+use Oro\Bundle\FormBundle\Autocomplete\SearchHandlerInterface;
+use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
+use Oro\Bundle\FormBundle\Autocomplete\SearchRegistry;
 
 class OroJquerySelect2HiddenType extends AbstractType
 {
     /**
      * @var EntityManager
      */
-    protected $em;
+    protected $entityManager;
 
     /**
-     * @var Configuration
+     * @var SearchRegistry
      */
-    protected $configuration;
+    protected $searchRegistry;
 
-    public function __construct(EntityManager $em, Configuration $configuration)
+    public function __construct(EntityManager $entityManager, SearchRegistry $registry)
     {
-        $this->em = $em;
-        $this->configuration = $configuration;
+        $this->entityManager = $entityManager;
+        $this->searchRegistry = $registry;
     }
 
     /**
@@ -39,50 +39,103 @@ class OroJquerySelect2HiddenType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $defaults = array(
-            'allowClear'         => true,
-            'minimumInputLength' => 1,
+        $defaultConfig = array(
+            'extra_config'            => 'autocomplete',
+            'properties'              => null,
+            'selection_template_twig' => null,
+            'result_template_twig'    => null,
+            'placeholder'             => 'Choose a value...',
+            'allowClear'              => true,
+            'minimumInputLength'      => 1,
+            'ajax'                    => array('url' => null)
         );
+
+        $searchRegistry = $this->searchRegistry;
+        $formType = $this;
+
         $resolver
-            ->setNormalizers(
-                array(
-                    'configs' => function (Options $options, $configs) use ($defaults) {
-                        return array_merge_recursive($defaults, $configs);
-                    },
-                )
-            )
             ->setDefaults(
                 array(
-                    'empty_value' => '',
-                    'empty_data' => null,
-                    'data_class' => null,
-                    'autocomplete_transformer' => null,
-                    'configs' => $defaults
+                    'empty_value'    => '',
+                    'empty_data'     => null,
+                    'data_class'     => null,
+                    'configs'        => $defaultConfig,
+                    'search_handler' => null,
+                    'route_name'     => 'oro_form_autocomplete_search',
+                    'url'            => null
+                )
+            )
+            ->setRequired(
+                array(
+                    'autocomplete_alias'
+                )
+            )
+            ->setNormalizers(
+                array(
+                    'search_handler' => function (Options $options, $value) use ($searchRegistry) {
+                        if (!$value) {
+                            $autocompleteAlias = $options['autocomplete_alias'];
+                            if (!$searchRegistry->hasSearchHandler($autocompleteAlias)) {
+                                throw new FormException(
+                                    sprintf(
+                                        'The option "autocomplete_alias" references to not registered autocomplete '
+                                        . 'search handler "%s".',
+                                        $autocompleteAlias
+                                    )
+                                );
+                            }
+                            $value = $searchRegistry->getSearchHandler($autocompleteAlias);
+                        } elseif (!$value instanceof SearchHandlerInterface) {
+                            throw new FormException(
+                                sprintf(
+                                    'The option "search_handler" must be an instance of "%s".',
+                                    'Oro\Bundle\FormBundle\Autocomplete\SearchHandlerInterface'
+                                )
+                            );
+                        }
+                        return $value;
+                    },
+                    'configs' => function (Options $options, $configs) use ($defaultConfig) {
+                        $result = array_replace_recursive($defaultConfig, $configs);
+                        $result['autocomplete_alias'] = $options['autocomplete_alias'];
+
+                        $result['properties'] = $options['search_handler']->getProperties();
+                        $result['route_name'] = $options['route_name'];
+
+                        if (!empty($options['url'])) {
+                            $result = array_replace_recursive(
+                                $result,
+                                array('ajax' => array('url' => $options['url']))
+                            );
+                        }
+
+                        return $result;
+                    },
+                    'transformer' => function (Options $options, $value) use ($formType) {
+                        if (!$value) {
+                            $value = $formType->createDefaultTransformer($options['search_handler']);
+                        }
+                        if (!$value instanceof DataTransformerInterface) {
+                            throw new FormException(
+                                sprintf(
+                                    'The option "transformer" must be an instance of "%s".',
+                                    'Symfony\Component\Form\DataTransformerInterface'
+                                )
+                            );
+                        }
+                        return $value;
+                    }
                 )
             );
     }
 
     /**
-     * Prepare entity transformer and unset data_class to support autosuggestion.
-     *
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     * @throws MissingOptionsException
+     * @param SearchHandlerInterface $searchHandler
+     * @return EntityToIdTransformer
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function createDefaultTransformer(SearchHandlerInterface $searchHandler)
     {
-        if (array_key_exists('autocomplete_alias', $options)) {
-            $autocompleteOptions = $this->configuration->getAutocompleteOptions($options['autocomplete_alias']);
-            $entityClass = $autocompleteOptions['entity_class'];
-        } elseif (array_key_exists('entity_class', $options)) {
-            $entityClass = $options['entity_class'];
-        } else {
-            throw new MissingOptionsException('Option "autocomplete_alias" or "entity_class" must be defined.');
-        }
-        $modelTransformer = new EntityToIdTransformer($this->em, $entityClass);
-        $builder->addModelTransformer($modelTransformer);
-
-        parent::buildForm($builder, $options);
+        return $value = new EntityToIdTransformer($this->entityManager, $searchHandler->getEntityName());
     }
 
     /**
@@ -96,89 +149,14 @@ class OroJquerySelect2HiddenType extends AbstractType
     {
         parent::buildView($view, $form, $options);
 
-        $configs = $this->getConfigs($options);
-
-        $vars = array('configs' => $configs);
+        $vars = array('configs' => $options['configs']);
         if ($form->getData()) {
             $vars['attr'] = array(
-                'data-entity' => $this->encodeEntity(
-                    $form->getData(),
-                    $configs['properties'],
-                    $options['autocomplete_transformer']
-                )
+                'data-entity' => json_encode($options['search_handler']->convertItem($form->getData()))
             );
         }
+
         $view->vars = array_replace_recursive($view->vars, $vars);
-    }
-
-    /**
-     * Prepare required options based on autocomplete configuration.
-     *
-     * @param array $options
-     * @return array
-     * @throws MissingOptionsException
-     */
-    protected function getConfigs($options)
-    {
-        if (array_key_exists('autocomplete_alias', $options)) {
-            $autocompleteOptions = $this->configuration->getAutocompleteOptions($options['autocomplete_alias']);
-            $configs = array_key_exists('form_options', $autocompleteOptions) ? $autocompleteOptions['form_options'] : array();
-            if (isset($autocompleteOptions['route'])) {
-                $configs['route'] = $autocompleteOptions['route'];
-            }
-
-            $properties = array();
-            /** @var Property $property */
-            foreach ($autocompleteOptions['properties'] as $property) {
-                $properties[] = $property->getName();
-            }
-            $configs['properties'] = $properties;
-
-            $configs['autocomplete_alias'] = $options['autocomplete_alias'];
-            if (isset($autocompleteOptions['url'])) {
-                $configs = array_replace_recursive(
-                    $configs,
-                    array(
-                        'ajax' => array('url' => $autocompleteOptions['url'])
-                    )
-                );
-            }
-        } elseif (array_key_exists('configs', $options)) {
-            $configs = $options['configs'];
-        } else {
-            $configs = array();
-        }
-
-        if (array_key_exists('properties', $configs)) {
-            if (!is_array($configs['properties'])) {
-                $configs['properties'] = array($configs['properties']);
-            }
-        } else {
-            $configs['properties'] = array();
-        }
-
-        if (!array_key_exists('minimumInputLength', $configs)) {
-            $configs['minimumInputLength'] = 1;
-        }
-        if (!array_key_exists('allowClear', $configs)) {
-            $configs['allowClear'] = true;
-        }
-
-        return $configs;
-    }
-
-    /**
-     * @param mixed $entity
-     * @param array $properties
-     * @param EntityTransformerInterface|null $entityTransformer
-     * @return string
-     */
-    protected function encodeEntity($entity, array $properties, EntityTransformerInterface $entityTransformer = null)
-    {
-        if (null == $entityTransformer) {
-            $entityTransformer = new EntityPropertiesTransformer($properties);
-        }
-        return json_encode($entityTransformer->transform($entity));
     }
 
     /**

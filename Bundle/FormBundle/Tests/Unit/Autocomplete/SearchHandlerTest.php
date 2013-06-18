@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FormBundle\Tests\Unit\EntityAutocomplete;
+namespace Oro\Bundle\FormBundle\Tests\Unit\Autocomplete;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
@@ -17,22 +17,28 @@ use Oro\Bundle\SearchBundle\Engine\Indexer;
 
 use Oro\Bundle\SearchBundle\Query\Result;
 use Oro\Bundle\SearchBundle\Query\Result\Item;
-use Oro\Bundle\FormBundle\EntityAutocomplete\SearchHandler;
+use Oro\Bundle\FormBundle\Autocomplete\SearchHandler;
 
 use Oro\Bundle\FormBundle\Tests\Unit\MockHelper;
 
 class SearchHandlerTest extends \PHPUnit_Framework_TestCase
 {
-    const TEST_ID_FIELD      = 'id';
-    const TEST_ENTITY_CLASS  = 'FooEntityClass';
-    const TEST_SEARCH_STRING = 'test_search_string';
-    const TEST_FIRST_RESULT  = 30;
-    const TEST_MAX_RESULTS   = 10;
+    const TEST_ID_FIELD            = 'id';
+    const TEST_ENTITY_CLASS        = 'FooEntityClass';
+    const TEST_ENTITY_SEARCH_ALIAS = 'foo_entity';
+    const TEST_SEARCH_STRING       = 'test_search_string';
+    const TEST_FIRST_RESULT        = 30;
+    const TEST_MAX_RESULTS         = 10;
 
     /**
      * @var array
      */
     protected $testProperties = array('name', 'email');
+
+    /**
+     * @var array
+     */
+    protected $testSearchConfig = array(self::TEST_ENTITY_CLASS => array('alias' => self::TEST_ENTITY_SEARCH_ALIAS));
 
     /**
      * @var Indexer|\PHPUnit_Framework_MockObject_MockObject
@@ -121,7 +127,7 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->managerRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
         $this->managerRegistry->expects($this->once())
-            ->method('getManager')
+            ->method('getManagerForClass')
             ->with(self::TEST_ENTITY_CLASS)
             ->will($this->returnValue($this->entityManager));
 
@@ -146,14 +152,15 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->searchHandler = new SearchHandler(
-            $this->indexer,
-            $this->managerRegistry,
             self::TEST_ENTITY_CLASS,
             $this->testProperties
         );
+
+        $this->searchHandler->setManagerRegistry($this->managerRegistry);
+        $this->searchHandler->initSearchIndexer($this->indexer, $this->testSearchConfig);
     }
 
-    public function testConstructor()
+    public function testConstructorAndInitialize()
     {
         $this->assertAttributeSame(
             $this->indexer,
@@ -176,10 +183,15 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
             $this->searchHandler
         );
         $this->assertAttributeEquals(
-            array_merge(array(self::TEST_ID_FIELD), $this->testProperties),
+            $this->testProperties,
             'properties',
             $this->searchHandler
         );
+    }
+
+    public function testGetProperties()
+    {
+        $this->assertEquals($this->testProperties, $this->searchHandler->getProperties());
     }
 
     public function testGetEntitName()
@@ -252,7 +264,10 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
                     'more' => false
                 ),
                 'expectIndexerCalls' => array(
-                    array('simpleSearch', array('search', 0, 101, self::TEST_ENTITY_CLASS), 'getMockSearchResult')
+                    array(
+                        'simpleSearch',
+                        array('search', 0, 101, self::TEST_ENTITY_SEARCH_ALIAS), 'getMockSearchResult'
+                    )
                 ),
                 'expectSearchResultCalls' => array(
                     array('getElements', array(), $this->createMockSearchItems(array(1, 2, 3, 4)))
@@ -315,7 +330,11 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
                     'more' => true
                 ),
                 'expectIndexerCalls' => array(
-                    array('simpleSearch', array('search', 0, 2, self::TEST_ENTITY_CLASS), 'getMockSearchResult')
+                    array(
+                        'simpleSearch',
+                        array('search', 0, 2, self::TEST_ENTITY_SEARCH_ALIAS),
+                        'getMockSearchResult'
+                    )
                 ),
                 'expectSearchResultCalls' => array(
                     array('getElements', array(), $this->createMockSearchItems(array(1, 2)))

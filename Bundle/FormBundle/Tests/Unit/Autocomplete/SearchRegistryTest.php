@@ -1,9 +1,9 @@
 <?php
 
-namespace Oro\Bundle\FormBundle\Tests\Unit\EntityAutocomplete;
+namespace Oro\Bundle\FormBundle\Tests\Unit\Autocomplete;
 
-use Oro\Bundle\FormBundle\EntityAutocomplete\SearchHandlerInterface;
-use Oro\Bundle\FormBundle\EntityAutocomplete\SearchRegistry;
+use Oro\Bundle\FormBundle\Autocomplete\SearchHandlerInterface;
+use Oro\Bundle\FormBundle\Autocomplete\SearchRegistry;
 
 class SearchRegistryTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,7 +19,7 @@ class SearchRegistryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->searchHandler = $this->getMock('Oro\Bundle\FormBundle\EntityAutocomplete\SearchHandlerInterface');
+        $this->searchHandler = $this->getMock('Oro\Bundle\FormBundle\Autocomplete\SearchHandlerInterface');
         $this->searchRegistry = new SearchRegistry();
     }
 

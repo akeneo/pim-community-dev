@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FormBundle\EntityAutocomplete;
+namespace Oro\Bundle\FormBundle\Autocomplete;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -28,6 +28,10 @@ class SearchHandler implements SearchHandlerInterface
      * @var string
      */
     protected $entityName;
+    /**
+     * @var string
+     */
+    protected $entitySearchAlias;
 
     /**
      * @var string
@@ -45,26 +49,52 @@ class SearchHandler implements SearchHandlerInterface
     private $hasMore;
 
     /**
-     * @param Indexer $indexer
-     * @param ManagerRegistry $managerRegistry
      * @param string $entityName
      * @param array $properties
      */
-    public function __construct(
-        Indexer $indexer,
-        ManagerRegistry $managerRegistry,
-        $entityName,
-        $properties
-    ) {
-        $this->indexer = $indexer;
-        $entityManager = $managerRegistry->getManager($entityName);
-        $this->entityRepository = $entityManager->getRepository($entityName);
+    public function __construct($entityName, array $properties)
+    {
         $this->entityName = $entityName;
-        $this->idFieldName = $this->getEntityIdentifierFieldName($entityManager);
-        $this->properties = array($this->idFieldName);
-        foreach ($properties as $property) {
-            $this->properties[] = $property;
+        $this->properties = $properties;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProperties()
+    {
+        return $this->properties;
+    }
+
+    /**
+     * @param Indexer $indexer
+     * @param array $config
+     * @throws \RuntimeException
+     */
+    public function initSearchIndexer(Indexer $indexer, array $config)
+    {
+        $this->indexer = $indexer;
+        if (empty($config[$this->entityName]['alias'])) {
+            throw new \RuntimeException("Cannot init entity search alias.");
         }
+        $this->entitySearchAlias = $config[$this->entityName]['alias'];
+    }
+
+    /**
+     * @param ManagerRegistry $managerRegistry
+     */
+    public function setManagerRegistry(ManagerRegistry $managerRegistry)
+    {
+        $this->setEntityManager($managerRegistry->getManagerForClass($this->entityName));
+    }
+
+    /**
+     * @param EntityManager $entityManager
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->entityRepository = $entityManager->getRepository($this->entityName);
+        $this->idFieldName = $this->getEntityIdentifierFieldName($entityManager);
     }
 
     /**
@@ -82,6 +112,10 @@ class SearchHandler implements SearchHandlerInterface
      */
     public function search($query, $page, $perPage)
     {
+        if (!$this->indexer || !$this->entitySearchAlias || !$this->entityRepository || !$this->idFieldName) {
+            throw new \RuntimeException('Search handler is not fully configured');
+        }
+
         $page = (int)$page > 0 ? (int)$page : 1;
         $perPage = (int)$perPage > 0 ? (int)$perPage : 1;
         $perPage += 1;
@@ -120,14 +154,17 @@ class SearchHandler implements SearchHandlerInterface
     {
         $entityIds = $this->searchIds($search, $firstResult, $maxResults);
 
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $this->entityRepository->createQueryBuilder('e');
-        $queryBuilder->where($queryBuilder->expr()->in('e.' . $this->idFieldName, $entityIds));
-        $currentEntities = $queryBuilder->getQuery()->getResult();
-
         $resultEntities = array();
-        foreach ($currentEntities as $entity) {
-            $resultEntities[] = $entity;
+
+        if ($entityIds) {
+            /** @var QueryBuilder $queryBuilder */
+            $queryBuilder = $this->entityRepository->createQueryBuilder('e');
+            $queryBuilder->where($queryBuilder->expr()->in('e.' . $this->idFieldName, $entityIds));
+            $currentEntities = $queryBuilder->getQuery()->getResult();
+
+            foreach ($currentEntities as $entity) {
+                $resultEntities[] = $entity;
+            }
         }
 
         return $resultEntities;
@@ -141,7 +178,7 @@ class SearchHandler implements SearchHandlerInterface
      */
     protected function searchIds($search, $firstResult, $maxResults)
     {
-        $result = $this->indexer->simpleSearch($search, $firstResult, $maxResults, $this->entityName);
+        $result = $this->indexer->simpleSearch($search, $firstResult, $maxResults, $this->entitySearchAlias);
         $elements = $result->getElements();
 
         $ids = array();
@@ -166,12 +203,13 @@ class SearchHandler implements SearchHandlerInterface
     }
 
     /**
-     * @param mixed $item
-     * @return array
+     * {@inheritdoc}
      */
-    protected function convertItem($item)
+    public function convertItem($item)
     {
         $result = array();
+
+        $result[$this->idFieldName] = $this->getPropertyValue($this->idFieldName, $item);
 
         foreach ($this->properties as $property) {
             $result[$property] = $this->getPropertyValue($property, $item);

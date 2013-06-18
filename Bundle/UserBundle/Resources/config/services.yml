@@ -40,7 +40,7 @@ parameters:
     oro_user.attribute_type.user.class: Oro\Bundle\UserBundle\AttributeType\UserType
     oro_user.form.type.user_select.class: Oro\Bundle\UserBundle\Form\Type\UserSelectType
     oro_user.entity_with_image.subscriber.class: Oro\Bundle\UserBundle\Entity\EventListener\UploadedImageSubscriber
-    oro_user.entity_autocomplete.transformer.class: Oro\Bundle\UserBundle\EntityAutocomplete\Transformer\UserTransformer
+    oro_user.autocomplete.user.search_handler: Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler
 
 services:
     oro_user.manager.flexible:
@@ -288,7 +288,6 @@ services:
     # Form type
     oro_user.form.type.user_select:
         class: %oro_user.form.type.user_select.class%
-        arguments: [@oro_user.entity_autocomplete.transformer]
         tags:
             - { name: form.type, alias: oro_user_select }
 
@@ -309,14 +308,13 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
-    oro_user.entity_autocomplete.transformer:
-        class: %oro_user.entity_autocomplete.transformer.class%
-        arguments: [@liip_imagine.cache.manager]
-
-    # autocomplete search handler
-    oro_user.autocomplete.search_handler.user:
-        class: %oro_form.autocomplete.indexer_search_handler.class%
+    # Autocomplete search handler
+    oro_user.autocomplete.user.search_handler:
+        class: %oro_user.autocomplete.user.search_handler%
+        parent: oro_form.autocomplete.search_handler
         arguments:
-            - @oro_search.index
-            - @oro_search.formatter.result_formatter
-            - "oro_user"
+            - @liip_imagine.cache.manager
+            - %oro_user.entity.class%
+            - ["username", "firstName", "lastName", "email"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: users }
