@@ -35,18 +35,6 @@ public function registerBundles()
 }
 ```
 
-Enable Loggable behavior in your `app/config/config.yml` file and customize `LoggableListener`:
-
-``` yaml
-stof_doctrine_extensions:
-    orm:
-        default:
-            [...]
-            loggable: true
-    class:
-        [...]
-        loggable: Oro\Bundle\DataAuditBundle\EventListener\LoggableListener
-```
 
 To enable log view and API calls, import routing rules in `app/config/routing.yml`
 
@@ -67,12 +55,12 @@ In your entity add special annotations to mark particular fields versioned.
 ``` php
 <?php
 // ...
-use Gedmo\Mapping\Annotation as Gedmo;
+use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 
 /**
  * @ORM\Entity()
  * @ORM\Table(name="my_table")
- * @Gedmo\Loggable(logEntryClass="Oro\Bundle\DataAuditBundle\Entity\Audit")
+ * @Oro\Loggable
  */
 class MyEntity
 {
@@ -80,13 +68,17 @@ class MyEntity
      * @var string
      *
      * @ORM\Column(type="string")
-     * @Gedmo\Versioned
+     * @Oro\Versioned
      */
     protected $myField;
 
-    // ...
+    /**
+     * @var MyCollectionItem[]
+     *
+     * @ORM\ManyToMany(targetEntity="MyCollectionItem")
+     * @Oro\Versioned("getLabel") // "getLabel" it is a method which provides data for Loggable. If method doesn't set Loggable will use "__toString" for relation entity.
+     */
+    protected $myCollection;
 }
 
-That's it! `myField` becomes versioned and will be tracked by DataAudit bundle.
-
-You may also specify your own logEntryClass with custom logic.
+That's it! `myField` and `$myCollection` becomes versioned and will be tracked by DataAudit bundle.
