@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\SearchBundle\Tests\Unit\ResultProvider;
+namespace Oro\Bundle\SearchBundle\Tests\Unit\Formatter;
 
 use Doctrine\ORM\Mapping\ClassMetadataFactory;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -13,7 +13,7 @@ use Oro\Bundle\SearchBundle\Query\Result\Item;
 use Oro\Bundle\SearchBundle\Engine\Indexer;
 use Oro\Bundle\SearchBundle\Formatter\ResultFormatter;
 
-class ResultProviderTest extends \PHPUnit_Framework_TestCase
+class ResultFormatterTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
