@@ -15,15 +15,17 @@ class ContainsPrimaryValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, 'array or Traversable and ArrayAccess');
         }
 
-        $count = 0;
+        $primaryItemsNumber = 0;
+        $totalItemsNumber = 0;
         /** @var TypedAddress $item */
         foreach ($value as $item) {
             if ($item instanceof TypedAddress && $item->isPrimary()) {
-                $count++;
+                $primaryItemsNumber++;
             }
+            $totalItemsNumber++;
         }
 
-        if (count($value) > 0 && $count != 1) {
+        if ($totalItemsNumber > 0 && $primaryItemsNumber != 1) {
             $this->context->addViolation($constraint->message);
         }
     }
