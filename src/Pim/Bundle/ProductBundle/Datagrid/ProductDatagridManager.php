@@ -29,7 +29,6 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
  */
 class ProductDatagridManager extends FlexibleDatagridManager
 {
-
     /**
      * @staticvar string
      */
