@@ -35,7 +35,8 @@ class Page
     {
         if (preg_match('/open(.*)/i', "{$name}", $result) > 0) {
             $class = __NAMESPACE__ . '\\Objects\\' . $result[1];
-            return new $class($this->test);
+            $class = new \ReflectionClass($class);
+            return $class->newInstanceArgs(array_merge(array($this->test), $arguments));
         }
 
         if (method_exists($this, $name)) {
