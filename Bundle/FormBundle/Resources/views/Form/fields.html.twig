@@ -45,9 +45,30 @@
     {{ form_widget(form) }}
 {% endblock %}
 
+{% block genemu_jqueryselect2_country_row %}
+    {{ block('genemu_jqueryselect2_row') }}
+{% endblock %}
+
+{% block genemu_jqueryselect2_choice_row %}
+    {{ block('genemu_jqueryselect2_row') }}
+{% endblock %}
+
+{% block genemu_jqueryselect2_entity_row %}
+    {{ block('genemu_jqueryselect2_row') }}
+{% endblock %}
+
+{% block oro_jqueryselect2_hidden_row %}
+    {{ block('genemu_jqueryselect2_row') }}
+{% endblock %}
+
+{% block genemu_jqueryselect2_row %}
+    {{ form_row(form) }}
+    {{ form_javascript(form) }}
+{% endblock %}
+
 {% block genemu_jqueryselect2_javascript %}
     <script type="text/javascript">
-        jQuery(document).ready(function($) {
+        (function() {
             var $field = $('#{{ id }}');
 
             {% block genemu_jqueryselect2_javascript_prototype %}
@@ -64,7 +85,7 @@
 
                 $field.select2(select2Config);
             {% endblock %}
-        });
+        })();
     </script>
 {% endblock %}
 

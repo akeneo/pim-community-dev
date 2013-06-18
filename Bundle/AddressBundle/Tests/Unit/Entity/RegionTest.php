@@ -54,4 +54,11 @@ class RegionTest extends \PHPUnit_Framework_TestCase
             array('locale'),
         );
     }
+
+    public function testToString()
+    {
+        $obj = new Region();
+        $obj->setName('TEST');
+        $this->assertEquals('TEST', (string)$obj);
+    }
 }

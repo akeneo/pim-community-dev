@@ -3,6 +3,8 @@
 namespace Oro\Bundle\GridBundle\Filter\ORM;
 
 use Doctrine\DBAL\Query\QueryBuilder;
+use Doctrine\Common\Collections\Collection;
+
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 
@@ -18,20 +20,24 @@ class ChoiceFilter extends AbstractFilter
             return;
         }
 
-        $operator = $this->getOperator($data['type']);
+        $operator  = $this->getOperator($data['type']);
+        $parameter = $this->getName() . '_choices';
 
         if ('IN' == $operator) {
             $expression = $this->getExpressionFactory()->in(
                 $this->createFieldExpression($field, $alias),
-                $data['value']
+                ':' . $parameter
             );
         } else {
             $expression = $this->getExpressionFactory()->notIn(
                 $this->createFieldExpression($field, $alias),
-                $data['value']
+                ':' . $parameter
             );
         }
+
         $this->applyFilterToClause($queryBuilder, $expression);
+        /** @var $queryBuilder QueryBuilder */
+        $queryBuilder->setParameter($parameter, $data['value']);
     }
 
     /**
@@ -44,16 +50,22 @@ class ChoiceFilter extends AbstractFilter
             || !array_key_exists('value', $data)
             || $data['value'] === ''
             || is_null($data['value'])
-            || (is_array($data['value']) && !count($data['value']))
+            || ((is_array($data['value']) || $data['value'] instanceof Collection) && !count($data['value']))
         ) {
             return false;
         }
 
-        if (!is_array($data['value'])) {
-            $data['value'] = array($data['value']);
+        $value = $data['value'];
+
+        if ($value instanceof Collection) {
+            $value = $value->getValues();
+        }
+        if (!is_array($value)) {
+            $value = array($value);
         }
 
-        $data['type'] = isset($data['type']) ? $data['type'] : null;
+        $data['type']  = isset($data['type']) ? $data['type'] : null;
+        $data['value'] = $value;
 
         return $data;
     }
