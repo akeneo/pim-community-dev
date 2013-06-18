@@ -121,7 +121,10 @@ class AclAwareMenuFactory extends MenuFactory
     protected function processRoute(array &$options = array())
     {
         if (!empty($options['route'])) {
-            $params = isset($options['routeParameters']) ? $options['routeParameters'] : array();
+            $params = array();
+            if (isset($options['routeParameters'])) {
+                $params = $options['routeParameters'];
+            }
             $cacheKey = null;
             $hasInCache = false;
             $uri = null;
@@ -133,7 +136,10 @@ class AclAwareMenuFactory extends MenuFactory
                 }
             }
             if (!$hasInCache) {
-                $absolute = isset($options['routeAbsolute']) ? $options['routeAbsolute'] : false;
+                $absolute = false;
+                if (isset($options['routeAbsolute'])) {
+                    $absolute = $options['routeAbsolute'];
+                }
                 $uri = $this->router->generate($options['route'], $params, $absolute);
                 if ($this->cache) {
                     $this->cache->save($cacheKey, $uri);
