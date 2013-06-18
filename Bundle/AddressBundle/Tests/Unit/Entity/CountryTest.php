@@ -43,6 +43,26 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @dataProvider regionsDataProvider
+     * @param array $regions
+     * @param bool $expected
+     */
+    public function testHasRegions($regions, $expected)
+    {
+        $obj = new Country('name', 'iso2Code', 'iso3Code');
+        $obj->setRegions($regions);
+        $this->assertEquals($expected, $obj->hasRegions());
+    }
+
+    public function regionsDataProvider()
+    {
+        return array(
+            array(null, false),
+            array(array('AL'), true)
+        );
+    }
+
     public function testToString()
     {
         $obj = new Country('name', 'iso2Code', 'iso3Code');

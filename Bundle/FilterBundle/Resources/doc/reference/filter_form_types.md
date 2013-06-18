@@ -44,6 +44,11 @@ There are next filters form types:
     <td>Represents choice filter form</td>
 </tr>
 <tr>
+    <td><a href="#oro_type_entity_filter-form-type">EntityFilterType</a></td>
+    <td>oro_type_entity_filter</td>
+    <td>Represents entity filter form</td>
+</tr>
+<tr>
     <td><a href="#oro_type_boolean_filter-form-type">BooleanFilterType</a></td>
     <td>oro_type_boolean_filter</td>
     <td>Represents boolean filter form</td>
@@ -216,6 +221,34 @@ oro\_type\_filter
 **Class**
 
 _Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType_
+
+**JS Classes**
+
+_Oro.Filter.MultiSelectFilter_
+_Oro.Filter.SelectFilter_
+
+### oro\_type\_entity\_filter Form Type
+
+**Inherit Options**
+
+* field\_type
+* field\_options
+* operator\_choices
+* operator\_type
+* operator\_options
+* show\_filter
+
+**Default Options**
+
+* field\_type = entity
+
+**Parent Type**
+
+oro\_type\_choice\_filter
+
+**Class**
+
+_Oro\Bundle\FilterBundle\Form\Type\Filter\EntityFilterType_
 
 **JS Classes**
 

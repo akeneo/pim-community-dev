@@ -45,6 +45,7 @@ class SoapDataAuditApiTest extends WebTestCase
         );
         $result = $this->client->soapClient->createUser($request);
         $this->assertTrue($result, $this->client->soapClient->__getLastResponse());
+
         return $request;
     }
 
@@ -57,17 +58,19 @@ class SoapDataAuditApiTest extends WebTestCase
     {
         $this->markTestSkipped('BAP-949');
         $result = $this->client->soapClient->getAudits();
+
         return $result;
     }
 
     /**
-     * @param array $response
+     * @param  array $response
      * @return array
      * @depends testGetAudits
      */
     public function testGetAudit($response)
     {
         $result = $this->client->soapClient->getAudit($response[0]['id']);
+
         return $result;
     }
 

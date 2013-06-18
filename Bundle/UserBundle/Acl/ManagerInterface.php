@@ -46,10 +46,10 @@ interface ManagerInterface
     /**
      * Search Acl resource by id
      *
-     * @param  string                            $id ACL Resource ID
+     * @param  string                            $aclId ACL Resource ID
      * @return \Oro\Bundle\UserBundle\Entity\Acl
      */
-    public function getAclResource($id);
+    public function getAclResource($aclId);
 
     /**
      * Get ACL Resources list

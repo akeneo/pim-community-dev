@@ -76,7 +76,13 @@ abstract class AbstractFilter extends AbstractORMFilter implements FilterInterfa
     protected function isApplyFilterToHavingClause()
     {
         $fieldMapping = $this->getFieldMapping();
-        return !empty($fieldMapping['fieldExpression']);
+        if (!empty($fieldMapping['filterByHaving'])) {
+            return true;
+        } elseif (!empty($fieldMapping['filterByWhere'])) {
+            return false;
+        } else {
+            return !empty($fieldMapping['fieldExpression']);
+        }
     }
 
     /**

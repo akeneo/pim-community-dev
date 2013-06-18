@@ -15,6 +15,8 @@ class ExtendMetadataFactoryTest extends AbstractMetadataTest
         $metadataFactory = new ExtendMetadataFactory($this->loggableAnnotationDriver);
         $resultMetadata  = $metadataFactory->extendLoadMetadataForClass($doctrineClassMetadata);
 
+        $metadata->createdAt = $resultMetadata->createdAt;
+
         $this->assertEquals($metadata, $resultMetadata);
     }
 }

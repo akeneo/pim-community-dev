@@ -1,4 +1,4 @@
-Oro\Bundle\AddressBundle\Entity\Address:
+Oro\Bundle\AddressBundle\Entity\AddressBase:
     properties:
         street:
             - NotBlank: ~
