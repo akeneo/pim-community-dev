@@ -1,0 +1,70 @@
+oro_menu_config:
+    items:
+        entities_list:
+            label: 'Entities Config'
+            route: 'flex'
+
+    tree:
+        application_menu:
+            children:
+                system_tab:
+                    children:
+                        entities_list: ~
+
+oro_titles:
+    flex: Entities Config
+
+
+#
+#oro_menu_config:
+#    items:
+#        system_tab:
+#            label: 'System'
+#            uri: '#'
+#        user_list:
+#            label: 'Users'
+#            route: 'oro_user_index'
+#            extras:
+#                routes: ['/^oro_user_(?!role\w+|group\w+)\w+$/']
+#        user_roles:
+#            label: 'Roles'
+#            route: 'oro_user_role_index'
+#            extras:
+#                routes: ['oro_user_role_*']
+#        user_groups:
+#            label: 'Groups'
+#            route: 'oro_user_group_index'
+#            extras:
+#                routes: ['oro_user_group_*']
+#        shortcut_new_user:
+#            label: Create new user
+#            route: oro_user_create
+#            extras:
+#                description: Create new user instance
+#                isCustomAction: true
+#        shortcut_list_users:
+#            label: Show users list
+#            route: oro_user_index
+#            extras:
+#                description: List of all system users
+#                isCustomAction: true
+#
+#    tree:
+#        application_menu:
+#            children:
+#                system_tab:
+#                    children:
+#                        user_list: ~
+#                        user_roles: ~
+#                        user_groups: ~
+#
+#        shortcuts:
+#            children:
+#                shortcut_new_user: ~
+#                shortcut_list_users: ~
+#
+#oro_titles:
+#    oro_user_view: %%username%% - Users
+#    oro_user_update: %%username%% - Users
+#    oro_user_create: Create User
+#    oro_user_index: Users

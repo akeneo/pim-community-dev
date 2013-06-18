@@ -4,6 +4,7 @@ namespace Oro\Bundle\EntityExtendBundle\Extend;
 
 use Oro\Bundle\EntityExtendBundle\DependencyInjection\Lazy\LazyEntityManager;
 use Oro\Bundle\EntityExtendBundle\Config\ExtendConfigProvider;
+use Oro\Bundle\EntityExtendBundle\Tools\Generator\Generator;
 
 class ExtendManager
 {
@@ -23,6 +24,11 @@ class ExtendManager
     protected $configProvider;
 
     /**
+     * @var Generator
+     */
+    protected $generator;
+
+    /**
      * @var LazyEntityManager
      */
     protected $lazyEm;
@@ -34,6 +40,7 @@ class ExtendManager
 
         $this->proxyFactory  = new ProxyObjectFactory($this);
         $this->extendFactory = new ExtendObjectFactory($this);
+        $this->generator     = new Generator($configProvider, $mode = 'Dynamic');
     }
 
     /**
@@ -74,7 +81,13 @@ class ExtendManager
      */
     public function isExtend($entityName)
     {
-        return $this->configProvider->isExtend($entityName);
+        if ($this->configProvider->isExtend($entityName)) {
+            $this->checkEntityCache($entityName);
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -124,5 +137,13 @@ class ExtendManager
             $extend = $this->getExtendFactory()->getExtendObject($entity);
             $this->getEntityManager()->remove($extend);
         }
+    }
+
+    /**
+     * @param $entity
+     */
+    protected function checkEntityCache($entity)
+    {
+        $this->generator->checkEntityCache($entity);
     }
 }

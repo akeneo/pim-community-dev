@@ -14,14 +14,14 @@ use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\Exclude;
 
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
-
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
-
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
-
 use Oro\Bundle\UserBundle\Entity\Status;
 use Oro\Bundle\UserBundle\Entity\Email;
 use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
+
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
+#use Oro\Bundle\FlexibleBundle\Metadata\Annotation\Extend;
 
 use DateTime;
 
@@ -30,6 +30,8 @@ use DateTime;
  * @ORM\Table(name="oro_user")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Loggable
+ *
+ * @Configurable;
  */
 class User extends AbstractEntityFlexible implements
     AdvancedUserInterface,
