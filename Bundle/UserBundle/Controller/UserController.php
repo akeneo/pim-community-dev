@@ -39,7 +39,7 @@ class UserController extends Controller
     public function viewAction(User $user)
     {
         return array(
-            'user' => $user,
+            'entity' => $user,
         );
     }
 

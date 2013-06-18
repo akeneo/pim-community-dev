@@ -11,7 +11,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
-use Oro\Bundle\DataAuditBundle\Form\EventListener\AuditableSubscriber;
 use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
 use Oro\Bundle\UserBundle\Form\EventListener\UserSubscriber;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -55,7 +54,6 @@ class UserType extends FlexibleType
 
         // user fields
         $builder
-            ->addEventSubscriber(new AuditableSubscriber())
             ->addEventSubscriber(new UserSubscriber($builder->getFormFactory(), $this->aclManager, $this->security))
             ->add(
                 'username',

@@ -318,6 +318,7 @@ Oro.Navigation = Backbone.Router.extend({
         );
 
         this.processForms(this.selectors.forms);
+        this.processAnchors($(this.selectors.container).find(this.selectors.scrollLinks));
 
         this.loadingMask = new Oro.LoadingMask();
         this.renderLoadingMask();
@@ -368,6 +369,7 @@ Oro.Navigation = Backbone.Router.extend({
              * Clearing content area with native js, prevents freezing of firefox with firebug enabled
              */
             document.getElementById('container').innerHTML = '';
+            data = $.trim(data);
             var redirectUrl = $(data).filter('#redirect').text();
             if (redirectUrl) {
                 var urlParts = redirectUrl.split('url=');
@@ -612,13 +614,15 @@ Oro.Navigation = Backbone.Router.extend({
     getHashUrl: function (includeGrid) {
         var url = this.url;
         if (!url) {
-            /**
-             * Get real url part from the hash without grid state
-             */
-            var urlParts = Backbone.history.fragment.split('|g/');
-            url = urlParts[0].replace('url=', '');
-            if (urlParts[1] && (!_.isUndefined(includeGrid) && includeGrid === true)) {
-                url += '#g/' + urlParts[1];
+            if (Backbone.history.fragment) {
+                /**
+                 * Get real url part from the hash without grid state
+                 */
+                var urlParts = Backbone.history.fragment.split('|g/');
+                url = urlParts[0].replace('url=', '');
+                if (urlParts[1] && (!_.isUndefined(includeGrid) && includeGrid === true)) {
+                    url += '#g/' + urlParts[1];
+                }
             }
             if (!url) {
                 url = window.location.pathname + window.location.search;

@@ -85,8 +85,6 @@
                 return this.__call_old();
             },
             switch_tree : function () {
-                var  _this = this;
-
                 // Create new root node, place it into the tree and
                 // open it if setup to auto_open_root
                 var selected_tree = this.get_tree_select().find(':selected');
@@ -115,6 +113,7 @@
                     this.select_node(root_node);
                 }
 
+                this.get_container().trigger('after_tree_loaded.jstree', root_node_id);
             },
             get_tree_select : function () {
                 return $("#" + tree_select_id);

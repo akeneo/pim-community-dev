@@ -28,18 +28,21 @@ class UrlPropertyTest extends \PHPUnit_Framework_TestCase
     /**
      * @param array $placeholders
      * @param bool $isAbsolute
+     * @param string $anchor
      * @return UrlProperty
      */
     protected function createUrlProperty(
         array $placeholders = array(),
-        $isAbsolute = false
+        $isAbsolute = false,
+        $anchor = null
     ) {
         return new UrlProperty(
             self::TEST_PROPERTY_NAME,
             $this->router,
             self::TEST_ROUTE_NAME,
             $placeholders,
-            $isAbsolute
+            $isAbsolute,
+            $anchor
         );
     }
 
@@ -56,17 +59,19 @@ class UrlPropertyTest extends \PHPUnit_Framework_TestCase
         $expectedParameters,
         ResultRecordInterface $record,
         $placeholders = array(),
-        $isAbsolute = false
+        $isAbsolute = false,
+        $anchor = null
     ) {
-        $expectedResult = 'test';
-        $property = $this->createUrlProperty($placeholders, $isAbsolute);
+        $expectedRoute = 'test';
+
+        $property = $this->createUrlProperty($placeholders, $isAbsolute, $anchor);
 
         $this->router->expects($this->once())
             ->method('generate')
             ->with(self::TEST_ROUTE_NAME, $expectedParameters, $isAbsolute)
-            ->will($this->returnValue($expectedResult));
+            ->will($this->returnValue($expectedRoute));
 
-        $this->assertEquals($expectedResult, $property->getValue($record));
+        $this->assertEquals($expectedRoute.$anchor, $property->getValue($record));
     }
 
     /**
@@ -108,7 +113,24 @@ class UrlPropertyTest extends \PHPUnit_Framework_TestCase
                 'placeholders' => array(
                     'id' => '_id_'
                 )
-            )
+            ),
+            'has placeholders and anchor' => array(
+                'expectedParameters' => array(
+                    'id' => 1
+                ),
+                'data' =>
+                    new ResultRecord(
+                        array(
+                            'id' => 1,
+                            'name' => 'Test name',
+                        )
+                    ),
+                'placeholders' => array(
+                    'id'
+                ),
+                'isAbsolute' => true,
+                'anchor' => '#myAnchor'
+            ),
         );
     }
 }
