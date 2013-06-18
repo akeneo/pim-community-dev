@@ -137,24 +137,4 @@ class UserController extends Controller
             ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
             : $this->render('OroUserBundle:User:index.html.twig', array('datagrid' => $view));
     }
-
-    /**
-     * @Route("/autocomplete", name="oro_user_autocomplete")
-     * @Acl(
-     *      id="oro_user_user_autocomplete",
-     *      name="Autocomplete list of users",
-     *      description="Autocomplete list of users",
-     *      parent="oro_user_user"
-     * )
-     */
-    public function autocompleteAction(Request $request)
-    {
-        $query = $this->getRequest()->get('query');
-        $page = $this->getRequest()->get('page', 1);
-        $perPage = $request->get('per_page', 50);
-
-        /** @var $search UserSearchHandler */
-        $search = $this->get('oro_user.autocomplete.user.search_handler');
-        return new JsonResponse($search->search($query, $page, $perPage));
-    }
 }

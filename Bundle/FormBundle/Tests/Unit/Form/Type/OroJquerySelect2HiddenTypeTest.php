@@ -9,7 +9,9 @@ use Doctrine\ORM\AbstractQuery;
 use Symfony\Component\Form\Tests\FormIntegrationTestCase;
 
 use Oro\Bundle\FormBundle\Autocomplete\SearchRegistry;
+use Oro\Bundle\FormBundle\Autocomplete\SearchHandler;
 use Oro\Bundle\FormBundle\Autocomplete\SearchHandlerInterface;
+use Oro\Bundle\FormBundle\Autocomplete\ConverterInterface;
 
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 use Oro\Bundle\FormBundle\Form\Type\OroJquerySelect2HiddenType;
@@ -39,6 +41,16 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
     protected $searchHandler;
 
     /**
+     * @var SearchHandler|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $combinedSearchHandler;
+
+    /**
+     * @var ConverterInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $converter;
+
+    /**
      * @var EntityManager|\PHPUnit_Framework_MockObject_MockObject
      */
     private $entityManager;
@@ -55,8 +67,8 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
             ->setMethods(array('createDefaultTransformer'))
             ->setConstructorArgs(array($this->getMockEntityManager(), $this->getMockSearchRegistry()))
             ->getMock();
-        $this->type->expects($this->any())->method('createDefaultTransformer')
-            ->will($this->returnValue($this->getMockEntityToIdTransformer()));
+        /*$this->type->expects($this->any())->method('createDefaultTransformer')
+            ->will($this->returnValue($this->getMockEntityToIdTransformer()));*/
     }
 
     protected function getExtensions()
@@ -81,6 +93,13 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
         array $expectedCalls,
         array $expectedVars
     ) {
+        if (isset($options['converter'])
+            && is_string($options['converter'])
+            && method_exists($this, $options['converter'])
+        ) {
+            $options['converter'] = $this->$options['converter']();
+        }
+
         foreach ($expectedCalls as $key => $calls) {
             $mock = $this->{'getMock' . ucfirst($key)}();
             MockHelper::addMockExpectedCalls($mock, $calls, $this);
@@ -101,6 +120,7 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
         }
     }
 
+
     /**
      * Data provider for testBindData
      *
@@ -111,23 +131,28 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
     {
         $entityId1 = $this->createMockEntity('id', 1);
         return array(
-            'default' => array(
+            'use autocomplete_alias' => array(
                 '1',
                 $entityId1,
                 '1',
                 array('autocomplete_alias' => 'foo'),
                 'expectedCalls' => array(
                     'searchRegistry' => array(
-                        array('hasSearchHandler', array('foo'), true),
-                        array('getSearchHandler', array('foo'), 'getMockSearchHandler')
+                        array('getSearchHandler', array('foo'), 'getMockCombinedSearchHandler'),
+                        array('getSearchHandler', array('foo'), 'getMockCombinedSearchHandler'),
+                        array('getSearchHandler', array('foo'), 'getMockCombinedSearchHandler')
                     ),
-                    'searchHandler' => array(
+                    'combinedSearchHandler' => array(
                         array('getProperties', array(), array('bar', 'baz')),
+                        array('getEntityName', array(), 'TestEntityClass'),
                         array(
                             'convertItem',
                             array($entityId1),
                             array('id' => 1, 'bar' => 'Bar value', 'baz' => 'Baz value')
                         ),
+                    ),
+                    'formType' => array(
+                        array('createDefaultTransformer', array('TestEntityClass'), 'getMockEntityToIdTransformer')
                     ),
                     'entityToIdTransformer' => array(
                         array('transform', array(null), null),
@@ -136,53 +161,40 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
                 ),
                 'expectedVars' => array(
                     'configs' => array(
-                        'extra_config' => 'autocomplete',
-                        'properties' => array('bar', 'baz'),
-                        'selection_template_twig' => null,
-                        'result_template_twig' => null,
-                        'placeholder' => 'Choose a value...',
+                        'placeholder' => 'oro.form.choose_value',
                         'allowClear' => 1,
                         'minimumInputLength' => 1,
-                        'ajax' => array('url' => null),
                         'autocomplete_alias' => 'foo',
-                        'route_name' => 'oro_form_autocomplete_search'
+                        'properties' => array('bar', 'baz'),
+                        'route_name' => 'oro_form_autocomplete_search',
+                        'extra_config' => 'autocomplete'
                     ),
                     'attr' => array(
                         'data-entity' => json_encode(array('id' => 1, 'bar' => 'Bar value', 'baz' => 'Baz value'))
                     )
                 )
             ),
-            'custom' => array(
+            'without autocomplete_alias' => array(
                 '1',
                 $entityId1,
                 '1',
                 array(
-                    'autocomplete_alias' => 'foo',
-                    'url' => 'custom_url',
-                    'route_name' => 'custom_route',
                     'configs' => array(
-                        'extra_config' => 'custom_extra_config',
-                        'selection_template_twig' => 'custom_selection_template_twig',
-                        'result_template_twig' => 'custom_result_template_twig',
-                        'placeholder' => 'custom_placeholder',
-                        'allowClear' => false,
-                        'minimumInputLength' => 2,
-                        'ajax' => array('custom_property' => 'custom_value'),
-                        'custom_property' => 'custom_value'
-                    )
+                        'route_name' => 'custom_route'
+                    ),
+                    'converter' => 'getMockConverter',
+                    'entity_class' => 'TestEntityClass'
                 ),
                 'expectedCalls' => array(
-                    'searchRegistry' => array(
-                        array('hasSearchHandler', array('foo'), true),
-                        array('getSearchHandler', array('foo'), 'getMockSearchHandler')
-                    ),
-                    'searchHandler' => array(
-                        array('getProperties', array(), array('bar', 'baz')),
+                    'converter' => array(
                         array(
                             'convertItem',
                             array($entityId1),
                             array('id' => 1, 'bar' => 'Bar value', 'baz' => 'Baz value')
                         ),
+                    ),
+                    'formType' => array(
+                        array('createDefaultTransformer', array('TestEntityClass'), 'getMockEntityToIdTransformer')
                     ),
                     'entityToIdTransformer' => array(
                         array('transform', array(null), null),
@@ -191,17 +203,10 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
                 ),
                 'expectedVars' => array(
                     'configs' => array(
-                        'extra_config' => 'custom_extra_config',
-                        'properties' => array('bar', 'baz'),
-                        'selection_template_twig' => 'custom_selection_template_twig',
-                        'result_template_twig' => 'custom_result_template_twig',
-                        'placeholder' => 'custom_placeholder',
-                        'allowClear' => false,
-                        'minimumInputLength' => 2,
-                        'ajax' => array('url' => 'custom_url', 'custom_property' => 'custom_value'),
-                        'autocomplete_alias' => 'foo',
-                        'route_name' => 'custom_route',
-                        'custom_property' => 'custom_value'
+                        'placeholder' => 'oro.form.choose_value',
+                        'allowClear' => 1,
+                        'minimumInputLength' => 1,
+                        'route_name' => 'custom_route'
                     ),
                     'attr' => array(
                         'data-entity' => json_encode(array('id' => 1, 'bar' => 'Bar value', 'baz' => 'Baz value'))
@@ -224,6 +229,13 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
         $expectedException,
         $expectedExceptionMessage
     ) {
+        if (isset($options['converter'])
+            && is_string($options['converter'])
+            && method_exists($this, $options['converter'])
+        ) {
+            $options['converter'] = $this->$options['converter']();
+        }
+
         foreach ($expectedCalls as $key => $calls) {
             $mock = $this->{'getMock' . ucfirst($key)}();
             MockHelper::addMockExpectedCalls($mock, $calls, $this);
@@ -241,41 +253,85 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
     public function createErrorsDataProvider()
     {
         return array(
-            'autocomplete_alias is required' => array(
+            'configs.route_name or configs.ajax.url must be set' => array(
                 array(),
                 'expectedCalls' => array(),
-                'expectedException' => 'Symfony\Component\OptionsResolver\Exception\MissingOptionsException',
-                'expectedExceptionMessage' => 'The required option "autocomplete_alias" is  missing.'
+                'expectedException' => 'Symfony\Component\Form\Exception\FormException',
+                'expectedExceptionMessage' => 'Either option "configs.route_name" or "configs.ajax.url" must be set.'
             ),
-            'cannot normalize search_handler when associated handler not found in registry' => array(
-                array('autocomplete_alias' => 'foo'),
-                'expectedCalls' => array(
-                    'searchRegistry' => array(
-                        array('hasSearchHandler', array('foo'), false),
+            'converter must be set' => array(
+                array(
+                    'configs' => array(
+                        'route_name' => 'foo'
                     )
                 ),
-                'expectedException' => 'Symfony\Component\Form\Exception\FormException',
-                'expectedExceptionMessage' => 'The option "autocomplete_alias" references to not '
-                    . 'registered autocomplete search handler "foo".'
-            ),
-            'cannot normalize search_handler when it has incorrect type' => array(
-                array('autocomplete_alias' => 'foo', 'search_handler' => 'invalid'),
                 'expectedCalls' => array(),
                 'expectedException' => 'Symfony\Component\Form\Exception\FormException',
-                'expectedExceptionMessage' => 'The option "search_handler" must be an instance of '
-                    . '"Oro\Bundle\FormBundle\Autocomplete\SearchHandlerInterface".'
+                'expectedExceptionMessage' => 'The option "converter" must be set.'
             ),
-            'cannot normalize transformer when it has incorrect type' => array(
-                array('autocomplete_alias' => 'foo', 'transformer' => 'invalid'),
+            'converter cannot be set using autocomplete_alias' => array(
+                array(
+                    'autocomplete_alias' => 'bar',
+                    'configs' => array(
+                        'route_name' => 'foo'
+                    )
+                ),
                 'expectedCalls' => array(
                     'searchRegistry' => array(
-                        array('hasSearchHandler', array('foo'), true),
-                        array('getSearchHandler', array('foo'), 'getMockSearchHandler'),
+                        array('getSearchHandler', array('bar'), 'getMockSearchHandler'),
                     )
                 ),
                 'expectedException' => 'Symfony\Component\Form\Exception\FormException',
-                'expectedExceptionMessage' => 'The option "transformer" must be an instance of '
-                    . '"Symfony\Component\Form\DataTransformerInterface".'
+                'expectedExceptionMessage' =>
+                    sprintf(
+                        'The option "converter" must be set. Pass a value or pass '
+                        . 'an "%s" option that refers to service that implements "%s"',
+                        'autocomplete_alias',
+                        'Oro\Bundle\FormBundle\Autocomplete\ConverterInterface'
+                    )
+            ),
+            'converter invalid' => array(
+                array(
+                    'converter' => 'bar',
+                    'configs' => array(
+                        'route_name' => 'foo'
+                    )
+                ),
+                'expectedCalls' => array(),
+                'expectedException' => 'Symfony\Component\Form\Exception\FormException',
+                'expectedExceptionMessage' =>
+                    sprintf(
+                        'The option "converter" must be an instance of "%s".',
+                        'Oro\Bundle\FormBundle\Autocomplete\ConverterInterface'
+                    )
+            ),
+            'entity_class must be set' => array(
+                array(
+                    'converter' => 'getMockConverter',
+                    'configs' => array(
+                        'route_name' => 'foo'
+                    )
+                ),
+                'expectedCalls' => array(),
+                'expectedException' => 'Symfony\Component\Form\Exception\FormException',
+                'expectedExceptionMessage' => 'The option "entity_class" must be set.'
+            ),
+            'entity_class must be set2' => array(
+                array(
+                    'converter' => 'getMockConverter',
+                    'entity_class' => 'bar',
+                    'configs' => array(
+                        'route_name' => 'foo'
+                    ),
+                    'transformer' => 'invalid'
+                ),
+                'expectedCalls' => array(),
+                'expectedException' => 'Symfony\Component\Form\Exception\FormException',
+                'expectedExceptionMessage' =>
+                    sprintf(
+                        'The option "transformer" must be an instance of "%s".',
+                        'Symfony\Component\Form\DataTransformerInterface'
+                    )
             )
         );
     }
@@ -326,6 +382,26 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
     }
 
     /**
+     * @return ConverterInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    public function getMockConverter()
+    {
+        if (!$this->converter) {
+            $this->converter = $this->getMock('Oro\Bundle\FormBundle\Autocomplete\ConverterInterface');
+        }
+
+        return $this->converter;
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    public function getMockFormType()
+    {
+        return $this->type;
+    }
+
+    /**
      * @return SearchHandlerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     public function getMockSearchHandler()
@@ -338,9 +414,25 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
     }
 
     /**
+     * @return SearchHandler|\PHPUnit_Framework_MockObject_MockObject
+     */
+    public function getMockCombinedSearchHandler()
+    {
+        if (!$this->combinedSearchHandler) {
+            $this->combinedSearchHandler =
+                $this->getMockBuilder('Oro\Bundle\FormBundle\Autocomplete\SearchHandler')
+                    ->disableOriginalConstructor()
+                    ->setMethods(array('convertItem', 'getProperties', 'getEntityName'))
+                    ->getMock();
+        }
+
+        return $this->combinedSearchHandler;
+    }
+
+    /**
      * @return EntityToIdTransformer|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getMockEntityToIdTransformer()
+    public function getMockEntityToIdTransformer()
     {
         if (!$this->entityToIdTransformer) {
             $this->entityToIdTransformer =

@@ -208,6 +208,7 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
      * @param array $expectEntityRepositoryCalls
      * @param array $expectQueryBuilderCalls
      * @param array $expectExprCalls
+     * @param array $expectQueryCalls
      */
     public function testSearch(
         $query,
@@ -401,7 +402,7 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return Expr|\PHPUnit_Framework_MockObject_MockObject
+     * @return AbstractQuery|\PHPUnit_Framework_MockObject_MockObject
      */
     public function getMockQuery()
     {
@@ -409,6 +410,7 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param array $ids
      * @return Item[]
      */
     public function createMockSearchItems(array $ids)

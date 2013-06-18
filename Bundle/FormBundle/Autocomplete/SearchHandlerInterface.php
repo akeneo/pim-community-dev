@@ -15,14 +15,6 @@ interface SearchHandlerInterface
     public function search($query, $page, $perPage);
 
     /**
-     * Converts found item into an array that represents it in view.
-     *
-     * @param mixed $item
-     * @return array
-     */
-    public function convertItem($item);
-
-    /**
      * Gets properties that should be displayed
      *
      * @return array

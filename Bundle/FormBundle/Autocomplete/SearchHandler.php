@@ -12,7 +12,7 @@ use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 
 use Oro\Bundle\SearchBundle\Engine\Indexer;
 
-class SearchHandler implements SearchHandlerInterface
+class SearchHandler implements SearchHandlerInterface, ConverterInterface
 {
     /**
      * @var Indexer
@@ -82,22 +82,32 @@ class SearchHandler implements SearchHandlerInterface
 
     /**
      * @param ManagerRegistry $managerRegistry
+     * @throws \RuntimeException
      */
-    public function setManagerRegistry(ManagerRegistry $managerRegistry)
+    public function initDoctrinePropertiesByManagerRegistry(ManagerRegistry $managerRegistry)
     {
-        $this->setEntityManager($managerRegistry->getManagerForClass($this->entityName));
+        $objectManager = $managerRegistry->getManagerForClass($this->entityName);
+        if (!$objectManager instanceof EntityManager) {
+            throw new \RuntimeException(
+                'Object manager for "%s" expected to be an instance of "%s".',
+                $this->entityName,
+                'Doctrine\ORM\EntityManager'
+            );
+        }
+        $this->initDoctrinePropertiesByEntityManager($objectManager);
     }
 
     /**
      * @param EntityManager $entityManager
      */
-    public function setEntityManager(EntityManager $entityManager)
+    public function initDoctrinePropertiesByEntityManager(EntityManager $entityManager)
     {
         $this->entityRepository = $entityManager->getRepository($this->entityName);
         $this->idFieldName = $this->getEntityIdentifierFieldName($entityManager);
     }
 
     /**
+     * @param EntityManager $entityManager
      * @return string
      */
     protected function getEntityIdentifierFieldName(EntityManager $entityManager)
@@ -112,12 +122,10 @@ class SearchHandler implements SearchHandlerInterface
      */
     public function search($query, $page, $perPage)
     {
-        if (!$this->indexer || !$this->entitySearchAlias || !$this->entityRepository || !$this->idFieldName) {
-            throw new \RuntimeException('Search handler is not fully configured');
-        }
+        $this->checkAllDependenciesInjected();
 
         $page = (int)$page > 0 ? (int)$page : 1;
-        $perPage = (int)$perPage > 0 ? (int)$perPage : 1;
+        $perPage = (int)$perPage > 0 ? (int)$perPage : 10;
         $perPage += 1;
 
         $items = $this->searchEntities($query, ($page - 1) * $perPage, $perPage);
@@ -128,6 +136,16 @@ class SearchHandler implements SearchHandlerInterface
         }
 
         return $this->formatResult($items);
+    }
+
+    /**
+     * @throws \RuntimeException
+     */
+    private function checkAllDependenciesInjected()
+    {
+        if (!$this->indexer || !$this->entitySearchAlias || !$this->entityRepository || !$this->idFieldName) {
+            throw new \RuntimeException('Search handler is not fully configured');
+        }
     }
 
     /**

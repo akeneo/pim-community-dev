@@ -17,6 +17,8 @@ class UserSearchHandler extends SearchHandler
 
     /**
      * @param CacheManager $cacheManager
+     * @param string $userEntityName
+     * @param array $properties
      */
     public function __construct(CacheManager $cacheManager, $userEntityName, array $properties)
     {
