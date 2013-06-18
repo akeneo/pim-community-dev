@@ -34,22 +34,16 @@ class ProductType extends AbstractType
             'user',
             'oro_jqueryselect2_hidden',
             array(
-                // Required values
                 'autocomplete_alias' => 'users',
 
                 // Default values
                 'configs' => array(
                     'extra_config'            => 'autocomplete',
-                    'selection_template_twig' => null,
-                    'result_template_twig'    => null,
                     'placeholder'             => 'Choose a value...',
                     'allowClear'              => true,
                     'minimumInputLength'      => 1,
-                    'ajax'                    => array()
-                ),
-                'search_handler' => null,
-                'route_name'     => 'oro_form_autocomplete_search',
-                'url'            => null
+                    'route_name'              => 'oro_form_autocomplete_search'
+                )
             )
         );
     }
@@ -57,12 +51,79 @@ class ProductType extends AbstractType
     // ...
 }
 ```
-Default options can be ommited as they will have default values.
+
+Minimum required configuration with use of "autocomplete_alias":
+
+```php
+class ProductType extends AbstractType
+{
+/**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add(
+            'user',
+            'oro_jqueryselect2_hidden',
+            array(
+                'autocomplete_alias' => 'users'
+            )
+        );
+    }
+
+    // ...
+}
+```
+
+
+Configuration without "autocomplete_alias":
+
+```php
+class ProductType extends AbstractType
+{
+/**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add(
+            'user',
+            'oro_jqueryselect2_hidden',
+            array(
+                'converter' => $this->converter,
+                'configs' => array(
+                    'properties' => array(),
+                    'route' => 'some_route',
+                    'entity_class' => 'UserFullyQualifiedClassName'
+                )
+            )
+        );
+    }
+
+    // ...
+}
+```
 
 **autocomplete_alias**
 
 This option refers to a service configured with tag "oro_form.autocomplete.search_handler". Details of service configuration
-described [here](#search-handler-configuration)
+described [here](#search-handler-configuration). If this option is set next options will be inited if they are empty:
+*entity_class*, *configs.properties*, *converter* (if service referenced to "autocomplete_alias" implements Oro\Bundle\FormBundle\Autocomplete\ConverterInterface),
+*configs.route_name* ("oro_form_autocomplete_search"), *configs.extra_config* ("autocomplete")
+
+**entity_class**
+
+Entity class (optional if "autocomplete_alias" option is provided).
+
+**converter**
+
+Object that implements Oro\Bundle\FormBundle\Autocomplete\ConverterInterface that will be used to convert bind entity into array to use in select2 plugin.
+This option can be ommited if service referenced to "autocomplete_alias" implements Oro\Bundle\FormBundle\Autocomplete\ConverterInterface.
+
+**configs.properties**
+
+List of properties that will be used in view to convert json object to string that will be displayed in select options
+(optional if "autocomplete_alias" option is provided).
 
 **configs.extra_config**
 
@@ -101,20 +162,21 @@ Count of characters that should be typed before request to remote server will be
 
 Custom options that are used by select2 jQuery plugin.
 
+**configs.ajax.url**
+
+Custom URL that will be used instead of route_name to send search requests.
+
 **configs.search_handler**
 
 You can provide your instance of search handler (instance of Oro\Bundle\FormBundle\Autocomplete\SearchHandlerInterface) in this option.
 Otherwise it will be resolved using "autocomplete_alias" option.
 
-**route_name**
+**configs.route_name**
 
 Url of this route will be used by select2 plugin to iteract with search handler.
 By default  Oro\Bundle\FormBundle\Controller\AutocompleteController::searchAction is used
 but you can implement your own action and use it by referencing it via *route_name*.
 
-**url**
-
-If your search service is located remotely on other server you can pass direct url that will be used instead of *route_name*.
 
 #### Search Handler Service
 
@@ -136,9 +198,10 @@ services:
             - %user_class% # pass class name of entity
             - ["firstName", "lastName"] # pass properties that should be transported to the client
         tags:
-            - { name: oro_form.autocomplete.search_handler, alias: users }
+            - { name: oro_form.autocomplete.search_handler, alias: users, acl_resource: user_acl_resource }
 
 ```
+
 
 After this "oro_jqueryselect2_hidden" form type can receive option "autocomplete_alias" with value "users".
 
@@ -148,6 +211,13 @@ receives properties names that control what data will be transported to select2 
 This services can be parent of abstract service "oro_form.autocomplete.search_handler" but if you need your
 own implementation of search handler you should implement Oro\Bundle\FormBundle\Autocomplete\SearchHandlerInterface.
 
+#### Security
+
+Each tag "oro_form.autocomplete.search_handler" can contain attribute "acl_resource" that references to an ACL resource
+that should be granted to user that performs autocomplete request. This feature works only if you use default implementation
+of autocomplete search action: Oro\Bundle\FormBundle\Controller\AutocompleteController::searchAction.
+
+If you use custom "configs.route_name" option it's on your own to check user permissions.
 
 #### Iteraction of Server and Javascript
 
@@ -168,7 +238,11 @@ Select2 plugin on client side expects response in next format:
 Properties "firstName" and "lastName" are configured in search handler service.
 
 
-#### Dependecny on OroSearchBundle
+#### Dependency on OroSearchBundle
 
 Default implementation of search handler is based on functionality of OroSearchBundle. If you use this implementation
 your entity should be properly configured in the way that OroSearchBundle allows.
+
+#### Dependency on OroUserBundle
+
+As each autocomplete could be protected using ACL-resource, there is a dependency on OroUserBundle, particularly on "oro_user.acl_manager" service.
