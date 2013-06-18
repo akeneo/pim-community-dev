@@ -164,34 +164,6 @@ class Orm extends AbstractEngine
     }
 
     /**
-     * Get url for entity
-     *
-     * @param object $entity
-     *
-     * @return string
-     */
-    public function getEntityUrl($entity)
-    {
-        if ($this->mapper->getEntityMapParameter(get_class($entity), 'route')) {
-            $routeParameters = $this->mapper->getEntityMapParameter(get_class($entity), 'route');
-            $routeData = array();
-            if (isset($routeParameters['parameters']) && count($routeParameters['parameters'])) {
-                foreach ($routeParameters['parameters'] as $parameter => $field) {
-                    $routeData[$parameter] = $this->mapper->getFieldValue($entity, $field);
-                }
-            }
-
-            return $this->container->get('router')->generate(
-                $routeParameters['name'],
-                $routeData,
-                true
-            );
-        }
-
-        return '';
-    }
-
-    /**
      * Get entity string
      *
      * @param object $entity
@@ -211,6 +183,34 @@ class Orm extends AbstractEngine
         }
 
         return implode(' ', $title);
+    }
+
+    /**
+     * Get url for entity
+     *
+     * @param object $entity
+     *
+     * @return string
+     */
+    protected function getEntityUrl($entity)
+    {
+        if ($this->mapper->getEntityMapParameter(get_class($entity), 'route')) {
+            $routeParameters = $this->mapper->getEntityMapParameter(get_class($entity), 'route');
+            $routeData = array();
+            if (isset($routeParameters['parameters']) && count($routeParameters['parameters'])) {
+                foreach ($routeParameters['parameters'] as $parameter => $field) {
+                    $routeData[$parameter] = $this->mapper->getFieldValue($entity, $field);
+                }
+            }
+
+            return $this->container->get('router')->generate(
+                $routeParameters['name'],
+                $routeData,
+                true
+            );
+        }
+
+        return '';
     }
 
     /**

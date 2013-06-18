@@ -51,7 +51,6 @@ class IndexCommand extends ContainerAwareCommand
             if ($entity) {
                 $item->setChanged(false)
                     ->setTitle($orm->getEntityTitle($entity))
-                    ->setUrl($orm->getEntityUrl($entity))
                     ->saveItemData($orm->getMapper()->mapObject($entity));
             } else {
                 $em->remove($item);
