@@ -55,7 +55,8 @@ class UserType extends FlexibleType
         // user fields
         $builder->addEventSubscriber(new UserSubscriber($builder->getFormFactory(), $this->aclManager, $this->security));
         $this->setDefaultUserFields($builder);
-        $builder->add(
+        $builder
+            ->add(
                 'rolesCollection',
                 'entity',
                 array(
@@ -177,7 +178,8 @@ class UserType extends FlexibleType
      */
     protected function setDefaultUserFields(FormBuilderInterface $builder)
     {
-        $builder->add(
+        $builder
+            ->add(
                 'username',
                 'text',
                 array(
