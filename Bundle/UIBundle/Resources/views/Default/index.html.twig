@@ -100,13 +100,15 @@
                     {% block left_panel %}
                         {% placeholder left_panel %}
                     {% endblock left_panel %}
-                    {% placeholder pinbar %}
-                    {% block application_menu %}
-                        <div id="main-menu">
-                            {% placeholder application_menu %}
-                        </div>
-                    {% endblock application_menu %}
-                    {% placeholder pin_button %}
+                    {% block pin_bar %}
+                        {% placeholder pinbar %}
+                        {% block application_menu %}
+                            <div id="main-menu">
+                                {% placeholder application_menu %}
+                            </div>
+                        {% endblock application_menu %}
+                        {% placeholder pin_button %}
+                    {% endblock pin_bar %}
                     <div id="flash-messages">
                         {% block messages %}
                             {% set allMessages = {'empty': ['']} %}

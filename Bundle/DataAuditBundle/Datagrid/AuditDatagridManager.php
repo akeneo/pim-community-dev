@@ -4,7 +4,7 @@ namespace Oro\Bundle\DataAuditBundle\Datagrid;
 
 use Doctrine\ORM\Query;
 
-use Gedmo\Loggable\LoggableListener;
+use Oro\Bundle\DataAuditBundle\Loggable\LoggableManager;
 
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -51,9 +51,9 @@ class AuditDatagridManager extends DatagridManager
                 'filterable'  => true,
                 'show_filter' => true,
                 'choices'     => array(
-                    LoggableListener::ACTION_UPDATE => 'Updated',
-                    LoggableListener::ACTION_CREATE => 'Created',
-                    LoggableListener::ACTION_REMOVE => 'Deleted',
+                    LoggableManager::ACTION_UPDATE => 'Updated',
+                    LoggableManager::ACTION_CREATE => 'Created',
+                    LoggableManager::ACTION_REMOVE => 'Deleted',
                 ),
                 'multiple' => true,
             )
