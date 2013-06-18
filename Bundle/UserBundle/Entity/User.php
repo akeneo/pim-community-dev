@@ -5,9 +5,8 @@ namespace Oro\Bundle\UserBundle\Entity;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-use Gedmo\Mapping\Annotation as Gedmo;
-
 use Doctrine\ORM\Mapping as ORM;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -18,7 +17,7 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 
-use Oro\Bundle\DataAuditBundle\Entity\AuditableInterface;
+use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 
 use Oro\Bundle\UserBundle\Entity\Status;
 use Oro\Bundle\UserBundle\Entity\Email;
@@ -27,16 +26,16 @@ use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
 use DateTime;
 
 /**
+ * @SuppressWarnings(PHPMD)
  * @ORM\Entity(repositoryClass="Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository")
  * @ORM\Table(name="oro_user")
  * @ORM\HasLifecycleCallbacks()
- * @Gedmo\Loggable(logEntryClass="Oro\Bundle\DataAuditBundle\Entity\Audit")
+ * @Oro\Loggable
  */
 class User extends AbstractEntityFlexible implements
     AdvancedUserInterface,
     \Serializable,
-    EntityUploadedImageInterface,
-    AuditableInterface
+    EntityUploadedImageInterface
 {
     const ROLE_DEFAULT   = 'ROLE_USER';
     const ROLE_ANONYMOUS = 'IS_AUTHENTICATED_ANONYMOUSLY';
@@ -56,7 +55,7 @@ class User extends AbstractEntityFlexible implements
      * @ORM\Column(type="string", length=255, unique=true)
      * @Soap\ComplexType("string")
      * @Type("string")
-     * @Gedmo\Versioned
+     * @Oro\Versioned
      */
     protected $username;
 
@@ -66,7 +65,7 @@ class User extends AbstractEntityFlexible implements
      * @ORM\Column(type="string", length=255, unique=true)
      * @Soap\ComplexType("string")
      * @Type("string")
-     * @Gedmo\Versioned
+     * @Oro\Versioned
      */
     protected $email;
 
@@ -78,7 +77,7 @@ class User extends AbstractEntityFlexible implements
      * @ORM\Column(name="firstname", type="string", length=100, nullable=true)
      * @Soap\ComplexType("string")
      * @Type("string")
-     * @Gedmo\Versioned
+     * @Oro\Versioned
      */
     protected $firstName;
 
@@ -90,7 +89,7 @@ class User extends AbstractEntityFlexible implements
      * @ORM\Column(name="lastname", type="string", length=100, nullable=true)
      * @Soap\ComplexType("string")
      * @Type("string")
-     * @Gedmo\Versioned
+     * @Oro\Versioned
      */
     protected $lastName;
 
@@ -100,7 +99,7 @@ class User extends AbstractEntityFlexible implements
      * @ORM\Column(name="birthday", type="datetime", nullable=true)
      * @Soap\ComplexType("dateTime", nillable=true)
      * @Type("dateTime")
-     * @Gedmo\Versioned
+     * @Oro\Versioned
      */
     protected $birthday;
 
@@ -129,7 +128,7 @@ class User extends AbstractEntityFlexible implements
      * @ORM\Column(type="boolean")
      * @Soap\ComplexType("boolean")
      * @Type("boolean")
-     * @Gedmo\Versioned
+     * @Oro\Versioned
      */
     protected $enabled = true;
 
@@ -217,6 +216,7 @@ class User extends AbstractEntityFlexible implements
      * )
      * @Soap\ComplexType("int[]", nillable=true)
      * @Exclude
+     * @Oro\Versioned("getLabel")
      */
     protected $roles;
 
@@ -230,6 +230,7 @@ class User extends AbstractEntityFlexible implements
      * )
      * @Soap\ComplexType("int[]", nillable=true)
      * @Exclude
+     * @Oro\Versioned("getName")
      */
     protected $groups;
 
@@ -270,17 +271,6 @@ class User extends AbstractEntityFlexible implements
      * @ORM\OneToMany(targetEntity="Email", mappedBy="user", orphanRemoval=true, cascade={"persist"})
      */
     protected $emails;
-
-    /**
-     * Workaround to track "versioned" collections
-     *
-     * @var array
-     * @see AuditableInterface
-     *
-     * @ORM\Column(name="collections_audit", type="array", nullable=true)
-     * @Gedmo\Versioned
-     */
-    protected $auditData;
 
     public function __construct()
     {
@@ -1120,26 +1110,5 @@ class User extends AbstractEntityFlexible implements
         $suffix = $this->getCreatedAt() ? $this->getCreatedAt()->format('Y-m') : date('Y-m');
 
         return 'uploads' . $ds . 'users' . $ds . $suffix;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setAuditData()
-    {
-        $this->auditData = array(
-            'roles'  => implode(
-                ', ',
-                $this->getRolesCollection()->map(function ($item) {
-                    return $item->getLabel();
-                })->toArray()
-            ),
-            'groups' => implode(
-                ', ',
-                $this->getGroups()->map(function ($item) {
-                    return $item->getName();
-                })->toArray()
-            ),
-        );
     }
 }

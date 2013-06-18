@@ -9,6 +9,10 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery as BaseProxyQuery;
 
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 
+/**
+ * @SuppressWarnings(PHPMD)
+ * TODO: This class should be refactored  (BAP-969).
+ */
 class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
 {
     /**
