@@ -18,6 +18,10 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
 
+/**
+ * @SuppressWarnings(PHPMD)
+ * TODO: This class should be refactored  (BAP-978)
+*/
 class LoggableManager
 {
     /**
