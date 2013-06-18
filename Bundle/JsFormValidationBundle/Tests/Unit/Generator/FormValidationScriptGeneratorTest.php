@@ -44,7 +44,7 @@ class FormValidationScriptGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->container->expects($this->once())
             ->method('get')->with('doctrine')->will($this->returnValue($managerRegistry));
 
-        $this->metadataFactory = $this->getMock('Symfony\Component\Validator\Mapping\MetadataFactoryInterface');
+        $this->metadataFactory = $this->getMock('Symfony\Component\Validator\MetadataFactoryInterface');
         $this->generator = new FormValidationScriptGenerator($this->container, $this->metadataFactory);
     }
 

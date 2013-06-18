@@ -45,7 +45,7 @@ class RegionTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildForm()
     {
-        $builderMock = $this->getMock('Symfony\Component\Form\Tests\FormBuilderInterface');
+        $builderMock = $this->getMock('Symfony\Component\Form\Test\FormBuilderInterface');
         $options = array(RegionType::COUNTRY_OPTION_KEY => 'test');
 
         $builderMock->expects($this->once())

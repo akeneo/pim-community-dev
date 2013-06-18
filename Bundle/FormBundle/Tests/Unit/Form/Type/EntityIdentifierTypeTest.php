@@ -272,7 +272,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
             },
             'values_delimiter' => ','
         );
-        $builder = $this->getMockBuilder('Symfony\Component\Form\Tests\FormBuilderInterface')
+        $builder = $this->getMockBuilder('Symfony\Component\Form\Test\FormBuilderInterface')
             ->setMethods(array('addViewTransformer', 'addEventSubscriber'))
             ->getMockForAbstractClass();
 

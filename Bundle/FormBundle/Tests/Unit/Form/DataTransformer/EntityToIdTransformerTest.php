@@ -46,7 +46,7 @@ class EntityToIdTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\Form\Exception\UnexpectedTypeException
+     * @expectedException \Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException
      * @expectedExceptionMessageExpected Expected argument of type "array", "string" given
      */
     public function testTransformFailsWhenValueInNotAnArray()
