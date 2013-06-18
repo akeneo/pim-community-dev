@@ -342,7 +342,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getPage('Currency index')->activateCurrencies(
             $this->listToArray($currencies)
         );
-        $this->getSession()->wait(5000, '$("table.grid tbody tr").length > 0');
+        $this->wait(5000, '$("table.grid tbody tr").length > 0');
     }
 
     /**
@@ -353,7 +353,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getPage('Currency index')->deactivateCurrencies(
             $this->listToArray($currencies)
         );
-        $this->getSession()->wait(5000, '$("table.grid tbody tr").length > 0');
+        $this->wait(5000, '$("table.grid tbody tr").length > 0');
     }
 
     /**
@@ -428,9 +428,18 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheProductPage($product)
     {
         $product = $this->getProduct($product);
-        $this->openPage('Product', array(
+        $this->openPage('Product edit', array(
             'id' => $product->getId(),
         ));
+    }
+
+    /**
+     * @Given /^I create a new product$/
+     */
+    public function iCreateANewProduct()
+    {
+        $this->getPage('Product index')->clickNewProductLink();
+        $this->wait(5000, '$(".ui-dialog:contains(\"Create a new product\")").css("display") === "block"');
     }
 
     /**
@@ -451,7 +460,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheCurrenciesPage()
     {
         $this->openPage('Currency index');
-        $this->getSession()->wait(5000, '$("table.grid tbody tr").length > 0');
+        $this->wait(5000, '$("table.grid tbody tr").length > 0');
     }
 
     /**
@@ -459,7 +468,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iVisitTheTab($tab)
     {
-        $this->getPage($this->currentPage)->visitTab($tab);
+        $this->getCurrentPage()->visitTab($tab);
     }
 
     /**
@@ -491,11 +500,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 'group'    => null,
                 'product'  => null,
                 'family'   => null,
+                'required' => 'no',
             ), $data);
 
             $attribute = $this->createAttribute($data['label'], false);
             $attribute->setSortOrder($data['position']);
             $attribute->setGroup($this->getGroup($data['group']));
+            $attribute->setRequired($data['required'] === 'yes');
 
             if ($family = $data['family']) {
                 $family = $this->getFamily($family);
@@ -630,6 +641,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldSee($text)
     {
+        $this->saveScreenshot();
         $this->assertSession()->pageTextContains($text);
     }
 
@@ -701,7 +713,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         if ($language) {
             try {
-                $field = $this->getPage($this->currentPage)->getFieldLocator(
+                $field = $this->getCurrentPage()->getFieldLocator(
                     $field, $this->getLocaleCode($language)
                 );
             } catch (\BadMethodCallException $e) {
@@ -733,7 +745,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldSeeAvailableAttributesInGroup($not, $attributes, $group)
     {
         foreach ($this->listToArray($attributes) as $attribute) {
-            $element = $this->getPage($this->currentPage)->getAvailableAttribute($attribute, $group);
+            $element = $this->getCurrentPage()->getAvailableAttribute($attribute, $group);
             if (!$not) {
                 if (!$element) {
                     throw $this->createExpectationException(sprintf(
@@ -757,14 +769,21 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iAddAvailableAttributes($attributes)
     {
-        $this->getPage($this->currentPage)->openAvailableAttributesMenu();
+        $this->getCurrentPage()->openAvailableAttributesMenu();
         foreach ($this->listToArray($attributes) as $attribute) {
-            $this->getPage($this->currentPage)->selectAvailableAttribute($attribute);
-            $this->getSession()->wait(2000);
+            $this->getCurrentPage()->selectAvailableAttribute($attribute);
         }
 
-        $this->getPage($this->currentPage)->addSelectedAvailableAttributes();
-            $this->getSession()->wait(2000);
+        $this->getCurrentPage()->addSelectedAvailableAttributes();
+        $this->wait(2000);
+    }
+
+    /**
+     * @When /^I am on the products page$/
+     */
+    public function iAmOnTheProductsPage()
+    {
+        $this->openPage('Product index');
     }
 
     /**
@@ -841,7 +860,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldSeeAttributeInGroup($attribute, $group)
     {
-        if (!$this->getPage($this->currentPage)->getAttribute($attribute, $group)) {
+        if (!$this->getCurrentPage()->getAttribute($attribute, $group)) {
             throw new ExpectationException(sprintf(
                 'Expecting to see attribute %s under group %s, but was not present.',
                 $attribute, $group
@@ -886,7 +905,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iRemoveTheAttribute($field)
     {
-        if (null === $link = $this->getPage($this->currentPage)->getRemoveLinkFor($field)) {
+        if (null === $link = $this->getCurrentPage()->getRemoveLinkFor($field)) {
             throw $this->createExpectationException(sprintf(
                 'Remove link on field "%s" should be displayed.', $field
             ));
@@ -954,7 +973,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             ->selectAttributeType($type)
         ;
 
-        $this->getSession()->wait(2000);
+        $this->wait(2000);
     }
 
     /**
@@ -972,7 +991,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $fields = $this->listToArray($fields);
         foreach ($fields as $field) {
-            if (!$this->getPage('Attribute creation')->findField($field)) {
+            if (!$this->getCurrentPage()->findField($field)) {
                 throw $this->createExpectationException(sprintf(
                     'Expecting to see field "%s".', $field
                 ));
@@ -980,11 +999,43 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
+    /**
+     * @Given /^I fill in the following informations:$/
+     */
+    public function iFillInTheFollowingInformations(TableNode $table)
+    {
+        foreach ($table->getRowsHash() as $field => $value) {
+            $this->getCurrentPage()->fillField($field, $value);
+        }
+    }
+
+    /**
+     * @Given /^I press the "([^"]*)" button$/
+     */
+    public function iPressTheButton($button)
+    {
+        $this->getCurrentPage()->pressButton($button);
+        $this->wait(2000, '$(".alert-success .message").length > 0');
+    }
+
+    /**
+     * @Given /^I select the (\w+) activated locale$/
+     */
+    public function iSelectTheActivatedLocale($locale)
+    {
+        $this->getCurrentPage()->selectActivatedLocale($locale);
+    }
+
     private function openPage($page, array $options = array())
     {
         $this->currentPage = $page;
 
-        return $this->getPage($page)->open($options);
+        return $this->getCurrentPage()->open($options);
+    }
+
+    private function getCurrentPage()
+    {
+        return $this->getPage($this->currentPage);
     }
 
     private function listToArray($list)
@@ -1200,5 +1251,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function createExpectationException($message)
     {
         return new ExpectationException($message, $this->getSession());
+    }
+
+    private function wait($time, $condition = null)
+    {
+        $this->getSession()->wait($time, $condition);
     }
 }

@@ -83,9 +83,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $field = $this->createSkuField();
-        $fieldsCollection->add($field);
-
         // TODO : until we'll have related backend type in grid bundle
         $excludedBackend = array(
             AbstractAttributeType::BACKEND_TYPE_MEDIA
@@ -130,31 +127,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $result['show_column'] = $attribute->getUseableAsGridColumn();
 
         return $result;
-    }
-
-    /**
-     * Create a sku field and filter
-     *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
-     */
-    protected function createSkuField()
-    {
-        $field = new FieldDescription();
-        $field->setName('sku');
-        $field->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translate('Sku'),
-                'field_name'  => 'sku',
-                'filter_type' => FilterInterface::TYPE_STRING,
-                'required'    => false,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
-            )
-        );
-
-        return $field;
     }
 
     /**
@@ -219,7 +191,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'field_name'  => 'categories',
                 'filter_type' => FilterInterface::TYPE_CATEGORY,
                 'required'    => false,
-                'sortable'    => true,
+                'sortable'    => false, //TODO To enable when PIM-603 is fixed
                 'filterable'  => true,
                 'show_filter' => true,
                 'field_options' => array(
