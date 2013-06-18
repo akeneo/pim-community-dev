@@ -108,12 +108,13 @@ navigation.dotMenu.MainView = Backbone.View.extend({
     /**
      * Checks if first tab in 3 dots menu is empty
      *
-     * @return {*Boolean}
+     * @return {Boolean}
      */
     isFirstTabEmpty: function() {
-        return this.$tabsContent.children().first() &&
-            (!this.$tabsContent.children().first().html().trim() ||
-            !this.$tabsContent.children().first().find('ul').html());
+        var children = this.$tabsContent.children();
+        return children && children.first().size() &&
+            (!children.first().html().trim() ||
+            !children.first().find('ul').html());
     },
 
     /**
