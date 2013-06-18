@@ -156,7 +156,7 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
             $this->testProperties
         );
 
-        $this->searchHandler->setManagerRegistry($this->managerRegistry);
+        $this->searchHandler->initDoctrinePropertiesByManagerRegistry($this->managerRegistry);
         $this->searchHandler->initSearchIndexer($this->indexer, $this->testSearchConfig);
     }
 

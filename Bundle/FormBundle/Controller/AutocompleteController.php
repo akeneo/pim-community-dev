@@ -17,11 +17,23 @@ use Oro\Bundle\FormBundle\Autocomplete\SearchHandlerInterface;
 
 /**
  * @Route("/autocomplete")
+ * @Acl(
+ *      id="oro_form_autocomplete",
+ *      name="Autocomplete functionality",
+ *      description="Actions from autocomplete controller",
+ *      parent="root"
+ * )
  */
 class AutocompleteController extends Controller
 {
     /**
      * @Route("/search", name="oro_form_autocomplete_search")
+     * @Acl(
+     *      id="oro_form_autocomplete_search",
+     *      name="Autocomplete search request",
+     *      description="Autocomplete search request",
+     *      parent="oro_form_autocomplete"
+     * )
      */
     public function searchAction(Request $request)
     {
