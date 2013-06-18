@@ -21,6 +21,7 @@ class OrmTest extends \PHPUnit_Framework_TestCase
     private $orm;
     private $om;
     private $container;
+    private $mapper;
 
     public function setUp()
     {
@@ -235,5 +236,10 @@ class OrmTest extends \PHPUnit_Framework_TestCase
     public function testFailedSave()
     {
         $this->assertEquals(false, $this->orm->save(new Attribute(), true));
+    }
+
+    public function testGetMapper()
+    {
+        $this->assertEquals($this->mapper, $this->orm->getMapper());
     }
 }
