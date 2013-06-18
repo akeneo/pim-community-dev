@@ -102,7 +102,7 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
 
         // Set first non empty address for new item as primary
         if ($addresses) {
-            if (!$data['id'] && !$hasPrimary) {
+            if ((!array_key_exists('id', $data) || !$data['id']) && !$hasPrimary) {
                 $first = array_shift($addresses);
                 $first['primary'] = true;
                 array_unshift($addresses, $first);

@@ -164,14 +164,16 @@ class AddressCollectionTypeSubscriberTest extends \PHPUnit_Framework_TestCase
                 array('key' => 'value', 'test' => array()), array('key' => 'value')
             ),
             array(
-                array('key' => 'value', 'test' => array(array(), array('k' => 'v'))), array('key' => 'value', 'test' => array(array('k' => 'v')))
+                array('key' => 'value', 'test' => array(array(), array('k' => 'v'))),
+                array('key' => 'value', 'test' => array(array('k' => 'v', 'primary' => true)))
             ),
             array(
-                array('key' => 'value', 'test' => array(array(array()), array('k' => 'v'))), array('key' => 'value', 'test' => array(array('k' => 'v')))
+                array('key' => 'value', 'test' => array(array(array()), array('k' => 'v'))),
+                array('key' => 'value', 'test' => array(array('k' => 'v', 'primary' => true)))
             ),
             array(
                 array('key' => 'value', 'test' => array(array(array('k2' => 'v')), array('k' => 'v'))),
-                array('key' => 'value', 'test' => array(array(array('k2' => 'v')), array('k' => 'v')))
+                array('key' => 'value', 'test' => array(array(array('k2' => 'v'), 'primary' => true), array('k' => 'v')))
             ),
         );
     }
