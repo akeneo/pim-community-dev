@@ -1,4 +1,4 @@
-@info https://akeneo.atlassian.net/browse/PIM-355
+@javascript @info https://akeneo.atlassian.net/browse/PIM-355
 Feature: Add attribute to a product family
   In order to validate exported product attributes
   As an user

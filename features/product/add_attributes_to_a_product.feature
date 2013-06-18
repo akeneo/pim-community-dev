@@ -1,3 +1,4 @@
+@javascript
 Feature: Add attributes to a product
   In order to provide more information about a product
   As an user
