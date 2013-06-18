@@ -3,7 +3,7 @@
 namespace Oro\Bundle\JsFormValidationBundle\Generator;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Validator\Mapping\ClassMetadataFactoryInterface;
+use Symfony\Component\Validator\MetadataFactoryInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Validator\Constraint;
@@ -22,7 +22,7 @@ use APY\JsFormValidationBundle\Generator\FormValidationScriptGenerator as BaseFo
 class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
 {
     /**
-     * @var ClassMetadataFactoryInterface
+     * @var MetadataFactoryInterface
      */
     protected $metadataFactory;
 
@@ -33,9 +33,9 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
 
     /**
      * @param ContainerInterface $container
-     * @param ClassMetadataFactoryInterface $metadataFactory
+     * @param MetadataFactoryInterface $metadataFactory
      */
-    public function __construct(ContainerInterface $container, ClassMetadataFactoryInterface $metadataFactory)
+    public function __construct(ContainerInterface $container, MetadataFactoryInterface $metadataFactory)
     {
         parent::__construct($container);
         $this->metadataFactory = $metadataFactory;
@@ -50,7 +50,7 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
     public function getClassMetadata($className)
     {
         if (!isset($this->classesMetadata[$className])) {
-            $this->classesMetadata[$className] = $this->metadataFactory->getClassMetadata($className);
+            $this->classesMetadata[$className] = $this->metadataFactory->getMetadataFor($className);
         }
 
         return $this->classesMetadata[$className];
