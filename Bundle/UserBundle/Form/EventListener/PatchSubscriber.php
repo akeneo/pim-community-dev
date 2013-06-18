@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
 
 /**
- * Changes Form->bind() behavior so that it treats not set values as if they
+ * Changes Form->submit() behavior so that it treats not set values as if they
  * were sent unchanged.
  *
  * Use when you don't want fields to be set to NULL when they are not displayed
