@@ -85,6 +85,32 @@ class Country
     }
 
     /**
+     * @param Region $region
+     * @return Country
+     */
+    public function addRegion(Region $region)
+    {
+        if (!$this->regions->contains($region)) {
+            $this->regions->add($region);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Region $region
+     * @return Country
+     */
+    public function removeRegion(Region $region)
+    {
+        if ($this->regions->contains($region)) {
+            $this->regions->removeElement($region);
+        }
+
+        return $this;
+    }
+
+    /**
      * Check if country contains regions
      *
      * @return bool

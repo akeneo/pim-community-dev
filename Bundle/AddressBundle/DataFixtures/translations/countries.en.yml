@@ -1,4 +1,3 @@
-
 - name: Afghanistan
   iso2: AF
   iso3: AFG
@@ -39,8 +38,7 @@
   iso2: AX
   iso3: ALA
   phone:
-  units:
-    - "Aland Islands"
+  units: []
 
 - name: Albania
   iso2: AL
@@ -154,8 +152,7 @@
   iso2: AD
   iso3: AND
   phone: 376
-  units:
-    - "Andorra"
+  units: []
 
 - name: Angola
   iso2: AO
@@ -192,15 +189,13 @@
   iso2: AI
   iso3: AIA
   phone: 1 264
-  units:
-    - "Anguilla"
+  units: []
 
 - name: Antarctica
   iso2: AQ
   iso3: ATA
   phone: 672
-  units:
-    - "Antarctica"
+  units: []
 
 - name: Antigua and Barbuda
   iso2: AG
@@ -268,8 +263,7 @@
   iso2: AW
   iso3: ABW
   phone: 297
-  units:
-    - "Aruba"
+  units: []
 
 - name: Australia
   iso2: AU
@@ -630,8 +624,7 @@
   iso2: BQ
   iso3: BES
   phone:
-  units:
-    - "Bonaire"
+  units: []
 
 - name: Bosnia and Herzegovina
   iso2: BA
@@ -665,8 +658,7 @@
   iso2: BV
   iso3: BVT
   phone:
-  units:
-    - "Bouvet Island"
+  units: []
 
 - name: Brazil
   iso2: BR
@@ -705,8 +697,7 @@
   iso2: IO
   iso3: IOT
   phone:
-  units:
-    - "British Indian Ocean Territory"
+  units: []
 
 - name: Brunei Darussalam
   iso2: BN
@@ -1029,8 +1020,7 @@
   iso2: CX
   iso3: CXR
   phone: 61
-  units:
-    - "Christmas Island"
+  units: []
 
 - name: Cocos [Keeling, ] Islands
   iso2: CC
@@ -1280,8 +1270,7 @@
   iso2: CW
   iso3: CUW
   phone:
-  units:
-    - "Curacao"
+  units: []
 
 - name: Cyprus
   iso2: CY
@@ -1548,8 +1537,7 @@
   iso2: FK
   iso3: FLK
   phone: 500
-  units:
-    - "Falkland Islands [Islas Malvinas]"
+  units: []
 
 - name: Faroe Islands
   iso2: FO
@@ -1621,8 +1609,7 @@
   iso2: GF
   iso3: GUF
   phone:
-  units:
-    - "French Guiana"
+  units: []
 
 - name: French Polynesia
   iso2: PF
@@ -1784,8 +1771,7 @@
   iso2: GI
   iso3: GIB
   phone: 350
-  units:
-    - "Gibraltar"
+  units: []
 
 - name: Greece
   iso2: GR
@@ -1884,8 +1870,7 @@
   iso2: GU
   iso3: GUM
   phone: 1 671
-  units:
-    - "Guam"
+  units: []
 
 - name: Guatemala
   iso2: GT
@@ -2021,8 +2006,7 @@
   iso2: HM
   iso3: HMD
   phone:
-  units:
-    - "Heard Island and McDonald Islands"
+  units: []
 
 - name: Holy See, Vatican City State
   iso2: VA
@@ -2059,8 +2043,7 @@
   iso2: HK
   iso3: HKG
   phone: 852
-  units:
-    - "Hong Kong"
+  units: []
 
 - name: Hungary
   iso2: HU
@@ -2531,8 +2514,7 @@
   iso2: JE
   iso3: JEY
   phone:
-  units:
-    - "Jersey"
+  units: []
 
 - name: Jordan
   iso2: JO
@@ -2919,8 +2901,7 @@
   iso2: MO
   iso3: MAC
   phone: 853
-  units:
-    - "Macao"
+  units: []
 
 - name: Macedonia
   iso2: MK
@@ -3207,8 +3188,7 @@
   iso2: MQ
   iso3: MTQ
   phone:
-  units:
-    - "Martinique"
+  units: []
 
 - name: Mauritania
   iso2: MR
@@ -3251,8 +3231,7 @@
   iso2: YT
   iso3: MYT
   phone: 262
-  units:
-    - "Mayotte"
+  units: []
 
 - name: Mexico
   iso2: MX
@@ -3361,8 +3340,7 @@
   iso2: ME
   iso3: MNE
   phone: 382
-  units:
-    - "Montenegro"
+  units: []
 
 - name: Montserrat
   iso2: MS
@@ -3735,15 +3713,13 @@
   iso2: NU
   iso3: NIU
   phone: 683
-  units:
-    - "Niue"
+  units: []
 
 - name: Norfolk Island
   iso2: NF
   iso3: NFK
   phone:
-  units:
-    - "Norfolk Island"
+  units: []
 
 - name: Northern Mariana Islands
   iso2: MP
@@ -4078,8 +4054,7 @@
   iso2: PN
   iso3: PCN
   phone: 870
-  units:
-    - "Pitcarin Islands"
+  units: []
 
 - name: Poland
   iso2: PL
@@ -4232,8 +4207,7 @@
   iso2: RE
   iso3: REU
   phone:
-  units:
-    - "Reunion"
+  units: []
 
 - name: Romania
   iso2: RO
@@ -4393,8 +4367,7 @@
   iso2: BL
   iso3: BLM
   phone: 590
-  units:
-    - "Saint Barthelemy"
+  units: []
 
 - name: Saint Helena Ascension and Tristan da Cunha
   iso2: SH
@@ -4446,8 +4419,7 @@
   iso2: MF
   iso3: MAF
   phone: 1 599
-  units:
-    - "Saint Martin [French part]"
+  units: []
 
 - name: Saint Pierre and Miquelon
   iso2: PM
@@ -4548,8 +4520,7 @@
   iso2: RS
   iso3: SRB
   phone: 381
-  units:
-    - "Serbia"
+  units: []
 
 - name: Seychelles
   iso2: SC
@@ -4594,15 +4565,13 @@
   iso2: SG
   iso3: SGP
   phone: 65
-  units:
-    - "Singapore"
+  units: []
 
 - name: Sint Maarten [Dutch part]
   iso2: SX
   iso3: SXM
   phone:
-  units:
-    - "Sint Maarten [Dutch part]"
+  units: []
 
 - name: Slovakia
   iso2: SK
@@ -4845,8 +4814,7 @@
   iso2: SS
   iso3: SSD
   phone:
-  units:
-    - "South Sudan"
+  units: []
 
 - name: Spain
   iso2: ES
@@ -5227,8 +5195,7 @@
   iso2: TL
   iso3: TLS
   phone: 670
-  units:
-    - "Timor-Leste"
+  units: []
 
 - name: Togo
   iso2: TG
@@ -5408,15 +5375,13 @@
   iso2: TC
   iso3: TCA
   phone: 1 649
-  units:
-    - "Turks and Caicos Islands"
+  units: []
 
 - name: Tuvalu
   iso2: TV
   iso3: TUV
   phone: 688
-  units:
-    - "Tuvalu"
+  units: []
 
 - name: Uganda
   iso2: UG
@@ -5917,8 +5882,7 @@
   iso2: EH
   iso3: ESH
   phone:
-  units:
-    - "Western Sahara"
+  units: []
 
 - name: Yemen
   iso2: YE

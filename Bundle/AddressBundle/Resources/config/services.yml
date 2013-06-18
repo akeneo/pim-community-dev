@@ -19,11 +19,6 @@ parameters:
     oro_address.provider.address.class: Oro\Bundle\AddressBundle\Provider\AddressProvider
     oro_address.entity.value.class: Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue
 
-    oro_address.dict.import.writer.class: Oro\Bundle\AddressBundle\Provider\ImportExport\DbWriter
-    oro_address.dict.import.intlreader.class: Oro\Bundle\AddressBundle\Provider\ImportExport\IntlReader
-    oro_address.dict.manager.class: Oro\Bundle\AddressBundle\Provider\ImportExport\Manager
-    oro_address.dict.import.entity.class: Oro\Bundle\AddressBundle\Entity\Country
-
     oro_address.type.country.class: Oro\Bundle\AddressBundle\Form\Type\CountryType
     oro_address.type.region.class: Oro\Bundle\AddressBundle\Form\Type\RegionType
 
@@ -148,23 +143,6 @@ services:
         class: %oro_address.type.region.class%
         tags:
             - { name: form.type, alias: oro_region }
-
-    # dictionary services
-    oro_address.dict.import.dbwriter:
-        class: %oro_address.dict.import.writer.class%
-        arguments: ["@doctrine.orm.entity_manager"]
-
-    oro_address.dict.import.intlreader:
-        class: %oro_address.dict.import.intlreader.class%
-        arguments: ["%oro_address.dict.import.entity.class%"]
-
-    oro_address.dict.import.manager:
-        class: %oro_address.dict.manager.class%
-        arguments: ["@oro_address.dict.import.dbwriter", null]
-
-    oro_address.dict.import.intl.manager:
-        class: %oro_address.dict.manager.class%
-        arguments: ["@oro_address.dict.import.dbwriter", "@oro_address.dict.import.intlreader"]
 
     oro_address.form.type.region:
         class: %oro_address.type.region.class%
