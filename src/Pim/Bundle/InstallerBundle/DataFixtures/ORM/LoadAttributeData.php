@@ -1,15 +1,11 @@
 <?php
-namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
+namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -20,22 +16,8 @@ use Symfony\Component\Yaml\Yaml;
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  *
  */
-class LoadAttributeData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
+class LoadAttributeData extends AbstractInstallerFixture
 {
-
-    /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
-
     /**
      * Get entity manager
      * @return Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
@@ -50,7 +32,7 @@ class LoadAttributeData extends AbstractFixture implements OrderedFixtureInterfa
      */
     public function load(ObjectManager $manager)
     {
-        $configuration = Yaml::parse(realpath(__DIR__ .'/../../Resources/config/attributes.yml'));
+        $configuration = Yaml::parse(realpath($this->getFilePath()));
 
         foreach ($configuration['attributes'] as $code => $data) {
             $attribute = $this->createAttribute($code, $data);
@@ -155,6 +137,14 @@ class LoadAttributeData extends AbstractFixture implements OrderedFixtureInterfa
         }
 
         return $options;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEntity()
+    {
+        return 'attributes';
     }
 
     /**

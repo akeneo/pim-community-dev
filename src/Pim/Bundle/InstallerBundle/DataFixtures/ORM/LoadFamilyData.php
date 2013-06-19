@@ -2,9 +2,6 @@
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
 use Pim\Bundle\ProductBundle\Entity\ProductFamily;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\ProductFamilyTranslation;
@@ -18,14 +15,14 @@ use Symfony\Component\Yaml\Yaml;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class LoadFamilyData extends AbstractFixture implements OrderedFixtureInterface
+class LoadFamilyData extends AbstractInstallerFixture
 {
     /**
      * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
-        $configuration = Yaml::parse(realpath(__DIR__ .'/../../Resources/config/families.yml'));
+        $configuration = Yaml::parse(realpath($this->getFilePath()));
 
         foreach ($configuration['families'] as $code => $data) {
             $family = $this->createFamily($code, $data);
@@ -79,6 +76,14 @@ class LoadFamilyData extends AbstractFixture implements OrderedFixtureInterface
         $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\ProductFamily');
 
         $family->addTranslation($translation);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEntity()
+    {
+        return 'families';
     }
 
     /**

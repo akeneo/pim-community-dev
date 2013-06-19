@@ -75,7 +75,7 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
 
             // PIM demo bundle
-            //$bundles[] = new Pim\Bundle\DemoBundle\PimDemoBundle();
+            $bundles[] = new Pim\Bundle\DemoBundle\PimDemoBundle();
         }
 
         return $bundles;

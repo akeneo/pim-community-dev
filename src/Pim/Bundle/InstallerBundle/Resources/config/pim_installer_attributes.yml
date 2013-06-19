@@ -7,6 +7,7 @@
         'description': 'the product name'
         'group': 'general'
         'parameters':
+            'translatable': true
             'useableAsGridColumn': true
             'useableAsGridFilter': true
     'price':

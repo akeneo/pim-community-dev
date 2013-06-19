@@ -4,9 +4,6 @@ namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Symfony\Component\Yaml\Yaml;
@@ -19,7 +16,7 @@ use Symfony\Component\Yaml\Yaml;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class LoadGroupData extends AbstractFixture implements OrderedFixtureInterface
+class LoadGroupData extends AbstractInstallerFixture
 {
     /**
      * count groups created to order them
@@ -32,7 +29,7 @@ class LoadGroupData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $configuration = Yaml::parse(realpath(__DIR__ .'/../../Resources/config/groups.yml'));
+        $configuration = Yaml::parse(realpath($this->getFilePath()));
 
         foreach ($configuration['groups'] as $code => $data) {
             $group = $this->createGroup($code, $data['labels']);
@@ -85,6 +82,14 @@ class LoadGroupData extends AbstractFixture implements OrderedFixtureInterface
         $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\AttributeGroup');
 
         return $translation;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEntity()
+    {
+        return 'groups';
     }
 
     /**
