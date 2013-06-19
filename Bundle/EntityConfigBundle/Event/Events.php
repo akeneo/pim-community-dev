@@ -4,5 +4,7 @@ namespace Oro\Bundle\EntityConfigBundle\Event;
 
 final class Events
 {
-    const prePersistEntityConfig = 'entity_config.pre_persist.config';
+    const newEntityConfig = 'entity_config.new.entity';
+
+    const newFieldConfig = 'entity_config.new.field';
 }

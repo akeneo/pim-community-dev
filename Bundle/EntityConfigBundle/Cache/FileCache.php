@@ -22,11 +22,12 @@ class FileCache implements CacheInterface
 
     /**
      * @param $className
+     * @param $scope
      * @return EntityConfig
      */
-    public function loadConfigFromCache($className)
+    public function loadConfigFromCache($className, $scope)
     {
-        $path = $this->dir.'/'.strtr($className, '\\', '-').'.cache.php';
+        $path = $this->dir . '/' . strtr($className, '\\', '-') . '.' . $scope . '.cache.php';
         if (!file_exists($path)) {
             return null;
         }
@@ -39,16 +40,17 @@ class FileCache implements CacheInterface
      */
     public function putConfigInCache(EntityConfig $config)
     {
-        $path = $this->dir.'/'.strtr($config->getClassName(), '\\', '-').'.cache.php';
-        file_put_contents($path, '<?php return unserialize('.var_export(serialize($config), true).');');
+        $path = $this->dir . '/' . strtr($config->getClassName(), '\\', '-') . '.' . $config->getScope() . '.cache.php';;
+        file_put_contents($path, '<?php return unserialize(' . var_export(serialize($config), true) . ');');
     }
 
     /**
      * @param $className
+     * @param $scope
      */
-    public function removeConfigFromCache($className)
+    public function removeConfigFromCache($className, $scope)
     {
-        $path = $this->dir.'/'.strtr($className, '\\', '-').'.cache.php';
+        $path = $this->dir . '/' . strtr($className, '\\', '-') . '.' . $scope . '.cache.php';
         if (file_exists($path)) {
             unlink($path);
         }

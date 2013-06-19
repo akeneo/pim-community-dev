@@ -4,8 +4,9 @@ namespace Oro\Bundle\EntityConfigBundle\Metadata\Driver;
 
 use Doctrine\Common\Annotations\Reader;
 
-use Metadata\ClassMetadata;
 use Metadata\Driver\DriverInterface;
+
+use Oro\Bundle\EntityConfigBundle\Metadata\ClassMetadata;
 
 class AnnotationDriver implements DriverInterface
 {
@@ -32,6 +33,12 @@ class AnnotationDriver implements DriverInterface
      */
     public function loadMetadataForClass(\ReflectionClass $class)
     {
-        return $this->reader->getClassAnnotation($class, self::CONFIGURABLE) ? new ClassMetadata($class->getName()) : null;
+        $metadata = new ClassMetadata($class->getName());
+
+        if ($this->reader->getClassAnnotation($class, self::CONFIGURABLE)) {
+            $metadata->configurable = true;
+        }
+
+        return $metadata;
     }
 }

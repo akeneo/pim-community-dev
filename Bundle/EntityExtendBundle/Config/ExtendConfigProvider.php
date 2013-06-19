@@ -2,35 +2,27 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Config;
 
-use Oro\Bundle\EntityConfigBundle\Provider\AbstractAdvancedConfigProvider;
+use Oro\Bundle\EntityConfigBundle\Provider\AbstractConfigProvider;
 
-class ExtendConfigProvider extends AbstractAdvancedConfigProvider
+class ExtendConfigProvider extends AbstractConfigProvider
 {
     public function isExtend($entityName)
     {
-        if ($config = $this->config($entityName)) {
-            return $this->get($config, 'is_extend');
+        if (!$this->hasConfig($this->getClassName($entityName))) {
+            return false;
         }
 
-        return false;
+        return $this->getConfig($this->getClassName($entityName))->has('is_extend');
     }
 
     public function getExtendClass($entityName)
     {
-        if ($config = $this->config($entityName)) {
-            return $this->get($config, 'extend_class', true);
-        }
-
-        return null;
+        return $this->getConfig($this->getClassName($entityName))->get('extend_class', true);
     }
 
     public function getProxyClass($entityName)
     {
-        if ($config = $this->config($entityName)) {
-            return $this->get($config, 'proxy_class', true);
-        }
-
-        return null;
+        return $this->getConfig($this->getClassName($entityName))->get('proxy_class', true);
     }
 
     public function getScope()

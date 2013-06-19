@@ -28,7 +28,7 @@ class UpdateCommand extends BaseCommand
     {
         $output->writeln($this->getDescription());
 
-        $this->getConfigManager()->update();
+        $this->getConfigManager()->updateAll();
 
         $output->writeln('Completed');
     }

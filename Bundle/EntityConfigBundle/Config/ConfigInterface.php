@@ -4,5 +4,15 @@ namespace Oro\Bundle\EntityConfigBundle\Config;
 
 interface ConfigInterface extends \Serializable
 {
-    public function getValues(\Closure $filter = null);
+    /**
+     * @return string
+     */
+    public function getClassName();
+
+    /**
+     * Get Config scope
+     *
+     * @return string
+     */
+    public function getScope();
 }

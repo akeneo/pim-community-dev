@@ -18,7 +18,7 @@ class Generator
 
     /**
      * @param ExtendConfigProvider $configProvider
-     * @param $mode
+     * @param                      $mode
      */
     public function __construct(ExtendConfigProvider $configProvider, $mode)
     {
@@ -31,7 +31,7 @@ class Generator
      */
     public function checkEntityCache($entityName)
     {
-        $extendClass = $this->configProvider->getExtendClass($entityName);
+        $extendClass = $this->generateExtendClassName($entityName);
 
         var_dump($extendClass);
 
@@ -41,4 +41,13 @@ class Generator
         }
     }
 
+    public function generateExtendClassName($entityName)
+    {
+        return 'Extend\\Entity\\' . $this->mode . '\\' . str_replace('\\', '', $entityName);
+    }
+
+    public function generateProxyClassName($entityName)
+    {
+        return 'Extend\\Entity\\Proxy\\' . str_replace('\\', '', $entityName);
+    }
 }

@@ -21,7 +21,7 @@ use Oro\Bundle\UserBundle\Entity\Email;
 use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
-#use Oro\Bundle\FlexibleBundle\Metadata\Annotation\Extend;
+use Oro\Bundle\EntityExtendBundle\Metadata\Annotation\Extend;
 
 use DateTime;
 
@@ -31,7 +31,8 @@ use DateTime;
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Loggable
  *
- * @Configurable;
+ * @Configurable
+ * @Extend
  */
 class User extends AbstractEntityFlexible implements
     AdvancedUserInterface,

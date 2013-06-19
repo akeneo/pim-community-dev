@@ -76,6 +76,14 @@ class ExtendManager
     }
 
     /**
+     * @return Generator
+     */
+    public function getClassGenerator()
+    {
+        return $this->generator;
+    }
+
+    /**
      * @param $entityName
      * @return bool|string
      */

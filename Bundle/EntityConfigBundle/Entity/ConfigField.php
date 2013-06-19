@@ -5,12 +5,13 @@ namespace Oro\Bundle\EntityConfigBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 use Doctrine\ORM\PersistentCollection;
+use Oro\Bundle\EntityConfigBundle\Entity\AbstractConfig;
 
 /**
  * @ORM\Table(name="oro_config_field")
  * @ORM\Entity
  */
-class ConfigField
+class ConfigField extends AbstractConfig
 {
     const ENTITY_NAME = 'OroEntityConfigBundle:ConfigField';
 
@@ -48,6 +49,19 @@ class ConfigField
     protected $code;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=60, nullable=false)
+     */
+    protected $type;
+
+    public function __construct($code = null, $type = null)
+    {
+        $this->code  = $code;
+        $this->type  = $type;
+    }
+
+    /**
      * @return int
      */
     public function getId()
@@ -75,35 +89,22 @@ class ConfigField
     }
 
     /**
-     * @param ConfigValue[] $values
+     * @param string $type
      * @return $this
      */
-    public function setValues($values)
+    public function setType($type)
     {
-        $this->values = $values;
+        $this->type = $type;
 
         return $this;
     }
 
     /**
-     * @param ConfigValue $value
-     *
-     * @return $this
+     * @return string
      */
-    public function addValue($value)
+    public function getType()
     {
-        $value->setField($this);
-        $this->values->add($value);
-
-        return $this;
-    }
-
-    /**
-     * @return ConfigValue[]|PersistentCollection
-     */
-    public function getValues()
-    {
-        return $this->values;
+        return $this->type;
     }
 
     /**

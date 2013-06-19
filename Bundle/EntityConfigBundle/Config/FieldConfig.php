@@ -2,25 +2,48 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Config;
 
-class FieldConfig implements ConfigInterface
+class FieldConfig extends AbstractConfig implements FieldConfigInterface
 {
     /**
      * @var string
      */
-    protected $name;
+    protected $code;
 
     /**
-     * @var ValueConfig[]
+     * @var string
+     */
+    protected $className;
+
+    /**
+     * @var string
+     */
+    protected $scope;
+
+    /**
+     * @var string
+     */
+    protected $type;
+
+    /**
+     * @var array
      */
     protected $values = array();
 
+    public function __construct($className, $code, $type, $scope)
+    {
+        $this->className = $className;
+        $this->code      = $code;
+        $this->type      = $type;
+        $this->scope     = $scope;
+    }
+
     /**
-     * @param string $name
+     * @param string $className
      * @return $this
      */
-    public function setName($name)
+    public function setClassName($className)
     {
-        $this->name = $name;
+        $this->className = $className;
 
         return $this;
     }
@@ -28,38 +51,57 @@ class FieldConfig implements ConfigInterface
     /**
      * @return string
      */
-    public function getName()
+    public function getClassName()
     {
-        return $this->name;
+        return $this->className;
     }
 
     /**
-     * @param ValueConfig[] $values
+     * @param string $code
      * @return $this
      */
-    public function setValues($values)
+    public function setCode($code)
     {
-        $this->values = $values;
+        $this->code = $code;
 
         return $this;
     }
 
     /**
-     * @param ValueConfig $value
+     * @return string
      */
-    public function addValue(ValueConfig $value)
+    public function getCode()
     {
-        $this->values[] = $value;
+        return $this->code;
     }
 
     /**
-     * @param  callable            $filter
-     * @return array|ValueConfig[]
+     * @return string
      */
-    public function getValues(\Closure $filter = null)
+    public function getScope()
     {
-        return $filter ? array_filter($this->values, $filter) : $this->values;
+        return $this->scope;
     }
+
+    /**
+     * @param string $type
+     * @return $this
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
 
     /**
      * {@inheritdoc}
@@ -67,7 +109,10 @@ class FieldConfig implements ConfigInterface
     public function serialize()
     {
         return serialize(array(
-            $this->name,
+            $this->code,
+            $this->className,
+            $this->type,
+            $this->scope,
             $this->values,
         ));
     }
@@ -78,7 +123,10 @@ class FieldConfig implements ConfigInterface
     public function unserialize($serialized)
     {
         list(
-            $this->name,
+            $this->code,
+            $this->className,
+            $this->type,
+            $this->scope,
             $this->values,
             ) = unserialize($serialized);
     }

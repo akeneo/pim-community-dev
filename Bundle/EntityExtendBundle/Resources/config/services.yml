@@ -3,6 +3,7 @@ parameters:
     oro_entity_extend.lazy.entity_manager.class:            Oro\Bundle\EntityExtendBundle\DependencyInjection\Lazy\LazyEntityManager
     oro_entity_extend.config.extend_config_provider.class:  Oro\Bundle\EntityExtendBundle\Config\ExtendConfigProvider
     oro_entity_extend.listener.doctrine_subscriber.class:   Oro\Bundle\EntityExtendBundle\EventListener\DoctrineSubscriber
+    oro_entity_extend.listener.config_subscriber.class:     Oro\Bundle\EntityExtendBundle\EventListener\ConfigSubscriber
     oro_entity_extend.tools.schema.class:                   Oro\Bundle\EntityExtendBundle\Tools\Schema
 
 services:
@@ -16,7 +17,7 @@ services:
 
     oro_entity_extend.config.extend_config_provider:
         class:                                              %oro_entity_extend.config.extend_config_provider.class%
-        arguments:                                          [@oro_entity_config.config_backend_manager]
+        arguments:                                          [@oro_entity_config.config_manager]
 
     oro_entity_extend.tools.schema:
         class:                                              %oro_entity_extend.tools.schema.class%
@@ -27,3 +28,9 @@ services:
         arguments:                                          [@oro_entity_extend.extend.extend_manager]
         tags:
             - { name: doctrine.event_subscriber, connection: default }
+
+    oro_entity_extend.listener.config_subscriber:
+        class:                                              %oro_entity_extend.listener.config_subscriber.class%
+        arguments:                                          [@oro_entity_extend.extend.extend_manager, @oro_entity_extend.metadata.annotation_metadata_factory]
+        tags:
+            - { name: kernel.event_subscriber}

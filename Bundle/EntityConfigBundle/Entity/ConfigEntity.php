@@ -9,13 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="oro_config_entity")
  * @ORM\Entity
  */
-class ConfigEntity
+class ConfigEntity extends AbstractConfig
 {
     const ENTITY_NAME = 'OroEntityConfigBundle:ConfigEntity';
 
     /**
      * @var integer
-     *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
@@ -24,29 +23,27 @@ class ConfigEntity
 
     /**
      * @var ConfigValue[]|ArrayCollection
-     *
      * @ORM\OneToMany(targetEntity="ConfigValue", mappedBy="entity", cascade={"all"})
      */
     protected $values;
 
     /**
      * @var ConfigField[]|ArrayCollection
-     *
      * @ORM\OneToMany(targetEntity="ConfigField", mappedBy="entity", cascade={"all"})
      */
     protected $fields;
 
     /**
      * @var string
-     *
      * @ORM\Column(name="class_name", type="string", length=255, nullable=false)
      */
     protected $className;
 
-    public function __construct()
+    public function __construct($className = null)
     {
-        $this->fields = new ArrayCollection();
-        $this->values = new ArrayCollection();
+        $this->className = $className;
+        $this->fields    = new ArrayCollection();
+        $this->values    = new ArrayCollection();
     }
 
     /**
@@ -59,7 +56,6 @@ class ConfigEntity
 
     /**
      * @param string $className
-     *
      * @return $this
      */
     public function setClassName($className)
@@ -79,7 +75,6 @@ class ConfigEntity
 
     /**
      * @param ConfigField[] $fields
-     *
      * @return $this
      */
     public function setFields($fields)
@@ -91,7 +86,6 @@ class ConfigEntity
 
     /**
      * @param ConfigField $field
-     *
      * @return $this
      */
     public function addFiled($field)
@@ -111,35 +105,15 @@ class ConfigEntity
     }
 
     /**
-     * @param ConfigValue[] $values
-     *
-     * @return $this
+     * @param $code
+     * @return ConfigField
      */
-    public function setValues($values)
+    public function getField($code)
     {
-        $this->values = $values;
+        $values = $this->getFields(function (ConfigField $field) use ($code) {
+            return $field->getCode() == $code;
+        });
 
-        return $this;
-    }
-
-    /**
-     * @param ConfigValue $value
-     *
-     * @return $this
-     */
-    public function addValue($value)
-    {
-        $value->setEntity($this);
-        $this->values->add($value);
-
-        return $this;
-    }
-
-    /**
-     * @return ConfigValue[]|ArrayCollection
-     */
-    public function getValues()
-    {
-        return $this->values;
+        return $values->first();
     }
 }

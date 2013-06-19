@@ -8,9 +8,10 @@ interface CacheInterface
 {
     /**
      * @param $className
+     * @param $scope
      * @return EntityConfig|null
      */
-    public function loadConfigFromCache($className);
+    public function loadConfigFromCache($className, $scope);
 
     /**
      * @param EntityConfig $config
@@ -19,6 +20,7 @@ interface CacheInterface
 
     /**
      * @param $className
+     * @param $scope
      */
-    public function removeConfigFromCache($className);
+    public function removeConfigFromCache($className, $scope);
 }

@@ -6,5 +6,5 @@ use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
 
 interface ConfigProviderInterface
 {
-
+    public function getScope();
 }

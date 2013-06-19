@@ -62,6 +62,13 @@ class ConfigValue
      */
     protected $value;
 
+    public function __construct($code = null, $scope = null, $value = null)
+    {
+        $this->code  = $code;
+        $this->scope = $scope;
+        $this->value = $value;
+    }
+
     /**
      * Get id
      *
