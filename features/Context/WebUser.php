@@ -361,7 +361,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSwitchTheLocaleTo($locale)
     {
-        $this->getPage('Product')->switchLocale($this->getLocaleCode($locale));
+        $this->getPage('Product edit')->switchLocale($this->getLocaleCode($locale));
     }
 
     /**
@@ -370,7 +370,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function theLocaleSwitcherShouldContainTheFollowingItems(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            if (!$this->getPage('Product')->findLocale($data['locale'], $data['label'])) {
+            if (!$this->getPage('Product edit')->findLocale($data['locale'], $data['label'])) {
                 throw $this->createExpectationException(sprintf(
                     'Could not find locale "%s %s" in the locale switcher', $data['locale'], $data['label']
                 ));
@@ -555,37 +555,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^the following attributes?:$/
-     */
-    public function theFollowingAttribute(TableNode $table)
-    {
-        $em = $this->getEntityManager();
-        foreach ($table->getHash() as $data) {
-            $data = array_merge(array(
-                'group' => null,
-                'type'  => 'text',
-            ), $data);
-
-            $attribute = $this->createAttribute($data['label'], false, $data['type']);
-            $attribute->setGroup($this->getGroup($data['group']));
-
-            if (isset($data['family']) && $data['family']) {
-                $this->getFamily($data['family'])->addAttribute($attribute);
-            }
-
-            $em->persist($attribute);
-        }
-        $em->flush();
-    }
-
-    /**
      * @Then /^I should see that the product is available in (.*)$/
      */
     public function iShouldSeeLanguages($languages)
     {
         $languages = $this->listToArray($languages);
         foreach ($languages as $language) {
-            if (null === $this->getPage('Product')->findLocaleLink($this->getLocaleCode($language))) {
+            if (null === $this->getPage('Product edit')->findLocaleLink($this->getLocaleCode($language))) {
                 throw $this->createExpectationException(sprintf('
                     Expecting to see a locale link for "%s", but didn\'t', $language
                 ));
@@ -602,7 +578,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $languages = $this->listToArray($languages);
         foreach ($languages as $language) {
             $this
-                ->getPage('Product')
+                ->getPage('Product edit')
                 ->selectLanguage($language)
             ;
         }
@@ -613,7 +589,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSaveTheProduct()
     {
-        $this->getPage('Product')->save();
+        $this->getPage('Product edit')->save();
     }
 
     /**
@@ -653,7 +629,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $attributes = $this->listToArray($attributes);
         $group = $this->getGroup($group) ?: 'Other';
 
-        if (count($attributes) !== $actual = $this->getPage('Product')->getFieldsCountFor($group)) {
+        if (count($attributes) !== $actual = $this->getPage('Product edit')->getFieldsCountFor($group)) {
             throw $this->createExpectationException(sprintf(
                 'Expected to see %d fields in group "%s", actually saw %d',
                 count($attributes), $group, $actual
@@ -662,7 +638,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
         foreach ($attributes as $index => $attribute) {
             $field = $this
-                ->getPage('Product')
+                ->getPage('Product edit')
                 ->getFieldAt($group, $index)
             ;
 
@@ -680,7 +656,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function theTitleOfTheProductShouldBe($title)
     {
-        if ($title !== $actual = $this->getPage('Product')->getTitle()) {
+        if ($title !== $actual = $this->getPage('Product edit')->getTitle()) {
             throw $this->createExpectationException(sprintf(
                 'Expected product title "%s", actually saw "%s"',
                 $title, $actual
@@ -694,7 +670,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function theProductFieldValueShouldBe($fieldName, $expected = '')
     {
-        $actual = $this->getPage('Product')->findField($fieldName)->getValue();
+        $actual = $this->getPage('Product edit')->findField($fieldName)->getValue();
 
         if ($expected !== $actual) {
             throw new \LogicException(sprintf(
@@ -884,7 +860,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldSeeARemoveLinkNextToTheField($not, $field)
     {
-        $removeLink = $this->getPage('Product')->getRemoveLinkFor($field);
+        $removeLink = $this->getPage('Product edit')->getRemoveLinkFor($field);
         if (!$not) {
             if (!$removeLink) {
                 throw $this->createExpectationException(sprintf(
