@@ -8,6 +8,7 @@
         'group': 'general'
         'parameters':
             'required': true
+            'unique': true
             'useableAsGridColumn': true
             'useableAsGridFilter': true
     'name':
