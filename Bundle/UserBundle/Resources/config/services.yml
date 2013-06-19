@@ -317,4 +317,4 @@ services:
             - %oro_user.entity.class%
             - ["username", "firstName", "lastName", "email"]
         tags:
-            - { name: oro_form.autocomplete.search_handler, alias: users, acl_resource: oro_user_user }
+            - { name: oro_form.autocomplete.search_handler, alias: users, acl_resource: oro_user_user_list }
