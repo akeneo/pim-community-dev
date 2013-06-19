@@ -159,7 +159,8 @@ class Orm extends AbstractEngine
     /**
      * @return \Oro\Bundle\SearchBundle\Engine\ObjectMapper
      */
-    public function getMapper() {
+    public function getMapper()
+    {
         return $this->mapper;
     }
 

@@ -14,23 +14,23 @@
         <ul class="nav pull-left shortcuts">
             <li class="divider-vertical extra-divider"></li>
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Shortcuts</a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Get help">{% trans %}Shortcuts{% endtrans %}</a>
                 <ul class="dropdown-menu">
-                    <li class="nav-header nav-header-title">Shortcuts</li>
+                    <li class="nav-header nav-header-title">{% trans %}Shortcuts{% endtrans %}</li>
                     <li class="divider"></li>
                     <li class="dark">
                         <form class="form-inline">
                             <input type="text" placeholder="Enter shortcut action" class="input-large">
-                            <button class="btn btn-primary" type="submit">Go</button>
+                            <button class="btn btn-primary" type="submit">{% trans %}Go{% endtrans %}</button>
                             <div class="clearfix">
-                                <div class="extra-small">Example: Create user, Users list
-                                    <a href="{{ options.details }}">See full list</a>
+                                <div class="extra-small">{% trans %}Example: Create user, Users list{% endtrans %}
+                                    <a href="{{ options.details }}">{% trans %}See full list{% endtrans %}</a>
                                 </div>
                             </div>
                         </form>
                     </li>
                     <li class="divider"></li>
-                    <div class="nav-header">Most Used Actions</div>
+                    <div class="nav-header">{% trans %}Most Used Actions{% endtrans %}</div>
                     {{ block('children') }}
                 </ul>
             </li>
