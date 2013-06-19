@@ -12,7 +12,7 @@ use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 
 use Oro\Bundle\SearchBundle\Engine\Indexer;
 
-class SearchHandler implements SearchHandlerInterface, ConverterInterface
+class SearchHandler implements SearchHandlerInterface
 {
     /**
      * @var Indexer

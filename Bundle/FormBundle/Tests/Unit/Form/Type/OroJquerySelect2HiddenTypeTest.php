@@ -41,11 +41,6 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
     protected $searchHandler;
 
     /**
-     * @var SearchHandler|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $combinedSearchHandler;
-
-    /**
      * @var ConverterInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $converter;
@@ -138,11 +133,11 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
                 array('autocomplete_alias' => 'foo'),
                 'expectedCalls' => array(
                     'searchRegistry' => array(
-                        array('getSearchHandler', array('foo'), 'getMockCombinedSearchHandler'),
-                        array('getSearchHandler', array('foo'), 'getMockCombinedSearchHandler'),
-                        array('getSearchHandler', array('foo'), 'getMockCombinedSearchHandler')
+                        array('getSearchHandler', array('foo'), 'getMockSearchHandler'),
+                        array('getSearchHandler', array('foo'), 'getMockSearchHandler'),
+                        array('getSearchHandler', array('foo'), 'getMockSearchHandler')
                     ),
-                    'combinedSearchHandler' => array(
+                    'searchHandler' => array(
                         array('getProperties', array(), array('bar', 'baz')),
                         array('getEntityName', array(), 'TestEntityClass'),
                         array(
@@ -269,27 +264,6 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
                 'expectedException' => 'Symfony\Component\Form\Exception\FormException',
                 'expectedExceptionMessage' => 'The option "converter" must be set.'
             ),
-            'converter cannot be set using autocomplete_alias' => array(
-                array(
-                    'autocomplete_alias' => 'bar',
-                    'configs' => array(
-                        'route_name' => 'foo'
-                    )
-                ),
-                'expectedCalls' => array(
-                    'searchRegistry' => array(
-                        array('getSearchHandler', array('bar'), 'getMockSearchHandler'),
-                    )
-                ),
-                'expectedException' => 'Symfony\Component\Form\Exception\FormException',
-                'expectedExceptionMessage' =>
-                    sprintf(
-                        'The option "converter" must be set. Pass a value or pass '
-                        . 'an "%s" option that refers to service that implements "%s"',
-                        'autocomplete_alias',
-                        'Oro\Bundle\FormBundle\Autocomplete\ConverterInterface'
-                    )
-            ),
             'converter invalid' => array(
                 array(
                     'converter' => 'bar',
@@ -411,22 +385,6 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
         }
 
         return $this->searchHandler;
-    }
-
-    /**
-     * @return SearchHandler|\PHPUnit_Framework_MockObject_MockObject
-     */
-    public function getMockCombinedSearchHandler()
-    {
-        if (!$this->combinedSearchHandler) {
-            $this->combinedSearchHandler =
-                $this->getMockBuilder('Oro\Bundle\FormBundle\Autocomplete\SearchHandler')
-                    ->disableOriginalConstructor()
-                    ->setMethods(array('convertItem', 'getProperties', 'getEntityName'))
-                    ->getMock();
-        }
-
-        return $this->combinedSearchHandler;
     }
 
     /**

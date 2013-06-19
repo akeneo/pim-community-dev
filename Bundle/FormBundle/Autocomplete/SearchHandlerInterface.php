@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\FormBundle\Autocomplete;
 
-interface SearchHandlerInterface
+interface SearchHandlerInterface extends ConverterInterface
 {
     /**
      * Gets search results, that includes found items and any additional information.

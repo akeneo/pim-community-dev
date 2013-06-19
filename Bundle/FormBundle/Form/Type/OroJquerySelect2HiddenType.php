@@ -105,25 +105,13 @@ class OroJquerySelect2HiddenType extends AbstractType
         $resolver->setNormalizers(
             array(
                 'converter' => function (Options $options, $value) use ($searchRegistry) {
-                    if (!$value) {
-                        if (!empty($options['autocomplete_alias'])) {
-                            $searchHandler = $searchRegistry->getSearchHandler($options['autocomplete_alias']);
-                            if ($searchHandler instanceof ConverterInterface) {
-                                $value = $searchHandler;
-                            } else {
-                                throw new FormException(
-                                    sprintf(
-                                        'The option "converter" must be set. Pass a value or pass '
-                                        . 'an "%s" option that refers to service that implements "%s".',
-                                        'autocomplete_alias',
-                                        'Oro\Bundle\FormBundle\Autocomplete\ConverterInterface'
-                                    )
-                                );
-                            }
-                        } else {
-                            throw new FormException('The option "converter" must be set.');
-                        }
-                    } elseif (!$value instanceof ConverterInterface) {
+                    if (!$value && !empty($options['autocomplete_alias'])) {
+                        $value = $searchRegistry->getSearchHandler($options['autocomplete_alias']);
+                    } elseif (!$value) {
+                        throw new FormException('The option "converter" must be set.');
+                    }
+
+                    if (!$value instanceof ConverterInterface) {
                         throw new FormException(
                             sprintf(
                                 'The option "converter" must be an instance of "%s".',
