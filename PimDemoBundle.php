@@ -1,5 +1,4 @@
 <?php
-
 namespace Pim\Bundle\DemoBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;

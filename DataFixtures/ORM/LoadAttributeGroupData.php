@@ -52,6 +52,7 @@ class LoadAttributeGroupData extends AbstractFixture implements OrderedFixtureIn
      */
     public function load(ObjectManager $manager)
     {
+        return false;
         $this->manager = $manager;
 
         // create group

@@ -84,14 +84,14 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 
         // get attributes by reference
         $attName        = $this->getReference('product-attribute.name');
-        $attDate        = $this->getReference('product-attribute.releaseDate');
-        $attDescription = $this->getReference('product-attribute.shortDescription');
+        $attDate        = $this->getReference('product-attribute.release_date');
+        $attDescription = $this->getReference('product-attribute.short_description');
         $attSize        = $this->getReference('product-attribute.size');
-        $attLongDesc    = $this->getReference('product-attribute.longDescription');
+        $attLongDesc    = $this->getReference('product-attribute.long_description');
         $attColor       = $this->getReference('product-attribute.color');
         $attPrice       = $this->getReference('product-attribute.price');
         $attManufact    = $this->getReference('product-attribute.manufacturer');
-        $attImageUpload = $this->getReference('product-attribute.imageUpload');
+        $attImageUpload = $this->getReference('product-attribute.image_upload');
 
         // get attribute color options
         $optColors = $this->getProductManager()->getAttributeOptionRepository()->findBy(
@@ -223,10 +223,10 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $this->persist($product);
 
             if ($ind % 20 === 0) {
-                $family = $this->getReference('family.mug');
+                $family = $manager->getRepository('PimProductBundle:ProductFamily')->findOneBy(array('code' => 'mug'));
                 $product->setProductFamily($family);
             } elseif ($ind % 17 === 0) {
-                $family = $this->getReference('family.shirt');
+                $family = $manager->getRepository('PimProductBundle:ProductFamily')->findOneBy(array('code' => 'shirt'));
                 $product->setProductFamily($family);
             }
 
@@ -237,7 +237,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 
         $this->getProductManager()->getStorageManager()->flush();
 
-        // prepare user and data audit RODO : we should inject the user ?
+        // prepare user and data audit TODO : we should inject the user ?
         $user = $this->getAdminUser();
         $products = $this->getProductManager()->getFlexibleRepository()->findAll();
         foreach ($products as $product) {

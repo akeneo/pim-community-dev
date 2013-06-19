@@ -26,6 +26,7 @@ class LoadProductFamilyData extends AbstractFixture implements OrderedFixtureInt
      */
     public function load(ObjectManager $manager)
     {
+        return false;
         $attributes = array(
             $this->getReference('product-attribute.name'),
             $this->getReference('product-attribute.manufacturer'),

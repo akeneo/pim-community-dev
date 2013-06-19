@@ -52,6 +52,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
      */
     public function load(ObjectManager $manager)
     {
+        return false;
         $referencePrefix = 'product-attribute.';
 
         // attribute name

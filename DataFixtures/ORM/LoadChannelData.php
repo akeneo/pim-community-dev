@@ -42,6 +42,7 @@ class LoadChannelData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+        return false;
         $this->manager = $manager;
 
         // create channels

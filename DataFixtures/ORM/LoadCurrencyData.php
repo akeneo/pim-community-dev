@@ -38,6 +38,7 @@ class LoadCurrencyData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
+        return false;
         $activatedCurrencies = array('GBP', 'CAD');
 
         foreach ($activatedCurrencies as $code) {

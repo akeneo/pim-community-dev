@@ -38,6 +38,7 @@ class LoadLocaleData extends AbstractFixture implements OrderedFixtureInterface,
      */
     public function load(ObjectManager $manager)
     {
+        return false;
         $locale = $this->createLocale('fr_FR', null, 'EUR');
         $manager->persist($locale);
 
