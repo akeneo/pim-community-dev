@@ -287,7 +287,7 @@ class Product extends AbstractEntityFlexible
             }
         }
 
-        return $this->sku;
+        return $this->id;
     }
 
     /**
