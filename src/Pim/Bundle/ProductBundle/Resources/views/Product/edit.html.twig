@@ -122,12 +122,6 @@
                             </div>
 
                             {{ form_row(form.id) }}
-                            <div class="control-group">
-                                {{ form_label(form.sku, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                <div class="controls">
-                                    {{ form_widget(form.sku, {'attr' : { 'class': 'input-large' } }) }}
-                                </div>
-                            </div>
                             {% set attributeCode = '' %}
                             {% set displayRemoveAttributeLink = true %}
                             {% for group in product.orderedGroups %}
@@ -269,9 +263,6 @@
             e.preventDefault();
             $('.scopable').scopableField($(this).data('action'));
         });
-
-        // TODO: Decide where the SKU field should be displayed
-        $('#pim_product_sku').parent().parent().hide();
 
         $('.control-group').css('position', 'relative');
         $('.remove-attribute')
