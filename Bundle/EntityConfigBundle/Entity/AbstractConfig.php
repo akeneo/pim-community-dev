@@ -35,11 +35,12 @@ abstract class AbstractConfig
     }
 
     /**
-     * @return ConfigValue[]|ArrayCollection
+     * @param callable $filter
+     * @return array|ArrayCollection|ConfigValue[]
      */
-    public function getValues()
+    public function getValues(\Closure $filter = null)
     {
-        return $this->values;
+        return $filter ? array_filter($this->values->toArray(), $filter) : $this->values;
     }
 
     /**
@@ -50,10 +51,10 @@ abstract class AbstractConfig
     public function getValue($code, $scope)
     {
         $values = $this->getValues(function (ConfigValue $value) use ($code, $scope) {
-            return $value->getScope() == $scope && $value->getCode() == $code;
+            return ($value->getScope() == $scope && $value->getCode() == $code);
         });
 
-        return $values->first();
+        return reset($values);
     }
 
     /**

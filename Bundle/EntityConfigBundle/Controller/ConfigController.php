@@ -3,6 +3,8 @@
 namespace Oro\Bundle\EntityConfigBundle\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
+use Oro\Bundle\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\Request;

@@ -95,7 +95,9 @@ class ConfigManager
      */
     public function getConfig($className, $scope)
     {
-        if (!$this->metadataFactory->getMetadataForClass($className)) {
+        /** @var ClassHierarchyMetadata $metadata */
+        $metadata = $this->metadataFactory->getMetadataForClass($className);
+        if (!$metadata->getOutsideClassMetadata()->configurable) {
             throw new RuntimeException(sprintf("Entity '%s' is not Configurable", $className));
         }
 
@@ -130,7 +132,10 @@ class ConfigManager
 
     public function hasConfig($className)
     {
-        return (bool)$this->metadataFactory->getMetadataForClass($className);
+        /** @var ClassHierarchyMetadata $metadata */
+        $metadata = $this->metadataFactory->getMetadataForClass($className);
+
+        return $metadata->getOutsideClassMetadata()->configurable;
     }
 
     public function updateAll()

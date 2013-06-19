@@ -35,6 +35,8 @@ abstract class AbstractConfigProvider implements ConfigProviderInterface
      */
     public function getConfig($className)
     {
+        $className = $this->getClassName($className);
+
         if (isset($this->configs[$className])) {
             return $this->configs[$className];
         } else {
@@ -48,6 +50,8 @@ abstract class AbstractConfigProvider implements ConfigProviderInterface
      */
     public function hasConfig($className)
     {
+        $className = $this->getClassName($className);
+
         return isset($this->configs[$className]) ? true : $this->configManager->hasConfig($className);
     }
 
@@ -58,6 +62,7 @@ abstract class AbstractConfigProvider implements ConfigProviderInterface
      */
     public function createEntityConfig($className, array $values)
     {
+        $className = $this->getClassName($className);
         $entityConfig = new EntityConfig($className, $this->getScope());
 
         foreach ($values as $key => $value) {
@@ -76,6 +81,7 @@ abstract class AbstractConfigProvider implements ConfigProviderInterface
      */
     public function createFieldConfig($className, $code, $type, array $values = array())
     {
+        $className = $this->getClassName($className);
         $fieldConfig = new FieldConfig($className, $code, $type, $this->getScope());
 
         foreach ($values as $key => $value) {
@@ -90,7 +96,7 @@ abstract class AbstractConfigProvider implements ConfigProviderInterface
      * @return string
      * @throws RuntimeException
      */
-    protected function getClassName($entity)
+    public function getClassName($entity)
     {
         $className = $entity;
 
