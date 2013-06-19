@@ -6,6 +6,8 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
 use Pim\Bundle\ProductBundle\Entity\ProductValue;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\ProductBundle\Entity\Product;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -19,27 +21,55 @@ class UniqueValueValidator extends ConstraintValidator
         $this->registry = $registry;
     }
 
+    /**
+     * Constraint is applied on ProductValue data property.
+     * That's why we use the current property path to guess the code
+     * of the attribute to which the data belongs to.
+     *
+     * @see Pim\Bundle\ProductBundle\Validator\ConstraintGuesser\UniqueValueGuesser
+     */
     public function validate($value, Constraint $constraint)
     {
-        (var_dump($this->context->getCurrentClass()));
-        die(var_dump($value));
-        if (!$value instanceof ProductValue) {
+        $entity = $this->getEntity();
+        if (!$entity instanceof ProductValue) {
             return;
         }
 
         $em = $this->registry->getManagerForClass(get_class($entity));
         $criteria = array(
-            'attribute'                              => $value->getAttribute(),
-            $value->getAttribute()->getBackendType() => $value->getData(),
+            'attribute'                               => $entity->getAttribute(),
+            $entity->getAttribute()->getBackendType() => $value,
         );
-        die(var_dump($criteria));
-        $result = $em->getRepository($this->context->getCurrentClass())->findBy($criteria);
+        $result = $em->getRepository(get_class($entity))->findBy($criteria);
 
         if (0 === count($result) || (1 === count($result) && $entity === ($result instanceof \Iterator ? $result->current() : current($result)))) {
             return;
         }
 
         $this->context->addViolation($constraint->message);
+    }
+
+    private function getEntity()
+    {
+        preg_match(
+            '/children\[values\].children\[(\w+)\].children\[\w+\].data/',
+            $this->context->getPropertyPath(),
+            $matches
+        );
+        if (!isset($matches[1])) {
+            return;
+        }
+
+        $product = $this->context->getRoot()->getData();
+        if (!$product instanceof Product) {
+            return;
+        }
+
+        if (false === $entity = $product->getValue($matches[1])) {
+            return;
+        }
+
+        return $entity;
     }
 }
 
