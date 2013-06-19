@@ -7,7 +7,7 @@ Feature: Set the attribute used as label
     Given the following family:
       | code |
       | Bags |
-    And the following attributes:
+    And the following product attributes:
       | label       | family | type     |
       | Brand       | Bags   | text     |
       | Model       | Bags   | text     |
@@ -17,7 +17,7 @@ Feature: Set the attribute used as label
   Scenario: Fail to set a non-text attribute as the family label
     Given I am logged in as "admin"
     When I am on the "Bags" family page
-    Then eligible attributes as label should be SKU, Brand and Model
+    Then eligible attributes as label should be Id, Brand and Model
 
   Scenario: Succesfully set a family attribute as the family label
     Given I am logged in as "admin"

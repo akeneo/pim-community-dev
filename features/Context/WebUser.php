@@ -50,6 +50,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @BeforeScenario
      */
+    public function createRequiredAttribute()
+    {
+        $em = $this->getEntityManager();
+        $attr = $this->createAttribute('SKU', false);
+        $em->persist($attr);
+        $em->flush();
+    }
+
+    /**
+     * @BeforeScenario
+     */
     public function resetCurrentLocale()
     {
         foreach ($this->locales as $locale) {
@@ -501,9 +512,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 'product'  => null,
                 'family'   => null,
                 'required' => 'no',
+                'type'     => 'text',
             ), $data);
 
-            $attribute = $this->createAttribute($data['label'], false);
+            try {
+                $attribute = $this->getAttribute($data['label']);
+            } catch (\InvalidArgumentException $e) {
+                $attribute = $this->createAttribute($data['label'], false, $data['type']);
+            }
             $attribute->setSortOrder($data['position']);
             $attribute->setGroup($this->getGroup($data['group']));
             $attribute->setRequired($data['required'] === 'yes');
@@ -617,7 +633,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldSee($text)
     {
-        $this->saveScreenshot();
         $this->assertSession()->pageTextContains($text);
     }
 
@@ -1021,21 +1036,24 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     private function getProduct($sku)
     {
-        $pm = $this->getProductManager();
-        $product = $pm
-            ->getFlexibleRepository()
-            ->findOneBy(array(
-                'sku' => $sku,
-            ));
+        $pm   = $this->getProductManager();
+        $repo = $pm->getFlexibleRepository();
+        $qb   = $repo->createQueryBuilder('p');
+        $repo->applyFilterByAttribute($qb, 'sKU', $sku);
+        $product = $qb->getQuery()->getOneOrNullResult();
 
         return $product ?: $this->createProduct($sku);
     }
 
-    private function createProduct($sku)
+    private function createProduct($data)
     {
         $product = $this->getProductManager()->createFlexible();
-        $product->setSku($sku);
+        $sku     = $this->getAttribute('SKU');
+        $value   = $this->createValue($sku, $data);
+
+        $product->addValue($value);
         $this->getProductManager()->getStorageManager()->persist($product);
+        $this->getProductManager()->getStorageManager()->flush();
 
         return $product;
     }
@@ -1131,7 +1149,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function getAttribute($label)
     {
         return $this->getEntityOrException('PimProductBundle:ProductAttribute', array(
-            'label' => ucfirst($label)
+            'label' => $label
         ));
     }
 
