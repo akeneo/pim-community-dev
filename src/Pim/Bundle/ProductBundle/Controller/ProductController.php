@@ -98,7 +98,7 @@ class ProductController extends Controller
         $entity = $this->getProductManager()->createFlexible(true);
 
         if ($this->get('pim_product.form.handler.simple_product')->process($entity)) {
-            $this->get('session')->getFlashBag()->add('success', 'Product successfully saved');
+            $this->addFlash('success', 'Product successfully saved.');
 
             $dataLocale = $entity->getLocales()->first()->getCode();
             $url = $this->generateUrl(

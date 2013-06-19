@@ -15,7 +15,7 @@ Feature: Add attribute to a product family
       | General |
 
   Scenario: Successfully list available grouped attributes
-    Given the following attributes:
+    Given the following product attributes:
       | label            | group   |
       | Long Description | General |
       | Manufacturer     | General |
@@ -26,7 +26,7 @@ Feature: Add attribute to a product family
     And I should see available attribute Size in group "Other"
 
   Scenario: Successfully display all grouped family's attributes
-    Given the following attributes:
+    Given the following product attributes:
       | label            | group   | family     |
       | Long Description | General | Smartphone |
       | Manufacturer     | General |            |
@@ -38,7 +38,7 @@ Feature: Add attribute to a product family
 
   @info https://akeneo.atlassian.net/browse/PIM-244
   Scenario: Successfully add an attribute to a family
-    Given the following attributes:
+    Given the following product attributes:
       | label            | group   |
       | Long Description | General |
       | Manufacturer     | General |

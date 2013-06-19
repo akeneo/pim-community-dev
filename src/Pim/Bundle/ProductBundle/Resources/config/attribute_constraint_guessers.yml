@@ -49,3 +49,9 @@ services:
         class: Pim\Bundle\ProductBundle\Validator\ConstraintGuesser\UrlGuesser
         tags:
             - { name: pim.attribute_constraint_guesser }
+
+    pim.attribute_constraint_guesser.unique_value:
+        public: false
+        class: Pim\Bundle\ProductBundle\Validator\ConstraintGuesser\UniqueValueGuesser
+        tags:
+            - { name: pim.attribute_constraint_guesser }

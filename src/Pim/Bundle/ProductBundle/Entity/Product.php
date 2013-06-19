@@ -21,21 +21,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @ORM\Table(name="pim_product")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductRepository")
- * @UniqueEntity("sku");
  * @Assert\Callback(methods={"isLocalesValid"})
  * @Gedmo\Loggable(logEntryClass="Oro\Bundle\DataAuditBundle\Entity\Audit")
  */
 class Product extends AbstractEntityFlexible
 {
-    /**
-     * @var string $sku
-     *
-     * @ORM\Column(name="sku", type="string", length=255, unique=true)
-     * @Assert\NotNull()
-     * @Gedmo\Versioned
-     */
-    protected $sku;
-
     /**
      * @var Value
      *
@@ -78,30 +68,6 @@ class Product extends AbstractEntityFlexible
         parent::__construct();
 
         $this->locales = new ArrayCollection();
-    }
-
-    /**
-     * Get sku
-     *
-     * @return string
-     */
-    public function getSku()
-    {
-        return $this->sku;
-    }
-
-    /**
-     * Set sku
-     *
-     * @param string $sku
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Product
-     */
-    public function setSku($sku)
-    {
-        $this->sku = $sku;
-
-        return $this;
     }
 
     /**
@@ -321,7 +287,7 @@ class Product extends AbstractEntityFlexible
             }
         }
 
-        return $this->sku;
+        return $this->id;
     }
 
     /**

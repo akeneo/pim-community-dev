@@ -25,16 +25,17 @@ class SimpleProductType extends FlexibleType
         parent::addEntityFields($builder);
 
         $builder
-            ->add('sku', 'text', array('required' => true, 'label' => 'SKU'))
+            ->add('values', 'collection')
             ->add('productFamily')
             ->add(
                 'locales',
                 'entity',
                 array(
-                    'required' => true,
-                    'multiple' => true,
-                    'class' => 'Pim\Bundle\ConfigBundle\Entity\Locale',
-                    'by_reference' => false,
+                    'label'         => 'Activated locales',
+                    'required'      => true,
+                    'multiple'      => true,
+                    'class'         => 'Pim\Bundle\ConfigBundle\Entity\Locale',
+                    'by_reference'  => false,
                     'query_builder' => function (EntityRepository $repository) {
                         return $repository->createQueryBuilder('l')->where('l.activated = 1')->orderBy('l.code');
                     }
