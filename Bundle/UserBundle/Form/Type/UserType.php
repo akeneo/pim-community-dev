@@ -11,7 +11,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
-use Oro\Bundle\DataAuditBundle\Form\EventListener\AuditableSubscriber;
 use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
 use Oro\Bundle\UserBundle\Form\EventListener\UserSubscriber;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -54,56 +53,9 @@ class UserType extends FlexibleType
         parent::addEntityFields($builder);
 
         // user fields
+        $builder->addEventSubscriber(new UserSubscriber($builder->getFormFactory(), $this->aclManager, $this->security));
+        $this->setDefaultUserFields($builder);
         $builder
-            ->addEventSubscriber(new AuditableSubscriber())
-            ->addEventSubscriber(new UserSubscriber($builder->getFormFactory(), $this->aclManager, $this->security))
-            ->add(
-                'username',
-                'text',
-                array(
-                    'required'       => true,
-                )
-            )
-            ->add(
-                'email',
-                'email',
-                array(
-                    'label'          => 'E-mail',
-                    'required'       => true,
-                )
-            )
-            ->add(
-                'firstName',
-                'text',
-                array(
-                    'label'          => 'First name',
-                    'required'       => true,
-                )
-            )
-            ->add(
-                'lastName',
-                'text',
-                array(
-                    'label'          => 'Last name',
-                    'required'       => true,
-                )
-            )
-            ->add(
-                'birthday',
-                'oro_date',
-                array(
-                    'label'          => 'Date of birth',
-                    'required'       => false,
-                )
-            )
-            ->add(
-                'imageFile',
-                'file',
-                array(
-                    'label'          => 'Avatar',
-                    'required'       => false,
-                )
-            )
             ->add(
                 'rolesCollection',
                 'entity',
@@ -217,5 +169,62 @@ class UserType extends FlexibleType
     public function getName()
     {
         return 'oro_user_user';
+    }
+
+    /**
+     * Set user fields
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function setDefaultUserFields(FormBuilderInterface $builder)
+    {
+        $builder
+            ->add(
+                'username',
+                'text',
+                array(
+                     'required'       => true,
+                )
+            )
+            ->add(
+                'email',
+                'email',
+                array(
+                     'label'          => 'E-mail',
+                     'required'       => true,
+                )
+            )
+            ->add(
+                'firstName',
+                'text',
+                array(
+                     'label'          => 'First name',
+                     'required'       => true,
+                )
+            )
+            ->add(
+                'lastName',
+                'text',
+                array(
+                     'label'          => 'Last name',
+                     'required'       => true,
+                )
+            )
+            ->add(
+                'birthday',
+                'oro_date',
+                array(
+                     'label'          => 'Date of birth',
+                     'required'       => false,
+                )
+            )
+            ->add(
+                'imageFile',
+                'file',
+                array(
+                     'label'          => 'Avatar',
+                     'required'       => false,
+                )
+            );
     }
 }

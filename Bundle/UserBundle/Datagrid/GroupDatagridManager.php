@@ -86,7 +86,7 @@ class GroupDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
-        $clickAction = array(
+        $groupClickAction = array(
             'name'         => 'rowClick',
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
@@ -97,7 +97,7 @@ class GroupDatagridManager extends DatagridManager
             )
         );
 
-        $updateAction = array(
+        $groupUpdateAction = array(
             'name'         => 'edit',
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
@@ -108,7 +108,7 @@ class GroupDatagridManager extends DatagridManager
             )
         );
 
-        $deleteAction = array(
+        $groupDeleteAction = array(
             'name'         => 'delete',
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'root',
@@ -119,6 +119,6 @@ class GroupDatagridManager extends DatagridManager
             )
         );
 
-        return array($clickAction, $updateAction, $deleteAction);
+        return array($groupClickAction, $groupUpdateAction, $groupDeleteAction);
     }
 }

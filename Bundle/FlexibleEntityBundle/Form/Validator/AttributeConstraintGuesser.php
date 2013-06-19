@@ -38,4 +38,3 @@ class AttributeConstraintGuesser implements ConstraintGuesserInterface
         return $constraints;
     }
 }
-

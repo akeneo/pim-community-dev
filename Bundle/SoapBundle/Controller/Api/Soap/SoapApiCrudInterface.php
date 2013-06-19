@@ -12,6 +12,14 @@ interface SoapApiCrudInterface
     public function handleCreateRequest();
 
     /**
+     * Get item by identifier.
+     *
+     * @param mixed $id
+     * @return object
+     */
+    public function handleGetRequest($id);
+
+    /**
      * Get paginated items list.
      *
      * @param int $page
@@ -21,12 +29,12 @@ interface SoapApiCrudInterface
     public function handleGetListRequest($page, $limit);
 
     /**
-     * Get item by identifier.
+     * Delete item.
      *
      * @param mixed $id
-     * @return object
+     * @return bool
      */
-    public function handleGetRequest($id);
+    public function handleDeleteRequest($id);
 
     /**
      * Update item.
@@ -35,12 +43,4 @@ interface SoapApiCrudInterface
      * @return bool
      */
     public function handleUpdateRequest($id);
-
-    /**
-     * Delete item.
-     *
-     * @param mixed $id
-     * @return bool
-     */
-    public function handleDeleteRequest($id);
 }

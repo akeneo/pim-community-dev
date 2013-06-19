@@ -157,6 +157,63 @@ class Orm extends AbstractEngine
     }
 
     /**
+     * @return \Oro\Bundle\SearchBundle\Engine\ObjectMapper
+     */
+    public function getMapper() {
+        return $this->mapper;
+    }
+
+    /**
+     * Get entity string
+     *
+     * @param object $entity
+     *
+     * @return string
+     */
+    public function getEntityTitle($entity)
+    {
+        if ($this->mapper->getEntityMapParameter(get_class($entity), 'title_fields')) {
+            $fields = $this->mapper->getEntityMapParameter(get_class($entity), 'title_fields');
+            $title = array();
+            foreach ($fields as $field) {
+                $title[] = $this->mapper->getFieldValue($entity, $field);
+            }
+        } else {
+            $title = array((string) $entity);
+        }
+
+        return implode(' ', $title);
+    }
+
+    /**
+     * Get url for entity
+     *
+     * @param object $entity
+     *
+     * @return string
+     */
+    protected function getEntityUrl($entity)
+    {
+        if ($this->mapper->getEntityMapParameter(get_class($entity), 'route')) {
+            $routeParameters = $this->mapper->getEntityMapParameter(get_class($entity), 'route');
+            $routeData = array();
+            if (isset($routeParameters['parameters']) && count($routeParameters['parameters'])) {
+                foreach ($routeParameters['parameters'] as $parameter => $field) {
+                    $routeData[$parameter] = $this->mapper->getFieldValue($entity, $field);
+                }
+            }
+
+            return $this->container->get('router')->generate(
+                $routeParameters['name'],
+                $routeData,
+                true
+            );
+        }
+
+        return '';
+    }
+
+    /**
      * Search query with query builder
      *
      * @param \Oro\Bundle\SearchBundle\Query\Query $query
@@ -245,56 +302,6 @@ class Orm extends AbstractEngine
         }
 
         return $this->jobRepo;
-    }
-
-    /**
-     * Get url for entity
-     *
-     * @param object $entity
-     *
-     * @return string
-     */
-    protected function getEntityUrl($entity)
-    {
-        if ($this->mapper->getEntityMapParameter(get_class($entity), 'route')) {
-            $routeParameters = $this->mapper->getEntityMapParameter(get_class($entity), 'route');
-            $routeData = array();
-            if (isset($routeParameters['parameters']) && count($routeParameters['parameters'])) {
-                foreach ($routeParameters['parameters'] as $parameter => $field) {
-                    $routeData[$parameter] = $this->mapper->getFieldValue($entity, $field);
-                }
-            }
-
-            return $this->container->get('router')->generate(
-                $routeParameters['name'],
-                $routeData,
-                true
-            );
-        }
-
-        return '';
-    }
-
-    /**
-     * Get entity string
-     *
-     * @param object $entity
-     *
-     * @return string
-     */
-    protected function getEntityTitle($entity)
-    {
-        if ($this->mapper->getEntityMapParameter(get_class($entity), 'title_fields')) {
-            $fields = $this->mapper->getEntityMapParameter(get_class($entity), 'title_fields');
-            $title = array();
-            foreach ($fields as $field) {
-                $title[] = $this->mapper->getFieldValue($entity, $field);
-            }
-        } else {
-            $title = array((string) $entity);
-        }
-
-        return implode(' ', $title);
     }
 
     /**

@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\Collection;
 
 use Doctrine\ORM\Mapping as ORM;
 
-use Gedmo\Mapping\Annotation as Gedmo;
+use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
@@ -14,7 +14,7 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
 /**
  * @ORM\Table(name="oro_user_value")
  * @ORM\Entity
- * @Gedmo\Loggable(logEntryClass="Oro\Bundle\DataAuditBundle\Entity\Audit")
+ * @Oro\Loggable
  */
 class UserValue extends AbstractEntityFlexibleValue
 {
@@ -53,7 +53,7 @@ class UserValue extends AbstractEntityFlexibleValue
      * @var string $varchar
      *
      * @ORM\Column(name="value_string", type="string", length=255, nullable=true)
-     * @Gedmo\Versioned
+     * @Oro\Versioned
      */
     protected $varchar;
 
@@ -63,7 +63,7 @@ class UserValue extends AbstractEntityFlexibleValue
      * @var integer $integer
      *
      * @ORM\Column(name="value_integer", type="integer", nullable=true)
-     * @Gedmo\Versioned
+     * @Oro\Versioned
      */
     protected $integer;
 
@@ -73,7 +73,7 @@ class UserValue extends AbstractEntityFlexibleValue
      * @var double $decimal
      *
      * @ORM\Column(name="value_decimal", type="decimal", nullable=true)
-     * @Gedmo\Versioned
+     * @Oro\Versioned
      */
     protected $decimal;
 
@@ -83,7 +83,7 @@ class UserValue extends AbstractEntityFlexibleValue
      * @var string $text
      *
      * @ORM\Column(name="value_text", type="text", nullable=true)
-     * @Gedmo\Versioned
+     * @Oro\Versioned
      */
     protected $text;
 
@@ -93,7 +93,7 @@ class UserValue extends AbstractEntityFlexibleValue
      * @var \DateTime $date
      *
      * @ORM\Column(name="value_date", type="date", nullable=true)
-     * @Gedmo\Versioned
+     * @Oro\Versioned
      */
     protected $date;
 
@@ -103,7 +103,7 @@ class UserValue extends AbstractEntityFlexibleValue
      * @var \DateTime $datetime
      *
      * @ORM\Column(name="value_datetime", type="datetime", nullable=true)
-     * @Gedmo\Versioned
+     * @Oro\Versioned
      */
     protected $datetime;
 }

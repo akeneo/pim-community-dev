@@ -67,67 +67,27 @@ class TestListener implements \PHPUnit_Framework_TestListener
     public function startTestSuite(\PHPUnit_Framework_TestSuite $suite)
     {
         if ($suite instanceof PHPUnit_Extensions_SeleniumTestSuite) {
-            $this->runPhantom();
+           $this->runPhantom();
         }
     }
 
     public function endTestSuite(\PHPUnit_Framework_TestSuite $suite)
     {
-        if ($suite instanceof PHPUnit_Extensions_SeleniumTestSuite) {
-            $this->terminatePhantom();
-        }
+
     }
 
     private function runPhantom()
     {
-        $descriptorspec = array(
-            0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
-            1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
-            2 => array("pipe", "w")  // stdout is a pipe that the child will write to
-        );
-
         if (strtolower(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM2_BROWSER) == 'phantomjs') {
-            if (PHP_OS == 'WINNT') {
-                $path = PHPUNIT_TESTSUITE_BROWSER_PATH_WINNT;
-            } else {
-                $path = PHPUNIT_TESTSUITE_BROWSER_PATH_LINUX;
-            }
-            $this->pid  = proc_open(
-                "{$path} --webdriver=" . PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT,
-                $descriptorspec,
-                $this->pipes);
-            $this->waitServerRun(5, PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_HOST, PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT);
-        }
-    }
-
-    private function terminatePhantom()
-    {
-
-        if (strtolower(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM2_BROWSER) == 'phantomjs') {
-            if (is_resource($this->pid)) {
-                $status = proc_get_status($this->pid);
-
-                fclose($this->pipes[2]);
-                fclose($this->pipes[1]);
-                fclose($this->pipes[0]);
-
+            if (!$this->waitServerRun(1)) {
                 if (PHP_OS == 'WINNT') {
-                    $output = array();
-                    exec("wmic process where name=\"phantomjs.exe\" call terminate", $output);
+                    pclose(popen("start /b " . PHPUNIT_TESTSUITE_BROWSER_PATH_WINNT . " --webdriver=" . PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT, "r"));
                 } else {
-                    $ppid = $status['pid'];
-                    //use ps to get all the children of this process, and kill them
-                    $pids = preg_split('/\s+/', `ps -o pid --no-heading --ppid $ppid`);
-                    foreach($pids as $pid) {
-                        if(is_numeric($pid)) {
-                            posix_kill($pid, SIGKILL); //9 is the SIGKILL signal
-                        }
-                    }
+                    shell_exec("nohup " . PHPUNIT_TESTSUITE_BROWSER_PATH_LINUX . " --webdriver=" . PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT .
+                        " > /dev/null 2> /dev/null &");
                 }
-
-                proc_terminate ($this->pid);
-                $this->pid = null;
             }
+            $this->waitServerRun(5, PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_HOST, PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT);
         }
     }
 
