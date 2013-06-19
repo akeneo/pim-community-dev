@@ -1,5 +1,6 @@
 parameters:
-    oro_entity_config.config_manager.class:             Oro\Bundle\EntityConfigBundle\ConfigManager
+    oro_entity_config.config_manager.class:                     Oro\Bundle\EntityConfigBundle\ConfigManager
+    oro_entity_config.provider.config_provider.class:           Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider
     oro_entity_config.cache.file_cache.class:                   Oro\Bundle\EntityConfigBundle\Cache\FileCache
     oro_entity_config.command.setup.class:                      Oro\Bundle\EntityConfigBundle\Command\SetupCommand
 

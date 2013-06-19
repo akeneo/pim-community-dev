@@ -7,9 +7,10 @@ use Doctrine\ORM\PersistentCollection;
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
+
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 
-abstract class AbstractConfigProvider implements ConfigProviderInterface
+class ConfigProvider implements ConfigProviderInterface
 {
     /**
      * @var ConfigManager
@@ -22,11 +23,18 @@ abstract class AbstractConfigProvider implements ConfigProviderInterface
     protected $configs = array();
 
     /**
-     * @param ConfigManager $configManager
+     * @var string
      */
-    public function __construct(ConfigManager $configManager)
+    protected $scope;
+
+    /**
+     * @param ConfigManager $configManager
+     * @param string        $scope
+     */
+    public function __construct(ConfigManager $configManager, $scope)
     {
         $this->configManager = $configManager;
+        $this->scope         = $scope;
     }
 
     /**
@@ -40,7 +48,7 @@ abstract class AbstractConfigProvider implements ConfigProviderInterface
         if (isset($this->configs[$className])) {
             return $this->configs[$className];
         } else {
-            return $this->configs[$className] = $this->configManager->getConfig($className, $this->getScope());
+            return $this->configs[$className] = $this->configManager->getConfig($className, $this->scope);
         }
     }
 
@@ -56,20 +64,47 @@ abstract class AbstractConfigProvider implements ConfigProviderInterface
     }
 
     /**
+     * @param $className
+     * @param $code
+     * @return FieldConfig
+     */
+    public function getFieldConfig($className, $code)
+    {
+        return $this->getConfig($className)->getField($code);
+    }
+
+    /**
+     * @param $className
+     * @param $code
+     * @return FieldConfig
+     */
+    public function hasFieldConfig($className, $code)
+    {
+        return $this->hasConfig($className)
+            ? $this->getConfig($className)->hasField($code)
+            : false;
+    }
+
+    /**
      * @param       $className
      * @param array $values
+     * @param bool  $flush
      * @return EntityConfig
      */
-    public function createEntityConfig($className, array $values)
+    public function createEntityConfig($className, array $values, $flush = false)
     {
-        $className = $this->getClassName($className);
-        $entityConfig = new EntityConfig($className, $this->getScope());
+        $className    = $this->getClassName($className);
+        $entityConfig = new EntityConfig($className, $this->scope);
 
         foreach ($values as $key => $value) {
             $entityConfig->set($key, $value);
         }
 
         $this->configManager->persist($entityConfig);
+
+        if ($flush) {
+            $this->configManager->flush();
+        }
     }
 
     /**
@@ -77,18 +112,23 @@ abstract class AbstractConfigProvider implements ConfigProviderInterface
      * @param       $code
      * @param       $type
      * @param array $values
+     * @param bool  $flush
      * @return FieldConfig
      */
-    public function createFieldConfig($className, $code, $type, array $values = array())
+    public function createFieldConfig($className, $code, $type, array $values = array(), $flush = false)
     {
-        $className = $this->getClassName($className);
-        $fieldConfig = new FieldConfig($className, $code, $type, $this->getScope());
+        $className   = $this->getClassName($className);
+        $fieldConfig = new FieldConfig($className, $code, $type, $this->scope);
 
         foreach ($values as $key => $value) {
             $fieldConfig->set($key, $value);
         }
 
         $this->configManager->persist($fieldConfig);
+
+        if ($flush) {
+            $this->configManager->flush();
+        }
     }
 
     /**
@@ -113,5 +153,10 @@ abstract class AbstractConfigProvider implements ConfigProviderInterface
         }
 
         return $className;
+    }
+
+    public function getScope()
+    {
+        return $this->scope;
     }
 }

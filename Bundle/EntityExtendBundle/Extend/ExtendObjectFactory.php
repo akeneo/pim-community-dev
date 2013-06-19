@@ -66,7 +66,7 @@ class ExtendObjectFactory
      */
     protected function createExtend($entity)
     {
-        $extendClass = $this->extendManager->getConfigProvider()->getExtendClass($entity);
+        $extendClass = $this->extendManager->getExtendClass($entity);
         $extend = $this->extendManager
             ->getEntityManager()
             ->getRepository($extendClass)

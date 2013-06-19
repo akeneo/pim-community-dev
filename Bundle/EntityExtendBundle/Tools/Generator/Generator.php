@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Tools\Generator;
 
-use Oro\Bundle\EntityExtendBundle\Config\ExtendConfigProvider;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 class Generator
 {
@@ -12,15 +12,15 @@ class Generator
     protected $mode;
 
     /**
-     * @var ExtendConfigProvider
+     * @var ConfigProvider
      */
     protected $configProvider;
 
     /**
-     * @param ExtendConfigProvider $configProvider
-     * @param                      $mode
+     * @param ConfigProvider $configProvider
+     * @param                $mode
      */
-    public function __construct(ExtendConfigProvider $configProvider, $mode)
+    public function __construct(ConfigProvider $configProvider, $mode)
     {
         $this->mode           = $mode;
         $this->configProvider = $configProvider;
@@ -33,13 +33,13 @@ class Generator
     {
         $extendClass = $this->generateExtendClassName($entityName);
 
-        var_dump($extendClass);
-        print_r(array_keys(
-            $this->configProvider->getConfig($entityName)->getFields()
-        ));
-        var_dump(
-            $this->configProvider->getConfig($entityName)->getValues()
-        );
+        //var_dump($extendClass);
+//        print_r(array_keys(
+//            $this->configProvider->getConfig($entityName)->getFields()
+//        ));
+//        var_dump(
+//            $this->configProvider->getConfig($entityName)->getValues()
+//        );
 
 
         if (!class_exists($extendClass)) {

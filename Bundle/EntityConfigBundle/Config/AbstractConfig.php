@@ -54,6 +54,15 @@ abstract class AbstractConfig implements ConfigInterface
     }
 
     /**
+     * @param $code
+     * @return bool
+     */
+    public function is($code)
+    {
+        return (bool) $this->get($code, false);
+    }
+
+    /**
      * @return array
      */
     public function getValues()

@@ -102,7 +102,6 @@ class FieldConfig extends AbstractConfig implements FieldConfigInterface
         return $this->type;
     }
 
-
     /**
      * {@inheritdoc}
      */

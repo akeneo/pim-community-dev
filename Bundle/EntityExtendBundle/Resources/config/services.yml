@@ -1,7 +1,6 @@
 parameters:
     oro_entity_extend.extend.extend_manager.class:          Oro\Bundle\EntityExtendBundle\Extend\ExtendManager
     oro_entity_extend.lazy.entity_manager.class:            Oro\Bundle\EntityExtendBundle\DependencyInjection\Lazy\LazyEntityManager
-    oro_entity_extend.config.extend_config_provider.class:  Oro\Bundle\EntityExtendBundle\Config\ExtendConfigProvider
     oro_entity_extend.listener.doctrine_subscriber.class:   Oro\Bundle\EntityExtendBundle\EventListener\DoctrineSubscriber
     oro_entity_extend.listener.config_subscriber.class:     Oro\Bundle\EntityExtendBundle\EventListener\ConfigSubscriber
     oro_entity_extend.tools.schema.class:                   Oro\Bundle\EntityExtendBundle\Tools\Schema
@@ -16,8 +15,8 @@ services:
         arguments:                                          [@service_container]
 
     oro_entity_extend.config.extend_config_provider:
-        class:                                              %oro_entity_extend.config.extend_config_provider.class%
-        arguments:                                          [@oro_entity_config.config_manager]
+        class:                                              %oro_entity_config.provider.config_provider.class%
+        arguments:                                          [@oro_entity_config.config_manager, "extend"]
 
     oro_entity_extend.tools.schema:
         class:                                              %oro_entity_extend.tools.schema.class%
