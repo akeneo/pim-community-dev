@@ -72,6 +72,7 @@ class RestApiAclTest extends WebTestCase
 
     /**
      * @param $acls
+     * @depends testGetAcls
      */
     public function testGetUserAcl($acls)
     {
