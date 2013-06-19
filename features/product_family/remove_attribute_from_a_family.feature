@@ -8,7 +8,7 @@ Feature: Remove attribute from a product family
     Given the following family:
       | code |
       | Bags |
-    And the following attributes:
+    And the following product attributes:
       | label            | family |
       | Long Description | Bags   |
       | Manufacturer     | Bags   |
@@ -23,7 +23,7 @@ Feature: Remove attribute from a product family
     Given the following family:
       | code |
       | Bags |
-    And the following attributes:
+    And the following product attributes:
       | label            | family |
       | Long Description | Bags   |
       | Manufacturer     | Bags   |
