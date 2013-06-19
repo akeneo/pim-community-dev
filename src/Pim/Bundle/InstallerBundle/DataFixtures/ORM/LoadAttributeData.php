@@ -34,10 +34,12 @@ class LoadAttributeData extends AbstractInstallerFixture
     {
         $configuration = Yaml::parse(realpath($this->getFilePath()));
 
-        foreach ($configuration['attributes'] as $code => $data) {
-            $attribute = $this->createAttribute($code, $data);
-            $manager->persist($attribute);
-            $this->addReference('product-attribute.'.$attribute->getCode(), $attribute);
+        if (isset($configuration['attributes'])) {
+            foreach ($configuration['attributes'] as $code => $data) {
+                $attribute = $this->createAttribute($code, $data);
+                $manager->persist($attribute);
+                $this->addReference('product-attribute.'.$attribute->getCode(), $attribute);
+            }
         }
 
         $manager->flush();

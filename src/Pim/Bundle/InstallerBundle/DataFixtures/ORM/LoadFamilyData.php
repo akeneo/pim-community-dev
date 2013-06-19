@@ -24,10 +24,12 @@ class LoadFamilyData extends AbstractInstallerFixture
     {
         $configuration = Yaml::parse(realpath($this->getFilePath()));
 
-        foreach ($configuration['families'] as $code => $data) {
-            $family = $this->createFamily($code, $data);
-            $manager->persist($family);
-            $this->addReference('attribute-family.'.$family->getCode(), $family);
+        if (isset($configuration['families'])) {
+            foreach ($configuration['families'] as $code => $data) {
+                $family = $this->createFamily($code, $data);
+                $manager->persist($family);
+                $this->addReference('attribute-family.'.$family->getCode(), $family);
+            }
         }
 
         $manager->flush();

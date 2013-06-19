@@ -31,10 +31,12 @@ class LoadGroupData extends AbstractInstallerFixture
     {
         $configuration = Yaml::parse(realpath($this->getFilePath()));
 
-        foreach ($configuration['groups'] as $code => $data) {
-            $group = $this->createGroup($code, $data['labels']);
-            $manager->persist($group);
-            $this->addReference('attribute-group.'.$group->getCode(), $group);
+        if (isset($configuration['groups'])) {
+            foreach ($configuration['groups'] as $code => $data) {
+                $group = $this->createGroup($code, $data['labels']);
+                $manager->persist($group);
+                $this->addReference('attribute-group.'.$group->getCode(), $group);
+            }
         }
 
         $manager->flush();
