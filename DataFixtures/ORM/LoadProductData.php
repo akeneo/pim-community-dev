@@ -1,5 +1,4 @@
 <?php
-
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
@@ -92,6 +91,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         $attPrice       = $this->getReference('product-attribute.price');
         $attManufact    = $this->getReference('product-attribute.manufacturer');
         $attImageUpload = $this->getReference('product-attribute.image_upload');
+        $attSku         = $this->getReference('product-attribute.sku');
 
         // get attribute color options
         $optColors = $this->getProductManager()->getAttributeOptionRepository()->findBy(
@@ -124,10 +124,14 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         $descriptions = array('my long description', 'my other description');
         for ($ind= 0; $ind < $nbProducts; $ind++) {
 
+            $product = $this->getProductManager()->createFlexible();
+
             // sku
             $prodSku = 'sku-'.str_pad($ind, 3, '0', STR_PAD_LEFT);
-            $product = $this->getProductManager()->createFlexible();
-            $product->setSku($prodSku);
+            $value = $this->getProductManager()->createFlexibleValue();
+            $value->setAttribute($attSku);
+            $value->setData($prodSku);
+            $product->addValue($value);
 
             // image upload
             $value = $this->getProductManager()->createFlexibleValue();
@@ -261,7 +265,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
     protected function persist(Product $product)
     {
         $this->getProductManager()->getStorageManager()->persist($product);
-        $this->addReference('product.'. $product->getSku(), $product);
+        $this->addReference('product.'. $product->sku, $product);
     }
 
     /**
