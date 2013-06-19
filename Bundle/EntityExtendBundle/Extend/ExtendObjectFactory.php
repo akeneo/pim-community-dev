@@ -33,7 +33,11 @@ class ExtendObjectFactory
         if (isset($this->extendObjects[spl_object_hash($entity)])) {
             return $this->extendObjects[spl_object_hash($entity)];
         } else {
-            return $this->createExtend($entity);
+            /**
+             * TODO:
+             */
+            //return $this->createExtend($entity);
+            return null;
         }
     }
 

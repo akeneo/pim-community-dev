@@ -90,7 +90,7 @@ class ExtendManager
     public function isExtend($entityName)
     {
         if ($this->configProvider->isExtend($entityName)) {
-            $this->checkEntityCache($this->configProvider->getClassName($entityName));
+            //$this->checkEntityCache($this->configProvider->getClassName($entityName));
 
             return true;
         }
@@ -121,7 +121,7 @@ class ExtendManager
      */
     public function load($entity)
     {
-        $this->getExtendFactory()->getExtendObject(get_class($entity));
+        $this->getExtendFactory()->getExtendObject($entity);
     }
 
     /**

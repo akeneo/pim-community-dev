@@ -1,0 +1,14 @@
+parameters:
+    oro_entity_config.datagrid.manager.class:         Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager
+
+
+services:
+    oro_entity_config.datagrid.manager:
+        class:                                  %oro_entity_config.datagrid.manager.class%
+        tags:
+            - name:                             oro_grid.datagrid.manager
+              datagrid_name:                    entity
+              entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity
+              entity_hint:                      entity
+              route_name:                       oro_entityconfig_index
+              query_entity_alias:               a

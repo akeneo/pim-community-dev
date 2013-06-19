@@ -34,14 +34,20 @@ class Generator
         $extendClass = $this->generateExtendClassName($entityName);
 
         var_dump($extendClass);
-        var_dump($this->configProvider->getConfig($entityName)->getFields());
-        var_dump($this->configProvider->getConfig($entityName)->getValues());
+        print_r(array_keys(
+            $this->configProvider->getConfig($entityName)->getFields()
+        ));
+        var_dump(
+            $this->configProvider->getConfig($entityName)->getValues()
+        );
 
-        die('generator');
+
         if (!class_exists($extendClass)) {
-
+            //die($extendClass);
 
         }
+
+        //die('generator');
     }
 
     public function generateExtendClassName($entityName)

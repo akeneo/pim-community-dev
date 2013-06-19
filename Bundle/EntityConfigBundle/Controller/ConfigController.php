@@ -4,6 +4,7 @@ namespace Oro\Bundle\EntityConfigBundle\Controller;
 
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
+use Oro\Bundle\GridBundle\Datagrid\Datagrid;
 use Oro\Bundle\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -18,36 +19,29 @@ use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
 /**
  * User controller.
  *
- * @Route("/flex")
+ * @Route("/oro_entityconfig")
  */
 class ConfigController extends Controller
 {
     /**
      * Lists all Flexible entities.
      *
-     * @Route("/", name="flex")
+     * @Route("/", name="oro_entityconfig_index")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
+        /** @var Datagrid $datagrid */
+        $datagrid = $this->get('oro_entity_config.datagrid.manager')->getDatagrid();
+        $view     = 'json' == $request->getRequestFormat()
+            ? 'OroGridBundle:Datagrid:list.json.php'
+            : 'OroEntityConfigBundle:Config:index.html.twig';
 
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository(ConfigEntity::ENTITY_NAME)->findAll();
-
-//        $entities = $em->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
-//        foreach ($entities as $entity){
-//            var_dump( $em->getClassMetadata($entity) );
-//            die;
-//        }
-
-
-//        var_dump( $em->getClassMetadata('Oro\Bundle\UserBundle\Entity\User') );
-//        var_dump( $entities );
-        //die;
-
-        return array(
-            'entities' => $entities
+        return $this->render(
+            $view,
+            array(
+                'datagrid' => $datagrid->createView()
+            )
         );
     }
 
