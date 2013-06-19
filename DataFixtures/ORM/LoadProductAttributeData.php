@@ -44,7 +44,7 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
      */
     protected function getProductManager()
     {
-        return $this->container->get('product_manager');
+        return $this->container->get('pim_product.manager.product');
     }
 
     /**
