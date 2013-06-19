@@ -54,7 +54,7 @@ class ProductController extends Controller
         $this->getProductManager()->setScope($this->getDataScope());
 
         /** @var $gridManager ProductDatagridManager */
-        $gridManager = $this->get('pim_product.product_grid_manager');
+        $gridManager = $this->get('pim_product.datagrid.manager.product');
         $datagrid = $gridManager->getDatagrid();
 
         if ('json' == $request->getRequestFormat()) {
@@ -165,7 +165,7 @@ class ProductController extends Controller
             }
         }
 
-        $auditManager = $this->container->get('pim_product.audit_manager');
+        $auditManager = $this->container->get('pim_product.manager.audit');
 
         return array(
             'form'           => $form->createView(),
@@ -351,7 +351,7 @@ class ProductController extends Controller
      */
     protected function getProductManager()
     {
-        $pm = $this->container->get('product_manager');
+        $pm = $this->container->get('pim_product.manager.product');
         $pm->setLocale($this->getDataLocale());
 
         return $pm;
@@ -364,7 +364,7 @@ class ProductController extends Controller
      */
     protected function getCategoryManager()
     {
-        return $this->container->get('pim_product.category_manager');
+        return $this->container->get('pim_product.manager.category');
     }
 
 

@@ -310,6 +310,6 @@ class CategoryTreeControllerTest extends ControllerTest
      */
     protected function getTreeManager()
     {
-        return $this->getContainer()->get('pim_product.category_manager');
+        return $this->getContainer()->get('pim_product.manager.category');
     }
 }

@@ -29,7 +29,7 @@ class Product extends AbstractEntityFlexible
     /**
      * @var Value
      *
-     * @ORM\OneToMany(targetEntity="ProductValue", mappedBy="entity", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Pim\Bundle\ProductBundle\Model\ProductValueInterface", mappedBy="entity", cascade={"persist", "remove"})
      */
     protected $values;
 

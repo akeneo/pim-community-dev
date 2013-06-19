@@ -11,40 +11,49 @@ parameters:
     pim_config.form.handler.channel.class:  Pim\Bundle\ConfigBundle\Form\Handler\ChannelHandler
     pim_config.form.type.channel.class:     Pim\Bundle\ConfigBundle\Form\Type\ChannelType
 
-    pim_config.locale_fallback_validator_class:      Pim\Bundle\ConfigBundle\Validator\Constraints\ValidLocaleFallbackValidator
-
 services:
     # Managers
     pim_config.manager.locale:
-        class:     %pim_config.manager.locale.class%
-        arguments: [@doctrine.orm.entity_manager, @security.context]
+        class: %pim_config.manager.locale.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @security.context
 
     pim_config.manager.currency:
-        class:     %pim_config.manager.currency.class%
-        arguments: [@doctrine.orm.entity_manager]
+        class: %pim_config.manager.currency.class%
+        arguments:
+            - @doctrine.orm.entity_manager
 
     pim_config.manager.channel:
-        class:     %pim_config.manager.channel.class%
-        arguments: [@doctrine.orm.entity_manager, @security.context]
+        class: %pim_config.manager.channel.class%
+        arguments:
+           - @doctrine.orm.entity_manager
+           - @security.context
 
     # Form
     pim_config.form.channel:
         class:           Symfony\Component\Form\Form
         factory_method:  createNamed
         factory_service: form.factory
-        arguments: ["pim_config_channel_form", "pim_config_channel"]
+        arguments:
+            - "pim_config_channel_form"
+            - "pim_config_channel"
 
     pim_config.form.currency:
         class:           Symfony\Component\Form\Form
         factory_method:  createNamed
         factory_service: form.factory
-        arguments: ["pim_config_currency_form", "pim_config_currency"]
+        arguments:
+            - "pim_config_currency_form"
+            - "pim_config_currency"
 
     pim_config.form.locale:
         class:           Symfony\Component\Form\Form
         factory_method:  createNamed
         factory_service: form.factory
-        arguments: ["pim_config_locale_form", "pim_config_locale"]
+        arguments:
+            - "pim_config_locale_form"
+            - "pim_config_locale"
 
     # Types
     pim_config.form.type.channel:
@@ -54,13 +63,16 @@ services:
 
     pim_config.form.type.currency:
         class: %pim_config.form.type.currency.class%
-        arguments: [%pim_config.currencies%]
+        arguments:
+            - %pim_config.currencies%
         tags:
             - { name: form.type, alias: pim_config_currency }
 
     pim_config.form.type.locale:
         class: %pim_config.form.type.locale.class%
-        arguments: [@doctrine.orm.entity_manager, %pim_config.locales%]
+        arguments:
+            - @doctrine.orm.entity_manager
+            - %pim_config.locales%
         tags:
             - { name: form.type, alias: pim_config_locale }
 
@@ -68,20 +80,29 @@ services:
     pim_config.form.handler.channel:
         class: %pim_config.form.handler.channel.class%
         scope: request
-        arguments: [@pim_config.form.channel, @request, @doctrine.orm.entity_manager]
+        arguments:
+            - @pim_config.form.channel
+            - @request
+            - @doctrine.orm.entity_manager
 
     pim_config.form.handler.currency:
         class: %pim_config.form.handler.currency.class%
         scope: request
-        arguments: [@pim_config.form.currency, @request, @doctrine.orm.entity_manager]
+        arguments:
+            - @pim_config.form.currency
+            - @request
+            - @doctrine.orm.entity_manager
 
     pim_config.form.handler.locale:
         class: %pim_config.form.handler.locale.class%
         scope: request
-        arguments: [@pim_config.form.locale, @request, @doctrine.orm.entity_manager]
+        arguments:
+            - @pim_config.form.locale
+            - @request
+            - @doctrine.orm.entity_manager
 
     # Subscriber
-    pim_config.user_preferences_listener:
+    pim_config.event_listener.user_preferences:
         class: Pim\Bundle\ConfigBundle\EventListener\UserPreferencesListener
         calls:
             - [ setContainer, [ @service_container ] ]
@@ -89,8 +110,9 @@ services:
             - { name: doctrine.event_subscriber }
 
     # Validators
-    pim_config.form.validator.locale_fallback:
-        class: %pim_config.locale_fallback_validator_class%
-        arguments: [@doctrine.orm.entity_manager]
+    pim_config.validator.valid_locale_fallback:
+        class: Pim\Bundle\ConfigBundle\Validator\Constraints\ValidLocaleFallbackValidator
+        arguments:
+            - @doctrine.orm.entity_manager
         tags:
-        - { name: validator.constraint_validator, alias: pim_config_locale_fallback_validator }
+        - { name: validator.constraint_validator, alias: pim_config.validator.valid_locale_fallback_validator }

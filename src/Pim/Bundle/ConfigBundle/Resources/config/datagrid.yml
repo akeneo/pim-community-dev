@@ -1,12 +1,12 @@
 parameters:
-    channel_grid_manager_class:   Pim\Bundle\ConfigBundle\Datagrid\ChannelDatagridManager
-    currency_grid_manager_class: Pim\Bundle\ConfigBundle\Datagrid\CurrencyDatagridManager
-    locale_grid_manager_class:   Pim\Bundle\ConfigBundle\Datagrid\LocaleDatagridManager
+    pim_config.datagrid.manager.channel_datagrid.class:  Pim\Bundle\ConfigBundle\Datagrid\ChannelDatagridManager
+    pim_config.datagrid.manager.currency_datagrid.class: Pim\Bundle\ConfigBundle\Datagrid\CurrencyDatagridManager
+    pim_config.datagrid.manager.locale_datagrid.class:   Pim\Bundle\ConfigBundle\Datagrid\LocaleDatagridManager
 
 services:
     # DataGrid
     pim_config.datagrid.manager.channel:
-        class: %channel_grid_manager_class%
+        class: %pim_config.datagrid.manager.channel_datagrid.class%
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: channels
@@ -14,7 +14,7 @@ services:
               route_name: pim_config_channel_index
 
     pim_config.datagrid.manager.currency:
-        class: %currency_grid_manager_class%
+        class: %pim_config.datagrid.manager.currency_datagrid.class%
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: currencies
@@ -22,7 +22,7 @@ services:
               route_name: pim_config_currency_index
 
     pim_config.datagrid.manager.locale:
-        class: %locale_grid_manager_class%
+        class: %pim_config.datagrid.manager.locale_datagrid.class%
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: locales

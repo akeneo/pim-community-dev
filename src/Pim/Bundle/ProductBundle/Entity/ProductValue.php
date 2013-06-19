@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
 
 /**
  * Value for a product attribute
@@ -18,7 +19,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity
  * @Gedmo\Loggable(logEntryClass="Oro\Bundle\DataAuditBundle\Entity\Audit")
  */
-class ProductValue extends AbstractEntityFlexibleValue
+class ProductValue extends AbstractEntityFlexibleValue implements ProductValueInterface
 {
     /**
      * @var Oro\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute

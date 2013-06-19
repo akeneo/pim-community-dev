@@ -67,6 +67,6 @@ class Controller extends BaseController
      */
     protected function getProductManager()
     {
-        return $this->get('product_manager');
+        return $this->get('pim_product.manager.product');
     }
 }

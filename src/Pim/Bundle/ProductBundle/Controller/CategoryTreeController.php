@@ -318,7 +318,7 @@ class CategoryTreeController extends Controller
      */
     protected function getTreeManager()
     {
-        return $this->container->get('pim_product.category_manager');
+        return $this->container->get('pim_product.manager.category');
     }
 
     /**
