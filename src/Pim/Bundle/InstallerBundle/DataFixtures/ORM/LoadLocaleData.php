@@ -1,5 +1,5 @@
 <?php
-namespace Pim\Bundle\ConfigBundle\DataFixtures\ORM;
+namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Pim\Bundle\ConfigBundle\Entity\Currency;
 use Pim\Bundle\ConfigBundle\Entity\Locale;
@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Load fixtures for locales
@@ -37,8 +38,12 @@ class LoadLocaleData extends AbstractFixture implements OrderedFixtureInterface,
      */
     public function load(ObjectManager $manager)
     {
-        $locale = $this->createLocale('en_US', null, 'USD');
-        $manager->persist($locale);
+        $activatedLocales = Yaml::parse(realpath(__DIR__ .'/../../Resources/config/locales.yml'));
+
+        foreach ($activatedLocales['locales'] as $code => $data) {
+            $locale = $this->createLocale($code, $data['fallback'], $data['currency']);
+            $manager->persist($locale);
+        }
 
         $manager->flush();
     }
@@ -58,11 +63,7 @@ class LoadLocaleData extends AbstractFixture implements OrderedFixtureInterface,
         $locale->setCode($code);
         $locale->setFallback($fallback);
         $locale->setActivated($activated);
-
-        // prepare currencies
-        $localeCurrency = $this->getReference('currency.'. $currencyCode);
-        $locale->setDefaultCurrency($localeCurrency);
-
+        $locale->setDefaultCurrency($this->getReference('currency.'. $currencyCode));
         $this->setReference('locale.'. $code, $locale);
 
         return $locale;

@@ -1067,4 +1067,19 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
 
         return $this;
     }
+
+    /**
+     * Set all parameters with associative array
+     * @param array $parameters
+     */
+    public function setParameters($parameters)
+    {
+        foreach ($parameters as $code => $value) {
+            $method = 'set'.ucfirst($code);
+            if (!method_exists($this, $method)) {
+                throw new \Exception(sprintf('The parameter "%s" doesnt exists.', $code));
+            }
+            $this->$method($value);
+        }
+    }
 }

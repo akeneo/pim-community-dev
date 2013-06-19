@@ -1,13 +1,13 @@
 <?php
-namespace Pim\Bundle\ConfigBundle\DataFixtures\ORM;
+namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
-use Symfony\Component\Yaml\Yaml;
 use Pim\Bundle\ConfigBundle\Entity\Currency;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Load fixtures for currencies
@@ -32,11 +32,11 @@ class LoadCurrencyData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
-        $configCurrencies = $this->container->getParameter('pim_config.currencies');
-        $activatedCurrencies = array('EUR', 'USD');
+        $allCurrencies = $this->container->getParameter('pim_config.currencies');
+        $activatedCurrencies = Yaml::parse(realpath(__DIR__ .'/../../Resources/config/currencies.yml'));
 
-        foreach ($configCurrencies['currencies'] as $currencyCode => $currencyName) {
-            $activated = in_array($currencyCode, $activatedCurrencies);
+        foreach ($allCurrencies['currencies'] as $currencyCode => $currencyName) {
+            $activated = in_array($currencyCode, $activatedCurrencies['currencies']);
             $currency = $this->createCurrency($currencyCode, $activated);
             $this->setReference('currency.'. $currencyCode, $currency);
             $manager->persist($currency);

@@ -1,12 +1,13 @@
 <?php
-namespace Pim\Bundle\ConfigBundle\DataFixtures\ORM;
+namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
-use Pim\Bundle\ConfigBundle\Entity\Channel;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Pim\Bundle\ConfigBundle\Entity\Channel;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Load fixtures for channels
@@ -22,8 +23,13 @@ class LoadChannelData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $channel = $this->createChannel('default', 'Default');
-        $manager->persist($channel);
+        $configuration = Yaml::parse(realpath(__DIR__ .'/../../Resources/config/channels.yml'));
+
+        foreach ($configuration['channels'] as $data) {
+            $channel = $this->createChannel($data['code'], $data['label']);
+            $manager->persist($channel);
+        }
+
         $manager->flush();
     }
 

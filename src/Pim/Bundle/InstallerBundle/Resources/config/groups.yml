@@ -1,0 +1,21 @@
+'groups':
+    'general':
+        'labels':
+            'default': 'General'
+            'fr_FR':   'Général'
+    'seo':
+        'labels':
+            'default': 'SEO'
+            'fr_FR':   'SEO'
+    'marketing':
+        'labels':
+            'default': 'Marketing'
+            'fr_FR':   'Commercial'
+    'sizes':
+        'labels':
+            'default': 'Sizes'
+            'fr_FR':   'Tailles'
+    'colors':
+        'labels':
+            'default': 'Colors'
+            'fr_FR':   'Couleurs'

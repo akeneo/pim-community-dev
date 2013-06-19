@@ -62,6 +62,7 @@ class AppKernel extends Kernel
 
             // PIM bundles
             new Pim\Bundle\ConfigBundle\PimConfigBundle(),
+            new Pim\Bundle\InstallerBundle\PimInstallerBundle(),
             new Pim\Bundle\UIBundle\PimUIBundle(),
             new Pim\Bundle\ProductBundle\PimProductBundle(),
             new Pim\Bundle\TranslationBundle\PimTranslationBundle(),
@@ -74,7 +75,7 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
 
             // PIM demo bundle
-            $bundles[] = new Pim\Bundle\DemoBundle\PimDemoBundle();
+            //$bundles[] = new Pim\Bundle\DemoBundle\PimDemoBundle();
         }
 
         return $bundles;
