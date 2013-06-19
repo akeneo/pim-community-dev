@@ -1,0 +1,11 @@
+'families':
+    'mug':
+        'labels':
+            'default': 'Mug'
+            'fr_FR': 'Tasse'
+        'attributes' : ['name', 'manufacturer', 'short_description', 'color']
+    'shirt':
+        'labels':
+            'default': 'Shirt'
+            'fr_FR': 'Chemise'
+        'attributes' : ['name', 'size', 'short_description', 'color']
