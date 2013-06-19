@@ -76,6 +76,7 @@ doctrine:
         auto_mapping:         true
         resolve_target_entities:
             Symfony\Component\Security\Core\User\UserInterface: Oro\Bundle\UserBundle\Entity\User
+            Pim\Bundle\ProductBundle\Model\ProductValueInterface: Pim\Bundle\ProductBundle\Entity\ProductValue
 
 # Swiftmailer Configuration
 swiftmailer:

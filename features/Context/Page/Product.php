@@ -16,11 +16,13 @@ class Product extends Page
     protected $path = '/enrich/product/{id}/edit';
 
     protected $elements = array(
-        'Locales dropdown'     => array('css' => '#locale-switcher'),
-        'Available attributes' => array('css' => '#pim_available_product_attributes_attributes'),
-        'Title'                => array('css' => '.navbar-title'),
-        'Tabs'                 => array('css' => '#form-navbar'),
-        'Locales selector'     => array('css' => '#pim_product_locales'),
+        'Locales dropdown'                => array('css' => '#locale-switcher'),
+        'Available attributes'            => array('css' => '#attributes .ui-multiselect-checkboxes'),
+        'Available attributes add button' => array('css' => 'a:contains("Add")'),
+        'Available attributes menu'       => array('css' => 'button:contains("Add attributes")'),
+        'Title'                           => array('css' => '.navbar-title'),
+        'Tabs'                            => array('css' => '#form-navbar'),
+        'Locales selector'                => array('css' => '#pim_product_locales'),
     );
 
     public function findLocaleLink($locale)
@@ -108,21 +110,35 @@ class Product extends Page
     {
         return $this
             ->getElement('Available attributes')
-            ->find('css', sprintf(
-                'optgroup[label="%s"] option:contains("%s")',
-                $group, $attribute
-            ))
+            ->find('css', sprintf('li:contains("%s")', $attribute))
         ;
+    }
+
+    public function openAvailableAttributesMenu()
+    {
+        $this->getElement('Available attributes menu')->click();
     }
 
     public function selectAvailableAttribute($attribute)
     {
-        $this->getElement('Available attributes')->selectOption($attribute, true);
+        $elt = $this
+            ->getElement('Available attributes')
+            ->find('css', sprintf('li:contains("%s") input[type="checkbox"]', $attribute))
+        ;
+
+        if (!$elt) {
+            throw new \Exception(sprintf('Could not find available attribute "%s".', $attribute));
+        }
+
+        $elt->check();
     }
 
     public function addSelectedAvailableAttributes()
     {
-        $this->pressButton('Add attributes');
+        $this
+            ->getElement('Available attributes add button')
+            ->press()
+        ;
     }
 
     public function getRemoveLinkFor($field)

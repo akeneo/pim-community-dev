@@ -348,7 +348,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @When /^I deactivate the (.*) currency$/
      */
-    public function iDeaactivateTheCurrency($currencies)
+    public function iDeactivateTheCurrency($currencies)
     {
         $this->getPage('Currency index')->deactivateCurrencies(
             $this->listToArray($currencies)
@@ -682,7 +682,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function theProductFieldValueShouldBe($fieldName, $expected = '')
     {
-        $actual = $this->getPage('Product')->findField(ucfirst($fieldName))->getValue();
+        $actual = $this->getPage('Product')->findField($fieldName)->getValue();
 
         if ($expected !== $actual) {
             throw new \LogicException(sprintf(
@@ -707,8 +707,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             } catch (\BadMethodCallException $e) {
                 // Use default $field if current page does not provide a getFieldLocator method
             }
-        } else {
-            $field = ucfirst($field);
         }
 
         return $this->getSession()->getPage()->fillField(
@@ -759,11 +757,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iAddAvailableAttributes($attributes)
     {
+        $this->getPage($this->currentPage)->openAvailableAttributesMenu();
         foreach ($this->listToArray($attributes) as $attribute) {
             $this->getPage($this->currentPage)->selectAvailableAttribute($attribute);
+            $this->getSession()->wait(2000);
         }
 
         $this->getPage($this->currentPage)->addSelectedAvailableAttributes();
+            $this->getSession()->wait(2000);
     }
 
     /**

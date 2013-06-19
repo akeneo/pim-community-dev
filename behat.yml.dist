@@ -18,7 +18,9 @@ default:
             #
             # where `firefox %s` is the page opening command
 
-        Behat\Symfony2Extension\Extension: ~
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat
         SensioLabs\Behat\PageObjectExtension\Extension: ~
 
 jenkins:
