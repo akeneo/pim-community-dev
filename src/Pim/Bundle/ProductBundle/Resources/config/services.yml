@@ -192,7 +192,14 @@ services:
         class: Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricAttributeValidator
         arguments: [%oro_measure.measures_config%]
         tags:
-        - { name: validator.constraint_validator, alias: pim_metric_attribute_validator }
+            - { name: validator.constraint_validator, alias: pim_metric_attribute_validator }
+
+    pim_product.validator.constraints.unique_value:
+        class: Pim\Bundle\ProductBundle\Validator\Constraints\UniqueValueValidator
+        arguments:
+            - @doctrine
+        tags:
+            - { name: validator.constraint_validator, alias: pim_unique_value_validator }
 
     # Media
     pim_product.manager.media:

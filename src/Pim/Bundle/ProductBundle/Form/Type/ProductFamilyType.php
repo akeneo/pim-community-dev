@@ -40,7 +40,7 @@ class ProductFamilyType extends AbstractType
                 'entity',
                 array(
                     'required'    => false,
-                    'empty_value' => 'SKU',
+                    'empty_value' => 'Id',
                     'label'       => 'Attribute used as label',
                     'choices'     => $data ? $data->getAttributeAsLabelChoices() : array(),
                     'class'       => 'Pim\Bundle\ProductBundle\Entity\ProductAttribute',

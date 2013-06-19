@@ -8,3 +8,4 @@ entities_config:
         attribute_option_value_class: Pim\Bundle\ProductBundle\Entity\AttributeOptionValue
         default_locale:               null
         default_scope:                null
+        flexible_init_mode:           required_attributes
