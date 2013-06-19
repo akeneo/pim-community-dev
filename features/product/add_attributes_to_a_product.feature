@@ -13,7 +13,7 @@ Feature: Add attributes to a product
     And the following product attribute:
       | product | label        | group   |
       | Car     | Release Date | General |
-    And the following attributes:
+    And the following product attributes:
       | label            | group   |
       | Long Description | General |
       | Manufacturer     | General |

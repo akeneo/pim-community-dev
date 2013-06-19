@@ -10,9 +10,9 @@
 
     <div class="row-fluid">
         {{ form_row(form.id) }}
-        {{ form_row(form.sku) }}
+        {{ form_row(form.values) }}
         {{ form_row(form.productFamily, { attr: { 'data-placeholder': 'Choose a product family'|trans }}) }}
-        {{ form_row(form.locales, { label: 'Activated locales' }) }}
+        {{ form_row(form.locales) }}
         {{ form_row(form._token) }}
     </div>
 

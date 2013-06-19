@@ -11,7 +11,7 @@ Feature: Remove an attribute from a product
       | label | Group   | family  |
       | Model | General | vehicle |
     And the following product:
-      | sku    | family  | 
+      | sku    | family  |
       | kangoo | vehicle |
     And I am logged in as "admin"
     And I am on the "kangoo" product page
@@ -33,7 +33,7 @@ Feature: Remove an attribute from a product
     And I am on the "kangoo" product page
     When I remove the "Color" attribute
     Then I should see "Attribute was successfully removed."
-    And attribute in group "Other" should be Model
+    And attributes in group "Other" should be SKU and Model
 
   @javascript
   Scenario: Successfully remove a scopable attribute from a product
@@ -55,4 +55,4 @@ Feature: Remove an attribute from a product
     And I am on the "kangoo" product page
     When I remove the "Color" attribute
     Then I should see "Attribute was successfully removed."
-    And attribute in group "Other" should be Model
+    And attribute in group "Other" should be SKU and Model
