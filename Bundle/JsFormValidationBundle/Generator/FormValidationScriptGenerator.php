@@ -343,9 +343,10 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
         if (!$fieldsConstraints->hasLibrary($constraintName)) {
             $templating = $this->container->get('templating');
             $library = "APYJsFormValidationBundle:Constraints:{$constraintName}Validator.js.twig";
-            if ($templating->exists($library)) {
-                $fieldsConstraints->addLibrary($constraintName, $library);
+            if (!$templating->exists($library)) {
+                return;
             }
+            $fieldsConstraints->addLibrary($constraintName, $library);
         }
 
         $constraintParameters = array();
