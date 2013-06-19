@@ -13,7 +13,10 @@ $(function() {
     var hashUrl = window.location.hash;
     var hashUrlTag = '#url=';
     if (hashUrl.length && hashUrl.match(hashUrlTag)) {
-        hashUrl = hashUrl.replace(hashUrlTag, '')
+        if (hashUrl.indexOf('|')) {
+            hashUrl = hashUrl.substring(0, hashUrl.indexOf('|'));
+        }
+        hashUrl = hashUrl.replace(hashUrlTag, '');
         var hashArray = hashUrl.split('php');
         if (hashArray[1]) {
             hashUrl = hashArray[1];
