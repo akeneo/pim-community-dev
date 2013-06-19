@@ -51,17 +51,22 @@ class Country
     protected $regions;
 
     /**
-     * @param null|string $name     [optional] Country name
-     * @param null|string $iso2Code [optional] ISO2 country code
-     * @param null|string $iso3Code [optional] ISO3 country code
+     * @param string $iso2Code ISO2 country code
      */
-    public function __construct($name = null, $iso2Code = null, $iso3Code = null)
+    public function __construct($iso2Code)
     {
-        $this
-            ->setName($name)
-            ->setIso2Code($iso2Code)
-            ->setIso3Code($iso3Code)
-            ->setRegions(new ArrayCollection());
+        $this->iso2Code = $iso2Code;
+        $this->regions  = new ArrayCollection();
+    }
+
+    /**
+     * Get iso2_code
+     *
+     * @return string
+     */
+    public function getIso2Code()
+    {
+        return $this->iso2Code;
     }
 
     /**
@@ -92,6 +97,7 @@ class Country
     {
         if (!$this->regions->contains($region)) {
             $this->regions->add($region);
+            $region->setCountry($this);
         }
 
         return $this;
@@ -105,6 +111,7 @@ class Country
     {
         if ($this->regions->contains($region)) {
             $this->regions->removeElement($region);
+            $region->setCountry(null);
         }
 
         return $this;
@@ -118,29 +125,6 @@ class Country
     public function hasRegions()
     {
         return count($this->regions) > 0;
-    }
-
-    /**
-     * Set iso2_code
-     *
-     * @param  string  $iso2Code
-     * @return Country
-     */
-    public function setIso2Code($iso2Code)
-    {
-        $this->iso2Code = $iso2Code;
-
-        return $this;
-    }
-
-    /**
-     * Get iso2_code
-     *
-     * @return string
-     */
-    public function getIso2Code()
-    {
-        return $this->iso2Code;
     }
 
     /**

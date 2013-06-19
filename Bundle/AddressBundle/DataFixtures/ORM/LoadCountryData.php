@@ -2,113 +2,196 @@
 
 namespace Oro\Bundle\AddressBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Finder\Finder;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Region;
 
-class LoadCountryData extends AbstractFixture implements OrderedFixtureInterface
+class LoadCountryData extends AbstractFixture implements ContainerAwareInterface
 {
-    const DEFAULT_LOCALE = 'en';
+    const COUNTRY_DOMAIN      = 'countries';
+    const COUNTRY_FILE_REGEXP = '/^countries\.(.*?)\./';
 
     /**
-     * Load address types
-     *
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
+     * @var string
+     */
+    protected $translationDirectory = '/Resources/translations/';
+
+    /**
+     * @param ObjectManager $manager
      */
     public function load(ObjectManager $manager)
     {
+        $this->translator = $this->container->get('translator');
+
         $fileName = $this->getFileName();
-        $countries = Yaml::parse(realpath($fileName));
+        $countries = $this->getDataFromFile($fileName);
         $this->saveCountryData($manager, $countries);
     }
 
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
     /**
-     * Save countries and regions in DB
+     * @return string
+     */
+    protected function getFileName()
+    {
+        return __DIR__ . '/../data/countries.yml';
+    }
+
+    /**
+     * @param string $fileName
+     * @return bool
+     */
+    protected function isFileAvailable($fileName)
+    {
+        return is_file($fileName) && is_readable($fileName);
+    }
+
+    /**
+     * @param string $fileName
+     * @return array
+     * @throws \LogicException
+     */
+    protected function getDataFromFile($fileName)
+    {
+        if (!$this->isFileAvailable($fileName)) {
+            throw new \LogicException('File ' . $fileName . 'is not available');
+        }
+
+        $fileName = realpath($fileName);
+
+        return Yaml::parse($fileName);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getAvailableCountryLocales()
+    {
+        $translationDirectory = str_replace('/', DIRECTORY_SEPARATOR, $this->translationDirectory);
+        $translationDirectories = array();
+
+        foreach ($this->container->getParameter('kernel.bundles') as $bundle) {
+            $reflection = new \ReflectionClass($bundle);
+            $bundleTranslationDirectory = dirname($reflection->getFilename()) . $translationDirectory;
+            if (is_dir($bundleTranslationDirectory) && is_readable($bundleTranslationDirectory)) {
+                $translationDirectories[] = realpath($bundleTranslationDirectory);
+            }
+        }
+
+        $finder = new Finder();
+        $finder->in($translationDirectories)->name(self::COUNTRY_FILE_REGEXP);
+
+        $countryLocales = array();
+        /** @var $file \SplFileInfo */
+        foreach ($finder as $file) {
+            preg_match(self::COUNTRY_FILE_REGEXP, $file->getFilename(), $matches);
+            if ($matches) {
+                $countryLocales[] = $matches[1];
+            }
+        }
+
+        return $countryLocales;
+    }
+
+    /**
+     * @param string $locale
+     * @param array $countryData
+     * @return null|Country
+     */
+    protected function createCountry($locale, array $countryData)
+    {
+        if (empty($countryData['iso2code']) || empty($countryData['iso3code'])) {
+            return null;
+        }
+
+        $country = new Country($countryData['iso2code']);
+        $countryName = $this->translator->trans(
+            $countryData['iso2code'],
+            array(),
+            self::COUNTRY_DOMAIN,
+            $locale
+        );
+        $country->setIso3Code($countryData['iso3code'])
+            ->setName($countryName);
+
+        return $country;
+    }
+
+    /**
+     * @param $locale
+     * @param Country $country
+     * @param array $regionData
+     * @return null|Region
+     */
+    protected function createRegion($locale, Country $country, array $regionData)
+    {
+        if (empty($regionData['combinedCode']) || empty($regionData['code'])) {
+            return null;
+        }
+
+        $region = new Region($regionData['combinedCode']);
+        $regionName = $this->translator->trans(
+            $regionData['combinedCode'],
+            array(),
+            self::COUNTRY_DOMAIN,
+            $locale
+        );
+        $region->setCode($regionData['code'])
+            ->setName($regionName);
+
+        $region->setCountry($country);
+
+        return $region;
+    }
+
+    /**
+     * Save countries and regions to DB
      *
      * @param ObjectManager $manager
      * @param array $countries
      */
     protected function saveCountryData(ObjectManager $manager, array $countries)
     {
-        foreach ($countries as $countryData) {
-            if (empty($countryData['name']) || empty($countryData['iso2']) || empty($countryData['iso3'])) {
-                continue;
-            }
-
-            $country = new Country($countryData['name'], $countryData['iso2'], $countryData['iso3']);
-            if (!empty($countryData['units'])) {
-                foreach ($countryData['units'] as $regionName) {
-                    $region = new Region();
-                    // TODO: extract region codes from external DB and add to fixture
-                    $regionCode = strtoupper(substr($regionName, 0, 8));
-                    $region->setName($regionName)
-                        ->setCode($regionCode)
-                        ->setCountry($country);
-                    $country->addRegion($region);
+        foreach ($this->getAvailableCountryLocales() as $locale) {
+            foreach ($countries as $countryData) {
+                $country = $this->createCountry($locale, $countryData);
+                if (!$country) {
+                    continue;
                 }
-            }
-            $manager->persist($country);
-        }
+                $manager->persist($country);
 
-        $manager->flush();
-    }
+                if (!empty($countryData['regions'])) {
+                    foreach ($countryData['regions'] as $regionData) {
+                        $region = $this->createRegion($locale, $country, $regionData);
+                        if ($region) {
+                            $manager->persist($region);
+                        }
+                    }
+                }
 
-    /**
-     * Get list of localized countries and regions
-     *
-     * @return string
-     * @throws \LogicException
-     */
-    protected function getFileName()
-    {
-        $locale = \Locale::getDefault();
-        if ($locale) {
-            $locale = substr($locale, 0, 2);
-            if ($this->isLocaleFileExists($locale)) {
-                return $this->getLocaleFileName($locale);
+                $manager->flush();
             }
         }
-
-        $locale = self::DEFAULT_LOCALE;
-        if ($this->isLocaleFileExists($locale)) {
-            return $this->getLocaleFileName($locale);
-        }
-
-        // if there is no default file
-        throw new \LogicException('There is no translation country file for locale "' . self::DEFAULT_LOCALE. '".');
-    }
-
-    /**
-     * @param string $locale
-     * @return string
-     */
-    protected function getLocaleFileName($locale)
-    {
-        return __DIR__ . '/../translations/countries.' . $locale . '.yml';
-    }
-
-    /**
-     * @param string $locale
-     * @return bool
-     */
-    protected function isLocaleFileExists($locale)
-    {
-        $fileName = $this->getLocaleFileName($locale);
-        return is_file($fileName) && is_readable($fileName);
-    }
-
-    /**
-     * Get the order of this fixture
-     *
-     * @return integer
-     */
-    public function getOrder()
-    {
-        return 10;
     }
 }

@@ -53,15 +53,6 @@ class AddressBase extends AbstractEntityFlexible
     /**
      * @var string
      *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\AddressBundle\Entity\Region", cascade={"persist"})
-     * @ORM\JoinColumn(name="region_id", referencedColumnName="id")
-     * @Soap\ComplexType("string", nillable=true)
-     */
-    protected $state;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="state_text", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string", nillable=true)
      */
@@ -79,10 +70,19 @@ class AddressBase extends AbstractEntityFlexible
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\AddressBundle\Entity\Country", cascade={"persist"})
-     * @ORM\JoinColumn(name="country_id", referencedColumnName="iso2_code")
+     * @ORM\JoinColumn(name="country_code", referencedColumnName="iso2_code")
      * @Soap\ComplexType("string", nillable=false)
      */
     protected $country;
+
+    /**
+     * @var string
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\AddressBundle\Entity\Region", cascade={"persist"})
+     * @ORM\JoinColumn(name="region_code", referencedColumnName="combined_code")
+     * @Soap\ComplexType("string", nillable=true)
+     */
+    protected $state;
 
     /**
      * @var string

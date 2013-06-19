@@ -19,19 +19,19 @@ use Oro\Bundle\AddressBundle\Entity\Country;
 class Region
 {
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(name="combined_code", type="string", length=16)
+     * @Soap\ComplexType("string", nillable=true)
      */
-    private $id;
+    private $combinedCode;
 
     /**
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="Country", inversedBy="regions",cascade={"persist"})
-     * @ORM\JoinColumn(name="country_id", referencedColumnName="iso2_code")
+     * @ORM\JoinColumn(name="country_code", referencedColumnName="iso2_code")
      * @Type("string")
      * @Soap\ComplexType("string", nillable=true)
      */
@@ -60,13 +60,21 @@ class Region
     private $locale;
 
     /**
+     * @param string $combinedCode
+     */
+    public function __construct($combinedCode)
+    {
+        $this->combinedCode = $combinedCode;
+    }
+
+    /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
+    public function getCombinedCode()
     {
-        return $this->id;
+        return $this->combinedCode;
     }
 
     /**
@@ -144,7 +152,7 @@ class Region
      * @param string $locale
      * @return $this
      */
-    public function setLocale($locale = 'en_US')
+    public function setLocale($locale)
     {
         $this->locale = $locale;
 
