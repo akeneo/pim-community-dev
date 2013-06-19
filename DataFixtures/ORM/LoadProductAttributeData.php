@@ -54,6 +54,16 @@ class LoadProductAttributeData extends AbstractFixture implements OrderedFixture
     {
         $referencePrefix = 'product-attribute.';
 
+        // sku
+        $sku = $this->getProductManager()->createAttribute('pim_product_text');
+        $sku->setCode('sku');
+        $sku->setLabel('SKU');
+        $sku->setRequired(true);
+        $sku->setUseableAsGridColumn(true);
+        $sku->setUseableAsGridFilter(true);
+        $this->getProductManager()->getStorageManager()->persist($sku);
+        $this->addReference($referencePrefix . $sku->getCode(), $sku);
+
         // attribute name
         $attributeCode = 'name';
         $attribute = $this->getProductManager()->createAttribute('pim_product_text');
