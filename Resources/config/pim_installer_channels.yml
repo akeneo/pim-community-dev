@@ -1,7 +1,7 @@
 channels:
     'ecommerce':
         'code':  'ecommerce'
-        'label': 'Ecommerce'
+        'label': 'E-Commerce'
     'mobile':
         'code':  'mobile'
         'label': 'Mobile'
