@@ -6,14 +6,14 @@ parameters:
 services:
     oro_entity_config.proxy.entity_manager:
         tags:
-            - { name: oro_entity_config.lazy,  service: doctrine.orm.default_entity_manager}
+            - { name: oro_entity_config.proxy,  service: doctrine.orm.default_entity_manager}
 
     oro_entity_config.config_manager:
         class:                                                  %oro_entity_config.config_manager.class%
         arguments:
             - @oro_entity_config.metadata.annotation_metadata_factory
+            - @event_dispatcher
             - @oro_entity_config.proxy.entity_manager
-            - %oro_entity_config.config.scopes%
         calls:
             - [setCache, [@oro_entity_config.cache.file_cache]]
 

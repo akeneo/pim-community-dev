@@ -13,4 +13,4 @@ services:
               entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity
               entity_hint:                      entity
               route_name:                       oro_entityconfig_index
-              query_entity_alias:               a
+              query_entity_alias:               ce

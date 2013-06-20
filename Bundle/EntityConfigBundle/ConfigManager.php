@@ -24,6 +24,8 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+
 use Oro\Bundle\EntityConfigBundle\Event\FieldConfigEvent;
 use Oro\Bundle\EntityConfigBundle\Event\EntityConfigEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
@@ -41,6 +43,11 @@ class ConfigManager
     protected $proxyEm;
 
     /**
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
      * @var CacheInterface
      */
     protected $configCache;
@@ -56,13 +63,20 @@ class ConfigManager
     protected $persistFieldConfig = array();
 
     /**
+     * @var ConfigProvider[]
+     */
+    protected $providers = array();
+
+    /**
      * @param MetadataFactory $metadataFactory
+     * @param EventDispatcher $eventDispatcher
      * @param ServiceProxy    $proxyEm
      */
-    public function __construct(MetadataFactory $metadataFactory, ServiceProxy $proxyEm, $scopes)
+    public function __construct(MetadataFactory $metadataFactory, EventDispatcher $eventDispatcher, ServiceProxy $proxyEm)
     {
         $this->metadataFactory = $metadataFactory;
         $this->proxyEm         = $proxyEm;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -82,11 +96,19 @@ class ConfigManager
     }
 
     /**
-     * @return EventDispatcher
+     * @return ConfigProvider[]
      */
-    public function dispatcher()
+    public function getProviders()
     {
-        return $this->proxyEm->get('event_dispatcher');
+        return $this->providers;
+    }
+
+    /**
+     * @param ConfigProvider $provider
+     */
+    public function setProvider(ConfigProvider $provider)
+    {
+        $this->providers[] = $provider;
     }
 
     /**
@@ -154,7 +176,7 @@ class ConfigManager
                 // listeners can add their configs for new ConfigEntity
                 $entity = new ConfigEntity($doctrineMetadata->getName());
 
-                $this->dispatcher()->dispatch(
+                $this->eventDispatcher->dispatch(
                     Events::newEntityConfig,
                     new EntityConfigEvent($doctrineMetadata->getName(), $this)
                 );
@@ -162,7 +184,7 @@ class ConfigManager
                 foreach ($doctrineMetadata->getFieldNames() as $fieldName) {
                     $type = $doctrineMetadata->getTypeOfField($fieldName);
                     $entity->addFiled(new ConfigField($fieldName, $type));
-                    $this->dispatcher()->dispatch(
+                    $this->eventDispatcher->dispatch(
                         Events::newFieldConfig,
                         new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
                     );
@@ -171,7 +193,7 @@ class ConfigManager
                 foreach ($doctrineMetadata->getAssociationNames() as $fieldName) {
                     $type = $doctrineMetadata->isSingleValuedAssociation($fieldName) ? 'ref-one' : 'ref-many';
                     $entity->addFiled(new ConfigField($fieldName, $type));
-                    $this->dispatcher()->dispatch(
+                    $this->eventDispatcher->dispatch(
                         Events::newFieldConfig,
                         new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
                     );

@@ -4,15 +4,18 @@ namespace Oro\Bundle\EntityConfigBundle\Datagrid;
 
 use Doctrine\ORM\Query;
 
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
+
+use Oro\Bundle\EntityConfigBundle\ConfigManager;
+
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
-use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
-use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
+
 
 class ConfigDatagridManager extends DatagridManager
 {
@@ -21,9 +24,12 @@ class ConfigDatagridManager extends DatagridManager
      */
     protected $fieldsCollection;
 
+    /**
+     * @var ConfigManager
+     */
     protected $configManager;
 
-    public function __construct($configManager)
+    public function __construct(ConfigManager $configManager)
     {
         $this->configManager = $configManager;
     }
@@ -75,6 +81,19 @@ class ConfigDatagridManager extends DatagridManager
             )
         );
         $fieldsCollection->add($fieldObjectName);
+
+        foreach ($this->configManager->getProviders() as $provider) {
+            foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
+                if (isset($item['grid'])) {
+                    $fieldObjectName = new FieldDescription();
+                    $fieldObjectName->setName($code);
+                    $fieldObjectName->setOptions(array_merge($item['grid'], array(
+                        'expression' => 'cev' . $code . '.value'
+                    )));
+                    $fieldsCollection->add($fieldObjectName);
+                }
+            }
+        }
     }
 
     /**
@@ -108,4 +127,22 @@ class ConfigDatagridManager extends DatagridManager
         return array($viewAction, $updateAction);
     }
 
+    /**
+     * @return ProxyQueryInterface
+     */
+    protected function createQuery()
+    {
+        /** @var ProxyQueryInterface|Query $query */
+        $query = parent::createQuery();
+
+        foreach ($this->configManager->getProviders() as $provider) {
+            foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
+                $alias = 'cev'. $code;
+                $query->leftJoin('ce.values', $alias, 'WITH', $alias . ".code='".$code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'");
+                $query->addSelect($alias . '.value as '. $code, true);
+            }
+        }
+
+        return $query;
+    }
 }

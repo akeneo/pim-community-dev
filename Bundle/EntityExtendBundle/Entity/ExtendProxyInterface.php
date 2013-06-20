@@ -8,5 +8,5 @@ interface ExtendProxyInterface
 
     public function __proxy__toArray();
 
-    public function __proxy__fromArray(array $values);
+    public function __proxy__fromArray($values);
 }

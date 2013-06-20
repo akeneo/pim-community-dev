@@ -37,8 +37,6 @@ class OroEntityConfigExtension extends Extension
 
     protected function loadBundleConfig(ContainerBuilder $container)
     {
-        $scopes = array();
-
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
             $reflection = new \ReflectionClass($bundle);
             if (is_file($file = dirname($reflection->getFilename()) . '/Resources/config/entity_config.yml')) {
@@ -51,12 +49,13 @@ class OroEntityConfigExtension extends Extension
                         'Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer',
                         array($bundleConfig['oro_entity_config'])
                     );
-                    $container->setDefinition('oro_entity_config.entity_config.' . end($scopes), $definition);
+                    $container->setDefinition(
+                        'oro_entity_config.entity_config.' . $bundleConfig['oro_entity_config']['scope'],
+                        $definition
+                    );
                 }
             }
         }
-
-        $container->setParameter('oro_entity_config.config.scopes', $scopes);
     }
 
 

@@ -9,9 +9,9 @@ use Symfony\Component\DependencyInjection\Reference;
 
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 
-class LazyServicePass implements CompilerPassInterface
+class ServiceProxyPass implements CompilerPassInterface
 {
-    const TAG_NAME = 'oro_entity_config.lazy';
+    const TAG_NAME = 'oro_entity_config.proxy';
 
     /**
      * {@inheritdoc}
@@ -33,7 +33,7 @@ class LazyServicePass implements CompilerPassInterface
             $targetService = $container->getDefinition($tag[0]['service']);
             if (!$targetService) {
                 throw new RuntimeException(sprintf(
-                    "Target service '%s' is undefined. Lazy Service '%s' with tag '%s' and tag-service '%s' ",
+                    "Target service '%s' is undefined. Proxy Service '%s' with tag '%s' and tag-service '%s' ",
                     $tag[0]['service'], $id, self::TAG_NAME, $tag[0]['service']
                 ));
             }

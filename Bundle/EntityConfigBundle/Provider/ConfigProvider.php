@@ -45,6 +45,14 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
+     * @return EntityConfigContainer
+     */
+    public function getConfigContainer()
+    {
+        return $this->configContainer;
+    }
+
+    /**
      * @param $className
      * @return EntityConfig
      */
