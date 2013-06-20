@@ -33,7 +33,9 @@ $(function() {
             if (xhr.status == 401) {
                 this._processRedirect();
             } else {
-                this._processModal(xhr);
+                if (xhr.readyState == 4) {
+                    this._processModal(xhr);
+                }
             }
         },
 

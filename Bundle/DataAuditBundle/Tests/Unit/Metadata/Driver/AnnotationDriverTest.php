@@ -36,6 +36,8 @@ class AnnotationDriverTest extends AbstractMetadataTest
 
         $resultMetadata = $annotationDriver->extendLoadMetadataForClass($doctrineClassMetadata);
 
+        $metadata->createdAt = $resultMetadata->createdAt;
+
         $this->assertEquals($metadata, $resultMetadata);
     }
 

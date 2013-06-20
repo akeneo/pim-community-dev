@@ -43,6 +43,24 @@
     }))
 {% endblock %}
 
+{% block oro_type_select_filter_js %}
+    Oro.createInstanceFromConstructor(Oro.Filter.SelectFilter.extend({
+    'name':    {{ formView.vars.name|json_encode|raw }},
+    'label':   {{ formView.vars.label|json_encode|raw }},
+    'enabled': {{ formView.vars.show_filter|json_encode|raw }},
+    'options': {{ formView.children.value.vars.choices|oro_filter_choices|json_encode|raw }}
+    }))
+{% endblock %}
+
+{% block oro_type_multiselect_filter_js %}
+    Oro.createInstanceFromConstructor(Oro.Filter.MultiSelectFilter.extend({
+    'name':    {{ formView.vars.name|json_encode|raw }},
+    'label':   {{ formView.vars.label|json_encode|raw }},
+    'enabled': {{ formView.vars.show_filter|json_encode|raw }},
+    'options': {{ formView.children.value.vars.choices|oro_filter_choices|json_encode|raw }}
+    }))
+{% endblock %}
+
 {% block oro_type_choice_filter_js %}
     {% if formView.children.value.vars.multiple %}
         {{ block('oro_type_multiselect_filter_js') }}
@@ -51,22 +69,8 @@
     {% endif %}
 {% endblock %}
 
-{% block oro_type_select_filter_js %}
-    Oro.createInstanceFromConstructor(Oro.Filter.SelectFilter.extend({
-        'name':    {{ formView.vars.name|json_encode|raw }},
-        'label':   {{ formView.vars.label|json_encode|raw }},
-        'enabled': {{ formView.vars.show_filter|json_encode|raw }},
-        'options': {{ formView.children.value.vars.choices|oro_filter_choices|json_encode|raw }}
-    }))
-{% endblock %}
-
-{% block oro_type_multiselect_filter_js %}
-    Oro.createInstanceFromConstructor(Oro.Filter.MultiSelectFilter.extend({
-        'name':    {{ formView.vars.name|json_encode|raw }},
-        'label':   {{ formView.vars.label|json_encode|raw }},
-        'enabled': {{ formView.vars.show_filter|json_encode|raw }},
-        'options': {{ formView.children.value.vars.choices|oro_filter_choices|json_encode|raw }}
-    }))
+{% block oro_type_entity_filter_js %}
+    {{ block('oro_type_choice_filter_js') }}
 {% endblock %}
 
 {% block oro_type_boolean_filter_js %}

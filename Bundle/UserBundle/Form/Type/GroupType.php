@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Oro\Bundle\UserBundle\Entity\User;
+
 class GroupType extends AbstractType
 {
     /**
@@ -27,6 +29,11 @@ class GroupType extends AbstractType
                 array(
                     'label'    => 'Roles',
                     'class'    => 'OroUserBundle:Role',
+                    'query_builder' => function($builder) {
+                        return $builder->createQueryBuilder('r')
+                            ->where('r.role != :anonRole')
+                            ->setParameter('anonRole', User::ROLE_ANONYMOUS);
+                    },
                     'property' => 'label',
                     'required' => true,
                     'multiple' => true,

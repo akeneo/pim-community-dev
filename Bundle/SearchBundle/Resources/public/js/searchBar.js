@@ -48,7 +48,9 @@ $(document).ready(function () {
         e.preventDefault();
     });
 
-    SearchInputWidth();
+    if ($('#search-bar-search').size()) {
+        SearchInputWidth();
+    }
 
     function SearchByTag() {
         var queryString = jQuery('#search-bar-search').val();
@@ -101,11 +103,13 @@ $(document).ready(function () {
     };
 
     function SearchByTagClose() {
-        var queryString2 = $('#search-bar-search').val();
+        if ($('#search-bar-search').size()) {
+            var queryString2 = $('#search-bar-search').val();
 
-        $('#search-div')
-            .removeClass('header-search-focused')
-            .toggleClass('search-focus', queryString2.length > 0);
+            $('#search-div')
+                .removeClass('header-search-focused')
+                .toggleClass('search-focus', queryString2.length > 0);
+        }
     };
 
     $('#search-bar-search').keydown(function (event) {

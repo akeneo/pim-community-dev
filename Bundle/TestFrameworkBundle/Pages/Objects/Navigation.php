@@ -15,7 +15,6 @@ class Navigation extends Page
     {
         parent::__construct($testCase, $redirect);
         $this->tabs = $this->byXPath("//div[@class = 'navbar application-menu']//ul[@class = 'nav nav-tabs']");
-        $this->menu = $this->byXPath("//div[contains(@class, 'application-menu')]//div[@class = 'tab-content']/div[contains(@class, 'active')]/ul");
 
         $this->pinbar = $this->byXPath("//div[contains(@class, 'pin-bar')]");
     }
