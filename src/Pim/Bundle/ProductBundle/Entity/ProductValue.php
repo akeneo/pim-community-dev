@@ -17,7 +17,6 @@ use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
  *
  * @ORM\Table(name="pim_product_value")
  * @ORM\Entity
- * @Gedmo\Loggable(logEntryClass="Oro\Bundle\DataAuditBundle\Entity\Audit")
  */
 class ProductValue extends AbstractEntityFlexibleValue implements ProductValueInterface
 {

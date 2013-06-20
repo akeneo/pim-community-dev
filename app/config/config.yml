@@ -136,8 +136,6 @@ stof_doctrine_extensions:
             translatable:     true
             tree:             true
             loggable:         true
-    class:
-        loggable:             Oro\Bundle\DataAuditBundle\EventListener\LoggableListener
 
 services:
     cache:

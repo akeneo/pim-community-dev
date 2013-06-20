@@ -22,7 +22,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="pim_product")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductRepository")
  * @Assert\Callback(methods={"isLocalesValid"})
- * @Gedmo\Loggable(logEntryClass="Oro\Bundle\DataAuditBundle\Entity\Audit")
  */
 class Product extends AbstractEntityFlexible
 {
