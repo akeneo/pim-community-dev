@@ -11,6 +11,8 @@ use Metadata\MetadataFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
+
 use Oro\Bundle\EntityConfigBundle\Cache\CacheInterface;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 
@@ -34,9 +36,9 @@ class ConfigManager
     protected $metadataFactory;
 
     /**
-     * @var ContainerInterface
+     * @var ServiceProxy
      */
-    protected $container;
+    protected $proxyEm;
 
     /**
      * @var CacheInterface
@@ -54,13 +56,13 @@ class ConfigManager
     protected $persistFieldConfig = array();
 
     /**
-     * @param MetadataFactory    $metadataFactory
-     * @param ContainerInterface $container
+     * @param MetadataFactory $metadataFactory
+     * @param ServiceProxy    $proxyEm
      */
-    public function __construct(MetadataFactory $metadataFactory, ContainerInterface $container)
+    public function __construct(MetadataFactory $metadataFactory, ServiceProxy $proxyEm)
     {
         $this->metadataFactory = $metadataFactory;
-        $this->container       = $container;
+        $this->proxyEm         = $proxyEm;
     }
 
     /**
@@ -76,7 +78,7 @@ class ConfigManager
      */
     public function em()
     {
-        return $this->container->get('doctrine.orm.entity_manager');
+        return $this->proxyEm->getService();
     }
 
     /**
@@ -84,7 +86,7 @@ class ConfigManager
      */
     public function dispatcher()
     {
-        return $this->container->get('event_dispatcher');
+        return $this->proxyEm->get('event_dispatcher');
     }
 
     /**

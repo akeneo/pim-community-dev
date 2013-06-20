@@ -8,6 +8,7 @@ use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
 
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 
 class ConfigProvider implements ConfigProviderInterface
@@ -20,7 +21,12 @@ class ConfigProvider implements ConfigProviderInterface
     /**
      * @var array|EntityConfig[]
      */
-    protected $configs = array();
+    protected $entityConfigCache = array();
+
+    /**
+     * @var EntityConfigContainer
+     */
+    protected $configContainer;
 
     /**
      * @var string
@@ -28,13 +34,14 @@ class ConfigProvider implements ConfigProviderInterface
     protected $scope;
 
     /**
-     * @param ConfigManager $configManager
-     * @param string        $scope
+     * @param ConfigManager         $configManager
+     * @param EntityConfigContainer $configContainer
      */
-    public function __construct(ConfigManager $configManager, $scope)
+    public function __construct(ConfigManager $configManager, EntityConfigContainer $configContainer)
     {
-        $this->configManager = $configManager;
-        $this->scope         = $scope;
+        $this->configManager   = $configManager;
+        $this->configContainer = $configContainer;
+        $this->scope           = $configContainer->getScope();
     }
 
     /**
@@ -45,10 +52,10 @@ class ConfigProvider implements ConfigProviderInterface
     {
         $className = $this->getClassName($className);
 
-        if (isset($this->configs[$className])) {
-            return $this->configs[$className];
+        if (isset($this->entityConfigCache[$className])) {
+            return $this->entityConfigCache[$className];
         } else {
-            return $this->configs[$className] = $this->configManager->getConfig($className, $this->scope);
+            return $this->entityConfigCache[$className] = $this->configManager->getConfig($className, $this->scope);
         }
     }
 
@@ -60,7 +67,7 @@ class ConfigProvider implements ConfigProviderInterface
     {
         $className = $this->getClassName($className);
 
-        return isset($this->configs[$className]) ? true : $this->configManager->hasConfig($className);
+        return isset($this->entityConfigCache[$className]) ? true : $this->configManager->hasConfig($className);
     }
 
     /**

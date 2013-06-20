@@ -3,12 +3,16 @@
 namespace Oro\Bundle\EntityConfigBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Yaml\Yaml;
 
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
+
 
 class OroEntityConfigExtension extends Extension
 {
@@ -17,6 +21,8 @@ class OroEntityConfigExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $this->loadBundleConfig($container);
+
         $configuration = new Configuration();
         $config        = $this->processConfiguration($configuration, $configs);
 
@@ -29,10 +35,34 @@ class OroEntityConfigExtension extends Extension
         $loader->load('datagrid.yml');
     }
 
+    protected function loadBundleConfig(ContainerBuilder $container)
+    {
+        $scopes = array();
+
+        foreach ($container->getParameter('kernel.bundles') as $bundle) {
+            $reflection = new \ReflectionClass($bundle);
+            if (is_file($file = dirname($reflection->getFilename()) . '/Resources/config/entity_config.yml')) {
+                $bundleConfig = Yaml::parse(realpath($file));
+
+                if (isset($bundleConfig['oro_entity_config']) && isset($bundleConfig['oro_entity_config']['scope'])) {
+                    $scopes[] = $bundleConfig['oro_entity_config']['scope'];
+
+                    $definition = new Definition(
+                        'Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer',
+                        array($bundleConfig['oro_entity_config'])
+                    );
+                    $container->setDefinition('oro_entity_config.entity_config.' . end($scopes), $definition);
+                }
+            }
+        }
+
+        $container->setParameter('oro_entity_config.config.scopes', $scopes);
+    }
+
+
     /**
      * @param ContainerBuilder $container
      * @param                  $config
-     *
      * @throws RuntimeException
      */
     protected function configCache(ContainerBuilder $container, $config)
