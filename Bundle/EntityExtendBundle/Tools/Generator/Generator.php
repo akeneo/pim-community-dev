@@ -54,7 +54,6 @@ class Generator
         $proxyClass  = $this->generateProxyClassName($entityName);
         if (!class_exists($extendClass) || !class_exists($proxyClass)) {
 
-            var_dump($this->backend);
             var_dump($this->entityCacheDir);
             var_dump($entityName);
 
@@ -150,8 +149,6 @@ class Generator
                 array('values')
             ));
 
-
-
         $fields = $this->configProvider->getConfig($entityName)->getFields();
         $toArray = '';
         if($fields) {
@@ -185,7 +182,6 @@ class Generator
     {
         $this->writer = new Writer();
 
-
         $class = PhpClass::create($this->generateClassName($entityName))
             ->setName($className)
             ->setParentClassName($entityName)
@@ -202,30 +198,34 @@ class Generator
                 '__proxy__fromArray',
                 'foreach($values as $key => $value){$this->set($key, $value);}',
                 array('values')
-            ))
-        ;
+            ));
 
+        $fields = $this->configProvider->getConfig($entityName)->getFields();
+        $toArray = '';
+        if($fields) {
+            foreach ($fields as $field => $options) {
+                $toArray .= '    \''.$field.'\' => $this->get'.ucfirst($field).','."\n";
 
+                if ($this->configProvider->getFieldConfig($entityName, $field)->is('is_extend')) {
+                    $class->setMethod($this->generateClassMethod(
+                        'set'.ucfirst($field),
+                        '$this->__extend->set(\''.$field.'\', $'.$field.'); return $this;',
+                        array($field)
+                    ));
 
+                    $class->setMethod($this->generateClassMethod(
+                        'get'.ucfirst($field),
+                        'return $this->__extend->get(\''.$field.'\');'
+                    ));
+                }
+            }
+        }
 
-//    public function __proxy__toArray()
-//    { генерим все
-//        return array(
-//            'id'        => $this->getId(),
-//            'name'      => $this->getName(),
-//            'firstName' => $this->getFirstName(),
-//        );
-//    }
-//    public function setFirstName($firstName)
-//    { только естенд
-//        $this->__extend->set('firstName', $firstName);
-//
-//        return $this;
-//    }
-//    public function getFirstName()
-//    {
-//        return $this->__extend->get('firstName');
-//    }
+        $class
+            ->setMethod($this->generateClassMethod(
+                '__proxy__toArray',
+                'return array('.$toArray."\n".');'
+            ));
 
         $strategy = new DefaultGeneratorStrategy();
 

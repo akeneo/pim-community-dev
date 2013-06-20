@@ -93,7 +93,7 @@ class ExtendManager
             && $this->configProvider->getConfig($entityName)->is('is_extend')
         ) {
             /** TODO: generator */
-            //$this->checkEntityCache($this->configProvider->getClassName($entityName));
+            $this->checkEntityCache($this->configProvider->getClassName($entityName));
             //return true;
         }
 
