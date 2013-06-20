@@ -31,7 +31,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     /**
      * @var Product $entity
      *
-     * @ORM\ManyToOne(targetEntity="Product", inversedBy="values")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Model\ProductInterface", inversedBy="values")
      */
     protected $entity;
 
