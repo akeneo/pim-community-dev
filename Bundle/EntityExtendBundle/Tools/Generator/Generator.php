@@ -8,7 +8,7 @@ use CG\Generator\PhpMethod;
 use CG\Generator\PhpParameter;
 use CG\Generator\PhpProperty;
 use CG\Generator\Writer;
-use Oro\Bundle\EntityExtendBundle\Config\ExtendConfigProvider;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 class Generator
 {
@@ -18,7 +18,7 @@ class Generator
     protected $mode;
 
     /**
-     * @var ExtendConfigProvider
+     * @var ConfigProvider
      */
     protected $configProvider;
 
@@ -30,10 +30,10 @@ class Generator
 
 
     /**
-     * @param ExtendConfigProvider $configProvider
+     * @param ConfigProvider $configProvider
      * @param                      $mode
      */
-    public function __construct(ExtendConfigProvider $configProvider, $mode)
+    public function __construct(ConfigProvider $configProvider, $mode)
     {
         $this->mode           = $mode;
         $this->configProvider = $configProvider;
@@ -150,7 +150,8 @@ class Generator
         $toArray = '';
         if($fields) {
             foreach ($fields as $field => $options) {
-                if (1!=1) {
+
+                if ($this->configProvider->getFieldConfig($entityName, $field)->is('is_extend')) {
                     $toArray .= '    \''.$field.'\' => $this->'.$field.','."\n";
                 }
             }
@@ -170,6 +171,9 @@ class Generator
 
         return $strategy->generate($class);
     }
+
+    
+
 
     public function generateExtendClassName($entityName)
     {

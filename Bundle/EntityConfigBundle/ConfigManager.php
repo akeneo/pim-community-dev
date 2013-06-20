@@ -59,7 +59,7 @@ class ConfigManager
      * @param MetadataFactory $metadataFactory
      * @param ServiceProxy    $proxyEm
      */
-    public function __construct(MetadataFactory $metadataFactory, ServiceProxy $proxyEm)
+    public function __construct(MetadataFactory $metadataFactory, ServiceProxy $proxyEm, $scopes)
     {
         $this->metadataFactory = $metadataFactory;
         $this->proxyEm         = $proxyEm;
