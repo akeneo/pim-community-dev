@@ -66,7 +66,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\UIBundle\PimUIBundle(),
             new Pim\Bundle\ProductBundle\PimProductBundle(),
             new Pim\Bundle\TranslationBundle\PimTranslationBundle(),
-
+            new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'behat'))) {
