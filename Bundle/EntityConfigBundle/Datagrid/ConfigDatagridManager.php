@@ -21,15 +21,21 @@ class ConfigDatagridManager extends DatagridManager
      */
     protected $fieldsCollection;
 
+    protected $configManager;
+
+    public function __construct($configManager)
+    {
+        $this->configManager = $configManager;
+    }
+
     /**
      * {@inheritDoc}
      */
     protected function getProperties()
     {
         return array(
-            new UrlProperty('view_link', $this->router, 'oro_entityconfig_view', array('id')),
+            new UrlProperty('view_link', $this->router, 'oro_user_view', array('id')),
             new UrlProperty('update_link', $this->router, 'oro_user_update', array('id')),
-            new UrlProperty('delete_link', $this->router, 'oro_api_delete_user', array('id')),
         );
     }
 
@@ -38,9 +44,9 @@ class ConfigDatagridManager extends DatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $fieldId = new FieldDescription();
-        $fieldId->setName('Id');
-        $fieldId->setOptions(
+        $fieldObjectId = new FieldDescription();
+        $fieldObjectId->setName('Id');
+        $fieldObjectId->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_INTEGER,
                 'label'       => 'Id',
@@ -52,14 +58,14 @@ class ConfigDatagridManager extends DatagridManager
                 'show_filter' => true,
             )
         );
-        $fieldsCollection->add($fieldId);
+        $fieldsCollection->add($fieldObjectId);
 
-        $fieldName = new FieldDescription();
-        $fieldName->setName('className');
-        $fieldName->setOptions(
+        $fieldObjectName = new FieldDescription();
+        $fieldObjectName->setName('className');
+        $fieldObjectName->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => 'Parent Class Name',
+                'label'       => 'Class Name',
                 'field_name'  => 'className',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
@@ -68,7 +74,7 @@ class ConfigDatagridManager extends DatagridManager
                 'show_filter' => false,
             )
         );
-        $fieldsCollection->add($fieldName);
+        $fieldsCollection->add($fieldObjectName);
     }
 
     /**
@@ -76,18 +82,6 @@ class ConfigDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
-        $clickAction = array(
-            'name'         => 'rowClick',
-            'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
-            'options'      => array(
-                'label'         => 'View',
-                'link'          => 'view_link',
-                'route'         => 'oro_user_view',
-                'runOnRowClick' => true,
-            )
-        );
-
         $viewAction = array(
             'name'         => 'view',
             'type'         => ActionInterface::TYPE_REDIRECT,
@@ -110,23 +104,8 @@ class ConfigDatagridManager extends DatagridManager
             )
         );
 
-        $deleteAction = array(
-            'name'         => 'delete',
-            'type'         => ActionInterface::TYPE_DELETE,
-            'acl_resource' => 'root',
-            'options'      => array(
-                'label' => 'Delete',
-                'icon'  => 'trash',
-                'link'  => 'delete_link',
-            )
-        );
 
-        return array(
-            $clickAction,
-            $viewAction,
-//            $updateAction,
-//            $deleteAction
-        );
+        return array($viewAction, $updateAction);
     }
 
 }

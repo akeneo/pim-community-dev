@@ -10,18 +10,12 @@ use Oro\Bundle\EntityExtendBundle\Backend\BackendInterface;
 class ExtendRepository implements ObjectRepository
 {
     /**
-     * @var BackendInterface
-     */
-    protected $backend;
-
-    /**
      * @var EntityConfig
      */
     protected $config;
 
-    public function __construct(BackendInterface $backend, EntityConfig $config)
+    public function __construct(EntityConfig $config)
     {
-        $this->backend = $backend;
         $this->config  = $config;
     }
 

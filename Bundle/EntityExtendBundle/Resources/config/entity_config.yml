@@ -1,0 +1,42 @@
+oro_entity_config:
+    scope:                              extend
+
+    entity:
+        items:
+            is_extend:
+                required:               true
+                grid:
+                    type:               boolean
+                form:
+                    type:               choice
+                    options:
+                        choices:        ['No', 'Yes']
+                        readonly:       true
+                        required:       false
+                        label:          "Is Extend Entity"
+
+            extend_class:
+                required:               true
+
+            proxy_class:
+                required:               true
+
+    field:
+        grid_action:
+            -                           {"name":"Remove", "route":"oro_entity_extend_field_remove", "filter":"is_extend"}
+        layout_action:
+            -                           {"name":"Create", "route":"oro_entity_extend_field_create"}
+        items:
+            is_extend:
+                required:               true
+                grid:
+                    type:               boolean
+                form:
+                    type:               choice
+                    options:
+                        choices:        ['No', 'Yes']
+                        readonly:       true
+                        required:       false
+                        label:          "Is Extend Field"
+
+

@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Extend;
 
-use Oro\Bundle\EntityExtendBundle\DependencyInjection\Lazy\LazyEntityManager;
-use Oro\Bundle\EntityExtendBundle\Config\ExtendConfigProvider;
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
 use Oro\Bundle\EntityExtendBundle\Tools\Generator\Generator;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 class ExtendManager
 {
@@ -19,7 +19,7 @@ class ExtendManager
     protected $extendFactory;
 
     /**
-     * @var ExtendConfigProvider
+     * @var ConfigProvider
      */
     protected $configProvider;
 
@@ -29,11 +29,11 @@ class ExtendManager
     protected $generator;
 
     /**
-     * @var LazyEntityManager
+     * @var ServiceProxy
      */
     protected $lazyEm;
 
-    function __construct(LazyEntityManager $lazyEm, ExtendConfigProvider $configProvider)
+    function __construct(ServiceProxy $lazyEm, ConfigProvider $configProvider)
     {
         $this->lazyEm         = $lazyEm;
         $this->configProvider = $configProvider;
@@ -44,7 +44,7 @@ class ExtendManager
     }
 
     /**
-     * @return ExtendConfigProvider
+     * @return ConfigProvider
      */
     public function getConfigProvider()
     {
@@ -56,7 +56,7 @@ class ExtendManager
      */
     public function getEntityManager()
     {
-        return $this->lazyEm->getEntityManager();
+        return $this->lazyEm->getService();
     }
 
     /**
@@ -89,7 +89,9 @@ class ExtendManager
      */
     public function isExtend($entityName)
     {
-        if ($this->configProvider->isExtend($entityName)) {
+        if ($this->configProvider->hasConfig($entityName)
+            && $this->configProvider->getConfig($entityName)->is('is_extend')
+        ) {
             /** TODO: generator */
             //$this->checkEntityCache($this->configProvider->getClassName($entityName));
             return true;
@@ -104,7 +106,16 @@ class ExtendManager
      */
     public function getExtendClass($entityName)
     {
-        return $this->configProvider->getExtendClass($entityName);
+        return $this->configProvider->getConfig($entityName)->get('extend_class');
+    }
+
+    /**
+     * @param $entityName
+     * @return null|string
+     */
+    public function getProxyClass($entityName)
+    {
+        return $this->configProvider->getConfig($entityName)->get('proxy_class');
     }
 
     /**
