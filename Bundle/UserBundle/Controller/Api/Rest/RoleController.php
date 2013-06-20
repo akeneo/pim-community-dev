@@ -195,7 +195,12 @@ class RoleController extends RestController implements ClassResourceInterface
      *          {"name"="resource", "dataType"="string"},
      *      }
      * )
-     * @AclAncestor("oro_user_acl_save")
+     *  @Acl(
+     *      id="oro_user_role_acl",
+     *      name="Role ACL manipulation",
+     *      description="Role ACL manipulation",
+     *      parent="oro_user_acl"
+     * )
      */
     public function postAclAction($id, $resource)
     {
@@ -218,7 +223,7 @@ class RoleController extends RestController implements ClassResourceInterface
      *          {"name"="resource", "dataType"="string"},
      *      }
      * )
-     * @AclAncestor("oro_user_acl_save")
+     * @AclAncestor("oro_user_role_acl")
      */
     public function deleteAclAction($id, $resource)
     {
@@ -240,7 +245,7 @@ class RoleController extends RestController implements ClassResourceInterface
      *          {"name"="id", "dataType"="integer"}
      *      }
      * )
-     * @AclAncestor("oro_user_acl_save")
+     * @AclAncestor("oro_user_role_acl")
      */
     public function postAclArrayAction($id)
     {
@@ -266,7 +271,7 @@ class RoleController extends RestController implements ClassResourceInterface
      *          {"name"="id", "dataType"="integer"}
      *      }
      * )
-     * @AclAncestor("oro_user_acl_save")
+     * @AclAncestor("oro_user_role_acl")
      */
     public function deleteAclArrayAction($id)
     {
