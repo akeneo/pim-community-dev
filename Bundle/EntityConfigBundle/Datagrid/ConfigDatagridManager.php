@@ -27,7 +27,7 @@ class ConfigDatagridManager extends DatagridManager
     protected function getProperties()
     {
         return array(
-            new UrlProperty('view_link', $this->router, 'oro_user_view', array('id')),
+            new UrlProperty('view_link', $this->router, 'oro_entityconfig_view', array('id')),
             new UrlProperty('update_link', $this->router, 'oro_user_update', array('id')),
             new UrlProperty('delete_link', $this->router, 'oro_api_delete_user', array('id')),
         );
@@ -38,45 +38,9 @@ class ConfigDatagridManager extends DatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-
-
-//        $fieldVersion = new FieldDescription();
-//        $fieldVersion->setName('version');
-//        $fieldVersion->setOptions(
-//            array(
-//                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-//                'label'       => 'Version',
-//                'field_name'  => 'version',
-//                'filter_type' => FilterInterface::TYPE_NUMBER,
-//                'required'    => false,
-//                'sortable'    => true,
-//                'filterable'  => true,
-//                'show_filter' => false,
-//            )
-//        );
-//        $fieldsCollection->add($fieldVersion);
-
-//        $fieldObjectClass = new FieldDescription();
-//        $fieldObjectClass->setName('objectClass');
-//        $fieldObjectClass->setOptions(
-//            array(
-//                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
-//                'label'       => 'Entity Type',
-//                'field_name'  => 'objectClass',
-//                'filter_type' => FilterInterface::TYPE_CHOICE,
-//                'required'    => false,
-//                'sortable'    => true,
-//                'filterable'  => true,
-//                'show_filter' => true,
-//                'choices'     => $this->getObjectClassOptions(),
-//                'multiple'    => true,
-//            )
-//        );
-//        $fieldsCollection->add($fieldObjectClass);
-
-        $fieldObjectId = new FieldDescription();
-        $fieldObjectId->setName('Id');
-        $fieldObjectId->setOptions(
+        $fieldId = new FieldDescription();
+        $fieldId->setName('Id');
+        $fieldId->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_INTEGER,
                 'label'       => 'Id',
@@ -88,14 +52,14 @@ class ConfigDatagridManager extends DatagridManager
                 'show_filter' => true,
             )
         );
-        $fieldsCollection->add($fieldObjectId);
+        $fieldsCollection->add($fieldId);
 
-        $fieldObjectName = new FieldDescription();
-        $fieldObjectName->setName('className');
-        $fieldObjectName->setOptions(
+        $fieldName = new FieldDescription();
+        $fieldName->setName('className');
+        $fieldName->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => 'Class Name',
+                'label'       => 'Parent Class Name',
                 'field_name'  => 'className',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
@@ -104,30 +68,7 @@ class ConfigDatagridManager extends DatagridManager
                 'show_filter' => false,
             )
         );
-        $fieldsCollection->add($fieldObjectName);
-
-
-
-//        $fieldData = new FieldDescription();
-//        $fieldData->setName('data');
-//        $fieldData->setOptions(
-//            array(
-//                'type'        => FieldDescriptionInterface::TYPE_HTML,
-//                'label'       => 'Data',
-//                'field_name'  => 'data',
-//                'filter_type' => FilterInterface::TYPE_STRING,
-//                'required'    => false,
-//                'sortable'    => true,
-//                'filterable'  => true,
-//                'show_filter' => true,
-//            )
-//        );
-//        $templateDataProperty = new TwigTemplateProperty(
-//            $fieldData,
-//            'OroDataAuditBundle:Datagrid:Property/data.html.twig'
-//        );
-//        $fieldData->setProperty($templateDataProperty);
-//        $fieldsCollection->add($fieldData);
+        $fieldsCollection->add($fieldName);
     }
 
     /**
@@ -180,7 +121,12 @@ class ConfigDatagridManager extends DatagridManager
             )
         );
 
-        return array($clickAction, $viewAction, $updateAction, $deleteAction);
+        return array(
+            $clickAction,
+            $viewAction,
+//            $updateAction,
+//            $deleteAction
+        );
     }
 
 }

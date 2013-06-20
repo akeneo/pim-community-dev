@@ -3,6 +3,7 @@
 namespace Oro\Bundle\EntityConfigBundle\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\GridBundle\Datagrid\Datagrid;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -46,26 +47,13 @@ class ConfigController extends Controller
     }
 
     /**
-     * Finds and displays a User entity.
-     *
-     * @Route("/{id}/show", name="flex_show")
-     * @Template()
+     * @Route("/view/{id}", name="oro_entityconfig_view", requirements={"id"="\d+"})
+     * @Template
      */
-    public function showAction($id)
+    public function viewAction(EntityConfig $entity)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository(Config::ENTITY_NAME)->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-
         return array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
+            'entity' => $entity,
         );
     }
 }

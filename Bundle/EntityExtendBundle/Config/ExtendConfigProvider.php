@@ -3,9 +3,57 @@
 namespace Oro\Bundle\EntityExtendBundle\Config;
 
 use Oro\Bundle\EntityConfigBundle\Provider\AbstractConfigProvider;
+use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 
 class ExtendConfigProvider extends AbstractConfigProvider
 {
+    public $fields_config = array(
+        'config' => array(
+            'is_extend' => array(
+                'grid'=> array(
+                    'show' => true,
+                    'type' => FieldDescriptionInterface::TYPE_BOOLEAN,
+                    'is_sortable' => true,
+                    'is_filtrable' => false,
+                ),
+                'form_type' => array(
+                    'type' => 'choice',
+                    'choices' => array('no','yes'),
+                )
+            ),
+        ),
+        'grid_actions' => array(
+            'remove' => array(),
+        ),
+        'view_actions' => array(
+            'remove' => array(),
+        ),
+    );
+
+    public $entity_config = array(
+        'config' => array(
+            'is_extend' => array(
+                'grid'=> array(
+                    'show' => true,
+                    'type' => FieldDescriptionInterface::TYPE_BOOLEAN,
+                    'is_sortable' => true,
+                    'is_filtrable' => false,
+                ),
+                'form_type' => array(
+                    'type' => 'choice',
+                    'choices' => array('no','yes'),
+                )
+            ),
+        ),
+        'extend_class' => array(
+            'required' => true,
+        ),
+        'proxy_class' => array(
+            'required' => true,
+        ),
+    );
+
+
     public function isExtend($entityName)
     {
         if (!$this->hasConfig($entityName)) {
