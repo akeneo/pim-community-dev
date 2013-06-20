@@ -17,7 +17,7 @@ class AddressCollectionTypeSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->subscriber = new AddressCollectionTypeSubscriber('test');
+        $this->subscriber = new AddressCollectionTypeSubscriber('test', '\Oro\Bundle\AddressBundle\Entity\TypedAddress');
     }
 
     public function testGetSubscribedEvents()
@@ -158,12 +158,6 @@ class AddressCollectionTypeSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                array('key' => 'value'), array('key' => 'value')
-            ),
-            array(
-                array('key' => 'value', 'test' => array()), array('key' => 'value')
-            ),
-            array(
                 array('key' => 'value', 'test' => array(array(), array('k' => 'v'))),
                 array('key' => 'value', 'test' => array(array('k' => 'v', 'primary' => true)))
             ),
@@ -175,6 +169,38 @@ class AddressCollectionTypeSubscriberTest extends \PHPUnit_Framework_TestCase
                 array('key' => 'value', 'test' => array(array(array('k2' => 'v')), array('k' => 'v'))),
                 array('key' => 'value', 'test' => array(array(array('k2' => 'v'), 'primary' => true), array('k' => 'v')))
             ),
+        );
+    }
+
+    /**
+     * @dataProvider preBindNoResetDataProvider
+     * @param array $data
+     */
+    public function testPreBindNoReset($data)
+    {
+        $event = $this->getMockBuilder('Symfony\Component\Form\FormEvent')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $event->expects($this->once())
+            ->method('getData')
+            ->will($this->returnValue($data));
+        $event->expects($this->never())
+            ->method('setData');
+        $this->subscriber->preBind($event);
+    }
+
+    /**
+     * @return array
+     */
+    public function preBindNoResetDataProvider()
+    {
+        return array(
+            array(
+                array('key' => 'value')
+            ),
+            array(
+                array('key' => 'value', 'test' => array())
+            )
         );
     }
 }
