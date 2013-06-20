@@ -8,6 +8,7 @@ use CG\Generator\PhpMethod;
 use CG\Generator\PhpParameter;
 use CG\Generator\PhpProperty;
 use CG\Generator\Writer;
+
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 class Generator
@@ -27,8 +28,6 @@ class Generator
      */
     protected $writer = null;
 
-
-
     /**
      * @param ConfigProvider $configProvider
      * @param                      $mode
@@ -45,24 +44,21 @@ class Generator
     public function checkEntityCache($entityName)
     {
         $extendClass = $this->generateExtendClassName($entityName);
-
-//        var_dump($extendClass);
-//        print_r(array_keys(
-//            $this->configProvider->getConfig($entityName)->getFields()
-//        ));
-//        var_dump(
-//            $this->configProvider->getConfig($entityName)->getValues()
-//        );
-
-        if (!class_exists($extendClass)) {
+        $proxyClass  = $this->generateProxyClassName($entityName);
+        if (!class_exists($extendClass) || !class_exists($proxyClass)) {
 
             var_dump($this->mode);
             var_dump($entityName);
+
             var_dump($extendClass);
+            var_dump($proxyClass);
+
+            //$path = $this->getContainer()->getParameter('kernel.root_dir') . '/entities/';
+            //var_dump($path);
 
             echo '<pre>', print_r($this->generateDynamicClass($entityName, $extendClass), 1), '</pre>';
+            echo '<pre>', print_r($this->generateProxyClass($entityName, $proxyClass), 1), '</pre>';
 
-            //$this->path = $this->getContainer()->getParameter('kernel.root_dir') . '/entities/Extend/Entity/';
             //file_put_contents($this->getPath() . $this->getFilename($emd) . '.php', "<?php\n\n" . $strategy->generate($this->class));
             //file_put_contents($this->getPath() . $this->getFilename($emd) . '.orm.yml', Yaml::dump($this->classYml, 5));
 
@@ -127,7 +123,8 @@ class Generator
             ))
             ->setMethod($this->generateClassMethod(
                 'setParent',
-                '$this->parent = $parent;return $this;', array('parent')
+                '$this->parent = $parent;return $this;',
+                array('parent')
             ))
             ->setMethod($this->generateClassMethod(
                 'set',
@@ -155,10 +152,11 @@ class Generator
             }
         }
 
-        $class->setMethod($this->generateClassMethod(
-            '__toArray',
-            'return array('.$toArray."\n".');'
-        ));
+        $class
+            ->setMethod($this->generateClassMethod(
+                '__toArray',
+                'return array('.$toArray."\n".');'
+            ));
 
         $strategy = new DefaultGeneratorStrategy();
 
@@ -178,9 +176,44 @@ class Generator
 
         $class = PhpClass::create($this->generateClassName($entityName))
             ->setName($className)
-            ->setInterfaceNames(array('Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface'))
-            ->setProperty(PhpProperty::create('id')->setVisibility('protected'))
-            ->setProperty(PhpProperty::create('parent')->setVisibility('protected'));
+            ->setParentClassName($entityName)
+            ->setInterfaceNames(array('Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface'))
+            ->setProperty(PhpProperty::create('__proxy__extend')->setVisibility('protected'))
+
+            ->setMethod($this->generateClassMethod(
+                '__proxy__setExtend',
+                '$this->__proxy__extend = $extend;return $this;',
+                array('extend')
+
+            ))
+            ->setMethod($this->generateClassMethod(
+                '__proxy__fromArray',
+                'foreach($values as $key => $value){$this->set($key, $value);}',
+                array('values')
+            ))
+        ;
+
+
+
+
+//    public function __proxy__toArray()
+//    { генерим все
+//        return array(
+//            'id'        => $this->getId(),
+//            'name'      => $this->getName(),
+//            'firstName' => $this->getFirstName(),
+//        );
+//    }
+//    public function setFirstName($firstName)
+//    { только естенд
+//        $this->__extend->set('firstName', $firstName);
+//
+//        return $this;
+//    }
+//    public function getFirstName()
+//    {
+//        return $this->__extend->get('firstName');
+//    }
 
         $strategy = new DefaultGeneratorStrategy();
 
