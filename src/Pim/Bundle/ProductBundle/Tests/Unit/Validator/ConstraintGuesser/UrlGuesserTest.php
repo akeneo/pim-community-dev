@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Validator\ConstraintGuesser;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\ProductBundle\Validator\ConstraintGuesser\UrlGuesser;
 
 /**
@@ -22,29 +21,29 @@ class UrlGuesserTest extends ConstraintGuesserTest
         $this->assertInstanceOf('Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface', $this->target);
     }
 
-    public function testSupportVarcharAttribute()
+    public function testSupportAttribute()
     {
         $this->assertTrue($this->target->supportAttribute(
             $this->getAttributeMock(array(
-                'backendType' => AbstractAttributeType::BACKEND_TYPE_VARCHAR
+                'attributeType' => 'pim_product_text',
             ))
         ));
     }
 
-    public function testGuessMinMaxConstraint()
+    public function testGuessUrlConstraint()
     {
         $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'backendType'    => AbstractAttributeType::BACKEND_TYPE_VARCHAR,
+            'attributeType'  => 'pim_product_text',
             'validationRule' => 'url',
         )));
 
         $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\Url', $constraints);
     }
 
-    public function testDoNotGuessRangeConstraint()
+    public function testDoNotGuessUrlConstraint()
     {
         $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'backendType'    => AbstractAttributeType::BACKEND_TYPE_VARCHAR,
+            'attributeType'  => 'pim_product_text',
             'validationRule' => null,
         )));
 

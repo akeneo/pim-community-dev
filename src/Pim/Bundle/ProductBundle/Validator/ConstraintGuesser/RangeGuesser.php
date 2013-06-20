@@ -22,14 +22,12 @@ class RangeGuesser implements ConstraintGuesserInterface
     public function supportAttribute(AbstractAttribute $attribute)
     {
         return in_array(
-            $attribute->getBackendType(),
+            $attribute->getAttributeType(),
             array(
-                AbstractAttributeType::BACKEND_TYPE_INTEGER,
-                AbstractAttributeType::BACKEND_TYPE_METRIC,
-                AbstractAttributeType::BACKEND_TYPE_PRICE,
-                'prices',
-                AbstractAttributeType::BACKEND_TYPE_DATE,
-                AbstractAttributeType::BACKEND_TYPE_DATETIME,
+                'pim_product_price_collection',
+                'pim_product_metric',
+                'pim_product_number',
+                'pim_product_date',
             )
         );
     }
@@ -41,7 +39,7 @@ class RangeGuesser implements ConstraintGuesserInterface
     {
         $constraints = array();
 
-        if (in_array($attribute->getBackendType(), array(AbstractAttributeType::BACKEND_TYPE_DATE, AbstractAttributeType::BACKEND_TYPE_DATETIME,))) {
+        if ('pim_product_date' === $attribute->getAttributeType()) {
             $min = $attribute->getDateMin();
             $max = $attribute->getDateMax();
         } else {

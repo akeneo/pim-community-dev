@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Validator\ConstraintGuesser;
 
 use Pim\Bundle\ProductBundle\Validator\ConstraintGuesser\RangeGuesser;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -26,31 +25,25 @@ class RangeGuesserTest extends ConstraintGuesserTest
     {
         $this->assertTrue($this->target->supportAttribute(
             $this->getAttributeMock(array(
-                'backendType' => AbstractAttributeType::BACKEND_TYPE_INTEGER
+                'attributeType' => 'pim_product_price_collection',
             ))
         ));
 
         $this->assertTrue($this->target->supportAttribute(
             $this->getAttributeMock(array(
-                'backendType' => AbstractAttributeType::BACKEND_TYPE_METRIC
+                'attributeType' => 'pim_product_metric',
             ))
         ));
 
         $this->assertTrue($this->target->supportAttribute(
             $this->getAttributeMock(array(
-                'backendType' => AbstractAttributeType::BACKEND_TYPE_PRICE
+                'attributeType' => 'pim_product_number',
             ))
         ));
 
         $this->assertTrue($this->target->supportAttribute(
             $this->getAttributeMock(array(
-                'backendType' => AbstractAttributeType::BACKEND_TYPE_DATE
-            ))
-        ));
-
-        $this->assertTrue($this->target->supportAttribute(
-            $this->getAttributeMock(array(
-                'backendType' => AbstractAttributeType::BACKEND_TYPE_DATETIME
+                'attributeType' => 'pim_product_date',
             ))
         ));
     }
@@ -58,8 +51,8 @@ class RangeGuesserTest extends ConstraintGuesserTest
     public function testGuessMinConstraint()
     {
         $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'backendType' => AbstractAttributeType::BACKEND_TYPE_INTEGER,
-            'numberMin'   => 100,
+            'attributeType' => 'pim_product_number',
+            'numberMin'     => 100,
         )));
 
         $this->assertContainsInstanceOf('Pim\Bundle\ProductBundle\Validator\Constraints\Range', $constraints);
@@ -71,7 +64,7 @@ class RangeGuesserTest extends ConstraintGuesserTest
     public function testGuessNegativeNotAllowedConstraint()
     {
         $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'backendType'     => AbstractAttributeType::BACKEND_TYPE_INTEGER,
+            'attributeType'   => 'pim_product_number',
             'negativeAllowed' => false,
             'numberMin'       => 100,
         )));
@@ -85,8 +78,8 @@ class RangeGuesserTest extends ConstraintGuesserTest
     public function testGuessMaxConstraint()
     {
         $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'backendType' => AbstractAttributeType::BACKEND_TYPE_INTEGER,
-            'numberMax'   => 300,
+            'attributeType' => 'pim_product_number',
+            'numberMax'     => 300,
         )));
 
         $this->assertContainsInstanceOf('Pim\Bundle\ProductBundle\Validator\Constraints\Range', $constraints);
@@ -98,9 +91,9 @@ class RangeGuesserTest extends ConstraintGuesserTest
     public function testGuessMinMaxConstraint()
     {
         $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'backendType' => AbstractAttributeType::BACKEND_TYPE_INTEGER,
-            'numberMin'   => 100,
-            'numberMax'   => 300,
+            'attributeType' => 'pim_product_number',
+            'numberMin'     => 100,
+            'numberMax'     => 300,
         )));
 
         $this->assertContainsInstanceOf('Pim\Bundle\ProductBundle\Validator\Constraints\Range', $constraints);
@@ -113,7 +106,7 @@ class RangeGuesserTest extends ConstraintGuesserTest
     public function testDoNotGuessRangeConstraint()
     {
         $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'backendType' => AbstractAttributeType::BACKEND_TYPE_INTEGER,
+            'attributeType' => 'pim_product_number',
         )));
 
         $this->assertEquals(0, count($constraints));
@@ -122,13 +115,41 @@ class RangeGuesserTest extends ConstraintGuesserTest
     public function testGuessMinDateConstraint()
     {
         $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'backendType' => AbstractAttributeType::BACKEND_TYPE_DATE,
-            'dateMin'     => '2012-01-01',
+            'attributeType' => 'pim_product_date',
+            'dateMin'       => '2012-01-01',
         )));
 
         $this->assertContainsInstanceOf('Pim\Bundle\ProductBundle\Validator\Constraints\Range', $constraints);
         $this->assertConstraintsConfiguration('Pim\Bundle\ProductBundle\Validator\Constraints\Range', $constraints, array(
             'min' => '2012-01-01',
+        ));
+    }
+
+    public function testGuessMaxDateConstraint()
+    {
+        $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
+            'attributeType' => 'pim_product_date',
+            'dateMax'       => '2013-05-14',
+        )));
+
+        $this->assertContainsInstanceOf('Pim\Bundle\ProductBundle\Validator\Constraints\Range', $constraints);
+        $this->assertConstraintsConfiguration('Pim\Bundle\ProductBundle\Validator\Constraints\Range', $constraints, array(
+            'max' => '2013-05-14',
+        ));
+    }
+
+    public function testGuessMinMaxDateConstraint()
+    {
+        $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
+            'attributeType' => 'pim_product_date',
+            'dateMin'       => '2012-01-01',
+            'dateMax'       => '2013-05-14',
+        )));
+
+        $this->assertContainsInstanceOf('Pim\Bundle\ProductBundle\Validator\Constraints\Range', $constraints);
+        $this->assertConstraintsConfiguration('Pim\Bundle\ProductBundle\Validator\Constraints\Range', $constraints, array(
+            'min' => '2012-01-01',
+            'max' => '2013-05-14',
         ));
     }
 }

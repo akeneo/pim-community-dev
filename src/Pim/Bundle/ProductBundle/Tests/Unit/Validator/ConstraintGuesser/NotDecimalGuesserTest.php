@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Validator\ConstraintGuesser;
 
 use Pim\Bundle\ProductBundle\Validator\ConstraintGuesser\NotDecimalGuesser;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -26,37 +25,37 @@ class NotDecimalGuesserTest extends ConstraintGuesserTest
     {
         $this->assertTrue($this->target->supportAttribute(
             $this->getAttributeMock(array(
-                'backendType' => AbstractAttributeType::BACKEND_TYPE_INTEGER
+                'attributeType' => 'pim_product_price_collection',
             ))
         ));
 
         $this->assertTrue($this->target->supportAttribute(
             $this->getAttributeMock(array(
-                'backendType' => AbstractAttributeType::BACKEND_TYPE_METRIC
+                'attributeType' => 'pim_product_metric',
             ))
         ));
 
         $this->assertTrue($this->target->supportAttribute(
             $this->getAttributeMock(array(
-                'backendType' => AbstractAttributeType::BACKEND_TYPE_PRICE
+                'attributeType' => 'pim_product_number',
             ))
         ));
     }
 
-    public function testGuessTypeConstraint()
+    public function testGuessNotDecimalConstraint()
     {
         $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'backendType'     => AbstractAttributeType::BACKEND_TYPE_INTEGER,
+            'attributeType'   => 'pim_product_number',
             'decimalsAllowed' => false,
         )));
 
         $this->assertContainsInstanceOf('Pim\Bundle\ProductBundle\Validator\Constraints\NotDecimal', $constraints);
     }
 
-    public function testDoNotGuessTypeConstraint()
+    public function testDoNotGuessNotDecimalConstraint()
     {
         $this->assertEquals(0, count($this->target->guessConstraints($this->getAttributeMock(array(
-            'backendType'     => AbstractAttributeType::BACKEND_TYPE_INTEGER,
+            'attributeType'   => 'pim_product_number',
             'decimalsAllowed' => true,
         )))));
     }

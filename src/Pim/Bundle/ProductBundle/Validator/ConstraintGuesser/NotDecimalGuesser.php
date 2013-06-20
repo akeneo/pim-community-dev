@@ -22,11 +22,11 @@ class NotDecimalGuesser implements ConstraintGuesserInterface
     public function supportAttribute(AbstractAttribute $attribute)
     {
         return in_array(
-            $attribute->getBackendType(),
+            $attribute->getAttributeType(),
             array(
-                AbstractAttributeType::BACKEND_TYPE_INTEGER,
-                AbstractAttributeType::BACKEND_TYPE_METRIC,
-                AbstractAttributeType::BACKEND_TYPE_PRICE,
+                'pim_product_price_collection',
+                'pim_product_metric',
+                'pim_product_number',
             )
         );
     }

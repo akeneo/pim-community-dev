@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Validator\ConstraintGuesser;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\ProductBundle\Validator\ConstraintGuesser\LengthGuesser;
 
 /**
@@ -22,25 +21,25 @@ class LengthGuesserTest extends ConstraintGuesserTest
         $this->assertInstanceOf('Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface', $this->target);
     }
 
-    public function testSupportTextAndVarcharAttribute()
+    public function testSupportAttribute()
     {
         $this->assertTrue($this->target->supportAttribute(
             $this->getAttributeMock(array(
-                'backendType' => AbstractAttributeType::BACKEND_TYPE_TEXT
+                'attributeType' => 'pim_product_text',
             ))
         ));
 
         $this->assertTrue($this->target->supportAttribute(
             $this->getAttributeMock(array(
-                'backendType' => AbstractAttributeType::BACKEND_TYPE_VARCHAR
+                'attributeType' => 'pim_product_textarea',
             ))
         ));
     }
 
-    public function testGuessMinMaxConstraint()
+    public function testGuessLengthConstraint()
     {
         $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'backendType'   => AbstractAttributeType::BACKEND_TYPE_TEXT,
+            'attributeType' => 'pim_product_text',
             'maxCharacters' => 128,
         )));
 
@@ -50,10 +49,10 @@ class LengthGuesserTest extends ConstraintGuesserTest
         ));
     }
 
-    public function testDoNotGuessRangeConstraint()
+    public function testDoNotGuessLengthConstraint()
     {
         $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'backendType' => AbstractAttributeType::BACKEND_TYPE_VARCHAR,
+            'attributeType' => 'pim_product_text',
         )));
 
         $this->assertEquals(0, count($constraints));

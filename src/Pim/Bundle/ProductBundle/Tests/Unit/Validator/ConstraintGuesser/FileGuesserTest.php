@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Validator\ConstraintGuesser;
 
 use Pim\Bundle\ProductBundle\Validator\ConstraintGuesser\FileGuesser;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -22,11 +21,17 @@ class FileGuesserTest extends ConstraintGuesserTest
         $this->assertInstanceOf('Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface', $this->target);
     }
 
-    public function testSupportFileAttribute()
+    public function testSupportAttribute()
     {
         $this->assertTrue($this->target->supportAttribute(
             $this->getAttributeMock(array(
-                'backendType' => AbstractAttributeType::BACKEND_TYPE_MEDIA
+                'attributeType' => 'pim_product_file',
+            ))
+        ));
+
+        $this->assertTrue($this->target->supportAttribute(
+            $this->getAttributeMock(array(
+                'attributeType' => 'pim_product_image',
             ))
         ));
     }
@@ -34,8 +39,8 @@ class FileGuesserTest extends ConstraintGuesserTest
     public function testGuessFileMaxSizeConstraint()
     {
         $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'backendType' => AbstractAttributeType::BACKEND_TYPE_MEDIA,
-            'maxFileSize' => 5000,
+            'attributeType' => 'pim_product_file',
+            'maxFileSize'   => 5000,
         )));
 
         $this->assertContainsInstanceOf('Pim\Bundle\ProductBundle\Validator\Constraints\File', $constraints);
@@ -47,7 +52,7 @@ class FileGuesserTest extends ConstraintGuesserTest
     public function testGuessAllowedExtensionConstraint()
     {
         $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'backendType'           => AbstractAttributeType::BACKEND_TYPE_MEDIA,
+            'attributeType'         => 'pim_product_file',
             'allowedFileExtensions' => array('gif', 'jpg'),
         )));
 
@@ -60,7 +65,7 @@ class FileGuesserTest extends ConstraintGuesserTest
     public function testGuessMultipleFileConstraints()
     {
         $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'backendType'           => AbstractAttributeType::BACKEND_TYPE_MEDIA,
+            'attributeType'         => 'pim_product_file',
             'maxFileSize'           => 5000,
             'allowedFileExtensions' => array('gif', 'jpg'),
         )));

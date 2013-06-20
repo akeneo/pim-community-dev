@@ -21,7 +21,13 @@ class LengthGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AbstractAttribute $attribute)
     {
-        return in_array($attribute->getBackendType(), array(AbstractAttributeType::BACKEND_TYPE_TEXT, AbstractAttributeType::BACKEND_TYPE_VARCHAR,));
+        return in_array(
+            $attribute->getAttributeType(),
+            array(
+                'pim_product_text',
+                'pim_product_textarea',
+            )
+        );
     }
 
     /**

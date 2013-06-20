@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Validator\ConstraintGuesser;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\ProductBundle\Validator\ConstraintGuesser\RegexGuesser;
 
 /**
@@ -22,19 +21,19 @@ class RegexGuesserTest extends ConstraintGuesserTest
         $this->assertInstanceOf('Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface', $this->target);
     }
 
-    public function testSupportVarcharAttribute()
+    public function testSupportAttribute()
     {
         $this->assertTrue($this->target->supportAttribute(
             $this->getAttributeMock(array(
-                'backendType' => AbstractAttributeType::BACKEND_TYPE_VARCHAR
+                'attributeType' => 'pim_product_text',
             ))
         ));
     }
 
-    public function testGuessMinMaxConstraint()
+    public function testGuessRegexConstraint()
     {
         $constraints = $this->target->guessConstraints($this->getAttributeMock(array(
-            'backendType'      => AbstractAttributeType::BACKEND_TYPE_VARCHAR,
+            'attributeType'    => 'pim_product_text',
             'validationRule'   => 'regexp',
             'validationRegexp' => '/foo/',
         )));
@@ -45,15 +44,15 @@ class RegexGuesserTest extends ConstraintGuesserTest
         ));
     }
 
-    public function testDoNotGuessRangeConstraint()
+    public function testDoNotGuessRegexConstraint()
     {
         $this->assertEquals(0, count($this->target->guessConstraints($this->getAttributeMock(array(
-            'backendType'    => AbstractAttributeType::BACKEND_TYPE_VARCHAR,
+            'attributeType'  => 'pim_product_text',
             'validationRule' => 'regexp',
         )))));
 
         $this->assertEquals(0, count($this->target->guessConstraints($this->getAttributeMock(array(
-            'backendType'    => AbstractAttributeType::BACKEND_TYPE_VARCHAR,
+            'attributeType'  => 'pim_product_text',
             'validationRule' => null,
         )))));
     }

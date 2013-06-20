@@ -21,7 +21,7 @@ class EmailGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AbstractAttribute $attribute)
     {
-        return AbstractAttributeType::BACKEND_TYPE_VARCHAR === $attribute->getBackendType();
+        return 'pim_product_text' === $attribute->getAttributeType();
     }
 
     /**

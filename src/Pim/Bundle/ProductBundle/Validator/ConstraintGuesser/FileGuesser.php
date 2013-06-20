@@ -21,7 +21,13 @@ class FileGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AbstractAttribute $attribute)
     {
-        return AbstractAttributeType::BACKEND_TYPE_MEDIA === $attribute->getBackendType();
+        return in_array(
+            $attribute->getAttributeType(),
+            array(
+                'pim_product_file',
+                'pim_product_image',
+            )
+        );
     }
 
     /**
