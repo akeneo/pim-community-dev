@@ -37,7 +37,6 @@ class ExtendManager
     {
         $this->lazyEm         = $lazyEm;
         $this->configProvider = $configProvider;
-
         $this->proxyFactory  = new ProxyObjectFactory($this);
         $this->extendFactory = new ExtendObjectFactory($this);
         $this->generator     = new Generator($configProvider, $backend, $entityCacheDir);

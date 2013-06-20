@@ -23,7 +23,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('backend')
                     ->isRequired()
                     ->validate()
-                        ->ifNotInArray(array('dynamic', 'eav'))
+                        ->ifNotInArray(array('Dynamic', 'EAV'))
                         ->thenInvalid('Invalid mode value "%s"')
                     ->end()
                 ->end()
