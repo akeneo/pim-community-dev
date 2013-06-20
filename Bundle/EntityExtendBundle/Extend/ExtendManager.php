@@ -90,8 +90,8 @@ class ExtendManager
     public function isExtend($entityName)
     {
         if ($this->configProvider->isExtend($entityName)) {
+            /** TODO: generator */
             //$this->checkEntityCache($this->configProvider->getClassName($entityName));
-
             return true;
         }
 
