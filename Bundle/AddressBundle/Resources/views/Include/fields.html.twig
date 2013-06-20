@@ -63,3 +63,51 @@
     {{ form_row(form.country) }}
     {{ form_row(form.postalCode) }}
 {%  endblock oro_address_widget %}
+
+{% macro address_collection_prototype(widget) %}
+    {% if widget.get('prototype') %}
+        {% set form = widget.get('prototype') %}
+        {% set name = widget.get('prototype').get('name') %}
+    {% else %}
+        {% set form = widget %}
+        {% set name = widget.get('full_name') %}
+    {% endif %}
+    <div data-content="{{ name }}">
+        <div class="row-oro oro-multiselect-holder">
+            {{ form_errors(form) }}
+            {{ form_row(form.id) }}
+            {{ form_row(form.type) }}
+            {{ form_row(form.primary) }}
+            {{ block('oro_address_widget') }}
+            <button class="removeRow btn btn-action btn-link" type="button" data-related="{{ name }}">×</button>
+        </div>
+    </div>
+{% endmacro %}
+
+{% block oro_address_collection_widget %}
+    {% spaceless %}
+        <div class="row-oro">
+            <div class="collection-fields-list" id="{{ id }}_collection" data-prototype="{{ _self.address_collection_prototype(form)|escape }}">
+                {% for field in form.children %}
+                    {{ _self.address_collection_prototype(field) }}
+                {% endfor %}
+            </div>
+            <a class="btn add-list-item" href="javascript: void(0);"><i class="icon-plus"></i>{{ 'Add'|trans }}</a>
+        </div>
+        <script type="text/javascript">
+            /**
+             * Allow only 1 primary checkbox to be checked.
+             * This logic convert checkbox logic to logic used in radiobutton
+             */
+            $(function() {
+                var container = $('#{{ id }}_collection');
+                container.on('click', '[name$="[primary]"]', function() {
+                    container.find('[name$="[primary]"]').each(function (idx, el) {
+                        el.checked = false;
+                    });
+                    this.checked = true;
+                });
+            });
+        </script>
+    {% endspaceless %}
+{%  endblock oro_address_collection_widget %}

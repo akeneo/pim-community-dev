@@ -292,6 +292,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($pager, $datagrid->getPager());
         $this->assertEquals($page, $pager->getPage());
         $this->assertEquals($perPage, $pager->getMaxPerPage());
+        $this->assertAttributeEquals(true, 'pagerApplied', $datagrid);
     }
 
     public function testGetQuery()

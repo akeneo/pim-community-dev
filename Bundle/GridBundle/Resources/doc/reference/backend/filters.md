@@ -17,6 +17,8 @@ Flexible filters are used to apply filters to flexible attributes in flexible en
 * **Filter \ ORM \ NumberFilter** - ORM filter for number values;
 * **Filter \ ORM \ StringFilter** - ORM filter for string values;
 * **Filter \ ORM \ ChoiceFilter** - ORM filter which allows to use choices (single or multiple);
+* **Filter \ ORM \ EntityFilter** - ORM choices filter based on Symfony entity field type and allows to use
+entity repository or query builder as choices data source;
 * **Filter \ ORM \ BooleanFilter** - ORM filter which allows to filter data as boolean value;
 * **Filter \ ORM \ AbstractDateFilter** - abstract filter implementation to work with date/datetime values;
 * **Filter \ ORM \ DateRangeFilter** - ORM filter for date and date range values;
@@ -85,6 +87,12 @@ services:
         arguments: ["@translator"]
         tags:
             - { name: oro_grid.filter.type, alias: oro_grid_orm_boolean }
+
+    oro_grid.orm.filter.type.entity:
+        class:     Oro\Bundle\GridBundle\Filter\ORM\EntityFilter
+        arguments: ["@translator"]
+        tags:
+            - { name: oro_grid.filter.type, alias: oro_grid_orm_entity }
 
     oro_grid.orm.filter.type.flexible_number:
         class:     Oro\Bundle\GridBundle\Filter\ORM\Flexible\FlexibleNumberFilter

@@ -56,11 +56,12 @@ class RestDataAuditApiTest extends WebTestCase
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
         $result = ToolsAPI::jsonToArray($result->getContent());
+
         return $result;
     }
 
     /**
-     * @param array $response
+     * @param  array $response
      * @return array
      * @depends testGetAudits
      */
@@ -70,6 +71,7 @@ class RestDataAuditApiTest extends WebTestCase
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
         $result = ToolsAPI::jsonToArray($result->getContent());
+
         return $result;
     }
 

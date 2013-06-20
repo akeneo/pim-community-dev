@@ -26,6 +26,7 @@ use Oro\Bundle\EntityExtendBundle\Metadata\Annotation\Extend;
 use DateTime;
 
 /**
+ * @SuppressWarnings(PHPMD)
  * @ORM\Entity(repositoryClass="Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository")
  * @ORM\Table(name="oro_user")
  * @ORM\HasLifecycleCallbacks()

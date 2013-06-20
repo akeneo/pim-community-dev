@@ -112,9 +112,6 @@ class TitleService implements TitleServiceInterface
                 $prefix = '';
                 $suffix = '';
             }
-
-
-
         }
 
         if (is_null($title)) {
@@ -134,15 +131,7 @@ class TitleService implements TitleServiceInterface
 
         $translatedTemplate = $trans->trans($title, $params);
 
-        if (!is_null($suffix)) {
-            $suffix = $trans->trans($suffix, $params);
-        }
-
-        if (!is_null($prefix)) {
-            $prefix = $trans->trans($prefix, $params);
-        }
-
-        $translatedTemplate = $prefix . $translatedTemplate . $suffix;
+        $translatedTemplate = $trans->trans($prefix, $params) . $translatedTemplate . $trans->trans($suffix, $params);
 
         return $translatedTemplate;
     }

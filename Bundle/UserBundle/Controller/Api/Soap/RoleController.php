@@ -111,7 +111,7 @@ class RoleController extends SoapController
      * @Soap\Param("id", phpType="int")
      * @Soap\Param("resource", phpType="string")
      * @Soap\Result(phpType="string")
-     * @AclAncestor("oro_user_acl_save")
+     * @AclAncestor("oro_user_role_acl")
      */
     public function postAclAction($id, $resource)
     {
@@ -131,7 +131,7 @@ class RoleController extends SoapController
      * @Soap\Param("id", phpType="int")
      * @Soap\Param("resource", phpType="string")
      * @Soap\Result(phpType="string")
-     * @AclAncestor("oro_user_acl_save")
+     * @AclAncestor("oro_user_role_acl")
      */
     public function deleteAclAction($id, $resource)
     {
@@ -151,7 +151,7 @@ class RoleController extends SoapController
      * @Soap\Param("id", phpType="int")
      * @Soap\Param("resources", phpType="string[]")
      * @Soap\Result(phpType="string")
-     * @AclAncestor("oro_user_acl_save")
+     * @AclAncestor("oro_user_role_acl")
      */
     public function addAclsToRoleAction($id, $resources)
     {
@@ -171,7 +171,7 @@ class RoleController extends SoapController
      * @Soap\Param("id", phpType="int")
      * @Soap\Param("resources", phpType="string[]")
      * @Soap\Result(phpType="string")
-     * @AclAncestor("oro_user_acl_save")
+     * @AclAncestor("oro_user_role_acl")
      */
     public function deleteAclsAction($id, $resources)
     {

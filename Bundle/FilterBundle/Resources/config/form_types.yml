@@ -50,3 +50,9 @@ services:
         arguments: ["@translator"]
         tags:
             - { name: form.type, alias: oro_type_boolean_filter }
+
+    oro_filter.form.type.filter.entity:
+        class:     Oro\Bundle\FilterBundle\Form\Type\Filter\EntityFilterType
+        arguments: ["@translator"]
+        tags:
+            - { name: form.type, alias: oro_type_entity_filter }

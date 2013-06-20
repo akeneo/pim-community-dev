@@ -6,7 +6,7 @@ use Oro\Bundle\DataAuditBundle\Entity\AuditData;
 
 class AuditDataTest extends \PHPUnit_Framework_TestCase
 {
-    public function test__construct()
+    public function testConstruct()
     {
         $auditData = new AuditData('key', 'value');
 

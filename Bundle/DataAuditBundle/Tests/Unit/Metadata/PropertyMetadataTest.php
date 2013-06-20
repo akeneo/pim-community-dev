@@ -4,7 +4,7 @@ namespace Oro\Bundle\DataAuditBundle\Tests\Unit\Metadata;
 
 use Oro\Bundle\DataAuditBundle\Metadata\PropertyMetadata;
 
-class PropertyMetadataTest  extends \PHPUnit_Framework_TestCase
+class PropertyMetadataTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var PropertyMetadata

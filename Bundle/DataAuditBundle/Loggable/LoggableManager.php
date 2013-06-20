@@ -18,6 +18,10 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
 
+/**
+ * @SuppressWarnings(PHPMD)
+ * TODO: This class should be refactored  (BAP-978)
+*/
 class LoggableManager
 {
     /**
@@ -139,9 +143,8 @@ class LoggableManager
         $this->em = $em;
         $uow      = $em->getUnitOfWork();
 
-        foreach (array_merge($uow->getScheduledCollectionUpdates(), $uow->getScheduledCollectionDeletions())
-                 as $collection
-        ) {
+        $collections = array_merge($uow->getScheduledCollectionUpdates(), $uow->getScheduledCollectionDeletions());
+        foreach ($collections as $collection) {
             $this->calculateCollectionData($collection);
         }
 

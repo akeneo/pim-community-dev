@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\AddressBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Type;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
@@ -386,6 +387,27 @@ class AddressBase extends AbstractEntityFlexible
             $this->getPostalCode(),
         );
 
-        return implode(' ', $data);
+        $str = implode(' ', $data);
+        $check = trim(str_replace(',', '', $str));
+        return empty($check) ? '' : $str;
+    }
+
+    /**
+     * Check if entity is empty.
+     *
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        foreach ($this as $val) {
+            if ($val instanceof Collection) {
+                if (!$val->isEmpty()) {
+                    return false;
+                }
+            } elseif (!empty($val)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

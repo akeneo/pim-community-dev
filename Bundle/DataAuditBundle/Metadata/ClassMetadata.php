@@ -6,5 +6,4 @@ use Metadata\ClassMetadata as BaseClassMetadata;
 
 class ClassMetadata extends BaseClassMetadata
 {
-
 }

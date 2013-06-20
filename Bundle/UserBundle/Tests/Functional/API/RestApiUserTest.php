@@ -102,7 +102,7 @@ class RestApiUserTest extends WebTestCase
         $requestGroup = array(
             "group" => array (
                 "name" => 'new_group_' . mt_rand(),
-                "roles" => array(1)
+                "roles" => array(2)
             )
         );
         $this->client->request('POST', 'http://localhost/api/rest/latest/group', $requestGroup);
@@ -139,7 +139,7 @@ class RestApiUserTest extends WebTestCase
         $requestUpdate = array(
             "group" => array (
                 "name" => 'new_group_' . mt_rand(),
-                "roles" => array(1)
+                "roles" => array(3)
             )
         );
         $this->client->request('PUT', 'http://localhost/api/rest/latest/groups/' . $groupId, $requestUpdate);

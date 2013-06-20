@@ -102,17 +102,17 @@ class Group
     }
 
     /**
-     * Pass a string, get the desired Role object or null
+     * Get role by string
      *
      * @param  string    $roleName Role name
      * @return Role|null
      */
     public function getRole($roleName)
     {
-        /** @var $item Role */
-        foreach ($this->getRoles() as $item) {
-            if ($roleName == $item->getRole()) {
-                return $item;
+        /** @var $role Role */
+        foreach ($this->getRoles() as $role) {
+            if ($roleName == $role->getRole()) {
+                return $role;
             }
         }
 

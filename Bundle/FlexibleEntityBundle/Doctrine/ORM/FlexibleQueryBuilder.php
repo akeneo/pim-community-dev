@@ -153,6 +153,9 @@ class FlexibleQueryBuilder extends QueryBuilder
      *
      * @return string
      * @throws FlexibleQueryException
+     *
+     * @SuppressWarnings(PHPMD)
+     * TODO: This method should be refactored (BAP-974).
      */
     public function prepareCriteriaCondition($field, $operator, $value)
     {
