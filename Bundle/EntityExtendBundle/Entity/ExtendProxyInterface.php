@@ -4,7 +4,9 @@ namespace Oro\Bundle\EntityExtendBundle\Entity;
 
 interface ExtendProxyInterface
 {
-    public function __fromArray(array $values);
+    public function __proxy__setExtend($extend);
 
-    public function __toArray();
+    public function __proxy__toArray();
+
+    public function __proxy__fromArray(array $values);
 }
