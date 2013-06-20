@@ -3,6 +3,7 @@
 namespace Oro\Bundle\AddressBundle\Tests\Entity;
 
 use Oro\Bundle\AddressBundle\Entity\Country;
+use Oro\Bundle\AddressBundle\Entity\Region;
 
 class CountryTest extends \PHPUnit_Framework_TestCase
 {
@@ -12,7 +13,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
      */
     public function testSettersAndGetters($property)
     {
-        $obj = new Country();
+        $obj = new Country('iso2code');
         $value = 'testValue';
 
         call_user_func_array(array($obj, 'set' . ucfirst($property)), array($value));
@@ -21,11 +22,9 @@ class CountryTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructorData()
     {
-        $obj = new Country('name', 'iso2Code', 'iso3Code');
+        $obj = new Country('iso2Code');
 
-        $this->assertEquals('name', $obj->getName());
         $this->assertEquals('iso2Code', $obj->getIso2Code());
-        $this->assertEquals('iso3Code', $obj->getIso3Code());
     }
 
     /**
@@ -37,35 +36,55 @@ class CountryTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array('name'),
-            array('iso2code'),
             array('iso3code'),
             array('regions'),
-        );
-    }
-
-    /**
-     * @dataProvider regionsDataProvider
-     * @param array $regions
-     * @param bool $expected
-     */
-    public function testHasRegions($regions, $expected)
-    {
-        $obj = new Country('name', 'iso2Code', 'iso3Code');
-        $obj->setRegions($regions);
-        $this->assertEquals($expected, $obj->hasRegions());
-    }
-
-    public function regionsDataProvider()
-    {
-        return array(
-            array(null, false),
-            array(array('AL'), true)
+            array('locale'),
         );
     }
 
     public function testToString()
     {
-        $obj = new Country('name', 'iso2Code', 'iso3Code');
+        $obj = new Country('iso2Code');
+        $obj->setName('name');
         $this->assertEquals('name', $obj->__toString());
+    }
+
+    public function testAddRegion()
+    {
+        $country = new Country('iso2Code');
+        $region = new Region('combinedCode');
+
+        $this->assertEmpty($country->getRegions()->getValues());
+
+        $country->addRegion($region);
+
+        $this->assertEquals(array($region), $country->getRegions()->getValues());
+        $this->assertEquals($country, $region->getCountry());
+    }
+
+    public function testRemoveRegion()
+    {
+        $country = new Country('iso2Code');
+        $region = new Region('combinedCode');
+        $country->addRegion($region);
+
+        $this->assertNotEmpty($country->getRegions()->getValues());
+
+        $country->removeRegion($region);
+
+        $this->assertEmpty($country->getRegions()->getValues());
+        $this->assertNull($region->getCountry());
+    }
+
+    public function testHasRegions()
+    {
+        $country = new Country('iso2Code');
+        $region = new Region('combinedCode');
+
+        $this->assertFalse($country->hasRegions());
+
+        $country->addRegion($region);
+
+        $this->assertTrue($country->hasRegions());
     }
 }
