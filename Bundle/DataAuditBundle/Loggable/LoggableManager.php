@@ -245,6 +245,10 @@ class LoggableManager
      */
     protected function createLogEntity($action, $entity)
     {
+        if (!$this->username) {
+            return;
+        }
+
         /** @var User $user */
         $user = $this->em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $this->username));
 
