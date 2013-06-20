@@ -132,6 +132,9 @@ class ProductAttributeHandler
                 }
             }
         }
+
+        $this->attTypeManager->prepareBackendProperties($entity);
+
         $this->manager->persist($entity);
         $this->manager->flush();
     }

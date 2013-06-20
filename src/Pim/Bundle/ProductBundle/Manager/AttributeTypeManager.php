@@ -120,4 +120,21 @@ class AttributeTypeManager
 
         return $choice;
     }
+
+    /**
+     * Make sure the ProductAttribute entity has the right backend properties
+     *
+     * @param ProductAttribute $attribute
+     *
+     * @return ProductAttribute $attribute
+     */
+    public function prepareBackendProperties(ProductAttribute $attribute)
+    {
+        $baseAttribute = $this->productManager->createAttribute($attribute->getAttributeType());
+
+        $attribute->setBackendType($baseAttribute->getBackendType());
+        $attribute->setBackendStorage($baseAttribute->getBackendStorage());
+
+        return $attribute;
+    }
 }
