@@ -142,7 +142,7 @@ class LoadCountryData extends AbstractFixture implements ContainerAwareInterface
         $country = $this->countryRepository->findOneBy(array('iso2Code' => $countryData['iso2Code']));
         if (!$country) {
             $country = new Country($countryData['iso2Code']);
-            $country->setiso3Code($countryData['iso3Code']);
+            $country->setIso3Code($countryData['iso3Code']);
         }
 
         if ($locale) {
