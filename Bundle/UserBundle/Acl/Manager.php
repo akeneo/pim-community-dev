@@ -51,6 +51,14 @@ class Manager extends AclManipulator implements ManagerInterface
                 ? $this->addAclToRole($acl, $role)
                 : $this->removeAclFromRole($acl, $role);
 
+            if (!$isAdd) {
+                $aclIds = $this->getAclRepo()->getAllowedAclResourcesForRoles(array($role));
+                $aclIds = array_diff($aclIds, array($aclId, 'root'));
+                $aclIds = array_flip($aclIds);
+
+                $this->saveRoleAcl($role, $aclIds);
+            }
+
             if ($res) {
                 $this->em->flush();
             }
