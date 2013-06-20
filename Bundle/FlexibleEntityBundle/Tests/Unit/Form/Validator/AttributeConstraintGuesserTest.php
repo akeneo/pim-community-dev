@@ -20,36 +20,51 @@ class ChainedConstraintGuesserTest extends \PHPUnit_Framework_TestCase
 
     public function testInstanceOfContraintGuesserInterface()
     {
-        $this->assertInstanceOf('Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface', $this->target);
+        $this->assertInstanceOf(
+            'Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface',
+            $this->target
+        );
     }
 
     public function testGuessNotBlankConstraints()
     {
-        $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\NotBlank', $this->target->guessConstraints(
-            $this->getAttributeMock(array('required' => true))
-        ));
+        $this->assertContainsInstanceOf(
+            'Symfony\Component\Validator\Constraints\NotBlank',
+            $this->target->guessConstraints(
+                $this->getAttributeMock(array('required' => true))
+            )
+        );
     }
 
     public function testGuessDateConstraints()
     {
-        $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\Date', $this->target->guessConstraints(
-            $this->getAttributeMock(array('backendType' => AbstractAttributeType::BACKEND_TYPE_DATE))
-        ));
+        $this->assertContainsInstanceOf(
+            'Symfony\Component\Validator\Constraints\Date',
+            $this->target->guessConstraints(
+                $this->getAttributeMock(array('backendType' => AbstractAttributeType::BACKEND_TYPE_DATE))
+            )
+        );
     }
 
     public function testGuessDateTimeConstraints()
     {
-        $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\DateTime', $this->target->guessConstraints(
-            $this->getAttributeMock(array('backendType' => AbstractAttributeType::BACKEND_TYPE_DATETIME))
-        ));
+        $this->assertContainsInstanceOf(
+            'Symfony\Component\Validator\Constraints\DateTime',
+            $this->target->guessConstraints(
+                $this->getAttributeMock(array('backendType' => AbstractAttributeType::BACKEND_TYPE_DATETIME))
+            )
+        );
     }
 
     private function getAttributeMock(array $options)
     {
-        $options = array_merge(array(
-            'required'    => false,
-            'backendType' => null,
-        ), $options);
+        $options = array_merge(
+            array(
+                'required'    => false,
+                'backendType' => null,
+            ),
+            $options
+        );
 
         $attribute = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute');
 
@@ -75,4 +90,3 @@ class ChainedConstraintGuesserTest extends \PHPUnit_Framework_TestCase
         throw new \Exception(sprintf('Expecting constraints to contain instance of "%s"', $class));
     }
 }
-

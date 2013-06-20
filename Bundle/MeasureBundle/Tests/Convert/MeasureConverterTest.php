@@ -117,6 +117,7 @@ class MeasureConverterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Data provider
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      *
      * @return multitype:multitype:number string
      *

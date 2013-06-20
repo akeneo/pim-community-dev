@@ -340,7 +340,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      *
      * @return AbstractEntityFlexibleValue
      */
-    public function setOption(AbstractEntityAttributeOption $option)
+    public function setOption(AbstractEntityAttributeOption $option = null)
     {
         $this->option = $option;
 
@@ -421,7 +421,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      * @param AbstractEntityFlexibleValue $value
      * @return $this
      */
-    public function setCollections(AbstractEntityFlexibleValue $value)
+    public function setCollections(AbstractEntityFlexibleValue $value = null)
     {
         $this->collection = $value->getCollections();
 

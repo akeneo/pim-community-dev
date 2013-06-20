@@ -181,11 +181,21 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
         $types = array();
 
         foreach ($properties as $property) {
-            $fieldType = isset($property['fieldType']) ? $property['fieldType'] : 'text';
-            $data      = isset($property['data'])      ? $property['data']      : null;
-            $options   = isset($property['options'])   ? $property['options']   : array();
-
-            $options['required'] = isset($options['required']) ? $options['required'] : false;
+            $fieldType = 'text';
+            if (isset($property['fieldType'])) {
+                $fieldType = $property['fieldType'];
+            }
+            $data = null;
+            if (isset($property['data'])) {
+                $data = $property['data'];
+            }
+            $options = array();
+            if (isset($property['options'])) {
+                $options = $property['options'];
+            }
+            if (!isset($options['required'])) {
+                $options['required'] = false;
+            }
 
             $types[] = $factory->createNamed($property['name'], $fieldType, $data, $options);
         }

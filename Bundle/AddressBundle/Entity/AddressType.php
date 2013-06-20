@@ -24,7 +24,7 @@ class AddressType
     /**
      * @var string
      *
-     * @ORM\Column(name="type", type="string", length=255)
+     * @ORM\Column(name="type", type="string", length=255, unique=true)
      */
     private $type;
 
@@ -57,6 +57,14 @@ class AddressType
      * @return string
      */
     public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
     {
         return $this->type;
     }

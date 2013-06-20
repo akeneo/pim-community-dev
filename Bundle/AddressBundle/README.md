@@ -80,3 +80,29 @@ public function registerBundles()
     oro_api_post_address      POST          /api/rest/{version}/address.{_format}
     oro_api_put_address       PUT           /api/rest/{version}/address.{_format}
 </pre>
+
+### Address collection
+Address collection may be added to form with next three steps
+1) Add field with type oro_address_collection to form
+
+```php
+$builder->add(
+    'multiAddress',
+    'oro_address_collection',
+    array(
+        'required' => false,
+        'label' => ' '
+    )
+);
+```
+2) Add AddressCollectionTypeSubscriber. AddressCollectionTypeSubscriber must be initialized with address collection field name.
+
+```php
+$builder->addEventSubscriber(new AddressCollectionTypeSubscriber('multiAddress'));
+```
+
+3) In template add OroAddressBundle:Include:fields.html.twig to support address form field typed
+
+```php
+{% form_theme form with ['OroAddressBundle:Include:fields.html.twig']}
+```
