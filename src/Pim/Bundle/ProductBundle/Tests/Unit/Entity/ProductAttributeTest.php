@@ -258,12 +258,7 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     public function testGetSetDecimalsAllowed()
     {
         $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getDecimalsAllowed());
-
-        // Change value and assert new
-        $decimalsAllowed = true;
-        $productAttribute->setDecimalsAllowed($decimalsAllowed);
-        $this->assertEquals($decimalsAllowed, $productAttribute->getDecimalsAllowed());
+        $this->assertTrue($productAttribute->getDecimalsAllowed());
 
         $decimalsAllowed = false;
         $productAttribute->setDecimalsAllowed($decimalsAllowed);
@@ -276,11 +271,11 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     public function testGetSetNegativeAllowed()
     {
         $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getNegativeAllowed());
+        $this->assertTrue($productAttribute->getNegativeAllowed());
 
         // Change value and assert new
-        $productAttribute->setNegativeAllowed(true);
-        $this->assertTrue($productAttribute->getNegativeAllowed());
+        $productAttribute->setNegativeAllowed(false);
+        $this->assertFalse($productAttribute->getNegativeAllowed());
     }
 
     /**
