@@ -53,24 +53,20 @@ class Generator
         $extendClass = $this->generateExtendClassName($entityName);
         $proxyClass  = $this->generateProxyClassName($entityName);
         if (!class_exists($extendClass) || !class_exists($proxyClass)) {
+            /** write Dynamic class */
+            file_put_contents(
+                $this->entityCacheDir. DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $extendClass) . '.php',
+                "<?php\n\n" . $this->generateDynamicClass($entityName, $extendClass)
+            );
 
-            var_dump($this->entityCacheDir);
-            var_dump($entityName);
+            /** write Proxy class */
+            file_put_contents(
+                $this->entityCacheDir. DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $proxyClass) . '.php',
+                "<?php\n\n" . $this->generateProxyClass($entityName, $proxyClass)
+            );
 
-            var_dump($extendClass);
-            var_dump($proxyClass);
-
-            //$path = $this->getContainer()->getParameter('kernel.root_dir') . '/entities/';
-            //var_dump($path);
-
-            echo '<pre>', print_r($this->generateDynamicClass($entityName, $extendClass), 1), '</pre>';
-            echo '<pre>', print_r($this->generateProxyClass($entityName, $proxyClass), 1), '</pre>';
-
-            //file_put_contents($this->getPath() . $this->getFilename($emd) . '.php', "<?php\n\n" . $strategy->generate($this->class));
             //file_put_contents($this->getPath() . $this->getFilename($emd) . '.orm.yml', Yaml::dump($this->classYml, 5));
-
         }
-        die('generator');
     }
 
     public function generateExtendClassName($entityName)
@@ -80,7 +76,7 @@ class Generator
 
     public function generateProxyClassName($entityName)
     {
-        return 'Extend\\Entity\\Proxy\\' . $this->generateClassName($entityName);
+        return 'Extend\\Proxy\\' . $this->generateClassName($entityName);
     }
 
     protected function generateClassName($entityName)
@@ -212,7 +208,6 @@ class Generator
                         '$this->__extend->set(\''.$field.'\', $'.$field.'); return $this;',
                         array($field)
                     ));
-
                     $class->setMethod($this->generateClassMethod(
                         'get'.ucfirst($field),
                         'return $this->__extend->get(\''.$field.'\');'
