@@ -7,7 +7,7 @@ parameters:
 services:
     oro_entity_extend.extend.extend_manager:
         class:                                              %oro_entity_extend.extend.extend_manager.class%
-        arguments:                                          [@oro_entity_config.proxy.entity_manager, @oro_entity_extend.config.extend_config_provider, null] #null is backend type EAV or Dynamic
+        arguments:                                          [@oro_entity_config.proxy.entity_manager, @oro_entity_extend.config.extend_config_provider, null, %kernel.root_dir%/entities] #null is backend type EAV or Dynamic
 
     oro_entity_extend.config.extend_config_provider:
         tags:

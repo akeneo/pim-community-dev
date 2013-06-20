@@ -15,7 +15,12 @@ class Generator
     /**
      * @var string
      */
-    protected $mode;
+    protected $backend;
+
+    /**
+     * @var string
+     */
+    protected $entityCacheDir;
 
     /**
      * @var ConfigProvider
@@ -28,14 +33,15 @@ class Generator
     protected $writer = null;
 
 
-
     /**
-     * @param ConfigProvider $configProvider
-     * @param                      $mode
+     * @param ConfigProvider       $configProvider
+     * @param                      $backend
+     * @param                      $entityCacheDir
      */
-    public function __construct(ConfigProvider $configProvider, $mode)
+    public function __construct(ConfigProvider $configProvider, $backend, $entityCacheDir)
     {
-        $this->mode           = $mode;
+        $this->backend        = $backend;
+        $this->entityCacheDir = $entityCacheDir;
         $this->configProvider = $configProvider;
     }
 
@@ -56,7 +62,7 @@ class Generator
 
         if (!class_exists($extendClass)) {
 
-            var_dump($this->mode);
+            var_dump($this->backend);
             var_dump($entityName);
             var_dump($extendClass);
 
@@ -172,12 +178,12 @@ class Generator
         return $strategy->generate($class);
     }
 
-    
+
 
 
     public function generateExtendClassName($entityName)
     {
-        return 'Extend\\Entity\\' . $this->mode . '\\' . $this->generateClassName($entityName);
+        return 'Extend\\Entity\\' . $this->backend . '\\' . $this->generateClassName($entityName);
     }
 
     public function generateProxyClassName($entityName)
