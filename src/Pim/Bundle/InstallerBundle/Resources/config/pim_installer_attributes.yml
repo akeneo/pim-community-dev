@@ -11,4 +11,5 @@
             'unique': true
             'useableAsGridColumn': true
             'useableAsGridFilter': true
+            'sortOrder': 1
 
