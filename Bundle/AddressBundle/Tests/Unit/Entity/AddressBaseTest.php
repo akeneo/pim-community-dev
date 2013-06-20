@@ -26,8 +26,10 @@ class AddressBaseTest extends \PHPUnit_Framework_TestCase
      */
     public function propertiesDataProvider()
     {
-        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')->disableOriginalConstructor()->getMock();
-        $regionMock = $this->getMock('Oro\Bundle\AddressBundle\Entity\Region');
+        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $regionMock = $this->getMock('Oro\Bundle\AddressBundle\Entity\Region', array(), array('combinedCode'));
         return array(
             'id' => array('id', 1),
             'lastName' => array('lastName', 'last name'),
@@ -58,12 +60,14 @@ class AddressBaseTest extends \PHPUnit_Framework_TestCase
     public function testToString()
     {
         $obj = new AddressBase();
-        $country = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')->disableOriginalConstructor()->getMock();
+        $country = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')
+            ->disableOriginalConstructor()
+            ->getMock();
         $country->expects($this->once())
             ->method('__toString')
             ->will($this->returnValue('Ukraine'));
 
-        $regionMock = $this->getMock('Oro\Bundle\AddressBundle\Entity\Region');
+        $regionMock = $this->getMock('Oro\Bundle\AddressBundle\Entity\Region', array(), array('combinedCode'));
         $regionMock->expects($this->once())
             ->method('__toString')
             ->will($this->returnValue('Kharkivs\'ka oblast\''));

@@ -8,10 +8,10 @@ class RegionTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstructorData()
     {
-        $obj = new Region();
+        $combinedCode = 'combinedCode';
 
-        $this->assertNull($obj->getId());
-        $obj->setLocale();
+        $obj = new Region($combinedCode);
+        $this->assertEquals($combinedCode, $obj->getCombinedCode());
     }
 
     /**
@@ -19,13 +19,14 @@ class RegionTest extends \PHPUnit_Framework_TestCase
      */
     public function testCountrySetter()
     {
-        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')->disableOriginalConstructor()->getMock();
+        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $obj = new Region();
+        $obj = new Region('combinedCode');
         $obj->setCountry($countryMock);
 
         $this->assertEquals($countryMock, $obj->getCountry());
-        $this->assertNull($obj->getId());
     }
 
     /**
@@ -34,7 +35,7 @@ class RegionTest extends \PHPUnit_Framework_TestCase
      */
     public function testSettersAndGetters($property)
     {
-        $obj = new Region();
+        $obj = new Region('combinedCode');
         $value = 'testValue';
 
         call_user_func_array(array($obj, 'set' . ucfirst($property)), array($value));
@@ -57,8 +58,8 @@ class RegionTest extends \PHPUnit_Framework_TestCase
 
     public function testToString()
     {
-        $obj = new Region();
-        $obj->setName('TEST');
-        $this->assertEquals('TEST', (string)$obj);
+        $obj = new Region('combinedCode');
+        $obj->setName('name');
+        $this->assertEquals('name', $obj->__toString());
     }
 }
