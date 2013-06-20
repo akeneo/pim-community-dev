@@ -57,8 +57,8 @@ services:
     pim_product.attributetype.boolean:
         class: Pim\Bundle\ProductBundle\AttributeType\BooleanType
         arguments:
-            - "integer"
-            - "option"
+            - "boolean"
+            - "checkbox"
             - @oro_flexibleentity.validator.attribute_constraint_guesser
         tags:
             - { name: oro_flexibleentity.attributetype, alias: pim_product_boolean }
