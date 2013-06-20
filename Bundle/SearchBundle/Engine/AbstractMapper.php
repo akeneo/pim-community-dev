@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\SearchBundle\Engine;
 
-use Symfony\Component\Form\Util\PropertyPath;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -29,9 +29,9 @@ abstract class AbstractMapper
      */
     public function getFieldValue($objectOrArray, $fieldName)
     {
-        $propertyPath = new PropertyPath($fieldName);
+        $propertyAccessor = PropertyAccess::getPropertyAccessor();
 
-        return $propertyPath->getValue($objectOrArray);
+        return $propertyAccessor->getValue($objectOrArray, $fieldName);
     }
 
     /**

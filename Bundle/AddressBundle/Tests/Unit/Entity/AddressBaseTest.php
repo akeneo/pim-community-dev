@@ -97,7 +97,7 @@ class AddressBaseTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $context->expects($this->never())
-            ->method('addViolationAtPath');
+            ->method('addViolationAt');
 
         $obj = new AddressBase();
         $obj->isStateValid($context);
@@ -116,7 +116,7 @@ class AddressBaseTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $context->expects($this->never())
-            ->method('addViolationAtPath');
+            ->method('addViolationAt');
 
         $obj = new AddressBase();
         $obj->setCountry($country);
@@ -142,7 +142,7 @@ class AddressBaseTest extends \PHPUnit_Framework_TestCase
             ->method('getPropertyPath')
             ->will($this->returnValue('test'));
         $context->expects($this->once())
-            ->method('addViolationAtPath')
+            ->method('addViolationAt')
             ->with(
                 'test.state',
                 'State is required for country %country%',
