@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\UserBundle\Datagrid;
 
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\EntityRepository;
+
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
@@ -10,6 +13,8 @@ use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Property\FixedProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
+use Oro\Bundle\UserBundle\Entity\User;
 
 class GroupDatagridManager extends DatagridManager
 {
@@ -70,12 +75,21 @@ class GroupDatagridManager extends DatagridManager
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
                 'label'       => 'Roles',
                 'field_name'  => 'roles',
-                'filter_type' => FilterInterface::TYPE_STRING,
+                'expression'  => 'role',
+                'filter_type' => FilterInterface::TYPE_ENTITY,
                 'required'    => false,
                 'sortable'    => false,
                 'filterable'  => true,
-                'show_filter' => false,
-
+                'show_filter' => true,
+                // entity filter options
+                'class'           => 'OroUserBundle:Role',
+                'property'        => 'label',
+                'filter_by_where' => true,
+                'query_builder'   => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('role')
+                        ->where('role.role != :anonymousRole')
+                        ->setParameter('anonymousRole', User::ROLE_ANONYMOUS);
+                },
             )
         );
         $fieldsCollection->add($rolesLabel);
@@ -120,5 +134,16 @@ class GroupDatagridManager extends DatagridManager
         );
 
         return array($groupClickAction, $groupUpdateAction, $groupDeleteAction);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function prepareQuery(ProxyQueryInterface $query)
+    {
+        $entityAlias = $query->getRootAlias();
+
+        /** @var $query QueryBuilder */
+        $query->leftJoin($entityAlias . '.roles', 'role');
     }
 }
