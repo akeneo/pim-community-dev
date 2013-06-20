@@ -28,7 +28,10 @@ class AddressCollectionType extends AbstractType
                     $data = $form->getData();
                     $hasAddress = false;
                     foreach ($data as $item) {
-                        $hasAddress = $hasAddress || !$item->isEmpty();
+                        if (!$item->isEmpty()) {
+                            $hasAddress = true;
+                            break;
+                        }
                     }
                     if ($hasAddress) {
                         return array('Default');

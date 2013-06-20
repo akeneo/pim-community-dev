@@ -4,9 +4,7 @@ namespace Oro\Bundle\AddressBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
-use JMS\Serializer\Annotation\Exclude;
 use Oro\Bundle\AddressBundle\Entity\AddressType;
-use Symfony\Component\Validator\ExecutionContext;
 
 /**
  * Typed Address
@@ -30,14 +28,6 @@ class TypedAddress extends AddressBase
      * @Soap\ComplexType("boolean", nillable=true)
      */
     protected $primary;
-
-    /**
-     * @var \Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexibleValue[]
-     *
-     * @ORM\OneToMany(targetEntity="Oro\Bundle\AddressBundle\Entity\Value\AddressValue", mappedBy="entity", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Exclude
-     */
-    protected $values;
 
     /**
      * @param AddressType $type
