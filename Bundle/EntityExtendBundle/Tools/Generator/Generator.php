@@ -16,7 +16,12 @@ class Generator
     /**
      * @var string
      */
-    protected $mode;
+    protected $backend;
+
+    /**
+     * @var string
+     */
+    protected $entityCacheDir;
 
     /**
      * @var ConfigProvider
@@ -29,12 +34,14 @@ class Generator
     protected $writer = null;
 
     /**
-     * @param ConfigProvider $configProvider
-     * @param                      $mode
+     * @param ConfigProvider       $configProvider
+     * @param                      $backend
+     * @param                      $entityCacheDir
      */
-    public function __construct(ConfigProvider $configProvider, $mode)
+    public function __construct(ConfigProvider $configProvider, $backend, $entityCacheDir)
     {
-        $this->mode           = $mode;
+        $this->backend        = $backend;
+        $this->entityCacheDir = $entityCacheDir;
         $this->configProvider = $configProvider;
     }
 
@@ -47,7 +54,8 @@ class Generator
         $proxyClass  = $this->generateProxyClassName($entityName);
         if (!class_exists($extendClass) || !class_exists($proxyClass)) {
 
-            var_dump($this->mode);
+            var_dump($this->backend);
+            var_dump($this->entityCacheDir);
             var_dump($entityName);
 
             var_dump($extendClass);
@@ -68,7 +76,7 @@ class Generator
 
     public function generateExtendClassName($entityName)
     {
-        return 'Extend\\Entity\\' . $this->mode . '\\' . $this->generateClassName($entityName);
+        return 'Extend\\Entity\\' . $this->backend . '\\' . $this->generateClassName($entityName);
     }
 
     public function generateProxyClassName($entityName)
@@ -98,7 +106,7 @@ class Generator
     }
 
     /**
-     * Generate Dynamic class
+     * Prepare Dynamic class
      *
      * @param $entityName
      * @param $className
@@ -142,12 +150,15 @@ class Generator
                 array('values')
             ));
 
+
+
         $fields = $this->configProvider->getConfig($entityName)->getFields();
         $toArray = '';
         if($fields) {
             foreach ($fields as $field => $options) {
+
                 if ($this->configProvider->getFieldConfig($entityName, $field)->is('is_extend')) {
-                    $toArray .= "\n".'    \''.$field.'\' => $this->'.$field.',';
+                    $toArray .= '    \''.$field.'\' => $this->'.$field.','."\n";
                 }
             }
         }
@@ -173,6 +184,7 @@ class Generator
     protected function generateProxyClass($entityName, $className)
     {
         $this->writer = new Writer();
+
 
         $class = PhpClass::create($this->generateClassName($entityName))
             ->setName($className)

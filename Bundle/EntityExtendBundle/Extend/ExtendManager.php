@@ -33,14 +33,14 @@ class ExtendManager
      */
     protected $lazyEm;
 
-    function __construct(ServiceProxy $lazyEm, ConfigProvider $configProvider)
+    function __construct(ServiceProxy $lazyEm, ConfigProvider $configProvider, $backend, $entityCacheDir)
     {
         $this->lazyEm         = $lazyEm;
         $this->configProvider = $configProvider;
 
         $this->proxyFactory  = new ProxyObjectFactory($this);
         $this->extendFactory = new ExtendObjectFactory($this);
-        $this->generator     = new Generator($configProvider, $mode = 'Dynamic');
+        $this->generator     = new Generator($configProvider, $backend, $entityCacheDir);
     }
 
     /**
@@ -93,7 +93,7 @@ class ExtendManager
             && $this->configProvider->getConfig($entityName)->is('is_extend')
         ) {
             /** TODO: generator */
-            $this->checkEntityCache($this->configProvider->getClassName($entityName));
+            //$this->checkEntityCache($this->configProvider->getClassName($entityName));
             //return true;
         }
 
