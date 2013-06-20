@@ -9,6 +9,8 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Finder\Finder;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Region;
@@ -29,6 +31,16 @@ class LoadCountryData extends AbstractFixture implements ContainerAwareInterface
     protected $translator;
 
     /**
+     * @var EntityRepository
+     */
+    protected $countryRepository;
+
+    /**
+     * @var EntityRepository
+     */
+    protected $regionRepository;
+
+    /**
      * @var string
      */
     protected $translationDirectory = '/Resources/translations/';
@@ -43,6 +55,7 @@ class LoadCountryData extends AbstractFixture implements ContainerAwareInterface
         $fileName = $this->getFileName();
         $countries = $this->getDataFromFile($fileName);
         $this->saveCountryData($manager, $countries);
+        $this->updateTranslations($manager);
     }
 
     public function setContainer(ContainerInterface $container = null)
@@ -119,48 +132,69 @@ class LoadCountryData extends AbstractFixture implements ContainerAwareInterface
      * @param array $countryData
      * @return null|Country
      */
-    protected function createCountry($locale, array $countryData)
+    protected function getCountry($locale, array $countryData)
     {
-        if (empty($countryData['iso2code']) || empty($countryData['iso3code'])) {
+        if (empty($countryData['iso2Code']) || empty($countryData['iso3Code'])) {
             return null;
         }
 
-        $country = new Country($countryData['iso2code']);
-        $countryName = $this->translator->trans(
-            $countryData['iso2code'],
-            array(),
-            self::COUNTRY_DOMAIN,
-            $locale
-        );
-        $country->setIso3Code($countryData['iso3code'])
+        /** @var $country Country */
+        $country = $this->countryRepository->findOneBy(array('iso2Code' => $countryData['iso2Code']));
+        if (!$country) {
+            $country = new Country($countryData['iso2Code']);
+            $country->setiso3Code($countryData['iso3Code']);
+        }
+
+        if ($locale) {
+            $countryName = $this->translator->trans(
+                $countryData['iso2Code'],
+                array(),
+                self::COUNTRY_DOMAIN,
+                $locale
+            );
+        } else {
+            $countryName = $countryData['iso2Code'];
+        }
+
+        $country->setLocale($locale)
             ->setName($countryName);
 
         return $country;
     }
 
     /**
-     * @param $locale
+     * @param string $locale
      * @param Country $country
      * @param array $regionData
      * @return null|Region
      */
-    protected function createRegion($locale, Country $country, array $regionData)
+    protected function getRegion($locale, Country $country, array $regionData)
     {
         if (empty($regionData['combinedCode']) || empty($regionData['code'])) {
             return null;
         }
 
-        $region = new Region($regionData['combinedCode']);
-        $regionName = $this->translator->trans(
-            $regionData['combinedCode'],
-            array(),
-            self::COUNTRY_DOMAIN,
-            $locale
-        );
-        $region->setCode($regionData['code'])
-            ->setName($regionName);
+        /** @var $region Region */
+        $region = $this->regionRepository->findOneBy(array('combinedCode' => $regionData['combinedCode']));
+        if (!$region) {
+            $region = new Region($regionData['combinedCode']);
+            $region->setCode($regionData['code'])
+                ->setCountry($country);
+        }
 
-        $region->setCountry($country);
+        if ($locale) {
+            $regionName = $this->translator->trans(
+                $regionData['combinedCode'],
+                array(),
+                self::COUNTRY_DOMAIN,
+                $locale
+            );
+        } else {
+            $regionName = $regionData['combinedCode'];
+        }
+
+        $region->setLocale($locale)
+            ->setName($regionName);
 
         return $region;
     }
@@ -173,25 +207,52 @@ class LoadCountryData extends AbstractFixture implements ContainerAwareInterface
      */
     protected function saveCountryData(ObjectManager $manager, array $countries)
     {
-        foreach ($this->getAvailableCountryLocales() as $locale) {
+        $this->countryRepository = $manager->getRepository('OroAddressBundle:Country');
+        $this->regionRepository  = $manager->getRepository('OroAddressBundle:Region');
+
+        $countryLocales = $this->getAvailableCountryLocales();
+        // null element performs entity initialization and save of basic not translatable entity
+        array_unshift($countryLocales, null);
+
+        foreach ($countryLocales as $locale) {
             foreach ($countries as $countryData) {
-                $country = $this->createCountry($locale, $countryData);
+                $country = $this->getCountry($locale, $countryData);
                 if (!$country) {
                     continue;
                 }
+
                 $manager->persist($country);
 
                 if (!empty($countryData['regions'])) {
                     foreach ($countryData['regions'] as $regionData) {
-                        $region = $this->createRegion($locale, $country, $regionData);
-                        if ($region) {
-                            $manager->persist($region);
+                        $region = $this->getRegion($locale, $country, $regionData);
+                        if (!$region) {
+                            continue;
                         }
+
+                        $manager->persist($region);
                     }
                 }
-
-                $manager->flush();
             }
+
+            $manager->flush();
+            $manager->clear();
         }
+    }
+
+    /**
+     * Update foreign keys in translation tables
+     *
+     * @param ObjectManager $manager
+     */
+    protected function updateTranslations(ObjectManager $manager)
+    {
+        /** @var $manager EntityManager */
+        $manager->createQuery(
+            'UPDATE OroAddressBundle:CountryTranslation trans SET trans.country = trans.foreignKey'
+        )->execute();
+        $manager->createQuery(
+            'UPDATE OroAddressBundle:RegionTranslation trans SET trans.region = trans.foreignKey'
+        )->execute();
     }
 }

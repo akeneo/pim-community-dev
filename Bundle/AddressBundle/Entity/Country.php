@@ -6,6 +6,8 @@ use JMS\Serializer\Annotation\Exclude;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
 
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
@@ -14,8 +16,9 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
  *
  * @ORM\Table("oro_dictionary_country")
  * @ORM\Entity
+ * @Gedmo\TranslationEntity(class="Oro\Bundle\AddressBundle\Entity\CountryTranslation")
  */
-class Country
+class Country implements Translatable
 {
     /**
      * @var string
@@ -24,7 +27,7 @@ class Country
      * @ORM\Column(name="iso2_code", type="string", length=2)
      * @Soap\ComplexType("string", nillable=true)
      */
-    protected $iso2Code;
+    private $iso2Code;
 
     /**
      * @var string
@@ -32,23 +35,44 @@ class Country
      * @ORM\Column(name="iso3_code", type="string", length=3)
      * @Soap\ComplexType("string", nillable=true)
      */
-    protected $iso3Code;
+    private $iso3Code;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=100)
+     * @ORM\Column(name="name", type="string", length=255)
      * @Soap\ComplexType("string", nillable=true)
+     * @Gedmo\Translatable
      */
-    protected $name;
+    private $name;
 
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Region", mappedBy="country", cascade={"ALL"}, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(
+     *     targetEntity="Oro\Bundle\AddressBundle\Entity\Region",
+     *     mappedBy="country",
+     *     cascade={"ALL"},
+     *     fetch="EXTRA_LAZY"
+     * )
      * @Exclude
      */
-    protected $regions;
+    private $regions;
+
+    /**
+     * @Gedmo\Locale
+     */
+    private $locale;
+
+    /**
+     * @ORM\OneToMany(
+     *     targetEntity="Oro\Bundle\AddressBundle\Entity\CountryTranslation",
+     *     mappedBy="country",
+     *     cascade={"ALL"},
+     *     fetch="EXTRA_LAZY"
+     * )
+     **/
+    private $translation;
 
     /**
      * @param string $iso2Code ISO2 country code
@@ -56,7 +80,9 @@ class Country
     public function __construct($iso2Code)
     {
         $this->iso2Code = $iso2Code;
-        $this->regions  = new ArrayCollection();
+
+        $this->regions     = new ArrayCollection();
+        $this->translation = new ArrayCollection();
     }
 
     /**
@@ -171,6 +197,29 @@ class Country
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set locale
+     *
+     * @param string $locale
+     * @return Country
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Returns locale code
+     *
+     * @return mixed
+     */
+    public function getLocale()
+    {
+        return $this->locale;
     }
 
     /**

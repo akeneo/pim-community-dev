@@ -1,6 +1,6 @@
 AD:
-    iso2code: AD
-    iso3code: AND
+    iso2Code: AD
+    iso3Code: AND
     regions:
         AD.06:
             combinedCode: AD.06
@@ -24,8 +24,8 @@ AD:
             combinedCode: AD.08
             code: '08'
 AE:
-    iso2code: AE
-    iso3code: ARE
+    iso2Code: AE
+    iso3Code: ARE
     regions:
         AE.07:
             combinedCode: AE.07
@@ -49,8 +49,8 @@ AE:
             combinedCode: AE.01
             code: '01'
 AF:
-    iso2code: AF
-    iso3code: AFG
+    iso2Code: AF
+    iso3Code: AFG
     regions:
         AF.28:
             combinedCode: AF.28
@@ -155,8 +155,8 @@ AF:
             combinedCode: AF.42
             code: '42'
 AG:
-    iso2code: AG
-    iso3code: ATG
+    iso2Code: AG
+    iso3Code: ATG
     regions:
         AG.08:
             combinedCode: AG.08
@@ -183,12 +183,12 @@ AG:
             combinedCode: AG.01
             code: '01'
 AI:
-    iso2code: AI
-    iso3code: AIA
+    iso2Code: AI
+    iso3Code: AIA
     regions: {  }
 AL:
-    iso2code: AL
-    iso3code: ALB
+    iso2Code: AL
+    iso3Code: ALB
     regions:
         AL.40:
             combinedCode: AL.40
@@ -227,8 +227,8 @@ AL:
             combinedCode: AL.51
             code: '51'
 AM:
-    iso2code: AM
-    iso3code: ARM
+    iso2Code: AM
+    iso3Code: ARM
     regions:
         AM.02:
             combinedCode: AM.02
@@ -264,8 +264,8 @@ AM:
             combinedCode: AM.09
             code: '09'
 AO:
-    iso2code: AO
-    iso3code: AGO
+    iso2Code: AO
+    iso3Code: AGO
     regions:
         AO.18:
             combinedCode: AO.18
@@ -322,12 +322,12 @@ AO:
             combinedCode: AO.01
             code: '01'
 AQ:
-    iso2code: AQ
-    iso3code: ATA
+    iso2Code: AQ
+    iso3Code: ATA
     regions: {  }
 AR:
-    iso2code: AR
-    iso3code: ARG
+    iso2Code: AR
+    iso3Code: ARG
     regions:
         AR.14:
             combinedCode: AR.14
@@ -402,8 +402,8 @@ AR:
             combinedCode: AR.02
             code: '02'
 AS:
-    iso2code: AS
-    iso3code: ASM
+    iso2Code: AS
+    iso3Code: ASM
     regions:
         AS.050:
             combinedCode: AS.050
@@ -421,8 +421,8 @@ AS:
             combinedCode: AS.030
             code: '030'
 AT:
-    iso2code: AT
-    iso3code: AUT
+    iso2Code: AT
+    iso3Code: AUT
     regions:
         AT.09:
             combinedCode: AT.09
@@ -452,8 +452,8 @@ AT:
             combinedCode: AT.01
             code: '01'
 AU:
-    iso2code: AU
-    iso3code: AUS
+    iso2Code: AU
+    iso3Code: AUS
     regions:
         AU.08:
             combinedCode: AU.08
@@ -480,12 +480,12 @@ AU:
             combinedCode: AU.01
             code: '01'
 AW:
-    iso2code: AW
-    iso3code: ABW
+    iso2Code: AW
+    iso3Code: ABW
     regions: {  }
 AX:
-    iso2code: AX
-    iso3code: ALA
+    iso2Code: AX
+    iso3Code: ALA
     regions:
         AX.941:
             combinedCode: AX.941
@@ -536,8 +536,8 @@ AX:
             combinedCode: AX.043
             code: '043'
 AZ:
-    iso2code: AZ
-    iso3code: AZE
+    iso2Code: AZ
+    iso3Code: AZE
     regions:
         AZ.12:
             combinedCode: AZ.12
@@ -756,8 +756,8 @@ AZ:
             combinedCode: AZ.75
             code: '75'
 BA:
-    iso2code: BA
-    iso3code: BIH
+    iso2Code: BA
+    iso3Code: BIH
     regions:
         BA.01:
             combinedCode: BA.01
@@ -769,8 +769,8 @@ BA:
             combinedCode: BA.BRC
             code: BRC
 BB:
-    iso2code: BB
-    iso3code: BRB
+    iso2Code: BB
+    iso3Code: BRB
     regions:
         BB.11:
             combinedCode: BB.11
@@ -806,8 +806,8 @@ BB:
             combinedCode: BB.01
             code: '01'
 BD:
-    iso2code: BD
-    iso3code: BGD
+    iso2Code: BD
+    iso3Code: BGD
     regions:
         BD.83:
             combinedCode: BD.83
@@ -831,8 +831,8 @@ BD:
             combinedCode: BD.87
             code: '87'
 BE:
-    iso2code: BE
-    iso3code: BEL
+    iso2Code: BE
+    iso3Code: BEL
     regions:
         BE.BRU:
             combinedCode: BE.BRU
@@ -844,8 +844,8 @@ BE:
             combinedCode: BE.VLG
             code: VLG
 BF:
-    iso2code: BF
-    iso3code: BFA
+    iso2Code: BF
+    iso3Code: BFA
     regions:
         BF.01:
             combinedCode: BF.01
@@ -887,8 +887,8 @@ BF:
             combinedCode: BF.13
             code: '13'
 BG:
-    iso2code: BG
-    iso3code: BGR
+    iso2Code: BG
+    iso3Code: BGR
     regions:
         BG.52:
             combinedCode: BG.52
@@ -975,8 +975,8 @@ BG:
             combinedCode: BG.65
             code: '65'
 BH:
-    iso2code: BH
-    iso3code: BHR
+    iso2Code: BH
+    iso3Code: BHR
     regions:
         BH.15:
             combinedCode: BH.15
@@ -994,8 +994,8 @@ BH:
             combinedCode: BH.19
             code: '19'
 BI:
-    iso2code: BI
-    iso3code: BDI
+    iso2Code: BI
+    iso3Code: BDI
     regions:
         BI.17:
             combinedCode: BI.17
@@ -1049,8 +1049,8 @@ BI:
             combinedCode: BI.25
             code: '25'
 BJ:
-    iso2code: BJ
-    iso3code: BEN
+    iso2Code: BJ
+    iso3Code: BEN
     regions:
         BJ.18:
             combinedCode: BJ.18
@@ -1089,12 +1089,12 @@ BJ:
             combinedCode: BJ.17
             code: '17'
 BL:
-    iso2code: BL
-    iso3code: BLM
+    iso2Code: BL
+    iso3Code: BLM
     regions: {  }
 BM:
-    iso2code: BM
-    iso3code: BMU
+    iso2Code: BM
+    iso3Code: BMU
     regions:
         BM.11:
             combinedCode: BM.11
@@ -1130,8 +1130,8 @@ BM:
             combinedCode: BM.01
             code: '01'
 BN:
-    iso2code: BN
-    iso3code: BRN
+    iso2Code: BN
+    iso3Code: BRN
     regions:
         BN.04:
             combinedCode: BN.04
@@ -1146,8 +1146,8 @@ BN:
             combinedCode: BN.01
             code: '01'
 BO:
-    iso2code: BO
-    iso3code: BOL
+    iso2Code: BO
+    iso3Code: BOL
     regions:
         BO.09:
             combinedCode: BO.09
@@ -1177,8 +1177,8 @@ BO:
             combinedCode: BO.03
             code: '03'
 BQ:
-    iso2code: BQ
-    iso3code: BES
+    iso2Code: BQ
+    iso3Code: BES
     regions:
         BQ.BO:
             combinedCode: BQ.BO
@@ -1190,8 +1190,8 @@ BQ:
             combinedCode: BQ.SE
             code: SE
 BR:
-    iso2code: BR
-    iso3code: BRA
+    iso2Code: BR
+    iso3Code: BRA
     regions:
         BR.22:
             combinedCode: BR.22
@@ -1275,8 +1275,8 @@ BR:
             combinedCode: BR.24
             code: '24'
 BS:
-    iso2code: BS
-    iso3code: BHS
+    iso2Code: BS
+    iso3Code: BHS
     regions:
         BS.35:
             combinedCode: BS.35
@@ -1399,8 +1399,8 @@ BS:
             combinedCode: BS.54
             code: '54'
 BT:
-    iso2code: BT
-    iso3code: BTN
+    iso2Code: BT
+    iso3Code: BTN
     regions:
         BT.05:
             combinedCode: BT.05
@@ -1463,12 +1463,12 @@ BT:
             combinedCode: BT.24
             code: '24'
 BV:
-    iso2code: BV
-    iso3code: BVT
+    iso2Code: BV
+    iso3Code: BVT
     regions: {  }
 BW:
-    iso2code: BW
-    iso3code: BWA
+    iso2Code: BW
+    iso3Code: BWA
     regions:
         BW.10:
             combinedCode: BW.10
@@ -1498,8 +1498,8 @@ BW:
             combinedCode: BW.01
             code: '01'
 BY:
-    iso2code: BY
-    iso3code: BLR
+    iso2Code: BY
+    iso3Code: BLR
     regions:
         BY.07:
             combinedCode: BY.07
@@ -1523,8 +1523,8 @@ BY:
             combinedCode: BY.01
             code: '01'
 BZ:
-    iso2code: BZ
-    iso3code: BLZ
+    iso2Code: BZ
+    iso3Code: BLZ
     regions:
         BZ.06:
             combinedCode: BZ.06
@@ -1545,8 +1545,8 @@ BZ:
             combinedCode: BZ.01
             code: '01'
 CA:
-    iso2code: CA
-    iso3code: CAN
+    iso2Code: CA
+    iso3Code: CAN
     regions:
         CA.01:
             combinedCode: CA.01
@@ -1588,12 +1588,12 @@ CA:
             combinedCode: CA.05
             code: '05'
 CC:
-    iso2code: CC
-    iso3code: CCK
+    iso2Code: CC
+    iso3Code: CCK
     regions: {  }
 CD:
-    iso2code: CD
-    iso3code: COD
+    iso2Code: CD
+    iso3Code: COD
     regions:
         CD.12:
             combinedCode: CD.12
@@ -1629,8 +1629,8 @@ CD:
             combinedCode: CD.01
             code: '01'
 CF:
-    iso2code: CF
-    iso3code: CAF
+    iso2Code: CF
+    iso3Code: CAF
     regions:
         CF.14:
             combinedCode: CF.14
@@ -1684,8 +1684,8 @@ CF:
             combinedCode: CF.18
             code: '18'
 CG:
-    iso2code: CG
-    iso3code: COG
+    iso2Code: CG
+    iso3Code: COG
     regions:
         CG.10:
             combinedCode: CG.10
@@ -1724,8 +1724,8 @@ CG:
             combinedCode: CG.7280295
             code: '7280295'
 CH:
-    iso2code: CH
-    iso3code: CHE
+    iso2Code: CH
+    iso3Code: CHE
     regions:
         CH.ZH:
             combinedCode: CH.ZH
@@ -1806,8 +1806,8 @@ CH:
             combinedCode: CH.AG
             code: AG
 CI:
-    iso2code: CI
-    iso3code: CIV
+    iso2Code: CI
+    iso3Code: CIV
     regions:
         CI.82:
             combinedCode: CI.82
@@ -1867,12 +1867,12 @@ CI:
             combinedCode: CI.75
             code: '75'
 CK:
-    iso2code: CK
-    iso3code: COK
+    iso2Code: CK
+    iso3Code: COK
     regions: {  }
 CL:
-    iso2code: CL
-    iso3code: CHL
+    iso2Code: CL
+    iso3Code: CHL
     regions:
         CL.01:
             combinedCode: CL.01
@@ -1920,8 +1920,8 @@ CL:
             combinedCode: CL.17
             code: '17'
 CM:
-    iso2code: CM
-    iso3code: CMR
+    iso2Code: CM
+    iso3Code: CMR
     regions:
         CM.09:
             combinedCode: CM.09
@@ -1954,8 +1954,8 @@ CM:
             combinedCode: CM.10
             code: '10'
 CN:
-    iso2code: CN
-    iso3code: CHN
+    iso2Code: CN
+    iso3Code: CHN
     regions:
         CN.14:
             combinedCode: CN.14
@@ -2051,8 +2051,8 @@ CN:
             combinedCode: CN.22
             code: '22'
 CO:
-    iso2code: CO
-    iso3code: COL
+    iso2Code: CO
+    iso3Code: COL
     regions:
         CO.31:
             combinedCode: CO.31
@@ -2154,8 +2154,8 @@ CO:
             combinedCode: CO.01
             code: '01'
 CR:
-    iso2code: CR
-    iso3code: CRI
+    iso2Code: CR
+    iso3Code: CRI
     regions:
         CR.08:
             combinedCode: CR.08
@@ -2179,8 +2179,8 @@ CR:
             combinedCode: CR.01
             code: '01'
 CU:
-    iso2code: CU
-    iso3code: CUB
+    iso2Code: CU
+    iso3Code: CUB
     regions:
         CU.16:
             combinedCode: CU.16
@@ -2231,8 +2231,8 @@ CU:
             combinedCode: CU.MA
             code: MA
 CV:
-    iso2code: CV
-    iso3code: CPV
+    iso2Code: CV
+    iso3Code: CPV
     regions:
         CV.20:
             combinedCode: CV.20
@@ -2301,16 +2301,16 @@ CV:
             combinedCode: CV.23
             code: '23'
 CW:
-    iso2code: CW
-    iso3code: CUW
+    iso2Code: CW
+    iso3Code: CUW
     regions: {  }
 CX:
-    iso2code: CX
-    iso3code: CXR
+    iso2Code: CX
+    iso3Code: CXR
     regions: {  }
 CY:
-    iso2code: CY
-    iso3code: CYP
+    iso2Code: CY
+    iso3Code: CYP
     regions:
         CY.06:
             combinedCode: CY.06
@@ -2331,8 +2331,8 @@ CY:
             combinedCode: CY.01
             code: '01'
 CZ:
-    iso2code: CZ
-    iso3code: CZE
+    iso2Code: CZ
+    iso3Code: CZE
     regions:
         CZ.52:
             combinedCode: CZ.52
@@ -2377,8 +2377,8 @@ CZ:
             combinedCode: CZ.90
             code: '90'
 DE:
-    iso2code: DE
-    iso3code: DEU
+    iso2Code: DE
+    iso3Code: DEU
     regions:
         DE.15:
             combinedCode: DE.15
@@ -2429,8 +2429,8 @@ DE:
             combinedCode: DE.01
             code: '01'
 DJ:
-    iso2code: DJ
-    iso3code: DJI
+    iso2Code: DJ
+    iso3Code: DJI
     regions:
         DJ.05:
             combinedCode: DJ.05
@@ -2451,8 +2451,8 @@ DJ:
             combinedCode: DJ.08
             code: '08'
 DK:
-    iso2code: DK
-    iso3code: DNK
+    iso2Code: DK
+    iso3Code: DNK
     regions:
         DK.17:
             combinedCode: DK.17
@@ -2470,8 +2470,8 @@ DK:
             combinedCode: DK.21
             code: '21'
 DM:
-    iso2code: DM
-    iso3code: DMA
+    iso2Code: DM
+    iso3Code: DMA
     regions:
         DM.11:
             combinedCode: DM.11
@@ -2504,8 +2504,8 @@ DM:
             combinedCode: DM.02
             code: '02'
 DO:
-    iso2code: DO
-    iso3code: DOM
+    iso2Code: DO
+    iso3Code: DOM
     regions:
         DO.27:
             combinedCode: DO.27
@@ -2604,8 +2604,8 @@ DO:
             combinedCode: DO.37
             code: '37'
 DZ:
-    iso2code: DZ
-    iso3code: DZA
+    iso2Code: DZ
+    iso3Code: DZA
     regions:
         DZ.15:
             combinedCode: DZ.15
@@ -2752,8 +2752,8 @@ DZ:
             combinedCode: DZ.34
             code: '34'
 EC:
-    iso2code: EC
-    iso3code: ECU
+    iso2Code: EC
+    iso3Code: ECU
     regions:
         EC.20:
             combinedCode: EC.20
@@ -2828,8 +2828,8 @@ EC:
             combinedCode: EC.25
             code: '25'
 EE:
-    iso2code: EE
-    iso3code: EST
+    iso2Code: EE
+    iso3Code: EST
     regions:
         EE.21:
             combinedCode: EE.21
@@ -2877,8 +2877,8 @@ EE:
             combinedCode: EE.01
             code: '01'
 EG:
-    iso2code: EG
-    iso3code: EGY
+    iso2Code: EG
+    iso3Code: EGY
     regions:
         EG.24:
             combinedCode: EG.24
@@ -2962,15 +2962,15 @@ EG:
             combinedCode: EG.28
             code: '28'
 EH:
-    iso2code: EH
-    iso3code: ESH
+    iso2Code: EH
+    iso3Code: ESH
     regions:
         EH.CE:
             combinedCode: EH.CE
             code: CE
 ER:
-    iso2code: ER
-    iso3code: ERI
+    iso2Code: ER
+    iso3Code: ERI
     regions:
         ER.01:
             combinedCode: ER.01
@@ -2991,8 +2991,8 @@ ER:
             combinedCode: ER.06
             code: '06'
 ES:
-    iso2code: ES
-    iso3code: ESP
+    iso2Code: ES
+    iso3Code: ESP
     regions:
         ES.31:
             combinedCode: ES.31
@@ -3052,8 +3052,8 @@ ES:
             combinedCode: ES.ML
             code: ML
 ET:
-    iso2code: ET
-    iso3code: ETH
+    iso2Code: ET
+    iso3Code: ETH
     regions:
         ET.44:
             combinedCode: ET.44
@@ -3089,8 +3089,8 @@ ET:
             combinedCode: ET.54
             code: '54'
 FI:
-    iso2code: FI
-    iso3code: FIN
+    iso2Code: FI
+    iso3Code: FIN
     regions:
         FI.08:
             combinedCode: FI.08
@@ -3108,8 +3108,8 @@ FI:
             combinedCode: FI.15
             code: '15'
 FJ:
-    iso2code: FJ
-    iso3code: FJI
+    iso2Code: FJ
+    iso3Code: FJI
     regions:
         FJ.05:
             combinedCode: FJ.05
@@ -3127,12 +3127,12 @@ FJ:
             combinedCode: FJ.04
             code: '04'
 FK:
-    iso2code: FK
-    iso3code: FLK
+    iso2Code: FK
+    iso3Code: FLK
     regions: {  }
 FM:
-    iso2code: FM
-    iso3code: FSM
+    iso2Code: FM
+    iso3Code: FSM
     regions:
         FM.04:
             combinedCode: FM.04
@@ -3147,8 +3147,8 @@ FM:
             combinedCode: FM.03
             code: '03'
 FO:
-    iso2code: FO
-    iso3code: FRO
+    iso2Code: FO
+    iso3Code: FRO
     regions:
         FO.VG:
             combinedCode: FO.VG
@@ -3169,8 +3169,8 @@ FO:
             combinedCode: FO.OS
             code: OS
 FR:
-    iso2code: FR
-    iso3code: FRA
+    iso2Code: FR
+    iso3Code: FRA
     regions:
         FR.B9:
             combinedCode: FR.B9
@@ -3239,8 +3239,8 @@ FR:
             combinedCode: FR.C1
             code: C1
 GA:
-    iso2code: GA
-    iso3code: GAB
+    iso2Code: GA
+    iso3Code: GAB
     regions:
         GA.09:
             combinedCode: GA.09
@@ -3270,8 +3270,8 @@ GA:
             combinedCode: GA.01
             code: '01'
 GB:
-    iso2code: GB
-    iso3code: GBR
+    iso2Code: GB
+    iso3Code: GBR
     regions:
         GB.WLS:
             combinedCode: GB.WLS
@@ -3286,8 +3286,8 @@ GB:
             combinedCode: GB.ENG
             code: ENG
 GD:
-    iso2code: GD
-    iso3code: GRD
+    iso2Code: GD
+    iso3Code: GRD
     regions:
         GD.06:
             combinedCode: GD.06
@@ -3311,8 +3311,8 @@ GD:
             combinedCode: GD.10
             code: '10'
 GE:
-    iso2code: GE
-    iso3code: GEO
+    iso2Code: GE
+    iso3Code: GEO
     regions:
         GE.51:
             combinedCode: GE.51
@@ -3351,19 +3351,19 @@ GE:
             combinedCode: GE.02
             code: '02'
 GF:
-    iso2code: GF
-    iso3code: GUF
+    iso2Code: GF
+    iso3Code: GUF
     regions:
         GF.GF:
             combinedCode: GF.GF
             code: GF
 GG:
-    iso2code: GG
-    iso3code: GGY
+    iso2Code: GG
+    iso3Code: GGY
     regions: {  }
 GH:
-    iso2code: GH
-    iso3code: GHA
+    iso2Code: GH
+    iso3Code: GHA
     regions:
         GH.09:
             combinedCode: GH.09
@@ -3396,12 +3396,12 @@ GH:
             combinedCode: GH.02
             code: '02'
 GI:
-    iso2code: GI
-    iso3code: GIB
+    iso2Code: GI
+    iso3Code: GIB
     regions: {  }
 GL:
-    iso2code: GL
-    iso3code: GRL
+    iso2Code: GL
+    iso3Code: GRL
     regions:
         GL.05:
             combinedCode: GL.05
@@ -3416,8 +3416,8 @@ GL:
             combinedCode: GL.07
             code: '07'
 GM:
-    iso2code: GM
-    iso3code: GMB
+    iso2Code: GM
+    iso3Code: GMB
     regions:
         GM.05:
             combinedCode: GM.05
@@ -3438,8 +3438,8 @@ GM:
             combinedCode: GM.01
             code: '01'
 GN:
-    iso2code: GN
-    iso3code: GIN
+    iso2Code: GN
+    iso3Code: GIN
     regions:
         GN.04:
             combinedCode: GN.04
@@ -3466,15 +3466,15 @@ GN:
             combinedCode: GN.N
             code: N
 GP:
-    iso2code: GP
-    iso3code: GLP
+    iso2Code: GP
+    iso3Code: GLP
     regions:
         GP.GP:
             combinedCode: GP.GP
             code: GP
 GQ:
-    iso2code: GQ
-    iso3code: GNQ
+    iso2Code: GQ
+    iso3Code: GNQ
     regions:
         GQ.03:
             combinedCode: GQ.03
@@ -3498,8 +3498,8 @@ GQ:
             combinedCode: GQ.09
             code: '09'
 GR:
-    iso2code: GR
-    iso3code: GRC
+    iso2Code: GR
+    iso3Code: GRC
     regions:
         GR.736572:
             combinedCode: GR.736572
@@ -3544,12 +3544,12 @@ GR:
             combinedCode: GR.ESYE13
             code: ESYE13
 GS:
-    iso2code: GS
-    iso3code: SGS
+    iso2Code: GS
+    iso3Code: SGS
     regions: {  }
 GT:
-    iso2code: GT
-    iso3code: GTM
+    iso2Code: GT
+    iso3Code: GTM
     regions:
         GT.22:
             combinedCode: GT.22
@@ -3618,8 +3618,8 @@ GT:
             combinedCode: GT.01
             code: '01'
 GU:
-    iso2code: GU
-    iso3code: GUM
+    iso2Code: GU
+    iso3Code: GUM
     regions:
         GU.PI:
             combinedCode: GU.PI
@@ -3679,8 +3679,8 @@ GU:
             combinedCode: GU.MT
             code: MT
 GW:
-    iso2code: GW
-    iso3code: GNB
+    iso2Code: GW
+    iso3Code: GNB
     regions:
         GW.07:
             combinedCode: GW.07
@@ -3710,8 +3710,8 @@ GW:
             combinedCode: GW.01
             code: '01'
 GY:
-    iso2code: GY
-    iso3code: GUY
+    iso2Code: GY
+    iso3Code: GUY
     regions:
         GY.19:
             combinedCode: GY.19
@@ -3744,8 +3744,8 @@ GY:
             combinedCode: GY.10
             code: '10'
 HK:
-    iso2code: HK
-    iso3code: HKG
+    iso2Code: HK
+    iso3Code: HKG
     regions:
         HK.NYL:
             combinedCode: HK.NYL
@@ -3802,12 +3802,12 @@ HK:
             combinedCode: HK.NST
             code: NST
 HM:
-    iso2code: HM
-    iso3code: HMD
+    iso2Code: HM
+    iso3Code: HMD
     regions: {  }
 HN:
-    iso2code: HN
-    iso3code: HND
+    iso2Code: HN
+    iso3Code: HND
     regions:
         HN.18:
             combinedCode: HN.18
@@ -3864,8 +3864,8 @@ HN:
             combinedCode: HN.01
             code: '01'
 HR:
-    iso2code: HR
-    iso3code: HRV
+    iso2Code: HR
+    iso3Code: HRV
     regions:
         HR.01:
             combinedCode: HR.01
@@ -3931,8 +3931,8 @@ HR:
             combinedCode: HR.17
             code: '17'
 HT:
-    iso2code: HT
-    iso3code: HTI
+    iso2Code: HT
+    iso3Code: HTI
     regions:
         HT.13:
             combinedCode: HT.13
@@ -3965,8 +3965,8 @@ HT:
             combinedCode: HT.15
             code: '15'
 HU:
-    iso2code: HU
-    iso3code: HUN
+    iso2Code: HU
+    iso3Code: HUN
     regions:
         HU.18:
             combinedCode: HU.18
@@ -4029,8 +4029,8 @@ HU:
             combinedCode: HU.01
             code: '01'
 ID:
-    iso2code: ID
-    iso3code: IDN
+    iso2Code: ID
+    iso3Code: IDN
     regions:
         ID.26:
             combinedCode: ID.26
@@ -4132,8 +4132,8 @@ ID:
             combinedCode: ID.40
             code: '40'
 IE:
-    iso2code: IE
-    iso3code: IRL
+    iso2Code: IE
+    iso3Code: IRL
     regions:
         IE.C:
             combinedCode: IE.C
@@ -4148,8 +4148,8 @@ IE:
             combinedCode: IE.U
             code: U
 IL:
-    iso2code: IL
-    iso3code: ISR
+    iso2Code: IL
+    iso3Code: ISR
     regions:
         IL.06:
             combinedCode: IL.06
@@ -4170,12 +4170,12 @@ IL:
             combinedCode: IL.01
             code: '01'
 IM:
-    iso2code: IM
-    iso3code: IMN
+    iso2Code: IM
+    iso3Code: IMN
     regions: {  }
 IN:
-    iso2code: IN
-    iso3code: IND
+    iso2Code: IN
+    iso3Code: IND
     regions:
         IN.28:
             combinedCode: IN.28
@@ -4283,12 +4283,12 @@ IN:
             combinedCode: IN.39
             code: '39'
 IO:
-    iso2code: IO
-    iso3code: IOT
+    iso2Code: IO
+    iso3Code: IOT
     regions: {  }
 IQ:
-    iso2code: IQ
-    iso3code: IRQ
+    iso2Code: IQ
+    iso3Code: IRQ
     regions:
         IQ.02:
             combinedCode: IQ.02
@@ -4345,8 +4345,8 @@ IQ:
             combinedCode: IQ.01
             code: '01'
 IR:
-    iso2code: IR
-    iso3code: IRN
+    iso2Code: IR
+    iso3Code: IRN
     regions:
         IR.26:
             combinedCode: IR.26
@@ -4442,8 +4442,8 @@ IR:
             combinedCode: IR.44
             code: '44'
 IS:
-    iso2code: IS
-    iso3code: ISL
+    iso2Code: IS
+    iso3Code: ISL
     regions:
         IS.41:
             combinedCode: IS.41
@@ -4470,8 +4470,8 @@ IS:
             combinedCode: IS.44
             code: '44'
 IT:
-    iso2code: IT
-    iso3code: ITA
+    iso2Code: IT
+    iso3Code: ITA
     regions:
         IT.15:
             combinedCode: IT.15
@@ -4534,12 +4534,12 @@ IT:
             combinedCode: IT.01
             code: '01'
 JE:
-    iso2code: JE
-    iso3code: JEY
+    iso2Code: JE
+    iso3Code: JEY
     regions: {  }
 JM:
-    iso2code: JM
-    iso3code: JAM
+    iso2Code: JM
+    iso3Code: JAM
     regions:
         JM.16:
             combinedCode: JM.16
@@ -4584,8 +4584,8 @@ JM:
             combinedCode: JM.01
             code: '01'
 JO:
-    iso2code: JO
-    iso3code: JOR
+    iso2Code: JO
+    iso3Code: JOR
     regions:
         JO.19:
             combinedCode: JO.19
@@ -4624,8 +4624,8 @@ JO:
             combinedCode: JO.23
             code: '23'
 JP:
-    iso2code: JP
-    iso3code: JPN
+    iso2Code: JP
+    iso3Code: JPN
     regions:
         JP.46:
             combinedCode: JP.46
@@ -4769,8 +4769,8 @@ JP:
             combinedCode: JP.03
             code: '03'
 KE:
-    iso2code: KE
-    iso3code: KEN
+    iso2Code: KE
+    iso3Code: KEN
     regions:
         KE.55:
             combinedCode: KE.55
@@ -4914,8 +4914,8 @@ KE:
             combinedCode: KE.40
             code: '40'
 KG:
-    iso2code: KG
-    iso3code: KGZ
+    iso2Code: KG
+    iso3Code: KGZ
     regions:
         KG.08:
             combinedCode: KG.08
@@ -4942,8 +4942,8 @@ KG:
             combinedCode: KG.02
             code: '02'
 KH:
-    iso2code: KH
-    iso3code: KHM
+    iso2Code: KH
+    iso3Code: KHM
     regions:
         KH.12:
             combinedCode: KH.12
@@ -5018,8 +5018,8 @@ KH:
             combinedCode: KH.25
             code: '25'
 KI:
-    iso2code: KI
-    iso3code: KIR
+    iso2Code: KI
+    iso3Code: KIR
     regions:
         KI.01:
             combinedCode: KI.01
@@ -5031,8 +5031,8 @@ KI:
             combinedCode: KI.03
             code: '03'
 KM:
-    iso2code: KM
-    iso3code: COM
+    iso2Code: KM
+    iso3Code: COM
     regions:
         KM.03:
             combinedCode: KM.03
@@ -5044,8 +5044,8 @@ KM:
             combinedCode: KM.01
             code: '01'
 KN:
-    iso2code: KN
-    iso3code: KNA
+    iso2Code: KN
+    iso3Code: KNA
     regions:
         KN.15:
             combinedCode: KN.15
@@ -5090,8 +5090,8 @@ KN:
             combinedCode: KN.01
             code: '01'
 KP:
-    iso2code: KP
-    iso3code: PRK
+    iso2Code: KP
+    iso3Code: PRK
     regions:
         KP.12:
             combinedCode: KP.12
@@ -5127,8 +5127,8 @@ KP:
             combinedCode: KP.18
             code: '18'
 KR:
-    iso2code: KR
-    iso3code: KOR
+    iso2Code: KR
+    iso3Code: KOR
     regions:
         KR.21:
             combinedCode: KR.21
@@ -5182,8 +5182,8 @@ KR:
             combinedCode: KR.22
             code: '22'
 XK:
-    iso2code: XK
-    iso3code: XKX
+    iso2Code: XK
+    iso3Code: XKX
     regions:
         XK.28:
             combinedCode: XK.28
@@ -5297,8 +5297,8 @@ XK:
             combinedCode: XK.37
             code: '37'
 KW:
-    iso2code: KW
-    iso3code: KWT
+    iso2Code: KW
+    iso3Code: KWT
     regions:
         KW.08:
             combinedCode: KW.08
@@ -5319,12 +5319,12 @@ KW:
             combinedCode: KW.09
             code: '09'
 KY:
-    iso2code: KY
-    iso3code: CYM
+    iso2Code: KY
+    iso3Code: CYM
     regions: {  }
 KZ:
-    iso2code: KZ
-    iso3code: KAZ
+    iso2Code: KZ
+    iso3Code: KAZ
     regions:
         KZ.07:
             combinedCode: KZ.07
@@ -5378,8 +5378,8 @@ KZ:
             combinedCode: KZ.05
             code: '05'
 LA:
-    iso2code: LA
-    iso3code: LAO
+    iso2Code: LA
+    iso3Code: LAO
     regions:
         LA.14:
             combinedCode: LA.14
@@ -5433,8 +5433,8 @@ LA:
             combinedCode: LA.24
             code: '24'
 LB:
-    iso2code: LB
-    iso3code: LBN
+    iso2Code: LB
+    iso3Code: LBN
     regions:
         LB.05:
             combinedCode: LB.05
@@ -5461,8 +5461,8 @@ LB:
             combinedCode: LB.11
             code: '11'
 LC:
-    iso2code: LC
-    iso3code: LCA
+    iso2Code: LC
+    iso3Code: LCA
     regions:
         LC.10:
             combinedCode: LC.10
@@ -5498,8 +5498,8 @@ LC:
             combinedCode: LC.01
             code: '01'
 LI:
-    iso2code: LI
-    iso3code: LIE
+    iso2Code: LI
+    iso3Code: LIE
     regions:
         LI.11:
             combinedCode: LI.11
@@ -5535,8 +5535,8 @@ LI:
             combinedCode: LI.01
             code: '01'
 LK:
-    iso2code: LK
-    iso3code: LKA
+    iso2Code: LK
+    iso3Code: LKA
     regions:
         LK.36:
             combinedCode: LK.36
@@ -5566,8 +5566,8 @@ LK:
             combinedCode: LK.37
             code: '37'
 LR:
-    iso2code: LR
-    iso3code: LBR
+    iso2Code: LR
+    iso3Code: LBR
     regions:
         LR.10:
             combinedCode: LR.10
@@ -5615,8 +5615,8 @@ LR:
             combinedCode: LR.22
             code: '22'
 LS:
-    iso2code: LS
-    iso3code: LSO
+    iso2Code: LS
+    iso3Code: LSO
     regions:
         LS.19:
             combinedCode: LS.19
@@ -5649,8 +5649,8 @@ LS:
             combinedCode: LS.10
             code: '10'
 LT:
-    iso2code: LT
-    iso3code: LTU
+    iso2Code: LT
+    iso3Code: LTU
     regions:
         LT.56:
             combinedCode: LT.56
@@ -5683,8 +5683,8 @@ LT:
             combinedCode: LT.65
             code: '65'
 LU:
-    iso2code: LU
-    iso3code: LUX
+    iso2Code: LU
+    iso3Code: LUX
     regions:
         LU.03:
             combinedCode: LU.03
@@ -5696,8 +5696,8 @@ LU:
             combinedCode: LU.01
             code: '01'
 LV:
-    iso2code: LV
-    iso3code: LVA
+    iso2Code: LV
+    iso3Code: LVA
     regions:
         LV.33:
             combinedCode: LV.33
@@ -6057,8 +6057,8 @@ LV:
             combinedCode: LV.F1
             code: F1
 LY:
-    iso2code: LY
-    iso3code: LBY
+    iso2Code: LY
+    iso3Code: LBY
     regions:
         LY.70:
             combinedCode: LY.70
@@ -6127,8 +6127,8 @@ LY:
             combinedCode: LY.84
             code: '84'
 MA:
-    iso2code: MA
-    iso3code: MAR
+    iso2Code: MA
+    iso3Code: MAR
     regions:
         MA.49:
             combinedCode: MA.49
@@ -6179,15 +6179,15 @@ MA:
             combinedCode: MA.EH
             code: EH
 MC:
-    iso2code: MC
-    iso3code: MCO
+    iso2Code: MC
+    iso3Code: MCO
     regions:
         MC.00:
             combinedCode: MC.00
             code: '00'
 MD:
-    iso2code: MD
-    iso3code: MDA
+    iso2Code: MD
+    iso3Code: MDA
     regions:
         MD.73:
             combinedCode: MD.73
@@ -6301,8 +6301,8 @@ MD:
             combinedCode: MD.60
             code: '60'
 ME:
-    iso2code: ME
-    iso3code: MNE
+    iso2Code: ME
+    iso3Code: MNE
     regions:
         ME.17:
             combinedCode: ME.17
@@ -6368,12 +6368,12 @@ ME:
             combinedCode: ME.01
             code: '01'
 MF:
-    iso2code: MF
-    iso3code: MAF
+    iso2Code: MF
+    iso3Code: MAF
     regions: {  }
 MG:
-    iso2code: MG
-    iso3code: MDG
+    iso2Code: MG
+    iso3Code: MDG
     regions:
         MG.7670842:
             combinedCode: MG.7670842
@@ -6442,8 +6442,8 @@ MG:
             combinedCode: MG.7670913
             code: '7670913'
 MH:
-    iso2code: MH
-    iso3code: MHL
+    iso2Code: MH
+    iso3Code: MHL
     regions:
         MH.007:
             combinedCode: MH.007
@@ -6545,8 +6545,8 @@ MH:
             combinedCode: MH.310
             code: '310'
 MK:
-    iso2code: MK
-    iso3code: MKD
+    iso2Code: MK
+    iso3Code: MKD
     regions:
         MK.E9:
             combinedCode: MK.E9
@@ -6801,8 +6801,8 @@ MK:
             combinedCode: MK.F5
             code: F5
 ML:
-    iso2code: ML
-    iso3code: MLI
+    iso2Code: ML
+    iso3Code: MLI
     regions:
         ML.08:
             combinedCode: ML.08
@@ -6832,8 +6832,8 @@ ML:
             combinedCode: ML.10
             code: '10'
 MM:
-    iso2code: MM
-    iso3code: MMR
+    iso2Code: MM
+    iso3Code: MMR
     regions:
         MM.12:
             combinedCode: MM.12
@@ -6878,8 +6878,8 @@ MM:
             combinedCode: MM.02
             code: '02'
 MN:
-    iso2code: MN
-    iso3code: MNG
+    iso2Code: MN
+    iso3Code: MNG
     regions:
         MN.19:
             combinedCode: MN.19
@@ -6948,8 +6948,8 @@ MN:
             combinedCode: MN.25
             code: '25'
 MO:
-    iso2code: MO
-    iso3code: MAC
+    iso2Code: MO
+    iso3Code: MAC
     regions:
         MO.02:
             combinedCode: MO.02
@@ -6958,8 +6958,8 @@ MO:
             combinedCode: MO.01
             code: '01'
 MP:
-    iso2code: MP
-    iso3code: MNP
+    iso2Code: MP
+    iso3Code: MNP
     regions:
         MP.100:
             combinedCode: MP.100
@@ -6974,15 +6974,15 @@ MP:
             combinedCode: MP.085
             code: '085'
 MQ:
-    iso2code: MQ
-    iso3code: MTQ
+    iso2Code: MQ
+    iso3Code: MTQ
     regions:
         MQ.MQ:
             combinedCode: MQ.MQ
             code: MQ
 MR:
-    iso2code: MR
-    iso3code: MRT
+    iso2Code: MR
+    iso3Code: MRT
     regions:
         MR.06:
             combinedCode: MR.06
@@ -7024,8 +7024,8 @@ MR:
             combinedCode: MR.07
             code: '07'
 MS:
-    iso2code: MS
-    iso3code: MSR
+    iso2Code: MS
+    iso3Code: MSR
     regions:
         MS.03:
             combinedCode: MS.03
@@ -7037,8 +7037,8 @@ MS:
             combinedCode: MS.01
             code: '01'
 MT:
-    iso2code: MT
-    iso3code: MLT
+    iso2Code: MT
+    iso3Code: MLT
     regions:
         MT.01:
             combinedCode: MT.01
@@ -7242,8 +7242,8 @@ MT:
             combinedCode: MT.60
             code: '60'
 MU:
-    iso2code: MU
-    iso3code: MUS
+    iso2Code: MU
+    iso3Code: MUS
     regions:
         MU.21:
             combinedCode: MU.21
@@ -7282,8 +7282,8 @@ MU:
             combinedCode: MU.23
             code: '23'
 MV:
-    iso2code: MV
-    iso3code: MDV
+    iso2Code: MV
+    iso3Code: MDV
     regions:
         MV.47:
             combinedCode: MV.47
@@ -7367,8 +7367,8 @@ MV:
             combinedCode: MV.54
             code: '54'
 MW:
-    iso2code: MW
-    iso3code: MWI
+    iso2Code: MW
+    iso3Code: MWI
     regions:
         MW.S:
             combinedCode: MW.S
@@ -7380,8 +7380,8 @@ MW:
             combinedCode: MW.C
             code: C
 MX:
-    iso2code: MX
-    iso3code: MEX
+    iso2Code: MX
+    iso3Code: MEX
     regions:
         MX.31:
             combinedCode: MX.31
@@ -7480,8 +7480,8 @@ MX:
             combinedCode: MX.01
             code: '01'
 MY:
-    iso2code: MY
-    iso3code: MYS
+    iso2Code: MY
+    iso3Code: MYS
     regions:
         MY.04:
             combinedCode: MY.04
@@ -7532,8 +7532,8 @@ MY:
             combinedCode: MY.17
             code: '17'
 MZ:
-    iso2code: MZ
-    iso3code: MOZ
+    iso2Code: MZ
+    iso3Code: MOZ
     regions:
         MZ.09:
             combinedCode: MZ.09
@@ -7569,8 +7569,8 @@ MZ:
             combinedCode: MZ.11
             code: '11'
 NA:
-    iso2code: NA
-    iso3code: NAM
+    iso2Code: NA
+    iso3Code: NAM
     regions:
         NA.28:
             combinedCode: NA.28
@@ -7612,8 +7612,8 @@ NA:
             combinedCode: NA.39
             code: '39'
 NC:
-    iso2code: NC
-    iso3code: NCL
+    iso2Code: NC
+    iso3Code: NCL
     regions:
         NC.02:
             combinedCode: NC.02
@@ -7625,8 +7625,8 @@ NC:
             combinedCode: NC.03
             code: '03'
 NE:
-    iso2code: NE
-    iso3code: NER
+    iso2Code: NE
+    iso3Code: NER
     regions:
         NE.07:
             combinedCode: NE.07
@@ -7653,12 +7653,12 @@ NE:
             combinedCode: NE.08
             code: '08'
 NF:
-    iso2code: NF
-    iso3code: NFK
+    iso2Code: NF
+    iso3Code: NFK
     regions: {  }
 NG:
-    iso2code: NG
-    iso3code: NGA
+    iso2Code: NG
+    iso3Code: NGA
     regions:
         NG.51:
             combinedCode: NG.51
@@ -7772,8 +7772,8 @@ NG:
             combinedCode: NG.44
             code: '44'
 NI:
-    iso2code: NI
-    iso3code: NIC
+    iso2Code: NI
+    iso3Code: NIC
     regions:
         NI.15:
             combinedCode: NI.15
@@ -7827,8 +7827,8 @@ NI:
             combinedCode: NI.18
             code: '18'
 NL:
-    iso2code: NL
-    iso3code: NLD
+    iso2Code: NL
+    iso3Code: NLD
     regions:
         NL.11:
             combinedCode: NL.11
@@ -7867,8 +7867,8 @@ NL:
             combinedCode: NL.16
             code: '16'
 NO:
-    iso2code: NO
-    iso3code: NOR
+    iso2Code: NO
+    iso3Code: NOR
     regions:
         NO.05:
             combinedCode: NO.05
@@ -7928,8 +7928,8 @@ NO:
             combinedCode: NO.01
             code: '01'
 NP:
-    iso2code: NP
-    iso3code: NPL
+    iso2Code: NP
+    iso3Code: NPL
     regions:
         NP.FR:
             combinedCode: NP.FR
@@ -7947,8 +7947,8 @@ NP:
             combinedCode: NP.WR
             code: WR
 NR:
-    iso2code: NR
-    iso3code: NRU
+    iso2Code: NR
+    iso3Code: NRU
     regions:
         NR.14:
             combinedCode: NR.14
@@ -7993,12 +7993,12 @@ NR:
             combinedCode: NR.01
             code: '01'
 NU:
-    iso2code: NU
-    iso3code: NIU
+    iso2Code: NU
+    iso3Code: NIU
     regions: {  }
 NZ:
-    iso2code: NZ
-    iso3code: NZL
+    iso2Code: NZ
+    iso3Code: NZL
     regions:
         NZ.G2:
             combinedCode: NZ.G2
@@ -8052,8 +8052,8 @@ NZ:
             combinedCode: NZ.G3
             code: G3
 OM:
-    iso2code: OM
-    iso3code: OMN
+    iso2Code: OM
+    iso3Code: OMN
     regions:
         OM.01:
             combinedCode: OM.01
@@ -8089,8 +8089,8 @@ OM:
             combinedCode: OM.11
             code: '11'
 PA:
-    iso2code: PA
-    iso3code: PAN
+    iso2Code: PA
+    iso3Code: PAN
     regions:
         PA.10:
             combinedCode: PA.10
@@ -8129,8 +8129,8 @@ PA:
             combinedCode: PA.12
             code: '12'
 PE:
-    iso2code: PE
-    iso3code: PER
+    iso2Code: PE
+    iso3Code: PER
     regions:
         PE.25:
             combinedCode: PE.25
@@ -8211,8 +8211,8 @@ PE:
             combinedCode: PE.03
             code: '03'
 PF:
-    iso2code: PF
-    iso3code: PYF
+    iso2Code: PF
+    iso3Code: PYF
     regions:
         PF.04:
             combinedCode: PF.04
@@ -8230,8 +8230,8 @@ PF:
             combinedCode: PF.05
             code: '05'
 PG:
-    iso2code: PG
-    iso3code: PNG
+    iso2Code: PG
+    iso3Code: PNG
     regions:
         PG.17:
             combinedCode: PG.17
@@ -8300,8 +8300,8 @@ PG:
             combinedCode: PG.22
             code: '22'
 PH:
-    iso2code: PH
-    iso3code: PHL
+    iso2Code: PH
+    iso3Code: PHL
     regions:
         PH.14:
             combinedCode: PH.14
@@ -8355,8 +8355,8 @@ PH:
             combinedCode: PH.NCR
             code: NCR
 PK:
-    iso2code: PK
-    iso3code: PAK
+    iso2Code: PK
+    iso3Code: PAK
     regions:
         PK.08:
             combinedCode: PK.08
@@ -8383,8 +8383,8 @@ PK:
             combinedCode: PK.06
             code: '06'
 PL:
-    iso2code: PL
-    iso3code: POL
+    iso2Code: PL
+    iso3Code: POL
     regions:
         PL.75:
             combinedCode: PL.75
@@ -8435,8 +8435,8 @@ PL:
             combinedCode: PL.73
             code: '73'
 PM:
-    iso2code: PM
-    iso3code: SPM
+    iso2Code: PM
+    iso3Code: SPM
     regions:
         PM.97502:
             combinedCode: PM.97502
@@ -8445,12 +8445,12 @@ PM:
             combinedCode: PM.97501
             code: '97501'
 PN:
-    iso2code: PN
-    iso3code: PCN
+    iso2Code: PN
+    iso3Code: PCN
     regions: {  }
 PR:
-    iso2code: PR
-    iso3code: PRI
+    iso2Code: PR
+    iso3Code: PRI
     regions:
         PR.001:
             combinedCode: PR.001
@@ -8687,8 +8687,8 @@ PR:
             combinedCode: PR.147
             code: '147'
 PS:
-    iso2code: PS
-    iso3code: PSE
+    iso2Code: PS
+    iso3Code: PSE
     regions:
         PS.GZ:
             combinedCode: PS.GZ
@@ -8697,8 +8697,8 @@ PS:
             combinedCode: PS.WE
             code: WE
 PT:
-    iso2code: PT
-    iso3code: PRT
+    iso2Code: PT
+    iso3Code: PRT
     regions:
         PT.19:
             combinedCode: PT.19
@@ -8761,8 +8761,8 @@ PT:
             combinedCode: PT.23
             code: '23'
 PW:
-    iso2code: PW
-    iso3code: PLW
+    iso2Code: PW
+    iso3Code: PLW
     regions:
         PW.11:
             combinedCode: PW.11
@@ -8813,8 +8813,8 @@ PW:
             combinedCode: PW.15
             code: '15'
 PY:
-    iso2code: PY
-    iso3code: PRY
+    iso2Code: PY
+    iso3Code: PRY
     regions:
         PY.17:
             combinedCode: PY.17
@@ -8871,8 +8871,8 @@ PY:
             combinedCode: PY.24
             code: '24'
 QA:
-    iso2code: QA
-    iso3code: QAT
+    iso2Code: QA
+    iso3Code: QAT
     regions:
         QA.08:
             combinedCode: QA.08
@@ -8908,15 +8908,15 @@ QA:
             combinedCode: QA.13
             code: '13'
 RE:
-    iso2code: RE
-    iso3code: REU
+    iso2Code: RE
+    iso3Code: REU
     regions:
         RE.RE:
             combinedCode: RE.RE
             code: RE
 RO:
-    iso2code: RO
-    iso3code: ROU
+    iso2Code: RO
+    iso3Code: ROU
     regions:
         RO.40:
             combinedCode: RO.40
@@ -9045,8 +9045,8 @@ RO:
             combinedCode: RO.43
             code: '43'
 RS:
-    iso2code: RS
-    iso3code: SRB
+    iso2Code: RS
+    iso3Code: SRB
     regions:
         RS.VO:
             combinedCode: RS.VO
@@ -9055,8 +9055,8 @@ RS:
             combinedCode: RS.SE
             code: SE
 RU:
-    iso2code: RU
-    iso3code: RUS
+    iso2Code: RU
+    iso3Code: RUS
     regions:
         RU.88:
             combinedCode: RU.88
@@ -9308,8 +9308,8 @@ RU:
             combinedCode: RU.93
             code: '93'
 RW:
-    iso2code: RW
-    iso3code: RWA
+    iso2Code: RW
+    iso3Code: RWA
     regions:
         RW.11:
             combinedCode: RW.11
@@ -9327,8 +9327,8 @@ RW:
             combinedCode: RW.15
             code: '15'
 SA:
-    iso2code: SA
-    iso3code: SAU
+    iso2Code: SA
+    iso3Code: SAU
     regions:
         SA.19:
             combinedCode: SA.19
@@ -9370,8 +9370,8 @@ SA:
             combinedCode: SA.02
             code: '02'
 SB:
-    iso2code: SB
-    iso3code: SLB
+    iso2Code: SB
+    iso3Code: SLB
     regions:
         SB.11:
             combinedCode: SB.11
@@ -9401,8 +9401,8 @@ SB:
             combinedCode: SB.13
             code: '13'
 SC:
-    iso2code: SC
-    iso3code: SYC
+    iso2Code: SC
+    iso3Code: SYC
     regions:
         SC.23:
             combinedCode: SC.23
@@ -9480,8 +9480,8 @@ SC:
             combinedCode: SC.28
             code: '28'
 SD:
-    iso2code: SD
-    iso3code: SDN
+    iso2Code: SD
+    iso3Code: SDN
     regions:
         SD.43:
             combinedCode: SD.43
@@ -9535,8 +9535,8 @@ SD:
             combinedCode: SD.61
             code: '61'
 SS:
-    iso2code: SS
-    iso3code: SSD
+    iso2Code: SS
+    iso3Code: SSD
     regions:
         SS.07:
             combinedCode: SS.07
@@ -9569,8 +9569,8 @@ SS:
             combinedCode: SS.08
             code: '08'
 SE:
-    iso2code: SE
-    iso3code: SWE
+    iso2Code: SE
+    iso3Code: SWE
     regions:
         SE.14:
             combinedCode: SE.14
@@ -9636,8 +9636,8 @@ SE:
             combinedCode: SE.28
             code: '28'
 SG:
-    iso2code: SG
-    iso3code: SGP
+    iso2Code: SG
+    iso3Code: SGP
     regions:
         SG.01:
             combinedCode: SG.01
@@ -9655,8 +9655,8 @@ SG:
             combinedCode: SG.03
             code: '03'
 SH:
-    iso2code: SH
-    iso3code: SHN
+    iso2Code: SH
+    iso3Code: SHN
     regions:
         SH.01:
             combinedCode: SH.01
@@ -9668,8 +9668,8 @@ SH:
             combinedCode: SH.02
             code: '02'
 SI:
-    iso2code: SI
-    iso3code: SVN
+    iso2Code: SI
+    iso3Code: SVN
     regions:
         SI.N5:
             combinedCode: SI.N5
@@ -10299,8 +10299,8 @@ SI:
             combinedCode: SI.P7
             code: P7
 SJ:
-    iso2code: SJ
-    iso3code: SJM
+    iso2Code: SJ
+    iso3Code: SJM
     regions:
         SJ.22:
             combinedCode: SJ.22
@@ -10309,8 +10309,8 @@ SJ:
             combinedCode: SJ.21
             code: '21'
 SK:
-    iso2code: SK
-    iso3code: SVK
+    iso2Code: SK
+    iso3Code: SVK
     regions:
         SK.03:
             combinedCode: SK.03
@@ -10337,8 +10337,8 @@ SK:
             combinedCode: SK.07
             code: '07'
 SL:
-    iso2code: SL
-    iso3code: SLE
+    iso2Code: SL
+    iso3Code: SLE
     regions:
         SL.04:
             combinedCode: SL.04
@@ -10353,8 +10353,8 @@ SL:
             combinedCode: SL.01
             code: '01'
 SM:
-    iso2code: SM
-    iso3code: SMR
+    iso2Code: SM
+    iso3Code: SMR
     regions:
         SM.09:
             combinedCode: SM.09
@@ -10384,8 +10384,8 @@ SM:
             combinedCode: SM.08
             code: '08'
 SN:
-    iso2code: SN
-    iso3code: SEN
+    iso2Code: SN
+    iso3Code: SEN
     regions:
         SN.12:
             combinedCode: SN.12
@@ -10430,8 +10430,8 @@ SN:
             combinedCode: SN.18
             code: '18'
 SO:
-    iso2code: SO
-    iso3code: SOM
+    iso2Code: SO
+    iso3Code: SOM
     regions:
         SO.20:
             combinedCode: SO.20
@@ -10488,8 +10488,8 @@ SO:
             combinedCode: SO.22
             code: '22'
 SR:
-    iso2code: SR
-    iso3code: SUR
+    iso2Code: SR
+    iso3Code: SUR
     regions:
         SR.19:
             combinedCode: SR.19
@@ -10522,8 +10522,8 @@ SR:
             combinedCode: SR.10
             code: '10'
 ST:
-    iso2code: ST
-    iso3code: STP
+    iso2Code: ST
+    iso3Code: STP
     regions:
         ST.02:
             combinedCode: ST.02
@@ -10532,8 +10532,8 @@ ST:
             combinedCode: ST.01
             code: '01'
 SV:
-    iso2code: SV
-    iso3code: SLV
+    iso2Code: SV
+    iso3Code: SLV
     regions:
         SV.14:
             combinedCode: SV.14
@@ -10578,12 +10578,12 @@ SV:
             combinedCode: SV.01
             code: '01'
 SX:
-    iso2code: SX
-    iso3code: SXM
+    iso2Code: SX
+    iso3Code: SXM
     regions: {  }
 SY:
-    iso2code: SY
-    iso3code: SYR
+    iso2Code: SY
+    iso3Code: SYR
     regions:
         SY.14:
             combinedCode: SY.14
@@ -10628,8 +10628,8 @@ SY:
             combinedCode: SY.01
             code: '01'
 SZ:
-    iso2code: SZ
-    iso3code: SWZ
+    iso2Code: SZ
+    iso3Code: SWZ
     regions:
         SZ.04:
             combinedCode: SZ.04
@@ -10644,12 +10644,12 @@ SZ:
             combinedCode: SZ.01
             code: '01'
 TC:
-    iso2code: TC
-    iso3code: TCA
+    iso2Code: TC
+    iso3Code: TCA
     regions: {  }
 TD:
-    iso2code: TD
-    iso3code: TCD
+    iso2Code: TD
+    iso3Code: TCD
     regions:
         TD.13:
             combinedCode: TD.13
@@ -10718,8 +10718,8 @@ TD:
             combinedCode: TD.26
             code: '26'
 TF:
-    iso2code: TF
-    iso3code: ATF
+    iso2Code: TF
+    iso3Code: ATF
     regions:
         TF.02:
             combinedCode: TF.02
@@ -10737,8 +10737,8 @@ TF:
             combinedCode: TF.04
             code: '04'
 TG:
-    iso2code: TG
-    iso3code: TGO
+    iso2Code: TG
+    iso3Code: TGO
     regions:
         TG.26:
             combinedCode: TG.26
@@ -10756,8 +10756,8 @@ TG:
             combinedCode: TG.23
             code: '23'
 TH:
-    iso2code: TH
-    iso3code: THA
+    iso2Code: TH
+    iso3Code: THA
     regions:
         TH.15:
             combinedCode: TH.15
@@ -10991,8 +10991,8 @@ TH:
             combinedCode: TH.81
             code: '81'
 TJ:
-    iso2code: TJ
-    iso3code: TJK
+    iso2Code: TJ
+    iso3Code: TJK
     regions:
         TJ.03:
             combinedCode: TJ.03
@@ -11010,8 +11010,8 @@ TJ:
             combinedCode: TJ.7280679
             code: '7280679'
 TK:
-    iso2code: TK
-    iso3code: TKL
+    iso2Code: TK
+    iso3Code: TKL
     regions:
         TK.N:
             combinedCode: TK.N
@@ -11023,8 +11023,8 @@ TK:
             combinedCode: TK.A
             code: A
 TL:
-    iso2code: TL
-    iso3code: TLS
+    iso2Code: TL
+    iso3Code: TLS
     regions:
         TL.VI:
             combinedCode: TL.VI
@@ -11066,8 +11066,8 @@ TL:
             combinedCode: TL.AL
             code: AL
 TM:
-    iso2code: TM
-    iso3code: TKM
+    iso2Code: TM
+    iso3Code: TKM
     regions:
         TM.02:
             combinedCode: TM.02
@@ -11085,8 +11085,8 @@ TM:
             combinedCode: TM.04
             code: '04'
 TN:
-    iso2code: TN
-    iso3code: TUN
+    iso2Code: TN
+    iso3Code: TUN
     regions:
         TN.37:
             combinedCode: TN.37
@@ -11161,8 +11161,8 @@ TN:
             combinedCode: TN.39
             code: '39'
 TO:
-    iso2code: TO
-    iso3code: TON
+    iso2Code: TO
+    iso3Code: TON
     regions:
         TO.03:
             combinedCode: TO.03
@@ -11180,8 +11180,8 @@ TO:
             combinedCode: TO.NI
             code: NI
 TR:
-    iso2code: TR
-    iso3code: TUR
+    iso2Code: TR
+    iso3Code: TUR
     regions:
         TR.66:
             combinedCode: TR.66
@@ -11427,8 +11427,8 @@ TR:
             combinedCode: TR.93
             code: '93'
 TT:
-    iso2code: TT
-    iso3code: TTO
+    iso2Code: TT
+    iso3Code: TTO
     regions:
         TT.11:
             combinedCode: TT.11
@@ -11479,8 +11479,8 @@ TT:
             combinedCode: TT.TUP
             code: TUP
 TV:
-    iso2code: TV
-    iso3code: TUV
+    iso2Code: TV
+    iso3Code: TUV
     regions:
         TV.NUI:
             combinedCode: TV.NUI
@@ -11507,8 +11507,8 @@ TV:
             combinedCode: TV.NKL
             code: NKL
 TW:
-    iso2code: TW
-    iso3code: TWN
+    iso2Code: TW
+    iso3Code: TWN
     regions:
         TW.01:
             combinedCode: TW.01
@@ -11523,8 +11523,8 @@ TW:
             combinedCode: TW.04
             code: '04'
 TZ:
-    iso2code: TZ
-    iso3code: TZA
+    iso2Code: TZ
+    iso3Code: TZA
     regions:
         TZ.19:
             combinedCode: TZ.19
@@ -11617,8 +11617,8 @@ TZ:
             combinedCode: TZ.30
             code: '30'
 UA:
-    iso2code: UA
-    iso3code: UKR
+    iso2Code: UA
+    iso3Code: UKR
     regions:
         UA.27:
             combinedCode: UA.27
@@ -11702,8 +11702,8 @@ UA:
             combinedCode: UA.01
             code: '01'
 UG:
-    iso2code: UG
-    iso3code: UGA
+    iso2Code: UG
+    iso3Code: UGA
     regions:
         UG.C:
             combinedCode: UG.C
@@ -11718,8 +11718,8 @@ UG:
             combinedCode: UG.W
             code: W
 UM:
-    iso2code: UM
-    iso3code: UMI
+    iso2Code: UM
+    iso3Code: UMI
     regions:
         UM.450:
             combinedCode: UM.450
@@ -11749,8 +11749,8 @@ UM:
             combinedCode: UM.400
             code: '400'
 US:
-    iso2code: US
-    iso3code: USA
+    iso2Code: US
+    iso3Code: USA
     regions:
         US.AR:
             combinedCode: US.AR
@@ -11906,8 +11906,8 @@ US:
             combinedCode: US.VA
             code: VA
 UY:
-    iso2code: UY
-    iso3code: URY
+    iso2Code: UY
+    iso3Code: URY
     regions:
         UY.19:
             combinedCode: UY.19
@@ -11967,8 +11967,8 @@ UY:
             combinedCode: UY.01
             code: '01'
 UZ:
-    iso2code: UZ
-    iso3code: UZB
+    iso2Code: UZ
+    iso3Code: UZB
     regions:
         UZ.09:
             combinedCode: UZ.09
@@ -12013,12 +12013,12 @@ UZ:
             combinedCode: UZ.01
             code: '01'
 VA:
-    iso2code: VA
-    iso3code: VAT
+    iso2Code: VA
+    iso3Code: VAT
     regions: {  }
 VC:
-    iso2code: VC
-    iso3code: VCT
+    iso2Code: VC
+    iso3Code: VCT
     regions:
         VC.05:
             combinedCode: VC.05
@@ -12039,8 +12039,8 @@ VC:
             combinedCode: VC.01
             code: '01'
 VE:
-    iso2code: VE
-    iso3code: VEN
+    iso2Code: VE
+    iso3Code: VEN
     regions:
         VE.23:
             combinedCode: VE.23
@@ -12118,12 +12118,12 @@ VE:
             combinedCode: VE.26
             code: '26'
 VG:
-    iso2code: VG
-    iso3code: VGB
+    iso2Code: VG
+    iso3Code: VGB
     regions: {  }
 VI:
-    iso2code: VI
-    iso3code: VIR
+    iso2Code: VI
+    iso3Code: VIR
     regions:
         VI.010:
             combinedCode: VI.010
@@ -12135,8 +12135,8 @@ VI:
             combinedCode: VI.030
             code: '030'
 VN:
-    iso2code: VN
-    iso3code: VNM
+    iso2Code: VN
+    iso3Code: VNM
     regions:
         VN.58:
             combinedCode: VN.58
@@ -12331,8 +12331,8 @@ VN:
             combinedCode: VN.93
             code: '93'
 VU:
-    iso2code: VU
-    iso3code: VUT
+    iso2Code: VU
+    iso3Code: VUT
     regions:
         VU.15:
             combinedCode: VU.15
@@ -12353,8 +12353,8 @@ VU:
             combinedCode: VU.18
             code: '18'
 WF:
-    iso2code: WF
-    iso3code: WLF
+    iso2Code: WF
+    iso3Code: WLF
     regions:
         WF.98613:
             combinedCode: WF.98613
@@ -12366,8 +12366,8 @@ WF:
             combinedCode: WF.98611
             code: '98611'
 WS:
-    iso2code: WS
-    iso3code: WSM
+    iso2Code: WS
+    iso3Code: WSM
     regions:
         WS.11:
             combinedCode: WS.11
@@ -12403,8 +12403,8 @@ WS:
             combinedCode: WS.01
             code: '01'
 YE:
-    iso2code: YE
-    iso3code: YEM
+    iso2Code: YE
+    iso3Code: YEM
     regions:
         YE.25:
             combinedCode: YE.25
@@ -12470,8 +12470,8 @@ YE:
             combinedCode: YE.26
             code: '26'
 YT:
-    iso2code: YT
-    iso3code: MYT
+    iso2Code: YT
+    iso3Code: MYT
     regions:
         YT.97601:
             combinedCode: YT.97601
@@ -12525,8 +12525,8 @@ YT:
             combinedCode: YT.97617
             code: '97617'
 ZA:
-    iso2code: ZA
-    iso3code: ZAF
+    iso2Code: ZA
+    iso3Code: ZAF
     regions:
         ZA.03:
             combinedCode: ZA.03
@@ -12556,8 +12556,8 @@ ZA:
             combinedCode: ZA.11
             code: '11'
 ZM:
-    iso2code: ZM
-    iso3code: ZMB
+    iso2Code: ZM
+    iso3Code: ZMB
     regions:
         ZM.01:
             combinedCode: ZM.01
@@ -12587,8 +12587,8 @@ ZM:
             combinedCode: ZM.02
             code: '02'
 ZW:
-    iso2code: ZW
-    iso3code: ZWE
+    iso2Code: ZW
+    iso3Code: ZWE
     regions:
         ZW.02:
             combinedCode: ZW.02
@@ -12621,10 +12621,10 @@ ZW:
             combinedCode: ZW.10
             code: '10'
 CS:
-    iso2code: CS
-    iso3code: SCG
+    iso2Code: CS
+    iso3Code: SCG
     regions: {  }
 AN:
-    iso2code: AN
-    iso3code: ANT
+    iso2Code: AN
+    iso3Code: ANT
     regions: {  }
