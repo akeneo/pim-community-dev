@@ -13,7 +13,6 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Doctrine\ORM\EntityManager;
 
 use Oro\Bundle\FormBundle\Autocomplete\ConverterInterface;
-use Oro\Bundle\FormBundle\Autocomplete\SearchHandlerInterface;
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 use Oro\Bundle\FormBundle\Autocomplete\SearchRegistry;
 

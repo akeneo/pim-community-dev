@@ -108,8 +108,7 @@ class ProductType extends AbstractType
 
 This option refers to a service configured with tag "oro_form.autocomplete.search_handler". Details of service configuration
 described [here](#search-handler-configuration). If this option is set next options will be inited if they are empty:
-*entity_class*, *configs.properties*, *converter* (if service referenced to "autocomplete_alias" implements Oro\Bundle\FormBundle\Autocomplete\ConverterInterface),
-*configs.route_name* ("oro_form_autocomplete_search"), *configs.extra_config* ("autocomplete")
+*entity_class*, *configs.properties*, *converter*, *configs.extra_config* ("autocomplete")
 
 **entity_class**
 
@@ -118,7 +117,7 @@ Entity class (optional if "autocomplete_alias" option is provided).
 **converter**
 
 Object that implements Oro\Bundle\FormBundle\Autocomplete\ConverterInterface that will be used to convert bind entity into array to use in select2 plugin.
-This option can be ommited if service referenced to "autocomplete_alias" implements Oro\Bundle\FormBundle\Autocomplete\ConverterInterface.
+This option can be ommited if option "autocomplete_alias" provided.
 
 **configs.properties**
 
@@ -165,11 +164,6 @@ Custom options that are used by select2 jQuery plugin.
 **configs.ajax.url**
 
 Custom URL that will be used instead of route_name to send search requests.
-
-**configs.search_handler**
-
-You can provide your instance of search handler (instance of Oro\Bundle\FormBundle\Autocomplete\SearchHandlerInterface) in this option.
-Otherwise it will be resolved using "autocomplete_alias" option.
 
 **configs.route_name**
 
