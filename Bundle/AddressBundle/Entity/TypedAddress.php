@@ -9,18 +9,16 @@ use Oro\Bundle\AddressBundle\Entity\AddressType;
 use Symfony\Component\Validator\ExecutionContext;
 
 /**
- * Address
+ * Typed Address
  *
- * @ORM\Table("oro_address_typed")
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Oro\Bundle\AddressBundle\Entity\Repository\AddressRepository")
+ * @ORM\MappedSuperclass
  */
 class TypedAddress extends AddressBase
 {
     /**
      * @var AddressType
      *
-     * @ORM\ManyToOne(targetEntity="AddressType")
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\AddressBundle\Entity\AddressType")
      * @Soap\ComplexType("string", nillable=true)
      */
     protected $type;
@@ -74,5 +72,15 @@ class TypedAddress extends AddressBase
     public function isPrimary()
     {
         return $this->primary;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEmpty()
+    {
+        return parent::isEmpty()
+            && empty($this->type)
+            && empty($this->primary);
     }
 }

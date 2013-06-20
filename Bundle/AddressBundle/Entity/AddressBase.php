@@ -8,6 +8,7 @@ use JMS\Serializer\Annotation\Type;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
+use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Symfony\Component\Validator\ExecutionContext;
 
 /**
@@ -399,15 +400,20 @@ class AddressBase extends AbstractEntityFlexible
      */
     public function isEmpty()
     {
-        foreach ($this as $val) {
-            if ($val instanceof Collection) {
-                if (!$val->isEmpty()) {
-                    return false;
-                }
-            } elseif (!empty($val)) {
-                return false;
-            }
+        $isEmpty = empty($this->firstName)
+            && empty($this->lastName)
+            && empty($this->street)
+            && empty($this->street2)
+            && empty($this->city)
+            && empty($this->state)
+            && empty($this->stateText)
+            && empty($this->country)
+            && empty($this->postalCode);
+        /** @var FlexibleValueInterface $value */
+        foreach ($this->values as $value) {
+            $flexibleValue = $value->getData();
+            $isEmpty = $isEmpty && empty($flexibleValue);
         }
-        return true;
+        return $isEmpty;
     }
 }

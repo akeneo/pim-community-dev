@@ -16,11 +16,18 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
     protected $property;
 
     /**
-     * @param string $property
+     * @var string
      */
-    public function __construct($property)
+    protected $entityClass;
+
+    /**
+     * @param string $property
+     * @param string $entityClass
+     */
+    public function __construct($property, $entityClass)
     {
         $this->property = $property;
+        $this->entityClass = $entityClass;
     }
 
     /**
@@ -49,7 +56,7 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
             /** @var Collection $addresses */
             $addresses = $data->$method();
             if ($addresses->isEmpty()) {
-                $addresses->add(new TypedAddress());
+                $addresses->add(new $this->entityClass());
             }
         }
     }
@@ -90,7 +97,6 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
 
         $addresses = array();
         $hasPrimary = false;
-        // Remove all empty addresses
         if ($data && array_key_exists($this->property, $data)) {
             foreach ($data[$this->property] as $addressRow) {
                 if (!$this->isArrayEmpty($addressRow)) {
@@ -108,10 +114,8 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
                 array_unshift($addresses, $first);
             }
             $data[$this->property] = $addresses;
-        } else {
-            unset($data[$this->property]);
+            $event->setData($data);
         }
-        $event->setData($data);
     }
 
     /**
