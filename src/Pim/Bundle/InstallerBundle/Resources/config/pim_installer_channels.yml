@@ -1,0 +1,4 @@
+channels:
+    'default':
+        'code':  'default'
+        'label': 'Default'

@@ -48,11 +48,11 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      */
     public function load(ObjectManager $manager)
     {
-        // change existing users (imported by user bundle itself)
         $users = $this->userRepository->findAll();
+        $scope = $this->userManager->getStorageManager()->getRepository('PimConfigBundle:Channel')->findOneBy(array());
         foreach ($users as $user) {
             $this->setFlexibleAttributeValueOption($user, 'cataloglocale', 'en_US');
-            $this->setFlexibleAttributeValueOption($user, 'catalogscope', 'default');
+            $this->setFlexibleAttributeValueOption($user, 'catalogscope', $scope->getCode());
             $this->persist($user);
         }
 

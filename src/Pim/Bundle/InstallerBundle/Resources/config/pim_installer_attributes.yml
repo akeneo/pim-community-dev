@@ -1,0 +1,14 @@
+'attributes':
+    'sku':
+        'labels':
+            'default': 'SKU'
+            'fr_FR':   'SKU'
+        'type': 'pim_product_text'
+        'description': 'the product sku'
+        'group': 'general'
+        'parameters':
+            'required': true
+            'unique': true
+            'useableAsGridColumn': true
+            'useableAsGridFilter': true
+

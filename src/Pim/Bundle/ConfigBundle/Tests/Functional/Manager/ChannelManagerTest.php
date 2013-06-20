@@ -47,9 +47,9 @@ class ChannelManagerTest extends WebTestCase
     public function testGetChannels()
     {
         $channels = $this->channelManager->getChannels();
-        $expectedChannels = array('default', 'ecommerce', 'mobile');
+        $expectedChannels = array('ecommerce', 'mobile');
 
-        $this->assertCount(3, $channels);
+        $this->assertCount(2, $channels);
         foreach ($channels as $channel) {
             $this->assertContains($channel->getCode(), $expectedChannels);
         }
@@ -61,9 +61,9 @@ class ChannelManagerTest extends WebTestCase
     public function testGetChannelChoices()
     {
         $channelChoices = $this->channelManager->getChannelChoices();
-        $expectedChannelChoices = array('default' => 'Default', 'ecommerce' => 'E-Commerce', 'mobile' => 'Mobile');
+        $expectedChannelChoices = array('ecommerce' => 'E-Commerce', 'mobile' => 'Mobile');
 
-        $this->assertCount(3, $channelChoices);
+        $this->assertCount(2, $channelChoices);
         foreach ($channelChoices as $code => $name) {
             $this->assertContains($name, $expectedChannelChoices);
             $this->assertArrayHasKey($code, $expectedChannelChoices);

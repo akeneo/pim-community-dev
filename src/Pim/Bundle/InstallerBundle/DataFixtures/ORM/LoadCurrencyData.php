@@ -1,13 +1,9 @@
 <?php
-namespace Pim\Bundle\ConfigBundle\DataFixtures\ORM;
+namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
-use Symfony\Component\Yaml\Yaml;
 use Pim\Bundle\ConfigBundle\Entity\Currency;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Load fixtures for currencies
@@ -17,26 +13,18 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class LoadCurrencyData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
+class LoadCurrencyData extends AbstractInstallerFixture
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
-        $configCurrencies = $this->container->getParameter('pim_config.currencies');
-        $activatedCurrencies = array('EUR', 'USD');
+        $allCurrencies = $this->container->getParameter('pim_config.currencies');
+        $activatedCurrencies = Yaml::parse(realpath($this->getFilePath()));
 
-        foreach ($configCurrencies['currencies'] as $currencyCode => $currencyName) {
-            $activated = in_array($currencyCode, $activatedCurrencies);
+        foreach ($allCurrencies['currencies'] as $currencyCode => $currencyName) {
+            $activated = in_array($currencyCode, $activatedCurrencies['currencies']);
             $currency = $this->createCurrency($currencyCode, $activated);
             $this->setReference('currency.'. $currencyCode, $currency);
             $manager->persist($currency);
@@ -59,6 +47,14 @@ class LoadCurrencyData extends AbstractFixture implements OrderedFixtureInterfac
         $currency->setActivated($activated);
 
         return $currency;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEntity()
+    {
+        return 'currencies';
     }
 
     /**

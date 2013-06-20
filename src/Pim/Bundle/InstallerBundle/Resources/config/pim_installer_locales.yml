@@ -1,0 +1,7 @@
+locales:
+    'en_US':
+        'fallback': null
+        'currency': 'USD'
+    'fr_FR':
+        'fallback': 'en_US'
+        'currency': 'EUR'

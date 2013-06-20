@@ -49,9 +49,9 @@ class CurrencyManagerTest extends WebTestCase
     public function testGetActiveCurrencies()
     {
         $currencies = $this->currencyManager->getActiveCurrencies();
-        $expectedCurrencies = array('EUR', 'USD', 'GBP', 'CAD');
+        $expectedCurrencies = array('EUR', 'USD');
 
-        $this->assertCount(4, $currencies);
+        $this->assertCount(2, $currencies);
         foreach ($currencies as $currency) {
             $this->assertContains($currency->getCode(), $expectedCurrencies);
         }
@@ -63,9 +63,9 @@ class CurrencyManagerTest extends WebTestCase
     public function testGetActiveCodes()
     {
         $currencies = $this->currencyManager->getActiveCodes();
-        $expectedCurrencies = array('EUR', 'USD', 'GBP', 'CAD');
+        $expectedCurrencies = array('EUR', 'USD');
 
-        $this->assertCount(4, $currencies);
+        $this->assertCount(2, $currencies);
         foreach ($currencies as $currency) {
             $this->assertContains($currency, $expectedCurrencies);
         }
@@ -77,8 +77,8 @@ class CurrencyManagerTest extends WebTestCase
     public function testGetCurrencies()
     {
         $currencies = $this->currencyManager->getCurrencies();
-        $expectedCurrencies = array('EUR', 'USD', 'GBP', 'CAD');
+        $expectedCurrencies = array('EUR', 'USD');
 
-        $this->assertGreaterThan(4, $currencies);
+        $this->assertGreaterThan(2, $currencies);
     }
 }

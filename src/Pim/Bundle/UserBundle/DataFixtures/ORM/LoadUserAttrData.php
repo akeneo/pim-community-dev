@@ -51,7 +51,7 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
         $attribute = $this->createAttributeWithOptions(
             'oro_flexibleentity_simpleselect',
             'cataloglocale',
-            self::getLocales(),
+            $this->getLocales(),
             true,
             'Catalog locale'
         );
@@ -60,7 +60,7 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
         $attribute = $this->createAttributeWithOptions(
             'oro_flexibleentity_simpleselect',
             'catalogscope',
-            self::getScopes(),
+            $this->getScopes(),
             true,
             'Catalog scope'
         );
@@ -132,7 +132,7 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
      *
      * @return array
      */
-    private static function getLocales()
+    private function getLocales()
     {
         return array('en_US');
     }
@@ -142,9 +142,15 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
      *
      * @return array
      */
-    private static function getScopes()
+    private function getScopes()
     {
-        return array('default');
+        $scopes = $this->userManager->getStorageManager()->getRepository('PimConfigBundle:Channel')->findAll();
+        $codes = array();
+        foreach ($scopes as $scope) {
+            $codes[]= $scope->getCode();
+        }
+
+        return $codes;
     }
 
     /**
@@ -164,7 +170,7 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
      */
     private function generateScope()
     {
-        return 'default';
+        return current($this->getLocales());
     }
 
     /**

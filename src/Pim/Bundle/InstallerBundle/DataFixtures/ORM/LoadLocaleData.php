@@ -1,13 +1,10 @@
 <?php
-namespace Pim\Bundle\ConfigBundle\DataFixtures\ORM;
+namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Pim\Bundle\ConfigBundle\Entity\Currency;
 use Pim\Bundle\ConfigBundle\Entity\Locale;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Load fixtures for locales
@@ -17,28 +14,19 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class LoadLocaleData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
+class LoadLocaleData extends AbstractInstallerFixture
 {
-    /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
-        $locale = $this->createLocale('en_US', null, 'USD');
-        $manager->persist($locale);
+        $activatedLocales = Yaml::parse(realpath($this->getFilePath()));
+
+        foreach ($activatedLocales['locales'] as $code => $data) {
+            $locale = $this->createLocale($code, $data['fallback'], $data['currency']);
+            $manager->persist($locale);
+        }
 
         $manager->flush();
     }
@@ -58,14 +46,18 @@ class LoadLocaleData extends AbstractFixture implements OrderedFixtureInterface,
         $locale->setCode($code);
         $locale->setFallback($fallback);
         $locale->setActivated($activated);
-
-        // prepare currencies
-        $localeCurrency = $this->getReference('currency.'. $currencyCode);
-        $locale->setDefaultCurrency($localeCurrency);
-
+        $locale->setDefaultCurrency($this->getReference('currency.'. $currencyCode));
         $this->setReference('locale.'. $code, $locale);
 
         return $locale;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEntity()
+    {
+        return 'locales';
     }
 
     /**

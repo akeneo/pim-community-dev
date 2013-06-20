@@ -1,12 +1,10 @@
 <?php
-namespace Pim\Bundle\ConfigBundle\DataFixtures\ORM;
+namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
-use Pim\Bundle\ConfigBundle\Entity\Channel;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Pim\Bundle\ConfigBundle\Entity\Channel;
+use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Config\FileLocator;
 
 /**
  * Load fixtures for channels
@@ -15,15 +13,20 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LoadChannelData extends AbstractFixture implements OrderedFixtureInterface
+class LoadChannelData extends AbstractInstallerFixture
 {
     /**
      * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
-        $channel = $this->createChannel('default', 'Default');
-        $manager->persist($channel);
+        $configuration = Yaml::parse(realpath($this->getFilePath()));
+
+        foreach ($configuration['channels'] as $data) {
+            $channel = $this->createChannel($data['code'], $data['label']);
+            $manager->persist($channel);
+        }
+
         $manager->flush();
     }
 
@@ -42,6 +45,14 @@ class LoadChannelData extends AbstractFixture implements OrderedFixtureInterface
         $this->setReference('channel.'. $code, $channel);
 
         return $channel;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEntity()
+    {
+        return 'channels';
     }
 
     /**
