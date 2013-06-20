@@ -242,6 +242,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         $this->getProductManager()->getStorageManager()->flush();
 
         // prepare user and data audit TODO : we should inject the user ?
+        /*
         $user = $this->getAdminUser();
         $products = $this->getProductManager()->getFlexibleRepository()->findAll();
         foreach ($products as $product) {
@@ -255,6 +256,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $logEntry->setObjectId($product->getId());
             $this->getProductManager()->getStorageManager()->persist($logEntry);
         }
+        */
         $this->getProductManager()->getStorageManager()->flush();
     }
 
