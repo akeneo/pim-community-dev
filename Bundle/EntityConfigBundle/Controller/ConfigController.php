@@ -99,7 +99,7 @@ class ConfigController extends Controller
 
         $formBuilder = $this->createFormBuilder();
         $data        = array();
-        $dataBlocks  = array();
+        $formConfig  = array();
         foreach ($configManager->getProviders() as $provider) {
             $fields = array();
             foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
@@ -111,13 +111,13 @@ class ConfigController extends Controller
                 }
             }
             if (count($fields)) {
-                $dataBlocks[] = array(
+                $formConfig[] = array(
                     'title'     => ucfirst($provider->getScope()),
-                    //'class' => 'active',
+                    'class' => '',
                     'subblocks' => array(
                         array(
                             'title'  => '',
-                            //'fields' => $fields,
+                            'fields' => $fields,
                             'data'   => array(),
                         )
                     )
@@ -135,11 +135,12 @@ class ConfigController extends Controller
             if ($form->isValid()) {
                 var_dump($form->getData());
             }
+            die('asd');
         }
 
         return array(
             'form' => $form->createView(),
-            'dataBlocks' => $dataBlocks
+            'formConfig' => $formConfig
         );
     }
 
