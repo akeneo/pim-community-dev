@@ -152,7 +152,7 @@ Oro.Navigation = Backbone.Router.extend({
         if (this.url) {
             this.beforeRequest();
             var i;
-            if ((i = this.contentCacheUrls.indexOf(this.removePageStateParam(this.url))) !== -1) {
+            if ((i = _.indexOf(this.contentCacheUrls, this.removePageStateParam(this.url))) !== -1) {
                 if (this.contentCache[i]) {
                     this.handleResponse(this.contentCache[i], {fromCache: true});
                     this.clearPageCache(i);
@@ -192,7 +192,7 @@ Oro.Navigation = Backbone.Router.extend({
         if (this.contentCacheUrls.length === this.maxCachedPages) {
             this.clearPageCache(0);
         }
-        var j = this.contentCacheUrls.indexOf(this.removePageStateParam(this.url));
+        var j = _.indexOf(this.contentCacheUrls, this.removePageStateParam(this.url));
         if (j !== -1) {
             this.clearPageCache(j);
         }
