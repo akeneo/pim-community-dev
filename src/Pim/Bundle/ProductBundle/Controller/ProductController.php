@@ -158,7 +158,8 @@ class ProductController extends Controller
                         'pim_product_product_edit',
                         array(
                             'id'         => $product->getId(),
-                            'dataLocale' => $this->getDataLocale()
+                            'dataLocale' => $this->getDataLocale(),
+                            'tab'        => $request->query->get('tab')
                         )
                     )
                 );
@@ -176,6 +177,7 @@ class ProductController extends Controller
             'trees'          => $trees,
             'created'        => $auditManager->getFirstLogEntry($product),
             'updated'        => $auditManager->getLastLogEntry($product),
+            'tab'            => $request->query->get('tab')
         );
     }
 
