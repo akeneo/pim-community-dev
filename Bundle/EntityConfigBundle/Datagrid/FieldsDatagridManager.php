@@ -24,6 +24,11 @@ class FieldsDatagridManager extends DatagridManager
     protected $fieldsCollection;
 
     /**
+     * @var ConfigEntity id
+     */
+    protected $entityId;
+
+    /**
      * @var ConfigManager
      */
     protected $configManager;
@@ -65,6 +70,22 @@ class FieldsDatagridManager extends DatagridManager
             )
         );
         $fieldsCollection->add($fieldObjectId);
+
+        $fieldEntityId = new FieldDescription();
+        $fieldEntityId->setName('entity');
+        $fieldEntityId->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
+                'label'       => 'entity Id',
+                'field_name'  => 'entity_id',
+                'filter_type' => FilterInterface::TYPE_NUMBER,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => false,
+                'show_filter' => false,
+            )
+        );
+        $fieldsCollection->add($fieldEntityId);
 
         $fieldObjectName = new FieldDescription();
         $fieldObjectName->setName('code');
@@ -139,12 +160,22 @@ class FieldsDatagridManager extends DatagridManager
     }
 
     /**
+     * @param $id
+     */
+    public function setEntityId($id)
+    {
+        $this->entityId = $id;
+    }
+
+    /**
      * @return ProxyQueryInterface
      */
     protected function createQuery()
     {
         /** @var ProxyQueryInterface|Query $query */
         $query = parent::createQuery();
+        $query->innerJoin('cf.entity', 'ce', 'WITH', 'ce.id=' . $this->entityId);
+        $query->addSelect('ce.id as entity_id', true);
 
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getFieldItems() as $code => $item) {
