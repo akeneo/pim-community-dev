@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Pim\Bundle\ProductBundle\Entity\Category;
 use Pim\Bundle\ProductBundle\Manager\MediaManager;
-use Pim\Bundle\ProductBundle\Entity\Product;
+use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\ProductBundle\Form\Type\ProductType;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
@@ -251,14 +251,16 @@ class ProductController extends Controller
     /**
      * Remove product
      *
-     * @param Product $product The product to remove
+     * @param integer $id Id of the product to remove
      *
      * @Route("/remove/{id}", requirements={"id"="\d+"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function removeAction(Product $product)
+    public function removeAction($id)
     {
+        $product  = $this->findProductOr404($id);
+
         $em = $this->getProductManager()->getStorageManager();
         $em->remove($product);
         $em->flush();
@@ -314,7 +316,7 @@ class ProductController extends Controller
      * List categories associated with the provided product and descending from the category
      * defined by the parent parameter.
      *
-     * @param Product  $product
+     * @param integer  $id     Product id
      * @param Category $parent The parent category
      *
      * httpparam include_category if true, will include the parentCategory in the response
@@ -325,10 +327,10 @@ class ProductController extends Controller
      * @Template()
      *
      * @return array
-     *
      */
-    public function listCategoriesAction(Product $product, Category $parent)
+    public function listCategoriesAction($id, Category $parent)
     {
+        $product = $this->findProductOr404($id);
         $categories = null;
 
         $includeParent = $this->getRequest()->get('include_parent', false);
@@ -482,7 +484,7 @@ class ProductController extends Controller
      *
      * @param int $id the product id
      *
-     * @return Pim\Bundle\ProductBundle\Entity\Product
+     * @return Pim\Bundle\ProductBundle\Model\ProductInterface
      *
      * @throw Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
