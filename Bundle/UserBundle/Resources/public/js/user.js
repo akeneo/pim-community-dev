@@ -46,7 +46,7 @@ $(function() {
         }
 
         var scrollable = $('.scrollable-container');
-        var container = scrollable.length ? scrollable.get(scrollable.length - 1) : '#container';
+        var container = scrollable.length ? '.scrollable-container:last' : '#container';
         new Oro.widget.DialogView({
             url: $(this).attr('href'),
             dialogOptions: {

@@ -156,10 +156,13 @@
             var filtersList = new Oro.Datagrid.Filter.List(filterListParameters);
             $(datagridFiltersSelector).html(filtersList.render().$el);
 
-            // Register router and start history
-            var router = new Oro.Datagrid.Router({
-                collection: datagridCollection
-            });
+            {# Don't use router when grid is embedded in dialog #}
+            {% if app.request.get('_widgetContainer') != 'dialog' %}
+                // Register router and start history
+                var router = new Oro.Datagrid.Router({
+                    collection: datagridCollection
+                });
+            {% endif %}
         };
 
         initDatagrid(

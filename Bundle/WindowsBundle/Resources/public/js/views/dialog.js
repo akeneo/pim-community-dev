@@ -25,9 +25,15 @@ Oro.widget.DialogView = Backbone.View.extend({
      * Initialize dialog
      */
     initialize: function(options) {
+        if (options && options.dialogOptions && options.dialogOptions.appendTo && !_.isString(options.dialogOptions.appendTo)) {
+            throw Error('The option "dialogOptions.appendTo" must be a string.');
+        }
         this._initModel(options);
 
-        this.dialogContent = this.$el.clone(true);
+        // TODO Leads to duplication DOM nodes, but not tested with forms
+        // this.dialogContent = this.$el.clone(true);
+
+        this.dialogContent = this.$el;
         this._initEmbeddedForm();
 
         var runner = function(handlers) {
