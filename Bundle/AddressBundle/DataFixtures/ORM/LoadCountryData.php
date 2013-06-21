@@ -144,16 +144,12 @@ class LoadCountryData extends AbstractFixture implements ContainerAwareInterface
             $country->setIso3Code($countryData['iso3Code']);
         }
 
-        if ($locale) {
-            $countryName = $this->translator->trans(
-                $countryData['iso2Code'],
-                array(),
-                self::COUNTRY_DOMAIN,
-                $locale
-            );
-        } else {
-            $countryName = $countryData['iso2Code'];
-        }
+        $countryName = $this->translator->trans(
+            $countryData['iso2Code'],
+            array(),
+            self::COUNTRY_DOMAIN,
+            $locale
+        );
 
         $country->setLocale($locale)
             ->setName($countryName);
@@ -181,16 +177,12 @@ class LoadCountryData extends AbstractFixture implements ContainerAwareInterface
                 ->setCountry($country);
         }
 
-        if ($locale) {
-            $regionName = $this->translator->trans(
-                $regionData['combinedCode'],
-                array(),
-                self::COUNTRY_DOMAIN,
-                $locale
-            );
-        } else {
-            $regionName = $regionData['combinedCode'];
-        }
+        $regionName = $this->translator->trans(
+            $regionData['combinedCode'],
+            array(),
+            self::COUNTRY_DOMAIN,
+            $locale
+        );
 
         $region->setLocale($locale)
             ->setName($regionName);
@@ -210,8 +202,6 @@ class LoadCountryData extends AbstractFixture implements ContainerAwareInterface
         $this->regionRepository  = $manager->getRepository('OroAddressBundle:Region');
 
         $countryLocales = $this->getAvailableCountryLocales();
-        // null element performs entity initialization and save of basic not translatable entity
-        array_unshift($countryLocales, null);
 
         foreach ($countryLocales as $locale) {
             foreach ($countries as $countryData) {
