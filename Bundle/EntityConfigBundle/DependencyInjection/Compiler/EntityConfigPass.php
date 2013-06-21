@@ -31,8 +31,7 @@ class EntityConfigPass implements CompilerPassInterface
                 );
             }
 
-            $configContainerDefinition = $container->findDefinition('oro_entity_config.entity_config.' . $tag[0]['scope']);
-            if (!$configContainerDefinition) {
+            if (!$container->hasDefinition('oro_entity_config.entity_config.' . $tag[0]['scope'])) {
                 throw new RuntimeException(sprintf(
                     "Resources/config/entity_config.yml not found or has wrong 'scope'. Service '%s' with tag '%s' and tag-scope '%s' ",
                     $id, self::TAG_NAME, $tag[0]['scope']

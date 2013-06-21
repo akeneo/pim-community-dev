@@ -30,8 +30,7 @@ class ServiceProxyPass implements CompilerPassInterface
                 );
             }
 
-            $targetService = $container->getDefinition($tag[0]['service']);
-            if (!$targetService) {
+            if (!$container->hasDefinition($tag[0]['service'])) {
                 throw new RuntimeException(sprintf(
                     "Target service '%s' is undefined. Proxy Service '%s' with tag '%s' and tag-service '%s' ",
                     $tag[0]['service'], $id, self::TAG_NAME, $tag[0]['service']
