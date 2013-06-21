@@ -64,10 +64,6 @@ _imagine:
     resource: .
     type:     imagine
 
-oro_address:
-    resource: "@OroAddressBundle/Resources/config/routing.yml"
-    prefix:   /
-
 _bazinga_exposetranslation:
     resource: "@BazingaExposeTranslationBundle/Resources/config/routing/routing.yml"
 
