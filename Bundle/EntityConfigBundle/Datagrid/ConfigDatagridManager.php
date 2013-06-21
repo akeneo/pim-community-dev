@@ -89,7 +89,8 @@ class ConfigDatagridManager extends DatagridManager
                     $fieldObjectName = new FieldDescription();
                     $fieldObjectName->setName($code);
                     $fieldObjectName->setOptions(array_merge($item['grid'], array(
-                        'expression' => 'cev' . $code . '.value'
+                        'expression' => 'cev' . $code . '.value',
+                        'field_name' => $code,
                     )));
                     $fieldsCollection->add($fieldObjectName);
                 }

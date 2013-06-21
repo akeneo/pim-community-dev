@@ -1,0 +1,36 @@
+oro_entity_config:
+    scope:                              entity
+
+    entity:
+        items:
+            label:
+                grid:
+                    type:               string
+                    label:              'Label'
+                    filter_type:        oro_grid_orm_string
+                    required:           true
+                    sortable:           true
+                    filterable:         true
+                    show_filter:        true
+                form:
+                    type:               text
+                    options:
+                        required:       true
+            icon:
+                grid:
+                    type:               string
+                    label:              'Icon'
+                    filter_type:        oro_grid_orm_string
+                    required:           true
+                    sortable:           true
+                    filterable:         true
+                    show_filter:        true
+                form:
+                    type:               text
+                    options:
+                        required:       true
+            description:
+                form:
+                    type:               textarea
+                    options:
+                        required:       false

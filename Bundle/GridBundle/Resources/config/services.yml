@@ -43,6 +43,10 @@ services:
         class:     %oro_grid.action.factory.class%
         arguments: ["@service_container", ~]
 
+    oro_grid.config.datagrid_config_provider:
+        tags:
+            - { name: oro_entity_config.provider, scope: datagrid }
+
     oro_grid.renderer:
         class:     %oro_grid.renderer.class%
         arguments: ["@templating.engine.php", "OroGridBundle:Datagrid:list.json.php"]

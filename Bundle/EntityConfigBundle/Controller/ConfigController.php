@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Controller;
 
+use Oro\Bundle\EntityConfigBundle\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -82,15 +83,31 @@ class ConfigController extends Controller
     }
 
     /**
-     * Lists all Flexible entities.
-     *
-     * @Route("/update/{className}", name="oro_entityconfig_update")
+     * @Route("/update/{id}", name="oro_entityconfig_update")
      * @Template()
      */
-    public function updateAction($className)
+    public function updateAction(ConfigEntity $entity)
     {
-        var_dump($className);
-        die;
+        /** @var ConfigManager $configManager */
+        $configManager = $this->get('oro_entity_config.config_manager');
+
+        $formBuilder = $this->createFormBuilder();
+        $data        = array();
+        foreach ($configManager->getProviders() as $provider) {
+            foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
+                if (isset($item['form']) && isset($item['form']['type']) && isset($item['form']['options'])) {
+                    $formBuilder->add($code, $item['form']['type'], $item['form']['options']);
+                    $config = $provider->getConfig($entity->getClassName());
+                    $data[$code] = $config->get($code);
+                }
+            }
+        }
+
+        $formBuilder->setData($data);
+
+        return array(
+            'form' => $formBuilder->getForm()->createView()
+        );
     }
 
     /**

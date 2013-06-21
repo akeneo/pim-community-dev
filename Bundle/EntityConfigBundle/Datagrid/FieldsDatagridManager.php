@@ -66,34 +66,35 @@ class FieldsDatagridManager extends DatagridManager
         );
         $fieldsCollection->add($fieldObjectId);
 
-//        $fieldObjectName = new FieldDescription();
-//        $fieldObjectName->setName('className');
-//        $fieldObjectName->setOptions(
-//            array(
-//                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-//                'label'       => 'Class Name',
-//                'field_name'  => 'className',
-//                'filter_type' => FilterInterface::TYPE_STRING,
-//                'required'    => false,
-//                'sortable'    => true,
-//                'filterable'  => false,
-//                'show_filter' => false,
-//            )
-//        );
-//        $fieldsCollection->add($fieldObjectName);
+        $fieldObjectName = new FieldDescription();
+        $fieldObjectName->setName('code');
+        $fieldObjectName->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => 'Field Name',
+                'field_name'  => 'code',
+                'filter_type' => FilterInterface::TYPE_STRING,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => false,
+                'show_filter' => false,
+            )
+        );
+        $fieldsCollection->add($fieldObjectName);
 
-//        foreach ($this->configManager->getProviders() as $provider) {
-//            foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
-//                if (isset($item['grid'])) {
-//                    $fieldObjectName = new FieldDescription();
-//                    $fieldObjectName->setName($code);
-//                    $fieldObjectName->setOptions(array_merge($item['grid'], array(
-//                        'expression' => 'cev' . $code . '.value'
-//                    )));
-//                    $fieldsCollection->add($fieldObjectName);
-//                }
-//            }
-//        }
+        foreach ($this->configManager->getProviders() as $provider) {
+            foreach ($provider->getConfigContainer()->getFieldItems() as $code => $item) {
+                if (isset($item['grid'])) {
+                    $fieldObjectName = new FieldDescription();
+                    $fieldObjectName->setName($code);
+                    $fieldObjectName->setOptions(array_merge($item['grid'], array(
+                        'expression' => 'cfv_' . $code . '.value',
+                        'field_name' => $code,
+                    )));
+                    $fieldsCollection->add($fieldObjectName);
+                }
+            }
+        }
     }
 
     /**
@@ -140,19 +141,19 @@ class FieldsDatagridManager extends DatagridManager
     /**
      * @return ProxyQueryInterface
      */
-//    protected function createQuery()
-//    {
-//        /** @var ProxyQueryInterface|Query $query */
-//        $query = parent::createQuery();
-//
-//        foreach ($this->configManager->getProviders() as $provider) {
-//            foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
-//                $alias = 'cev'. $code;
-//                $query->leftJoin('ce.values', $alias, 'WITH', $alias . ".code='".$code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'");
-//                $query->addSelect($alias . '.value as '. $code, true);
-//            }
-//        }
-//
-//        return $query;
-//    }
+    protected function createQuery()
+    {
+        /** @var ProxyQueryInterface|Query $query */
+        $query = parent::createQuery();
+
+        foreach ($this->configManager->getProviders() as $provider) {
+            foreach ($provider->getConfigContainer()->getFieldItems() as $code => $item) {
+                $alias = 'cfv_'. $code;
+                $query->leftJoin('cf.values', $alias, 'WITH', $alias . ".code='".$code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'");
+                $query->addSelect($alias . '.value as '. $code, true);
+            }
+        }
+
+        return $query;
+    }
 }

@@ -26,4 +26,4 @@ services:
               entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\ConfigField
               entity_hint:                      fields
               route_name:                       oro_entityconfig_fields
-              query_entity_alias:               ef
+              query_entity_alias:               cf

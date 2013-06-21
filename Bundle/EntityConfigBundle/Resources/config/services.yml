@@ -22,6 +22,10 @@ services:
         arguments:                                              [%oro_entity_config.cache_dir.config%]
         public:                                                 false
 
+    oro_entity_config.config.entity_config_provider:
+        tags:
+            - { name: oro_entity_config.provider, scope: entity }
+
     oro_entity_config.command:
         class:                                                  %oro_entity_config.command.setup.class%
         calls:
