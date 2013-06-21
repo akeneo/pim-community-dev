@@ -241,26 +241,10 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
                 'query' => array('query' => 'search', 'page' => 1, 'perPage' => 100),
                 'expectedResult' => array(
                     'results' => array(
-                        array(
-                            self::TEST_ID_FIELD => 1,
-                            'name' => 'John',
-                            'email' => 'john@example.com'
-                        ),
-                        array(
-                            self::TEST_ID_FIELD => 2,
-                            'name' => 'Jane',
-                            'email' => 'jane@example.com'
-                        ),
-                        array(
-                            self::TEST_ID_FIELD => 3,
-                            'name' => 'Jack',
-                            'email' => null
-                        ),
-                        array(
-                            self::TEST_ID_FIELD => 4,
-                            'name' => 'Bill',
-                            'email' => 'bill@example.com'
-                        )
+                        array(self::TEST_ID_FIELD => 1, 'name' => 'John', 'email' => 'john@example.com'),
+                        array(self::TEST_ID_FIELD => 2, 'name' => 'Jane', 'email' => 'jane@example.com'),
+                        array(self::TEST_ID_FIELD => 3, 'name' => 'Jack', 'email' => null),
+                        array(self::TEST_ID_FIELD => 4, 'name' => 'Bill', 'email' => 'bill@example.com')
                     ),
                     'more' => false
                 ),
@@ -290,23 +274,12 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
                         array(),
                         array(
                             $this->createMockEntity(
-                                array(
-                                    self::TEST_ID_FIELD => 1,
-                                    'name' => 'John',
-                                    'email' => 'john@example.com'
-                                )
+                                array(self::TEST_ID_FIELD => 1, 'name' => 'John', 'email' => 'john@example.com')
                             ),
                             $this->createMockEntity(
-                                array(
-                                    self::TEST_ID_FIELD => 2,
-                                    'name' => 'Jane',
-                                    'email' => 'jane@example.com'
-                                )
+                                array(self::TEST_ID_FIELD => 2, 'name' => 'Jane', 'email' => 'jane@example.com')
                             ),
-                            array(
-                                self::TEST_ID_FIELD => 3,
-                                'name' => 'Jack'
-                            ),
+                            array(self::TEST_ID_FIELD => 3,'name' => 'Jack'),
                             $this->createStubEntityWithProperties(
                                 array(
                                     self::TEST_ID_FIELD => 4,
@@ -323,18 +296,14 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
                 'expectedResult' => array(
                     'results' => array(
                         array(
-                            self::TEST_ID_FIELD => 1,
-                            'name' => 'John',
-                            'email' => 'john@example.com'
+                            self::TEST_ID_FIELD => 1, 'name' => 'John', 'email' => 'john@example.com'
                         )
                     ),
                     'more' => true
                 ),
                 'expectIndexerCalls' => array(
                     array(
-                        'simpleSearch',
-                        array('search', 0, 2, self::TEST_ENTITY_SEARCH_ALIAS),
-                        'getMockSearchResult'
+                        'simpleSearch', array('search', 0, 2, self::TEST_ENTITY_SEARCH_ALIAS), 'getMockSearchResult'
                     )
                 ),
                 'expectSearchResultCalls' => array(
@@ -357,18 +326,10 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
                         array(),
                         array(
                             $this->createMockEntity(
-                                array(
-                                    self::TEST_ID_FIELD => 1,
-                                    'name' => 'John',
-                                    'email' => 'john@example.com'
-                                )
+                                array(self::TEST_ID_FIELD => 1, 'name' => 'John', 'email' => 'john@example.com')
                             ),
                             $this->createMockEntity(
-                                array(
-                                    self::TEST_ID_FIELD => 2,
-                                    'name' => 'Jane',
-                                    'email' => 'jane@example.com'
-                                )
+                                array(self::TEST_ID_FIELD => 2, 'name' => 'Jane', 'email' => 'jane@example.com')
                             )
                         )
                     )
