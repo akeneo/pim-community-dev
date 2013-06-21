@@ -39,13 +39,14 @@ class TranslatableFieldType extends AbstractType
     /**
      * @param ValidatorInterface $validator
      * @param LocaleManager      $localeManager
-     * @param unknown_type       $defaultLocale
+     * @param string             $defaultLocale
      */
     public function __construct(ValidatorInterface $validator, LocaleManager $localeManager, $defaultLocale)
     {
         $this->validator     = $validator;
         $this->localeManager = $localeManager;
         $this->defaultLocale = $defaultLocale;
+        $this->subscriber    = $subscriber;
     }
 
     /**
@@ -69,15 +70,12 @@ class TranslatableFieldType extends AbstractType
             throw new FormException('required locale(s) must be an array');
         }
 
-        $translationFactory = new TranslationFactory($options['translation_class'], $options['entity_class'], $options['field']);
-
         $subscriber = new AddTranslatableFieldSubscriber(
             $builder->getFormFactory(),
             $this->validator,
-            $translationFactory,
             $options
         );
-        $builder->addEventSubscriber($subscriber);
+        $builder->addEventSubscriber($this->subscriber);
     }
 
     /**

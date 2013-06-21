@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\TranslationBundle\Form\Subscriber;
 
-use Pim\Bundle\TranslationBundle\Exception\MissingOptionException;
-
 use Symfony\Component\Form\Event\DataEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormError;
@@ -11,6 +9,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslatableEntity;
+use Pim\Bundle\TranslationBundle\Exception\MissingOptionException;
 use Pim\Bundle\TranslationBundle\Factory\TranslationFactory;
 
 /**
@@ -52,12 +51,17 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      * @param TranslationFactory   $translationFactory
      * @param multitype:mixed      $options
      */
-    public function __construct(FormFactoryInterface $formFactory, ValidatorInterface $validator, TranslationFactory $translationFactory, array $options)
+    public function __construct(FormFactoryInterface $formFactory, ValidatorInterface $validator, array $options)
     {
         $this->formFactory        = $formFactory;
         $this->validator          = $validator;
-        $this->translationFactory = $translationFactory;
         $this->options            = $options;
+
+        $this->translationFactory = new TranslationFactory(
+            $this->getOption('translation_class'),
+            $this->getOption('entity_class'),
+            $this->getOption('field')
+        );
     }
 
     /**
