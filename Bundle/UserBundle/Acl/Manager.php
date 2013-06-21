@@ -53,7 +53,15 @@ class Manager extends AclManipulator implements ManagerInterface
 
             if (!$isAdd) {
                 $aclIds = $this->getAclRepo()->getAllowedAclResourcesForRoles(array($role));
-                $aclIds = array_diff($aclIds, array($aclId, 'root'));
+                $skipAcls = array($aclId, 'root');
+
+                foreach ($aclIds as $currentAclId) {
+                    $resource = $this->getAclRepo()->findOneBy(array('id' => $currentAclId));
+                    $skipAcls = $this->filterAclResources($resource, $aclId, $resource->getId(), $skipAcls);
+
+                }
+
+                $aclIds = array_diff($aclIds, $skipAcls);
                 $aclIds = array_flip($aclIds);
 
                 $this->saveRoleAcl($role, $aclIds);
@@ -63,6 +71,31 @@ class Manager extends AclManipulator implements ManagerInterface
                 $this->em->flush();
             }
         }
+    }
+
+    /**
+     * Filter parent acl resources for deleted resource
+     *
+     * @param Acl $resource
+     * @param $removedAclId
+     * @param $currentAclId
+     * @param array $skipAcls
+     * @internal param int $aclId
+     * @return array
+     */
+    public function filterAclResources(Acl $resource, $removedAclId, $currentAclId, $skipAcls = array())
+    {
+        if (!$resource->getParent()) {
+            return $skipAcls;
+        }
+
+        // if deleted node is first parent
+        if ($resource->getParent()->getId() == $removedAclId) {
+            $skipAcls[] = $currentAclId;
+            return $skipAcls;
+        }
+
+        return $this->filterAclResources($resource->getParent(), $removedAclId, $currentAclId, $skipAcls);
     }
 
     /**
