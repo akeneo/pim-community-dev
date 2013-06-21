@@ -2,7 +2,7 @@
 namespace Pim\Bundle\ProductBundle\Entity\Repository;
 
 use Pim\Bundle\ProductBundle\Entity\Category;
-use Pim\Bundle\ProductBundle\Entity\Product;
+use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -80,11 +80,11 @@ class CategoryRepository extends SegmentRepository
     /**
      * Return the number of times the product is present in each tree
      *
-     * @param Product $product The product to look for in the trees
+     * @param ProductInterface $product The product to look for in the trees
      *
      * @return array Each row of the array has the format:'tree'=>treeObject, 'productsCount'=>integer
      */
-    public function getProductsCountByTree(Product $product)
+    public function getProductsCountByTree(ProductInterface $product)
     {
         $meta = $this->getClassMetadata();
         $config = $this->listener->getConfiguration($this->_em, $meta->name);
