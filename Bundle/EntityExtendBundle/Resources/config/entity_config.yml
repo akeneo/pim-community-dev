@@ -8,7 +8,6 @@ oro_entity_config:
                 grid:
                     type:               boolean
                     label:              'Is Extend Entity'
-                    field_name:         is_extend
                     filter_type:        oro_grid_orm_boolean
                     required:           true
                     sortable:           true
@@ -39,7 +38,6 @@ oro_entity_config:
                 grid:
                     type:               boolean
                     label:              'Is Extend Field'
-                    field_name:         is_extend
                     filter_type:        oro_grid_orm_boolean
                     required:           true
                     sortable:           true

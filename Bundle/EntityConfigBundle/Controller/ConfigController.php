@@ -18,14 +18,12 @@ use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
 
 /**
  * User controller.
- *
  * @Route("/oro_entityconfig")
  */
 class ConfigController extends Controller
 {
     /**
      * Lists all Flexible entities.
-     *
      * @Route("/", name="oro_entityconfig_index")
      * @Template()
      */
@@ -48,7 +46,6 @@ class ConfigController extends Controller
 
     /**
      * Lists Entity fields
-     *
      * @Route("/fields/{id}", name="oro_entityconfig_fields", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Template()
      */
@@ -62,11 +59,11 @@ class ConfigController extends Controller
 
         $datagridManager->getRouteGenerator()->setRouteParameters(
             array(
-                'id'     => $id
+                'id' => $id
             )
         );
 
-        $view     = 'json' == $request->getRequestFormat()
+        $view = 'json' == $request->getRequestFormat()
             ? 'OroGridBundle:Datagrid:list.json.php'
             : 'OroEntityConfigBundle:Config:fields.html.twig';
 
@@ -81,7 +78,6 @@ class ConfigController extends Controller
 
     /**
      * View Entity
-     *
      * @Route("/view/{id}", name="oro_entityconfig_view")
      * @Template()
      */
@@ -103,26 +99,52 @@ class ConfigController extends Controller
 
         $formBuilder = $this->createFormBuilder();
         $data        = array();
+        $dataBlocks  = array();
         foreach ($configManager->getProviders() as $provider) {
+            $fields = array();
             foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
                 if (isset($item['form']) && isset($item['form']['type']) && isset($item['form']['options'])) {
                     $formBuilder->add($code, $item['form']['type'], $item['form']['options']);
-                    $config = $provider->getConfig($entity->getClassName());
+                    $config      = $provider->getConfig($entity->getClassName());
                     $data[$code] = $config->get($code);
+                    $fields[]    = $code;
                 }
+            }
+            if (count($fields)) {
+                $dataBlocks[] = array(
+                    'title'     => ucfirst($provider->getScope()),
+                    //'class' => 'active',
+                    'subblocks' => array(
+                        array(
+                            'title'  => '',
+                            //'fields' => $fields,
+                            'data'   => array(),
+                        )
+                    )
+                );
+            }
+        }
+        $formBuilder->setData($data);
+
+        $form    = $formBuilder->getForm();
+        $request = $this->getRequest();
+
+        if ($request->getMethod() == 'POST') {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                var_dump($form->getData());
             }
         }
 
-        $formBuilder->setData($data);
-
         return array(
-            'form' => $formBuilder->getForm()->createView()
+            'form' => $form->createView(),
+            'dataBlocks' => $dataBlocks
         );
     }
 
     /**
      * Lists all Flexible entities.
-     *
      * @Route("/remove/{id}", name="oro_entityconfig_remove")
      * @Template()
      */
