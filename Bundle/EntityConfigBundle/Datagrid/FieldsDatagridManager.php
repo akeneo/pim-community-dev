@@ -16,7 +16,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 
-class ConfigDatagridManager extends DatagridManager
+class FieldsDatagridManager extends DatagridManager
 {
     /**
      * @var FieldDescriptionCollection
@@ -39,10 +39,9 @@ class ConfigDatagridManager extends DatagridManager
     protected function getProperties()
     {
         return array(
-            new UrlProperty('view_link', $this->router, 'oro_entityconfig_view', array('id')),
-            new UrlProperty('update_link', $this->router, 'oro_entityconfig_update', array('className')),
-            //new UrlProperty('remove_link', $this->router, 'oro_entityconfig_remove', array('is')),
-            new UrlProperty('fields_link', $this->router, 'oro_entityconfig_fields', array('id')),
+            //new UrlProperty('view_link', $this->router, 'oro_entityconfig_update', array('className')),
+            //new UrlProperty('update_link', $this->router, 'oro_entityconfig_fields_update', array('id')),
+            //new UrlProperty('fields_link', $this->router, 'oro_entityconfig_fields', array('id')),
         );
     }
 
@@ -67,34 +66,34 @@ class ConfigDatagridManager extends DatagridManager
         );
         $fieldsCollection->add($fieldObjectId);
 
-        $fieldObjectName = new FieldDescription();
-        $fieldObjectName->setName('className');
-        $fieldObjectName->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => 'Class Name',
-                'field_name'  => 'className',
-                'filter_type' => FilterInterface::TYPE_STRING,
-                'required'    => false,
-                'sortable'    => true,
-                'filterable'  => false,
-                'show_filter' => false,
-            )
-        );
-        $fieldsCollection->add($fieldObjectName);
+//        $fieldObjectName = new FieldDescription();
+//        $fieldObjectName->setName('className');
+//        $fieldObjectName->setOptions(
+//            array(
+//                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+//                'label'       => 'Class Name',
+//                'field_name'  => 'className',
+//                'filter_type' => FilterInterface::TYPE_STRING,
+//                'required'    => false,
+//                'sortable'    => true,
+//                'filterable'  => false,
+//                'show_filter' => false,
+//            )
+//        );
+//        $fieldsCollection->add($fieldObjectName);
 
-        foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
-                if (isset($item['grid'])) {
-                    $fieldObjectName = new FieldDescription();
-                    $fieldObjectName->setName($code);
-                    $fieldObjectName->setOptions(array_merge($item['grid'], array(
-                        'expression' => 'cev' . $code . '.value'
-                    )));
-                    $fieldsCollection->add($fieldObjectName);
-                }
-            }
-        }
+//        foreach ($this->configManager->getProviders() as $provider) {
+//            foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
+//                if (isset($item['grid'])) {
+//                    $fieldObjectName = new FieldDescription();
+//                    $fieldObjectName->setName($code);
+//                    $fieldObjectName->setOptions(array_merge($item['grid'], array(
+//                        'expression' => 'cev' . $code . '.value'
+//                    )));
+//                    $fieldsCollection->add($fieldObjectName);
+//                }
+//            }
+//        }
     }
 
     /**
@@ -124,17 +123,6 @@ class ConfigDatagridManager extends DatagridManager
             )
         );
 
-        $fieldsAction = array(
-            'name'         => 'fields',
-            'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
-            'options'      => array(
-                'label' => 'Fields',
-                'icon'  => 'th-list',
-                'link'  => 'fields_link',
-            )
-        );
-
         $deleteAction = array(
             'name'         => 'delete',
             'type'         => ActionInterface::TYPE_DELETE,
@@ -146,25 +134,25 @@ class ConfigDatagridManager extends DatagridManager
             )
         );
 
-        return array($viewAction, $updateAction, $fieldsAction);
+        return array($viewAction, $updateAction, $deleteAction);
     }
 
     /**
      * @return ProxyQueryInterface
      */
-    protected function createQuery()
-    {
-        /** @var ProxyQueryInterface|Query $query */
-        $query = parent::createQuery();
-
-        foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
-                $alias = 'cev'. $code;
-                $query->leftJoin('ce.values', $alias, 'WITH', $alias . ".code='".$code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'");
-                $query->addSelect($alias . '.value as '. $code, true);
-            }
-        }
-
-        return $query;
-    }
+//    protected function createQuery()
+//    {
+//        /** @var ProxyQueryInterface|Query $query */
+//        $query = parent::createQuery();
+//
+//        foreach ($this->configManager->getProviders() as $provider) {
+//            foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
+//                $alias = 'cev'. $code;
+//                $query->leftJoin('ce.values', $alias, 'WITH', $alias . ".code='".$code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'");
+//                $query->addSelect($alias . '.value as '. $code, true);
+//            }
+//        }
+//
+//        return $query;
+//    }
 }

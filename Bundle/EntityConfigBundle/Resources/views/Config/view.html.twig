@@ -1,0 +1,68 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+
+
+{#{% set entityClass = 'Oro_Bundle_EntityConfigBundle_Entity_ConfigEntity' %}#}
+
+
+{% block navButtons %}
+    {{ UI.button({'path' : path('oro_entityconfig_index'), 'iClass' : 'icon-chevron-left ', 'title' : 'Back', 'label' : 'Back'}) }}
+
+    {#{% if resource_granted('oro_user_user_update') %}#}
+        {#{{ UI.button({'path' : path('oro_user_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}#}
+    {#{% endif %}#}
+
+    {#{% if resource_granted('oro_user_user_delete') and entity.id!=app.user.id %}#}
+        {#{{ UI.deleteButton({#}
+        {#'dataUrl': path('oro_api_delete_user', {'id': entity.id}),#}
+        {#'dataRedirect': path('oro_user_index'),#}
+        {#'aCss': 'no-hash remove-button',#}
+        {#'id': 'btn-remove-user',#}
+        {#'dataId': entity.id,#}
+        {#'dataMessage': 'Are you sure you want to delete this user?',#}
+        {#'title': 'Delete user',#}
+        {#'label': 'Delete'#}
+        {#}) }}#}
+    {#{% endif %}#}
+{% endblock navButtons %}
+
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('oro_entityconfig_index'),
+        'indexLabel': 'Entities',
+        'entityTitle': entity.className,
+        'hasAvatar':   false,
+        'imagePath':   '',
+    }
+    %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block stats %}
+{% endblock stats%}
+
+{% block content_data %}
+    {% set id = 'entityconfig-view' %}
+    {% set data = {
+        'dataBlocks':
+            [
+                {
+                    'title': 'General',
+                    'class': 'active',
+                    'subblocks': [
+                        {
+                            'title': 'Basic Information',
+                            'data': [
+                                UI.attibuteRow('Id', entity.id),
+                                UI.attibuteRow('Class name', entity.className),
+                            ]
+                        },
+                    ]
+                },
+            ]
+        }
+    %}
+    {{ parent() }}
+
+{% endblock content_data %}
