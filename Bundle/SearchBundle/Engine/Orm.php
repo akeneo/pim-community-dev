@@ -93,13 +93,9 @@ class Orm extends AbstractEngine
                 $this->em->remove($item);
             } else {
                 $item->setChanged(!$realtime);
-
                 $this->reindexJob();
-
                 $this->em->persist($item);
             }
-
-            $this->em->flush($item);
 
             return $id;
         }
@@ -113,18 +109,23 @@ class Orm extends AbstractEngine
      * @param object $entity   New/updated entity
      * @param bool   $realtime [optional] Perform immediate insert/update to
      *                              search attributes table(s). True by default.
-     * @return bool|int Index item id on success, false otherwise
+     * @param bool   $needToCompute
+     * @return Item Index item id on success, false otherwise
      */
-    public function save($entity, $realtime = true)
+    public function save($entity, $realtime = true, $needToCompute = false)
     {
         $data = $this->mapper->mapObject($entity);
         $name = get_class($entity);
+        $entityMeta      = $this->em->getClassMetadata(get_class($entity));
+        $identifierField = $entityMeta->getSingleIdentifierFieldName($entityMeta);
+
+        $id = $entityMeta->getReflectionProperty($identifierField)->getValue($entity);
 
         if (count($data)) {
             $item = $this->getIndexRepo()->findOneBy(
                 array(
                     'entity'   => $name,
-                    'recordId' => $entity->getId()
+                    'recordId' => $id
                 )
             );
 
@@ -134,7 +135,7 @@ class Orm extends AbstractEngine
                 $alias  = $config ? $config['alias'] : $name;
 
                 $item->setEntity($name)
-                     ->setRecordId($entity->getId())
+                     ->setRecordId($id)
                      ->setAlias($alias);
             }
 
@@ -148,9 +149,12 @@ class Orm extends AbstractEngine
             }
 
             $this->em->persist($item);
-            $this->em->flush($item);
 
-            return $item->getId();
+            if($needToCompute) {
+                $this->computeSet($item);
+            }
+
+            return $item;
         }
 
         return false;
@@ -340,5 +344,29 @@ class Orm extends AbstractEngine
         $cmd = $this->em->getClassMetadata($table);
         $q = $dbPlatform->getTruncateTableSql($cmd->getTableName());
         $connection->executeUpdate($q);
+    }
+
+    /**
+     * @param Item $item
+     */
+    protected function computeSet(Item $item)
+    {
+        $this->em->getUnitOfWork()->computeChangeSet($this->em->getClassMetadata(get_class($item)), $item);
+        $this->computeFields($item->getTextFields());
+        $this->computeFields($item->getIntegerFields());
+        $this->computeFields($item->getDatetimeFields());
+        $this->computeFields($item->getDecimalFields());
+    }
+
+    /**
+     * @param array $fields
+     */
+    protected function computeFields($fields)
+    {
+        if(count($fields)) {
+            foreach($fields as $field) {
+                $this->em->getUnitOfWork()->computeChangeSet($this->em->getClassMetadata(get_class($field)), $field);
+            }
+        }
     }
 }

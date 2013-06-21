@@ -126,6 +126,7 @@ class RestApiAclTest extends WebTestCase
      */
     public function testAddAclToRole()
     {
+        $this->markTestSkipped('CRM-182');
         $this->client->request('GET', 'http://localhost/api/rest/latest/roles/' . self::TEST_EDIT_ROLE . '/byname');
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
@@ -133,7 +134,7 @@ class RestApiAclTest extends WebTestCase
 
         $this->client->request('POST', "http://localhost/api/rest/latest/roles/{$roleId['id']}/acls/oro_address");
         $result = $this->client->getResponse();
-        ToolsAPI::assertJsonResponse($result, 200);
+        ToolsAPI::assertJsonResponse($result, 204);
     }
 
     public function testRemoveAclsFromRole()
@@ -161,7 +162,7 @@ class RestApiAclTest extends WebTestCase
         }
         sort($expectedAcl);
 
-        $this->client->request('DELETE', "http://localhost/api/rest/latest/roles/{$roleId['id']}/acls/oro_address,oro_security");
+        $this->client->request('DELETE', "http://localhost/api/rest/latest/roles/{$roleId['id']}/aclsarray", array('oro_security','oro_address'));
         $result = $this->client->getResponse();
 
         ToolsAPI::assertJsonResponse($result, 204);

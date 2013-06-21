@@ -30,6 +30,9 @@ OroSelect2Config.prototype.getConfig = function () {
             }
         };
     }
+    if (this.config.ajax.quietMillis === undefined) {
+        this.config.ajax.quietMillis = 700;
+    }
     if (this.config.escapeMarkup === undefined) {
         this.config.escapeMarkup = function (m) { return m; };
     }

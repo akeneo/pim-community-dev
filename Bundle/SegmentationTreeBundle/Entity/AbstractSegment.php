@@ -223,6 +223,7 @@ abstract class AbstractSegment
      */
     public function addChild(AbstractSegment $child)
     {
+        $child->setParent($this);
         $this->children[] = $child;
 
         return $this;
