@@ -46,7 +46,6 @@ class TranslatableFieldType extends AbstractType
         $this->validator     = $validator;
         $this->localeManager = $localeManager;
         $this->defaultLocale = $defaultLocale;
-        $this->subscriber    = $subscriber;
     }
 
     /**
