@@ -382,7 +382,12 @@ Oro.Navigation = Backbone.Router.extend({
                     this.setLocation(redirectUrl);
                 }
             } else {
-                $(this.selectors.container).html($(data).filter(this.selectors.content).html());
+                var content = $(data).filter(this.selectors.content).html();
+                if (options.fromCache) {
+                    //don't load additional scripts for cached page to prevent dublicated scripts loading
+                    content = content.replace(/<script.*?><\/script>/ig, '');
+                }
+                $(this.selectors.container).html(content);
                 $(this.selectors.menu).html($(data).filter(this.selectors.menu).html());
                 /**
                  * Collecting javascript from head and append them to content
