@@ -54,8 +54,18 @@ class ConfigController extends Controller
      */
     public function fieldsAction($id, Request $request)
     {
-        /** @var  ConfigDatagridManager $datagrid */
-        $datagrid = $this->get('oro_entity_config.fieldsdatagrid.manager')->getDatagrid();
+        /** @var  ConfigDatagridManager $datagridManager */
+        $datagridManager = $this->get('oro_entity_config.fieldsdatagrid.manager');
+        $datagridManager->setEntityId($id);
+
+        $datagrid = $datagridManager->getDatagrid();
+
+        $datagridManager->getRouteGenerator()->setRouteParameters(
+            array(
+                'id'     => $id
+            )
+        );
+
         $view     = 'json' == $request->getRequestFormat()
             ? 'OroGridBundle:Datagrid:list.json.php'
             : 'OroEntityConfigBundle:Config:fields.html.twig';
@@ -113,7 +123,7 @@ class ConfigController extends Controller
     /**
      * Lists all Flexible entities.
      *
-     * @Route("/update/{className}", name="oro_entityconfig_update")
+     * @Route("/remove/{id}", name="oro_entityconfig_remove")
      * @Template()
      */
     public function removeAction($className)

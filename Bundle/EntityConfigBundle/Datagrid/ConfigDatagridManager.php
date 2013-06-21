@@ -40,7 +40,7 @@ class ConfigDatagridManager extends DatagridManager
     {
         return array(
             new UrlProperty('view_link', $this->router, 'oro_entityconfig_view', array('id')),
-            new UrlProperty('update_link', $this->router, 'oro_entityconfig_update', array('className')),
+            new UrlProperty('update_link', $this->router, 'oro_entityconfig_update', array('id')),
             //new UrlProperty('remove_link', $this->router, 'oro_entityconfig_remove', array('is')),
             new UrlProperty('fields_link', $this->router, 'oro_entityconfig_fields', array('id')),
         );
