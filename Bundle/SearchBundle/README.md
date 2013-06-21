@@ -10,7 +10,19 @@ Install project
 
 MySql, Postgres and other db engines use additional indexes for fulltext search. To create this indexes use console command
 
-    php app/console oro:search:create-index
+```
+php app/console oro:search:create-index
+```
+
+MySql config
+----------------------------------
+
+By default, search engine use MySQL fulltext search index to make search in text data. in MySQL config where is  ft_min_word_len
+parameter - the minimum length of the word to be included in a fulltext index. Default value of this parameter is 4
+http://dev.mysql.com/doc/refman/5.0/en/server-system-variables.html#sysvar_ft_min_word_len .
+
+It's recommended to change this value to 3 http://dev.mysql.com/doc/refman/5.1/en/fulltext-fine-tuning.html .
+
 
 Bundle config
 ----------------------------------
@@ -40,6 +52,7 @@ All text fields data wheel be store in **all_text** virtual field. Additionally,
 
 Example:
 
+```
     Acme\DemoBundle\Entity\Product:
         alias: demo_product
         flexible_manager: demo_product_manager
@@ -77,7 +90,7 @@ Example:
                         name: name
                         target_type: text
                         target_fields: [all_data]
-
+```
 
 Parameters:
 
@@ -106,4 +119,6 @@ Run unit tests
 
 To run tests for bundle, use command
 
-    phpunit -c app src/Oro/Bundle/SearchBundle/
+```
+phpunit -c app src/Oro/Bundle/SearchBundle/
+```
