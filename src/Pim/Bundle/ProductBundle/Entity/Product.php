@@ -188,7 +188,7 @@ class Product extends AbstractEntityFlexible
 
         foreach ($this->values as $value) {
             $attribute = $value->getAttribute();
-            $key = $value->getAttribute()->getCode();
+            $key = $attribute->getCode();
             if ($attribute->getTranslatable()) {
                 $key .= '_'.$value->getLocale();
             }

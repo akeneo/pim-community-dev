@@ -488,7 +488,7 @@ class ProductController extends Controller
      */
     private function findProductOr404($id)
     {
-        $product = $this->getProductManager()->localizedFind($id);
+        $product = $this->getProductManager()->find($id);
 
         if (!$product) {
             throw $this->createNotFoundException(

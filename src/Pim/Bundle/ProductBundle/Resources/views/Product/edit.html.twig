@@ -121,41 +121,33 @@
                                 </div>
                             </div>
 
-                            {{ form_row(form.id) }}
-                            {% set attributeCode = '' %}
-                            {% set displayRemoveAttributeLink = true %}
-                            {% for group in product.orderedGroups %}
-                            <div id="tabs-{{ group.id }}" class="tab-pane{% if loop.index == 1 %} active{% endif %}">
-                                <h3>{{ group.name|trans }}</h3>
-                                <div> {# will generate a <div></div> for first iteration #}
-                                    {% for formValue in form.values %}
-                                        {% if formValue.vars.value.attribute.group is null %}
-                                            {% set groupId = 0 %}
-                                        {% else %}
-                                            {% set groupId = formValue.vars.value.attribute.group.id %}
-                                        {% endif %}
-                                        {% if group.id == groupId %}
-                                            {% if attributeCode != formValue.vars.value.attribute.code %}
-                                                </div>
-                                                <div class="{{ formValue.vars.value.attribute.scopable ? 'scopable' : '' }}{{ formValue.vars.value.attribute.attributeType == 'pim_product_price_collection' ? 'currency' : '' }}" data-field="{{ formValue.vars.value.attribute.code }}">
-                                                {% set displayRemoveAttributeLink = true %}
-                                            {% endif %}
-                                            <div class="control-group">
-                                                {{ form_widget(formValue, {'attr': {'data-scope': formValue.vars.value.scope}} ) }}
-                                                {% if displayRemoveAttributeLink %}
-                                                    {% if formValue.vars.value.isRemovable() %}
-                                                        <a href="{{ path('pim_product_product_removeproductvalue', {'productId': formValue.vars.value.entity.id, 'attributeId': formValue.vars.value.attribute.id}) }}"
-                                                           class="btn btn-action btn-link remove-attribute"
-                                                           title="Remove this attribute"
-                                                           data-method="DELETE" data-confirm="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': formValue.vars.value.attribute.label}) }}">×</a>
-                                                    {% endif %}
-                                                    {% set displayRemoveAttributeLink = false %}
-                                                {% endif %}
+                            {% for groupId, groupView in form.vars.groups %}
+                            <div id="tabs-{{ groupId }}" class="tab-pane">
+                                <h3>{{ groupView.name }}</h3>
+                                {% for attributeId, attributeView in groupView.attributes %}
+                                    <div class="attribute-field {{ attributeView.classes|default([])|keys|join(' ') }}">
+                                    {% if attributeView.values is defined %}
+                                        {% for scope, subvalue in attributeView.values %}
+                                            <div class="control-group" data-field="{{ attributeView.code }}">
+                                                {{ form_widget(subvalue, {'attr': {'data-scope': scope}}) }}
                                             </div>
-                                            {% set attributeCode = formValue.vars.value.attribute.code %}
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
+                                        {% endfor %}
+                                    {% else %}
+                                            <div class="control-group" data-field="{{ attributeView.code }}">
+                                                {{ form_widget(attributeView.value) }}
+                                            </div>
+                                    {% endif %}
+                                    {% if attributeView.isRemovable %}
+                                        <a href="{{ path('pim_product_product_removeproductvalue', {
+                                            'productId': product.id,
+                                            'attributeId': attributeId
+                                        }) }}"
+                                               class="btn btn-action btn-link remove-attribute"
+                                               title="Remove this attribute"
+                                               data-method="DELETE" data-confirm="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attributeView.label}) }}">×</a>
+                                    {% endif %}
+                                    </div>
+                                {% endfor %}
                             </div>
                             {% endfor %}
                         </div>
@@ -264,13 +256,10 @@
             $('.scopable').scopableField($(this).data('action'));
         });
 
-        $('.control-group').css('position', 'relative');
-        $('.remove-attribute')
-            .css('position', 'absolute')
-            .css('top', '0')
-            .css('left', '845px')
-        ;
-
+        $('li.tab.active a').each(function() {
+            var paneId = $(this).attr('href');
+            $(paneId).addClass('active');
+        });
     });
     </script>
     <link rel="stylesheet" href="{{ asset('bundles/pimui/css/select2.css') }}" />
