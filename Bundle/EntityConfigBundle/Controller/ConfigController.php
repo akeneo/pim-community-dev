@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Controller;
 
-use Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager;
+use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -11,18 +11,19 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Oro\Bundle\EntityConfigBundle\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager;
+
 use Oro\Bundle\GridBundle\Datagrid\Datagrid;
 
 /**
  * User controller.
- *
  * @Route("/oro_entityconfig")
  */
 class ConfigController extends Controller
 {
     /**
      * Lists all Flexible entities.
-     *
      * @Route("/", name="oro_entityconfig_index")
      * @Template()
      */
@@ -41,17 +42,5 @@ class ConfigController extends Controller
                 'datagrid' => $datagrid->createView()
             )
         );
-    }
-
-    /**
-     * Lists all Flexible entities.
-     *
-     * @Route("/update/{className}", name="oro_entityconfig_update")
-     * @Template()
-     */
-    public function updateAction($className)
-    {
-        var_dump($className);
-        die;
     }
 }
