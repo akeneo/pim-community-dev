@@ -3,9 +3,11 @@
 namespace Oro\Bundle\AddressBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\Type;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
 
 use Oro\Bundle\AddressBundle\Entity\Country;
 
@@ -14,24 +16,24 @@ use Oro\Bundle\AddressBundle\Entity\Country;
  *
  * @ORM\Table("oro_dictionary_region")
  * @ORM\Entity
- * @Gedmo\TranslationEntity(class="Oro\Bundle\AddressBundle\Entity\RegionLocalized")
+ * @Gedmo\TranslationEntity(class="Oro\Bundle\AddressBundle\Entity\RegionTranslation")
  */
-class Region
+class Region implements Translatable
 {
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(name="combined_code", type="string", length=16)
+     * @Soap\ComplexType("string", nillable=true)
      */
-    private $id;
+    private $combinedCode;
 
     /**
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="Country", inversedBy="regions",cascade={"persist"})
-     * @ORM\JoinColumn(name="country_id", referencedColumnName="iso2_code")
+     * @ORM\JoinColumn(name="country_code", referencedColumnName="iso2_code")
      * @Type("string")
      * @Soap\ComplexType("string", nillable=true)
      */
@@ -60,13 +62,32 @@ class Region
     private $locale;
 
     /**
+     * @ORM\OneToMany(
+     *     targetEntity="Oro\Bundle\AddressBundle\Entity\RegionTranslation",
+     *     mappedBy="region",
+     *     cascade={"ALL"},
+     *     fetch="EXTRA_LAZY"
+     * )
+     **/
+    private $translation;
+
+    /**
+     * @param string $combinedCode
+     */
+    public function __construct($combinedCode)
+    {
+        $this->combinedCode = $combinedCode;
+        $this->translation  = new ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
+    public function getCombinedCode()
     {
-        return $this->id;
+        return $this->combinedCode;
     }
 
     /**
@@ -142,9 +163,9 @@ class Region
      * Set locale
      *
      * @param string $locale
-     * @return $this
+     * @return Region
      */
-    public function setLocale($locale = 'en_US')
+    public function setLocale($locale)
     {
         $this->locale = $locale;
 

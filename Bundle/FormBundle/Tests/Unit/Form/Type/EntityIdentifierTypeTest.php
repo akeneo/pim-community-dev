@@ -11,6 +11,7 @@ use Doctrine\ORM\AbstractQuery;
 
 use Symfony\Component\Form\Tests\FormIntegrationTestCase;
 
+use Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer;
 use Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType;
 
 class EntityIdentifierTypeTest extends FormIntegrationTestCase

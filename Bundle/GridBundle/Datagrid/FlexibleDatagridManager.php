@@ -39,6 +39,10 @@ abstract class FlexibleDatagridManager extends DatagridManager
             'field'  => FieldDescriptionInterface::TYPE_DECIMAL,
             'filter' => FilterInterface::TYPE_FLEXIBLE_NUMBER,
         ),
+        AbstractAttributeType::BACKEND_TYPE_BOOLEAN => array(
+            'field'  => FieldDescriptionInterface::TYPE_BOOLEAN,
+            'filter' => FilterInterface::TYPE_FLEXIBLE_BOOLEAN,
+        ),
         AbstractAttributeType::BACKEND_TYPE_INTEGER => array(
             'field'  => FieldDescriptionInterface::TYPE_INTEGER,
             'filter' => FilterInterface::TYPE_FLEXIBLE_NUMBER,

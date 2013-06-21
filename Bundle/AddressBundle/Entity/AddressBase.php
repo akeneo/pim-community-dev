@@ -8,6 +8,7 @@ use JMS\Serializer\Annotation\Type;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
+use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Symfony\Component\Validator\ExecutionContext;
 
 /**
@@ -54,15 +55,6 @@ class AddressBase extends AbstractEntityFlexible
     /**
      * @var string
      *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\AddressBundle\Entity\Region", cascade={"persist"})
-     * @ORM\JoinColumn(name="region_id", referencedColumnName="id")
-     * @Soap\ComplexType("string", nillable=true)
-     */
-    protected $state;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="state_text", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string", nillable=true)
      */
@@ -80,10 +72,19 @@ class AddressBase extends AbstractEntityFlexible
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\AddressBundle\Entity\Country", cascade={"persist"})
-     * @ORM\JoinColumn(name="country_id", referencedColumnName="iso2_code")
+     * @ORM\JoinColumn(name="country_code", referencedColumnName="iso2_code")
      * @Soap\ComplexType("string", nillable=false)
      */
     protected $country;
+
+    /**
+     * @var string
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\AddressBundle\Entity\Region", cascade={"persist"})
+     * @ORM\JoinColumn(name="region_code", referencedColumnName="combined_code")
+     * @Soap\ComplexType("string", nillable=true)
+     */
+    protected $state;
 
     /**
      * @var string
@@ -399,15 +400,20 @@ class AddressBase extends AbstractEntityFlexible
      */
     public function isEmpty()
     {
-        foreach ($this as $val) {
-            if ($val instanceof Collection) {
-                if (!$val->isEmpty()) {
-                    return false;
-                }
-            } elseif (!empty($val)) {
-                return false;
-            }
+        $isEmpty = empty($this->firstName)
+            && empty($this->lastName)
+            && empty($this->street)
+            && empty($this->street2)
+            && empty($this->city)
+            && empty($this->state)
+            && empty($this->stateText)
+            && empty($this->country)
+            && empty($this->postalCode);
+        /** @var FlexibleValueInterface $value */
+        foreach ($this->values as $value) {
+            $flexibleValue = $value->getData();
+            $isEmpty = $isEmpty && empty($flexibleValue);
         }
-        return true;
+        return $isEmpty;
     }
 }

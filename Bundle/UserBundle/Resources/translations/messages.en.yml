@@ -1,3 +1,5 @@
+oro.user.form.choose_user: Choose a user...
+
 change_password:
     flash:
         success: The password has been changed

@@ -131,6 +131,7 @@ class FlexibleQueryBuilder extends QueryBuilder
             AbstractAttributeType::BACKEND_TYPE_DATETIME => array('=', '<', '<=', '>', '>='),
             AbstractAttributeType::BACKEND_TYPE_DECIMAL  => array('=', '<', '<=', '>', '>='),
             AbstractAttributeType::BACKEND_TYPE_INTEGER  => array('=', '<', '<=', '>', '>='),
+            AbstractAttributeType::BACKEND_TYPE_BOOLEAN  => array('='),
             AbstractAttributeType::BACKEND_TYPE_OPTION   => array('IN', 'NOT IN'),
             AbstractAttributeType::BACKEND_TYPE_OPTIONS  => array('IN', 'NOT IN'),
             AbstractAttributeType::BACKEND_TYPE_TEXT     => array('=', 'NOT LIKE', 'LIKE'),

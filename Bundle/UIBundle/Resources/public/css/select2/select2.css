@@ -257,13 +257,13 @@ Version: 3.4.0 Timestamp: Tue May 14 08:27:33 PDT 2013
 }
 
 .select2-search input.select2-active {
-    background: #fff url('select2-spinner.gif') no-repeat 100%;
+    /*background: #fff url('select2-spinner.gif') no-repeat 100%;
     background: url('select2-spinner.gif') no-repeat 100%, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
     background: url('select2-spinner.gif') no-repeat 100%, -webkit-linear-gradient(center bottom, white 85%, #eeeeee 99%);
     background: url('select2-spinner.gif') no-repeat 100%, -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
     background: url('select2-spinner.gif') no-repeat 100%, -o-linear-gradient(bottom, white 85%, #eeeeee 99%);
     background: url('select2-spinner.gif') no-repeat 100%, -ms-linear-gradient(top, #ffffff 85%, #eeeeee 99%);
-    background: url('select2-spinner.gif') no-repeat 100%, linear-gradient(top, #ffffff 85%, #eeeeee 99%);
+    background: url('select2-spinner.gif') no-repeat 100%, linear-gradient(top, #ffffff 85%, #eeeeee 99%);*/
 }
 
 .select2-container-active .select2-choice,
@@ -419,7 +419,7 @@ disabled look for disabled choices in the results dropdown
 }
 
 .select2-more-results.select2-active {
-    background: #f4f4f4 url('select2-spinner.gif') no-repeat 100%;
+    /*background: #f4f4f4 url('select2-spinner.gif') no-repeat 100%;*/
 }
 
 .select2-more-results {
@@ -511,7 +511,7 @@ disabled look for disabled choices in the results dropdown
 }
 
 .select2-container-multi .select2-choices .select2-search-field input.select2-active {
-    background: #fff url('select2-spinner.gif') no-repeat 100% !important;
+    /*background: #fff url('select2-spinner.gif') no-repeat 100% !important;*/
 }
 
 .select2-default {
