@@ -1,5 +1,6 @@
 parameters:
     oro_entity_config.datagrid.manager.class:         Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager
+    oro_entity_config.fieldsdatagrid.manager.class:   Oro\Bundle\EntityConfigBundle\Datagrid\FieldsDatagridManager
 
 
 services:
@@ -14,3 +15,15 @@ services:
               entity_hint:                      entity
               route_name:                       oro_entityconfig_index
               query_entity_alias:               ce
+
+    oro_entity_config.fieldsdatagrid.manager:
+        class:                                  %oro_entity_config.fieldsdatagrid.manager.class%
+        arguments:
+          - @oro_entity_config.config_manager
+        tags:
+            - name:                             oro_grid.datagrid.manager
+              datagrid_name:                    field
+              entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\ConfigField
+              entity_hint:                      fields
+              route_name:                       oro_entityconfig_fields
+              query_entity_alias:               ef

@@ -39,8 +39,10 @@ class ConfigDatagridManager extends DatagridManager
     protected function getProperties()
     {
         return array(
-            //new UrlProperty('view_link', $this->router, 'oro_entityconfig_update', array('className')),
+            new UrlProperty('view_link', $this->router, 'oro_entityconfig_view', array('id')),
             new UrlProperty('update_link', $this->router, 'oro_entityconfig_update', array('className')),
+            //new UrlProperty('remove_link', $this->router, 'oro_entityconfig_remove', array('is')),
+            new UrlProperty('fields_link', $this->router, 'oro_entityconfig_fields', array('id')),
         );
     }
 
@@ -106,7 +108,7 @@ class ConfigDatagridManager extends DatagridManager
             'acl_resource' => 'root',
             'options'      => array(
                 'label' => 'View',
-                'icon'  => 'user',
+                'icon'  => 'book',
                 'link'  => 'view_link',
             )
         );
@@ -122,8 +124,29 @@ class ConfigDatagridManager extends DatagridManager
             )
         );
 
+        $fieldsAction = array(
+            'name'         => 'fields',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label' => 'Fields',
+                'icon'  => 'th-list',
+                'link'  => 'fields_link',
+            )
+        );
 
-        return array($viewAction, $updateAction);
+        $deleteAction = array(
+            'name'         => 'delete',
+            'type'         => ActionInterface::TYPE_DELETE,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label' => 'Delete',
+                'icon'  => 'trash',
+                'link'  => 'delete_link',
+            )
+        );
+
+        return array($viewAction, $updateAction, $fieldsAction);
     }
 
     /**
