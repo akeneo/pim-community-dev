@@ -1,6 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\AttributeType;
 
+use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
@@ -18,12 +19,16 @@ abstract class AbstractEntitySelectType extends AbstractAttributeType
      */
     protected function prepareValueFormOptions(FlexibleValueInterface $value)
     {
-        $options = parent::prepareValueFormOptions($value);
+        $options   = parent::prepareValueFormOptions($value);
         $attribute = $value->getAttribute();
+        $orderBy   = $this->getEntityFieldToOrder();
         $options['empty_value'] = false;
         $options['class']       = $this->getEntityAlias();
         $options['expanded']    = false;
         $options['multiple']    = $this->isMultiselect();
+        $options['query_builder'] = function (EntityRepository $er) use ($orderBy) {
+            return $er->createQueryBuilder('o')->orderBy('o.'.$orderBy);
+        };
 
         return $options;
     }
@@ -34,6 +39,13 @@ abstract class AbstractEntitySelectType extends AbstractAttributeType
      * @return boolean
      */
     protected abstract function isMultiselect();
+
+    /**
+     * Get entity field to order
+     *
+     * @return string
+     */
+    protected abstract function getEntityFieldToOrder();
 
     /**
      * Get joined entity alias
