@@ -74,7 +74,7 @@ class TranslatableFieldType extends AbstractType
             $this->validator,
             $options
         );
-        $builder->addEventSubscriber($this->subscriber);
+        $builder->addEventSubscriber($subscriber);
     }
 
     /**
