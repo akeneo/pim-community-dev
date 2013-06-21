@@ -6,5 +6,6 @@
 {% block content %}
     {% set pageTitle = 'Entity Config' %}
     {% set buttons = [UI.addButton({'path' : path('oro_user_create'), 'title' : 'Create', 'label' : 'Create'})] %}
+
     {{ parent() }}
 {% endblock %}

@@ -16,7 +16,6 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 
-
 class ConfigDatagridManager extends DatagridManager
 {
     /**
@@ -40,8 +39,8 @@ class ConfigDatagridManager extends DatagridManager
     protected function getProperties()
     {
         return array(
-            new UrlProperty('view_link', $this->router, 'oro_user_view', array('id')),
-            new UrlProperty('update_link', $this->router, 'oro_user_update', array('id')),
+            //new UrlProperty('view_link', $this->router, 'oro_entityconfig_update', array('className')),
+            new UrlProperty('update_link', $this->router, 'oro_entityconfig_update', array('className')),
         );
     }
 

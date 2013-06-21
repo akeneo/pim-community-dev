@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Controller;
 
+use Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +28,7 @@ class ConfigController extends Controller
      */
     public function indexAction(Request $request)
     {
-        /** @var Datagrid $datagrid */
+        /** @var  ConfigDatagridManager $datagrid */
         $datagrid = $this->get('oro_entity_config.datagrid.manager')->getDatagrid();
         $view     = 'json' == $request->getRequestFormat()
             ? 'OroGridBundle:Datagrid:list.json.php'
@@ -36,8 +37,21 @@ class ConfigController extends Controller
         return $this->render(
             $view,
             array(
+                //'buttons' =>
                 'datagrid' => $datagrid->createView()
             )
         );
+    }
+
+    /**
+     * Lists all Flexible entities.
+     *
+     * @Route("/update/{className}", name="oro_entityconfig_update")
+     * @Template()
+     */
+    public function updateAction($className)
+    {
+        var_dump($className);
+        die;
     }
 }
