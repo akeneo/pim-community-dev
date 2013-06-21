@@ -4,13 +4,12 @@ namespace Pim\Bundle\ProductBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Pim\Bundle\ProductBundle\Entity\Product;
 use Pim\Bundle\ProductBundle\Entity\ProductFamily;
 use Pim\Bundle\ProductBundle\Form\Type\ProductFamilyType;
 use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
 
 /**
- * Product Controller
+ * Product family controller
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -20,7 +19,6 @@ use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
  */
 class ProductFamilyController extends Controller
 {
-
     /**
      * Index action
      *
