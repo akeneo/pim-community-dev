@@ -3,12 +3,12 @@
 namespace Oro\Bundle\AddressBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+use Oro\Bundle\FormBundle\Form\Type\TranslatableEntityType;
 
 class RegionType extends AbstractType
 {
@@ -28,18 +28,12 @@ class RegionType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $list = function (Options $options) {
-            if (null === $options['country']) {
-                return new ObjectChoiceList(array());
-            }
-
-            return new ObjectChoiceList($options['country']->getRegions(), null, array(), null, 'code');
-        };
-
         $resolver
             ->setDefaults(
                 array(
-                    'choice_list' => $list,
+                    'class' => 'OroAddressBundle:Region',
+                    'property' => 'name',
+                    'query_builder' => null,
                     'country'     => null,
                     'country_field' => null,
                     'empty_value' => 'Choose a state...',
@@ -61,7 +55,7 @@ class RegionType extends AbstractType
      */
     public function getParent()
     {
-        return 'choice';
+        return TranslatableEntityType::NAME;
     }
 
     /**

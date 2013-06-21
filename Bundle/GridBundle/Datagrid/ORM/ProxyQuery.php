@@ -4,6 +4,7 @@ namespace Oro\Bundle\GridBundle\Datagrid\ORM;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\AbstractQuery;
 
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery as BaseProxyQuery;
 
@@ -41,6 +42,11 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     protected $selectWhitelist = array();
 
     /**
+     * @var array
+     */
+    protected $queryHints = array();
+
+    /**
      * Get query builder
      *
      * @return QueryBuilder
@@ -62,7 +68,9 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
         $qb->setMaxResults(null);
         $qb->resetDQLPart('orderBy');
 
-        $ids = $qb->getQuery()->execute();
+        $query = $qb->getQuery();
+        $this->applyQueryHints($query);
+        $ids = $query->execute();
 
         return count($ids);
     }
@@ -73,6 +81,7 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     public function execute(array $params = array(), $hydrationMode = null)
     {
         $query = $this->getResultQueryBuilder()->getQuery();
+        $this->applyQueryHints($query);
         return $query->execute($params, $hydrationMode);
     }
 
@@ -206,6 +215,7 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
         $idx = array();
 
         $query = $this->getResultIdsQueryBuilder()->getQuery();
+        $this->applyQueryHints($query);
         $results = $query->execute(array(), Query::HYDRATE_ARRAY);
 
         $connection = $this->getQueryBuilder()->getEntityManager()->getConnection();
@@ -412,9 +422,36 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
      *
      * @param string $name
      * @param mixed $value
+     * @return ProxyQuery
      */
     public function setParameter($name, $value)
     {
         $this->getQueryBuilder()->setParameter($name, $value);
+
+        return $this;
+    }
+
+    /**
+     * Sets a query hint
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return ProxyQuery
+     */
+    public function setQueryHint($name, $value)
+    {
+        $this->queryHints[$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param AbstractQuery $query
+     */
+    protected function applyQueryHints(AbstractQuery $query)
+    {
+        foreach ($this->queryHints as $name => $value) {
+            $query->setHint($name, $value);
+        }
     }
 }

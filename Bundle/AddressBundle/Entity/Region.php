@@ -62,22 +62,11 @@ class Region implements Translatable
     private $locale;
 
     /**
-     * @ORM\OneToMany(
-     *     targetEntity="Oro\Bundle\AddressBundle\Entity\RegionTranslation",
-     *     mappedBy="region",
-     *     cascade={"ALL"},
-     *     fetch="EXTRA_LAZY"
-     * )
-     **/
-    private $translation;
-
-    /**
      * @param string $combinedCode
      */
     public function __construct($combinedCode)
     {
         $this->combinedCode = $combinedCode;
-        $this->translation  = new ArrayCollection();
     }
 
     /**

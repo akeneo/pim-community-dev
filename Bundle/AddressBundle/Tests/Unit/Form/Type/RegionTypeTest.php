@@ -4,6 +4,7 @@ namespace Oro\Bundle\AddressBundle\Tests\Unit\Type;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Oro\Bundle\AddressBundle\Form\Type\RegionType;
+use Oro\Bundle\FormBundle\Form\Type\TranslatableEntityType;
 
 class RegionTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -35,7 +36,7 @@ class RegionTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetParent()
     {
-        $this->assertEquals('choice', $this->type->getParent());
+        $this->assertEquals(TranslatableEntityType::NAME, $this->type->getParent());
     }
 
     public function testGetName()

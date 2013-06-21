@@ -24,11 +24,16 @@ class EntityFilter extends ChoiceFilter
         list($formType, $formOptions) = parent::getRenderSettings();
 
         // proxy for entity form type options
-        foreach (array('class', 'property', 'group_by', 'query_builder', 'em') as $option) {
+        foreach (array('class', 'property', 'query_builder') as $option) {
             $optionValue = $this->getOption($option);
             if ($optionValue) {
                 $formOptions['field_options'][$option] = $optionValue;
             }
+        }
+
+        $translatable = $this->getOption('translatable');
+        if ($translatable) {
+            $formOptions['translatable'] = $translatable;
         }
 
         return array($formType, $formOptions);

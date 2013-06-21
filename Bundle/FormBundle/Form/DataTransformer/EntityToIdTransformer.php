@@ -32,6 +32,11 @@ class EntityToIdTransformer implements DataTransformerInterface
     protected $property;
 
     /**
+     * @var PropertyPath
+     */
+    protected $propertyPath;
+
+    /**
      * @var callable
      */
     protected $queryBuilderCallback;
