@@ -14,13 +14,6 @@ services:
         tags:
             - { name: form.type, alias: pim_type_currency_filter }
 
-    pim_filter.form.type.filter.entity:
-        class:     Pim\Bundle\FilterBundle\Form\Type\Filter\EntityFilterType
-        arguments:
-            - "@translator"
-        tags:
-            - { name: form.type, alias: pim_type_entity_filter }
-
     pim_filter.form.type.filter.locale:
         class:     Pim\Bundle\FilterBundle\Form\Type\Filter\LocaleFilterType
         arguments:

@@ -10,7 +10,7 @@ use Pim\Bundle\ConfigBundle\Manager\CurrencyManager;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-use Pim\Bundle\ProductBundle\Entity\Product;
+use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\ProductBundle\Entity\ProductValue;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -45,11 +45,11 @@ class ProductManager extends FlexibleManager
      *     2.2) Add missing and remove redundant scope and locale values for each attribute
      *     2.3) Reflush to save these new values
      *
-     * @param Product         $product
-     * @param ArrayCollection $categories
-     * @param boolean         $onlyTree
+     * @param ProductInterface $product
+     * @param ArrayCollection  $categories
+     * @param boolean          $onlyTree
      */
-    public function save(Product $product, ArrayCollection $categories = null, array $onlyTree = null)
+    public function save(ProductInterface $product, ArrayCollection $categories = null, array $onlyTree = null)
     {
         $this->handleMedia($product);
 
@@ -72,11 +72,11 @@ class ProductManager extends FlexibleManager
      * in the required locales/channels exist. If the attribute is not scopable or
      * translatable, makes sure that a single value exists.
      *
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @return null
      */
-    private function ensureRequiredAttributeValues(Product $product)
+    private function ensureRequiredAttributeValues(ProductInterface $product)
     {
         $channels  = $this->getChannels();
         $locales = $product->getLocales();
@@ -147,11 +147,11 @@ class ProductManager extends FlexibleManager
     /**
      * Add missing prices (a price per currency)
      *
-     * @param CurrencyManager $manager         the currency manager
-     * @param Product         $product         the product
-     * @param Currency        $defaultCurrency the first to display
+     * @param CurrencyManager  $manager         the currency manager
+     * @param ProductInterface $product         the product
+     * @param Currency         $defaultCurrency the first to display
      */
-    public function addMissingPrices(CurrencyManager $manager, Product $product, $defaultCurrency)
+    public function addMissingPrices(CurrencyManager $manager, ProductInterface $product, $defaultCurrency)
     {
         foreach ($product->getValues() as $value) {
             if ($value->getAttribute()->getAttributeType() === 'pim_product_price_collection') {
@@ -166,14 +166,14 @@ class ProductManager extends FlexibleManager
     /**
      * Add a missing value to the product
      *
-     * @param Product   $product
-     * @param Attribute $attribute
-     * @param string    $locale
-     * @param string    $scope
+     * @param ProductInterface $product
+     * @param Attribute        $attribute
+     * @param string           $locale
+     * @param string           $scope
      *
      * @return null
      */
-    private function addProductValue(Product $product, $attribute, $locale = null, $scope = null)
+    private function addProductValue(ProductInterface $product, $attribute, $locale = null, $scope = null)
     {
         $value = $this->createFlexibleValue();
         if ($locale) {
@@ -188,14 +188,14 @@ class ProductManager extends FlexibleManager
     /**
      * Remove a redundant value from the product
      *
-     * @param Product   $product
-     * @param Attribute $attribute
-     * @param string    $locale
-     * @param string    $scope
+     * @param ProductInterface $product
+     * @param Attribute        $attribute
+     * @param string           $locale
+     * @param string           $scope
      *
      * @return null
      */
-    private function removeProductValue(Product $product, $attribute, $locale = null, $scope = null)
+    private function removeProductValue(ProductInterface $product, $attribute, $locale = null, $scope = null)
     {
         $values = $product->getValues();
         $values = $values->filter(
@@ -216,9 +216,9 @@ class ProductManager extends FlexibleManager
     }
 
     /**
-     * @param Product $product
+     * @param ProductInterface $product
      */
-    private function handleMedia(Product $product)
+    private function handleMedia(ProductInterface $product)
     {
         foreach ($product->getValues() as $value) {
             if (null !== $media = $value->getMedia()) {
@@ -235,12 +235,12 @@ class ProductManager extends FlexibleManager
     }
 
     /**
-     * @param Product      $product
-     * @param ProductValue $value
+     * @param ProductInterface $product
+     * @param ProductValue     $value
      *
      * @return string
      */
-    private function generateFilenamePrefix(Product $product, ProductValue $value)
+    private function generateFilenamePrefix(ProductInterface $product, ProductValue $value)
     {
         return sprintf(
             '%s-%s-%s-%s-%s',
@@ -258,11 +258,11 @@ class ProductManager extends FlexibleManager
      * The onlyTrees parameter allow to limit the scope of the removing or setting
      * of categories to specific trees
      *
-     * @param Product         $product
-     * @param ArrayCollection $categories
-     * @param array           $onlyTrees
+     * @param ProductInterface $product
+     * @param ArrayCollection  $categories
+     * @param array            $onlyTrees
      */
-    public function setCategories(Product $product, ArrayCollection $categories = null, array $onlyTrees = null)
+    public function setCategories(ProductInterface $product, ArrayCollection $categories = null, array $onlyTrees = null)
     {
         // Remove current categories
         $currentCategories = $product->getCategories();

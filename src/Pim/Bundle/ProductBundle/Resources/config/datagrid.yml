@@ -20,7 +20,7 @@ services:
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: products
-              entity_name: Pim\Bundle\ProductBundle\Entity\Product
+              entity_name: %pim_product.entity.product.class%
               entity_hint: products
               flexible: true
               route_name: pim_product_product_index

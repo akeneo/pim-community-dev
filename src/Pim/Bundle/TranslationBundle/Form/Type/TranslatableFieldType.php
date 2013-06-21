@@ -39,7 +39,7 @@ class TranslatableFieldType extends AbstractType
     /**
      * @param ValidatorInterface $validator
      * @param LocaleManager      $localeManager
-     * @param unknown_type       $defaultLocale
+     * @param string             $defaultLocale
      */
     public function __construct(ValidatorInterface $validator, LocaleManager $localeManager, $defaultLocale)
     {
@@ -65,16 +65,14 @@ class TranslatableFieldType extends AbstractType
             throw new FormException('must provide a field');
         }
 
-        $translationFactory = new TranslationFactory($options['translation_class'], $options['entity_class'], $options['field']);
+        if (!is_array($options['required_locale'])) {
+            throw new FormException('required locale(s) must be an array');
+        }
 
         $subscriber = new AddTranslatableFieldSubscriber(
             $builder->getFormFactory(),
             $this->validator,
-            $translationFactory,
-            $options['field'],
-            $options['widget'],
-            $options['required_locale'],
-            $options['locales']
+            $options
         );
         $builder->addEventSubscriber($subscriber);
     }
@@ -89,6 +87,7 @@ class TranslatableFieldType extends AbstractType
      * - required_locale      : Fields are required or not
      * - field                : Field name
      * - widget               : Widget used by translations fields
+     * - only_default         : Render only default translation
      */
     public function getDefaultOptions(array $options = array())
     {
@@ -97,8 +96,9 @@ class TranslatableFieldType extends AbstractType
         $options['field']             = false;
         $options['locales']           = $this->getActiveLocales();
         $options['default_locale']    = $this->defaultLocale;
-        $options['required_locale']   = $this->defaultLocale;
+        $options['required_locale']   = array($this->defaultLocale);
         $options['widget']            = 'text';
+        $options['only_default']      = false;
 
         return $options;
     }

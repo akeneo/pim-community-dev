@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Form\Handler;
 
-use Pim\Bundle\ProductBundle\Entity\Product;
+use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Pim\Bundle\ProductBundle\Entity\ProductValue;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,11 +48,11 @@ class SimpleProductHandler
 
     /**
      * Process method for handler
-     * @param Product $entity
+     * @param ProductInterface $entity
      *
      * @return boolean
      */
-    public function process(Product $entity)
+    public function process(ProductInterface $entity)
     {
         $this->form->setData($entity);
 
@@ -71,9 +71,9 @@ class SimpleProductHandler
 
     /**
      * Call when form is valid
-     * @param Product $entity
+     * @param ProductInterface $entity
      */
-    protected function onSuccess(Product $entity)
+    protected function onSuccess(ProductInterface $entity)
     {
         $this->manager->save($entity);
     }

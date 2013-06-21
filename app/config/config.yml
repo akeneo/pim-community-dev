@@ -75,8 +75,9 @@ doctrine:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping:         true
         resolve_target_entities:
-            Symfony\Component\Security\Core\User\UserInterface: Oro\Bundle\UserBundle\Entity\User
+            Symfony\Component\Security\Core\User\UserInterface:   Oro\Bundle\UserBundle\Entity\User
             Pim\Bundle\ProductBundle\Model\ProductValueInterface: Pim\Bundle\ProductBundle\Entity\ProductValue
+            Pim\Bundle\ProductBundle\Model\ProductInterface:      Pim\Bundle\ProductBundle\Entity\Product
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -136,8 +137,6 @@ stof_doctrine_extensions:
             translatable:     true
             tree:             true
             loggable:         true
-    class:
-        loggable:             Oro\Bundle\DataAuditBundle\EventListener\LoggableListener
 
 services:
     cache:

@@ -5,7 +5,7 @@ namespace Pim\Bundle\TranslationBundle\Factory;
 use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;
 
 /**
- * Translation factory
+ * Translation factory for entity instanciation
  *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -13,11 +13,31 @@ use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;
  */
 class TranslationFactory
 {
+
+    /**
+     * The entity translation class
+     *
+     * @var string
+     */
     protected $translationClass;
+
+    /**
+     * The entity class
+     *
+     * @var string
+     */
     protected $entityClass;
+
+    /**
+     * The field type
+     *
+     * @var string
+     */
     protected $field;
 
     /**
+     * Constructor
+     *
      * @param string $translationClass
      * @param string $entityClass
      * @param string $field
@@ -42,9 +62,11 @@ class TranslationFactory
     }
 
     /**
+     * Create the translation entity
+     *
      * @param string $locale
      *
-     * @return Translation
+     * @return \Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation
      */
     public function createTranslation($locale)
     {

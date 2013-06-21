@@ -17,7 +17,6 @@ use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
  *
  * @ORM\Table(name="pim_product_value")
  * @ORM\Entity
- * @Gedmo\Loggable(logEntryClass="Oro\Bundle\DataAuditBundle\Entity\Audit")
  */
 class ProductValue extends AbstractEntityFlexibleValue implements ProductValueInterface
 {
@@ -32,7 +31,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     /**
      * @var Product $entity
      *
-     * @ORM\ManyToOne(targetEntity="Product", inversedBy="values")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Model\ProductInterface", inversedBy="values")
      */
     protected $entity;
 

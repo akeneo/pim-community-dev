@@ -310,7 +310,7 @@ a.accordion-toggle {
   float: none;
 }
 
-span.handle {
+span.handle, td.handle {
   cursor: move;
 }
 
@@ -480,6 +480,16 @@ div.ui-dialog {
   }
   td.handle {
     line-height: 30px;
+  }
+}
+
+/* Sortable table */
+table.ui-sortable, tbody.ui-sortable {
+  td.handle {
+    line-height: 30px;
+  }
+  td a.btn {
+    height: 28px;
   }
 }
 

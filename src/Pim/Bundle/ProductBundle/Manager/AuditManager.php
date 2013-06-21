@@ -5,7 +5,7 @@ use Oro\Bundle\DataAuditBundle\Entity\Audit;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\ProductBundle\Entity\Product;
+use Pim\Bundle\ProductBundle\Model\ProductInterface;
 
 /**
  * Audit manager
@@ -32,11 +32,11 @@ class AuditManager
     /**
      * Return product logs
      *
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @return ArrayCollection
      */
-    public function getLogEntries(Product $product)
+    public function getLogEntries(ProductInterface $product)
     {
         $repo = $this->objectManager->getRepository('Oro\Bundle\DataAuditBundle\Entity\Audit');
         $logs = $repo->getLogEntries($product);
@@ -47,11 +47,11 @@ class AuditManager
     /**
      * Return first log entry
      *
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @return Audit
      */
-    public function getFirstLogEntry(Product $product)
+    public function getFirstLogEntry(ProductInterface $product)
     {
         $logs = $this->getLogEntries($product);
 
@@ -61,11 +61,11 @@ class AuditManager
     /**
      * Return last log entry
      *
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @return Audit
      */
-    public function getLastLogEntry(Product $product)
+    public function getLastLogEntry(ProductInterface $product)
     {
         $logs = $this->getLogEntries($product);
 

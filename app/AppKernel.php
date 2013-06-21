@@ -50,7 +50,6 @@ class AppKernel extends Kernel
             new Oro\Bundle\FilterBundle\OroFilterBundle(),
             new Oro\Bundle\GridBundle\OroGridBundle(),
             new Oro\Bundle\WindowsBundle\OroWindowsBundle(),
-            new Oro\Bundle\AddressBundle\OroAddressBundle(),
             new Oro\Bundle\DataAuditBundle\OroDataAuditBundle(),
             new Oro\Bundle\FormBundle\OroFormBundle(),
 

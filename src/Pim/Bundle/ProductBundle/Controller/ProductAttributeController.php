@@ -55,11 +55,12 @@ class ProductAttributeController extends Controller
     public function indexAction(Request $request)
     {
         /** @var $queryBuilder QueryBuilder */
+        $productClass = $this->getProductManager()->getFlexibleName();
         $queryBuilder = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
         $queryBuilder
             ->select('a')
             ->from('PimProductBundle:ProductAttribute', 'a')
-            ->where("a.entityType = 'Pim\Bundle\ProductBundle\Entity\Product'");
+            ->where("a.entityType = '{$productClass}'");
 
         /** @var $queryFactory QueryFactory */
         $queryFactory = $this->get('pim_product.datagrid.manager.productattribute.default_query_factory');
