@@ -50,6 +50,13 @@ $.widget( "ui.dialog", $.ui.dialog, {
         this._initBottomLine();
     },
 
+    _limitTo: function() {
+        if (this.options.limitTo) {
+            return $(this.options.limitTo);
+        }
+        return this._appendTo();
+    },
+
     _init: function() {
         this._super();
 
@@ -64,7 +71,7 @@ $.widget( "ui.dialog", $.ui.dialog, {
 
     _makeDraggable: function() {
         this._super();
-        this.uiDialog.draggable('option', 'containment', 'parent');
+        this.uiDialog.draggable('option', 'containment', this.options.limitTo || 'parent');
     },
 
     close: function() {
@@ -222,7 +229,7 @@ $.widget( "ui.dialog", $.ui.dialog, {
                 .css({
                     position: "fixed",
                     bottom: 1,
-                    left: this._appendTo().offset().left,
+                    left: this._limitTo().offset().left,
                     zIndex: 9999
                 })
                 .hide()
@@ -239,8 +246,8 @@ $.widget( "ui.dialog", $.ui.dialog, {
 
     _calculateNewMaximizedDimensions: function() {
         var newHeight = this._getContainerHeight();
-        var newWidth = this._appendTo().width();
-        var parentOffset = this._appendTo().offset();
+        var newWidth = this._limitTo().width();
+        var parentOffset = this._limitTo().offset();
         this._setOptions({
             resizable: false,
             draggable : false,
@@ -248,6 +255,7 @@ $.widget( "ui.dialog", $.ui.dialog, {
             width: newWidth,
             position: [parentOffset.left, parentOffset.top]
         });
+        this.widget().css('position', 'fixed'); // remove scroll when maximized
         return this;
     },
 
@@ -276,8 +284,8 @@ $.widget( "ui.dialog", $.ui.dialog, {
         }
 
         // Maximize window to container, or to viewport in case when container is higher
-        var baseHeight = this._appendTo().height();
-        var visibleHeight = this.bottomLine.offset().top - this._appendTo().offset().top;
+        var baseHeight = this._limitTo().height();
+        var visibleHeight = this.bottomLine.offset().top - this._limitTo().offset().top;
         var currentHeight = baseHeight > visibleHeight ? visibleHeight : baseHeight;
         return currentHeight - heightDelta;
     },
@@ -468,7 +476,7 @@ $.widget( "ui.dialog", $.ui.dialog, {
     },
 
     _getVisibleLeft: function(left, width) {
-        var containerWidth = this._appendTo().width();
+        var containerWidth = this._limitTo().width();
         if (left + width > containerWidth) {
             return containerWidth - width;
         }
