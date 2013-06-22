@@ -52,6 +52,25 @@ class EntityConfigContainer
         return array();
     }
 
+    public function hasEntityItemsWithForm()
+    {
+        return count(array_filter($this->getEntityItems(), function ($item) {
+            return isset($item['form']) && isset($item['form']['type']);
+        }));
+    }
+
+    /**
+     * @return array
+     */
+    public function getEntityFormConfig()
+    {
+        if (isset($this->config['entity']) && isset($this->config['entity']['form'])) {
+            return $this->config['entity']['form'];
+        }
+
+        return array();
+    }
+
     /**
      * @return array
      */
@@ -83,6 +102,18 @@ class EntityConfigContainer
     {
         if (isset($this->config['field']) && isset($this->config['field']['items'])) {
             return $this->config['field']['items'];
+        }
+
+        return array();
+    }
+
+    /**
+     * @return array
+     */
+    public function getFieldFormConfig()
+    {
+        if (isset($this->config['field']) && isset($this->config['field']['form'])) {
+            return $this->config['field']['form'];
         }
 
         return array();
