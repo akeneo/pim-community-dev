@@ -229,6 +229,8 @@ class ConfigManager
             }
 
             $configEntity->fromArray($entityConfig->getScope(), $entityConfig->getValues());
+
+            $this->configCache->removeConfigFromCache($className, $entityConfig->getScope());
         }
 
         foreach ($this->persistFieldConfig as $fieldConfig) {
@@ -245,6 +247,8 @@ class ConfigManager
             }
 
             $field->fromArray($fieldConfig->getScope(), $fieldConfig->getValues());
+
+            $this->configCache->removeConfigFromCache($className, $fieldConfig->getScope());
         }
 
         foreach ($entities as $entity) {
