@@ -10,8 +10,8 @@ $(function() {
         $.get(el.attr('href'), function (data) {
             el.prev().text(data);
             var messageText = el.attr('data-message') + ' <strong>' + data + '</strong>';
-            if (!_.isUndefined(Oro.Messages)) {
-                Oro.Messages.showMessage('success', messageText);
+            if (!_.isUndefined(Oro.NotificationFlashMessage)) {
+                Oro.NotificationFlashMessage('success', messageText);
             } else {
                 alert(messageText);
             }
