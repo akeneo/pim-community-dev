@@ -128,12 +128,12 @@
                                     <div class="attribute-field {{ attributeView.classes|default([])|keys|join(' ') }}">
                                     {% if attributeView.values is defined %}
                                         {% for scope, subvalue in attributeView.values %}
-                                            <div class="control-group" data-field="{{ attributeView.code }}">
+                                            <div class="control-group pull-left" data-field="{{ attributeView.code }}">
                                                 {{ form_widget(subvalue, {'attr': {'data-scope': scope}}) }}
                                             </div>
                                         {% endfor %}
                                     {% else %}
-                                            <div class="control-group" data-field="{{ attributeView.code }}">
+                                            <div class="control-group pull-left" data-field="{{ attributeView.code }}">
                                                 {{ form_widget(attributeView.value) }}
                                             </div>
                                     {% endif %}
