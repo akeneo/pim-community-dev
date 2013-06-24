@@ -71,7 +71,7 @@
                 $field.find('iframe.wysihtml5-sandbox, textarea').width(opts.wysihtml5.width);
                 $label.height(opts.wysihtml5.height);
             } else {
-                $label.height($field.children().first().height() - 10);
+                $label.height($field.children().first().actual('height') - 10);
             }
 
             var $controls = $field.find('.controls').first();
@@ -80,53 +80,39 @@
     }
 
     function bindEvents(el, opts) {
-        var $fields = getFields(el);
-        $fields.first().off('click', 'label span');
-        $fields.first().on('click', 'label span', function() {
-            toggleOpen($(this).parents('.scopablefield'), opts, true);
+        getFields(el).first().off('click', 'label span').on('click', 'label span', function() {
+            toggleOpen(el, opts);
         });
 
     }
 
-    function expand(el, opts, force) {
-        $(el).addClass('expanded').removeClass('collapsed');
+    function prepareToggle(el, icon) {
+        $(el).toggleClass('expanded collapsed');
+
         var $fields = getFields(el);
 
         $fields.find('label span').remove();
-        var $icon = $('<span>').html($('<i>').addClass(opts.collapseIcon));
+        var $icon = $('<span>').html($('<i>').addClass(icon));
         $fields.first().find('label.control-label').prepend($icon);
-
-        if (opts.toggleOnUpdate || force) {
-            $fields.show();
-        } else {
-            $fields.hide();
-            $fields.first().show();
-        }
     }
 
-    function collapse(el, opts, force) {
-        $(el).addClass('collapsed').removeClass('expanded');
-        var $fields = getFields(el);
+    function expand(el, opts) {
+        prepareToggle(el, opts.collapseIcon);
 
-        $fields.find('label span').remove();
-        var $icon = $('<span>').html($('<i>').addClass(opts.expandIcon));
-        $fields.first().find('label.control-label').prepend($icon);
-
-        if (opts.toggleOnUpdate || force) {
-            $fields.hide();
-            $fields.first().show();
-        } else {
-            $fields.show();
-        }
+        getFields(el).show();
     }
 
-    function toggleOpen(el, opts, force) {
-        var $fields = getFields(el);
+    function collapse(el, opts) {
+        prepareToggle(el, opts.expandIcon);
 
-        if ($fields.filter(':visible').length === 1) {
-            expand(el, opts, force);
+        getFields(el).hide().first().show();
+    }
+
+    function toggleOpen(el, opts) {
+        if ($(el).hasClass('collapsed')) {
+            expand(el, opts);
         } else {
-            collapse(el, opts, force);
+            collapse(el, opts);
         }
     }
 
@@ -148,11 +134,15 @@
 
             if (options === 'collapse') {
                 return this.each(function() {
-                    collapse(this, opts, true);
+                    if (getFields(this, opts).length > 1) {
+                        collapse(this, opts);
+                    }
                 });
             } else if (options === 'expand') {
                 return this.each(function() {
-                    expand(this, opts, true);
+                    if (getFields(this, opts).length > 1) {
+                        expand(this, opts);
+                    }
                 });
             } else {
                 return this;
@@ -165,14 +155,20 @@
             if (!$(this).hasClass('scopablefield')) {
                 showTitle(this, opts);
             }
-            sortFields(this, opts);
-            prepareLabels(this, opts);
-            bindEvents(this, opts);
-            if (!$(this).hasClass('scopablefield') || opts.toggleOnUpdate === true) {
-                toggleOpen(this, opts, true);
+
+            if (getFields(this, opts).length < 2) {
+                prepareLabels(this, opts);
             } else {
-                toggleOpen(this, opts);
+                sortFields(this, opts);
+                prepareLabels(this, opts);
+                bindEvents(this, opts);
+                if (!$(this).hasClass('scopablefield') || opts.toggleOnUpdate === true) {
+                    toggleOpen(this, opts);
+                } else {
+                    collapse(this, opts);
+                }
             }
+
             $(this).addClass('scopablefield');
         });
     }
