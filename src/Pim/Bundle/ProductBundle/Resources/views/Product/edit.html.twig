@@ -1,5 +1,5 @@
 {% extends 'PimProductBundle::layout.html.twig' %}
-{% set title = form.vars.value.id ? 'Edit product'|trans : 'Add product'|trans %}
+{% import 'PimUIBundle:Form:form_elements.html.twig' as forms %}
 
 {% block page_container %}
 <div class="container-fluid product-edit">
@@ -14,149 +14,71 @@
     {{ JSFV(form) }}
     <form method="POST" class="form-horizontal" action="{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
 
-        <div class="navigation clearfix navbar-extra navbar-extra-right">
-            <div class="row-fluid">
-                <div class="pull-right">
-                    <div class="pull-right">
-                        <div class="btn-group icons-holder">
-                            <a class="btn" href="{{ path('pim_product_product_index') }}" title="{{ 'Back to grid' | trans }}"><i class="icon-chevron-left"></i></a>
-                        </div>
-                        <div class="btn-group icons-holder">
-                            {{ form_widget(form.enabled) }}
-                        </div>
-                        <div class="btn-group icons-holder">
-                            <a href="javascript: void(0);" class="btn icons-holder-text" id="btn-delete-product" data-id="{{ form.vars.value.id }}" data-message="{{ 'Are you sure you want to delete this product ?'|trans }}" title="{{ 'Delete'|trans }}"><i class="icon-trash hide-text">{{ 'Remove'|trans }}</i>Delete</a>
-                        </div>
-                        <div class="btn-group">
-                            <button type="submit" class="btn btn-primary"><i class="hide-text">Save </i> {{ ' Save'|trans }}</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="pull-left">
-                    <div class="navbar-content pull-left">
-                        <div class="navbar-title clearfix-oro">
-                            <div class="sub-title">{{ 'Products'|trans }}</div>
-                            <span class="separator">/</span>
-                            <div id="locale-switcher" class="btn-group sub-title">
-                                <span class="product-name dropdown-toggle" data-toggle="dropdown">{{ product.label }}<span class="caret"></span></span>
-                                <ul class="dropdown-menu">
-                                    {% for locale in form.vars.value.getLocales() %}
-                                        <li>
-                                            <a href="?dataLocale={{ locale.code }}" title="{{ locale.code|lower }}">
-                                                <span class="code">
-                                                    {% if locale.code == dataLocale %}
-                                                        <i class="icon-bullet"></i>
-                                                    {% endif %}
-                                                    {{ locale.code|upper }}
-                                                </span>
-                                                <span class="title">{{ product.label(locale.code) }}</span>
-                                            </a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                        <ul class="inline">
-                           <li>{{ 'Family'|trans }}: {{ form.vars.value.productFamily|capitalize|default('N/A'|trans) }}</li>
-                           <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by' | trans }} {{ updated ? updated.user.username : 'N/A'|trans }}</li>
-                           <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by' | trans }} {{ created ? created.user.username : 'N/A'|trans }}</li>
-                       </ul>
-                   </div>
-                </div>
-                <div class="pull-right product-updated">
-                    <span id="updated" class="label label-warning">{{ 'There are unsaved changes.'|trans }}</span>
-                </div>
+        {% set title = 'Products'|trans %}
+
+        {% set buttons %}
+            <div class="btn-group icons-holder">
+                <a class="btn" href="{{ path('pim_product_product_index') }}" title="{{ 'Back to grid' | trans }}"><i class="icon-chevron-left"></i></a>
             </div>
-        </div>
+            <div class="btn-group icons-holder">
+                {{ form_widget(form.enabled) }}
+            </div>
+            <div class="btn-group icons-holder">
+                <a href="javascript: void(0);" class="btn icons-holder-text" id="btn-delete-product" data-id="{{ form.vars.value.id }}" data-message="{{ 'Are you sure you want to delete this product ?'|trans }}" title="{{ 'Delete'|trans }}"><i class="icon-trash hide-text">{{ 'Remove'|trans }}</i>Delete</a>
+            </div>
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary"><i class="hide-text">Save </i> {{ ' Save'|trans }}</button>
+            </div>
+        {% endset %}
+
+        {% set subtitle %}
+            <div id="locale-switcher" class="btn-group sub-title">
+                <span class="product-name dropdown-toggle" data-toggle="dropdown">{{ product.label }}<span class="caret"></span></span>
+                <ul class="dropdown-menu">
+                    {% for locale in form.vars.value.getLocales() %}
+                        <li>
+                            <a href="?dataLocale={{ locale.code }}" title="{{ locale.code|lower }}">
+                                <span class="code">
+                                    {% if locale.code == dataLocale %}
+                                        <i class="icon-bullet"></i>
+                                    {% endif %}
+                                    {{ locale.code|upper }}
+                                </span>
+                                <span class="title">{{ product.label(locale.code) }}</span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endset %}
+
+        {% set left %}
+            <ul class="inline">
+               <li>{{ 'Family'|trans }}: {{ form.vars.value.productFamily|capitalize|default('N/A'|trans) }}</li>
+               <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by' | trans }} {{ updated ? updated.user.username : 'N/A'|trans }}</li>
+               <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by' | trans }} {{ created ? created.user.username : 'N/A'|trans }}</li>
+           </ul>
+        {% endset %}
+
+        {% set right %}
+            <div class="pull-right product-updated">
+                <span id="updated" class="label label-warning">{{ 'There are unsaved changes.'|trans }}</span>
+            </div>
+        {% endset %}
+
+        {{ forms.form_header(title, buttons, subtitle, left, right) }}
 
         <div class="layout-content">
 
-                <div id="form-navbar" class="navbar navbar-static scrollspy-nav">
-                    <div class="navbar-inner">
-                        <div class="row-fluid">
-                            <ul class="nav">
-                                <li class="active"><a href="#attributes" data-toggle="tab">{{ 'Attributes' | trans }}</a></li>
-                                <li class=""><a href="#categories" data-toggle="tab">{{ 'Categories' | trans }}</a></li>
-                                <li class=""><a href="#localisations" data-toggle="tab">{{ 'Localisations' | trans }}</a></li>
-                            </ul>
-                        </div>
-                    </div>
+            {{ forms.form_navbar(['Attributes', 'Categories', 'Localisations']) }}
+
+            <div class="row-fluid tab-content">
+
+                {{ forms.form_errors(form) }}
+
+                <div class="tab-pane active" id="attributes">
+                    {% include 'PimProductBundle:Product:_attributes.html.twig' with { 'product': product, 'channels': channels, 'forn': form } %}
                 </div>
-
-                <div class="row-fluid tab-content">
-                    {% if form.vars.errors|length %}
-                        <div class="alert alert-error">
-                            {{ form_errors(form) }}
-                        </div>
-                    {% endif %}
-                    <div class="tab-pane active" id="attributes">
-                        <div class="tab-groups">
-                            <ul class="nav nav-list">
-                                {% for group in product.orderedGroups %}
-                                <li class="tab{% if loop.index == 1 %} active{% endif %}">
-                                    <a href="#tabs-{{group.id}}" data-toggle="tab">{{ group.name }}</a>
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="tab-content">
-                            <div id="attribute-buttons">
-                                <div class="btn-group">
-                                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                        <i class="icon-cog"></i>
-                                        <span class="caret"></span>
-                                    </a>
-                                    <div class="dropdown-menu channel pull-right">
-                                        <h5>{{ 'Scope'|trans }}</h5>
-                                        <div>
-                                            <span id="channel-controls">
-                                                <label for="default_channel">{{ 'Default channel'|trans }}</label>
-                                                <select id="default_channel">
-                                                    {% for channel in channels %}
-                                                        <option value="{{ channel.code }}" data-scope="{{ channel.code }}">{{ channel.name }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </span>
-                                            <a href="#" data-action="expand">{{ 'Expand all channels'|trans }}</a>
-                                            <a href="#" data-action="collapse">{{ 'Collapse all channels'|trans }}</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {% for groupId, groupView in form.vars.groups %}
-                            <div id="tabs-{{ groupId }}" class="tab-pane">
-                                <h3>{{ groupView.name }}</h3>
-                                {% for attributeId, attributeView in groupView.attributes %}
-                                    <div class="attribute-field {{ attributeView.classes|default([])|keys|join(' ') }}">
-                                    {% if attributeView.values is defined %}
-                                        {% for scope, subvalue in attributeView.values %}
-                                            <div class="control-group" data-field="{{ attributeView.code }}">
-                                                {{ form_widget(subvalue, {'attr': {'data-scope': scope}}) }}
-                                            </div>
-                                        {% endfor %}
-                                    {% else %}
-                                            <div class="control-group" data-field="{{ attributeView.code }}">
-                                                {{ form_widget(attributeView.value) }}
-                                            </div>
-                                    {% endif %}
-                                    {% if attributeView.isRemovable %}
-                                        <a href="{{ path('pim_product_product_removeproductvalue', {
-                                            'productId': product.id,
-                                            'attributeId': attributeId
-                                        }) }}"
-                                               class="btn btn-action btn-link remove-attribute"
-                                               title="Remove this attribute"
-                                               data-method="DELETE" data-confirm="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attributeView.label}) }}">×</a>
-                                    {% endif %}
-                                    </div>
-                                {% endfor %}
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-
-                    <div class="tab-pane" id="variants"></div>
 
                     <div class="tab-pane" id="associations"></div>
 
@@ -200,81 +122,5 @@
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
-    <script type="text/javascript">
-    $(function() {
-        var activeTab = $('[href=' + location.hash + ']');
-        activeTab && activeTab.tab('show');
-
-
-        var updated = false;
-
-        $('#updated').css('display', 'none');
-        $('form [id^="pim_product_"]').change(function(event){
-            updated = true;
-            $('#updated').css('display', 'inline-block');
-            $('form [id^="pim_product_"]').unbind('change');
-        });
-
-        $(window).on('beforeunload', function(){
-            if (updated) {
-                return "{{ 'You will lose changes to the product if you leave the page.'|trans }}";
-            }
-        });
-
-        $('button[type="submit"]').click(function(event) {
-            $('#pim_available_product_attributes_attributes').removeAttr('required');
-            $(window).unbind('beforeunload');
-        });
-
-        $('#btn-delete-product').click(function(event) {
-            doAction = function() {
-                window.location.href = "{{ path('pim_product_product_remove', { id: form.vars.value.id }) }}";
-            };
-
-            if (!_.isUndefined(Backbone.BootstrapModal)) {
-                confirm = new Backbone.BootstrapModal({
-                    title: "{{ 'Delete Confirmation' | trans }}",
-                    content: "{{ 'Are you sure you want to delete this product' | trans }}"
-                });
-                confirm.on('ok', doAction);
-                confirm.open();
-            } else if (window.confirm(message)) {
-                doAction();
-            }
-        });
-
-        $('#attribute-buttons .dropdown-menu').click(function (e) {
-            e.stopPropagation();
-        });
-
-        // Destroy Select2 where it's not necessary
-        $('#default_channel').select2('destroy');
-
-        $('#default_channel').change(function() {
-            $('.scopable').scopableField({ defaultScope: $(this).val() });
-        });
-
-        $('.dropdown-menu.channel a').click(function (e) {
-            e.preventDefault();
-            $('.scopable').scopableField($(this).data('action'));
-        });
-
-        $('li.tab.active a').each(function() {
-            var paneId = $(this).attr('href');
-            $(paneId).addClass('active');
-        });
-
-        $('.remove-attribute').each(function() {
-            var target = $(this).parent().find('input:not([type="hidden"]):not([class*=select2]), select').first();
-            $(this).insertAfter(target).css('margin-left', 20);
-        });
-
-        $('a.validation-tooltip').each(function() {
-            var tabId = $(this).parents('.tab-pane').attr('id');
-
-            $('a[href="#' + tabId + '"]').parents('li').addClass('error');
-        });
-    });
-    </script>
-    <link rel="stylesheet" href="{{ asset('bundles/pimui/css/select2.css') }}" />
+    {% include 'PimProductBundle:Product:_js-handler.html.twig' %}
 {% endblock %}

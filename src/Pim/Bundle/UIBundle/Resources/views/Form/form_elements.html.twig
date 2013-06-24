@@ -1,0 +1,53 @@
+{% macro form_header(title, buttons, subtitle, left, right) %}
+    <div class="navigation clearfix navbar-extra navbar-extra-right">
+        <div class="row-fluid">
+            {% if buttons is not empty %}
+                <div class="navbar-content pull-right">
+                    {{ buttons }}
+                </div>
+            {% endif %}
+            <div class="navbar-content pull-left">
+                <div class="navbar-title clearfix-oro">
+                    <div class="sub-title">{{ title }}</div>
+                    {% if subtitle is not empty %}
+                        <span class="separator">/</span>
+                        {{ subtitle }}
+                    {% endif %}
+                </div>
+                {{ left }}
+           </div>
+            {{ right }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro form_navbar(tabs) %}
+    <div id="form-navbar" class="navbar navbar-static scrollspy-nav">
+        <div class="navbar-inner">
+            <div class="row-fluid">
+                {% if tabs is not empty %}
+                    <ul class="nav">
+                        {% if tabs is iterable %}
+                            {% for tab in tabs %}
+                                <li{% if loop.first %} class="active"{% endif %}><a href="#{{ tab|lower }}" data-toggle="tab">{{ tab|trans }}</a></li>
+                            {% endfor %}
+                        {% else %}
+                            <li class="active"><a href="#{{ tabs|lower }}" data-toggle="tab">{{ tabs|trans|capitalize }}</a></li>
+                        {% endif %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro form_errors(form) %}
+    {% if form.vars.errors|length %}
+        <div class="alert alert-error fade in top-messages">
+            <a class="close" data-dismiss="alert" href="#">×</a>
+            <div class="message">
+                {{ form_errors(form) }}
+            </div>
+        </div>
+    {% endif %}
+{% endmacro %}
