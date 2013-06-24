@@ -268,6 +268,12 @@
             var target = $(this).parent().find('input:not([type="hidden"]):not([class*=select2]), select').first();
             $(this).insertAfter(target).css('margin-left', 20);
         });
+
+        $('a.validation-tooltip').each(function() {
+            var tabId = $(this).parents('.tab-pane').attr('id');
+
+            $('a[href="#' + tabId + '"]').parents('li').addClass('error');
+        });
     });
     </script>
     <link rel="stylesheet" href="{{ asset('bundles/pimui/css/select2.css') }}" />
