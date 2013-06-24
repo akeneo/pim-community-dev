@@ -2,6 +2,11 @@
 <script type="text/javascript">
     if (self == top) {
         window.location.reload();
+    } else {
+        //skipping js errors in case content is loaded in iframe (for ex. file uploading in ie8)
+        window.onerror = function(e) {
+            return true;
+        };
     }
 </script>
 <div id="head">
