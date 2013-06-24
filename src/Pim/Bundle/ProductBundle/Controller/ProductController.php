@@ -163,6 +163,8 @@ class ProductController extends Controller
                         )
                     )
                 );
+            } else {
+                $this->addFlash('error', 'Please check your entry and try again.');
             }
         }
 
