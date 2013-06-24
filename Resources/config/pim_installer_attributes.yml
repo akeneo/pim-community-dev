@@ -102,18 +102,23 @@
         'options':
             'XS':
                 labels:
+                    'default': 'XS'
                     'en_US': 'XS'
             'S':
                 labels:
+                    'default': 'S'
                     'en_US': 'S'
             'M':
                 labels:
+                    'default': 'M'
                     'en_US': 'M'
             'L':
                 labels:
+                    'default': 'L'
                     'en_US': 'L'
             'XL':
                 labels:
+                    'default': 'XL'
                     'en_US': 'XL'
     'color':
         'labels':
@@ -128,22 +133,27 @@
         'options':
             'Red':
                 labels:
+                    'default': 'Red'
                     'en_US': 'Red'
                     'fr_FR': 'Rouge'
             'Blue':
                 labels:
+                    'default': 'Blue'
                     'en_US': 'Blue'
                     'fr_FR': 'Bleu'
             'Green':
                 labels:
+                    'default': 'Green'
                     'en_US': 'Green'
                     'fr_FR': 'Vert'
             'Purple':
                 'labels':
+                    'default': 'Purple'
                     'en_US': 'Purple'
                     'fr_FR': 'Violet'
             'Orange':
                 'labels':
+                    'default': 'Orange'
                     'en_US': 'Orange'
                     'fr_FR': 'Orange'
     'manufacturer':
@@ -159,8 +169,10 @@
         'options':
             'MyMug':
                 labels:
+                    'default': 'MyMug'
                     'en_US': 'MyMug'
-            'MyStore':
+            'MugStore':
                 labels:
-                    'en_US': 'MyStore'
+                    'default': 'MugStore'
+                    'en_US': 'MugStore'
 
