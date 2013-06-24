@@ -144,6 +144,15 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(53, $product->getLabel());
     }
 
+    public function testIsSetEnabled()
+    {
+        $product = new Product();
+        $this->assertTrue($product->isEnabled());
+
+        $product->setEnabled(false);
+        $this->assertFalse($product->isEnabled());
+    }
+
     private function getAttributeMock($group = null)
     {
         $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute', array('getGroup'));
