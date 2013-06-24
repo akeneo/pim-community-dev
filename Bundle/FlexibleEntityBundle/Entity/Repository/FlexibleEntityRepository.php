@@ -371,7 +371,7 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
     }
 
     /**
-     * Load a flexible entity with its attributes sorted by code and sortOrder
+     * Load a flexible entity with its attributes sorted by sortOrder
      *
      * @param integer $id
      *
