@@ -49,43 +49,38 @@
     }
 
     function bindEvents(el, opts) {
-        var $fields = getFields(el);
-        $fields.first().off('click', 'label span');
-        $fields.first().on('click', 'label span', function() {
-            toggleOpen($(this).parents('.currencyfield'), opts);
+        getFields(el).first().off('click', 'label span').on('click', 'label span', function() {
+            toggleOpen(el, opts);
         });
+    }
 
+    function prepareToggle(el, icon) {
+        $(el).toggleClass('expanded collapsed');
+
+        var $fields = getFields(el);
+
+        $fields.find('label span').remove();
+        var $icon = $('<span>').html($('<i>').addClass(icon));
+        $fields.first().find('label.control-label').prepend($icon);
     }
 
     function expand(el, opts) {
-        $(el).addClass('expanded').removeClass('collapsed');
-        var $fields = getFields(el);
+        prepareToggle(el, opts.collapseIcon);
 
-        $fields.find('label span').remove();
-        var $icon = $('<span>').html($('<i>').addClass(opts.collapseIcon));
-        $fields.first().find('label.control-label').prepend($icon);
-        $fields.show();
+        getFields(el).show();
     }
 
     function collapse(el, opts) {
-        $(el).addClass('collapsed').removeClass('expanded');
-        var $fields = getFields(el);
-        $fields.hide();
+        prepareToggle(el, opts.expandIcon);
 
-        $fields.first().show();
-
-        $fields.find('label span').remove();
-        var $icon = $('<span>').html($('<i>').addClass(opts.expandIcon));
-        getFields(el).first().find('label.control-label').prepend($icon);
+        getFields(el).hide().first().show();
     }
 
-    function toggleOpen(el, opts, close) {
-        var $fields = getFields(el);
-
-        if ($fields.filter(':visible').length > 1 || close === true) {
-            collapse(el, opts);
-        } else {
+    function toggleOpen(el, opts) {
+        if ($(el).hasClass('collapsed')) {
             expand(el, opts);
+        } else {
+            collapse(el, opts);
         }
     }
 
@@ -96,11 +91,15 @@
 
             if (options === 'collapse') {
                 return this.each(function() {
-                    collapse(this, opts);
+                    if (getFields(this, opts).length > 1) {
+                        collapse(this, opts);
+                    }
                 });
             } else if (options === 'expand') {
                 return this.each(function() {
-                    expand(this, opts);
+                    if (getFields(this, opts).length > 1) {
+                        expand(this, opts);
+                    }
                 });
             } else {
                 return this;
@@ -114,9 +113,17 @@
                 $(this).addClass('currencyfield');
                 showTitle(this, opts);
             }
+
             prepareLabels(this, opts);
-            bindEvents(this, opts);
-            toggleOpen(this, opts, true);
+
+            if (getFields(this, opts).length > 1) {
+                bindEvents(this, opts);
+                if (!$(this).hasClass('scopablefield')) {
+                    toggleOpen(this, opts);
+                } else {
+                    collapse(this, opts);
+                }
+            }
         });
     }
 
@@ -130,5 +137,5 @@
 $(function() {
     "use strict";
 
-    $('.currency').currencyField();
+    $('form div.currency').currencyField();
 });

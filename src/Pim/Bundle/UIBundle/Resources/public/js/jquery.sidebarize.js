@@ -9,33 +9,36 @@
 (function($) {
     "use strict";
 
-    function triggerResize() {
-        $(window).trigger('resize');
-        setTimeout(function() {
-            $('.scrollable-container').css('overflow', 'hidden');
-        }, 50);
+    function getAvailableHeight($element, opts) {
+        var height = $(window).height() - $element.offset().top - opts.heightCompensator;
+
+        // @todo: remove in production environment
+        if ($('.sf-toolbar').length && $('.sf-toolbar').height()) {
+            height -= 39;
+        }
+
+        return height;
     }
 
     function collapse($element, opts) {
         $element.children().first().hide();
         $element.children().eq(1).toggleClass('expanded collapsed').outerWidth(opts.collapsedSeparatorWidth);
         $element.find('.sidebar-separator i.' + opts.expandIcon).show();
-        triggerResize();
+        $(window).trigger('resize');
     }
 
     function expand($element, opts) {
         $element.children().first().show();
         $element.children().eq(1).toggleClass('expanded collapsed').outerWidth(opts.separatorWidth);
         $element.find('.sidebar-separator i.' + opts.expandIcon).hide();
-        triggerResize();
+        $(window).trigger('resize');
     }
 
     function adjustHeight($element, opts) {
-        var offset = $element.position().top - $('.scrollable-container').position().top;
-        var height = $('.scrollable-container').height() - offset;
+        var height = getAvailableHeight($element, opts);
 
-        $element.outerHeight(height - opts.heightCompensator);
-        $element.find('.sidebar-content').outerHeight(height - opts.controlsHeight - opts.heightCompensator);
+        $element.outerHeight(height);
+        $element.find('.sidebar-content').outerHeight(height - opts.controlsHeight);
     }
 
     function adjustWidth($element, opts) {
@@ -135,9 +138,7 @@
                 adjustWidth($element, opts);
             });
 
-            triggerResize();
-            // Fix the issue with scrollable-container not having the right initial height
-            setTimeout(triggerResize, 200);
+            $(window).trigger('resize');
         });
     };
 

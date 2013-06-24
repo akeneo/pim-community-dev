@@ -64,15 +64,15 @@ class LoadAttributeData extends AbstractInstallerFixture
             $attribute->addTranslation($translation);
         }
 
-        $parameters = $this->prepareParameters($data);
-        $attribute->setParameters($parameters);
-
         if (isset($data['options'])) {
             $options = $this->prepareOptions($data['options']);
             foreach ($options as $option) {
                 $attribute->addOption($option);
             }
         }
+
+        $parameters = $this->prepareParameters($data);
+        $attribute->setParameters($parameters);
 
         return $attribute;
     }
@@ -111,6 +111,10 @@ class LoadAttributeData extends AbstractInstallerFixture
         $parameters['dateMin']= (isset($parameters['dateMin'])) ? new \DateTime($parameters['dateMin']) : null;
         $parameters['dateMax']= (isset($parameters['dateMax'])) ? new \DateTime($parameters['dateMax']) : null;
 
+        if ($data['type'] === 'pim_product_simpleselect' and isset($parameters['defaultValue'])) {
+            $parameters['defaultValue']= $this->getReference('product-attributeoption.'.$parameters['defaultValue']);
+        }
+
         return $parameters;
     }
 
@@ -128,7 +132,7 @@ class LoadAttributeData extends AbstractInstallerFixture
             $option = $this->getProductManager()->createAttributeOption();
             $option->setTranslatable(true);
             $labels = $data['labels'];
-            $option->setDefaultValue($labels['en_US']);
+            $option->setDefaultValue($labels['default']);
             foreach ($labels as $locale => $translated) {
                 $optionValue = $this->getProductManager()->createAttributeOptionValue();
                 $optionValue->setValue($translated);
@@ -136,6 +140,7 @@ class LoadAttributeData extends AbstractInstallerFixture
                 $option->addOptionValue($optionValue);
             }
             $options[]= $option;
+            $this->addReference('product-attributeoption.'.$code, $option);
         }
 
         return $options;

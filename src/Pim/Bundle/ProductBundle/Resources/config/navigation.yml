@@ -18,7 +18,7 @@ oro_menu_config:
             label: 'Attribute groups'
             route: 'pim_product_attributegroup_index'
         pim_enrich_categorytree:
-            label: 'Category trees'
+            label: 'Categories'
             route: 'pim_product_categorytree_index'
 
     tree:
@@ -27,11 +27,17 @@ oro_menu_config:
                 pim_enrich_tab:
                     children:
                         pim_enrich_product: ~
+                        pim_enrich_categorytree: ~
+
+                pim_configuration_tab:
+                    children:
                         pim_enrich_family: ~
                         pim_enrich_attribute: ~
                         pim_enrich_attributegroup: ~
+
+                pim_export_tab:
+                    children:
                         pim_enrich_exportprofile: ~
-                        pim_enrich_categorytree: ~
 
 oro_titles:
     pim_default:                             Dashboard

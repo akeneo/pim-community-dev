@@ -56,6 +56,10 @@ class LoadFamilyData extends AbstractInstallerFixture
             $family->addAttribute($this->getReference('product-attribute.'.$attribute));
         }
 
+        if (isset($data['attributeAsLabel'])) {
+            $family->setAttributeAsLabel($this->getReference('product-attribute.'.$data['attributeAsLabel']));
+        }
+
         return $family;
     }
 

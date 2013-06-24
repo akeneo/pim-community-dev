@@ -281,4 +281,25 @@ class ProductManager extends FlexibleManager
             }
         }
     }
+
+    /**
+     * Find a product
+     * Also ensure that it contains all required values
+     *
+     * @param int $id
+     *
+     * @return Product|null
+     */
+    public function find($id)
+    {
+        $product = $this
+            ->getFlexibleRepository()
+            ->findWithSortedAttribute($id);
+
+        if ($product) {
+            $this->ensureRequiredAttributeValues($product);
+        }
+
+        return $product;
+    }
 }
