@@ -1,4 +1,5 @@
 {% extends 'PimProductBundle::layout.html.twig' %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
 {% set title = 'Products'|trans %}
 
@@ -26,23 +27,16 @@
 <div class="container-fluid product-list">
     {% block content %}
 
-    <div class="navigation clearfix navbar-extra navbar-extra-right">
-        <div class="row-fluid">
-            <div class="pull-right">
-                <a id="create-product" class="btn btn-primary pull-right" href="{{ path('pim_product_product_create') }}">{{ 'New product'|trans }}</a>
-            </div>
-            <div class="pull-left">
-                <div class="navbar-content pull-left">
-                    <div class="navbar-title products-title clearfix-oro">
-                        <div class="sub-title">{{ title }}</div>
-                        <span class="separator">/</span>
-                        <div id="locale-switcher" class="sub-title"></div>
-                        <div id="scope-switcher" class="sub-title"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% set buttons %}
+        <a id="create-product" class="btn btn-primary pull-right" href="{{ path('pim_product_product_create') }}">{{ 'New product'|trans }}</a>
+    {% endset %}
+
+    {% set subtitle %}
+        <div id="locale-switcher" class="sub-title"></div>
+        <div id="scope-switcher" class="sub-title"></div>
+    {% endset %}
+
+    {{ elements.page_header(title, buttons, subtitle) }}
 
     <div class="row-fluid has-sidebar">
         <div id="tree"></div>
