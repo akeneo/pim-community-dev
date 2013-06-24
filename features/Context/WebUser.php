@@ -1219,7 +1219,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     private function getProductManager()
     {
-        return $this->getContainer()->get('product_manager');
+        return $this->getContainer()->get('pim_product.manager.product');
     }
 
     private function getUserManager()

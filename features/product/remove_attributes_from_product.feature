@@ -33,7 +33,7 @@ Feature: Remove an attribute from a product
     And I am on the "kangoo" product page
     When I remove the "Color" attribute
     Then I should see "Attribute was successfully removed."
-    And attributes in group "Other" should be SKU and Model
+    And attributes in group "Other" should be Model and SKU
 
   @javascript
   Scenario: Successfully remove a scopable attribute from a product
@@ -55,4 +55,4 @@ Feature: Remove an attribute from a product
     And I am on the "kangoo" product page
     When I remove the "Color" attribute
     Then I should see "Attribute was successfully removed."
-    And attribute in group "Other" should be SKU and Model
+    And attributes in group "Other" should be Model and SKU
