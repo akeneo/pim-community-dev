@@ -1,4 +1,7 @@
 $(function() {
+    // Disable the oro scrollable container
+    $('.scrollable-container').removeClass('scrollable-container').css('overflow', 'visible');
+
     // Prevent UniformJS from breaking our stuff
     $(document).uniform.restore();
 

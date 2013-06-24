@@ -260,6 +260,11 @@
             var paneId = $(this).attr('href');
             $(paneId).addClass('active');
         });
+
+        $('.remove-attribute').each(function() {
+            var target = $(this).parent().find('input:not([type="hidden"]):not([class*=select2]), select').first();
+            $(this).insertAfter(target).css('margin-left', 20);
+        });
     });
     </script>
     <link rel="stylesheet" href="{{ asset('bundles/pimui/css/select2.css') }}" />
