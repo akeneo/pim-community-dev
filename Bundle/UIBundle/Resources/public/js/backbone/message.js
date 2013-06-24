@@ -44,6 +44,7 @@ var Oro = Oro || {};
                 }
             }, this));
             if (e !== undefined) {
+                e.preventDefault();
                 e.stopPropagation();
             }
         },
