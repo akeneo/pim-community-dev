@@ -4,6 +4,7 @@ namespace Oro\Bundle\EntityConfigBundle\Controller;
 
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\GridBundle\Datagrid\Datagrid;
 
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
+use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
 
 /**
  * User controller.
@@ -77,11 +79,21 @@ class ConfigController extends Controller
     }
 
     /**
-     * View Entity
      * @Route("/view/{id}", name="oro_entityconfig_view")
      * @Template()
      */
     public function viewAction(ConfigEntity $entity)
+    {
+        return array(
+            'entity' => $entity,
+        );
+    }
+
+    /**
+     * @Route("/fieldview/{id}", name="oro_entityconfig_fieldview")
+     * @Template()
+     */
+    public function fieldviewAction(ConfigField $entity)
     {
         return array(
             'entity' => $entity,
@@ -135,8 +147,56 @@ class ConfigController extends Controller
             if ($form->isValid()) {
                 var_dump($form->getData());
             }
-            die('asd');
         }
+
+        return array(
+            'form' => $form->createView(),
+            'formConfig' => $formConfig
+        );
+    }
+
+
+    /**
+     * @Route("/fieldupdate/{id}", name="oro_entityconfig_fieldupdate")
+     * @Template()
+     */
+    public function fieldupdateAction(ConfigField $field)
+    {
+        /** @var ConfigManager $configManager */
+        $configManager = $this->get('oro_entity_config.config_manager');
+
+        $formBuilder = $this->createFormBuilder();
+        $data        = array();
+        $formConfig  = array();
+        foreach ($configManager->getProviders() as $provider) {
+            $fields = array();
+            foreach ($provider->getConfigContainer()->getFieldItems() as $code => $item) {
+                if (isset($item['form']) && isset($item['form']['type']) && isset($item['form']['options'])) {
+                    $formBuilder->add($code, $item['form']['type'], $item['form']['options']);
+
+                    $config      = $provider->getFieldConfig($field->getEntity()->getClassName(), $field->getCode());
+                    $data[$code] = $config->get($code);
+                    $fields[]    = $code;
+                }
+            }
+
+            if (count($fields)) {
+                $formConfig[] = array(
+                    'title'     => ucfirst($provider->getScope()),
+                    'class' => '',
+                    'subblocks' => array(
+                        array(
+                            'title'  => '',
+                            'fields' => $fields,
+                            'data'   => array(),
+                        )
+                    )
+                );
+            }
+        }
+
+        $formBuilder->setData($data);
+        $form    = $formBuilder->getForm();
 
         return array(
             'form' => $form->createView(),

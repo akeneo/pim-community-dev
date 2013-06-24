@@ -3,6 +3,11 @@
 
 {% set gridId = 'entityconfigfields-grid' %}
 
+{% block navButtons %}
+    {{ UI.button({'path' : path('oro_entityconfig_index'), 'iClass' : 'icon-chevron-left ', 'title' : 'Back', 'label' : 'Back'}) }}
+
+{% endblock navButtons %}
+
 {% block content %}
     {% set pageTitle = 'Entity Fields Config' %}
     {#{% set buttons = [UI.addButton({'path' : path('oro_user_create'), 'title' : 'Create', 'label' : 'Create'})] %}#}
