@@ -2,6 +2,12 @@
 
 namespace Oro\Bundle\EntityConfigBundle\DependencyInjection;
 
+use Symfony\Component\PropertyAccess\PropertyAccess;
+
+use Oro\Bundle\FormBundle\Config\SubBlockConfig;
+use Oro\Bundle\FormBundle\Config\BlockConfig;
+use Oro\Bundle\FormBundle\Config\FormConfig;
+
 class EntityConfigContainer
 {
 
@@ -15,13 +21,16 @@ class EntityConfigContainer
      */
     protected $config;
 
+    protected $accessor;
+
     /**
      * @param $config
      */
     public function __construct($config)
     {
-        $this->config = $config;
-        $this->scope  = $config['scope'];
+        $this->accessor = $accessor = PropertyAccess::createPropertyAccessor();
+        $this->config   = $config;
+        $this->scope    = $config['scope'];
     }
 
     /**
@@ -52,23 +61,34 @@ class EntityConfigContainer
         return array();
     }
 
-    public function hasEntityItemsWithForm()
-    {
-        return count(array_filter($this->getEntityItems(), function ($item) {
-            return isset($item['form']) && isset($item['form']['type']);
-        }));
-    }
-
     /**
+     * @param FormConfig $formConfig
      * @return array
      */
-    public function getEntityFormConfig()
+    public function getEntityFormConfig(FormConfig $formConfig = null)
     {
         if (isset($this->config['entity']) && isset($this->config['entity']['form'])) {
-            return $this->config['entity']['form'];
+            $fromConfig = $formConfig ? $formConfig : new FormConfig;
+
+            foreach ((array)$this->accessor->getValue($this->config['entity']['form'], '[blocks]') as $key => $block) {
+                $formBlockConfig = new BlockConfig($this->scope . $key);
+                $formBlockConfig->setTitle($this->accessor->getValue($block, '[title]'));
+                $formBlockConfig->setClass($this->accessor->getValue($block, '[class]'));
+
+                foreach ((array)$this->accessor->getValue($block, '[subblocks]') as $subBlock) {
+                    $formSubBlockConfig = new SubBlockConfig;
+                    $formSubBlockConfig->setTitle($this->accessor->getValue($subBlock, '[title]'));
+
+                    $formBlockConfig->addSubBlock($formSubBlockConfig);
+                }
+
+                $fromConfig->addBlock($formBlockConfig);
+            }
+
+            return $fromConfig;
         }
 
-        return array();
+        return false;
     }
 
     /**
