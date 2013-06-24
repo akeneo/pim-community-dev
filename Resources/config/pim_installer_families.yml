@@ -3,9 +3,34 @@
         'labels':
             'default': 'Mug'
             'fr_FR': 'Tasse'
-        'attributes' : ['name', 'manufacturer', 'short_description', 'color']
+        'attributes' :
+            - 'sku'
+            - 'name'
+            - 'short_description'
+            - 'manufacturer'
+            - 'color'
+        'attributeAsLabel': 'name'
     'shirt':
         'labels':
             'default': 'Shirt'
             'fr_FR': 'Chemise'
-        'attributes' : ['name', 'size', 'short_description', 'color']
+        'attributes' :
+            - 'sku'
+            - 'name'
+            - 'short_description'
+            - 'size'
+            - 'color'
+        'attributeAsLabel': 'name'
+    'shoe':
+        'labels':
+            'default': 'Shoe'
+            'fr_FR': 'Chaussure'
+        'attributes' :
+            - 'sku'
+            - 'name'
+            - 'short_description'
+            - 'long_description'
+            - 'size'
+            - 'color'
+            - 'image_upload'
+        'attributeAsLabel': 'name'

@@ -11,6 +11,7 @@
             'unique': true
             'useableAsGridColumn': true
             'useableAsGridFilter': true
+            'sortOrder': 1
     'name':
         'labels':
             'default': 'Name'
@@ -22,6 +23,7 @@
             'translatable': true
             'useableAsGridColumn': true
             'useableAsGridFilter': true
+            'sortOrder': 2
     'price':
         'labels':
             'default': 'Price'
@@ -34,6 +36,7 @@
             'useableAsGridFilter': true
             'numberMin': 1
             'numberMax': 500
+            'sortOrder': 1
     'short_description':
         'labels':
             'default': 'Short Description'
@@ -47,6 +50,7 @@
             'useableAsGridColumn': true
             'useableAsGridFilter': true
             'maxCharacters': 100
+            'sortOrder': 3
     'long_description':
         'labels':
             'default': 'Long Description'
@@ -60,6 +64,7 @@
             'useableAsGridColumn': true
             'useableAsGridFilter': true
             'wysiwygEnabled': true
+            'sortOrder': 4
     'release_date':
         'labels':
             'default': 'Release date'
@@ -72,6 +77,7 @@
             'useableAsGridFilter': true
             'dateMin': '2012-01-01'
             'dateMax': '2014-01-01'
+            'sortOrder': 5
     'file_upload':
         'labels':
             'default': 'File upload'
@@ -81,6 +87,7 @@
         'group': 'seo'
         'parameters':
             'maxFileSize': '2000'
+            'sortOrder': 1
     'image_upload':
         'labels':
             'default': 'Image upload'
@@ -88,7 +95,8 @@
         'type': 'pim_product_image'
         'description': 'File upload'
         'group': 'seo'
-        'parameters': ~
+        'parameters':
+            'sortOrder': 2
     'size':
         'labels':
             'default': 'Size'
@@ -99,6 +107,8 @@
         'parameters':
             'useableAsGridColumn': true
             'useableAsGridFilter': true
+            'sortOrder': 1
+            'defaultValue': 'M'
         'options':
             'XS':
                 labels:
@@ -130,6 +140,7 @@
         'parameters':
             'useableAsGridColumn': true
             'useableAsGridFilter': true
+            'sortOrder': 1
         'options':
             'Red':
                 labels:
@@ -166,6 +177,7 @@
         'parameters':
             'useableAsGridColumn': true
             'useableAsGridFilter': true
+            'sortOrder': 10
         'options':
             'MyMug':
                 labels:
