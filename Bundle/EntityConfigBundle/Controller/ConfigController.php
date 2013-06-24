@@ -114,7 +114,18 @@ class ConfigController extends Controller
         }
 
         return array(
-            'form' => $form->createView(),
+            'form' => $form->createView(),           
         );
+    }
+
+    /**
+     * Lists all Flexible entities.
+     * @Route("/remove/{id}", name="oro_entityconfig_remove")
+     * @Template()
+     */
+    public function removeAction($className)
+    {
+        var_dump($className);
+        die;
     }
 }
