@@ -60,6 +60,11 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     protected $categories;
 
     /**
+     * @ORM\Column(name="is_enabled", type="boolean")
+     */
+    protected $enabled = true;
+
+    /**
      * Redefine constructor
      */
     public function __construct()
@@ -312,5 +317,15 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         }
 
         return implode(', ', $titles);
+    }
+
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
     }
 }
