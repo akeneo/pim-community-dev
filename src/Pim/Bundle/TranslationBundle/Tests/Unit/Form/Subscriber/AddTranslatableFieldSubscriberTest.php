@@ -22,7 +22,7 @@ use Symfony\Component\Form\Forms;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class AddTranslatableFieldSubscriberTestBCTest extends \PHPUnit_Framework_TestCase
+class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -257,7 +257,7 @@ class AddTranslatableFieldSubscriberTestBCTest extends \PHPUnit_Framework_TestCa
                     'translation_class' => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\ItemTranslation',
                     'field'             => 'name',
                     'required_locale'   => array('default'),
-                    'locales'           => array('default', 'en_US', 'fr_FR'),
+                    'locales'           => array('en_US', 'fr_FR'),
                     'default_locale'    => 'default',
                     'only_default'      => false,
                     'widget'            => 'text'
@@ -269,7 +269,7 @@ class AddTranslatableFieldSubscriberTestBCTest extends \PHPUnit_Framework_TestCa
                     'translation_class' => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\ItemTranslation',
                     'field'             => 'name',
                     'required_locale'   => array('default'),
-                    'locales'           => array('default', 'en_US', 'fr_FR'),
+                    'locales'           => array('en_US', 'fr_FR'),
                     'default_locale'    => 'default',
                     'only_default'      => true,
                     'widget'            => 'text'
@@ -337,20 +337,7 @@ class AddTranslatableFieldSubscriberTestBCTest extends \PHPUnit_Framework_TestCa
      */
     public static function bindDataProvider()
     {
-        return array(
-            'only_default' => array(
-                array(
-                    'entity_class'      => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\Item',
-                    'translation_class' => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\ItemTranslation',
-                    'field'             => 'name',
-                    'required_locale'   => array('default'),
-                    'locales'           => array('default', 'en_US', 'fr_FR'),
-                    'default_locale'    => 'default',
-                    'only_default'      => true,
-                    'widget'            => 'text'
-                )
-            )
-        );
+        return self::preSetDataProvider();
     }
 
     /**
@@ -378,12 +365,22 @@ class AddTranslatableFieldSubscriberTestBCTest extends \PHPUnit_Framework_TestCa
                          ->method('getData')
                          ->will($this->returnValue(null));
         } else {
-            die('NOT YET IMPLEMENTED !!!');
+            $locales = $options['locales'];
+
+            foreach ($locales as $index => $locale) {
+                $this->form->expects($this->at($index))
+                     ->method('get')
+                     ->with($this->equalTo($options['field'].':'.$locale))
+                     ->will($this->returnValue($defaultField = $this->getFormMock()));
+
+                $defaultField->expects($this->any())
+                             ->method('getData')
+                             ->will($this->returnValue(null));
+            }
         }
 
-        $event = $this->getEventMock($this->form, $translatableEntity, array('name:default' => 'toto'));
+        $event = $this->getEventMock($this->form, $translatableEntity, array());
 
-//         $target->preSetData($event);
         $target->bind($event);
     }
 
