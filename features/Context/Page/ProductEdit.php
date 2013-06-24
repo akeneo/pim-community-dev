@@ -23,6 +23,7 @@ class ProductEdit extends Page
         'Title'                           => array('css' => '.navbar-title'),
         'Tabs'                            => array('css' => '#form-navbar'),
         'Locales selector'                => array('css' => '#pim_product_locales'),
+        'Enable switcher'                 => array('css' => '#pim_product_enabled'),
     );
 
     public function findLocaleLink($locale)
@@ -175,5 +176,19 @@ class ProductEdit extends Page
     public function visitTab($tab)
     {
         $this->getElement('Tabs')->clickLink($tab);
+    }
+
+    public function disableProduct()
+    {
+        $this->getElement('Enable switcher')->uncheck();
+
+        return $this;
+    }
+
+    public function enableProduct()
+    {
+        $this->getElement('Enable switcher')->check();
+
+        return $this;
     }
 }

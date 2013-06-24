@@ -1017,6 +1017,76 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getCurrentPage()->selectActivatedLocale($locale);
     }
 
+    /**
+     * @Given /^an enabled "([^"]*)" product$/
+     */
+    public function anEnabledProduct($sku)
+    {
+        $this
+            ->aProductAvailableIn($sku, 'english')
+            ->setEnabled(true)
+        ;
+
+        $this->getEntityManager()->flush();
+    }
+
+    /**
+     * @Given /^a disabled "([^"]*)" product$/
+     */
+    public function aDisabledProduct($sku)
+    {
+        $this
+            ->aProductAvailableIn($sku, 'english')
+            ->setEnabled(false)
+        ;
+
+        $this->getEntityManager()->flush();
+    }
+
+    /**
+     * @Given /^I disable the product$/
+     */
+    public function iDisableTheProduct()
+    {
+        $this
+            ->getPage('Product edit')
+            ->disableProduct()
+            ->save()
+        ;
+    }
+
+    /**
+     * @Given /^I enable the product$/
+     */
+    public function iEnableTheProduct()
+    {
+        $this
+            ->getPage('Product edit')
+            ->enableProduct()
+            ->save()
+        ;
+    }
+
+    /**
+     * @Given /^product "([^"]*)" should be disabled$/
+     */
+    public function productShouldBeDisabled($sku)
+    {
+        if ($this->getProduct($sku)->isEnabled()) {
+            throw $this->createExpectationException('Product was expected to be be disabled');
+        }
+    }
+
+    /**
+     * @Given /^product "([^"]*)" should be enabled$/
+     */
+    public function productShouldBeEnabled($sku)
+    {
+        if (!$this->getProduct($sku)->isEnabled()) {
+            throw $this->createExpectationException('Product was expected to be be enabled');
+        }
+    }
+
     private function openPage($page, array $options = array())
     {
         $this->currentPage = $page;

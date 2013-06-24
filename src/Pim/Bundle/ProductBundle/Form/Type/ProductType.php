@@ -110,6 +110,19 @@ class ProductType extends FlexibleType
     {
         parent::addEntityFields($builder);
 
+        $builder
+            ->add(
+                'enabled',
+                'checkbox',
+                array(
+                    'attr' => array(
+                        'data-on-label'  => 'Enabled',
+                        'data-off-label' => 'Disabled',
+                    )
+                )
+            )
+        ;
+
         $this->addLocaleField($builder);
     }
 
