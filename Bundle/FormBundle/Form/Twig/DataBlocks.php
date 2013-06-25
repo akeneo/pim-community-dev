@@ -2,38 +2,188 @@
 
 namespace Oro\Bundle\FormBundle\Form\Twig;
 
+use Oro\Bundle\FormBundle\Config\SubBlockConfig;
 use Symfony\Component\Form\FormView;
 
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
+
+use Oro\Bundle\FormBundle\Config\BlockConfig;
 use Oro\Bundle\FormBundle\Config\FormConfig;
+use Oro\Bundle\FormBundle\Exception\RuntimeException;
+
 
 class DataBlocks
 {
-    public static function render(\Twig_Environment $env, $context, FormView $form, $formVariableName = 'form')
+    /**
+     * @var FormConfig
+     */
+    protected $formConfig;
+
+    /**
+     * @var string
+     */
+    protected $formVariableName;
+
+    /**
+     * @var mixed
+     */
+    protected $context;
+
+    /**
+     * @var \Twig_Environment
+     */
+    protected $env;
+
+    /**
+     * @var PropertyAccessor
+     */
+    protected $accessor;
+
+    public function __construct()
     {
-        if (isset($form->vars['formConfig']) && $form->vars['formConfig'] instanceof FormConfig) {
-            $tmpLoader = $env->getLoader();
-            $env->setLoader(new \Twig_Loader_String());
+        $this->accessor = PropertyAccess::createPropertyAccessor();
+    }
 
-            /** @var FormConfig $formConfig */
-            $formConfig = $form->vars['formConfig'];
+    /**
+     * @param \Twig_Environment $env
+     * @param                   $context
+     * @param FormView          $form
+     * @param string            $formVariableName
+     * @return array
+     */
+    public function render(\Twig_Environment $env, $context, FormView $form, $formVariableName = 'form')
+    {
+        $this->formVariableName = $formVariableName;
+        $this->formConfig       = new FormConfig;
+        $this->context          = $context;
+        $this->env              = $env;
 
-            foreach ($form->children as $formChildName => $formChild) {
-                foreach ($formChild->children as $childName => $child) {
-                    if (isset($child->vars['block']) && isset($child->vars['subblock'])) {
-                        $subBlock = $formConfig->getSubBlocks($child->vars['block'], $child->vars['subblock']);
-                        $subBlock->addData($env->render('{{ form_row(' . $formVariableName  . sprintf(
-                            '.children[\'%s\'].children[\'%s\']',
-                            $formChildName, $childName
-                        ) . ') }}', $context));
-                    }
-                }
-            }
+        $tmpLoader = $env->getLoader();
+        $env->setLoader(new \Twig_Loader_String());
 
-            $env->setLoader($tmpLoader);
+        try {
 
-            return $formConfig->toArray();
+            $this->renderBlock($form);
+        } catch(\Exception $e) {
+            var_dump($e);
+            die;
         }
 
-        return array();
+        $env->setLoader($tmpLoader);
+
+        return $this->formConfig->toArray();
+    }
+
+    /**
+     * @param FormView $form
+     */
+    protected function renderBlock(FormView $form)
+    {
+        if (isset($form->vars['block_config'])) {
+            $this->createBlock($form->vars['block_config']);
+        }
+
+        foreach ($form->children as $name => $child) {
+            if (isset($child->vars['block']) || isset($child->vars['subblock'])) {
+
+                if (isset($child->vars['block']) && $this->formConfig->hasBlock($child->vars['block'])) {
+                    $block = $this->formConfig->getBlock($child->vars['block']);
+                } else {
+                    $blocks = $this->formConfig->getBlocks();
+                    $block = reset($blocks);
+                }
+
+
+                if (!$block) {
+                    $blockCode = isset($child->vars['block'])
+                        ? $child->vars['block']
+                        : $name;
+
+                    $block = $this->createBlock(array($blockCode => array()));
+
+                    $this->formConfig->addBlock($block);
+                }
+
+                if (isset($child->vars['subblock']) && $block->hasSubBlock($child->vars['subblock'])) {
+                    $subBlock = $block->getSubBlock($child->vars['subblock']);
+                } else {
+                    $subBlocks = $block->getSubBlocks();
+                    $subBlock = reset($subBlocks);
+                }
+
+                if (!$subBlock) {
+                    $subBlockCode = isset($child->vars['subblock'])
+                        ? $child->vars['subblock']
+                        : $name . '__subblock';
+
+                    $subBlock = $this->createSubBlock($subBlockCode, array('title' => ''));
+
+                    $block->addSubBlock($subBlock);
+                }
+
+                $tmpChild = $child;
+                $formPath = '';
+
+                while ($tmpChild->parent) {
+                    $formPath = sprintf('.children[\'%s\']', $tmpChild->vars['name']) . $formPath;
+                    $tmpChild = $tmpChild->parent;
+                }
+
+                $subBlock->addData($this->env->render(
+                    '{{ form_row(' . $this->formVariableName . $formPath . ') }}',
+                    $this->context
+                ));
+            }
+
+            $this->renderBlock($child);
+        }
+    }
+
+    /**
+     * @param $config
+     * @return null|BlockConfig
+     * @throws RuntimeException
+     */
+    protected function createBlock($config)
+    {
+        foreach ($config as $code => $blockConfig) {
+            if ($this->formConfig->hasBlock($code)) {
+                throw new RuntimeException(sprintf("block_config '%s' isset in form config.", $code));
+            }
+
+            $block = new BlockConfig($code);
+            $block->setClass($this->accessor->getValue($blockConfig, '[class]'));
+            $block->setPriority($this->accessor->getValue($blockConfig, '[priority]'));
+
+            $title = $this->accessor->getValue($blockConfig, '[title]')
+                ? $this->accessor->getValue($blockConfig, '[title]')
+                : ucfirst($code);
+            $block->setTitle($title);
+
+            foreach ((array)$this->accessor->getValue($blockConfig, '[subblocks]') as $subCode => $subBlockConfig) {
+                $block->addSubBlock($this->createSubBlock($subCode, (array)$subBlockConfig));
+            }
+
+            $this->formConfig->addBlock($block);
+
+            return $block;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param $code
+     * @param $config
+     * @return SubBlockConfig
+     */
+    protected function createSubBlock($code, $config)
+    {
+        $subBlock = new SubBlockConfig($code);
+        $subBlock->setTitle($this->accessor->getValue($config, '[title]'));
+        $subBlock->setPriority($this->accessor->getValue($config, '[priority]'));
+
+        return $subBlock;
     }
 }

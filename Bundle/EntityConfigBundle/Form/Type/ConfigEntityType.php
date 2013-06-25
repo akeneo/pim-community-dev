@@ -36,26 +36,16 @@ class ConfigEntityType extends AbstractType
         $className = $options['class_name'];
         $data      = array();
         foreach ($this->configManager->getProviders() as $provider) {
-            if ($provider->getConfigContainer()->getEntityFormConfig()) {
-                $builder->add($provider->getScope(), new ConfigType($provider), array());
+            if ($provider->getConfigContainer()->hasEntityForm()) {
+                $builder->add($provider->getScope(), new ConfigType($provider), array(
+                    'block_config' => (array)$provider->getConfigContainer()->getEntityFormBlockConfig()
+                ));
                 $data[$provider->getScope()] = $provider->getConfig($className)->getValues();
             }
         }
         $builder->setData($data);
 
         $builder->addEventSubscriber(new ConfigSubscriber($this->configManager));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options)
-    {
-        $view->vars['formConfig'] = new FormConfig;
-
-        foreach ($this->configManager->getProviders() as $provider) {
-            $provider->getConfigContainer()->getEntityFormConfig($view->vars['formConfig']);
-        }
     }
 
     /**

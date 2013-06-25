@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\FormBundle\Twig;
 
+use Oro\Bundle\FormBundle\Form\Twig\DataBlocks;
+
 class FormExtension extends \Twig_Extension
 {
     public function getFunctions()
@@ -9,7 +11,7 @@ class FormExtension extends \Twig_Extension
         return array(
             new \Twig_SimpleFunction(
                 'form_data_blocks',
-                array('Oro\Bundle\FormBundle\Form\Twig\DataBlocks', 'render'),
+                array(new DataBlocks, 'render'),
                 array('needs_context' => true, 'needs_environment' => true)
             )
         );
