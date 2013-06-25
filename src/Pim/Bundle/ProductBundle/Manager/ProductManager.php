@@ -302,4 +302,28 @@ class ProductManager extends FlexibleManager
 
         return $product;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLocale($code)
+    {
+        parent::setLocale($code);
+
+        $this->getFlexibleRepository()->setLocale($code);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setScope($code)
+    {
+        parent::setScope($code);
+
+        $this->getFlexibleRepository()->setScope($code);
+
+        return $this;
+    }
 }

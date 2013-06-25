@@ -25,7 +25,8 @@ parameters:
     pim_product.entity.category.class:                 Pim\Bundle\ProductBundle\Entity\Category
     pim_product.manager.category.class:                Pim\Bundle\ProductBundle\Manager\CategoryManager
 
-    pim_product.listener.locale.class:                 Pim\Bundle\ProductBundle\EventListener\LocaleListener
+    pim_product.listener.user_context.class:           Pim\Bundle\ProductBundle\EventListener\UserContextListener
+    
     pim_product.subscriber.add_attribute_type.class:   Pim\Bundle\ProductBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
 
     pim_product.manager.audit.class:                   Pim\Bundle\ProductBundle\Manager\AuditManager
@@ -222,10 +223,12 @@ services:
         tags:
             - { name: twig.extension }
 
+    # extension listener
     stof_doctrine_extensions.event_listener.locale:
-        class: %pim_product.listener.locale.class%
+        class: %pim_product.listener.user_context.class%
         arguments:
             - @security.context
             - @stof_doctrine_extensions.listener.translatable
+            - @pim_product.manager.product
         tags:
             - { name: kernel.event_subscriber }
