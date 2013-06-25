@@ -303,6 +303,7 @@ class LoggableManager
 
             if ($action !== self::ACTION_REMOVE && count($meta->propertyMetadata)) {
                 foreach ($uow->getEntityChangeSet($entity) as $field => $changes) {
+
                     if (!isset($meta->propertyMetadata[$field])) {
                         continue;
                     }
@@ -327,8 +328,8 @@ class LoggableManager
                         }
 
                         $method = $meta->propertyMetadata[$field]->method;
-                        $old = $old->$method();
-                        $new = $new->$method();
+                        $old = ($old !== null) ? $old->$method() : $old;
+                        $new = ($new !== null) ? $new->$method() : $new;
                     }
 
                     $newValues[$field] = array(
@@ -338,7 +339,7 @@ class LoggableManager
                 }
 
                 $newValues = array_merge($newValues, $this->collectionLogData);
-                $logEntry->setData(array_merge($newValues, $this->collectionLogData));
+                $logEntry->setData($newValues);
             }
 
             if ($action === self::ACTION_UPDATE && 0 === count($newValues) && !($entity instanceof AbstractEntityFlexible)) {
@@ -399,29 +400,33 @@ class LoggableManager
                 $oldData  = $changes[0];
                 $newData  = $entity->getData();
 
-                if ($oldData instanceof AbstractEntityAttributeOption) {
-                    $oldData = $oldData->getOptionValue()->getValue();
-                }
+                if ($newData instanceof Collection) {
 
-                if ($newData instanceof AbstractEntityAttributeOption) {
-                    $newData = $newData->getOptionValue()->getValue();
-                } elseif ($newData instanceof Collection) {
+                    $newDataArray = $newData->toArray();
+                    $oldDataArray = array_diff($newData->getSnapshot(), $newDataArray);
+
                     $oldData = implode(
                         ', ',
                         array_map(
-                            function (AbstractEntityAttributeOption $item) {
-                                return $item->getOptionValue()->getValue();
+                            function ($item) {
+                                return (string) $item;
                             },
-                            $newData->getSnapshot()
+                            $oldDataArray
                         )
                     );
 
                     $newData = implode(
                         ', ',
-                        $newData->map(function (AbstractEntityAttributeOption $item) {
-                            return $item->getOptionValue()->getValue();
-                        })->toArray()
+                        array_map(
+                            function ($item) {
+                                return (string) $item;
+                            },
+                            $newDataArray
+                        )
                     );
+
+                } elseif (is_object($oldData)) {
+                    $oldData = (string) $oldData;
                 }
 
                 // special case for, as an example, decimal values
