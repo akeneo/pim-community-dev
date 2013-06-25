@@ -355,5 +355,18 @@ Oro.Filter.AbstractFilter = Backbone.View.extend({
         } else {
             element.parent().removeClass(this.buttonActiveClass);
         }
+    },
+
+    /**
+     * Prevent submit of parent form if any.
+     *
+     * @param {Event} e
+     * @private
+     */
+    _preventEnterProcessing: function(e) {
+        if (e.keyCode == 13) {
+            e.preventDefault()
+            e.stopPropagation();
+        }
     }
 });

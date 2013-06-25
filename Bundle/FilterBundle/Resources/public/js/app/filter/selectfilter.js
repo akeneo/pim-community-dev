@@ -117,6 +117,7 @@ Oro.Filter.SelectFilter = Oro.Filter.AbstractFilter.extend({
      * @property
      */
     events: {
+        'keydown select': '_preventEnterProcessing',
         'click .filter-select': '_onClickFilterArea',
         'click .disable-filter': '_onClickDisableFilter',
         'change select': '_onSelectChange'

@@ -185,28 +185,23 @@
     Parameters:
         title - title of sub block
         data - array with data fields (i.e. form_row() or attibuteRow() data)
-        cols - number of columns
         isForm - flag what scroll block mut contain the form
         useSpan - flag to indicate is subblock must have span6 css class or not
 #}
-{% macro scrollSubblock(title, data, cols, isForm, useSpan) %}
+{% macro scrollSubblock(title, data, isForm, useSpan) %}
     {% if useSpan is not defined or useSpan == true %}
         {% set span = 'span6' %}
     {% else %}
         {% set span = '' %}
     {% endif %}
-    {% if isForm is defined and isForm == true %}
-        <fieldset class="form-horizontal {{ span }}">
-    {% else %}
-        <div class="form-horizontal {% if cols > 1 %}{{ span }}{% endif %}">
+    {% if span %}
+        <div class="{{ span }}">
     {% endif %}
     {% if title|length %}<h5 class="usser-fiedset"><span>{{ title|trans }}</span></h5>{% endif %}
     {% for dataBlock in data %}
         {{ dataBlock|raw }}
     {% endfor %}
-    {% if isForm is defined and isForm == true %}
-        </fieldset>
-    {% else %}
+    {% if span %}
         </div>
     {% endif %}
 {% endmacro %}
@@ -228,9 +223,19 @@
     <div class="usser-row">
         <h4 id="{{ blockId }}" class="scrollspy-title">{{ title|trans }}</h4>
         <div class="row-fluid {% if cols > 1 %}row-fluid-divider{% endif %}">
-            {% for subblock in subblocks %}
-                {{ _self.scrollSubblock(subblock.title|length ? subblock.title : null, subblock.data, cols, isForm, subblock.useSpan is defined ? subblock.useSpan : true) }}
-            {% endfor %}
+            {% if isForm is defined and isForm == true %}
+                <fieldset class="form-horizontal">
+            {% else %}
+                <div class="form-horizontal">
+            {% endif %}
+                {% for subblock in subblocks %}
+                    {{ _self.scrollSubblock(subblock.title|length ? subblock.title : null, subblock.data, isForm, subblock.useSpan is defined ? subblock.useSpan : true) }}
+                {% endfor %}
+            {% if isForm is defined and isForm == true %}
+                </fieldset>
+            {% else %}
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endmacro %}

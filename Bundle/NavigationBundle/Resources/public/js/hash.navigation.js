@@ -152,7 +152,7 @@ Oro.Navigation = Backbone.Router.extend({
         if (this.url) {
             this.beforeRequest();
             var i;
-            if ((i = this.contentCacheUrls.indexOf(this.removePageStateParam(this.url))) !== -1) {
+            if ((i = _.indexOf(this.contentCacheUrls, this.removePageStateParam(this.url))) !== -1) {
                 if (this.contentCache[i]) {
                     this.handleResponse(this.contentCache[i], {fromCache: true});
                     this.clearPageCache(i);
@@ -192,7 +192,7 @@ Oro.Navigation = Backbone.Router.extend({
         if (this.contentCacheUrls.length === this.maxCachedPages) {
             this.clearPageCache(0);
         }
-        var j = this.contentCacheUrls.indexOf(this.removePageStateParam(this.url));
+        var j = _.indexOf(this.contentCacheUrls, this.removePageStateParam(this.url));
         if (j !== -1) {
             this.clearPageCache(j);
         }
@@ -382,7 +382,12 @@ Oro.Navigation = Backbone.Router.extend({
                     this.setLocation(redirectUrl);
                 }
             } else {
-                $(this.selectors.container).html($(data).filter(this.selectors.content).html());
+                var content = $(data).filter(this.selectors.content).html();
+                if (options.fromCache) {
+                    //don't load additional scripts for cached page to prevent dublicated scripts loading
+                    content = content.replace(/<script.*?><\/script>/ig, '');
+                }
+                $(this.selectors.container).html(content);
                 $(this.selectors.menu).html($(data).filter(this.selectors.menu).html());
                 /**
                  * Collecting javascript from head and append them to content

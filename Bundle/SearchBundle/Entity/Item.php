@@ -46,7 +46,7 @@ class Item
     /**
      * @var integer $record_id
      *
-     * @ORM\Column(name="record_id", type="integer")
+     * @ORM\Column(name="record_id", type="integer", nullable=true)
      */
     protected $recordId;
 
