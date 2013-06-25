@@ -16,6 +16,8 @@
 $.widget( "ui.dialog", $.ui.dialog, {
     version: "2.0.0",
 
+    _limitToEl: false,
+
     options: $.extend($.ui.dialog.options, {
         minimizeTo: false,
         maximizedHeightDecreaseBy: false,
@@ -51,10 +53,11 @@ $.widget( "ui.dialog", $.ui.dialog, {
     },
 
     _limitTo: function() {
-        if (this.options.limitTo) {
-            return $(this.options.limitTo);
+        if (false === this._limitToEl) {
+            this._limitToEl = this.options.limitTo ? $(this.options.limitTo) : this._appendTo();
         }
-        return this._appendTo();
+
+        return this._limitToEl;
     },
 
     _init: function() {
