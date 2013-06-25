@@ -99,7 +99,11 @@ class PriceCollectionType extends AbstractAttributeType
             ),
             array(
                 'name' => 'translatable',
-                'fieldType' => 'pim_product_translatable'
+                'fieldType' => 'checkbox',
+                'options' => array(
+                    'disabled' => true,
+                    'read_only' => true
+                )
             ),
             array(
                 'name' => 'availableLocales',
