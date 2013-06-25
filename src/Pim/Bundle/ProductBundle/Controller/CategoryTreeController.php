@@ -254,8 +254,8 @@ class CategoryTreeController extends Controller
 
                 return $this->redirect(
                     $this->generateUrl(
-                        'pim_product_categorytree_index',
-                        array('node' => $category->getId())
+                        'pim_product_categorytree_edit',
+                        array('id'=> $category->getId(), 'node' => $category->getId())
                     )
                 );
             }

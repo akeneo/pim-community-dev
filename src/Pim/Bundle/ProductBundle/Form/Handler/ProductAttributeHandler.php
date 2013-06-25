@@ -76,7 +76,7 @@ class ProductAttributeHandler
      */
     public function process(ProductAttribute $entity)
     {
-        $locales = $this->manager->getRepository('PimConfigBundle:Locale')->findBy(array('activated' => 1));
+        $locales = $this->manager->getRepository('PimConfigBundle:Locale')->getActivatedLocales();
         $locales = array();
         foreach ($locales as $locale) {
             $locales[] = $locale->getCode();

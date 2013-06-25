@@ -38,15 +38,23 @@ class LocaleManager
     }
 
     /**
+     * Get locale repository
+     *
+     * @return \Pim\Bundle\ConfigBundle\Entity\Repository\LocaleRepository
+     */
+    protected function getObjectRepository()
+    {
+        return $this->objectManager->getRepository('PimConfigBundle:Locale');
+    }
+
+    /**
      * Get active locales
      *
      * @return \Doctrine\Common\Persistence\mixed
      */
     public function getActiveLocales()
     {
-        $criterias = array('activated' => true);
-
-        return $this->getLocales($criterias);
+        return $this->getObjectRepository()->getActivatedLocales();
     }
 
     /**
@@ -70,7 +78,7 @@ class LocaleManager
      */
     public function getLocales($criterias = array())
     {
-        return $this->objectManager->getRepository('PimConfigBundle:Locale')->findBy($criterias);
+        return $this->getObjectRepository()->findBy($criterias);
     }
 
     /**
@@ -82,7 +90,7 @@ class LocaleManager
      */
     public function getLocaleByCode($code)
     {
-        return $this->objectManager->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => $code));
+        return $this->getObjectRepository()->findOneBy(array('code' => $code));
     }
 
     /**

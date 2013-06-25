@@ -112,7 +112,9 @@ class ProductAttributeController extends Controller
         if ($this->get('pim_product.form.handler.attribute')->process($entity)) {
             $this->get('session')->getFlashBag()->add('success', 'Attribute successfully saved');
 
-            return $this->redirect($this->generateUrl('pim_product_productattribute_index'));
+            return $this->redirect(
+                $this->generateUrl('pim_product_productattribute_edit', array('id' => $entity->getId()))
+            );
         }
 
         $localeManager = $this->get('pim_config.manager.locale');
