@@ -28,7 +28,11 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     /**
      * @var Value
      *
-     * @ORM\OneToMany(targetEntity="Pim\Bundle\ProductBundle\Model\ProductValueInterface", mappedBy="entity", cascade={"persist", "remove"})
+     * @ORM\OneToMany(
+     *     targetEntity="Pim\Bundle\ProductBundle\Model\ProductValueInterface",
+     *     mappedBy="entity",
+     *     cascade={"persist", "remove"}
+     * )
      */
     protected $values;
 
@@ -319,13 +323,27 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         return implode(', ', $titles);
     }
 
+    /**
+     * Predicate to know if product is enabled or not
+     *
+     * @return boolean
+     */
     public function isEnabled()
     {
         return $this->enabled;
     }
 
+    /**
+     * Setter for predicate enabled
+     *
+     * @param bool $enabled
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\Product
+     */
     public function setEnabled($enabled)
     {
         $this->enabled = $enabled;
+
+        return $this;
     }
 }
