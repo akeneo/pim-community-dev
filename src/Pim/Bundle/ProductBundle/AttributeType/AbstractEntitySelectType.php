@@ -11,6 +11,8 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
+ *
+ * @abstract
  */
 abstract class AbstractEntitySelectType extends AbstractAttributeType
 {
@@ -37,6 +39,8 @@ abstract class AbstractEntitySelectType extends AbstractAttributeType
      * Is multiselect
      *
      * @return boolean
+     *
+     * @abstract
      */
     protected abstract function isMultiselect();
 
@@ -44,6 +48,8 @@ abstract class AbstractEntitySelectType extends AbstractAttributeType
      * Get entity field to order
      *
      * @return string
+     *
+     * @abstract
      */
     protected abstract function getEntityFieldToOrder();
 
@@ -51,6 +57,8 @@ abstract class AbstractEntitySelectType extends AbstractAttributeType
      * Get joined entity alias
      *
      * @return string
+     *
+     * @abstract
      */
     protected abstract function getEntityAlias();
 }

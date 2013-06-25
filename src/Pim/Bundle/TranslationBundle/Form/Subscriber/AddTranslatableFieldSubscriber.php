@@ -130,9 +130,11 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
             $content = $form->get($fieldName)->getData();
 
             if (null === $content && in_array($locale, $this->getOption('required_locale'))) {
-                $form->addError(new FormError(
-                    sprintf('Field "%s" for locale "%s" cannot be blank', $this->getOption('field'), $locale)
-                ));
+                $form->addError(
+                    new FormError(
+                        sprintf('Field "%s" for locale "%s" cannot be blank', $this->getOption('field'), $locale)
+                    )
+                );
             }
 
             $translation = $this->translationFactory->createTranslation($locale);
