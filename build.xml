@@ -169,6 +169,7 @@
         <exec executable="${basedir}/composer.phar" failonerror="true">
             <arg value="install" />
             <arg value="--prefer-dist" />
+            <arg value="--no-progress" />
         </exec>
     </target>
 
