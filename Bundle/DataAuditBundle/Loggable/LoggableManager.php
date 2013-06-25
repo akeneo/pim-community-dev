@@ -217,15 +217,18 @@ class LoggableManager
             if (isset($meta->propertyMetadata[$collectionMapping['fieldName']])) {
                 $method = $meta->propertyMetadata[$collectionMapping['fieldName']]->method;
 
+                $newCollection = $collection->toArray();
+                $oldCollection = array_diff($collection->getSnapshot(), $newCollection);
+
                 $oldData = array_reduce(
-                    $collection->getSnapshot(),
+                    $oldCollection,
                     function ($result, $item) use ($method) {
                         return $result . ($result ? ', ' : '') . $item->{$method}();
                     }
                 );
 
                 $newData = array_reduce(
-                    $collection->toArray(),
+                    $newCollection,
                     function ($result, $item) use ($method) {
                         return $result . ($result ? ', ' : '') . $item->{$method}();
                     }
@@ -334,9 +337,9 @@ class LoggableManager
                     );
                 }
 
+                $newValues = array_merge($newValues, $this->collectionLogData);
                 $logEntry->setData(array_merge($newValues, $this->collectionLogData));
             }
-
 
             if ($action === self::ACTION_UPDATE && 0 === count($newValues) && !($entity instanceof AbstractEntityFlexible)) {
                 return;
