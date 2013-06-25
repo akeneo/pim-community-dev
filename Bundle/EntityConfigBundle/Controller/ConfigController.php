@@ -113,7 +113,7 @@ class ConfigController extends Controller
         }
 
         return array(
-            'form' => $form->createView(),           
+            'form' => $form->createView(),
         );
     }
 }

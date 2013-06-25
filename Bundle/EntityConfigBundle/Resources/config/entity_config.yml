@@ -3,12 +3,13 @@ oro_entity_config:
 
     entity:
         form:
-            blocks:
-                -
-                    title:          Entity Config
+            block_config:
+                entity:
+                    priority:           20
                     subblocks:
-                        - { title: Base }
-                        - { title: Icon }
+                        base:           ~
+                        icon:
+                            title:      Icon Setting
         items:
             label:
                 grid:
@@ -21,9 +22,9 @@ oro_entity_config:
                     show_filter:        true
                 form:
                     type:               text
-                    block:              0
-                    subblock:           0
                     options:
+                        block:          entity
+                        subblock:       base
                         required:       true
             icon:
                 grid:
@@ -36,11 +37,13 @@ oro_entity_config:
                     show_filter:        true
                 form:
                     type:               text
-                    subblock:           1
                     options:
+                        block:          entity
+                        subblock:       icon
                         required:       true
             description:
                 form:
                     type:               textarea
                     options:
+                        block:          entity
                         required:       false

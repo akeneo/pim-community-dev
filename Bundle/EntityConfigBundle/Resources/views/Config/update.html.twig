@@ -30,6 +30,7 @@
 
 {% block content_data %}
     {% set id = 'configentity-update' %}
+
     {% set dataBlocks = form_data_blocks(form) %}
 
     {#{% for scope, block in formConfig %}#}
@@ -55,8 +56,6 @@
         {#{% set dataBlocks = dataBlocks|merge([dataBlock]) %}#}
 
     {#{% endfor %}#}
-
-    {{ form_widget(form) }}
 
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,
