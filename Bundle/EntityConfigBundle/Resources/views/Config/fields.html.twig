@@ -4,9 +4,15 @@
 {% set gridId = 'entityconfigfields-grid' %}
 
 {% block content %}
-    {% set pageTitle = 'Entity Fields Config' %}
+    {% set pageTitle = 'Entity Fields Config/Entity-' ~ entity_id %}
 
-    {% set buttons = [] %}
+    {% set buttons = [UI.addButton({
+        'path' : path('oro_entityconfig_index'),
+        'title' : 'Back to Enteties grid',
+        'label' : 'Back',
+        'aClass': 'btn-info'
+    })] %}
+
     {% for button in buttonConfig %}
         {% set buttons = buttons|merge([UI.addButton({
             'path': path(button.route, button.args|default({})),

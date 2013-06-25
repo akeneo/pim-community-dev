@@ -3,6 +3,8 @@ oro_menu_config:
         entities_list:
             label: 'Entities Config'
             route: 'oro_entityconfig_index'
+            extras:
+                routes: ['oro_entityconfig*']
 
     tree:
         application_menu:

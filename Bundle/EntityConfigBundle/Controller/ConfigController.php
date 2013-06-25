@@ -3,6 +3,7 @@
 namespace Oro\Bundle\EntityConfigBundle\Controller;
 
 use Oro\Bundle\EntityConfigBundle\Datagrid\FieldsDatagridManager;
+use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -28,17 +29,62 @@ class ConfigController extends Controller
     {
         /** @var  ConfigDatagridManager $datagrid */
         $datagridManager = $this->get('oro_entity_config.datagrid.manager');
-        $datagrid = $datagridManager->getDatagrid();
-        $view     = 'json' == $request->getRequestFormat()
+        $datagrid        = $datagridManager->getDatagrid();
+        $view            = 'json' == $request->getRequestFormat()
             ? 'OroGridBundle:Datagrid:list.json.php'
             : 'OroEntityConfigBundle:Config:index.html.twig';
 
         return $this->render(
             $view,
             array(
-                'buttonConfig'  => $datagridManager->getLayoutActions(),
-                'datagrid' => $datagrid->createView()
+                'buttonConfig' => $datagridManager->getLayoutActions(),
+                'datagrid'     => $datagrid->createView()
             )
+        );
+    }
+
+    /**
+     * View Entity
+     * @Route("/view/{id}", name="oro_entityconfig_view")
+     * @Template()
+     */
+    public function viewAction($id)
+    {
+        $entity = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
+
+        return array(
+            'entity' => $entity,
+        );
+    }
+
+    /**
+     * @Route("/update/{id}", name="oro_entityconfig_update")
+     * @Template()
+     */
+    public function updateAction($id)
+    {
+        $entity  = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
+        $form    = $this->createForm(
+            'oro_entity_config_config_entity_type',
+            null,
+            array('class_name' => $entity->getClassName())
+        );
+        $request = $this->getRequest();
+
+        if ($request->getMethod() == 'POST') {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                //persist data inside the form
+                $this->get('session')->getFlashBag()->add('success', 'ConfigEntity successfully saved');
+
+                return $this->redirect($this->generateUrl('oro_entityconfig_index'));
+            }
+        }
+
+        return array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
         );
     }
 
@@ -68,48 +114,39 @@ class ConfigController extends Controller
         return $this->render(
             $view,
             array(
-                'buttonConfig'  => $datagridManager->getLayoutActions($id),
-                'datagrid' => $datagrid->createView()
+                'buttonConfig' => $datagridManager->getLayoutActions($id),
+                'datagrid'     => $datagrid->createView(),
+                'entity_id'    => $id,
             )
         );
     }
 
     /**
-     * View Entity
-     * @Route("/view/{id}", name="oro_entityconfig_view")
+     * View Field
+     * @Route("/field/view/{id}", name="oro_entityconfig_field_view")
      * @Template()
      */
-    public function viewAction(ConfigEntity $entity)
+    public function fieldViewAction($id)
     {
+        $field = $this->getDoctrine()->getRepository(ConfigField::ENTITY_NAME)->find($id);
+
         return array(
-            'entity' => $entity,
+            'field' => $field,
         );
     }
 
-    /**
-     * View Entity
-     * @Route("/create", name="oro_entityconfig_create")
-     * @Template()
-     */
-    public function createAction(ConfigEntity $entity)
-    {
-        return array(
-            'entity' => $entity,
-        );
-    }
 
     /**
-     * @Route("/update/{id}", name="oro_entityconfig_update")
+     * @Route("/field/update/{id}", name="oro_entityconfig_field_update")
      * @Template()
      */
-    public function updateAction($id)
+    public function filedUpdateAction($id)
     {
-        $entity = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
-        $form    = $this->createForm(
-            'oro_entity_config_config_entity_type',
-            null,
-            array('class_name' => $entity->getClassName())
-        );
+        $field   = $this->getDoctrine()->getRepository(ConfigField::ENTITY_NAME)->find($id);
+        $form    = $this->createForm('oro_entity_config_config_field_type', null, array(
+            'class_name' => $field->getEntity()->getClassName(),
+            'field_name' => $field->getCode(),
+        ));
         $request = $this->getRequest();
 
         if ($request->getMethod() == 'POST') {
@@ -117,15 +154,19 @@ class ConfigController extends Controller
 
             if ($form->isValid()) {
                 //persist data inside the form
-                $this->get('session')->getFlashBag()->add('success', 'ConfigEntity successfully saved');
+                $this->get('session')->getFlashBag()->add('success', 'ConfigField successfully saved');
 
-                return $this->redirect($this->generateUrl('oro_entityconfig_index'));
+                return $this->redirect($this->generateUrl('oro_entityconfig_fields',
+                    array(
+                        'id' => $field->getEntity()->getId()
+                    )
+                ));
             }
         }
 
         return array(
-            'entity' => $entity,
-            'form' => $form->createView(),
+            'field' => $field,
+            'form'  => $form->createView(),
         );
     }
 }

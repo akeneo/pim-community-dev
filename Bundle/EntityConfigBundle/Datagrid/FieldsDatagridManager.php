@@ -13,6 +13,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 
+use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
 
 class FieldsDatagridManager extends DatagridManager
@@ -61,11 +62,14 @@ class FieldsDatagridManager extends DatagridManager
      */
     protected function getProperties()
     {
-        $properties = array();
+        $properties = array(
+            new UrlProperty('view_link', $this->router, 'oro_entityconfig_field_view', array('id')),
+            new UrlProperty('update_link', $this->router, 'oro_entityconfig_field_update', array('id')),
+        );
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getFieldGridActions() as $config) {
                 $properties[] = new UrlProperty(
-                    strtolower($config['name']).'_link',
+                    strtolower($config['name']) . '_link',
                     $this->router,
                     $config['route'],
                     (isset($config['args']) ? $config['args'] : array())
@@ -97,21 +101,21 @@ class FieldsDatagridManager extends DatagridManager
         );
         $fieldsCollection->add($fieldObjectId);
 
-        $fieldEntityId = new FieldDescription();
-        $fieldEntityId->setName('entity');
-        $fieldEntityId->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                'label'       => 'entity Id',
-                'field_name'  => 'entity_id',
-                'filter_type' => FilterInterface::TYPE_NUMBER,
-                'required'    => false,
-                'sortable'    => true,
-                'filterable'  => false,
-                'show_filter' => false,
-            )
-        );
-        $fieldsCollection->add($fieldEntityId);
+//        $fieldEntityId = new FieldDescription();
+//        $fieldEntityId->setName('entity');
+//        $fieldEntityId->setOptions(
+//            array(
+//                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
+//                'label'       => 'entity Id',
+//                'field_name'  => 'entity_id',
+//                'filter_type' => FilterInterface::TYPE_NUMBER,
+//                'required'    => false,
+//                'sortable'    => true,
+//                'filterable'  => false,
+//                'show_filter' => false,
+//            )
+//        );
+//        $fieldsCollection->add($fieldEntityId);
 
         $fieldObjectName = new FieldDescription();
         $fieldObjectName->setName('code');
@@ -149,7 +153,29 @@ class FieldsDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
-        $actions = array();
+        $viewAction = array(
+            'name'         => 'view',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label' => 'View',
+                'icon'  => 'book',
+                'link'  => 'view_link',
+            )
+        );
+
+        $updateAction = array(
+            'name'         => 'update',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label' => 'Edit',
+                'icon'  => 'edit',
+                'link'  => 'update_link',
+            )
+        );
+
+        $actions = array($viewAction, $updateAction);
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getFieldGridActions() as $config) {
                 $configItem = array(
@@ -158,7 +184,7 @@ class FieldsDatagridManager extends DatagridManager
                     'options'      => array(
                         'label' => ucfirst($config['name']),
                         'icon'  => isset($config['icon']) ? $config['icon'] : 'question-sign',
-                        'link'  => strtolower($config['name']).'_link'
+                        'link'  => strtolower($config['name']) . '_link'
                     )
                 );
 
@@ -166,6 +192,7 @@ class FieldsDatagridManager extends DatagridManager
                     switch ($config['type']) {
                         case 'delete':
                             $configItem['type'] = ActionInterface::TYPE_DELETE;
+                            break;
                         case 'redirect':
                             $configItem['type'] = ActionInterface::TYPE_REDIRECT;
                             break;
@@ -201,9 +228,9 @@ class FieldsDatagridManager extends DatagridManager
 
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getFieldItems() as $code => $item) {
-                $alias = 'cfv_'. $code;
-                $query->leftJoin('cf.values', $alias, 'WITH', $alias . ".code='".$code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'");
-                $query->addSelect($alias . '.value as '. $code, true);
+                $alias = 'cfv_' . $code;
+                $query->leftJoin('cf.values', $alias, 'WITH', $alias . ".code='" . $code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'");
+                $query->addSelect($alias . '.value as ' . $code, true);
             }
         }
 

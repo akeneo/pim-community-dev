@@ -4,18 +4,18 @@
 {% set title = 'Update Entity' %}
 {% oro_title_set({params : {"%username%": 'User' }}) %}
 
-{% set formAction = path('oro_entityconfig_update', {id: 2}) %}
+{% set formAction = path('oro_entityconfig_field_update', {id: field.id}) %}
 
 {% block navButtons %}
-    {{ UI.button({'path' : path('oro_entityconfig_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
+    {{ UI.button({'path' : path('oro_entityconfig_fields', {id: field.entity.id}), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
     {{ UI.buttonType({'type': 'submit', 'class': 'btn-success', 'label': 'Save'}) }}
 {% endblock navButtons %}
 
 {% block pageHeader %}
     {% set breadcrumbs = {
         'entity':      'entity',
-        'indexPath':   path('oro_entityconfig_index'),
-        'indexLabel': 'Entities',
+        'indexPath':   path('oro_entityconfig_fields', {id: field.entity.id}),
+        'indexLabel': 'Field',
         'entityTitle': 'N/A',
         'hasAvatar':   false,
         'imagePath':   '',
@@ -29,32 +29,8 @@
 {% endblock stats %}
 
 {% block content_data %}
-    {% set id = 'configentity-update' %}
-    {% set dataBlocks = [] %}
-
-    {% for block in formConfig %}
-
-        {% set subblocks = [] %}
-
-        {% for subblock in block.subblocks %}
-            {% set data = [] %}
-            {% for key, field in subblock.fields %}
-                {% set data = data|merge([ form_row(form[field]) ]) %}
-            {% endfor %}
-
-            {% set subblocks = subblocks|merge([{'title': subblock.title, 'data': data }]) %}
-        {% endfor %}
-
-        {% set dataBlock = {
-            'title': block.title,
-            'class': block.class,
-            'subblocks': subblocks
-        }%}
-
-        {% set dataBlocks = dataBlocks|merge([dataBlock]) %}
-
-    {% endfor %}
-
+    {% set id = 'configfield-update' %}
+    {% set dataBlocks = form_data_blocks(form) %}
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,
         'dataBlocks': dataBlocks,
