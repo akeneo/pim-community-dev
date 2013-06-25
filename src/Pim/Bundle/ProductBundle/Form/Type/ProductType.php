@@ -61,7 +61,7 @@ class ProductType extends FlexibleType
      *
      * Access it into the view through {{ form.vars.groups }}
      *
-     * {@inheridoc}
+     * {@inheritdoc}
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
