@@ -16,25 +16,9 @@ use Oro\Bundle\AddressBundle\Entity\Region;
 class RegionTranslation extends AbstractTranslation
 {
     /**
-     * @var Region
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\AddressBundle\Entity\Region", inversedBy="translation")
-     * @ORM\JoinColumn(name="region_code", referencedColumnName="combined_code", onDelete="CASCADE")
-     **/
-    private $region;
-
-    /**
      * @var string $content
      *
      * @ORM\Column(type="string", length=255)
      */
     protected $content;
-
-    /**
-     * @return Region
-     */
-    public function getRegion()
-    {
-        return $this->region;
-    }
 }
