@@ -91,7 +91,7 @@ class OptionMultiSelectType extends AbstractAttributeType
             ),
             array(
                 'name' => 'unique',
-                'fieldType' => 'pim_product_unique',
+                'fieldType' => 'checkbox',
                 'options' => array(
                     'disabled' => true,
                     'read_only' => true

@@ -63,7 +63,11 @@ class TextType extends OroTextType
             ),
             array(
                 'name' => 'unique',
-                'fieldType' => 'pim_product_unique'
+                'fieldType' => 'checkbox',
+                'options' => array(
+                    'disabled' => (bool) $attribute->getId(),
+                    'read_only' => (bool) $attribute->getId()
+                )
             )
         );
 

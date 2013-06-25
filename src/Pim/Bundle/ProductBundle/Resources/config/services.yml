@@ -1,6 +1,6 @@
 parameters:
     pim_product.manager.product.class:                Pim\Bundle\ProductBundle\Manager\ProductManager
-    
+
     pim_product.entity.product.class:                 Pim\Bundle\ProductBundle\Entity\Product
     pim_product.form.type.product.class:              Pim\Bundle\ProductBundle\Form\Type\ProductType
     pim_product.form.type.simple_product.class:       Pim\Bundle\ProductBundle\Form\Type\SimpleProductType
@@ -38,7 +38,6 @@ parameters:
 
     pim_product.form.type.attribute_property_scopable.class:         Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\ScopableType
     pim_product.form.type.attribute_property_translatable.class:     Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\TranslatableType
-    pim_product.form.type.attribute_property_unique.class:           Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\UniqueType
     pim_product.form.type.attribute_property_available_locale.class: Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\AvailableLocalesType
     pim_product.form.type.attribute_property_options.class:          Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\OptionsType
 
@@ -162,11 +161,6 @@ services:
         class: %pim_product.form.type.attribute_property_translatable.class%
         tags:
             - { name: form.type, alias: pim_product_translatable }
-
-    pim_product.form.type.unique:
-        class: %pim_product.form.type.attribute_property_unique.class%
-        tags:
-            - { name: form.type, alias: pim_product_unique }
 
     pim_product.form.type.available_locales:
         class: %pim_product.form.type.attribute_property_available_locale.class%
