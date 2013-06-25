@@ -66,6 +66,8 @@ class Orm extends AbstractEngine
             }
         }
 
+        $this->em->flush();
+
         return $recordsCount;
     }
 
@@ -115,52 +117,51 @@ class Orm extends AbstractEngine
     public function save($entity, $realtime = true, $needToCompute = false)
     {
         $data = $this->mapper->mapObject($entity);
-        $name = get_class($entity);
-        $entityMeta      = $this->em->getClassMetadata(get_class($entity));
-        $identifierField = $entityMeta->getSingleIdentifierFieldName($entityMeta);
-
-        $id = $entityMeta->getReflectionProperty($identifierField)->getValue($entity);
-
-        if (count($data)) {
-            $item = null;
-            if ($id) {
-                $item = $this->getIndexRepo()->findOneBy(
-                    array(
-                        'entity'   => $name,
-                        'recordId' => $id
-                    )
-                );
-            }
-
-            if (!$item) {
-                $item   = new Item();
-                $config = $this->mapper->getEntityConfig($name);
-                $alias  = $config ? $config['alias'] : $name;
-
-                $item->setEntity($name)
-                     ->setRecordId($id)
-                     ->setAlias($alias);
-            }
-
-            $item->setChanged(!$realtime);
-
-            if ($realtime) {
-                $item->setTitle($this->getEntityTitle($entity))
-                    ->saveItemData($data);
-            } else {
-                $this->reindexJob();
-            }
-
-            $this->em->persist($item);
-
-            if($needToCompute) {
-                $this->computeSet($item);
-            }
-
-            return $item;
+        if (empty($data)) {
+            return null;
         }
 
-        return false;
+        $name = get_class($entity);
+        $entityMeta = $this->em->getClassMetadata(get_class($entity));
+        $identifierField = $entityMeta->getSingleIdentifierFieldName($entityMeta);
+        $id = $entityMeta->getReflectionProperty($identifierField)->getValue($entity);
+
+        $item = null;
+        if ($id) {
+            $item = $this->getIndexRepo()->findOneBy(
+                array(
+                    'entity'   => $name,
+                    'recordId' => $id
+                )
+            );
+        }
+
+        if (!$item) {
+            $item   = new Item();
+            $config = $this->mapper->getEntityConfig($name);
+            $alias  = $config ? $config['alias'] : $name;
+
+            $item->setEntity($name)
+                 ->setRecordId($id)
+                 ->setAlias($alias);
+        }
+
+        $item->setChanged(!$realtime);
+
+        if ($realtime) {
+            $item->setTitle($this->getEntityTitle($entity))
+                ->saveItemData($data);
+        } else {
+            $this->reindexJob();
+        }
+
+        $this->em->persist($item);
+
+        if ($needToCompute) {
+            $this->computeSet($item);
+        }
+
+        return $item;
     }
 
     /**
