@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity;
 
+use Pim\Bundle\ProductBundle\Model\CategoryInterface;
+
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 use Gedmo\Translatable\Translatable;
@@ -29,7 +31,7 @@ use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
  * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\CategoryTranslation")
  * @UniqueEntity(fields="code", message="This code is already taken")
  */
-class Category extends AbstractSegment implements Translatable
+class Category extends AbstractSegment implements Translatable, CategoryInterface
 {
     /**
      * @var Category $parent
