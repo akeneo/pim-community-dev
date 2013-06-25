@@ -210,7 +210,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      *
      * Group with negative sort order (Other) will be put at the end
      *
-     * @return string|number|multitype:
+     * @return array
      */
     public function getOrderedGroups()
     {
