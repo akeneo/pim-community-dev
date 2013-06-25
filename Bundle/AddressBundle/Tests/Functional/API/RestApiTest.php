@@ -25,7 +25,7 @@ class RestApiTest extends WebTestCase
             array(
                 'street'      => 'Some kind st.',
                 'city'        => 'Old York',
-                'state'       => 'AL',
+                'state'       => 'US.AL',
                 'country'     => 'US',
                 'postalCode'  => '32422',
             )

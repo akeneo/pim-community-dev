@@ -2,12 +2,16 @@
 
 namespace Oro\Bundle\AddressBundle\Controller\Api\Rest;
 
+use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ORM\Query;
 use FOS\Rest\Util\Codes;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\HttpFoundation\Response;
+
+use Oro\Bundle\AddressBundle\Entity\Country;
+use Oro\Bundle\AddressBundle\Entity\Repository\RegionRepository;
 
 /**
  * @RouteResource("country/regions")
@@ -18,7 +22,7 @@ class CountryRegionsController extends FOSRestController
     /**
      * REST GET regions by country
      *
-     * @param string $id
+     * @param Country $country
      *
      * @ApiDoc(
      *  description="Get regions by country id",
@@ -26,13 +30,20 @@ class CountryRegionsController extends FOSRestController
      * )
      * @return Response
      */
-    public function getAction($id)
+    public function getAction(Country $country = null)
     {
-        /** @var  $item \Oro\Bundle\AddressBundle\Entity\Country */
-        $item = $this->getDoctrine()->getRepository('OroAddressBundle:Country')->find($id);
+        if (!$country) {
+            return $this->handleView(
+                $this->view(null, Codes::HTTP_NOT_FOUND)
+            );
+        }
+
+        /** @var $regionRepository RegionRepository */
+        $regionRepository = $this->getDoctrine()->getRepository('OroAddressBundle:Region');
+        $regions = $regionRepository->getCountryRegions($country);
 
         return $this->handleView(
-            $this->view($item ? $item->getRegions() : null, $item ? Codes::HTTP_OK : Codes::HTTP_NOT_FOUND)
+            $this->view($regions, Codes::HTTP_OK)
         );
     }
 }

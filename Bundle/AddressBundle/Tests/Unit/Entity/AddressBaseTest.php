@@ -92,7 +92,7 @@ class AddressBaseTest extends \PHPUnit_Framework_TestCase
         $obj->setState($region);
         $this->assertEquals($region, $obj->getState());
         $obj->setStateText('text state');
-        $this->assertEquals('text state', $obj->getState());
+        $this->assertEquals('text state', $obj->getUniversalState());
     }
 
     public function testIsStateValidNoCountry()
