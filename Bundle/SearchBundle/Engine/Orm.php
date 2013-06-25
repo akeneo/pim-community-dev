@@ -122,12 +122,15 @@ class Orm extends AbstractEngine
         $id = $entityMeta->getReflectionProperty($identifierField)->getValue($entity);
 
         if (count($data)) {
-            $item = $this->getIndexRepo()->findOneBy(
-                array(
-                    'entity'   => $name,
-                    'recordId' => $id
-                )
-            );
+            $item = null;
+            if ($id) {
+                $item = $this->getIndexRepo()->findOneBy(
+                    array(
+                        'entity'   => $name,
+                        'recordId' => $id
+                    )
+                );
+            }
 
             if (!$item) {
                 $item   = new Item();
