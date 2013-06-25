@@ -133,7 +133,7 @@
     </target>
 
     <target name="phpunit" description="Run unit tests with PHPUnit">
-        <exec executable="phpunit" failonerror="true">
+        <exec executable="phpunit">
             <arg value="-c" />
             <arg path="${basedir}/app/phpunit.jenkins.xml" />
             <arg value="--testsuite=Jenkins_PIM_Test" />
