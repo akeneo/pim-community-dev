@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Tools\Generator;
 
+use Symfony\Component\Yaml\Yaml;
+
 use CG\Core\DefaultGeneratorStrategy;
 use CG\Generator\PhpClass;
 use CG\Generator\PhpMethod;
@@ -52,6 +54,7 @@ class Generator
     {
         $extendClass = $this->generateExtendClassName($entityName);
         $proxyClass  = $this->generateProxyClassName($entityName);
+
         if (!class_exists($extendClass) || !class_exists($proxyClass)) {
             /** write Dynamic class */
             file_put_contents(
@@ -59,13 +62,17 @@ class Generator
                 "<?php\n\n" . $this->generateDynamicClass($entityName, $extendClass)
             );
 
+            /** write Dynamic yml */
+            file_put_contents(
+                $this->entityCacheDir. DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $extendClass) . '.orm.yml',
+                Yaml::dump($this->generateDynamicYml($entityName, $extendClass), 5)
+            );
+
             /** write Proxy class */
             file_put_contents(
                 $this->entityCacheDir. DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $proxyClass) . '.php',
                 "<?php\n\n" . $this->generateProxyClass($entityName, $proxyClass)
             );
-
-            //file_put_contents($this->getPath() . $this->getFilename($emd) . '.orm.yml', Yaml::dump($this->classYml, 5));
         }
     }
 
@@ -82,6 +89,48 @@ class Generator
     protected function generateClassName($entityName)
     {
         return str_replace('\\', '', $entityName);
+    }
+
+    protected function generateDynamicYml($entityName, $extendClass)
+    {
+        $yml = array(
+            $extendClass => array(
+                'type'     => 'entity',
+                'table'    => 'oro_extend_' . strtolower(str_replace('\\', '', $entityName)),
+                'oneToOne' => array(
+                    'parent' => array(
+                        'targetEntity' => $entityName,
+                        'joinColumn'   => array(
+                            'name'                 => 'parent_id',
+                            'referencedColumnName' => 'id',
+                            'nullable'             => true,
+                        ),
+                    ),
+                ),
+                'fields'   => array(
+                    'id' => array(
+                        'type'      => 'integer',
+                        'id'        => true,
+                        'generator' => array(
+                            'strategy' => 'AUTO'
+                        )
+                    )
+                )
+            )
+        );
+
+        if($fields = $this->configProvider->getConfig($entityName)->getFields()) {
+            foreach ($fields as $field => $options) {
+                if ($this->configProvider->getFieldConfig($entityName, $field)->is('is_extend')) {
+                    $yml[$extendClass]['fields'][$field] = array(
+                        'is_extend' => true,
+                        'doctrine'  => unserialize($this->configProvider->getFieldConfig($entityName, $field)->get('doctrine'))
+                    );
+                }
+            }
+        }
+
+        return $yml;
     }
 
     protected function generateClassMethod($methodName, $methodBody, $methodArgs = array())
@@ -145,11 +194,9 @@ class Generator
                 array('values')
             ));
 
-        $fields = $this->configProvider->getConfig($entityName)->getFields();
         $toArray = '';
-        if($fields) {
+        if($fields = $this->configProvider->getConfig($entityName)->getFields()) {
             foreach ($fields as $field => $options) {
-
                 if ($this->configProvider->getFieldConfig($entityName, $field)->is('is_extend')) {
                     $toArray .= '    \''.$field.'\' => $this->'.$field.','."\n";
                 }
@@ -196,9 +243,8 @@ class Generator
                 array('values')
             ));
 
-        $fields = $this->configProvider->getConfig($entityName)->getFields();
         $toArray = '';
-        if($fields) {
+        if($fields = $this->configProvider->getConfig($entityName)->getFields()) {
             foreach ($fields as $field => $options) {
                 $toArray .= '    \''.$field.'\' => $this->get'.ucfirst($field).','."\n";
 
