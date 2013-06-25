@@ -1,66 +1,19 @@
 // Get form name
 var formName = 'pim_product_attribute_form';
-$('#'+ formName +'_attributeType').on('change', updateFieldsFromAttributeType);
-
-// Enable/disable fields according to attribute type value
-function updateFieldsFromAttributeType() {
-    // enable all fields
-    enableField('unique');
-
-    // disable field and check
-    switch ($('#pim_product_attribute_form_attributeType').val()) {
-        case '{{ 'pim_product_textarea' }}':
-        case '{{ 'pim_product_price_collection' }}':
-        case '{{ 'pim_product_multiselect' }}':
-        case '{{ 'pim_product_simpleselect' }}':
-        case '{{ 'oro_flexibleentity_file' }}':
-        case '{{ 'oro_flexibleentity_image' }}':
-        case '{{ 'oro_flexibleentity_metric' }}':
-        case '{{ 'oro_flexibleentity_boolean' }}':
-            disableField('unique');
-            break;
-        default:
-            updateFieldsFromUnique();
-    }
-}
-
-// Enable a field from its name (just enable don't change check state)
-function enableField(fieldName) {
-    $('#'+ formName +'_'+ fieldName).removeAttr('disabled');
-}
-
-// Disable a field from its name (uncheck and disable)
-function disableField(fieldName) {
-    $('#'+ formName +'_'+ fieldName).attr('checked', false);
-    $('#'+ formName +'_'+ fieldName).attr('disabled', true);
-}
-
-// update fields when editing
-updateFieldsFromAttributeType();
-
-/****************************************************/
-
-$('#'+ formName +'_unique').on('change', updateFieldsFromUnique);
-// Enable/disable fields according to unique type value
-function updateFieldsFromUnique() {
-	console.info('update fields from unique');
-	if ($('#'+ formName +'_unique').is(':checked')) {
-		// update scope
-		$('#'+ formName +'_scopable option').filter(function() {
-		    console.log($(this).val());
-            return $(this).val() == 0;
-		}).attr('selected', 'selected');
-
-		disableField('translatable');
-		disableField('scopable');
-	} else {
-		// enable two fields (channel + translatable)
-		enableField('translatable');
-		enableField('scopable');
-	}
-}
 
 $(function() {
+
+    // Enable/disable scope and translatable fields according to unique field value
+    $('#'+formName+'_unique').closest('.has-switch').on('switch-change', function (e, data) {
+        if (data.value) {
+            $('#'+formName+'_scopable').select2('val', 0).select2('disable');
+            $('#'+formName+'_translatable').closest('.has-switch').bootstrapSwitch('setState', false);
+            $('#'+formName+'_translatable').closest('.has-switch').bootstrapSwitch('setActive', false);
+        } else {
+            $('#'+formName+'_scopable').select2('enable');
+            $('#'+formName+'_translatable').closest('.has-switch').bootstrapSwitch('setActive', true);
+        }
+    });
 
     var $optionList;
 
@@ -69,7 +22,7 @@ $(function() {
            'preprocess',
             $('#' + formName).serialize(),
             function(data) {
-                $('#' + formName).replaceWith($(data));
+                $('#' + formName).replaceWith(data);
                 $('#' + formName + ' div.alert').remove();
                 initializeForm();
             }

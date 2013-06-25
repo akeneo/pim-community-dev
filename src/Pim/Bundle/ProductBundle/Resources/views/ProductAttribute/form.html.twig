@@ -1,3 +1,7 @@
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
+
 {{ JSFV(form) }}
 <form id="{{ form.vars.id }}" class="form-horizontal form-register" action="{{ form.vars.value.id ?
     path('pim_product_productattribute_edit', { id: form.vars.value.id }) :
