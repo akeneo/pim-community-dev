@@ -44,8 +44,8 @@ class OroEntityExtendExtension extends Extension
     }
 
     /**
-     * @param ContainerBuilder $container
-     * @param                  $config
+     * @param  ContainerBuilder $container
+     * @param                   $config
      * @throws RuntimeException
      */
     protected function configCache(ContainerBuilder $container, $config)

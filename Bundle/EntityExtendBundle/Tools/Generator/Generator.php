@@ -36,9 +36,9 @@ class Generator
     protected $writer = null;
 
     /**
-     * @param ConfigProvider       $configProvider
-     * @param                      $backend
-     * @param                      $entityCacheDir
+     * @param ConfigProvider $configProvider
+     * @param                $backend
+     * @param                $entityCacheDir
      */
     public function __construct(ConfigProvider $configProvider, $backend, $entityCacheDir)
     {
@@ -119,7 +119,7 @@ class Generator
             )
         );
 
-        if($fields = $this->configProvider->getConfig($entityName)->getFields()) {
+        if ($fields = $this->configProvider->getConfig($entityName)->getFields()) {
             foreach ($fields as $field => $options) {
                 if ($this->configProvider->getFieldConfig($entityName, $field)->is('is_extend')) {
                     $yml[$extendClass]['fields'][$field] = array(
@@ -190,12 +190,12 @@ class Generator
             ))
             ->setMethod($this->generateClassMethod(
                 '__fromArray',
-                'foreach($values as $key => $value){$this->set($key, $value);}',
+                'foreach ($values as $key => $value) {$this->set($key, $value);}',
                 array('values')
             ));
 
         $toArray = '';
-        if($fields = $this->configProvider->getConfig($entityName)->getFields()) {
+        if ($fields = $this->configProvider->getConfig($entityName)->getFields()) {
             foreach ($fields as $field => $options) {
                 if ($this->configProvider->getFieldConfig($entityName, $field)->is('is_extend')) {
                     $toArray .= '    \''.$field.'\' => $this->'.$field.','."\n";
@@ -239,12 +239,12 @@ class Generator
             ))
             ->setMethod($this->generateClassMethod(
                 '__proxy__fromArray',
-                'foreach($values as $key => $value){$this->set($key, $value);}',
+                'foreach ($values as $key => $value) {$this->set($key, $value);}',
                 array('values')
             ));
 
         $toArray = '';
-        if($fields = $this->configProvider->getConfig($entityName)->getFields()) {
+        if ($fields = $this->configProvider->getConfig($entityName)->getFields()) {
             foreach ($fields as $field => $options) {
                 $toArray .= '    \''.$field.'\' => $this->get'.ucfirst($field).','."\n";
 

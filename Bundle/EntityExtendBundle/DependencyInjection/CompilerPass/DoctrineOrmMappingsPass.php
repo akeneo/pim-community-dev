@@ -3,7 +3,6 @@
 namespace Oro\Bundle\EntityExtendBundle\DependencyInjection\CompilerPass;
 
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -20,7 +19,7 @@ class DoctrineOrmMappingsPass extends RegisterMappingsPass
      * @param string[]             $managerParameters ordered list of container parameters that may
      *      provide the name of the manager to register the mappings for. The first non-empty name
      *      is used, the others skipped.
-     * @param bool                 $enabledParameter  if specified, the compiler pass only executes
+     * @param bool $enabledParameter if specified, the compiler pass only executes
      *      if this parameter exists in the service container.
      */
     public function __construct($driver, $namespaces, array $managerParameters, $enabledParameter = false)
@@ -42,7 +41,7 @@ class DoctrineOrmMappingsPass extends RegisterMappingsPass
      *                                    your bundle uses. This compiler pass will automatically
      *                                    append the parameter name for the default entity manager
      *                                    to this list.
-     * @param string   $enabledParameter  Service container parameter that must be present to
+     * @param string $enabledParameter Service container parameter that must be present to
      *                                    enable the mapping. Set to false to not do any check,
      *                                    optional.
      */
@@ -56,12 +55,12 @@ class DoctrineOrmMappingsPass extends RegisterMappingsPass
     }
 
     /**
-     * @param array  $mappings            Hashmap of directory path to namespace
+     * @param array    $mappings          Hashmap of directory path to namespace
      * @param string[] $managerParameters List of parameters that could which object manager name
      *                                    your bundle uses. This compiler pass will automatically
      *                                    append the parameter name for the default entity manager
      *                                    to this list.
-     * @param string $enabledParameter    Service container parameter that must be present to
+     * @param string $enabledParameter Service container parameter that must be present to
      *                                    enable the mapping. Set to false to not do any check,
      *                                    optional.
      */
@@ -80,7 +79,7 @@ class DoctrineOrmMappingsPass extends RegisterMappingsPass
      *                                    your bundle uses. This compiler pass will automatically
      *                                    append the parameter name for the default entity manager
      *                                    to this list.
-     * @param string   $enabledParameter  Service container parameter that must be present to
+     * @param string $enabledParameter Service container parameter that must be present to
      *                                    enable the mapping. Set to false to not do any check,
      *                                    optional.
      */
@@ -100,7 +99,7 @@ class DoctrineOrmMappingsPass extends RegisterMappingsPass
      *                                    your bundle uses. This compiler pass will automatically
      *                                    append the parameter name for the default entity manager
      *                                    to this list.
-     * @param string   $enabledParameter  Service container parameter that must be present to
+     * @param string $enabledParameter Service container parameter that must be present to
      *                                    enable the mapping. Set to false to not do any check,
      *                                    optional.
      */
@@ -119,7 +118,7 @@ class DoctrineOrmMappingsPass extends RegisterMappingsPass
      *                                    your bundle uses. This compiler pass will automatically
      *                                    append the parameter name for the default entity manager
      *                                    to this list.
-     * @param string   $enabledParameter  Service container parameter that must be present to
+     * @param string $enabledParameter Service container parameter that must be present to
      *                                    enable the mapping. Set to false to not do any check,
      *                                    optional.
      */

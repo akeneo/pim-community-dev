@@ -1,16 +1,10 @@
 <?php
 
-
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
 
 /**
  * Class ConfigGridController
@@ -51,6 +45,5 @@ class ConfigFieldGridController extends Controller
     {
         die('extend remove');
     }
-
 
 }

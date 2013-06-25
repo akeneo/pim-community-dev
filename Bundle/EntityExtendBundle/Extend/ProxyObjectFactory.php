@@ -27,8 +27,7 @@ class ProxyObjectFactory
      */
     public function getProxyObject($entity)
     {
-        if (isset($this->proxyObjects[spl_object_hash($entity)]))
-        {
+        if (isset($this->proxyObjects[spl_object_hash($entity)])) {
             return $this->proxyObjects[spl_object_hash($entity)];
         } else {
             return $this->createProxyObject($entity);

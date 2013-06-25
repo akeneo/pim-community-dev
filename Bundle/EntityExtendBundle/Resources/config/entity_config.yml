@@ -59,5 +59,3 @@ oro_entity_config:
                         read_only:      true
                         required:       false
                         label:          "Is Extend Field"
-
-

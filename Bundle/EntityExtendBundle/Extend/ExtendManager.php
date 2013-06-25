@@ -33,7 +33,7 @@ class ExtendManager
      */
     protected $lazyEm;
 
-    function __construct(ServiceProxy $lazyEm, ConfigProvider $configProvider, $backend, $entityCacheDir)
+    public function __construct(ServiceProxy $lazyEm, ConfigProvider $configProvider, $backend, $entityCacheDir)
     {
         $this->lazyEm         = $lazyEm;
         $this->configProvider = $configProvider;

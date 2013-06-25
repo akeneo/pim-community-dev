@@ -25,7 +25,7 @@ class ConfigSubscriber implements EventSubscriberInterface
     protected $metadataFactory;
 
     /**
-     * @param ExtendManager             $extendManager
+     * @param ExtendManager   $extendManager
      * @param MetadataFactory $metadataFactory
      */
     public function __construct(ExtendManager $extendManager, MetadataFactory $metadataFactory)

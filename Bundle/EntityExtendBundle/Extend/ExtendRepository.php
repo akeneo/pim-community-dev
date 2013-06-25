@@ -5,7 +5,6 @@ namespace Oro\Bundle\EntityExtendBundle\Extend;
 use Doctrine\Common\Persistence\ObjectRepository;
 
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
-use Oro\Bundle\EntityExtendBundle\Backend\BackendInterface;
 
 class ExtendRepository implements ObjectRepository
 {
