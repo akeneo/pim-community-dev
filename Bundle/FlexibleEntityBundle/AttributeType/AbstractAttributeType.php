@@ -33,6 +33,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     const BACKEND_TYPE_DATE          = 'date';
     const BACKEND_TYPE_DATETIME      = 'datetime';
     const BACKEND_TYPE_DECIMAL       = 'decimal';
+    const BACKEND_TYPE_BOOLEAN       = 'boolean';
     const BACKEND_TYPE_INTEGER       = 'integer';
     const BACKEND_TYPE_OPTIONS       = 'options';
     const BACKEND_TYPE_OPTION        = 'option';

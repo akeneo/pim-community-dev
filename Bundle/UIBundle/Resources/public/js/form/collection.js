@@ -8,9 +8,7 @@ $(function () {
         var data = $('<div/>');
         data.html(widget).appendTo(cList);
         /* temporary solution need add init only for new created row */
-        if ($.isPlainObject($.uniform)) {
-            data.find('input:file, select:not(.select2-offscreen)').uniform();
-        }
+        Oro.styleForm(data);
         /* temporary solution finish */
     });
 

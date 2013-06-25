@@ -51,6 +51,12 @@ class ContainsPrimaryValidatorTest extends \PHPUnit_Framework_TestCase
             'more than one address with primary' => array(
                 array($this->getTypedAddressMock(false), $this->getTypedAddressMock(true))
             ),
+            'empty address' => array(
+                array($this->getTypedAddressMock(false, true), $this->getTypedAddressMock(false, true))
+            ),
+            'empty address and primary' => array(
+                array($this->getTypedAddressMock(false, true), $this->getTypedAddressMock(true), $this->getTypedAddressMock(false, true))
+            )
         );
     }
 
@@ -96,9 +102,10 @@ class ContainsPrimaryValidatorTest extends \PHPUnit_Framework_TestCase
      * Get address mock.
      *
      * @param bool $isPrimary
+     * @param bool $isEmpty
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getTypedAddressMock($isPrimary)
+    protected function getTypedAddressMock($isPrimary, $isEmpty = false)
     {
         $address = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\TypedAddress')
             ->disableOriginalConstructor()
@@ -106,6 +113,9 @@ class ContainsPrimaryValidatorTest extends \PHPUnit_Framework_TestCase
         $address->expects($this->any())
             ->method('isPrimary')
             ->will($this->returnValue($isPrimary));
+        $address->expects($this->once())
+            ->method('isEmpty')
+            ->will($this->returnValue($isEmpty));
         return $address;
     }
 }

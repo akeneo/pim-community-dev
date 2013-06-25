@@ -2,14 +2,14 @@
 
 namespace Oro\Bundle\FormBundle\Form\DataTransformer;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Mapping\MappingException;
-
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Util\PropertyPath;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Exception\FormException;
+
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Mapping\MappingException;
 
 /**
  * Transforms between entity and id
@@ -30,6 +30,11 @@ class EntityToIdTransformer implements DataTransformerInterface
      * @var string
      */
     protected $property;
+
+    /**
+     * @var PropertyPath
+     */
+    protected $propertyPath;
 
     /**
      * @var callable
@@ -73,7 +78,7 @@ class EntityToIdTransformer implements DataTransformerInterface
             return $meta->getSingleIdentifierFieldName();
         } catch (MappingException $e) {
             throw new FormException(
-                "Cannot get id property path of entity. \"$this->className\" has composite primary key."
+                "Cannot get id property path of entity. \"$className\" has composite primary key."
             );
         }
     }
@@ -85,6 +90,10 @@ class EntityToIdTransformer implements DataTransformerInterface
     {
         if (null === $value) {
             return null;
+        }
+
+        if (!is_object($value)) {
+            throw new UnexpectedTypeException($value, 'object');
         }
 
         return $this->propertyPath->getValue($value);

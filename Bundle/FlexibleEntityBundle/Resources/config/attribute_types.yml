@@ -2,8 +2,8 @@ services:
     oro_flexibleentity.attributetype.boolean:
         class: Oro\Bundle\FlexibleEntityBundle\AttributeType\BooleanType
         arguments:
-            - "integer"
-            - "option"
+            - "boolean"
+            - "checkbox"
             - @oro_flexibleentity.validator.attribute_constraint_guesser
         tags:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_boolean }

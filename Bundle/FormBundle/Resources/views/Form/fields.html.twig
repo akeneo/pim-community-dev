@@ -72,26 +72,48 @@
             var $field = $('#{{ id }}');
 
             {% block genemu_jqueryselect2_javascript_prototype %}
-                var select2Config = {{ configs|json_encode|raw }};
-                if ($field[0].tagName.toLowerCase() == 'input') {
-                    select2Config.initSelection = function(element, callback) {
-                        callback({'id': element.val(), 'text': element.data('title')});
-                    };
-                }
-
-                {% if configs.datasource is defined %}
-                    {{ block('oro_combobox_dataconfig_' ~ configs.datasource) }}
+                {% set url = '' %}
+                {% if configs.ajax.url is defined and configs.ajax.url%}
+                    {% set url = configs.ajax.url %}
+                {% elseif configs.route_name is defined and configs.route_name %}
+                    {% set url = path(configs.route_name) %}
                 {% endif %}
 
+                {% if configs.placeholder is defined %}
+                    {% set configs = configs|merge({'placeholder': configs.placeholder|trans }) %}
+                {% endif %}
+                {% if configs.result_template_twig is defined and configs.result_template_twig %}
+                    {% set configs = configs|merge({'result_template': include(configs.result_template_twig) }) %}
+                {% endif %}
+                {% if configs.selection_template_twig is defined and configs.selection_template_twig %}
+                    {% set configs = configs|merge({'selection_template': include(configs.selection_template_twig) }) %}
+                {% endif %}
+
+                var select2Config = {{ configs|json_encode|raw }};
+                {% if configs.extra_config is defined and configs.extra_config %}
+                    {{ block('oro_combobox_dataconfig_' ~ configs.extra_config) }}
+                {% endif %}
+
+                if ($field.length && $field[0].tagName.toLowerCase() === 'input') {
+                    var configurator = new OroSelect2Config(select2Config, {{ url|json_encode|raw }}, {{ configs.per_page|default(10) }});
+                    select2Config = configurator.getConfig();
+                }
+
                 $field.select2(select2Config);
+
+                $field.trigger('select2-init');
             {% endblock %}
         })();
     </script>
 {% endblock %}
 
 {% block oro_combobox_dataconfig_autocomplete %}
-    {% set url = configs.ajax.url is defined ? configs.ajax.url : path(configs.route) %}
-
+    {% set url = '' %}
+    {% if configs.ajax.url is defined and configs.ajax.url%}
+    {% set url = configs.ajax.url %}
+    {% elseif configs.route_name is defined and configs.route_name %}
+        {% set url = path(configs.route_name) %}
+    {% endif %}
     select2Config.ajax = {
         'url': {{ url|json_encode|raw }},
         'data': function (query, page) {
@@ -105,12 +127,11 @@
         'results': function (data, page) {
             return data;
         }
-    }
+    };
 {% endblock %}
 
 {% block oro_combobox_dataconfig_grid %}
     {% set url = configs.ajax.url is defined ? configs.ajax.url : path(configs.route, {'_format': 'json'}) %}
-
     select2Config.ajax = {
         'url': {{ url|json_encode|raw }},
         'data': function (query, page) {
@@ -130,5 +151,5 @@
                 more: page*10 < data.options.totalRecords
             };
         }
-    }
+    };
 {% endblock %}

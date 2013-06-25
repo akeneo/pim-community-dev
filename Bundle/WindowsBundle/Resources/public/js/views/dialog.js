@@ -25,9 +25,13 @@ Oro.widget.DialogView = Backbone.View.extend({
      * Initialize dialog
      */
     initialize: function(options) {
+        options = options || {}
+        options.dialogOptions = options.dialogOptions || {};
+        options.dialogOptions.limitTo = options.dialogOptions.limitTo || '#container';
+
         this._initModel(options);
 
-        this.dialogContent = this.$el.clone(true);
+        this.dialogContent = this.$el;
         this._initEmbeddedForm();
 
         var runner = function(handlers) {
@@ -251,14 +255,9 @@ Oro.widget.DialogView = Backbone.View.extend({
             Oro.widget.DialogView.prototype.windowY += Oro.widget.DialogView.prototype.windowOffsetY;
         }
 
-        var position = {
+        return {
             my: offset,
-            at: Oro.widget.DialogView.prototype.defaultPos,
-            of: $('body')
+            at: Oro.widget.DialogView.prototype.defaultPos
         };
-        if (typeof this.options.dialogOptions.appendTo != 'undefined') {
-            position.within = this.options.dialogOptions.appendTo;
-        }
-        return position;
     }
 });

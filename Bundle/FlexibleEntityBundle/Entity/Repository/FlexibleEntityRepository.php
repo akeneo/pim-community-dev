@@ -371,17 +371,18 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
     }
 
     /**
-     * Load a flexible entity with only localized values
+     * Load a flexible entity with its attributes sorted by sortOrder
      *
      * @param integer $id
      *
-     * @return AbstractFlexible
+     * @return AbstractFlexible|null
+     * @throws NonUniqueResultException
      */
-    public function findWithLocalizedValuesAndSortedAttributes($id)
+    public function findWithSortedAttribute($id)
     {
         return $this
             ->findByWithAttributesQB(array(), array('id' => $id))
-            ->orderBy('Attribute.sortOrder')
+            ->addOrderBy('Attribute.sortOrder')
             ->getQuery()
             ->getOneOrNullResult();
     }

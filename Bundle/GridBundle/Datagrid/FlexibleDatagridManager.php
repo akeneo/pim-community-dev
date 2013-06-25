@@ -39,6 +39,10 @@ abstract class FlexibleDatagridManager extends DatagridManager
             'field'  => FieldDescriptionInterface::TYPE_DECIMAL,
             'filter' => FilterInterface::TYPE_FLEXIBLE_NUMBER,
         ),
+        AbstractAttributeType::BACKEND_TYPE_BOOLEAN => array(
+            'field'  => FieldDescriptionInterface::TYPE_BOOLEAN,
+            'filter' => FilterInterface::TYPE_FLEXIBLE_BOOLEAN,
+        ),
         AbstractAttributeType::BACKEND_TYPE_INTEGER => array(
             'field'  => FieldDescriptionInterface::TYPE_INTEGER,
             'filter' => FilterInterface::TYPE_FLEXIBLE_NUMBER,
@@ -111,12 +115,14 @@ abstract class FlexibleDatagridManager extends DatagridManager
         $attributeCode,
         array $options = array()
     ) {
-        $fieldsCollection->add(
-            $this->createFlexibleField(
-                $this->getFlexibleAttribute($attributeCode),
-                $options
-            )
-        );
+        if ($this->hasFlexibleAttribute($attributeCode)) {
+            $fieldsCollection->add(
+                $this->createFlexibleField(
+                    $this->getFlexibleAttribute($attributeCode),
+                    $options
+                )
+            );
+        }
     }
 
     /**
@@ -191,7 +197,7 @@ abstract class FlexibleDatagridManager extends DatagridManager
     }
 
     /**
-     * @param $code
+     * @param string $code
      * @return AbstractAttribute
      * @throws \LogicException
      */
@@ -203,6 +209,17 @@ abstract class FlexibleDatagridManager extends DatagridManager
         }
 
         return $attributes[$code];
+    }
+
+    /**
+     * @param string $code
+     * @return boolean
+     */
+    protected function hasFlexibleAttribute($code)
+    {
+        $attributes = $this->getFlexibleAttributes();
+
+        return isset($attributes[$code]);
     }
 
     /**
