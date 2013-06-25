@@ -37,6 +37,7 @@
         <mkdir dir="${basedir}/app/build/code-browser"/>
         <mkdir dir="${basedir}/app/build/coverage"/>
         <mkdir dir="${basedir}/app/build/logs"/>
+        <mkdir dir="${basedir}/app/build/logs/behat"/>
         <mkdir dir="${basedir}/app/build/pdepend"/>
         <mkdir dir="${basedir}/app/build/phpdox"/>
 
@@ -144,10 +145,10 @@
 
     <target name="behat" description="Run acceptance tests with Behat">
         <exec executable="bin/behat">
+            <arg value="--profile jenkins" />
             <arg value="--tags=~javascript" />
             <arg value="--no-paths" />
             <arg value="--ansi" />
-            <arg value="--profile jenkins" />
         </exec>
     </target>
 
