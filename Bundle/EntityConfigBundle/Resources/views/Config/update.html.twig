@@ -2,9 +2,7 @@
 {% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
 
 {% set title = 'Update Entity' %}
-{% oro_title_set({params : {"%username%": 'User' }}) %}
-
-{% set formAction = path('oro_entityconfig_update', {id: 2}) %}
+{% set formAction = path('oro_entityconfig_update', {id: entity.id}) %}
 
 {% block navButtons %}
     {{ UI.button({'path' : path('oro_entityconfig_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
@@ -16,11 +14,11 @@
         'entity':      'entity',
         'indexPath':   path('oro_entityconfig_index'),
         'indexLabel': 'Entities',
-        'entityTitle': 'N/A',
+        'entityTitle': entity.className|default('N/A'),
         'hasAvatar':   false,
         'imagePath':   '',
-    }
-    %}
+    }%}
+
     {{ parent() }}
 {% endblock pageHeader %}
 
@@ -30,33 +28,7 @@
 
 {% block content_data %}
     {% set id = 'configentity-update' %}
-
     {% set dataBlocks = form_data_blocks(form) %}
-
-    {#{% for scope, block in formConfig %}#}
-
-        {#{% set subblocks = [] %}#}
-
-        {#{% for subblock in block.subblocks %}#}
-            {#{% set data = [] %}#}
-            {#{% for key, field in subblock.fields %}#}
-                {#{{ dump(form.children[scope]) }}#}
-                {#&#123;&#35;{% set data = data|merge([ form_row(form.children[scope][field]) ]) %}&#35;&#125;#}
-            {#{% endfor %}#}
-
-            {#{% set subblocks = subblocks|merge([{'title': subblock.title, 'data': data }]) %}#}
-        {#{% endfor %}#}
-
-        {#{% set dataBlock = {#}
-            {#'title': block.title,#}
-            {#'class': block.class,#}
-            {#'subblocks': subblocks#}
-        {#}%}#}
-
-        {#{% set dataBlocks = dataBlocks|merge([dataBlock]) %}#}
-
-    {#{% endfor %}#}
-
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,
         'dataBlocks': dataBlocks,

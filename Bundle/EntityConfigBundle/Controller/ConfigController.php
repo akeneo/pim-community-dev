@@ -127,6 +127,7 @@ class ConfigController extends Controller
         }
 
         return array(
+            'entity' => $entity,
             'form' => $form->createView(),
         );
     }
