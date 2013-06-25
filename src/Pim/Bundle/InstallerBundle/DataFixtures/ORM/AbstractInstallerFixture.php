@@ -13,8 +13,11 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @abstract
  */
-abstract class AbstractInstallerFixture extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
+abstract class AbstractInstallerFixture extends AbstractFixture
+                                        implements OrderedFixtureInterface, ContainerAwareInterface
 {
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
@@ -44,6 +47,7 @@ abstract class AbstractInstallerFixture extends AbstractFixture implements Order
     }
 
     /**
+     * @abstract
      * @return string
      */
     abstract public function getEntity();
