@@ -27,7 +27,7 @@ class CountryType extends AbstractType
 
     public function getParent()
     {
-        return '`';
+        return 'genemu_jqueryselect2_translatable_entity';
     }
 
     public function getName()
