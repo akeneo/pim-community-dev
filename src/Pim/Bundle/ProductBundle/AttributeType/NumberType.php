@@ -47,7 +47,7 @@ class NumberType extends OroNumberType
             ),
             array(
                 'name' => 'translatable',
-                'fieldType' => 'pim_product_translatable'
+                'fieldType' => 'checkbox'
             ),
             array(
                 'name' => 'availableLocales',

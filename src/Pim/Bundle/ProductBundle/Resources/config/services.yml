@@ -37,7 +37,6 @@ parameters:
     pim_product.form.type.product_value_price_collection.class: Pim\Bundle\ProductBundle\Form\Type\PriceCollectionType
 
     pim_product.form.type.attribute_property_scopable.class:         Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\ScopableType
-    pim_product.form.type.attribute_property_translatable.class:     Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\TranslatableType
     pim_product.form.type.attribute_property_available_locale.class: Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\AvailableLocalesType
     pim_product.form.type.attribute_property_options.class:          Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\OptionsType
 
@@ -156,11 +155,6 @@ services:
         class: %pim_product.form.type.attribute_property_scopable.class%
         tags:
             - { name: form.type, alias: pim_product_scopable }
-
-    pim_product.form.type.translatable:
-        class: %pim_product.form.type.attribute_property_translatable.class%
-        tags:
-            - { name: form.type, alias: pim_product_translatable }
 
     pim_product.form.type.available_locales:
         class: %pim_product.form.type.attribute_property_available_locale.class%
