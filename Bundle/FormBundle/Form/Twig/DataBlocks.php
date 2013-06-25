@@ -65,7 +65,7 @@ class DataBlocks
         try {
 
             $this->renderBlock($form);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             var_dump($e);
             die;
         }
@@ -81,35 +81,38 @@ class DataBlocks
     protected function renderBlock(FormView $form)
     {
         if (isset($form->vars['block_config'])) {
-            $this->createBlock($form->vars['block_config']);
+            foreach ($form->vars['block_config'] as $code => $blockConfig) {
+                $this->createBlock($code, $blockConfig);
+            }
         }
 
         foreach ($form->children as $name => $child) {
             if (isset($child->vars['block']) || isset($child->vars['subblock'])) {
 
+                $block = null;
                 if (isset($child->vars['block']) && $this->formConfig->hasBlock($child->vars['block'])) {
                     $block = $this->formConfig->getBlock($child->vars['block']);
-                } else {
+                } else if (!isset($child->vars['block'])) {
                     $blocks = $this->formConfig->getBlocks();
-                    $block = reset($blocks);
+                    $block  = reset($blocks);
                 }
-
 
                 if (!$block) {
                     $blockCode = isset($child->vars['block'])
                         ? $child->vars['block']
                         : $name;
 
-                    $block = $this->createBlock(array($blockCode => array()));
+                    $block = $this->createBlock($blockCode);
 
                     $this->formConfig->addBlock($block);
                 }
 
+                $subBlock = null;
                 if (isset($child->vars['subblock']) && $block->hasSubBlock($child->vars['subblock'])) {
                     $subBlock = $block->getSubBlock($child->vars['subblock']);
-                } else {
+                } else if (!isset($child->vars['subblock'])) {
                     $subBlocks = $block->getSubBlocks();
-                    $subBlock = reset($subBlocks);
+                    $subBlock  = reset($subBlocks);
                 }
 
                 if (!$subBlock) {
@@ -140,37 +143,29 @@ class DataBlocks
         }
     }
 
-    /**
-     * @param $config
-     * @return null|BlockConfig
-     * @throws RuntimeException
-     */
-    protected function createBlock($config)
+
+    protected function createBlock($code, $blockConfig = array())
     {
-        foreach ($config as $code => $blockConfig) {
-            if ($this->formConfig->hasBlock($code)) {
-                throw new RuntimeException(sprintf("block_config '%s' isset in form config.", $code));
-            }
-
-            $block = new BlockConfig($code);
-            $block->setClass($this->accessor->getValue($blockConfig, '[class]'));
-            $block->setPriority($this->accessor->getValue($blockConfig, '[priority]'));
-
-            $title = $this->accessor->getValue($blockConfig, '[title]')
-                ? $this->accessor->getValue($blockConfig, '[title]')
-                : ucfirst($code);
-            $block->setTitle($title);
-
-            foreach ((array)$this->accessor->getValue($blockConfig, '[subblocks]') as $subCode => $subBlockConfig) {
-                $block->addSubBlock($this->createSubBlock($subCode, (array)$subBlockConfig));
-            }
-
-            $this->formConfig->addBlock($block);
-
-            return $block;
+        if ($this->formConfig->hasBlock($code)) {
+            throw new RuntimeException(sprintf("block_config '%s' isset in form config.", $code));
         }
 
-        return null;
+        $block = new BlockConfig($code);
+        $block->setClass($this->accessor->getValue($blockConfig, '[class]'));
+        $block->setPriority($this->accessor->getValue($blockConfig, '[priority]'));
+
+        $title = $this->accessor->getValue($blockConfig, '[title]')
+            ? $this->accessor->getValue($blockConfig, '[title]')
+            : ucfirst($code);
+        $block->setTitle($title);
+
+        foreach ((array)$this->accessor->getValue($blockConfig, '[subblocks]') as $subCode => $subBlockConfig) {
+            $block->addSubBlock($this->createSubBlock($subCode, (array)$subBlockConfig));
+        }
+
+        $this->formConfig->addBlock($block);
+
+        return $block;
     }
 
     /**
