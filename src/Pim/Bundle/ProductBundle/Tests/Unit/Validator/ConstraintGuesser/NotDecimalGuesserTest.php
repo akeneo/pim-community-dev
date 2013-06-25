@@ -5,15 +5,21 @@ namespace Pim\Bundle\ProductBundle\Tests\Unit\Validator\ConstraintGuesser;
 use Pim\Bundle\ProductBundle\Validator\ConstraintGuesser\NotDecimalGuesser;
 
 /**
+ * Test related class
+ *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class NotDecimalGuesserTest extends ConstraintGuesserTest
 {
+
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
-        $this->target = new NotDecimalGuesser;
+        $this->target = new NotDecimalGuesser();
     }
 
     public function testInstanceOfContraintGuesserInterface()

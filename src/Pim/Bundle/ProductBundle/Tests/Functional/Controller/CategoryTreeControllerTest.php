@@ -163,7 +163,7 @@ class CategoryTreeControllerTest extends ControllerTest
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Category', $category);
         $this->assertEquals(self::NODE_CODE, $category->getCode());
         $this->assertEquals(self::NODE_TITLE, $category->getTitle());
-        $this->assertEquals(self::NODE_IS_DYNAMIC, $category->getIsDynamic());
+        $this->assertEquals(self::NODE_IS_DYNAMIC, $category->isDynamic());
     }
 
     /**
@@ -276,7 +276,7 @@ class CategoryTreeControllerTest extends ControllerTest
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Category', $node);
         $this->assertEquals(self::NODE_EDITED_CODE, $node->getCode());
         $this->assertEquals(self::NODE_TITLE, $node->getTitle());
-        $this->assertEquals(self::NODE_IS_DYNAMIC, $node->getIsDynamic());
+        $this->assertEquals(self::NODE_IS_DYNAMIC, $node->isDynamic());
     }
 
     /**

@@ -122,17 +122,17 @@ class ProductAttributeValidator
     protected static function isAttributeTypeMatrixValid(ProductAttribute $productAttribute, ExecutionContext $context)
     {
         $attributeType = array(
-            'pim_product_textarea',
-            'pim_product_price_collection',
-            'pim_product_multiselect',
-            'pim_product_simpleselect',
-            'pim_product_image',
-            'pim_product_file',
-            'pim_product_metric',
-            'pim_product_boolean'
+                'pim_product_textarea',
+                'pim_product_price_collection',
+                'pim_product_multiselect',
+                'pim_product_simpleselect',
+                'pim_product_image',
+                'pim_product_file',
+                'pim_product_metric',
+                'pim_product_boolean'
         );
         if (in_array($productAttribute->getAttributeType(), $attributeType)
-            && $productAttribute->getUnique() === true) {
+                && $productAttribute->getUnique() === true) {
             $context->addViolation(self::VIOLATION_UNIQUE_ATT_TYPE);
         }
     }
@@ -150,7 +150,7 @@ class ProductAttributeValidator
     {
         if ($productAttribute->getUnique() === true) {
             if ($productAttribute->getScopable() != false
-                || $productAttribute->getTranslatable() === true) {
+                    || $productAttribute->getTranslatable() === true) {
                 $context->addViolation(self::VIOLATION_UNIQUE_SCOPE_I18N);
             }
         }
@@ -167,8 +167,8 @@ class ProductAttributeValidator
     protected static function areOptionsValid(ProductAttribute $productAttribute, ExecutionContext $context)
     {
         $optionTypes = array(
-            'pim_product_multiselect',
-            'pim_product_simpleselect'
+                'pim_product_multiselect',
+                'pim_product_simpleselect'
         );
 
         if (in_array($productAttribute->getAttributeType(), $optionTypes)) {
@@ -242,8 +242,8 @@ class ProductAttributeValidator
         $value = $productAttribute->getDefaultValue();
         if ($value !== null) {
             $exclusions = array(
-                'pim_product_image',
-                'pim_product_file'
+                    'pim_product_image',
+                    'pim_product_file'
             );
 
             if (in_array($productAttribute->getAttributeType(), $exclusions)) {
@@ -272,7 +272,7 @@ class ProductAttributeValidator
                 case 'pim_product_price_collection':
                 case 'pim_product_number':
                 case 'pim_product_metric':
-                    if ($productAttribute->getNegativeAllowed() === false && $value < 0) {
+                    if ($productAttribute->isNegativeAllowed() === false && $value < 0) {
                         break;
                     }
                     if ($productAttribute->getNumberMin() !== null && $value < $productAttribute->getNumberMin()) {
@@ -281,7 +281,7 @@ class ProductAttributeValidator
                     if ($productAttribute->getNumberMax() !== null && $value > $productAttribute->getNumberMax()) {
                         break;
                     }
-                    if (!$productAttribute->getDecimalsAllowed() && $value != (int) $value) {
+                    if (!$productAttribute->isDecimalsAllowed() && $value != (int) $value) {
                         break;
                     }
 
@@ -365,7 +365,7 @@ class ProductAttributeValidator
     {
         if ($value = $productAttribute->getValidationRule()) {
             $validRules = array(
-                'url', 'email', 'regexp'
+                    'url', 'email', 'regexp'
             );
             if (!in_array($value, $validRules)) {
                 $context->addViolation(self::VIOLATION_INVALID_VALIDATION_RULE);
@@ -404,11 +404,11 @@ class ProductAttributeValidator
     protected static function isNumberMinValid(ProductAttribute $productAttribute, ExecutionContext $context)
     {
         if ($value = $productAttribute->getNumberMin()) {
-            if ($productAttribute->getNegativeAllowed()) {
-                if ($value == (int) $value || $productAttribute->getDecimalsAllowed()) {
+            if ($productAttribute->isNegativeAllowed()) {
+                if ($value == (int) $value || $productAttribute->isDecimalsAllowed()) {
                     return;
                 }
-            } elseif (($value == (int) $value || $productAttribute->getDecimalsAllowed()) && $value >= 0) {
+            } elseif (($value == (int) $value || $productAttribute->isDecimalsAllowed()) && $value >= 0) {
                 return;
             }
 
@@ -428,11 +428,11 @@ class ProductAttributeValidator
     {
         if ($value = $productAttribute->getNumberMax()) {
             if ($productAttribute->getNumberMax() > $productAttribute->getNumberMin()) {
-                if ($productAttribute->getNegativeAllowed()) {
-                    if ($value == (int) $value || $productAttribute->getDecimalsAllowed()) {
+                if ($productAttribute->isNegativeAllowed()) {
+                    if ($value == (int) $value || $productAttribute->isDecimalsAllowed()) {
                         return;
                     }
-                } elseif (($value == (int) $value || $productAttribute->getDecimalsAllowed()) && $value >= 0) {
+                } elseif (($value == (int) $value || $productAttribute->isDecimalsAllowed()) && $value >= 0) {
                     return;
                 }
             }
@@ -485,9 +485,9 @@ class ProductAttributeValidator
     {
         if ($productAttribute->getDateMax()) {
             if (!$productAttribute->getDateMax() instanceof \DateTime || (
-                $productAttribute->getDateMin()
-                && $productAttribute->getDateMin()->getTimestamp() >= $productAttribute->getDateMax()->getTimestamp()
-                )
+                    $productAttribute->getDateMin()
+                    && $productAttribute->getDateMin()->getTimestamp() >= $productAttribute->getDateMax()->getTimestamp()
+            )
             ) {
                 $context->addViolation(self::VIOLATION_INVALID_DATE_MAX);
             }

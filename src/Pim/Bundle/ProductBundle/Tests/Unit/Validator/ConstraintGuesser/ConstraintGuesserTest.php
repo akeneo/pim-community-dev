@@ -6,6 +6,8 @@ namespace Pim\Bundle\ProductBundle\Tests\Unit\Validator\ConstraintGuesser;
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @abstract
  */
 abstract class ConstraintGuesserTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,6 +18,10 @@ abstract class ConstraintGuesserTest extends \PHPUnit_Framework_TestCase
         foreach ($options as $name => $value) {
             $attribute->expects($this->any())
                 ->method(sprintf('get%s', ucfirst($name)))
+                ->will($this->returnValue($value));
+
+            $attribute->expects($this->any())
+                ->method(sprintf('is%s', ucfirst($name)))
                 ->will($this->returnValue($value));
         }
 
