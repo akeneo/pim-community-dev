@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\AddressBundle\Entity\Country;
+use Oro\Bundle\AddressBundle\Entity\Repository\RegionRepository;
 
 class BuildAddressFormListener implements EventSubscriberInterface
 {
@@ -127,13 +128,8 @@ class BuildAddressFormListener implements EventSubscriberInterface
      */
     protected function getRegionClosure(Country $country)
     {
-        return function (EntityRepository $er) use ($country) {
-            $qb = $er->createQueryBuilder('r')
-                ->where('r.country = :country')
-                ->orderBy('r.name', 'ASC');
-            $qb->setParameter('country', $country);
-
-            return $qb;
+        return function (RegionRepository $regionRepository) use ($country) {
+            return $regionRepository->getCountryRegionsQueryBuilder($country);
         };
     }
 }

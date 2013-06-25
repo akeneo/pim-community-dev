@@ -1,7 +1,8 @@
 <?php
+
 namespace Oro\Bundle\AddressBundle\Tests\Unit\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\FormView;
 
 use Oro\Bundle\AddressBundle\Form\Type\RegionType;
 
@@ -57,15 +58,28 @@ class RegionTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testFinishView()
     {
-        $formViewMock = $this->getMock('Symfony\Component\Form\FormView');
-        $formMock = $this->getMockBuilder('Symfony\Component\Form\Form')
+        $optionKey = 'countryFieldName';
+
+        $formConfigMock = $this->getMockBuilder('Symfony\Component\Form\FormConfigInterface')
             ->disableOriginalConstructor()
-            ->getMock();
-        $formMock->expects($this->once())
+            ->setMethods(array('getAttribute'))
+            ->getMockForAbstractClass();
+        $formConfigMock->expects($this->once())
             ->method('getAttribute')
             ->with($this->equalTo(RegionType::COUNTRY_OPTION_KEY))
-            ->will($this->returnValue(''));
+            ->will($this->returnValue($optionKey));
 
-        $this->type->finishView($formViewMock, $formMock, array());
+        $formMock = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getConfig'))
+            ->getMock();
+        $formMock->expects($this->once())
+            ->method('getConfig')
+            ->will($this->returnValue($formConfigMock));
+
+        $formView = new FormView();
+        $this->type->finishView($formView, $formMock, array());
+        $this->assertArrayHasKey('country_field', $formView->vars);
+        $this->assertEquals($optionKey, $formView->vars['country_field']);
     }
 }

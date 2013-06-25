@@ -89,6 +89,16 @@ class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
         $this->type = new TranslatableEntityType($this->registry);
     }
 
+    protected function tearDown()
+    {
+        unset($this->classMetadata);
+        unset($this->entityManager);
+        unset($this->registry);
+        unset($this->entityRepository);
+        unset($this->queryBuilder);
+        unset($this->type);
+    }
+
     public function testGetName()
     {
         $this->assertEquals(TranslatableEntityType::NAME, $this->type->getName());

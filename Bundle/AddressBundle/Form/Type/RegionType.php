@@ -9,8 +9,6 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\Options;
 
-use Oro\Bundle\FormBundle\Form\Type\TranslatableEntityType;
-
 class RegionType extends AbstractType
 {
     const COUNTRY_OPTION_KEY = 'country_field';
@@ -61,7 +59,7 @@ class RegionType extends AbstractType
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['country_field'] = $form->getAttribute(self::COUNTRY_OPTION_KEY);
+        $view->vars['country_field'] = $form->getConfig()->getAttribute(self::COUNTRY_OPTION_KEY);
     }
 
     /**

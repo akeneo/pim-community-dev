@@ -3,7 +3,6 @@
 namespace Oro\Bundle\AddressBundle\Controller\Api\Rest;
 
 use Symfony\Component\HttpFoundation\Response;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use FOS\Rest\Util\Codes;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -12,6 +11,7 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 use Oro\Bundle\AddressBundle\Entity\Country;
+use Oro\Bundle\AddressBundle\Entity\Repository\RegionRepository;
 
 /**
  * @RouteResource("country/regions")
@@ -38,21 +38,12 @@ class CountryRegionsController extends FOSRestController
             );
         }
 
-        /** @var $countryRepository EntityRepository */
-        $countryRepository = $this->getDoctrine()->getRepository('OroAddressBundle:Region');
-        $query = $countryRepository->createQueryBuilder('r')
-            ->where('r.country = :country')
-            ->orderBy('r.name', 'ASC')
-            ->setParameter('country', $country)
-            ->getQuery();
-
-        $query->setHint(
-            Query::HINT_CUSTOM_OUTPUT_WALKER,
-            'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker'
-        );
+        /** @var $regionRepository RegionRepository */
+        $regionRepository = $this->getDoctrine()->getRepository('OroAddressBundle:Region');
+        $regions = $regionRepository->getCountryRegions($country);
 
         return $this->handleView(
-            $this->view($query->execute(), Codes::HTTP_OK)
+            $this->view($regions, Codes::HTTP_OK)
         );
     }
 }

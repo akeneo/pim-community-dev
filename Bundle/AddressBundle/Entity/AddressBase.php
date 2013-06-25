@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\AddressBundle\Entity;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Type;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
@@ -78,7 +77,7 @@ class AddressBase extends AbstractEntityFlexible
     protected $country;
 
     /**
-     * @var string
+     * @var Region
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\AddressBundle\Entity\Region", cascade={"persist"})
      * @ORM\JoinColumn(name="region_code", referencedColumnName="combined_code")
@@ -184,10 +183,10 @@ class AddressBase extends AbstractEntityFlexible
     /**
      * Set state
      *
-     * @param  Region      $state
+     * @param Region $state
      * @return AddressBase
      */
-    public function setState($state)
+    public function setState(Region $state)
     {
         $this->state = $state;
 
@@ -207,7 +206,7 @@ class AddressBase extends AbstractEntityFlexible
     /**
      * Set state text
      *
-     * @param  Region      $stateText
+     * @param string $stateText
      * @return AddressBase
      */
     public function setStateText($stateText)
@@ -220,7 +219,7 @@ class AddressBase extends AbstractEntityFlexible
     /**
      * Get state test
      *
-     * @return Region
+     * @return string
      */
     public function getStateText()
     {
@@ -230,7 +229,7 @@ class AddressBase extends AbstractEntityFlexible
     /**
      * Get state
      *
-     * @return Region
+     * @return Region|string
      */
     public function getUniversalState()
     {

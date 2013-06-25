@@ -27,7 +27,7 @@
                 target: $('#{{ id }}'),
                 simpleEl: $('{{ state_text_field }}'),
                 collection: regions,
-                showSelect: {{ choices ? 'true' : 'false' }}
+                showSelect: {{ (choices is not empty)|json_encode }}
             });
         });
     </script>
