@@ -168,6 +168,7 @@ Oro.Navigation = Backbone.Router.extend({
             $.ajax({
                 url: pageUrl,
                 headers: { 'x-oro-hash-navigation': true },
+                cache: false,
                 beforeSend: function( xhr ) {
                     //remove standard ajax header because we already have a custom header sent
                     xhr.setRequestHeader('X-Requested-With', {toString: function(){ return ''; }});
@@ -386,8 +387,12 @@ Oro.Navigation = Backbone.Router.extend({
                 if (urlParts[1]) {
                     redirectUrl = urlParts[1];
                 }
-                if(redirectUrl.fullRedirect) {
-                    window.location.replace(redirectUrl);
+                if(data.fullRedirect) {
+                    var delimiter = '?';
+                    if (redirectUrl.indexOf(delimiter) !== -1) {
+                        delimiter = '&';
+                    }
+                    window.location.replace(redirectUrl + delimiter + '_rand=' + Math.random());
                 } else {
                     this.setLocation(redirectUrl);
                 }
