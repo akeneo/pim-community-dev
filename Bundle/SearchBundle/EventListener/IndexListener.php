@@ -3,10 +3,8 @@
 namespace Oro\Bundle\SearchBundle\EventListener;
 
 use Doctrine\ORM\Event\PostFlushEventArgs;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Doctrine\ORM\Event\OnFlushEventArgs;
-use Doctrine\ORM\Event\PostPersist;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\SearchBundle\Engine\AbstractEngine;
 
