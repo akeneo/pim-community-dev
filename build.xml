@@ -141,7 +141,7 @@
     </target>
 
     <target name="behat" description="Run acceptance tests with Behat">
-        <exec executable="behat">
+        <exec executable="bin/behat">
             <arg value="--tags=~javascript" />
             <arg value="--no-paths" />
         </exec>
