@@ -5,9 +5,6 @@ namespace Oro\Bundle\EntityConfigBundle\Datagrid;
 use Doctrine\ORM\Query;
 
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
-
-use Oro\Bundle\EntityConfigBundle\ConfigManager;
-
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -15,6 +12,8 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
+
+use Oro\Bundle\EntityConfigBundle\ConfigManager;
 
 class ConfigDatagridManager extends DatagridManager
 {
@@ -38,12 +37,19 @@ class ConfigDatagridManager extends DatagridManager
      */
     protected function getProperties()
     {
-        return array(
-            new UrlProperty('view_link', $this->router, 'oro_entityconfig_view', array('id')),
-            new UrlProperty('update_link', $this->router, 'oro_entityconfig_update', array('id')),
-            //new UrlProperty('remove_link', $this->router, 'oro_entityconfig_remove', array('id')),
-            new UrlProperty('fields_link', $this->router, 'oro_entityconfig_fields', array('id')),
-        );
+        $properties = array();
+        foreach ($this->configManager->getProviders() as $provider) {
+            foreach ($provider->getConfigContainer()->getEntityGridActions() as $config) {
+                $properties[] = new UrlProperty(
+                    strtolower($config['name']).'_link',
+                    $this->router,
+                    $config['route'],
+                    (isset($config['args']) ? $config['args'] : array())
+                );
+            }
+        }
+
+        return $properties;
     }
 
     /**
@@ -103,50 +109,6 @@ class ConfigDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
-//        $viewAction = array(
-//            'name'         => 'view',
-//            'type'         => ActionInterface::TYPE_REDIRECT,
-//            'acl_resource' => 'root',
-//            'options'      => array(
-//                'label' => 'View',
-//                'icon'  => 'book',
-//                'link'  => 'view_link',
-//            )
-//        );
-//
-//        $updateAction = array(
-//            'name'         => 'update',
-//            'type'         => ActionInterface::TYPE_REDIRECT,
-//            'acl_resource' => 'root',
-//            'options'      => array(
-//                'label' => 'Edit',
-//                'icon'  => 'edit',
-//                'link'  => 'update_link',
-//            )
-//        );
-//
-//        $fieldsAction = array(
-//            'name'         => 'fields',
-//            'type'         => ActionInterface::TYPE_REDIRECT,
-//            'acl_resource' => 'root',
-//            'options'      => array(
-//                'label' => 'Fields',
-//                'icon'  => 'th-list',
-//                'link'  => 'fields_link',
-//            )
-//        );
-//
-//        $deleteAction = array(
-//            'name'         => 'delete',
-//            'type'         => ActionInterface::TYPE_DELETE,
-//            'acl_resource' => 'root',
-//            'options'      => array(
-//                'label' => 'Delete',
-//                'icon'  => 'trash',
-//                'link'  => 'delete_link',
-//            )
-//        );
-
         $actions = array();
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getEntityGridActions() as $config) {
@@ -177,7 +139,6 @@ class ConfigDatagridManager extends DatagridManager
         }
 
         return $actions;
-        //return array($viewAction, $updateAction, $fieldsAction);
     }
 
     /**

@@ -5,12 +5,10 @@
 
 {% block content %}
     {% set pageTitle = 'Entity Fields Config' %}
-    {#{% set buttons = [UI.addButton({'path' : path('oro_user_create'), 'title' : 'Create', 'label' : 'Create'})] %}#}
-    {% set buttons = [UI.addButton({'path' : path('oro_user_create'), 'title' : 'Create', 'label' : 'Create'})] %}
-    {#{% set buttons = [] %}#}
-
-
-
+    {% set buttons = [
+        UI.addButton({'path':path('oro_entityextend_field_create'), 'title':'Create', 'label':'Create'}),
+        UI.addButton({'path':path('oro_entityconfig_index'),        'title':'Back',   'label':'Back', 'aClass':'btn-info'})
+    ] %}
 
     {{ parent() }}
 {% endblock %}

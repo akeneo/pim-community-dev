@@ -21,11 +21,19 @@ use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
 class ConfigFieldGridController extends Controller
 {
     /**
-     * @Route("/create", name="oro_entityextend_field_create")
+     * @Route("/create", name="oro_entityextend_field_create", requirements={"id"="\d+"}, defaults={"id"=0})
      */
-    public function createAction()
+    public function createAction($id)
     {
         die('extend create');
+    }
+
+    /**
+     * @Route("/view/{id}", name="oro_entityextend_field_view", requirements={"id"="\d+"}, defaults={"id"=0})
+     */
+    public function viewAction($id)
+    {
+        die('extend update');
     }
 
     /**

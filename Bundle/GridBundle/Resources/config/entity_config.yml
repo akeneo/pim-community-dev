@@ -2,10 +2,6 @@ oro_entity_config:
     scope:                              datagrid
 
     field:
-        grid_action:
-            -                           {"name":"Remove", "route":"oro_entityextend_remove", "icon":"trash", "filter":"is_extend"}
-        layout_action:
-            -                           {"name":"Create", "route":"oro_entityextend_create"}
         items:
             enabled:
                 grid:
