@@ -186,7 +186,7 @@ class AddressBase extends AbstractEntityFlexible
      * @param Region $state
      * @return AddressBase
      */
-    public function setState(Region $state)
+    public function setState($state)
     {
         $this->state = $state;
 
