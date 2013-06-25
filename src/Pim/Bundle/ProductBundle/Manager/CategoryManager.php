@@ -80,7 +80,7 @@ class CategoryManager extends SegmentManager
         }
         $parentsIds = array_unique($parentsIds);
 
-        return $this->getEntityRepository()->getTreeFromParents($root, $parentsIds);
+        return $this->getEntityRepository()->getTreeFromParents($parentsIds);
 
     }
 }
