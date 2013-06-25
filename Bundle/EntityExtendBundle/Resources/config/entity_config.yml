@@ -2,6 +2,13 @@ oro_entity_config:
     scope:                              extend
 
     entity:
+        grid_action:
+            -                           {"name":"View",   "route":"oro_entityconfig_view",   "type":"redirect", "icon":"book",    "acl_resource":"root", "filter":"is_extend"}
+            -                           {"name":"Update", "route":"oro_entityconfig_update", "type":"redirect", "icon":"edit",    "acl_resource":"root", "filter":"is_extend"}
+            -                           {"name":"Fields", "route":"oro_entityconfig_fields", "type":"redirect", "icon":"th-list", "acl_resource":"root", "filter":"is_extend"}
+            -                           {"name":"Remove", "route":"oro_entityconfig_remove", "type":"delete",   "icon":"trash",   "acl_resource":"root", "filter":"is_extend"}
+        layout_action:
+            -                           {"name":"Create", "route":"oro_entityextend_create", "type":"redirect"}
         items:
             is_extend:
                 required:               true
@@ -29,9 +36,9 @@ oro_entity_config:
 
     field:
         grid_action:
-            -                           {"name":"Remove", "route":"oro_entity_extend_field_remove", "filter":"is_extend"}
+            -                           {"name":"Remove", "route":"oro_entityextend_remove", "filter":"is_extend"}
         layout_action:
-            -                           {"name":"Create", "route":"oro_entity_extend_field_create"}
+            -                           {"name":"Create", "route":"oro_entityextend_create"}
         items:
             is_extend:
                 required:               true

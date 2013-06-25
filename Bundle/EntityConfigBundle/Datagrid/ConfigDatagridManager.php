@@ -41,7 +41,7 @@ class ConfigDatagridManager extends DatagridManager
         return array(
             new UrlProperty('view_link', $this->router, 'oro_entityconfig_view', array('id')),
             new UrlProperty('update_link', $this->router, 'oro_entityconfig_update', array('id')),
-            //new UrlProperty('remove_link', $this->router, 'oro_entityconfig_remove', array('is')),
+            new UrlProperty('remove_link', $this->router, 'oro_entityconfig_remove', array('id')),
             new UrlProperty('fields_link', $this->router, 'oro_entityconfig_fields', array('id')),
         );
     }
@@ -103,51 +103,81 @@ class ConfigDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
-        $viewAction = array(
-            'name'         => 'view',
-            'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
-            'options'      => array(
-                'label' => 'View',
-                'icon'  => 'book',
-                'link'  => 'view_link',
-            )
-        );
+//        $viewAction = array(
+//            'name'         => 'view',
+//            'type'         => ActionInterface::TYPE_REDIRECT,
+//            'acl_resource' => 'root',
+//            'options'      => array(
+//                'label' => 'View',
+//                'icon'  => 'book',
+//                'link'  => 'view_link',
+//            )
+//        );
+//
+//        $updateAction = array(
+//            'name'         => 'update',
+//            'type'         => ActionInterface::TYPE_REDIRECT,
+//            'acl_resource' => 'root',
+//            'options'      => array(
+//                'label' => 'Edit',
+//                'icon'  => 'edit',
+//                'link'  => 'update_link',
+//            )
+//        );
+//
+//        $fieldsAction = array(
+//            'name'         => 'fields',
+//            'type'         => ActionInterface::TYPE_REDIRECT,
+//            'acl_resource' => 'root',
+//            'options'      => array(
+//                'label' => 'Fields',
+//                'icon'  => 'th-list',
+//                'link'  => 'fields_link',
+//            )
+//        );
+//
+//        $deleteAction = array(
+//            'name'         => 'delete',
+//            'type'         => ActionInterface::TYPE_DELETE,
+//            'acl_resource' => 'root',
+//            'options'      => array(
+//                'label' => 'Delete',
+//                'icon'  => 'trash',
+//                'link'  => 'delete_link',
+//            )
+//        );
 
-        $updateAction = array(
-            'name'         => 'update',
-            'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
-            'options'      => array(
-                'label' => 'Edit',
-                'icon'  => 'edit',
-                'link'  => 'update_link',
-            )
-        );
+        $actions = array();
+        foreach ($this->configManager->getProviders() as $provider) {
+            foreach ($provider->getConfigContainer()->getEntityGridActions() as $config) {
+                $configItem = array(
+                    'name'         => strtolower($config['name']),
+                    'acl_resource' => isset($config['acl_resource']) ? $config['acl_resource'] : 'root',
+                    'options'      => array(
+                        'label' => ucfirst($config['name']),
+                        'icon'  => isset($config['icon']) ? $config['icon'] : 'question-sign',
+                        'link'  => strtolower($config['name']).'_link'
+                    )
+                );
 
-        $fieldsAction = array(
-            'name'         => 'fields',
-            'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
-            'options'      => array(
-                'label' => 'Fields',
-                'icon'  => 'th-list',
-                'link'  => 'fields_link',
-            )
-        );
+                if (isset($config['type'])) {
+                    switch ($config['type']) {
+                        case 'delete':
+                            $configItem['type'] = ActionInterface::TYPE_DELETE;
+                        case 'redirect':
+                            $configItem['type'] = ActionInterface::TYPE_REDIRECT;
+                            break;
+                    }
+                } else {
+                    $configItem['type'] = ActionInterface::TYPE_REDIRECT;
+                }
 
-        $deleteAction = array(
-            'name'         => 'delete',
-            'type'         => ActionInterface::TYPE_DELETE,
-            'acl_resource' => 'root',
-            'options'      => array(
-                'label' => 'Delete',
-                'icon'  => 'trash',
-                'link'  => 'delete_link',
-            )
-        );
+                $actions[] = $configItem;
+            }
+        }
 
-        return array($viewAction, $updateAction, $fieldsAction);
+        return $actions;
+        //return array($viewAction, $updateAction, $fieldsAction);
     }
 
     /**

@@ -2,11 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Controller;
 
-use Oro\Bundle\EntityConfigBundle\ConfigManager;
-use Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -14,12 +10,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\GridBundle\Datagrid\Datagrid;
-
+use Oro\Bundle\EntityConfigBundle\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
 
 /**
- * User controller.
+ * EntityConfig controller.
  * @Route("/oro_entityconfig")
  */
 class ConfigController extends Controller
