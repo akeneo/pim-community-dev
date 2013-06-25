@@ -205,11 +205,10 @@
                                                             {% endfor %}
                                                         </td>
                                                     {% endfor %}
-                                                    {% if form.defaultValue is defined %}
-                                                        <td>
-                                                            <input type="radio" name="default_option" id="default_option_{{ option.vars.value.id }}" {% if option.vars.value.id == form.defaultValue.vars.value or option.vars.value.id in form.defaultValue.vars.value %} checked="checked"{% endif %}>
-                                                        </td>
-                                                    {% endif %}
+                                                    <td>
+                                                        {{ form_row(option.default) }}
+                                                        <input type="{{ form.attributeType.vars.value == 'pim_product_multiselect' ? 'checkbox' : 'radio' }}" name="default"{% if option.vars.value.default %} checked="checked"{% endif %}>
+                                                    </td>
                                                     {% if disabledLocales is not empty %}
                                                         <td style="display:none;">
                                                             {% for i in 0..disabledLocales|length-1 %}

@@ -49,19 +49,6 @@ class OptionMultiSelectType extends AbstractAttributeType
     {
         $properties = array(
             array(
-                'name' => 'defaultValue',
-                'fieldType' => 'entity',
-                'options' => array(
-                    'empty_value'   => new AttributeOption(),
-                    'class'         => 'PimProductBundle:AttributeOption',
-                    'query_builder' => function (EntityRepository $er) use ($attribute) {
-                        return $er->findAllForAttribute($attribute);
-                    },
-                    'expanded'      => false,
-                    'multiple'      => true
-                )
-            ),
-            array(
                 'name' => 'valueCreationAllowed',
                 'fieldType' => 'checkbox'
             ),

@@ -52,12 +52,6 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     protected $options;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\AttributeOption")
-     * @ORM\JoinColumn(name="default_option_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $defaultOption;
-
-    /**
      * @ORM\Column(name="sort_order", type="integer")
      */
     protected $sortOrder = 0;
@@ -283,18 +277,15 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      */
     public function getDefaultValue()
     {
-        if (is_null($this->defaultValue) && is_null($this->defaultOption)) {
+        if (is_null($this->defaultValue) && $this->getDefaultOptions()->isEmpty()) {
             return null;
         }
 
         switch ($this->getBackendType()) {
             case 'option':
-                return $this->getDefaultOption();
+                return $this->getDefaultOptions()->isEmpty() ? null : $this->getDefaultOptions()->first();
             case 'options':
-                $option = new ArrayCollection();
-                $option[] = $this->getDefaultOption();
-
-                return $option;
+                return $this->getDefaultOptions();
             case 'date':
                 $date = new \DateTime();
                 $date->setTimestamp((int) $this->defaultValue);
@@ -328,12 +319,6 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
         }
 
         switch ($this->getBackendType()) {
-            case 'option':
-                $this->setDefaultOption($defaultValue);
-                break;
-            case 'options':
-                $this->setDefaultOption($defaultValue->first());
-                break;
             case 'date':
                 $this->defaultValue = $defaultValue->format('U');
                 break;
@@ -349,27 +334,15 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Get defaultOption
+     * Get default AttributeOptions
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\AttributeOption
+     * @return ArrayCollection
      */
-    public function getDefaultOption()
+    public function getDefaultOptions()
     {
-        return $this->defaultOption;
-    }
-
-    /**
-     * Set defaultOption
-     *
-     * @param AttributeOption $option
-     *
-     * @return ProductAttribute
-     */
-    public function setDefaultOption(\Pim\Bundle\ProductBundle\Entity\AttributeOption $option = null)
-    {
-        $this->defaultOption = $option;
-
-        return $this;
+        return $this->options->filter(function($option) {
+            return $option->isDefault();
+        });
     }
 
     /**

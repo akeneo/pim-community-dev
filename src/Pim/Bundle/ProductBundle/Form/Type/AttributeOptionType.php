@@ -18,6 +18,16 @@ use Pim\Bundle\ProductBundle\Form\Type\AttributeOptionValueType as ProductAttrib
 class AttributeOptionType extends FlexibleAttributeOptionType
 {
     /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        parent::buildForm($builder, $options);
+
+        $this->addFieldIsDefault($builder);
+    }
+
+    /**
      * Add options values to form builder
      * @param FormBuilderInterface $builder
      */
@@ -33,6 +43,15 @@ class AttributeOptionType extends FlexibleAttributeOptionType
                 'by_reference' => false
             )
         );
+    }
+
+    /**
+     * Add isDefault field to form builder
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldIsDefault(FormBuilderInterface $builder)
+    {
+        $builder->add('default', 'hidden');
     }
 
     /**
