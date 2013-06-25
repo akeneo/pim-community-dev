@@ -174,17 +174,41 @@ Oro.Navigation = Backbone.Router.extend({
                     xhr.setRequestHeader('X-Requested-With', {toString: function(){ return ''; }});
                 },
 
-                error: _.bind(function (XMLHttpRequest, textStatus, errorThrown) {
+                error: _.bind(function (jqXHR, textStatus, errorThrown) {
                     this.showError('Error Message: ' + textStatus, 'HTTP Error: ' + errorThrown);
+                    this.updateDebugToolbar(jqXHR);
                     this.afterRequest();
                 }, this),
 
-                success: _.bind(function (data) {
+                success: _.bind(function (data, textStatus, jqXHR) {
                     this.handleResponse(data);
+                    this.updateDebugToolbar(jqXHR)
                     this.afterRequest();
                     this.savePageToCache(data);
                 }, this)
             });
+        }
+    },
+
+    /**
+     * Update debug toolbar.
+     *
+     * @param jqXHR
+     */
+    updateDebugToolbar: function(jqXHR) {
+        var debugBarToken = jqXHR.getResponseHeader('x-debug-token');
+        var entryPoint = window.location.pathname;
+        if (entryPoint.indexOf('.php') !== -1) {
+            entryPoint = entryPoint.substr(0, entryPoint.indexOf('.php') + 4);
+        }
+        if(debugBarToken) {
+            $('.sf-toolbarreset').remove();
+            $.get(
+                this.baseUrl + entryPoint + '/_wdt/' + debugBarToken,
+                _.bind(function(data) {
+                    this.selectorCached['container'].append(data);
+                }, this)
+            );
         }
     },
 
