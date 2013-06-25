@@ -46,7 +46,7 @@ class LocaleRepository extends EntityRepository
     }
 
     /**
-     * Return a query builder for activated locales
+     * Return an array of activated locales
      *
      * @return array
      */
@@ -57,5 +57,19 @@ class LocaleRepository extends EntityRepository
            ->orderBy('l.code');
 
         return $qb->getQuery()->getResult();
+    }
+
+   /**
+     * Return a query builder for activated locales
+     *
+     * @return QueryBuilder
+     */
+    public function getActivatedLocalesQB()
+    {
+        $qb = $this->createQueryBuilder('l');
+        $qb->where($qb->expr()->eq('l.activated', true))
+           ->orderBy('l.code');
+
+        return $qb;
     }
 }

@@ -203,7 +203,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             $language = $this->getLocale($this->getLocaleCode($language));
             $pl = $product->getLocale($language);
             if (!$pl) {
-                $product->addLocale($language, true);
+                $product->addLocale($language);
             }
             $this->getProductManager()->save($product);
         }
@@ -1161,8 +1161,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $value->setAttribute($attribute);
         $value->setData($data);
         $value->setLocale($locale);
-
-        $pm->getStorageManager()->persist($value);
 
         return $value;
     }

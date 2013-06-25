@@ -35,7 +35,7 @@ class AvailableLocalesType extends AbstractType
                 'multiple' => true,
                 'class' => 'Pim\Bundle\ConfigBundle\Entity\Locale',
                 'query_builder' => function (EntityRepository $repository) {
-                    return $repository->getActivatedLocales();
+                    return $repository->getActivatedLocalesQB();
                 }
             )
         );
