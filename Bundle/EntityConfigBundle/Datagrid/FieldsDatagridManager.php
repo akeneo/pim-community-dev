@@ -5,9 +5,6 @@ namespace Oro\Bundle\EntityConfigBundle\Datagrid;
 use Doctrine\ORM\Query;
 
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
-
-use Oro\Bundle\EntityConfigBundle\ConfigManager;
-
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -15,6 +12,8 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
+
+use Oro\Bundle\EntityConfigBundle\ConfigManager;
 
 class FieldsDatagridManager extends DatagridManager
 {
@@ -43,11 +42,19 @@ class FieldsDatagridManager extends DatagridManager
      */
     protected function getProperties()
     {
-        return array(
-            //new UrlProperty('view_link', $this->router, 'oro_entityconfig_fieldview', array('id')),
-            //new UrlProperty('update_link', $this->router, 'oro_entityconfig_fieldupdate', array('id')),
-            //new UrlProperty('fields_link', $this->router, 'oro_entityconfig_fields', array('id')),
-        );
+        $properties = array();
+        foreach ($this->configManager->getProviders() as $provider) {
+            foreach ($provider->getConfigContainer()->getFieldGridActions() as $config) {
+                $properties[] = new UrlProperty(
+                    strtolower($config['name']).'_link',
+                    $this->router,
+                    $config['route'],
+                    (isset($config['args']) ? $config['args'] : array())
+                );
+            }
+        }
+
+        return $properties;
     }
 
     /**
@@ -123,42 +130,36 @@ class FieldsDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
-        $viewAction = array(
-            'name'         => 'view',
-            'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
-            'options'      => array(
-                'label' => 'View',
-                'icon'  => 'book',
-                'link'  => 'view_link',
-            )
-        );
+        $actions = array();
+        foreach ($this->configManager->getProviders() as $provider) {
+            foreach ($provider->getConfigContainer()->getFieldGridActions() as $config) {
+                $configItem = array(
+                    'name'         => strtolower($config['name']),
+                    'acl_resource' => isset($config['acl_resource']) ? $config['acl_resource'] : 'root',
+                    'options'      => array(
+                        'label' => ucfirst($config['name']),
+                        'icon'  => isset($config['icon']) ? $config['icon'] : 'question-sign',
+                        'link'  => strtolower($config['name']).'_link'
+                    )
+                );
 
-        $updateAction = array(
-            'name'         => 'update',
-            'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
-            'options'      => array(
-                'label' => 'Edit',
-                'icon'  => 'edit',
-                'link'  => 'update_link',
-            )
-        );
+                if (isset($config['type'])) {
+                    switch ($config['type']) {
+                        case 'delete':
+                            $configItem['type'] = ActionInterface::TYPE_DELETE;
+                        case 'redirect':
+                            $configItem['type'] = ActionInterface::TYPE_REDIRECT;
+                            break;
+                    }
+                } else {
+                    $configItem['type'] = ActionInterface::TYPE_REDIRECT;
+                }
 
-        $deleteAction = array(
-            'name'         => 'delete',
-            'type'         => ActionInterface::TYPE_DELETE,
-            'acl_resource' => 'root',
-            'options'      => array(
-                'label' => 'Delete',
-                'icon'  => 'trash',
-                'link'  => 'delete_link',
-            )
-        );
+                $actions[] = $configItem;
+            }
+        }
 
-        return array(
-//            $viewAction, $updateAction
-        );
+        return $actions;
     }
 
     /**

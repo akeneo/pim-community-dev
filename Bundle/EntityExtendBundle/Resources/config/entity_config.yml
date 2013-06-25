@@ -3,12 +3,11 @@ oro_entity_config:
 
     entity:
         grid_action:
-            -                           {"name":"View",   "route":"oro_entityconfig_view",   "type":"redirect", "icon":"book",    "acl_resource":"root", "filter":"is_extend"}
-            -                           {"name":"Update", "route":"oro_entityconfig_update", "type":"redirect", "icon":"edit",    "acl_resource":"root", "filter":"is_extend"}
-            -                           {"name":"Fields", "route":"oro_entityconfig_fields", "type":"redirect", "icon":"th-list", "acl_resource":"root", "filter":"is_extend"}
-#            -                           {"name":"Remove", "route":"oro_entityconfig_remove", "type":"delete",   "icon":"trash",   "acl_resource":"root", "filter":"is_extend"}
-        layout_action:
-            -                           {"name":"Create", "route":"oro_entityextend_create", "type":"redirect"}
+            -                           {"name":"View",   "route":"oro_entityconfig_view",   "type":"redirect", "icon":"book",    "acl_resource":"root", "filter":"is_extend", "args":["id"]}
+            -                           {"name":"Update", "route":"oro_entityconfig_update", "type":"redirect", "icon":"edit",    "acl_resource":"root", "filter":"is_extend", "args":["id"]}
+            -                           {"name":"Fields", "route":"oro_entityconfig_fields", "type":"redirect", "icon":"th-list", "acl_resource":"root", "filter":"is_extend", "args":["id"]}
+        layout_action:                  ~
+            -                           {"name":"Create", "route":"oro_entityconfig_create", "type":"redirect"}
         items:
             is_extend:
                 required:               true
@@ -36,9 +35,11 @@ oro_entity_config:
 
     field:
         grid_action:
-            -                           {"name":"Remove", "route":"oro_entityextend_remove", "filter":"is_extend"}
+            -                           {"name":"View",   "route":"oro_entityextend_field_view",   "type":"redirect", "icon":"pencil", "acl_resource":"root", "filter":"is_extend", "args":["id"]}
+            -                           {"name":"Update", "route":"oro_entityextend_field_update", "type":"redirect", "icon":"edit",   "acl_resource":"root", "filter":"is_extend", "args":["id"]}
+            -                           {"name":"Remove", "route":"oro_entityextend_field_remove", "type":"delete",   "icon":"trash",  "acl_resource":"root", "filter":"is_extend", "args":["id"]}
         layout_action:
-            -                           {"name":"Create", "route":"oro_entityextend_create"}
+            -                           {"name":"Create", "route":"oro_entityextend_field_create"}
         items:
             is_extend:
                 required:               true
