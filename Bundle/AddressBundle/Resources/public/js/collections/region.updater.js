@@ -19,6 +19,6 @@ Oro.RegionUpdater.Collection = Backbone.Collection.extend({
      * @param id {String}
      */
     setCountryId: function (id) {
-        this.url = Routing.generate(this.route, {id: id});
+        this.url = Routing.generate(this.route, {country: id});
     }
 });

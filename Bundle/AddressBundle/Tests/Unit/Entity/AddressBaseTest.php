@@ -92,7 +92,7 @@ class AddressBaseTest extends \PHPUnit_Framework_TestCase
         $obj->setState($region);
         $this->assertEquals($region, $obj->getState());
         $obj->setStateText('text state');
-        $this->assertEquals('text state', $obj->getState());
+        $this->assertEquals('text state', $obj->getUniversalState());
     }
 
     public function testIsStateValidNoCountry()
@@ -183,8 +183,10 @@ class AddressBaseTest extends \PHPUnit_Framework_TestCase
      */
     public function emptyCheckPropertiesDataProvider()
     {
-        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')->disableOriginalConstructor()->getMock();
-        $regionMock = $this->getMock('Oro\Bundle\AddressBundle\Entity\Region');
+        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $regionMock = $this->getMock('Oro\Bundle\AddressBundle\Entity\Region', array(), array('combinedCode'));
         return array(
             'lastName' => array('lastName', 'last name'),
             'firstName' => array('firstName', 'first_name'),

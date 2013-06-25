@@ -218,4 +218,17 @@ class IndexerQuery implements ProxyQueryInterface
     public function getRootAlias()
     {
     }
+
+    /**
+     * Sets a query hint
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return ProxyQueryInterface
+     *
+     * @deprecated Not allowed for indexer query
+     */
+    public function setQueryHint($name, $value)
+    {
+    }
 }

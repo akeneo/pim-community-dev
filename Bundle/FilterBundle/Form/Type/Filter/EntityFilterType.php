@@ -5,6 +5,7 @@ namespace Oro\Bundle\FilterBundle\Form\Type\Filter;
 use Symfony\Component\Form\AbstractType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\Options;
 
 class EntityFilterType extends AbstractType
 {
@@ -33,8 +34,20 @@ class EntityFilterType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'field_type' => 'entity',
+                'field_type'    => 'entity',
                 'field_options' => array(),
+                'translatable'  => false,
+            )
+        );
+
+        $resolver->setNormalizers(
+            array(
+                'field_type' => function (Options $options, $value) {
+                    if (!empty($options['translatable'])) {
+                        $value = 'translatable_entity';
+                    }
+                    return $value;
+                }
             )
         );
     }

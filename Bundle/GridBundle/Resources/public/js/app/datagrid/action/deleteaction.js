@@ -35,9 +35,9 @@ Oro.Datagrid.Action.DeleteAction = Oro.Datagrid.Action.ModelAction.extend({
                 self.getErrorDialog().open();
             },
             success: function() {
-                var messageText = 'Item was deleted';
-                if (!_.isUndefined(Oro.Messages)) {
-                    Oro.Messages.showMessage('success', messageText);
+                var messageText = Translator.get('Item was deleted');
+                if (!_.isUndefined(Oro.NotificationFlashMessage)) {
+                    Oro.NotificationFlashMessage('success', messageText);
                 } else {
                     alert(messageText);
                 }
@@ -53,8 +53,8 @@ Oro.Datagrid.Action.DeleteAction = Oro.Datagrid.Action.ModelAction.extend({
     getConfirmDialog: function() {
         if (!this.confirmModal) {
             this.confirmModal = new Oro.BootstrapModal({
-                title: 'Delete Confirmation',
-                content: 'Are you sure you want to delete this item?',
+                title: Translator.get('Delete Confirmation'),
+                content: Translator.get('Are you sure you want to delete this item?'),
                 okText: 'Yes, Delete',
                 allowCancel: 'false'
             });

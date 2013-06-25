@@ -65,24 +65,12 @@ class Country implements Translatable
     private $locale;
 
     /**
-     * @ORM\OneToMany(
-     *     targetEntity="Oro\Bundle\AddressBundle\Entity\CountryTranslation",
-     *     mappedBy="country",
-     *     cascade={"ALL"},
-     *     fetch="EXTRA_LAZY"
-     * )
-     **/
-    private $translation;
-
-    /**
      * @param string $iso2Code ISO2 country code
      */
     public function __construct($iso2Code)
     {
         $this->iso2Code = $iso2Code;
-
-        $this->regions     = new ArrayCollection();
-        $this->translation = new ArrayCollection();
+        $this->regions  = new ArrayCollection();
     }
 
     /**
