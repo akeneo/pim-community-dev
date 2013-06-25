@@ -93,7 +93,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 continue;
             }
 
-            if (!$attribute->getUseableAsGridColumn() && !$attribute->getUseableAsGridFilter()) {
+            if (!$attribute->isUseableAsGridColumn() && !$attribute->isUseableAsGridFilter()) {
                 continue;
             }
 
@@ -121,9 +121,9 @@ class ProductDatagridManager extends FlexibleDatagridManager
     {
         $result = parent::getFlexibleFieldOptions($attribute, $options);
 
-        $result['filterable'] = $attribute->getUseableAsGridFilter();
-        $result['show_filter'] = $attribute->getUseableAsGridFilter();
-        $result['show_column'] = $attribute->getUseableAsGridColumn();
+        $result['filterable'] = $attribute->isUseableAsGridFilter();
+        $result['show_filter'] = $attribute->isUseableAsGridFilter();
+        $result['show_column'] = $attribute->isUseableAsGridColumn();
 
         return $result;
     }

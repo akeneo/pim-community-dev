@@ -45,7 +45,7 @@ class RangeGuesser implements ConstraintGuesserInterface
         } else {
             $min = $attribute->getNumberMin();
             $max = $attribute->getNumberMax();
-            if (false === $attribute->getNegativeAllowed()) {
+            if (false === $attribute->isNegativeAllowed()) {
                 $min = 0;
             }
         }
