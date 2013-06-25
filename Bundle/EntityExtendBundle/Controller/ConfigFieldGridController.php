@@ -16,12 +16,12 @@ use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
  * Class ConfigGridController
  * @package Oro\Bundle\EntityExtendBundle\Controller
  *
- * @Route("/entityextend")
+ * @Route("/entityextend/field")
  */
 class ConfigFieldGridController extends Controller
 {
     /**
-     * @Route("/create", name="oro_entityextend_create")
+     * @Route("/create", name="oro_entityextend_field_create")
      */
     public function createAction()
     {
@@ -29,7 +29,7 @@ class ConfigFieldGridController extends Controller
     }
 
     /**
-     * @Route("/update/{id}", name="oro_entityextend_update", requirements={"id"="\d+"}, defaults={"id"=0})
+     * @Route("/update/{id}", name="oro_entityextend_field_update", requirements={"id"="\d+"}, defaults={"id"=0})
      */
     public function updateAction($id)
     {
@@ -37,7 +37,7 @@ class ConfigFieldGridController extends Controller
     }
 
     /**
-     * @Route("/remove/{id}", name="oro_entityextend_remove", requirements={"id"="\d+"}, defaults={"id"=0})
+     * @Route("/remove/{id}", name="oro_entityextend_field_remove", requirements={"id"="\d+"}, defaults={"id"=0})
      */
     public function removeAction($id)
     {

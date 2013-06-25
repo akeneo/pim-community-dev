@@ -3,9 +3,9 @@ oro_entity_config:
 
     field:
         grid_action:
-            -                           {"name":"Remove", "route":"oro_entity_extend_field_remove", "filter":"is_extend"}
+            -                           {"name":"Remove", "route":"oro_entityextend_remove", "icon":"trash", "filter":"is_extend"}
         layout_action:
-            -                           {"name":"Create", "route":"oro_entity_extend_field_create"}
+            -                           {"name":"Create", "route":"oro_entityextend_create"}
         items:
             enabled:
                 grid:
@@ -20,8 +20,25 @@ oro_entity_config:
                     type:               choice
                     options:
                         choices:        ['No', 'Yes']
-                        readonly:       true
+                        read_only:       true
                         required:       false
                         label:          "Show in Datagrid"
+
+            is_searchable:
+                grid:
+                    type:               boolean
+                    label:              'Datagrid search'
+                    filter_type:        oro_grid_orm_boolean
+                    required:           true
+                    sortable:           true
+                    filterable:         true
+                    show_filter:        true
+                form:
+                    type:               choice
+                    options:
+                        choices:        ['No', 'Yes']
+                        read_only:      false
+                        required:       false
+                        label:          "Datagrid search"
 
 

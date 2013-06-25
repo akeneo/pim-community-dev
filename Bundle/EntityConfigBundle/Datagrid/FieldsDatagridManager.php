@@ -44,8 +44,8 @@ class FieldsDatagridManager extends DatagridManager
     protected function getProperties()
     {
         return array(
-            new UrlProperty('view_link', $this->router, 'oro_entityconfig_fieldview', array('id')),
-            new UrlProperty('update_link', $this->router, 'oro_entityconfig_fieldupdate', array('id')),
+            //new UrlProperty('view_link', $this->router, 'oro_entityconfig_fieldview', array('id')),
+            //new UrlProperty('update_link', $this->router, 'oro_entityconfig_fieldupdate', array('id')),
             //new UrlProperty('fields_link', $this->router, 'oro_entityconfig_fields', array('id')),
         );
     }
@@ -156,7 +156,9 @@ class FieldsDatagridManager extends DatagridManager
             )
         );
 
-        return array($viewAction, $updateAction);
+        return array(
+//            $viewAction, $updateAction
+        );
     }
 
     /**
