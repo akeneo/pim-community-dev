@@ -27,4 +27,4 @@ jenkins:
     formatter:
         name: pretty,junit
         parameters:
-            output_path: null,/tmp/junit
+            output_path: null,app/build/logs/behat/
