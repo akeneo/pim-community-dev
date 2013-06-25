@@ -3,6 +3,9 @@
 {% set gridId = 'users-grid' %}
 {% block content %}
     {% set pageTitle = 'Users' %}
-    {% set buttons = [UI.addButton({'path' : path('oro_user_create'), 'title' : 'Create user', 'label' : 'Create user'})] %}
+    {% set buttons = [] %}
+    {% if resource_granted('oro_user_user_create') %}
+        {% set buttons = buttons|merge([UI.addButton({'path' : path('oro_user_create'), 'title' : 'Create user', 'label' : 'Create user'})]) %}
+    {% endif %}
     {{ parent() }}
 {% endblock %}

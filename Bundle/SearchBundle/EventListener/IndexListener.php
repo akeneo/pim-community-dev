@@ -56,7 +56,7 @@ class IndexListener
 
         foreach ($uow->getScheduledEntityUpdates() as $entity) {
             if (isset($this->entities[get_class($entity)])) {
-                $this->container->get('oro_search.search.engine')->save($entity, $this->realtime, $args->getEntityManager(), true);
+                $this->container->get('oro_search.search.engine')->save($entity, $this->realtime, true);
             }
         }
 
@@ -75,24 +75,18 @@ class IndexListener
         $entity = $args->getEntity();
         $oid = spl_object_hash($entity);
         $em = $args->getEntityManager();
-        $uow = $em->getUnitOfWork();
 
-        if(isset($this->pendingInserts[$oid])) {
+        if (array_key_exists($oid, $this->pendingInserts) ) {
             $searchEntity     = $this->pendingInserts[$oid];
-            $searchEntityMeta = $em->getClassMetadata(get_class($searchEntity));
+
             $entityMeta      = $em->getClassMetadata(get_class($entity));
             $identifierField = $entityMeta->getSingleIdentifierFieldName($entityMeta);
-
             $id =  $entityMeta->getReflectionProperty($identifierField)->getValue($entity);
+            $searchEntity->setRecordId($id);
 
-            $searchEntityMeta->getReflectionProperty('recordId')->setValue($searchEntity, $id);
-            $uow->scheduleExtraUpdate($searchEntity, array(
-                'recordId' => array(null, $id)
-            ));
-
-            $uow->setOriginalEntityProperty(spl_object_hash($searchEntity), 'recordId', $id);
-
+            $em->persist($searchEntity);
             unset($this->pendingInserts[$oid]);
+            $em->flush($searchEntity);
         }
     }
 }
