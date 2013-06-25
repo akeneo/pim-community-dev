@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\Options;
 
 use Oro\Bundle\FormBundle\Form\Type\TranslatableEntityType;
 
@@ -28,16 +29,29 @@ class RegionType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $choices = function (Options $options) {
+            // show empty list if country is not selected
+            if (empty($options['country'])) {
+                return array();
+            }
+
+            return null;
+        };
+
         $resolver
             ->setDefaults(
                 array(
-                    'class' => 'OroAddressBundle:Region',
-                    'property' => 'name',
+                    'class'         => 'OroAddressBundle:Region',
+                    'property'      => 'name',
                     'query_builder' => null,
-                    'country'     => null,
+                    'choices'       => $choices,
+                    'country'       => null,
                     'country_field' => null,
-                    'empty_value' => 'Choose a state...',
-                    'empty_data'  => null,
+                    'configs' => array(
+                        'placeholder' => 'oro.address.form.choose_state',
+                    ),
+                    'empty_value' => '',
+                    'empty_data'  => null
                 )
             );
     }
@@ -55,7 +69,7 @@ class RegionType extends AbstractType
      */
     public function getParent()
     {
-        return TranslatableEntityType::NAME;
+        return 'genemu_jqueryselect2_translatable_entity';
     }
 
     /**

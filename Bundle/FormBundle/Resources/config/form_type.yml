@@ -37,3 +37,9 @@ services:
         arguments: ["@doctrine"]
         tags:
             - { name: form.type, alias: translatable_entity }
+
+    oro_form.type.jqueryselect2_translatable_entity:
+        parent: genemu.form.jquery.type.select2
+        arguments: ["translatable_entity"]
+        tags:
+            - { name: form.type, alias: genemu_jqueryselect2_translatable_entity }

@@ -78,6 +78,14 @@ class TranslatableEntityType extends AbstractType
         $choiceList = function (Options $options) use ($registry) {
             $className = $options['class'];
 
+            /** @var $entityManager EntityManager */
+            $entityManager = $registry->getManager();
+            $idField = $entityManager->getClassMetadata($className)->getSingleIdentifierFieldName();
+
+            if (null !== $options['choices']) {
+                return new ObjectChoiceList($options['choices'], $options['property'], array(), null, $idField);
+            }
+
             // get query builder
             if (!empty($options['query_builder'])) {
                 $queryBuilder = $options['query_builder'];
@@ -98,10 +106,6 @@ class TranslatableEntityType extends AbstractType
                 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker'
             );
 
-            /** @var $entityManager EntityManager */
-            $entityManager = $registry->getManager();
-            $idField = $entityManager->getClassMetadata($className)->getSingleIdentifierFieldName();
-
             return new ObjectChoiceList($query->execute(), $options['property'], array(), null, $idField);
         };
 
@@ -109,7 +113,7 @@ class TranslatableEntityType extends AbstractType
             array(
                 'property'      => null,
                 'query_builder' => null,
-                'choices'       => null,
+                    'choices'       => null,
                 'choice_list'   => $choiceList
             )
         );

@@ -201,11 +201,7 @@ class AddressBase extends AbstractEntityFlexible
      */
     public function getState()
     {
-        if (!empty($this->stateText)) {
-            return $this->stateText;
-        } else {
-            return $this->state;
-        }
+        return $this->state;
     }
 
     /**
@@ -229,6 +225,20 @@ class AddressBase extends AbstractEntityFlexible
     public function getStateText()
     {
         return $this->stateText;
+    }
+
+    /**
+     * Get state
+     *
+     * @return Region
+     */
+    public function getUniversalState()
+    {
+        if (!empty($this->stateText)) {
+            return $this->stateText;
+        } else {
+            return $this->state;
+        }
     }
 
     /**
@@ -382,7 +392,7 @@ class AddressBase extends AbstractEntityFlexible
             $this->getStreet(),
             $this->getStreet2(),
             $this->getCity(),
-            $this->getState(),
+            $this->getUniversalState(),
             ',',
             $this->getCountry(),
             $this->getPostalCode(),

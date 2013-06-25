@@ -2,12 +2,16 @@
 
 namespace Oro\Bundle\AddressBundle\Controller\Api\Rest;
 
+use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 use FOS\Rest\Util\Codes;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\HttpFoundation\Response;
+
+use Oro\Bundle\AddressBundle\Entity\Country;
 
 /**
  * @RouteResource("country/regions")
@@ -18,7 +22,7 @@ class CountryRegionsController extends FOSRestController
     /**
      * REST GET regions by country
      *
-     * @param string $id
+     * @param Country $country
      *
      * @ApiDoc(
      *  description="Get regions by country id",
@@ -26,13 +30,29 @@ class CountryRegionsController extends FOSRestController
      * )
      * @return Response
      */
-    public function getAction($id)
+    public function getAction(Country $country = null)
     {
-        /** @var  $item \Oro\Bundle\AddressBundle\Entity\Country */
-        $item = $this->getDoctrine()->getRepository('OroAddressBundle:Country')->find($id);
+        if (!$country) {
+            return $this->handleView(
+                $this->view(null, Codes::HTTP_NOT_FOUND)
+            );
+        }
+
+        /** @var $countryRepository EntityRepository */
+        $countryRepository = $this->getDoctrine()->getRepository('OroAddressBundle:Region');
+        $query = $countryRepository->createQueryBuilder('r')
+            ->where('r.country = :country')
+            ->orderBy('r.name', 'ASC')
+            ->setParameter('country', $country)
+            ->getQuery();
+
+        $query->setHint(
+            Query::HINT_CUSTOM_OUTPUT_WALKER,
+            'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker'
+        );
 
         return $this->handleView(
-            $this->view($item ? $item->getRegions() : null, $item ? Codes::HTTP_OK : Codes::HTTP_NOT_FOUND)
+            $this->view($query->execute(), Codes::HTTP_OK)
         );
     }
 }

@@ -80,7 +80,7 @@
                 {% endif %}
 
                 {% if configs.placeholder is defined %}
-                    {% set configs = configs|merge({'placeholder': configs.placeholder|trans({}) }) %}
+                    {% set configs = configs|merge({'placeholder': configs.placeholder|trans }) %}
                 {% endif %}
                 {% if configs.result_template_twig is defined and configs.result_template_twig %}
                     {% set configs = configs|merge({'result_template': include(configs.result_template_twig) }) %}
@@ -100,6 +100,8 @@
                 }
 
                 $field.select2(select2Config);
+
+                $field.trigger('select2-init');
             {% endblock %}
         })();
     </script>

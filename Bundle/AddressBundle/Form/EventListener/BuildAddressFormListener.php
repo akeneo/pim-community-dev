@@ -1,12 +1,12 @@
 <?php
 namespace Oro\Bundle\AddressBundle\Form\EventListener;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\AddressBundle\Entity\Country;
 
@@ -69,10 +69,12 @@ class BuildAddressFormListener implements EventSubscriberInterface
             if ($form->has('state')) {
                 $config = $form->get('state')->getConfig()->getOptions();
                 unset($config['choice_list']);
+                unset($config['choices']);
             } else {
                 $config = array();
             }
 
+            $config['country'] = $country;
             $config['query_builder'] = $this->getRegionClosure($country);
 
             $form->add(
@@ -103,7 +105,9 @@ class BuildAddressFormListener implements EventSubscriberInterface
         if ($country && $country->hasRegions()) {
             $config = $form->get('state')->getConfig()->getOptions();
             unset($config['choice_list']);
+            unset($config['choices']);
 
+            $config['country'] = $country;
             $config['query_builder'] = $this->getRegionClosure($country);
 
             $form->add(
