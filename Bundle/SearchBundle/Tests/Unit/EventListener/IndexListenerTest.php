@@ -116,22 +116,12 @@ class IndexListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->listener->onFlush($this->onFlushArgs);
 
-        $this->engine->expects($this->exactly(3))->method($this->anything());
+        $this->engine->expects($this->once())->method($this->anything());
 
         $this->engine
             ->expects($this->at(0))
             ->method('save')
             ->with($insertEntity, true, true);
-
-        $this->engine
-            ->expects($this->at(1))
-            ->method('save')
-            ->with($updateEntity, true, true);
-
-        $this->engine
-            ->expects($this->at(2))
-            ->method('delete')
-            ->with($deleteEntity, true);
 
         $this->entityManager->expects($this->once())->method('flush');
 

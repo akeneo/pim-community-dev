@@ -2,10 +2,11 @@
 
 namespace Oro\Bundle\SearchBundle\EventListener;
 
+use Doctrine\ORM\Event\PostFlushEventArgs;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
-use Doctrine\ORM\Event\PostFlushEventArgs;
+use Doctrine\ORM\Event\PostPersist;
 
 use Oro\Bundle\SearchBundle\Engine\AbstractEngine;
 
@@ -35,16 +36,6 @@ class IndexListener
      * @var array
      */
     protected $insertEntities = array();
-
-    /**
-     * @var array
-     */
-    protected $updateEntities = array();
-
-    /**
-     * @var array
-     */
-    protected $deleteEntities = array();
 
     /**
      * Unfortunately, can't use AbstractEngine as a parameter here due to circular reference
@@ -91,15 +82,31 @@ class IndexListener
 
         foreach ($uow->getScheduledEntityUpdates() as $entity) {
             if ($this->isSupported($entity)) {
-                $this->updateEntities[] = $entity;
+                $this->getSearchEngine()->save($entity, $this->realtime, true);
             }
         }
 
         foreach ($uow->getScheduledEntityDeletions() as $entity) {
             if ($this->isSupported($entity)) {
-                $this->deleteEntities[] = $entity;
+                $this->getSearchEngine()->delete($entity, true);
             }
         }
+    }
+
+    /**
+     * @param PostFlushEventArgs $args
+     */
+    public function postFlush(PostFlushEventArgs $args)
+    {
+        if (!$this->isActive() || !$this->hasChanges()) {
+            return;
+        }
+
+        foreach ($this->insertEntities as $entity) {
+            $this->getSearchEngine()->save($entity, $this->realtime, true);
+        }
+        $this->insertEntities = array();
+        $args->getEntityManager()->flush();
     }
 
     /**
@@ -120,37 +127,10 @@ class IndexListener
     }
 
     /**
-     * @param PostFlushEventArgs $args
-     */
-    public function postFlush(PostFlushEventArgs $args)
-    {
-        if (!$this->isActive() || !$this->hasChanges()) {
-            return;
-        }
-
-        foreach ($this->insertEntities as $entity) {
-            $this->getSearchEngine()->save($entity, $this->realtime, true);
-        }
-        $this->insertEntities = array();
-
-        foreach ($this->updateEntities as $entity) {
-            $this->getSearchEngine()->save($entity, $this->realtime, true);
-        }
-        $this->updateEntities = array();
-
-        foreach ($this->deleteEntities as $entity) {
-            $this->getSearchEngine()->delete($entity, true);
-        }
-        $this->deleteEntities = array();
-
-        $args->getEntityManager()->flush();
-    }
-
-    /**
      * @return bool
      */
     protected function hasChanges()
     {
-        return count($this->insertEntities) || count($this->updateEntities) || count($this->deleteEntities);
+        return count($this->insertEntities);
     }
 }
