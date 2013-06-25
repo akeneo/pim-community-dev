@@ -153,7 +153,7 @@ class CategoryTreeControllerTest extends ControllerTest
         $values = array(
             'pim_category[code]'                 => self::NODE_CODE,
             'pim_category[title][title:default]' => self::NODE_TITLE,
-            'pim_category[isDynamic]'            => self::NODE_IS_DYNAMIC
+            'pim_category[dynamic]'              => self::NODE_IS_DYNAMIC
         );
 
         $this->submitFormAndAssertFlashbag($form, $values, self::CATEGORY_SAVED_MSG);
@@ -266,7 +266,7 @@ class CategoryTreeControllerTest extends ControllerTest
         $values = array(
             'pim_category[code]'                 => self::NODE_EDITED_CODE,
             'pim_category[title][title:default]' => self::NODE_TITLE,
-            'pim_category[isDynamic]'            => self::NODE_IS_DYNAMIC
+            'pim_category[dynamic]'              => self::NODE_IS_DYNAMIC
         );
 
         $this->submitFormAndAssertFlashbag($form, $values, self::CATEGORY_SAVED_MSG);
