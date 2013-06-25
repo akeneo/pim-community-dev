@@ -18,4 +18,3 @@ class UniqueValue extends Constraint
         return 'pim_unique_value_validator';
     }
 }
-

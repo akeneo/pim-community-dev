@@ -74,4 +74,3 @@ class UniqueValueValidator extends ConstraintValidator
         return $entity;
     }
 }
-

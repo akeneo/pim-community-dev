@@ -16,4 +16,3 @@ class PimJsFormValidationBundle extends Bundle
         return 'OroJsFormValidationBundle';
     }
 }
-
