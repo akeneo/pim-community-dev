@@ -4,11 +4,9 @@ namespace Oro\Bundle\SearchBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 
-use Oro\Bundle\SearchBundle\Entity\Item;
 use Oro\Bundle\SearchBundle\Engine\AbstractEngine;
 
 class IndexListener
