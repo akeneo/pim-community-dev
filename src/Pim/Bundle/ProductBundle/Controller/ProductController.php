@@ -492,7 +492,7 @@ class ProductController extends Controller
      *
      * @throw Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    private function findProductOr404($id)
+    protected function findProductOr404($id)
     {
         $product = $this->getProductManager()->find($id);
 

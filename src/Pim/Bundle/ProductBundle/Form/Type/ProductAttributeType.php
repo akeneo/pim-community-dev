@@ -28,13 +28,13 @@ class ProductAttributeType extends AttributeType
      * Attribute type manager
      * @var AttributeTypeManager
      */
-    private $attTypeManager;
+    protected $attTypeManager;
 
     /**
      * Attribute subscriber
      * @var AddAttributeTypeRelatedFieldsSubscriber
      */
-    private $subscriber;
+    protected $subscriber;
 
     /**
      * Constructor

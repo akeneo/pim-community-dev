@@ -63,7 +63,7 @@ class MediaManager
      *
      * @return string
      */
-    private function generateFilename(File $file, $filenamePrefix)
+    protected function generateFilename(File $file, $filenamePrefix)
     {
         return sprintf('%s-%s', $filenamePrefix, $file->getClientOriginalName());
     }
@@ -74,7 +74,7 @@ class MediaManager
      * @param string  $filename  Filename
      * @param boolean $overwrite Overwrite file or not
      */
-    private function upload(Media $media, $filename, $overwrite = false)
+    protected function upload(Media $media, $filename, $overwrite = false)
     {
         $uploadedFile = $media->getFile();
         $this->write($filename, file_get_contents($uploadedFile->getPathname()), $overwrite);
@@ -91,7 +91,7 @@ class MediaManager
      * @param string  $content   File content
      * @param boolean $overwrite Overwrite file or not
      */
-    private function write($filename, $content, $overwrite = false)
+    protected function write($filename, $content, $overwrite = false)
     {
         $this->fileSystem->write($filename, $content, $overwrite);
     }
@@ -102,7 +102,7 @@ class MediaManager
      *
      * @return content
      */
-    private function getFilePath(Media $media)
+    protected function getFilePath(Media $media)
     {
         if ($this->fileExists($media)) {
             return $this->uploadDirectory . DIRECTORY_SEPARATOR . $media->getFilename();
@@ -113,7 +113,7 @@ class MediaManager
      * Delete a file
      * @param Media $media
      */
-    private function delete(Media $media)
+    protected function delete(Media $media)
     {
         $this->fileSystem->delete($media->getFilename());
     }
@@ -125,7 +125,7 @@ class MediaManager
      *
      * @return boolean
      */
-    private function fileExists(Media $media)
+    protected function fileExists(Media $media)
     {
         return $this->fileSystem->has($media->getFilename());
     }

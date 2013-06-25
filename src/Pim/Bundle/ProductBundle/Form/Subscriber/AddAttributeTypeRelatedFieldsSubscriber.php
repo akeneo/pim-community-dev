@@ -114,7 +114,7 @@ class AddAttributeTypeRelatedFieldsSubscriber extends AttributeTypeSubscriber
      * @param Form             $form      ProductAttribute form
      * @param ProductAttribute $attribute ProductAttribute entity
      */
-    private function customizeForm($form, ProductAttribute $attribute)
+    protected function customizeForm($form, ProductAttribute $attribute)
     {
         $attTypeClass = $this->attTypeFactory->get($attribute->getAttributeType());
         $fields = $attTypeClass->buildAttributeFormTypes($this->factory, $attribute);

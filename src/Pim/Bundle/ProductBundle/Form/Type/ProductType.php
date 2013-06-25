@@ -193,7 +193,7 @@ class ProductType extends FlexibleType
      *
      * @return array
      */
-    private function sortAttributes(array $attributes)
+    protected function sortAttributes(array $attributes)
     {
         uasort(
             $attributes,
