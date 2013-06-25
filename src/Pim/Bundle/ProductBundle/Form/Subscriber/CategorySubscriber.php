@@ -59,10 +59,10 @@ class CategorySubscriber implements EventSubscriberInterface
             return;
         }
 
+        $isDynamic = $data->isDynamic() ? 1 : 0;
         $form = $event->getForm();
-        $isDynamic = ($data->getIsDynamic()) ? 1 : 0;
         $form->add(
-            $this->factory->createNamed('isDynamic', 'hidden', $isDynamic, array('required' => false))
+            $this->factory->createNamed('dynamic', 'hidden', $isDynamic, array('required' => false))
         );
     }
 }

@@ -407,11 +407,11 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Get smart
+     * Predicate for smart property
      *
      * @return boolean $smart
      */
-    public function getSmart()
+    public function isSmart()
     {
         return $this->smart;
     }
@@ -499,11 +499,11 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Get useableAsGridColumn
+     * Predicate for useableAsGridColumn property
      *
      * @return boolean $useableAsGridColumn
      */
-    public function getUseableAsGridColumn()
+    public function isUseableAsGridColumn()
     {
         return $this->useableAsGridColumn;
     }
@@ -523,11 +523,11 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Get useableAsGridFilter
+     * Predicate for useableAsGridFilter property
      *
      * @return boolean $useableAsGridFilter
      */
-    public function getUseableAsGridFilter()
+    public function isUseableAsGridFilter()
     {
         return $this->useableAsGridFilter;
     }
@@ -657,11 +657,11 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Get wysiwygEnabled
+     * Predicate for wysiwygEnabled property
      *
      * @return boolean $wysiwygEnabled
      */
-    public function getWysiwygEnabled()
+    public function isWysiwygEnabled()
     {
         return $this->wysiwygEnabled;
     }
@@ -729,11 +729,11 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Get decimalsAllowed
+     * Predicate for decimalsAllowed property
      *
      * @return boolean $decimalsAllowed
      */
-    public function getDecimalsAllowed()
+    public function isDecimalsAllowed()
     {
         return $this->decimalsAllowed;
     }
@@ -753,11 +753,11 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Get negativeAllowed
+     * Predicate for negativeAllowed property
      *
      * @return boolean $negativeAllowed
      */
-    public function getNegativeAllowed()
+    public function isNegativeAllowed()
     {
         return $this->negativeAllowed;
     }
@@ -777,11 +777,11 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Get valueCreationAllowed
+     * Predicate for valueCreationAllowed property
      *
      * @return boolean $valueCreationAllowed
      */
-    public function getValueCreationAllowed()
+    public function isValueCreationAllowed()
     {
         return $this->valueCreationAllowed;
     }

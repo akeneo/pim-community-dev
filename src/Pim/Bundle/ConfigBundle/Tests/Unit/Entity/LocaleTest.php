@@ -97,17 +97,17 @@ class LocaleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for activated property
+     * Test is/setter for activated property
      */
-    public function testGetSetActivated()
+    public function testIsSetActivated()
     {
         $locale = new Locale();
-        $this->assertTrue($locale->getActivated());
+        $this->assertTrue($locale->isActivated());
 
         // change value and assert new
         $newActivated = false;
         $locale->setActivated($newActivated);
-        $this->assertFalse($locale->getActivated());
+        $this->assertFalse($locale->isActivated());
     }
 
     /**

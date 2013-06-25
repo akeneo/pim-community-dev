@@ -85,7 +85,7 @@ class Category extends AbstractSegment implements Translatable
      *
      * @ORM\Column(name="is_dynamic", type="boolean")
      */
-    protected $isDynamic = false;
+    protected $dynamic = false;
 
     /**
      * @var datetime
@@ -218,21 +218,21 @@ class Category extends AbstractSegment implements Translatable
      *
      * @return boolean
      */
-    public function getIsDynamic()
+    public function isDynamic()
     {
-        return $this->isDynamic;
+        return $this->dynamic;
     }
 
     /**
      * Set if a node is dynamic
      *
-     * @param boolean $isDynamic
+     * @param boolean $dynamic
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Category
      */
-    public function setIsDynamic($isDynamic)
+    public function setDynamic($dynamic)
     {
-        $this->isDynamic = $isDynamic;
+        $this->dynamic = $dynamic;
 
         return $this;
     }

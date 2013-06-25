@@ -70,17 +70,17 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for smart property
+     * Test is/setter for smart property
      */
-    public function testGetSetSmart()
+    public function testIsSetSmart()
     {
         $productAttribute = new ProductAttribute();
-        $this->assertFalse($productAttribute->getSmart());
+        $this->assertFalse($productAttribute->isSmart());
 
         // change value and assert new
         $newSmart = true;
         $productAttribute->setSmart($newSmart);
-        $this->assertTrue($productAttribute->getSmart());
+        $this->assertTrue($productAttribute->isSmart());
     }
 
     public function testGetVirtualGroup()
@@ -121,31 +121,31 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for useableAsGridColumn property
+     * Test is/setter for useableAsGridColumn property
      */
-    public function testGetSetUseableAsGridColumn()
+    public function testIsSetUseableAsGridColumn()
     {
         $productAttribute = new ProductAttribute();
-        $this->assertFalse($productAttribute->getUseableAsGridColumn());
+        $this->assertFalse($productAttribute->isUseableAsGridColumn());
 
         // change value and assert new
         $newUseableAsGridColumn = true;
         $productAttribute->setUseableAsGridColumn($newUseableAsGridColumn);
-        $this->assertTrue($productAttribute->getUseableAsGridColumn());
+        $this->assertTrue($productAttribute->isUseableAsGridColumn());
     }
 
     /**
-     * Test getter/setter for useableAsGridFilter property
+     * Test is/setter for useableAsGridFilter property
      */
-    public function testGetSetUseableAsGridFilter()
+    public function testIsSetUseableAsGridFilter()
     {
         $productAttribute = new ProductAttribute();
-        $this->assertFalse($productAttribute->getUseableAsGridFilter());
+        $this->assertFalse($productAttribute->isUseableAsGridFilter());
 
         // change value and assert new
         $newUseableAsGridFilter = true;
         $productAttribute->setUseableAsGridFilter($newUseableAsGridFilter);
-        $this->assertTrue($productAttribute->getUseableAsGridFilter());
+        $this->assertTrue($productAttribute->isUseableAsGridFilter());
     }
 
     /**
@@ -212,16 +212,16 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for wysiwygEnabled property
+     * Test is/setter for wysiwygEnabled property
      */
-    public function testGetSetWysiwygEnabled()
+    public function testIsSetWysiwygEnabled()
     {
         $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getWysiwygEnabled());
+        $this->assertNull($productAttribute->isWysiwygEnabled());
 
         // Change value and assert new
         $productAttribute->setWysiwygEnabled(true);
-        $this->assertTrue($productAttribute->getWysiwygEnabled());
+        $this->assertTrue($productAttribute->isWysiwygEnabled());
     }
 
     /**
@@ -253,42 +253,42 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for decimalsAllowed property
+     * Test is/setter for decimalsAllowed property
      */
-    public function testGetSetDecimalsAllowed()
+    public function testIsSetDecimalsAllowed()
     {
         $productAttribute = new ProductAttribute();
-        $this->assertTrue($productAttribute->getDecimalsAllowed());
+        $this->assertTrue($productAttribute->isDecimalsAllowed());
 
         $decimalsAllowed = false;
         $productAttribute->setDecimalsAllowed($decimalsAllowed);
-        $this->assertEquals($decimalsAllowed, $productAttribute->getDecimalsAllowed());
+        $this->assertEquals($decimalsAllowed, $productAttribute->isDecimalsAllowed());
     }
 
     /**
-     * Test getter/setter for negativeAllowed property
+     * Test is/setter for negativeAllowed property
      */
-    public function testGetSetNegativeAllowed()
+    public function testIsSetNegativeAllowed()
     {
         $productAttribute = new ProductAttribute();
-        $this->assertTrue($productAttribute->getNegativeAllowed());
+        $this->assertTrue($productAttribute->isNegativeAllowed());
 
         // Change value and assert new
         $productAttribute->setNegativeAllowed(false);
-        $this->assertFalse($productAttribute->getNegativeAllowed());
+        $this->assertFalse($productAttribute->isNegativeAllowed());
     }
 
     /**
-     * Test getter/setter for ValueCreationAllowed property
+     * Test is/setter for ValueCreationAllowed property
      */
-    public function testGetSetValueCreationAllowed()
+    public function testIsSetValueCreationAllowed()
     {
         $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getValueCreationAllowed());
+        $this->assertNull($productAttribute->isValueCreationAllowed());
 
         // Change value and assert new
         $productAttribute->setValueCreationAllowed(true);
-        $this->assertTrue($productAttribute->getValueCreationAllowed());
+        $this->assertTrue($productAttribute->isValueCreationAllowed());
     }
 
     /**
