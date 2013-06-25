@@ -15,7 +15,7 @@ use Oro\Bundle\AddressBundle\Entity\Country;
  * Region
  *
  * @ORM\Table("oro_dictionary_region")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Oro\Bundle\AddressBundle\Entity\Repository\RegionRepository")
  * @Gedmo\TranslationEntity(class="Oro\Bundle\AddressBundle\Entity\RegionTranslation")
  */
 class Region implements Translatable
@@ -62,22 +62,11 @@ class Region implements Translatable
     private $locale;
 
     /**
-     * @ORM\OneToMany(
-     *     targetEntity="Oro\Bundle\AddressBundle\Entity\RegionTranslation",
-     *     mappedBy="region",
-     *     cascade={"ALL"},
-     *     fetch="EXTRA_LAZY"
-     * )
-     **/
-    private $translation;
-
-    /**
      * @param string $combinedCode
      */
     public function __construct($combinedCode)
     {
         $this->combinedCode = $combinedCode;
-        $this->translation  = new ArrayCollection();
     }
 
     /**

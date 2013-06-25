@@ -10,8 +10,6 @@ class EntityFilterTest extends FilterTestCase
     const TEST_CLASS          = 'Test:Class';
     const TEST_PROPERTY       = 'name';
     const TEST_QUERY_BUILDER  = 'test_query_builder';
-    const TEST_GROUP_BY       = 'entity.type';
-    const TEST_ENTITY_MANAGER = 'test_entity_manager';
 
     /**
      * @var EntityFilter
@@ -70,9 +68,8 @@ class EntityFilterTest extends FilterTestCase
                     'multiple'      => true,
                     'class'         => self::TEST_CLASS,
                     'property'      => self::TEST_PROPERTY,
-                    'group_by'      => self::TEST_GROUP_BY,
                     'query_builder' => self::TEST_QUERY_BUILDER,
-                    'em'            => self::TEST_ENTITY_MANAGER,
+                    'translatable'  => true,
                 ),
                 array(
                     EntityFilterType::NAME,
@@ -82,10 +79,9 @@ class EntityFilterTest extends FilterTestCase
                             'multiple'      => true,
                             'class'         => self::TEST_CLASS,
                             'property'      => self::TEST_PROPERTY,
-                            'group_by'      => self::TEST_GROUP_BY,
                             'query_builder' => self::TEST_QUERY_BUILDER,
-                            'em'            => self::TEST_ENTITY_MANAGER,
-                        )
+                        ),
+                        'translatable' => true,
                     )
                 )
             ),

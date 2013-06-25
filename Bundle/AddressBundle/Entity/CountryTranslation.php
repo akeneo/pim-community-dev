@@ -16,25 +16,9 @@ use Oro\Bundle\AddressBundle\Entity\Country;
 class CountryTranslation extends AbstractTranslation
 {
     /**
-     * @var Country
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\AddressBundle\Entity\Country", inversedBy="translation")
-     * @ORM\JoinColumn(name="country_code", referencedColumnName="iso2_code", onDelete="CASCADE")
-     **/
-    private $country;
-
-    /**
      * @var string $content
      *
      * @ORM\Column(type="string", length=255)
      */
     protected $content;
-
-    /**
-     * @return Country
-     */
-    public function getCountry()
-    {
-        return $this->country;
-    }
 }

@@ -41,16 +41,9 @@ $(function() {
     });
 
     $(document).on('click', '#view-activity-btn', function (e) {
-        if ($(':ui-dialog').has('#historyDatagridGridTemplate').length) {
-            return e.stopPropagation();
-        }
-
-        var scrollable = $('.scrollable-container');
-        var container = scrollable.length ? '.scrollable-container:last' : '#container';
         new Oro.widget.DialogView({
             url: $(this).attr('href'),
             dialogOptions: {
-                appendTo: container,
                 allowMaximize: true,
                 allowMinimize: true,
                 dblclick: 'maximize',

@@ -35,6 +35,12 @@ class AttributeConstraintGuesser implements ConstraintGuesserInterface
                 break;
         }
 
+        switch ($attribute->getAttributeType()) {
+            case 'oro_flexibleentity_email':
+                $constraints[] = new Constraints\Email();
+                break;
+        }
+
         return $constraints;
     }
 }
