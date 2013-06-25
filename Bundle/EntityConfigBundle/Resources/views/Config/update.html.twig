@@ -30,30 +30,33 @@
 
 {% block content_data %}
     {% set id = 'configentity-update' %}
-    {% set dataBlocks = [] %}
+    {% set dataBlocks = form_data_blocks(form) %}
 
-    {% for block in formConfig %}
+    {#{% for scope, block in formConfig %}#}
 
-        {% set subblocks = [] %}
+        {#{% set subblocks = [] %}#}
 
-        {% for subblock in block.subblocks %}
-            {% set data = [] %}
-            {% for key, field in subblock.fields %}
-                {% set data = data|merge([ form_row(form[field]) ]) %}
-            {% endfor %}
+        {#{% for subblock in block.subblocks %}#}
+            {#{% set data = [] %}#}
+            {#{% for key, field in subblock.fields %}#}
+                {#{{ dump(form.children[scope]) }}#}
+                {#&#123;&#35;{% set data = data|merge([ form_row(form.children[scope][field]) ]) %}&#35;&#125;#}
+            {#{% endfor %}#}
 
-            {% set subblocks = subblocks|merge([{'title': subblock.title, 'data': data }]) %}
-        {% endfor %}
+            {#{% set subblocks = subblocks|merge([{'title': subblock.title, 'data': data }]) %}#}
+        {#{% endfor %}#}
 
-        {% set dataBlock = {
-            'title': block.title,
-            'class': block.class,
-            'subblocks': subblocks
-        }%}
+        {#{% set dataBlock = {#}
+            {#'title': block.title,#}
+            {#'class': block.class,#}
+            {#'subblocks': subblocks#}
+        {#}%}#}
 
-        {% set dataBlocks = dataBlocks|merge([dataBlock]) %}
+        {#{% set dataBlocks = dataBlocks|merge([dataBlock]) %}#}
 
-    {% endfor %}
+    {#{% endfor %}#}
+
+    {{ form_widget(form) }}
 
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,

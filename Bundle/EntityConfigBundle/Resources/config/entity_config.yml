@@ -2,6 +2,13 @@ oro_entity_config:
     scope:                              entity
 
     entity:
+        form:
+            blocks:
+                -
+                    title:          Entity Config
+                    subblocks:
+                        - { title: Base }
+                        - { title: Icon }
         items:
             label:
                 grid:
@@ -14,6 +21,8 @@ oro_entity_config:
                     show_filter:        true
                 form:
                     type:               text
+                    block:              0
+                    subblock:           0
                     options:
                         required:       true
             icon:
@@ -27,6 +36,7 @@ oro_entity_config:
                     show_filter:        true
                 form:
                     type:               text
+                    subblock:           1
                     options:
                         required:       true
             description:

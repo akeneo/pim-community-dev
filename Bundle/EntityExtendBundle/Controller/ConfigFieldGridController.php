@@ -18,31 +18,8 @@ use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
  *
  * @Route("/entityextend")
  */
-class ConfigGridController extends Controller
+class ConfigFieldGridController extends Controller
 {
-    /**
-     * @Route("/", name="oro_entityextend_index")
-     * @Template()
-     */
-    public function indexAction(Request $request)
-    {
-        die('extend index');
-
-        /** @var  ConfigDatagridManager $datagrid */
-        $datagrid = $this->get('oro_entity_config.datagrid.manager')->getDatagrid();
-        $view     = 'json' == $request->getRequestFormat()
-            ? 'OroGridBundle:Datagrid:list.json.php'
-            : 'OroEntityConfigBundle:Config:index.html.twig';
-
-        return $this->render(
-            $view,
-            array(
-                //'buttons' =>
-                'datagrid' => $datagrid->createView()
-            )
-        );
-    }
-
     /**
      * @Route("/create", name="oro_entityextend_create")
      */

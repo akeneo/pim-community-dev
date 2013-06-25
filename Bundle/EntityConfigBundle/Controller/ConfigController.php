@@ -3,6 +3,7 @@
 namespace Oro\Bundle\EntityConfigBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -13,7 +14,6 @@ use Oro\Bundle\GridBundle\Datagrid\Datagrid;
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
 
 /**
  * EntityConfig controller.
@@ -76,6 +76,7 @@ class ConfigController extends Controller
     }
 
     /**
+     * View Entity
      * @Route("/view/{id}", name="oro_entityconfig_view")
      * @Template()
      */
@@ -87,128 +88,32 @@ class ConfigController extends Controller
     }
 
     /**
-     * @Route("/fieldview/{id}", name="oro_entityconfig_fieldview")
-     * @Template()
-     */
-    public function fieldviewAction(ConfigField $entity)
-    {
-        return array(
-            'entity' => $entity,
-        );
-    }
-
-    /**
      * @Route("/update/{id}", name="oro_entityconfig_update")
      * @Template()
      */
-    public function updateAction(ConfigEntity $entity)
+    public function updateAction($id)
     {
-        /** @var ConfigManager $configManager */
-        $configManager = $this->get('oro_entity_config.config_manager');
-
-        $formBuilder = $this->createFormBuilder();
-        $data        = array();
-        $formConfig  = array();
-        foreach ($configManager->getProviders() as $provider) {
-            $fields = array();
-            foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
-                if (isset($item['form']) && isset($item['form']['type']) && isset($item['form']['options'])) {
-                    $formBuilder->add($code, $item['form']['type'], $item['form']['options']);
-                    $config      = $provider->getConfig($entity->getClassName());
-                    $data[$code] = $config->get($code);
-                    $fields[]    = $code;
-                }
-            }
-            if (count($fields)) {
-                $formConfig[] = array(
-                    'title'     => ucfirst($provider->getScope()),
-                    'class' => '',
-                    'subblocks' => array(
-                        array(
-                            'title'  => '',
-                            'fields' => $fields,
-                            'data'   => array(),
-                        )
-                    )
-                );
-            }
-        }
-        $formBuilder->setData($data);
-
-        $form    = $formBuilder->getForm();
+        $entity = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
+        $form    = $this->createForm(
+            'oro_entity_config_config_entity_type',
+            null,
+            array('class_name' => $entity->getClassName())
+        );
         $request = $this->getRequest();
 
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
 
             if ($form->isValid()) {
-                var_dump($form->getData());
+                //persist data inside the form
+                $this->get('session')->getFlashBag()->add('success', 'ConfigEntity successfully saved');
+
+                return $this->redirect($this->generateUrl('oro_entityconfig_index'));
             }
         }
 
         return array(
-            'form' => $form->createView(),
-            'formConfig' => $formConfig
+            'form' => $form->createView(),           
         );
-    }
-
-
-    /**
-     * @Route("/fieldupdate/{id}", name="oro_entityconfig_fieldupdate")
-     * @Template()
-     */
-    public function fieldupdateAction(ConfigField $field)
-    {
-        /** @var ConfigManager $configManager */
-        $configManager = $this->get('oro_entity_config.config_manager');
-
-        $formBuilder = $this->createFormBuilder();
-        $data        = array();
-        $formConfig  = array();
-        foreach ($configManager->getProviders() as $provider) {
-            $fields = array();
-            foreach ($provider->getConfigContainer()->getFieldItems() as $code => $item) {
-                if (isset($item['form']) && isset($item['form']['type']) && isset($item['form']['options'])) {
-                    $formBuilder->add($code, $item['form']['type'], $item['form']['options']);
-
-                    $config      = $provider->getFieldConfig($field->getEntity()->getClassName(), $field->getCode());
-                    $data[$code] = $config->get($code);
-                    $fields[]    = $code;
-                }
-            }
-
-            if (count($fields)) {
-                $formConfig[] = array(
-                    'title'     => ucfirst($provider->getScope()),
-                    'class' => '',
-                    'subblocks' => array(
-                        array(
-                            'title'  => '',
-                            'fields' => $fields,
-                            'data'   => array(),
-                        )
-                    )
-                );
-            }
-        }
-
-        $formBuilder->setData($data);
-        $form    = $formBuilder->getForm();
-
-        return array(
-            'form' => $form->createView(),
-            'formConfig' => $formConfig
-        );
-    }
-
-    /**
-     * Lists all Flexible entities.
-     * @Route("/remove/{id}", name="oro_entityconfig_remove")
-     * @Template()
-     */
-    public function removeAction($className)
-    {
-        var_dump($className);
-        die;
     }
 }
