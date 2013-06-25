@@ -367,6 +367,34 @@ Oro.Navigation = Backbone.Router.extend({
     },
 
     /**
+     * Make data more bulletproof.
+     *
+     * @param {String} data
+     * @returns {Object}
+     */
+    getCorrectedData: function(data) {
+        data = $.trim(data);
+        var jsonStartPos = data.indexOf('{');
+        var additionalData = '';
+        if (jsonStartPos > 0) {
+            additionalData = data.substr(0, jsonStartPos);
+            data = data.substr(jsonStartPos);
+        }
+        var dataObj = (data.indexOf('http') === 0) ? {'redirect': true, 'fullRedirect': true, 'location': data} : $.parseJSON(data);
+
+        if (additionalData) {
+            additionalData = '<div class="alert alert-info fade in top-messages"><a class="close" data-dismiss="alert" href="#">&times;</a>'
+                + '<div class="message">' + additionalData + '</div></div>';
+        }
+
+        if (dataObj.content !== undefined) {
+            dataObj.content = additionalData + dataObj.content;
+        }
+
+        return dataObj;
+    },
+
+    /**
      * Handling ajax response data. Updating content area with new content, processing title and js
      *
      * @param {String} data
@@ -378,10 +406,8 @@ Oro.Navigation = Backbone.Router.extend({
         }
         try {
             this.clearContainer();
-            data = $.trim(data);
-            data = (data.indexOf('http') === 0) ? {'redirect': true, 'fullRedirect': true, 'location': data} : $.parseJSON(data);
-            var hasRedirect = data.redirect !== undefined && data.redirect;
-            if (hasRedirect) {
+            data = this.getCorrectedData(data);
+            if (data.redirect !== undefined && data.redirect) {
                 var redirectUrl = data.location;
                 var urlParts = redirectUrl.split('url=');
                 if (urlParts[1]) {
