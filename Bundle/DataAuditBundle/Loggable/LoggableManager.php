@@ -304,16 +304,17 @@ class LoggableManager
                         continue;
                     }
 
+                    $old = $changes[0];
+                    $new = $changes[1];
+
                     // fix issues with DateTime
-                    if ($changes[0] == $changes[1]) {
+                    if ($old == $new) {
                         continue;
                     }
 
-                    $value = $changes[1];
-
-                    if ($entityMeta->isSingleValuedAssociation($field) && $value) {
-                        $oid   = spl_object_hash($value);
-                        $value = $this->getIdentifier($value);
+                    if ($entityMeta->isSingleValuedAssociation($field) && $new) {
+                        $oid   = spl_object_hash($new);
+                        $value = $this->getIdentifier($new);
 
                         if (!is_array($value) && !$value) {
                             $this->pendingRelatedEntities[$oid][] = array(
@@ -321,11 +322,15 @@ class LoggableManager
                                 'field' => $field
                             );
                         }
+
+                        $method = $meta->propertyMetadata[$field]->method;
+                        $old = $old->$method();
+                        $new = $new->$method();
                     }
 
                     $newValues[$field] = array(
-                        'old' => $changes[0],
-                        'new' => $value,
+                        'old' => $old,
+                        'new' => $new,
                     );
                 }
 
