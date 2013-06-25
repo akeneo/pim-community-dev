@@ -98,16 +98,18 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
 
         $translations = $this->bindTranslations($data);
         foreach ($translations as $binded) {
-             $form->add($this->formFactory->createNamed(
-                $binded['fieldName'],
-                $this->getOption('widget'),
-                $binded['translation']->getContent() !== null ? $binded['translation']->getContent() : '',
-                array(
-                    'label'         => $binded['locale'],
-                    'required'      => in_array($binded['locale'], $this->getOption('required_locale')),
-                    'property_path' => false,
+            $form->add(
+                $this->formFactory->createNamed(
+                    $binded['fieldName'],
+                    $this->getOption('widget'),
+                    $binded['translation']->getContent() !== null ? $binded['translation']->getContent() : '',
+                    array(
+                        'label'         => $binded['locale'],
+                        'required'      => in_array($binded['locale'], $this->getOption('required_locale')),
+                        'property_path' => false,
+                    )
                 )
-            ));
+            );
             if ($this->getOption('only_default')) {
                 return;
             }

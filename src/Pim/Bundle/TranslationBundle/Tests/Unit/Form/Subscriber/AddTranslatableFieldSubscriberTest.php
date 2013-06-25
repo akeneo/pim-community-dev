@@ -2,17 +2,7 @@
 
 namespace Pim\Bundle\TranslationBundle\Form\Subscriber;
 
-use Symfony\Component\Form\Form;
-
-use Pim\Bundle\TranslationBundle\Tests\Entity\Item;
-
-use Pim\Bundle\TranslationBundle\Tests\Entity\ItemTranslation;
-
-use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
-use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
-use Symfony\Component\Form\Event\DataEvent;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\Form\Forms;
+use Pim\Bundle\TranslationBundle\Form\Subscriber\AddTranslatableFieldSubscriber;
 
 /**
  * Test related class
@@ -110,19 +100,7 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
                     'locales'           => array('fr_FR', 'en_US'),
                     'widget'            => 'text'
                 )
-            ),
-//             'miss_fdsfgsd' => array(
-//                 array(
-//                     'translation_class' => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\ItemTranslation',
-//                     'entity_class'      => 'Pim\\Bundle\\TranslationBundle\\Tests\\Entity\\Item',
-//                     'field'             => 'name',
-//                     'default_locale'    => 'default',
-//                     'only_default'      => false,
-//                     'locales'           => array('fr_FR', 'en_US'),
-//                     'widget'            => 'text',
-//                     'required_locale'   => array('default')
-//                 )
-//             )
+            )
         );
     }
 
@@ -347,8 +325,6 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
      * @param array $options
      *
      * @dataProvider bindDataProvider
-     *
-     * @group fail
      */
     public function testBindData(array $options)
     {
@@ -386,6 +362,7 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Data provider post data binding
+     * It should add translation after binding
      *
      * @static
      *
@@ -406,52 +383,15 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     public function testPostBindData(array $options)
     {
-        $target                = $this->getTargetedClass($options);
-        $translatableEntity    = $this->getTranslatableEntityMock();
-        $methodName = 'set'. ucfirst($options['field']);
+        $this->markTestIncomplete('Not totally implemented');
 
-        $locales = $options['locales'];
+        $target = $this->getTargetedClass($options);
+        $translatableEntity = $this->getTranslatableEntityMock();
 
-        foreach ($locales as $index => $locale) {
-            $this->form->expects($this->at($index+1))
-                 ->method('get')
-                 ->with(sprintf('%s:%s', $options['field'], $locale))
-                 ->will($this->returnValue($field = $this->getFormMock()));
-
-//             $field->expects($this->any())
-//                   ->method('getData')
-//                   ->will($this->returnValue('foo'));
-
-
-//             $translatableEntity->expects($this->at($index+1))
-//                                ->method($methodName);
-
-//             $translation = $this->getTranslationMock($options['field'], $locale);
-
-//             $translation->expects($this->once())
-//                         ->method('setContent')
-//                         ->with($this->equalTo('foo'));
-        }
-
-        $translatableEntity->expects($this->once())
-                           ->method('setTranslatableLocale')
-                           ->with($this->equalTo('default'));
-
-//         if ($options['only_default']) {
-//             $this->form->expects($this->at(0))
-//                  ->method('get')
-//                  ->with($this->equalTo($options['field'].':'.$options['default_locale']))
-//                  ->will($this->returnValue($defaultField = $this->getFormMock()));
-
-//             $defaultField->expects($this->any())
-//                          ->method('getData')
-//                          ->will($this->returnValue(null));
-//         } else {
-//             $this->assertTrue(true); return;
-//             die('Not yet implemented');
-//         }
-
-        $event = $this->getEventMock($this->form, $translatableEntity, array('foo'));
+        $event = $this->getEventMock(
+            $this->form,
+            $translatableEntity
+        );
 
         $target->postBind($event);
     }
@@ -573,34 +513,16 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     protected function getTranslatableEntityMock()
     {
-        return $this->getMock('Pim\Bundle\TranslationBundle\Entity\AbstractTranslatableEntity');
+        return $this->getMockForAbstractClass('Pim\Bundle\TranslationBundle\Entity\AbstractTranslatableEntity');
     }
 
     /**
      * Get translated entity mock
      *
-     * @param string $field
-     * @param string $locale
-     * @param string $content
-     *
      * @return Mock
      */
-    protected function getTranslationMock($field, $locale, $content = null)
+    protected function getTranslationMock()
     {
-        $translation = $this->getMock('Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation');
-
-        $translation->expects($this->any())
-                    ->method('getField')
-                    ->will($this->returnValue($field));
-
-        $translation->expects($this->any())
-                    ->method('getLocale')
-                    ->will($this->returnValue($locale));
-
-        $translation->expects($this->any())
-                    ->method('getContent')
-                    ->will($this->returnValue($content));
-
-        return $translation;
+        return $this->getMockForAbstractClass('Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation');
     }
 }
