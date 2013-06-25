@@ -6,6 +6,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Event\PostFlushEventArgs;
+
+use Oro\Bundle\SearchBundle\Entity\Item;
+use Oro\Bundle\SearchBundle\Engine\AbstractEngine;
 
 class IndexListener
 {
@@ -24,7 +28,25 @@ class IndexListener
      */
     protected $entities;
 
-    protected $pendingInserts = array();
+    /**
+     * @var AbstractEngine
+     */
+    protected $searchEngine;
+
+    /**
+     * @var array
+     */
+    protected $insertEntities = array();
+
+    /**
+     * @var array
+     */
+    protected $updateEntities = array();
+
+    /**
+     * @var array
+     */
+    protected $deleteEntities = array();
 
     /**
      * Unfortunately, can't use AbstractEngine as a parameter here due to circular reference
@@ -40,53 +62,97 @@ class IndexListener
         $this->entities  = $entities;
     }
 
+    /**
+     * @return AbstractEngine
+     */
+    protected function getSearchEngine()
+    {
+        if (!$this->searchEngine) {
+            $this->searchEngine = $this->container->get('oro_search.search.engine');
+        }
+
+        return $this->searchEngine;
+    }
+
+    /**
+     * @param OnFlushEventArgs $args
+     */
     public function onFlush(OnFlushEventArgs $args)
     {
-        if (empty($this->entities)) {
+        if (!$this->isActive()) {
             return;
         }
 
         $uow = $args->getEntityManager()->getUnitOfWork();
 
         foreach ($uow->getScheduledEntityInsertions() as $entity) {
-            if (isset($this->entities[get_class($entity)])) {
-                $this->pendingInserts[spl_object_hash($entity)] = $this->container->get('oro_search.search.engine')->save($entity, $this->realtime, true);
+            if ($this->isSupported($entity)) {
+                $this->insertEntities[] = $entity;
             }
         }
 
         foreach ($uow->getScheduledEntityUpdates() as $entity) {
-            if (isset($this->entities[get_class($entity)])) {
-                $this->container->get('oro_search.search.engine')->save($entity, $this->realtime, true);
+            if ($this->isSupported($entity)) {
+                $this->updateEntities[] = $entity;
             }
         }
 
         foreach ($uow->getScheduledEntityDeletions() as $entity) {
-            if (isset($this->entities[get_class($entity)])) {
-                $this->container->get('oro_search.search.engine')->delete($entity, $this->realtime);
+            if ($this->isSupported($entity)) {
+                $this->deleteEntities[] = $entity;
             }
         }
     }
 
     /**
-     * @param LifecycleEventArgs $args
+     * @return bool
      */
-    public function postPersist(LifecycleEventArgs $args)
+    protected function isActive()
     {
-        $entity = $args->getEntity();
-        $oid = spl_object_hash($entity);
-        $em = $args->getEntityManager();
+        return !empty($this->entities);
+    }
 
-        if (array_key_exists($oid, $this->pendingInserts) ) {
-            $searchEntity     = $this->pendingInserts[$oid];
+    /**
+     * @param string $entity
+     * @return bool
+     */
+    protected function isSupported($entity)
+    {
+        return isset($this->entities[get_class($entity)]);
+    }
 
-            $entityMeta      = $em->getClassMetadata(get_class($entity));
-            $identifierField = $entityMeta->getSingleIdentifierFieldName($entityMeta);
-            $id =  $entityMeta->getReflectionProperty($identifierField)->getValue($entity);
-            $searchEntity->setRecordId($id);
-
-            $em->persist($searchEntity);
-            unset($this->pendingInserts[$oid]);
-            $em->flush($searchEntity);
+    /**
+     * @param PostFlushEventArgs $args
+     */
+    public function postFlush(PostFlushEventArgs $args)
+    {
+        if (!$this->isActive() || !$this->hasChanges()) {
+            return;
         }
+
+        foreach ($this->insertEntities as $entity) {
+            $this->getSearchEngine()->save($entity, $this->realtime, true);
+        }
+        $this->insertEntities = array();
+
+        foreach ($this->updateEntities as $entity) {
+            $this->getSearchEngine()->save($entity, $this->realtime, true);
+        }
+        $this->updateEntities = array();
+
+        foreach ($this->deleteEntities as $entity) {
+            $this->getSearchEngine()->delete($entity, true);
+        }
+        $this->deleteEntities = array();
+
+        $args->getEntityManager()->flush();
+    }
+
+    /**
+     * @return bool
+     */
+    protected function hasChanges()
+    {
+        return count($this->insertEntities) || count($this->updateEntities) || count($this->deleteEntities);
     }
 }
