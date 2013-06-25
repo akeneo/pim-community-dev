@@ -7,7 +7,7 @@ oro_entity_config:
             -                           {"name":"Update", "route":"oro_entityconfig_update", "type":"redirect", "icon":"edit",    "acl_resource":"root", "filter":"is_extend", "args":["id"]}
             -                           {"name":"Fields", "route":"oro_entityconfig_fields", "type":"redirect", "icon":"th-list", "acl_resource":"root", "filter":"is_extend", "args":["id"]}
         layout_action:                  ~
-            -                           {"name":"Create", "route":"oro_entityconfig_create", "type":"redirect"}
+#            -                           {"name":"Create", "route":"oro_entityconfig_create", "title":"Create custom entity"}
         items:
             is_extend:
                 required:               true
@@ -35,11 +35,12 @@ oro_entity_config:
 
     field:
         grid_action:
-            -                           {"name":"View",   "route":"oro_entityextend_field_view",   "type":"redirect", "icon":"pencil", "acl_resource":"root", "filter":"is_extend", "args":["id"]}
+            -                           {"name":"View",   "route":"oro_entityextend_field_view",   "type":"redirect", "icon":"file", "acl_resource":"root", "filter":"is_extend", "args":["id"]}
             -                           {"name":"Update", "route":"oro_entityextend_field_update", "type":"redirect", "icon":"edit",   "acl_resource":"root", "filter":"is_extend", "args":["id"]}
             -                           {"name":"Remove", "route":"oro_entityextend_field_remove", "type":"delete",   "icon":"trash",  "acl_resource":"root", "filter":"is_extend", "args":["id"]}
         layout_action:
-            -                           {"name":"Create", "route":"oro_entityextend_field_create"}
+            -                           {"name":"Create", "route":"oro_entityextend_field_create", "entity_id":true}
+            -                           {"name":"Back",   "route":"oro_entityconfig_index", "aClass":"btn-info", "title":"Back to Enteties grid"}
         items:
             is_extend:
                 required:               true

@@ -157,7 +157,7 @@ class EntityConfigContainer
     public function getFieldLayoutActions()
     {
         if (isset($this->config['field']) && isset($this->config['field']['layout_action'])) {
-            return $this->config['entity']['layout_action'];
+            return $this->config['field']['layout_action'];
         }
 
         return array();

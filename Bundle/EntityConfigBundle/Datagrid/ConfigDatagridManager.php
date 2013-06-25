@@ -33,6 +33,21 @@ class ConfigDatagridManager extends DatagridManager
     }
 
     /**
+     * @return array
+     */
+    public function getLayoutActions()
+    {
+        $actions = array();
+        foreach ($this->configManager->getProviders() as $provider) {
+            foreach ($provider->getConfigContainer()->getEntityLayoutActions() as $config) {
+                $actions[] = $config;
+            }
+        }
+
+        return $actions;
+    }
+
+    /**
      * {@inheritDoc}
      */
     protected function getProperties()

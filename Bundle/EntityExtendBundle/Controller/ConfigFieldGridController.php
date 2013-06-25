@@ -21,7 +21,7 @@ use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
 class ConfigFieldGridController extends Controller
 {
     /**
-     * @Route("/create", name="oro_entityextend_field_create", requirements={"id"="\d+"}, defaults={"id"=0})
+     * @Route("/create/{id}", name="oro_entityextend_field_create", requirements={"id"="\d+"}, defaults={"id"=0})
      */
     public function createAction($id)
     {

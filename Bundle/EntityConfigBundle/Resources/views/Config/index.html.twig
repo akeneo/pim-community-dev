@@ -5,9 +5,16 @@
 
 {% block content %}
     {% set pageTitle = 'Entity Config' %}
-    {% set buttons = [
-        UI.addButton({'path' : path('oro_user_create'), 'title' : 'Create', 'label' : 'Create'})
-    ] %}
+
+    {% set buttons = [] %}
+    {% for button in buttonConfig %}
+        {% set buttons = buttons|merge([UI.addButton({
+        'path': path(button.route, button.args|default({})),
+        'title': button.title|default(button.name),
+        'label': button.name,
+        'aClass': button.aClass|default('')
+        })]) %}
+    {% endfor %}
 
     {{ parent() }}
 {% endblock %}

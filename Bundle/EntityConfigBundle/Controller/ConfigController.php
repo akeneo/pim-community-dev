@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Controller;
 
+use Oro\Bundle\EntityConfigBundle\Datagrid\FieldsDatagridManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +30,8 @@ class ConfigController extends Controller
     public function indexAction(Request $request)
     {
         /** @var  ConfigDatagridManager $datagrid */
-        $datagrid = $this->get('oro_entity_config.datagrid.manager')->getDatagrid();
+        $datagridManager = $this->get('oro_entity_config.datagrid.manager');
+        $datagrid = $datagridManager->getDatagrid();
         $view     = 'json' == $request->getRequestFormat()
             ? 'OroGridBundle:Datagrid:list.json.php'
             : 'OroEntityConfigBundle:Config:index.html.twig';
@@ -37,7 +39,7 @@ class ConfigController extends Controller
         return $this->render(
             $view,
             array(
-                //'buttons' =>
+                'buttonConfig'  => $datagridManager->getLayoutActions(),
                 'datagrid' => $datagrid->createView()
             )
         );
@@ -50,7 +52,7 @@ class ConfigController extends Controller
      */
     public function fieldsAction($id, Request $request)
     {
-        /** @var  ConfigDatagridManager $datagridManager */
+        /** @var  FieldsDatagridManager $datagridManager */
         $datagridManager = $this->get('oro_entity_config.fieldsdatagrid.manager');
         $datagridManager->setEntityId($id);
 
@@ -69,7 +71,7 @@ class ConfigController extends Controller
         return $this->render(
             $view,
             array(
-                //'buttons' =>
+                'buttonConfig'  => $datagridManager->getLayoutActions($id),
                 'datagrid' => $datagrid->createView()
             )
         );
@@ -81,6 +83,18 @@ class ConfigController extends Controller
      * @Template()
      */
     public function viewAction(ConfigEntity $entity)
+    {
+        return array(
+            'entity' => $entity,
+        );
+    }
+
+    /**
+     * View Entity
+     * @Route("/create", name="oro_entityconfig_create")
+     * @Template()
+     */
+    public function createAction(ConfigEntity $entity)
     {
         return array(
             'entity' => $entity,
