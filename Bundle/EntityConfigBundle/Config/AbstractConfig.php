@@ -59,7 +59,7 @@ abstract class AbstractConfig implements ConfigInterface
      */
     public function is($code)
     {
-        return (bool) $this->get($code, false);
+        return (bool) $this->get($code);
     }
 
     /**

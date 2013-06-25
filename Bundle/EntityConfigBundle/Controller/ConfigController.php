@@ -95,6 +95,8 @@ class ConfigController extends Controller
      */
     public function fieldsAction($id, Request $request)
     {
+        $entity  = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
+
         /** @var  FieldsDatagridManager $datagridManager */
         $datagridManager = $this->get('oro_entity_config.fieldsdatagrid.manager');
         $datagridManager->setEntityId($id);
@@ -114,7 +116,7 @@ class ConfigController extends Controller
         return $this->render(
             $view,
             array(
-                'buttonConfig' => $datagridManager->getLayoutActions($id),
+                'buttonConfig' => $datagridManager->getLayoutActions($entity),
                 'datagrid'     => $datagrid->createView(),
                 'entity_id'    => $id,
             )

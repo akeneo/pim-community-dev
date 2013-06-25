@@ -39,16 +39,22 @@ class FieldsDatagridManager extends DatagridManager
     }
 
     /**
-     * @param $entityId
+     * @param $entity
      * @return array
      */
-    public function getLayoutActions($entityId)
+    public function getLayoutActions(ConfigEntity $entity)
     {
         $actions = array();
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getFieldLayoutActions() as $config) {
+                if (isset($config['filter'])
+                    && !$provider->getConfig($entity->getClassName())->is($config['filter'])
+                ) {
+                    continue;
+                }
+
                 if (isset($config['entity_id']) && $config['entity_id'] == true) {
-                    $config['args'] = array('id' => $entityId);
+                    $config['args'] = array('id' => $entity->getId());
                 }
                 $actions[] = $config;
             }
