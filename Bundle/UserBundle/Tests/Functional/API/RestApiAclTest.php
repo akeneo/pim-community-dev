@@ -90,7 +90,6 @@ class RestApiAclTest extends WebTestCase
 
     public function testRemoveAclFromRole()
     {
-        $this->markTestSkipped('CRM-182');
         $this->client->request('GET', 'http://localhost/api/rest/latest/roles/' . self::TEST_EDIT_ROLE . '/byname');
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
@@ -101,7 +100,13 @@ class RestApiAclTest extends WebTestCase
         ToolsAPI::assertJsonResponse($result, 200);
         $expectedAcl = ToolsAPI::jsonToArray($result->getContent());
         sort($expectedAcl);
-        unset($expectedAcl[array_search('oro_address', $expectedAcl)]);
+
+        foreach ($expectedAcl as $key => $val) {
+            if (preg_match('/oro_address*/', $val) || $val == 'root') { // root resource will be deleted after any resource delete
+                unset($expectedAcl[ $key ]);
+            }
+        }
+        sort($expectedAcl);
 
         $this->client->request('DELETE', "http://localhost/api/rest/latest/roles/{$roleId['id']}/acls/oro_address");
         $result = $this->client->getResponse();
@@ -121,6 +126,7 @@ class RestApiAclTest extends WebTestCase
      */
     public function testAddAclToRole()
     {
+        $this->markTestSkipped('CRM-182');
         $this->client->request('GET', 'http://localhost/api/rest/latest/roles/' . self::TEST_EDIT_ROLE . '/byname');
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
@@ -128,12 +134,46 @@ class RestApiAclTest extends WebTestCase
 
         $this->client->request('POST', "http://localhost/api/rest/latest/roles/{$roleId['id']}/acls/oro_address");
         $result = $this->client->getResponse();
-        ToolsAPI::assertJsonResponse($result, 200);
+        ToolsAPI::assertJsonResponse($result, 204);
     }
 
     public function testRemoveAclsFromRole()
     {
         $this->markTestSkipped('CRM-182');
+        $this->client->request('GET', 'http://localhost/api/rest/latest/roles/' . self::TEST_EDIT_ROLE . '/byname');
+        $result = $this->client->getResponse();
+        ToolsAPI::assertJsonResponse($result, 200);
+        $roleId = ToolsAPI::jsonToArray($result->getContent());
+
+        $this->client->request('GET', "http://localhost/api/rest/latest/roles/{$roleId['id']}/acl");
+        $result = $this->client->getResponse();
+        ToolsAPI::assertJsonResponse($result, 200);
+        $expectedAcl = ToolsAPI::jsonToArray($result->getContent());
+        sort($expectedAcl);
+
+        foreach ($expectedAcl as $key => $val) {
+            if (preg_match('/oro_address*/', $val) || $val == 'root'
+                || in_array($val, array(
+                    'oro_security', 'oro_login', 'oro_login_check', 'oro_logout', 'oro_reset_check_email',
+                    'oro_reset_controller', 'oro_reset_password', 'oro_reset_request', 'oro_reset_send_mail'
+                ))) { // root resource will be deleted after any resource delete
+                unset($expectedAcl[ $key ]);
+            }
+        }
+        sort($expectedAcl);
+
+        $this->client->request('DELETE', "http://localhost/api/rest/latest/roles/{$roleId['id']}/aclsarray", array('oro_security','oro_address'));
+        $result = $this->client->getResponse();
+
+        ToolsAPI::assertJsonResponse($result, 204);
+
+        $this->client->request('GET', "http://localhost/api/rest/latest/roles/{$roleId['id']}/acl");
+        $result = $this->client->getResponse();
+        ToolsAPI::assertJsonResponse($result, 200);
+        $actualAcl = ToolsAPI::jsonToArray($result->getContent());
+        sort($actualAcl);
+
+        $this->assertEquals($expectedAcl, $actualAcl);
     }
 
     /**

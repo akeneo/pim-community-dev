@@ -158,6 +158,16 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     }
 
     /**
+     * Get entity
+     *
+     * @return AbstractFlexible $entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
      * Set entity
      *
      * @param AbstractFlexible $entity
