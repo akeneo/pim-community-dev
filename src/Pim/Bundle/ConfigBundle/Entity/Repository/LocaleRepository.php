@@ -38,17 +38,24 @@ class LocaleRepository extends EntityRepository
      */
     public function findWithFallback()
     {
-        return $this->createQueryBuilder('l')
-            ->where('l.fallback IS NOT NULL')->orderBy('l.code')->getQuery()->getResult();
+        $qb = $this->createQueryBuilder('l');
+        $qb->where($qb->expr()->isNotNull('l.fallback'))
+           ->orderBy('l.code');
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
      * Return a query builder for activated locales
      *
-     * @return Doctrine\ORM\QueryBuilder
+     * @return array
      */
     public function getActivatedLocales()
     {
-        return $this->createQueryBuilder('l')->where('l.activated = 1')->orderBy('l.code');
+        $qb = $this->createQueryBuilder('l');
+        $qb->where($qb->expr()->eq('l.activated', true))
+           ->orderBy('l.code');
+
+        return $qb->getQuery()->getResult();
     }
 }
