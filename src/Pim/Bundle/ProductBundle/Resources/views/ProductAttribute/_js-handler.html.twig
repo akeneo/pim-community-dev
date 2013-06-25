@@ -8,21 +8,21 @@ $(function() {
     function updateForm() {
         $.post(
            'preprocess',
-            $('#' + formName).serialize(),
+            $('#'+formName).serialize(),
             function(data) {
-                $('#' + formName).replaceWith(data);
-                $('#' + formName + ' div.alert').remove();
+                $('#'+formName).replaceWith(data);
+                $('#'+formName+' div.alert').remove();
                 initializeForm();
             }
         );
     }
 
     function initializeForm() {
-        $('#' + formName + ' .switch:not(.has-switch)').bootstrapSwitch();
-        $('#' + formName + ' select').select2();
-        $('#' + formName + ' input.multiselect').select2({ tags: $('#' + formName + ' input.multiselect').val() });
+        $('#'+formName+' .switch:not(.has-switch)').bootstrapSwitch();
+        $('#'+formName+' select').select2();
+        $('#'+formName+' input.multiselect').select2({ tags: $('#'+formName+' input.multiselect').val() });
         initializeOptions();
-        $('#pim_product_attribute_form_attributeType').select2().on('change', function() {
+        $('#'+formName+'_attributeType').select2().on('change', function() {
             updateForm();
         });
 
@@ -38,17 +38,16 @@ $(function() {
             }
         });
 
-        $('select[id*=validationRule]').change(function() {
+        $('#'+formName+'_validationRule').change(function() {
             if ($(this).val() == 'regexp') {
-                $('input[id*=validationRegexp]').parent().parent().show();
+                $('#'+formName+'_validationRegexp').parent().parent().show();
             } else {
-                $('input[id*=validationRegexp]').parent().parent().hide();
+                $('#'+formName+'_validationRegexp').parent().parent().hide();
             }
-        });
-        $('select[id*=validationRule]').trigger('change');
+        }).trigger('change');
 
-        if ($('select[id*=availableLocales]').val()) {
-            $('select[id*=availableLocales]').parent().parent().show();
+        if ($('#'+formName+'_availableLocales').val()) {
+            $('#'+formName+'_availableLocales').parent().parent().show();
             $('#limitLocales-switch').bootstrapSwitch('setState', true);
         }
 
@@ -61,13 +60,11 @@ $(function() {
             }
         });
 
-        $('#pim_product_attribute_form_metricFamily').select2({ data: OroApp.measures.getMetricTypes() });
-        $('#pim_product_attribute_form_metricFamily').change(function() {
-            $('#pim_product_attribute_form_defaultMetricUnit').select2({
+        $('#'+formName+'_metricFamily').select2({ data: OroApp.measures.getMetricTypes() }).change(function() {
+            $('#'+formName+'_defaultMetricUnit').select2({
                 data: OroApp.measures.getMetricUnits($(this).select2('val'))
             });
-        });
-        $('#pim_product_attribute_form_metricFamily').trigger('change');
+        }).trigger('change');
 
         $('.picker-datetime').datetimepicker();
         $('.picker-date').datetimepicker({ pickTime: false });
@@ -147,6 +144,7 @@ $(function() {
 
         option = option.replace(/\[options\]\[([0-9]+)\]/g, "[options][" + optionNumber + "]");
         option = option.replace(/_options_([0-9]+)_/g, "_options_" + optionNumber + "_");
+        option = option.replace('checked="checked"', '');
         option = option.replace(/\s+/g, ' ');
 
         var $option = $('<tr class="att-option">' + option + '</tr>');
