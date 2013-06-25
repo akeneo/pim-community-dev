@@ -17,6 +17,7 @@ class DataBlockExtension extends AbstractTypeExtension
         $resolver->setOptional(array(
             'block',
             'subblock',
+            'block_config'
         ));
     }
 
@@ -33,6 +34,10 @@ class DataBlockExtension extends AbstractTypeExtension
 
         if (isset($options['subblock'])) {
             $view->vars['subblock'] = $options['subblock'];
+        }
+
+        if (isset($options['block_config'])) {
+            $view->vars['block_config'] = $options['block_config'];
         }
     }
 

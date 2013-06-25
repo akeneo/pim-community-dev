@@ -5,6 +5,11 @@ namespace Oro\Bundle\FormBundle\Config;
 class BlockConfig implements FormConfigInterface
 {
     /**
+     * @var array
+     */
+    protected $blockConfig;
+
+    /**
      * @var string
      */
     protected $code;
@@ -20,7 +25,12 @@ class BlockConfig implements FormConfigInterface
     protected $class;
 
     /**
-     * @var SubBlockConfig
+     * @var int
+     */
+    protected $priority;
+
+    /**
+     * @var SubBlockConfig[]
      */
     protected $subBlocks = array();
 
@@ -31,6 +41,26 @@ class BlockConfig implements FormConfigInterface
     {
         $this->code = $code;
     }
+
+    /**
+     * @param mixed $blockConfig
+     * @return $this
+     */
+    public function setBlockConfig($blockConfig)
+    {
+        $this->blockConfig = $blockConfig;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBlockConfig()
+    {
+        return $this->blockConfig;
+    }
+
 
     /**
      * @param $code
@@ -90,12 +120,33 @@ class BlockConfig implements FormConfigInterface
     }
 
     /**
+     * @param int $priority
+     * @return $this
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+
+    /**
      * @param SubBlockConfig $config
      * @return $this
      */
     public function addSubBlock(SubBlockConfig $config)
     {
-        $this->subBlocks[] = $config;
+        $this->subBlocks[$config->getCode()] = $config;
+
+        $this->sortSubBlocks();
 
         return $this;
     }
@@ -107,6 +158,8 @@ class BlockConfig implements FormConfigInterface
     public function setSubBlocks($subBlocks)
     {
         $this->subBlocks = $subBlocks;
+
+        $this->sortSubBlocks();
 
         return $this;
     }
@@ -120,12 +173,21 @@ class BlockConfig implements FormConfigInterface
     }
 
     /**
-     * @param $index
+     * @param $code
      * @return SubBlockConfig
      */
-    public function getSubBlock($index)
+    public function getSubBlock($code)
     {
-        return $this->subBlocks[$index];
+        return $this->subBlocks[$code];
+    }
+
+    /**
+     * @param $code
+     * @return boolean
+     */
+    public function hasSubBlock($code)
+    {
+        return isset($this->subBlocks[$code]);
     }
 
     /**
@@ -140,5 +202,15 @@ class BlockConfig implements FormConfigInterface
                 return $config->toArray();
             }, $this->subBlocks)
         );
+    }
+
+    protected function sortSubBlocks()
+    {
+        $priority = array();
+        foreach ($this->subBlocks as $key => $subBlock) {
+            $priority[$key] = $subBlock->getPriority();
+        }
+
+        array_multisort($priority, SORT_DESC, $this->subBlocks);
     }
 }

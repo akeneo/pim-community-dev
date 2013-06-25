@@ -10,9 +10,24 @@ class SubBlockConfig implements FormConfigInterface
     protected $title;
 
     /**
+     * @var string
+     */
+    protected $code;
+
+    /**
+     * @var int
+     */
+    protected $priority;
+
+    /**
      * @var array
      */
     protected $data = array();
+
+    public function __construct($code)
+    {
+        $this->code = $code;
+    }
 
     /**
      * @param $title
@@ -31,6 +46,44 @@ class SubBlockConfig implements FormConfigInterface
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * @param string $code
+     * @return $this
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param int $priority
+     * @return $this
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriority()
+    {
+        return $this->priority;
     }
 
     /**

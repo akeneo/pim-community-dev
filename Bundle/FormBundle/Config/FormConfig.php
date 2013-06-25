@@ -5,7 +5,7 @@ namespace Oro\Bundle\FormBundle\Config;
 class FormConfig implements FormConfigInterface
 {
     /**
-     * @var BlockConfig
+     * @var BlockConfig[]
      */
     protected $blocks = array();
 
@@ -16,6 +16,8 @@ class FormConfig implements FormConfigInterface
     public function addBlock(BlockConfig $block)
     {
         $this->blocks[$block->getCode()] = $block;
+
+        $this->sortBlocks();
 
         return $this;
     }
@@ -54,6 +56,8 @@ class FormConfig implements FormConfigInterface
     {
         $this->blocks = $blocks;
 
+        $this->sortBlocks();
+
         return $this;
     }
 
@@ -75,5 +79,15 @@ class FormConfig implements FormConfigInterface
         return array_map(function (BlockConfig $block) {
             return $block->toArray();
         }, $this->blocks);
+    }
+
+    protected function sortBlocks()
+    {
+        $priority = array();
+        foreach ($this->blocks as $key => $block) {
+            $priority[$key] = $block->getPriority();
+        }
+
+        array_multisort($priority, SORT_DESC, $this->blocks);
     }
 }
