@@ -484,7 +484,11 @@ class ProductAttributeValidator
     protected static function isDateMaxValid(ProductAttribute $productAttribute, ExecutionContext $context)
     {
         if ($productAttribute->getDateMax()) {
-            if (!$productAttribute->getDateMax() instanceof \DateTime || ($productAttribute->getDateMin() && $productAttribute->getDateMin()->getTimestamp() >= $productAttribute->getDateMax()->getTimestamp())) {
+            if (!$productAttribute->getDateMax() instanceof \DateTime || (
+                $productAttribute->getDateMin()
+                && $productAttribute->getDateMin()->getTimestamp() >= $productAttribute->getDateMax()->getTimestamp()
+                )
+            ) {
                 $context->addViolation(self::VIOLATION_INVALID_DATE_MAX);
             }
         }

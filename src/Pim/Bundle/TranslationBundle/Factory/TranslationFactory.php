@@ -50,8 +50,9 @@ class TranslationFactory
         if (!$refl->isSubClassOf('Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation')) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'The translation class "%s" must extends Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation',
-                    $translationClass
+                    'The translation class "%s" must extends "%s"',
+                    $translationClass,
+                    'Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation'
                 )
             );
         }

@@ -42,7 +42,9 @@ class UniqueValueValidator extends ConstraintValidator
         );
         $result = $em->getRepository(get_class($entity))->findBy($criteria);
 
-        if (0 === count($result) || (1 === count($result) && $entity === ($result instanceof \Iterator ? $result->current() : current($result)))) {
+        if (0 === count($result) ||
+            (1 === count($result) && $entity === ($result instanceof \Iterator ? $result->current() : current($result)))
+        ) {
             return;
         }
 

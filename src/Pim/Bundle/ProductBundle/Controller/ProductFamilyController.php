@@ -107,7 +107,8 @@ class ProductFamilyController extends Controller
             'form'           => $form->createView(),
             'families'       => $families,
             'family'         => $family,
-            'attributesForm' => $this->getAvailableProductAttributesForm($family->getAttributes()->toArray())->createView()
+            'attributesForm' => $this->getAvailableProductAttributesForm($family->getAttributes()->toArray())
+                                     ->createView()
         );
     }
 
@@ -178,7 +179,9 @@ class ProductFamilyController extends Controller
         $attribute = $this->findAttributeOr404($attributeId);
 
         if (false === $family->hasAttribute($attribute)) {
-            throw $this->createNotFoundException(sprintf('Attribute "%s" is not attached to "%s"', $attribute, $family));
+            throw $this->createNotFoundException(
+                sprintf('Attribute "%s" is not attached to "%s"', $attribute, $family)
+            );
         }
 
         if ($attribute === $family->getAttributeAsLabel()) {
