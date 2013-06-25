@@ -144,6 +144,7 @@
         <exec executable="bin/behat">
             <arg value="--tags=~javascript" />
             <arg value="--no-paths" />
+            <arg value="--ansi" />
         </exec>
     </target>
 
