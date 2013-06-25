@@ -122,14 +122,14 @@ class ProductAttributeValidator
     protected static function isAttributeTypeMatrixValid(ProductAttribute $productAttribute, ExecutionContext $context)
     {
         $attributeType = array(
-                'pim_product_textarea',
-                'pim_product_price_collection',
-                'pim_product_multiselect',
-                'pim_product_simpleselect',
-                'pim_product_image',
-                'pim_product_file',
-                'pim_product_metric',
-                'pim_product_boolean'
+            'pim_product_textarea',
+            'pim_product_price_collection',
+            'pim_product_multiselect',
+            'pim_product_simpleselect',
+            'pim_product_image',
+            'pim_product_file',
+            'pim_product_metric',
+            'pim_product_boolean'
         );
         if (in_array($productAttribute->getAttributeType(), $attributeType)
                 && $productAttribute->getUnique() === true) {
