@@ -5,14 +5,12 @@ namespace Oro\Bundle\EntityConfigBundle\DependencyInjection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Yaml\Yaml;
 
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
-
 
 class OroEntityConfigExtension extends Extension
 {
@@ -58,10 +56,9 @@ class OroEntityConfigExtension extends Extension
         }
     }
 
-
     /**
-     * @param ContainerBuilder $container
-     * @param                  $config
+     * @param  ContainerBuilder $container
+     * @param                   $config
      * @throws RuntimeException
      */
     protected function configCache(ContainerBuilder $container, $config)

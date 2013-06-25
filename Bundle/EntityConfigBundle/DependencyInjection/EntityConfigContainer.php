@@ -53,7 +53,7 @@ class EntityConfigContainer
 
     public function hasEntityForm()
     {
-        return (boolean)array_filter($this->getEntityItems(), function ($item) {
+        return (boolean) array_filter($this->getEntityItems(), function ($item) {
             return (isset($item['form']) && isset($item['form']['type']));
         });
     }

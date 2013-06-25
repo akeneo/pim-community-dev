@@ -2,11 +2,8 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Form\Type;
 
-use Oro\Bundle\FormBundle\Config\FormConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -38,7 +35,7 @@ class ConfigEntityType extends AbstractType
         foreach ($this->configManager->getProviders() as $provider) {
             if ($provider->getConfigContainer()->hasEntityForm()) {
                 $builder->add($provider->getScope(), new ConfigType($provider), array(
-                    'block_config' => (array)$provider->getConfigContainer()->getEntityFormBlockConfig()
+                    'block_config' => (array) $provider->getConfigContainer()->getEntityFormBlockConfig()
                 ));
                 $data[$provider->getScope()] = $provider->getConfig($className)->getValues();
             }

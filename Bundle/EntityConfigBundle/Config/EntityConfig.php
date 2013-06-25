@@ -2,11 +2,6 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Config;
 
-use Doctrine\Common\Collections\Expr\Value;
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigValue;
-
 class EntityConfig extends AbstractConfig
 {
     /**
@@ -95,7 +90,7 @@ class EntityConfig extends AbstractConfig
     }
 
     /**
-     * @param  callable $filter
+     * @param  callable      $filter
      * @return FieldConfig[]
      */
     public function getFields(\Closure $filter = null)

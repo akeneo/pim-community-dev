@@ -30,9 +30,9 @@ class FieldConfigEvent extends Event
     protected $configManager;
 
     /**
-     * @param string               $className
-     * @param string               $fieldName
-     * @param string               $fieldType
+     * @param string        $className
+     * @param string        $fieldName
+     * @param string        $fieldType
      * @param ConfigManager $configManager
      */
     public function __construct($className, $fieldName, $fieldType, ConfigManager $configManager)

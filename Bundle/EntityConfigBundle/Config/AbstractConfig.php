@@ -12,8 +12,8 @@ abstract class AbstractConfig implements ConfigInterface
     protected $values = array();
 
     /**
-     * @param      $code
-     * @param bool $strict
+     * @param                   $code
+     * @param  bool             $strict
      * @throws RuntimeException
      * @return string
      */
@@ -21,7 +21,7 @@ abstract class AbstractConfig implements ConfigInterface
     {
         if (isset($this->values[$code])) {
             return $this->values[$code];
-        } else if ($strict) {
+        } elseif ($strict) {
             throw new RuntimeException(sprintf(
                 "Config '%s' for class '%s' in scope '%s' is not found ",
                 $code, $this->getClassName(), $this->getScope()

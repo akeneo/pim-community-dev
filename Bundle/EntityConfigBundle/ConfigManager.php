@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityManager;
 use Metadata\ClassHierarchyMetadata;
 use Metadata\MetadataFactory;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;

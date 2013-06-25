@@ -20,7 +20,7 @@ class EntityConfigEvent extends Event
     protected $configManager;
 
     /**
-     * @param string               $className
+     * @param string        $className
      * @param ConfigManager $configManager
      */
     public function __construct($className, ConfigManager $configManager)

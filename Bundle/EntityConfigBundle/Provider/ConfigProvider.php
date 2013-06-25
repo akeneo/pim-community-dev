@@ -101,9 +101,9 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * @param       $className
-     * @param array $values
-     * @param bool  $flush
+     * @param               $className
+     * @param  array        $values
+     * @param  bool         $flush
      * @return EntityConfig
      */
     public function createEntityConfig($className, array $values, $flush = false)
@@ -123,11 +123,11 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * @param       $className
-     * @param       $code
-     * @param       $type
-     * @param array $values
-     * @param bool  $flush
+     * @param              $className
+     * @param              $code
+     * @param              $type
+     * @param  array       $values
+     * @param  bool        $flush
      * @return FieldConfig
      */
     public function createFieldConfig($className, $code, $type, array $values = array(), $flush = false)
