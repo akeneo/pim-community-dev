@@ -165,20 +165,10 @@
         </exec>
     </target>
 
-    <target name="submodule" description="Install submodules">
-        <exec executable="git">
-            <arg value="submodule"/>
-            <arg value="init"/>
-        </exec>
-        <exec executable="git">
-            <arg value="submodule"/>
-            <arg value="update"/>
-        </exec>
-    </target>
-
     <target name="vendors" description="Install vendors">
         <exec executable="${basedir}/composer.phar" failonerror="true">
             <arg value="install" />
+            <arg value="--prefer-dist" />
         </exec>
     </target>
 
