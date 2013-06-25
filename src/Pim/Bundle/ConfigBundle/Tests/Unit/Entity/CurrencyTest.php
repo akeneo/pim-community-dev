@@ -56,15 +56,15 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
     /**
      * Test getter/setter for activated property
      */
-    public function testGetSetActivated()
+    public function testIsSetActivated()
     {
         $currency = new Currency();
-        $this->assertTrue($currency->getActivated());
+        $this->assertTrue($currency->isActivated());
 
         // change value and assert new
         $newActivated = false;
         $currency->setActivated($newActivated);
-        $this->assertFalse($currency->getActivated());
+        $this->assertFalse($currency->isActivated());
     }
 
     /**
@@ -74,10 +74,10 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
     {
         $currency = new Currency();
         $currency->toggleActivation();
-        $this->assertFalse($currency->getActivated());
+        $this->assertFalse($currency->isActivated());
 
         $currency->toggleActivation();
-        $this->assertTrue($currency->getActivated());
+        $this->assertTrue($currency->isActivated());
     }
 
     /**

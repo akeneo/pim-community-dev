@@ -118,11 +118,11 @@ class Currency
     }
 
     /**
-     * Get activated
+     * Is activated
      *
      * @return boolean
      */
-    public function getActivated()
+    public function isActivated()
     {
         return $this->activated;
     }
