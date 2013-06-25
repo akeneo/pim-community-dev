@@ -59,7 +59,7 @@ class LocaleRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-   /**
+    /**
      * Return a query builder for activated locales
      *
      * @return QueryBuilder

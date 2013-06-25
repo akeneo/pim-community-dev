@@ -340,9 +340,11 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      */
     public function getDefaultOptions()
     {
-        return $this->options->filter(function($option) {
-            return $option->isDefault();
-        });
+        return $this->options->filter(
+            function ($option) {
+                return $option->isDefault();
+            }
+        );
     }
 
     /**

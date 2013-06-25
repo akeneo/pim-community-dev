@@ -42,7 +42,7 @@ abstract class AbstractEntitySelectType extends AbstractAttributeType
      *
      * @abstract
      */
-    protected abstract function isMultiselect();
+    abstract protected function isMultiselect();
 
     /**
      * Get entity field to order
@@ -51,7 +51,7 @@ abstract class AbstractEntitySelectType extends AbstractAttributeType
      *
      * @abstract
      */
-    protected abstract function getEntityFieldToOrder();
+    abstract protected function getEntityFieldToOrder();
 
     /**
      * Get joined entity alias
@@ -60,5 +60,5 @@ abstract class AbstractEntitySelectType extends AbstractAttributeType
      *
      * @abstract
      */
-    protected abstract function getEntityAlias();
+    abstract protected function getEntityAlias();
 }
