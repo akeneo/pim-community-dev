@@ -3,19 +3,22 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
-
-use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Oro\Bundle\EntityExtendBundle\Exception\RuntimeException;
 use Oro\Bundle\EntityExtendBundle\Form\Type\FieldType;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
+use Oro\Bundle\EntityConfigBundle\ConfigManager;
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 /**
  * Class ConfigGridController
@@ -83,15 +86,22 @@ class ConfigFieldGridController extends Controller
     /**
      * @Route("/remove/{id}", name="oro_entityextend_field_remove", requirements={"id"="\d+"}, defaults={"id"=0})
      */
-    public function removeAction($id)
+    public function removeAction(ConfigField $field)
     {
-        /** @var ConfigEntity $entity */
-        $field = $this->getDoctrine()->getRepository(ConfigField::ENTITY_NAME)->find($id);
-
         /** @var ExtendManager $extendManager */
         $extendManager = $this->get('oro_entity_extend.extend.extend_manager');
-        //$extendManager->getConfigProvider()->
-        die('extend remove');
-    }
 
+        if (!$extendManager->isExtend($field->getEntity()->getClassName())) {
+            throw new RuntimeException('Cannot delete not extend field');
+        }
+
+        $this->getDoctrine()->getManager()->remove($field);
+        $this->getDoctrine()->getManager()->flush($field);
+
+        /** @var ConfigManager $configManager */
+        $configManager = $this->get('oro_entity_config.config_manager');
+        $configManager->clearCache();
+
+        return new RedirectResponse($this->getRequest()->headers->get('referer'));
+    }
 }
