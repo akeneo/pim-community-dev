@@ -194,10 +194,10 @@
                                                     <td>
                                                         {{ form_row(option.defaultValue) }}
                                                     </td>
-                                                    {% for i in 0..locales|length-1 %}
+                                                    {% for locale in locales %}
                                                         <td>
                                                             {% for value in option.optionValues %}
-                                                                {% if value.locale.vars.value == locales[i].code %}
+                                                                {% if value.locale.vars.value == locale.code %}
                                                                     {{ form_row(value.id) }}
                                                                     {{ form_row(value.value) }}
                                                                     {{ form_row(value.locale) }}

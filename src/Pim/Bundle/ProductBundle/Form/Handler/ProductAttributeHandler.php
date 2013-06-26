@@ -76,11 +76,12 @@ class ProductAttributeHandler
      */
     public function process(ProductAttribute $entity)
     {
-        $locales = $this->manager->getRepository('PimConfigBundle:Locale')->getActivatedLocales();
-        $locales = array();
-        foreach ($locales as $locale) {
-            $locales[] = $locale->getCode();
-        }
+        $locales = array_map(
+            function ($locale) {
+                return $locale->getCode();
+            },
+            $this->manager->getRepository('PimConfigBundle:Locale')->getActivatedLocales()
+        );
 
         foreach ($entity->getOptions() as $option) {
             if ($option->getTranslatable()) {
