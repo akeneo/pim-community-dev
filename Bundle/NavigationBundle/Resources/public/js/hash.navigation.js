@@ -44,9 +44,9 @@ Oro.Navigation = Backbone.Router.extend({
         mostViewedTab:  '#mostviewed-content',
         flashMessages:  '#flash-messages',
         menu:           '#main-menu',
-        pinButton:      '#pin-button-div',
-        scrollSpy:      '.scrollspy'
+        pinButton:      '#pin-button-div'
     },
+    selectorCached: {},
 
     /** @property {Oro.LoadingMask} */
     loadingMask: '',
@@ -119,11 +119,15 @@ Oro.Navigation = Backbone.Router.extend({
     },
 
     /**
-     * Initialaize hash navigation
+     * Initialize hash navigation
      *
      * @param options
      */
     initialize: function (options) {
+        for (var selector in this.selectors) if (this.selectors.hasOwnProperty(selector)) {
+            this.selectorCached[selector] = $(this.selectors[selector]);
+        }
+
         options = options || {};
         if (!options.baseUrl) {
             throw new TypeError("'baseUrl' is required");
@@ -134,7 +138,7 @@ Oro.Navigation = Backbone.Router.extend({
             //skip ajax page refresh for the current page
             this.skipAjaxCall = true;
             //change location hash to current url
-            setTimeout(_.bind(function () {
+            _.delay(_.bind(function () {
                 this.setLocation(window.location.href);
             }, this), 100);
 
@@ -164,22 +168,47 @@ Oro.Navigation = Backbone.Router.extend({
             $.ajax({
                 url: pageUrl,
                 headers: { 'x-oro-hash-navigation': true },
+                cache: false,
                 beforeSend: function( xhr ) {
                     //remove standard ajax header because we already have a custom header sent
                     xhr.setRequestHeader('X-Requested-With', {toString: function(){ return ''; }});
                 },
 
-                error: _.bind(function (XMLHttpRequest, textStatus, errorThrown) {
+                error: _.bind(function (jqXHR, textStatus, errorThrown) {
                     this.showError('Error Message: ' + textStatus, 'HTTP Error: ' + errorThrown);
+                    this.updateDebugToolbar(jqXHR);
                     this.afterRequest();
                 }, this),
 
-                success: _.bind(function (data) {
+                success: _.bind(function (data, textStatus, jqXHR) {
                     this.handleResponse(data);
+                    this.updateDebugToolbar(jqXHR)
                     this.afterRequest();
                     this.savePageToCache(data);
                 }, this)
             });
+        }
+    },
+
+    /**
+     * Update debug toolbar.
+     *
+     * @param jqXHR
+     */
+    updateDebugToolbar: function(jqXHR) {
+        var debugBarToken = jqXHR.getResponseHeader('x-debug-token');
+        var entryPoint = window.location.pathname;
+        if (entryPoint.indexOf('.php') !== -1) {
+            entryPoint = entryPoint.substr(0, entryPoint.indexOf('.php') + 4);
+        }
+        if(debugBarToken) {
+            $('.sf-toolbarreset').remove();
+            $.get(
+                this.baseUrl + entryPoint + '/_wdt/' + debugBarToken,
+                _.bind(function(data) {
+                    this.selectorCached['container'].append(data);
+                }, this)
+            );
         }
     },
 
@@ -250,7 +279,7 @@ Oro.Navigation = Backbone.Router.extend({
         /**
          * Processing all links
          */
-        this.processClicks(this.selectors.links);
+        this.processClicks(this.selectorCached.links);
         /**
          * Processing all links in grid after grid load
          */
@@ -301,7 +330,7 @@ Oro.Navigation = Backbone.Router.extend({
         Oro.Events.bind(
             "top_search_request:complete",
             function () {
-                this.processClicks($(this.selectors.searchDropdown).find(this.selectors.links));
+                this.processClicks($(this.selectorCached.searchDropdown).find(this.selectors.links));
             },
             this
         );
@@ -318,7 +347,7 @@ Oro.Navigation = Backbone.Router.extend({
         );
 
         this.processForms(this.selectors.forms);
-        this.processAnchors($(this.selectors.container).find(this.selectors.scrollLinks));
+        this.processAnchors(this.selectorCached.container.find(this.selectors.scrollLinks));
 
         this.loadingMask = new Oro.LoadingMask();
         this.renderLoadingMask();
@@ -350,8 +379,43 @@ Oro.Navigation = Backbone.Router.extend({
      * @protected
      */
     renderLoadingMask: function() {
-        $(this.selectors.loadingMask).append(this.loadingMask.render().$el);
+        this.selectorCached.loadingMask.append(this.loadingMask.render().$el);
         this.loadingMask.hide();
+    },
+
+    /**
+     * Clearing content area with native js, prevents freezing of firefox with firebug enabled
+     */
+    clearContainer: function() {
+        document.getElementById('container').innerHTML = '';
+    },
+
+    /**
+     * Make data more bulletproof.
+     *
+     * @param {String} data
+     * @returns {Object}
+     */
+    getCorrectedData: function(data) {
+        data = $.trim(data);
+        var jsonStartPos = data.indexOf('{');
+        var additionalData = '';
+        if (jsonStartPos > 0) {
+            additionalData = data.substr(0, jsonStartPos);
+            data = data.substr(jsonStartPos);
+        }
+        var dataObj = (data.indexOf('http') === 0) ? {'redirect': true, 'fullRedirect': true, 'location': data} : $.parseJSON(data);
+
+        if (additionalData) {
+            additionalData = '<div class="alert alert-info fade in top-messages"><a class="close" data-dismiss="alert" href="#">&times;</a>'
+                + '<div class="message">' + additionalData + '</div></div>';
+        }
+
+        if (dataObj.content !== undefined) {
+            dataObj.content = additionalData + dataObj.content;
+        }
+
+        return dataObj;
     },
 
     /**
@@ -365,58 +429,57 @@ Oro.Navigation = Backbone.Router.extend({
             options = {};
         }
         try {
-            /**
-             * Clearing content area with native js, prevents freezing of firefox with firebug enabled
-             */
-            document.getElementById('container').innerHTML = '';
-            data = $.trim(data);
-            var redirectUrl = $(data).filter('#redirect').text();
-            if (redirectUrl) {
+            this.clearContainer();
+            data = this.getCorrectedData(data);
+            if (data.redirect !== undefined && data.redirect) {
+                var redirectUrl = data.location;
                 var urlParts = redirectUrl.split('url=');
                 if (urlParts[1]) {
                     redirectUrl = urlParts[1];
                 }
-                if($(data).filter('#redirect').attr('data-redirect')) {
-                    window.location.replace(redirectUrl);
+                if(data.fullRedirect) {
+                    var delimiter = '?';
+                    if (redirectUrl.indexOf(delimiter) !== -1) {
+                        delimiter = '&';
+                    }
+                    window.location.replace(redirectUrl + delimiter + '_rand=' + Math.random());
                 } else {
                     this.setLocation(redirectUrl);
                 }
             } else {
-                var content = $(data).filter(this.selectors.content).html();
+                var content = data.content;
                 if (options.fromCache) {
                     //don't load additional scripts for cached page to prevent dublicated scripts loading
                     content = content.replace(/<script.*?><\/script>/ig, '');
                 }
-                $(this.selectors.container).html(content);
-                $(this.selectors.menu).html($(data).filter(this.selectors.menu).html());
+                this.selectorCached.container.html(content);
+                this.selectorCached.menu.html(data.mainMenu);
                 /**
                  * Collecting javascript from head and append them to content
                  */
-                var js = '';
-                $(data).filter('#head').find('script:not([src])').each(function () {
-                    js = js + this.outerHTML;
-                });
-                $(this.selectors.container).append(js);
+                if (data.scripts.length) {
+                    this.selectorCached.container.append(data.scripts);
+                }
                 /**
                  * Setting page title
                  */
-                document.title = $(data).filter('#head').find('#title').html();
+                document.title = data.title;
                 /**
                  * Setting serialized titles for pinbar and favourites buttons
                  */
-                var titleSerialized = $(data).filter('#head').find('#title-serialized').html();
+                var titleSerialized = data.titleSerialized;
                 if (titleSerialized) {
                     titleSerialized = $.parseJSON(titleSerialized);
                     $('.top-action-box .btn').filter('.minimize-button, .favorite-button').data('title', titleSerialized);
                 }
                 if (!options.fromCache) {
-                    this.processClicks($(this.selectors.menu).find(this.selectors.links));
-                    this.processClicks($(this.selectors.container).find(this.selectors.links));
-                    this.processAnchors($(this.selectors.container).find(this.selectors.scrollLinks));
+                    this.processClicks(this.selectorCached.menu.find(this.selectors.links));
+                    this.processClicks(this.selectorCached.container.find(this.selectors.links));
+                    this.processAnchors(this.selectorCached.container.find(this.selectors.scrollLinks));
                     this.updateMenuTabs(data);
-                    this.processForms($(this.selectors.container).find(this.selectors.forms));
-                    this.updateMessages(data);
-                    this.processPinButton(data);
+                    this.processForms(this.selectorCached.container.find(this.selectors.forms));
+                    this.addMessages(data.flashMessages);
+                    this.processPinButton(data.showPinButton);
                 }
                 this.hideActiveDropdowns();
 
@@ -456,30 +519,33 @@ Oro.Navigation = Backbone.Router.extend({
      * Hide active dropdowns
      */
     hideActiveDropdowns: function() {
-        $(this.selectors.searchDropdown).removeClass('header-search-focused');
-        $(this.selectors.menuDropdowns).removeClass('open');
+        this.selectorCached.searchDropdown.removeClass('header-search-focused');
+        this.selectorCached.menuDropdowns.removeClass('open');
     },
 
     /**
-     * Updating session messages block
+     * Add session messages
      *
-     * @param data
+     * @param messages
      */
-    updateMessages: function(data) {
-        $(this.selectors.flashMessages).html($(data).filter(this.selectors.flashMessages).html());
+    addMessages: function(messages) {
+        for (var type in messages) if (messages.hasOwnProperty(type)) {
+            for (var i = 0; i < messages[type].length; i++) {
+                Oro.NotificationMessage(type, messages[type][i]);
+            }
+        }
     },
 
     /**
      * View / hide pins div
      *
-     * @param data
+     * @param showPinButton
      */
-    processPinButton: function(data) {
-        var pinBar  = $(data).filter(this.selectors.pinButton).html();
-        if (pinBar && (pinBar.indexOf("true") !== - 1)) {
-            $(this.selectors.pinButton).show();
+    processPinButton: function(showPinButton) {
+        if (showPinButton) {
+            this.selectorCached.pinButton.show();
         } else {
-            $(this.selectors.pinButton).hide();
+            this.selectorCached.pinButton.hide();
         }
     },
 
@@ -489,13 +555,13 @@ Oro.Navigation = Backbone.Router.extend({
      * @param data
      */
     updateMenuTabs: function (data) {
-        $(this.selectors.historyTab).html($(data).filter(this.selectors.historyTab).html());
-        $(this.selectors.mostViewedTab).html($(data).filter(this.selectors.mostViewedTab).html());
+        this.selectorCached.historyTab.html(data.history);
+        this.selectorCached.mostViewedTab.html(data.mostviewed);
         /**
          * Processing links for history and most viewed tabs
          */
-        this.processClicks($(this.selectors.historyTab).find(this.selectors.links));
-        this.processClicks($(this.selectors.mostViewedTab).find(this.selectors.links));
+        this.processClicks(this.selectorCached.historyTab.find(this.selectors.links));
+        this.processClicks(this.selectorCached.mostViewedTab.find(this.selectors.links));
     },
 
     /**
@@ -643,7 +709,7 @@ Oro.Navigation = Backbone.Router.extend({
      * @return {Boolean}
      */
     checkThirdPartyLink: function(url) {
-        var external = RegExp('^(https?:)?//(?!' + location.host + ')');
+        var external = new RegExp('^(https?:)?//(?!' + location.host + ')');
         return (url.indexOf('http') !== -1) && external.test(url);
     },
 

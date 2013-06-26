@@ -36,13 +36,6 @@ class TimestampableListener implements EventSubscriber
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        $om     = $args->getEntityManager();
-
-        if ($entity instanceof \Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue) {
-            $flexible = $entity->getEntity();
-            $this->updateFlexibleFields($om, $flexible, array('created', 'updated'));
-        }
-
         if ($entity instanceof TimestampableInterface) {
             $entity->setCreated(new \DateTime('now', new \DateTimeZone('UTC')));
             $entity->setUpdated(new \DateTime('now', new \DateTimeZone('UTC')));
@@ -56,11 +49,12 @@ class TimestampableListener implements EventSubscriber
     public function preUpdate(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        $om     = $args->getEntityManager();
 
         if ($entity instanceof \Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue) {
             $flexible = $entity->getEntity();
-            $this->updateFlexibleFields($om, $flexible, array('updated'));
+            if ($flexible !== null) {
+                $this->updateFlexibleFields($args->getEntityManager(), $flexible, array('updated'));
+            }
         }
 
         if ($entity instanceof \Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface) {
@@ -77,15 +71,13 @@ class TimestampableListener implements EventSubscriber
      */
     protected function updateFlexibleFields(ObjectManager $om, AbstractFlexible $flexible, $fields)
     {
-        if ($flexible !== null) {
-            $meta = $om->getClassMetadata(get_class($flexible));
-            $uow  = $om->getUnitOfWork();
-            $now  = new \DateTime('now', new \DateTimeZone('UTC'));
-            $changes = array();
-            foreach ($fields as $field) {
-                $changes[$field]= array(null, $now);
-            }
-            $uow->scheduleExtraUpdate($flexible, $changes);
+        $meta = $om->getClassMetadata(get_class($flexible));
+        $uow  = $om->getUnitOfWork();
+        $now  = new \DateTime('now', new \DateTimeZone('UTC'));
+        $changes = array();
+        foreach ($fields as $field) {
+            $changes[$field]= array(null, $now);
         }
+        $uow->scheduleExtraUpdate($flexible, $changes);
     }
 }
