@@ -97,11 +97,12 @@ class ConfigEntity extends AbstractConfig
     }
 
     /**
+     * @param callable $filter
      * @return ConfigField[]|ArrayCollection
      */
-    public function getFields()
+    public function getFields(\Closure $filter = null)
     {
-        return $this->fields;
+        return $filter ? array_filter($this->fields->toArray(), $filter) : $this->fields;
     }
 
     /**
@@ -114,6 +115,6 @@ class ConfigEntity extends AbstractConfig
             return $field->getCode() == $code;
         });
 
-        return $values->first();
+        return reset($values);
     }
 }

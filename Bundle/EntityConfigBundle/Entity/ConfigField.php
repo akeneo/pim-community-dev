@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Doctrine\ORM\PersistentCollection;
@@ -17,7 +18,6 @@ class ConfigField extends AbstractConfig
 
     /**
      * @var integer
-     *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
@@ -26,39 +26,36 @@ class ConfigField extends AbstractConfig
 
     /**
      * @var ConfigEntity
-     *
      * @ORM\ManyToOne(targetEntity="ConfigEntity", inversedBy="fields")
      * @ORM\JoinColumns({
-     *      @ORM\JoinColumn(name="entity_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="entity_id", referencedColumnName="id")
      * })
      */
     protected $entity;
 
     /**
      * @var ConfigValue[]|PersistentCollection
-     *
      * @ORM\OneToMany(targetEntity="ConfigValue", mappedBy="field", cascade={"all"})
      */
     protected $values;
 
     /**
      * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     protected $code;
 
     /**
      * @var string
-     *
      * @ORM\Column(type="string", length=60, nullable=false)
      */
     protected $type;
 
     public function __construct($code = null, $type = null)
     {
-        $this->code  = $code;
-        $this->type  = $type;
+        $this->code   = $code;
+        $this->type   = $type;
+        $this->values = new ArrayCollection;
     }
 
     /**
@@ -109,7 +106,6 @@ class ConfigField extends AbstractConfig
 
     /**
      * @param ConfigEntity $entity
-     *
      * @return $this
      */
     public function setEntity($entity)

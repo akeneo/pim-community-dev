@@ -250,7 +250,7 @@ class ConfigManager
 
             if ($config instanceof FieldConfigInterface) {
                 if (!$configField = $configEntity->getField($config->getCode())) {
-                    $configField = new ConfigField($config->getCode(), $configField->getType());
+                    $configField = new ConfigField($config->getCode(), $config->getType());
                     $configEntity->addFiled($configField);
                 }
 
