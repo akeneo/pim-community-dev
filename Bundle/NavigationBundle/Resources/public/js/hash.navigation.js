@@ -428,7 +428,6 @@ Oro.Navigation = Backbone.Router.extend({
             options = {};
         }
         try {
-            this.clearContainer();
             data = this.getCorrectedData(data);
             if (data.redirect !== undefined && data.redirect) {
                 var redirectUrl = data.location;
@@ -446,6 +445,7 @@ Oro.Navigation = Backbone.Router.extend({
                     this.setLocation(redirectUrl);
                 }
             } else {
+                this.clearContainer();
                 var content = data.content;
                 if (options.fromCache) {
                     //don't load additional scripts for cached page to prevent dublicated scripts loading
