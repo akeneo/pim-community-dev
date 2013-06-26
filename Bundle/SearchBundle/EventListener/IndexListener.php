@@ -96,7 +96,7 @@ class IndexListener
      */
     public function postFlush(PostFlushEventArgs $args)
     {
-        if (!$this->isActive() || !$this->hasChanges()) {
+        if (!$this->isActive() || empty($this->insertEntities)) {
             return;
         }
 
@@ -104,6 +104,7 @@ class IndexListener
             $this->getSearchEngine()->save($entity, $this->realtime, true);
         }
         $this->insertEntities = array();
+
         $args->getEntityManager()->flush();
     }
 
@@ -122,13 +123,5 @@ class IndexListener
     protected function isSupported($entity)
     {
         return isset($this->entities[get_class($entity)]);
-    }
-
-    /**
-     * @return bool
-     */
-    protected function hasChanges()
-    {
-        return count($this->insertEntities);
     }
 }
