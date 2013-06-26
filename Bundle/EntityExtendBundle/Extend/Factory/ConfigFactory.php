@@ -23,7 +23,8 @@ class ConfigFactory
     {
         $values = array();
 
-        $values['doctrine'] = serialize($data);
+        $values['is_extend'] = true;
+        $values['doctrine']  = serialize($data);
 
         $constraint = array(
             'property'   => array(),
