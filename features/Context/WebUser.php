@@ -1098,12 +1098,24 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^the Options section should contain an empty option$/
+     * @Given /^the Options section should contain (\d+) empty option$/
      */
-    public function theSectionShouldContainAnEmptyOption()
+    public function theSectionShouldContainAnEmptyOption($expectedCountOfOptions)
     {
-        if (1 !== $count = $this->getPage('Attribute creation')->countOptions()) {
-            throw $this->createExpectationException(sprintf('Expecting to see the 1 option, saw %d.', $count));
+        if ((int) $expectedCountOfOptions !== $count = $this->getPage('Attribute creation')->countOptions()) {
+            throw $this->createExpectationException(sprintf(
+                'Expecting to see %d option, saw %d.', $expectedCountOfOptions, $count
+            ));
+        }
+    }
+
+    /**
+     * @Then /^the option should not be removable$/
+     */
+    public function theOptionShouldNotBeRemovable()
+    {
+        if (0 !== $this->getPage('Attribute creation')->countOptionRemoveButtons()) {
+            throw $this->createExpectationException('The option should not be removable.');
         }
     }
 

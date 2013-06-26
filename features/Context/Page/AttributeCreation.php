@@ -35,4 +35,9 @@ class AttributeCreation extends Page
     {
         return count($this->findAll('css', $this->elements['Attribute options']['css']));
     }
+
+    public function countOptionRemoveButtons()
+    {
+        return count($this->findAll('css', 'button.action-delete-inline'));
+    }
 }
