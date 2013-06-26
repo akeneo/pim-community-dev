@@ -170,6 +170,11 @@ class ConfigProvider implements ConfigProviderInterface
         return $className;
     }
 
+    public function flush()
+    {
+        $this->configManager->flush();
+    }
+
     public function getScope()
     {
         return $this->scope;

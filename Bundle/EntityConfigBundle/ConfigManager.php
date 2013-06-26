@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManager;
 use Metadata\ClassHierarchyMetadata;
 use Metadata\MetadataFactory;
 
+use Oro\Bundle\EntityConfigBundle\Config\EntityConfigInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
@@ -52,14 +53,14 @@ class ConfigManager
     protected $configCache;
 
     /**
-     * @var EntityConfig[]
+     * @var ConfigInterface[]
      */
-    protected $persistEntityConfig = array();
+    protected $persistConfigs = array();
 
     /**
-     * @var FieldConfig[]
+     * @var ConfigInterface[]
      */
-    protected $persistFieldConfig = array();
+    protected $removeConfigs = array();
 
     /**
      * @var ConfigProvider[]
@@ -210,45 +211,58 @@ class ConfigManager
      */
     public function persist(ConfigInterface $config)
     {
-        if ($config instanceof FieldConfigInterface) {
-            $this->persistFieldConfig[] = $config;
-        } else {
-            $this->persistEntityConfig[] = $config;
+        $this->persistConfigs[spl_object_hash($config)] = $config;
+
+        if ($config instanceof EntityConfigInterface) {
+            foreach($config->getFields() as $fieldConfig){
+                $this->persistConfigs[spl_object_hash($fieldConfig)] = $fieldConfig;
+            }
         }
     }
 
+    /**
+     * @param ConfigInterface $config
+     */
+    public function remove(ConfigInterface $config)
+    {
+        $this->removeConfigs[spl_object_hash($config)] = $config;
+
+        if ($config instanceof EntityConfigInterface) {
+            foreach($config->getFields() as $fieldConfig){
+                $this->removeConfigs[spl_object_hash($fieldConfig)] = $fieldConfig;
+            }
+        }
+    }
+
+    /**
+     * @param array $entities
+     */
     public function flush(array $entities = array())
     {
-        foreach ($this->persistEntityConfig as $entityConfig) {
-            $className = $entityConfig->getClassName();
+        foreach ($this->persistConfigs as $config) {
+            $className = $config->getClassName();
+
             if (isset($entities[$className])) {
                 $configEntity = $entities[$className];
             } else {
                 $configEntity = $entities[$className] = $this->findOrCreateConfigEntity($className);
             }
 
-            $configEntity->fromArray($entityConfig->getScope(), $entityConfig->getValues());
+            if ($config instanceof FieldConfigInterface) {
+                if (!$configField = $configEntity->getField($config->getCode())) {
+                    $configField = new ConfigField($config->getCode(), $configField->getType());
+                    $configEntity->addFiled($configField);
+                }
 
-            $this->configCache->removeConfigFromCache($className, $entityConfig->getScope());
-        }
-
-        foreach ($this->persistFieldConfig as $fieldConfig) {
-            $className = $fieldConfig->getClassName();
-            if (isset($entities[$className])) {
-                $configEntity = $entities[$className];
+                $configField->fromArray($config->getScope(), $config->getValues());
             } else {
-                $configEntity = $entities[$className] = $this->findOrCreateConfigEntity($className);
+                $configEntity->fromArray($config->getScope(), $config->getValues());
             }
 
-            if (!$field = $configEntity->getField($fieldConfig->getCode())) {
-                $field = new ConfigField($fieldConfig->getCode(), $field->getType());
-                $configEntity->addFiled($field);
-            }
-
-            $field->fromArray($fieldConfig->getScope(), $fieldConfig->getValues());
-
-            $this->configCache->removeConfigFromCache($className, $fieldConfig->getScope());
+            $this->configCache->removeConfigFromCache($className, $config->getScope());
         }
+
+        // TODO:: remove configs
 
         foreach ($entities as $entity) {
             $this->em()->persist($entity);
@@ -257,6 +271,10 @@ class ConfigManager
         $this->em()->flush();
     }
 
+    /**
+     * @param $className
+     * @return ConfigEntity
+     */
     protected function findOrCreateConfigEntity($className)
     {
         $entityConfigRepo = $this->em()->getRepository(ConfigEntity::ENTITY_NAME);

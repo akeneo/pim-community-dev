@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Config;
 
-class EntityConfig extends AbstractConfig
+class EntityConfig extends AbstractConfig implements EntityConfigInterface
 {
     /**
      * @var string
