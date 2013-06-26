@@ -1,7 +1,0 @@
-parameters:
-    oro_entity_form.twig.form.class:              Oro\Bundle\EntityFormBundle\Twig\FormExtension
-services:
-    oro_entity_form.twig.form_extension:
-        class: %oro_entity_form.twig.form.class%
-        tags:
-            - { name: twig.extension }
