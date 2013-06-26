@@ -31,10 +31,8 @@ class ConfigFieldGridController extends Controller
      * @Route("/create/{id}", name="oro_entityextend_field_create", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Template
      */
-    public function createAction($id)
+    public function createAction(ConfigEntity $entity)
     {
-        /** @var ConfigEntity $entity */
-        $entity = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
         /** @var ExtendManager $extendManager */
         $extendManager = $this->get('oro_entity_extend.extend.extend_manager');
 
@@ -43,7 +41,7 @@ class ConfigFieldGridController extends Controller
 
             return $this->redirect($this->generateUrl('oro_entityconfig_fields',
                 array(
-                    'id' => $id
+                    'id' => $entity->getId()
                 )
             ));
         }
@@ -79,7 +77,7 @@ class ConfigFieldGridController extends Controller
 
         return array(
             'form'      => $form->createView(),
-            'entity_id' => $id
+            'entity_id' => $entity->getId()
         );
     }
 
@@ -88,10 +86,16 @@ class ConfigFieldGridController extends Controller
      */
     public function removeAction(ConfigField $field)
     {
+        if (!$field) {
+            throw $this->createNotFoundException('Unable to find ConfigField entity.');
+        }
+
         /** @var ExtendManager $extendManager */
         $extendManager = $this->get('oro_entity_extend.extend.extend_manager');
 
-        if (!$extendManager->isExtend($field->getEntity()->getClassName())) {
+        $fieldConfig = $extendManager->getConfigProvider()
+            ->getFieldConfig($field->getEntity()->getClassName(), $field->getCode());
+        if (!$fieldConfig->is('is_extend')) {
             throw new RuntimeException('Cannot delete not extend field');
         }
 
