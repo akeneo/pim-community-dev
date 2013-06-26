@@ -168,7 +168,6 @@ Oro.Navigation = Backbone.Router.extend({
             $.ajax({
                 url: pageUrl,
                 headers: { 'x-oro-hash-navigation': true },
-                cache: false,
                 beforeSend: function( xhr ) {
                     //remove standard ajax header because we already have a custom header sent
                     xhr.setRequestHeader('X-Requested-With', {toString: function(){ return ''; }});
