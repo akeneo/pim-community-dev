@@ -271,7 +271,8 @@ class Orm extends AbstractEngine
     {
         // check if reindex task has not been added earlier
         $command = 'oro:search:index';
-        $currJob = $this->em->createQuery("SELECT j FROM JMSJobQueueBundle:Job j WHERE j.command = :command AND j.state <> :state")
+        $currJob = $this->em
+            ->createQuery("SELECT j FROM JMSJobQueueBundle:Job j WHERE j.command = :command AND j.state <> :state")
             ->setParameter('command', $command)
             ->setParameter('state', Job::STATE_FINISHED)
             ->setMaxResults(1)
@@ -367,8 +368,8 @@ class Orm extends AbstractEngine
      */
     protected function computeFields($fields)
     {
-        if(count($fields)) {
-            foreach($fields as $field) {
+        if (count($fields)) {
+            foreach ($fields as $field) {
                 $this->em->getUnitOfWork()->computeChangeSet($this->em->getClassMetadata(get_class($field)), $field);
             }
         }

@@ -256,7 +256,7 @@ class OrmTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($uow));
 
         $uow->expects($this->any())
-            ->method('computeFields');;
+            ->method('computeFields');
 
         $this->orm->save($this->product, true, true);
         $this->orm->save($this->product, false);
