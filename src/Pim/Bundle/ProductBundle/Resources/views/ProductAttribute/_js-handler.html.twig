@@ -107,14 +107,18 @@ $(function() {
         });
 
         $(document).on('click', 'button.action-delete-inline', function(e) {
-            var rows = $optionList.find('tr').length;
-            if (rows > 2) {
+            var rows = $optionList.find('tbody tr').length;
+            if (rows > 1) {
                 $(this).parent().parent().remove();
-                if (rows == 3) {
-                    $('button.action-delete-inline').hide();
+                if (rows === 2) {
+                    $('button.action-delete-inline').attr('disabled', 'disabled');
                 }
             }
         });
+
+        if ($('button.action-delete-inline').length === 1) {
+            $('button.action-delete-inline').attr('disabled', 'disabled');
+        }
 
         $('input[name="default"]').on('change', updateDefaultField);
 
@@ -158,7 +162,7 @@ $(function() {
 
         $optionList.find('tbody').append($option);
 
-        $('button.action-delete-inline').show();
+        $('button.action-delete-inline').removeAttr('disabled');
         updateSortOrder();
     }
 

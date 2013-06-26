@@ -1114,7 +1114,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function theOptionShouldNotBeRemovable()
     {
-        if (0 !== $this->getPage('Attribute creation')->countOptionRemoveButtons()) {
+        if (0 !== $this->getPage('Attribute creation')->countRemovableOptions()) {
             throw $this->createExpectationException('The option should not be removable.');
         }
     }
