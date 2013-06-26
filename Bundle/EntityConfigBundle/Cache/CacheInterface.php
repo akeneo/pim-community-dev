@@ -23,4 +23,6 @@ interface CacheInterface
      * @param $scope
      */
     public function removeConfigFromCache($className, $scope);
+
+    public function clearCache();
 }

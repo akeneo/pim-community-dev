@@ -162,6 +162,10 @@ class ConfigManager
         return $metadata->getOutsideClassMetadata()->configurable;
     }
 
+    public function clearCache()
+    {
+        $this->configCache->clearCache();
+    }
     public function updateAll()
     {
         /** @var $doctrineMetadata ClassMetadata */
