@@ -2,9 +2,9 @@
 <project name="pim" default="build">
     <target name="build-behat" depends="prepare,composer,vendors,setupdb,behat"/>
 
-    <target name="build" depends="prepare,composer,vendors,setupdb,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,behat,phpcb"/>
+    <target name="build" depends="prepare,composer,vendors,setupdb,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
 
-    <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,behat,phpcb"/>
+    <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
 
     <target name="tools-parallel" description="Run tools in parallel">
         <parallel threadCount="2">
