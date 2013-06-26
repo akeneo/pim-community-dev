@@ -91,9 +91,9 @@ class AttributeGroupControllerTest extends ControllerTest
         )->first()->form();
 
         $values = array(
-            'pim_attribute_group_form[code]'               => self::GROUP_CODE,
-            'pim_attribute_group_form[name][name:default]' => self::GROUP_NAME,
-            'pim_attribute_group_form[sort_order]'         => self::GROUP_ORDER
+            'pim_attribute_group_form[code]'          => self::GROUP_CODE,
+            'pim_attribute_group_form[name][default]' => self::GROUP_NAME,
+            'pim_attribute_group_form[sort_order]'    => self::GROUP_ORDER
         );
 
 
@@ -141,9 +141,9 @@ class AttributeGroupControllerTest extends ControllerTest
         )->first()->form();
 
         $values = array(
-            'pim_attribute_group_form[code]'               => self::GROUP_EDITED_CODE,
-            'pim_attribute_group_form[name][name:default]' => self::GROUP_NAME,
-            'pim_attribute_group_form[sort_order]'         => self::GROUP_ORDER
+            'pim_attribute_group_form[code]'          => self::GROUP_EDITED_CODE,
+            'pim_attribute_group_form[name][default]' => self::GROUP_NAME,
+            'pim_attribute_group_form[sort_order]'    => self::GROUP_ORDER
         );
 
         $this->submitFormAndAssertFlashbag($form, $values, self::GROUP_SAVED_MSG);
