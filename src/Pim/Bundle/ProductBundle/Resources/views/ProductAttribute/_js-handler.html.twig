@@ -116,7 +116,7 @@ $(function() {
             }
         });
 
-        $('input[name="default"]').on('change', updateDefaultField);
+        $(document).on('change', 'input[name="default"]', updateDefaultField);
 
         $optionList.find('.handle input').hide();
 
@@ -141,6 +141,9 @@ $(function() {
         var option = $optionList.find('tr').last().html();
 
         var optionNumber = $optionList.find('tr.att-option').length + 1;
+        while ($optionList.find('[id*=pim_product_attribute_form_options_'+optionNumber+']').length) {
+            optionNumber++;
+        }
 
         option = option.replace(/\[options\]\[([0-9]+)\]/g, "[options][" + optionNumber + "]");
         option = option.replace(/_options_([0-9]+)_/g, "_options_" + optionNumber + "_");
