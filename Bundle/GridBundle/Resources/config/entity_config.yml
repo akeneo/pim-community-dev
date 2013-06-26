@@ -1,6 +1,31 @@
 oro_entity_config:
     scope:                              datagrid
 
+    entity:
+        form:
+            block_config:
+                datagrid:
+                    title:              'Datagrid Entity Config'
+                    subblocks:
+                        base:           ~
+        items:
+            delete_action:
+                form:
+                    type:               choice
+                    options:
+                        choices:        ['No', 'Yes']
+                        empty_value:    false
+                        block:          datagrid
+                        label:          "Delete Action"
+
+            create_action:
+                form:
+                    type:               choice
+                    options:
+                        choices:        ['No', 'Yes']
+                        empty_value:    false
+                        block:          datagrid
+                        label:          "Create Action"
     field:
         form:
             block_config:

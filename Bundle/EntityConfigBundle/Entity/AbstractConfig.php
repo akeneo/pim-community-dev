@@ -4,8 +4,6 @@ namespace Oro\Bundle\EntityConfigBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Oro\Bundle\EntityConfigBundle\Config\EntityConfigInterface;
-
 abstract class AbstractConfig
 {
     /**
@@ -34,7 +32,7 @@ abstract class AbstractConfig
      */
     public function addValue($value)
     {
-        if ($this instanceof EntityConfigInterface) {
+        if ($this instanceof ConfigEntity) {
             $value->setEntity($this);
         } else {
             $value->setField($this);
@@ -51,7 +49,7 @@ abstract class AbstractConfig
      */
     public function getValues(\Closure $filter = null)
     {
-        return $filter ? array_filter($this->values->toArray(), $filter) : $this->values;
+        return $filter ? array_filter($this->values->toArray(), $filter) : $this->values->toArray();
     }
 
     /**

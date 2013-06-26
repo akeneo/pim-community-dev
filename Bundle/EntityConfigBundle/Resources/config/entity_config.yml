@@ -6,10 +6,6 @@ oro_entity_config:
             block_config:
                 entity:
                     priority:           20
-                    subblocks:
-                        base:           ~
-                        icon:
-                            title:      Icon Setting
         items:
             label:
                 grid:
@@ -24,7 +20,6 @@ oro_entity_config:
                     type:               text
                     options:
                         block:          entity
-                        subblock:       base
                         required:       true
             icon:
                 grid:
@@ -39,7 +34,6 @@ oro_entity_config:
                     type:               text
                     options:
                         block:          entity
-                        subblock:       icon
                         required:       true
             description:
                 form:

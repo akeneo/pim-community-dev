@@ -36,7 +36,7 @@ class ConfigEntityType extends AbstractType
             if ($provider->getConfigContainer()->hasEntityForm()) {
                 $builder->add(
                     $provider->getScope(),
-                    new ConfigType($provider->getConfigContainer()->getFieldItems()),
+                    new ConfigType($provider->getConfigContainer()->getEntityItems()),
                     array(
                         'block_config' => (array)$provider->getConfigContainer()->getEntityFormBlockConfig()
                     )

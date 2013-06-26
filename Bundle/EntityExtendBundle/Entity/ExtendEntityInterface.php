@@ -4,11 +4,7 @@ namespace Oro\Bundle\EntityExtendBundle\Entity;
 
 interface ExtendEntityInterface
 {
-    public function setParent($parent);
-
-    public function get($key);
-
-    public function set($key, $value);
+    public function __extend__setParent($parent);
 
     public function __toArray();
 

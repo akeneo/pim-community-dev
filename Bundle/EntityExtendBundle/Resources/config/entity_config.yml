@@ -17,13 +17,6 @@ oro_entity_config:
                     sortable:           true
                     filterable:         true
                     show_filter:        true
-                form:
-                    type:               choice
-                    options:
-                        choices:        ['No', 'Yes']
-                        read_only:      true
-                        required:       false
-                        label:          "Is Extend Entity"
 
             extend_class:
                 required:               true
