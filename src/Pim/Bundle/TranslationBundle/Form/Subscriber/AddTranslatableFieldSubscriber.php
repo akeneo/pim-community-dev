@@ -142,7 +142,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
 
             $errors = $this->validator->validate(
                 $translation,
-                array(sprintf("%s:%s", $this->getOption('field'), $locale))
+                array($locale)
             );
 
             if (count($errors) > 0) {
@@ -234,10 +234,10 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
 
         if ($this->getOption('only_default')) {
             $defaultLocale = $this->getOption('default_locale');
-            $collection[$defaultLocale] = sprintf('%s:%s', $this->getOption('field'), $defaultLocale);
+            $collection[$defaultLocale] = $defaultLocale;
         } else {
             foreach ($this->getOption('locales') as $locale) {
-                $collection[$locale] = sprintf('%s:%s', $this->getOption('field'), $locale);
+                $collection[$locale] = $locale;
             }
         }
 
