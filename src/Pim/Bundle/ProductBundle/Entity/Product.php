@@ -1,15 +1,16 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity;
 
-use JMS\Serializer\Handler\ArrayCollectionHandler;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\ExecutionContext;
 use Symfony\Component\Validator\Constraints as Assert;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
+use JMS\Serializer\Handler\ArrayCollectionHandler;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\ConfigBundle\Entity\Locale;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
+use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
+use Pim\Bundle\ConfigBundle\Entity\Locale;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
 
 /**
@@ -22,6 +23,7 @@ use Pim\Bundle\ProductBundle\Model\ProductInterface;
  * @ORM\Table(name="pim_product")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductRepository")
  * @Assert\Callback(methods={"isLocalesValid"})
+ * @Oro\Loggable
  */
 class Product extends AbstractEntityFlexible implements ProductInterface
 {
@@ -33,6 +35,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      *     mappedBy="entity",
      *     cascade={"persist", "remove"}
      * )
+     * @Oro\Versioned
      */
     protected $values;
 
@@ -41,6 +44,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      *
      * @ORM\ManyToOne(targetEntity="ProductFamily")
      * @ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Oro\Versioned("getCode")
      */
     protected $productFamily;
 
@@ -53,6 +57,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      *    joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
      *    inverseJoinColumns={@ORM\JoinColumn(name="locale_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
+     * @Oro\Versioned("getCode")
      */
     protected $locales;
 
@@ -65,6 +70,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
 
     /**
      * @ORM\Column(name="is_enabled", type="boolean")
+     *  @Oro\Versioned
      */
     protected $enabled = true;
 

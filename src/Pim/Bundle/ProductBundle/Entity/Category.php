@@ -2,16 +2,12 @@
 namespace Pim\Bundle\ProductBundle\Entity;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
-use Gedmo\Translatable\Translatable;
-
-use Gedmo\Mapping\Annotation as Gedmo;
-
 use Doctrine\ORM\Mapping as ORM;
-
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Gedmo\Translatable\Translatable;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
+use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 
 /**
  * Segment class allowing to organize a flexible product class into trees
@@ -28,15 +24,25 @@ use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
  * @Gedmo\Tree(type="nested")
  * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\CategoryTranslation")
  * @UniqueEntity(fields="code", message="This code is already taken")
+ * @Oro\Loggable
  */
 class Category extends AbstractSegment implements Translatable
 {
+    /**
+     * @var string $code
+     *
+     * @ORM\Column(name="code", type="string", length=64)
+     * @Oro\Versioned
+     */
+    protected $code;
+
     /**
      * @var Category $parent
      *
      * @Gedmo\TreeParent
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Oro\Versioned("getCode")
      */
     protected $parent;
 
@@ -45,6 +51,7 @@ class Category extends AbstractSegment implements Translatable
      *
      * @ORM\OneToMany(targetEntity="Category", mappedBy="parent", cascade={"persist"})
      * @ORM\OrderBy({"left" = "ASC"})
+     * @Oro\Versioned("getCode")
      */
     protected $children;
 

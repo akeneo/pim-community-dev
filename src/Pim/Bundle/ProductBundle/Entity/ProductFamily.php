@@ -1,5 +1,4 @@
 <?php
-
 namespace Pim\Bundle\ProductBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -7,8 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Gedmo\Translatable\Translatable;
+use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
+use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\ProductFamilyTranslation;
 
 /**
@@ -22,10 +22,10 @@ use Pim\Bundle\ProductBundle\Entity\ProductFamilyTranslation;
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductFamilyRepository")
  * @UniqueEntity(fields="code", message="This code is already taken.")
  * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\ProductFamilyTranslation")
+ * @Oro\Loggable
  */
 class ProductFamily implements Translatable
 {
-
     /**
      * @var integer $id
      *
@@ -40,6 +40,7 @@ class ProductFamily implements Translatable
      *
      * @ORM\Column(unique=true)
      * @Assert\Regex(pattern="/^[a-zA-Z0-9]+$/", message="The code must only contain alphanumeric characters.")
+     * @Oro\Versioned
      */
     protected $code;
 
@@ -60,7 +61,8 @@ class ProductFamily implements Translatable
      *    joinColumns={@ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="CASCADE")},
      *    inverseJoinColumns={@ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
-    */
+     * @Oro\Versioned("getCode")
+     */
     protected $attributes;
 
     /**
@@ -87,6 +89,7 @@ class ProductFamily implements Translatable
 
     /**
      * @ORM\ManyToOne(targetEntity="ProductAttribute")
+     * @Oro\Versioned("getCode")
      */
     protected $attributeAsLabel;
 
