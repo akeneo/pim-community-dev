@@ -48,7 +48,6 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      *
      * @param FormFactoryInterface $formFactory
      * @param ValidatorInterface   $validator
-     * @param TranslationFactory   $translationFactory
      * @param multitype:mixed      $options
      */
     public function __construct(FormFactoryInterface $formFactory, ValidatorInterface $validator, array $options)
@@ -248,6 +247,8 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      * Get an option value
      *
      * @param string $name
+     *
+     * @return mixed
      *
      * @throws MissingOptionException
      */
