@@ -263,6 +263,10 @@ class ConfigManager
                 $configEntity->fromArray($config->getScope(), $config->getValues());
             }
 
+//            var_dump($className);
+//            var_dump($config);
+//            die;
+
             $this->configCache->removeConfigFromCache($className, $config->getScope());
         }
 
