@@ -49,13 +49,14 @@ class Generator
 
     /**
      * @param $entityName
+     * @param bool $force
      */
-    public function checkEntityCache($entityName)
+    public function checkEntityCache($entityName, $force = false)
     {
         $extendClass = $this->generateExtendClassName($entityName);
         $proxyClass  = $this->generateProxyClassName($entityName);
 
-        if (!class_exists($extendClass) || !class_exists($proxyClass)) {
+        if ((!class_exists($extendClass) || !class_exists($proxyClass)) || $force) {
             /** write Dynamic class */
             file_put_contents(
                 $this->entityCacheDir. DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $extendClass) . '.php',
@@ -121,6 +122,7 @@ class Generator
 
         if ($fields = $this->configProvider->getConfig($entityName)->getFields()) {
             foreach ($fields as $field => $options) {
+                var_dump($field);
                 if ($this->configProvider->getFieldConfig($entityName, $field)->is('is_extend')) {
                     $yml[$extendClass]['fields'][$field] = unserialize(
                         $this->configProvider->getFieldConfig($entityName, $field)->get('doctrine')

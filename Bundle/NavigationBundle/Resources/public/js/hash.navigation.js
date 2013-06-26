@@ -10,7 +10,7 @@ Oro.Navigation = Backbone.Router.extend({
     /**
      * Hash navigation enabled/disabled flag
      */
-    enabled: true,
+    enabled: false,
 
     /**
      * links - Selector for all links that will be processed by hash navigation
