@@ -40,13 +40,19 @@ class ConfigSubscriber implements EventSubscriberInterface
     {
         $options   = $event->getForm()->getConfig()->getOptions();
         $className = $options['class_name'];
+        $fieldName = isset($options['field_name']) ? $options['field_name'] : null;
         $data      = $event->getData();
 
         foreach ($this->configManager->getProviders() as $provider) {
             if (isset($data[$provider->getScope()])) {
-                $config = $provider->getConfig($className);
-                $config->setValues($data[$provider->getScope()]);
 
+                if ($fieldName) {
+                    $config = $provider->getFieldConfig($className, $fieldName);
+                } else {
+                    $config = $provider->getConfig($className);
+                }
+
+                $config->setValues($data[$provider->getScope()]);
                 //TODO::look after a EntityConfig changes in configManager
                 $this->configManager->persist($config);
             }

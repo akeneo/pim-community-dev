@@ -19,7 +19,11 @@ abstract class AbstractConfig
      */
     public function setValues($values)
     {
-        $this->values = $values;
+        $this->values->clear();
+
+        foreach ($values as $value) {
+            $this->addValue($value);
+        }
 
         return $this;
     }

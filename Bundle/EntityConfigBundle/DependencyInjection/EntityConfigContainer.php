@@ -109,6 +109,13 @@ class EntityConfigContainer
         return array();
     }
 
+    public function hasFieldForm()
+    {
+        return (boolean) array_filter($this->getFieldItems(), function ($item) {
+            return (isset($item['form']) && isset($item['form']['type']));
+        });
+    }
+
     /**
      * @return array
      */

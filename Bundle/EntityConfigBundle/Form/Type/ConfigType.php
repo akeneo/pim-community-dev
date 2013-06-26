@@ -5,15 +5,19 @@ namespace Oro\Bundle\EntityConfigBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-
 class ConfigType extends AbstractType
 {
-    protected $provider;
+    /**
+     * @var array
+     */
+    protected $items;
 
-    public function __construct(ConfigProvider $provider)
+    /**
+     * @param $items
+     */
+    public function __construct($items)
     {
-        $this->provider = $provider;
+        $this->items = $items;
     }
 
     /**
@@ -21,7 +25,7 @@ class ConfigType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        foreach ($this->provider->getConfigContainer()->getEntityItems() as $code => $config) {
+        foreach ($this->items as $code => $config) {
             if (isset($config['form']) && isset($config['form']['type']) && isset($config['form']['options'])) {
                 $builder->add($code, $config['form']['type'], $config['form']['options']);
             }

@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Form\EventListener\ConfigSubscriber;
 
-class ConfigEntityType extends AbstractType
+class ConfigFieldType extends AbstractType
 {
     /**
      * @var ConfigManager
@@ -31,9 +31,10 @@ class ConfigEntityType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $className = $options['class_name'];
+        $fieldName = $options['field_name'];
         $data      = array();
         foreach ($this->configManager->getProviders() as $provider) {
-            if ($provider->getConfigContainer()->hasEntityForm()) {
+            if ($provider->getConfigContainer()->hasFieldForm()) {
                 $builder->add(
                     $provider->getScope(),
                     new ConfigType($provider->getConfigContainer()->getFieldItems()),
@@ -41,7 +42,7 @@ class ConfigEntityType extends AbstractType
                         'block_config' => (array)$provider->getConfigContainer()->getEntityFormBlockConfig()
                     )
                 );
-                $data[$provider->getScope()] = $provider->getConfig($className)->getValues();
+                $data[$provider->getScope()] = $provider->getFieldConfig($className, $fieldName)->getValues();
             }
         }
         $builder->setData($data);
@@ -56,6 +57,7 @@ class ConfigEntityType extends AbstractType
     {
         $resolver->setRequired(array(
             'class_name',
+            'field_name',
         ));
     }
 
@@ -64,6 +66,6 @@ class ConfigEntityType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_entity_config_config_entity_type';
+        return 'oro_entity_config_config_field_type';
     }
 }

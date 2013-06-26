@@ -142,7 +142,7 @@ class ConfigController extends Controller
      * @Route("/field/update/{id}", name="oro_entityconfig_field_update")
      * @Template()
      */
-    public function filedUpdateAction($id)
+    public function fieldupdateAction($id)
     {
         $field   = $this->getDoctrine()->getRepository(ConfigField::ENTITY_NAME)->find($id);
         $form    = $this->createForm('oro_entity_config_config_field_type', null, array(
