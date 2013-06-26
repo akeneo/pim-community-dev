@@ -1001,6 +1001,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^I fill in the "([^"]*)" with "([^"]*)"$/
+     */
+    public function iFillInTheWith($field, $value)
+    {
+        if ('Default label' === $field) {
+            $this->getCurrentPage()->fillDefaultLabelField($value);
+        }
+        $this->getCurrentPage()->fillField($field, $value);
+    }
+
+    /**
      * @Given /^I press the "([^"]*)" button$/
      */
     public function iPressTheButton($button)

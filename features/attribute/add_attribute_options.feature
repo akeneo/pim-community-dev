@@ -21,3 +21,24 @@ Feature: Add attribute options
     And I am on the attribute creation page
     And I select the attribute type "Simple select"
     Then the option should not be removable
+
+  Scenario: Fail to create a select attribute with an empty option
+    Given I am logged in as "admin"
+    And I am on the attribute creation page
+    And I select the attribute type "Simple select"
+    And I fill in the "Name" with "color"
+    And I fill in the "Default label" with "Color"
+    And I save the attribute
+
+  Scenario: Successfully create a select attribute with some options
+    Given I am logged in as "admin"
+    And I am on the attribute creation page
+    And I select the attribute type "Simple select"
+    And I fill in the "Name" with "color"
+    And I fill in the Default label with "Color"
+    And I fill in the following option information:
+      | Default value       | red |
+      | Selected by default | no  |
+    And I add an option with the following information:
+      | Default value       | blue |
+      | Selected by default | yes  |

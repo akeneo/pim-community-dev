@@ -16,6 +16,7 @@ class AttributeCreation extends Page
     protected $elements = array(
         'Attribute type selector' => array('css' => '#pim_product_attribute_form_attributeType'),
         'Attribute options'       => array('css' => 'table.sortable_options tbody tr'),
+        'Default label field'     => array('css' => '#pim_product_attribute_form_label_label:default')
     );
 
     public function selectAttributeType($type)
@@ -39,5 +40,10 @@ class AttributeCreation extends Page
     public function countRemovableOptions()
     {
         return count($this->findAll('css', 'button.action-delete-inline:not([disabled])'));
+    }
+
+    public function fillDefaultLabelField($value)
+    {
+        $this->getElement('Default label field')->setValue($value);
     }
 }
