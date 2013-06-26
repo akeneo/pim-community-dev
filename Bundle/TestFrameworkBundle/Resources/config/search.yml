@@ -1,6 +1,6 @@
 Oro\Bundle\TestFrameworkBundle\Entity\Item:
     label: Test Search Bundle Item
-    alias: TestsBundle:Item
+    alias: oro_test_item
     route:
         name: oro_search_results
     fields:

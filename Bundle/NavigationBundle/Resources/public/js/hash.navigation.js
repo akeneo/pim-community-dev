@@ -168,7 +168,6 @@ Oro.Navigation = Backbone.Router.extend({
             $.ajax({
                 url: pageUrl,
                 headers: { 'x-oro-hash-navigation': true },
-                cache: false,
                 beforeSend: function( xhr ) {
                     //remove standard ajax header because we already have a custom header sent
                     xhr.setRequestHeader('X-Requested-With', {toString: function(){ return ''; }});
@@ -429,7 +428,6 @@ Oro.Navigation = Backbone.Router.extend({
             options = {};
         }
         try {
-            this.clearContainer();
             data = this.getCorrectedData(data);
             if (data.redirect !== undefined && data.redirect) {
                 var redirectUrl = data.location;
@@ -447,6 +445,7 @@ Oro.Navigation = Backbone.Router.extend({
                     this.setLocation(redirectUrl);
                 }
             } else {
+                this.clearContainer();
                 var content = data.content;
                 if (options.fromCache) {
                     //don't load additional scripts for cached page to prevent dublicated scripts loading
@@ -529,9 +528,10 @@ Oro.Navigation = Backbone.Router.extend({
      * @param messages
      */
     addMessages: function(messages) {
+        this.selectorCached['flashMessages'].find('.flash-messages-holder').empty();
         for (var type in messages) if (messages.hasOwnProperty(type)) {
             for (var i = 0; i < messages[type].length; i++) {
-                Oro.NotificationMessage(type, messages[type][i]);
+                Oro.NotificationFlashMessage(type, messages[type][i]);
             }
         }
     },

@@ -8,12 +8,13 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Oro\Bundle\TestFrameworkBundle\Entity\Item;
+
 /**
 * Load customers
 *
 * Execute with "php app/console doctrine:fixtures:load"
-*
-*
 */
 class LoadSearchItemData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
@@ -40,7 +41,7 @@ class LoadSearchItemData extends AbstractFixture implements OrderedFixtureInterf
 
     /**
      * Get product manager
-     * @return SimpleManager
+     * @return FlexibleManager
      */
     protected function getItemManager()
     {
@@ -72,33 +73,33 @@ class LoadSearchItemData extends AbstractFixture implements OrderedFixtureInterf
     {
         for ($ind= 1; $ind < 10; $ind++) {
             //create item
-            $customer = $this->getItemManager()->createFlexible();
+            /** @var $item Item */
+            $item = $this->getItemManager()->createFlexible();
             //string value
-            $customer->stringValue = 'item' . $ind . '@mail.com';
-            $customer->integerValue = $ind*1000;
+            $item->stringValue = 'item' . $ind . '@mail.com';
+            $item->integerValue = $ind*1000;
             //decimal
-            $customer->decimalValue = $ind / 10.0 ;
+            $item->decimalValue = $ind / 10.0 ;
             //float
-            $customer->floatValue = $ind / 10.0 + 10;
+            $item->floatValue = $ind / 10.0 + 10;
             //boolean
-            $customer->booleanValue = rand(0, 1) == true;
+            $item->booleanValue = rand(0, 1) == true;
             //blob
-            $customer->blobValue = "blob-{$ind}";
+            $item->blobValue = "blob-{$ind}";
             //array
-            $customer->arrayValue = array($ind);
+            $item->arrayValue = array($ind);
             //datetime
             $date = new \DateTime('now', new \DateTimeZone('UTC'));
             $date->add(new \DateInterval("P{$ind}Y"));
-            $customer->datetimeValue = $date;
+            $item->datetimeValue = $date;
             //guid
-            $customer->guidValue = uniqid();
+            $item->guidValue = uniqid();
             //object
-            $customer->objectValue = new \stdClass();
+            $item->objectValue = new \stdClass();
 
-            $this->getItemManager()->getStorageManager()->persist($customer);
+            $this->getItemManager()->getStorageManager()->persist($item);
         }
 
         $this->getItemManager()->getStorageManager()->flush();
-
     }
 }
