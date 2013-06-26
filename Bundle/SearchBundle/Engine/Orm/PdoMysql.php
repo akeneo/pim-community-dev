@@ -58,6 +58,7 @@ class PdoMysql extends BaseDriver
     {
         $words = $this->getWords($searchCondition['fieldValue']);
 
+        // TODO Need to clarify search requirements in scope of CRM-214
         if ($searchCondition['condition'] == Query::OPERATOR_CONTAINS) {
             $whereExpr = $this->createMatchAgainstWordsExpr($qb, $words, $index, $searchCondition, $setOrderBy);
             $shortWords = $this->getWordsLessThanFullTextMinWordLength($searchCondition['fieldValue']);
@@ -218,6 +219,7 @@ class PdoMysql extends BaseDriver
         $fieldParameter = 'field' . $index;
         $valueParameter = 'value' . $index;
 
+        // TODO Need to clarify requirements for "not contains" in scope of CRM-215
         $qb->setParameter($valueParameter, '%' . implode('%', $words) . '%');
 
         $whereExpr = 'textField.value NOT LIKE :' . $valueParameter;
