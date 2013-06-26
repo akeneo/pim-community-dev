@@ -25,6 +25,11 @@ use Oro\Bundle\UserBundle\Entity\User;
 class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
     /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
      * @var UserManager
      */
     protected $userManager;
@@ -39,7 +44,8 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      */
     public function setContainer(ContainerInterface $container = null)
     {
-        $this->userManager = $container->get('oro_user.manager');
+        $this->container      = $container;
+        $this->userManager    = $container->get('oro_user.manager');
         $this->userRepository = $this->userManager->getFlexibleRepository();
     }
 
@@ -49,14 +55,38 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     public function load(ObjectManager $manager)
     {
         $users = $this->userRepository->findAll();
+
+        $scope = current($this->getChannelManager()->getChannels());
+        $channel = current($this->getLocaleManager()->getLocales());
+
         $scope = $this->userManager->getStorageManager()->getRepository('PimConfigBundle:Channel')->findOneBy(array());
         foreach ($users as $user) {
-            $this->setFlexibleAttributeValueOption($user, 'cataloglocale', 'en_US');
+            $this->setFlexibleAttributeValueOption($user, 'cataloglocale', $channel->getCode());
             $this->setFlexibleAttributeValueOption($user, 'catalogscope', $scope->getCode());
             $this->persist($user);
         }
 
         $this->flush();
+    }
+
+    /**
+     * Get locale manager
+     *
+     * @return \Pim\Bundle\ConfigBundle\Manager\LocaleManager
+     */
+    protected function getLocaleManager()
+    {
+        return $this->container->get('pim_config.manager.locale');
+    }
+
+    /**
+     * Get channel manager
+     *
+     * @return \Pim\Bundle\ConfigBundle\Manager\ChannelManager
+     */
+    protected function getChannelManager()
+    {
+        return $this->container->get('pim_config.manager.channel');
     }
 
     /**
@@ -69,7 +99,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      * @return void
      * @throws \LogicException
      */
-    private function setFlexibleAttributeValueOption(AbstractFlexible $flexibleEntity, $attributeCode, $value)
+    protected function setFlexibleAttributeValueOption(AbstractFlexible $flexibleEntity, $attributeCode, $value)
     {
         if ($attribute = $this->findAttribute($attributeCode)) {
             $option = $this->findAttributeOptionWithValue($attribute, $value);
@@ -86,7 +116,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      *
      * @return AbstractAttribute
      */
-    private function findAttribute($attributeCode)
+    protected function findAttribute($attributeCode)
     {
         return $this->userRepository->findAttributeByCode($attributeCode);
     }
@@ -100,7 +130,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      * @return AbstractAttributeOption
      * @throws \LogicException
      */
-    private function findAttributeOptionWithValue(AbstractAttribute $attribute, $value)
+    protected function findAttributeOptionWithValue(AbstractAttribute $attribute, $value)
     {
         /** @var $options \Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption[] */
         $options = $this->userManager->getAttributeOptionRepository()->findBy(
@@ -125,7 +155,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      *
      * @return FlexibleValueInterface
      */
-    private function getFlexibleValueForAttribute(AbstractFlexible $flexibleEntity, AbstractAttribute $attribute)
+    protected function getFlexibleValueForAttribute(AbstractFlexible $flexibleEntity, AbstractAttribute $attribute)
     {
         $flexibleValue = $flexibleEntity->getValue($attribute->getCode());
         if (!$flexibleValue) {
@@ -144,7 +174,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      *
      * @return void
      */
-    private function persist($object)
+    protected function persist($object)
     {
         $this->userManager->getStorageManager()->persist($object);
     }
@@ -154,7 +184,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      *
      * @return void
      */
-    private function flush()
+    protected function flush()
     {
         $this->userManager->getStorageManager()->flush();
     }
