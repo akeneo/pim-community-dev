@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "ab185fb7d258be5534fd4d3d6b930d4e",
+    "hash": "e61e2ccb4e5ffc473b543f30634ec973",
     "packages": [
         {
             "name": "akeneo/DemoBundle",
@@ -55,7 +55,7 @@
                 "source": "https://github.com/akeneo/DemoBundle/tree/master",
                 "issues": "https://github.com/akeneo/DemoBundle/issues"
             },
-            "time": "2013-06-24 11:00:58"
+            "time": "2013-06-24 16:10:58"
         },
         {
             "name": "apy/jsfv-bundle",
@@ -1038,7 +1038,7 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -1117,12 +1117,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/doctrine2.git",
-                "reference": "9787b27518bf4e4da1523ced6bfca74e98397907"
+                "reference": "0633aa54c84b69061c8c399f5afa551547527bed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/9787b27518bf4e4da1523ced6bfca74e98397907",
-                "reference": "9787b27518bf4e4da1523ced6bfca74e98397907",
+                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/0633aa54c84b69061c8c399f5afa551547527bed",
+                "reference": "0633aa54c84b69061c8c399f5afa551547527bed",
                 "shasum": ""
             },
             "require": {
@@ -1179,7 +1179,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2013-05-26 07:27:03"
+            "time": "2013-06-25 17:36:05"
         },
         {
             "name": "escapestudios/wsse-authentication-bundle",
@@ -1415,12 +1415,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "v1.2.0"
+                "reference": "e46930075a899c1d1ea8bc4b4bef6566eb0aefb0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/v1.2.0",
-                "reference": "v1.2.0",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/e46930075a899c1d1ea8bc4b4bef6566eb0aefb0",
+                "reference": "e46930075a899c1d1ea8bc4b4bef6566eb0aefb0",
                 "shasum": ""
             },
             "require": {
@@ -1453,7 +1453,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2013-06-09 18:05:57"
+            "time": "2013-06-19 07:07:09"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -2094,12 +2094,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/Gaufrette.git",
-                "reference": "4bfc8e16086276134768159093e2f5d2ad752991"
+                "reference": "6f9260ddf10c9cba9aea66ac92b8f38a13a86115"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/Gaufrette/zipball/4bfc8e16086276134768159093e2f5d2ad752991",
-                "reference": "4bfc8e16086276134768159093e2f5d2ad752991",
+                "url": "https://api.github.com/repos/KnpLabs/Gaufrette/zipball/6f9260ddf10c9cba9aea66ac92b8f38a13a86115",
+                "reference": "6f9260ddf10c9cba9aea66ac92b8f38a13a86115",
                 "shasum": ""
             },
             "require": {
@@ -2110,6 +2110,7 @@
                 "doctrine/dbal": ">=2.3",
                 "dropbox-php/dropbox-php": "*",
                 "herzult/php-ssh": "*",
+                "phpseclib/phpseclib": "dev-master",
                 "phpspec/phpspec2": "dev-master",
                 "phpunit/phpunit": "3.7.*",
                 "rackspace/php-cloudfiles": "*",
@@ -2126,6 +2127,7 @@
                 "ext-mongo": "*",
                 "ext-zip": "to use the Zip adapter",
                 "knplabs/knp-gaufrette-bundle": "*",
+                "phpseclib/phpseclib": "to use the SFTP",
                 "rackspace/php-opencloud": "to use Opencloud adapter"
             },
             "type": "library",
@@ -2161,7 +2163,7 @@
                 "filesystem",
                 "media"
             ],
-            "time": "2013-04-28 21:52:32"
+            "time": "2013-06-17 09:36:44"
         },
         {
             "name": "knplabs/knp-components",
@@ -2231,12 +2233,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpGaufretteBundle.git",
-                "reference": "de1ef2f9b2cb422f11e9585f29af0c73c105f01d"
+                "reference": "6c615bde72ab40e90bc271cffc2a33fe38ba30bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpGaufretteBundle/zipball/de1ef2f9b2cb422f11e9585f29af0c73c105f01d",
-                "reference": "de1ef2f9b2cb422f11e9585f29af0c73c105f01d",
+                "url": "https://api.github.com/repos/KnpLabs/KnpGaufretteBundle/zipball/6c615bde72ab40e90bc271cffc2a33fe38ba30bb",
+                "reference": "6c615bde72ab40e90bc271cffc2a33fe38ba30bb",
                 "shasum": ""
             },
             "require": {
@@ -2282,7 +2284,7 @@
                 "filesystem",
                 "media"
             ],
-            "time": "2013-04-15 06:12:02"
+            "time": "2013-06-17 07:53:15"
         },
         {
             "name": "knplabs/knp-menu",
@@ -2811,12 +2813,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/platform.git",
-                "reference": "b42f6714123b8556fb44963a89857a6661620694"
+                "reference": "e09b5adbda3cdbc04d9fff7db9f009014c8e13cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/platform/zipball/b42f6714123b8556fb44963a89857a6661620694",
-                "reference": "b42f6714123b8556fb44963a89857a6661620694",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/e09b5adbda3cdbc04d9fff7db9f009014c8e13cb",
+                "reference": "e09b5adbda3cdbc04d9fff7db9f009014c8e13cb",
                 "shasum": ""
             },
             "require": {
@@ -2878,7 +2880,7 @@
                 "source": "https://github.com/laboro/platform/tree/master",
                 "issues": "https://github.com/laboro/platform/issues"
             },
-            "time": "2013-06-25 12:23:07"
+            "time": "2013-06-26 10:53:03"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -3849,12 +3851,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "6f753205834b511269a97fe35108bbd5c8d245f5"
+                "reference": "49d31bbfee5872f6d612be5265e53fe2813f59a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/6f753205834b511269a97fe35108bbd5c8d245f5",
-                "reference": "6f753205834b511269a97fe35108bbd5c8d245f5",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/49d31bbfee5872f6d612be5265e53fe2813f59a1",
+                "reference": "49d31bbfee5872f6d612be5265e53fe2813f59a1",
                 "shasum": ""
             },
             "require": {
@@ -3873,7 +3875,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD-3"
+                "BSD-3-Clause"
             ],
             "authors": [
                 {
@@ -3890,7 +3892,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-06-09 06:03:21"
+            "time": "2013-06-25 16:45:01"
         },
         {
             "name": "willdurand/expose-translation-bundle",
@@ -4927,17 +4929,88 @@
             "time": "2013-06-06 20:36:08"
         },
         {
+            "name": "genemu/form-bundle",
+            "version": "2.1.x-dev",
+            "target-dir": "Genemu/Bundle/FormBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/genemu/GenemuFormBundle.git",
+                "reference": "v2.1.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/genemu/GenemuFormBundle/zipball/v2.1.4",
+                "reference": "v2.1.4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "symfony/form": ">=2.1,<2.3-dev",
+                "symfony/framework-bundle": ">=2.1,<2.3-dev"
+            },
+            "require-dev": {
+                "doctrine/doctrine-bundle": "1.*",
+                "doctrine/mongodb-odm-bundle": "*",
+                "doctrine/orm": "2.*",
+                "phpunit/phpunit": "3.7.*",
+                "propel/propel-bundle": "*",
+                "symfony/doctrine-bridge": ">=2.1,<2.3-dev",
+                "symfony/finder": "2.*"
+            },
+            "suggest": {
+                "symfony/doctrine-bundle": "In order to use some form types with Doctrine",
+                "symfony/finder": "For an image type",
+                "symfony/mongodb-odm-bundle": "For MongoDB integration",
+                "symfony/twig-bridge": "For integration into Twig templates"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Genemu\\Bundle\\FormBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Olivier Chauvel",
+                    "email": "olivier@generation-multiple.com"
+                },
+                {
+                    "name": "Community contributions",
+                    "homepage": "https://github.com/genemu/GenemuFormBundle/contributors"
+                },
+                {
+                    "name": "Bilal Amarni",
+                    "email": "bilal.amarni@gmail.com"
+                }
+            ],
+            "description": "Extra form types for your Symfony2 projects",
+            "keywords": [
+                "extra form",
+                "form"
+            ],
+            "time": "2013-05-01 15:40:40"
+        },
+        {
             "name": "instaclick/php-webdriver",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/instaclick/php-webdriver.git",
-                "reference": "1.0.14"
+                "reference": "3af07b82598506e765cffdf4cf1385b117cf0a41"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/instaclick/php-webdriver/zipball/1.0.14",
-                "reference": "1.0.14",
+                "url": "https://api.github.com/repos/instaclick/php-webdriver/zipball/3af07b82598506e765cffdf4cf1385b117cf0a41",
+                "reference": "3af07b82598506e765cffdf4cf1385b117cf0a41",
                 "shasum": ""
             },
             "require": {
@@ -4979,7 +5052,7 @@
                 "webdriver",
                 "webtest"
             ],
-            "time": "2013-06-12 03:00:14"
+            "time": "2013-06-19 13:54:29"
         },
         {
             "name": "sensiolabs/behat-page-object-extension",
