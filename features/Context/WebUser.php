@@ -1092,9 +1092,18 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldSeeTheSection($title)
     {
-        $page = $this->getPage('Attribute creation');
-        if (!$page->getSection($title)) {
+        if (!$this->getPage('Attribute creation')->getSection($title)) {
             throw $this->createExpectationException(sprintf('Expecting to see the %s section.', $title));
+        }
+    }
+
+    /**
+     * @Given /^the Options section should contain an empty option$/
+     */
+    public function theSectionShouldContainAnEmptyOption()
+    {
+        if (1 !== $count = $this->getPage('Attribute creation')->countOptions()) {
+            throw $this->createExpectationException(sprintf('Expecting to see the 1 option, saw %d.', $count));
         }
     }
 

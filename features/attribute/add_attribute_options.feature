@@ -9,3 +9,4 @@ Feature: Add attribute options
     And I am on the attribute creation page
     And I select the attribute type "Simple select"
     Then I should see the "Options" section
+    And the Options section should contain an empty option

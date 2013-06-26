@@ -15,6 +15,7 @@ class AttributeCreation extends Page
 
     protected $elements = array(
         'Attribute type selector' => array('css' => '#pim_product_attribute_form_attributeType'),
+        'Attribute options'       => array('css' => 'table.sortable_options tbody tr'),
     );
 
     public function selectAttributeType($type)
@@ -28,5 +29,10 @@ class AttributeCreation extends Page
     public function getSection($title)
     {
         return $this->find('css', sprintf('div.accordion-heading:contains("%s")', $title));
+    }
+
+    public function countOptions()
+    {
+        return count($this->findAll('css', $this->elements['Attribute options']['css']));
     }
 }
