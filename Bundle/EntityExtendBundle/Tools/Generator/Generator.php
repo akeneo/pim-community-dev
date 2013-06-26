@@ -122,9 +122,8 @@ class Generator
         if ($fields = $this->configProvider->getConfig($entityName)->getFields()) {
             foreach ($fields as $field => $options) {
                 if ($this->configProvider->getFieldConfig($entityName, $field)->is('is_extend')) {
-                    $yml[$extendClass]['fields'][$field] = array(
-                        'is_extend' => true,
-                        'doctrine'  => unserialize($this->configProvider->getFieldConfig($entityName, $field)->get('doctrine'))
+                    $yml[$extendClass]['fields'][$field] = unserialize(
+                        $this->configProvider->getFieldConfig($entityName, $field)->get('doctrine')
                     );
                 }
             }

@@ -3,6 +3,7 @@
 namespace Oro\Bundle\EntityExtendBundle\Extend;
 
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
+use Oro\Bundle\EntityExtendBundle\Extend\Factory\ConfigFactory;
 use Oro\Bundle\EntityExtendBundle\Tools\Generator\Generator;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
@@ -17,6 +18,11 @@ class ExtendManager
      * @var ExtendObjectFactory
      */
     protected $extendFactory;
+
+    /**
+     * @var ConfigFactory
+     */
+    protected $configFactory;
 
     /**
      * @var ConfigProvider
@@ -39,6 +45,7 @@ class ExtendManager
         $this->configProvider = $configProvider;
         $this->proxyFactory   = new ProxyObjectFactory($this);
         $this->extendFactory  = new ExtendObjectFactory($this);
+        $this->configFactory  = new ConfigFactory($this);
         $this->generator      = new Generator($configProvider, $backend, $entityCacheDir);
     }
 
@@ -75,6 +82,14 @@ class ExtendManager
     }
 
     /**
+     * @return ConfigFactory
+     */
+    public function getConfigFactory()
+    {
+        return $this->configFactory;
+    }
+
+    /**
      * @return Generator
      */
     public function getClassGenerator()
@@ -92,6 +107,7 @@ class ExtendManager
             && $this->configProvider->getConfig($entityName)->is('is_extend')
         ) {
             $this->checkEntityCache($this->configProvider->getClassName($entityName));
+
             return true;
         }
 

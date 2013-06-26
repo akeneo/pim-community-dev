@@ -5,15 +5,10 @@ namespace Oro\Bundle\EntityExtendBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class FieldType extends AbstractType
 {
-    /**
-     * @var ConfigProvider
-     */
-    protected $extendConfigProvider;
-
     protected $types = array(
         'string',
         'text',
@@ -25,29 +20,71 @@ class FieldType extends AbstractType
         'date'
     );
 
-    protected $options = array(
-        'length'    => array('string'),
-        'unique'    => array(),
-        'nullable'  => array(),
-        'precision' => array('decimal'),
-        'scale'     => array('decimal'),
-    );
-
-    /**
-     * @param ConfigProvider $extendConfigProvider
-     */
-    public function __construct(ConfigProvider $extendConfigProvider)
-    {
-        $this->extendConfigProvider = $extendConfigProvider;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->add('code', 'text', array(
+            'label'    => 'Field Name',
+            'block'    => 'type',
+            'subblock' => 'common',
+        ));
+
         $builder->add('type', 'choice', array(
-            'choices' => array_combine(array_reverse($this->types), $this->types)
+            'choices'     => array_combine(array_values($this->types), $this->types),
+            'empty_value' => false,
+            'block'       => 'type',
+            'subblock'    => 'common',
+        ));
+
+        $builder->add('length', 'integer', array(
+            'block'    => 'type',
+            'subblock' => 'custom',
+            'required' => false,
+        ));
+        $builder->add('unique', 'checkbox', array(
+            'block'    => 'type',
+            'subblock' => 'common',
+            'required' => false,
+        ));
+        $builder->add('nullable', 'checkbox', array(
+            'block'    => 'type',
+            'subblock' => 'common',
+            'required' => false,
+        ));
+        $builder->add('precision', 'integer', array(
+            'block'    => 'type',
+            'subblock' => 'custom',
+            'required' => false,
+        ));
+        $builder->add('scale', 'integer', array(
+            'block'    => 'type',
+            'subblock' => 'custom',
+            'required' => false,
         ));
 
     }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'block_config' => array(
+                'type' => array(
+                    'title'     => 'Doctrine Type',
+                    'priority'  => 1,
+                    'subblocks' => array(
+                        'common' => array(
+                            'title'    => 'Common Setting',
+                            'priority' => 2,
+                        ),
+                        'custom' => array(
+                            'title'    => 'Custom Setting',
+                            'priority' => 1,
+                        ),
+                    )
+                ),
+            )
+        ));
+    }
+
 
     /**
      * {@inheritdoc}
