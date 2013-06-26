@@ -1087,6 +1087,39 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
+    /**
+     * @Then /^I should see the "([^"]*)" section$/
+     */
+    public function iShouldSeeTheSection($title)
+    {
+        if (!$this->getPage('Attribute creation')->getSection($title)) {
+            throw $this->createExpectationException(sprintf('Expecting to see the %s section.', $title));
+        }
+    }
+
+    /**
+     * @Given /^the Options section should contain (\d+) empty option$/
+     */
+    public function theSectionShouldContainAnEmptyOption($expectedCountOfOptions)
+    {
+        if ((int) $expectedCountOfOptions !== $count = $this->getPage('Attribute creation')->countOptions()) {
+            throw $this->createExpectationException(sprintf(
+                'Expecting to see %d option, saw %d.', $expectedCountOfOptions, $count
+            ));
+        }
+    }
+
+    /**
+     * @Then /^the option should not be removable$/
+     */
+    public function theOptionShouldNotBeRemovable()
+    {
+        if (0 !== $this->getPage('Attribute creation')->countRemovableOptions()) {
+            throw $this->createExpectationException('The option should not be removable.');
+        }
+    }
+
+    /* Private methods */
     private function openPage($page, array $options = array())
     {
         $this->currentPage = $page;
