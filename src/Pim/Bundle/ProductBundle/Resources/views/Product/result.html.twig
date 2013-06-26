@@ -25,6 +25,7 @@
 {% set entityType = 'Product' |trans({}, 'config') %}
 
 {% set entityInfo = [
+    {'title': 'Family', 'value': entity.productFamily ? entity.productFamily : 'N/A'},
     {'title': 'Created', 'value': entity.created ? macros.time(entity.created) : 'N/A'},
     {'title': 'Updated', 'value': entity.updated ? macros.time(entity.updated) : 'N/A'},
 ] %}
