@@ -24,4 +24,9 @@ class AttributeCreation extends Page
             ->selectOption($type)
         ;
     }
+
+    public function getSection($title)
+    {
+        return $this->find('css', sprintf('div.accordion-heading:contains("%s")', $title));
+    }
 }

@@ -1087,6 +1087,18 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
+    /**
+     * @Then /^I should see the "([^"]*)" section$/
+     */
+    public function iShouldSeeTheSection($title)
+    {
+        $page = $this->getPage('Attribute creation');
+        if (!$page->getSection($title)) {
+            throw $this->createExpectationException(sprintf('Expecting to see the %s section.', $title));
+        }
+    }
+
+    /* Private methods */
     private function openPage($page, array $options = array())
     {
         $this->currentPage = $page;
