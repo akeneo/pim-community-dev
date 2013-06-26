@@ -29,7 +29,6 @@ use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
  * )
  * @Gedmo\Tree(type="nested")
  * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\CategoryTranslation")
- * @UniqueEntity(fields="code", message="This code is already taken")
  */
 class Category extends AbstractSegment implements Translatable, CategoryInterface
 {
@@ -37,7 +36,7 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
      * @var Category $parent
      *
      * @Gedmo\TreeParent
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Model\CategoryInterface", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $parent;
@@ -45,7 +44,11 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
     /**
      * @var \Doctrine\Common\Collections\Collection $children
      *
-     * @ORM\OneToMany(targetEntity="Category", mappedBy="parent", cascade={"persist"})
+     * @ORM\OneToMany(
+     *     targetEntity="Pim\Bundle\ProductBundle\Model\CategoryInterface",
+     *     mappedBy="parent",
+     *     cascade={"persist"}
+     * )
      * @ORM\OrderBy({"left" = "ASC"})
      */
     protected $children;

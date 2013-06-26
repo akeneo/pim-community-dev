@@ -59,7 +59,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     /**
      * @var ArrayCollection $categories
      *
-     * @ORM\ManyToMany(targetEntity="Category", mappedBy="products")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ProductBundle\Model\CategoryInterface", mappedBy="products")
      */
     protected $categories;
 
