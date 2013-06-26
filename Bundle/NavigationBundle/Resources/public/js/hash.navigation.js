@@ -528,9 +528,10 @@ Oro.Navigation = Backbone.Router.extend({
      * @param messages
      */
     addMessages: function(messages) {
+        this.selectorCached['flashMessages'].find('.flash-messages-holder').empty();
         for (var type in messages) if (messages.hasOwnProperty(type)) {
             for (var i = 0; i < messages[type].length; i++) {
-                Oro.NotificationMessage(type, messages[type][i]);
+                Oro.NotificationFlashMessage(type, messages[type][i]);
             }
         }
     },
