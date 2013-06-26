@@ -54,7 +54,7 @@ class ProductFamily implements Translatable
     /**
      * @var ArrayCollection $attributes
      *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ProductBundle\Entity\ProductAttribute")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ProductBundle\Entity\ProductAttribute", cascade={"persist"})
      * @ORM\JoinTable(
      *    name="pim_product_family_attribute",
      *    joinColumns={@ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="CASCADE")},

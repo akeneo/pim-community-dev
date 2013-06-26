@@ -39,7 +39,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     /**
      * @var productFamily
      *
-     * @ORM\ManyToOne(targetEntity="ProductFamily")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\ProductFamily", cascade={"persist"})
      * @ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $productFamily;
@@ -47,7 +47,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     /**
      * @var ArrayCollection $locales
      *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale", cascade={"persist"})
      * @ORM\JoinTable(
      *    name="pim_product_locale",
      *    joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
