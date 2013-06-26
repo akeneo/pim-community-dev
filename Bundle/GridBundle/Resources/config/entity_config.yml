@@ -2,6 +2,12 @@ oro_entity_config:
     scope:                              datagrid
 
     field:
+        form:
+            block_config:
+                datagrid:
+                    title:              'Datagrid Config'
+                    subblocks:
+                        base:           ~
         items:
             enabled:
                 grid:
@@ -16,8 +22,8 @@ oro_entity_config:
                     type:               choice
                     options:
                         choices:        ['No', 'Yes']
-                        read_only:       true
-                        required:       false
+                        empty_value:    false
+                        block:          datagrid
                         label:          "Show in Datagrid"
 
             is_searchable:
@@ -33,8 +39,25 @@ oro_entity_config:
                     type:               choice
                     options:
                         choices:        ['No', 'Yes']
-                        read_only:      false
-                        required:       false
+                        empty_value:    false
+                        block:          datagrid
                         label:          "Datagrid search"
+
+            is_filtrableble:
+                grid:
+                    type:               boolean
+                    label:              'Datagrid filter'
+                    filter_type:        oro_grid_orm_boolean
+                    required:           true
+                    sortable:           true
+                    filterable:         true
+                    show_filter:        true
+                form:
+                    type:               choice
+                    options:
+                        choices:        ['No', 'Yes']
+                        empty_value:    false
+                        block:          datagrid
+                        label:          "Datagrid filter"
 
 
