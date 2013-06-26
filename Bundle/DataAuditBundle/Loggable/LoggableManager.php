@@ -1,20 +1,14 @@
 <?php
-
 namespace Oro\Bundle\DataAuditBundle\Loggable;
 
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 use Doctrine\Common\Collections\Collection;
-
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\EntityManager;
-
 use Oro\Bundle\UserBundle\Entity\User;
-
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Oro\Bundle\DataAuditBundle\Metadata\ClassMetadata;
-
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
 
@@ -218,7 +212,7 @@ class LoggableManager
                 $method = $meta->propertyMetadata[$collectionMapping['fieldName']]->method;
 
                 $newCollection = $collection->toArray();
-                $oldCollection = array_diff($collection->getSnapshot(), $newCollection);
+                $oldCollection = $collection->getSnapshot();
 
                 $oldData = array_reduce(
                     $oldCollection,
@@ -405,16 +399,6 @@ class LoggableManager
                     $newDataArray = $newData->toArray();
                     $oldDataArray = array_diff($newData->getSnapshot(), $newDataArray);
 
-                    $oldData = implode(
-                        ', ',
-                        array_map(
-                            function ($item) {
-                                return (string) $item;
-                            },
-                            $oldDataArray
-                        )
-                    );
-
                     $newData = implode(
                         ', ',
                         array_map(
@@ -425,8 +409,23 @@ class LoggableManager
                         )
                     );
 
-                } elseif (is_object($oldData)) {
+                    $oldData = implode(
+                        ', ',
+                        array_map(
+                            function ($item) {
+                                return (string) $item;
+                            },
+                            $oldDataArray
+                        )
+                    );
+
+                } elseif ($newData instanceof \DateTime) {
+                    $oldData = $oldData->format(\DateTime::ISO8601);
+                    $newData = $newData->format(\DateTime::ISO8601);
+
+                } elseif (is_object($newData)) {
                     $oldData = (string) $oldData;
+                    $newData = (string) $newData;
                 }
 
                 // special case for, as an example, decimal values
