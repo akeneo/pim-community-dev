@@ -481,7 +481,7 @@ Oro.Navigation = Backbone.Router.extend({
                     this.processPinButton(data.showPinButton);
                 }
                 this.hideActiveDropdowns();
-
+                Oro.Events.trigger("hash_navigation_content:refresh", this);
             }
         }
         catch (err) {
