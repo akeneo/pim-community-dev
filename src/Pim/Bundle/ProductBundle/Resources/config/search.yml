@@ -1,4 +1,4 @@
-Pim\Bundle\ProductBundle\Entity\Category:
+%pim_product.entity.category.class%:
     alias:                          pim_category
     title_fields:                   [title]
     route:
@@ -16,7 +16,7 @@ Pim\Bundle\ProductBundle\Entity\Category:
             target_type:            text
             target_fields:          [code]
             
-Pim\Bundle\ProductBundle\Entity\Product:
+%pim_product.entity.product.class%:
     alias:                          pim_product
     route:
         name:                       pim_product_product_edit
