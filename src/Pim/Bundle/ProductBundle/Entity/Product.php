@@ -346,4 +346,12 @@ class Product extends AbstractEntityFlexible implements ProductInterface
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getLabel();
+    }
 }

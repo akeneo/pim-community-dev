@@ -16,11 +16,7 @@
     {% endblock %}
 {% endif %}
 
-{% if entity.sku is defined %}
-    {% set title = entity.sku %}
-{% else %}
-    {% set title = entity.id %}
-{% endif %}
+{% set title = entity.getLabel() %}
 
 {% set entityType = 'Product' |trans({}, 'config') %}
 
