@@ -30,6 +30,8 @@ use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
  * )
  * @Gedmo\Tree(type="nested")
  * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\CategoryTranslation")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
  */
 class Category extends AbstractSegment implements Translatable, CategoryInterface
 {
