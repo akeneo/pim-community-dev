@@ -24,6 +24,7 @@ parameters:
 
     pim_product.entity.category.class:                 Pim\Bundle\ProductBundle\Entity\Category
     pim_product.manager.category.class:                Pim\Bundle\ProductBundle\Manager\CategoryManager
+    pim_product.form.type.category.class:              Pim\Bundle\ProductBundle\Form\Type\CategoryType
 
     pim_product.listener.user_context.class:           Pim\Bundle\ProductBundle\EventListener\UserContextListener
     
@@ -150,6 +151,11 @@ services:
         class: %pim_product.form.type.product_value_price_collection.class%
         tags:
             - { name: form.type, alias: pim_product_price_collection }
+
+    pim_product.form.type.category:
+        class: %pim_product.form.type.category.class%
+        tags:
+            - { name: form.type, alias: pim_category }
 
     # Attribute property types
     pim_product.form.type.scopable:
