@@ -27,6 +27,20 @@ class CategoryType extends AbstractSegmentType
     {
         parent::buildForm($builder, $options);
 
+        $this->addTitleField($builder);
+
+        // Add isDynamic field is needed
+        $subscriber = new CategorySubscriber($builder->getFormFactory());
+        $builder->addEventSubscriber($subscriber);
+    }
+
+    /**
+     * Add title field
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function addTitleField(FormBuilderInterface $builder)
+    {
         $builder->add(
             'title',
             'pim_translatable_field',
@@ -37,10 +51,6 @@ class CategoryType extends AbstractSegmentType
                 'property_path'     => 'translations'
             )
         );
-
-        // Add isDynamic field is needed
-        $subscriber = new CategorySubscriber($builder->getFormFactory());
-        $builder->addEventSubscriber($subscriber);
     }
 
     /**
