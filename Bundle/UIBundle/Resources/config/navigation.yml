@@ -33,6 +33,7 @@ oro_menu_config:
             type: shortcuts
 
 oro_titles:
+    oro_default:                  Welcome!
     oro_ui_index:                 Dashboard
     oro_ui_1column:               Dashboard | One Column
     oro_ui_grid_without_bar_page: Dashboard | Grid

@@ -5,8 +5,8 @@ $(function () {
         var cCount = cList.children().length;
         var widget = cList.attr('data-prototype').replace(/__name__/g, cCount++);
 
-        var data = $('<div/>');
-        data.html(widget).appendTo(cList);
+        var data = $('<div/>').html(widget);
+        data.children().appendTo(cList);
         /* temporary solution need add init only for new created row */
         Oro.styleForm(data);
         /* temporary solution finish */
