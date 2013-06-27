@@ -55,6 +55,18 @@ class Generator
     {
         $extendClass = $this->generateExtendClassName($entityName);
         $proxyClass  = $this->generateProxyClassName($entityName);
+        $validator   = $this->entityCacheDir. DIRECTORY_SEPARATOR . 'validator.yml';
+
+        if (!file_exists($validator)) {
+            file_put_contents(
+                $validator,
+                ''
+            );
+        }
+        $validatorYml = Yaml::parse($validator);
+
+//        var_dump($validatorYml);
+//        die;
 
         if ((!class_exists($extendClass) || !class_exists($proxyClass)) || $force) {
             /** write Dynamic class */
@@ -98,6 +110,7 @@ class Generator
             $extendClass => array(
                 'type'     => 'entity',
                 'table'    => 'oro_extend_' . strtolower(str_replace('\\', '', $entityName)),
+
                 'oneToOne' => array(
                     'parent' => array(
                         'targetEntity' => $entityName,
@@ -122,7 +135,6 @@ class Generator
 
         if ($fields = $this->configProvider->getConfig($entityName)->getFields()) {
             foreach ($fields as $field => $options) {
-                var_dump($field);
                 if ($this->configProvider->getFieldConfig($entityName, $field)->is('is_extend')) {
                     $yml[$extendClass]['fields'][$field] = unserialize(
                         $this->configProvider->getFieldConfig($entityName, $field)->get('doctrine')
@@ -163,35 +175,36 @@ class Generator
 
         $class = PhpClass::create($this->generateClassName($entityName))
             ->setName($className)
+            ->setParentClassName($entityName)
             ->setInterfaceNames(array('Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface'))
             ->setProperty(PhpProperty::create('id')->setVisibility('protected'))
-            ->setProperty(PhpProperty::create('parent')->setVisibility('protected'))
+            ->setProperty(PhpProperty::create('__extend__parent')->setVisibility('protected'))
             ->setMethod($this->generateClassMethod(
                 'getId',
                 'return $this->id;'
             ))
             ->setMethod($this->generateClassMethod(
-                'getParent',
-                'return $this->parent;'
+                '__extend__getParent',
+                'return $this->__extend__parent;'
             ))
             ->setMethod($this->generateClassMethod(
-                'setParent',
-                '$this->parent = $parent;return $this;',
+                '__extend__setParent',
+                '$this->__extend__parent = $parent;return $this;',
                 array('parent')
             ))
-            ->setMethod($this->generateClassMethod(
-                'set',
-                'return $this->{\'set\'.ucfirst($key)}($value);',
-                array('key', 'value')
-            ))
-            ->setMethod($this->generateClassMethod(
-                'get',
-                'return $this->{\'get\'.ucfirst($key)}();',
-                array('key')
-            ))
+//            ->setMethod($this->generateClassMethod(
+//                'set',
+//                'return $this->{\'set\'.ucfirst($key)}($value);',
+//                array('key', 'value')
+//            ))
+//            ->setMethod($this->generateClassMethod(
+//                'get',
+//                'return $this->{\'get\'.ucfirst($key)}();',
+//                array('key')
+//            ))
             ->setMethod($this->generateClassMethod(
                 '__fromArray',
-                'foreach ($values as $key => $value) {$this->set($key, $value);}',
+                'foreach ($values as $key => $value) {$this->{\'set\'.ucfirst($key)}($value);}',
                 array('values')
             ));
 
@@ -199,6 +212,17 @@ class Generator
         if ($fields = $this->configProvider->getConfig($entityName)->getFields()) {
             foreach ($fields as $field => $options) {
                 if ($this->configProvider->getFieldConfig($entityName, $field)->is('is_extend')) {
+                    $class
+                        ->setProperty(PhpProperty::create($field)->setVisibility('protected'))
+                        ->setMethod($this->generateClassMethod(
+                            'get'.ucfirst($field),
+                            'return $this->'.$field.';'
+                        ))
+                        ->setMethod($this->generateClassMethod(
+                            'set'.ucfirst($field),
+                            '$this->'.$field.' = $value; return $this;',
+                            array('value')
+                        ));
                     $toArray .= '    \''.$field.'\' => $this->'.$field.','."\n";
                 }
             }
@@ -247,17 +271,17 @@ class Generator
         $toArray = '';
         if ($fields = $this->configProvider->getConfig($entityName)->getFields()) {
             foreach ($fields as $field => $options) {
-                $toArray .= '    \''.$field.'\' => $this->get'.ucfirst($field).','."\n";
+                $toArray .= '    \''.$field.'\' => $this->get'.ucfirst($field).'(),'."\n";
 
                 if ($this->configProvider->getFieldConfig($entityName, $field)->is('is_extend')) {
                     $class->setMethod($this->generateClassMethod(
                         'set'.ucfirst($field),
-                        '$this->__extend->set(\''.$field.'\', $'.$field.'); return $this;',
+                        '$this->__proxy__extend->set'.ucfirst($field).'($'.$field.'); return $this;',
                         array($field)
                     ));
                     $class->setMethod($this->generateClassMethod(
                         'get'.ucfirst($field),
-                        'return $this->__extend->get(\''.$field.'\');'
+                        'return $this->__proxy__extend->get'.ucfirst($field).'();'
                     ));
                 }
             }

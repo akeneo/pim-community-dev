@@ -6,6 +6,7 @@ use Doctrine\Common\EventSubscriber;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
+use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class DoctrineSubscriber implements EventSubscriber
@@ -32,6 +33,7 @@ class DoctrineSubscriber implements EventSubscriber
             'preRemove',
             'preUpdate',
             'prePersist',
+            'loadClassMetadata',
             'postLoad'
         );
     }
@@ -62,5 +64,10 @@ class DoctrineSubscriber implements EventSubscriber
         if ($this->exm->isExtend($event->getEntity())) {
 //            $this->exm->load($event->getEntity());
         }
+    }
+
+    public function loadClassMetadata(LoadClassMetadataEventArgs $event)
+    {
+        $event->getClassMetadata()->set
     }
 }
