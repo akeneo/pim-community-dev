@@ -18,7 +18,6 @@ Pim\Bundle\ProductBundle\Entity\Category:
             
 Pim\Bundle\ProductBundle\Entity\Product:
     alias:                          pim_product
-    title_fields:                   [id]
     route:
         name:                       pim_product_product_edit
         parameters:
