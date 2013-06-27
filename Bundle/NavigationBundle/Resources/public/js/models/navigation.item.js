@@ -6,7 +6,8 @@ navigation.Item = Backbone.Model.extend({
         title_rendered: '',
         url: null,
         position: null,
-        type: null
+        type: null,
+        restore: false
     },
 
     url: function(a) {

@@ -64,7 +64,14 @@ navigation.pinbar.ItemView = Backbone.View.extend({
         } else {
             url = window.location.pathname;
         }
-        return this.model.get('url') ==  url;
+        return this.cleanupUrl(this.model.get('url')) == this.cleanupUrl(url);
+    },
+
+    cleanupUrl: function(url) {
+        if (url) {
+            url = url.replace(/(\?|&)restore=1/ig, '');
+        }
+        return url;
     },
 
     setActiveItem: function() {

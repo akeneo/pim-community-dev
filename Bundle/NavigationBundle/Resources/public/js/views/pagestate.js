@@ -2,10 +2,12 @@ var Oro = Oro || {};
 
 Oro.PageState = Oro.PageState || {};
 
+// Unset timer in case if script is double loaded and previous timer has been started
+if (typeof Oro.PageStateTimer !== undefined && Oro.PageStateTimer) {
+    clearInterval(Oro.PageStateTimer);
+}
+Oro.PageStateTimer = false;
 Oro.PageState.View = Backbone.View.extend({
-
-    timer: '',
-
     initialize: function () {
         this.init();
         this.listenTo(this.model, 'change:pagestate', this.handleStateChange);
@@ -32,10 +34,15 @@ Oro.PageState.View = Backbone.View.extend({
         );
     },
 
+    hasForm: function() {
+        return Backbone.$('form[data-collect=true]').length;
+    },
+
     init: function() {
         var self = this;
 
-        if (Backbone.$('form[data-collect=true]').length == 0) {
+        this.clearTimer();
+        if (!this.hasForm()) {
             return;
         }
 
@@ -47,11 +54,11 @@ Oro.PageState.View = Backbone.View.extend({
                     pagestate : data.pagestate
                 });
 
-                if ( parseInt(data.id) > 0  && self.model.get('restore')) {
+                if (parseInt(data.id) > 0  && self.model.get('restore')) {
                     self.restore();
                 }
 
-                self.timer = setInterval(function() {
+                Oro.PageStateTimer = setInterval(function() {
                     self.collect();
                 }, 2000);
             }
@@ -59,7 +66,9 @@ Oro.PageState.View = Backbone.View.extend({
     },
 
     clearTimer: function() {
-        clearInterval(this.timer);
+        if (Oro.PageStateTimer) {
+            clearInterval(Oro.PageStateTimer);
+        }
         this.model.set('restore', false);
     },
 
@@ -70,6 +79,10 @@ Oro.PageState.View = Backbone.View.extend({
     },
 
     collect: function() {
+        if (!this.hasForm()) {
+            this.clearTimer();
+            return;
+        }
         var filterUrl = this.filterUrl();
         if (!filterUrl) {
             return;
@@ -143,4 +156,4 @@ Oro.PageState.View = Backbone.View.extend({
 
 $(function() {
     Oro.pagestate = new Oro.PageState.View({ model: new Oro.PageState.Model });
-})
+});
