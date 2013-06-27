@@ -2,6 +2,7 @@
 namespace Pim\Bundle\ProductBundle\Entity;
 
 use Pim\Bundle\ProductBundle\Model\CategoryInterface;
+use Pim\Bundle\ProductBundle\Model\ProductInterface;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -56,7 +57,7 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
     /**
      * @var \Doctrine\Common\Collections\Collection $products
      *
-     * @ORM\ManyToMany(targetEntity="Product", inversedBy="categories")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ProductBundle\Model\ProductInterface", inversedBy="categories")
      * @ORM\JoinTable(
      *     name="pim_category_product",
      *     joinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="CASCADE")},
@@ -149,11 +150,11 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
     /**
      * Add product to this category node
      *
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Category
      */
-    public function addProduct(Product $product)
+    public function addProduct(ProductInterface $product)
     {
         $this->products[] = $product;
 
@@ -173,11 +174,11 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
     /**
      * Remove product for this category node
      *
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Category
      */
-    public function removeProduct(Product $product)
+    public function removeProduct(ProductInterface $product)
     {
         $this->products->removeElement($product);
 
