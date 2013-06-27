@@ -1461,12 +1461,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/l3pp4rd/DoctrineExtensions.git",
-                "reference": "10f5f83a3e20fb94566e9a103b45a40a817e6134"
+                "reference": "f9322867ee9ded7531c3f2f5d8c6c146c4ed2e9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/10f5f83a3e20fb94566e9a103b45a40a817e6134",
-                "reference": "10f5f83a3e20fb94566e9a103b45a40a817e6134",
+                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/f9322867ee9ded7531c3f2f5d8c6c146c4ed2e9e",
+                "reference": "f9322867ee9ded7531c3f2f5d8c6c146c4ed2e9e",
                 "shasum": ""
             },
             "require": {
@@ -1533,7 +1533,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2013-06-24 12:42:19"
+            "time": "2013-06-26 14:50:24"
         },
         {
             "name": "imagine/imagine",
@@ -2094,12 +2094,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/Gaufrette.git",
-                "reference": "6f9260ddf10c9cba9aea66ac92b8f38a13a86115"
+                "reference": "4950daadb01f288a1c4355896d9337c697631dda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/Gaufrette/zipball/6f9260ddf10c9cba9aea66ac92b8f38a13a86115",
-                "reference": "6f9260ddf10c9cba9aea66ac92b8f38a13a86115",
+                "url": "https://api.github.com/repos/KnpLabs/Gaufrette/zipball/4950daadb01f288a1c4355896d9337c697631dda",
+                "reference": "4950daadb01f288a1c4355896d9337c697631dda",
                 "shasum": ""
             },
             "require": {
@@ -2111,7 +2111,7 @@
                 "dropbox-php/dropbox-php": "*",
                 "herzult/php-ssh": "*",
                 "phpseclib/phpseclib": "dev-master",
-                "phpspec/phpspec2": "dev-master",
+                "phpspec/phpspec": "2.0.*",
                 "phpunit/phpunit": "3.7.*",
                 "rackspace/php-cloudfiles": "*",
                 "rackspace/php-opencloud": "dev-master"
@@ -2126,7 +2126,7 @@
                 "ext-mbstring": "*",
                 "ext-mongo": "*",
                 "ext-zip": "to use the Zip adapter",
-                "knplabs/knp-gaufrette-bundle": "*",
+                "knplabs/knp-gaufrette-bundle": "to use with Symfony2",
                 "phpseclib/phpseclib": "to use the SFTP",
                 "rackspace/php-opencloud": "to use Opencloud adapter"
             },
@@ -2163,7 +2163,7 @@
                 "filesystem",
                 "media"
             ],
-            "time": "2013-06-17 09:36:44"
+            "time": "2013-06-27 12:41:30"
         },
         {
             "name": "knplabs/knp-components",
@@ -2813,12 +2813,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/platform.git",
-                "reference": "e09b5adbda3cdbc04d9fff7db9f009014c8e13cb"
+                "reference": "3e02dd1cd654b474a3d9e0be49cf9159db92e17e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/platform/zipball/e09b5adbda3cdbc04d9fff7db9f009014c8e13cb",
-                "reference": "e09b5adbda3cdbc04d9fff7db9f009014c8e13cb",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/3e02dd1cd654b474a3d9e0be49cf9159db92e17e",
+                "reference": "3e02dd1cd654b474a3d9e0be49cf9159db92e17e",
                 "shasum": ""
             },
             "require": {
@@ -2880,7 +2880,7 @@
                 "source": "https://github.com/laboro/platform/tree/master",
                 "issues": "https://github.com/laboro/platform/issues"
             },
-            "time": "2013-06-26 10:53:03"
+            "time": "2013-06-27 13:41:46"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -3851,12 +3851,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "49d31bbfee5872f6d612be5265e53fe2813f59a1"
+                "reference": "6f0753f0ff4047a870f57e7567446242b38b37ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/49d31bbfee5872f6d612be5265e53fe2813f59a1",
-                "reference": "49d31bbfee5872f6d612be5265e53fe2813f59a1",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/6f0753f0ff4047a870f57e7567446242b38b37ac",
+                "reference": "6f0753f0ff4047a870f57e7567446242b38b37ac",
                 "shasum": ""
             },
             "require": {
@@ -3892,7 +3892,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-06-25 16:45:01"
+            "time": "2013-06-27 06:24:36"
         },
         {
             "name": "willdurand/expose-translation-bundle",
