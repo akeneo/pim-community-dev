@@ -58,29 +58,37 @@
                                 {{ form_row(form.code, { 'label': 'Name'|trans }) }}
                                 {{ form_row(form.attributeType) }}
 
-                                {{ form_row(form.scopable, { 'label': 'Scope'|trans }) }}
+                                {% if form.scopable is defined %}
+                                    {{ form_row(form.scopable, { 'label': 'Scope'|trans }) }}
+                                {% endif %}
 
-                                {{ form_row(form.translatable) }}
+                                {% if form.translatable is defined %}
+                                    {{ form_row(form.translatable) }}
+                                {% endif %}
 
-                                {{ form_row(form.unique, { 'label': 'Unique value'|trans }) }}
+                                {% if form.unique is defined %}
+                                    {{ form_row(form.unique, { 'label': 'Unique value'|trans }) }}
+                                {% endif %}
 
                                 {{ form_row(form.required) }}
 
-                                <div class="control-group">
-                                    <label class="control-label" for="limitLocales">{{ 'Locale specific'|trans }}</label>
-                                    <div class="controls">
-                                        <div id="limitLocales-switch" class="switch switch-small" data-on-label="{{ 'Yes'|trans }}" data-off-label="{{ 'No'|trans }}">
-                                            <input type="checkbox" name="limitLocales">
+                                {% if form.availableLocales is defined %}
+                                    <div class="control-group">
+                                        <label class="control-label" for="limitLocales">{{ 'Locale specific'|trans }}</label>
+                                        <div class="controls">
+                                            <div id="limitLocales-switch" class="switch switch-small" data-on-label="{{ 'Yes'|trans }}" data-off-label="{{ 'No'|trans }}">
+                                                <input type="checkbox" name="limitLocales">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="control-group" style="display: none;">
-                                    {{ form_label(form.availableLocales, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                    <div class="controls">
-                                        {{ form_widget(form.availableLocales, {'attr' : { 'class': 'input-large' }}) }}
+                                    <div class="control-group" style="display: none;">
+                                        {{ form_label(form.availableLocales, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                        <div class="controls">
+                                            {{ form_widget(form.availableLocales, {'attr' : { 'class': 'input-large' }}) }}
+                                        </div>
                                     </div>
-                                </div>
+                                {% endif %}
 
                                 {% set optionalFields = ['dateType', 'dateMin', 'dateMax',
                                 'negativeAllowed', 'decimalsAllowed', 'numberMin', 'numberMax',
