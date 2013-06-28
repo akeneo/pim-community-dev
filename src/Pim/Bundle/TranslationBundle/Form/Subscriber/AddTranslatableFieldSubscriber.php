@@ -122,7 +122,6 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      */
     public function bind(DataEvent $event)
     {
-        $data = $event->getData();
         $form = $event->getForm();
 
         foreach ($this->getFieldNames() as $locale => $fieldName) {
