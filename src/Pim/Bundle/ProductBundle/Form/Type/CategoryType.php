@@ -19,6 +19,31 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class CategoryType extends AbstractSegmentType
 {
+    /**
+     * Entity FQCN
+     *
+     * @var string
+     */
+    protected $className;
+
+    /**
+     * Translation entity FQCN
+     *
+     * @var string
+     */
+    protected $translationClassName;
+
+    /**
+     * Constructor
+     *
+     * @param string $className
+     * @param string $translationClassName
+     */
+    public function __construct($className, $translationClassName)
+    {
+        $this->className = $className;
+        $this->translationClassName = $translationClassName;
+    }
 
     /**
      * {@inheritdoc}
@@ -46,8 +71,8 @@ class CategoryType extends AbstractSegmentType
             'pim_translatable_field',
             array(
                 'field'             => 'title',
-                'translation_class' => 'Pim\\Bundle\\ProductBundle\\Entity\\CategoryTranslation',
-                'entity_class'      => 'Pim\\Bundle\\ProductBundle\\Entity\\Category',
+                'translation_class' => $this->translationClassName,
+                'entity_class'      => $this->className,
                 'property_path'     => 'translations'
             )
         );
@@ -60,7 +85,7 @@ class CategoryType extends AbstractSegmentType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\ProductBundle\Entity\Category'
+                'data_class' => $this->className
             )
         );
     }
