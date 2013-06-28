@@ -34,7 +34,10 @@ class CategoryTypeTest extends AbstractFormTypeTest
         parent::setUp();
 
         // Create form type
-        $this->type = new CategoryType();
+        $this->type = new CategoryType(
+            'Pim\Bundle\ProductBundle\Entity\Category',
+            'Pim\Bundle\ProductBundle\Entity\CategoryTranslation'
+        );
         $this->form = $this->factory->create($this->type);
     }
 

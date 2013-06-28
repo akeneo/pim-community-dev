@@ -128,11 +128,14 @@ class UserContextListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getTokenMock($user)
     {
-        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface', array(
-            'getUser', 'setUser', '__toString', 'getRoles', 'getCredentials', 'setUsername', 'getUsername', 'isAuthenticated',
-            'setAuthenticated', 'eraseCredentials', 'getAttributes', 'setAttributes', 'hasAttribute', 'getAttribute',
-            'setAttribute', 'serialize', 'unserialize'
-        ));
+        $token = $this->getMock(
+            'Symfony\Component\Security\Core\Authentication\Token\TokenInterface',
+            array(
+                'getUser', 'setUser', '__toString', 'getRoles', 'getCredentials', 'setUsername', 'getUsername',
+                'isAuthenticated', 'setAuthenticated', 'eraseCredentials', 'getAttributes', 'setAttributes',
+                'hasAttribute', 'getAttribute', 'setAttribute', 'serialize', 'unserialize'
+            )
+        );
 
         $token->expects($this->any())
               ->method('getUser')
