@@ -1,9 +1,6 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity;
 
-use Pim\Bundle\ProductBundle\Model\CategoryInterface;
-use Pim\Bundle\ProductBundle\Model\ProductInterface;
-
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,6 +8,9 @@ use Gedmo\Translatable\Translatable;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
+use Pim\Bundle\ProductBundle\Model\CategoryInterface;
+use Pim\Bundle\ProductBundle\Model\ProductInterface;
+
 
 /**
  * Segment class allowing to organize a flexible product class into trees
@@ -29,25 +29,15 @@ use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
  * @UniqueEntity(fields="code", message="This code is already taken")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @Oro\Loggable
  */
 class Category extends AbstractSegment implements Translatable, CategoryInterface
 {
-    /**
-     * @var string $code
-     *
-     * @ORM\Column(name="code", type="string", length=64)
-     * @Oro\Versioned
-     */
-    protected $code;
-
     /**
      * @var Category $parent
      *
      * @Gedmo\TreeParent
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Model\CategoryInterface", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="SET NULL")
-     * @Oro\Versioned("getCode")
      */
     protected $parent;
 
@@ -60,7 +50,6 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
      *     cascade={"persist"}
      * )
      * @ORM\OrderBy({"left" = "ASC"})
-     * @Oro\Versioned("getCode")
      */
     protected $children;
 
