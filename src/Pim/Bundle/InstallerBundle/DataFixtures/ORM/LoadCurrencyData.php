@@ -23,7 +23,7 @@ class LoadCurrencyData extends AbstractInstallerFixture
         $allCurrencies = $this->container->getParameter('pim_config.currencies');
         $activatedCurrencies = Yaml::parse(realpath($this->getFilePath()));
 
-        foreach ($allCurrencies['currencies'] as $currencyCode => $currencyName) {
+        foreach (array_keys($allCurrencies['currencies']) as $currencyCode) {
             $activated = in_array($currencyCode, $activatedCurrencies['currencies']);
             $currency = $this->createCurrency($currencyCode, $activated);
             $this->setReference('currency.'. $currencyCode, $currency);
