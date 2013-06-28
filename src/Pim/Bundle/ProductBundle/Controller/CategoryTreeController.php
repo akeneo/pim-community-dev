@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -67,6 +69,34 @@ class CategoryTreeController extends Controller
         $treesResponse = CategoryHelper::treesResponse($trees, $selectNode);
 
         return array('trees' => $treesResponse);
+    }
+
+    /**
+     * Move a node
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @Route("/move-node")
+     */
+    public function moveNodeAction(Request $request)
+    {
+        $segmentId = $request->get('id');
+        $parentId = $request->get('parent');
+        $prevSiblingId = $request->get('prev_sibling');
+
+        if ($request->get('copy') == 1) {
+            $this->getTreeManager()->copy($segmentId, $parentId, $prevSiblingId);
+        } else {
+            $this->getTreeManager()->move($segmentId, $parentId, $prevSiblingId);
+        }
+
+        $this->getTreeManager()->getStorageManager()->flush();
+
+        // format response to json content
+//         $data = JsonSegmentHelper::statusOKResponse();
+
+        return new JsonResponse(array('status' => 1));
     }
 
     /**
