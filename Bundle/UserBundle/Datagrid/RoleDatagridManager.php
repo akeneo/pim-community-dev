@@ -109,9 +109,9 @@ class RoleDatagridManager extends DatagridManager
         $clickAction = array(
             'name'         => 'rowClick',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            'acl_resource' => 'oro_user_role_update',
             'options'      => array(
-                'label'         => 'Edit',
+                'label'         => 'Update',
                 'link'          => 'update_link',
                 'runOnRowClick' => true,
             )
@@ -120,9 +120,9 @@ class RoleDatagridManager extends DatagridManager
         $updateAction = array(
             'name'         => 'edit',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            'acl_resource' => 'oro_user_role_update',
             'options'      => array(
-                'label' => 'Edit',
+                'label' => 'Update',
                 'icon'  => 'edit',
                 'link'  => 'update_link',
             )
@@ -131,7 +131,7 @@ class RoleDatagridManager extends DatagridManager
         $deleteAction = array(
             'name'         => 'delete',
             'type'         => ActionInterface::TYPE_DELETE,
-            'acl_resource' => 'root',
+            'acl_resource' => 'oro_user_role_remove',
             'options'      => array(
                 'label' => 'Delete',
                 'icon'  => 'trash',

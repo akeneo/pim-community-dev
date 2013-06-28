@@ -28,7 +28,11 @@ navigation.MainViewAbstract = Backbone.View.extend({
      * @return {*}
      */
     getItemForCurrentPage: function() {
-        return this.options.collection.where(this.getCurrentPageItemData());
+        var currentItemUrl = this.cleanupUrl(this.getCurrentPageItemData().url);
+        return this.options.collection.filter(_.bind(function (item) {
+            var itemUrl = this.cleanupUrl(item.get('url'));
+            return itemUrl == currentItemUrl;
+        }, this));
     },
 
     /**
@@ -43,6 +47,13 @@ navigation.MainViewAbstract = Backbone.View.extend({
             url = window.location.pathname + window.location.search + window.location.hash;
         }
         return {url: url};
+    },
+
+    cleanupUrl: function(url) {
+        if (url) {
+            url = url.replace(/(\?|&)restore=1/ig, '');
+        }
+        return url;
     },
 
     /**
