@@ -36,7 +36,7 @@
                 <ul class="dropdown-menu">
                     {% for locale in form.vars.value.getLocales() %}
                         <li>
-                            <a href="?dataLocale={{ locale.code }}" title="{{ localeLabel(locale.code) }}">
+                            <a href="?dataLocale={{ locale.code }}" title="{{ locale.code|lower }}">
                                 <span class="icon">
                                     {% if locale.code == dataLocale %}
                                         <i class="icon-bullet"></i>
