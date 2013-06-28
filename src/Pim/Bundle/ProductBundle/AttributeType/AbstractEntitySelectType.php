@@ -22,7 +22,6 @@ abstract class AbstractEntitySelectType extends AbstractAttributeType
     protected function prepareValueFormOptions(FlexibleValueInterface $value)
     {
         $options   = parent::prepareValueFormOptions($value);
-        $attribute = $value->getAttribute();
         $orderBy   = $this->getEntityFieldToOrder();
         $options['empty_value'] = false;
         $options['class']       = $this->getEntityAlias();
