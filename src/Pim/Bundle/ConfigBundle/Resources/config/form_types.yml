@@ -1,0 +1,21 @@
+services:
+    # Types
+    pim_config.form.type.channel:
+        class: %pim_config.form.type.channel.class%
+        tags:
+            - { name: form.type, alias: pim_config_channel }
+
+    pim_config.form.type.currency:
+        class: %pim_config.form.type.currency.class%
+        arguments:
+            - %pim_config.currencies%
+        tags:
+            - { name: form.type, alias: pim_config_currency }
+
+    pim_config.form.type.locale:
+        class: %pim_config.form.type.locale.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - %pim_config.locales%
+        tags:
+            - { name: form.type, alias: pim_config_locale }
