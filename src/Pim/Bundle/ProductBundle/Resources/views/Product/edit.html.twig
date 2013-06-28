@@ -36,19 +36,21 @@
                 <ul class="dropdown-menu">
                     {% for locale in form.vars.value.getLocales() %}
                         <li>
-                            <a href="?dataLocale={{ locale.code }}" title="{{ locale.code|lower }}">
-                                <span class="code">
+                            <a href="?dataLocale={{ locale.code }}" title="{{ localeLabel(locale.code) }}">
+                                <span class="icon">
                                     {% if locale.code == dataLocale %}
                                         <i class="icon-bullet"></i>
                                     {% endif %}
-                                    {{ locale.code|upper }}
                                 </span>
                                 <span class="title">{{ product.label(locale.code) }}</span>
+                                <span class="lang">{{ localeLabel(locale.code) }}</span>
                             </a>
                         </li>
                     {% endfor %}
                 </ul>
             </div>
+            <span class="closer separator">/</span>
+            <div class="sub-title lang">{{ localeLabel(dataLocale) }}</div>
         {% endset %}
 
         {% set left %}

@@ -228,6 +228,8 @@ services:
     # twig extension
     pim_product.twig.product_extension:
         class: Pim\Bundle\ProductBundle\Twig\ProductExtension
+        arguments:
+            - @security.context
         tags:
             - { name: twig.extension }
 

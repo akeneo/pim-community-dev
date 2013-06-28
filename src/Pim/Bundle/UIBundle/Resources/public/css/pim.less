@@ -566,6 +566,7 @@ table.ui-sortable, tbody.ui-sortable {
 .navbar-content {line-height: 18px;}
 .navbar-content .sub-title {font-size: 17px; color: #999; float: left;}
 .navbar-content .separator {float: left; padding: 0 3px; color: #999; font-size: 18px; }
+.navbar-content .separator.closer {margin-left: -10px}
 .navbar-content ul.inline li {padding: 0 10px; border-left: 1px solid #e6e6e6; font-size: 11px; line-height: 14px;}
 .navbar-content .product-name {margin: 0 10px 5px 0; font-size: 19px; line-height: 22px; float: left; font: bold 17px/18px 'HelveticaNeue bold',Arial,Helvetica,sans-serif;}
 .navbar-content ul.inline { color: #777; }
@@ -780,15 +781,17 @@ div.dropdown-menu.channel {
         background-color: #f1f1f1;
         background-image: none;
       };
-      span.code {
+      span.icon {
         color: @textColor + #444;
-        float: left;
-        text-align: right;
-        width: 70px;
+        position: absolute;
+        left: 1px;
+      }
+      span.lang {
+        color: @textColor + #444;
       }
       span.title {
         font-weight: bold;
-        margin: 0 10px;
+        margin: 0 10px 0 15px;
         font-size: 12px;
       }
     }
