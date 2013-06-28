@@ -69,9 +69,16 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
     protected $products;
 
     /**
+     * @var string $code
+     *
+     * @ORM\Column(name="code", type="string", length=100)
+     */
+    protected $code;
+
+    /**
      * @var string $title
      *
-     * @ORM\Column(name="title", type="string", length=100)
+     * @ORM\Column(name="title", type="string", length=64)
      * @Gedmo\Translatable
      */
     protected $title;
