@@ -71,7 +71,7 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
     /**
      * @var string $title
      *
-     * @ORM\Column(name="title", type="string", length=64)
+     * @ORM\Column(name="title", type="string", length=100)
      * @Gedmo\Translatable
      */
     protected $title;
