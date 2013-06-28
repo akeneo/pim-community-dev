@@ -73,6 +73,14 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'pim_product_product_edit',
                 array('id', 'dataLocale' => self::LOCALE_FIELD_NAME)
             ),
+            new UrlProperty(
+                'edit_categories_link',
+                $this->router,
+                'pim_product_product_edit',
+                array('id', 'dataLocale' => self::LOCALE_FIELD_NAME),
+                false,
+                '#categories'
+            ),
             new UrlProperty('delete_link', $this->router, 'pim_product_product_remove', array('id')),
         );
     }
@@ -282,6 +290,18 @@ class ProductDatagridManager extends FlexibleDatagridManager
             )
         );
 
+        $editCategoriesAction = array(
+            'name'         => 'edit_categories',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label'   => $this->translate('Edit categories'),
+                'icon'    => 'folder-close',
+                'link'    => 'edit_categories_link',
+                'backUrl' => true
+            )
+        );
+
         $deleteAction = array(
             'name'         => 'delete',
             'type'         => ActionInterface::TYPE_DELETE,
@@ -293,7 +313,12 @@ class ProductDatagridManager extends FlexibleDatagridManager
             )
         );
 
-        return array($clickAction, $editAction, $deleteAction);
+        return array(
+            $clickAction,
+            $editAction,
+            $editCategoriesAction,
+            $deleteAction
+        );
     }
 
     /**
