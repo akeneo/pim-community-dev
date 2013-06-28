@@ -25,7 +25,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 
@@ -45,9 +45,6 @@ abstract class AbstractFormTypeTest extends TypeTestCase
                     'en_US'
                 )
             )
-//             ->addType(
-//                 $this->getMock('Symfony\Bridge\Doctrine\Form\Type\EntityType')
-//             )
             ->getFormFactory();
     }
 
