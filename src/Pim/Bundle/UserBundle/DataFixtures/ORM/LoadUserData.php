@@ -137,7 +137,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
             array('attribute' => $attribute)
         );
 
-        $selectedOption = null;
         foreach ($options as $option) {
             if ($value == $option->getOptionValue()->getValue()) {
                 return $option;
