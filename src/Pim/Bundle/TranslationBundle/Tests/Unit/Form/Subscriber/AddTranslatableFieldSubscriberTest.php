@@ -285,15 +285,13 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
             $this->formFactory->expects($this->at($index))
                 ->method('createNamed')
                 ->with(
-                    $this->equalTo(sprintf('%s:%s', $options['field'], $locale)),
-                    $this->equalTo($options['widget']),
-                    $this->equalTo(''),
-                    $this->equalTo(
-                        array(
-                            'label'         => $locale,
-                            'required'      => in_array($locale, $requiredLocales),
-                            'property_path' => false,
-                        )
+                    $locale,
+                    $options['widget'],
+                    '',
+                    array(
+                        'label'         => $locale,
+                        'required'      => in_array($locale, $requiredLocales),
+                        'property_path' => false,
                     )
                 )
                 ->will($this->returnValue($field = $this->getFormMock()));
@@ -334,7 +332,7 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
         if ($options['only_default']) {
             $this->form->expects($this->at(0))
                  ->method('get')
-                 ->with(sprintf('%s:%s', $options['field'], $options['default_locale']))
+                 ->with($options['default_locale'])
                  ->will($this->returnValue($defaultField = $this->getFormMock()));
 
             $defaultField->expects($this->any())
@@ -346,7 +344,7 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
             foreach ($locales as $index => $locale) {
                 $this->form->expects($this->at($index))
                      ->method('get')
-                     ->with(sprintf('%s:%s', $options['field'], $locale))
+                     ->with($locale)
                      ->will($this->returnValue($defaultField = $this->getFormMock()));
 
                 $defaultField->expects($this->any())
@@ -355,7 +353,7 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
             }
         }
 
-        $event = $this->getEventMock($this->form, $translatableEntity, array('name:default'));
+        $event = $this->getEventMock($this->form, $translatableEntity, array('default'));
 
         $target->bind($event);
     }

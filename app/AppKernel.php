@@ -34,6 +34,7 @@ class AppKernel extends Kernel
             new Liip\ImagineBundle\LiipImagineBundle(),
             new Bazinga\ExposeTranslationBundle\BazingaExposeTranslationBundle(),
             new APY\JsFormValidationBundle\APYJsFormValidationBundle(),
+            new Genemu\Bundle\FormBundle\GenemuFormBundle(),
 
             // BAP bundles
             new Oro\Bundle\FlexibleEntityBundle\OroFlexibleEntityBundle(),
@@ -58,6 +59,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\FilterBundle\PimFilterBundle(),
             new Pim\Bundle\GridBundle\PimGridBundle(),
             new Pim\Bundle\UserBundle\PimUserBundle(),
+            new Pim\Bundle\SearchBundle\PimSearchBundle(),
 
             // PIM bundles
             new Pim\Bundle\ConfigBundle\PimConfigBundle(),

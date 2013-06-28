@@ -42,7 +42,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     /**
      * @var productFamily
      *
-     * @ORM\ManyToOne(targetEntity="ProductFamily")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\ProductFamily", cascade={"persist"})
      * @ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="SET NULL")
      * @Oro\Versioned("getCode")
      */
@@ -51,7 +51,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     /**
      * @var ArrayCollection $locales
      *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale", cascade={"persist"})
      * @ORM\JoinTable(
      *    name="pim_product_locale",
      *    joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
@@ -64,7 +64,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     /**
      * @var ArrayCollection $categories
      *
-     * @ORM\ManyToMany(targetEntity="Category", mappedBy="products")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ProductBundle\Model\CategoryInterface", mappedBy="products")
      */
     protected $categories;
 
@@ -351,5 +351,13 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         $this->enabled = $enabled;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getLabel();
     }
 }

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="pim" default="build">
-    <target name="build" depends="prepare,composer,vendors,setupdb,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,behat,phpcb"/>
+    <target name="build-behat" depends="prepare,composer,vendors,setupdb,behat"/>
 
-    <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,behat,phpcb"/>
+    <target name="build" depends="prepare,composer,vendors,setupdb,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
+
+    <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
 
     <target name="tools-parallel" description="Run tools in parallel">
         <parallel threadCount="2">
@@ -35,6 +37,7 @@
         <mkdir dir="${basedir}/app/build/code-browser"/>
         <mkdir dir="${basedir}/app/build/coverage"/>
         <mkdir dir="${basedir}/app/build/logs"/>
+        <mkdir dir="${basedir}/app/build/logs/behat"/>
         <mkdir dir="${basedir}/app/build/pdepend"/>
         <mkdir dir="${basedir}/app/build/phpdox"/>
 
@@ -142,8 +145,8 @@
 
     <target name="behat" description="Run acceptance tests with Behat">
         <exec executable="bin/behat">
+            <arg value="--profile=jenkins" />
             <arg value="--tags=~javascript" />
-            <arg value="--no-paths" />
             <arg value="--ansi" />
         </exec>
     </target>

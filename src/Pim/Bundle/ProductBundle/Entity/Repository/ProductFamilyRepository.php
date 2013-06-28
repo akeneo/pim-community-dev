@@ -16,7 +16,7 @@ class ProductFamilyRepository extends EntityRepository
     /**
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function buildAllOrderedByName()
+    protected function buildAllOrderedByName()
     {
         return $this->build()->orderBy('product_family.code');
     }
@@ -26,7 +26,7 @@ class ProductFamilyRepository extends EntityRepository
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function buildOneWithAttributes($id)
+    protected function buildOneWithAttributes($id)
     {
         return $this
             ->buildOne($id)

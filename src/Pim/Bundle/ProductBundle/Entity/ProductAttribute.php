@@ -52,12 +52,6 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     protected $options;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\AttributeOption")
-     * @ORM\JoinColumn(name="default_option_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $defaultOption;
-
-    /**
      * @ORM\Column(name="sort_order", type="integer")
      */
     protected $sortOrder = 0;
@@ -283,18 +277,15 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
      */
     public function getDefaultValue()
     {
-        if (is_null($this->defaultValue) && is_null($this->defaultOption)) {
+        if (is_null($this->defaultValue) && $this->getDefaultOptions()->isEmpty()) {
             return null;
         }
 
         switch ($this->getBackendType()) {
             case 'option':
-                return $this->getDefaultOption();
+                return $this->getDefaultOptions()->isEmpty() ? null : $this->getDefaultOptions()->first();
             case 'options':
-                $option = new ArrayCollection();
-                $option[] = $this->getDefaultOption();
-
-                return $option;
+                return $this->getDefaultOptions();
             case 'date':
                 $date = new \DateTime();
                 $date->setTimestamp((int) $this->defaultValue);
@@ -328,12 +319,6 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
         }
 
         switch ($this->getBackendType()) {
-            case 'option':
-                $this->setDefaultOption($defaultValue);
-                break;
-            case 'options':
-                $this->setDefaultOption($defaultValue->first());
-                break;
             case 'date':
                 $this->defaultValue = $defaultValue->format('U');
                 break;
@@ -349,27 +334,17 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Get defaultOption
+     * Get default AttributeOptions
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\AttributeOption
+     * @return ArrayCollection
      */
-    public function getDefaultOption()
+    public function getDefaultOptions()
     {
-        return $this->defaultOption;
-    }
-
-    /**
-     * Set defaultOption
-     *
-     * @param AttributeOption $option
-     *
-     * @return ProductAttribute
-     */
-    public function setDefaultOption(\Pim\Bundle\ProductBundle\Entity\AttributeOption $option = null)
-    {
-        $this->defaultOption = $option;
-
-        return $this;
+        return $this->options->filter(
+            function ($option) {
+                return $option->isDefault();
+            }
+        );
     }
 
     /**
@@ -407,11 +382,11 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Get smart
+     * Predicate for smart property
      *
      * @return boolean $smart
      */
-    public function getSmart()
+    public function isSmart()
     {
         return $this->smart;
     }
@@ -499,11 +474,11 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Get useableAsGridColumn
+     * Predicate for useableAsGridColumn property
      *
      * @return boolean $useableAsGridColumn
      */
-    public function getUseableAsGridColumn()
+    public function isUseableAsGridColumn()
     {
         return $this->useableAsGridColumn;
     }
@@ -523,11 +498,11 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Get useableAsGridFilter
+     * Predicate for useableAsGridFilter property
      *
      * @return boolean $useableAsGridFilter
      */
-    public function getUseableAsGridFilter()
+    public function isUseableAsGridFilter()
     {
         return $this->useableAsGridFilter;
     }
@@ -657,11 +632,11 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Get wysiwygEnabled
+     * Predicate for wysiwygEnabled property
      *
      * @return boolean $wysiwygEnabled
      */
-    public function getWysiwygEnabled()
+    public function isWysiwygEnabled()
     {
         return $this->wysiwygEnabled;
     }
@@ -729,11 +704,11 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Get decimalsAllowed
+     * Predicate for decimalsAllowed property
      *
      * @return boolean $decimalsAllowed
      */
-    public function getDecimalsAllowed()
+    public function isDecimalsAllowed()
     {
         return $this->decimalsAllowed;
     }
@@ -753,11 +728,11 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Get negativeAllowed
+     * Predicate for negativeAllowed property
      *
      * @return boolean $negativeAllowed
      */
-    public function getNegativeAllowed()
+    public function isNegativeAllowed()
     {
         return $this->negativeAllowed;
     }
@@ -777,11 +752,11 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     }
 
     /**
-     * Get valueCreationAllowed
+     * Predicate for valueCreationAllowed property
      *
      * @return boolean $valueCreationAllowed
      */
-    public function getValueCreationAllowed()
+    public function isValueCreationAllowed()
     {
         return $this->valueCreationAllowed;
     }

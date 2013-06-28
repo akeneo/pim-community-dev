@@ -2,9 +2,7 @@
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\ProductBundle\Entity\CategoryTranslation;
-
 use Pim\Bundle\ProductBundle\Entity\Product;
-
 use Pim\Bundle\ProductBundle\Entity\Category;
 
 /**
@@ -17,6 +15,19 @@ use Pim\Bundle\ProductBundle\Entity\Category;
  */
 class CategoryTest extends \PHPUnit_Framework_TestCase
 {
+
+    /**
+     * @var Pim\Bundle\ProductBundle\Entity\Category
+     */
+    protected $category;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        $this->category = new Category();
+    }
 
     /**
      * Create a mock of flexible product entity
@@ -33,18 +44,16 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $category = new Category();
-
         // assert instance and implementation
-        $this->assertEntity($category);
-        $this->assertInstanceOf('\Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment', $category);
-        $this->assertInstanceOf('\Gedmo\Translatable\Translatable', $category);
+        $this->assertEntity($this->category);
+        $this->assertInstanceOf('\Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment', $this->category);
+        $this->assertInstanceOf('\Gedmo\Translatable\Translatable', $this->category);
 
         // assert object properties
-        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $category->getChildren());
-        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $category->getProducts());
-        $this->assertCount(0, $category->getChildren());
-        $this->assertCount(0, $category->getProducts());
+        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->category->getChildren());
+        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->category->getProducts());
+        $this->assertCount(0, $this->category->getChildren());
+        $this->assertCount(0, $this->category->getProducts());
     }
 
     /**
@@ -52,18 +61,23 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetProducts()
     {
-        $category = new Category();
         $product1 = $this->createProduct();
         $product2 = $this->createProduct();
 
         // assert adding
-        $this->assertEntity($category->addProduct($product1));
-        $category->addProduct($product2);
-        $this->assertCount(2, $category->getProducts());
+        $this->assertEntity($this->category->addProduct($product1));
+        $this->category->addProduct($product2);
+        $this->assertCount(2, $this->category->getProducts());
 
         // assert removing
-        $this->assertEntity($category->removeProduct($product1));
-        $this->assertCount(1, $category->getProducts());
+        $this->assertEntity($this->category->removeProduct($product1));
+        $this->assertCount(1, $this->category->getProducts());
+
+        // assert product entity
+        $products = $this->category->getProducts();
+        foreach ($products as $product) {
+            $this->assertProductEntity($product);
+        }
     }
 
     /**
@@ -72,8 +86,7 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetTranslatableLocale()
     {
-        $category = new Category();
-        $this->assertEntity($category->setTranslatableLocale('en_US'));
+        $this->assertEntity($this->category->setTranslatableLocale('en_US'));
     }
 
     /**
@@ -81,31 +94,32 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCode()
     {
-        $category = new Category();
-
         // assert getter
-        $this->assertNull($category->getCode());
+        $this->assertNull($this->category->getCode());
 
         // assert setter
         $testCode = 'test-code';
-        $this->assertEntity($category->setCode($testCode));
-        $this->assertEquals($testCode, $category->getCode());
+        $this->assertEntity($this->category->setCode($testCode));
+        $this->assertEquals($testCode, $this->category->getCode());
     }
 
     /**
-     * Test getter/setter for isDynamic property
+     * Test is/setter for dynamic property
      */
-    public function testIsDynamic()
+    public function testDynamic()
     {
-        $category = new Category();
-
         // assert getter
-        $this->assertFalse($category->getIsDynamic());
+        $this->assertFalse($this->category->isDynamic());
 
         // assert setter
         $testIsDynamic = true;
-        $this->assertEntity($category->setIsDynamic($testIsDynamic));
-        $this->assertEquals($testIsDynamic, $category->getIsDynamic());
+        $this->assertEntity($this->category->setDynamic($testIsDynamic));
+        $this->assertTrue($this->category->isDynamic());
+
+        // assert setter
+        $testIsDynamic = false;
+        $this->assertEntity($this->category->setDynamic($testIsDynamic));
+        $this->assertFalse($this->category->isDynamic());
     }
 
     /**
@@ -113,23 +127,22 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testTranslations()
     {
-        $category = new Category();
-        $this->assertCount(0, $category->getTranslations());
+        $this->assertCount(0, $this->category->getTranslations());
 
         // Change value and assert new
-        $newTranslation = new CategoryTranslation();
-        $this->assertEntity($category->addTranslation($newTranslation));
-        $this->assertCount(1, $category->getTranslations());
+        $newTranslation = $this->createCategoryTranslation();
+        $this->assertEntity($this->category->addTranslation($newTranslation));
+        $this->assertCount(1, $this->category->getTranslations());
         $this->assertInstanceOf(
             'Pim\Bundle\ProductBundle\Entity\CategoryTranslation',
-            $category->getTranslations()->first()
+            $this->category->getTranslations()->first()
         );
 
-        $category->addTranslation($newTranslation);
-        $this->assertCount(1, $category->getTranslations());
+        $this->category->addTranslation($newTranslation);
+        $this->assertCount(1, $this->category->getTranslations());
 
-        $this->assertEntity($category->removeTranslation($newTranslation));
-        $this->assertCount(0, $category->getTranslations());
+        $this->assertEntity($this->category->removeTranslation($newTranslation));
+        $this->assertCount(0, $this->category->getTranslations());
     }
 
     /**
@@ -139,5 +152,25 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
     protected function assertEntity($entity)
     {
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Category', $entity);
+    }
+
+    /**
+     * Create CategoryTranslation entity
+     *
+     * @return \Pim\Bundle\ProductBundle\Entity\CategoryTranslation
+     */
+    protected function createCategoryTranslation()
+    {
+        return new CategoryTranslation();
+    }
+
+    /**
+     * Assert product entity
+     *
+     * @param Pim\Bundle\ProductBundle\Entity\Product $entity
+     */
+    protected function assertProductEntity($entity)
+    {
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Product', $entity);
     }
 }

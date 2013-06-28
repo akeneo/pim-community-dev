@@ -10,8 +10,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Response;
 
 use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
-
-use Pim\Bundle\ProductBundle\Form\Type\CategoryType;
 use Pim\Bundle\ProductBundle\Entity\Category;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -240,7 +238,7 @@ class CategoryTreeController extends Controller
     public function editAction(Category $category)
     {
         $request = $this->getRequest();
-        $form = $this->createForm(new CategoryType(), $category);
+        $form = $this->createForm($this->get('pim_product.form.type.category'), $category);
 
         if ($request->getMethod() == 'POST') {
             $form->bind($request);

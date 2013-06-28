@@ -19,6 +19,31 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class CategoryType extends AbstractSegmentType
 {
+    /**
+     * Entity FQCN
+     *
+     * @var string
+     */
+    protected $className;
+
+    /**
+     * Translation entity FQCN
+     *
+     * @var string
+     */
+    protected $translationClassName;
+
+    /**
+     * Constructor
+     *
+     * @param string $className
+     * @param string $translationClassName
+     */
+    public function __construct($className, $translationClassName)
+    {
+        $this->className = $className;
+        $this->translationClassName = $translationClassName;
+    }
 
     /**
      * {@inheritdoc}
@@ -27,20 +52,30 @@ class CategoryType extends AbstractSegmentType
     {
         parent::buildForm($builder, $options);
 
+        $this->addTitleField($builder);
+
+        // Add isDynamic field is needed
+        $subscriber = new CategorySubscriber($builder->getFormFactory());
+        $builder->addEventSubscriber($subscriber);
+    }
+
+    /**
+     * Add title field
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function addTitleField(FormBuilderInterface $builder)
+    {
         $builder->add(
             'title',
             'pim_translatable_field',
             array(
                 'field'             => 'title',
-                'translation_class' => 'Pim\\Bundle\\ProductBundle\\Entity\\CategoryTranslation',
-                'entity_class'      => 'Pim\\Bundle\\ProductBundle\\Entity\\Category',
+                'translation_class' => $this->translationClassName,
+                'entity_class'      => $this->className,
                 'property_path'     => 'translations'
             )
         );
-
-        // Add isDynamic field is needed
-        $subscriber = new CategorySubscriber($builder->getFormFactory());
-        $builder->addEventSubscriber($subscriber);
     }
 
     /**
@@ -50,7 +85,7 @@ class CategoryType extends AbstractSegmentType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\ProductBundle\Entity\Category'
+                'data_class' => $this->className
             )
         );
     }

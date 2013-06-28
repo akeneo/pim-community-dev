@@ -1,6 +1,9 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity;
 
+use Pim\Bundle\ProductBundle\Model\CategoryInterface;
+use Pim\Bundle\ProductBundle\Model\ProductInterface;
+
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -24,9 +27,11 @@ use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
  * @Gedmo\Tree(type="nested")
  * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\CategoryTranslation")
  * @UniqueEntity(fields="code", message="This code is already taken")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @Oro\Loggable
  */
-class Category extends AbstractSegment implements Translatable
+class Category extends AbstractSegment implements Translatable, CategoryInterface
 {
     /**
      * @var string $code
@@ -40,7 +45,7 @@ class Category extends AbstractSegment implements Translatable
      * @var Category $parent
      *
      * @Gedmo\TreeParent
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Model\CategoryInterface", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="SET NULL")
      * @Oro\Versioned("getCode")
      */
@@ -49,7 +54,11 @@ class Category extends AbstractSegment implements Translatable
     /**
      * @var \Doctrine\Common\Collections\Collection $children
      *
-     * @ORM\OneToMany(targetEntity="Category", mappedBy="parent", cascade={"persist"})
+     * @ORM\OneToMany(
+     *     targetEntity="Pim\Bundle\ProductBundle\Model\CategoryInterface",
+     *     mappedBy="parent",
+     *     cascade={"persist"}
+     * )
      * @ORM\OrderBy({"left" = "ASC"})
      * @Oro\Versioned("getCode")
      */
@@ -58,7 +67,7 @@ class Category extends AbstractSegment implements Translatable
     /**
      * @var \Doctrine\Common\Collections\Collection $products
      *
-     * @ORM\ManyToMany(targetEntity="Product", inversedBy="categories")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ProductBundle\Model\ProductInterface", inversedBy="categories")
      * @ORM\JoinTable(
      *     name="pim_category_product",
      *     joinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="CASCADE")},
@@ -66,6 +75,13 @@ class Category extends AbstractSegment implements Translatable
      * )
      */
     protected $products;
+
+    /**
+     * @var string $code
+     *
+     * @ORM\Column(name="code", type="string", length=100)
+     */
+    protected $code;
 
     /**
      * @var string $title
@@ -92,7 +108,7 @@ class Category extends AbstractSegment implements Translatable
      *
      * @ORM\Column(name="is_dynamic", type="boolean")
      */
-    protected $isDynamic = false;
+    protected $dynamic = false;
 
     /**
      * @var datetime
@@ -151,11 +167,11 @@ class Category extends AbstractSegment implements Translatable
     /**
      * Add product to this category node
      *
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Category
      */
-    public function addProduct(Product $product)
+    public function addProduct(ProductInterface $product)
     {
         $this->products[] = $product;
 
@@ -175,11 +191,11 @@ class Category extends AbstractSegment implements Translatable
     /**
      * Remove product for this category node
      *
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Category
      */
-    public function removeProduct(Product $product)
+    public function removeProduct(ProductInterface $product)
     {
         $this->products->removeElement($product);
 
@@ -225,21 +241,21 @@ class Category extends AbstractSegment implements Translatable
      *
      * @return boolean
      */
-    public function getIsDynamic()
+    public function isDynamic()
     {
-        return $this->isDynamic;
+        return $this->dynamic;
     }
 
     /**
      * Set if a node is dynamic
      *
-     * @param boolean $isDynamic
+     * @param boolean $dynamic
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Category
      */
-    public function setIsDynamic($isDynamic)
+    public function setDynamic($dynamic)
     {
-        $this->isDynamic = $isDynamic;
+        $this->dynamic = $dynamic;
 
         return $this;
     }

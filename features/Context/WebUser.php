@@ -222,10 +222,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         foreach ($table->getHash() as $data) {
             $data = array_merge(array(
                 'languages' => 'english',
+                'family'    => null,
             ), $data);
 
             $product = $this->aProductAvailableIn($data['sku'], $data['languages']);
-            $product->setProductFamily($this->getFamily($data['family']));
+            if ($data['family']) {
+                $product->setProductFamily($this->getFamily($data['family']));
+            }
             $pm->save($product);
         }
     }
@@ -381,7 +384,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function theLocaleSwitcherShouldContainTheFollowingItems(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            if (!$this->getPage('Product edit')->findLocale($data['locale'], $data['label'])) {
+            if (!$this->getPage('Product edit')->findLocaleLink($data['locale'], array($data['language'], $data['label']))) {
                 throw $this->createExpectationException(sprintf(
                     'Could not find locale "%s %s" in the locale switcher', $data['locale'], $data['label']
                 ));
@@ -675,6 +678,19 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             throw $this->createExpectationException(sprintf(
                 'Expected product title "%s", actually saw "%s"',
                 $title, $actual
+            ));
+        }
+    }
+
+    /**
+     * @Then /^the title of the product should match "([^"]*)"$/
+     */
+    public function theTitleOfTheProductShouldMatch($pattern)
+    {
+        if (1 !== preg_match($pattern, $actual = $this->getPage('Product edit')->getTitle())) {
+            throw $this->createExpectationException(sprintf(
+                'Expected product title to match "%s", actually saw "%s"',
+                $pattern, $actual
             ));
         }
     }

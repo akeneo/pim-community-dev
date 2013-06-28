@@ -58,29 +58,37 @@
                                 {{ form_row(form.code, { 'label': 'Name'|trans }) }}
                                 {{ form_row(form.attributeType) }}
 
-                                {{ form_row(form.scopable, { 'label': 'Scope'|trans }) }}
+                                {% if form.scopable is defined %}
+                                    {{ form_row(form.scopable, { 'label': 'Scope'|trans }) }}
+                                {% endif %}
 
-                                {{ form_row(form.translatable) }}
+                                {% if form.translatable is defined %}
+                                    {{ form_row(form.translatable) }}
+                                {% endif %}
 
-                                {{ form_row(form.unique, { 'label': 'Unique value'|trans }) }}
+                                {% if form.unique is defined %}
+                                    {{ form_row(form.unique, { 'label': 'Unique value'|trans }) }}
+                                {% endif %}
 
                                 {{ form_row(form.required) }}
 
-                                <div class="control-group">
-                                    <label class="control-label" for="limitLocales">{{ 'Locale specific'|trans }}</label>
-                                    <div class="controls">
-                                        <div id="limitLocales-switch" class="switch switch-small" data-on-label="{{ 'Yes'|trans }}" data-off-label="{{ 'No'|trans }}">
-                                            <input type="checkbox" name="limitLocales">
+                                {% if form.availableLocales is defined %}
+                                    <div class="control-group">
+                                        <label class="control-label" for="limitLocales">{{ 'Locale specific'|trans }}</label>
+                                        <div class="controls">
+                                            <div id="limitLocales-switch" class="switch switch-small" data-on-label="{{ 'Yes'|trans }}" data-off-label="{{ 'No'|trans }}">
+                                                <input type="checkbox" name="limitLocales">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="control-group" style="display: none;">
-                                    {{ form_label(form.availableLocales, null, { 'label_attr': {'class': 'control-label'} }) }}
-                                    <div class="controls">
-                                        {{ form_widget(form.availableLocales, {'attr' : { 'class': 'input-large' }}) }}
+                                    <div class="control-group" style="display: none;">
+                                        {{ form_label(form.availableLocales, null, { 'label_attr': {'class': 'control-label'} }) }}
+                                        <div class="controls">
+                                            {{ form_widget(form.availableLocales, {'attr' : { 'class': 'input-large' }}) }}
+                                        </div>
                                     </div>
-                                </div>
+                                {% endif %}
 
                                 {% set optionalFields = ['dateType', 'dateMin', 'dateMax',
                                 'negativeAllowed', 'decimalsAllowed', 'numberMin', 'numberMax',
@@ -194,10 +202,10 @@
                                                     <td>
                                                         {{ form_row(option.defaultValue) }}
                                                     </td>
-                                                    {% for i in 0..locales|length-1 %}
+                                                    {% for locale in locales %}
                                                         <td>
                                                             {% for value in option.optionValues %}
-                                                                {% if value.locale.vars.value == locales[i].code %}
+                                                                {% if value.locale.vars.value == locale.code %}
                                                                     {{ form_row(value.id) }}
                                                                     {{ form_row(value.value) }}
                                                                     {{ form_row(value.locale) }}
@@ -205,11 +213,10 @@
                                                             {% endfor %}
                                                         </td>
                                                     {% endfor %}
-                                                    {% if form.defaultValue is defined %}
-                                                        <td>
-                                                            <input type="radio" name="default_option" id="default_option_{{ option.vars.value.id }}" {% if option.vars.value.id == form.defaultValue.vars.value or option.vars.value.id in form.defaultValue.vars.value %} checked="checked"{% endif %}>
-                                                        </td>
-                                                    {% endif %}
+                                                    <td>
+                                                        {{ form_row(option.default) }}
+                                                        <input type="{{ form.attributeType.vars.value == 'pim_product_multiselect' ? 'checkbox' : 'radio' }}" name="default"{% if option.vars.value.default %} checked="checked"{% endif %}>
+                                                    </td>
                                                     {% if disabledLocales is not empty %}
                                                         <td style="display:none;">
                                                             {% for i in 0..disabledLocales|length-1 %}

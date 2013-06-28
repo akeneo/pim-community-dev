@@ -25,7 +25,7 @@ class ProductAttributeControllerTest extends ControllerTest
         // assert with authentication
         $crawler = $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertCount(1, $crawler->filter('h1:contains("Attributes overview")'));
+        $this->assertCount(1, $crawler->filter('div.sub-title:contains("Attributes overview")'));
     }
 
     /**

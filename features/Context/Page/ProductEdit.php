@@ -26,9 +26,17 @@ class ProductEdit extends Page
         'Enable switcher'                 => array('css' => '#pim_product_enabled'),
     );
 
-    public function findLocaleLink($locale)
+    public function findLocaleLink($locale, array $contents = array())
     {
-        return $this->getElement('Locales dropdown')->findLink(strtolower($locale));
+        $link = $this->getElement('Locales dropdown')->findLink(strtolower($locale));
+
+        foreach ($contents as $content) {
+            if (strpos($link->getText(), $content) === false) {
+                return null;
+            }
+        }
+
+        return $link;
     }
 
     public function selectLanguage($language)
@@ -160,16 +168,23 @@ class ProductEdit extends Page
     {
         $titleElt = $this->getElement('Title');
 
-        $subtitle  = $titleElt->find('css', '.sub-title');
-        $separator = $titleElt->find('css', '.separator');
-        $name      = $titleElt->find('css', '.product-name');
+        $subtitle        = $titleElt->find('css', '.sub-title');
+        $separator       = $titleElt->find('css', '.separator');
+        $name            = $titleElt->find('css', '.product-name');
+        $closerSeparator = $titleElt->find('css', '.closer.separator');
+        $lang            = $titleElt->find('css', '.lang.sub-title');
 
-        if (!$subtitle || !$separator || !$name) {
+        if (!$subtitle || !$separator || !$name || !$closerSeparator || !$lang) {
             throw new \Exception('Could not find product title');
         }
 
         return sprintf(
-            '%s%s%s', $subtitle->getText(), $separator->getText(), $name->getText()
+            '%s%s%s%s%s',
+            $subtitle->getText(),
+            $separator->getText(),
+            $name->getText(),
+            $closerSeparator->getText(),
+            $lang->getText()
         );
     }
 

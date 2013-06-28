@@ -19,7 +19,7 @@ class TextAreaType extends OroTextAreaType
      */
     protected function prepareValueFormAlias(FlexibleValueInterface $value)
     {
-        if ($value->getAttribute()->getWysiwygEnabled()) {
+        if ($value->getAttribute()->isWysiwygEnabled()) {
             return 'pim_wysiwyg';
         }
 

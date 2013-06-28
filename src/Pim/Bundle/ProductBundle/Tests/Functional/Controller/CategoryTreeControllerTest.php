@@ -98,8 +98,8 @@ class CategoryTreeControllerTest extends ControllerTest
         $form = $crawler->form();
 
         $values = array(
-            'pim_category[code]'                 => self::TREE_CODE,
-            'pim_category[title][title:default]' => self::TREE_TITLE
+            'pim_category[code]'           => self::TREE_CODE,
+            'pim_category[title][default]' => self::TREE_TITLE
         );
 
         $this->submitFormAndAssertFlashbag($form, $values, self::TREE_SAVED_MSG);
@@ -151,9 +151,9 @@ class CategoryTreeControllerTest extends ControllerTest
         $form = $crawler->form();
 
         $values = array(
-            'pim_category[code]'                 => self::NODE_CODE,
-            'pim_category[title][title:default]' => self::NODE_TITLE,
-            'pim_category[isDynamic]'            => self::NODE_IS_DYNAMIC
+            'pim_category[code]'           => self::NODE_CODE,
+            'pim_category[title][default]' => self::NODE_TITLE,
+            'pim_category[dynamic]'        => self::NODE_IS_DYNAMIC
         );
 
         $this->submitFormAndAssertFlashbag($form, $values, self::CATEGORY_SAVED_MSG);
@@ -163,7 +163,7 @@ class CategoryTreeControllerTest extends ControllerTest
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Category', $category);
         $this->assertEquals(self::NODE_CODE, $category->getCode());
         $this->assertEquals(self::NODE_TITLE, $category->getTitle());
-        $this->assertEquals(self::NODE_IS_DYNAMIC, $category->getIsDynamic());
+        $this->assertEquals(self::NODE_IS_DYNAMIC, $category->isDynamic());
     }
 
     /**
@@ -206,8 +206,8 @@ class CategoryTreeControllerTest extends ControllerTest
         $form = $crawler->form();
 
         $values = array(
-            'pim_category[code]'                 => self::TREE_EDITED_CODE,
-            'pim_category[title][title:default]' => self::TREE_TITLE
+            'pim_category[code]'           => self::TREE_EDITED_CODE,
+            'pim_category[title][default]' => self::TREE_TITLE
         );
 
         $this->submitFormAndAssertFlashbag($form, $values, self::TREE_SAVED_MSG);
@@ -264,9 +264,9 @@ class CategoryTreeControllerTest extends ControllerTest
         $form = $crawler->form();
 
         $values = array(
-            'pim_category[code]'                 => self::NODE_EDITED_CODE,
-            'pim_category[title][title:default]' => self::NODE_TITLE,
-            'pim_category[isDynamic]'            => self::NODE_IS_DYNAMIC
+            'pim_category[code]'           => self::NODE_EDITED_CODE,
+            'pim_category[title][default]' => self::NODE_TITLE,
+            'pim_category[dynamic]'        => self::NODE_IS_DYNAMIC
         );
 
         $this->submitFormAndAssertFlashbag($form, $values, self::CATEGORY_SAVED_MSG);
@@ -276,7 +276,7 @@ class CategoryTreeControllerTest extends ControllerTest
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Category', $node);
         $this->assertEquals(self::NODE_EDITED_CODE, $node->getCode());
         $this->assertEquals(self::NODE_TITLE, $node->getTitle());
-        $this->assertEquals(self::NODE_IS_DYNAMIC, $node->getIsDynamic());
+        $this->assertEquals(self::NODE_IS_DYNAMIC, $node->isDynamic());
     }
 
     /**

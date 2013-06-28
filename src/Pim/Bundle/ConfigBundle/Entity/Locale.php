@@ -4,7 +4,6 @@ namespace Pim\Bundle\ConfigBundle\Entity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Locale\Locale as SfLocale;
 use Pim\Bundle\ConfigBundle\Validator\Constraints as PimAssert;
 
 /**
@@ -151,11 +150,11 @@ class Locale
     }
 
     /**
-     * Get activated
+     * Is activated
      *
      * @return boolean
      */
-    public function getActivated()
+    public function isActivated()
     {
         return $this->activated;
     }
@@ -196,19 +195,5 @@ class Locale
         $this->defaultCurrency = $currency;
 
         return $this;
-    }
-
-    /**
-     * Get displayed locale from locale code
-     *
-     * @param string $locale
-     *
-     * @return string
-     */
-    public function fromLocale($locale)
-    {
-        $countries = SfLocale::getDisplayLanguages($locale);
-
-        return isset($countries[$this->code]) ? $countries[$this->code] : $this->code;
     }
 }

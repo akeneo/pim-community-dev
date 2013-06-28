@@ -46,6 +46,15 @@ class AttributeOption extends AbstractEntityAttributeOption
     protected $defaultValue;
 
     /**
+     * Specifies whether this AttributeOption is the default option for the attribute
+     *
+     * @var boolean $default
+     *
+     * @ORM\Column(name="is_default", type="boolean")
+     */
+    protected $default = false;
+
+    /**
      * Override to use default value
      *
      * @return string
@@ -55,5 +64,26 @@ class AttributeOption extends AbstractEntityAttributeOption
         $value = $this->getOptionValue();
 
         return ($value and $value->getValue()) ? $value->getValue() : (string) $this->getDefaultValue();
+    }
+
+    /**
+     * Set default
+     * @param boolen $default
+     *
+     * @return AttributeOption
+     */
+    public function setDefault($default)
+    {
+        $this->default = (bool) $default;
+    }
+
+    /**
+     * Get default
+     *
+     * @return boolean
+     */
+    public function isDefault()
+    {
+        return $this->default;
     }
 }

@@ -1,6 +1,9 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Twig;
 
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Locale\Locale;
 use Symfony\Component\Locale\Stub\StubLocale;
 
 /**
@@ -12,6 +15,13 @@ use Symfony\Component\Locale\Stub\StubLocale;
  */
 class ProductExtension extends \Twig_Extension
 {
+    protected $securityContext;
+
+    public function __construct(SecurityContextInterface $securityContext)
+    {
+        $this->securityContext = $securityContext;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -19,6 +29,7 @@ class ProductExtension extends \Twig_Extension
     {
         return array(
             'currencySymbol' => new \Twig_Function_Method($this, 'currencySymbolFunction'),
+            'localeLabel'    => new \Twig_Function_Method($this, 'localeLabel'),
         );
     }
 
@@ -37,10 +48,48 @@ class ProductExtension extends \Twig_Extension
     }
 
     /**
+     * Get displayed locale from locale code
+     *
+     * @param string $locale
+     *
+     * @return string
+     */
+    public function localeLabel($code)
+    {
+        if ($catalogLocale = $this->getCatalogLocale()) {
+            $countries = Locale::getDisplayLocales($catalogLocale);
+
+            if (isset($countries[$code])) {
+                return $countries[$code];
+            }
+
+            list($lang) = explode('_', $code);
+            if (isset($countries[$lang])) {
+                return $countries[$lang];
+            }
+        }
+
+        return $code;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getName()
     {
         return 'product_extension';
+    }
+
+    private function getCatalogLocale()
+    {
+        if (null === $token = $this->securityContext->getToken()) {
+            return null;
+        }
+
+        if (!is_object($user = $token->getUser())) {
+            return null;
+        }
+
+        return (string) $user->cataloglocale;
     }
 }

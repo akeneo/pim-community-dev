@@ -146,12 +146,11 @@ class CategoryRepository extends SegmentRepository
     /**
      * Get a tree filled with children and their parents
      *
-     * @param Category $root       the root
-     * @param array    $parentsIds parent ids
+     * @param array $parentsIds parent ids
      *
      * @return array
      */
-    public function getTreeFromParents(Category $root, array $parentsIds)
+    public function getTreeFromParents(array $parentsIds)
     {
         if (count($parentsIds) === 0) {
             return array();

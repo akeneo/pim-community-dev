@@ -5,7 +5,7 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
+use Pim\Bundle\ProductBundle\Entity\AttributeOption;
 
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
