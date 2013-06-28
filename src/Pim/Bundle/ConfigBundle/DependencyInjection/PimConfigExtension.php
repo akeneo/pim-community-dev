@@ -31,6 +31,11 @@ class PimConfigExtension extends Extension
 
         // load services
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('parameters.yml');
+        $loader->load('forms.yml');
+        $loader->load('form_types.yml');
+        $loader->load('handlers.yml');
+        $loader->load('managers.yml');
         $loader->load('services.yml');
         $loader->load('datagrid.yml');
     }
