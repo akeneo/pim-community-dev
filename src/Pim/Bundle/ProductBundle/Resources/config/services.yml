@@ -1,4 +1,3 @@
-
 services:
     # Attribute property types
     pim_product.form.type.scopable:
@@ -15,7 +14,7 @@ services:
         class: %pim_product.form.type.attribute_property_options.class%
         tags:
             - { name: form.type, alias: pim_product_options }
-services:
+
     # Subscribers
     pim_product.form.subscriber.attribute:
         class:     %pim_product.subscriber.add_attribute_type.class%
@@ -34,11 +33,6 @@ services:
             - @doctrine
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_value_validator }
-
-    # Media
-    pim_product.manager.media:
-        class:     %pim_product.manager.media.class%
-        arguments: [@knp_gaufrette.filesystem_map, "pim", %upload_dir%]
 
     # twig extension
     pim_product.twig.product_extension:
