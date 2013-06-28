@@ -384,7 +384,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function theLocaleSwitcherShouldContainTheFollowingItems(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            if (!$this->getPage('Product edit')->findLocale($data['locale'], $data['label'])) {
+            if (!$this->getPage('Product edit')->findLocaleLink($data['locale'], array($data['language'], $data['label']))) {
                 throw $this->createExpectationException(sprintf(
                     'Could not find locale "%s %s" in the locale switcher', $data['locale'], $data['label']
                 ));

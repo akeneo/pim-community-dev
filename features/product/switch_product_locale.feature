@@ -49,6 +49,6 @@ Feature: Switch product locale
     And the product "Computer" belongs to the family "Technology"
     And I am on the "Computer" product page
     Then the locale switcher should contain the following items:
-      | locale | label      |
-      | en_US  | computer   |
-      | fr_FR  | ordinateur |
+      | locale | language | label      |
+      | en_US  | English  | computer   |
+      | fr_FR  | French   | ordinateur |

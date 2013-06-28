@@ -26,9 +26,17 @@ class ProductEdit extends Page
         'Enable switcher'                 => array('css' => '#pim_product_enabled'),
     );
 
-    public function findLocaleLink($locale)
+    public function findLocaleLink($locale, array $contents = array())
     {
-        return $this->getElement('Locales dropdown')->findLink(strtolower($locale));
+        $link = $this->getElement('Locales dropdown')->findLink(strtolower($locale));
+
+        foreach ($contents as $content) {
+            if (strpos($link->getText(), $content) === false) {
+                return null;
+            }
+        }
+
+        return $link;
     }
 
     public function selectLanguage($language)
