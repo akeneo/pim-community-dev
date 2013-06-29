@@ -3,17 +3,13 @@
 namespace Oro\Bundle\EntityExtendBundle\Extend;
 
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface;
 use Oro\Bundle\EntityExtendBundle\Extend\Factory\ConfigFactory;
 use Oro\Bundle\EntityExtendBundle\Tools\Generator\Generator;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 class ExtendManager
 {
-    /**
-     * @var ProxyObjectFactory
-     */
-    protected $proxyFactory;
-
     /**
      * @var ExtendObjectFactory
      */
@@ -66,14 +62,6 @@ class ExtendManager
     }
 
     /**
-     * @return ProxyObjectFactory
-     */
-    public function getProxyFactory()
-    {
-        return $this->proxyFactory;
-    }
-
-    /**
      * @return ExtendObjectFactory
      */
     public function getExtendFactory()
@@ -106,8 +94,6 @@ class ExtendManager
         if ($this->configProvider->hasConfig($entityName)
             && $this->configProvider->getConfig($entityName)->is('is_extend')
         ) {
-            $this->checkEntityCache($this->configProvider->getClassName($entityName));
-
             return true;
         }
 
@@ -144,7 +130,7 @@ class ExtendManager
     /**
      * @param $entity
      */
-    public function load($entity)
+    public function load(ExtendProxyInterface $entity)
     {
         $this->getExtendFactory()->getExtendObject($entity);
     }
@@ -154,11 +140,20 @@ class ExtendManager
      */
     public function persist($entity)
     {
-        if ($this->isExtend($entity)) {
-            $extend = $this->getExtendFactory()->getExtendObject($entity);
+        if (!$entity instanceof ExtendProxyInterface) {
+            $proxyClass = $this->getProxyClass($entity);
+            $proxy      = new $proxyClass();
+            $proxy->__proxy__createFromEntity($entity);
 
-            $this->getEntityManager()->persist($extend);
+            $ids = $this->getEntityManager()->getUnitOfWork()->getEntityIdentifier($entity);
+            //$this->getEntityManager()->detach($entity);
+            $entity = $proxy;
+            $this->getEntityManager()->getUnitOfWork()->registerManaged($entity, $ids, $entity->__proxy__toArray());
         }
+
+        $extend = $this->getExtendFactory()->getExtendObject($entity);
+
+        $this->getEntityManager()->persist($extend);
     }
 
     /**
@@ -166,17 +161,7 @@ class ExtendManager
      */
     public function remove($entity)
     {
-        if ($this->isExtend($entity)) {
-            $extend = $this->getExtendFactory()->getExtendObject($entity);
-            $this->getEntityManager()->remove($extend);
-        }
-    }
-
-    /**
-     * @param $entity
-     */
-    protected function checkEntityCache($entity)
-    {
-        $this->generator->checkEntityCache($entity);
+        $extend = $this->getExtendFactory()->getExtendObject($entity);
+        $this->getEntityManager()->remove($extend);
     }
 }

@@ -50,7 +50,6 @@ class GenerateCommand extends ContainerAwareCommand
             if ($xm->isExtend($config->getClassName())) {
                 $xm->getClassGenerator()->checkEntityCache($config->getClassName(), true);
             };
-
         }
     }
 }

@@ -3,6 +3,7 @@
 namespace Oro\Bundle\EntityExtendBundle\Extend;
 
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface;
 
 class ExtendObjectFactory
 {
@@ -28,16 +29,12 @@ class ExtendObjectFactory
      * @param $entity
      * @return null|ExtendEntityInterface
      */
-    public function getExtendObject($entity)
+    public function getExtendObject(ExtendProxyInterface $entity)
     {
         if (isset($this->extendObjects[spl_object_hash($entity)])) {
             return $this->extendObjects[spl_object_hash($entity)];
         } else {
-            /**
-             * TODO:
-             */
-            //return $this->createExtend($entity);
-            return null;
+            return $this->createExtend($entity);
         }
     }
 
@@ -45,7 +42,7 @@ class ExtendObjectFactory
      * @param $entity
      * @return bool
      */
-    public function hasExtendObject($entity)
+    public function hasExtendObject(ExtendProxyInterface $entity)
     {
         return isset($this->extendObjects[spl_object_hash($entity)]);
     }
@@ -53,7 +50,7 @@ class ExtendObjectFactory
     /**
      * @param $entity
      */
-    public function removeExtendObject($entity)
+    public function removeExtendObject(ExtendProxyInterface $entity)
     {
         if (isset($this->extendObjects[spl_object_hash($entity)])) {
             unset($this->extendObjects[spl_object_hash($entity)]);
@@ -64,19 +61,23 @@ class ExtendObjectFactory
      * @param $entity
      * @return null|ExtendEntityInterface
      */
-    protected function createExtend($entity)
+    protected function createExtend(ExtendProxyInterface $entity)
     {
-        $extendClass = $this->extendManager->getExtendClass($entity);
-        $extend = $this->extendManager
-            ->getEntityManager()
+        $entityClass = get_parent_class($entity);
+        $extendClass = $this->extendManager->getExtendClass($entityClass);
+
+        $em = $this->extendManager->getEntityManager();
+        $extend = $em
             ->getRepository($extendClass)
-            ->findOneBy(array('parent' => $entity));
+            ->findOneBy(array('__extend__parent' => $em->getUnitOfWork()->getEntityIdentifier($entity)));
 
         if (!$extend) {
             /** @var ExtendEntityInterface $extend */
             $extend = new $extendClass();
-            $extend->setParent($entity);
+            $extend->__extend__setParent($entity);
         }
+
+        $entity->__proxy__setExtend($extend);
 
         $this->extendManager->getEntityManager()->persist($extend);
 

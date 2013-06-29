@@ -50,8 +50,11 @@ class ProxyObjectFactory
     protected function createProxyObject($entity)
     {
         $proxyClass = $this->extendManager->getProxyClass($entity);
-        $extend = $this->extendManager->getExtendFactory()->getExtendObject($entity);
+        //$extend = $this->extendManager->getExtendFactory()->getExtendObject($entity);
+        $proxy = new $proxyClass();
 
-        return $this->proxyObjects[spl_object_hash($entity)] = new $proxyClass($entity, $extend);
+        $proxy->__proxy__createFromEntity($entity);
+
+        return $this->proxyObjects[spl_object_hash($entity)] = $proxy;
     }
 }
