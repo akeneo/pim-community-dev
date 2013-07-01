@@ -1,7 +1,6 @@
 <?php
 namespace Oro\Bundle\FlexibleEntityBundle\EventListener;
 
-use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Util\ClassUtils;
@@ -38,7 +37,7 @@ class AddAttributesListener implements EventSubscriber
         $em       = $args->getEntityManager();
 
         if ($flexible instanceof AbstractEntityFlexible) {
-return true;
+
             $metadata               = $em->getMetadataFactory()->getLoadedMetadata();
             $flexibleMetadata       = $metadata[get_class($flexible)];
             $flexibleAssociations   = $flexibleMetadata->getAssociationMappings();
@@ -50,22 +49,9 @@ return true;
             $toAttributeAssociation = $valueAssociations['attribute'];
             $attributeClass         = $toAttributeAssociation['targetEntity'];
 
-            $qb = $em->createQueryBuilder()->select('att')->from($attributeClass, 'att', 'att.code')
-                ->where('att.entityType = :entityType')->setParameter('entityType', get_class($flexible));
-            $codeToAttributeData = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_OBJECT);
-
+            $codeToAttributeData = $em->getRepository($attributeClass)->getCodeToAttributes(get_class($flexible));
             $flexible->setAllAttributes($codeToAttributeData);
             $flexible->setValueClass($valueClass);
-
-            //var_dump($codeToAttributeData); exit();
-/*
-            if ($flexible instanceof Pim\Bundle\ProductBundle\Model\ProductInterface) {
-
-                var_dump($codeToAttributeData); exit();
-
-                var_dump($flexible->getAttributes());
-                exit();
-            }*/
         }
     }
 }

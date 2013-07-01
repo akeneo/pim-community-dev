@@ -350,17 +350,16 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
     public function createFlexible()
     {
         $class = $this->getFlexibleName();
+        $attributeClass = $this->getAttributeName();
+        $valueClass = $this->getFlexibleValueName();
+
         $flexible = new $class();
         $flexible->setLocale($this->getLocale());
         $flexible->setScope($this->getScope());
 
-        $attributeClass = $this->getAttributeName();
-        $qb = $this->getStorageManager()->createQueryBuilder()->select('att')->from($attributeClass, 'att', 'att.code')
-            ->where('att.entityType = :entityType')->setParameter('entityType', $class);
-        $codeToAttributeData = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_OBJECT);
-
+        $codeToAttributeData = $this->getStorageManager()->getRepository($attributeClass)->getCodeToAttributes($class);
         $flexible->setAllAttributes($codeToAttributeData);
-        $flexible->setValueClass($this->getFlexibleValueName());
+        $flexible->setValueClass($valueClass);
 
         $event = new FilterFlexibleEvent($this, $flexible);
         $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_FLEXIBLE, $event);

@@ -231,7 +231,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     }
 
     /**
-     * Add support of magic method getAttributeCode, setAttributeCode
+     * Add support of magic method getAttributeCode, setAttributeCode, addAttributeCode
      *
      * @param string $method
      * @param string $arguments
@@ -320,7 +320,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     }
 
     /**
-     * TODO merge with __call !
+     * TODO merge with __call ! ensure that existing method can be called
      *
      * Get value data by attribute code
      *
