@@ -68,7 +68,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $nbProducts = 100;
+        $nbProducts = 250;
         $batchSize = 500;
 
         // get scopes
