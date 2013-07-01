@@ -187,7 +187,7 @@ $value->setAttribute($attCompany);
 $value->setData('Akeneo');
 $customer->addValue($value);
 
-// add a value (shortcut !!!)
+// add a value (shortcut !)
 $customer->setCompany('Akeneo');
 
 // persist and flush

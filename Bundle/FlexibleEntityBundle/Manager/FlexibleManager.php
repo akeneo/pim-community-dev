@@ -1,12 +1,8 @@
 <?php
 namespace Oro\Bundle\FlexibleEntityBundle\Manager;
 
-use Doctrine\ORM\AbstractQuery;
-
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
-
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
-
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Oro\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
