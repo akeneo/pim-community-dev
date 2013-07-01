@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:akeneo/DemoBundle.git",
-                "reference": "0d1eeff49604281c8ae4ba50c997397cb64b91ba"
+                "reference": "4afbc59a40e39f6f2cc3d902240dc85dadea5f0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/0d1eeff49604281c8ae4ba50c997397cb64b91ba",
-                "reference": "0d1eeff49604281c8ae4ba50c997397cb64b91ba",
+                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/4afbc59a40e39f6f2cc3d902240dc85dadea5f0a",
+                "reference": "4afbc59a40e39f6f2cc3d902240dc85dadea5f0a",
                 "shasum": ""
             },
             "require": {
@@ -2884,12 +2884,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/platform.git",
-                "reference": "3e02dd1cd654b474a3d9e0be49cf9159db92e17e"
+                "reference": "0521d72adbae3365951cac0d688afa7ecfe38be6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/platform/zipball/3e02dd1cd654b474a3d9e0be49cf9159db92e17e",
-                "reference": "3e02dd1cd654b474a3d9e0be49cf9159db92e17e",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/0521d72adbae3365951cac0d688afa7ecfe38be6",
+                "reference": "0521d72adbae3365951cac0d688afa7ecfe38be6",
                 "shasum": ""
             },
             "require": {

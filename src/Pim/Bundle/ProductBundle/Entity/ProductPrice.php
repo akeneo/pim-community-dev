@@ -27,7 +27,7 @@ class ProductPrice
     /**
      * @var ProductValue
      *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Model\ProductValueInterface", inversedBy="prices")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Model\ProductValueInterface", inversedBy="prices", cascade="persist")
      * @ORM\JoinColumn(name="value_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $value;
@@ -36,7 +36,7 @@ class ProductPrice
      * Store decimal value
      * @var double $decimal
      *
-     * @ORM\Column(name="data", type="decimal", nullable=true)
+     * @ORM\Column(name="data", type="decimal", scale=2, nullable=true)
      */
     protected $data;
 
@@ -47,6 +47,17 @@ class ProductPrice
      * @ORM\Column(name="currency_code", type="string", length=5, nullable=false)
      */
     protected $currency;
+
+    /**
+     * Constructor
+     * @param decimal $data
+     * @param string  $currency
+     */
+    public function __construct($data = null, $currency = null)
+    {
+        $this->data = $data;
+        $this->currency = $currency;
+    }
 
     /**
      * Get id
