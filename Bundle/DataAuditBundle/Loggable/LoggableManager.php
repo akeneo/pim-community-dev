@@ -2,7 +2,6 @@
 namespace Oro\Bundle\DataAuditBundle\Loggable;
 
 use Symfony\Component\Routing\Exception\InvalidParameterException;
-
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\EntityManager;
@@ -397,7 +396,7 @@ class LoggableManager
                 if ($newData instanceof Collection) {
 
                     $newDataArray = $newData->toArray();
-                    $oldDataArray = array_diff($newData->getSnapshot(), $newDataArray);
+                    $oldDataArray = $newData->getSnapshot();
 
                     $newData = implode(
                         ', ',
