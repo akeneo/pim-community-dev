@@ -64,6 +64,7 @@ How to use ?
 Enhancement
 ===========
 
+- customize doctrine query cache for common queries as retrieve available attributes for a flexible entity
 - add a default is_unique behavior
 - default fallback (locale, scope) in queries
 - add a "multivalued" parameter to any attribute in order to have multiple values for the same attribute (manufacturer atttibute: several manufacturers, gallery attribute: several images, documentation attribute: several files)
