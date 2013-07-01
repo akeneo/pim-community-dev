@@ -18,7 +18,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     name="oro_flexibleentity_attribute", indexes={@ORM\Index(name="searchcode_idx", columns={"code"})},
  *     uniqueConstraints={@ORM\UniqueConstraint(name="searchunique_idx", columns={"code", "entity_type"})}
  * )
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Oro\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository")
  * @ORM\HasLifecycleCallbacks
  * @UniqueEntity("code")
  * @Gedmo\TranslationEntity(class="Oro\Bundle\FlexibleEntityBundle\Entity\AttributeTranslation")
