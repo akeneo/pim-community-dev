@@ -164,18 +164,14 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
 
         $values = $values->filter(
             function ($value) use ($attributeCode, $locale, $scope) {
-                // related value to asked attribute
                 if ($value->getAttribute()->getCode() == $attributeCode) {
-                    // return relevant translated value if translatable
                     if ($value->getAttribute()->getTranslatable() and $value->getLocale() == $locale) {
-                        // check also scope if scopable
                         if ($value->getAttribute()->getScopable() and $value->getScope() == $scope) {
                             return true;
                         } elseif (!$value->getAttribute()->getScopable()) {
                             return true;
                         }
                     } elseif (!$value->getAttribute()->getTranslatable()) {
-                        // return the value if not translatable
                         return true;
                     }
                 }
@@ -184,6 +180,36 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
             }
         );
         $value = (count($values) == 1) ? $values->first() : false;
+
+        return $value;
+    }
+
+    /**
+     * Create a new value
+     *
+     * @param string $attributeCode
+     * @param string $locale
+     * @param string $scope
+     *
+     * @throws \Exception
+     *
+     * @return AbstractFlexibleValue
+     */
+    public function createValue($attributeCode, $locale = null, $scope = null)
+    {
+        if (!isset($this->allAttributes[$attributeCode])) {
+            throw new \Exception(sprintf('Could not find attribute "%s".', $attributeCode));
+        }
+
+        $attribute = $this->allAttributes[$attributeCode];
+        $value = new $this->valueClass();
+        $value->setAttribute($attribute);
+        if ($attribute->getTranslatable()) {
+            $value->setLocale($locale);
+        }
+        if ($attribute->getScopable()) {
+            $value->setScope($scope);
+        }
 
         return $value;
     }
@@ -199,8 +225,6 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     {
         // to authorize call to dynamic __get by twig, should be filter on existing attributes
         // cf http://twig.sensiolabs.org/doc/recipes.html#using-dynamic-object-properties
-        //return true;
-
         $values = $this->getValues();
 
         if (empty($values)) {
@@ -209,7 +233,6 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
 
         $values = $values->filter(
             function ($value) use ($name) {
-                // related value to asked attribute
                 if ($value->getAttribute()->getCode() == $name) {
                     return true;
                 }
@@ -219,7 +242,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     }
 
     /**
-     * TODO : to move !
+     * Convert attribute code format from CamelCase to camel_case
      *
      * @param string $code
      *
@@ -242,86 +265,36 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     public function __call($method, $arguments)
     {
-        preg_match('/get(.*)/', $method, $matches);
-
-        if (count($matches) > 1) {
+        if (preg_match('/get(.*)/', $method, $matches)) {
             $attributeCode = $this->sanitizeAttributeCode($matches[1]);
 
             return $this->getValue($attributeCode);
         }
 
-        preg_match('/set(.*)/', $method, $matches);
-        if (count($matches) > 1) {
-
+        if (preg_match('/set(.*)/', $method, $matches)) {
             $attributeCode = $this->sanitizeAttributeCode($matches[1]);
-            $data          = $arguments[0];
-            $locale        = (isset($arguments[1])) ? $arguments[1] : $this->getLocale();
-            $scope         = (isset($arguments[2])) ? $arguments[2] : $this->getScope();
-            $value         = $this->getValue($attributeCode, $locale, $scope);
-
-            if (!$value) {
-                if (!isset($this->allAttributes[$attributeCode])) {
-                    throw new \Exception(sprintf('Could not find attribute "%s".', $attributeCode));
-                }
-
-                $attribute = $this->allAttributes[$attributeCode];
-                $value = new $this->valueClass();
-                $value->setAttribute($attribute);
-
-                if ($attribute->getTranslatable()) {
-                    $value->setLocale($locale);
-                }
-
-                if ($attribute->getScopable()) {
-                    $value->setScope($scope);
-                }
-
-                $this->addValue($value);
-            }
-
-            $value->setData($data);
-
-            return $this;
+            $method        = 'setData';
+        } else if (preg_match('/add(.*)/', $method, $matches)) {
+            $attributeCode = $this->sanitizeAttributeCode($matches[1]);
+            $method        = 'addData';
         }
 
-        preg_match('/add(.*)/', $method, $matches);
-        if (count($matches) > 1) {
-
-            $attributeCode = $this->sanitizeAttributeCode($matches[1]);
-            $data          = $arguments[0];
-            $locale        = (isset($arguments[1])) ? $arguments[1] : $this->getLocale();
-            $scope         = (isset($arguments[2])) ? $arguments[2] : $this->getScope();
-            $value         = $this->getValue($attributeCode, $locale, $scope);
-
-            if (!$value) {
-                if (!isset($this->allAttributes[$attributeCode])) {
-                    throw new \Exception(sprintf('Could not find attribute "%s".', $attributeCode));
-                }
-
-                $attribute = $this->allAttributes[$attributeCode];
-                $value = new $this->valueClass();
-                $value->setAttribute($attribute);
-
-                if ($attribute->getTranslatable()) {
-                    $value->setLocale($locale);
-                }
-
-                if ($attribute->getScopable()) {
-                    $value->setScope($scope);
-                }
-
+        if ($attributeCode !== null) {
+            $data   = $arguments[0];
+            $locale = (isset($arguments[1])) ? $arguments[1] : $this->getLocale();
+            $scope  = (isset($arguments[2])) ? $arguments[2] : $this->getScope();
+            $value  = $this->getValue($attributeCode, $locale, $scope);
+            if ($value === false) {
+                $value = $this->createValue($attributeCode, $locale, $scope);
                 $this->addValue($value);
             }
-
-            $value->addData($data);
+            $value->$method($data);
 
             return $this;
         }
     }
 
     /**
-     * TODO merge with __call ! ensure that existing method can be called
-     *
      * Get value data by attribute code
      *
      * @param string $attCode
