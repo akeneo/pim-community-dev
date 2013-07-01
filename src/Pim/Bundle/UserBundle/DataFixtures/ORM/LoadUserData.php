@@ -56,13 +56,17 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     {
         $users = $this->userRepository->findAll();
 
-        $scope = current($this->getChannelManager()->getChannels());
-        $channel = current($this->getLocaleManager()->getLocales());
+        $locale       = current($this->getLocaleManager()->getLocales(array('code' => 'en_US')));
+        $localeAttr   = $this->findAttribute('cataloglocale');
+        $localeOption = $this->findAttributeOptionWithValue($localeAttr, $locale->getCode());
 
-        $scope = $this->userManager->getStorageManager()->getRepository('PimConfigBundle:Channel')->findOneBy(array());
+        $scope       = current($this->getChannelManager()->getChannels());
+        $scopeAttr   = $this->findAttribute('catalogscope');
+        $scopeOption = $this->findAttributeOptionWithValue($scopeAttr, $scope->getCode());
+
         foreach ($users as $user) {
-            $this->setFlexibleAttributeValueOption($user, 'cataloglocale', $channel->getCode());
-            $this->setFlexibleAttributeValueOption($user, 'catalogscope', $scope->getCode());
+            $user->setCataloglocale($localeOption);
+            $user->setCatalogscope($scopeOption);
             $this->persist($user);
         }
 
@@ -87,26 +91,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     protected function getChannelManager()
     {
         return $this->container->get('pim_config.manager.channel');
-    }
-
-    /**
-     * Sets a flexible attribute value as option with given value
-     *
-     * @param AbstractFlexible $flexibleEntity
-     * @param string           $attributeCode
-     * @param string           $value
-     *
-     * @return void
-     * @throws \LogicException
-     */
-    protected function setFlexibleAttributeValueOption(AbstractFlexible $flexibleEntity, $attributeCode, $value)
-    {
-        if ($attribute = $this->findAttribute($attributeCode)) {
-            $option = $this->findAttributeOptionWithValue($attribute, $value);
-            $this->getFlexibleValueForAttribute($flexibleEntity, $attribute)->setOption($option);
-        } else {
-            throw new \LogicException(sprintf('Cannot set value, attribute "%s" is missing', $attributeCode));
-        }
     }
 
     /**
@@ -144,26 +128,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         }
 
         throw new \LogicException(sprintf('Cannot find attribute option with value "%s"', $value));
-    }
-
-    /**
-     * Gets or creates a flexible value for attribute
-     *
-     * @param AbstractFlexible  $flexibleEntity
-     * @param AbstractAttribute $attribute
-     *
-     * @return FlexibleValueInterface
-     */
-    protected function getFlexibleValueForAttribute(AbstractFlexible $flexibleEntity, AbstractAttribute $attribute)
-    {
-        $flexibleValue = $flexibleEntity->getValue($attribute->getCode());
-        if (!$flexibleValue) {
-            $flexibleValue = $this->userManager->createFlexibleValue();
-            $flexibleValue->setAttribute($attribute);
-            $flexibleEntity->addValue($flexibleValue);
-        }
-
-        return $flexibleValue;
     }
 
     /**

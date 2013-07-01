@@ -36,15 +36,15 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function itShouldNotBeRemovableIfTheAttributeBelongsToTheProductFamily()
+    public function itShouldNotBeRemovableIfTheAttributeBelongsToTheFamily()
     {
-        $family    = $this->getProductFamilyMock();
+        $family    = $this->getFamilyMock();
         $attribute = $this->getProductAttributeMock();
         $product   = $this->getProductMock();
         $target    = $this->getTargetedClass();
 
         $product->expects($this->any())
-                ->method('getProductFamily')
+                ->method('getFamily')
                 ->will($this->returnValue($family));
 
         $family->expects($this->any())
@@ -60,15 +60,15 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function itShouldBeRemovableIfTheAttributeDoesNotBelongToTheProductFamily()
+    public function itShouldBeRemovableIfTheAttributeDoesNotBelongToTheFamily()
     {
-        $family    = $this->getProductFamilyMock();
+        $family    = $this->getFamilyMock();
         $attribute = $this->getProductAttributeMock();
         $product   = $this->getProductMock();
         $target    = $this->getTargetedClass();
 
         $product->expects($this->any())
-                ->method('getProductFamily')
+                ->method('getFamily')
                 ->will($this->returnValue($family));
 
         $family->expects($this->any())
@@ -91,7 +91,7 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
         $target    = $this->getTargetedClass();
 
         $product->expects($this->any())
-                ->method('getProductFamily')
+                ->method('getFamily')
                 ->will($this->returnValue(null));
 
         $target->setEntity($product);
@@ -105,10 +105,10 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
         return new ProductValue;
     }
 
-    private function getProductFamilyMock()
+    private function getFamilyMock()
     {
         return $this
-            ->getMock('Pim\Bundle\ProductBundle\Entity\ProductFamily')
+            ->getMock('Pim\Bundle\ProductBundle\Entity\Family')
         ;
     }
 

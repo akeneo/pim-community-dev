@@ -9,7 +9,7 @@ namespace Pim\Bundle\ProductBundle\Tests\Functional\Controller;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ProductFamilyControllerTest extends ControllerTest
+class FamilyControllerTest extends ControllerTest
 {
     /**
      * @staticvar string
@@ -46,7 +46,7 @@ class ProductFamilyControllerTest extends ControllerTest
      */
     public function testIndex()
     {
-        $uri = '/enrich/product-family/';
+        $uri = '/enrich/family/';
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -65,7 +65,7 @@ class ProductFamilyControllerTest extends ControllerTest
      */
     public function testCreate()
     {
-        $uri = '/enrich/product-family/create';
+        $uri = '/enrich/family/create';
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -80,7 +80,7 @@ class ProductFamilyControllerTest extends ControllerTest
             function ($node, $i) {
                 if ($node->hasAttribute('action')) {
                     $action = $node->getAttribute('action');
-                    if (preg_match('#\/enrich\/product-family\/create$#', $action)) {
+                    if (preg_match('#\/enrich\/family\/create$#', $action)) {
                         return true;
                     }
                 }
@@ -98,7 +98,7 @@ class ProductFamilyControllerTest extends ControllerTest
 
         // assert entity well inserted
         $family = $this->getRepository()->findOneBy(array('code' => self::FAMILY_CODE));
-        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductFamily', $family);
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Family', $family);
         $this->assertEquals(self::FAMILY_LABEL, $family->getLabel());
         $this->assertEquals(self::FAMILY_CODE, $family->getCode());
     }
@@ -112,8 +112,8 @@ class ProductFamilyControllerTest extends ControllerTest
     public function testEdit()
     {
         // get product family entity
-        $productFamily = $this->getRepository()->findOneBy(array('code' => self::FAMILY_CODE));
-        $uri = '/enrich/product-family/edit/'. $productFamily->getId();
+        $family = $this->getRepository()->findOneBy(array('code' => self::FAMILY_CODE));
+        $uri = '/enrich/family/edit/'. $family->getId();
 
         // assert without authentication
         $this->client->request('GET', $uri);
@@ -128,7 +128,7 @@ class ProductFamilyControllerTest extends ControllerTest
             function ($node, $i) {
                 if ($node->hasAttribute('action')) {
                     $action = $node->getAttribute('action');
-                    if (preg_match('#\/enrich\/product-family\/edit/[0-9]*$#', $action)) {
+                    if (preg_match('#\/enrich\/family\/edit/[0-9]*$#', $action)) {
                         return true;
                     }
                 }
@@ -146,12 +146,12 @@ class ProductFamilyControllerTest extends ControllerTest
 
         // assert entity well inserted
         $family = $this->getRepository()->findOneBy(array('code' => self::FAMILY_CODE));
-        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductFamily', $family);
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Family', $family);
         $this->assertEquals(self::FAMILY_EDITED_NAME, $family->getLabel());
         $this->assertEquals(self::FAMILY_CODE, $family->getCode());
 
         // assert with unknown product family id and authentication
-        $uri = '/enrich/product-family/edit/0';
+        $uri = '/enrich/family/edit/0';
         $this->client->request('GET', $uri, array(), array(), $this->server);
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
@@ -163,8 +163,8 @@ class ProductFamilyControllerTest extends ControllerTest
     public function testRemove()
     {
         // get product family entity
-        $productFamily = $this->getRepository()->findOneBy(array('code' => self::FAMILY_CODE));
-        $uri = '/enrich/product-family/remove/'. $productFamily->getId();
+        $family = $this->getRepository()->findOneBy(array('code' => self::FAMILY_CODE));
+        $uri = '/enrich/family/remove/'. $family->getId();
 
         // assert without authentication
         $this->client->request('DELETE', $uri);
@@ -183,6 +183,6 @@ class ProductFamilyControllerTest extends ControllerTest
      */
     protected function getRepository()
     {
-        return $this->getStorageManager()->getRepository('PimProductBundle:ProductFamily');
+        return $this->getStorageManager()->getRepository('PimProductBundle:Family');
     }
 }

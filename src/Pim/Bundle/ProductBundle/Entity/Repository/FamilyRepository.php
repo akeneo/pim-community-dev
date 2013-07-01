@@ -11,14 +11,14 @@ use Pim\Bundle\ProductBundle\Doctrine\EntityRepository;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductFamilyRepository extends EntityRepository
+class FamilyRepository extends EntityRepository
 {
     /**
      * @return \Doctrine\ORM\QueryBuilder
      */
     protected function buildAllOrderedByName()
     {
-        return $this->build()->orderBy('product_family.code');
+        return $this->build()->orderBy('family.code');
     }
 
     /**
@@ -31,7 +31,7 @@ class ProductFamilyRepository extends EntityRepository
         return $this
             ->buildOne($id)
             ->addSelect('attribute')
-            ->leftJoin('product_family.attributes', 'attribute')
+            ->leftJoin('family.attributes', 'attribute')
             ->leftJoin('attribute.group', 'group')
             ->orderBy('attribute.group', 'DESC');
         ;

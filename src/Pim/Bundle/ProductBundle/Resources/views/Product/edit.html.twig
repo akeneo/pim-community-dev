@@ -5,11 +5,6 @@
 
     {% block content %}
 
-    {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
-        'form': attributesForm,
-        'action': path('pim_product_product_addproductattributes', {'id': product.id, 'dataLocale': dataLocale})
-    } %}
-
     {{ JSFV(form) }}
     <form method="POST" class="form-horizontal" action="{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
 
@@ -55,7 +50,7 @@
 
         {% set left %}
             <ul class="inline">
-               <li>{{ 'Family'|trans }}: {{ form.vars.value.productFamily|capitalize|default('N/A'|trans) }}</li>
+               <li>{{ 'Family'|trans }}: {{ form.vars.value.family|capitalize|default('N/A'|trans) }}</li>
                <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by' | trans }} {{ updated ? updated.user.username : 'N/A'|trans }}</li>
                <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by' | trans }} {{ created ? created.user.username : 'N/A'|trans }}</li>
            </ul>
@@ -101,6 +96,10 @@
         </div>
     </form>
     {% endblock %}
+    {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
+        'form': attributesForm,
+        'action': path('pim_product_product_addproductattributes', {'id': product.id, 'dataLocale': dataLocale})
+    } %}
 </div>
 {% endblock %}
 

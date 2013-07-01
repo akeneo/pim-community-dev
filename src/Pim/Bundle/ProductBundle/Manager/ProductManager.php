@@ -82,7 +82,7 @@ class ProductManager extends FlexibleManager
         $locales = $product->getLocales();
         $attributes = $product->getAttributes();
 
-        if ($family = $product->getProductFamily()) {
+        if ($family = $product->getFamily()) {
             foreach ($family->getAttributes() as $attribute) {
                 $attributes[] = $attribute;
             }
@@ -292,9 +292,7 @@ class ProductManager extends FlexibleManager
      */
     public function find($id)
     {
-        $product = $this
-            ->getFlexibleRepository()
-            ->findWithSortedAttribute($id);
+        $product = $this->getFlexibleRepository()->findWithSortedAttribute($id);
 
         if ($product) {
             $this->ensureRequiredAttributeValues($product);
