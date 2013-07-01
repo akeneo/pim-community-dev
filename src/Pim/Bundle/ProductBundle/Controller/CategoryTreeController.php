@@ -93,9 +93,6 @@ class CategoryTreeController extends Controller
 
         $this->getTreeManager()->getStorageManager()->flush();
 
-        // format response to json content
-//         $data = JsonSegmentHelper::statusOKResponse();
-
         return new JsonResponse(array('status' => 1));
     }
 
