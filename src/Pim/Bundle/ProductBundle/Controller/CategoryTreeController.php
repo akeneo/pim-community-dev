@@ -1,18 +1,17 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Symfony\Component\HttpFoundation\Response;
-
 use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
 use Pim\Bundle\ProductBundle\Entity\Category;
+
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
