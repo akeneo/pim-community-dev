@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Type;
 
-use Pim\Bundle\ProductBundle\Form\Type\ProductFamilyType;
+use Pim\Bundle\ProductBundle\Form\Type\FamilyType;
 use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
 
 /**
@@ -12,7 +12,7 @@ use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ProductFamilyTypeTest extends AbstractFormTypeTest
+class FamilyTypeTest extends AbstractFormTypeTest
 {
 
     /**
@@ -24,7 +24,7 @@ class ProductFamilyTypeTest extends AbstractFormTypeTest
         parent::setUp();
 
         // Create form type
-        $this->type = new ProductFamilyType();
+        $this->type = new FamilyType();
         $this->form = $this->factory->create($this->type);
     }
 
@@ -39,7 +39,7 @@ class ProductFamilyTypeTest extends AbstractFormTypeTest
 
         // Assert option class
         $this->assertEquals(
-            'Pim\Bundle\ProductBundle\Entity\ProductFamily',
+            'Pim\Bundle\ProductBundle\Entity\Family',
             $this->form->getConfig()->getDataClass()
         );
 

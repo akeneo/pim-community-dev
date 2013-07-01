@@ -82,7 +82,7 @@ class ProductManager extends FlexibleManager
         $locales = $product->getLocales();
         $attributes = $product->getAttributes();
 
-        if ($family = $product->getProductFamily()) {
+        if ($family = $product->getFamily()) {
             foreach ($family->getAttributes() as $attribute) {
                 $attributes[] = $attribute;
             }

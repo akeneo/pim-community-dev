@@ -4,8 +4,8 @@ namespace Pim\Bundle\ProductBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Pim\Bundle\ProductBundle\Entity\ProductFamily;
-use Pim\Bundle\ProductBundle\Form\Type\ProductFamilyType;
+use Pim\Bundle\ProductBundle\Entity\Family;
+use Pim\Bundle\ProductBundle\Form\Type\FamilyType;
 use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
 
 /**
@@ -15,9 +15,9 @@ use Pim\Bundle\ProductBundle\Model\AvailableProductAttributes;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @Route("/product-family")
+ * @Route("/family")
  */
-class ProductFamilyController extends Controller
+class FamilyController extends Controller
 {
     /**
      * Index action
@@ -29,7 +29,7 @@ class ProductFamilyController extends Controller
      */
     public function indexAction()
     {
-        return $this->redirect($this->generateUrl('pim_product_productfamily_create'));
+        return $this->redirect($this->generateUrl('pim_product_family_create'));
     }
 
     /**
@@ -42,9 +42,9 @@ class ProductFamilyController extends Controller
      */
     public function createAction()
     {
-        $family   = new ProductFamily;
-        $form     = $this->createForm(new ProductFamilyType(), $family);
-        $families = $this->getProductFamilyRepository()->findAllOrderedByName();
+        $family   = new Family;
+        $form     = $this->createForm(new FamilyType(), $family);
+        $families = $this->getFamilyRepository()->findAllOrderedByName();
         $request  = $this->getRequest();
 
         if ($request->isMethod('POST')) {
@@ -57,7 +57,7 @@ class ProductFamilyController extends Controller
 
                 $this->addFlash('success', 'Product family successfully created');
 
-                return $this->redirectToProductFamilyAttributesTab($family->getId());
+                return $this->redirectToFamilyAttributesTab($family->getId());
             }
         }
 
@@ -84,9 +84,9 @@ class ProductFamilyController extends Controller
     public function editAction($id)
     {
         $family   = $this->findFamilyOr404($id);
-        $families = $this->getProductFamilyRepository()->findAllOrderedByName();
+        $families = $this->getFamilyRepository()->findAllOrderedByName();
         $request  = $this->getRequest();
-        $form     = $this->createForm(new ProductFamilyType(), $family);
+        $form     = $this->createForm(new FamilyType(), $family);
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -97,7 +97,7 @@ class ProductFamilyController extends Controller
 
                 $this->addFlash('success', 'Product family successfully updated.');
 
-                return $this->redirect($this->generateUrl('pim_product_productfamily_edit', array('id' => $id)));
+                return $this->redirect($this->generateUrl('pim_product_family_edit', array('id' => $id)));
             }
 
             $this->getEntityManager()->refresh($family);
@@ -115,21 +115,21 @@ class ProductFamilyController extends Controller
     /**
      * Remove product family
      *
-     * @param ProductFamily $entity
+     * @param Family $entity
      *
      * @Route("/remove/{id}", requirements={"id"="\d+"})
      * @Method("DELETE")
      *
      * @return array
      */
-    public function removeAction(ProductFamily $entity)
+    public function removeAction(Family $entity)
     {
         $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();
 
         $this->get('session')->getFlashBag()->add('success', 'Product family successfully removed');
 
-        return $this->redirect($this->generateUrl('pim_product_productfamily_index'));
+        return $this->redirect($this->generateUrl('pim_product_family_index'));
     }
 
     /**
@@ -159,7 +159,7 @@ class ProductFamilyController extends Controller
 
         $this->getEntityManager()->flush();
 
-        return $this->redirectToProductFamilyAttributesTab($family->getId());
+        return $this->redirectToFamilyAttributesTab($family->getId());
     }
 
     /**
@@ -187,7 +187,7 @@ class ProductFamilyController extends Controller
         if ($attribute === $family->getAttributeAsLabel()) {
             $this->addFlash('error', 'You cannot remove this attribute because it\'s used as label for the family.');
 
-            return $this->redirectToProductFamilyAttributesTab($family->getId());
+            return $this->redirectToFamilyAttributesTab($family->getId());
         }
 
         $family->removeAttribute($attribute);
@@ -195,7 +195,7 @@ class ProductFamilyController extends Controller
 
         $this->addFlash('success', 'The family is successfully updated.');
 
-        return $this->redirectToProductFamilyAttributesTab($family->getId());
+        return $this->redirectToFamilyAttributesTab($family->getId());
     }
 
     /**
@@ -205,9 +205,9 @@ class ProductFamilyController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    protected function redirectToProductFamilyAttributesTab($id)
+    protected function redirectToFamilyAttributesTab($id)
     {
-        $url = $this->generateUrl('pim_product_productfamily_edit', array('id' => $id));
+        $url = $this->generateUrl('pim_product_family_edit', array('id' => $id));
 
         return $this->redirect(sprintf('%s#attributes', $url));
     }
@@ -221,7 +221,7 @@ class ProductFamilyController extends Controller
      */
     protected function findFamilyOr404($id)
     {
-        $family = $this->getProductFamilyRepository()->findOneWithAttributes($id);
+        $family = $this->getFamilyRepository()->findOneWithAttributes($id);
         if (!$family) {
             throw $this->createNotFoundException(sprintf('Couldn\'t find a product family with id %d', $id));
         }
@@ -251,8 +251,8 @@ class ProductFamilyController extends Controller
      *
      * @return \Doctrine\ORM\EntityRepository
      */
-    protected function getProductFamilyRepository()
+    protected function getFamilyRepository()
     {
-        return $this->getEntityManager()->getRepository('PimProductBundle:ProductFamily');
+        return $this->getEntityManager()->getRepository('PimProductBundle:Family');
     }
 }

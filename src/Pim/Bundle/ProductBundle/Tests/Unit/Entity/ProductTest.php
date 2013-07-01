@@ -2,7 +2,7 @@
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\ProductBundle\Entity\Product;
-use Pim\Bundle\ProductBundle\Entity\ProductFamily;
+use Pim\Bundle\ProductBundle\Entity\Family;
 
 /**
  * Test related class
@@ -25,20 +25,20 @@ class ProductTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for productFamily property
+     * Test getter/setter for family property
      */
-    public function testGetSetProductFamily()
+    public function testGetSetFamily()
     {
         $product = new Product();
-        $this->assertEmpty($product->getProductFamily());
+        $this->assertEmpty($product->getFamily());
 
         // Change value and assert new
-        $newProductFamily = new ProductFamily();
-        $product->setProductFamily($newProductFamily);
-        $this->assertEquals($newProductFamily, $product->getProductFamily());
+        $newFamily = new Family();
+        $product->setFamily($newFamily);
+        $this->assertEquals($newFamily, $product->getFamily());
 
-        $product->setProductFamily(null);
-        $this->assertNull($product->getProductFamily());
+        $product->setFamily(null);
+        $this->assertNull($product->getFamily());
     }
 
     public function testGetAttributes()
@@ -96,7 +96,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
 
         $product = new Product();
         $product->setId(10);
-        $product->setProductFamily($family);
+        $product->setFamily($family);
         $product->addValue($value);
 
         $this->assertEquals('bar', $product->getLabel());
@@ -110,7 +110,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
 
         $product = new Product();
         $product->setId(25);
-        $product->setProductFamily($family);
+        $product->setFamily($family);
         $product->addValue($value);
 
         $this->assertEquals(25, $product->getLabel());
@@ -124,7 +124,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
 
         $product = new Product();
         $product->setId(38);
-        $product->setProductFamily($family);
+        $product->setFamily($family);
         $product->addValue($value);
 
         $this->assertEquals(38, $product->getLabel());
@@ -138,7 +138,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
 
         $product = new Product();
         $product->setId(53);
-        $product->setProductFamily($family);
+        $product->setFamily($family);
         $product->addValue($value);
 
         $this->assertEquals(53, $product->getLabel());

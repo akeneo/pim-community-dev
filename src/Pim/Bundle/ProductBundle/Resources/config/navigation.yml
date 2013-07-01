@@ -13,7 +13,7 @@ oro_menu_config:
             route: 'pim_product_productattribute_index'
         pim_enrich_family:
             label: 'Families'
-            route: 'pim_product_productfamily_index'
+            route: 'pim_product_family_index'
         pim_enrich_attributegroup:
             label: 'Attribute groups'
             route: 'pim_product_attributegroup_index'
@@ -60,9 +60,9 @@ oro_titles:
     pim_product_product_index:               Products
     pim_product_product_create:              Products | Create
     pim_product_product_edit:                Products | Edit
-    pim_product_productfamily_index:         Product families
-    pim_product_productfamily_create:        Product families | Create
-    pim_product_productfamily_edit:          Product families | Edit
+    pim_product_family_index:                Product families
+    pim_product_family_create:               Product families | Create
+    pim_product_family_edit:                 Product families | Edit
     pim_config_channel_index:                Channels
     pim_config_channel_create:               Channels | Create
     pim_config_channel_edit:                 Channels | Edit
