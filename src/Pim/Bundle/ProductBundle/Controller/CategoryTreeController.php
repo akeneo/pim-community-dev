@@ -1,16 +1,17 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Controller;
 
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Symfony\Component\HttpFoundation\Response;
-
 use Pim\Bundle\ProductBundle\Helper\CategoryHelper;
 use Pim\Bundle\ProductBundle\Entity\Category;
+
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -67,6 +68,31 @@ class CategoryTreeController extends Controller
         $treesResponse = CategoryHelper::treesResponse($trees, $selectNode);
 
         return array('trees' => $treesResponse);
+    }
+
+    /**
+     * Move a node
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @Route("/move-node")
+     */
+    public function moveNodeAction(Request $request)
+    {
+        $segmentId = $request->get('id');
+        $parentId = $request->get('parent');
+        $prevSiblingId = $request->get('prev_sibling');
+
+        if ($request->get('copy') == 1) {
+            $this->getTreeManager()->copy($segmentId, $parentId, $prevSiblingId);
+        } else {
+            $this->getTreeManager()->move($segmentId, $parentId, $prevSiblingId);
+        }
+
+        $this->getTreeManager()->getStorageManager()->flush();
+
+        return new JsonResponse(array('status' => 1));
     }
 
     /**
