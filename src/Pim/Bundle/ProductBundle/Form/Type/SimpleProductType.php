@@ -26,7 +26,7 @@ class SimpleProductType extends FlexibleType
 
         $builder
             ->add('values', 'collection')
-            ->add('productFamily')
+            ->add('family')
             ->add(
                 'locales',
                 'entity',

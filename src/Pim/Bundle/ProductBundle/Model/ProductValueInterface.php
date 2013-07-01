@@ -10,4 +10,8 @@ namespace Pim\Bundle\ProductBundle\Model;
  */
 interface ProductValueInterface
 {
+    /**
+     * @return string
+     */
+    public function __toString();
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\ProductBundle\Entity\ProductFamily;
+use Pim\Bundle\ProductBundle\Entity\Family;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
 /**
@@ -12,7 +12,7 @@ use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ProductFamilyTest extends \PHPUnit_Framework_TestCase
+class FamilyTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -20,8 +20,8 @@ class ProductFamilyTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $productFamily = new ProductFamily();
-        $this->assertEntity($productFamily);
+        $family = new Family();
+        $this->assertEntity($family);
     }
 
     /**
@@ -29,8 +29,8 @@ class ProductFamilyTest extends \PHPUnit_Framework_TestCase
      */
     public function testId()
     {
-        $productFamily = new ProductFamily();
-        $this->assertEmpty($productFamily->getId());
+        $family = new Family();
+        $this->assertEmpty($family->getId());
     }
 
     /**
@@ -38,13 +38,13 @@ class ProductFamilyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetCode()
     {
-        $productFamily = new ProductFamily();
-        $this->assertEmpty($productFamily->getCode());
+        $family = new Family();
+        $this->assertEmpty($family->getCode());
 
         // Change value and assert new
         $newCode = 'test-code';
-        $productFamily->setCode($newCode);
-        $this->assertEquals($newCode, $productFamily->getCode());
+        $family->setCode($newCode);
+        $this->assertEquals($newCode, $family->getCode());
     }
 
     /**
@@ -52,13 +52,13 @@ class ProductFamilyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetLabel()
     {
-        $productFamily = new ProductFamily();
-        $this->assertEmpty($productFamily->getLabel());
+        $family = new Family();
+        $this->assertEmpty($family->getLabel());
 
         // Change value and assert new
         $newLabel = 'test-label';
-        $productFamily->setLabel($newLabel);
-        $this->assertEquals($newLabel, $productFamily->getLabel());
+        $family->setLabel($newLabel);
+        $this->assertEquals($newLabel, $family->getLabel());
     }
 
     /**
@@ -66,20 +66,20 @@ class ProductFamilyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAddRemoveAttribute()
     {
-        $productFamily = new ProductFamily();
+        $family = new Family();
 
         // Change value and assert new
         $newAttribute = new ProductAttribute();
-        $productFamily->addAttribute($newAttribute);
+        $family->addAttribute($newAttribute);
         $this->assertInstanceOf(
             'Pim\Bundle\ProductBundle\Entity\ProductAttribute',
-            $productFamily->getAttributes()->first()
+            $family->getAttributes()->first()
         );
 
-        $productFamily->removeAttribute($newAttribute);
+        $family->removeAttribute($newAttribute);
         $this->assertNotInstanceOf(
             'Pim\Bundle\ProductBundle\Entity\ProductAttribute',
-            $productFamily->getAttributes()->first()
+            $family->getAttributes()->first()
         );
     }
 
@@ -88,24 +88,24 @@ class ProductFamilyTest extends \PHPUnit_Framework_TestCase
      */
     public function testToString()
     {
-        $productFamily = new ProductFamily();
+        $family = new Family();
         $string = 'test-string';
-        $productFamily->setCode($string);
-        $this->assertEquals($string, $productFamily->__toString());
+        $family->setCode($string);
+        $this->assertEquals($string, $family->__toString());
     }
 
     /**
      * Assert entity
-     * @param Pim\Bundle\ProductBundle\Entity\ProductFamily $entity
+     * @param Pim\Bundle\ProductBundle\Entity\Family $entity
      */
     protected function assertEntity($entity)
     {
-        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductFamily', $entity);
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Family', $entity);
     }
 
     public function testGetSetAttributeAsLabel()
     {
-        $family    = new ProductFamily;
+        $family    = new Family;
         $attribute = $this->getAttributeMock();
 
         $this->assertNull($family->getAttributeAsLabel());
@@ -115,7 +115,7 @@ class ProductFamilyTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAttributeAsLabelChoices()
     {
-        $family  = new ProductFamily;
+        $family  = new Family;
         $name    = $this->getAttributeMock();
         $address = $this->getAttributeMock();
         $phone   = $this->getAttributeMock('phone');
