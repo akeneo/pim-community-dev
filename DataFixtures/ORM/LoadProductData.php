@@ -1,6 +1,8 @@
 <?php
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Oro\Bundle\UserBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -26,7 +28,6 @@ use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 */
 class LoadProductData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
-
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
      */
@@ -67,7 +68,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $nbProducts = 250;
+        $nbProducts = 100;
         $batchSize = 500;
 
         // get scopes
@@ -81,19 +82,8 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         // get currency
         $currencyUSD = $manager->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => 'USD'));
 
-        // get attributes by reference
-        $attName        = $this->getReference('product-attribute.name');
-        $attDate        = $this->getReference('product-attribute.release_date');
-        $attDescription = $this->getReference('product-attribute.short_description');
-        $attSize        = $this->getReference('product-attribute.size');
-        $attLongDesc    = $this->getReference('product-attribute.long_description');
-        $attColor       = $this->getReference('product-attribute.color');
-        $attPrice       = $this->getReference('product-attribute.price');
-        $attManufact    = $this->getReference('product-attribute.manufacturer');
-        $attImageUpload = $this->getReference('product-attribute.image_upload');
-        $attSku         = $this->getReference('product-attribute.sku');
-
         // get attribute color options
+        $attColor  = $this->getReference('product-attribute.color');
         $optColors = $this->getProductManager()->getAttributeOptionRepository()->findBy(
             array('attribute' => $attColor)
         );
@@ -103,6 +93,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         }
 
         // get attribute size options
+        $attSize  = $this->getReference('product-attribute.size');
         $optSizes = $this->getProductManager()->getAttributeOptionRepository()->findBy(
             array('attribute' => $attSize)
         );
@@ -112,6 +103,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         }
 
         // get attribute manufacturer options
+        $attManufact = $this->getReference('product-attribute.manufacturer');
         $optManufact = $this->getProductManager()->getAttributeOptionRepository()->findBy(
             array('attribute' => $attManufact)
         );
@@ -126,31 +118,18 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 
             $product = $this->getProductManager()->createFlexible();
 
-            // sku
-            $prodSku = 'sku-'.str_pad($ind, 3, '0', STR_PAD_LEFT);
-            $value = $this->getProductManager()->createFlexibleValue();
-            $value->setAttribute($attSku);
-            $value->setData($prodSku);
-            $product->addValue($value);
-
-            // image upload
-            $value = $this->getProductManager()->createFlexibleValue();
-            $value->setAttribute($attImageUpload);
-            $value->setData(null);
-            $product->addValue($value);
-
             // product locales
             $product->addLocale($manager->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => 'de_DE')));
             $product->addLocale($manager->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => 'fr_FR')));
             $product->addLocale($manager->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => 'en_US')));
 
+            // sku
+            $prodSku = 'sku-'.str_pad($ind, 3, '0', STR_PAD_LEFT);
+            $product->setSku($prodSku);
+
             // name
             foreach ($names as $locale => $data) {
-                $value = $this->getProductManager()->createFlexibleValue();
-                $value->setAttribute($attName);
-                $value->setLocale($locale);
-                $value->setData($data.' '.$ind);
-                $product->addValue($value);
+                $product->setName($data.' '.$ind, $locale);
             }
 
             // short description
@@ -158,12 +137,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $scopes = array('ecommerce', 'mobile');
             foreach ($locales as $locale) {
                 foreach ($scopes as $scope) {
-                    $value = $this->getProductManager()->createFlexibleValue();
-                    $value->setLocale($locale);
-                    $value->setScope($scope);
-                    $value->setAttribute($attDescription);
-                    $product->addValue($value);
-                    $value->setData('description ('.$locale.') ('.$scope.') '.$ind);
+                    $product->setShortDescription('description ('.$locale.') ('.$scope.') '.$ind, $locale, $scope);
                 }
             }
 
@@ -172,65 +146,46 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $scopes = array('ecommerce', 'mobile');
             foreach ($locales as $locale) {
                 foreach ($scopes as $scope) {
-                    $value = $this->getProductManager()->createFlexibleValue();
-                    $value->setLocale($locale);
-                    $value->setScope($scope);
-                    $value->setAttribute($attLongDesc);
-                    $product->addValue($value);
-                    $value->setData('long description ('.$locale.') ('.$scope.') '.$ind);
+                    $product->setLongDescription('long description ('.$locale.') ('.$scope.') '.$ind, $locale, $scope);
                 }
             }
 
             // size
-            $value = $this->getProductManager()->createFlexibleValue();
-            $value->setAttribute($attSize);
             $firstSizeOpt = $sizes[rand(0, count($sizes)-1)];
-            $value->setData($firstSizeOpt);
-            $product->addValue($value);
+            $product->setSize($firstSizeOpt);
 
             // manufacturer
-            $value = $this->getProductManager()->createFlexibleValue();
-            $value->setAttribute($attManufact);
             $firstManOpt = $manufacturers[rand(0, count($manufacturers)-1)];
-            $value->setData($firstManOpt);
-            $product->addValue($value);
+            $product->setManufacturer($firstManOpt);
 
             // color
-            $value = $this->getProductManager()->createFlexibleValue();
-            $value->setAttribute($attColor);
             $firstColorOpt = $colors[rand(0, count($colors)-1)];
-            $value->addOption($firstColorOpt);
+            $product->addColor($firstColorOpt);
             $secondColorOpt = $colors[rand(0, count($colors)-1)];
             if ($firstColorOpt->getId() != $secondColorOpt->getId()) {
-                $value->addOption($secondColorOpt);
+                $product->addColor($secondColorOpt);
             }
-            $product->addValue($value);
 
             // price
-            $value = $this->getProductManager()->createFlexibleValue();
-            $value->setAttribute($attPrice);
             $currencies = array('USD', 'EUR');
             foreach ($currencies as $currency) {
-                $price = new ProductPrice();
-                $price->setData(rand(5, 100));
-                $price->setCurrency($currency);
-                $value->addPrice($price);
+                $price = new ProductPrice(rand(5, 100), $currency);
+                $product->addPrice($price);
             }
-            $product->addValue($value);
 
             // date
-            $value = $this->getProductManager()->createFlexibleValue();
-            $value->setAttribute($attDate);
-            $value->setData(new \Datetime());
-            $product->addValue($value);
+            $product->setReleaseDate(new \Datetime());
 
             $this->persist($product);
 
-            if ($ind % 20 === 0) {
+            if ($ind % 3 === 0) {
                 $family = $manager->getRepository('PimProductBundle:ProductFamily')->findOneBy(array('code' => 'mug'));
                 $product->setProductFamily($family);
-            } elseif ($ind % 17 === 0) {
+            } elseif ($ind % 7 === 0) {
                 $family = $manager->getRepository('PimProductBundle:ProductFamily')->findOneBy(array('code' => 'shirt'));
+                $product->setProductFamily($family);
+            } elseif ($ind % 11 === 0) {
+                $family = $manager->getRepository('PimProductBundle:ProductFamily')->findOneBy(array('code' => 'shoe'));
                 $product->setProductFamily($family);
             }
 
@@ -267,7 +222,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
     protected function persist(Product $product)
     {
         $this->getProductManager()->getStorageManager()->persist($product);
-        $this->addReference('product.'. $product->sku, $product);
+        $this->addReference('product.'. $product->getSku(), $product);
     }
 
     /**
