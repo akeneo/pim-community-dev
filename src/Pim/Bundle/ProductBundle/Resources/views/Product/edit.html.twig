@@ -5,11 +5,6 @@
 
     {% block content %}
 
-    {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
-        'form': attributesForm,
-        'action': path('pim_product_product_addproductattributes', {'id': product.id, 'dataLocale': dataLocale})
-    } %}
-
     {{ JSFV(form) }}
     <form method="POST" class="form-horizontal" action="{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
 
@@ -101,6 +96,10 @@
         </div>
     </form>
     {% endblock %}
+    {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
+        'form': attributesForm,
+        'action': path('pim_product_product_addproductattributes', {'id': product.id, 'dataLocale': dataLocale})
+    } %}
 </div>
 {% endblock %}
 
