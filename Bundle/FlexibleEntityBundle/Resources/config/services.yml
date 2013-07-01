@@ -4,7 +4,8 @@ parameters:
     oro_flexibleentity.attributetype.factory.class:                   Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory
     oro_flexibleentity.value_form.value_subscriber.class:             Oro\Bundle\FlexibleEntityBundle\Form\EventListener\FlexibleValueSubscriber
     oro_flexibleentity.filterAttributes.twig.extension.class:         Oro\Bundle\FlexibleEntityBundle\Twig\FilterAttributesExtension
-    oro_flexibleentity.validator.attribute_constraint_guesser.class: Oro\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser
+    oro_flexibleentity.validator.attribute_constraint_guesser.class:  Oro\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser
+    oro_flexibleentity.listener.add_attributes.class:                 Oro\Bundle\FlexibleEntityBundle\EventListener\AddAttributesListener
 
 services:
     oro_flexibleentity.value_form.value_subscriber:
@@ -22,7 +23,13 @@ services:
         class: %oro_flexibleentity.attributetype.factory.class%
         arguments: ["@service_container", ~]
 
-    # deal with translatable behavior
+    # inject attributes into flexible entity
+    oro_flexibleentity.listener.add_attributes_listener:
+        class: %oro_flexibleentity.listener.add_attributes.class%
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    # inject current locale of manager into entity
     oro_flexibleentity.translatable_listener:
         class: Oro\Bundle\FlexibleEntityBundle\EventListener\TranslatableListener
         calls:
@@ -30,7 +37,7 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
-    # deal with translatable behavior
+    # inject current scope of manager into entity
     oro_flexibleentity.scopable_listener:
         class: Oro\Bundle\FlexibleEntityBundle\EventListener\ScopableListener
         calls:
@@ -38,13 +45,13 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
-    # deal with timestampable behavior
+    # update created and updated at fields 
     oro_flexibleentity.timestampable_listener:
         class: Oro\Bundle\FlexibleEntityBundle\EventListener\TimestampableListener
         tags:
             - { name: doctrine.event_subscriber }
 
-    # deal with required value behavior
+    # ensure that required value has been set
     oro_flexibleentity.has_required_value_listener:
         class: Oro\Bundle\FlexibleEntityBundle\EventListener\RequiredValueListener
         calls:
@@ -52,11 +59,11 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
-    # deal with default value behavior
+    # add default value
     oro_flexibleentity.listener.default_value_listener:
         class: Oro\Bundle\FlexibleEntityBundle\EventListener\DefaultValueListener
 
-    # deal with flexible values initialization mode
+    # initialize flexible entity
     oro_flexibleentity.listener.initialize_values_listener:
         class: Oro\Bundle\FlexibleEntityBundle\EventListener\InitializeValuesListener
         tags:

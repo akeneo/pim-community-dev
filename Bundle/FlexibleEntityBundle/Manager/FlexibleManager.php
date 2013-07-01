@@ -1,6 +1,8 @@
 <?php
 namespace Oro\Bundle\FlexibleEntityBundle\Manager;
 
+use Doctrine\ORM\AbstractQuery;
+
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
@@ -348,14 +350,22 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
     public function createFlexible()
     {
         $class = $this->getFlexibleName();
-        $object = new $class();
-        $object->setLocale($this->getLocale());
-        $object->setScope($this->getScope());
-        // dispatch event
-        $event = new FilterFlexibleEvent($this, $object);
+        $flexible = new $class();
+        $flexible->setLocale($this->getLocale());
+        $flexible->setScope($this->getScope());
+
+        $attributeClass = $this->getAttributeName();
+        $qb = $this->getStorageManager()->createQueryBuilder()->select('att')->from($attributeClass, 'att', 'att.code')
+            ->where('att.entityType = :entityType')->setParameter('entityType', $class);
+        $codeToAttributeData = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_OBJECT);
+
+        $flexible->setAllAttributes($codeToAttributeData);
+        $flexible->setValueClass($this->getFlexibleValueName());
+
+        $event = new FilterFlexibleEvent($this, $flexible);
         $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_FLEXIBLE, $event);
 
-        return $object;
+        return $flexible;
     }
 
     /**

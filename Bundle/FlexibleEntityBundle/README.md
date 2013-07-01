@@ -64,8 +64,15 @@ How to use ?
 Enhancement
 ===========
 
+TODO :
+
+- inject all attributes into flexible entity (create / load)
+- flexible entity must know th value class
+- all attributes in cache
+
+
+
 - add new attributes when load an existing flexible
 - add a default is_unique behavior
-- deal with in, like, etc in queries 
 - default fallback (locale, scope) in queries
 - add a "multivalued" parameter to any attribute in order to have multiple values for the same attribute (manufacturer atttibute: several manufacturers, gallery attribute: several images, documentation attribute: several files)
