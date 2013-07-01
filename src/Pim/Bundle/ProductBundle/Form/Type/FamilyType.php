@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ProductFamilyType extends AbstractType
+class FamilyType extends AbstractType
 {
 
     /**
@@ -30,8 +30,8 @@ class ProductFamilyType extends AbstractType
                 'pim_translatable_field',
                 array(
                     'field'             => 'label',
-                    'translation_class' => 'Pim\\Bundle\\ProductBundle\\Entity\\ProductFamilyTranslation',
-                    'entity_class'      => 'Pim\\Bundle\\ProductBundle\\Entity\\ProductFamily',
+                    'translation_class' => 'Pim\\Bundle\\ProductBundle\\Entity\\FamilyTranslation',
+                    'entity_class'      => 'Pim\\Bundle\\ProductBundle\\Entity\\Family',
                     'property_path'     => 'translations'
                 )
             )
@@ -55,7 +55,7 @@ class ProductFamilyType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\ProductBundle\Entity\ProductFamily'
+                'data_class' => 'Pim\Bundle\ProductBundle\Entity\Family'
             )
         );
     }

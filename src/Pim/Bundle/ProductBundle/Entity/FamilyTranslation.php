@@ -1,5 +1,4 @@
 <?php
-
 namespace Pim\Bundle\ProductBundle\Entity;
 
 use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;
@@ -25,7 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
  * )
  *
  */
-class ProductFamilyTranslation extends AbstractTranslation
+class FamilyTranslation extends AbstractTranslation
 {
     /**
      * All required columns are mapped through inherited superclass
@@ -34,7 +33,7 @@ class ProductFamilyTranslation extends AbstractTranslation
     /**
      * Change foreign key to add constraint and work with basic entity
      *
-     * @ORM\ManyToOne(targetEntity="ProductFamily", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity="Family", inversedBy="translations")
      * @ORM\JoinColumn(name="foreign_key", referencedColumnName="id")
      */
     protected $foreignKey;

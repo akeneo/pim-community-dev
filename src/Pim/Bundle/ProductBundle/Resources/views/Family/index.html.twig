@@ -8,7 +8,7 @@
             <div class="sidebar-list">
                 <ul>
                     {% for family in families %}
-                    <li class="{{ family == currentFamily ? 'active' : '' }}"><a href="{{ path('pim_product_productfamily_edit', {'id': family.id}) }}">{{ family.label }}</a></li>
+                    <li class="{{ family == currentFamily ? 'active' : '' }}"><a href="{{ path('pim_product_family_edit', {'id': family.id}) }}">{{ family.label }}</a></li>
                     {% endfor %}
                 </ul>
             </div>
@@ -38,7 +38,7 @@
     $(function() {
         "use strict";
 
-        $('#family-container').sidebarize({ buttons: ['<a href="{{ path('pim_product_productfamily_create') }}"><i class="icon-plus-sign"></i></a>'] });
+        $('#family-container').sidebarize({ buttons: ['<a href="{{ path('pim_product_family_create') }}"><i class="icon-plus-sign"></i></a>'] });
     });
     </script>
 {% endblock %}

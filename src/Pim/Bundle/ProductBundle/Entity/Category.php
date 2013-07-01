@@ -29,6 +29,7 @@ use Pim\Bundle\ProductBundle\Model\ProductInterface;
  * @UniqueEntity(fields="code", message="This code is already taken")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @Oro\Loggable
  */
 class Category extends AbstractSegment implements Translatable, CategoryInterface
 {
@@ -69,6 +70,7 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
      * @var string $code
      *
      * @ORM\Column(name="code", type="string", length=100)
+     * @Oro\Versioned
      */
     protected $code;
 
@@ -297,5 +299,13 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
         $this->translations->removeElement($translation);
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getTitle();
     }
 }

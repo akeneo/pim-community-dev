@@ -9,7 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Pim\Bundle\ProductBundle\Entity\ProductFamilyTranslation;
+use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
 
 /**
  * Product family
@@ -19,12 +19,12 @@ use Pim\Bundle\ProductBundle\Entity\ProductFamilyTranslation;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ORM\Table(name="pim_product_family")
- * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductFamilyRepository")
+ * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\FamilyRepository")
  * @UniqueEntity(fields="code", message="This code is already taken.")
- * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\ProductFamilyTranslation")
+ * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\FamilyTranslation")
  * @Oro\Loggable
  */
-class ProductFamily implements Translatable
+class Family implements Translatable
 {
     /**
      * @var integer $id
@@ -79,7 +79,7 @@ class ProductFamily implements Translatable
      * @var ArrayCollection $translations
      *
      * @ORM\OneToMany(
-     *     targetEntity="ProductFamilyTranslation",
+     *     targetEntity="FamilyTranslation",
      *     mappedBy="foreignKey",
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
@@ -151,7 +151,7 @@ class ProductFamily implements Translatable
      *
      * @param \Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute
      *
-     * @return ProductFamily
+     * @return Family
      */
     public function addAttribute(\Pim\Bundle\ProductBundle\Entity\ProductAttribute $attribute)
     {
@@ -221,7 +221,7 @@ class ProductFamily implements Translatable
      *
      * @param string $locale
      *
-     * @return Pim\Bundle\ProductBundle\Entity\ProductFamily
+     * @return Pim\Bundle\ProductBundle\Entity\Family
      */
     public function setTranslatableLocale($locale)
     {
@@ -243,11 +243,11 @@ class ProductFamily implements Translatable
     /**
      * Add translation
      *
-     * @param ProductFamilyTranslation $translation
+     * @param FamilyTranslation $translation
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductFamily
+     * @return \Pim\Bundle\ProductBundle\Entity\Family
      */
-    public function addTranslation(ProductFamilyTranslation $translation)
+    public function addTranslation(FamilyTranslation $translation)
     {
         if (!$this->translations->contains($translation)) {
             $this->translations->add($translation);
@@ -259,11 +259,11 @@ class ProductFamily implements Translatable
     /**
      * Remove translation
      *
-     * @param ProductFamilyTranslation $translation
+     * @param FamilyTranslation $translation
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductFamily
+     * @return \Pim\Bundle\ProductBundle\Entity\Family
      */
-    public function removeTranslation(ProductFamilyTranslation $translation)
+    public function removeTranslation(FamilyTranslation $translation)
     {
         $this->translations->removeElement($translation);
 

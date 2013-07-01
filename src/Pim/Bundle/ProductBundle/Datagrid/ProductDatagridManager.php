@@ -145,7 +145,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     {
         // get families
         $em = $this->flexibleManager->getStorageManager();
-        $families = $em->getRepository('PimProductBundle:ProductFamily')->findAll();
+        $families = $em->getRepository('PimProductBundle:Family')->findAll();
         $choices = array();
         foreach ($families as $family) {
             $choices[$family->getId()] = $family->getLabel();
@@ -157,7 +157,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
                 'label'       => $this->translate('Family'),
-                'field_name'  => 'productFamily',
+                'field_name'  => 'family',
                 'filter_type' => FilterInterface::TYPE_CHOICE,
                 'required'    => false,
                 'sortable'    => true,

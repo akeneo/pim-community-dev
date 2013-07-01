@@ -40,13 +40,13 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     protected $values;
 
     /**
-     * @var productFamily
+     * @var family
      *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\ProductFamily", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\Family", cascade={"persist"})
      * @ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="SET NULL")
      * @Oro\Versioned("getCode")
      */
-    protected $productFamily;
+    protected $family;
 
     /**
      * @var ArrayCollection $locales
@@ -87,23 +87,23 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     /**
      * Get product family
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductFamily
+     * @return \Pim\Bundle\ProductBundle\Entity\Family
      */
-    public function getProductFamily()
+    public function getFamily()
     {
-        return $this->productFamily;
+        return $this->family;
     }
 
     /**
      * Set product family
      *
-     * @param ProductFamily $productFamily
+     * @param Family $family
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Product
      */
-    public function setProductFamily($productFamily)
+    public function setFamily($family)
     {
-        $this->productFamily = $productFamily;
+        $this->family = $family;
 
         return $this;
     }
@@ -287,8 +287,8 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      */
     public function getLabel($locale = null)
     {
-        if ($this->productFamily) {
-            if ($attributeAsLabel = $this->productFamily->getAttributeAsLabel()) {
+        if ($this->family) {
+            if ($attributeAsLabel = $this->family->getAttributeAsLabel()) {
                 if ($locale) {
                     $this->setLocale($locale);
                 }
