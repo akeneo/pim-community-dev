@@ -8,7 +8,7 @@ use Oro\Bundle\TestFrameworkBundle\Test\Client;
 
 /**
  * @outputBuffering enabled
- * db_isolation
+ * @db_isolation
  */
 class RestApiAclTest extends WebTestCase
 {
