@@ -179,14 +179,14 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $this->persist($product);
 
             if ($ind % 3 === 0) {
-                $family = $manager->getRepository('PimProductBundle:ProductFamily')->findOneBy(array('code' => 'mug'));
-                $product->setProductFamily($family);
+                $family = $manager->getRepository('PimProductBundle:Family')->findOneBy(array('code' => 'mug'));
+                $product->setFamily($family);
             } elseif ($ind % 7 === 0) {
-                $family = $manager->getRepository('PimProductBundle:ProductFamily')->findOneBy(array('code' => 'shirt'));
-                $product->setProductFamily($family);
+                $family = $manager->getRepository('PimProductBundle:Family')->findOneBy(array('code' => 'shirt'));
+                $product->setFamily($family);
             } elseif ($ind % 11 === 0) {
-                $family = $manager->getRepository('PimProductBundle:ProductFamily')->findOneBy(array('code' => 'shoe'));
-                $product->setProductFamily($family);
+                $family = $manager->getRepository('PimProductBundle:Family')->findOneBy(array('code' => 'shoe'));
+                $product->setFamily($family);
             }
 
             if (($ind % $batchSize) == 0) {
