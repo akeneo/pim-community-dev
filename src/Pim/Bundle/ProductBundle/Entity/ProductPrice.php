@@ -49,6 +49,17 @@ class ProductPrice
     protected $currency;
 
     /**
+     * Constructor
+     * @param decimal $data
+     * @param string  $currency
+     */
+    public function __construct($data = null, $currency = null)
+    {
+        $this->data = $data;
+        $this->currency = $currency;
+    }
+
+    /**
      * Get id
      *
      * @return integer
