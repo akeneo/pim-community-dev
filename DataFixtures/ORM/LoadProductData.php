@@ -2,7 +2,6 @@
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Oro\Bundle\UserBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -71,16 +70,18 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         $nbProducts = 250;
         $batchSize = 500;
 
-        // get scopes
-        $scopeEcommerce = $this->getReference('channel.ecommerce');
-        $scopeMobile    = $this->getReference('channel.mobile');
+        $generator = \Faker\Factory::create();
 
-        // force in english because product is translatable
-        $locale = $manager->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => 'en_US'));
-        $this->getProductManager()->setLocale($locale->getCode());
-
-        // get currency
-        $currencyUSD = $manager->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => 'USD'));
+        // get locales, scopes, currencies
+        $locales = array();
+        foreach (array('en_US', 'fr_FR', 'de_DE') as $localeCode) {
+            $locales[$localeCode] = $manager->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => $localeCode));
+        }
+        $scopes = array();
+        foreach (array('ecommerce', 'mobile') as $scopeCode) {
+            $scopes[$scopeCode] = $this->getReference('channel.'.$scopeCode);
+        }
+        $currencies = array('USD', 'EUR');
 
         // get attribute color options
         $attColor  = $this->getReference('product-attribute.color');
@@ -113,15 +114,14 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         }
 
         $names = array('en_US' => 'my product name', 'fr_FR' => 'mon nom de produit', 'de_DE' => 'produkt namen');
-        $descriptions = array('my long description', 'my other description');
         for ($ind= 0; $ind < $nbProducts; $ind++) {
 
             $product = $this->getProductManager()->createFlexible();
 
-            // product locales
-            $product->addLocale($manager->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => 'de_DE')));
-            $product->addLocale($manager->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => 'fr_FR')));
-            $product->addLocale($manager->getRepository('PimConfigBundle:Locale')->findOneBy(array('code' => 'en_US')));
+            // enable the product on locales
+            foreach ($locales as $locale) {
+                $product->addLocale($locale);
+            }
 
             // sku
             $prodSku = 'sku-'.str_pad($ind, 3, '0', STR_PAD_LEFT);
@@ -133,22 +133,21 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             }
 
             // short description
-            $locales = array('en_US', 'fr_FR', 'de_DE');
-            $scopes = array('ecommerce', 'mobile');
-            foreach ($locales as $locale) {
-                foreach ($scopes as $scope) {
-                    $product->setShortDescription('description ('.$locale.') ('.$scope.') '.$ind, $locale, $scope);
+            foreach (array_keys($locales) as $locale) {
+                foreach (array_keys($scopes) as $scope) {
+                    $product->setShortDescription($generator->sentence(6), $locale, $scope);
                 }
             }
 
             // long description
-            $locales = array('en_US', 'fr_FR', 'de_DE');
-            $scopes = array('ecommerce', 'mobile');
-            foreach ($locales as $locale) {
-                foreach ($scopes as $scope) {
-                    $product->setLongDescription('long description ('.$locale.') ('.$scope.') '.$ind, $locale, $scope);
+            foreach (array_keys($locales) as $locale) {
+                foreach (array_keys($scopes) as $scope) {
+                    $product->setLongDescription($generator->sentence(24), $locale, $scope);
                 }
             }
+
+            // date
+            $product->setReleaseDate($generator->dateTimeBetween("-1 year", "now"));
 
             // size
             $firstSizeOpt = $sizes[rand(0, count($sizes)-1)];
@@ -167,14 +166,10 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             }
 
             // price
-            $currencies = array('USD', 'EUR');
             foreach ($currencies as $currency) {
-                $price = new ProductPrice(rand(5, 100), $currency);
+                $price = new ProductPrice($generator->randomFloat(2, 5, 100), $currency);
                 $product->addPrice($price);
             }
-
-            // date
-            $product->setReleaseDate(new \Datetime());
 
             $this->persist($product);
 

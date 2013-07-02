@@ -61,7 +61,7 @@
         'parameters':
             'translatable': true
             'scopable': true
-            'useableAsGridColumn': true
+            'useableAsGridColumn': false
             'useableAsGridFilter': true
             'wysiwygEnabled': true
             'sortOrder': 4
