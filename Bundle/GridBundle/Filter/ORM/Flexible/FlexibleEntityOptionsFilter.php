@@ -12,7 +12,7 @@ use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-class FlexibleEntityOptionsFilter extends FlexibleOptionsFilter
+class FlexibleEntityOptionsFilter extends AbstractFlexibleFilter
 {
     /**
      * FQCN of the linked entity
@@ -20,6 +20,12 @@ class FlexibleEntityOptionsFilter extends FlexibleOptionsFilter
      * @var string
      */
     protected $className;
+
+    /**
+     *
+     * @var unknown_type
+     */
+    protected $parentFilterClass = 'Oro\\Bundle\\GridBundle\\Filter\\ORM\\EntityFilter';
 
     /**
      * The attribute defining the entity linked
@@ -36,6 +42,24 @@ class FlexibleEntityOptionsFilter extends FlexibleOptionsFilter
         parent::initialize($name, $options);
 
         $this->getAttribute($this->getOption('field_name'));
+        $this->getClassName($this->attribute->getBackendType());
+        $this->setOption('class', $this->className);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function filter(\Sonata\AdminBundle\Datagrid\ProxyQueryInterface $proxyQuery, $alias, $field, $data)
+    {
+        $data = $this->parentFilter->parseData($data);
+        if (!$data) {
+            return;
+        }
+
+        $operator = $this->parentFilter->getOperator($data['type']);
+
+        // apply filter
+        $this->applyFlexibleFilter($proxyQuery, $field, $data['value'], $operator);
     }
 
     /**
