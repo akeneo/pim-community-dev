@@ -21,10 +21,9 @@ use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
  * @ORM\Table(name="pim_product_family")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\FamilyRepository")
  * @UniqueEntity(fields="code", message="This code is already taken.")
- * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\FamilyTranslation")
  * @Oro\Loggable
  */
-class Family implements Translatable
+class Family
 {
     /**
      * @var integer $id
@@ -76,18 +75,6 @@ class Family implements Translatable
     protected $locale;
 
     /**
-     * @var ArrayCollection $translations
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="FamilyTranslation",
-     *     mappedBy="foreignKey",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
-     * )
-     */
-    protected $translations;
-
-    /**
      * @ORM\ManyToOne(targetEntity="ProductAttribute")
      * @Oro\Versioned("getCode")
      */
@@ -99,7 +86,6 @@ class Family implements Translatable
     public function __construct()
     {
         $this->attributes   = new ArrayCollection();
-        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -226,46 +212,6 @@ class Family implements Translatable
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get translations
-     *
-     * @return ArrayCollection
-     */
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-
-    /**
-     * Add translation
-     *
-     * @param FamilyTranslation $translation
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Family
-     */
-    public function addTranslation(FamilyTranslation $translation)
-    {
-        if (!$this->translations->contains($translation)) {
-            $this->translations->add($translation);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove translation
-     *
-     * @param FamilyTranslation $translation
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Family
-     */
-    public function removeTranslation(FamilyTranslation $translation)
-    {
-        $this->translations->removeElement($translation);
 
         return $this;
     }
