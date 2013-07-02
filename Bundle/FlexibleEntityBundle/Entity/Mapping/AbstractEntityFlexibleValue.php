@@ -208,6 +208,24 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     }
 
     /**
+     * Add data
+     *
+     * @param mixed $data
+     *
+     * @return EntityAttributeValue
+     */
+    public function addData($data)
+    {
+        $backendType = $this->attribute->getBackendType();
+        if (substr($backendType, -1, 1) === 's') {
+            $backendType = substr($backendType, 0, strlen($backendType) - 1);
+        }
+        $name = 'add'.ucfirst($backendType);
+
+        return $this->$name($data);
+    }
+
+    /**
      * Get varchar data
      *
      * @return string

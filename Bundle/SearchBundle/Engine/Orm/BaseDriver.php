@@ -100,6 +100,7 @@ abstract class BaseDriver
     {
         $useFieldName = $searchCondition['fieldName'] == '*' ? false : true;
 
+        // TODO Need to clarify search requirements in scope of CRM-214
         if ($searchCondition['condition'] == Query::OPERATOR_CONTAINS) {
             $searchString = $this->createContainsStringQuery($index, $useFieldName);
         } else {

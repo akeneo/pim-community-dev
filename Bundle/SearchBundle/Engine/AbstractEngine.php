@@ -40,10 +40,11 @@ abstract class AbstractEngine
      *
      * @param object $entity
      * @param bool   $realtime
+     * @param bool   $needToCompute
      *
      * @return mixed
      */
-    abstract public function save($entity, $realtime = true);
+    abstract public function save($entity, $realtime = true, $needToCompute = false);
 
     /**
      * Insert or update record

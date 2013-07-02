@@ -2,9 +2,7 @@
 namespace Oro\Bundle\FlexibleEntityBundle\Manager;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
-
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
-
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Oro\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
@@ -348,14 +346,21 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
     public function createFlexible()
     {
         $class = $this->getFlexibleName();
-        $object = new $class();
-        $object->setLocale($this->getLocale());
-        $object->setScope($this->getScope());
-        // dispatch event
-        $event = new FilterFlexibleEvent($this, $object);
+        $attributeClass = $this->getAttributeName();
+        $valueClass = $this->getFlexibleValueName();
+
+        $flexible = new $class();
+        $flexible->setLocale($this->getLocale());
+        $flexible->setScope($this->getScope());
+
+        $codeToAttributeData = $this->getStorageManager()->getRepository($attributeClass)->getCodeToAttributes($class);
+        $flexible->setAllAttributes($codeToAttributeData);
+        $flexible->setValueClass($valueClass);
+
+        $event = new FilterFlexibleEvent($this, $flexible);
         $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_FLEXIBLE, $event);
 
-        return $object;
+        return $flexible;
     }
 
     /**

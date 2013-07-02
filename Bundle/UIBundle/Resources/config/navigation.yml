@@ -33,6 +33,7 @@ oro_menu_config:
             type: shortcuts
 
 oro_titles:
+    oro_default:                  Dashboard
     oro_ui_index:                 Dashboard
     oro_ui_1column:               Dashboard | One Column
     oro_ui_grid_without_bar_page: Dashboard | Grid
@@ -54,3 +55,4 @@ oro_titles:
     oro_ui_general_elements:      Dashboard | Elements
     oro_ui_dialog_styled:         Dashboard | Dialog
     oro_ui_record_edit:           Dashboard | Edit
+
