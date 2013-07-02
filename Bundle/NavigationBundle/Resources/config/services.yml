@@ -1,5 +1,6 @@
 parameters:
-    oro_menu.factory.class:                                    Oro\Bundle\NavigationBundle\Menu\AclAwareMenuFactory
+    oro_menu.factory.acl_extension.class:                      Oro\Bundle\NavigationBundle\Menu\AclAwareMenuFactoryExtension
+    oro_menu.factory.class:                                    Knp\Menu\MenuFactory
     oro_menu.builder_chain.class:                              Oro\Bundle\NavigationBundle\Provider\BuilderChainProvider
     oro_menu.configuration_builder.class:                      Oro\Bundle\NavigationBundle\Menu\ConfigurationBuilder
     oro_menu.twig.extension.class:                             Oro\Bundle\NavigationBundle\Twig\MenuExtension
@@ -35,13 +36,18 @@ parameters:
     oro_navigation.form.handler.pagestate.class:               Oro\Bundle\NavigationBundle\Form\Handler\PageStateHandler
 
 services:
-    oro_menu.factory:
-        class: %oro_menu.factory.class%
+    oro_menu_acl_extension:
+        class: %oro_menu.factory.acl_extension.class%
         arguments:
             - @router
             - @oro_user.acl_manager
         calls:
             - [ setCache, [ @cache ] ]
+
+    oro_menu.factory:
+        class: %oro_menu.factory.class%
+        calls:
+            - [ addExtension, [ @oro_menu_acl_extension ] ]
 
     oro_menu.builder_chain:
         class: %oro_menu.builder_chain.class%
