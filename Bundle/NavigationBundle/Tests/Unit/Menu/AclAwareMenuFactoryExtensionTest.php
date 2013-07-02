@@ -321,7 +321,7 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
                 ->with($cacheKey, 'controller::action');
         }
 
-        $this->factory->setCache($cache);
+        $this->factoryExtension->setCache($cache);
 
         $options = array('uri' => '#');
 
@@ -393,7 +393,7 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
                 );
         }
 
-        $this->factory->setCache($cache);
+        $this->factoryExtension->setCache($cache);
 
         $options = array('route' => 'route_name', 'routeParameters' => $params);
 
