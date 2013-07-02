@@ -13,52 +13,59 @@ use Doctrine\ORM\Mapping as ORM;
 class AddressType
 {
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="name", type="string", length=16)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="type", type="string", length=255, unique=true)
+     * @ORM\Column(name="label", type="string", length=255, unique=true)
      */
-    private $type;
+    protected $label;
 
     /**
-     * Get id
-     *
-     * @return integer
+     * @param string $name
      */
-    public function getId()
+    public function __construct($name)
     {
-        return $this->id;
+        $this->name = $name;
     }
 
     /**
-     * Set route
+     * Get type name
      *
-     * @param  string      $type
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set address type label
+     *
+     * @param string $label
      * @return AddressType
      */
-    public function setType($type)
+    public function setLabel($label)
     {
-        $this->type = $type;
+        $this->label = $label;
 
         return $this;
     }
 
     /**
-     * Get type
+     * Get address type label
      *
      * @return string
      */
-    public function getType()
+    public function getLabel()
     {
-        return $this->type;
+        return $this->label;
     }
 
     /**
@@ -66,6 +73,6 @@ class AddressType
      */
     public function __toString()
     {
-        return $this->type;
+        return $this->label;
     }
 }

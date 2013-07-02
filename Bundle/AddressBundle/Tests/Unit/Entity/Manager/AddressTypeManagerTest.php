@@ -83,7 +83,7 @@ class AddressTypeManagerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($repository));
 
         $this->assertEquals($this->addressTypeManager->getRepository(), $repository);
-        $this->assertEquals($repository->findOneBy($addressTypeCriteria), new AddressType());
+        $this->assertEquals($repository->findOneBy($addressTypeCriteria), new AddressType('testName'));
     }
 
     /**
@@ -91,7 +91,7 @@ class AddressTypeManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testQueryMethods()
     {
-        $addressType = new AddressType();
+        $addressType = new AddressType('testName');
         $addressTypeCriteria = array('type' => 'shipping');
 
         $this->om
@@ -139,7 +139,7 @@ class AddressTypeManagerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('findOneBy')
             ->with($this->equalTo($addressTypeCriteria))
-            ->will($this->returnValue(new AddressType()));
+            ->will($this->returnValue(new AddressType('testName')));
 
         return $repository;
     }

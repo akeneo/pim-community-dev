@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\AddressBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 use Oro\Bundle\AddressBundle\Entity\AddressType;
@@ -14,12 +15,11 @@ use Oro\Bundle\AddressBundle\Entity\AddressType;
 class TypedAddress extends AddressBase
 {
     /**
-     * @var AddressType
+     * Many-to-many relation field, annotation must be in specific class
      *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\AddressBundle\Entity\AddressType")
-     * @Soap\ComplexType("string", nillable=true)
-     */
-    protected $type;
+     * @var ArrayCollection
+     **/
+    protected $types;
 
     /**
      * @var boolean
@@ -29,31 +29,56 @@ class TypedAddress extends AddressBase
      */
     protected $primary;
 
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->types = new ArrayCollection();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getTypes()
+    {
+        return $this->types;
+    }
+
     /**
      * @param AddressType $type
      * @return TypedAddress
      */
-    public function setType($type)
+    public function addType(AddressType $type)
     {
-        $this->type = $type;
+        if (!$this->getTypes()->contains($type)) {
+            $this->getTypes()->add($type);
+        }
 
         return $this;
     }
 
     /**
-     * @return AddressType
+     * @param AddressType $type
+     * @return TypedAddress
      */
-    public function getType()
+    public function removeType(AddressType $type)
     {
-        return $this->type;
+        if ($this->getTypes()->contains($type)) {
+            $this->getTypes()->removeElement($type);
+        }
+
+        return $this;
     }
 
     /**
      * @param bool $primary
+     * @return TypedAddress
      */
     public function setPrimary($primary)
     {
         $this->primary = $primary;
+
+        return $this;
     }
 
     /**
@@ -70,7 +95,7 @@ class TypedAddress extends AddressBase
     public function isEmpty()
     {
         return parent::isEmpty()
-            && empty($this->type)
+            && $this->types->isEmpty()
             && empty($this->primary);
     }
 }

@@ -17,11 +17,11 @@ class LoadAddressTypeData extends AbstractFixture implements OrderedFixtureInter
      */
     public function load(ObjectManager $manager)
     {
-        $shippingAddressType = new AddressType();
-        $shippingAddressType->setType('shipping');
+        $shippingAddressType = new AddressType('shipping');
+        $shippingAddressType->setLabel('Shipping');
 
-        $billingAddressType = new AddressType();
-        $billingAddressType->setType('billing');
+        $billingAddressType = new AddressType('billing');
+        $billingAddressType->setLabel('Billing');
 
         $manager->persist($shippingAddressType);
         $manager->persist($billingAddressType);
