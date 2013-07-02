@@ -103,9 +103,9 @@ class GroupDatagridManager extends DatagridManager
         $groupClickAction = array(
             'name'         => 'rowClick',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            'acl_resource' => 'oro_user_group_update',
             'options'      => array(
-                'label'         => 'Edit',
+                'label'         => 'Update',
                 'link'          => 'update_link',
                 'runOnRowClick' => true,
             )
@@ -114,9 +114,9 @@ class GroupDatagridManager extends DatagridManager
         $groupUpdateAction = array(
             'name'         => 'edit',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            'acl_resource' => 'oro_user_group_update',
             'options'      => array(
-                'label' => 'Edit',
+                'label' => 'Update',
                 'icon'  => 'edit',
                 'link'  => 'update_link',
             )
@@ -125,7 +125,7 @@ class GroupDatagridManager extends DatagridManager
         $groupDeleteAction = array(
             'name'         => 'delete',
             'type'         => ActionInterface::TYPE_DELETE,
-            'acl_resource' => 'root',
+            'acl_resource' => 'oro_user_group_remove',
             'options'      => array(
                 'label' => 'Delete',
                 'icon'  => 'trash',

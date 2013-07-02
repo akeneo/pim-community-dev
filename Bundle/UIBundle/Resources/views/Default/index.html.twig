@@ -120,7 +120,7 @@
                                 $(function() {
                                 {% for type, messages in app.session.flashbag.all %}
                                     {% for message in messages %}
-                                        Oro.NotificationMessage({{ type|json_encode|raw }}, {{ message|trans|json_encode|raw }});
+                                        Oro.NotificationFlashMessage({{ type|json_encode|raw }}, {{ message|trans|json_encode|raw }});
                                     {% endfor %}
                                 {% endfor %}
                                 });

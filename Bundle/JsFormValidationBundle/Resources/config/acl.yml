@@ -1,0 +1,6 @@
+bazinga_expose_translation:
+    name: Frontend translations
+    description: Frontend translations provided by APY/JsFormValidationBundle and Bazinga/ExposeTranslationBundle
+    parent: external_bundle_actions
+    class: Bazinga\ExposeTranslationBundle\Controller\Controller
+    method: exposeTranslationAction
