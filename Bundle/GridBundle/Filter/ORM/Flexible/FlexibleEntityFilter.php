@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\GridBundle\Filter\ORM\Flexible;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 
 /**
@@ -50,7 +52,8 @@ class FlexibleEntityFilter extends FlexibleOptionsFilter
 
     /**
      * Get the attribute linked to the flexible entity filter
-     * @return unknown
+     *
+     * @return \Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     protected function getAttribute($attributeCode)
     {
@@ -84,10 +87,10 @@ class FlexibleEntityFilter extends FlexibleOptionsFilter
         $qb->innerJoin($qb->getRootAlias() .'.'. $attribute->getBackendStorage(), $joinAlias, 'WITH', $condition);
 
         // then join to linked entity with filter on id
-        $joinAliasColor = 'filterentity'.$field;
-        $backendField = sprintf('%s.%s', $joinAliasColor, 'id');
+        $joinAliasEntity = 'filterentity'.$field;
+        $backendField = sprintf('%s.id', $joinAliasEntity);
         $condition = $qb->prepareCriteriaCondition($backendField, $operator, $value);
-        $qb->innerJoin($joinAlias .'.'. $attribute->getBackendType(), $joinAliasColor, 'WITH', $condition);
+        $qb->innerJoin($joinAlias .'.'. $attribute->getBackendType(), $joinAliasEntity, 'WITH', $condition);
 
         // filter is active since it's applied to the flexible repository
         $this->active = true;
