@@ -29,7 +29,15 @@ h1 {
   padding: 0 20px;
 }
 
-a { color: @color-purple_dark; }
+a:not(.btn) {
+  color: @color-purple_dark;
+  &:hover,
+  &:focus,
+  &:active,
+  &:visited {
+    color: lighten(@color-purple_dark, 10%);
+  }
+}
 
 /* Header ***********************************************************************************************************/
 
@@ -220,14 +228,19 @@ i.icon-home {
 
 form.form-signin {
   .title-box {
-    .border-radius(7px 7px 0 0);
-    padding-top: 0;
-    padding-left: 15px;
-    padding-bottom: 10px;
+    .border-radius(6px 6px 0 0);
+    border: 1px solid #d4d4d4;
+    padding: 0;
     #gradient .vertical(@color-header_top, @color-header_bottom);
     h1.oro-title {
-      margin-top: 8px;
       padding: 0px;
+      img {
+        vertical-align: top;
+      }
+    }
+    h2.title {
+      text-align: center;
+      font-size: 20px;
     }
   }
   .input-prepend {
@@ -243,25 +256,26 @@ form.form-signin {
     }
   }
   button.btn-primary {
-    height: auto;
     float: none;
   }
   .form-row {
     padding: 0;
   }
-  div.divider-vertical-small {
-    float: left;
-    width: 1px;
-    height: 14px;
-    background-color: #b8b8b8;
-    margin: 3px 5px;
-  }
   .signin-help {
     margin-top: 15px;
     a {
-      float: left;
       font-size: 13px;
     }
+  }
+  fieldset.oro-forgot-password {
+    button {
+      float: right;
+      margin-right: 3px;
+    }
+  }
+  div.alert {
+    margin: 0;
+    .border-radius(0);
   }
 }
 
@@ -269,7 +283,8 @@ form.form-signin {
 
 .form-row {
   button.btn {
-    height: 32px;
+    height: 34px;
+    line-height: 34px;
   }
   .btn {
     font-weight: bold;
