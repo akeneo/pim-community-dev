@@ -56,9 +56,7 @@ class RoleController extends Controller
     {
         $resources = $this->getRequest()->request->get('resource');
         if ($this->get('oro_user.form.handler.role')->process($entity)) {
-            if ($resources) {
-                $this->getAclManager()->saveRoleAcl($entity, $resources);
-            }
+            $this->getAclManager()->saveRoleAcl($entity, $resources);
 
             $this->get('session')->getFlashBag()->add('success', 'Role successfully saved');
 

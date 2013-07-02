@@ -94,6 +94,7 @@ Oro.Filter.TextFilter = Oro.Filter.AbstractFilter.extend({
      */
     events: {
         'keyup input': '_onReadCriteriaInputKey',
+        'keydown [type="text"]': '_preventEnterProcessing',
         'click .filter-update': '_onClickUpdateCriteria',
         'click .filter-criteria-selector': '_onClickCriteriaSelector',
         'click .filter-criteria .filter-criteria-hide': '_onClickCloseCriteria',

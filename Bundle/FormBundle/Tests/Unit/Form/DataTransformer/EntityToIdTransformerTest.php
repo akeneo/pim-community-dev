@@ -128,7 +128,7 @@ class EntityToIdTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Form\Exception\UnexpectedTypeException
+     * @expectedException Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException
      * @expectedExceptionMessage Expected argument of type "Doctrine\ORM\QueryBuilder", "NULL" given
      */
     public function testReverseTransformQueryBuilderException()
@@ -204,7 +204,7 @@ class EntityToIdTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Form\Exception\UnexpectedTypeException
+     * @expectedException Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException
      * @expectedExceptionMessage Expected argument of type "callable", "string" given
      */
     public function testCallbackException()

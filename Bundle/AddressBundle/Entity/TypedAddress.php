@@ -4,23 +4,19 @@ namespace Oro\Bundle\AddressBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
-use JMS\Serializer\Annotation\Exclude;
 use Oro\Bundle\AddressBundle\Entity\AddressType;
-use Symfony\Component\Validator\ExecutionContext;
 
 /**
- * Address
+ * Typed Address
  *
- * @ORM\Table("oro_address_typed")
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Oro\Bundle\AddressBundle\Entity\Repository\AddressRepository")
+ * @ORM\MappedSuperclass
  */
 class TypedAddress extends AddressBase
 {
     /**
      * @var AddressType
      *
-     * @ORM\ManyToOne(targetEntity="AddressType")
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\AddressBundle\Entity\AddressType")
      * @Soap\ComplexType("string", nillable=true)
      */
     protected $type;
@@ -32,14 +28,6 @@ class TypedAddress extends AddressBase
      * @Soap\ComplexType("boolean", nillable=true)
      */
     protected $primary;
-
-    /**
-     * @var \Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexibleValue[]
-     *
-     * @ORM\OneToMany(targetEntity="Oro\Bundle\AddressBundle\Entity\Value\AddressValue", mappedBy="entity", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Exclude
-     */
-    protected $values;
 
     /**
      * @param AddressType $type
@@ -74,5 +62,15 @@ class TypedAddress extends AddressBase
     public function isPrimary()
     {
         return $this->primary;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEmpty()
+    {
+        return parent::isEmpty()
+            && empty($this->type)
+            && empty($this->primary);
     }
 }

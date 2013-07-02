@@ -3,6 +3,9 @@
 {% set gridId = 'roles-grid' %}
 {% block content %}
     {% set pageTitle = 'Roles' %}
-    {% set buttons = [UI.addButton({'path' : path('oro_user_role_create'), 'title' : 'Create role', 'label' : 'Create role'})] %}
+    {% set buttons = [] %}
+    {% if resource_granted('oro_user_role_create') %}
+        {% set buttons = buttons|merge([UI.addButton({'path' : path('oro_user_role_create'), 'title' : 'Create role', 'label' : 'Create role'})]) %}
+    {% endif %}
     {{ parent() }}
 {% endblock %}

@@ -19,6 +19,7 @@ interface FilterInterface extends BaseFilterInterface
     const TYPE_FLEXIBLE_DATE     = 'oro_grid_orm_flexible_date_range';
     const TYPE_FLEXIBLE_DATETIME = 'oro_grid_orm_flexible_datetime_range';
     const TYPE_FLEXIBLE_NUMBER   = 'oro_grid_orm_flexible_number';
+    const TYPE_FLEXIBLE_BOOLEAN  = 'oro_grid_orm_flexible_boolean';
     const TYPE_FLEXIBLE_STRING   = 'oro_grid_orm_flexible_string';
     const TYPE_FLEXIBLE_OPTIONS  = 'oro_grid_orm_flexible_options';
 

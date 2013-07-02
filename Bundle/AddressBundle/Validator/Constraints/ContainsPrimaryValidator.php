@@ -19,10 +19,12 @@ class ContainsPrimaryValidator extends ConstraintValidator
         $totalItemsNumber = 0;
         /** @var TypedAddress $item */
         foreach ($value as $item) {
-            if ($item instanceof TypedAddress && $item->isPrimary()) {
-                $primaryItemsNumber++;
+            if (!$item->isEmpty()) {
+                if ($item instanceof TypedAddress && $item->isPrimary()) {
+                    $primaryItemsNumber++;
+                }
+                $totalItemsNumber++;
             }
-            $totalItemsNumber++;
         }
 
         if ($totalItemsNumber > 0 && $primaryItemsNumber != 1) {

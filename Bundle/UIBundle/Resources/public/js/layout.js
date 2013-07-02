@@ -133,10 +133,17 @@ if (typeof Oro !== "undefined") {
 /**
  * Js updates
  */
-function initLayout() {
+var Oro = Oro || {};
+Oro.styleForm = function(container) {
     if ($.isPlainObject($.uniform)) {
-        $('input:file, select:not(.select2-offscreen)').uniform();
+        var formElements = container.find('input:file, select:not(.select2-offscreen)');
+        formElements.uniform();
+        formElements.trigger('uniformInit');
     }
+}
+
+function initLayout() {
+    Oro.styleForm($(document.body));
 
     if (typeof($.datepicker) != 'undefined') {
         $('input.datepicker').each(function (index, el) {

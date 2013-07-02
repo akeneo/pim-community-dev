@@ -111,23 +111,21 @@
                     {% endblock pin_bar %}
                     <div id="flash-messages">
                         {% block messages %}
-                            {% set allMessages = {'empty': ['']} %}
-                            {% if app.session.flashbag.peekAll|length > 0 %}
-                                {% set allMessages = allMessages|merge(app.session.flashbag.all) %}
-                            {% endif %}
-                            <div class="flash-messages-frame"
-                                 {% if allMessages|length < 2 %}style="display:none"{% endif %}>
-                                <div class="flash-messages-holder">
-                                    {% for type, messages in allMessages %}
-                                        {% for message in messages %}
-                                            <div class="alert{{ type ? ' alert-'~type : '' }} fade in top-messages ">
-                                                <a class="close" data-dismiss="alert" href="#">&times;</a>
-                                                <div class="message">{{ message|trans|raw }}</div>
-                                            </div>
-                                        {% endfor %}
-                                    {% endfor %}
-                                </div>
+                            {%  set hasMessages = app.session.flashbag.peekAll|length > 0 %}
+                            <div class="flash-messages-frame" {% if not hasMessages %}style="display:none"{% endif %}>
+                                <div class="flash-messages-holder"></div>
                             </div>
+                            {% if hasMessages %}
+                            <script type="text/javascript">
+                                $(function() {
+                                {% for type, messages in app.session.flashbag.all %}
+                                    {% for message in messages %}
+                                        Oro.NotificationFlashMessage({{ type|json_encode|raw }}, {{ message|trans|json_encode|raw }});
+                                    {% endfor %}
+                                {% endfor %}
+                                });
+                            </script>
+                            {% endif %}
                         {% endblock messages %}
                     </div>
                     <div class="hash-loading-mask"></div>
@@ -190,6 +188,10 @@
 {% else %}
 {# Template for hash tag navigation#}
 {% include 'OroNavigationBundle:HashNav:hashNavAjax.html.twig'
-    with {'script': block('head_script'), 'messages':block('messages'), 'content': block('page_container'), 'menu': block('application_menu')}
+    with {
+        'script': block('head_script'),
+        'content': block('page_container'),
+        'menu': block('application_menu')
+    }
     %}
 {% endif %}

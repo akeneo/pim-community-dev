@@ -1,17 +1,53 @@
 <?php
 namespace Oro\Bundle\SearchBundle\Tests\Unit\EventListener;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Event\PostFlushEventArgs;
 
 use Oro\Bundle\SearchBundle\EventListener\IndexListener;
 use Oro\Bundle\SearchBundle\Tests\Unit\Fixture\Entity\Product;
 
 class IndexListenerTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
     private $container;
+
+    /**
+     * @var IndexListener
+     */
     private $listener;
+
+    /**
+     * @var IndexListener
+     */
+    private $inactiveListener;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
     private $engine;
-    private $args;
+
+    /**
+     * @var OnFlushEventArgs
+     */
+    private $onFlushArgs;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $postFlushArgs;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $uow;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $entityManager;
 
     public function setUp()
     {
@@ -21,63 +57,133 @@ class IndexListenerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $entities = array(
-            'Oro\Bundle\SearchBundle\Tests\Unit\Fixture\Entity\Product' => array(),
-            'test_entity2' => array()
-        );
-
-        $emMock = $this
-            ->getMockBuilder('Doctrine\\ORM\\EntityManager')
+        $this->entityManager = $this
+            ->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->args = new LifecycleEventArgs(new Product(), $emMock);
+        $this->onFlushArgs = new OnFlushEventArgs($this->entityManager);
+        $this->postFlushArgs = new PostFlushEventArgs($this->entityManager);
 
         $this->container
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('get')
             ->with($this->equalTo('oro_search.search.engine'))
             ->will($this->returnValue($this->engine));
 
-        $this->listener = new IndexListener($this->container, true, $entities);
+        $this->uow = $this
+            ->getMockBuilder('Doctrine\ORM\UnitOfWork')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->entityManager
+            ->expects($this->any())
+            ->method('getUnitOfWork')
+            ->will($this->returnValue($this->uow));
+
+        $this->listener = new IndexListener(
+            $this->container,
+            true,
+            array(
+                'Oro\Bundle\SearchBundle\Tests\Unit\Fixture\Entity\Product' => array(),
+                'test_entity2' => array()
+            )
+        );
+
+        $this->inactiveListener = new IndexListener($this->container, true, array());
     }
 
-    public function testPostPersist()
+    public function testOnFlushAndPostFlushUpdatesIndex()
     {
-        $this->engine
+        $insertEntity = $this->createTestEntity('Insert Entity');
+        $updateEntity = $this->createTestEntity('Update Entity');
+        $deleteEntity = $this->createTestEntity('Delete Entity');
+
+        $this->uow
             ->expects($this->once())
-            ->method('save');
+            ->method('getScheduledEntityInsertions')
+            ->will($this->returnValue(array($insertEntity)));
 
-        $this->listener->postPersist($this->args);
+        $this->uow
+            ->expects($this->once())
+            ->method('getScheduledEntityUpdates')
+            ->will($this->returnValue(array($updateEntity)));
 
-        $listener = new IndexListener($this->container, true, array());
+        $this->uow
+            ->expects($this->once())
+            ->method('getScheduledEntityDeletions')
+            ->will($this->returnValue(array($deleteEntity)));
 
-        $listener->postPersist($this->args);
+        $this->listener->onFlush($this->onFlushArgs);
+
+        $this->engine->expects($this->once())->method($this->anything());
+
+        $this->engine
+            ->expects($this->at(0))
+            ->method('save')
+            ->with($insertEntity, true, true);
+
+        $this->entityManager->expects($this->once())->method('flush');
+
+        $this->listener->postFlush($this->postFlushArgs);
     }
 
-    public function testPreRemove()
+    public function testOnFlushAndPostFlushNotUpdatesIndexWhenNoEntitiesChanged()
     {
-        $this->engine
+        $this->uow
             ->expects($this->once())
-            ->method('delete');
+            ->method('getScheduledEntityInsertions')
+            ->will($this->returnValue(array()));
 
-        $this->listener->preRemove($this->args);
+        $this->uow
+            ->expects($this->once())
+            ->method('getScheduledEntityUpdates')
+            ->will($this->returnValue(array()));
 
-        $listener = new IndexListener($this->container, true, array());
+        $this->uow
+            ->expects($this->once())
+            ->method('getScheduledEntityDeletions')
+            ->will($this->returnValue(array()));
 
-        $listener->preRemove($this->args);
+        $this->engine->expects($this->never())->method($this->anything());
+        $this->entityManager->expects($this->never())->method('flush');
+
+        $this->listener->onFlush($this->onFlushArgs);
+        $this->listener->postFlush($this->postFlushArgs);
     }
 
-    public function testPostUpdate()
+    public function testOnFlushAndPostFlushNotUpdatesIndexWhenNotActive()
     {
-        $this->engine
+        $this->uow
             ->expects($this->once())
-            ->method('save');
+            ->method('getScheduledEntityInsertions')
+            ->will($this->returnValue(array()));
 
-        $this->listener->postUpdate($this->args);
+        $this->uow
+            ->expects($this->once())
+            ->method('getScheduledEntityUpdates')
+            ->will($this->returnValue(array()));
 
-        $listener = new IndexListener($this->container, true, array());
+        $this->uow
+            ->expects($this->once())
+            ->method('getScheduledEntityDeletions')
+            ->will($this->returnValue(array()));
 
-        $listener->postUpdate($this->args);
+        $this->engine->expects($this->never())->method($this->anything());
+        $this->entityManager->expects($this->never())->method('flush');
+
+        $this->listener->onFlush($this->onFlushArgs);
+        $this->listener->postFlush($this->postFlushArgs);
+    }
+
+    /**
+     * @param string $name
+     * @return Product
+     */
+    protected function createTestEntity($name)
+    {
+        $result = new Product();
+        $result->setName($name);
+        return $result;
     }
 }

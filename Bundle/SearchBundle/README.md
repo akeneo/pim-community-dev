@@ -10,7 +10,19 @@ Install project
 
 MySql, Postgres and other db engines use additional indexes for fulltext search. To create this indexes use console command
 
-    php app/console oro:search:create-index
+```
+php app/console oro:search:create-index
+```
+
+MySql config
+----------------------------------
+
+By default, search engine use MySQL fulltext search index to make search in text data. in MySQL config where is  ft_min_word_len
+parameter - the minimum length of the word to be included in a fulltext index. Default value of this parameter is 4
+http://dev.mysql.com/doc/refman/5.0/en/server-system-variables.html#sysvar_ft_min_word_len .
+
+It's recommended to change this value to 3 http://dev.mysql.com/doc/refman/5.1/en/fulltext-fine-tuning.html .
+
 
 Bundle config
 ----------------------------------
@@ -36,10 +48,11 @@ Configuration is array that contain info about bundle name, entity name and arra
 
 Fields array contain array of field name and field type.
 
-All text fields data wheel be store in **all_text** virtual field. Additionally, all the fields wheel be stored in fieldName virtual fields, if not set target_fields parameter.
+All text fields data will be store in **all_text** virtual field. Additionally, all the fields will be stored in fieldName virtual fields, if not set target_fields parameter.
 
 Example:
 
+```
     Acme\DemoBundle\Entity\Product:
         alias: demo_product
         flexible_manager: demo_product_manager
@@ -77,7 +90,7 @@ Example:
                         name: name
                         target_type: text
                         target_fields: [all_data]
-
+```
 
 Parameters:
 
@@ -91,8 +104,8 @@ Parameters:
 - **relation_type**: indicate that this field is relation field to another table. Supported relation types: one-to-one, many-to-many, one-to-many, many-to-one.
 - **relation_fields**: array of fields from relation record we must to index.
 - **flexible_manager**. If entity has flexible attributes, they can be indexed for search by parameter flexible_manager in mapping config. Value of this parameter
-is the service name for flexible entity. In search index wheel be indexed all the attributes with parameter **searchable** set to true. All text fields data wheel
-be store in **all_text** virtual field. Additionally, all the fields wheel be stored in fieldName virtual fields.
+is the service name for flexible entity. In search index will be indexed all the attributes with parameter **searchable** set to true. All text fields data will
+be store in **all_text** virtual field. Additionally, all the fields will be stored in fieldName virtual fields.
 
 [Query builder](Resources/doc/query_builder.md)
 
@@ -106,4 +119,6 @@ Run unit tests
 
 To run tests for bundle, use command
 
-    phpunit -c app src/Oro/Bundle/SearchBundle/
+```
+phpunit -c app src/Oro/Bundle/SearchBundle/
+```

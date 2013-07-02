@@ -374,21 +374,6 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
     }
 
     /**
-     * Return only localized values of flexible entity
-     *
-     * @param integer $id
-     *
-     * @return AbstractFlexible
-     */
-    public function localizedFind($id)
-    {
-        $fr = $this->getFlexibleRepository();
-        $fr->setLocale($this->getLocale());
-
-        return $fr->findWithLocalizedValuesAndSortedAttributes($id);
-    }
-
-    /**
      * Get attribute type factory
      *
      * @return AttributeTypeFactory

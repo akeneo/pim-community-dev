@@ -29,7 +29,7 @@ class GroupType extends AbstractType
                 array(
                     'label'    => 'Roles',
                     'class'    => 'OroUserBundle:Role',
-                    'query_builder' => function($builder) {
+                    'query_builder' => function ($builder) {
                         return $builder->createQueryBuilder('r')
                             ->where('r.role != :anonRole')
                             ->setParameter('anonRole', User::ROLE_ANONYMOUS);

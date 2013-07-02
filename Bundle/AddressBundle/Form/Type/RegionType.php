@@ -3,12 +3,11 @@
 namespace Oro\Bundle\AddressBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\Options;
 
 class RegionType extends AbstractType
 {
@@ -28,22 +27,29 @@ class RegionType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $list = function (Options $options) {
-            if (null === $options['country']) {
-                return new ObjectChoiceList(array());
+        $choices = function (Options $options) {
+            // show empty list if country is not selected
+            if (empty($options['country'])) {
+                return array();
             }
 
-            return new ObjectChoiceList($options['country']->getRegions(), null, array(), null, 'code');
+            return null;
         };
 
         $resolver
             ->setDefaults(
                 array(
-                    'choice_list' => $list,
-                    'country'     => null,
+                    'class'         => 'OroAddressBundle:Region',
+                    'property'      => 'name',
+                    'query_builder' => null,
+                    'choices'       => $choices,
+                    'country'       => null,
                     'country_field' => null,
-                    'empty_value' => 'Choose a state...',
-                    'empty_data'  => null,
+                    'configs' => array(
+                        'placeholder' => 'oro.address.form.choose_state',
+                    ),
+                    'empty_value' => '',
+                    'empty_data'  => null
                 )
             );
     }
@@ -61,7 +67,7 @@ class RegionType extends AbstractType
      */
     public function getParent()
     {
-        return 'choice';
+        return 'genemu_jqueryselect2_translatable_entity';
     }
 
     /**

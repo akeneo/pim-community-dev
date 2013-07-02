@@ -31,6 +31,7 @@ services:
             - name: oro_grid.datagrid.manager
               datagrid_name: groups
               entity_name: Oro\Bundle\UserBundle\Entity\Group
+              query_entity_alias: user_group
               entity_hint: groups
               route_name: oro_user_group_index
 
@@ -40,8 +41,8 @@ services:
             - name: oro_grid.datagrid.manager
               datagrid_name: roleusers
               entity_name: Oro\Bundle\UserBundle\Entity\User
+              query_entity_alias: user
               entity_hint: users
-              query_entity_alias: u
               route_name: oro_user_role_user_grid
 
     oro_user.group_user_datagrid_manager:
@@ -50,6 +51,6 @@ services:
             - name: oro_grid.datagrid.manager
               datagrid_name: groupusers
               entity_name: Oro\Bundle\UserBundle\Entity\User
+              query_entity_alias: user
               entity_hint: users
-              query_entity_alias: u
               route_name: oro_user_group_user_grid

@@ -85,6 +85,14 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     protected $decimal;
 
     /**
+     * Store boolean value
+     * @var boolean $boolean
+     *
+     * @ORM\Column(name="value_boolean", type="boolean", nullable=true)
+     */
+    protected $boolean;
+
+    /**
      * Store text value
      * @var string $text
      *
@@ -147,6 +155,16 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     {
         $this->options = new ArrayCollection();
         $this->collection = new ArrayCollection();
+    }
+
+    /**
+     * Get entity
+     *
+     * @return AbstractFlexible $entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
     }
 
     /**
@@ -257,6 +275,30 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     public function setDecimal($decimal)
     {
         $this->decimal = $decimal;
+
+        return $this;
+    }
+
+    /**
+     * Get boolean data
+     *
+     * @return boolean
+     */
+    public function getBoolean()
+    {
+        return $this->boolean;
+    }
+
+    /**
+     * Set boolean data
+     *
+     * @param boolean $boolean
+     *
+     * @return EntityAttributeValue
+     */
+    public function setBoolean($boolean)
+    {
+        $this->boolean = $boolean;
 
         return $this;
     }

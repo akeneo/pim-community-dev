@@ -47,6 +47,12 @@ services:
         tags:
             - { name: oro_grid.filter.type, alias: oro_grid_orm_flexible_number }
 
+    oro_grid.orm.filter.type.flexible_boolean:
+        class:     Oro\Bundle\GridBundle\Filter\ORM\Flexible\FlexibleBooleanFilter
+        arguments: ["@oro_flexibleentity.registry", "@oro_grid.orm.filter.type.boolean"]
+        tags:
+            - { name: oro_grid.filter.type, alias: oro_grid_orm_flexible_boolean }
+
     oro_grid.orm.filter.type.flexible_string:
         class:     Oro\Bundle\GridBundle\Filter\ORM\Flexible\FlexibleStringFilter
         arguments: ["@oro_flexibleentity.registry", "@oro_grid.orm.filter.type.string"]

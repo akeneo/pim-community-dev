@@ -1,7 +1,8 @@
 <?php
+
 namespace Oro\Bundle\AddressBundle\Tests\Unit\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\FormView;
 
 use Oro\Bundle\AddressBundle\Form\Type\RegionType;
 
@@ -25,7 +26,6 @@ class RegionTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testSetDefaultOptions()
     {
-        /** @var OptionsResolverInterface $resolver */
         $resolver = $this->getMock('Symfony\Component\OptionsResolver\OptionsResolverInterface');
         $resolver->expects($this->once())
             ->method('setDefaults')
@@ -35,7 +35,7 @@ class RegionTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetParent()
     {
-        $this->assertEquals('choice', $this->type->getParent());
+        $this->assertEquals('genemu_jqueryselect2_translatable_entity', $this->type->getParent());
     }
 
     public function testGetName()
@@ -58,20 +58,25 @@ class RegionTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testFinishView()
     {
-        $formViewMock = $this->getMock('Symfony\Component\Form\FormView');
+        $optionKey = 'countryFieldName';
+
         $formConfigMock = $this->getMock('Symfony\Component\Form\FormConfigInterface');
         $formConfigMock->expects($this->once())
             ->method('getAttribute')
             ->with($this->equalTo(RegionType::COUNTRY_OPTION_KEY))
-            ->will($this->returnValue(''));
+            ->will($this->returnValue($optionKey));
 
         $formMock = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
+            ->setMethods(array('getConfig'))
             ->getMock();
         $formMock->expects($this->once())
             ->method('getConfig')
             ->will($this->returnValue($formConfigMock));
 
-        $this->type->finishView($formViewMock, $formMock, array());
+        $formView = new FormView();
+        $this->type->finishView($formView, $formMock, array());
+        $this->assertArrayHasKey('country_field', $formView->vars);
+        $this->assertEquals($optionKey, $formView->vars['country_field']);
     }
 }

@@ -33,7 +33,7 @@
 
                     var tree_select = $('<select>', {
                         id: tree_select_id,
-                        style: 'width:90%' 
+                        class: 'input-large'
                     });
                     tree_select.addClass('jstree-tree-select');
 
@@ -208,7 +208,7 @@
                     href: "#",
                     text: node_name
                 });
-        
+
                 node_link.prepend("<ins class='jstree-icon'>&#160;</ins>");
                 node.append(node_link);
 
