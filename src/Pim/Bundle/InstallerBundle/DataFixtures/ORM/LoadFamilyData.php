@@ -25,7 +25,7 @@ class LoadFamilyData extends AbstractInstallerFixture
 
         if (isset($configuration['families'])) {
             foreach ($configuration['families'] as $code => $data) {
-                $family = $this->createFamily($code, $data);
+                $family = $this->createFamily($code, $data, $manager);
                 $manager->persist($family);
                 $this->addReference('attribute-family.'.$family->getCode(), $family);
             }
@@ -41,14 +41,15 @@ class LoadFamilyData extends AbstractInstallerFixture
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Family
      */
-    protected function createFamily($code, $data)
+    protected function createFamily($code, $data, $manager)
     {
+        $repository = $manager->getRepository('Gedmo\\Translatable\\Entity\\Translation');
         $family = new Family();
         $family->setCode($code);
         $family->setLabel($data['labels']['default']);
 
         foreach ($data['labels'] as $locale => $translation) {
-            $this->createTranslation($family, $locale, $translation);
+            $repository->translate($family, 'label', $locale, $translation);
         }
 
         foreach ($data['attributes'] as $attribute) {
@@ -60,27 +61,6 @@ class LoadFamilyData extends AbstractInstallerFixture
         }
 
         return $family;
-    }
-
-    /**
-     * Create a translation entity
-     *
-     * @param Family $family  entity
-     * @param string $locale  Locale used
-     * @param string $content Translated content
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\FamilyTranslation
-     */
-    public function createTranslation($family, $locale, $content)
-    {
-        $translation = new FamilyTranslation();
-        $translation->setContent($content);
-        $translation->setField('label');
-        $translation->setForeignKey($family);
-        $translation->setLocale($locale);
-        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\Family');
-
-        $family->addTranslation($translation);
     }
 
     /**

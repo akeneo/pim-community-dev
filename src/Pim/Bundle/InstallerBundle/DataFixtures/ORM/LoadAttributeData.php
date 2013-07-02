@@ -36,7 +36,7 @@ class LoadAttributeData extends AbstractInstallerFixture
 
         if (isset($configuration['attributes'])) {
             foreach ($configuration['attributes'] as $code => $data) {
-                $attribute = $this->createAttribute($code, $data);
+                $attribute = $this->createAttribute($code, $data, $manager);
                 $manager->persist($attribute);
                 $this->addReference('product-attribute.'.$attribute->getCode(), $attribute);
             }
@@ -51,8 +51,9 @@ class LoadAttributeData extends AbstractInstallerFixture
      * @param string $code
      * @param array  $data
      */
-    public function createAttribute($code, $data)
+    public function createAttribute($code, $data, $manager)
     {
+        $repository = $manager->getRepository('Gedmo\\Translatable\\Entity\\Translation');
         $attribute = $this->getProductManager()->createAttribute($data['type']);
         $attribute->setCode($code);
         $attribute->setLabel($data['labels']['default']);
@@ -60,8 +61,7 @@ class LoadAttributeData extends AbstractInstallerFixture
         $attribute->setGroup($this->getReference('attribute-group.'.$data['group']));
 
         foreach ($data['labels'] as $locale => $label) {
-            $translation = $this->createTranslation($attribute, $locale, $label);
-            $attribute->addTranslation($translation);
+            $repository->translate($attribute, 'label', $locale, $label);
         }
 
         if (isset($data['options'])) {

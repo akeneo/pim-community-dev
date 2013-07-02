@@ -6,7 +6,6 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
 use Pim\Bundle\ConfigBundle\Entity\Locale;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Translatable\Translatable;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -23,10 +22,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductAttributeRepository")
  * @ORM\HasLifecycleCallbacks
- * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation")
  * @UniqueEntity("code")
  */
-class ProductAttribute extends AbstractEntityAttribute implements Translatable
+class ProductAttribute extends AbstractEntityAttribute
 {
     /**
      * @var string $label
@@ -237,17 +235,6 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     protected $locale;
 
     /**
-     * @var ArrayCollection $translations
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="ProductAttributeTranslation",
-     *     mappedBy="foreignKey",
-     *     cascade={"persist", "remove"}
-     * )
-     */
-    protected $translations;
-
-    /**
      * Constructor
      */
     public function __construct()
@@ -267,7 +254,6 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
         $this->decimalsAllowed     = true;
         $this->negativeAllowed     = true;
         $this->availableLocales  = new ArrayCollection();
-        $this->translations        = new ArrayCollection();
     }
 
     /**
@@ -977,46 +963,6 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get translations
-     *
-     * @return ArrayCollection
-     */
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-
-    /**
-     * Add translation
-     *
-     * @param ProductAttributeTranslation $translation
-     *
-     * @return ProductAttribute
-     */
-    public function addTranslation(ProductAttributeTranslation $translation)
-    {
-        if (!$this->translations->contains($translation)) {
-            $this->translations->add($translation);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove translation
-     *
-     * @param ProductAttributeTranslation $translation
-     *
-     * @return ProductAttribute
-     */
-    public function removeTranslation(ProductAttributeTranslation $translation)
-    {
-        $this->translations->removeElement($translation);
 
         return $this;
     }

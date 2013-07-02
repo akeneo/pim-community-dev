@@ -25,13 +25,12 @@ use Pim\Bundle\ProductBundle\Model\ProductInterface;
  *     uniqueConstraints={@ORM\UniqueConstraint(name="pim_category_code_uc", columns={"code"})}
  * )
  * @Gedmo\Tree(type="nested")
- * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\CategoryTranslation")
  * @UniqueEntity(fields="code", message="This code is already taken")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @Oro\Loggable
  */
-class Category extends AbstractSegment implements Translatable, CategoryInterface
+class Category extends AbstractSegment implements CategoryInterface
 {
     /**
      * @var Category $parent
@@ -110,17 +109,6 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
     protected $created;
 
     /**
-     * @var ArrayCollection $translations
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="CategoryTranslation",
-     *     mappedBy="foreignKey",
-     *     cascade={"persist", "remove"}
-     * )
-     */
-    protected $translations;
-
-    /**
      * Constructor
      */
     public function __construct()
@@ -128,7 +116,6 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
         parent::__construct();
 
         $this->products     = new ArrayCollection();
-        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -259,46 +246,6 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
     public function getCreated()
     {
         return $this->created;
-    }
-
-    /**
-     * Get translations
-     *
-     * @return ArrayCollection
-     */
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-
-    /**
-     * Add translation
-     *
-     * @param CategoryTranslation $translation
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Category
-     */
-    public function addTranslation(CategoryTranslation $translation)
-    {
-        if (!$this->translations->contains($translation)) {
-            $this->translations->add($translation);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove translation
-     *
-     * @param CategoryTranslation $translation
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\Category
-     */
-    public function removeTranslation(CategoryTranslation $translation)
-    {
-        $this->translations->removeElement($translation);
-
-        return $this;
     }
 
     /**

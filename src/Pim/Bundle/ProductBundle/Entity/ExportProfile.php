@@ -1,14 +1,10 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Entity;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
 use Doctrine\Common\Collections\ArrayCollection;
-
-use Gedmo\Translatable\Translatable;
-
 use Gedmo\Mapping\Annotation as Gedmo;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,10 +16,9 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity()
  * @ORM\Table(name="pim_export_profile")
- * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\ExportProfileTranslation")
  * @UniqueEntity("code")
  */
-class ExportProfile implements Translatable
+class ExportProfile
 {
 
     /**
@@ -59,25 +54,6 @@ class ExportProfile implements Translatable
      * @Gedmo\Locale
      */
     protected $locale;
-
-    /**
-     * @var ArrayCollection $translations
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="ExportProfileTranslation",
-     *     mappedBy="foreignKey",
-     *     cascade={"persist", "remove"}
-     * )
-     */
-    protected $translations;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->translations = new ArrayCollection();
-    }
 
     /**
      * Get id
@@ -147,46 +123,6 @@ class ExportProfile implements Translatable
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get translations
-     *
-     * @return ArrayCollection
-     */
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-
-    /**
-     * Add translation
-     *
-     * @param ExportProfileTranslation $translation
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\ExportProfile
-     */
-    public function addTranslation(ExportProfileTranslation $translation)
-    {
-        if (!$this->translations->contains($translation)) {
-            $this->translations->add($translation);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove translation
-     *
-     * @param ExportProfileTranslation $translation
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\ExportProfile
-     */
-    public function removeTranslation(ExportProfileTranslation $translation)
-    {
-        $this->translations->removeElement($translation);
 
         return $this;
     }

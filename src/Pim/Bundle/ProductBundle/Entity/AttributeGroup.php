@@ -17,9 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\AttributeGroupRepository")
  * @ORM\Table(name="pim_attribute_group")
- * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation")
  */
-class AttributeGroup implements TimestampableInterface, Translatable
+class AttributeGroup implements TimestampableInterface
 {
 
     /**
@@ -86,24 +85,11 @@ class AttributeGroup implements TimestampableInterface, Translatable
     protected $locale;
 
     /**
-     * @var ArrayCollection $translations
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="AttributeGroupTranslation",
-     *     mappedBy="foreignKey",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
-     * )
-     */
-    protected $translations;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
         $this->attributes   = new ArrayCollection();
-        $this->translations = new ArrayCollection();
         $this->sortOrder = 0;
     }
 
@@ -322,46 +308,6 @@ class AttributeGroup implements TimestampableInterface, Translatable
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get translations
-     *
-     * @return ArrayCollection
-     */
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-
-    /**
-     * Add translation
-     *
-     * @param AttributeGroupTranslation $translation
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
-     */
-    public function addTranslation(AttributeGroupTranslation $translation)
-    {
-        if (!$this->translations->contains($translation)) {
-            $this->translations->add($translation);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove translation
-     *
-     * @param AttributeGroupTranslation $translation
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
-     */
-    public function removeTranslation(AttributeGroupTranslation $translation)
-    {
-        $this->translations->removeElement($translation);
 
         return $this;
     }

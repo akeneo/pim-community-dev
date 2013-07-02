@@ -32,7 +32,7 @@ class LoadGroupData extends AbstractInstallerFixture
 
         if (isset($configuration['groups'])) {
             foreach ($configuration['groups'] as $code => $data) {
-                $group = $this->createGroup($code, $data['labels']);
+                $group = $this->createGroup($code, $data['labels'], $manager);
                 $manager->persist($group);
                 $this->addReference('attribute-group.'.$group->getCode(), $group);
             }
@@ -49,40 +49,19 @@ class LoadGroupData extends AbstractInstallerFixture
      *
      * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
      */
-    protected function createGroup($code, $translations)
+    protected function createGroup($code, $translations, $manager)
     {
+        $repository = $manager->getRepository('Gedmo\\Translatable\\Entity\\Translation');
         $group = new AttributeGroup();
         $group->setCode($code);
         $group->setName($translations['default']);
         $group->setSortOrder(++self::$order);
 
         foreach ($translations as $locale => $label) {
-            $translation = $this->createTranslation($group, $locale, $label);
-            $group->addTranslation($translation);
+            $repository->translate($group, 'name', $locale, $label);
         }
 
         return $group;
-    }
-
-    /**
-     * Create a translation entity
-     *
-     * @param AttributeGroup $entity AttributeGroup entity
-     * @param string         $locale Locale used
-     * @param string         $name   Name translated in locale value linked
-     *
-     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation
-     */
-    protected function createTranslation($entity, $locale, $name)
-    {
-        $translation = new AttributeGroupTranslation();
-        $translation->setContent($name);
-        $translation->setField('name');
-        $translation->setForeignKey($entity);
-        $translation->setLocale($locale);
-        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\AttributeGroup');
-
-        return $translation;
     }
 
     /**
