@@ -67,12 +67,7 @@ class FlexibleEntityFilter extends FlexibleOptionsFilter
     }
 
     /**
-     * Apply filter using flexible repository
-     *
-     * @param ProxyQueryInterface $proxyQuery
-     * @param string $field
-     * @param string $value
-     * @param string $operator
+     * {@inheritdoc}
      */
     protected function applyFlexibleFilter(ProxyQueryInterface $proxyQuery, $field, $value, $operator)
     {
