@@ -16,7 +16,7 @@ class FlexibleEntityFilter extends FlexibleOptionsFilter
 {
 
     /**
-     * Setter for class name
+     * Setter for class name used for filtering
      *
      * @param string $className
      *
@@ -76,16 +76,14 @@ class FlexibleEntityFilter extends FlexibleOptionsFilter
     protected function applyFlexibleFilter(ProxyQueryInterface $proxyQuery, $field, $value, $operator)
     {
         $attribute = $this->getAttribute($field);
-
         $qb = $proxyQuery->getQueryBuilder();
 
-        $joinAlias = 'filter'.$field;
-
         // inner join to value
+        $joinAlias = 'filter'.$field;
         $condition = $qb->prepareAttributeJoinCondition($attribute, $joinAlias);
         $qb->innerJoin($qb->getRootAlias() .'.'. $attribute->getBackendStorage(), $joinAlias, 'WITH', $condition);
 
-        // then join to color with filter on option id
+        // then join to linked entity with filter on id
         $joinAliasColor = 'filterentity'.$field;
         $backendField = sprintf('%s.%s', $joinAliasColor, 'id');
         $condition = $qb->prepareCriteriaCondition($backendField, $operator, $value);
@@ -93,38 +91,5 @@ class FlexibleEntityFilter extends FlexibleOptionsFilter
 
         // filter is active since it's applied to the flexible repository
         $this->active = true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOperator($type)
-    {
-        $type = (int) $type;
-
-        $operatorTypes = array(
-                1 => 'IN',
-                2 => 'NOT IN'
-        );
-
-        return isset($operatorTypes[$type]) ? $operatorTypes[$type] : 'IN';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function parseData($data)
-    {
-        if (!is_array($data) || !array_key_exists('value', $data) || !is_numeric($data['value'])) {
-            return false;
-        }
-
-        if (!is_array($data['value'])) {
-            $data['value'] = array($data['value']);
-        }
-
-        $data['type'] = isset($data['type']) ? $data['type'] : null;
-
-        return $data;
     }
 }
