@@ -7,7 +7,7 @@ use Oro\Bundle\AddressBundle\Validator\Constraints\ContainsPrimaryValidator;
 class ContainsPrimaryValidatorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException Symfony\Component\Validator\Exception\UnexpectedTypeException
+     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
      * @expectedExceptionMessage Expected argument of type array or Traversable and ArrayAccess, boolean given
      */
     public function testValidateException()
@@ -21,7 +21,7 @@ class ContainsPrimaryValidatorTest extends \PHPUnit_Framework_TestCase
      * @dataProvider validAddressesDataProvider
      * @param array $addresses
      */
-    public function testValidateValid($addresses)
+    public function testValidateValid(array $addresses)
     {
         $context = $this->getMockBuilder('Symfony\Component\Validator\ExecutionContext')
             ->disableOriginalConstructor()

@@ -48,6 +48,21 @@ class TypedAddress extends AddressBase
     }
 
     /**
+     * Get list of address types names
+     *
+     * @return array
+     */
+    public function getTypeNames()
+    {
+        $result = array();
+        /** @var AddressType $type */
+        foreach ($this->getTypes() as $type) {
+            $result[] = $type->getName();
+        }
+        return $result;
+    }
+
+    /**
      * @param AddressType $type
      * @return TypedAddress
      */
