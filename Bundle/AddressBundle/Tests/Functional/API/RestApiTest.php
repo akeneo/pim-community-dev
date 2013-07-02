@@ -6,6 +6,10 @@ use Oro\Bundle\TestFrameworkBundle\Test\ToolsAPI;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\TestFrameworkBundle\Test\Client;
 
+/**
+ * @outputBuffering enabled
+ * @db_isolation
+ */
 class RestApiTest extends WebTestCase
 {
     public $client = null;
