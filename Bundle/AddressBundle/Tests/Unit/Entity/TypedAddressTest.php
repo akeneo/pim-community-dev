@@ -28,6 +28,7 @@ class TypedAddressTest extends \PHPUnit_Framework_TestCase
 
         $type = new AddressType('testAddressType');
 
+        // add type in first time
         $this->address->addType($type);
         $types = $this->address->getTypes();
         $this->assertCount(1, $types);
