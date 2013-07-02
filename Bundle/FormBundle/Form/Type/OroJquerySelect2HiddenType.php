@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\FormBundle\Form\Type;
 
+use Symfony\Component\Form\Exception\InvalidConfigurationException;
+use Symfony\Component\Form\Exception\TransformationFailedException;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\Form\AbstractType;
@@ -74,7 +77,7 @@ class OroJquerySelect2HiddenType extends AbstractType
                         }
 
                         if (!$value) {
-                            throw new FormException('The option "entity_class" must be set.');
+                            throw new InvalidConfigurationException('The option "entity_class" must be set.');
                         }
                         return $value;
                     },
@@ -82,7 +85,7 @@ class OroJquerySelect2HiddenType extends AbstractType
                         if (!$value) {
                             $value = $formType->createDefaultTransformer($options['entity_class']);
                         } elseif (!$value instanceof DataTransformerInterface) {
-                            throw new FormException(
+                            throw new TransformationFailedException(
                                 sprintf(
                                     'The option "transformer" must be an instance of "%s".',
                                     'Symfony\Component\Form\DataTransformerInterface'
@@ -107,11 +110,11 @@ class OroJquerySelect2HiddenType extends AbstractType
                     if (!$value && !empty($options['autocomplete_alias'])) {
                         $value = $searchRegistry->getSearchHandler($options['autocomplete_alias']);
                     } elseif (!$value) {
-                        throw new FormException('The option "converter" must be set.');
+                        throw new InvalidConfigurationException('The option "converter" must be set.');
                     }
 
                     if (!$value instanceof ConverterInterface) {
-                        throw new FormException(
+                        throw new UnexpectedTypeException(
                             sprintf(
                                 'The option "converter" must be an instance of "%s".',
                                 'Oro\Bundle\FormBundle\Autocomplete\ConverterInterface'
@@ -151,7 +154,7 @@ class OroJquerySelect2HiddenType extends AbstractType
                     }
 
                     if (empty($result['route_name']) && empty($result['ajax']['url'])) {
-                        throw new FormException(
+                        throw new InvalidConfigurationException(
                             'Either option "configs.route_name" or "configs.ajax.url" must be set.'
                         );
                     }
