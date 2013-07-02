@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\GridBundle\Filter\ORM\Flexible;
 
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 
 /**
