@@ -115,10 +115,8 @@ class OroJquerySelect2HiddenType extends AbstractType
 
                     if (!$value instanceof ConverterInterface) {
                         throw new UnexpectedTypeException(
-                            sprintf(
-                                'The option "converter" must be an instance of "%s".',
-                                'Oro\Bundle\FormBundle\Autocomplete\ConverterInterface'
-                            )
+                            $value,
+                            'Oro\Bundle\FormBundle\Autocomplete\ConverterInterface'
                         );
                     }
                     return $value;
