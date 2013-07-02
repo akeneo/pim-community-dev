@@ -3,13 +3,51 @@
 namespace Oro\Bundle\AddressBundle\Tests\Entity;
 
 use Oro\Bundle\AddressBundle\Entity\TypedAddress;
+use Oro\Bundle\AddressBundle\Entity\AddressType;
 
 class TypedAddressTest extends \PHPUnit_Framework_TestCase
 {
-    public function testType()
+    /**
+     * @var TypedAddress
+     */
+    protected $address;
+
+    protected function setUp()
     {
-        $obj = new TypedAddress();
-        $obj->setType('TEST');
-        $this->assertEquals('TEST', $obj->getType());
+        $this->address = new TypedAddress();
+    }
+
+    protected function tearDown()
+    {
+        unset($this->address);
+    }
+
+    public function testAddType()
+    {
+        $this->assertEmpty($this->address->getTypes()->toArray());
+
+        $type = new AddressType('testAddressType');
+
+        // add type in first time
+        $this->address->addType($type);
+        $types = $this->address->getTypes();
+        $this->assertCount(1, $types);
+        $this->assertContains($type, $types);
+
+        // type should be added only once
+        $this->address->addType($type);
+        $types = $this->address->getTypes();
+        $this->assertCount(1, $types);
+        $this->assertContains($type, $types);
+    }
+
+    public function testRemoveType()
+    {
+        $type = new AddressType('testAddressType');
+        $this->address->addType($type);
+        $this->assertCount(1, $this->address->getTypes());
+
+        $this->address->removeType($type);
+        $this->assertEmpty($this->address->getTypes()->toArray());
     }
 }

@@ -15,7 +15,7 @@ use Oro\Bundle\AddressBundle\Entity\AddressType;
 class TypedAddress extends AddressBase
 {
     /**
-     * Many-to-many relation field, annotation must be in specific class
+     * Many-to-many relation field, relation parameters must be in specific class
      *
      * @var ArrayCollection
      **/

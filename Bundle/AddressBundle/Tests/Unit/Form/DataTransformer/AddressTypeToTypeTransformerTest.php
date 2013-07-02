@@ -20,6 +20,8 @@ class AddressTypeToTypeTransformerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        $this->markTestIncomplete('Should be fixed in scope of CRM-221');
+
         $this->om = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectManager')
             ->disableOriginalConstructor()
             ->getMock();
