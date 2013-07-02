@@ -14,18 +14,6 @@ use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
  */
 class FlexibleEntityOptionsFilter extends AbstractFlexibleFilter
 {
-    /**
-     * FQCN of the linked entity
-     *
-     * @var string
-     */
-    protected $className;
-
-    /**
-     *
-     * @var unknown_type
-     */
-    protected $parentFilterClass = 'Oro\\Bundle\\GridBundle\\Filter\\ORM\\EntityFilter';
 
     /**
      * The attribute defining the entity linked
@@ -35,6 +23,25 @@ class FlexibleEntityOptionsFilter extends AbstractFlexibleFilter
     protected $attribute;
 
     /**
+     * FQCN of the linked entity
+     *
+     * @var string
+     */
+    protected $className;
+
+    /**
+     * @var string
+     */
+    protected $parentFilterClass = 'Oro\\Bundle\\GridBundle\\Filter\\ORM\\EntityFilter';
+
+    /**
+     * @var array
+     */
+    protected $valueOptions;
+
+    /**
+     * Override initialize method to instanciate attribute and FQCN of the linked entity
+     *
      * {@inheritdoc}
      */
     public function initialize($name, array $options = array())
@@ -60,27 +67,6 @@ class FlexibleEntityOptionsFilter extends AbstractFlexibleFilter
 
         // apply filter
         $this->applyFlexibleFilter($proxyQuery, $field, $data['value'], $operator);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getValueOptions()
-    {
-        if (null === $this->valueOptions) {
-            $entityManager    = $this->getFlexibleManager()->getStorageManager();
-            $entityRepository = $entityManager->getRepository(
-                $this->getClassName($this->attribute->getBackendType())
-            );
-            $entities         = $entityRepository->findAll();
-
-            $this->valueOptions = array();
-            foreach ($entities as $entity) {
-                $this->valueOptions[$entity->getId()] = $entity->__toString();
-            }
-        }
-
-        return $this->valueOptions;
     }
 
     /**
