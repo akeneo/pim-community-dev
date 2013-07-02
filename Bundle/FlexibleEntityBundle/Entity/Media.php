@@ -238,6 +238,6 @@ class Media
      */
     public function __toString()
     {
-        return $this->filename;
+        return (string) $this->filename;
     }
 }
