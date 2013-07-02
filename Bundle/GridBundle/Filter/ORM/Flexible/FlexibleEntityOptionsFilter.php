@@ -12,21 +12,30 @@ use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  */
-class FlexibleEntityFilter extends FlexibleOptionsFilter
+class FlexibleEntityOptionsFilter extends FlexibleOptionsFilter
 {
+    /**
+     * FQCN of the linked entity
+     *
+     * @var string
+     */
+    protected $className;
 
     /**
-     * Setter for class name used for filtering
+     * The attribute defining the entity linked
      *
-     * @param string $className
-     *
-     * @return \Oro\Bundle\GridBundle\Filter\ORM\Flexible\FlexibleEntityFilter
+     * @var \Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
-    public function setClassName($className)
-    {
-        $this->className = $className;
+    protected $attribute;
 
-        return $this;
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize($name, array $options = array())
+    {
+        parent::initialize($name, $options);
+
+        $this->getAttribute($this->getOption('field_name'));
     }
 
     /**
@@ -36,7 +45,9 @@ class FlexibleEntityFilter extends FlexibleOptionsFilter
     {
         if (null === $this->valueOptions) {
             $entityManager    = $this->getFlexibleManager()->getStorageManager();
-            $entityRepository = $entityManager->getRepository($this->className);
+            $entityRepository = $entityManager->getRepository(
+                $this->getClassName($this->attribute->getBackendType())
+            );
             $entities         = $entityRepository->findAll();
 
             $this->valueOptions = array();
@@ -55,15 +66,48 @@ class FlexibleEntityFilter extends FlexibleOptionsFilter
      */
     protected function getAttribute($attributeCode)
     {
-        $attribute = $this->getFlexibleManager()
-                          ->getAttributeRepository()
-                          ->findOneBy(array('code' => $attributeCode));
+        if ($this->attribute === null) {
+            $attribute = $this->getFlexibleManager()
+                              ->getAttributeRepository()
+                              ->findOneBy(array('code' => $attributeCode));
 
-        if (!$attribute) {
-            throw new \LogicException('Impossible to find attribute');
+            if (!$attribute) {
+                throw new \LogicException('Impossible to find attribute');
+            }
+
+            $this->attribute = $attribute;
         }
 
-        return $attribute;
+        return $this->attribute;
+    }
+
+    /**
+     * Get the class name of the entity linked
+     *
+     * @param string $backendType
+     *
+     * @return string
+     *
+     * @throws \LogicException
+     */
+    protected function getClassName($backendType)
+    {
+        if ($this->className === null) {
+            $valueName = $this->flexibleManager->getFlexibleValueName();
+            $valueMetadata = $this->flexibleManager->getStorageManager()
+                                                   ->getMetadataFactory()
+                                                   ->getMetadataFor($valueName);
+            $associationMapping = $valueMetadata->getAssociationMappings();
+
+            if (empty($associationMapping[$backendType])
+                || empty($associationMapping[$backendType]['targetEntity'])) {
+                throw new \LogicException(sprintf('Impossible to find metadata for %s', $backendType));
+            }
+
+            $this->className = $associationMapping[$backendType]['targetEntity'];
+        }
+
+        return $this->className;
     }
 
     /**

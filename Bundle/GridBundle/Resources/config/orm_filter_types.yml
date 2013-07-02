@@ -1,6 +1,3 @@
-parameters:
-    oro_grid.orm.filter.type.flexible_entity.class: Oro\Bundle\GridBundle\Filter\ORM\Flexible\FlexibleEntityFilter
-
 services:
     oro_grid.orm.filter.type.date_range:
         class: Oro\Bundle\GridBundle\Filter\ORM\DateRangeFilter
@@ -79,3 +76,10 @@ services:
         arguments: ["@oro_flexibleentity.registry", "@oro_grid.orm.filter.type.choice"]
         tags:
             - { name: oro_grid.filter.type, alias: oro_grid_orm_flexible_options }
+
+    oro_grid.orm.filter.type.flexible_entity_options:
+        class:     Oro\Bundle\GridBundle\Filter\ORM\Flexible\FlexibleEntityOptionsFilter
+        arguments: ["@oro_flexibleentity.registry", "@oro_grid.orm.filter.type.choice"]
+        tags:
+            - { name: oro_grid.filter.type, alias: oro_grid_orm_flexible_options }
+            
