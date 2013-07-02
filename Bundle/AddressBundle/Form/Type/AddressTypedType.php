@@ -12,13 +12,14 @@ class AddressTypedType extends AddressType
     public function addEntityFields(FormBuilderInterface $builder)
     {
         $builder->add(
-            'type',
+            'types',
             'entity',
             array(
                 'class' => 'OroAddressBundle:AddressType',
-                'property' => 'type',
+                'property' => 'label',
                 'required' => false,
-                'empty_value' => 'Choose type...'
+                'multiple' => true,
+                'expanded' => true,
             )
         );
         $builder->add(

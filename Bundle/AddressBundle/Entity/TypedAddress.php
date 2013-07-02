@@ -2,9 +2,12 @@
 
 namespace Oro\Bundle\AddressBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
+
 use Oro\Bundle\AddressBundle\Entity\AddressType;
 
 /**
@@ -17,7 +20,7 @@ class TypedAddress extends AddressBase
     /**
      * Many-to-many relation field, relation parameters must be in specific class
      *
-     * @var ArrayCollection
+     * @var Collection
      **/
     protected $types;
 
@@ -37,7 +40,7 @@ class TypedAddress extends AddressBase
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
     public function getTypes()
     {

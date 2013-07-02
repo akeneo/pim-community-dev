@@ -41,7 +41,7 @@ class AddressTypedTypeTest extends \PHPUnit_Framework_TestCase
         $builder->expects($this->at(0))
             ->method('add')
             ->with(
-                'type',
+                'types',
                 'entity',
                 $this->isType('array')
             );
