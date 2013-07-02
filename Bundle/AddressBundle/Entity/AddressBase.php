@@ -30,6 +30,14 @@ class AddressBase extends AbstractEntityFlexible
     /**
      * @var string
      *
+     * @ORM\Column(name="label", type="string", length=255, nullable=true)
+     * @Soap\ComplexType("string", nillable=true)
+     */
+    protected $label;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="street", type="string", length=500)
      * @Soap\ComplexType("string", nillable=true)
      */
@@ -109,6 +117,29 @@ class AddressBase extends AbstractEntityFlexible
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set label
+     *
+     * @param string $label
+     * @return AddressBase
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * Get label
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->label;
     }
 
     /**
@@ -409,7 +440,8 @@ class AddressBase extends AbstractEntityFlexible
      */
     public function isEmpty()
     {
-        $isEmpty = empty($this->firstName)
+        $isEmpty = empty($this->label)
+            && empty($this->firstName)
             && empty($this->lastName)
             && empty($this->street)
             && empty($this->street2)

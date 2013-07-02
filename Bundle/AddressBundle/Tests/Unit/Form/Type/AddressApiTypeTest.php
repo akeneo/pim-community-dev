@@ -40,7 +40,7 @@ class AddressApiTypeTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $builder->expects($this->exactly(10))
+        $builder->expects($this->exactly(11))
             ->method('add')
             ->will($this->returnSelf());
 

@@ -32,6 +32,7 @@ class AddressBaseTest extends \PHPUnit_Framework_TestCase
         $regionMock = $this->getMock('Oro\Bundle\AddressBundle\Entity\Region', array(), array('combinedCode'));
         return array(
             'id' => array('id', 1),
+            'label' => array('label', 'Shipping'),
             'lastName' => array('lastName', 'last name'),
             'firstName' => array('firstName', 'first_name'),
             'street' => array('street', 'street'),
@@ -57,30 +58,71 @@ class AddressBaseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($obj->getCreatedAt(), $obj->getUpdatedAt());
     }
 
-    public function testToString()
+    /**
+     * @dataProvider toStringDataProvider
+     */
+    public function testToString(array $actualData, $expected)
     {
         $obj = new AddressBase();
-        $country = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $country->expects($this->once())
-            ->method('__toString')
-            ->will($this->returnValue('Ukraine'));
 
-        $regionMock = $this->getMock('Oro\Bundle\AddressBundle\Entity\Region', array(), array('combinedCode'));
-        $regionMock->expects($this->once())
-            ->method('__toString')
-            ->will($this->returnValue('Kharkivs\'ka oblast\''));
-
-        $obj->setFirstName('FirstName')
-            ->setLastName('LastName')
-            ->setStreet('Street')
-            ->setState($regionMock)
-            ->setPostalCode('12345')
-            ->setCountry($country);
+        foreach ($actualData as $key => $value) {
+            $setter = 'set' . ucfirst($key);
+            $obj->$setter($value);
+        }
 
         $this->assertTrue(method_exists($obj, '__toString'));
-        $this->assertEquals('FirstName LastName , Street   Kharkivs\'ka oblast\' , Ukraine 12345', $obj->__toString());
+        $this->assertEquals($expected, $obj->__toString());
+    }
+
+    /**
+     * @return array
+     */
+    public function toStringDataProvider()
+    {
+        return array(
+            array(
+                array(
+                    'firstName' => 'FirstName',
+                    'lastName' => 'LastName',
+                    'street' => 'Street',
+                    'state' => $this->createMockRegion('Kharkivs\'ka oblast\''),
+                    'postalCode' => '12345',
+                    'country' => $this->createMockCountry('Ukraine'),
+                ),
+                'FirstName LastName , Street   Kharkivs\'ka oblast\' , Ukraine 12345'
+            )
+        );
+    }
+
+    /**
+     * @param string $name
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function createMockCountry($name)
+    {
+        $result = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $result->expects($this->once())
+            ->method('__toString')
+            ->will($this->returnValue($name));
+
+        return $result;
+    }
+
+    /**
+     * @param string $name
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function createMockRegion($name)
+    {
+        $result = $this->getMock('Oro\Bundle\AddressBundle\Entity\Region', array(), array('combinedCode'));
+        $result->expects($this->once())
+            ->method('__toString')
+            ->will($this->returnValue($name));
+
+        return $result;
     }
 
     public function testStateText()

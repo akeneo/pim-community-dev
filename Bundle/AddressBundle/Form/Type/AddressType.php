@@ -38,6 +38,7 @@ class AddressType extends FlexibleType
 
         // address fields
         $builder
+            ->add('label', 'text', array('required' => false, 'label' => 'Label'))
             ->add('firstName', 'text', array('required' => false, 'label' => 'First Name'))
             ->add('lastName', 'text', array('required' => false, 'label' => 'Last Name'))
             ->add('street', 'text', array('required' => true, 'label' => 'Street'))
