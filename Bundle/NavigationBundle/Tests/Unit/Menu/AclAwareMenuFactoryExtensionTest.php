@@ -274,8 +274,8 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf('Knp\Menu\MenuItem', $item);
         }
 
-        $this->assertAttributeCount(1, 'aclCache', $this->factory);
-        $this->assertAttributeEquals(array($options['aclResourceId'] => true), 'aclCache', $this->factory);
+        $this->assertAttributeCount(1, 'aclCache', $this->factoryExtension);
+        $this->assertAttributeEquals(array($options['aclResourceId'] => true), 'aclCache', $this->factoryExtension);
     }
 
     public function testAclCacheByKey()
@@ -290,8 +290,8 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf('Knp\Menu\MenuItem', $item);
         }
 
-        $this->assertAttributeCount(1, 'aclCache', $this->factory);
-        $this->assertAttributeEquals(array('controller::action' => true), 'aclCache', $this->factory);
+        $this->assertAttributeCount(1, 'aclCache', $this->factoryExtension);
+        $this->assertAttributeEquals(array('controller::action' => true), 'aclCache', $this->factoryExtension);
     }
 
     /**
