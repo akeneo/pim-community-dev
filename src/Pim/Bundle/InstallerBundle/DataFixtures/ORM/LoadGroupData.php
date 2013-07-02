@@ -2,7 +2,6 @@
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;

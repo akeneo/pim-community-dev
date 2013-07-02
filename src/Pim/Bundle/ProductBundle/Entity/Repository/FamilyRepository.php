@@ -33,7 +33,7 @@ class FamilyRepository extends EntityRepository
             ->addSelect('attribute')
             ->leftJoin('family.attributes', 'attribute')
             ->leftJoin('attribute.group', 'group')
-            ->orderBy('attribute.group', 'DESC');
-        ;
+            ->addOrderBy('group.sortOrder', 'ASC')
+            ->addOrderBy('attribute.sortOrder', 'ASC');
     }
 }

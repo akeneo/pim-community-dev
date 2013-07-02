@@ -3,7 +3,6 @@ namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\ProductBundle\Entity\Family;
-use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
 use Symfony\Component\Yaml\Yaml;
 
