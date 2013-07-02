@@ -1,3 +1,6 @@
+parameters:
+    oro_grid.orm.filter.type.flexible_entity.class: Oro\Bundle\GridBundle\Filter\ORM\Flexible\FlexibleEntityFilter
+
 services:
     oro_grid.orm.filter.type.date_range:
         class: Oro\Bundle\GridBundle\Filter\ORM\DateRangeFilter
