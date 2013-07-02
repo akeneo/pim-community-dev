@@ -49,14 +49,6 @@ class MenuExtensionTest extends \PHPUnit_Framework_TestCase
             ->setMethods(array('render'))
             ->getMock();
 
-        /** @var $router RouterInterface */
-        $router = $this->getMockBuilder('Symfony\Component\Routing\RouterInterface')
-            ->getMock();
-        /** @var $aclManager Manager */
-        $aclManager = $this->getMockBuilder('Oro\Bundle\UserBundle\Acl\Manager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $this->factory = $this->getMockBuilder('Knp\Menu\MenuFactory')
             ->setMethods(array('getRouteInfo', 'processRoute'))
             ->getMock();
