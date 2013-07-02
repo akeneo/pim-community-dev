@@ -570,12 +570,18 @@ table.ui-sortable, tbody.ui-sortable {
 
 /* Product edit form - attributes tab */
 
-#attributes {
+.product-edit #attributes {
   #attribute-buttons {
     position: relative;
     float: right;
     top: 4px;
   }
+  .attribute-field .input-large {width: 350px;}
+  .attribute-field.currencyfield .input-large {width: 288px;}
+  .attribute-field .datepicker.input-large {width: 200px;}
+  .attribute-field.scopablefield textarea.input-large { width: 523px; }
+  .select2-container { max-width: 365px;}
+  .select2-container { width: 365px!important; } /* important statement come from bap */
 }
 .navbar-extra {padding: 10px;}
 .navbar-content {line-height: 18px;}
@@ -588,9 +594,7 @@ table.ui-sortable, tbody.ui-sortable {
 .navbar-content .locale-switcher, .navbar-content .scope-switcher {height: 30px;}
 .navbar-title { line-height: 33px; }
 .tab-groups {float:left; min-width: 120px;}
-#localisations {margin-top:20px;}
-
-.scopablefield textarea { width: 523px; }
+.product-edit #localisations {margin-top:20px;}
 
 form .scopable {
   margin-bottom: 10px;
@@ -650,8 +654,15 @@ form .scopable {
       }
     }
     ul.wysihtml5-toolbar {
-      width: 655px;
-      height: 42px;
+      width: 651px;
+      height: 37px;
+      padding-top: 4px;
+      border: 1px solid #ccc;
+      border-bottom: none;
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+      .btn {height: 32px;}
+      > li {margin-bottom: 0px; }
     }
     input, select, textarea {
       border-radius: 0;
