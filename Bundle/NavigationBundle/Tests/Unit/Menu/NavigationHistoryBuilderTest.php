@@ -82,7 +82,7 @@ class NavigationHistoryBuilderTest extends \PHPUnit_Framework_TestCase
             ->with(get_class($item))
             ->will($this->returnValue($repository));
 
-        $menu = $this->getMockBuilder('Knp\Menu\MenuItem')->getMock();
+        $menu = $this->getMockBuilder('Knp\Menu\MenuItem')->disableOriginalConstructor()->getMock();
 
         $childMock = $this->getMock('Knp\Menu\ItemInterface');
         $childMock2 = clone $childMock;

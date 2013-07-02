@@ -57,8 +57,7 @@ class MenuExtensionTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->factory = $this->getMockBuilder('Oro\Bundle\NavigationBundle\Menu\AclAwareMenuFactory')
-            ->setConstructorArgs(array($router, $aclManager))
+        $this->factory = $this->getMockBuilder('Knp\Menu\MenuFactory')
             ->setMethods(array('getRouteInfo', 'processRoute'))
             ->getMock();
 
