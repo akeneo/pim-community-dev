@@ -115,7 +115,7 @@ var jsfv = new function () {
 
     return {
         id: function (id) {
-            return document.getElementById(id);
+            return document.getElementById(id) || document.getElementById(id+'_data');
         },
 {% block removeErrors_method %}
         removeErrors: function (field) {
