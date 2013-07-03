@@ -2,6 +2,7 @@
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Inflector\Inflector;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
@@ -242,18 +243,6 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     }
 
     /**
-     * Convert attribute code format from CamelCase to camel_case
-     *
-     * @param string $code
-     *
-     * @return string
-     */
-    protected function sanitizeAttributeCode($code)
-    {
-        return strtolower(implode('_', preg_split('/(?=[A-Z])/', $code, -1, PREG_SPLIT_NO_EMPTY)));
-    }
-
-    /**
      * Add support of magic method getAttributeCode, setAttributeCode, addAttributeCode
      *
      * @param string $method
@@ -266,16 +255,17 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     public function __call($method, $arguments)
     {
         if (preg_match('/get(.*)/', $method, $matches)) {
-            $attributeCode = $this->sanitizeAttributeCode($matches[1]);
+            $attributeCode = Inflector::tableize($matches[1]);
 
             return $this->getValue($attributeCode);
         }
 
+        $attributeCode = null;
         if (preg_match('/set(.*)/', $method, $matches)) {
-            $attributeCode = $this->sanitizeAttributeCode($matches[1]);
+            $attributeCode = Inflector::tableize($matches[1]);
             $method        = 'setData';
         } else if (preg_match('/add(.*)/', $method, $matches)) {
-            $attributeCode = $this->sanitizeAttributeCode($matches[1]);
+            $attributeCode = Inflector::tableize($matches[1]);
             $method        = 'addData';
         }
 
