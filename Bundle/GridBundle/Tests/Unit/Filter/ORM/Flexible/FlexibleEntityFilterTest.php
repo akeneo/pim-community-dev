@@ -3,13 +3,9 @@
 namespace Oro\Bundle\GridBundle\Tests\Unit\Filter\ORM\Flexible;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
-
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
-
 use Oro\Bundle\GridBundle\Filter\ORM\Flexible\FlexibleEntityFilter;
-
 use Oro\Bundle\GridBundle\Filter\ORM\EntityFilter;
 
 /**
@@ -18,7 +14,6 @@ use Oro\Bundle\GridBundle\Filter\ORM\EntityFilter;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
- *
  */
 class FlexibleEntityFilterTest extends FlexibleFilterTestCase
 {
