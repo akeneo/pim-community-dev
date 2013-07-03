@@ -122,6 +122,7 @@ class SubBlockConfig implements FormConfigInterface
     public function toArray()
     {
         return array(
+            'code'  => $this->code,
             'title' => $this->title,
             'data'  => $this->data
         );
