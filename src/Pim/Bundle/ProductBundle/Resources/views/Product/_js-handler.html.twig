@@ -2,7 +2,7 @@
 $(function() {
     'use strict';
 
-    var activeTab = $('[href=' + {% if tab %}'#{{ tab }}'{% else %}location.hash{% endif %} + ']');
+    var activeTab = $('[href=' + {{ tab ? ("'#" ~ tab ~ "'")|raw : 'location.hash' }} + ']');
     activeTab && activeTab.tab('show');
 
     var formAction = '{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}';
