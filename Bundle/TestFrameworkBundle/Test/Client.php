@@ -10,6 +10,8 @@ use Symfony\Component\HttpKernel\TerminableInterface;
 class Client extends BaseClient
 {
 
+    const LOCAL_URL = 'http://localhost/api/rest/latest/';
+
     public $soapClient;
 
     /** @var shared doctrine connection */
@@ -23,6 +25,14 @@ class Client extends BaseClient
         if (is_null(self::$connection)) {
             self::$connection = $this->getContainer()->get('doctrine.dbal.default_connection');
         }
+    }
+
+    public function request($method, $uri, array $parameters = array(), array $files = array(), array $server = array(), $content = null, $changeHistory = true)
+    {
+        if (strpos($uri, 'http://') === false) {
+            $uri = self::LOCAL_URL . $uri;
+        }
+        return parent::request($method, $uri, $parameters, $files, $server, $content, $changeHistory);
     }
     /**
      * @param null $wsdl

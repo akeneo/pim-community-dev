@@ -16,16 +16,26 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
  */
 class FlexibleTest extends \PHPUnit_Framework_TestCase
 {
-
     protected $flexible;
+
+    protected $attributeCode;
+
+    protected $attribute;
 
     /**
      * Set up unit test
      */
     public function setUp()
     {
+        // create attribute
+        $this->attributeCode = 'short_description';
+        $this->attribute = new Attribute();
+        $this->attribute->setCode($this->attributeCode);
+        $this->attribute->setBackendType('varchar');
         // create flexible
         $this->flexible = new Flexible();
+        $this->flexible->setValueClass('Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\FlexibleValue');
+        $this->flexible->setAllAttributes(array($this->attributeCode => $this->attribute));
     }
 
     /**
@@ -91,23 +101,23 @@ class FlexibleTest extends \PHPUnit_Framework_TestCase
      */
     public function testValues()
     {
-        // create attribute
-        $att = new Attribute();
-        $code = 'mycode';
-        $att->setCode($code);
-        $att->setBackendType('varchar');
         // create value
         $data = 'my test value';
         $value = new FlexibleValue();
-        $value->setAttribute($att);
+        $value->setAttribute($this->attribute);
         $value->setData($data);
+
         // get / add / remove values
         $this->assertEquals($this->flexible->getValues()->count(), 0);
         $this->flexible->addValue($value);
         $this->assertEquals($this->flexible->getValues()->count(), 1);
-        $this->assertEquals($this->flexible->getValue($code), $value);
-        $this->assertEquals($this->flexible->mycode, $data);
+        $this->assertEquals($this->flexible->getValue($this->attributeCode), $value);
+        $this->assertEquals($this->flexible->short_description, $data);
         $this->flexible->removeValue($value);
         $this->assertEquals($this->flexible->getValues()->count(), 0);
+
+        // test magic method
+        $this->flexible->setShortDescription('my value');
+        $this->assertEquals($this->flexible->getShortDescription(), 'my value');
     }
 }
