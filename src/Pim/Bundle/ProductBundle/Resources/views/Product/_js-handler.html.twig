@@ -13,6 +13,11 @@ $(function() {
         return true;
     });
 
+    $('#locale-switcher a').on('click', function() {
+        var tab = $('.tab-groups li.tab.active a').attr('href');
+        tab && $(this).attr('href', $(this).attr('href') + '&tab=' + tab.substr(1));
+    })
+
     var updated = false;
 
     $('#updated').css('display', 'none');
