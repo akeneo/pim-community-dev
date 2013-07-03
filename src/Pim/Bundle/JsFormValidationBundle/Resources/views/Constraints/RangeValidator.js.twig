@@ -6,6 +6,10 @@ function Range(field, params)
         return true;
     }
 
+    if (value != parseFloat(value)) {
+        return getComputeMessage(params.invalidMessage);
+    }
+
     value = parseFloat(value);
 
     if (value < parseFloat(params.min)) {
