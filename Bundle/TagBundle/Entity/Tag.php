@@ -2,8 +2,10 @@
 
 namespace Oro\Bundle\TagBundle\Entity;
 
-use FPN\TagBundle\Entity\Tag as BaseTag;
 use Doctrine\ORM\Mapping as ORM;
+use FPN\TagBundle\Entity\Tag as BaseTag;
+
+use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * Tag
@@ -26,4 +28,34 @@ class Tag extends BaseTag
      * @ORM\OneToMany(targetEntity="Tagging", mappedBy="tag", fetch="EAGER")
      */
     protected $tagging;
+
+    /**
+     * @var User
+     * @ORM\OneToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
+     */
+    protected $user;
+
+    /**
+     * Return tag owner user or null if it's global scope
+     *
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set user
+     *
+     * @param User $user
+     * @return $this
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }
