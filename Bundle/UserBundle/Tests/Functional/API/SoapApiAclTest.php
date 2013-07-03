@@ -14,9 +14,8 @@ class SoapApiAclTest extends WebTestCase
 {
     const TEST_ROLE = 'ROLE_SUPER_ADMIN';
     const TEST_EDIT_ROLE = 'ROLE_USER';
-    /**
-     * @var Client
-     */
+
+    /** @var Client */
     protected $client = null;
 
     public function setUp()

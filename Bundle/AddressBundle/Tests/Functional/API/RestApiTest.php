@@ -13,7 +13,7 @@ use Symfony\Component\BrowserKit\Response;
  */
 class RestApiTest extends WebTestCase
 {
-    /** @var Client  */
+    /** @var Client */
     protected $client = null;
 
     public function setUp()
@@ -39,7 +39,7 @@ class RestApiTest extends WebTestCase
 
         $this->client->request(
             'POST',
-            'http://localhost/api/rest/latest/address',
+            $this->client->generate('oro_api_post_address'),
             $requestData
         );
 
@@ -66,7 +66,7 @@ class RestApiTest extends WebTestCase
     {
         $this->client->request(
             'GET',
-            'http://localhost/api/rest/latest/addresses/' . $id
+            $this->client->generate('oro_api_get_address', array('id' => $id))
         );
 
         /** @var $result Response */
@@ -98,7 +98,7 @@ class RestApiTest extends WebTestCase
 
         $this->client->request(
             'PUT',
-            'http://localhost/api/rest/latest/addresses/' . $id,
+            $this->client->generate('oro_api_put_address', array('id' => $id)),
             $requestData
         );
 
@@ -109,7 +109,7 @@ class RestApiTest extends WebTestCase
         // open address by id
         $this->client->request(
             'GET',
-            'http://localhost/api/rest/latest/addresses/' . $id
+            $this->client->generate('oro_api_get_address', array('id' => $id))
         );
 
         $result = $this->client->getResponse();
@@ -132,7 +132,7 @@ class RestApiTest extends WebTestCase
     {
         $this->client->request(
             'DELETE',
-            'http://localhost/api/rest/latest/addresses/' . $id
+            $this->client->generate('oro_api_delete_address', array('id' => $id))
         );
 
         /** @var $result Response */
@@ -141,7 +141,7 @@ class RestApiTest extends WebTestCase
 
         $this->client->request(
             'GET',
-            'http://localhost/api/rest/latest/addresses/' . $id
+            $this->client->generate('oro_api_get_address', array('id' => $id))
         );
 
         $result = $this->client->getResponse();
@@ -155,7 +155,7 @@ class RestApiTest extends WebTestCase
     {
         $this->client->request(
             'GET',
-            "http://localhost/api/rest/latest/countries"
+            $this->client->generate('oro_api_get_countries')
         );
 
         /** @var $result Response */
@@ -175,7 +175,7 @@ class RestApiTest extends WebTestCase
         foreach ($countries as $country) {
             $this->client->request(
                 'GET',
-                "http://localhost/api/rest/latest/countries/" . $country['iso2_code']
+                $this->client->generate('oro_api_get_country', array('id' => $country['iso2_code']))
             );
             /** @var $result Response */
             $result = $this->client->getResponse();
@@ -196,7 +196,7 @@ class RestApiTest extends WebTestCase
     {
         $this->client->request(
             'GET',
-            "http://localhost/api/rest/latest/regions"
+            $this->client->generate('oro_api_get_regions')
         );
 
         /** @var $result Response */
