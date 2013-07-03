@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FormBundle\Form\Type;
+namespace Oro\Bundle\TranslationBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Options;
@@ -8,14 +8,14 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Util\PropertyPath;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
+use Symfony\Bridge\Doctrine\Form\EventListener\MergeDoctrineCollectionListener;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query;
 
-use Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer;
-use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
+use Oro\Bundle\TranslationBundle\Form\DataTransformer\CollectionToArrayTransformer;
 
 class TranslatableEntityType extends AbstractType
 {
@@ -56,15 +56,9 @@ class TranslatableEntityType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // transformer must be only one in chain
-        $builder->resetViewTransformers();
-
-        /** @var $entityManager EntityManager */
-        $entityManager = $this->registry->getManager();
-        if (!empty($options['multiple'])) {
-            $builder->addViewTransformer(new EntitiesToIdsTransformer($entityManager, $options['class']));
-        } else {
-            $builder->addViewTransformer(new EntityToIdTransformer($entityManager, $options['class']));
+        if ($options['multiple']) {
+            $builder->addEventSubscriber(new MergeDoctrineCollectionListener())
+                ->addViewTransformer(new CollectionToArrayTransformer(), true);
         }
     }
 
@@ -113,7 +107,7 @@ class TranslatableEntityType extends AbstractType
             array(
                 'property'      => null,
                 'query_builder' => null,
-                    'choices'       => null,
+                'choices'       => null,
                 'choice_list'   => $choiceList
             )
         );

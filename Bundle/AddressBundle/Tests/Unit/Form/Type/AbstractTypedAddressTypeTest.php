@@ -16,9 +16,10 @@ class AbstractTypedAddressTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $buildAddressFormListener = $this->getMockBuilder('Oro\Bundle\AddressBundle\Form\EventListener\BuildAddressFormListener')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $buildAddressFormListener
+            = $this->getMockBuilder('Oro\Bundle\AddressBundle\Form\EventListener\BuildAddressFormListener')
+                ->disableOriginalConstructor()
+                ->getMock();
         $flexibleManager = $this->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager')
             ->disableOriginalConstructor()
             ->getMock();
@@ -45,9 +46,26 @@ class AbstractTypedAddressTypeTest extends \PHPUnit_Framework_TestCase
             ->method('add')
             ->with(
                 'types',
-                'entity',
+                'translatable_entity',
+                $this->callback(
+                    function ($options) {
+                        \PHPUnit_Framework_TestCase::assertArrayHasKey('class', $options);
+                        \PHPUnit_Framework_TestCase::assertArrayHasKey('property', $options);
+                        \PHPUnit_Framework_TestCase::assertEquals('OroAddressBundle:AddressType', $options['class']);
+                        \PHPUnit_Framework_TestCase::assertEquals('label', $options['property']);
+                        return true;
+                    }
+                )
+            );
+
+        $builder->expects($this->at(1))
+            ->method('add')
+            ->with(
+                'primary',
+                'checkbox',
                 $this->isType('array')
             );
+
         $this->type->addEntityFields($builder);
     }
 }

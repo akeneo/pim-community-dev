@@ -3,15 +3,21 @@
 namespace Oro\Bundle\AddressBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
 
 /**
  * AddressType
  *
  * @ORM\Entity(repositoryClass="Oro\Bundle\AddressBundle\Entity\Repository\AddressTypeRepository")
  * @ORM\Table(name="oro_address_type")
+ * @Gedmo\TranslationEntity(class="Oro\Bundle\AddressBundle\Entity\AddressTypeTranslation")
  */
-class AddressType
+class AddressType implements Translatable
 {
+    const TYPE_BILLING  = 'billing';
+    const TYPE_SHIPPING = 'shipping';
+
     /**
      * @var string
      *
@@ -24,8 +30,14 @@ class AddressType
      * @var string
      *
      * @ORM\Column(name="label", type="string", length=255, unique=true)
+     * @Gedmo\Translatable
      */
     protected $label;
+
+    /**
+     * @Gedmo\Locale
+     */
+    protected $locale;
 
     /**
      * @param string $name
@@ -66,6 +78,29 @@ class AddressType
     public function getLabel()
     {
         return $this->label;
+    }
+
+    /**
+     * Set locale
+     *
+     * @param string $locale
+     * @return AddressType
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Returns locale code
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
     }
 
     /**

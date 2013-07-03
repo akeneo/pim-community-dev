@@ -164,7 +164,7 @@ class Region implements Translatable
     /**
      * Returns locale code
      *
-     * @return mixed
+     * @return string
      */
     public function getLocale()
     {

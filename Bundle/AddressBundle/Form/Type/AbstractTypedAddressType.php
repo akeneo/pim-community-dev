@@ -13,7 +13,7 @@ abstract class AbstractTypedAddressType extends AbstractAddressType
     {
         $builder->add(
             'types',
-            'entity',
+            'translatable_entity',
             array(
                 'class' => 'OroAddressBundle:AddressType',
                 'property' => 'label',

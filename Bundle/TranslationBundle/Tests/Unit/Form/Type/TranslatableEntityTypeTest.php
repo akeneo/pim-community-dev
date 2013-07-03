@@ -1,9 +1,7 @@
 <?php
 
-namespace Oro\Bundle\FormBundle\Tests\Unit\Form\Type;
+namespace Oro\Bundle\TranslationBundle\Tests\Unit\Form\Type;
 
-use Oro\Bundle\FormBundle\Form\Type\TranslatableEntityType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\EntityManager;
@@ -12,7 +10,9 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
-use Oro\Bundle\FormBundle\Tests\Unit\Form\Type\Stub\TestEntity;
+
+use Oro\Bundle\TranslationBundle\Form\Type\TranslatableEntityType;
+use Oro\Bundle\TranslationBundle\Tests\Unit\Form\Type\Stub\TestEntity;
 
 class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -171,34 +171,26 @@ class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param array $options
-     * @param string $transformerClass
+     * @param array $expectedCalls
      *
      * @dataProvider buildFormDataProvider
      */
-    public function testBuildForm($options, $transformerClass)
+    public function testBuildForm($options, array $expectedCalls = array())
     {
-        // mock
         $formBuilder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
             ->disableOriginalConstructor()
-            ->setMethods(array('resetViewTransformers'))
+            ->setMethods(array('addEventSubscriber', 'addViewTransformer'))
             ->getMock();
-        $formBuilder->expects($this->at(0))
-            ->method('resetViewTransformers');
+
+        foreach ($expectedCalls as $method => $parameters) {
+            $mocker = $formBuilder->expects($this->exactly($parameters['count']))
+                ->method($method)
+                ->will($this->returnSelf());
+            call_user_func_array(array($mocker, 'with'), $parameters['with']);
+        }
 
         // test
         $this->type->buildForm($formBuilder, $options);
-
-        // assertions
-        /** @var $formBuilder FormBuilderInterface */
-        $transformers = $formBuilder->getViewTransformers();
-        $this->assertCount(1, $transformers);
-
-        $transformer = current($transformers);
-        $this->assertInstanceOf($transformerClass, $transformer);
-
-        $this->assertAttributeEquals($this->entityManager, 'em', $transformer);
-        $this->assertAttributeEquals(self::TEST_CLASS, 'className', $transformer);
-        $this->assertAttributeEquals(self::TEST_IDENTIFIER, 'property', $transformer);
     }
 
     /**
@@ -208,12 +200,35 @@ class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'single' => array(
-                'options'          => array('class' => self::TEST_CLASS),
-                'transformerClass' => 'Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer'
+                'options' => array(
+                    'class'    => self::TEST_CLASS,
+                    'multiple' => false,
+                ),
             ),
             'multiple' => array(
-                'options'          => array('class' => self::TEST_CLASS, 'multiple' => true),
-                'transformerClass' => 'Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer'
+                'options'       => array(
+                    'class'    => self::TEST_CLASS,
+                    'multiple' => true,
+                ),
+                'expectedCalls' => array(
+                    'addEventSubscriber' => array(
+                        'count' => 1,
+                        'with'  => array(
+                            $this->isInstanceOf(
+                                'Symfony\Bridge\Doctrine\Form\EventListener\MergeDoctrineCollectionListener'
+                            )
+                        )
+                    ),
+                    'addViewTransformer' => array(
+                        'count' => 1,
+                        'with'  => array(
+                            $this->isInstanceOf(
+                                'Oro\Bundle\TranslationBundle\Form\DataTransformer\CollectionToArrayTransformer'
+                            ),
+                            true
+                        )
+                    ),
+                ),
             ),
         );
     }
