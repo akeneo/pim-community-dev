@@ -157,7 +157,6 @@ class ProductManager extends FlexibleManager
             if ($value->getAttribute()->getAttributeType() === 'pim_product_price_collection') {
                 $activeCurrencies = $manager->getActiveCodes();
                 $value->addMissingPrices($activeCurrencies);
-                $value->sortPrices($defaultCurrency->getCode());
                 $value->removeDisabledPrices($activeCurrencies);
             }
         }

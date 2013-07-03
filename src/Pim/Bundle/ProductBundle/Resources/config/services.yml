@@ -39,6 +39,7 @@ services:
         class: Pim\Bundle\ProductBundle\Twig\ProductExtension
         arguments:
             - @security.context
+            - @pim_config.manager.locale
         tags:
             - { name: twig.extension }
 
