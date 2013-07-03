@@ -1,10 +1,11 @@
 parameters:
-    oro_form.type.date.class:                 Oro\Bundle\FormBundle\Form\Type\OroDateType
-    oro_form.type.datetime.class:             Oro\Bundle\FormBundle\Form\Type\OroDateTimeType
-    oro_form.type.combobox_local.class:       Oro\Bundle\FormBundle\Form\Type\OroComboboxLocalType
-    oro_form.type.entity_identifier.class:    Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType
-    oro_form.type.jqueryselect2_hidden.class: Oro\Bundle\FormBundle\Form\Type\OroJquerySelect2HiddenType
-    oro_form.type.translatable_entity.class:  Oro\Bundle\FormBundle\Form\Type\TranslatableEntityType
+    oro_form.type.date.class:                       Oro\Bundle\FormBundle\Form\Type\OroDateType
+    oro_form.type.datetime.class:                   Oro\Bundle\FormBundle\Form\Type\OroDateTimeType
+    oro_form.type.combobox_local.class:             Oro\Bundle\FormBundle\Form\Type\OroComboboxLocalType
+    oro_form.type.entity_identifier.class:          Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType
+    oro_form.type.jqueryselect2_hidden.class:       Oro\Bundle\FormBundle\Form\Type\OroJquerySelect2HiddenType
+    oro_form.extension.data_block.class:            Oro\Bundle\FormBundle\Form\Extension\DataBlockExtension
+    oro_form.type.translatable_entity.class:        Oro\Bundle\FormBundle\Form\Type\TranslatableEntityType
 
 services:
     # Form types
@@ -31,6 +32,11 @@ services:
             - @oro_form.autocomplete.search_registry
         tags:
             - { name: form.type, alias: oro_jqueryselect2_hidden }
+
+    oro_form.extension.data_block:
+        class: %oro_form.extension.data_block.class%
+        tags:
+            - { name: form.type_extension, alias: form }
 
     oro_form.type.translatable_entity:
         class: %oro_form.type.translatable_entity.class%
