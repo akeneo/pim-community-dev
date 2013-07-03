@@ -15,6 +15,7 @@ function Range(field, params)
             return getComputeMessage(params.maxMessage, { 'limit' : params.max}, params.max);
         }
 
+        return true;
     } else {
         var date = new window.Date(value);
         var valid = Boolean(date.getTime());
