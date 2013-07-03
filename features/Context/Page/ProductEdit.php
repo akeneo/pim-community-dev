@@ -26,11 +26,11 @@ class ProductEdit extends Page
         'Enable switcher'                 => array('css' => '#pim_product_enabled'),
     );
 
-    public function findLocaleLink($locale, array $contents = array())
+    public function findLocaleLink($locale, $content = null)
     {
         $link = $this->getElement('Locales dropdown')->findLink(strtolower($locale));
 
-        foreach ($contents as $content) {
+        if ($content) {
             if (strpos($link->getText(), $content) === false) {
                 return null;
             }
