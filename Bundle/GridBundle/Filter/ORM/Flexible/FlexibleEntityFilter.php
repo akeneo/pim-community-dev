@@ -11,7 +11,7 @@ use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class FlexibleEntityOptionsFilter extends AbstractFlexibleFilter
+class FlexibleEntityFilter extends AbstractFlexibleFilter
 {
     /**
      * The attribute defining the entity linked
@@ -28,7 +28,7 @@ class FlexibleEntityOptionsFilter extends AbstractFlexibleFilter
     protected $className;
 
     /**
-     * @var Oro\Bundle\GridBundle\Filter\ORM\EntityFilter
+     * @var \Oro\Bundle\GridBundle\Filter\ORM\EntityFilter
      */
     protected $parentFilter;
 
@@ -51,9 +51,7 @@ class FlexibleEntityOptionsFilter extends AbstractFlexibleFilter
     {
         parent::initialize($name, $options);
 
-        $this->getAttribute($this->getOption('field_name'));
-        $this->setOption('backend_type', $this->attribute->getBackendType());
-        $this->getClassName();
+        $this->setOption('backend_type', $this->getAttribute()->getBackendType());
         $this->setOption('class', $this->getClassName());
     }
 
@@ -70,7 +68,7 @@ class FlexibleEntityOptionsFilter extends AbstractFlexibleFilter
         $operator = $this->parentFilter->getOperator($data['type']);
 
         // apply filter
-        $this->applyFlexibleFilter($proxyQuery, $field, $data['value'], $operator);
+        $this->applyFlexibleFilter($proxyQuery, $field, $this->extractIds($data['value']), $operator);
     }
 
     /**
@@ -78,21 +76,17 @@ class FlexibleEntityOptionsFilter extends AbstractFlexibleFilter
      *
      * @return \Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
-    protected function getAttribute($attributeCode)
+    protected function getAttribute()
     {
-        if ($this->attribute === null) {
-            $attribute = $this->getFlexibleManager()
-                              ->getAttributeRepository()
-                              ->findOneBy(array('code' => $attributeCode));
+        $attribute = $this->getFlexibleManager()
+                          ->getAttributeRepository()
+                          ->findOneBy(array('code' => $this->getOption('field_name')));
 
-            if (!$attribute) {
-                throw new \LogicException('Impossible to find attribute');
-            }
-
-            $this->attribute = $attribute;
+        if (!$attribute) {
+            throw new \LogicException('Impossible to find attribute');
         }
 
-        return $this->attribute;
+        return $attribute;
     }
 
     /**
@@ -126,14 +120,12 @@ class FlexibleEntityOptionsFilter extends AbstractFlexibleFilter
     protected function applyFlexibleFilter(ProxyQueryInterface $proxyQuery, $field, $value, $operator)
     {
         $attribute = $this->getAttribute($field);
-        /** @var $qb FlexibleQueryBuilder */
         $qb = $proxyQuery->getQueryBuilder();
 
         // inner join to value
         $joinAlias = 'filter'.$field;
         $condition = $qb->prepareAttributeJoinCondition($attribute, $joinAlias);
-        $rootAliases = $qb->getRootAliases();
-        $qb->innerJoin($rootAliases[0] .'.'. $attribute->getBackendStorage(), $joinAlias, 'WITH', $condition);
+        $qb->innerJoin($qb->getRootAlias() .'.'. $attribute->getBackendStorage(), $joinAlias, 'WITH', $condition);
 
         // then join to linked entity with filter on id
         $joinAliasEntity = 'filterentity'.$field;
@@ -143,5 +135,22 @@ class FlexibleEntityOptionsFilter extends AbstractFlexibleFilter
 
         // filter is active since it's applied to the flexible repository
         $this->active = true;
+    }
+
+    /**
+     * Extract collection ids
+     *
+     * @param ArrayCollection $entities
+     *
+     * @return array
+     */
+    public function extractIds($entities)
+    {
+        $entityIds = array();
+        foreach ($entities as $entity) {
+            $entityIds[] = $entity->getId();
+        }
+
+        return $entityIds;
     }
 }
