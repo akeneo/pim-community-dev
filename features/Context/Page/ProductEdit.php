@@ -171,20 +171,16 @@ class ProductEdit extends Page
         $subtitle        = $titleElt->find('css', '.sub-title');
         $separator       = $titleElt->find('css', '.separator');
         $name            = $titleElt->find('css', '.product-name');
-        $closerSeparator = $titleElt->find('css', '.closer.separator');
-        $lang            = $titleElt->find('css', '.lang.sub-title');
 
-        if (!$subtitle || !$separator || !$name || !$closerSeparator || !$lang) {
+        if (!$subtitle || !$separator || !$name ) {
             throw new \Exception('Could not find product title');
         }
 
         return sprintf(
-            '%s%s%s%s%s',
-            $subtitle->getText(),
-            $separator->getText(),
-            $name->getText(),
-            $closerSeparator->getText(),
-            $lang->getText()
+            '%s%s%s',
+            trim($subtitle->getText()),
+            trim($separator->getText()),
+            trim($name->getText())
         );
     }
 

@@ -19,3 +19,4 @@ css:
   - 'bundles/pimui/css/bootstrap-wysihtml5.css'
   - 'bundles/pimui/css/slimbox2.css'
   - 'bundles/pimui/css/font-awesome/font-awesome.min.css'
+  - 'bundles/pimui/css/flags.css'
