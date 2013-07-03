@@ -5,6 +5,7 @@ namespace Pim\Bundle\ProductBundle\Twig;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Locale\Locale;
 use Symfony\Component\Locale\Stub\StubLocale;
+use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
 
 /**
  * Display currency symbol from code
@@ -17,9 +18,15 @@ class ProductExtension extends \Twig_Extension
 {
     protected $securityContext;
 
-    public function __construct(SecurityContextInterface $securityContext)
+    protected $localeManager;
+
+    /**
+     * @param SecurityContextInterface $securityContext
+     */
+    public function __construct(SecurityContextInterface $securityContext, LocaleManager $localeManager)
     {
         $this->securityContext = $securityContext;
+        $this->localeManager   = $localeManager;
     }
 
     /**
@@ -28,8 +35,9 @@ class ProductExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'currencySymbol' => new \Twig_Function_Method($this, 'currencySymbolFunction'),
+            'currencySymbol' => new \Twig_Function_Method($this, 'currencySymbol'),
             'localeLabel'    => new \Twig_Function_Method($this, 'localeLabel'),
+            'localeCurrency' => new \Twig_Function_Method($this, 'localeCurrency'),
         );
     }
 
@@ -47,7 +55,7 @@ class ProductExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function currencySymbolFunction($currency)
+    public function currencySymbol($currency)
     {
         $currencies = StubLocale::getCurrenciesData('en');
 
@@ -79,6 +87,20 @@ class ProductExtension extends \Twig_Extension
         return $code;
     }
 
+    /**
+     * Get locale currency
+     *
+     * @return string
+     */
+    public function localeCurrency()
+    {
+        return $this->getCatalogCurrency();
+    }
+
+    /**
+     * @param string $code
+     * @return string
+     */
     public function flag($code)
     {
         return sprintf(
@@ -88,6 +110,10 @@ class ProductExtension extends \Twig_Extension
         );
     }
 
+    /**
+     * @param string $code
+     * @return string
+     */
     private function getCountry($code)
     {
         $parts = explode('_', $code);
@@ -99,13 +125,8 @@ class ProductExtension extends \Twig_Extension
     }
 
     /**
-     * {@inheritdoc}
+     * @return string|NULL
      */
-    public function getName()
-    {
-        return 'product_extension';
-    }
-
     private function getCatalogLocale()
     {
         if (null === $token = $this->securityContext->getToken()) {
@@ -117,5 +138,24 @@ class ProductExtension extends \Twig_Extension
         }
 
         return (string) $user->cataloglocale;
+    }
+
+    /**
+     * @return string|NULL
+     */
+    private function getCatalogCurrency()
+    {
+        $localeCode = $this->getCatalogLocale();
+        $locale = $this->localeManager->getLocaleByCode($localeCode);
+
+        return ($locale !== null) ? $locale->getDefaultCurrency()->getCode() : null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'product_extension';
     }
 }
