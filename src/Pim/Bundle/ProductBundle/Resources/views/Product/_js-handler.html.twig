@@ -2,8 +2,16 @@
 $(function() {
     'use strict';
 
-    var activeTab = $('[href=' + location.hash + ']');
+    var activeTab = $('[href=' + {{ tab ? ("'#" ~ tab ~ "'")|raw : 'location.hash' }} + ']');
     activeTab && activeTab.tab('show');
+
+    var formAction = '{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}';
+
+    $('#{{ form.vars.id }}').on('submit', function() {
+        var tab = $('#form-navbar .nav li.active a').attr('href');
+        tab && $(this).attr('action', formAction + '&tab=' + tab.substr(1));
+        return true;
+    });
 
     var updated = false;
 
@@ -66,12 +74,6 @@ $(function() {
     $('.remove-attribute').each(function() {
         var target = $(this).parent().find('input:not([type="hidden"]):not([class*=select2]), select, textarea').first();
         $(this).insertAfter(target).css('margin-left', 20);
-    });
-
-    $('a.validation-tooltip').each(function() {
-        var tabId = $(this).parents('.tab-pane').attr('id');
-
-        $('a[href="#' + tabId + '"]').parents('li').addClass('error');
     });
 });
 </script>

@@ -586,7 +586,16 @@ table.ui-sortable, tbody.ui-sortable {
 .navbar-content ul.inline { color: #777; }
 .navbar-content .locale-switcher, .navbar-content .scope-switcher {height: 30px;}
 .navbar-title { line-height: 33px; }
-.tab-groups {float:left; min-width: 120px;}
+.tab-groups {
+  float:left;
+  min-width: 120px;
+  i.validation-tooltip {
+    display: block;
+    float: right;
+    margin-top: 4px;
+    margin-right: -8px;
+  }
+}
 .product-edit #localisations {margin-top:20px;}
 
 form .scopable {
@@ -959,8 +968,4 @@ table.grid { margin-bottom: 0; }
     content: "\2022";
     font-size: 2em;
     color: #777777;
-}
-
-.tab.error a {
-    background: transparent url('/bundles/oroui/img/error-ico.png') no-repeat 100px center;
 }
