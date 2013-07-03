@@ -132,7 +132,6 @@ class BlockConfigTest extends \PHPUnit_Framework_TestCase
         $this->blockConfig->setSubBlocks($this->testSubBlocks);
         $this->assertEquals($this->testSubBlocks, $this->blockConfig->getSubBlocks());
 
-        //print_r ($this->blockConfig->toArray());
         $this->assertEquals(
             array(
                 'title'     => $this->testTitle,
