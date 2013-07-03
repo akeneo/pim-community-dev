@@ -71,6 +71,9 @@
     }
 
     function collapse(el, opts) {
+        if ($(el).find('.validation-error').length) {
+            return;
+        }
         prepareToggle(el, opts.expandIcon);
 
         getFields(el).hide().first().show();
