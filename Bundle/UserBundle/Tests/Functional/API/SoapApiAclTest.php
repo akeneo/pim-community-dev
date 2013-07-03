@@ -49,8 +49,15 @@ class SoapApiAclTest extends WebTestCase
      */
     public function testGetAcl($acls)
     {
+        $i = 0;
         foreach ($acls as $acl) {
             $result = $this->client->soapClient->getAcl($acl);
+            $result = ToolsAPI::classToArray($result);
+            $this->assertEquals($acl, $result['id']);
+            $i++;
+            if ($i % 10 == 0) {
+                break;
+            }
         }
     }
 
