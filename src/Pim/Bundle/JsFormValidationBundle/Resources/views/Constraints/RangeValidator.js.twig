@@ -6,18 +6,30 @@ function Range(field, params)
         return true;
     }
 
-    if (value != parseFloat(value)) {
-        return getComputeMessage(params.invalidMessage);
+    if (value == parseFloat(value)) {
+        value = parseFloat(value);
+        if (value < parseFloat(params.min)) {
+            return getComputeMessage(params.minMessage, { 'limit' : params.min }, params.min);
+        }
+        if (value > parseFloat(params.max)) {
+            return getComputeMessage(params.maxMessage, { 'limit' : params.max}, params.max);
+        }
+
+    } else {
+        var date = new window.Date(value);
+        var valid = Boolean(date.getTime());
+        if (valid) {
+            // TODO: Compensate for timezone offset and print errors in the right format
+            if (date < new window.Date(params.min.date)) {
+                return getComputeMessage(params.minMessage, { 'limit' : params.min.date }, params.min.date);
+            }
+            if (date > new window.Date(params.max.date)) {
+                return getComputeMessage(params.maxMessage, { 'limit' : params.max.date }, params.max.date);
+            }
+
+            return true;
+        }
     }
 
-    value = parseFloat(value);
-
-    if (value < parseFloat(params.min)) {
-        return getComputeMessage(params.minMessage, { 'limit' : params.min }, params.min);
-    }
-    if (value > parseFloat(params.max)) {
-        return getComputeMessage(params.maxMessage, { 'limit' : params.max}, params.max);
-    }
-
-    return true;
+    return getComputeMessage(params.invalidMessage);
 }

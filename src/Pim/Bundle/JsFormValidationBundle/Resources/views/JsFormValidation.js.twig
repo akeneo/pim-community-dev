@@ -54,7 +54,6 @@ var jsfv = new function () {
     function showFirstTabWithErrors() {
         $error = $('.validation-error').first();
         if (!$error.length || $error.is(':visible')) {
-            console.log('all ok');
             return;
         }
 
