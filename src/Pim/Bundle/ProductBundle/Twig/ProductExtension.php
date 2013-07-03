@@ -33,6 +33,13 @@ class ProductExtension extends \Twig_Extension
         );
     }
 
+    public function getFilters()
+    {
+        return array(
+            'flag' => new \Twig_Filter_Method($this, 'flag', array('is_safe' => array('html'))),
+        );
+    }
+
     /**
      * Get currency symbol from code
      *
@@ -70,6 +77,25 @@ class ProductExtension extends \Twig_Extension
         }
 
         return $code;
+    }
+
+    public function flag($code)
+    {
+        return sprintf(
+            '<img class="flag flag-%s" alt="%s" />',
+            $this->getCountry($code),
+            $this->localeLabel($code)
+        );
+    }
+
+    private function getCountry($code)
+    {
+        $parts = explode('_', $code);
+        if (isset($parts[1])) {
+            return strtolower($parts[1]);
+        }
+
+        return 'unknown';
     }
 
     /**
