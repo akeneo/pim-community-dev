@@ -26,6 +26,12 @@ services:
         tags:
             - { name: pim.attribute_constraint_guesser }
 
+    pim.attribute_constraint_guesser.date:
+        public: false
+        class: Pim\Bundle\ProductBundle\Validator\ConstraintGuesser\DateGuesser
+        tags:
+            - { name: pim.attribute_constraint_guesser }
+
     pim.attribute_constraint_guesser.range:
         public: false
         class: Pim\Bundle\ProductBundle\Validator\ConstraintGuesser\RangeGuesser
