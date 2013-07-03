@@ -111,7 +111,14 @@
 
 {% block pim_product_price_collection_widget %}
     {% for child in form.children %}
-        {{ form_widget(child) }}
+        {% if child.vars.value.currency == localeCurrency() %}
+            {{ form_widget(child) }}
+        {% endif %}
+    {% endfor %}
+    {% for child in form.children %}
+        {% if child.vars.value.currency != localeCurrency() %}
+            {{ form_widget(child) }}
+        {% endif %}
     {% endfor %}
 {% endblock pim_product_price_collection_widget %}
 
