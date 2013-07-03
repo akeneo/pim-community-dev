@@ -52,19 +52,12 @@ var jsfv = new function () {
     }
 
     function showFirstTabWithErrors() {
-        $error = $('.validation-error').first();
-        if (!$error.length || $error.is(':visible')) {
+        $errors = $('.validation-error');
+        if (!$errors.length || $errors.filter(':visible').length) {
             return;
         }
 
-        var tabId = $error.closest('.tab-pane').attr('id');
-        if (!tabId) {
-            return;
-        }
-        var $tabLabel = $('a[href="#'+tabId+'"]').first();
-        if (!$tabLabel.length) {
-            return;
-        }
+        $tabLabel = $('a i.validation-tooltip').first();
 
         if (!$tabLabel.is(':visible')) {
             $('a[href="#'+$tabLabel.closest('.tab-pane').attr('id')+'"]').click();
