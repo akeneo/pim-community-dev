@@ -5,10 +5,16 @@ namespace Oro\Bundle\AddressBundle\Tests\Functional\API;
 use Oro\Bundle\TestFrameworkBundle\Test\ToolsAPI;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\TestFrameworkBundle\Test\Client;
+use Symfony\Component\BrowserKit\Response;
 
+/**
+ * @outputBuffering enabled
+ * @db_isolation
+ */
 class RestApiTest extends WebTestCase
 {
-    public $client = null;
+    /** @var Client  */
+    protected $client = null;
 
     public function setUp()
     {
@@ -19,7 +25,7 @@ class RestApiTest extends WebTestCase
      * Test POST
      *
      */
-    public function testPost()
+    public function testCreateAddress()
     {
         $requestData = array('address' =>
             array(
@@ -33,7 +39,7 @@ class RestApiTest extends WebTestCase
 
         $this->client->request(
             'POST',
-            "api/rest/latest/address",
+            'address',
             $requestData
         );
 
@@ -54,13 +60,13 @@ class RestApiTest extends WebTestCase
     /**
      * Test GET
      *
-     * @depends testPost
+     * @depends testCreateAddress
      */
-    public function testGet($id)
+    public function testGetAddress($id)
     {
         $this->client->request(
             'GET',
-            "api/rest/latest/addresses/" . $id
+            'addresses/' . $id
         );
 
         /** @var $result Response */
@@ -78,9 +84,9 @@ class RestApiTest extends WebTestCase
     /**
      * Test PUT
      *
-     * @depends testPost
+     * @depends testCreateAddress
      */
-    public function testPut($id)
+    public function testUpdateAddress($id)
     {
         // update
         $requestData = array('address' =>
@@ -92,7 +98,7 @@ class RestApiTest extends WebTestCase
 
         $this->client->request(
             'PUT',
-            'http://localhost/api/rest/latest/addresses/' . $id,
+            'addresses/' . $id,
             $requestData
         );
 
@@ -103,7 +109,7 @@ class RestApiTest extends WebTestCase
         // open address by id
         $this->client->request(
             'GET',
-            'http://localhost/api/rest/latest/addresses/' . $id
+            'addresses/' . $id
         );
 
         $result = $this->client->getResponse();
@@ -120,13 +126,13 @@ class RestApiTest extends WebTestCase
     /**
      * Test DELETE
      *
-     * @depends testPost
+     * @depends testCreateAddress
      */
-    public function testDelete($id)
+    public function testDeleteAddress($id)
     {
         $this->client->request(
             'DELETE',
-            'http://localhost/api/rest/latest/addresses/' . $id
+            'addresses/' . $id
         );
 
         /** @var $result Response */
@@ -135,7 +141,7 @@ class RestApiTest extends WebTestCase
 
         $this->client->request(
             'GET',
-            'http://localhost/api/rest/latest/addresses/' . $id
+            'addresses/' . $id
         );
 
         $result = $this->client->getResponse();
