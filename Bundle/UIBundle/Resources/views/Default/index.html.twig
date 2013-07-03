@@ -5,7 +5,6 @@
         {% block head %}
             <title>{{ oro_title_render() }}</title>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
             {% block head_style %}
                 <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
                 {% if env is defined  and env == 'devjs' %}
@@ -69,7 +68,11 @@
     </head>
     <body class="{% block bodyClass %}{% endblock %}">
     {% placeholder after_body_start %}
-    <div id="page">
+    <div id="progressbar" style="display:block;margin-top:200px;margin-right:auto;margin-left:auto;text-align:center;">
+        <h3>{% trans %}Loading Application{% endtrans %}</h3>
+        <img src="{{ asset('bundles/oroui/img/progressbar.gif') }}" alt="{% trans %}Loading...{% endtrans %}" />
+    </div>
+    <div id="page" style="display:none;">
         <div id="top-page">
             {% block header %}
                 <header class="navbar">

@@ -1,6 +1,11 @@
 $(document).ready(function () {
     initLayout();
 
+    /* hide progress bar on page ready*/
+    if (window.location.hash === '') {
+        hideProgressBar();
+    }
+
     /* side bar functionality */
     $('div.side-nav').each(function () {
         var myParent = $(this);
@@ -117,13 +122,19 @@ $(document).ready(function () {
     });
  });
 
+function hideProgressBar() {
+    $('#progressbar').hide();
+    $('#page').show();
+}
+
 if (typeof Oro !== "undefined") {
     /**
-     * Init page layout js after hash navigation request is completed
+     * Init page layout js and hide progress bar after hash navigation request is completed
      */
     Oro.Events.bind(
         "hash_navigation_request:complete",
         function () {
+            hideProgressBar();
             initLayout();
         },
         this
