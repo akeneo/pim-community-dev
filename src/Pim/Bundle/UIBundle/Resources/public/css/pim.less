@@ -33,10 +33,6 @@ a {
   color: @color-purple_dark;
 }
 
-a.btn {
-  color: @textColor - #111;
-}
-
 /* Header ***********************************************************************************************************/
 
 header,
@@ -573,6 +569,10 @@ table.ui-sortable, tbody.ui-sortable {
     position: relative;
     float: right;
     top: 4px;
+    .btn-group>a.btn {
+      height: 30px;
+      line-height: 30px;
+    }
   }
   .attribute-field .input-large {width: 350px;}
   .attribute-field.currencyfield .input-large {width: 288px;}
