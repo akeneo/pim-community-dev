@@ -51,8 +51,9 @@ class FlexibleEntityOptionsFilter extends AbstractFlexibleFilter
     {
         parent::initialize($name, $options);
 
-//         $this->getAttribute($this->getOption('field_name'));
-//         $this->getClassName($this->attribute->getBackendType());
+        $this->getAttribute($this->getOption('field_name'));
+        $this->setOption('backend_type', $this->attribute->getBackendType());
+        $this->getClassName();
         $this->setOption('class', $this->getClassName());
     }
 
@@ -103,17 +104,20 @@ class FlexibleEntityOptionsFilter extends AbstractFlexibleFilter
      */
     protected function getClassName()
     {
+        $backendType = $this->getOption('backend_type');
+
         $valueName = $this->flexibleManager->getFlexibleValueName();
         $valueMetadata = $this->flexibleManager->getStorageManager()
                                                ->getMetadataFactory()
                                                ->getMetadataFor($valueName);
-        $associationMapping = $valueMetadata->getAssociationTargetClass($this->getOption('field_name'));
+        $associationMapping = $valueMetadata->getAssociationMappings();
 
-        if (empty($associationMapping['targetEntity'])) {
-            throw new \LogicException(sprintf('Impossible to find metadata for %s', $this->getOption('field_name')));
+        if (empty($associationMapping[$backendType])
+            || empty($associationMapping[$backendType]['targetEntity'])) {
+            throw new \LogicException(sprintf('Impossible to find metadata for %s', $backendType));
         }
 
-        return $associationMapping['targetEntity'];
+        return $associationMapping[$backendType]['targetEntity'];
     }
 
     /**
@@ -122,12 +126,14 @@ class FlexibleEntityOptionsFilter extends AbstractFlexibleFilter
     protected function applyFlexibleFilter(ProxyQueryInterface $proxyQuery, $field, $value, $operator)
     {
         $attribute = $this->getAttribute($field);
+        /** @var $qb FlexibleQueryBuilder */
         $qb = $proxyQuery->getQueryBuilder();
 
         // inner join to value
         $joinAlias = 'filter'.$field;
         $condition = $qb->prepareAttributeJoinCondition($attribute, $joinAlias);
-        $qb->innerJoin($qb->getRootAlias() .'.'. $attribute->getBackendStorage(), $joinAlias, 'WITH', $condition);
+        $rootAliases = $qb->getRootAliases();
+        $qb->innerJoin($rootAliases[0] .'.'. $attribute->getBackendStorage(), $joinAlias, 'WITH', $condition);
 
         // then join to linked entity with filter on id
         $joinAliasEntity = 'filterentity'.$field;
