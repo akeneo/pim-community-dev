@@ -98,20 +98,12 @@ class FlexibleEntityFilter extends AbstractFlexibleFilter
      */
     protected function getClassName()
     {
-        $backendType = $this->getOption('backend_type');
-
         $valueName = $this->flexibleManager->getFlexibleValueName();
         $valueMetadata = $this->flexibleManager->getStorageManager()
                                                ->getMetadataFactory()
                                                ->getMetadataFor($valueName);
-        $associationMapping = $valueMetadata->getAssociationMappings();
 
-        if (empty($associationMapping[$backendType])
-            || empty($associationMapping[$backendType]['targetEntity'])) {
-            throw new \LogicException(sprintf('Impossible to find metadata for %s', $backendType));
-        }
-
-        return $associationMapping[$backendType]['targetEntity'];
+        return $valueMetadata->getAssociationTargetClass($this->getOption('backend_type'));
     }
 
     /**
