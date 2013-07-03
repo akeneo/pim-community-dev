@@ -39,7 +39,7 @@ class RestApiTest extends WebTestCase
 
         $this->client->request(
             'POST',
-            'address',
+            'http://localhost/api/rest/latest/address',
             $requestData
         );
 
@@ -66,7 +66,7 @@ class RestApiTest extends WebTestCase
     {
         $this->client->request(
             'GET',
-            'addresses/' . $id
+            'http://localhost/api/rest/latest/addresses/' . $id
         );
 
         /** @var $result Response */
@@ -98,7 +98,7 @@ class RestApiTest extends WebTestCase
 
         $this->client->request(
             'PUT',
-            'addresses/' . $id,
+            'http://localhost/api/rest/latest/addresses/' . $id,
             $requestData
         );
 
@@ -109,7 +109,7 @@ class RestApiTest extends WebTestCase
         // open address by id
         $this->client->request(
             'GET',
-            'addresses/' . $id
+            'http://localhost/api/rest/latest/addresses/' . $id
         );
 
         $result = $this->client->getResponse();
@@ -132,7 +132,7 @@ class RestApiTest extends WebTestCase
     {
         $this->client->request(
             'DELETE',
-            'addresses/' . $id
+            'http://localhost/api/rest/latest/addresses/' . $id
         );
 
         /** @var $result Response */
@@ -141,10 +141,68 @@ class RestApiTest extends WebTestCase
 
         $this->client->request(
             'GET',
-            'addresses/' . $id
+            'http://localhost/api/rest/latest/addresses/' . $id
         );
 
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 404);
+    }
+
+    /**
+     * @return array
+     */
+    public function testGetCountries()
+    {
+        $this->client->request(
+            'GET',
+            "http://localhost/api/rest/latest/countries"
+        );
+
+        /** @var $result Response */
+        $result = $this->client->getResponse();
+        ToolsAPI::assertJsonResponse($result, 200);
+        $result = ToolsAPI::jsonToArray($result->getContent());
+        return $result;
+    }
+
+    /**
+     * @depends testGetCountries
+     * @param $countries
+     */
+    public function testGetCountry($countries)
+    {
+        $i = 0;
+        foreach ($countries as $country) {
+            $this->client->request(
+                'GET',
+                "http://localhost/api/rest/latest/countries/" . $country['iso2_code']
+            );
+            /** @var $result Response */
+            $result = $this->client->getResponse();
+            ToolsAPI::assertJsonResponse($result, 200);
+            $result = ToolsAPI::jsonToArray($result->getContent());
+            $this->assertEquals($country, $result);
+            $i++;
+            if ($i % 25  == 0) {
+                break;
+            }
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function testGetRegions()
+    {
+        $this->client->request(
+            'GET',
+            "http://localhost/api/rest/latest/regions"
+        );
+
+        /** @var $result Response */
+        $result = $this->client->getResponse();
+        ToolsAPI::assertJsonResponse($result, 200);
+        $result = ToolsAPI::jsonToArray($result->getContent());
+        return $result;
     }
 }

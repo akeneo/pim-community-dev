@@ -10,7 +10,8 @@ use Symfony\Component\HttpKernel\TerminableInterface;
 class Client extends BaseClient
 {
 
-    const LOCAL_URL = 'http://localhost/api/rest/latest/';
+    const LOCAL_URL = 'http://localhost';
+    const API_URL = '/api/rest/latest/';
 
     public $soapClient;
 
@@ -29,9 +30,9 @@ class Client extends BaseClient
 
     public function request($method, $uri, array $parameters = array(), array $files = array(), array $server = array(), $content = null, $changeHistory = true)
     {
-        if (strpos($uri, 'http://') === false) {
-            $uri = self::LOCAL_URL . $uri;
-        }
+//        if (strpos($uri, 'http://') === false) {
+//            $uri = self::LOCAL_URL . $uri;
+//        }
         return parent::request($method, $uri, $parameters, $files, $server, $content, $changeHistory);
     }
     /**
