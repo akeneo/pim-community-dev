@@ -310,36 +310,6 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     }
 
     /**
-     * Sort price, default currency is first
-     *
-     * @param string $defaultCurrencyCode
-     *
-     * @return ProductValue
-     */
-    public function sortPrices($defaultCurrencyCode)
-    {
-        // get default price by currency
-        $defaultPrice = $this->getPrices()->filter(
-            function ($price) use ($defaultCurrencyCode) {
-                return ($price->getCurrency() === $defaultCurrencyCode);
-            }
-        );
-        $defaultPrice = $defaultPrice->first();
-        // sort prices
-        $prices = $this->getPrices();
-        $sortedPrices = new ArrayCollection();
-        $sortedPrices[]= $defaultPrice;
-        foreach ($prices as $price) {
-            if ($price->getCurrency() !== $defaultCurrencyCode) {
-                $sortedPrices[]= $price;
-            }
-        }
-        $this->setPrices($sortedPrices);
-
-        return $this;
-    }
-
-    /**
      * @return boolean
      */
     public function isRemovable()
