@@ -10,11 +10,9 @@ use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
- *
  */
 class FlexibleEntityOptionsFilter extends AbstractFlexibleFilter
 {
-
     /**
      * The attribute defining the entity linked
      *
@@ -28,6 +26,11 @@ class FlexibleEntityOptionsFilter extends AbstractFlexibleFilter
      * @var string
      */
     protected $className;
+
+    /**
+     * @var Oro\Bundle\GridBundle\Filter\ORM\EntityFilter
+     */
+    protected $parentFilter;
 
     /**
      * @var string
@@ -48,9 +51,9 @@ class FlexibleEntityOptionsFilter extends AbstractFlexibleFilter
     {
         parent::initialize($name, $options);
 
-        $this->getAttribute($this->getOption('field_name'));
-        $this->getClassName($this->attribute->getBackendType());
-        $this->setOption('class', $this->className);
+//         $this->getAttribute($this->getOption('field_name'));
+//         $this->getClassName($this->attribute->getBackendType());
+        $this->setOption('class', $this->getClassName());
     }
 
     /**
@@ -94,30 +97,23 @@ class FlexibleEntityOptionsFilter extends AbstractFlexibleFilter
     /**
      * Get the class name of the entity linked
      *
-     * @param string $backendType
-     *
      * @return string
      *
      * @throws \LogicException
      */
-    protected function getClassName($backendType)
+    protected function getClassName()
     {
-        if ($this->className === null) {
-            $valueName = $this->flexibleManager->getFlexibleValueName();
-            $valueMetadata = $this->flexibleManager->getStorageManager()
-                                                   ->getMetadataFactory()
-                                                   ->getMetadataFor($valueName);
-            $associationMapping = $valueMetadata->getAssociationMappings();
+        $valueName = $this->flexibleManager->getFlexibleValueName();
+        $valueMetadata = $this->flexibleManager->getStorageManager()
+                                               ->getMetadataFactory()
+                                               ->getMetadataFor($valueName);
+        $associationMapping = $valueMetadata->getAssociationTargetClass($this->getOption('field_name'));
 
-            if (empty($associationMapping[$backendType])
-                || empty($associationMapping[$backendType]['targetEntity'])) {
-                throw new \LogicException(sprintf('Impossible to find metadata for %s', $backendType));
-            }
-
-            $this->className = $associationMapping[$backendType]['targetEntity'];
+        if (empty($associationMapping['targetEntity'])) {
+            throw new \LogicException(sprintf('Impossible to find metadata for %s', $this->getOption('field_name')));
         }
 
-        return $this->className;
+        return $associationMapping['targetEntity'];
     }
 
     /**
