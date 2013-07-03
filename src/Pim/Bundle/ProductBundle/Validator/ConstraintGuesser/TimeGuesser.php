@@ -2,18 +2,18 @@
 
 namespace Pim\Bundle\ProductBundle\Validator\ConstraintGuesser;
 
-use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints\Time;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 
 /**
- * Date guesser
+ * Time guesser
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DateGuesser implements ConstraintGuesserInterface
+class TimeGuesser implements ConstraintGuesserInterface
 {
     /**
      * {@inheritdoc}
@@ -35,8 +35,8 @@ class DateGuesser implements ConstraintGuesserInterface
     {
         $constraints = array();
 
-        if ($attribute->getDateType() === 'date') {
-            $constraints[] = new Date();
+        if ($attribute->getDateType() === 'time') {
+            $constraints[] = new Time();
         }
 
         return $constraints;
