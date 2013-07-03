@@ -2,8 +2,16 @@
 $(function() {
     'use strict';
 
-    var activeTab = $('[href=' + location.hash + ']');
+    var activeTab = $('[href=' + {% if tab %}'#{{ tab }}'{% else %}location.hash{% endif %} + ']');
     activeTab && activeTab.tab('show');
+
+    var formAction = '{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}';
+
+    $('#{{ form.vars.id }}').on('submit', function() {
+        var tab = $('#form-navbar .nav li.active a').attr('href');
+        tab && $(this).attr('action', formAction + '&tab=' + tab.substr(1));
+        return true;
+    });
 
     var updated = false;
 
