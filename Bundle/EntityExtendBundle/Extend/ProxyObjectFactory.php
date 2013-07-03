@@ -2,20 +2,24 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Extend;
 
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface;
 
 class ProxyObjectFactory
 {
+    /**
+     * @var ExtendProxyInterface[]
+     */
+    protected $proxyObjects = array();
+
     /**
      * @var ExtendManager
      */
     protected $extendManager;
 
     /**
-     * @var ExtendProxyInterface[]
+     * @param ExtendManager $extendManager
      */
-    protected $proxyObjects = array();
-
     public function __construct(ExtendManager $extendManager)
     {
         $this->extendManager = $extendManager;
@@ -23,14 +27,14 @@ class ProxyObjectFactory
 
     /**
      * @param $entity
-     * @return null|ExtendProxyInterface
+     * @return ExtendProxyInterface
      */
     public function getProxyObject($entity)
     {
         if (isset($this->proxyObjects[spl_object_hash($entity)])) {
             return $this->proxyObjects[spl_object_hash($entity)];
         } else {
-            return $this->createProxyObject($entity);
+            return $this->initProxyObject($entity);
         }
     }
 
@@ -45,16 +49,55 @@ class ProxyObjectFactory
 
     /**
      * @param $entity
-     * @return ExtendProxyInterface
      */
-    protected function createProxyObject($entity)
+    public function removeProxyObject($entity)
     {
-        $proxyClass = $this->extendManager->getProxyClass($entity);
-        //$extend = $this->extendManager->getExtendFactory()->getExtendObject($entity);
-        $proxy = new $proxyClass();
+        if (isset($this->proxyObjects[spl_object_hash($entity)])) {
+            unset($this->proxyObjects[spl_object_hash($entity)]);
+        }
+    }
 
-        $proxy->__proxy__createFromEntity($entity);
+    /**
+     * @param $entity
+     * @return null|ExtendEntityInterface
+     */
+    public function initExtendObject(ExtendProxyInterface $entity)
+    {
+        $entityClass = get_parent_class($entity);
+        $extendClass = $this->extendManager->getExtendClass($entityClass);
 
-        return $this->proxyObjects[spl_object_hash($entity)] = $proxy;
+        $em     = $this->extendManager->getEntityManager();
+        $extend = $em->getUnitOfWork()->isEntityScheduled($entity)
+            ? $em
+                ->getRepository($extendClass)
+                ->findOneBy(array('__extend__parent' => $em->getUnitOfWork()->getEntityIdentifier($entity)))
+            : null;
+
+        if (!$extend) {
+            /** @var ExtendEntityInterface $extend */
+            $extend = new $extendClass();
+            $extend->__extend__setParent($entity);
+        }
+
+        $entity->__proxy__setExtend($extend);
+
+        return $this->proxyObjects[spl_object_hash($entity)] = $extend;
+    }
+
+    /**
+     * @param $entity
+     * @return null|\Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface
+     */
+    protected function initProxyObject($entity)
+    {
+        if (!$entity instanceof ExtendProxyInterface) {
+            $proxyClass = $this->extendManager->getProxyClass($entity);
+            $proxy      = new $proxyClass();
+            $proxy->__proxy__createFromEntity($entity);
+            $entity = $proxy;
+            $this->extendManager->getProxyFactory()->getProxyObject($entity);
+        }
+
+        return $entity;
     }
 }

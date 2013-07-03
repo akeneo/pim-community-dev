@@ -11,9 +11,9 @@ use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 class ExtendManager
 {
     /**
-     * @var ExtendObjectFactory
+     * @var ProxyObjectFactory
      */
-    protected $extendFactory;
+    protected $proxyFactory;
 
     /**
      * @var ConfigFactory
@@ -40,7 +40,6 @@ class ExtendManager
         $this->lazyEm         = $lazyEm;
         $this->configProvider = $configProvider;
         $this->proxyFactory   = new ProxyObjectFactory($this);
-        $this->extendFactory  = new ExtendObjectFactory($this);
         $this->configFactory  = new ConfigFactory($this);
         $this->generator      = new Generator($configProvider, $backend, $entityCacheDir);
     }
@@ -62,11 +61,11 @@ class ExtendManager
     }
 
     /**
-     * @return ExtendObjectFactory
+     * @return ProxyObjectFactory
      */
-    public function getExtendFactory()
+    public function getProxyFactory()
     {
-        return $this->extendFactory;
+        return $this->proxyFactory;
     }
 
     /**
@@ -91,7 +90,8 @@ class ExtendManager
      */
     public function isExtend($entityName)
     {
-        if ($this->configProvider->hasConfig($entityName)
+        if ($entityName
+            && $this->configProvider->hasConfig($entityName)
             && $this->configProvider->getConfig($entityName)->is('is_extend')
         ) {
             return true;
@@ -120,40 +120,27 @@ class ExtendManager
 
     /**
      * @param $entity
-     * @return null|\Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface
      */
-    public function getProxyObject($entity)
+    public function loadExtend($entity)
     {
-        return $this->proxyFactory->getProxyObject($entity);
+        $proxy = $this->getProxyFactory()->getProxyObject($entity);
+        $this->getProxyFactory()->initExtendObject($proxy);
     }
 
-    /**
-     * @param $entity
-     */
-    public function load(ExtendProxyInterface $entity)
-    {
-        $this->getExtendFactory()->getExtendObject($entity);
-    }
-
-    /**
-     * @param $entity
-     */
     public function persist($entity)
     {
-        if (!$entity instanceof ExtendProxyInterface) {
-            $proxyClass = $this->getProxyClass($entity);
-            $proxy      = new $proxyClass();
+        if ($this->isExtend($entity)) {
+            $proxy = $this->getProxyFactory()->getProxyObject($entity);
             $proxy->__proxy__createFromEntity($entity);
 
-            $ids = $this->getEntityManager()->getUnitOfWork()->getEntityIdentifier($entity);
-            //$this->getEntityManager()->detach($entity);
-            $entity = $proxy;
-            $this->getEntityManager()->getUnitOfWork()->registerManaged($entity, $ids, $entity->__proxy__toArray());
+            $this->getEntityManager()->detach($entity);
+            $this->getEntityManager()->persist($proxy);
+            $this->getEntityManager()->persist($proxy->__proxy__getExtend());
         }
 
-        $extend = $this->getExtendFactory()->getExtendObject($entity);
-
-        $this->getEntityManager()->persist($extend);
+        if ($entity instanceof ExtendProxyInterface) {
+            $this->getEntityManager()->persist($entity->__proxy__getExtend());
+        }
     }
 
     /**
@@ -161,7 +148,7 @@ class ExtendManager
      */
     public function remove($entity)
     {
-        $extend = $this->getExtendFactory()->getExtendObject($entity);
+        $extend = $this->getProxyFactory()->getProxyObject($entity);
         $this->getEntityManager()->remove($extend);
     }
 }
