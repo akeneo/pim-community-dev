@@ -107,7 +107,7 @@ class ContainsPrimaryValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function getTypedAddressMock($isPrimary, $isEmpty = false)
     {
-        $address = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\TypedAddress')
+        $address = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress')
             ->disableOriginalConstructor()
             ->getMock();
         $address->expects($this->any())

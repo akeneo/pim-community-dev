@@ -3,7 +3,7 @@
 namespace Oro\Bundle\AddressBundle\Form\EventListener;
 
 use Doctrine\Common\Collections\Collection;
-use Oro\Bundle\AddressBundle\Entity\TypedAddress;
+use Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -74,7 +74,7 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
         if ($data && method_exists($data, $method)) {
             /** @var Collection $addresses */
             $addresses = $data->$method();
-            /** @var TypedAddress $item */
+            /** @var AbstractTypedAddress $item */
             foreach ($addresses as $item) {
                 if ($item->isEmpty()) {
                     $addresses->removeElement($item);

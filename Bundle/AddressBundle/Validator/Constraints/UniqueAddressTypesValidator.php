@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\AddressBundle\Validator\Constraints;
 
-use Oro\Bundle\AddressBundle\Entity\TypedAddress;
+use Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Exception\ValidatorException;
 
 class UniqueAddressTypesValidator extends ConstraintValidator
 {
-    const TYPED_ADDRESS_CLASS = 'Oro\Bundle\AddressBundle\Entity\TypedAddress';
+    const TYPED_ADDRESS_CLASS = 'Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress';
 
     /**
      * {@inheritdoc}
@@ -24,9 +24,9 @@ class UniqueAddressTypesValidator extends ConstraintValidator
         $allTypeNames = array();
         $repeatedTypeNames = array();
 
-        /** @var TypedAddress $address */
+        /** @var AbstractTypedAddress $address */
         foreach ($value as $address) {
-            if (!$address instanceof TypedAddress) {
+            if (!$address instanceof AbstractTypedAddress) {
                 throw new ValidatorException(
                     sprintf(
                         'Expected element of type %s, %s given',

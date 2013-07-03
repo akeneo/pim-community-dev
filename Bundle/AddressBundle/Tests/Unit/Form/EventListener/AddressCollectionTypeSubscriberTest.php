@@ -8,6 +8,11 @@ use Symfony\Component\Form\FormEvents;
 class AddressCollectionTypeSubscriberTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @var string
+     */
+    protected $typedAddressClass;
+
+    /**
      * @var AddressCollectionTypeSubscriber
      */
     protected $subscriber;
@@ -17,7 +22,8 @@ class AddressCollectionTypeSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->subscriber = new AddressCollectionTypeSubscriber('test', '\Oro\Bundle\AddressBundle\Entity\TypedAddress');
+        $this->typedAddressClass = $this->getMockClass('Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress');
+        $this->subscriber = new AddressCollectionTypeSubscriber('test', $this->typedAddressClass);
     }
 
     public function testGetSubscribedEvents()
@@ -53,19 +59,19 @@ class AddressCollectionTypeSubscriberTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
         $addresses->expects($this->once())
             ->method('add')
-            ->with($this->isInstanceOf('Oro\Bundle\AddressBundle\Entity\TypedAddress'));
+            ->with($this->isInstanceOf($this->typedAddressClass));
         $this->subscriber->preSet($this->getEvent($addresses));
     }
 
     public function testPostBind()
     {
-        $addressEmpty = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\TypedAddress')
+        $addressEmpty = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress')
             ->disableOriginalConstructor()
             ->getMock();
         $addressEmpty->expects($this->once())
             ->method('isEmpty')
             ->will($this->returnValue(true));
-        $addressNotEmpty = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\TypedAddress')
+        $addressNotEmpty = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress')
             ->disableOriginalConstructor()
             ->getMock();
         $addressNotEmpty->expects($this->once())

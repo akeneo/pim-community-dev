@@ -1,5 +1,6 @@
 <?php
-namespace Oro\Bundle\AddressBundle\Tests\Unit\Type;
+
+namespace Oro\Bundle\AddressBundle\Tests\Unit\Form\Type;
 
 use Oro\Bundle\AddressBundle\Form\Type\AddressApiType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;

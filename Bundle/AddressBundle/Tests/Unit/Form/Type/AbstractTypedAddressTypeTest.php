@@ -1,13 +1,13 @@
 <?php
 
-namespace Oro\Bundle\AddressBundle\Tests\Unit\Type;
+namespace Oro\Bundle\AddressBundle\Tests\Unit\Form\Type;
 
-use Oro\Bundle\AddressBundle\Form\Type\AddressTypedType;
+use Oro\Bundle\AddressBundle\Form\Type\AbstractTypedAddressType;
 
-class AddressTypedTypeTest extends \PHPUnit_Framework_TestCase
+class AbstractTypedAddressTypeTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var AddressTypedType
+     * @var \PHPUnit_Framework_MockObject_MockObject|AbstractTypedAddressType
      */
     protected $type;
 
@@ -23,10 +23,13 @@ class AddressTypedTypeTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->type = new AddressTypedType(
-            $flexibleManager,
-            'oro_address_value',
-            $buildAddressFormListener
+        $this->type = $this->getMockForAbstractClass(
+            'Oro\Bundle\AddressBundle\Form\Type\AbstractTypedAddressType',
+            array(
+                $flexibleManager,
+                'oro_address_value',
+                $buildAddressFormListener
+            )
         );
     }
 
@@ -46,10 +49,5 @@ class AddressTypedTypeTest extends \PHPUnit_Framework_TestCase
                 $this->isType('array')
             );
         $this->type->addEntityFields($builder);
-    }
-
-    public function testGetName()
-    {
-        $this->assertEquals('oro_address_typed', $this->type->getName());
     }
 }

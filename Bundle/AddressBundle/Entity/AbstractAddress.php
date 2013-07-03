@@ -15,7 +15,7 @@ use Symfony\Component\Validator\ExecutionContext;
  *
  * @ORM\MappedSuperclass
  */
-class AddressBase extends AbstractEntityFlexible
+abstract class AbstractAddress extends AbstractEntityFlexible
 {
     /**
      * @var integer
@@ -123,7 +123,7 @@ class AddressBase extends AbstractEntityFlexible
      * Set label
      *
      * @param string $label
-     * @return AddressBase
+     * @return AbstractAddress
      */
     public function setLabel($label)
     {
@@ -146,7 +146,7 @@ class AddressBase extends AbstractEntityFlexible
      * Set street
      *
      * @param  string      $street
-     * @return AddressBase
+     * @return AbstractAddress
      */
     public function setStreet($street)
     {
@@ -169,7 +169,7 @@ class AddressBase extends AbstractEntityFlexible
      * Set street2
      *
      * @param  string      $street2
-     * @return AddressBase
+     * @return AbstractAddress
      */
     public function setStreet2($street2)
     {
@@ -192,7 +192,7 @@ class AddressBase extends AbstractEntityFlexible
      * Set city
      *
      * @param  string      $city
-     * @return AddressBase
+     * @return AbstractAddress
      */
     public function setCity($city)
     {
@@ -215,7 +215,7 @@ class AddressBase extends AbstractEntityFlexible
      * Set state
      *
      * @param Region $state
-     * @return AddressBase
+     * @return AbstractAddress
      */
     public function setState($state)
     {
@@ -238,7 +238,7 @@ class AddressBase extends AbstractEntityFlexible
      * Set state text
      *
      * @param string $stateText
-     * @return AddressBase
+     * @return AbstractAddress
      */
     public function setStateText($stateText)
     {
@@ -275,7 +275,7 @@ class AddressBase extends AbstractEntityFlexible
      * Set postal_code
      *
      * @param  string      $postalCode
-     * @return AddressBase
+     * @return AbstractAddress
      */
     public function setPostalCode($postalCode)
     {
@@ -298,7 +298,7 @@ class AddressBase extends AbstractEntityFlexible
      * Set country
      *
      * @param  Country     $country
-     * @return AddressBase
+     * @return AbstractAddress
      */
     public function setCountry($country)
     {

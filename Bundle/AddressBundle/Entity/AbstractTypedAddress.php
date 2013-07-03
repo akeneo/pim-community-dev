@@ -15,7 +15,7 @@ use Oro\Bundle\AddressBundle\Entity\AddressType;
  *
  * @ORM\MappedSuperclass
  */
-class TypedAddress extends AddressBase
+abstract class AbstractTypedAddress extends AbstractAddress
 {
     /**
      * Many-to-many relation field, relation parameters must be in specific class
@@ -63,8 +63,23 @@ class TypedAddress extends AddressBase
     }
 
     /**
+     * Get list of address types names
+     *
+     * @return array
+     */
+    public function getTypeLabels()
+    {
+        $result = array();
+        /** @var AddressType $type */
+        foreach ($this->getTypes() as $type) {
+            $result[] = $type->getLabel();
+        }
+        return $result;
+    }
+
+    /**
      * @param AddressType $type
-     * @return TypedAddress
+     * @return AbstractTypedAddress
      */
     public function addType(AddressType $type)
     {
@@ -77,7 +92,7 @@ class TypedAddress extends AddressBase
 
     /**
      * @param AddressType $type
-     * @return TypedAddress
+     * @return AbstractTypedAddress
      */
     public function removeType(AddressType $type)
     {
@@ -90,7 +105,7 @@ class TypedAddress extends AddressBase
 
     /**
      * @param bool $primary
-     * @return TypedAddress
+     * @return AbstractTypedAddress
      */
     public function setPrimary($primary)
     {

@@ -2,19 +2,19 @@
 
 namespace Oro\Bundle\AddressBundle\Tests\Entity;
 
-use Oro\Bundle\AddressBundle\Entity\TypedAddress;
+use Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress;
 use Oro\Bundle\AddressBundle\Entity\AddressType;
 
-class TypedAddressTest extends \PHPUnit_Framework_TestCase
+class AbstractTypedAddressTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var TypedAddress
+     * @var AbstractTypedAddress
      */
     protected $address;
 
     protected function setUp()
     {
-        $this->address = new TypedAddress();
+        $this->address = $this->getMockForAbstractClass('Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress');
     }
 
     protected function tearDown()

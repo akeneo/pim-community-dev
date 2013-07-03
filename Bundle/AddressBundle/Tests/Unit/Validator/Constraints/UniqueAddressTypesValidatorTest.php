@@ -20,7 +20,7 @@ class UniqueAddressTypesValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Symfony\Component\Validator\Exception\ValidatorException
-     * @expectedExceptionMessage Expected element of type Oro\Bundle\AddressBundle\Entity\TypedAddress, integer given
+     * @expectedExceptionMessage Expected element of type Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress, integer given
      */
     public function testValidateExceptionWhenInvalidArgumentElementType()
     {
@@ -126,7 +126,7 @@ class UniqueAddressTypesValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function getTypedAddressMock(array $typeNames, $isEmpty = false)
     {
-        $address = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\TypedAddress')
+        $address = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress')
             ->disableOriginalConstructor()
             ->getMock();
 
