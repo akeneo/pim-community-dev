@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\UserBundle\Entity;
 
+use DoctrineExtensions\Taggable\Doctrine;
+use DoctrineExtensions\Taggable\Taggable;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -35,7 +37,8 @@ use DateTime;
 class User extends AbstractEntityFlexible implements
     AdvancedUserInterface,
     \Serializable,
-    EntityUploadedImageInterface
+    EntityUploadedImageInterface,
+    Taggable
 {
     const ROLE_DEFAULT   = 'ROLE_USER';
     const ROLE_ANONYMOUS = 'IS_AUTHENTICATED_ANONYMOUSLY';
@@ -271,6 +274,11 @@ class User extends AbstractEntityFlexible implements
      * @ORM\OneToMany(targetEntity="Email", mappedBy="user", orphanRemoval=true, cascade={"persist"})
      */
     protected $emails;
+
+    /**
+     * @var
+     */
+    private $tags;
 
     public function __construct()
     {
@@ -1110,5 +1118,37 @@ class User extends AbstractEntityFlexible implements
         $suffix = $this->getCreatedAt() ? $this->getCreatedAt()->format('Y-m') : date('Y-m');
 
         return 'uploads' . $ds . 'users' . $ds . $suffix;
+    }
+
+    /**
+     * Returns the unique taggable resource type
+     *
+     * @return string
+     */
+    function getTaggableType()
+    {
+        return strtolower(__NAMESPACE__ . __CLASS__);
+    }
+
+    /**
+     * Returns the unique taggable resource identifier
+     *
+     * @return string
+     */
+    function getTaggableId()
+    {
+        return $this->getId();
+    }
+
+    /**
+     * Returns the collection of tags for this Taggable entity
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    function getTags()
+    {
+        $this->tags = $this->tags ?: new ArrayCollection();
+
+        return $this->tags;
     }
 }
