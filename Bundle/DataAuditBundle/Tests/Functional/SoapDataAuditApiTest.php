@@ -13,6 +13,7 @@ use Oro\Bundle\TestFrameworkBundle\Test\Client;
 class SoapDataAuditApiTest extends WebTestCase
 {
 
+    /** @var Client  */
     protected $client = null;
 
     public function setUp()
