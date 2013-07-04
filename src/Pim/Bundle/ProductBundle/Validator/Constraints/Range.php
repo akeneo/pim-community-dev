@@ -15,4 +15,5 @@ class Range extends BaseRange
 {
     public $minDateMessage     = 'This date should be {{ limit }} or after.';
     public $maxDateMessage     = 'This date should be {{ limit }} or before.';
+    public $invalidDateMessage = 'This value is not a valid date.';
 }
