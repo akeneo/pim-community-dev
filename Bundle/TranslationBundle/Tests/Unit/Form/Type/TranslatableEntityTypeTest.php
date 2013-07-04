@@ -3,13 +3,15 @@
 namespace Oro\Bundle\TranslationBundle\Tests\Unit\Form\Type;
 
 use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
+use Doctrine\ORM\Configuration;
+use Gedmo\Translatable\Query\TreeWalker\TranslationWalker;
 
 use Oro\Bundle\TranslationBundle\Form\Type\TranslatableEntityType;
 use Oro\Bundle\TranslationBundle\Tests\Unit\Form\Type\Stub\TestEntity;
@@ -24,6 +26,11 @@ class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
      * @var ClassMetadataInfo
      */
     protected $classMetadata;
+
+    /**
+     * @var Configuration
+     */
+    protected $ormConfiguration;
 
     /**
      * @var EntityManager
@@ -65,14 +72,22 @@ class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
             ->method('getSingleIdentifierFieldName')
             ->will($this->returnValue(self::TEST_IDENTIFIER));
 
+        $this->ormConfiguration = $this->getMockBuilder('Doctrine\ORM\Configuration')
+            ->disableOriginalConstructor()
+            ->setMethods(array('addCustomHydrationMode'))
+            ->getMock();
+
         $this->entityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
-            ->setMethods(array('getClassMetadata'))
+            ->setMethods(array('getClassMetadata', 'getConfiguration'))
             ->getMock();
         $this->entityManager->expects($this->any())
             ->method('getClassMetadata')
             ->with(self::TEST_CLASS)
             ->will($this->returnValue($this->classMetadata));
+        $this->entityManager->expects($this->any())
+            ->method('getConfiguration')
+            ->will($this->returnValue($this->ormConfiguration));
 
         $this->registry = $this->getMockBuilder('Doctrine\Common\Persistence\ManagerRegistry')
             ->disableOriginalConstructor()
@@ -92,6 +107,7 @@ class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         unset($this->classMetadata);
+        unset($this->ormConfiguration);
         unset($this->entityManager);
         unset($this->registry);
         unset($this->entityRepository);
@@ -236,11 +252,11 @@ class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
     /**
      * @param array $choiceListOptions
      * @param array $expectedChoices
-     * @param boolean $expectSetHint
+     * @param boolean $expectTranslation
      *
      * @dataProvider setDefaultOptionsDataProvider
      */
-    public function testSetDefaultOptions(array $choiceListOptions, array $expectedChoices, $expectSetHint = false)
+    public function testSetDefaultOptions(array $choiceListOptions, array $expectedChoices, $expectTranslation = false)
     {
         $test = $this;
 
@@ -274,8 +290,17 @@ class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        // expectation for translation walker hint
-        if ($expectSetHint) {
+        // expectation for translation hydrator and hint
+        if ($expectTranslation) {
+            /** @var $configuration \PHPUnit_Framework_MockObject_MockObject */
+            $configuration = $this->ormConfiguration;
+            $configuration->expects($this->once())
+                ->method('addCustomHydrationMode')
+                ->with(
+                    TranslationWalker::HYDRATE_OBJECT_TRANSLATION,
+                    'Gedmo\\Translatable\\Hydrator\\ORM\\ObjectHydrator'
+                );
+
             /** @var $query \PHPUnit_Framework_MockObject_MockObject */
             $query = $this->getQueryBuilder()->getQuery();
             $query->expects($this->once())
@@ -337,7 +362,7 @@ class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
                     'choices'  => null
                 ),
                 'expectedChoices' => $testChoiceEntities,
-                'expectSetHint' => true,
+                'expectTranslation' => true,
             ),
             'query_builder' => array(
                'choiceListOptions' => array(
@@ -347,7 +372,7 @@ class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
                    'query_builder' => 'object'
                 ),
                 'expectedChoices' => $testChoiceEntities,
-                'expectSetHint' => true,
+                'expectTranslation' => true,
             ),
             'query_builder_callback' => array(
                 'choiceListOptions' => array(
@@ -357,7 +382,7 @@ class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
                     'query_builder' => 'closure'
                 ),
                 'expectedChoices' => $testChoiceEntities,
-                'expectSetHint' => true,
+                'expectTranslation' => true,
             ),
         );
     }

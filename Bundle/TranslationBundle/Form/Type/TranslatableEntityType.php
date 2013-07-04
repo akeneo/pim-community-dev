@@ -14,6 +14,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query;
+use Gedmo\Translatable\Query\TreeWalker\TranslationWalker;
 
 use Oro\Bundle\TranslationBundle\Form\DataTransformer\CollectionToArrayTransformer;
 
@@ -92,6 +93,12 @@ class TranslatableEntityType extends AbstractType
                 $queryBuilder = $repository->createQueryBuilder('e');
             }
 
+            // translation must not be selected separately for each entity
+            $entityManager->getConfiguration()->addCustomHydrationMode(
+                TranslationWalker::HYDRATE_OBJECT_TRANSLATION,
+                'Gedmo\\Translatable\\Hydrator\\ORM\\ObjectHydrator'
+            );
+
             // make entity translatable
             /** @var $queryBuilder QueryBuilder */
             $query = $queryBuilder->getQuery();
@@ -100,7 +107,9 @@ class TranslatableEntityType extends AbstractType
                 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker'
             );
 
-            return new ObjectChoiceList($query->execute(), $options['property'], array(), null, $idField);
+            $entities = $query->execute(null, TranslationWalker::HYDRATE_OBJECT_TRANSLATION);
+
+            return new ObjectChoiceList($entities, $options['property'], array(), null, $idField);
         };
 
         $resolver->setDefaults(
