@@ -39,8 +39,8 @@ abstract class AbstractFormTypeTest extends TypeTestCase
         $config->setMetadataCacheImpl(new \Doctrine\Common\Cache\ArrayCache());
 
         $params = array(
-                'driver' => 'pdo_sqlite',
-                'memory' => true,
+            'driver' => 'pdo_sqlite',
+            'memory' => true,
         );
 
         return EntityManager::create($params, $config);
@@ -144,7 +144,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
      *
      * @return \Doctrine\Common\Persistence\ObjectManager
      */
-    private function getObjectManagerMock()
+    protected function getObjectManagerMock()
     {
         return $this->getMock('Doctrine\Common\Persistence\ObjectManager');
     }
@@ -154,7 +154,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
      *
      * @return \Symfony\Component\EventDispatcher\EventDispatcherInterface
      */
-    private function getEventDispatcherInterfaceMock()
+    protected function getEventDispatcherInterfaceMock()
     {
         return $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
     }
@@ -164,11 +164,23 @@ abstract class AbstractFormTypeTest extends TypeTestCase
      *
      * @return \Pim\Bundle\ProductBundle\Manager\MediaManager
      */
-    private function getMediaManagerMock()
+    protected function getMediaManagerMock()
     {
         return $this
             ->getMockBuilder('Pim\Bundle\ProductBundle\Manager\MediaManager')
             ->disableOriginalConstructor()
             ->getMock();
+    }
+
+    /**
+     * Assert field name and type
+     * @param string $name Field name
+     * @param string $type Field type alias
+     */
+    protected function assertField($name, $type)
+    {
+        $formType = $this->form->get($name);
+        $this->assertInstanceOf('\Symfony\Component\Form\Form', $formType);
+        $this->assertEquals($type, $formType->getConfig()->getType()->getInnerType()->getName());
     }
 }

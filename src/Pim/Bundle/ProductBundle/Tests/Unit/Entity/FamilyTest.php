@@ -103,6 +103,9 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\Family', $entity);
     }
 
+    /**
+     * Test related method
+     */
     public function testGetSetAttributeAsLabel()
     {
         $family    = new Family;
@@ -113,6 +116,9 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($attribute, $family->getAttributeAsLabel());
     }
 
+    /**
+     * Test related method
+     */
     public function testGetAttributeAsLabelChoices()
     {
         $family  = new Family;
@@ -127,7 +133,14 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array($name, $address), $family->getAttributeAsLabelChoices());
     }
 
-    private function getAttributeMock($type = 'pim_product_text')
+    /**
+     * Get product attribute mock with attribute type
+     *
+     * @param string $type
+     *
+     * @return Pim\Bundle\ProductBundle\Entity\ProductAttribute
+     */
+    protected function getAttributeMock($type = 'pim_product_text')
     {
         $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute', array('getAttributeType'));
 
