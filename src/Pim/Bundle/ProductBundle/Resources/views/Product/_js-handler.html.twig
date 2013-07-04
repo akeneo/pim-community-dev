@@ -19,13 +19,15 @@ $(function() {
     })
 
     var updated = false;
+    $('#updated').hide();
 
-    $('#updated').css('display', 'none');
-    $('form [id^="pim_product_"]').change(function(event){
+    function formUpdated() {
         updated = true;
-        $('#updated').css('display', 'inline-block');
-        $('form [id^="pim_product_"]').unbind('change');
-    });
+        $('#updated').show();
+        $('form [id^="{{ form.vars.id }}"]').off('change', formUpdated);
+    }
+
+    $('form [id^="{{ form.vars.id }}"]').on('change', formUpdated);
 
     $(window).on('beforeunload', function(){
         if (updated) {
