@@ -117,6 +117,7 @@ class ProductType extends FlexibleType
                 'attr' => array(
                     'data-on-label'  => 'Enabled',
                     'data-off-label' => 'Disabled',
+                    'size'           => null
                 )
             )
         );
