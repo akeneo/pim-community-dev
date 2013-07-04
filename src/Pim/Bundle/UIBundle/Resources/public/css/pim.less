@@ -12,7 +12,8 @@
 @backgroundColor-white: #fff;
 @textColor: #444;
 @border-purple: 1px solid #3a1657;
-
+@btnPrimaryBackgroundLight: #83c817;
+@btnPrimaryBackground: #519d0b;
 
 /* General **********************************************************************************************************/
 
@@ -291,11 +292,18 @@ form.form-signin {
 }
 
 .btn-primary {
-  .buttonBackground(#83c817, #519d0b);
+  .buttonBackground(@btnPrimaryBackgroundLight, @btnPrimaryBackground);
   &:focus,
   &:active {
     background-image: none;
     border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+  }
+}
+
+/* Green bootstrapSwitch */
+.has-switch span {
+  &.switch-primary, &.switch-left {
+    .buttonBackground(@btnPrimaryBackgroundLight, @btnPrimaryBackground);
   }
 }
 
