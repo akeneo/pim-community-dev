@@ -8,13 +8,13 @@ use Doctrine\ORM\EntityManager;
 use Metadata\ClassHierarchyMetadata;
 use Metadata\MetadataFactory;
 
-use Oro\Bundle\EntityConfigBundle\Config\EntityConfigInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
+use Oro\Bundle\EntityConfigBundle\Config\EntityConfigInterface;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
-
 use Oro\Bundle\EntityConfigBundle\Cache\CacheInterface;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
@@ -23,8 +23,6 @@ use Oro\Bundle\EntityConfigBundle\Config\FieldConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
-
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use Oro\Bundle\EntityConfigBundle\Event\FieldConfigEvent;
 use Oro\Bundle\EntityConfigBundle\Event\EntityConfigEvent;
@@ -259,15 +257,10 @@ class ConfigManager
                 $configEntity->fromArray($config->getScope(), $config->getValues());
             }
 
-//            var_dump($className);
-//            var_dump($config);
-//            die;
-
             $this->configCache->removeConfigFromCache($className, $config->getScope());
         }
 
         // TODO:: remove configs
-
         foreach ($entities as $entity) {
             $this->em()->persist($entity);
         }
