@@ -42,10 +42,10 @@ class EntityToIdTransformer implements DataTransformerInterface
     protected $queryBuilderCallback;
 
     /**
-     * @param EntityManager $em
-     * @param string $className
-     * @param string|null $property
-     * @param callable $queryBuilderCallback
+     * @param  EntityManager           $em
+     * @param  string                  $className
+     * @param  string|null             $property
+     * @param  callable                $queryBuilderCallback
      * @throws UnexpectedTypeException When $queryBuilderCallback is set and not callable
      */
     public function __construct(EntityManager $em, $className, $property = null, $queryBuilderCallback = null)
@@ -66,8 +66,8 @@ class EntityToIdTransformer implements DataTransformerInterface
     /**
      * Get identifier field name of entity using metadata
      *
-     * @param EntityManager $em
-     * @param string $className
+     * @param  EntityManager $em
+     * @param  string        $className
      * @return string
      * @throws FormException When entity has composite key
      */
@@ -114,7 +114,7 @@ class EntityToIdTransformer implements DataTransformerInterface
     /**
      * Load entity by id
      *
-     * @param mixed $id
+     * @param  mixed                   $id
      * @return object
      * @throws UnexpectedTypeException if query builder callback returns invalid type
      */
@@ -127,6 +127,7 @@ class EntityToIdTransformer implements DataTransformerInterface
             if (!$qb instanceof QueryBuilder) {
                 throw new UnexpectedTypeException($qb, 'Doctrine\ORM\QueryBuilder');
             }
+
             return $qb->getQuery()->execute();
         } else {
             return $repository->find($id);
