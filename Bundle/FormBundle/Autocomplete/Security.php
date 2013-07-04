@@ -32,7 +32,7 @@ class Security
     }
 
     /**
-     * @param string $name
+     * @param  string      $name
      * @return string|null
      */
     public function getAutocompleteAclResource($name)
@@ -47,6 +47,7 @@ class Security
     public function isAutocompleteGranted($name)
     {
         $aclResource = $this->getAutocompleteAclResource($name);
+
         return $aclResource && $this->manager->isResourceGranted($aclResource);
     }
 }

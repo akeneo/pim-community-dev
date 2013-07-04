@@ -12,7 +12,6 @@ use Oro\Bundle\FormBundle\Config\BlockConfig;
 use Oro\Bundle\FormBundle\Config\FormConfig;
 use Oro\Bundle\FormBundle\Exception\RuntimeException;
 
-
 class DataBlocks
 {
     /**
@@ -46,10 +45,10 @@ class DataBlocks
     }
 
     /**
-     * @param \Twig_Environment $env
-     * @param                   $context
-     * @param FormView          $form
-     * @param string            $formVariableName
+     * @param  \Twig_Environment $env
+     * @param                    $context
+     * @param  FormView          $form
+     * @param  string            $formVariableName
      * @return array
      */
     public function render(\Twig_Environment $env, $context, FormView $form, $formVariableName = 'form')
@@ -86,7 +85,7 @@ class DataBlocks
                 $block = null;
                 if (isset($child->vars['block']) && $this->formConfig->hasBlock($child->vars['block'])) {
                     $block = $this->formConfig->getBlock($child->vars['block']);
-                } else if (!isset($child->vars['block'])) {
+                } elseif (!isset($child->vars['block'])) {
                     $blocks = $this->formConfig->getBlocks();
                     $block  = reset($blocks);
                 }
@@ -104,7 +103,7 @@ class DataBlocks
                 $subBlock = null;
                 if (isset($child->vars['subblock']) && $block->hasSubBlock($child->vars['subblock'])) {
                     $subBlock = $block->getSubBlock($child->vars['subblock']);
-                } else if (!isset($child->vars['subblock'])) {
+                } elseif (!isset($child->vars['subblock'])) {
                     $subBlocks = $block->getSubBlocks();
                     $subBlock  = reset($subBlocks);
                 }
@@ -137,7 +136,6 @@ class DataBlocks
         }
     }
 
-
     protected function createBlock($code, $blockConfig = array())
     {
         if ($this->formConfig->hasBlock($code)) {
@@ -153,8 +151,8 @@ class DataBlocks
             : ucfirst($code);
         $block->setTitle($title);
 
-        foreach ((array)$this->accessor->getValue($blockConfig, '[subblocks]') as $subCode => $subBlockConfig) {
-            $block->addSubBlock($this->createSubBlock($subCode, (array)$subBlockConfig));
+        foreach ((array) $this->accessor->getValue($blockConfig, '[subblocks]') as $subCode => $subBlockConfig) {
+            $block->addSubBlock($this->createSubBlock($subCode, (array) $subBlockConfig));
         }
 
         $this->formConfig->addBlock($block);

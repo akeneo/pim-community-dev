@@ -61,7 +61,6 @@ class BlockConfig implements FormConfigInterface
         return $this->blockConfig;
     }
 
-
     /**
      * @param $code
      * @return $this
