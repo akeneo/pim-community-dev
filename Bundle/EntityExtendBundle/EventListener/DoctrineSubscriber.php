@@ -68,6 +68,5 @@ class DoctrineSubscriber implements EventSubscriber
 
     public function loadClassMetadata(LoadClassMetadataEventArgs $event)
     {
-        $event->getClassMetadata()->set
     }
 }
