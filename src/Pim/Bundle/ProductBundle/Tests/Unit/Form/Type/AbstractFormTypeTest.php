@@ -56,7 +56,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
         $em = $this->createTestEntityManager();
 
         $registry = $this->getMockForAbstractClass('Doctrine\Common\Persistence\ManagerRegistry');
-        $registry->expects($this->once())
+        $registry->expects($this->any())
                  ->method('getManagerForClass')
                  ->will($this->returnValue($em));
 
