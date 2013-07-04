@@ -6,8 +6,14 @@ use Oro\Bundle\TagBundle\EventListener\TagListener;
 
 class TagListenerTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var TagListener
+     */
     private $listener;
 
+    /**
+     * @var \DoctrineExtensions\Taggable\Taggable
+     */
     private $resource;
 
     public function setUp()
@@ -15,6 +21,9 @@ class TagListenerTest extends \PHPUnit_Framework_TestCase
         $this->resource = $this->getMock('DoctrineExtensions\Taggable\Taggable');
     }
 
+    /**
+     * Test pre-remove doctrine listener
+     */
     public function testPreRemove()
     {
         $manager = $this->getMockBuilder('FPN\TagBundle\Entity\TagManager')
@@ -43,6 +52,9 @@ class TagListenerTest extends \PHPUnit_Framework_TestCase
         $this->listener->preRemove($args);
     }
 
+    /**
+     * Test that event listener bound to correct event
+     */
     public function testSubscribedEvents()
     {
         $this->listener = new TagListener();
