@@ -5,15 +5,12 @@ namespace Oro\Bundle\TagBundle\Datagrid;
 use Doctrine\ORM\QueryBuilder;
 
 use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
-use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
-
-use Oro\Bundle\TagBundle\Entity\Tag;
 
 class TagDatagridManager extends FlexibleDatagridManager
 {
@@ -48,28 +45,6 @@ class TagDatagridManager extends FlexibleDatagridManager
             )
         );
         $fieldsCollection->add($fieldName);
-
-        $fieldScope = new FieldDescription();
-        $fieldScope->setName('scope');
-        $fieldScope->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
-                'label'       => $this->translate('Scope'),
-                'field_name'  => 'scope',
-                'filter_type' => FilterInterface::TYPE_CHOICE,
-                'required'    => false,
-                'expression'  => 'scope',
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
-                'choices'     => array(
-//                    Tag::SCOPE_GLOBAL => $this->translate('Global'),
-//                    Tag::SCOPE_USER   => $this->translate('User')
-                ),
-                'multiple'    => false,
-            )
-        );
-        $fieldsCollection->add($fieldScope);
     }
 
     /**
@@ -123,23 +98,4 @@ class TagDatagridManager extends FlexibleDatagridManager
 
         return array($clickAction, $viewAction, $updateAction, $deleteAction);
     }
-
-//    /**
-//     * {@inheritDoc}
-//     */
-//    protected function prepareQuery(ProxyQueryInterface $query)
-//    {
-//        /** @var $query QueryBuilder */
-//        $query->addSelect($this->getScopeExpression(), true);
-//    }
-//
-//    /**
-//     * Transform data from DB to expected option
-//     *
-//     * @return string
-//     */
-//    private function getScopeExpression()
-//    {
-//        return 'CASE WHEN (o.user IS NOT NULL) THEN ' . Tag::SCOPE_USER . ' ELSE ' . Tag::SCOPE_GLOBAL . ' as scope';
-//    }
 }

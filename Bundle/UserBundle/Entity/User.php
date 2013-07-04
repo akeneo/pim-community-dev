@@ -4,7 +4,6 @@ namespace Oro\Bundle\UserBundle\Entity;
 
 use DoctrineExtensions\Taggable\Doctrine;
 use DoctrineExtensions\Taggable\Taggable;
-use Oro\Bundle\TagBundle\Entity\Tag;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

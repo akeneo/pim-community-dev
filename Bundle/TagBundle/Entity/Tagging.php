@@ -2,15 +2,17 @@
 
 namespace Oro\Bundle\TagBundle\Entity;
 
-use FPN\TagBundle\Entity\Tagging as BaseTagging;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\UniqueConstraint;
+
+use FPN\TagBundle\Entity\Tagging as BaseTagging;
+
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
- * Acme\TagBundle\Entity\Tagging
- *
- * @ORM\Table(name="oro_tag_tagging", uniqueConstraints={@UniqueConstraint(name="tagging_idx", columns={"tag_id", "resource_type", "resource_id"})})
+ * @ORM\Table(
+ *     name="oro_tag_tagging",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="tagging_idx", columns={"tag_id", "resource_type", "resource_id", "user_id"})}
+ * )
  * @ORM\Entity
  */
 class Tagging extends BaseTagging
