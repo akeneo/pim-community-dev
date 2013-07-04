@@ -3,6 +3,7 @@ $(document).ready(function () {
 
     /* hide progress bar on page ready*/
     if (window.location.hash === '') {
+        document.title = $('#page-title').text();
         hideProgressBar();
     }
 
@@ -123,8 +124,10 @@ $(document).ready(function () {
  });
 
 function hideProgressBar() {
-    $('#progressbar').hide();
-    $('#page').show();
+    if ($('#progressbar').is(':visible')) {
+        $('#progressbar').hide();
+        $('#page').show();
+    }
 }
 
 if (typeof Oro !== "undefined") {

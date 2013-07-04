@@ -3,7 +3,8 @@
     <html>
     <head>
         {% block head %}
-            <title>{{ oro_title_render() }}</title>
+            <title>{% trans %}Loading...{% endtrans %}</title>
+            <script id="page-title" type="text/html">{{ oro_title_render() }}</script>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             {% block head_style %}
                 <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
