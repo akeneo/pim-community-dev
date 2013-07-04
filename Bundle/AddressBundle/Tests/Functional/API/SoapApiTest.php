@@ -15,6 +15,7 @@ class SoapApiTest extends WebTestCase
     /** @var array Address Test Data */
     protected $addressData = array(
         'Create Address Data' => array(
+            'label' => 'created address',
             'street' => 'Some kind st.',
             'street2' => 'Second st.',
             'city' => 'Old York',
@@ -25,6 +26,7 @@ class SoapApiTest extends WebTestCase
             'lastName' => 'Last name'
         ),
         'Update Address Data' => array(
+            'label' => 'updated address',
             'street' => 'Some kind st. Updated',
             'street2' => 'Second st. Updated',
             'city' => 'Los Angeles',
@@ -36,6 +38,7 @@ class SoapApiTest extends WebTestCase
             'lastName' => 'Last name Updated'
         ),
         'Expected Address Data' => array(
+            'label' => 'created address',
             'street' => 'Some kind st.',
             'street2' => 'Second st.',
             'city' => 'Old York',
@@ -47,6 +50,7 @@ class SoapApiTest extends WebTestCase
             'lastName' => 'Last name'
         ),
         'Expected Updated Address Data' => array(
+            'label' => 'updated address',
             'street' => 'Some kind st. Updated',
             'street2' => 'Second st. Updated',
             'city' => 'Los Angeles',
