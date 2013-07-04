@@ -137,7 +137,6 @@ class ConfigController extends Controller
         );
     }
 
-
     /**
      * @Route("/field/update/{id}", name="oro_entityconfig_field_update")
      * @Template()

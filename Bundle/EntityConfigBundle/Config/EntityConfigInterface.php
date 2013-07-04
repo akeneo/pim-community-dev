@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Config;
 
-interface EntityConfigInterface 
+interface EntityConfigInterface
 {
     /**
      * @param  callable      $filter

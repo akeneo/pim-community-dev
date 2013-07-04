@@ -214,7 +214,7 @@ class ConfigManager
         $this->persistConfigs[spl_object_hash($config)] = $config;
 
         if ($config instanceof EntityConfigInterface) {
-            foreach($config->getFields() as $fieldConfig){
+            foreach ($config->getFields() as $fieldConfig) {
                 $this->persistConfigs[spl_object_hash($fieldConfig)] = $fieldConfig;
             }
         }
@@ -228,7 +228,7 @@ class ConfigManager
         $this->removeConfigs[spl_object_hash($config)] = $config;
 
         if ($config instanceof EntityConfigInterface) {
-            foreach($config->getFields() as $fieldConfig){
+            foreach ($config->getFields() as $fieldConfig) {
                 $this->removeConfigs[spl_object_hash($fieldConfig)] = $fieldConfig;
             }
         }

@@ -97,7 +97,7 @@ class ConfigEntity extends AbstractConfig
     }
 
     /**
-     * @param callable $filter
+     * @param  callable                      $filter
      * @return ConfigField[]|ArrayCollection
      */
     public function getFields(\Closure $filter = null)

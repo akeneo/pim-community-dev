@@ -46,7 +46,7 @@ abstract class AbstractConfig
     }
 
     /**
-     * @param  callable $filter
+     * @param  callable                            $filter
      * @return array|ArrayCollection|ConfigValue[]
      */
     public function getValues(\Closure $filter = null)
