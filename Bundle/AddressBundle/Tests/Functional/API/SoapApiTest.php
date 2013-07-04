@@ -153,4 +153,33 @@ class SoapApiTest extends WebTestCase
         $this->setExpectedException('SoapFault');
         $this->client->soapClient->getAddress($id);
     }
+
+    /**
+     * @return array
+     */
+    public function testGetCountries()
+    {
+        $this->markTestSkipped('BAP-1072');
+        $result = $this->client->soapClient->getCountries();
+        $result = ToolsAPI::classToArray($result);
+        return $result['item'];
+    }
+
+    /**
+     * @depends testGetCountries
+     * @param $countries
+     */
+    public function testGetCountry($countries)
+    {
+        $i = 0;
+        foreach ($countries as $country) {
+            $result = $this->client->soapClient->getCountry($country['iso2_code']);
+            $result = ToolsAPI::classToArray($result);
+            $this->assertEquals($country, $result);
+            $i++;
+            if ($i % 25  == 0) {
+                break;
+            }
+        }
+    }
 }
