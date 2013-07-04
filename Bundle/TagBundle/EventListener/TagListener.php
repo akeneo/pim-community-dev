@@ -6,12 +6,12 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use DoctrineExtensions\Taggable\Taggable;
+
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * TagListener.
- *
  */
 class TagListener implements EventSubscriber, ContainerAwareInterface
 {
@@ -48,8 +48,6 @@ class TagListener implements EventSubscriber, ContainerAwareInterface
      * Sets the Container.
      *
      * @param ContainerInterface $container A ContainerInterface instance
-     *
-     * @api
      */
     public function setContainer(ContainerInterface $container = null)
     {

@@ -51,22 +51,5 @@ class LoadTestData extends AbstractFixture implements ContainerAwareInterface, O
         $manager->flush($account);
 
         $tagManager->saveTagging($account);
-
-        $user = $manager->getRepository('Oro\Bundle\UserBundle\Entity\User')->findOneBy(array());
-
-            /** @var \FPN\TagBundle\Entity\TagManager $tagManager */
-        $tagManager = $this->container->get('fpn_tag.tag_manager');
-
-        $tag = $tagManager->loadOrCreateTag('Kiev');
-
-        if ($user) {
-            $tag->setUser($user);
-        }
-        $tagManager->addTag($tag, $account);
-
-        $manager->persist($account);
-        $manager->flush($account);
-
-        $tagManager->saveTagging($account);
     }
 }

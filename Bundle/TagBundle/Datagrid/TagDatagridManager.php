@@ -63,8 +63,8 @@ class TagDatagridManager extends FlexibleDatagridManager
                 'filterable'  => true,
                 'show_filter' => true,
                 'choices'     => array(
-                    Tag::SCOPE_GLOBAL => $this->translate('Global'),
-                    Tag::SCOPE_USER   => $this->translate('User')
+//                    Tag::SCOPE_GLOBAL => $this->translate('Global'),
+//                    Tag::SCOPE_USER   => $this->translate('User')
                 ),
                 'multiple'    => false,
             )
@@ -124,22 +124,22 @@ class TagDatagridManager extends FlexibleDatagridManager
         return array($clickAction, $viewAction, $updateAction, $deleteAction);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function prepareQuery(ProxyQueryInterface $query)
-    {
-        /** @var $query QueryBuilder */
-        $query->addSelect($this->getScopeExpression(), true);
-    }
-
-    /**
-     * Transform data from DB to expected option
-     *
-     * @return string
-     */
-    private function getScopeExpression()
-    {
-        return 'CASE WHEN (o.user IS NOT NULL) THEN ' . Tag::SCOPE_USER . ' ELSE ' . Tag::SCOPE_GLOBAL . ' as scope';
-    }
+//    /**
+//     * {@inheritDoc}
+//     */
+//    protected function prepareQuery(ProxyQueryInterface $query)
+//    {
+//        /** @var $query QueryBuilder */
+//        $query->addSelect($this->getScopeExpression(), true);
+//    }
+//
+//    /**
+//     * Transform data from DB to expected option
+//     *
+//     * @return string
+//     */
+//    private function getScopeExpression()
+//    {
+//        return 'CASE WHEN (o.user IS NOT NULL) THEN ' . Tag::SCOPE_USER . ' ELSE ' . Tag::SCOPE_GLOBAL . ' as scope';
+//    }
 }

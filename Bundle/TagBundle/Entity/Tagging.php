@@ -5,6 +5,7 @@ namespace Oro\Bundle\TagBundle\Entity;
 use FPN\TagBundle\Entity\Tagging as BaseTagging;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
+use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * Acme\TagBundle\Entity\Tagging
@@ -28,4 +29,33 @@ class Tagging extends BaseTagging
      * @ORM\JoinColumn(name="tag_id", referencedColumnName="id")
      **/
     protected $tag;
+
+    /**
+     * @var User
+     * @ORM\OneToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     */
+    protected $user;
+
+    /**
+     * Return tag relation owner user
+     *
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set user
+     *
+     * @param User $user
+     * @return $this
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }
