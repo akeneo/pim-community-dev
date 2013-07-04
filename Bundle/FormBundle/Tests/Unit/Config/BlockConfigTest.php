@@ -104,7 +104,7 @@ class BlockConfigTest extends \PHPUnit_Framework_TestCase
 
         /** test setSubBlock */
         $subblocks = array();
-        foreach($this->testSubBlocksConfig as $code => $data) {
+        foreach ($this->testSubBlocksConfig as $code => $data) {
             $subblocks[] = array(
                 'code'  => $code,
                 'title' => $data['title'],

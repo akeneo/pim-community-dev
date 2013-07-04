@@ -50,7 +50,7 @@ class FormConfigTest extends \PHPUnit_Framework_TestCase
 
         $subblocks      = array();
         $subblocksArray = array();
-        foreach($this->testSubBlocksConfig as $code => $data) {
+        foreach ($this->testSubBlocksConfig as $code => $data) {
             $subBlock = new SubBlockConfig($code);
             $subBlock
                 ->setTitle($data['title'])

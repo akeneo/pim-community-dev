@@ -202,13 +202,13 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider searchDataProvider
      * @param string $query
-     * @param array $expectedResult
-     * @param array $expectedIndexerCalls
-     * @param array $expectSearchResultCalls
-     * @param array $expectEntityRepositoryCalls
-     * @param array $expectQueryBuilderCalls
-     * @param array $expectExprCalls
-     * @param array $expectQueryCalls
+     * @param array  $expectedResult
+     * @param array  $expectedIndexerCalls
+     * @param array  $expectSearchResultCalls
+     * @param array  $expectEntityRepositoryCalls
+     * @param array  $expectQueryBuilderCalls
+     * @param array  $expectExprCalls
+     * @param array  $expectQueryCalls
      */
     public function testSearch(
         $query,
@@ -372,7 +372,7 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param array $ids
+     * @param  array  $ids
      * @return Item[]
      */
     public function createMockSearchItems(array $ids)
@@ -388,6 +388,7 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue($id));
             $result[] = $item;
         }
+
         return $result;
     }
 
@@ -397,6 +398,7 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
         foreach ($data as $name => $property) {
             $result->$name = $property;
         }
+
         return $result;
     }
 
@@ -412,6 +414,7 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
                 ->method($methods[$name])
                 ->will($this->returnValue($property));
         }
+
         return $result;
     }
 
@@ -421,6 +424,7 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
         $result->expects($this->any())
             ->method('getData')
             ->will($this->returnValue($data));
+
         return $result;
     }
 }

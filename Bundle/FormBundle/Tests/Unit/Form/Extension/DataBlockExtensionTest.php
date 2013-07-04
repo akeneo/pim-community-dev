@@ -6,7 +6,6 @@ use Oro\Bundle\FormBundle\Form\Extension\DataBlockExtension;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormBuilder;
 
 class DataBlockExtensionTest extends \PHPUnit_Framework_TestCase
 {
