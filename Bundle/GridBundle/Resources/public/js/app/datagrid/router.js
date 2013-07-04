@@ -10,8 +10,7 @@ Oro.Datagrid = Oro.Datagrid || {};
 Oro.Datagrid.Router = Backbone.Router.extend({
     /** @property */
     routes: {
-        "g/*encodedStateData": "changeState",
-        "": "init"
+        "g/*encodedStateData": "changeState"
     },
 
     /**
@@ -44,8 +43,6 @@ Oro.Datagrid.Router = Backbone.Router.extend({
         this._initState = _.clone(this.collection.state);
 
         this.collection.on('beforeReset', this._handleStateChange, this);
-
-        //this.init();
 
         Backbone.Router.prototype.initialize.apply(this, arguments);
         /**
@@ -93,14 +90,5 @@ Oro.Datagrid.Router = Backbone.Router.extend({
         this.collection.fetch({
             ignoreSaveStateInUrl: true
         });
-    },
-
-    /**
-     * Init function to change collection state if page is loaded without hash navigation
-     */
-    init: function() {
-        if (Backbone.history.fragment === '') {
-            this.changeState('');
-        }
     }
 });

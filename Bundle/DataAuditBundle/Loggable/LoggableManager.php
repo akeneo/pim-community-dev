@@ -1,20 +1,13 @@
 <?php
-
 namespace Oro\Bundle\DataAuditBundle\Loggable;
 
 use Symfony\Component\Routing\Exception\InvalidParameterException;
-
 use Doctrine\Common\Collections\Collection;
-
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\EntityManager;
-
 use Oro\Bundle\UserBundle\Entity\User;
-
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Oro\Bundle\DataAuditBundle\Metadata\ClassMetadata;
-
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
 
@@ -217,15 +210,18 @@ class LoggableManager
             if (isset($meta->propertyMetadata[$collectionMapping['fieldName']])) {
                 $method = $meta->propertyMetadata[$collectionMapping['fieldName']]->method;
 
+                $newCollection = $collection->toArray();
+                $oldCollection = $collection->getSnapshot();
+
                 $oldData = array_reduce(
-                    $collection->getSnapshot(),
+                    $oldCollection,
                     function ($result, $item) use ($method) {
                         return $result . ($result ? ', ' : '') . $item->{$method}();
                     }
                 );
 
                 $newData = array_reduce(
-                    $collection->toArray(),
+                    $newCollection,
                     function ($result, $item) use ($method) {
                         return $result . ($result ? ', ' : '') . $item->{$method}();
                     }
@@ -300,20 +296,22 @@ class LoggableManager
 
             if ($action !== self::ACTION_REMOVE && count($meta->propertyMetadata)) {
                 foreach ($uow->getEntityChangeSet($entity) as $field => $changes) {
+
                     if (!isset($meta->propertyMetadata[$field])) {
                         continue;
                     }
 
+                    $old = $changes[0];
+                    $new = $changes[1];
+
                     // fix issues with DateTime
-                    if ($changes[0] == $changes[1]) {
+                    if ($old == $new) {
                         continue;
                     }
 
-                    $value = $changes[1];
-
-                    if ($entityMeta->isSingleValuedAssociation($field) && $value) {
-                        $oid   = spl_object_hash($value);
-                        $value = $this->getIdentifier($value);
+                    if ($entityMeta->isSingleValuedAssociation($field) && $new) {
+                        $oid   = spl_object_hash($new);
+                        $value = $this->getIdentifier($new);
 
                         if (!is_array($value) && !$value) {
                             $this->pendingRelatedEntities[$oid][] = array(
@@ -321,17 +319,21 @@ class LoggableManager
                                 'field' => $field
                             );
                         }
+
+                        $method = $meta->propertyMetadata[$field]->method;
+                        $old = ($old !== null) ? $old->$method() : $old;
+                        $new = ($new !== null) ? $new->$method() : $new;
                     }
 
                     $newValues[$field] = array(
-                        'old' => $changes[0],
-                        'new' => $value,
+                        'old' => $old,
+                        'new' => $new,
                     );
                 }
 
-                $logEntry->setData(array_merge($newValues, $this->collectionLogData));
+                $newValues = array_merge($newValues, $this->collectionLogData);
+                $logEntry->setData($newValues);
             }
-
 
             if ($action === self::ACTION_UPDATE && 0 === count($newValues) && !($entity instanceof AbstractEntityFlexible)) {
                 return;
@@ -391,29 +393,38 @@ class LoggableManager
                 $oldData  = $changes[0];
                 $newData  = $entity->getData();
 
-                if ($oldData instanceof AbstractEntityAttributeOption) {
-                    $oldData = $oldData->getOptionValue()->getValue();
-                }
+                if ($newData instanceof Collection) {
 
-                if ($newData instanceof AbstractEntityAttributeOption) {
-                    $newData = $newData->getOptionValue()->getValue();
-                } elseif ($newData instanceof Collection) {
-                    $oldData = implode(
-                        ', ',
-                        array_map(
-                            function (AbstractEntityAttributeOption $item) {
-                                return $item->getOptionValue()->getValue();
-                            },
-                            $newData->getSnapshot()
-                        )
-                    );
+                    $newDataArray = $newData->toArray();
+                    $oldDataArray = $newData->getSnapshot();
 
                     $newData = implode(
                         ', ',
-                        $newData->map(function (AbstractEntityAttributeOption $item) {
-                            return $item->getOptionValue()->getValue();
-                        })->toArray()
+                        array_map(
+                            function ($item) {
+                                return (string) $item;
+                            },
+                            $newDataArray
+                        )
                     );
+
+                    $oldData = implode(
+                        ', ',
+                        array_map(
+                            function ($item) {
+                                return (string) $item;
+                            },
+                            $oldDataArray
+                        )
+                    );
+
+                } elseif ($newData instanceof \DateTime) {
+                    $oldData = $oldData->format(\DateTime::ISO8601);
+                    $newData = $newData->format(\DateTime::ISO8601);
+
+                } elseif (is_object($newData)) {
+                    $oldData = (string) $oldData;
+                    $newData = (string) $newData;
                 }
 
                 // special case for, as an example, decimal values

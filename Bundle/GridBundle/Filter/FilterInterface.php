@@ -22,6 +22,7 @@ interface FilterInterface extends BaseFilterInterface
     const TYPE_FLEXIBLE_BOOLEAN  = 'oro_grid_orm_flexible_boolean';
     const TYPE_FLEXIBLE_STRING   = 'oro_grid_orm_flexible_string';
     const TYPE_FLEXIBLE_OPTIONS  = 'oro_grid_orm_flexible_options';
+    const TYPE_FLEXIBLE_ENTITY   = 'oro_grid_orm_flexible_entity';
 
     /**
      * @return boolean

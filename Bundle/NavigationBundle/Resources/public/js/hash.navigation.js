@@ -73,7 +73,7 @@ Oro.Navigation = Backbone.Router.extend({
 
     /** @property */
     routes: {
-        "url=*page(|g/*encodedStateData)": "defaultAction",
+        "(url=*page)(|g/*encodedStateData)": "defaultAction",
         "g/*encodedStateData": "gridChangeStateAction"
     },
 
@@ -94,6 +94,9 @@ Oro.Navigation = Backbone.Router.extend({
     defaultAction: function (page, encodedStateData) {
         this.encodedStateData = encodedStateData;
         this.url = page;
+        if (!this.url) {
+            this.url = window.location.href.replace(this.baseUrl, '');
+        }
         if (!this.skipAjaxCall) {
             this.loadPage();
         }
@@ -137,11 +140,6 @@ Oro.Navigation = Backbone.Router.extend({
         if (window.location.hash === '') {
             //skip ajax page refresh for the current page
             this.skipAjaxCall = true;
-            //change location hash to current url
-            _.delay(_.bind(function () {
-                this.setLocation(window.location.href);
-            }, this), 100);
-
         }
 
         this.init();
@@ -479,9 +477,9 @@ Oro.Navigation = Backbone.Router.extend({
                     this.processForms(this.selectorCached.container.find(this.selectors.forms));
                     this.addMessages(data.flashMessages);
                     this.processPinButton(data.showPinButton);
+                    Oro.Events.trigger("hash_navigation_content:refresh", this);
                 }
                 this.hideActiveDropdowns();
-
             }
         }
         catch (err) {

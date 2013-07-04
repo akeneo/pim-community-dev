@@ -80,38 +80,19 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
             if (item.get('maximized')) {
                 url = item.get('url');
                 this.removeFromHistory(item);
-                this.options.history.push(url);
+                this.options.history.push(this.cleanupUrl(url));
             } else {
                 goBack = true;
             }
-            if (url != this.getCurrentPageItemData().url) {
-                item.save(null, {success: _.bind(this.handleRestoreChange, this)});
-                if (!goBack) {
-                    Oro.Navigation.prototype.setLocation(url);
-                } else {
-                    this.goToLatestOpenedPage();
-                }
+            if (this.cleanupUrl(url) != this.cleanupUrl(this.getCurrentPageItemData().url)) {
+                item.save(null, {success: _.bind(function () {
+                    if (!goBack) {
+                        Oro.Navigation.prototype.setLocation(url);
+                    } else {
+                        this.goToLatestOpenedPage();
+                    }
+                }, this)});
             }
-        }
-    },
-
-    /**
-     * Checking for page states and adding restore param to the item url
-     *
-     * @param item
-     */
-    handleRestoreChange: function(item) {
-        /**
-         * Add restore param to the url
-         */
-        if (Oro.hashNavigationEnabled() && !_.isUndefined(item.changed) && item.changed.restore) {
-            var itemUrl = item.get('url');
-            if (itemUrl.indexOf('?') !== -1) {
-                itemUrl += '&restore=1';
-            } else {
-                itemUrl += '?restore=1';
-            }
-            item.set('url', itemUrl);
         }
     },
 
@@ -121,10 +102,10 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
      * @param item
      */
     removeFromHistory: function(item) {
-        var idx = this.options.history.indexOf(item.get('url'));
-        if (idx > -1) {
-            this.options.history.splice(idx, 1);
-        }
+        var currentItemUrl = this.cleanupUrl(item.get('url'))
+        this.options.history = _.filter(this.options.history, function (url) {
+            return url != currentItemUrl;
+        });
     },
 
     /**
@@ -167,7 +148,9 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
                 item.set('maximized', false);
             }, this);
         } else {
-            var currentItem = new navigation.pinbar.Item(this.getNewItemData(Backbone.$(e.currentTarget)));
+            var newItem = this.getNewItemData(Backbone.$(e.currentTarget));
+            newItem.url = this.cleanupUrl(newItem.url);
+            var currentItem = new navigation.pinbar.Item(newItem);
             this.options.collection.unshift(currentItem);
             this.handleItemStateChange(currentItem);
         }
