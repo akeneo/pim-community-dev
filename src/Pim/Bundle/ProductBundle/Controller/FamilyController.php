@@ -107,7 +107,9 @@ class FamilyController extends Controller
             'form'           => $form->createView(),
             'families'       => $families,
             'family'         => $family,
-            'attributesForm' => $this->getAvailableProductAttributesForm($family->getAttributes()->toArray())->createView()
+            'attributesForm' => $this->getAvailableProductAttributesForm(
+                $family->getAttributes()->toArray()
+            )->createView()
         );
     }
 

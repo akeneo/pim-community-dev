@@ -147,11 +147,10 @@ class ProductManager extends FlexibleManager
     /**
      * Add missing prices (a price per currency)
      *
-     * @param CurrencyManager  $manager         the currency manager
-     * @param ProductInterface $product         the product
-     * @param Currency         $defaultCurrency the first to display
+     * @param CurrencyManager  $manager the currency manager
+     * @param ProductInterface $product the product
      */
-    public function addMissingPrices(CurrencyManager $manager, ProductInterface $product, $defaultCurrency)
+    public function addMissingPrices(CurrencyManager $manager, ProductInterface $product)
     {
         foreach ($product->getValues() as $value) {
             if ($value->getAttribute()->getAttributeType() === 'pim_product_price_collection') {
