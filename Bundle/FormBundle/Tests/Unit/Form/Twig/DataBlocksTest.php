@@ -46,7 +46,7 @@ class DataBlocksTest extends \PHPUnit_Framework_TestCase
             'title'     => 'First Block',
             'class'     => null,
             'subblocks' => array(
-                'first' => array(
+                'first'  => array(
                     'code'  => 'first',
                     'title' => null,
                     'data'  => array(null),
@@ -101,7 +101,24 @@ class DataBlocksTest extends \PHPUnit_Framework_TestCase
 
     public function testRender()
     {
-        $builder = $this->factory->createNamedBuilder('test');
+        $options = array('block_config' =>
+              array(
+                  'first'  => array(
+                      'priority'  => 1,
+                      'title'     => 'First Block',
+                      'subblocks' => array(
+                          'first'  => array(),
+                          'second' => array(
+                              'title' => 'Second SubBlock'
+                          ),
+                      ),
+                  ),
+                  'second' => array(
+                      'priority' => 2,
+                  )
+              )
+        );
+        $builder = $this->factory->createNamedBuilder('test', 'form', null, $options);
         $builder->add('text_1', null, array('block' => 'first', 'subblock' => 'second'));
         $builder->add('text_2', null, array('block' => 'first'));
         $builder->add('text_3', null, array('block' => 'second'));
@@ -110,20 +127,23 @@ class DataBlocksTest extends \PHPUnit_Framework_TestCase
 
         $formView = $builder->getForm()->createView();
 
-        $formView->vars['block_config'] = array(
-            'first'  => array(
-                'priority'  => 1,
-                'title'     => 'First Block',
-                'subblocks' => array(
-                    'first'  => array(),
-                    'second' => array(
-                        'title' => 'Second SubBlock'
-                    ),
-                ),
-            ),
-            'second' => array(
-                'priority' => 2,
-            )
+        //$formView->vars[
+        array('block_config' =>
+              array(
+                  'first'  => array(
+                      'priority'  => 1,
+                      'title'     => 'First Block',
+                      'subblocks' => array(
+                          'first'  => array(),
+                          'second' => array(
+                              'title' => 'Second SubBlock'
+                          ),
+                      ),
+                  ),
+                  'second' => array(
+                      'priority' => 2,
+                  )
+              )
         );
 
         $result = $this->dataBlocks->render($this->twig, array('form' => $formView), $formView);
