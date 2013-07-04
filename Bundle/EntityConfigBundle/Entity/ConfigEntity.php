@@ -88,7 +88,7 @@ class ConfigEntity extends AbstractConfig
      * @param ConfigField $field
      * @return $this
      */
-    public function addFiled($field)
+    public function addField($field)
     {
         $field->setEntity($this);
         $this->fields->add($field);
