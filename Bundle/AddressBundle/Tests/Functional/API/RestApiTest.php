@@ -205,4 +205,54 @@ class RestApiTest extends WebTestCase
         $result = ToolsAPI::jsonToArray($result->getContent());
         return $result;
     }
+
+    /**
+     * @depends testGetRegions
+     * @param $regions
+     */
+    public function testGetRegion($regions)
+    {
+        $i = 0;
+        foreach ($regions as $region) {
+            $this->client->request(
+                'GET',
+                $this->client->generate('oro_api_get_region'), array('id' => $region['combined_code'])
+            );
+            /** @var $result Response */
+            $result = $this->client->getResponse();
+            ToolsAPI::assertJsonResponse($result, 200);
+            $result = ToolsAPI::jsonToArray($result->getContent());
+            $this->assertEquals($region, $result);
+            $i++;
+            if ($i % 25  == 0) {
+                break;
+            }
+        }
+    }
+
+    /**
+     * @depends testGetRegion
+     */
+    public function testGetCountryRegion()
+    {
+            $this->client->request(
+                'GET',
+                $this->client->generate('oro_api_country_get_regions', array('country' => 'US'))
+            );
+            /** @var $result Response */
+            $result = $this->client->getResponse();
+            ToolsAPI::assertJsonResponse($result, 200);
+            $result = ToolsAPI::jsonToArray($result->getContent());
+            foreach ($result as $region) {
+                $this->client->request(
+                    'GET',
+                    $this->client->generate('oro_api_get_region'), array('id' => $region['combined_code'])
+                );
+                /** @var $result Response */
+                $expectedResult = $this->client->getResponse();
+                ToolsAPI::assertJsonResponse($expectedResult, 200);
+                $expectedResult = ToolsAPI::jsonToArray($expectedResult->getContent());
+                $this->assertEquals($expectedResult, $region);
+            }
+    }
 }

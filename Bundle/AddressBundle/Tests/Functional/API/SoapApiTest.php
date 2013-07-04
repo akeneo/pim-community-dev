@@ -182,4 +182,48 @@ class SoapApiTest extends WebTestCase
             }
         }
     }
+
+    /**
+     * @return array
+     */
+    public function testGetRegions()
+    {
+        $this->markTestSkipped('BAP-1072');
+        $result = $this->client->soapClient->getRegions();
+        $result = ToolsAPI::classToArray($result);
+        return $result['item'];
+    }
+
+    /**
+     * @depends testGetRegions
+     * @param $regions
+     */
+    public function testGetRegion($regions)
+    {
+        $i = 0;
+        foreach ($regions as $region) {
+            $i = 0;
+            $result = $this->client->soapClient->getRegion($region['combined_code']);
+            $result = ToolsAPI::classToArray($result);
+            $this->assertEquals($region, $result['item']);
+            $i++;
+            if ($i % 25  == 0) {
+                break;
+            }
+        }
+    }
+
+    /**
+     * @depends testGetRegion
+     */
+    public function testGetCountryRegion()
+    {
+        $result = $this->client->soapClient->getCountryRegions('US');
+        $result = ToolsAPI::classToArray($result);
+        foreach ($result['item'] as $region) {
+            $expectedResult = $this->client->soapClient->getRegion($region['combined_code']);
+            $expectedResult = ToolsAPI::classToArray($expectedResult);
+            $this->assertEquals($expectedResult['item'], $region);
+        }
+    }
 }

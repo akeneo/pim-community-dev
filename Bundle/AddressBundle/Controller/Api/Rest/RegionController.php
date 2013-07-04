@@ -8,6 +8,8 @@ use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Symfony\Component\HttpFoundation\Response;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Symfony\Component\Routing\Annotation\Route;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
 
 /**
  * @RouteResource("region")
@@ -37,16 +39,24 @@ class RegionController extends FOSRestController
     /**
      * REST GET region by id
      *
-     * @param string $id
+     * @QueryParam(name="id", nullable=false)
      *
      * @ApiDoc(
-     *  description="Get region by id",
-     *  resource=true
+     *     description="Get region by id",
+     *     resource=true,
+     *     requirements={
+     *         {"name"="id", "dataType"="string"},
+     *     }
      * )
      * @return Response
      */
-    public function getAction($id)
+    public function getAction()
     {
+        $id = $this->getRequest()->get('id');
+        if (!$id) {
+            return $this->handleView($this->view(null, Codes::HTTP_NOT_FOUND));
+        }
+
         /** @var  $item \Oro\Bundle\AddressBundle\Entity\Region */
         $item = $this->getDoctrine()->getRepository('OroAddressBundle:Region')->find($id);
 
