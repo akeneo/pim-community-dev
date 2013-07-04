@@ -181,7 +181,7 @@ class ConfigManager
 
                 foreach ($doctrineMetadata->getFieldNames() as $fieldName) {
                     $type = $doctrineMetadata->getTypeOfField($fieldName);
-                    $entity->addFiled(new ConfigField($fieldName, $type));
+                    $entity->addField(new ConfigField($fieldName, $type));
                     $this->eventDispatcher->dispatch(
                         Events::newFieldConfig,
                         new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
@@ -190,7 +190,7 @@ class ConfigManager
 
                 foreach ($doctrineMetadata->getAssociationNames() as $fieldName) {
                     $type = $doctrineMetadata->isSingleValuedAssociation($fieldName) ? 'ref-one' : 'ref-many';
-                    $entity->addFiled(new ConfigField($fieldName, $type));
+                    $entity->addField(new ConfigField($fieldName, $type));
                     $this->eventDispatcher->dispatch(
                         Events::newFieldConfig,
                         new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
@@ -234,6 +234,7 @@ class ConfigManager
 
     /**
      * @param array $entities
+     * TODO:: remove configs
      */
     public function flush(array $entities = array())
     {
@@ -249,7 +250,7 @@ class ConfigManager
             if ($config instanceof FieldConfigInterface) {
                 if (!$configField = $configEntity->getField($config->getCode())) {
                     $configField = new ConfigField($config->getCode(), $config->getType());
-                    $configEntity->addFiled($configField);
+                    $configEntity->addField($configField);
                 }
 
                 $configField->fromArray($config->getScope(), $config->getValues());
@@ -260,7 +261,6 @@ class ConfigManager
             $this->configCache->removeConfigFromCache($className, $config->getScope());
         }
 
-        // TODO:: remove configs
         foreach ($entities as $entity) {
             $this->em()->persist($entity);
         }

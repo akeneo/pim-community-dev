@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Table(name="oro_config_entity")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks()
  */
 class ConfigEntity extends AbstractConfig
 {
@@ -88,7 +89,7 @@ class ConfigEntity extends AbstractConfig
      * @param ConfigField $field
      * @return $this
      */
-    public function addFiled($field)
+    public function addField($field)
     {
         $field->setEntity($this);
         $this->fields->add($field);

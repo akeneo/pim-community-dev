@@ -107,22 +107,6 @@ class FieldsDatagridManager extends DatagridManager
         );
         $fieldsCollection->add($fieldObjectId);
 
-//        $fieldEntityId = new FieldDescription();
-//        $fieldEntityId->setName('entity');
-//        $fieldEntityId->setOptions(
-//            array(
-//                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-//                'label'       => 'entity Id',
-//                'field_name'  => 'entity_id',
-//                'filter_type' => FilterInterface::TYPE_NUMBER,
-//                'required'    => false,
-//                'sortable'    => true,
-//                'filterable'  => false,
-//                'show_filter' => false,
-//            )
-//        );
-//        $fieldsCollection->add($fieldEntityId);
-
         $fieldObjectName = new FieldDescription();
         $fieldObjectName->setName('code');
         $fieldObjectName->setOptions(
@@ -152,6 +136,38 @@ class FieldsDatagridManager extends DatagridManager
                 }
             }
         }
+
+        $fieldObjectCreate = new FieldDescription();
+        $fieldObjectCreate->setName('created');
+        $fieldObjectCreate->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_DATETIME,
+                'label'       => 'Create At',
+                'field_name'  => 'created',
+                'filter_type' => FilterInterface::TYPE_DATETIME,
+                'required'    => true,
+                'sortable'    => true,
+                'filterable'  => false,
+                'show_filter' => true,
+            )
+        );
+        $fieldsCollection->add($fieldObjectCreate);
+
+        $fieldObjectUpdate = new FieldDescription();
+        $fieldObjectUpdate->setName('updated');
+        $fieldObjectUpdate->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_DATETIME,
+                'label'       => 'Update At',
+                'field_name'  => 'updated',
+                'filter_type' => FilterInterface::TYPE_DATETIME,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+            )
+        );
+        $fieldsCollection->add($fieldObjectUpdate);
     }
 
     /**

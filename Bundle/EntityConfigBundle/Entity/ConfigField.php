@@ -11,6 +11,7 @@ use Oro\Bundle\EntityConfigBundle\Entity\AbstractConfig;
 /**
  * @ORM\Table(name="oro_config_field")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks()
  */
 class ConfigField extends AbstractConfig
 {

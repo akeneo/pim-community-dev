@@ -64,12 +64,12 @@ class ConfigController extends Controller
     public function updateAction($id)
     {
         $entity  = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
+        $request = $this->getRequest();
         $form    = $this->createForm(
             'oro_entity_config_config_entity_type',
             null,
             array('class_name' => $entity->getClassName())
         );
-        $request = $this->getRequest();
 
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
@@ -95,7 +95,7 @@ class ConfigController extends Controller
      */
     public function fieldsAction($id, Request $request)
     {
-        $entity  = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
+        $entity = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
 
         /** @var  FieldsDatagridManager $datagridManager */
         $datagridManager = $this->get('oro_entity_config.fieldsdatagrid.manager');
@@ -119,6 +119,7 @@ class ConfigController extends Controller
                 'buttonConfig' => $datagridManager->getLayoutActions($entity),
                 'datagrid'     => $datagrid->createView(),
                 'entity_id'    => $id,
+                'entity_name'  => $entity->getClassName(),
             )
         );
     }

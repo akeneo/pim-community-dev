@@ -3,11 +3,26 @@
 namespace Oro\Bundle\EntityConfigBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfigInterface;
 
 abstract class AbstractConfig
 {
+    /**
+     * @var \DateTime $created
+     *
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+
+    /**
+     * @var \DateTime $updated
+     *
+     * @ORM\Column(type="datetime")
+     */
+    protected $updated;
+
     /**
      * @var ConfigValue[]|ArrayCollection
      */
@@ -87,6 +102,44 @@ abstract class AbstractConfig
     }
 
     /**
+     * @param \DateTime $created
+     * @return $this
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * @param \DateTime $updated
+     * @return $this
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
      * @param       $scope
      * @param array $values
      */
@@ -100,5 +153,21 @@ abstract class AbstractConfig
                 $this->addValue($configValue);
             }
         }
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function beforeSave()
+    {
+        $this->created = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function preUpdate()
+    {
+        $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 }
