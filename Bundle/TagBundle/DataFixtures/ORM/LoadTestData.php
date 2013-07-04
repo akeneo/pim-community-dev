@@ -44,7 +44,7 @@ class LoadTestData extends AbstractFixture implements ContainerAwareInterface, O
         /** @var \FPN\TagBundle\Entity\TagManager $tagManager */
         $tagManager = $this->container->get('fpn_tag.tag_manager');
 
-        $tag = $tagManager->loadOrCreateTag('Smallville');
+        $tag = $tagManager->loadOrCreateTag('Kharkiv');
         $tagManager->addTag($tag, $account);
 
         $manager->persist($account);
@@ -57,7 +57,7 @@ class LoadTestData extends AbstractFixture implements ContainerAwareInterface, O
             /** @var \FPN\TagBundle\Entity\TagManager $tagManager */
         $tagManager = $this->container->get('fpn_tag.tag_manager');
 
-        $tag = $tagManager->loadOrCreateTag('Smallville222');
+        $tag = $tagManager->loadOrCreateTag('Kiev');
 
         if ($user) {
             $tag->setUser($user);

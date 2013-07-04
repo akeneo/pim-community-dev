@@ -1,0 +1,10 @@
+parameters:
+    oro_tag.tag_listener.class: Oro\Bundle\TagBundle\EventListener\TagListener
+
+services:
+    oro_tag_listener:
+        class: %oro_tag.tag_listener.class%
+        calls:
+            - [ setContainer, [ @service_container ] ]
+        tags:
+            - { name: doctrine.event_listener, event: preRemove }

@@ -1128,7 +1128,7 @@ class User extends AbstractEntityFlexible implements
      */
     public function getTaggableType()
     {
-        return 'oro_'.strtolower(__CLASS__);
+        return 'oro_user';
     }
 
     /**
