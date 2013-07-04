@@ -1,0 +1,26 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set gridId = 'entityconfigfields-grid' %}
+
+{% block content %}
+    {% set pageTitle = 'Entity Fields Config/Entity-' ~ entity_id %}
+
+    {% set buttons = [UI.addButton({
+        'path' : path('oro_entityconfig_index'),
+        'title' : 'Back to Enteties grid',
+        'label' : 'Back',
+        'aClass': 'btn-info'
+    })] %}
+
+    {% for button in buttonConfig %}
+        {% set buttons = buttons|merge([UI.addButton({
+            'path': path(button.route, button.args|default({})),
+            'title': button.title|default(button.name),
+            'label': button.name,
+            'aClass': button.aClass|default('')
+        })]) %}
+    {% endfor %}
+
+    {{ parent() }}
+{% endblock %}

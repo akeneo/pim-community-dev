@@ -1,0 +1,17 @@
+model: Oro\Bundle\EntityConfigBundle\Entity\ConfigValue
+fixtures:
+    extend_extend_class:
+        scope:                  extend
+        code:                   extend_class
+        value:                  Extend\Entity\EAV\UserBundleUser
+        entity:                 entity_user
+    extend_proxy_class:
+        scope:                  extend
+        code:                   proxy_class
+        value:                  Extend\Proxy\UserBundleUserProxy
+        entity:                 entity_user
+    extend_is_extend:
+        scope:                  extend
+        code:                   is_extend
+        value:                  true
+        entity:                 entity_user

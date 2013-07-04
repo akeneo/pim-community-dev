@@ -1,0 +1,47 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+
+{% block navButtons %}
+    {{ UI.button({'path' : path('oro_entityconfig_index'), 'iClass' : 'icon-chevron-left ', 'title' : 'Back', 'label' : 'Back'}) }}
+
+{% endblock navButtons %}
+
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('oro_entityconfig_index'),
+        'indexLabel': 'Entities',
+        'entityTitle': 'Field',
+        'hasAvatar':   false,
+        'imagePath':   '',
+    }
+    %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block stats %}
+{% endblock stats%}
+
+{% block content_data %}
+    {% set id = 'entityconfig-view' %}
+    {% set data = {
+        'dataBlocks':
+            [
+                {
+                    'title': 'General',
+                    'class': 'active',
+                    'subblocks': [
+                        {
+                            'title': 'Basic Information',
+                            'data': [
+                                UI.attibuteRow('Id', entity.id),
+                            ]
+                        },
+                    ]
+                },
+            ]
+        }
+    %}
+    {{ parent() }}
+
+{% endblock content_data %}

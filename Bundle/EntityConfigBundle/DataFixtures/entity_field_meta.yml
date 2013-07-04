@@ -1,0 +1,88 @@
+model: Oro\Bundle\EntityConfigBundle\Entity\ConfigValue
+fixtures:
+    name_field_ui_label:
+        scope:                  ui
+        field:                  name_field
+        code:                   label
+        value:                  "Customer Name"
+    name_field_ui_icon_class:
+        scope:                  ui
+        field:                  name_field
+        code:                   icon_class
+        value:                  customer-name
+    name_field_ui_description:
+        scope:                  ui
+        field:                  name_field
+        code:                   description
+        value:                  "Custom User Text"
+
+    name_field_datagrid_is_searchable:
+        scope:                  datagrid
+        field:                  name_field
+        code:                   is_searchable
+        value:                  true
+    name_field_datagrid_is_sortable:
+        scope:                  datagrid
+        field:                  name_field
+        code:                   is_sortable
+        value:                  false
+
+    firstname_field_extend_is_extend:
+        scope:                  extend
+        field:                  firstname_field
+        code:                   is_extend
+        value:                  true
+    firstname_field_extend_type:
+        scope:                  extend
+        field:                  firstname_field
+        code:                   type
+        value:                  string
+    firstname_field_extend_length:
+        scope:                  extend
+        field:                  firstname_field
+        code:                   length
+        value:                  255
+    firstname_field_extend_nullable:
+        scope:                  extend
+        field:                  firstname_field
+        code:                   nullable
+        value:                  true
+    firstname_field_extend_default_value:
+        scope:                  extend
+        field:                  firstname_field
+        code:                   default_value
+        value:                  ''
+
+
+    firstname_field_datagrid_is_searchable:
+        scope:                  datagrid
+        field:                  firstname_field
+        code:                   is_searchable
+        value:                  true
+    firstname_field_datagrid_is_sortable:
+        scope:                  datagrid
+        field:                  firstname_field
+        code:                   is_sortable
+        value:                  true
+    firstname_field_datagrid_is_visible:
+        scope:                  datagrid
+        field:                  firstname_field
+        code:                   is_visible
+        value:                  true
+
+    firstname_field_ui_label:
+        scope:                  ui
+        field:                  firstname_field
+        code:                   label
+        value:                  'a:3:{s:2:"en";s:12:"Firstname EN";s:2:"de";s:12:"Firstname DE";s:2:"fr";s:12:"Firstname FR";}'
+
+    firstname_field_ui_icon_class:
+        scope:                  ui
+        field:                  firstname_field
+        code:                   icon_class
+        value:                  customer-name
+    firstname_field_ui_description:
+        scope:                  ui
+        field:                  firstname_field
+        code:                   description
+        value:                  "Firstname Text"
