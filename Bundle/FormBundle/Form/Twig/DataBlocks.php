@@ -129,6 +129,11 @@ class DataBlocks
         }
     }
 
+    /**
+     * @param $code
+     * @param  array       $blockConfig
+     * @return BlockConfig
+     */
     protected function createBlock($code, $blockConfig = array())
     {
         $block = new BlockConfig($code);

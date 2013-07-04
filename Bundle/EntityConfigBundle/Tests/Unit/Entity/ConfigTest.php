@@ -17,9 +17,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     /** @var  ConfigValue */
     private $configValue;
 
-    private $testClassName = 'Acme\Bundle\DemoBundle\Entity\TestAccount';
-
-    protected  function setUp()
+    protected function setUp()
     {
         $this->configEntity = new ConfigEntity();
         $this->configField  = new ConfigField();
@@ -32,10 +30,23 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->configEntity->getClassName());
         $this->assertEmpty($this->configEntity->getId());
 
-        $this->assertEquals(
-            $this->testClassName,
-            $this->configEntity->getClassName($this->configEntity->setClassName($this->testClassName))
-        );
+        $this->assertNull($this->configEntity->getCreated());
+        $this->configEntity->setCreated(new \DateTime('2013-01-01'));
+        $this->assertEquals('2013-01-01', $this->configEntity->getCreated()->format('Y-m-d'));
+
+        $this->assertNull($this->configEntity->getUpdated());
+        $this->configEntity->setUpdated(new \DateTime('2013-01-01'));
+        $this->assertEquals('2013-01-01', $this->configEntity->getUpdated()->format('Y-m-d'));
+
+        /** test ConfigEntity beforeSave */
+        $this->configEntity->beforeSave();
+        $currentDate = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->assertEquals($currentDate->format('Y-m-d'), $this->configEntity->getCreated()->format('Y-m-d'));
+
+        /** test ConfigEntity preUpdate */
+        $this->configEntity->preUpdate();
+        $currentDate = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->assertEquals($currentDate->format('Y-m-d'), $this->configEntity->getUpdated()->format('Y-m-d'));
 
         /** test ConfigField */
         $this->assertEmpty($this->configField->getId());
@@ -59,6 +70,11 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             'string',
             $this->configField->getType($this->configField->setType('string'))
+        );
+
+        $this->assertEquals(
+            'Acme\Bundle\DemoBundle\Entity\TestAccount',
+            $this->configEntity->getClassName($this->configEntity->setClassName('Acme\Bundle\DemoBundle\Entity\TestAccount'))
         );
 
         /** test ConfigField set/getEntity */
@@ -85,16 +101,10 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         /** test ConfigValue */
         $this->configValue
             ->setCode('is_extend')
-            ->setValue(true)
             ->setScope('extend')
-            ->setEntity($this->configEntity)
-            ->setField($this->configField);
-
-        $this->assertEquals($this->configEntity, $this->configValue->getEntity());
-        $this->assertEquals($this->configField, $this->configValue->getField());
-
-        $this->assertEquals(true, $this->configValue->getValue());
-        $this->assertEquals('is_extend', $this->configValue->getCode());
+            ->setValue(true)
+            ->setField($this->configField)
+        ;
 
         $this->assertEquals(
             array(
@@ -104,5 +114,28 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             ),
             $this->configValue->toArray()
         );
+
+        /** test AbstractConfig setValues() */
+        $this->configEntity->setValues(array($this->configValue));
+        $this->assertEquals(
+            $this->configValue,
+            $this->configEntity->getValue('is_extend', 'extend')
+        );
+
+        /** test AbstractConfig fromArray() */
+        $config = array(
+            'is_searchable' => true,
+            'is_sortable'   => false,
+            'is_extend'     => $this->configValue
+        );
+
+        $this->configField->fromArray('datagrid', $config);
+        $this->assertEquals($config, $this->configField->toArray('datagrid'));
+
+        $this->configEntity->fromArray('datagrid', $config);
+        $this->assertEquals($config, $this->configEntity->toArray('datagrid'));
+
+        $this->configEntity->fromArray('extend', $config);
+        $this->assertEquals($config, $this->configEntity->toArray('extend'));
     }
 }

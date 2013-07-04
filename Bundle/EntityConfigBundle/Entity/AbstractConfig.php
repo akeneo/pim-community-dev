@@ -5,8 +5,6 @@ namespace Oro\Bundle\EntityConfigBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-use Oro\Bundle\EntityConfigBundle\Config\EntityConfigInterface;
-
 abstract class AbstractConfig
 {
     /**
@@ -49,12 +47,6 @@ abstract class AbstractConfig
      */
     public function addValue($value)
     {
-        if ($this instanceof EntityConfigInterface) {
-            $value->setEntity($this);
-        } else {
-            $value->setField($this);
-        }
-
         $this->values->add($value);
 
         return $this;
@@ -150,6 +142,13 @@ abstract class AbstractConfig
                 $configValue->setValue($value);
             } else {
                 $configValue = new ConfigValue($code, $scope, $value);
+
+                if ($this instanceof ConfigEntity) {
+                    $configValue->setEntity($this);
+                } else {
+                    $configValue->setField($this);
+                }
+
                 $this->addValue($configValue);
             }
         }
