@@ -1,5 +1,6 @@
 parameters:
     oro_tag.tag_listener.class: Oro\Bundle\TagBundle\EventListener\TagListener
+    oro_tag.tag.entity.class: Oro\Bundle\TagBundle\Entity\Tag
 
 services:
     oro_tag_listener:

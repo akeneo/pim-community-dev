@@ -24,7 +24,7 @@ class Tagging extends BaseTagging
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Tag")
+     * @ORM\ManyToOne(targetEntity="Tag", inversedBy="tagging")
      * @ORM\JoinColumn(name="tag_id", referencedColumnName="id")
      **/
     protected $tag;

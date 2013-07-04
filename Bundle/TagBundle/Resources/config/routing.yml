@@ -1,0 +1,4 @@
+orocrm_account_bundle:
+    resource:     "@OroTagBundle/Controller"
+    type:         annotation
+    prefix:       /tag

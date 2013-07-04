@@ -1,0 +1,16 @@
+oro_menu_config:
+    items:
+        oro_tag_list:
+            label: 'Tags'
+            route: 'oro_tag_index'
+            extras:
+                routes: ['oro_tag_*']
+    tree:
+        application_menu:
+            children:
+                system_tab:
+                    children:
+                        oro_tag_list: ~
+
+oro_titles:
+    oro_tag_index: Tags

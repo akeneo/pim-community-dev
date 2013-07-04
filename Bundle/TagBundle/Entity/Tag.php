@@ -31,10 +31,13 @@ class Tag extends BaseTag
 
     /**
      * @var User
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
+     * @ORM\ManyToMany(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinTable(name="user_tags",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
      */
-    protected $user;
+    protected $users;
 
     /**
      * Return tag owner user or null if it's global scope
