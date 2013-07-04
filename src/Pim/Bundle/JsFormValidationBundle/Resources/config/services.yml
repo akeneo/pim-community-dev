@@ -1,0 +1,9 @@
+parameters:
+    pim_jsfv.generator.class: Pim\Bundle\JsFormValidationBundle\Generator\FormValidationScriptGenerator
+
+services:
+    jsfv.generator:
+        class: %pim_jsfv.generator.class%
+        arguments:
+            - @service_container
+            - @validator.mapping.class_metadata_factory
