@@ -10,7 +10,6 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 use Oro\Bundle\FormBundle\Config\BlockConfig;
 use Oro\Bundle\FormBundle\Config\FormConfig;
-use Oro\Bundle\FormBundle\Exception\RuntimeException;
 
 class DataBlocks
 {
@@ -141,8 +140,8 @@ class DataBlocks
             : ucfirst($code);
         $block->setTitle($title);
 
-        foreach ((array)$this->accessor->getValue($blockConfig, '[subblocks]') as $subCode => $subBlockConfig) {
-            $block->addSubBlock($this->createSubBlock($subCode, (array)$subBlockConfig));
+        foreach ((array) $this->accessor->getValue($blockConfig, '[subblocks]') as $subCode => $subBlockConfig) {
+            $block->addSubBlock($this->createSubBlock($subCode, (array) $subBlockConfig));
         }
 
         $this->formConfig->addBlock($block);

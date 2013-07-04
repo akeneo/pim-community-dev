@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\FormBundle\Tests\Unit\Form\Twig;
 
-use Symfony\Bridge\Twig\Form\TwigRendererEngine;
-
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\Forms;
 
