@@ -20,9 +20,10 @@ default value is "entities";
 
 Methods:
 
-* **load** - method from abstract DataFixture, entry point for data fixture run;
+* **load** - method from Doctrine AbstractFixture, entry point for data fixture run,
+sets translator property and runs loadEntities method;
 * **setContainer** - method form ContainerAwareInterface, sets container property;
-* **loadEntities** - abstract method, must be specified in descendent classes to load entities;
+* **loadEntities** - abstract method, must be specified in descendant classes to load entities;
 * **getDomainFileRegExp** - returns formed regular expression based on source expression and current domain;
 * **getTranslationLocales** - parses all translation files and searches files that matches formed regular expression,
 returns list of locales with appropriate translations;
