@@ -4,7 +4,7 @@ Form Types
 Translation bundle provide form types for easier translation on frontend.
 
 
-### Form Type Description
+### Form Types Description
 
 #### translatable\_entity
 
