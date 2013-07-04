@@ -21,7 +21,8 @@ abstract class AbstractTypedAddress extends AbstractAddress
      * Many-to-many relation field, relation parameters must be in specific class
      *
      * @var Collection
-     **/
+     * @Soap\ComplexType("Oro\Bundle\AddressBundle\Entity\AddressType[]", nillable=true)
+     */
     protected $types;
 
     /**
@@ -40,7 +41,7 @@ abstract class AbstractTypedAddress extends AbstractAddress
     }
 
     /**
-     * @return Collection
+     * @return Collection|AddressType[]
      */
     public function getTypes()
     {
@@ -63,6 +64,33 @@ abstract class AbstractTypedAddress extends AbstractAddress
     }
 
     /**
+     * Gets instance of address type entity by it's name if it exist.
+     *
+     * @param string $typeName
+     * @return AddressType|null
+     */
+    public function getTypeByName($typeName)
+    {
+        foreach ($this->getTypes() as $type) {
+            if ($type->getName() === $typeName) {
+                return $type;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Checks if address has type with specified name
+     *
+     * @param string $typeName
+     * @return bool
+     */
+    public function hasTypeWithName($typeName)
+    {
+        return null !== $this->getTypeByName($typeName);
+    }
+
+    /**
      * Get list of address types names
      *
      * @return array
@@ -70,10 +98,11 @@ abstract class AbstractTypedAddress extends AbstractAddress
     public function getTypeLabels()
     {
         $result = array();
-        /** @var AddressType $type */
+
         foreach ($this->getTypes() as $type) {
             $result[] = $type->getLabel();
         }
+
         return $result;
     }
 

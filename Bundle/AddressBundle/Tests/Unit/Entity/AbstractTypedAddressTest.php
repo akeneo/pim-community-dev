@@ -51,6 +51,23 @@ class AbstractTypedAddressTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('billing', 'shipping'), $this->address->getTypeNames());
     }
 
+    public function testGetTypeByName()
+    {
+        $addressType = new AddressType('billing');
+        $this->address->addType($addressType);
+
+        $this->assertSame($addressType, $this->address->getTypeByName('billing'));
+        $this->assertNull($this->address->getTypeByName('shipping'));
+    }
+
+    public function testHasTypeWithName()
+    {
+        $this->address->addType(new AddressType('billing'));
+
+        $this->assertTrue($this->address->hasTypeWithName('billing'));
+        $this->assertFalse($this->address->hasTypeWithName('shipping'));
+    }
+
     public function testRemoveType()
     {
         $type = new AddressType('testAddressType');
