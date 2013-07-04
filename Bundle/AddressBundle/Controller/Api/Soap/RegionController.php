@@ -41,7 +41,7 @@ class RegionController extends ContainerAware
      * @Soap\Result(phpType = "Oro\Bundle\AddressBundle\Entity\Region[]")
      * @AclAncestor("oro_address")
      */
-    public function getByCountryAction(Country $country = null)
+    public function getByCountryAction(Country $country)
     {
         /** @var  RegionRepository $regionRepository */
         $regionRepository = $this->getManager()->getRepository('OroAddressBundle:Region');
