@@ -83,19 +83,13 @@ class DataBlocks
             if (isset($child->vars['block']) || isset($child->vars['subblock'])) {
 
                 $block = null;
-                if (isset($child->vars['block']) && $this->formConfig->hasBlock($child->vars['block'])) {
+                if ($this->formConfig->hasBlock($child->vars['block'])) {
                     $block = $this->formConfig->getBlock($child->vars['block']);
-                } elseif (!isset($child->vars['block'])) {
-                    $blocks = $this->formConfig->getBlocks();
-                    $block  = reset($blocks);
                 }
 
                 if (!$block) {
-                    $blockCode = isset($child->vars['block'])
-                        ? $child->vars['block']
-                        : $name;
-
-                    $block = $this->createBlock($blockCode);
+                    $blockCode = $child->vars['block'];
+                    $block     = $this->createBlock($blockCode);
 
                     $this->formConfig->addBlock($block);
                 }
@@ -138,10 +132,6 @@ class DataBlocks
 
     protected function createBlock($code, $blockConfig = array())
     {
-        if ($this->formConfig->hasBlock($code)) {
-            throw new RuntimeException(sprintf("block_config '%s' isset in form config.", $code));
-        }
-
         $block = new BlockConfig($code);
         $block->setClass($this->accessor->getValue($blockConfig, '[class]'));
         $block->setPriority($this->accessor->getValue($blockConfig, '[priority]'));
@@ -151,8 +141,8 @@ class DataBlocks
             : ucfirst($code);
         $block->setTitle($title);
 
-        foreach ((array) $this->accessor->getValue($blockConfig, '[subblocks]') as $subCode => $subBlockConfig) {
-            $block->addSubBlock($this->createSubBlock($subCode, (array) $subBlockConfig));
+        foreach ((array)$this->accessor->getValue($blockConfig, '[subblocks]') as $subCode => $subBlockConfig) {
+            $block->addSubBlock($this->createSubBlock($subCode, (array)$subBlockConfig));
         }
 
         $this->formConfig->addBlock($block);
