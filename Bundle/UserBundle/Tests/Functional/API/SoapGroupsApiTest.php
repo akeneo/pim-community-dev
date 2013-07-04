@@ -15,7 +15,7 @@ class SoapGroupsApiTest extends WebTestCase
     /** Default value for role label */
     const DEFAULT_VALUE = 'GROUP_LABEL';
 
-    /** @var \SoapClient */
+    /** @var Client */
     protected $client = null;
 
     public function setUp()

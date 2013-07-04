@@ -364,7 +364,9 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      */
     public function setDate($date)
     {
-        $this->date = $date;
+        if ($this->date != $date) {
+            $this->date = $date;
+        }
 
         return $this;
     }
@@ -388,7 +390,9 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      */
     public function setDatetime($datetime)
     {
-        $this->datetime = $datetime;
+        if ($this->datetime != $datetime) {
+            $this->datetime = $datetime;
+        }
 
         return $this;
     }

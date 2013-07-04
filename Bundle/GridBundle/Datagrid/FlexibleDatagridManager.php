@@ -229,11 +229,11 @@ abstract class FlexibleDatagridManager extends DatagridManager
      */
     protected function convertFlexibleTypeToFieldType($flexibleFieldType)
     {
-        if (!isset(self::$typeMatches[$flexibleFieldType]['field'])) {
+        if (!isset(static::$typeMatches[$flexibleFieldType]['field'])) {
             throw new \LogicException('Unknown flexible backend field type.');
         }
 
-        return self::$typeMatches[$flexibleFieldType]['field'];
+        return static::$typeMatches[$flexibleFieldType]['field'];
     }
 
     /**
@@ -243,10 +243,10 @@ abstract class FlexibleDatagridManager extends DatagridManager
      */
     protected function convertFlexibleTypeToFilterType($flexibleFieldType)
     {
-        if (!isset(self::$typeMatches[$flexibleFieldType]['filter'])) {
+        if (!isset(static::$typeMatches[$flexibleFieldType]['filter'])) {
             throw new \LogicException('Unknown flexible backend filter type.');
         }
 
-        return self::$typeMatches[$flexibleFieldType]['filter'];
+        return static::$typeMatches[$flexibleFieldType]['filter'];
     }
 }
