@@ -13,7 +13,10 @@ class TagListenerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->resource = $this->getMock('DoctrineExtensions\Taggable\Taggable');
+    }
 
+    public function testPreRemove()
+    {
         $manager = $this->getMockBuilder('FPN\TagBundle\Entity\TagManager')
             ->disableOriginalConstructor()
             ->getMock();
@@ -29,10 +32,7 @@ class TagListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->listener = new TagListener();
         $this->listener->setContainer($container);
-    }
 
-    public function testPreRemove()
-    {
         $args = $this->getMockBuilder('Doctrine\ORM\Event\LifecycleEventArgs')
             ->disableOriginalConstructor()
             ->getMock();
@@ -45,6 +45,8 @@ class TagListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testSubscribedEvents()
     {
+        $this->listener = new TagListener();
+
         $this->assertEquals($this->listener->getSubscribedEvents(), array('preRemove'));
     }
 }
