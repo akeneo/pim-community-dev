@@ -3,11 +3,8 @@
 namespace Oro\Bundle\FormBundle\Tests\Unit\Form\Type;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\AbstractQuery;
 
 use Symfony\Component\Form\Tests\FormIntegrationTestCase;
 
@@ -99,6 +96,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
     {
         $self = $this;
         $entitiesId1234 = $this->createMockEntityList('id', array(1, 2, 3, 4));
+
         return array(
             'default' => array(
                 '1,2,3,4',
@@ -171,6 +169,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
                     'queryBuilder' => function ($repository, array $ids) use ($self) {
                         $result = $repository->createQueryBuilder('o');
                         $result->where('o.id IN (:values)')->setParameter('values', $ids);
+
                         return $result;
                     }
                 ),
@@ -190,8 +189,8 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
 
     /**
      * @dataProvider createErrorsDataProvider
-     * @param array $options
-     * @param array $expectedCalls
+     * @param array  $options
+     * @param array  $expectedCalls
      * @param string $expectedException
      * @param string $expectedExceptionMessage
      */
@@ -306,6 +305,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
                             'queryBuilderCallback',
                             $transformer
                         );
+
                         return true;
                     }
                 )
@@ -323,8 +323,8 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
     /**
      * Create list of mocked entities by id property name and values
      *
-     * @param string $property
-     * @param array $values
+     * @param  string                                     $property
+     * @param  array                                      $values
      * @return \PHPUnit_Framework_MockObject_MockObject[]
      */
     private function createMockEntityList($property, array $values)
@@ -333,14 +333,15 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
         foreach ($values as $value) {
             $result[] = $this->createMockEntity($property, $value);
         }
+
         return $result;
     }
 
     /**
      * Create mock entity by id property name and value
      *
-     * @param string $property
-     * @param mixed $value
+     * @param  string                                   $property
+     * @param  mixed                                    $value
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
     private function createMockEntity($property, $value)
@@ -348,12 +349,13 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
         $getter = 'get' . ucfirst($property);
         $result = $this->getMock('MockEntity', array($getter));
         $result->expects($this->any())->method($getter)->will($this->returnValue($value));
+
         return $result;
     }
 
     /**
      * @param \PHPUnit_Framework_MockObject_MockObject|string $mock
-     * @param array $expectedCalls
+     * @param array                                           $expectedCalls
      */
     private function addMockExpectedCalls($mock, array $expectedCalls)
     {
@@ -418,6 +420,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
                     ->setMethods(array('transform', 'reverseTransform'))
                     ->getMockForAbstractClass();
         }
+
         return $this->entitiesToIdsTransformer;
     }
 }

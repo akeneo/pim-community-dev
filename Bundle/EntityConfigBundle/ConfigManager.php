@@ -234,6 +234,7 @@ class ConfigManager
 
     /**
      * @param array $entities
+     * TODO:: remove configs
      */
     public function flush(array $entities = array())
     {
@@ -260,7 +261,6 @@ class ConfigManager
             $this->configCache->removeConfigFromCache($className, $config->getScope());
         }
 
-        // TODO:: remove configs
         foreach ($entities as $entity) {
             $this->em()->persist($entity);
         }

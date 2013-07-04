@@ -44,7 +44,7 @@ class EntityIdentifierType extends AbstractType
     }
 
     /**
-     * @param array $options
+     * @param  array                    $options
      * @return EntitiesToIdsTransformer
      */
     protected function createEntitiesToIdsTransformer(array $options)

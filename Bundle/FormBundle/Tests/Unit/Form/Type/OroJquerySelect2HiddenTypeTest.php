@@ -3,8 +3,6 @@
 namespace Oro\Bundle\FormBundle\Tests\Unit\Form\Type;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\AbstractQuery;
 
 use Symfony\Component\Form\Tests\FormIntegrationTestCase;
 
@@ -115,7 +113,6 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
         }
     }
 
-
     /**
      * Data provider for testBindData
      *
@@ -125,6 +122,7 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
     public function bindDataProvider()
     {
         $entityId1 = $this->createMockEntity('id', 1);
+
         return array(
             'use autocomplete_alias' => array(
                 '1',
@@ -213,8 +211,8 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
 
     /**
      * @dataProvider createErrorsDataProvider
-     * @param array $options
-     * @param array $expectedCalls
+     * @param array  $options
+     * @param array  $expectedCalls
      * @param string $expectedException
      * @param string $expectedExceptionMessage
      */
@@ -313,8 +311,8 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
     /**
      * Create mock entity by id property name and value
      *
-     * @param string $property
-     * @param mixed $value
+     * @param  string                                   $property
+     * @param  mixed                                    $value
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
     private function createMockEntity($property, $value)
@@ -322,6 +320,7 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
         $getter = 'get' . ucfirst($property);
         $result = $this->getMock('MockEntity', array($getter));
         $result->expects($this->any())->method($getter)->will($this->returnValue($value));
+
         return $result;
     }
 
@@ -399,6 +398,7 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
                     ->setMethods(array('transform', 'reverseTransform'))
                     ->getMockForAbstractClass();
         }
+
         return $this->entityToIdTransformer;
     }
 }

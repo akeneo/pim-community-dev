@@ -17,8 +17,8 @@ class EntityToIdTransformerTest extends \PHPUnit_Framework_TestCase
      * @dataProvider transformDataProvider
      *
      * @param string $property
-     * @param mixed $value
-     * @param mixed $expectedValue
+     * @param mixed  $value
+     * @param mixed  $expectedValue
      */
     public function testTransform($property, $value, $expectedValue)
     {
@@ -112,6 +112,7 @@ class EntityToIdTransformerTest extends \PHPUnit_Framework_TestCase
             $qb->expects($self->once())
                 ->method('getQuery')
                 ->will($self->returnValue($query));
+
             return $qb;
         };
 
@@ -230,8 +231,8 @@ class EntityToIdTransformerTest extends \PHPUnit_Framework_TestCase
     /**
      * Create mock entity by id property name and value
      *
-     * @param string $property
-     * @param mixed $value
+     * @param  string                                   $property
+     * @param  mixed                                    $value
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
     private function createMockEntity($property, $value)
@@ -239,6 +240,7 @@ class EntityToIdTransformerTest extends \PHPUnit_Framework_TestCase
         $getter = 'get' . ucfirst($property);
         $result = $this->getMock('MockEntity', array($getter));
         $result->expects($this->any())->method($getter)->will($this->returnValue($value));
+
         return $result;
     }
 }

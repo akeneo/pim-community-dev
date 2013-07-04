@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Table(name="oro_config_entity")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks()
  */
 class ConfigEntity extends AbstractConfig
 {

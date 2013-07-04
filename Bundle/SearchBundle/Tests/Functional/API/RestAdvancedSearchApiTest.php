@@ -12,6 +12,7 @@ use Oro\Bundle\TestFrameworkBundle\Test\Client;
  */
 class RestAdvancedSearchApiTest extends WebTestCase
 {
+    /** @var Client */
     protected $client = null;
     protected static $hasLoaded = false;
 
@@ -33,7 +34,7 @@ class RestAdvancedSearchApiTest extends WebTestCase
     public function testApi($request, $response)
     {
         $requestUrl = $request['query'];
-        $this->client->request('GET', "http://localhost/api/rest/latest/search/advanced?query={$requestUrl}");
+        $this->client->request('GET', $this->client->generate('oro_api_get_search_advanced'), array('query' => $requestUrl));
 
         $result = $this->client->getResponse();
 

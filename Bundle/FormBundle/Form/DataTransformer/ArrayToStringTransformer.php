@@ -62,7 +62,7 @@ class ArrayToStringTransformer implements DataTransformerInterface
     /**
      * Transforms string to array
      *
-     * @param string $stringValue
+     * @param  string $stringValue
      * @return array
      */
     private function transformStringToArray($stringValue)
@@ -73,13 +73,14 @@ class ArrayToStringTransformer implements DataTransformerInterface
             $separator = $this->delimiter;
         }
         $arrayValue = explode($separator, $stringValue);
+
         return $this->filterArrayValue($arrayValue);
     }
 
     /**
      * Transforms array to string
      *
-     * @param array $arrayValue
+     * @param  array  $arrayValue
      * @return string
      */
     private function transformArrayToString(array $arrayValue)
@@ -89,13 +90,14 @@ class ArrayToStringTransformer implements DataTransformerInterface
         } else {
             $separator = $this->delimiter;
         }
+
         return implode($separator, $this->filterArrayValue($arrayValue));
     }
 
     /**
      * Trims all elements and apply unique filter if needed
      *
-     * @param array $arrayValue
+     * @param  array $arrayValue
      * @return array
      */
     private function filterArrayValue(array $arrayValue)
@@ -104,6 +106,7 @@ class ArrayToStringTransformer implements DataTransformerInterface
             $arrayValue = array_unique($arrayValue);
         }
         $arrayValue = array_filter(array_map('trim', $arrayValue));
+
         return array_values($arrayValue);
     }
 }

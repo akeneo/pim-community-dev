@@ -4,7 +4,7 @@
 {% set gridId = 'entityconfigfields-grid' %}
 
 {% block content %}
-    {% set pageTitle = 'Entity Fields Config/Entity-' ~ entity_id %}
+    {% set pageTitle = 'Entity Fields Config/' ~ entity_name %}
 
     {% set buttons = [UI.addButton({
         'path' : path('oro_entityconfig_index'),
