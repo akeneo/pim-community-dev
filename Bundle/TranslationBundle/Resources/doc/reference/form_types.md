@@ -35,18 +35,18 @@ to support empty array as data source.
 
 ```
 parameters:
-    oro\_form.type.translatable\_entity.class:  Oro\Bundle\TranslationBundle\Form\Type\TranslatableEntityType
+    oro_form.type.translatable_entity.class:  Oro\Bundle\TranslationBundle\Form\Type\TranslatableEntityType
 
 services:
-    oro\_form.type.translatable\_entity:
-        class: %oro\_form.type.translatable\_entity.class%
+    oro_form.type.translatable_entity:
+        class: %oro_form.type.translatable_entity.class%
         arguments: ["@doctrine"]
         tags:
-            - { name: form.type, alias: translatable\_entity }
+            - { name: form.type, alias: translatable_entity }
 
-    oro\_form.type.jqueryselect2\_translatable\_entity:
+    oro_form.type.jqueryselect2_translatable_entity:
         parent: genemu.form.jquery.type.select2
-        arguments: ["translatable\_entity"]
+        arguments: ["translatable_entity"]
         tags:
-            - { name: form.type, alias: genemu\_jqueryselect2\_translatable\_entity }
+            - { name: form.type, alias: genemu_jqueryselect2_translatable_entity }
 ```
