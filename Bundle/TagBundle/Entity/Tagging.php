@@ -28,13 +28,13 @@ class Tagging extends BaseTagging
 
     /**
      * @ORM\ManyToOne(targetEntity="Tag", inversedBy="tagging")
-     * @ORM\JoinColumn(name="tag_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="tag_id", referencedColumnName="id", onDelete="CASCADE")
      **/
     protected $tag;
 
     /**
      * @var User
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\OneToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User", cascade="remove")
      */
     protected $user;
 

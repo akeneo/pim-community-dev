@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Oro\Bundle\TagBundle\Entity\Tag;
 use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\UserBundle\Annotation\AclAncestor;
 use Oro\Bundle\TagBundle\Datagrid\TagDatagridManager;
@@ -50,18 +51,24 @@ class TagController extends Controller
     }
 
     /**
-     * @Route(
-     *      "/{_format}",
-     *      name="oro_tag_update",
-     *      requirements={"_format"="html|json"},
-     *      defaults={"_format" = "html"}
-     * )
+     * @Route("/update/{id}", name="oro_tag_update", requirements={"id"="\d+"}, defaults={"id"=0})
      * @AclAncestor("oro_tag_grid_and_edit")
      * @Template
      */
-    public function updateAction()
+    public function updateAction(Tag $entity)
     {
-        return array();
+        if ($this->get('oro_tag.tag.form.handler.tag')->process($entity)) {
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('oro.tag.controller.tag.saved.message')
+            );
+
+            return $this->redirect($this->generateUrl('oro_tag_index'));
+        }
+
+        return array(
+            'form' => $this->get('oro_tag.form.tag')->createView(),
+        );
     }
 
     /**
@@ -75,26 +82,6 @@ class TagController extends Controller
      * @Template
      */
     public function viewAction()
-    {
-        return array();
-    }
-
-    /**
-     * @Route(
-     *      "/{_format}",
-     *      name="oro_tag_delete",
-     *      requirements={"_format"="html|json"},
-     *      defaults={"_format" = "html"}
-     * )
-     * @Acl(
-     *      id="oro_tag_delete",
-     *      name="Delete tags",
-     *      description="User can delete tags",
-     *      parent="oro_tag_grid_and_edit"
-     * )
-     * @Template
-     */
-    public function deleteAction()
     {
         return array();
     }

@@ -6,4 +6,4 @@ oro_tag_assign:
 oro_tag_unassign:
     name: Tag unassign
     description: User can unassign all tags from entities
-    parent: oro_tag_assign
+    parent: oro_tag

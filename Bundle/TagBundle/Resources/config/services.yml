@@ -1,11 +1,62 @@
 parameters:
-    oro_tag.tag_listener.class: Oro\Bundle\TagBundle\EventListener\TagListener
     oro_tag.tag.entity.class: Oro\Bundle\TagBundle\Entity\Tag
+    oro_tag.tag_listener.class: Oro\Bundle\TagBundle\EventListener\TagListener
+
+    oro_tag.tag.form.type.tag.class: Oro\Bundle\TagBundle\Form\Type\TagType
+    oro_tag.tag.form.type.tag.api.class: Oro\Bundle\TagBundle\Form\Type\TagApiType
+    oro_tag.tag.form.handler.tag.class: Oro\Bundle\TagBundle\Form\Handler\TagHandler
+
+    oro_tag.tag.manager.api.class:  Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
 
 services:
-    oro_tag_listener:
+    oro_tag.docrine.event.listener:
         class: %oro_tag.tag_listener.class%
         calls:
             - [ setContainer, [ @service_container ] ]
         tags:
             - { name: doctrine.event_listener, event: preRemove }
+
+    oro_tag.form.tag:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments: ["oro_tag_tag_form", "oro_tag_tag"]
+
+    oro_tag.tag.form.handler.tag:
+        class: %oro_tag.tag.form.handler.tag.class%
+        scope: request
+        arguments:
+            - @oro_tag.form.tag
+            - @request
+            - @doctrine.orm.entity_manager
+
+    oro_tag.form.type.tag:
+        class: %oro_tag.tag.form.type.tag.class%
+        tags:
+            - { name: form.type, alias: oro_tag_tag }
+
+    # Tag API
+    oro_tag.tag.manager.api:
+        class: %oro_tag.tag.manager.api.class%
+        arguments:
+            - %oro_tag.tag.entity.class%
+            - @doctrine.orm.entity_manager
+
+    oro_tag.form.type.tag.api:
+        class: %oro_tag.tag.form.type.tag.api.class%
+        tags:
+            - { name: form.type, alias: oro_tag_tag }
+
+    oro_tag.form.tag.api:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments: ["oro_tag_tag_form", "oro_tag_tag", null]
+
+    oro_tag.form.handler.api:
+        class: %oro_tag.tag.form.handler.tag.class%
+        scope: request
+        arguments:
+            - @oro_tag.form.type.tag.api
+            - @request
+            - @doctrine.orm.entity_manager
