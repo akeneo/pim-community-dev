@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\TagBundle\EventListener;
 
-use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Events;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -14,7 +12,7 @@ use Oro\Bundle\TagBundle\Entity\Taggable;
 /**
  * TagListener.
  */
-class TagListener implements EventSubscriber, ContainerAwareInterface
+class TagListener implements ContainerAwareInterface
 {
     protected $manager;
 
@@ -24,20 +22,12 @@ class TagListener implements EventSubscriber, ContainerAwareInterface
     protected $container;
 
     /**
-     * @see Doctrine\Common\EventSubscriber
-     */
-    public function getSubscribedEvents()
-    {
-        return array(Events::preRemove);
-    }
-
-    /**
      * @param LifecycleEventArgs $args
      */
     public function preRemove(LifecycleEventArgs $args)
     {
-        if (is_null($this->manager)) {
-            $this->manager = $this->container->get('fpn_tag.tag_manager');
+        if (is_null($this->manager) && $this->container) {
+            $this->manager = $this->container->get('oro_tag.manager');
         }
 
         if (($resource = $args->getEntity()) and $resource instanceof Taggable) {
@@ -46,9 +36,7 @@ class TagListener implements EventSubscriber, ContainerAwareInterface
     }
 
     /**
-     * Sets the Container.
-     *
-     * @param ContainerInterface $container A ContainerInterface instance
+     * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {

@@ -1,5 +1,6 @@
 parameters:
     oro_tag.tag.entity.class: Oro\Bundle\TagBundle\Entity\Tag
+    oro_tag.tagging.entity.class: Oro\Bundle\TagBundle\Entity\Tagging
     oro_tag.tag_listener.class: Oro\Bundle\TagBundle\EventListener\TagListener
 
     oro_tag.tag.form.type.tag.class: Oro\Bundle\TagBundle\Form\Type\TagType
@@ -7,8 +8,16 @@ parameters:
     oro_tag.tag.form.handler.tag.class: Oro\Bundle\TagBundle\Form\Handler\TagHandler
 
     oro_tag.tag.manager.api.class:  Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+    oro_tag.tag.manager.class:  Oro\Bundle\TagBundle\Entity\TagManager
 
 services:
+    oro_tag.tag.manager:
+        class: %oro_tag.tag.manager.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - %oro_tag.tag.entity.class%
+            - %oro_tag.tagging.entity.class%
+
     oro_tag.docrine.event.listener:
         class: %oro_tag.tag_listener.class%
         calls:

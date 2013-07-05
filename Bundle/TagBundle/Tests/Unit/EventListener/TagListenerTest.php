@@ -26,7 +26,7 @@ class TagListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testPreRemove()
     {
-        $manager = $this->getMockBuilder('FPN\TagBundle\Entity\TagManager')
+        $manager = $this->getMockBuilder('Oro\Bundle\TagBundle\Entity\TagManager')
             ->disableOriginalConstructor()
             ->getMock();
         $manager->expects($this->once())
@@ -36,7 +36,7 @@ class TagListenerTest extends \PHPUnit_Framework_TestCase
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->once())
             ->method('get')
-            ->with($this->equalTo('fpn_tag.tag_manager'))
+            ->with($this->equalTo('oro_tag.manager'))
             ->will($this->returnValue($manager));
 
         $this->listener = new TagListener();
@@ -50,15 +50,5 @@ class TagListenerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->resource));
 
         $this->listener->preRemove($args);
-    }
-
-    /**
-     * Test that event listener bound to correct event
-     */
-    public function testSubscribedEvents()
-    {
-        $this->listener = new TagListener();
-
-        $this->assertEquals($this->listener->getSubscribedEvents(), array('preRemove'));
     }
 }
