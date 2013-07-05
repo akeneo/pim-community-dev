@@ -81,7 +81,7 @@
             expand($element, opts);
         }).appendTo($separator).hide();
 
-        $(opts.buttons).each(function () {
+        $.each(opts.buttons, function () {
             $(this).children('.dropdown-toggle').css(opts.buttonsCss);
             $(this).css(opts.buttonsCss).appendTo($controls);
         });
