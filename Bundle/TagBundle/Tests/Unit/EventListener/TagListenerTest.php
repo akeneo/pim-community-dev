@@ -36,7 +36,7 @@ class TagListenerTest extends \PHPUnit_Framework_TestCase
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->once())
             ->method('get')
-            ->with($this->equalTo('oro_tag.manager'))
+            ->with($this->equalTo('oro_tag.tag.manager'))
             ->will($this->returnValue($manager));
 
         $this->listener = new TagListener();
