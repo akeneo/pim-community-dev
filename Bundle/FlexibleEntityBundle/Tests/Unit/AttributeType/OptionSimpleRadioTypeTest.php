@@ -31,16 +31,16 @@ class OptionSimpleRadioTypeTest extends AttributeTypeTest
                 'foo',
                 'email',
                 'bar',
-                array(
-                    'constraints' => array('constraints'),
-                    'label'       => null,
-                    'required'    => null,
-                    'empty_value' => false,
-                    'class'       => 'OroFlexibleEntityBundle:AttributeOption',
-                    'expanded'    => true,
-                    'multiple'    => false,
-                    'query_builder' => function () {
-                    },
+                array_merge(
+                    $this->defaultCreateNamedOptions,
+                    array(
+                        'empty_value' => false,
+                        'class'       => 'OroFlexibleEntityBundle:AttributeOption',
+                        'expanded'    => true,
+                        'multiple'    => false,
+                        'query_builder' => function () {
+                        },
+                    )
                 )
             );
 

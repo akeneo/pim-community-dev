@@ -72,10 +72,10 @@ class EntityQueryFactoryTest extends \PHPUnit_Framework_TestCase
             false,
             true,
             true,
-            array('getEntityManagerForClass')
+            array('getManagerForClass')
         );
         $registryMock->expects($this->once())
-            ->method('getEntityManagerForClass')
+            ->method('getManagerForClass')
             ->with(self::TEST_CLASS_NAME)
             ->will($this->returnValue($entityManagerMock));
 

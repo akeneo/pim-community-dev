@@ -12,6 +12,18 @@ abstract class AttributeTypeTest extends \PHPUnit_Framework_TestCase
     protected $target;
     protected $name;
 
+    /**
+     * Default set of options to create named form child
+     *
+     * @var array
+     */
+    protected $defaultCreateNamedOptions = array(
+        'constraints'     => array('constraints'),
+        'label'           => null,
+        'required'        => null,
+        'auto_initialize' => null
+    );
+
     public function setUp()
     {
         $this->guesser = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser');
