@@ -12,12 +12,12 @@ var no_tree_message = "{{ "No tree available" | trans }}";
 
 $(function() {
     // define buttons
-    var createBtn = $('<div>', { class: 'btn-group' }).html(
+    var createBtn = $('<div>', { 'class': 'btn-group' }).html(
         $('<button class="dropdown-toggle" data-toggle="dropdown"></button>').html(
-            $('<i>', { class: 'icon-plus-sign' })
-        ).append($('<span>', { class: 'caret' }))
+            $('<i>', { 'class': 'icon-plus-sign' })
+        ).append($('<span>', { 'class': 'caret' }))
     ).append(
-        $('<ul>', { class: 'dropdown-menu' }).append(
+        $('<ul>', { 'class': 'dropdown-menu' }).append(
             $('<li>').html($('<a>', { id: 'tree-create', html: '{{ 'Create tree'|trans }}' }).on(
                 'click', function() {
                     window.location = "{{ path('pim_product_categorytree_create') }}";
@@ -39,7 +39,7 @@ $(function() {
     );
 
     var editBtn = $('<button>', { id: 'category-edit' }).html(
-        $('<i>', { class: 'icon-edit' })
+        $('<i>', { 'class': 'icon-edit' })
     ).on('click', function() {
         var node = $.jstree._focused().get_selected();
         if(!$.jstree._focused()._get_node(node)) {
@@ -52,7 +52,7 @@ $(function() {
     });
 
     var removeBtn = $('<button>', { id: 'category-remove' }).html(
-        $('<i>', { class: 'icon-trash' })
+        $('<i>', { 'class': 'icon-trash' })
     ).on('click', function() {
         var node = $.jstree._focused().get_selected();
         if(!$.jstree._focused()._get_node($.jstree._focused().get_selected())) {
