@@ -69,30 +69,33 @@ class ProductType extends FlexibleType
 
         $valueForms = $form->get('values')->getChildren();
         foreach ($valueForms as $valueForm) {
-            $value          = $valueForm->getData();
-            $attribute      = $value->getAttribute();
-            $attributeGroup = $attribute->getVirtualGroup();
+            $value     = $valueForm->getData();
+            $attribute = $value->getAttribute();
+            $attrId    = $attribute->getId();
+            $group     = $attribute->getVirtualGroup();
+            $groupId   = $group->getId();
 
-            if (!isset($groups[$attributeGroup->getId()])) {
-                $groups[$attributeGroup->getId()]['name'] = $attributeGroup->getName();
+            if (!isset($groups[$groupId])) {
+                $groups[$groupId]['name'] = $group->getName();
             }
 
-            if (!isset($groups[$attributeGroup->getId()]['values'][$attribute->getId()])) {
-                $groups[$attributeGroup->getId()]['attributes'][$attribute->getId()]['isRemovable'] = $value->isRemovable();
-                $groups[$attributeGroup->getId()]['attributes'][$attribute->getId()]['code']        = $attribute->getCode();
-                $groups[$attributeGroup->getId()]['attributes'][$attribute->getId()]['label']       = $attribute->getLabel();
-                $groups[$attributeGroup->getId()]['attributes'][$attribute->getId()]['sortOrder']   = $attribute->getSortOrder();
+            if (!isset($groups[$groupId]['values'][$attrId])) {
+                $groups[$groupId]['attributes'][$attrId]['isRemovable'] = $value->isRemovable();
+                $groups[$groupId]['attributes'][$attrId]['code']        = $attribute->getCode();
+                $groups[$groupId]['attributes'][$attrId]['label']       = $attribute->getLabel();
+                $groups[$groupId]['attributes'][$attrId]['sortOrder']   = $attribute->getSortOrder();
             }
 
+            $formView = $valueForm->createView($view->getChild('values'));
             if ($value->getAttribute()->getScopable()) {
-                $groups[$attributeGroup->getId()]['attributes'][$attribute->getId()]['classes']['scopable']        = true;
-                $groups[$attributeGroup->getId()]['attributes'][$attribute->getId()]['values'][$value->getScope()] = $valueForm->createView($view->getChild('values'));
+                $groups[$groupId]['attributes'][$attrId]['classes']['scopable']        = true;
+                $groups[$groupId]['attributes'][$attrId]['values'][$value->getScope()] = $formView;
             } else {
-                $groups[$attributeGroup->getId()]['attributes'][$attribute->getId()]['value'] = $valueForm->createView($view->getChild('values'));
+                $groups[$groupId]['attributes'][$attrId]['value'] = $formView;
             }
 
             if ('pim_product_price_collection' === $attribute->getAttributeType()) {
-                $groups[$attributeGroup->getId()]['attributes'][$attribute->getId()]['classes']['currency'] = true;
+                $groups[$groupId]['attributes'][$attrId]['classes']['currency'] = true;
             }
         }
 
