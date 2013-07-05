@@ -44,7 +44,7 @@ class EntityConfigPass implements CompilerPassInterface
                 new Reference('oro_entity_config.entity_config.' . $tag[0]['scope'])
             ));
 
-            $configManagerDefinition->addMethodCall('setProvider', array($provider));
+            $configManagerDefinition->addMethodCall('addProvider', array($provider));
         }
     }
 }
