@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Routing\Annotation\Route;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
+use Oro\Bundle\UserBundle\Annotation\AclAncestor;
 
 /**
  * @RouteResource("region")
@@ -24,6 +25,7 @@ class RegionController extends FOSRestController
      *  description="Get regions",
      *  resource=true
      * )
+     * @AclAncestor("oro_address")
      * @return Response
      */
     public function cgetAction()

@@ -163,7 +163,6 @@ class SoapApiTest extends WebTestCase
      */
     public function testGetCountries()
     {
-        $this->markTestSkipped('BAP-1072');
         $result = $this->client->soapClient->getCountries();
         $result = ToolsAPI::classToArray($result);
         return $result['item'];
@@ -177,7 +176,7 @@ class SoapApiTest extends WebTestCase
     {
         $i = 0;
         foreach ($countries as $country) {
-            $result = $this->client->soapClient->getCountry($country['iso2_code']);
+            $result = $this->client->soapClient->getCountry($country['iso2Code']);
             $result = ToolsAPI::classToArray($result);
             $this->assertEquals($country, $result);
             $i++;
@@ -192,7 +191,6 @@ class SoapApiTest extends WebTestCase
      */
     public function testGetRegions()
     {
-        $this->markTestSkipped('BAP-1072');
         $result = $this->client->soapClient->getRegions();
         $result = ToolsAPI::classToArray($result);
         return $result['item'];
@@ -206,10 +204,9 @@ class SoapApiTest extends WebTestCase
     {
         $i = 0;
         foreach ($regions as $region) {
-            $i = 0;
-            $result = $this->client->soapClient->getRegion($region['combined_code']);
+            $result = $this->client->soapClient->getRegion($region['combinedCode']);
             $result = ToolsAPI::classToArray($result);
-            $this->assertEquals($region, $result['item']);
+            $this->assertEquals($region, $result);
             $i++;
             if ($i % 25  == 0) {
                 break;
@@ -222,12 +219,13 @@ class SoapApiTest extends WebTestCase
      */
     public function testGetCountryRegion()
     {
-        $result = $this->client->soapClient->getCountryRegions('US');
+        $result = $this->client->soapClient->getRegionByCountry('US');
         $result = ToolsAPI::classToArray($result);
         foreach ($result['item'] as $region) {
-            $expectedResult = $this->client->soapClient->getRegion($region['combined_code']);
+            $region['country'] = $region['country']['name'];
+            $expectedResult = $this->client->soapClient->getRegion($region['combinedCode']);
             $expectedResult = ToolsAPI::classToArray($expectedResult);
-            $this->assertEquals($expectedResult['item'], $region);
+            $this->assertEquals($expectedResult, $region);
         }
     }
 }
