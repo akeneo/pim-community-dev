@@ -2,6 +2,10 @@
                                                                                 
 namespace Pim\Bundle\ImportExportBundle\Job;
 
+use Pim\Bundle\ImportExportBundle\Step\StepInterface;
+
+use Pim\Bundle\ImportExportBundle\Logger;
+
 /**
  * 
  * Abstract implementation of the {@link Job} interface. Common dependencies
@@ -16,10 +20,8 @@ namespace Pim\Bundle\ImportExportBundle\Job;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-abstract class AbstractStep implements JobInterface
+abstract class AbstractJob implements JobInterface
 {
-
-    private $logger = null;
 
     private $name;
 
@@ -28,15 +30,16 @@ abstract class AbstractStep implements JobInterface
 //    private JobRepository jobRepository;
 //    private JobParametersIncrementer jobParametersIncrementer;
 //    private JobParametersValidator jobParametersValidator = new DefaultJobParametersValidator();
-//    private StepHandler stepHandler;
+
+    /* @var StepHandler $stepHandler */
+    private $stepHandler = null;
 
     /**
      * Convenience constructor to immediately add name (which is mandatory)
      *
      * @param name
      */
-    public function __construct(String $name) {
-        parent();
+    public function __construct($name) {
         $this->name = $name;
     }
 
@@ -72,6 +75,28 @@ abstract class AbstractStep implements JobInterface
     public abstract function getStepNames();
 
     /**
+     * Public setter for the {@link JobRepository} that is needed to manage the
+     * state of the batch meta domain (jobs, steps, executions) during the life
+     * of a job.
+     *
+     * @param jobRepository
+     */
+    public function setJobRepository(JobRepository $jobRepository) {
+        $this->jobRepository = $jobRepository;
+        $this->stepHandler = new SimpleStepHandler($jobRepository);
+    }
+
+    /**
+     * Convenience method for subclasses to access the job repository.
+     *
+     * @return the jobRepository
+     */
+    protected function getJobRepository() {
+        return $this->jobRepository;
+    }
+
+
+    /**
      * Extension point for subclasses allowing them to concentrate on processing
      * logic and ignore listeners and repository calls. Implementations usually
      * are concerned with the ordering of steps, and delegate actual step
@@ -96,21 +121,21 @@ abstract class AbstractStep implements JobInterface
      */
     public final function execute(JobExecution $execution) {
 
-        $this->logger->debug("Job execution starting: " . $execution);
+        Logger::debug("Job execution starting: " . $execution);
 
         try {
 //            jobParametersValidator.validate(execution.getJobParameters());
 
-            if ($execution->getStatus()->getValue() != BatchStatus.STOPPING) {
+            if ($execution->getStatus()->getValue() != BatchStatus::STOPPING) {
 
-                $execution->setStartTime(now());
+                $execution->setStartTime(time());
                 $this->updateStatus($execution, BatchStatus::STARTED);
 
 //                listener.beforeJob(execution);
 
 //                try {
-                    $this->doExecute(execution);
-                    $this->logger->debug("Job execution complete: ". $execution);
+                    $this->doExecute($execution);
+                    Logger::debug("Job execution complete: ". $execution);
 //                } catch (RepeatException e) {
 //                    throw e.getCause();
 //                }
@@ -119,42 +144,42 @@ abstract class AbstractStep implements JobInterface
                 // The job was already stopped before we even got this far. Deal
                 // with it in the same way as any other interruption.
                 $execution->setStatus(new BatchStatus(BatchStatus::STOPPED));
-                $execution->setExitStatus(new ExitStatus(ExitStatus.COMPLETED));
-                $this->logger->debug("Job execution was stopped: ". $execution);
+                $execution->setExitStatus(new ExitStatus(ExitStatus::COMPLETED));
+                Logger::debug("Job execution was stopped: ". $execution);
 
             }
 
 
         } catch (JobInterruptedException $e) {
-            $this->logger->info("Encountered interruption executing job: " . $e->getMessage());
-            $this->logger->debug("Full exception", $e);
+            Logger::info("Encountered interruption executing job: " . $e->getMessage());
+            Logger::debug("Full exception", $e);
 
             $execution->setExitStatus($this->getDefaultExitStatusForFailure($e));
-            $execution->setStatus(new BatchStatus(BatchStatus::max(BatchStatus::STOPPED, e.getStatus()->getValue())));
+//            $execution->setStatus(new BatchStatus(BatchStatus::max(BatchStatus::STOPPED, e.getStatus()->getValue())));
             $execution->addFailureException($e);
         } catch (\Exception $e) {
-            $this->logger->error("Encountered fatal error executing job", $e);
-            $execution->setExitStatus(getDefaultExitStatusForFailure($e));
-            $execution->setStatus(new BatchStatus(BatchStatus.FAILED));
-            $execution->addFailureException($e);
+            Logger::error("Encountered fatal error executing job", $e);
+            $execution->setExitStatus($this->getDefaultExitStatusForFailure($e));
+            $execution->setStatus(new BatchStatus(BatchStatus::FAILED));
+//            $execution->addFailureException($e);
         } 
 
-        if ( ($execution->getStatus()->getValue <= BatchStatus.STOPPED)
+        if ( ($execution->getStatus()->getValue() <= BatchStatus::STOPPED)
                 && $execution->getStepExecutions()->isEmpty()
         ) {
             /* @var ExitStatus $exitStatus */
             $exitStatus = $execution->getExitStatus();
             $noopExitStatus = new ExitStatus(ExitStatus::NOOP);
             $noopExitStatus->addExitDescription("All steps already completed or no steps configured for this job.");
-            $execution->setExitStatus($exitStatus->and($noopExitStatus));
+            $execution->setExitStatus($exitStatus->logicalAnd($noopExitStatus));
         }
 
-        $execution->setEndTime(new Date());
+        $execution->setEndTime(time());
 
         try {
 //            listener.afterJob(execution);
         } catch (Exception $e) {
-            logger.error("Exception encountered in afterStep callback", $e);
+            Logger::error("Exception encountered in afterStep callback", $e);
         }
 
 //        jobRepository.update(execution);
@@ -184,7 +209,7 @@ abstract class AbstractStep implements JobInterface
      *             if the job is in an inconsistent state from an earlier
      *             failure
      */
-    protected function handleStep(Step $step, JobExecution $execution)
+    protected function handleStep(StepInterface $step, JobExecution $execution)
     {
         return $this->stepHandler->handleStep($step, $execution);
     }
@@ -200,11 +225,11 @@ abstract class AbstractStep implements JobInterface
     {
         $exitStatus = new ExitStatus();
 
-        if ($e instanceof JobInterruptedException || $e.getPrevious() instanceof JobInterruptedException) {
+        if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             $exitStatus = new ExitStatus(ExitStatus::STOPPED);
             $exitStatus->addExitDescription(get_class(JobInterruptedException));
         }
-        else if ($e instanceof NoSuchJobException || ex.getPrevious() instanceof NoSuchJobException) {
+        else if ($e instanceof NoSuchJobException || $e->getPrevious() instanceof NoSuchJobException) {
 //            exitStatus = new ExitStatus(ExitCodeMapper.NO_SUCH_JOB, ex.getClass().getName());
         }
         else {
@@ -217,12 +242,12 @@ abstract class AbstractStep implements JobInterface
 
 
     private function updateStatus(JobExecution $jobExecution, $status) {
-        $jobExecution->setStatus(new BatchStatus(status));
+        $jobExecution->setStatus(new BatchStatus($status));
 //        $jobRepository->update($jobExecution);
     }
 
     public function __toString() {
-        return get_class($this) . ': [name=' . name . ']';
+        return get_class($this) . ': [name=' . $this->name . ']';
     }
 
 

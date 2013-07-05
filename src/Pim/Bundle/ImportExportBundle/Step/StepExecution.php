@@ -1,6 +1,15 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle;                                        
+namespace Pim\Bundle\ImportExportBundle\Step;
+
+use Pim\Bundle\ImportExportBundle\Job\JobExecution;
+
+use Pim\Bundle\ImportExportBundle\Job\BatchStatus;
+use Pim\Bundle\ImportExportBundle\Job\ExitStatus;
+
+use Pim\Bundle\ImportExportBundle\Item\ExecutionContext;
+
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * 
@@ -17,6 +26,8 @@ namespace Pim\Bundle\ImportExportBundle;
  */
 class StepExecution
 {
+    private $id;
+
     /* @var JobExecution $jobExecution */
     private $jobExecution = null;
 
@@ -45,12 +56,18 @@ class StepExecution
 
     private $lastUpdated;
 
+    /* @var ExecutionContext $executionContext */
+    private $executionContext;
+
+    /* @var ExitStatus $existStatus */
+    private $exitStatus = null;
+
     private $terminateOnly;
 
-    private $filterCount;
+    private $filterCount = 0;
 
     /* @var ArrayCollection $failureExceptions */
-    private $failureExceptions;
+    private $failureExceptions = null;
 
     /**
      * Constructor with mandatory properties.
@@ -64,13 +81,39 @@ class StepExecution
         $this->jobExecution = $jobExecution;
         $jobExecution->addStepExecution($this);
 
-        if ($status == null) {
-            $status = new BatchStatus(BatchStatus::STARTING);
-        }
-        $this->failureExceptions = new ArrayList();
+        $this->status = new BatchStatus(BatchStatus::STARTING);
+        $this->exitStatus = new ExitStatus(ExitStatus::EXECUTING);
 
-        $this->startTime = now();
+        $this->failureExceptions = new ArrayCollection();
+
+        $this->executionContext = new ExecutionContext();
+
+        $this->startTime = time();
     }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Returns the {@link ExecutionContext} for this execution
+     *
+     * @return ExecutionContext with its attributes
+     */
+    public function getExecutionContext() {                                           
+        return $this->executionContext;
+    }
+
+    /**
+     * Sets the {@link ExecutionContext} for this execution
+     *
+     * @param executionContext the attributes
+     */
+    public function setExecutionContext(ExecutionContext $executionContext) {
+        $this->executionContext = $executionContext;
+    }
+
 
     /**
      * Returns the current number of commits for this execution
@@ -183,6 +226,22 @@ class StepExecution
     }
 
     /**
+     * @return flag to indicate that an execution should halt
+     */
+    public function isTerminateOnly() {
+        return $this->terminateOnly;
+    }
+
+    /**
+     * Set a flag that will signal to an execution environment that this
+     * execution (and its surrounding job) wishes to exit.
+     */
+    public function setTerminateOnly() {
+        $this->terminateOnly = true;
+    }
+
+
+    /**
      * Setter for number of rollbacks for this execution
      */
     public function setRollbackCount($rollbackCount)
@@ -237,7 +296,7 @@ class StepExecution
      *
      * @param status the new status value
      */
-    public function upgradeStatus(BatchStatus $status)
+    public function upgradeStatus($status)
     {
         $this->status = $this->status->upgradeTo($status);
     }
@@ -251,6 +310,20 @@ class StepExecution
     }
 
     /**
+     * @param exitStatus
+     */
+    public function setExitStatus(ExitStatus $exitStatus) {
+        $this->exitStatus = $exitStatus;
+    }
+
+    /**
+     * @return the exitCode
+     */
+    public function getExitStatus() {                                                       
+        return $this->exitStatus;
+    }
+
+    /**
      * Accessor for the execution context information of the enclosing job.
      *
      * @return the that was used to start this step execution.
@@ -259,6 +332,15 @@ class StepExecution
     public function getJobExecution() {
         return $this->jobExecution;
     }
+
+    public function getFailureExceptions() {
+        return $this->failureExceptions;
+    }
+
+    public function addFailureException(\Exception $e) {
+        $this->failureExceptions->add($e);
+    }
+
 
     public function __toString() {
         return $this->getSummary();
@@ -270,7 +352,7 @@ class StepExecution
             + ", processSkipCount=%d, commitCount=%d, rollbackCount=%d",
             $this->stepName,
             $this->status->getValue(),
-            $this->exitStatus->getValue(),
+            $this->exitStatus->getExitCode(),
             $this->readCount,
             $this->filterCount,
             $this->writeCount,

@@ -2,6 +2,8 @@
                                                                                 
 namespace Pim\Bundle\ImportExportBundle\Job;
 
+use Pim\Bundle\ImportExportBundle\Step\StepInterface;
+
 /**
  * Strategy interface for handling a {@link Step} on behalf of a {@link Job}.
  * 
@@ -32,7 +34,7 @@ interface StepHandlerInterface
      * @see Job#execute(JobExecution)
      * @see Step#execute(StepExecution)
      */
-    public function handleStep(Step $step, JobExecution $jobExecution);
+    public function handleStep(StepInterface $step, JobExecution $jobExecution);
 
 
 }

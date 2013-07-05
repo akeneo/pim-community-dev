@@ -2,6 +2,12 @@
 
 namespace Pim\Bundle\ImportExportBundle\Job;
 
+use Pim\Bundle\ImportExportBundle\Step\StepInterface;
+
+use Pim\Bundle\ImportExportBundle\Logger;
+
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * 
  * Simple implementation of {@link Job} interface providing the ability to run a
@@ -23,8 +29,8 @@ class SimpleJob extends AbstractJob
 
     public function __construct($name = "")
     {
-        parent($name);
-        $steps = new ArrayCollection();
+        parent::__construct($name);
+        $this->steps = new ArrayCollection();
     }
 
     /**
@@ -58,7 +64,7 @@ class SimpleJob extends AbstractJob
      *
      * @param step a {@link Step} to add
      */
-    public function addStep(Step $step)
+    public function addStep(StepInterface $step)
     {
         $this->steps->add($step);
     }
@@ -97,7 +103,7 @@ class SimpleJob extends AbstractJob
 
         foreach ($this->steps as $step) {
             $stepExecution = $this->handleStep($step, $execution);
-            if ($stepExecution.getStatus()->getValue() != BatchStatus.COMPLETED) {
+            if ($stepExecution->getStatus()->getValue() != BatchStatus::COMPLETED) {
                 //
                 // Terminate the job if a step fails
                 //
@@ -109,7 +115,7 @@ class SimpleJob extends AbstractJob
         // Update the job status to be the same as the last step
         //
         if ($stepExecution != null) {
-            $this->logger->debug("Upgrading JobExecution status: " . $stepExecution);
+            Logger::debug("Upgrading JobExecution status: " . $stepExecution);
             $execution->upgradeStatus($stepExecution->getStatus()->getValue());
             $execution->setExitStatus($stepExecution->getExitStatus());
         }

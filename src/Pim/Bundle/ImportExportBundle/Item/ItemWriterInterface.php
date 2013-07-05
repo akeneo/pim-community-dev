@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle;
+namespace Pim\Bundle\ImportExportBundle\Item;
 
 /**
  * 
@@ -23,17 +23,17 @@ namespace Pim\Bundle\ImportExportBundle;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-public interface ItemReaderInterface
+interface ItemWriterInterface
 {
     /**
      * Process the supplied data element. Will not be called with any null items
      * in normal operation.
      *
-     * @param ArrayList items The list of items to write
-     * FIXME: ArrayList is not maybe the best structure to hold the items. Investigate this point.
+     * @param array items The list of items to write
+     * FIXME: array is not maybe the best structure to hold the items. Investigate this point.
      * 
      * @throws Exception if there are errors. The framework will catch the
      * exception and convert or rethrow it as appropriate.
      */
-    public function write(ArrayList $items);
+    public function write(array $items);
 }

@@ -1,7 +1,9 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle;                                        
+namespace Pim\Bundle\ImportExportBundle\Job;
 
+use Pim\Bundle\ImportExportBundle\Step\StepExecution;
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * 
  * Batch domain object representing the execution of a job
@@ -15,9 +17,11 @@ namespace Pim\Bundle\ImportExportBundle;
  */
 class JobExecution
 {
-    //private final JobParameters jobParameters;
+    /* @var JobParameters $jobParameters */
+    private $jobParameters;
 
-//    private JobInstance jobInstance;
+    /* @var JobInstance $jobInstance */
+    private $jobInstance;
    
     // Collection of StepExecution
     /* @var ArrayCollection $stepExecutions */
@@ -32,9 +36,9 @@ class JobExecution
 
     private $endTime = null;
 
-    //private volatile Date lastUpdated = null;
+    private $lastUpdated = null;
 
-    //private volatile ExitStatus exitStatus = ExitStatus.UNKNOWN;
+    private $exitStatus = null;
 
     //private volatile ExecutionContext executionContext = new ExecutionContext();
 
@@ -42,9 +46,73 @@ class JobExecution
 
     public function __construct()
     {
-        $this->batchStatus = new BatchStatus(BatchStatus::STARTING);
+        $this->status = new BatchStatus(BatchStatus::STARTING);
+        $this->exitStatus = new ExitStatus(ExitStatus::UNKNOWN);
         $this->stepExecutions = new ArrayCollection();
-        $this->createTime = now();
+        $this->createTime = time();
+    }
+
+    public function getJobParameters() {
+        return $this->jobParameters;
+    }
+
+    public function getEndTime() {
+        return $this->endTime;
+    }
+/*
+    public void setJobInstance(JobInstance jobInstance) {
+        this.jobInstance = jobInstance;
+    }
+*/
+
+    public function setEndTime($endTime) {
+        $this->endTime = $endTime;
+    }
+
+    public function getStartTime() {
+        return $startTime;
+    }
+
+    public function setStartTime($startTime) {
+        $this->startTime = $startTime;
+    }
+
+    public function getStatus() {
+        return $this->status;
+    }
+
+    /**
+     * Set the value of the status field.
+     *
+     * @param status the status to set
+     */
+    public function setStatus(BatchStatus $status) {
+        $this->status = $status;
+    }
+
+    /**
+     * Upgrade the status field if the provided value is greater than the
+     * existing one. Clients using this method to set the status can be sure
+     * that they don't overwrite a failed status with an successful one.
+     *
+     * @param status the new status value
+     */
+    public function upgradeStatus($status) {                                           
+        $this->status = $this->status->upgradeTo($status);
+    }
+
+    /**
+     * @param exitStatus
+     */
+    public function setExitStatus(ExitStatus $exitStatus) {
+        $this->exitStatus = $exitStatus;
+    }
+
+    /**
+     * @return the exitStatus
+     */
+    public function getExitStatus() {
+        return $this->exitStatus;
     }
 
     /**
@@ -77,7 +145,7 @@ class JobExecution
      * @return true if the end time is null
      */
     public function isRunning() {
-        return $endTime == null;
+        return $this->endTime == null;
     }
 
     /**
@@ -86,7 +154,7 @@ class JobExecution
      * @return true if the status is BatchStatus::STOPPING
      */
     public function isStopping() {
-        return $status->getValue() == BatchStatus::STOPPING;
+        return $this->status->getValue() == BatchStatus::STOPPING;
     }
 
     /**
@@ -95,10 +163,10 @@ class JobExecution
      *
      */
     public function stop() {
-        foreach ($stepExecutions as $stepExecution) {
+        foreach ($this->stepExecutions as $stepExecution) {
             $stepExecution->setTerminateOnly();
         }
-        $status = new BatchStatus(BatchStatus::STOPPING);
+        $this->status = new BatchStatus(BatchStatus::STOPPING);
     }
 
     /*
@@ -121,7 +189,7 @@ class JobExecution
      * @param stepExecution
      */
     public function addStepExecution(StepExecution $stepExecution) {
-        $this->stepExecutions->add(stepExecution);
+        $this->stepExecutions->add($stepExecution);
     }
 
     /**
@@ -144,14 +212,22 @@ class JobExecution
      */
 
     public function __toString() {
-        return sprintft(", startTime=%s, endTime=%s, lastUpdated=%s, status=%s, exitStatus=%s, job=[%s], jobParameters=[%s]",
-                        $this->startTime,
-                        $this->endTime,
-                        $this->lastUpdated,
-                        $this->status,
-                        $this->exitStatus,
-                        $this->jobInstance,
-                        $this->jobParameters);
+        $string = "";
+        try {
+            $string = sprintf("startTime=%s, endTime=%s, lastUpdated=%s, status=%s, exitStatus=%s, job=[%s], jobParameters=[%s]",
+                $this->startTime,
+                $this->endTime,
+                $this->lastUpdated,
+                $this->status,
+                $this->exitStatus,
+                $this->jobInstance,
+                $this->jobParameters
+            );
+        } catch (\Exception $e) {
+            $string = $e->getMessage();
+            echo $e->getTraceAsString();
+        }
+        return $string;
     }
 }
 

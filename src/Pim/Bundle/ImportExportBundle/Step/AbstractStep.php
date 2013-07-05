@@ -2,6 +2,13 @@
                                                                                 
 namespace Pim\Bundle\ImportExportBundle\Step;
 
+use Pim\Bundle\ImportExportBundle\Job\BatchStatus;
+use Pim\Bundle\ImportExportBundle\Job\ExitStatus;
+
+use Pim\Bundle\ImportExportBundle\Item\ExecutionContext;
+
+use Pim\Bundle\ImportExportBundle\Logger;
+
 /**
  * 
  * A Step implementation that provides common behavior to subclasses, including registering and calling
@@ -16,9 +23,6 @@ namespace Pim\Bundle\ImportExportBundle\Step;
  */
 abstract class AbstractStep implements StepInterface
 {
-
-    private $logger = null;
-
     private $name;
 
 //    private CompositeStepExecutionListener stepExecutionListener = new CompositeStepExecutionListener();
@@ -28,7 +32,8 @@ abstract class AbstractStep implements StepInterface
     /**
      * @{inherit}
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
@@ -36,7 +41,13 @@ abstract class AbstractStep implements StepInterface
      * Set the name property
      *
      */
-    public function setName($name) {
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    public function __construct($name)
+    {
         $this->name = $name;
     }
 
@@ -55,9 +66,10 @@ abstract class AbstractStep implements StepInterface
      *
      * @param ctx the {@link ExecutionContext} to use
      * @throws Exception
-    protected void open(ExecutionContext ctx) throws Exception {
-    }
      */
+    protected function open(ExecutionContext $ctx)
+    {
+    }
 
     /**
      * Extension point for subclasses to provide callbacks to their collaborators at the end of a step (right at the end
@@ -65,9 +77,10 @@ abstract class AbstractStep implements StepInterface
      *
      * @param ctx the {@link ExecutionContext} to use
      * @throws Exception
-    protected void close(ExecutionContext ctx) throws Exception {
-    }
      */
+    protected function close(ExecutionContext $ctx)
+    {
+    }
 
 
 
@@ -83,9 +96,9 @@ abstract class AbstractStep implements StepInterface
      */
     public final function execute(StepExecution $stepExecution)
     {
-        $this->logger->debug("Executing: id=" . $stepExecution->getId());
+        Logger::debug("Executing: id=" . $stepExecution->getId());
 
-        $stepExecution->setStartTime(now());
+        $stepExecution->setStartTime(time());
         $stepExecution->setStatus(new BatchStatus(BatchStatus::STARTED));
 
         //FIXME: persist stepExecution getJobRepository().update(stepExecution);
@@ -103,7 +116,7 @@ abstract class AbstractStep implements StepInterface
 //            catch (RepeatException e) {
             
             $exitStatus = new ExitStatus(ExitStatus::COMPLETED);
-            $exitStatus->and($stepExecution->getExitStatus());
+            $exitStatus->logicalAnd($stepExecution->getExitStatus());
 
             // Check if someone is trying to stop us
             if ($stepExecution->isTerminateOnly()) {
@@ -112,32 +125,32 @@ abstract class AbstractStep implements StepInterface
 
             // Need to upgrade here not set, in case the execution was stopped
             $stepExecution->upgradeStatus(BatchStatus::COMPLETED);
-            $this->logger->debug("Step execution success: id=" . $stepExecution->getId());
+            Logger::debug("Step execution success: id=" . $stepExecution->getId());
         }
         catch (\Exception $e) {
             $stepExecution->upgradeStatus($this->determineBatchStatus($e));
 
-            $exitStatus = $exitStatus->and($this->getDefaultExitStatusForFailure($e));
+            $exitStatus = $exitStatus->logicalAnd($this->getDefaultExitStatusForFailure($e));
 
-            $stepExecution->addFailureException(e);
+            $stepExecution->addFailureException($e);
 
             if ($stepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
-                $this->logger->info("Encountered interruption executing step: " . $e->getMessage());
-                $this->logger->debug("Full exception", $e);
+                Logger::info("Encountered interruption executing step: " . $e->getMessage());
+                Logger::debug("Full exception", $e);
             } else {
-                $this->logger->error("Encountered an error executing the step", $e);
+                Logger::error("Encountered an error executing the step", $e);
             }
         }
 
         try {
             // Update the step execution to the latest known value so the
             // listeners can act on it
-            $exitStatus = $exitStatus->and(stepExecution.getExitStatus());
+            $exitStatus = $exitStatus->logicalAnd($stepExecution->getExitStatus());
             $stepExecution->setExitStatus($exitStatus);
 //            $exitStatus = $exitStatus->and($this->getCompositeListener()->afterStep($stepExecution));
         }
         catch (Exception $e) {
-            $this->logger->error("Exception in afterStep callback", $e);
+            Logger::error("Exception in afterStep callback", $e);
         }
 
         try {
@@ -147,11 +160,11 @@ abstract class AbstractStep implements StepInterface
             $stepExecution->setStatus(new BatchStatus(BatchStatus::UNKNOWN));
             $exitStatus = $exitStatus->and(ExitStatus::UNKNOWN);
             $stepExecution->addFailureException($e);
-            $this->logger->error("Encountered an error saving batch meta data. "
+            Logger::error("Encountered an error saving batch meta data. "
                     . "This job is now in an unknown state and should not be restarted.", $e);
         }
 
-        $stepExecution->setEndTime(now);
+        $stepExecution->setEndTime(time());
         $stepExecution->setExitStatus($exitStatus);
 
         try {
@@ -161,21 +174,21 @@ abstract class AbstractStep implements StepInterface
             $stepExecution->setStatus(new BatchStatus(BatchStatus::UNKNOWN));
             $stepExecution->setExitStatus($exitStatus->and(ExitStatus::UNKNOWN));
             $stepExecution->addFailureException($e);
-            $this->logger->error("Encountered an error saving batch meta data. "
+            Logger::error("Encountered an error saving batch meta data. "
                     . "This job is now in an unknown state and should not be restarted.", $e);
         }
 
         try {
-            $this->close($stepExecution.getExecutionContext());
+            $this->close($stepExecution->getExecutionContext());
         }
         catch (Exception $e) {
-            $this->logger->error("Exception while closing step execution resources", $e);
+            Logger::error("Exception while closing step execution resources", $e);
             $stepExecution.addFailureException(e);
         }
 
         //StepSynchronizationManager.release();
 
-        $this->logger->debug("Step execution complete: " . $stepExecution->getSummary());
+        Logger::debug("Step execution complete: " . $stepExecution->getSummary());
     }
 
 
@@ -203,7 +216,7 @@ abstract class AbstractStep implements StepInterface
     {
         $exitStatus = new ExitStatus();
 
-        if ($e instanceof JobInterruptedException || $e.getPrevious() instanceof JobInterruptedException) {
+        if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             $exitStatus = new ExitStatus(ExitStatus::STOPPED);
             $exitStatus->addExitDescription(get_class(JobInterruptedException));
         }

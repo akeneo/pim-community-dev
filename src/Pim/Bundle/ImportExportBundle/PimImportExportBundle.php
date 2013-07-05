@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle;
 
+use Symfony\Component\HttpKernel\Bundle\Bundle;
+
 /**
  * Import Export Bundle
  *

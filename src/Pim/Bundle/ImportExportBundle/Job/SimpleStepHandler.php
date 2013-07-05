@@ -2,6 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle\Job;
 
+use Pim\Bundle\ImportExportBundle\Step\StepInterface;
+
+use Pim\Bundle\ImportExportBundle\Logger;
+
 /**
  * Implementation of {@link StepHandler} that manages repository and restart
  * concerns.
@@ -13,10 +17,8 @@ namespace Pim\Bundle\ImportExportBundle\Job;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class SimpleStepHandler implements StepHandler
+class SimpleStepHandler implements StepHandlerInterface
 {
-    private $logger = null;
-
     /* @var JobRepository $jobRepository */
     private $jobRepository = null;
 
@@ -27,8 +29,11 @@ class SimpleStepHandler implements StepHandler
      * @param jobRepository
      * @param executionContext
      */
-    public function __construct(JobRepository $jobRepository, ExecutionContext $executionContext) {
+    public function __construct(JobRepository $jobRepository, ExecutionContext $executionContext = null) {
         $this->jobRepository = $jobRepository;
+        if ($executionContext = null) {
+            $executionContext = new ExecutionContext();
+        }
         $this->executionContext = $executionContext;
     }
 
@@ -54,13 +59,13 @@ class SimpleStepHandler implements StepHandler
      * @throws JobRestartException
      * @throws StartLimitExceededException
      */
-    public function handleStep(Step $step, JobExecution $execution)
+    public function handleStep(StepInterface $step, JobExecution $execution)
     {
         if ($execution->isStopping()) {
             throw new JobInterruptedException("JobExecution interrupted.");
         }
 
-        $currentStepExecution = $execution->createStepExecution(step.getName());
+        $currentStepExecution = $execution->createStepExecution($step->getName());
 
 
 /*        JobInstance jobInstance = execution.getJobInstance();
@@ -90,27 +95,28 @@ class SimpleStepHandler implements StepHandler
             }
 
             jobRepository.add(currentStepExecution);
-
-            logger.info("Executing step: [" + step.getName() + "]");
+*/
+            Logger::info("Executing step: [" . $step->getName() . "]");
             try {
-                step.execute(currentStepExecution);
+                $step->execute($currentStepExecution);
             }
-            catch (JobInterruptedException e) {
+            catch (JobInterruptedException $e) {
                 // Ensure that the job gets the message that it is stopping
                 // and can pass it on to other steps that are executing
                 // concurrently.
-                execution.setStatus(BatchStatus.STOPPING);
-                throw e;
+                $this->execution->setStatus(new BatchStatus(BatchStatus::STOPPING));
+                throw $e;
             }
 
-            jobRepository.updateExecutionContext(execution);
+//            jobRepository.updateExecutionContext(execution);
 
-            if (currentStepExecution.getStatus() == BatchStatus.STOPPING
-                    || currentStepExecution.getStatus() == BatchStatus.STOPPED) {
+            if ($currentStepExecution->getStatus()->getValue() == BatchStatus::STOPPING
+                    || $currentStepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
                 // Ensure that the job gets the message that it is stopping
-                execution.setStatus(BatchStatus.STOPPING);
+                $this->execution->setStatus(new BatchStatus(BatchStatus::STOPPING));
                 throw new JobInterruptedException("Job interrupted by step execution");
             }
+            /*
 
         }
         else {
@@ -118,7 +124,7 @@ class SimpleStepHandler implements StepHandler
         }
 */
 
-        return currentStepExecution;
+        return $currentStepExecution;
     }
 
     /**

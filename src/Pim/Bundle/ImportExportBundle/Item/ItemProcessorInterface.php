@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle;
+namespace Pim\Bundle\ImportExportBundle\Item;
 
 /**
  * 
@@ -17,7 +17,7 @@ namespace Pim\Bundle\ImportExportBundle;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-public interface ItemProcessorInterface
+interface ItemProcessorInterface
 {
     /**
      * Process the provided item, returning a potentially modified or new item for continued

@@ -13,7 +13,7 @@ namespace Pim\Bundle\ImportExportBundle\Job;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class BatchStatus
+class ExitStatus
 {
     /**
      * Convenient constant value representing unknown state - assumed not
@@ -44,7 +44,7 @@ class BatchStatus
     /**
      * Convenient constant value representing finished processing with an error.
      */
-    const FAILED = "FAILED"
+    const FAILED = "FAILED";
 
     /**
      * Convenient constant value representing finished processing with
@@ -128,7 +128,7 @@ class BatchStatus
      * @return a new {@link ExitStatus} combining the current value and the
      * argument provided.
      */
-    public function and(ExitStatus $status)
+    public function logicalAnd(ExitStatus $status)
     {
         if ($status != null) {
             $this->addExitDescription($status->exitDescription);
@@ -160,7 +160,7 @@ class BatchStatus
      *
      * @return severity
      */
-    private int severity() {
+    private function severity() {
         $severity = 7;
 
         if (array_key_exists($this->exitCode, self::$statusSeverity)) {
@@ -175,7 +175,7 @@ class BatchStatus
      */
     public function __toString()
     {
-        return self::$statusLabels[$this->value];
+        return sprintf('[%s] %s', $this->exitCode, $this->exitDescription);
     }
 
     /**
@@ -207,7 +207,7 @@ class BatchStatus
             $this->description .= ';'.$description;
         }
 
-        return $this
+        return $this;
     }
 
 
