@@ -72,16 +72,11 @@ class TagController extends Controller
     }
 
     /**
-     * @Route(
-     *      "/{_format}",
-     *      name="oro_tag_view",
-     *      requirements={"_format"="html|json"},
-     *      defaults={"_format" = "html"}
-     * )
+     *@Route("/search/{id}", name="oro_tag_search", requirements={"id"="\d+"}, defaults={"id"=0})
      * @AclAncestor("oro_tag_grid_and_edit")
      * @Template
      */
-    public function viewAction()
+    public function searchAction(Tag $entity)
     {
         return array();
     }

@@ -12,13 +12,13 @@ class TagListenerTest extends \PHPUnit_Framework_TestCase
     private $listener;
 
     /**
-     * @var \DoctrineExtensions\Taggable\Taggable
+     * @var \Oro\Bundle\TagBundle\Entity\Taggable
      */
     private $resource;
 
     public function setUp()
     {
-        $this->resource = $this->getMock('DoctrineExtensions\Taggable\Taggable');
+        $this->resource = $this->getMock('Oro\Bundle\TagBundle\Entity\Taggable');
     }
 
     /**

@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\TagBundle\Datagrid;
 
-use Doctrine\ORM\QueryBuilder;
-
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -21,7 +19,7 @@ class TagDatagridManager extends DatagridManager
     protected function getProperties()
     {
         return array(
-            new UrlProperty('view_link', $this->router, 'oro_tag_view', array('id')),
+            new UrlProperty('search_link', $this->router, 'oro_tag_search', array('id')),
             new UrlProperty('update_link', $this->router, 'oro_tag_update', array('id')),
             new UrlProperty('delete_link', $this->router, 'oro_api_delete_tag', array('id')),
         );
@@ -87,20 +85,20 @@ class TagDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'oro_tag_grid_and_edit',
             'options'      => array(
-                'label'         => $this->translate('View'),
-                'link'          => 'view_link',
+                'label'         => $this->translate('Search by tag'),
+                'link'          => 'search_link',
                 'runOnRowClick' => true,
             )
         );
 
         $viewAction = array(
-            'name'         => 'view',
+            'name'         => 'search',
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'oro_tag_grid_and_edit',
             'options'      => array(
-                'label' => $this->translate('View'),
-                'icon'  => 'user',
-                'link'  => 'view_link',
+                'label' => $this->translate('Search by tag'),
+                'icon'  => 'search',
+                'link'  => 'search_link',
             )
         );
 

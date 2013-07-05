@@ -4,8 +4,6 @@ namespace Oro\Bundle\TagBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-use FPN\TagBundle\Entity\Tagging as BaseTagging;
-
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
@@ -15,7 +13,7 @@ use Oro\Bundle\UserBundle\Entity\User;
  * )
  * @ORM\Entity
  */
-class Tagging extends BaseTagging
+class Tagging
 {
     /**
      * @var integer $id
@@ -39,6 +37,109 @@ class Tagging extends BaseTagging
     protected $user;
 
     /**
+     * @var \Datetime $created
+     *
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+
+    /**
+     * @var \Datetime $updated
+     *
+     * @ORM\Column(type="datetime")
+     */
+    protected $updated;
+
+    /**
+     * @var string
+     * @ORM\Column(name="resource_type", type="string", length=100)
+     */
+    protected $resourceType;
+
+    /**
+     * @var int
+     *@ORM\Column(name="resource_id", type="integer")
+     */
+    protected $resourceId;
+
+    /**
+     * Constructor
+     */
+    public function __construct(Tag $tag = null, Taggable $resource = null)
+    {
+        if ($tag != null) {
+            $this->setTag($tag);
+        }
+
+        if ($resource != null) {
+            $this->setResource($resource);
+        }
+
+        $this->setCreated(new \DateTime('now'));
+        $this->setUpdated(new \DateTime('now'));
+    }
+
+    /**
+     * Returns tagging id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Sets the tag object
+     *
+     * @param Tag $tag Tag to set
+     */
+    public function setTag(Tag $tag)
+    {
+        $this->tag = $tag;
+    }
+
+    /**
+     * Returns the tag object
+     *
+     * @return Tag
+     */
+    public function getTag()
+    {
+        return $this->tag;
+    }
+
+    /**
+     * Sets the resource
+     *
+     * @param Taggable $resource Resource to set
+     */
+    public function setResource(Taggable $resource)
+    {
+        $this->resourceType = get_class($resource);
+        $this->resourceId = $resource->getTaggableId();
+    }
+
+    /**
+     * Returns the tagged resource type
+     *
+     * @return string
+     */
+    public function getResourceType()
+    {
+        return $this->resourceType;
+    }
+
+    /**
+     * Returns the tagged resource id
+     *
+     * @return int
+     */
+    public function getResourceId()
+    {
+        return $this->resourceId;
+    }
+    /**
      * Return tag relation owner user
      *
      * @return User
@@ -59,5 +160,51 @@ class Tagging extends BaseTagging
         $this->user = $user;
 
         return $this;
+    }
+
+    /**
+     * Set created date
+     *
+     * @param \DateTime $date
+     * @return $this
+     */
+    public function setCreated(\DateTime $date)
+    {
+        $this->created = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get created date
+     *
+     * @return \Datetime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set updated date
+     *
+     * @param \DateTime $date
+     * @return $this
+     */
+    public function setUpdated(\DateTime $date)
+    {
+        $this->updated = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get updated date
+     *
+     * @return \Datetime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
     }
 }

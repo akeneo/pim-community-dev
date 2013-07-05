@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\UserBundle\Entity;
 
-use DoctrineExtensions\Taggable\Doctrine;
-use DoctrineExtensions\Taggable\Taggable;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -21,6 +19,7 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 
+use Oro\Bundle\TagBundle\Entity\Taggable;
 use Oro\Bundle\UserBundle\Entity\Status;
 use Oro\Bundle\UserBundle\Entity\Email;
 use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
@@ -1118,16 +1117,6 @@ class User extends AbstractEntityFlexible implements
         $suffix = $this->getCreatedAt() ? $this->getCreatedAt()->format('Y-m') : date('Y-m');
 
         return 'uploads' . $ds . 'users' . $ds . $suffix;
-    }
-
-    /**
-     * Returns the unique taggable resource type
-     *
-     * @return string
-     */
-    public function getTaggableType()
-    {
-        return 'oro_user';
     }
 
     /**

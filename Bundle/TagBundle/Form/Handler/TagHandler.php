@@ -41,8 +41,8 @@ class TagHandler
     /**
      * Process form
      *
-     * @param  Tag $entity
-     * @return bool  True on successfull processing, false otherwise
+     * @param  Tag  $entity
+     * @return bool True on successfull processing, false otherwise
      */
     public function process(Tag $entity)
     {
