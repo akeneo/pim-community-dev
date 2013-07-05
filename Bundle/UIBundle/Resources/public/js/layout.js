@@ -2,7 +2,7 @@ $(document).ready(function () {
     initLayout();
 
     /* hide progress bar on page ready*/
-    if (window.location.hash === '') {
+    if (window.location.hash === '' || !Oro.hashNavigationEnabled()) {
         document.title = $('#page-title').text();
         hideProgressBar();
     }
