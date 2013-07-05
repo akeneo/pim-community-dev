@@ -21,11 +21,27 @@ class RestDataAuditApiTest extends WebTestCase
         $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
     }
 
+    public function tearDown()
+    {
+        unset($this->client);
+    }
+
     /**
      * @return array
      */
     public function testPreconditions()
     {
+        //clear Audits
+        $this->client->request('GET', $this->client->generate('oro_api_get_audits'));
+        $result = $this->client->getResponse();
+        ToolsAPI::assertJsonResponse($result, 200);
+        $result = ToolsAPI::jsonToArray($result->getContent());
+        foreach ($result as $audit) {
+            $this->client->request('DELETE', $this->client->generate('oro_api_delete_audit', array('id' => $audit['id'])));
+            $result = $this->client->getResponse();
+            ToolsAPI::assertJsonResponse($result, 204);
+        }
+
         //create users
         $request = array(
             "user" => array (
@@ -57,36 +73,51 @@ class RestDataAuditApiTest extends WebTestCase
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
         $result = ToolsAPI::jsonToArray($result->getContent());
+        $resultExpected = reset($result);
+        $this->assertEquals($resultExpected['action'], 'create');
+        $this->assertEquals($resultExpected['object_class'], 'Oro\Bundle\UserBundle\Entity\User');
+        $this->assertEquals($resultExpected['object_name'], $response['user']['username']);
+        $this->assertEquals($resultExpected['user'], 'admin');
+        $this->assertEquals($resultExpected['data']['username']['new'], $response['user']['username']);
+        $this->assertEquals($resultExpected['data']['email']['new'], $response['user']['email']);
+        $this->assertEquals($resultExpected['data']['enabled']['new'], $response['user']['enabled']);
+        $this->assertEquals($resultExpected['data']['roles']['new'], 'User');
 
         return $result;
     }
 
     /**
      * @param  array $response
-     * @return array
      * @depends testGetAudits
      */
     public function testGetAudit($response)
     {
-        $this->client->request('GET', $this->client->generate('oro_api_get_audit', array('id' => $response[0]['id'])));
-        $result = $this->client->getResponse();
-        ToolsAPI::assertJsonResponse($result, 200);
-        $result = ToolsAPI::jsonToArray($result->getContent());
-
-        return $result;
+        foreach ($response as $audit) {
+            $this->client->request('GET', $this->client->generate('oro_api_get_audit', array('id' => $audit['id'])));
+            $result = $this->client->getResponse();
+            ToolsAPI::assertJsonResponse($result, 200);
+            $result = ToolsAPI::jsonToArray($result->getContent());
+            unset($result['loggedAt']);
+            unset($audit['loggedAt']);
+            $this->assertEquals($audit, $result);
+        }
     }
 
     /**
      * @param array $response
-     * @depends testGetAudit
+     * @depends testGetAudits
      */
     public function testDeleteAudit($response)
     {
-        $this->client->request('DELETE', $this->client->generate('oro_api_delete_audit', array('id' => $response['id'])));
+        foreach ($response as $audit) {
+            $this->client->request('DELETE', $this->client->generate('oro_api_delete_audit', array('id' => $audit['id'])));
+            $result = $this->client->getResponse();
+            ToolsAPI::assertJsonResponse($result, 204);
+        }
+        $this->client->request('GET', $this->client->generate('oro_api_get_audits'));
         $result = $this->client->getResponse();
-        ToolsAPI::assertJsonResponse($result, 204);
-        $this->client->request('GET', $this->client->generate('oro_api_get_audit', array('id' => $response['id'])));
-        $result = $this->client->getResponse();
-        ToolsAPI::assertJsonResponse($result, 404);
+        ToolsAPI::assertJsonResponse($result, 200);
+        $result = ToolsAPI::jsonToArray($result->getContent());
+        $this->assertEmpty($result);
     }
 }
