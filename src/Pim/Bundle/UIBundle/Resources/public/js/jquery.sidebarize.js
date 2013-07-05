@@ -59,11 +59,11 @@
     }
 
     function prepareControls($element, opts) {
-        var $controls = $('<div>').addClass('sidebar-controls').css(opts.controlsCss).height(opts.controlsHeight);
+        var $controls = $('<div>', { class: 'sidebar-controls', css: opts.controlsCss, height: opts.controlsHeight });
 
-        var $collapseButton = $('<i>').addClass(opts.collapseIcon).on('click', function() {
+        var $collapseButton = $('<i>', { class: opts.collapseIcon, css: opts.iconCss }).on('click', function() {
             collapse($element, opts);
-        }).appendTo($controls).css({ 'float': 'right', 'margin-top': 3 });
+        }).appendTo($controls);
 
         var $sidebar = $element.children().first();
         if (opts.controlsPosition === 'top') {
@@ -72,8 +72,8 @@
             $sidebar.append($controls);
         }
 
-        var $separator = $('<div>').addClass('sidebar-separator expanded').css(opts.separatorCss);
-        $separator.height('100%').insertAfter($sidebar).on('dblclick', function() {
+        var $separator = $('<div>', { class: 'sidebar-separator expanded', css: opts.separatorCss, height: '100%' });
+        $separator.insertAfter($sidebar).on('dblclick', function() {
             if ($(this).hasClass('collapsed')) {
                 expand($element, opts);
             } else {
@@ -81,9 +81,9 @@
             }
         });
 
-        var $expandButton = $('<i>').addClass(opts.expandIcon).on('click', function() {
+        var $expandButton = $('<i>', { class: opts.expandIcon, css: opts.iconCss }).on('click', function() {
             expand($element, opts);
-        }).css({ 'position': 'absolute' }).appendTo($separator).hide();
+        }).appendTo($separator).hide();
 
         if (opts.controlsPosition === 'top') {
             $expandButton.css('top', 5);
@@ -92,7 +92,8 @@
         }
 
         for (var i in opts.buttons) {
-            $(opts.buttons[i]).css({ 'float': 'left' }).appendTo($controls);
+            $(opts.buttons[i]).children('.dropdown-toggle').css(opts.buttonsCss);
+            $(opts.buttons[i]).css(opts.buttonsCss).appendTo($controls);
         }
     }
 
@@ -116,11 +117,10 @@
             $element.addClass('sidebarized');
             $content.addClass('content pull-left');
 
-            $sidebar = $sidebar.wrap($('<div>').addClass('sidebar-content')).parent().css('overflow', 'auto');
-            $sidebar = $sidebar.wrap($('<div>').addClass('sidebar pull-left')).parent();
+            $sidebar = $sidebar.wrap($('<div>', { class: 'sidebar-content' })).parent().css('overflow', 'auto');
+            $sidebar = $sidebar.wrap($('<div>', { class: 'sidebar pull-left' })).parent().height('100%');
 
-            $sidebar.height('100%');
-            $content.height('100%').css({ 'overflow-y': 'auto', 'margin-left': '0' });
+            $content.css({ 'height': '100%', 'overflow-y': 'auto', 'margin-left': '0' });
 
             prepareControls($element, opts);
 
@@ -144,14 +144,25 @@
 
     $.fn.sidebarize.defaults = {
         sidebarPercentage: 15,
-        controlsHeight: 22,
+        controlsHeight: 25,
         controlsPosition: 'top',
         heightCompensator: 2,
-        collapseIcon: 'icon-chevron-left',
-        expandIcon: 'icon-chevron-right',
+        collapseIcon: 'fa-icon-chevron-left',
+        expandIcon: 'fa-icon-chevron-right',
         controlsCss: {
             'border': '1px solid #ddd',
             'text-align': 'right'
+        },
+        iconCss: {
+            'font-weight': 'bold',
+            'font-size': 14,
+            'line-height': '20px',
+            'float': 'right',
+            'margin': '3px 6px 0'
+        },
+        buttonsCss: {
+            'float': 'left',
+            'height': '25px'
         },
         separatorWidth: 9,
         collapsedSeparatorWidth: 22,
