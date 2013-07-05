@@ -1,0 +1,105 @@
+parameters:
+    oro_address.form.type.address.class: Oro\Bundle\AddressBundle\Form\Type\AddressType
+    oro_address.form.type.address_value.class: Oro\Bundle\AddressBundle\Form\Type\AddressValueType
+    oro_address.form.type.address_collection.class: Oro\Bundle\AddressBundle\Form\Type\AddressCollectionType
+    oro_address.form.type.address_api.class: Oro\Bundle\AddressBundle\Form\Type\AddressApiType
+    oro_address.form.type.address_api_value.class: Oro\Bundle\AddressBundle\Form\Type\AddressApiValueType
+    oro_address.form.type.country.class: Oro\Bundle\AddressBundle\Form\Type\CountryType
+    oro_address.form.type.region.class: Oro\Bundle\AddressBundle\Form\Type\RegionType
+    oro_address.form.handler.address.class: Oro\Bundle\AddressBundle\Form\Handler\AddressHandler
+    oro_address.form.listener.address.class: Oro\Bundle\AddressBundle\Form\EventListener\BuildAddressFormListener
+
+services:
+    oro_address.form.type.address:
+        class: %oro_address.form.type.address.class%
+        arguments:
+            - @oro_address.address.manager.flexible
+            - "oro_address_value"
+            - @oro_address.form.listener.address
+        tags:
+             - { name: form.type, alias: oro_address }
+
+    oro_address.form.type.address_value:
+        class: %oro_address.form.type.address_value.class%
+        arguments:
+            - @oro_address.address.manager.flexible
+            - @oro_flexibleentity.value_form.value_subscriber
+        tags:
+            - { name: form.type, alias: oro_address_value }
+
+    oro_address.type.address_collection:
+        class: %oro_address.form.type.address_collection.class%
+        tags:
+             - { name: form.type, alias: oro_address_collection }
+
+    oro_address.form.type.address.api:
+        class: %oro_address.form.type.address_api.class%
+        arguments:
+            - @oro_address.address.manager.flexible
+            - "oro_address_value"
+            - @oro_address.form.listener.address
+        tags:
+            - { name: form.type, alias: address }
+
+    oro_address.form.type.address_api_value:
+        class: %oro_address.form.type.address_api_value.class%
+        arguments:
+            - @oro_address.address.manager.flexible
+            - @oro_flexibleentity.value_form.value_subscriber
+        tags:
+            - { name: form.type, alias: oro_address_api_value }
+
+    oro_address.form.type.country:
+        class: %oro_address.form.type.country.class%
+        tags:
+            - { name: form.type, alias: oro_country }
+
+    oro_address.form.type.region:
+        class: %oro_address.form.type.region.class%
+        tags:
+            - { name: form.type, alias: oro_region }
+
+    oro_address.form.type.region:
+        class: %oro_address.form.type.region.class%
+        tags:
+            - { name: form.type, alias: oro_region }
+
+    oro_address.form.address:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - "oro_address_form"
+            - "oro_address"
+            - ~
+
+    oro_address.form.address.api:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - "address"
+            - "address"
+            - ~
+
+    oro_address.form.handler.address:
+        class: %oro_address.form.handler.address.class%
+        scope: request
+        arguments:
+            - @oro_address.form.address
+            - @request
+            - @doctrine.orm.entity_manager
+
+    oro_address.form.handler.address.api:
+        class: %oro_address.form.handler.address.class%
+        scope: request
+        arguments:
+            - @oro_address.form.address.api
+            - @request
+            - @doctrine.orm.entity_manager
+
+    oro_address.form.listener.address:
+        class: %oro_address.form.listener.address.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @form.factory

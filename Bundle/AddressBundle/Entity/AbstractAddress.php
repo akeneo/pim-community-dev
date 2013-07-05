@@ -62,14 +62,6 @@ abstract class AbstractAddress extends AbstractEntityFlexible
     /**
      * @var string
      *
-     * @ORM\Column(name="state_text", type="string", length=255, nullable=true)
-     * @Soap\ComplexType("string", nillable=true)
-     */
-    protected $stateText;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="postal_code", type="string", length=20)
      * @Soap\ComplexType("string", nillable=true)
      */
@@ -92,6 +84,14 @@ abstract class AbstractAddress extends AbstractEntityFlexible
      * @Soap\ComplexType("string", nillable=true)
      */
     protected $state;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="state_text", type="string", length=255, nullable=true)
+     * @Soap\ComplexType("string", nillable=true)
+     */
+    protected $stateText;
 
     /**
      * @var string

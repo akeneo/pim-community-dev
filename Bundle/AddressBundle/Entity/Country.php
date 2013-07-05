@@ -27,7 +27,7 @@ class Country implements Translatable
      * @ORM\Column(name="iso2_code", type="string", length=2)
      * @Soap\ComplexType("string", nillable=true)
      */
-    private $iso2Code;
+    protected $iso2Code;
 
     /**
      * @var string
@@ -35,7 +35,7 @@ class Country implements Translatable
      * @ORM\Column(name="iso3_code", type="string", length=3)
      * @Soap\ComplexType("string", nillable=true)
      */
-    private $iso3Code;
+    protected $iso3Code;
 
     /**
      * @var string
@@ -44,7 +44,7 @@ class Country implements Translatable
      * @Soap\ComplexType("string", nillable=true)
      * @Gedmo\Translatable
      */
-    private $name;
+    protected $name;
 
     /**
      * @var ArrayCollection
@@ -57,12 +57,12 @@ class Country implements Translatable
      * )
      * @Exclude
      */
-    private $regions;
+    protected $regions;
 
     /**
      * @Gedmo\Locale
      */
-    private $locale;
+    protected $locale;
 
     /**
      * @param string $iso2Code ISO2 country code
