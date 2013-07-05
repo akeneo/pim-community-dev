@@ -59,18 +59,10 @@
     }
 
     function prepareControls($element, opts) {
-        var $controls = $('<div>', { class: 'sidebar-controls', css: opts.controlsCss, height: opts.controlsHeight });
-
-        var $collapseButton = $('<i>', { class: opts.collapseIcon, css: opts.iconCss }).on('click', function() {
-            collapse($element, opts);
-        }).appendTo($controls);
-
         var $sidebar = $element.children().first();
-        if (opts.controlsPosition === 'top') {
-            $sidebar.prepend($controls);
-        } else {
-            $sidebar.append($controls);
-        }
+
+        var $controls = $('<div>', { class: 'sidebar-controls', css: opts.controlsCss, height: opts.controlsHeight });
+        $controls.prependTo($sidebar);
 
         var $separator = $('<div>', { class: 'sidebar-separator expanded', css: opts.separatorCss, height: '100%' });
         $separator.insertAfter($sidebar).on('dblclick', function() {
@@ -81,20 +73,18 @@
             }
         });
 
-        var $expandButton = $('<i>', { class: opts.expandIcon, css: opts.iconCss }).on('click', function() {
+        $('<i>', { class: opts.collapseIcon, css: opts.iconCss }).on('click', function() {
+            collapse($element, opts);
+        }).appendTo($controls);
+
+        $('<i>', { class: opts.expandIcon, css: opts.iconCss }).on('click', function() {
             expand($element, opts);
         }).appendTo($separator).hide();
 
-        if (opts.controlsPosition === 'top') {
-            $expandButton.css('top', 5);
-        } else {
-            $expandButton.css('bottom', 5);
-        }
-
-        for (var i in opts.buttons) {
-            $(opts.buttons[i]).children('.dropdown-toggle').css(opts.buttonsCss);
-            $(opts.buttons[i]).css(opts.buttonsCss).appendTo($controls);
-        }
+        $(opts.buttons).each(function() {
+            $(this).children('.dropdown-toggle').css(opts.buttonsCss);
+            $(this).css(opts.buttonsCss).appendTo($controls);
+        });
     }
 
     $.fn.sidebarize = function(options) {
@@ -145,7 +135,6 @@
     $.fn.sidebarize.defaults = {
         sidebarPercentage: 15,
         controlsHeight: 25,
-        controlsPosition: 'top',
         heightCompensator: 2,
         collapseIcon: 'fa-icon-chevron-left',
         expandIcon: 'fa-icon-chevron-right',
