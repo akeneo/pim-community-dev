@@ -1,12 +1,14 @@
 <?php
 
-namespace Oro\Bundle\NavigationBundle\Twig;
+namespace Oro\Bundle\AsseticBundle\Twig;
+
+use Oro\Bundle\AsseticBundle\Parser\AsseticTokenParser;
 
 use Symfony\Bundle\AsseticBundle\Factory\AssetFactory;
 use Symfony\Component\Templating\TemplateNameParserInterface;
 use Symfony\Bundle\AsseticBundle\Twig\AsseticNodeVisitor;
 
-class AssetsConfigExtension extends \Twig_Extension
+class AsseticExtension extends \Twig_Extension
 {
     /**
      * @var \Symfony\Bundle\AsseticBundle\Factory\AssetFactory
@@ -54,7 +56,7 @@ class AssetsConfigExtension extends \Twig_Extension
     {
         return array(
             new AsseticTokenParser($this->assets['js'], $this->assetsFactory, 'oro_js', 'js/*.js'),
-            new AsseticTokenParser($this->assets['css'], $this->assetsFactory, 'oro_css', 'css/*.css'),
+            //new AsseticTokenParser($this->assets['css'], $this->assetsFactory, 'oro_css', 'css/*.css'),
         );
     }
 

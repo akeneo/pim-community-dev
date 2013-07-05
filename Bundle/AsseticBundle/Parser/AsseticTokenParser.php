@@ -1,10 +1,10 @@
 <?php
 
-namespace Oro\Bundle\NavigationBundle\Twig;
+namespace Oro\Bundle\AsseticBundle\Parser;
 
 use Assetic\Asset\AssetInterface;
 use Assetic\Factory\AssetFactory;
-use Symfony\Bundle\AsseticBundle\Twig\AsseticNode;
+use Oro\Bundle\AsseticBundle\Node\OroAsseticNode;
 
 class AsseticTokenParser extends \Twig_TokenParser
 {
@@ -81,14 +81,15 @@ class AsseticTokenParser extends \Twig_TokenParser
         $body = $this->parser->subparse(array($this, 'testEndTag'), true);
         $stream->expect(\Twig_Token::BLOCK_END_TYPE);
 
-        $name = $this->factory->generateAssetName($inputs, $filters, $attributes);
-
-        return new AsseticNode(
-            $this->factory->createAsset($inputs, $filters, $attributes + array('name' => $name)),
-            $body,
+        $nameCompress = $this->factory->generateAssetName($inputs['compress'][0], $filters, $attributes);
+        $nameUnCompress = $this->factory->generateAssetName($inputs['uncompress'][0], $filters, $attributes);
+        return new OroAsseticNode(
+            $this->factory->createAsset($inputs['compress'][0], $filters, $attributes + array('name' => $nameCompress, 'debug' => false)),
+            $nameCompress,
+            $this->factory->createAsset($inputs['uncompress'][0], $filters, $attributes + array('name' => $nameUnCompress, 'debug' => true)),
+            $nameUnCompress,
             $inputs,
-            $filters,
-            $name,
+            $body,
             $attributes,
             $token->getLine(),
             $this->getTag()

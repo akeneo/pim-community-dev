@@ -1,0 +1,33 @@
+parameters:
+    oro_assetic.twig_extension.class:  Oro\Bundle\AsseticBundle\Twig\AsseticExtension
+    oro_assetic.routing_loader.class:  Oro\Bundle\AsseticBundle\Routing\OroasseticLoader
+
+services:
+    oro_assetic.twig.extension:
+          class:        %oro_assetic.twig_extension.class%
+          arguments:
+              - @assetic.asset_factory
+              - %oro_assetic.assets%
+              - @templating.name_parser
+              - %assetic.bundles%
+          tags:
+              - { name: twig.extension }
+    oro_assetic.routing_loader:
+          class:        %oro_assetic.routing_loader.class%
+          arguments:
+              - @assetic.asset_manager
+              - @twig
+              - @assetic.config_cache
+          tags:
+              - { name: routing.loader }
+#
+#
+#              <service id="assetic.twig_formula_loader.real" class="%assetic.twig_formula_loader.class%" public="false">
+#                          <tag name="assetic.templating.twig" />
+#                          <argument type="service" id="twig" />
+#                      </service>
+#
+#                      <service id="assetic.routing_loader" class="%assetic.routing_loader.class%" public="false">
+#                                  <tag name="routing.loader" />
+#                                  <argument type="service" id="assetic.asset_manager" />
+#                              </service>
