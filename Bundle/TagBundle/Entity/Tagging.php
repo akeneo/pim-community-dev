@@ -34,7 +34,7 @@ class Tagging extends BaseTagging
 
     /**
      * @var User
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User", cascade="remove")
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User", cascade="remove")
      */
     protected $user;
 

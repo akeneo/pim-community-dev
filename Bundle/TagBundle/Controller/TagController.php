@@ -57,7 +57,7 @@ class TagController extends Controller
      */
     public function updateAction(Tag $entity)
     {
-        if ($this->get('oro_tag.tag.form.handler.tag')->process($entity)) {
+        if ($this->get('oro_tag.form.handler.tag')->process($entity)) {
             $this->get('session')->getFlashBag()->add(
                 'success',
                 $this->get('translator')->trans('oro.tag.controller.tag.saved.message')

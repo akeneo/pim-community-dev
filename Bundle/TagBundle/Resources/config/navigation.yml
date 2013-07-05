@@ -13,5 +13,5 @@ oro_menu_config:
                         oro_tag_list: ~
 
 oro_titles:
-    oro_tag_index: Tags
+    oro_tag_index:  Tags
     oro_tag_update: Edit "%%tag.name%%" tag

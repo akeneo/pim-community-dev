@@ -4,6 +4,7 @@ namespace Oro\Bundle\TagBundle\Form\Handler;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\TagBundle\Entity\Tag;

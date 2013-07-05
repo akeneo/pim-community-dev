@@ -22,7 +22,7 @@ services:
         factory_service: form.factory
         arguments: ["oro_tag_tag_form", "oro_tag_tag"]
 
-    oro_tag.tag.form.handler.tag:
+    oro_tag.form.handler.tag:
         class: %oro_tag.tag.form.handler.tag.class%
         scope: request
         arguments:

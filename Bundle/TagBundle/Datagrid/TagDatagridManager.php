@@ -136,19 +136,10 @@ class TagDatagridManager extends DatagridManager
     {
         $alias = $query->getRootAlias();
 
+        /** @var $query \Oro\Bundle\GridBundle\Datagrid\ORM\ProxyQuery */
         $query->leftJoin($alias . '.tagging', 't');
-        $query->addSelect($this->getUsageExpression(), true);
+        $query->addSelect($query->getQueryBuilder()->expr()->count('t.id') . ' as usage', true);
 
         $query->groupBy($alias . '.id');
-    }
-
-    /**
-     * Add usage count expression
-     *
-     * @return string
-     */
-    private function getUsageExpression()
-    {
-        return 'COUNT(t.id) as usage';
     }
 }

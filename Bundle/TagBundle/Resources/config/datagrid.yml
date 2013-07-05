@@ -1,5 +1,5 @@
 parameters:
-    oro_tag.datagrid_manager.class:        Oro\Bundle\TagBundle\Datagrid\TagDatagridManager
+    oro_tag.datagrid_manager.class: Oro\Bundle\TagBundle\Datagrid\TagDatagridManager
 
 services:
     oro_tag.datagrid_manager:
