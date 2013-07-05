@@ -10,6 +10,9 @@ parameters:
     oro_tag.tag.manager.api.class:  Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_tag.tag.manager.class:  Oro\Bundle\TagBundle\Entity\TagManager
 
+    oro_tag.autocomplete.tag.search_handler.class: Oro\Bundle\FormBundle\Autocomplete\SearchHandler
+    oro_tag.form.type.tag_select.class: Oro\Bundle\TagBundle\Form\Type\TagSelectType
+
 services:
     oro_tag.tag.manager:
         class: %oro_tag.tag.manager.class%
@@ -69,3 +72,19 @@ services:
             - @oro_tag.form.type.tag.api
             - @request
             - @doctrine.orm.entity_manager
+
+    # Autocomplete search handler
+    oro_tag.autocomplete.tag.search_handler:
+        class: %oro_tag.autocomplete.tag.search_handler.class%
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - %oro_tag.tag.entity.class%
+            - ["name"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: tags, acl_resource: oro_tag_assign }
+
+    # Autocomplete form type
+    oro_tag.form.type.tag_select:
+        class: %oro_tag.form.type.tag_select.class%
+        tags:
+            - { name: form.type, alias: oro_tag_select }

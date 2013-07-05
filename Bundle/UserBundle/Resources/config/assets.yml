@@ -1,5 +1,6 @@
 css:
   - '@OroUserBundle/Resources/public/css/jquery-ui-1.10.2.custom.css'
+  - '@OroUIBundle/Resources/public/css/bootstrap-tag-cloud.css'
 
 js:
   - '@OroUIBundle/Resources/public/lib/jquery-ui-timepicker-addon.js'
@@ -7,3 +8,4 @@ js:
   - '@OroUIBundle/Resources/public/js/form/collection.js'
   - '@OroUserBundle/Resources/public/js/user.js'
   - '@OroUserBundle/Resources/public/js/status.js'
+  - '@OroUIBundle/Resources/public/js/bootstrap-tag-cloud.js'

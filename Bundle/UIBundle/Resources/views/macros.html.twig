@@ -245,7 +245,7 @@
     Parameters:
         dataTarget - id of scroll block
         data - array with scroll data blocks
-        isForm - flag what scroll block mut contain the form
+        isForm - flag that scroll block must contain the form
     data parameter structure:
         [
             'dataBlocks' - array of blocks. each block consist of:
@@ -326,4 +326,31 @@
 #}
 {% macro gridBlock(gridId) %}
     <div id="{{ gridId }}"></div>
+{% endmacro %}
+
+{#
+    Render input for tags
+    Parameters:
+        defaultClass - tag class, that can be one of following:
+            - info
+            - success
+            - warning
+            - danger
+            - inverse
+            - or empty
+#}
+{% macro tagInputField(label, defaultClass) %}
+    <div>
+        <label for="{{ 'tag-' ~ class|default('tag') }}" class="control-label">{{ label|trans }}:</label>
+        <div class="controls">
+            <div class="row-oro">
+                <div class="tag-cloud-field" id="{{ defaultClass|default('tag') }}">
+                    <input type="text">
+                    <button class="btn" type="button">{{ 'Add'|trans }} <i class="icon-plus"></i></button>
+                    <ul id="tag-cloud"></ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
 {% endmacro %}

@@ -71,7 +71,9 @@
                     'title': '',
                     'data': [
                         form_row(form.email),
-                        UI.collectionField(form.emails, 'Additional emails', 'Add another email')
+                        UI.collectionField(form.emails, 'Additional emails', 'Add another email'),
+                        UI.tagInputField('Tags')
+                        form_row(form.tags),
                     ]
                 }
             ]
