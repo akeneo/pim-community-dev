@@ -58,7 +58,9 @@ class EntityConfig extends AbstractConfig implements EntityConfigInterface
      */
     public function setFields($fields)
     {
-        $this->fields = $fields;
+        foreach ($fields as $field) {
+            $this->addField($field);
+        }
 
         return $this;
     }
