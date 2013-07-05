@@ -3,7 +3,7 @@ AddressBundle
 
 OroAddressBundle implements basic address storage and country/region storage.
 
-**Table of contents**
+###Table of contents
 
 * [Installation](./Resources/doc/reference/installation.md)
 * [Usage](./Resources/doc/reference/usage.md)
