@@ -213,6 +213,7 @@ class ConfigDatagridManager extends DatagridManager
                     switch ($config['type']) {
                         case 'delete':
                             $configItem['type'] = ActionInterface::TYPE_DELETE;
+                            break;
                         case 'redirect':
                             $configItem['type'] = ActionInterface::TYPE_REDIRECT;
                             break;

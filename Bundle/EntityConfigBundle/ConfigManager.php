@@ -172,7 +172,7 @@ class ConfigManager
             ) {
 
                 $this->eventDispatcher->dispatch(
-                    Events::newEntityConfig,
+                    Events::NEWENTITYCONFIG,
                     new EntityConfigEvent($doctrineMetadata->getName(), $this)
                 );
 
@@ -180,7 +180,7 @@ class ConfigManager
                     $type = $doctrineMetadata->getTypeOfField($fieldName);
 
                     $this->eventDispatcher->dispatch(
-                        Events::newFieldConfig,
+                        Events::NEWFIELDCONFIG,
                         new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
                     );
                 }
@@ -189,7 +189,7 @@ class ConfigManager
                     $type = $doctrineMetadata->isSingleValuedAssociation($fieldName) ? 'ref-one' : 'ref-many';
 
                     $this->eventDispatcher->dispatch(
-                        Events::newFieldConfig,
+                        Events::NEWFIELDCONFIG,
                         new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
                     );
                 }

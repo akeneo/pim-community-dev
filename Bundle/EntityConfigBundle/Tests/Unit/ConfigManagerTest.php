@@ -3,7 +3,6 @@
 namespace Oro\Bundle\EntityConfigBundle\Tests\Unit;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Tests\OrmTestCase;
 
 use Metadata\MetadataFactory;
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;

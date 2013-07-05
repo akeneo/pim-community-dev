@@ -3,7 +3,6 @@
 namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Yaml\Parser;
 
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\OroEntityConfigExtension;
 

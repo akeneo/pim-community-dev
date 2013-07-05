@@ -44,5 +44,4 @@ class EntityConfigEvent extends Event
     {
         return $this->configManager;
     }
-
 }

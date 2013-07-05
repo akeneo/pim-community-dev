@@ -40,7 +40,7 @@ class FileCache implements CacheInterface
      */
     public function putConfigInCache(EntityConfig $config)
     {
-        $path = $this->dir . '/' . strtr($config->getClassName(), '\\', '-') . '.' . $config->getScope() . '.cache.php';;
+        $path = $this->dir . '/' . strtr($config->getClassName(), '\\', '-') . '.' . $config->getScope() . '.cache.php';
         file_put_contents($path, '<?php return unserialize(' . var_export(serialize($config), true) . ');');
     }
 

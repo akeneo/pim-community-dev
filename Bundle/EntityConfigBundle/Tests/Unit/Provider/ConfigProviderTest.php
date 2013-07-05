@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\Provider;
 
-use Doctrine\ORM\PersistentCollection;
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 use Oro\Bundle\EntityConfigBundle\ConfigManager;

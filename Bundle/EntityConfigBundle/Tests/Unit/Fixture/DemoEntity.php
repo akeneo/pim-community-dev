@@ -37,7 +37,6 @@ class DemoEntity
      */
     private $parent;
 
-
     /**
      * @var string
      * @ORM\Column(name="description", type="text")
@@ -55,7 +54,7 @@ class DemoEntity
 
     /**
      * Set name
-     * @param string $name
+     * @param  string     $name
      * @return DemoEntity
      */
     public function setName($name)
@@ -114,7 +113,7 @@ class DemoEntity
 
     /**
      * Set description
-     * @param string $description
+     * @param  string     $description
      * @return DemoEntity
      */
     public function setDescription($description)

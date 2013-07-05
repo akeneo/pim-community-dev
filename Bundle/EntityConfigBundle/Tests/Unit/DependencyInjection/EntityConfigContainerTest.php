@@ -62,9 +62,16 @@ class EntityConfigContainerTest extends \PHPUnit_Framework_TestCase
         );
 
     }
+
+    public function testServiceProxy()
+    {
+    }
+
+    public function test()
+    {
+
+    }
 }
-
-
 
 //    /**
 //     * @return array

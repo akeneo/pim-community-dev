@@ -80,7 +80,6 @@ class ConfigSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->subscriber->postBind($event);
     }
 
-
     public function testGetSubscribedEvents()
     {
         $this->assertEquals(array(FormEvents::POST_BIND => 'postBind'), ConfigSubscriber::getSubscribedEvents());
