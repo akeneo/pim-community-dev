@@ -81,9 +81,9 @@
             expand($element, opts);
         }).appendTo($separator).hide();
 
-        $.each(opts.buttons, function () {
-            $(this).children('.dropdown-toggle').css(opts.buttonsCss);
-            $(this).css(opts.buttonsCss).appendTo($controls);
+        opts.buttons.map(function (button) {
+            $(button).children('.dropdown-toggle').css(opts.buttonsCss);
+            $(button).css(opts.buttonsCss).appendTo($controls);
         });
     }
 
@@ -151,7 +151,8 @@
         },
         buttonsCss: {
             'float': 'left',
-            'height': '25px'
+            'height': '25px',
+            'line-height': '25px'
         },
         separatorWidth: 9,
         collapsedSeparatorWidth: 22,
@@ -161,7 +162,7 @@
             'width': '7px',
             'border': '1px solid #ddd'
         },
-        buttons: {}
+        buttons: []
     };
 
 })(jQuery);
