@@ -29,7 +29,14 @@ class ProductManager extends FlexibleManager
     /**
      * {@inheritDoc}
      */
-    public function __construct($flexibleName, $flexibleConfig, ObjectManager $storageManager, EventDispatcherInterface $eventDispatcher, AttributeTypeFactory $attributeTypeFactory, $mediaManager)
+    public function __construct(
+        $flexibleName,
+        $flexibleConfig,
+        ObjectManager $storageManager,
+        EventDispatcherInterface $eventDispatcher,
+        AttributeTypeFactory $attributeTypeFactory,
+        $mediaManager
+    )
     {
         parent::__construct($flexibleName, $flexibleConfig, $storageManager, $eventDispatcher, $attributeTypeFactory);
 
@@ -47,7 +54,7 @@ class ProductManager extends FlexibleManager
      *
      * @param ProductInterface $product
      * @param ArrayCollection  $categories
-     * @param boolean          $onlyTree
+     * @param array            $onlyTree
      */
     public function save(ProductInterface $product, ArrayCollection $categories = null, array $onlyTree = null)
     {
@@ -260,7 +267,11 @@ class ProductManager extends FlexibleManager
      * @param ArrayCollection  $categories
      * @param array            $onlyTrees
      */
-    public function setCategories(ProductInterface $product, ArrayCollection $categories = null, array $onlyTrees = null)
+    public function setCategories(
+        ProductInterface $product,
+        ArrayCollection $categories = null,
+        array $onlyTrees = null
+    )
     {
         // Remove current categories
         $currentCategories = $product->getCategories();

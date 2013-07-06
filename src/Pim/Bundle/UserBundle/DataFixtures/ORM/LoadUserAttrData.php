@@ -113,7 +113,13 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
      *
      * @return AbstractAttribute
      */
-    protected function createAttributeWithOptions($attributeType, $attributeCode, array $optionValues, $required = false, $label = false)
+    protected function createAttributeWithOptions(
+        $attributeType,
+        $attributeCode,
+        array $optionValues,
+        $required = false,
+        $label = false
+    )
     {
         $attribute = $this->createAttribute($attributeType, $attributeCode);
         foreach ($optionValues as $value) {
