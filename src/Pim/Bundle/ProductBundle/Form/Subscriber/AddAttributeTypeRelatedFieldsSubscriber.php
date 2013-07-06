@@ -50,8 +50,7 @@ class AddAttributeTypeRelatedFieldsSubscriber extends AttributeTypeSubscriber
     public function __construct(
         AttributeTypeManager $attTypeManager = null,
         AttributeTypeFactory $attTypeFactory = null
-    )
-    {
+    ) {
         $this->attTypeManager = $attTypeManager;
         $this->attTypeFactory = $attTypeFactory;
     }

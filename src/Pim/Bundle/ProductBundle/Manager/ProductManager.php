@@ -36,8 +36,7 @@ class ProductManager extends FlexibleManager
         EventDispatcherInterface $eventDispatcher,
         AttributeTypeFactory $attributeTypeFactory,
         $mediaManager
-    )
-    {
+    ) {
         parent::__construct($flexibleName, $flexibleConfig, $storageManager, $eventDispatcher, $attributeTypeFactory);
 
         $this->mediaManager = $mediaManager;
@@ -271,8 +270,7 @@ class ProductManager extends FlexibleManager
         ProductInterface $product,
         ArrayCollection $categories = null,
         array $onlyTrees = null
-    )
-    {
+    ) {
         // Remove current categories
         $currentCategories = $product->getCategories();
         foreach ($currentCategories as $currentCategory) {

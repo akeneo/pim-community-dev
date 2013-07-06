@@ -119,8 +119,7 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
         array $optionValues,
         $required = false,
         $label = false
-    )
-    {
+    ) {
         $attribute = $this->createAttribute($attributeType, $attributeCode);
         foreach ($optionValues as $value) {
             $attribute->addOption($this->createAttributeOptionWithValue($value));

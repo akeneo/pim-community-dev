@@ -39,8 +39,7 @@ class PriceCollectionType extends AbstractAttributeType
         $formType,
         ConstraintGuesserInterface $constraintGuesser,
         CurrencyManager $manager
-    )
-    {
+    ) {
         parent::__construct($backendType, $formType, $constraintGuesser);
 
         $this->currencyManager = $manager;

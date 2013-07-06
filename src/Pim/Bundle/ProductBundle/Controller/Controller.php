@@ -33,8 +33,7 @@ class Controller extends BaseController
     protected function getAvailableProductAttributesForm(
         array $attributes = array(),
         AvailableProductAttributes $availableAttributes = null
-    )
-    {
+    ) {
         return $this->createForm(
             new AvailableProductAttributesType,
             $availableAttributes ?: new AvailableProductAttributes,

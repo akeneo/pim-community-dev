@@ -50,8 +50,7 @@ class ProductAttributeHandler
         Request $request,
         ObjectManager $manager,
         AttributeTypeManager $attTypeManager
-    )
-    {
+    ) {
         $this->form    = $form;
         $this->request = $request;
         $this->manager = $manager;

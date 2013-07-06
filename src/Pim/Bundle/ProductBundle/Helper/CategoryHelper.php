@@ -118,8 +118,7 @@ class CategoryHelper
         Category $selectCategory = null,
         $withProductsCount = false,
         Category $parent = null
-    )
-    {
+    ) {
         $result = static::formatCategory($categories, $selectCategory, $withProductsCount);
 
         if ($parent != null) {
@@ -152,8 +151,7 @@ class CategoryHelper
         array $categories,
         Category $selectCategory = null,
         $withProductsCount = false
-    )
-    {
+    ) {
         $result = array();
 
         foreach ($categories as $category) {

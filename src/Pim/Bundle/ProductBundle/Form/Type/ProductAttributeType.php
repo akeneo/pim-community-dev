@@ -45,8 +45,7 @@ class ProductAttributeType extends AttributeType
     public function __construct(
         AttributeTypeManager $attTypeManager = null,
         AddAttributeTypeRelatedFieldsSubscriber $subscriber = null
-    )
-    {
+    ) {
         $this->attTypeManager = $attTypeManager;
         $this->subscriber = $subscriber;
     }

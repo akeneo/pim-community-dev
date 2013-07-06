@@ -46,8 +46,7 @@ class AttributeTypeManager
         ProductManager $productManager,
         LocaleManager $localeManager,
         AttributeTypeFactory $factory
-    )
-    {
+    ) {
         $this->productManager = $productManager;
         $this->localeManager = $localeManager;
         $this->factory = $factory;
