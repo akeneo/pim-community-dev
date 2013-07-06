@@ -16,6 +16,7 @@ class RestInvalidUsersTest extends WebTestCase
     const USER_NAME = 'user_wo_permissions';
     const USER_PASSWORD = 'no_key';
 
+    /** @var Client */
     protected $client = null;
 
     public function testInvalidKey()
@@ -33,7 +34,7 @@ class RestInvalidUsersTest extends WebTestCase
                 "rolesCollection" => array("1")
             )
         );
-        $this->client->request('POST', 'http://localhost/api/rest/latest/user', $request);
+        $this->client->request('POST', $this->client->generate('oro_api_post_user'), $request);
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 401);
     }
@@ -53,7 +54,7 @@ class RestInvalidUsersTest extends WebTestCase
                 "rolesCollection" => array("1")
             )
         );
-        $this->client->request('POST', 'http://localhost/api/rest/latest/user', $request);
+        $this->client->request('POST', $this->client->generate('oro_api_post_user'), $request);
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 401);
     }

@@ -208,6 +208,24 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     }
 
     /**
+     * Add data
+     *
+     * @param mixed $data
+     *
+     * @return EntityAttributeValue
+     */
+    public function addData($data)
+    {
+        $backendType = $this->attribute->getBackendType();
+        if (substr($backendType, -1, 1) === 's') {
+            $backendType = substr($backendType, 0, strlen($backendType) - 1);
+        }
+        $name = 'add'.ucfirst($backendType);
+
+        return $this->$name($data);
+    }
+
+    /**
      * Get varchar data
      *
      * @return string
@@ -346,7 +364,9 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      */
     public function setDate($date)
     {
-        $this->date = $date;
+        if ($this->date != $date) {
+            $this->date = $date;
+        }
 
         return $this;
     }
@@ -370,7 +390,9 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      */
     public function setDatetime($datetime)
     {
-        $this->datetime = $datetime;
+        if ($this->datetime != $datetime) {
+            $this->datetime = $datetime;
+        }
 
         return $this;
     }
