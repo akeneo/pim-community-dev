@@ -42,7 +42,10 @@ class ProductAttributeType extends AttributeType
      * @param AttributeTypeManager                    $attTypeManager Attribute type manager
      * @param AddAttributeTypeRelatedFieldsSubscriber $subscriber     Subscriber to add attribute type related fields
      */
-    public function __construct(AttributeTypeManager $attTypeManager = null, AddAttributeTypeRelatedFieldsSubscriber $subscriber = null)
+    public function __construct(
+        AttributeTypeManager $attTypeManager = null,
+        AddAttributeTypeRelatedFieldsSubscriber $subscriber = null
+    )
     {
         $this->attTypeManager = $attTypeManager;
         $this->subscriber = $subscriber;

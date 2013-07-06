@@ -113,7 +113,12 @@ class CategoryHelper
      * @return array
      * @static
      */
-    public static function childrenTreeResponse(array $categories, Category $selectCategory = null, $withProductsCount = false, Category $parent = null)
+    public static function childrenTreeResponse(
+        array $categories,
+        Category $selectCategory = null,
+        $withProductsCount = false,
+        Category $parent = null
+    )
     {
         $result = static::formatCategory($categories, $selectCategory, $withProductsCount);
 
@@ -143,7 +148,11 @@ class CategoryHelper
      * @return array
      * @static
      */
-    protected static function formatCategory(array $categories, Category $selectCategory = null, $withProductsCount = false)
+    protected static function formatCategory(
+        array $categories,
+        Category $selectCategory = null,
+        $withProductsCount = false
+    )
     {
         $result = array();
 
