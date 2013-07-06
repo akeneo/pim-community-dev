@@ -30,7 +30,10 @@ class Controller extends BaseController
      *
      * @return Symfony\Component\Form\Form
      */
-    protected function getAvailableProductAttributesForm(array $attributes = array(), AvailableProductAttributes $availableAttributes = null)
+    protected function getAvailableProductAttributesForm(
+        array $attributes = array(),
+        AvailableProductAttributes $availableAttributes = null
+    )
     {
         return $this->createForm(
             new AvailableProductAttributesType,

@@ -48,7 +48,11 @@ class UserContextListener implements EventSubscriberInterface
      * @param TranslatableListener     $listener
      * @param ProductManager           $productManager
      */
-    public function __construct(SecurityContextInterface $securityContext, TranslatableListener $listener, ProductManager $productManager)
+    public function __construct(
+        SecurityContextInterface $securityContext,
+        TranslatableListener $listener,
+        ProductManager $productManager
+    )
     {
         $this->securityContext = $securityContext;
         $this->listener        = $listener;

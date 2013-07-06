@@ -42,7 +42,11 @@ class AttributeTypeManager
      * @param LocaleManager        $localeManager  Locale manager
      * @param AttributeTypeFactory $factory        Attribute type factory
      */
-    public function __construct(ProductManager $productManager, LocaleManager $localeManager, AttributeTypeFactory $factory)
+    public function __construct(
+        ProductManager $productManager,
+        LocaleManager $localeManager,
+        AttributeTypeFactory $factory
+    )
     {
         $this->productManager = $productManager;
         $this->localeManager = $localeManager;
