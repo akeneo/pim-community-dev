@@ -7,4 +7,5 @@ js:
       - '@OroWindowsBundle/Resources/public/js/collections/state.js'
       - '@OroWindowsBundle/Resources/public/js/views/dialog.js'
 css:
-  - 'bundles/orowindows/css/jquery.dialog.extended.css'
+  'windows':
+      - 'bundles/orowindows/css/jquery.dialog.extended.css'

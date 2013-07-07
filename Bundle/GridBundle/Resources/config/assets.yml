@@ -50,8 +50,9 @@ js:
       - '@OroGridBundle/Resources/public/js/app/datagrid/listener/columnformlistener.js'
 
 css:
-  - 'bundles/orogrid/lib/backgrid/backgrid.css'
-  - 'bundles/orogrid/lib/backgrid/extensions/paginator/backgrid-paginator.css'
-  - 'bundles/orogrid/lib/multiselect/jquery.multiselect.css'
-  - 'bundles/orogrid/lib/multiselect/jquery.multiselect.filter.css'
-  - 'bundles/orogrid/css/oro.grid.css'
+  'grids':
+      - 'bundles/orogrid/lib/backgrid/backgrid.css'
+      - 'bundles/orogrid/lib/backgrid/extensions/paginator/backgrid-paginator.css'
+      - 'bundles/orogrid/lib/multiselect/jquery.multiselect.css'
+      - 'bundles/orogrid/lib/multiselect/jquery.multiselect.filter.css'
+      - 'bundles/orogrid/css/oro.grid.css'

@@ -3,37 +3,28 @@
 namespace Oro\Bundle\AsseticBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Assetic\Factory\LazyAssetManager;
 use Assetic\Asset\AssetInterface;
 use Assetic\Util\VarUtils;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use Assetic\Asset\AssetCollection;
-use Assetic\Asset\FileAsset;
-use Assetic\Factory\AssetFactory;
-
 use Symfony\Component\HttpFoundation\Request;
 
-class CssDumpCommand extends ContainerAwareCommand
+use Oro\Bundle\AsseticBundle\Factory\OroAssetManager;
+
+class OroAsseticDumpCommand extends ContainerAwareCommand
 {
     /**
-     * @var LazyAssetManager
+     * @var OroAssetManager
      */
     protected $am;
-
-    /**
-     * @var AssetFactory
-     */
-    protected $af;
 
     protected function configure()
     {
         $this
             ->setName('oro:assetic:dump')
-            ->setDescription('Dumps css files')
+            ->setDescription('Dumps oro assetics')
             ->addArgument('write_to', InputArgument::OPTIONAL, 'Override the configured asset root')
         ;
     }
@@ -41,14 +32,13 @@ class CssDumpCommand extends ContainerAwareCommand
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->basePath = $input->getArgument('write_to') ?: $this->getContainer()->getParameter('assetic.write_to');
-        $this->am = $this->getContainer()->get('assetic.asset_manager');
-        $this->af = $this->getContainer()->get('assetic.asset_factory');
+        $this->am = $this->getContainer()->get('oro_assetic.asset_manager');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln(sprintf('Dumping all <comment>%s</comment> assets.', $input->getOption('env')));
-        $output->writeln(sprintf('Debug mode is <comment>%s</comment>.', $this->am->isDebug() ? 'on' : 'off'));
+        $output->writeln(sprintf('Debug mode is <comment>%s</comment>.', 'off'));
         $output->writeln('');
 
         //$this->dumpCss($output);
@@ -69,13 +59,10 @@ class CssDumpCommand extends ContainerAwareCommand
 
     protected function dumpJs($output)
     {
-        $filters = array(
-            'yui_js',
-        );
-        $files = $this->getContainer()->getParameter('oro_assetic.assets');
-        $assetCollection = $this->af->createAsset($files['js']['compress'][0], $filters);
-        $assetCollection->setTargetPath("js/oro.bootstrap.js");
-        $this->doDump($assetCollection, $output);
+        foreach ($this->am->getAssets() as $asset) {
+            /** @var  $asset \Oro\Bundle\AsseticBundle\Node\OroAsseticNode */
+            $this->doDump($asset->getCompressAsset(), $output);
+        }
     }
 
     /**

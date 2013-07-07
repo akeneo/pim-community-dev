@@ -27,6 +27,11 @@ class OroAsseticExtension extends Extension
         $loader->load('services.yml');
 
         $container->setParameter('oro_assetic.assets', $this->getAssets($container, $config));
+
+        // choose dynamic or static
+        if (!$container->getParameterBag()->resolveValue($container->getParameterBag()->get('assetic.use_controller'))) {
+            $loader->load('assetic_controller_service.yml');
+        }
     }
 
     /**
@@ -55,14 +60,15 @@ class OroAsseticExtension extends Extension
         );
 
         $js = array();
+        $css = array();
 
         foreach ($bundles as $bundle) {
             $reflection = new \ReflectionClass($bundle);
             if (is_file($file = dirname($reflection->getFilename()) . '/Resources/config/assets.yml')) {
                 $bundleConfig = Yaml::parse(realpath($file));
-                /*if (isset($bundleConfig['css'])) {
-                    $assets['css'] = array_merge($assets['css'], $bundleConfig['css']);
-                }*/
+                if (isset($bundleConfig['css'])) {
+                    $css = array_merge_recursive($css, $bundleConfig['css']);
+                }
                 if (isset($bundleConfig['js'])) {
                     $js = array_merge_recursive($js, $bundleConfig['js']);
                 }
@@ -82,6 +88,20 @@ class OroAsseticExtension extends Extension
         $assets['js'] = array(
             'compress' => array($compressJs),
             'uncompress' => array($uncompressJs)
+        );
+
+        $compressCss = array();
+        $uncompressCss = array();
+        foreach ($css as $cssBlockName => $cssFiles) {
+            if (in_array($cssBlockName, $config['uncompress_css'])) {
+                $uncompressCss = array_merge($uncompressCss, $cssFiles);
+            } else {
+                $compressCss = array_merge($compressCss, $cssFiles);
+            }
+        }
+        $assets['css'] = array(
+            'compress' => array($compressCss),
+            'uncompress' => array($uncompressCss)
         );
 
         return $assets;

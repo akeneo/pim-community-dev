@@ -1,5 +1,6 @@
 css:
-  - '@OroUserBundle/Resources/public/css/jquery-ui-1.10.2.custom.css'
+  'user':
+      - '@OroUserBundle/Resources/public/css/jquery-ui-1.10.2.custom.css'
 
 js:
   'user':

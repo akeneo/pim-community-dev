@@ -10,17 +10,12 @@
 namespace Oro\Bundle\AsseticBundle\Routing;
 
 use Assetic\Asset\AssetInterface;
-use Assetic\Factory\LazyAssetManager;
 use Symfony\Bundle\AsseticBundle\Config\AsseticResource;
 use Symfony\Component\Config\Loader\Loader;
-use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use Assetic\Factory\Resource\IteratorResourceInterface;
 
-use Oro\Bundle\AsseticBundle\Node\OroAsseticNode;
-
-use Assetic\Cache\ConfigCache;
+use Oro\Bundle\AsseticBundle\Factory\OroAssetManager;
 
 /**
  * Loads routes for all assets.
@@ -42,18 +37,11 @@ use Assetic\Cache\ConfigCache;
 class OroasseticLoader extends Loader
 {
     protected $am;
-    /**
-     * @var \Twig_Environment
-     */
-    protected $twig;
 
-    protected $configCache;
-
-    public function __construct(LazyAssetManager $am, $twig, ConfigCache $configCache)
+    public function __construct(OroAssetManager $am)
     {
         $this->am = $am;
-        $this->twig = $twig;
-        $this->configCache = $configCache;
+
     }
 
     public function load($routingResource, $type = null)
@@ -61,48 +49,7 @@ class OroasseticLoader extends Loader
         $routes = new RouteCollection();
 
         // resources
-        foreach ($this->am->getResources() as $resources) {
-            if (!$resources instanceof \Traversable) {
-                $resources = array($resources);
-            }
-            foreach ($resources as $resource) {
-                $routes->addResource(new AsseticResource($resource));
-            }
-        }
-
-
-
-        foreach ($this->am->getResources() as $resources) {
-
-            if (!$resources instanceof IteratorResourceInterface) {
-                $resources = array($resources);
-            }
-
-            $formulae = array();
-
-            foreach ($resources as $resource) {
-                $id = (string) $resource;
-                if (!$this->configCache->has($id) || (!$resource->isFresh($this->configCache->getTimestamp($id)))) {
-
-                    $tokens = $this->twig->tokenize($resource->getContent(), (string) $resource);
-                    $nodes  = $this->twig->parse($tokens);
-
-                    $formulae += $this->loadNode($nodes);
-                    $this->configCache->set($id, $formulae);
-                } else {
-                    $formulae += $this->configCache->get($id);
-                }
-            }
-
-
-        }
-
-       die;
-
-
-/*
-        // resources
-        foreach ($this->am->getResources() as $resources) {
+        foreach ($this->am->am->getResources() as $resources) {
             if (!$resources instanceof \Traversable) {
                 $resources = array($resources);
             }
@@ -112,63 +59,22 @@ class OroasseticLoader extends Loader
         }
 
         // routes
-
-        var_dump($this->am->getResources());die;
-        foreach ($this->am->getNames() as $name) {
-            $asset = $this->am->get($name);
-            $formula = $this->am->getFormula($name);
-
-            $this->loadRouteForAsset($routes, $asset, $name);
-
-            $debug = isset($formula[2]['debug']) ? $formula[2]['debug'] : $this->am->isDebug();
-            $combine = isset($formula[2]['combine']) ? $formula[2]['combine'] : !$debug;
+        foreach ($this->am->getAssets() as $name => $assetNode) {
+            $asset = $assetNode->getUnCompressAsset();
 
             // add a route for each "leaf" in debug mode
-            if (!$combine) {
+
                 $i = 0;
                 foreach ($asset as $leaf) {
                     $this->loadRouteForAsset($routes, $leaf, $name, $i++);
                 }
-            }
-        }*/
+
+        }
 
         return $routes;
     }
 
-    /**
-     * Loads assets from the supplied node.
-     *
-     * @param \Twig_Node $node
-     *
-     * @return array An array of asset formulae indexed by name
-     */
-    private function loadNode(\Twig_Node $node)
-    {
-        $formulae = array();
-        if ($node instanceof OroAsseticNode) {
-            $inputs = $node->getAttribute('inputs');
 
-            $formulae[$node->getAttribute('name')] = array(
-                $inputs['uncompress'][0],
-                $node->getAttribute('filters'),
-                array(
-                    'output'  => $node->getAttribute('compressAsset')->getTargetPath(),
-                    'name'    => $node->getAttribute('name'),
-                    'debug'   => $node->getAttribute('debug'),
-                    'combine' => false,
-                    'vars'    => $node->getAttribute('vars'),
-                ),
-            );
-        }
-
-        foreach ($node as $child) {
-            if ($child instanceof \Twig_Node) {
-                $formulae += $this->loadNode($child);
-            }
-        }
-
-        return $formulae;
-    }
 
     /**
      * Loads a route to serve an supplied asset.
@@ -184,7 +90,7 @@ class OroasseticLoader extends Loader
     private function loadRouteForAsset(RouteCollection $routes, AssetInterface $asset, $name, $pos = null)
     {
         $defaults = array(
-            '_controller' => 'assetic.controller:render',
+            '_controller' => 'oro_assetic.controller:render',
             'name'        => $name,
             'pos'         => $pos,
         );
@@ -206,6 +112,6 @@ class OroasseticLoader extends Loader
 
     public function supports($resource, $type = null)
     {
-        return 'oroassetic' == $type;
+        return 'oro_assetic' == $type;
     }
 }

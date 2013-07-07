@@ -1,8 +1,16 @@
 parameters:
     oro_assetic.twig_extension.class:  Oro\Bundle\AsseticBundle\Twig\AsseticExtension
     oro_assetic.routing_loader.class:  Oro\Bundle\AsseticBundle\Routing\OroasseticLoader
+    oro_assetic.asset_manager.class:   Oro\Bundle\AsseticBundle\Factory\OroAssetManager
+    oro_assetic.controller.class:      Oro\Bundle\AsseticBundle\Controller\AsseticController
 
 services:
+    oro_assetic.asset_manager:
+          class:        %oro_assetic.asset_manager.class%
+          arguments:
+              - @assetic.asset_manager
+              - @twig
+
     oro_assetic.twig.extension:
           class:        %oro_assetic.twig_extension.class%
           arguments:
@@ -12,22 +20,22 @@ services:
               - %assetic.bundles%
           tags:
               - { name: twig.extension }
+
     oro_assetic.routing_loader:
           class:        %oro_assetic.routing_loader.class%
           arguments:
-              - @assetic.asset_manager
-              - @twig
-              - @assetic.config_cache
+              - @oro_assetic.asset_manager
           tags:
               - { name: routing.loader }
-#
-#
-#              <service id="assetic.twig_formula_loader.real" class="%assetic.twig_formula_loader.class%" public="false">
-#                          <tag name="assetic.templating.twig" />
-#                          <argument type="service" id="twig" />
-#                      </service>
-#
-#                      <service id="assetic.routing_loader" class="%assetic.routing_loader.class%" public="false">
-#                                  <tag name="routing.loader" />
-#                                  <argument type="service" id="assetic.asset_manager" />
-#                              </service>
+
+    oro_assetic.controller:
+          class:        %oro_assetic.controller.class%
+          arguments:
+              - @request
+              - @oro_assetic.asset_manager
+              - @assetic.cache
+              - %assetic.enable_profiler%
+              - @profiler
+          scope: prototype
+          calls:
+              - [setValueSupplier, [@assetic.value_supplier]]

@@ -24,6 +24,11 @@ class Configuration implements ConfigurationInterface
             ->children()
             ->arrayNode('uncompress_js')
                 ->prototype('scalar')
+            ->end()
+            ->end()
+            ->arrayNode('uncompress_css')
+                ->prototype('scalar')
+            ->end()
             ->end();
 
         return $treeBuilder;

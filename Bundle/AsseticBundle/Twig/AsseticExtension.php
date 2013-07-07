@@ -56,7 +56,7 @@ class AsseticExtension extends \Twig_Extension
     {
         return array(
             new AsseticTokenParser($this->assets['js'], $this->assetsFactory, 'oro_js', 'js/*.js'),
-            //new AsseticTokenParser($this->assets['css'], $this->assetsFactory, 'oro_css', 'css/*.css'),
+            new AsseticTokenParser($this->assets['css'], $this->assetsFactory, 'oro_css', 'css/*.css'),
         );
     }
 

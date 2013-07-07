@@ -2,39 +2,59 @@
 
 namespace Oro\Bundle\AsseticBundle\Factory;
 
-use Assetic\Asset\AssetCollectionInterface;
+use Assetic\Factory\Resource\IteratorResourceInterface;
 use Assetic\Asset\AssetInterface;
-use Assetic\AssetManager;
-use Assetic\Factory\Loader\FormulaLoaderInterface;
-use Assetic\Factory\Resource\ResourceInterface;
-use Assetic\Filter\DependencyExtractorInterface;
+
+use Oro\Bundle\AsseticBundle\Node\OroAsseticNode;
 
 /**
  * A lazy asset manager is a composition of a factory and many formula loaders.
  *
  * @author Kris Wallsmith <kris.wallsmith@gmail.com>
  */
-class LazyAssetManager extends AssetManager
+class OroAssetManager
 {
-    private $factory;
-    private $loaders;
-    private $resources;
-    private $formulae;
+    public $am;
+
+    private $assets;
     private $loaded;
     private $loading;
+    private $twig;
 
-    /**
-     * Constructor.
-     *
-     * @param AssetFactory $factory The asset factory
-     * @param array        $loaders An array of loaders indexed by alias
-     */
-    public function __construct($am, $loader)
+    public function __construct($am, $twig)
     {
+        $this->loaded = false;
+        $this->loading = false;
         $this->am = $am;
+        $this->assets = array();
+        $this->twig = $twig;
+    }
 
-            $this->setLoader($loader);
+    public function getAssets()
+    {
+        if (!$this->loaded) {
+            $this->load();
+        }
 
+        return $this->assets;
+    }
+
+    public function get($name)
+    {
+        if (!$this->loaded) {
+            $this->load();
+        }
+
+        return $this->assets[$name]->getUnCompressAsset();
+    }
+
+    public function has($name)
+    {
+        if (!$this->loaded) {
+            $this->load();
+        }
+
+        return isset($this->assets[$name]);
     }
 
     /**
@@ -49,52 +69,26 @@ class LazyAssetManager extends AssetManager
         }
         $this->loading = true;
 
-        foreach ($this->resources as $resources) {
+        $assets = array();
+        foreach ($this->am->getResources() as $resources) {
+
+            if (!$resources instanceof IteratorResourceInterface) {
+                $resources = array($resources);
+            }
+
             foreach ($resources as $resource) {
-                $this->formulae = array_replace($this->formulae, $this->loaders->load($resource));
+                /**@var $resource \Symfony\Bundle\AsseticBundle\Factory\Resource\FileResource */
+                $tokens = $this->twig->tokenize($resource->getContent(), (string) $resource);
+                $nodes  = $this->twig->parse($tokens);
+                $assets += $this->loadNode($nodes);
             }
         }
 
+        $this->assets = $assets;
         $this->loaded = true;
         $this->loading = false;
-    }
 
-    public function get($name)
-    {
-        if (!$this->loaded) {
-            $this->load();
-        }
-
-        if (!parent::has($name) && isset($this->formulae[$name])) {
-            list($inputs, $filters, $options) = $this->formulae[$name];
-            $options['name'] = $name;
-            parent::set($name, $this->factory->createAsset($inputs, $filters, $options));
-        }
-
-        return parent::get($name);
-    }
-
-    public function has($name)
-    {
-        if (!$this->loaded) {
-            $this->load();
-        }
-
-        return isset($this->formulae[$name]) || parent::has($name);
-    }
-
-    public function getNames()
-    {
-        if (!$this->loaded) {
-            $this->load();
-        }
-
-        return array_unique(array_merge(parent::getNames(), array_keys($this->formulae)));
-    }
-
-    public function isDebug()
-    {
-        return $this->factory->isDebug();
+        return $this->assets;
     }
 
     public function getLastModified(AssetInterface $asset)
@@ -135,5 +129,46 @@ class LazyAssetManager extends AssetManager
         }
 
         return $mtime;
+    }
+
+    public function hasFormula($name)
+    {
+        if (!$this->loaded) {
+            $this->load();
+        }
+
+        return true;
+    }
+
+    public function getFormula($name)
+    {
+        if (!$this->loaded) {
+            $this->load();
+        }
+
+        return array($this->assets[$name]->getAttribute('inputs'));
+    }
+
+    /**
+     * Loads assets from the supplied node.
+     *
+     * @param \Twig_Node $node
+     *
+     * @return array An array of asset formulae indexed by name
+     */
+    private function loadNode(\Twig_Node $node)
+    {
+        $assets = array();
+        if ($node instanceof OroAsseticNode) {
+            $assets[$node->getNameUnCompress()] = $node;
+        }
+
+        foreach ($node as $child) {
+            if ($child instanceof \Twig_Node) {
+                $assets += $this->loadNode($child);
+            }
+        }
+
+        return $assets;
     }
 }
