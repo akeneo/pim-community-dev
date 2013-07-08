@@ -8,13 +8,13 @@ use Doctrine\ORM\EntityManager;
 use Metadata\ClassHierarchyMetadata;
 use Metadata\MetadataFactory;
 
-use Oro\Bundle\EntityConfigBundle\Config\EntityConfigInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
+use Oro\Bundle\EntityConfigBundle\Config\EntityConfigInterface;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
-
 use Oro\Bundle\EntityConfigBundle\Cache\CacheInterface;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
@@ -23,8 +23,6 @@ use Oro\Bundle\EntityConfigBundle\Config\FieldConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
-
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use Oro\Bundle\EntityConfigBundle\Event\FieldConfigEvent;
 use Oro\Bundle\EntityConfigBundle\Event\EntityConfigEvent;
@@ -106,7 +104,7 @@ class ConfigManager
     /**
      * @param ConfigProvider $provider
      */
-    public function setProvider(ConfigProvider $provider)
+    public function addProvider(ConfigProvider $provider)
     {
         $this->providers[] = $provider;
     }
@@ -162,14 +160,9 @@ class ConfigManager
         return $metadata->getOutsideClassMetadata()->configurable;
     }
 
-    public function clearCache()
-    {
-        $this->configCache->clearCache();
-    }
-    public function updateAll()
+    public function updateAll($flush = true)
     {
         /** @var $doctrineMetadata ClassMetadata */
-        $entities = array();
         foreach ($this->em()->getMetadataFactory()->getAllMetadata() as $doctrineMetadata) {
             /** @var ClassHierarchyMetadata $metadata */
             $metadata = $this->metadataFactory->getMetadataForClass($doctrineMetadata->getName());
@@ -177,37 +170,35 @@ class ConfigManager
                 && !$this->em()->getRepository(ConfigEntity::ENTITY_NAME)->findOneBy(array(
                     'className' => $doctrineMetadata->getName()))
             ) {
-                // listeners can add their configs for new ConfigEntity
-                $entity = new ConfigEntity($doctrineMetadata->getName());
 
                 $this->eventDispatcher->dispatch(
-                    Events::newEntityConfig,
+                    Events::NEWENTITYCONFIG,
                     new EntityConfigEvent($doctrineMetadata->getName(), $this)
                 );
 
                 foreach ($doctrineMetadata->getFieldNames() as $fieldName) {
                     $type = $doctrineMetadata->getTypeOfField($fieldName);
-                    $entity->addFiled(new ConfigField($fieldName, $type));
+
                     $this->eventDispatcher->dispatch(
-                        Events::newFieldConfig,
+                        Events::NEWFIELDCONFIG,
                         new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
                     );
                 }
 
                 foreach ($doctrineMetadata->getAssociationNames() as $fieldName) {
                     $type = $doctrineMetadata->isSingleValuedAssociation($fieldName) ? 'ref-one' : 'ref-many';
-                    $entity->addFiled(new ConfigField($fieldName, $type));
+
                     $this->eventDispatcher->dispatch(
-                        Events::newFieldConfig,
+                        Events::NEWFIELDCONFIG,
                         new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
                     );
                 }
-
-                $entities[$entity->getClassName()] = $entity;
             }
         }
 
-        $this->flush($entities);
+        if ($flush) {
+            $this->flush();
+        }
     }
 
     /**
@@ -218,7 +209,7 @@ class ConfigManager
         $this->persistConfigs[spl_object_hash($config)] = $config;
 
         if ($config instanceof EntityConfigInterface) {
-            foreach($config->getFields() as $fieldConfig){
+            foreach ($config->getFields() as $fieldConfig) {
                 $this->persistConfigs[spl_object_hash($fieldConfig)] = $fieldConfig;
             }
         }
@@ -232,7 +223,7 @@ class ConfigManager
         $this->removeConfigs[spl_object_hash($config)] = $config;
 
         if ($config instanceof EntityConfigInterface) {
-            foreach($config->getFields() as $fieldConfig){
+            foreach ($config->getFields() as $fieldConfig) {
                 $this->removeConfigs[spl_object_hash($fieldConfig)] = $fieldConfig;
             }
         }
@@ -240,6 +231,7 @@ class ConfigManager
 
     /**
      * @param array $entities
+     * TODO:: remove configs
      */
     public function flush(array $entities = array())
     {
@@ -255,7 +247,7 @@ class ConfigManager
             if ($config instanceof FieldConfigInterface) {
                 if (!$configField = $configEntity->getField($config->getCode())) {
                     $configField = new ConfigField($config->getCode(), $config->getType());
-                    $configEntity->addFiled($configField);
+                    $configEntity->addField($configField);
                 }
 
                 $configField->fromArray($config->getScope(), $config->getValues());
@@ -263,14 +255,8 @@ class ConfigManager
                 $configEntity->fromArray($config->getScope(), $config->getValues());
             }
 
-//            var_dump($className);
-//            var_dump($config);
-//            die;
-
             $this->configCache->removeConfigFromCache($className, $config->getScope());
         }
-
-        // TODO:: remove configs
 
         foreach ($entities as $entity) {
             $this->em()->persist($entity);

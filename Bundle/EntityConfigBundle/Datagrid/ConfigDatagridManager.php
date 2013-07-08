@@ -113,16 +113,48 @@ class ConfigDatagridManager extends DatagridManager
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
                 if (isset($item['grid'])) {
-                    $fieldObjectName = new FieldDescription();
-                    $fieldObjectName->setName($code);
-                    $fieldObjectName->setOptions(array_merge($item['grid'], array(
+                    $fieldObjectProvider = new FieldDescription();
+                    $fieldObjectProvider->setName($code);
+                    $fieldObjectProvider->setOptions(array_merge($item['grid'], array(
                         'expression' => 'cev' . $code . '.value',
                         'field_name' => $code,
                     )));
-                    $fieldsCollection->add($fieldObjectName);
+                    $fieldsCollection->add($fieldObjectProvider);
                 }
             }
         }
+
+        $fieldObjectCreate = new FieldDescription();
+        $fieldObjectCreate->setName('created');
+        $fieldObjectCreate->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_DATETIME,
+                'label'       => 'Create At',
+                'field_name'  => 'created',
+                'filter_type' => FilterInterface::TYPE_DATETIME,
+                'required'    => true,
+                'sortable'    => true,
+                'filterable'  => false,
+                'show_filter' => true,
+            )
+        );
+        $fieldsCollection->add($fieldObjectCreate);
+
+        $fieldObjectUpdate = new FieldDescription();
+        $fieldObjectUpdate->setName('updated');
+        $fieldObjectUpdate->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_DATETIME,
+                'label'       => 'Update At',
+                'field_name'  => 'updated',
+                'filter_type' => FilterInterface::TYPE_DATETIME,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+            )
+        );
+        $fieldsCollection->add($fieldObjectUpdate);
     }
 
     /**
@@ -181,6 +213,7 @@ class ConfigDatagridManager extends DatagridManager
                     switch ($config['type']) {
                         case 'delete':
                             $configItem['type'] = ActionInterface::TYPE_DELETE;
+                            break;
                         case 'redirect':
                             $configItem['type'] = ActionInterface::TYPE_REDIRECT;
                             break;

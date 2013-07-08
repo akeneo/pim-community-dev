@@ -169,7 +169,7 @@ class Role implements RoleInterface
     /**
      * Get aclResources
      *
-     * @return Collection
+     * @return ArrayCollection
      */
     public function getAclResources()
     {

@@ -44,11 +44,12 @@ class EntityConfigContainer
      */
     public function getEntityItems()
     {
+        $entityItems = array();
         if (isset($this->config['entity']) && isset($this->config['entity']['items'])) {
-            return $this->config['entity']['items'];
+            $entityItems = $this->config['entity']['items'];
         }
 
-        return array();
+        return $entityItems;
     }
 
     public function hasEntityForm()
@@ -63,14 +64,15 @@ class EntityConfigContainer
      */
     public function getEntityFormBlockConfig()
     {
+        $entityFormBlockConfig = null;
         if (isset($this->config['entity'])
             && isset($this->config['entity']['form'])
             && isset($this->config['entity']['form']['block_config'])
         ) {
-            return $this->config['entity']['form']['block_config'];
+            $entityFormBlockConfig = $this->config['entity']['form']['block_config'];
         }
 
-        return null;
+        return $entityFormBlockConfig;
     }
 
     /**
@@ -78,11 +80,12 @@ class EntityConfigContainer
      */
     public function getEntityGridActions()
     {
+        $entityGridActions = array();
         if (isset($this->config['entity']) && isset($this->config['entity']['grid_action'])) {
-            return $this->config['entity']['grid_action'];
+            $entityGridActions =  $this->config['entity']['grid_action'];
         }
 
-        return array();
+        return $entityGridActions;
     }
 
     /**
@@ -90,11 +93,12 @@ class EntityConfigContainer
      */
     public function getEntityLayoutActions()
     {
+        $entityLayoutActions = array();
         if (isset($this->config['entity']) && isset($this->config['entity']['layout_action'])) {
-            return $this->config['entity']['layout_action'];
+            $entityLayoutActions = $this->config['entity']['layout_action'];
         }
 
-        return array();
+        return $entityLayoutActions;
     }
 
     /**
@@ -102,11 +106,12 @@ class EntityConfigContainer
      */
     public function getFieldItems()
     {
+        $fieldItems = array();
         if (isset($this->config['field']) && isset($this->config['field']['items'])) {
-            return $this->config['field']['items'];
+            $fieldItems = $this->config['field']['items'];
         }
 
-        return array();
+        return $fieldItems;
     }
 
     public function hasFieldForm()
@@ -121,11 +126,12 @@ class EntityConfigContainer
      */
     public function getFieldFormConfig()
     {
+        $fieldFormConfig = array();
         if (isset($this->config['field']) && isset($this->config['field']['form'])) {
-            return $this->config['field']['form'];
+            $fieldFormConfig = $this->config['field']['form'];
         }
 
-        return array();
+        return $fieldFormConfig;
     }
 
     /**
@@ -133,11 +139,12 @@ class EntityConfigContainer
      */
     public function getFieldGridActions()
     {
+        $fieldGridActions = array();
         if (isset($this->config['field']) && isset($this->config['field']['grid_action'])) {
-            return $this->config['field']['grid_action'];
+            $fieldGridActions = $this->config['field']['grid_action'];
         }
 
-        return array();
+        return $fieldGridActions;
     }
 
     /**
@@ -145,10 +152,11 @@ class EntityConfigContainer
      */
     public function getFieldLayoutActions()
     {
+        $fieldLayoutActions = array();
         if (isset($this->config['field']) && isset($this->config['field']['layout_action'])) {
-            return $this->config['field']['layout_action'];
+            $fieldLayoutActions = $this->config['field']['layout_action'];
         }
 
-        return array();
+        return $fieldLayoutActions;
     }
 }
