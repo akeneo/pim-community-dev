@@ -16,8 +16,8 @@ interface StorageInterface
     /**
      * Updates an address
      *
-     * @param  AbstractAddress       $address
-     * @param  bool              $flush   Whether to flush the changes (default true)
+     * @param AbstractAddress $address
+     * @param bool $flush Whether to flush the changes (default true)
      * @throws \RuntimeException
      */
     public function updateAddress(AbstractAddress $address, $flush = true);
@@ -32,7 +32,7 @@ interface StorageInterface
     /**
      * Finds one address by the given criteria
      *
-     * @param  array       $criteria
+     * @param array $criteria
      * @return AbstractAddress
      */
     public function findAddressBy(array $criteria);

@@ -24,11 +24,13 @@ OroAddressBundle provides PHP/REST/SOAP API for address CRUD operations.
 ### REST API
 
 <pre>
-    oro_api_delete_address    DELETE        /api/rest/{version}/address.{_format}
-    oro_api_get_address       GET           /api/rest/{version}/addresses/{id}.{_format}
     oro_api_get_addresses     GET           /api/rest/{version}/addresses.{_format}
+    oro_api_get_address       GET           /api/rest/{version}/addresses/{id}.{_format}
     oro_api_post_address      POST          /api/rest/{version}/address.{_format}
     oro_api_put_address       PUT           /api/rest/{version}/address.{_format}
+    oro_api_delete_address    DELETE        /api/rest/{version}/address.{_format}
+    oro_api_get_addresstype   GET           /api/rest/{version}/addresstypes/{name}.{_format}
+    oro_api_get_addresstypes  GET           /api/rest/{version}/addresstypes.{_format}
 </pre>
 
 ### Address collection
@@ -37,7 +39,7 @@ Address collection may be added to form with next three steps
 
 ```php
 $builder->add(
-    'multiAddress',
+    'addresses',
     'oro_address_collection',
     array(
         'required' => false,
@@ -45,10 +47,10 @@ $builder->add(
     )
 );
 ```
-2) Add AddressCollectionTypeSubscriber. AddressCollectionTypeSubscriber must be initialized with address collection field name.
+2) Add AddressCollectionTypeSubscriber. AddressCollectionTypeSubscriber must be initialized with address collection field name and address class name.
 
 ```php
-$builder->addEventSubscriber(new AddressCollectionTypeSubscriber('multiAddress'));
+$builder->addEventSubscriber(new AddressCollectionTypeSubscriber('addresses', $this->addressClass));
 ```
 
 3) In template add OroAddressBundle:Include:fields.html.twig to support address form field typed

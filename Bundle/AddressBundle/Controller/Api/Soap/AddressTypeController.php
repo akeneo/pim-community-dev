@@ -30,7 +30,7 @@ class AddressTypeController extends Controller
         $entity = $this->getDoctrine()->getRepository('OroAddressBundle:AddressType')->find($name);
 
         if (!$entity) {
-            throw new \SoapFault('NOT_FOUND', sprintf('Record #%s can not be found', $name));
+            throw new \SoapFault('NOT_FOUND', sprintf('Address type "%s" can\'t be found', $name));
         }
 
         return $entity;

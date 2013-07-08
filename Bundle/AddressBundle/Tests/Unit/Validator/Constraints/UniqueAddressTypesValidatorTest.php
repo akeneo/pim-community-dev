@@ -75,7 +75,7 @@ class UniqueAddressTypesValidatorTest extends \PHPUnit_Framework_TestCase
                 array(
                     $this->getTypedAddressMock(array('billing')),
                     $this->getTypedAddressMock(array('shipping')),
-                    $this->getTypedAddressMock(array('shipping'), true),
+                    $this->getTypedAddressMock(array(), true),
                 )
             )
         );
@@ -84,15 +84,16 @@ class UniqueAddressTypesValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider invalidAddressesDataProvider
      * @param array $addresses
+     * @param string $types
      */
-    public function testValidateInvalid($addresses)
+    public function testValidateInvalid($addresses, $types)
     {
         $context = $this->getMockBuilder('Symfony\Component\Validator\ExecutionContext')
             ->disableOriginalConstructor()
             ->getMock();
         $context->expects($this->once())
             ->method('addViolation')
-            ->with('Different addresses cannot have same type.');
+            ->with('Several addresses have the same type {{ types }}.', array('{{ types }}' => $types));
 
         $constraint = $this->getMock('Oro\Bundle\AddressBundle\Validator\Constraints\UniqueAddressTypes');
         $validator = new UniqueAddressTypesValidator();
@@ -107,12 +108,20 @@ class UniqueAddressTypesValidatorTest extends \PHPUnit_Framework_TestCase
     public function invalidAddressesDataProvider()
     {
         return array(
-            'more than one address with same type' => array(
+            'several addresses with one same type' => array(
+                array(
+                    $this->getTypedAddressMock(array('billing')),
+                    $this->getTypedAddressMock(array('billing', 'shipping')),
+                ),
+                '"billing"'
+            ),
+            'several addresses with two same types' => array(
                 array(
                     $this->getTypedAddressMock(array('billing')),
                     $this->getTypedAddressMock(array('shipping')),
                     $this->getTypedAddressMock(array('billing', 'shipping')),
-                )
+                ),
+                '"billing", "shipping"'
             ),
         );
     }

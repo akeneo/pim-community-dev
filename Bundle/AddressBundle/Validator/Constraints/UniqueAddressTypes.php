@@ -6,5 +6,5 @@ use Symfony\Component\Validator\Constraint;
 
 class UniqueAddressTypes extends Constraint
 {
-    public $message = 'Different addresses cannot have same type.';
+    public $message = 'Several addresses have the same type {{ types }}.';
 }

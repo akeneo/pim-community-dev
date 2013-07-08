@@ -10,8 +10,6 @@ use Symfony\Component\Validator\Exception\ValidatorException;
 
 class UniqueAddressTypesValidator extends ConstraintValidator
 {
-    const TYPED_ADDRESS_CLASS = 'Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress';
-
     /**
      * {@inheritdoc}
      */
@@ -30,7 +28,7 @@ class UniqueAddressTypesValidator extends ConstraintValidator
                 throw new ValidatorException(
                     sprintf(
                         'Expected element of type %s, %s given',
-                        self::TYPED_ADDRESS_CLASS,
+                        'Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress',
                         is_object($value) ? get_class($address) : gettype($address)
                     )
                 );
@@ -47,7 +45,10 @@ class UniqueAddressTypesValidator extends ConstraintValidator
 
         if ($repeatedTypeNames) {
             /** @var UniqueAddressTypes $constraint */
-            $this->context->addViolation($constraint->message);
+            $this->context->addViolation(
+                $constraint->message,
+                array('{{ types }}' => '"' . implode('", "', $repeatedTypeNames) . '"')
+            );
         }
     }
 }
