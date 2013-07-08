@@ -3,6 +3,7 @@
 namespace Oro\Bundle\EntityConfigBundle\Tests\Unit;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 use Oro\Bundle\EntityConfigBundle\OroEntityConfigBundle;
 
@@ -13,6 +14,9 @@ class OroEntityConfigBundleTest extends \PHPUnit_Framework_TestCase
      */
     private $containerBuilder;
 
+    /**
+     * @var Bundle
+     */
     private $bundle;
 
     protected function setUp()

@@ -129,8 +129,8 @@ class DataBlocks
     }
 
     /**
-     * @param $code
-     * @param  array       $blockConfig
+     * @param        $code
+     * @param  array $blockConfig
      * @return BlockConfig
      */
     protected function createBlock($code, $blockConfig = array())
@@ -144,8 +144,8 @@ class DataBlocks
             : ucfirst($code);
         $block->setTitle($title);
 
-        foreach ((array) $this->accessor->getValue($blockConfig, '[subblocks]') as $subCode => $subBlockConfig) {
-            $block->addSubBlock($this->createSubBlock($subCode, (array) $subBlockConfig));
+        foreach ((array)$this->accessor->getValue($blockConfig, '[subblocks]') as $subCode => $subBlockConfig) {
+            $block->addSubBlock($this->createSubBlock($subCode, (array)$subBlockConfig));
         }
 
         $this->formConfig->addBlock($block);
