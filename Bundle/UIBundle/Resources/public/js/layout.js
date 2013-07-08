@@ -2,8 +2,10 @@ $(document).ready(function () {
     initLayout();
 
     /* hide progress bar on page ready*/
-    if (window.location.hash === '') {
-        document.title = $('#page-title').text();
+    if (window.location.hash === '' || !Oro.hashNavigationEnabled()) {
+        if ($('#page-title').size()) {
+            document.title = $('#page-title').text();
+        }
         hideProgressBar();
     }
 
