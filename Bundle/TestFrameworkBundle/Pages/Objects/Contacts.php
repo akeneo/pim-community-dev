@@ -22,7 +22,7 @@ class Contacts extends PageFilteredGrid
         $this->waitPageToLoad();
         $this->waitForAjax();
         $contact = new Contact($this->test);
-        return $contact->init(true);
+        return $contact->init();
     }
 
     public function open($entityData = array())

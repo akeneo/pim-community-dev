@@ -22,7 +22,7 @@ class Accounts extends PageFilteredGrid
         $this->waitPageToLoad();
         $this->waitForAjax();
         $account = new Account($this->test);
-        return $account->init(true);
+        return $account->init();
     }
 
     public function open($entityData = array())

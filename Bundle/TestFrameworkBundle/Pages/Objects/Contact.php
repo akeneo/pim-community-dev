@@ -7,12 +7,16 @@ use Oro\Bundle\TestFrameworkBundle\Pages\Page;
 
 class Contact extends Page implements Entity
 {
-    protected $first_name;
-    protected $last_name;
+    protected $firstname;
+    protected $lastname;
+    protected $email;
     protected $street;
     protected $city;
-    protected $zip_code;
-    protected $email;
+    protected $zipcode;
+    protected $country;
+    protected $state;
+    protected $assignedto;
+    protected $reportsto;
 
     public function __construct($testCase, $redirect = true)
     {
@@ -21,38 +25,42 @@ class Contact extends Page implements Entity
 
     public function init()
     {
-        $this->first_name = $this->byId('orocrm_contact_form_values_1_varchar');
-        $this->last_name = $this->byId('orocrm_contact_form_values_2_varchar');
+        $this->firstname = $this->byId('orocrm_contact_form_values_1_varchar');
+        $this->lastname = $this->byId('orocrm_contact_form_values_2_varchar');
         $this->email = $this->byId('orocrm_contact_form_values_10_varchar');
         $this->street = $this->byId('orocrm_contact_form_multiAddress_0_street');
         $this->city = $this->byId('orocrm_contact_form_multiAddress_0_city');
-        $this->zip_code = $this->byId('orocrm_contact_form_multiAddress_0_postalCode');
+        $this->zipcode = $this->byId('orocrm_contact_form_multiAddress_0_postalCode');
+        $this->country = $this->byXpath("//div[@id='s2id_orocrm_contact_form_multiAddress_0_country']/a");
+        $this->state = $this->byXpath("//div[@id='s2id_orocrm_contact_form_multiAddress_0_state']/a");
+        $this->assignedto = $this->byXpath("//div[@id='s2id_orocrm_contact_form_values_8_user']/a");
+        $this->reportsto = $this->byXpath("//div[@id='s2id_orocrm_contact_form_values_9_contact']/a");
 
         return $this;
     }
 
-    public function setFirst_name($first_name)
+    public function setFirstName($firstname)
     {
-        $this->first_name->clear();
-        $this->first_name->value($first_name);
+        $this->firstname->clear();
+        $this->firstname->value($firstname);
         return $this;
     }
 
-    public function getFirst_name()
+    public function getFirstName()
     {
-        return $this->first_name->value();
+        return $this->firstname->value();
     }
 
-    public function setLast_name($last_name)
+    public function setLastName($lastname)
     {
-        $this->last_name->clear();
-        $this->last_name->value($last_name);
+        $this->lastname->clear();
+        $this->lastname->value($lastname);
         return $this;
     }
 
-    public function getLast_name()
+    public function getLastName()
     {
-        return $this->last_name->value();
+        return $this->lastname->value();
     }
 
     public function setEmail($email)
@@ -64,7 +72,7 @@ class Contact extends Page implements Entity
 
     public function getEmail()
     {
-        return $this->last_name->value();
+        return $this->email->value();
     }
 
     public function setStreet($street)
@@ -91,16 +99,64 @@ class Contact extends Page implements Entity
         return $this->city->value();
     }
 
-    public function setZip_code($zip_code)
+    public function setZipCode($zipcode)
     {
-        $this->zip_code->clear();
-        $this->zip_code->value($zip_code);
+        $this->zipcode->clear();
+        $this->zipcode->value($zipcode);
         return $this;
     }
 
-    public function getZip_code()
+    public function getZipCode()
     {
-        return $this->zip_code->value();
+        return $this->zipcode->value();
+    }
+
+    public function setCountry($country)
+    {
+        $this->country->click();
+        $this->waitForAjax();
+        $this->byXpath("//div[@id='select2-drop']/div/input")->value($country);
+        $this->waitForAjax();
+        $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$country}')]", "Country's autocoplete doesn't return search value");
+        $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$country}')]")->click();
+
+        return $this;
+    }
+
+    public function setState($state)
+    {
+        $this->state->click();
+        $this->waitForAjax();
+        $this->byXpath("//div[@id='select2-drop']/div/input")->value($state);
+        $this->waitForAjax();
+        $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$state}')]", "Country's autocoplete doesn't return search value");
+        $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$state}')]")->click();
+
+        return $this;
+    }
+
+    public function setAssignedTo($assignedto)
+    {
+        $this->assignedto->click();
+        $this->waitForAjax();
+        $this->byXpath("//div[@id='select2-drop']/div/input")->value($assignedto);
+        $this->waitForAjax();
+        $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$assignedto}')]", "Assigned to autocoplete doesn't return search value");
+        $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$assignedto}')]")->click();
+
+        return $this;
+    }
+
+    public function setReportsTo($reportsto)
+    {
+        $this->reportsto->click();
+        $this->waitForAjax();
+        $this->byXpath("//div[@id='select2-drop']/div/input")->value($reportsto);
+        $this->waitForAjax();
+        $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$reportsto}')]", "Reports to autocoplete doesn't return search value");
+        $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$reportsto}')]")->click();
+
+        return $this;
     }
 
     public function save()
