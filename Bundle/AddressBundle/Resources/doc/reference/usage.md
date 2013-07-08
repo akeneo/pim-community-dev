@@ -43,7 +43,7 @@ $builder->add(
     'oro_address_collection',
     array(
         'required' => false,
-        'label' => ' '
+        'type'     => 'oro_address'
     )
 );
 ```
