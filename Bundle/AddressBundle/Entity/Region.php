@@ -32,7 +32,7 @@ class Region implements Translatable
     /**
      * @var string
      *
-     * @ORM\ManyToOne(targetEntity="Country", inversedBy="regions",     cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Country", inversedBy="regions", cascade={"persist"})
      * @ORM\JoinColumn(name="country_code", referencedColumnName="iso2_code")
      * @Type("string")
      * @Soap\ComplexType("string", nillable=true)
