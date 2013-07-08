@@ -15,6 +15,7 @@ class SoapSearchApiTest extends WebTestCase
     /** Default value for offset and max_records */
     const DEFAULT_VALUE = 0;
 
+    /** @var Client */
     protected $client = null;
 
     protected static $hasLoaded = false;
