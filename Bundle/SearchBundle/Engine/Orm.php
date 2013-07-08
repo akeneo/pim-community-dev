@@ -195,34 +195,6 @@ class Orm extends AbstractEngine
     }
 
     /**
-     * Get url for entity
-     *
-     * @param object $entity
-     *
-     * @return string
-     */
-    protected function getEntityUrl($entity)
-    {
-        if ($this->mapper->getEntityMapParameter(get_class($entity), 'route')) {
-            $routeParameters = $this->mapper->getEntityMapParameter(get_class($entity), 'route');
-            $routeData = array();
-            if (isset($routeParameters['parameters']) && count($routeParameters['parameters'])) {
-                foreach ($routeParameters['parameters'] as $parameter => $field) {
-                    $routeData[$parameter] = $this->mapper->getFieldValue($entity, $field);
-                }
-            }
-
-            return $this->container->get('router')->generate(
-                $routeParameters['name'],
-                $routeData,
-                true
-            );
-        }
-
-        return '';
-    }
-
-    /**
      * Search query with query builder
      *
      * @param \Oro\Bundle\SearchBundle\Query\Query $query
@@ -249,9 +221,7 @@ class Orm extends AbstractEngine
                     $item->getEntity(),
                     $item->getRecordId(),
                     $item->getTitle(),
-                    $this->getEntityUrl(
-                        $this->em->getRepository($item->getEntity())->find($item->getRecordId())
-                    ),
+                    null,
                     $item->getRecordText(),
                     $this->mapper->getEntityConfig($item->getEntity())
                 );

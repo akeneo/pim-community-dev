@@ -2,10 +2,12 @@
 
 namespace Oro\Bundle\SearchBundle\Datagrid;
 
-use Oro\Bundle\SearchBundle\Formatter\ResultFormatter;
+use Symfony\Component\Routing\Router;
 
-use Oro\Bundle\GridBundle\EventDispatcher\ResultDatagridEvent;
+use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
 use Oro\Bundle\SearchBundle\Query\Result\Item;
+use Oro\Bundle\SearchBundle\Formatter\ResultFormatter;
+use Oro\Bundle\GridBundle\EventDispatcher\ResultDatagridEvent;
 
 class EntityResultListener
 {
@@ -20,13 +22,55 @@ class EntityResultListener
     protected $resultFormatter;
 
     /**
+     * @var Router
+     */
+    protected $router;
+
+    /**
+     * @var ObjectMapper
+     */
+    protected $mapper;
+
+    /**
      * @param ResultFormatter $resultFormatter
      * @param string $datagridName
+     * @param ObjectMapper $mapper
+     * @param Router $router
      */
-    public function __construct(ResultFormatter $resultFormatter, $datagridName)
+    public function __construct(ResultFormatter $resultFormatter, $datagridName, ObjectMapper $mapper, Router $router)
     {
         $this->resultFormatter = $resultFormatter;
         $this->datagridName    = $datagridName;
+        $this->mapper          = $mapper;
+        $this->router          = $router;
+    }
+
+    /**
+     * Get url for entity
+     *
+     * @param object $entity
+     *
+     * @return string
+     */
+    protected function getEntityUrl($entity)
+    {
+        if ($this->mapper->getEntityMapParameter(get_class($entity), 'route')) {
+            $routeParameters = $this->mapper->getEntityMapParameter(get_class($entity), 'route');
+            $routeData = array();
+            if (isset($routeParameters['parameters']) && count($routeParameters['parameters'])) {
+                foreach ($routeParameters['parameters'] as $parameter => $field) {
+                    $routeData[$parameter] = $this->mapper->getFieldValue($entity, $field);
+                }
+            }
+
+            return $this->router->generate(
+                $routeParameters['name'],
+                $routeData,
+                true
+            );
+        }
+
+        return '';
     }
 
     /**
@@ -52,6 +96,9 @@ class EntityResultListener
                 $entity = $entities[$entityName][$entityId];
             }
 
+            if (!$row->getRecordUrl()) {
+                $row->setRecordUrl($this->getEntityUrl($entity));
+            }
             $resultRows[] = array(
                 'indexer_item' => $row,
                 'entity' => $entity,
