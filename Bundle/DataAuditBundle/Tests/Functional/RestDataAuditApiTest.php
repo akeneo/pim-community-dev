@@ -73,15 +73,15 @@ class RestDataAuditApiTest extends WebTestCase
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
         $result = ToolsAPI::jsonToArray($result->getContent());
-        $resultExpected = reset($result);
-        $this->assertEquals($resultExpected['action'], 'create');
-        $this->assertEquals($resultExpected['object_class'], 'Oro\Bundle\UserBundle\Entity\User');
-        $this->assertEquals($resultExpected['object_name'], $response['user']['username']);
-        $this->assertEquals($resultExpected['user'], 'admin');
-        $this->assertEquals($resultExpected['data']['username']['new'], $response['user']['username']);
-        $this->assertEquals($resultExpected['data']['email']['new'], $response['user']['email']);
-        $this->assertEquals($resultExpected['data']['enabled']['new'], $response['user']['enabled']);
-        $this->assertEquals($resultExpected['data']['roles']['new'], 'User');
+        $resultActual = reset($result);
+        $this->assertEquals('create', $resultActual['action']);
+        $this->assertEquals('Oro\Bundle\UserBundle\Entity\User', $resultActual['object_class']);
+        $this->assertEquals($response['user']['username'], $resultActual['object_name']);
+        $this->assertEquals('admin', $resultActual['user']);
+        $this->assertEquals($response['user']['username'], $resultActual['data']['username']['new']);
+        $this->assertEquals($response['user']['email'], $resultActual['data']['email']['new']);
+        $this->assertEquals($response['user']['enabled'], $resultActual['data']['enabled']['new']);
+        $this->assertEquals('User', $resultActual['data']['roles']['new']);
 
         return $result;
     }
