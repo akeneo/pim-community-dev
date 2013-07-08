@@ -4,6 +4,7 @@ namespace Oro\Bundle\UserBundle\Tests\Functional\API;
 
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\TestFrameworkBundle\Test\ToolsAPI;
+use Oro\Bundle\TestFrameworkBundle\Test\Client;
 
 /**
  * @outputBuffering enabled
@@ -17,14 +18,15 @@ class SoapApiUsersACLTest extends WebTestCase
 
     const DEFAULT_USER_ID = '1';
 
-    protected $clientSoap = null;
+    /** @var Client */
+    protected $client = null;
     protected static $hasLoaded = false;
 
     public function setUp()
     {
-        $this->clientSoap = static::createClient(array(), ToolsAPI::generateWsseHeader(self::USER_NAME, self::USER_PASSWORD));
+        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader(self::USER_NAME, self::USER_PASSWORD));
         if (!self::$hasLoaded) {
-            $this->clientSoap->appendFixtures(__DIR__ . DIRECTORY_SEPARATOR . 'DataFixtures');
+            $this->client->appendFixtures(__DIR__ . DIRECTORY_SEPARATOR . 'DataFixtures');
         }
         self::$hasLoaded = true;
     }
@@ -32,7 +34,7 @@ class SoapApiUsersACLTest extends WebTestCase
     public function testWsseAccess()
     {
         try {
-            $this->clientSoap->soap(
+            $this->client->soap(
                 "http://localhost/api/soap",
                 array(
                     'location' => 'http://localhost/api/soap',

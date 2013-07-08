@@ -13,7 +13,8 @@ use Oro\Bundle\TestFrameworkBundle\Test\Client;
 class RestApiUserTest extends WebTestCase
 {
 
-    public $client = null;
+    /** @var Client  */
+    protected $client = null;
 
     public function setUp()
     {
@@ -31,10 +32,9 @@ class RestApiUserTest extends WebTestCase
                 "label" => "new_label_" . mt_rand()
             )
         );
-        $this->client->request('POST', 'http://localhost/api/rest/latest/role', $request);
+        $this->client->request('POST', $this->client->generate('oro_api_post_role'), $request);
         $result = $this->client->getResponse();
-        $this->assertJsonResponse($result, 201);
-        $result = json_decode($result->getContent(), true);
+        ToolsAPI::assertJsonResponse($result, 201);
 
         return $request;
     }
@@ -47,9 +47,9 @@ class RestApiUserTest extends WebTestCase
     */
     public function testApiContainRole($request)
     {
-        $this->client->request('GET', "http://localhost/api/rest/latest/roles");
+        $this->client->request('GET', $this->client->generate('oro_api_get_roles'));
         $result = $this->client->getResponse();
-        $this->assertJsonResponse($result, 200);
+        ToolsAPI::assertJsonResponse($result, 200);
         $result = json_decode($result->getContent(), true);
         //compare result
         $roleId = $this->assertEqualsRoles($request, $result);
@@ -70,15 +70,15 @@ class RestApiUserTest extends WebTestCase
                 "label" => "new_label_update"
             )
         );
-        $this->client->request('PUT', 'http://localhost/api/rest/latest/roles/' . $roleId, $requestUpdate);
+        $this->client->request('PUT', $this->client->generate('oro_api_put_role', array('id' => $roleId)), $requestUpdate);
         $result = $this->client->getResponse();
-        $this->assertJsonResponse($result, 204);
-        $this->client->request('GET', "http://localhost/api/rest/latest/roles");
+        ToolsAPI::assertJsonResponse($result, 204);
+        $this->client->request('GET', $this->client->generate('oro_api_get_roles'));
         $result = $this->client->getResponse();
-        $this->assertJsonResponse($result, 200);
+        ToolsAPI::assertJsonResponse($result, 200);
         $result = json_decode($result->getContent(), true);
         //compare result
-        $roleId = $this->assertEqualsRoles($requestUpdate, $result);
+        $this->assertEqualsRoles($requestUpdate, $result);
 
         return $roleId;
     }
@@ -89,9 +89,12 @@ class RestApiUserTest extends WebTestCase
      */
     public function testApiDeleteRole($roleId)
     {
-        $this->client->request('DELETE', "http://localhost/api/rest/latest/roles/" . $roleId);
+        $this->client->request('DELETE', $this->client->generate('oro_api_delete_role', array('id' => $roleId)));
         $result = $this->client->getResponse();
-        $this->assertJsonResponse($result, 204);
+        ToolsAPI::assertJsonResponse($result, 204);
+        $this->client->request('GET', $this->client->generate('oro_api_get_role', array('id' => $roleId)));
+        $result = $this->client->getResponse();
+        ToolsAPI::assertJsonResponse($result, 404);
     }
 
     /**
@@ -105,9 +108,9 @@ class RestApiUserTest extends WebTestCase
                 "roles" => array(2)
             )
         );
-        $this->client->request('POST', 'http://localhost/api/rest/latest/group', $requestGroup);
+        $this->client->request('POST', $this->client->generate('oro_api_post_group'), $requestGroup);
         $result = $this->client->getResponse();
-        $this->assertJsonResponse($result, 201);
+        ToolsAPI::assertJsonResponse($result, 201);
 
         return $requestGroup;
     }
@@ -119,9 +122,9 @@ class RestApiUserTest extends WebTestCase
      */
     public function testApiContainGroup($requestGroup)
     {
-        $this->client->request('GET', "http://localhost/api/rest/latest/groups");
+        $this->client->request('GET', $this->client->generate('oro_api_get_groups'));
         $result = $this->client->getResponse();
-        $this->assertJsonResponse($result, 200);
+        ToolsAPI::assertJsonResponse($result, 200);
         $result = json_decode($result->getContent(), true);
         //compare result
         $groupId = $this->assertEqualsGroups($requestGroup, $result);
@@ -142,15 +145,15 @@ class RestApiUserTest extends WebTestCase
                 "roles" => array(3)
             )
         );
-        $this->client->request('PUT', 'http://localhost/api/rest/latest/groups/' . $groupId, $requestUpdate);
+        $this->client->request('PUT', $this->client->generate('oro_api_put_group', array('id' => $groupId)), $requestUpdate);
         $result = $this->client->getResponse();
-        $this->assertJsonResponse($result, 204);
-        $this->client->request('GET', "http://localhost/api/rest/latest/groups");
+        ToolsAPI::assertJsonResponse($result, 204);
+        $this->client->request('GET', $this->client->generate('oro_api_get_groups'));
         $result = $this->client->getResponse();
-        $this->assertJsonResponse($result, 200);
+        ToolsAPI::assertJsonResponse($result, 200);
         $result = json_decode($result->getContent(), true);
         //compare result
-        $groupId = $this->assertEqualsGroups($requestUpdate, $result);
+        $this->assertEqualsGroups($requestUpdate, $result);
 
         return $groupId;
     }
@@ -161,24 +164,13 @@ class RestApiUserTest extends WebTestCase
      */
     public function testApiDeleteGroup($groupId)
     {
-        $this->client->request('DELETE', "http://localhost/api/rest/latest/groups/" . $groupId);
+        $this->client->request('DELETE', $this->client->generate('oro_api_delete_group', array('id' => $groupId)));
         $result = $this->client->getResponse();
-        $this->assertJsonResponse($result, 204);
-    }
+        ToolsAPI::assertJsonResponse($result, 204);
+        $this->client->request('GET', $this->client->generate('oro_api_get_group', array('id' => $groupId)));
+        $result = $this->client->getResponse();
+        ToolsAPI::assertJsonResponse($result, 404);
 
-    /**
-     * Test API response status
-     *
-     * @param string $response
-     * @param int    $statusCode
-     */
-    protected function assertJsonResponse($response, $statusCode = 201)
-    {
-        $this->assertEquals(
-            $statusCode,
-            $response->getStatusCode(),
-            $response->getContent()
-        );
     }
 
     /**
