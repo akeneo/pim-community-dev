@@ -93,7 +93,7 @@ abstract class AclManipulator
      * @param Acl  $acl
      * @param Role $role
      *
-     * @return True if ACL has been added, false otherwise
+     * @return boolean True if ACL has been added, false otherwise
      */
     protected function addAclToRole(Acl $acl, Role $role)
     {
@@ -106,6 +106,7 @@ abstract class AclManipulator
             }
 
             foreach ($role->getAclResources() as $resource) {
+                /** @var $resource Acl */
                 if ($resource->getId() == Acl::ROOT_NODE) {
                     $resource->setAccessRoles(new ArrayCollection(array($role)));
 
