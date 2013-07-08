@@ -5,6 +5,7 @@ namespace Oro\Bundle\UserBundle\Acl;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Cache\CacheProvider;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\Acl;
