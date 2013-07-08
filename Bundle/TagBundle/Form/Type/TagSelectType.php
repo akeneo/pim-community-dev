@@ -11,9 +11,12 @@ class TagSelectType extends AbstractType
         $resolver->setDefaults(
             array(
                 'configs' => array(
-                    'placeholder' => 'oro.tag.form.choose_tag'
+                    'placeholder'  => 'oro.tag.form.choose_tag',
+                    'multiple'     => true,
+                    'tokenSeparators' => array(',', ' '),
+                    'tags' => array('dede', 'red'),
                 ),
-                'autocomplete_alias' => 'tags'
+                'autocomplete_alias' => 'tags',
             )
         );
     }

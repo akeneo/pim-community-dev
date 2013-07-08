@@ -339,7 +339,7 @@
             - inverse
             - or empty
 #}
-{% macro tagInputField(label, defaultClass) %}
+{% macro tagInputField(label, formTags, defaultClass) %}
     <div>
         <label for="{{ 'tag-' ~ class|default('tag') }}" class="control-label">{{ label|trans }}:</label>
         <div class="controls">
@@ -353,4 +353,10 @@
         </div>
 
     </div>
+
+    {{ form_row(formTags)  }}
+
+    {{ block('oro_tag_select_row') }}
+
+
 {% endmacro %}

@@ -1,12 +1,7 @@
 Oro\Bundle\TagBundle\Entity\Tag:
     alias:                          oro_tag
-    flexible_manager:               oro_tag.manager.flexible
     title_fields:                   [name]
-    route:
-        name:                       oro_tag_view
-        parameters:
-            id:                     id
-    search_template:                OroUserBundle:Search:result.html.twig
+    search_template:                OroTagBundle:Search:result.html.twig
     fields:
         -
             name:                   name
