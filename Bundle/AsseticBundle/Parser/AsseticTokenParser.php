@@ -23,7 +23,7 @@ class AsseticTokenParser extends \Twig_TokenParser
     private $output;
 
     /**
-     * @param array        $assets
+     * @param array $assets
      * @param AssetFactory $factory
      * @param              $tag
      * @param              $output
@@ -45,9 +45,9 @@ class AsseticTokenParser extends \Twig_TokenParser
 
         $filters = array();
         $attributes = array(
-            'output'   => $this->output,
+            'output' => $this->output,
             'var_name' => 'asset_url',
-            'vars'     => array(),
+            'vars' => array(),
         );
 
         $stream = $this->parser->getStream();
@@ -83,11 +83,20 @@ class AsseticTokenParser extends \Twig_TokenParser
 
         $nameCompress = $this->factory->generateAssetName($inputs['compress'][0], $filters, $attributes);
 
-        $nameUnCompress = substr(sha1($inputs['uncompress'][0].array('oro_assets')), 0, 7);
+        $nameUnCompress = substr(sha1($inputs['uncompress'][0] . array('oro_assets')), 0, 7);
+
         return new OroAsseticNode(
-            $this->factory->createAsset($inputs['compress'][0], $filters, $attributes + array('name' => $nameCompress, 'debug' => false)),
+            $this->factory->createAsset(
+                $inputs['compress'][0],
+                $filters,
+                $attributes + array('name' => $nameCompress, 'debug' => false)
+            ),
             $nameCompress,
-            $this->factory->createAsset($inputs['uncompress'][0], $filters, $attributes + array('name' => $nameUnCompress, 'debug' => true)),
+            $this->factory->createAsset(
+                $inputs['uncompress'][0],
+                $filters,
+                $attributes + array('name' => $nameUnCompress, 'debug' => true)
+            ),
             $nameUnCompress,
             $filters,
             $inputs,
@@ -122,7 +131,7 @@ class AsseticTokenParser extends \Twig_TokenParser
      * Get value from stream
      *
      * @param \Twig_TokenStream $stream
-     * @param bool              $isBool
+     * @param bool $isBool
      *
      * @return bool|string
      */

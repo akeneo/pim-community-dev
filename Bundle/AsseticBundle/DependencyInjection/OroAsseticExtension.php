@@ -48,16 +48,12 @@ class OroAsseticExtension extends Extension
      * Get array with assets from config files
      *
      * @param ContainerBuilder $container
-     *
+     * @param $config
      * @return array
      */
     public function getAssets(ContainerBuilder $container, $config)
     {
         $bundles = $container->getParameter('kernel.bundles');
-        $assets = array(
-            'css' => array(),
-            'js'  => array()
-        );
 
         $js = array();
         $css = array();
@@ -76,34 +72,27 @@ class OroAsseticExtension extends Extension
 
         }
 
-        $compressJs = array();
-        $uncompressJs = array();
-        foreach ($js as $jsBlockName => $jsFiles) {
-            if (in_array($jsBlockName, $config['uncompress_js'])) {
-                $uncompressJs = array_merge($uncompressJs, $jsFiles);
+        return array(
+            'css' => $this->getAssetics($css, $config['uncompress_css']),
+            'js' => $this->getAssetics($js, $config['uncompress_js']),
+        );
+    }
+
+    protected function getAssetics($assetsArray, $uncompressBlocks)
+    {
+        $compressAssets = array();
+        $uncompressAssets = array();
+        foreach ($assetsArray as $blockName => $files) {
+            if (in_array($blockName, $uncompressBlocks)) {
+                $uncompressAssets = array_merge($uncompressAssets, $files);
             } else {
-                $compressJs = array_merge($compressJs, $jsFiles);
+                $compressAssets = array_merge($compressAssets, $files);
             }
         }
-        $assets['js'] = array(
-            'compress' => array($compressJs),
-            'uncompress' => array($uncompressJs)
-        );
 
-        $compressCss = array();
-        $uncompressCss = array();
-        foreach ($css as $cssBlockName => $cssFiles) {
-            if (in_array($cssBlockName, $config['uncompress_css'])) {
-                $uncompressCss = array_merge($uncompressCss, $cssFiles);
-            } else {
-                $compressCss = array_merge($compressCss, $cssFiles);
-            }
-        }
-        $assets['css'] = array(
-            'compress' => array($compressCss),
-            'uncompress' => array($uncompressCss)
+        return array(
+            'compress' => array($compressAssets),
+            'uncompress' => array($uncompressAssets)
         );
-
-        return $assets;
     }
 }

@@ -1,6 +1,6 @@
 parameters:
     oro_assetic.twig_extension.class:  Oro\Bundle\AsseticBundle\Twig\AsseticExtension
-    oro_assetic.routing_loader.class:  Oro\Bundle\AsseticBundle\Routing\OroasseticLoader
+    oro_assetic.routing_loader.class:  Oro\Bundle\AsseticBundle\Routing\AsseticLoader
     oro_assetic.asset_manager.class:   Oro\Bundle\AsseticBundle\Factory\OroAssetManager
     oro_assetic.controller.class:      Oro\Bundle\AsseticBundle\Controller\AsseticController
 

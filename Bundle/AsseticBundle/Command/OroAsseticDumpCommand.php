@@ -20,7 +20,7 @@ class OroAsseticDumpCommand extends ContainerAwareCommand
      */
     protected $am;
 
-    protected function configure()
+    public function configure()
     {
         $this
             ->setName('oro:assetic:dump')
@@ -35,29 +35,16 @@ class OroAsseticDumpCommand extends ContainerAwareCommand
         $this->am = $this->getContainer()->get('oro_assetic.asset_manager');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln(sprintf('Dumping all <comment>%s</comment> assets.', $input->getOption('env')));
         $output->writeln(sprintf('Debug mode is <comment>%s</comment>.', 'off'));
         $output->writeln('');
 
-        //$this->dumpCss($output);
-        $this->dumpJs($output);
+        $this->dumpAssets($output);
     }
 
-    protected function dumpCss($output)
-    {
-        $filters = array(
-            'cssrewrite',
-            'lessphp',
-            'yui_css'
-        );
-        $assetCollection = $this->af->createAsset($this->cssFiles, $filters);
-        $assetCollection->setTargetPath("css/oro.bootstrap.css");
-        $this->doDump($assetCollection, $output);
-    }
-
-    protected function dumpJs($output)
+    protected function dumpAssets($output)
     {
         foreach ($this->am->getAssets() as $asset) {
             /** @var  $asset \Oro\Bundle\AsseticBundle\Node\OroAsseticNode */
@@ -66,12 +53,9 @@ class OroAsseticDumpCommand extends ContainerAwareCommand
     }
 
     /**
-     * Performs the asset dump.
-     *
-     * @param AssetInterface  $asset  An asset
-     * @param OutputInterface $output The command output
-     *
-     * @throws RuntimeException If there is a problem writing the asset
+     * @param AssetInterface $asset
+     * @param OutputInterface $output
+     * @throws \RuntimeException
      */
     private function doDump(AssetInterface $asset, OutputInterface $output)
     {

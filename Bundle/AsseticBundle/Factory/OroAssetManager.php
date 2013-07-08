@@ -4,24 +4,28 @@ namespace Oro\Bundle\AsseticBundle\Factory;
 
 use Assetic\Factory\Resource\IteratorResourceInterface;
 use Assetic\Asset\AssetInterface;
+use Assetic\Factory\LazyAssetManager;
 
 use Oro\Bundle\AsseticBundle\Node\OroAsseticNode;
 
-/**
- * A lazy asset manager is a composition of a factory and many formula loaders.
- *
- * @author Kris Wallsmith <kris.wallsmith@gmail.com>
- */
 class OroAssetManager
 {
+    /**
+     * @var LazyAssetManager
+     */
     public $am;
+
+    /**
+     * @var \Twig_Environment
+     */
+    private $twig;
 
     private $assets;
     private $loaded;
     private $loading;
-    private $twig;
 
-    public function __construct($am, $twig)
+
+    public function __construct(LazyAssetManager $am, \Twig_Environment $twig)
     {
         $this->loaded = false;
         $this->loading = false;
@@ -30,37 +34,40 @@ class OroAssetManager
         $this->twig = $twig;
     }
 
+    /**
+     * @return array
+     */
     public function getAssets()
     {
-        if (!$this->loaded) {
-            $this->load();
-        }
+        $this->checkLoad();
 
         return $this->assets;
     }
 
+    /**
+     * @param $name
+     * @return mixed
+     */
     public function get($name)
     {
-        if (!$this->loaded) {
-            $this->load();
-        }
+        $this->checkLoad();
 
         return $this->assets[$name]->getUnCompressAsset();
     }
 
+    /**
+     * @param $name
+     * @return bool
+     */
     public function has($name)
     {
-        if (!$this->loaded) {
-            $this->load();
-        }
+        $this->checkLoad();
 
         return isset($this->assets[$name]);
     }
 
     /**
-     * Loads formulae from resources.
-     *
-     * @throws \LogicException If a resource has been added to an invalid loader
+     * @return array
      */
     public function load()
     {
@@ -78,8 +85,8 @@ class OroAssetManager
 
             foreach ($resources as $resource) {
                 /**@var $resource \Symfony\Bundle\AsseticBundle\Factory\Resource\FileResource */
-                $tokens = $this->twig->tokenize($resource->getContent(), (string) $resource);
-                $nodes  = $this->twig->parse($tokens);
+                $tokens = $this->twig->tokenize($resource->getContent(), (string)$resource);
+                $nodes = $this->twig->parse($tokens);
                 $assets += $this->loadNode($nodes);
             }
         }
@@ -91,6 +98,10 @@ class OroAssetManager
         return $this->assets;
     }
 
+    /**
+     * @param AssetInterface $asset
+     * @return int|mixed
+     */
     public function getLastModified(AssetInterface $asset)
     {
         $mtime = 0;
@@ -104,7 +115,7 @@ class OroAssetManager
             // prepare load path
             $sourceRoot = $leaf->getSourceRoot();
             $sourcePath = $leaf->getSourcePath();
-            $loadPath = $sourceRoot && $sourcePath ? dirname($sourceRoot.'/'.$sourcePath) : null;
+            $loadPath = $sourceRoot && $sourcePath ? dirname($sourceRoot . '/' . $sourcePath) : null;
 
             $prevFilters = array();
             foreach ($filters as $filter) {
@@ -131,22 +142,36 @@ class OroAssetManager
         return $mtime;
     }
 
+    /**
+     * @param $name
+     * @return bool
+     */
     public function hasFormula($name)
     {
-        if (!$this->loaded) {
-            $this->load();
-        }
+        $this->checkLoad();
 
         return true;
     }
 
+    /**
+     * @param $name
+     * @return array
+     */
     public function getFormula($name)
+    {
+        $this->checkLoad();
+
+        return array($this->assets[$name]->getAttribute('inputs'));
+    }
+
+    /**
+     * Check if assets was loaded
+     */
+    private function checkLoad()
     {
         if (!$this->loaded) {
             $this->load();
         }
-
-        return array($this->assets[$name]->getAttribute('inputs'));
     }
 
     /**

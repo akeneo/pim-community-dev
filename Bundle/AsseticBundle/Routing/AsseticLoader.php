@@ -17,33 +17,26 @@ use Symfony\Component\Routing\RouteCollection;
 
 use Oro\Bundle\AsseticBundle\Factory\OroAssetManager;
 
-/**
- * Loads routes for all assets.
- *
- * Assets should only be served through the routing system for ease-of-use
- * during development.
- *
- * For example, add the following to your application's routing_dev.yml:
- *
- *     _assetic:
- *         resource: .
- *         type:     assetic
- *
- * In a production environment you should use the `assetic:dump` command to
- * create static asset files.
- *
- * @author Kris Wallsmith <kris@symfony.com>
- */
-class OroasseticLoader extends Loader
+class AsseticLoader extends Loader
 {
+    /**
+     * @var OroAssetManager
+     */
     protected $am;
 
+    /**
+     * @param OroAssetManager $am
+     */
     public function __construct(OroAssetManager $am)
     {
         $this->am = $am;
-
     }
 
+    /**
+     * @param mixed $routingResource The resource
+     * @param string $type           The resource type
+     * @return RouteCollection
+     */
     public function load($routingResource, $type = null)
     {
         $routes = new RouteCollection();
@@ -62,19 +55,20 @@ class OroasseticLoader extends Loader
         foreach ($this->am->getAssets() as $name => $assetNode) {
             $asset = $assetNode->getUnCompressAsset();
 
-            // add a route for each "leaf" in debug mode
-
-                $i = 0;
-                foreach ($asset as $leaf) {
-                    $this->loadRouteForAsset($routes, $leaf, $name, $i++);
-                }
+            $i = 0;
+            foreach ($asset as $leaf) {
+                $this->loadRouteForAsset($routes, $leaf, $name, $i++);
+            }
 
         }
 
         return $routes;
     }
 
-
+    public function supports($resource, $type = null)
+    {
+        return 'oro_assetic' == $type;
+    }
 
     /**
      * Loads a route to serve an supplied asset.
@@ -83,16 +77,16 @@ class OroasseticLoader extends Loader
      * target URL will be removed before set as a route pattern.
      *
      * @param RouteCollection $routes The route collection
-     * @param AssetInterface  $asset  The asset
-     * @param string          $name   The name to use
-     * @param integer         $pos    The leaf index
+     * @param AssetInterface $asset  The asset
+     * @param string $name   The name to use
+     * @param integer $pos    The leaf index
      */
     private function loadRouteForAsset(RouteCollection $routes, AssetInterface $asset, $name, $pos = null)
     {
         $defaults = array(
             '_controller' => 'oro_assetic.controller:render',
-            'name'        => $name,
-            'pos'         => $pos,
+            'name' => $name,
+            'pos' => $pos,
         );
 
         // remove the fake front controller
@@ -102,16 +96,11 @@ class OroasseticLoader extends Loader
             $defaults['_format'] = $format;
         }
 
-        $route = '_assetic_'.$name;
+        $route = '_assetic_' . $name;
         if (null !== $pos) {
-            $route .= '_'.$pos;
+            $route .= '_' . $pos;
         }
 
         $routes->add($route, new Route($pattern, $defaults));
-    }
-
-    public function supports($resource, $type = null)
-    {
-        return 'oro_assetic' == $type;
     }
 }
