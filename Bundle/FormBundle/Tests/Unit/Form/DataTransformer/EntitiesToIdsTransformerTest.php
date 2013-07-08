@@ -5,6 +5,7 @@ namespace Oro\Bundle\FormBundle\Tests\Unit\Form\Type;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
 
@@ -352,7 +353,7 @@ class EntitiesToIdsTransformerTest extends \PHPUnit_Framework_TestCase
 
         $classMetadata = $this->getMockClassMetadata();
         $classMetadata->expects($this->once())->method('getSingleIdentifierFieldName')
-            ->will($this->throwException(new \Doctrine\ORM\Mapping\MappingException()));
+            ->will($this->throwException(new MappingException()));
 
         $em = $this->getMockEntityManager();
         $em->expects($this->once())->method('getClassMetadata')

@@ -93,18 +93,17 @@ class DataBlocks
                     $this->formConfig->addBlock($block);
                 }
 
-                $subBlock = null;
                 if (isset($child->vars['subblock']) && $block->hasSubBlock($child->vars['subblock'])) {
                     $subBlock = $block->getSubBlock($child->vars['subblock']);
                 } elseif (!isset($child->vars['subblock'])) {
                     $subBlocks = $block->getSubBlocks();
                     $subBlock  = reset($subBlocks);
-                }
-
-                if (!$subBlock) {
-                    $subBlockCode = isset($child->vars['subblock'])
-                        ? $child->vars['subblock']
-                        : $name . '__subblock';
+                } else {
+                    if (isset($child->vars['subblock'])) {
+                        $subBlockCode = $child->vars['subblock'];
+                    } else {
+                        $subBlockCode = $name . '__subblock';
+                    }
 
                     $subBlock = $this->createSubBlock($subBlockCode, array('title' => ''));
 
