@@ -40,7 +40,7 @@ class ConfigSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            Events::newEntityConfig => 'newEntityConfig'
+            Events::NEW_ENTITY_CONFIG => 'newEntityConfig'
         );
     }
 
