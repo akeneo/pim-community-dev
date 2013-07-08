@@ -54,7 +54,7 @@ class TagManager
             $this->em->remove($tagging);
         }
 
-        $this->em->flush($tagging);
+        $this->em->flush();
 
         return $this;
     }

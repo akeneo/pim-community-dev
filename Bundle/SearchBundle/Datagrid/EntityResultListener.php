@@ -74,6 +74,28 @@ class EntityResultListener
     }
 
     /**
+     * Get entity string
+     *
+     * @param object $entity
+     *
+     * @return string
+     */
+    public function getEntityTitle($entity)
+    {
+        if ($this->mapper->getEntityMapParameter(get_class($entity), 'title_fields')) {
+            $fields = $this->mapper->getEntityMapParameter(get_class($entity), 'title_fields');
+            $title = array();
+            foreach ($fields as $field) {
+                $title[] = $this->mapper->getFieldValue($entity, $field);
+            }
+        } else {
+            $title = array((string) $entity);
+        }
+
+        return implode(' ', $title);
+    }
+
+    /**
      * @param ResultDatagridEvent $event
      */
     public function processResult(ResultDatagridEvent $event)
@@ -98,6 +120,10 @@ class EntityResultListener
 
             if (!$row->getRecordUrl()) {
                 $row->setRecordUrl($this->getEntityUrl($entity));
+            }
+
+            if (!$row->getRecordTitle()) {
+                $row->setRecordTitle($this->getEntityTitle($entity));
             }
             $resultRows[] = array(
                 'indexer_item' => $row,

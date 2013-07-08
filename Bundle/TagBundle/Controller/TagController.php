@@ -2,7 +2,10 @@
 
 namespace Oro\Bundle\TagBundle\Controller;
 
+use Oro\Bundle\GridBundle\Datagrid\Datagrid;
 use Oro\Bundle\GridBundle\Datagrid\DatagridView;
+use Oro\Bundle\GridBundle\Datagrid\ResultRecord;
+use Oro\Bundle\SearchBundle\Query\Result\Item;
 use Oro\Bundle\TagBundle\Datagrid\ResultsDatagridManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -82,25 +85,55 @@ class TagController extends Controller
     public function searchAction(Tag $entity, Request $request)
     {
         $from = $request->get('from');
-        $datagridView = $this->getSearchResultsDatagridView($from, $entity);
-
-        //$resultProvider = $this->get('oro_search.provider.result_statistics_provider');
+        $datagrid = $this->getSearchResultsDatagrid($from, $entity);
 
         return array(
             'tag' => $entity,
             'from'           => $from,
-            'groupedResults' => array(),
-            'datagrid'       => $datagridView
+            'groupedResults' => $this->formatGrouppedResults($datagrid->getResults()),
+            'datagrid'       => $datagrid->createView()
         );
     }
 
+    private function formatGrouppedResults(array $rows)
+    {
+        // empty key array contains all data
+        $result = array(
+            '' => array(
+                'count' => 0,
+                'class' => '',
+                'config' => array()
+            )
+        );
+
+        /** @var $item ResultRecord */
+        foreach ($rows as $row) {
+            /** @var Item $item */
+            $item = $row->getValue('indexer_item');
+            $config = $item->getEntityConfig();
+            $alias = get_class($row->getValue('entity'));
+
+            if (!isset($result[$alias])) {
+                $result[$alias] = array(
+                    'count' => 0,
+                    'class' => $item->getEntityName(),
+                    'config' => $config,
+                );
+            }
+
+            $result[$alias]['count']++;
+            $result['']['count']++;
+        }
+
+        return $result;
+    }
 
     /**
      * @param string $from
      * @param Tag $tag
-     * @return DatagridView
+     * @return Datagrid
      */
-    protected function getSearchResultsDatagridView($from, Tag $tag)
+    protected function getSearchResultsDatagrid($from, Tag $tag)
     {
         /** @var $datagridManager ResultsDatagridManager */
         $datagridManager = $this->get('oro_tag.datagrid_results.datagrid_manager');
@@ -115,7 +148,7 @@ class TagController extends Controller
             )
         );
 
-        return $datagridManager->getDatagrid()->createView();
+        return $datagridManager->getDatagrid();
     }
 
     /**
@@ -126,8 +159,8 @@ class TagController extends Controller
     public function searchResultsAjaxAction(Tag $entity, Request $request)
     {
         $from   = $request->get('from');
-        $datagridView = $this->getSearchResultsDatagridView($from, $entity);
+        $datagrid = $this->getSearchResultsDatagrid($from, $entity);
 
-        return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
+        return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagrid->createView());
     }
 }
