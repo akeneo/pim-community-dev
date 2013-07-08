@@ -42,14 +42,16 @@ class SoapDataAuditApiTest extends WebTestCase
         //clear Audits
         $result = $this->client->soapClient->getAudits();
         $result = ToolsAPI::classToArray($result);
-        if (!is_array(reset($result['item']))) {
-            $result[] = $result['item'];
-            unset($result['item']);
-        } else {
-            $result = $result['item'];
-        }
-        foreach ($result as $audit) {
-            $this->client->soapClient->deleteAudit($audit['id']);
+        if (!empty($result)) {
+            if (!is_array(array_shift($result['item']))) {
+                $result[] = $result['item'];
+                unset($result['item']);
+            } else {
+                $result = $result['item'];
+            }
+            foreach ($result as $audit) {
+                $this->client->soapClient->deleteAudit($audit['id']);
+            }
         }
 
         //create users
