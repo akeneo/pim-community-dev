@@ -12,7 +12,7 @@ use JMS\Serializer\Annotation\Exclude;
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="Oro\Bundle\AddressBundle\Entity\Repository\AddressRepository")
  */
-class Address extends AddressBase
+class Address extends AbstractAddress
 {
     /**
      *  This inheritance needed to add possibility to store address in separate table
