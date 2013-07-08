@@ -132,17 +132,12 @@ class SoapApiAclTest extends WebTestCase
         $roleId = ToolsAPI::classToArray($roleId);
 
         $this->client->soapClient->addAclToRole($roleId['id'], 'oro_address');
+        $this->client->soapClient->addAclToRole($roleId['id'], 'root');
 
         $result =  $this->client->soapClient->getRoleAcl($roleId['id']);
         $result = ToolsAPI::classToArray($result);
         $actualAcl = $result['item'];
         sort($actualAcl);
-
-        foreach ($expectedAcl as $key => $val) {
-            if ($val == 'root') { // root resource will be deleted after any resource delete
-                unset($expectedAcl[ $key ]);
-            }
-        }
         sort($expectedAcl);
 
         $this->assertEquals($expectedAcl, $actualAcl);
