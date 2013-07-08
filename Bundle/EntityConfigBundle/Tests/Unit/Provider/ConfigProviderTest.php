@@ -43,7 +43,7 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->configManager = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\ConfigManager')
             ->disableOriginalConstructor()
-            ->getMock();;
+            ->getMock();
 
         $this->configManager->expects($this->any())->method('getConfig')->will($this->returnValue($this->entityConfig));
         $this->configManager->expects($this->any())->method('hasConfig')->will($this->returnValue(true));

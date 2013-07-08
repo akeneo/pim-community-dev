@@ -103,8 +103,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             ->setCode('is_extend')
             ->setScope('extend')
             ->setValue(true)
-            ->setField($this->configField)
-        ;
+            ->setField($this->configField);
 
         $this->assertEquals(
             array(

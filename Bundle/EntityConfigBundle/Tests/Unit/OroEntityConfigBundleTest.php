@@ -30,5 +30,4 @@ class OroEntityConfigBundleTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Oro\Bundle\EntityConfigBundle\DependencyInjection\Compiler\EntityConfigPass', $pass[0]);
         $this->assertInstanceOf('Oro\Bundle\EntityConfigBundle\DependencyInjection\Compiler\ServiceProxyPass', $pass[1]);
     }
-
 }
