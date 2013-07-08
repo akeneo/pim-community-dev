@@ -89,7 +89,7 @@
 {% block oro_address_collection_widget %}
     {% spaceless %}
         <div class="row-oro">
-            <div class="collection-fields-list" id="{{ id }}_collection" data-prototype="{{ _self.address_collection_prototype(form)|escape }}">
+            <div class="oro-address-collection collection-fields-list" id="{{ id }}_collection" data-prototype="{{ _self.address_collection_prototype(form)|escape }}">
                 {% for field in form.children %}
                     {{ _self.address_collection_prototype(field) }}
                 {% endfor %}

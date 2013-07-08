@@ -25,13 +25,7 @@ class UniqueAddressTypesValidator extends ConstraintValidator
         /** @var AbstractTypedAddress $address */
         foreach ($value as $address) {
             if (!$address instanceof AbstractTypedAddress) {
-                throw new ValidatorException(
-                    sprintf(
-                        'Expected element of type %s, %s given',
-                        'Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress',
-                        is_object($value) ? get_class($address) : gettype($address)
-                    )
-                );
+                throw new UnexpectedTypeException($value, 'Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress');
             }
 
             if ($address->isEmpty()) {
