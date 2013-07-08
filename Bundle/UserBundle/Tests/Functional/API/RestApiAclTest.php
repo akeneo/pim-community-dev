@@ -138,18 +138,15 @@ class RestApiAclTest extends WebTestCase
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 204);
 
+        $this->client->request('POST', $this->client->generate('oro_api_post_role_acl', array('id' => $roleId['id'], 'resource' => 'root')));
+        $result = $this->client->getResponse();
+        ToolsAPI::assertJsonResponse($result, 204);
+
         $this->client->request('GET', $this->client->generate('oro_api_get_role_acl', array('id' => $roleId['id'])));
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
         $actualAcl = ToolsAPI::jsonToArray($result->getContent());
         sort($actualAcl);
-
-        foreach ($expectedAcl as $key => $val) {
-            if ($val == 'root') { // root resource will be deleted after any resource delete
-                unset($expectedAcl[ $key ]);
-            }
-        }
-        sort($expectedAcl);
 
         $this->assertEquals($expectedAcl, $actualAcl);
 

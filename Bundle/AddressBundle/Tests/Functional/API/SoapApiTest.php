@@ -159,7 +159,6 @@ class SoapApiTest extends WebTestCase
      */
     public function testGetCountries()
     {
-        $this->markTestSkipped('BAP-1072');
         $result = $this->client->soapClient->getCountries();
         $result = ToolsAPI::classToArray($result);
         return $result['item'];
@@ -173,13 +172,56 @@ class SoapApiTest extends WebTestCase
     {
         $i = 0;
         foreach ($countries as $country) {
-            $result = $this->client->soapClient->getCountry($country['iso2_code']);
+            $result = $this->client->soapClient->getCountry($country['iso2Code']);
             $result = ToolsAPI::classToArray($result);
             $this->assertEquals($country, $result);
             $i++;
             if ($i % 25  == 0) {
                 break;
             }
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function testGetRegions()
+    {
+        $result = $this->client->soapClient->getRegions();
+        $result = ToolsAPI::classToArray($result);
+        return $result['item'];
+    }
+
+    /**
+     * @depends testGetRegions
+     * @param $regions
+     */
+    public function testGetRegion($regions)
+    {
+        $i = 0;
+        foreach ($regions as $region) {
+            $result = $this->client->soapClient->getRegion($region['combinedCode']);
+            $result = ToolsAPI::classToArray($result);
+            $this->assertEquals($region, $result);
+            $i++;
+            if ($i % 25  == 0) {
+                break;
+            }
+        }
+    }
+
+    /**
+     * @depends testGetRegion
+     */
+    public function testGetCountryRegion()
+    {
+        $result = $this->client->soapClient->getRegionByCountry('US');
+        $result = ToolsAPI::classToArray($result);
+        foreach ($result['item'] as $region) {
+            $region['country'] = $region['country']['name'];
+            $expectedResult = $this->client->soapClient->getRegion($region['combinedCode']);
+            $expectedResult = ToolsAPI::classToArray($expectedResult);
+            $this->assertEquals($expectedResult, $region);
         }
     }
 }
