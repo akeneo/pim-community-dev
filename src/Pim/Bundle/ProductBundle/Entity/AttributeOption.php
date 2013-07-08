@@ -52,17 +52,7 @@ class AttributeOption extends AbstractEntityAttributeOption
      *
      * @ORM\Column(name="is_default", type="boolean")
      */
-    protected $default;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->default = false;
-    }
+    protected $default = false;
 
     /**
      * Override to use default value
@@ -85,6 +75,8 @@ class AttributeOption extends AbstractEntityAttributeOption
     public function setDefault($default)
     {
         $this->default = (bool) $default;
+
+        return $this;
     }
 
     /**
