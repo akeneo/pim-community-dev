@@ -5,6 +5,7 @@ namespace Oro\Bundle\DataAuditBundle\Controller\Api\Soap;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Doctrine\Common\Persistence\ObjectManager;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
+use Oro\Bundle\UserBundle\Annotation\AclAncestor;
 
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
 
@@ -13,6 +14,7 @@ class AuditController extends ContainerAware
     /**
      * @Soap\Method("getAudits")
      * @Soap\Result(phpType = "Oro\Bundle\DataAuditBundle\Entity\Audit[]")
+     * @AclAncestor("oro_dataaudit_history")
      */
     public function cgetAction()
     {
@@ -23,6 +25,7 @@ class AuditController extends ContainerAware
      * @Soap\Method("getAudit")
      * @Soap\Param("id", phpType = "int")
      * @Soap\Result(phpType = "Oro\Bundle\DataAuditBundle\Entity\Audit")
+     * @AclAncestor("oro_dataaudit_history")
      */
     public function getAction($id)
     {
