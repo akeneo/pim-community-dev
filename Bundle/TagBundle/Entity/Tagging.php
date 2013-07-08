@@ -9,7 +9,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 /**
  * @ORM\Table(
  *     name="oro_tag_tagging",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="tagging_idx", columns={"tag_id", "resource_type", "resource_id", "user_id"})}
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="tagging_idx", columns={"tag_id", "entity_name", "record_id", "user_id"})}
  * )
  * @ORM\Entity
  */
@@ -32,7 +32,7 @@ class Tagging
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User", cascade="remove")
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      */
     protected $user;
 
@@ -52,15 +52,15 @@ class Tagging
 
     /**
      * @var string
-     * @ORM\Column(name="resource_type", type="string", length=100)
+     * @ORM\Column(name="entity_name", type="string", length=100)
      */
-    protected $resourceType;
+    protected $entityName;
 
     /**
      * @var int
-     *@ORM\Column(name="resource_id", type="integer")
+     *@ORM\Column(name="record_id", type="integer")
      */
-    protected $resourceId;
+    protected $recordId;
 
     /**
      * Constructor
@@ -116,8 +116,8 @@ class Tagging
      */
     public function setResource(Taggable $resource)
     {
-        $this->resourceType = get_class($resource);
-        $this->resourceId = $resource->getTaggableId();
+        $this->entityName = get_class($resource);
+        $this->recordId = $resource->getTaggableId();
     }
 
     /**
@@ -125,9 +125,9 @@ class Tagging
      *
      * @return string
      */
-    public function getResourceType()
+    public function getEntityName()
     {
-        return $this->resourceType;
+        return $this->entityName;
     }
 
     /**
@@ -135,9 +135,9 @@ class Tagging
      *
      * @return int
      */
-    public function getResourceId()
+    public function getRecordId()
     {
-        return $this->resourceId;
+        return $this->recordId;
     }
     /**
      * Return tag relation owner user

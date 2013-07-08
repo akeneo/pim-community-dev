@@ -41,10 +41,10 @@ class TagManager
             ->select('t')
             ->from($this->taggingClass, 't')
 
-            ->where('t.resourceType = :type')
-            ->setParameter('type', get_class($resource))
+            ->where('t.entityName = :entityName')
+            ->setParameter('entityName', get_class($resource))
 
-            ->andWhere('t.resourceId = :id')
+            ->andWhere('t.recordId = :id')
             ->setParameter('id', $resource->getTaggableId())
 
             ->getQuery()
@@ -54,7 +54,7 @@ class TagManager
             $this->em->remove($tagging);
         }
 
-        $this->em->flush();
+        $this->em->flush($tagging);
 
         return $this;
     }
