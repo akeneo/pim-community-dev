@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\TagBundle\Controller;
 
+use Oro\Bundle\GridBundle\Datagrid\DatagridView;
+use Oro\Bundle\TagBundle\Datagrid\ResultsDatagridManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -11,6 +13,7 @@ use Oro\Bundle\TagBundle\Entity\Tag;
 use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\UserBundle\Annotation\AclAncestor;
 use Oro\Bundle\TagBundle\Datagrid\TagDatagridManager;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Acl(
@@ -76,8 +79,55 @@ class TagController extends Controller
      * @AclAncestor("oro_tag_grid_and_edit")
      * @Template
      */
-    public function searchAction(Tag $entity)
+    public function searchAction(Tag $entity, Request $request)
     {
-        return array();
+        $from = $request->get('from');
+        $datagridView = $this->getSearchResultsDatagridView($from, $entity);
+
+        //$resultProvider = $this->get('oro_search.provider.result_statistics_provider');
+
+        return array(
+            'tag' => $entity,
+            'from'           => $from,
+            'groupedResults' => array(),
+            'datagrid'       => $datagridView
+        );
+    }
+
+
+    /**
+     * @param string $from
+     * @param Tag $tag
+     * @return DatagridView
+     */
+    protected function getSearchResultsDatagridView($from, Tag $tag)
+    {
+        /** @var $datagridManager ResultsDatagridManager */
+        $datagridManager = $this->get('oro_tag.datagrid_results.datagrid_manager');
+
+        $datagridManager->setSearchEntity($from);
+        $datagridManager->setTag($tag);
+
+        $datagridManager->getRouteGenerator()->setRouteParameters(
+            array(
+                'from'   => $from,
+                'id'     => $tag->getId(),
+            )
+        );
+
+        return $datagridManager->getDatagrid()->createView();
+    }
+
+    /**
+     * Return search results in json for datagrid
+     *
+     * @Route("/ajax/{id}", name="oro_tag_search_ajax", requirements={"id"="\d+"}, defaults={"id"=0})
+     */
+    public function searchResultsAjaxAction(Tag $entity, Request $request)
+    {
+        $from   = $request->get('from');
+        $datagridView = $this->getSearchResultsDatagridView($from, $entity);
+
+        return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
     }
 }
