@@ -36,8 +36,7 @@ services:
         arguments:
             - @oro_search.formatter.result_formatter
             - %oro_tag.datagrid_results.grid_name%
-            - @oro_search.mapper
-            - @router
+            - @event_dispatcher
         tags:
             - name: kernel.event_listener
               event: oro_grid.datagrid.result

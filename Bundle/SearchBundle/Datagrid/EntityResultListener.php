@@ -2,11 +2,11 @@
 
 namespace Oro\Bundle\SearchBundle\Datagrid;
 
-use Symfony\Component\Routing\Router;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
-use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
 use Oro\Bundle\SearchBundle\Query\Result\Item;
 use Oro\Bundle\SearchBundle\Formatter\ResultFormatter;
+use Oro\Bundle\SearchBundle\Event\PrepareResultItemEvent;
 use Oro\Bundle\GridBundle\EventDispatcher\ResultDatagridEvent;
 
 class EntityResultListener
@@ -22,77 +22,20 @@ class EntityResultListener
     protected $resultFormatter;
 
     /**
-     * @var Router
+     * @var EventDispatcher
      */
-    protected $router;
-
-    /**
-     * @var ObjectMapper
-     */
-    protected $mapper;
+    protected $dispatcher;
 
     /**
      * @param ResultFormatter $resultFormatter
      * @param string $datagridName
-     * @param ObjectMapper $mapper
-     * @param Router $router
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
      */
-    public function __construct(ResultFormatter $resultFormatter, $datagridName, ObjectMapper $mapper, Router $router)
+    public function __construct(ResultFormatter $resultFormatter, $datagridName, EventDispatcher $dispatcher)
     {
         $this->resultFormatter = $resultFormatter;
         $this->datagridName    = $datagridName;
-        $this->mapper          = $mapper;
-        $this->router          = $router;
-    }
-
-    /**
-     * Get url for entity
-     *
-     * @param object $entity
-     *
-     * @return string
-     */
-    protected function getEntityUrl($entity)
-    {
-        if ($this->mapper->getEntityMapParameter(get_class($entity), 'route')) {
-            $routeParameters = $this->mapper->getEntityMapParameter(get_class($entity), 'route');
-            $routeData = array();
-            if (isset($routeParameters['parameters']) && count($routeParameters['parameters'])) {
-                foreach ($routeParameters['parameters'] as $parameter => $field) {
-                    $routeData[$parameter] = $this->mapper->getFieldValue($entity, $field);
-                }
-            }
-
-            return $this->router->generate(
-                $routeParameters['name'],
-                $routeData,
-                true
-            );
-        }
-
-        return '';
-    }
-
-    /**
-     * Get entity string
-     *
-     * @param object $entity
-     *
-     * @return string
-     */
-    public function getEntityTitle($entity)
-    {
-        if ($this->mapper->getEntityMapParameter(get_class($entity), 'title_fields')) {
-            $fields = $this->mapper->getEntityMapParameter(get_class($entity), 'title_fields');
-            $title = array();
-            foreach ($fields as $field) {
-                $title[] = $this->mapper->getFieldValue($entity, $field);
-            }
-        } else {
-            $title = array((string) $entity);
-        }
-
-        return implode(' ', $title);
+        $this->dispatcher      = $dispatcher;
     }
 
     /**
@@ -118,13 +61,8 @@ class EntityResultListener
                 $entity = $entities[$entityName][$entityId];
             }
 
-            if (!$row->getRecordUrl()) {
-                $row->setRecordUrl($this->getEntityUrl($entity));
-            }
+            $this->dispatcher->dispatch(PrepareResultItemEvent::EVENT_NAME, new PrepareResultItemEvent($row, $entity));
 
-            if (!$row->getRecordTitle()) {
-                $row->setRecordTitle($this->getEntityTitle($entity));
-            }
             $resultRows[] = array(
                 'indexer_item' => $row,
                 'entity' => $entity,
