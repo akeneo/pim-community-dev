@@ -9,6 +9,7 @@ $(function() {
     $('#{{ form.attributes.vars.id }}').pimMultiselect({
         title: "{{ 'Add attributes'|trans }}",
         placeholder: "{{ 'Search'|trans }}",
+        emptyText: "{{ 'There are no more attributes to add'|trans }}",
         appendTo: '#attribute-buttons',
         buttons: {
             "{{ 'Add'|trans }}": function() {

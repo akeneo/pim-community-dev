@@ -29,12 +29,24 @@
             });
 
             $('.ui-multiselect-menu.pimmultiselect').find('input[type="search"]').width(opts.searchBoxWidth);
+            if (!$('.ui-multiselect-checkboxes').html()) {
+                $('.ui-multiselect-checkboxes').html(
+                    $('<span>', { html: opts.emptyText, css: {
+                        'position': 'absolute',
+                        'color': '#999',
+                        'padding': '15px',
+                        'font-size': '13px'
+                    }})
+                );
+                $('.ui-multiselect-footer .btn').addClass('disabled');
+            }
         });
     }
 
     $.fn.pimMultiselect.defaults = {
         title: '',
         header: '',
+        emptyText: 'No options to display',
         height: 175,
         minWidth: 225,
         searchBoxWidth: 207,
