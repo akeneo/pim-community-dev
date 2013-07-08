@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\AddressBundle\Tests\Unit\Validator\Constraints;
 
+use Oro\Bundle\AddressBundle\Entity\AddressType;
 use Oro\Bundle\AddressBundle\Validator\Constraints\UniqueAddressTypesValidator;
-use Oro\Bundle\AddressBundle\Validator\Constraints\UniqueAddressTypes;
 
 class UniqueAddressTypesValidatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,7 +20,7 @@ class UniqueAddressTypesValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Symfony\Component\Validator\Exception\ValidatorException
-     * @expectedExceptionMessage Expected element of type Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress, integer given
+     * @expectedExceptionMessage Expected argument of type Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress, array given
      */
     public function testValidateExceptionWhenInvalidArgumentElementType()
     {
@@ -61,20 +61,20 @@ class UniqueAddressTypesValidatorTest extends \PHPUnit_Framework_TestCase
                 array($this->getTypedAddressMock(array()))
             ),
             'one address with type' => array(
-                array($this->getTypedAddressMock(array('billing')))
+                array($this->getTypedAddressMock(array('billing' => 'billing label')))
             ),
             'many addresses unique types' => array(
                 array(
-                    $this->getTypedAddressMock(array('billing')),
-                    $this->getTypedAddressMock(array('shipping')),
-                    $this->getTypedAddressMock(array('billing_corporate')),
+                    $this->getTypedAddressMock(array('billing' => 'billing label')),
+                    $this->getTypedAddressMock(array('shipping' => 'shipping label')),
+                    $this->getTypedAddressMock(array('billing_corporate' => 'billing_corporate label')),
                     $this->getTypedAddressMock(array()),
                 )
             ),
             'empty address' => array(
                 array(
-                    $this->getTypedAddressMock(array('billing')),
-                    $this->getTypedAddressMock(array('shipping')),
+                    $this->getTypedAddressMock(array('billing' => 'billing label')),
+                    $this->getTypedAddressMock(array('shipping' => 'shipping label')),
                     $this->getTypedAddressMock(array(), true),
                 )
             )
@@ -110,18 +110,18 @@ class UniqueAddressTypesValidatorTest extends \PHPUnit_Framework_TestCase
         return array(
             'several addresses with one same type' => array(
                 array(
-                    $this->getTypedAddressMock(array('billing')),
-                    $this->getTypedAddressMock(array('billing', 'shipping')),
+                    $this->getTypedAddressMock(array('billing' => 'billing label')),
+                    $this->getTypedAddressMock(array('billing' => 'billing label', 'shipping' => 'shipping label')),
                 ),
-                '"billing"'
+                '"billing label"'
             ),
             'several addresses with two same types' => array(
                 array(
-                    $this->getTypedAddressMock(array('billing')),
-                    $this->getTypedAddressMock(array('shipping')),
-                    $this->getTypedAddressMock(array('billing', 'shipping')),
+                    $this->getTypedAddressMock(array('billing' => 'billing label')),
+                    $this->getTypedAddressMock(array('shipping' => 'shipping label')),
+                    $this->getTypedAddressMock(array('billing' => 'billing label', 'shipping' => 'shipping label')),
                 ),
-                '"billing", "shipping"'
+                '"billing label", "shipping label"'
             ),
         );
     }
@@ -129,19 +129,27 @@ class UniqueAddressTypesValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * Get address mock.
      *
-     * @param array $typeNames
+     * @param array $addressTypes
      * @param bool $isEmpty
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getTypedAddressMock(array $typeNames, $isEmpty = false)
+    protected function getTypedAddressMock(array $addressTypes, $isEmpty = false)
     {
         $address = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->setMethods(array('getTypes', 'isEmpty'))
+            ->getMockForAbstractClass();
+
+        $addressTypeEntities = array();
+        foreach ($addressTypes as $name => $label) {
+            $addressType = new AddressType($name);
+            $addressType->setLabel($label);
+            $addressTypeEntities[] = $addressType;
+        }
 
         $address->expects($this->any())
-            ->method('getTypeNames')
-            ->will($this->returnValue($typeNames));
+            ->method('getTypes')
+            ->will($this->returnValue($addressTypeEntities));
 
         $address->expects($this->once())
             ->method('isEmpty')

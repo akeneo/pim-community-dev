@@ -19,6 +19,7 @@ class UniqueAddressTypesValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, 'array or Traversable and ArrayAccess');
         }
 
+        $typeNamesToLabels = array();
         $allTypeNames = array();
         $repeatedTypeNames = array();
 
@@ -32,16 +33,24 @@ class UniqueAddressTypesValidator extends ConstraintValidator
                 continue;
             }
 
+            foreach ($address->getTypes() as $type) {
+                $typeNamesToLabels[$type->getName()] = $type->getLabel();
+            }
+
             $typeNames = $address->getTypeNames();
             $repeatedTypeNames = array_merge($repeatedTypeNames, array_intersect($allTypeNames, $typeNames));
             $allTypeNames = array_merge($allTypeNames, $typeNames);
         }
 
         if ($repeatedTypeNames) {
+            $repeatedTypeLabels = array();
+            foreach ($repeatedTypeNames as $name) {
+                $repeatedTypeLabels[] = $typeNamesToLabels[$name];
+            }
             /** @var UniqueAddressTypes $constraint */
             $this->context->addViolation(
                 $constraint->message,
-                array('{{ types }}' => '"' . implode('", "', $repeatedTypeNames) . '"')
+                array('{{ types }}' => '"' . implode('", "', $repeatedTypeLabels) . '"')
             );
         }
     }
