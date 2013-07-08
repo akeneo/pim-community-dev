@@ -7,14 +7,16 @@ use Symfony\Component\Yaml\Yaml;
 
 use Oro\Bundle\FormBundle\Form\Extension\DataBlockExtension;
 
+use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
+
+use Oro\Bundle\EntityConfigBundle\Form\Type\ConfigFieldType;
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer;
-use Oro\Bundle\EntityConfigBundle\Form\Type\ConfigEntityType;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Tests\Unit\ConfigManagerTest;
 
-class ConfigEntityTypeTest extends \PHPUnit_Framework_TestCase
+class ConfigFieldTypeTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var ConfigManager
@@ -39,6 +41,7 @@ class ConfigEntityTypeTest extends \PHPUnit_Framework_TestCase
         $config         = Yaml::parse(file_get_contents(__DIR__ . '/../../Fixture/entity_config.yml'));
         $configProvider = new ConfigProvider($this->configManager, new EntityConfigContainer($config));
         $entityConfig   = new EntityConfig(ConfigManagerTest::DEMO_ENTITY, 'datagrid');
+        $entityConfig->addField(new FieldConfig(ConfigManagerTest::DEMO_ENTITY, 'testField', 'string', 'datagrid'));
 
         $this->configManager->expects($this->any())->method('getConfig')->will($this->returnValue($entityConfig));
         $this->configManager->expects($this->any())->method('hasConfig')->will($this->returnValue(true));
@@ -49,17 +52,24 @@ class ConfigEntityTypeTest extends \PHPUnit_Framework_TestCase
     public function testBindValidData()
     {
         $formData = array(
-            'datagrid' => array('enabled' => true),
+            'datagrid' => array(
+                'enabled'         => true,
+                'is_searchable'   => true,
+                'is_filtrableble' => false,
+            ),
         );
 
-        $type = new ConfigEntityType($this->configManager);
-        $form = $this->factory->create($type, null, array('class_name' => ConfigManagerTest::DEMO_ENTITY));
+        $type = new ConfigFieldType($this->configManager);
+        $form = $this->factory->create($type, null, array(
+            'class_name' => ConfigManagerTest::DEMO_ENTITY,
+            'field_name' => 'testField',
+        ));
         $form->bind($formData);
 
         $this->assertTrue($form->isSynchronized());
         $this->assertEquals($formData, $form->getData());
 
-        $view = $form->createView();
+        $view     = $form->createView();
         $children = $view->children;
 
         foreach (array_keys($formData) as $key) {

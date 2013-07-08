@@ -28,7 +28,7 @@ class EntityConfigContainerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($this->config, $this->container->getConfig());
 
-        $this->assertFalse($this->container->hasEntityForm());
+        $this->assertTrue($this->container->hasEntityForm());
         $this->assertTrue($this->container->hasFieldForm());
 
         $this->assertEquals(
