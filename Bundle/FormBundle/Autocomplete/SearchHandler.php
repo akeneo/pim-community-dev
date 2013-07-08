@@ -50,7 +50,7 @@ class SearchHandler implements SearchHandlerInterface
 
     /**
      * @param string $entityName
-     * @param array $properties
+     * @param array  $properties
      */
     public function __construct($entityName, array $properties)
     {
@@ -67,8 +67,8 @@ class SearchHandler implements SearchHandlerInterface
     }
 
     /**
-     * @param Indexer $indexer
-     * @param array $config
+     * @param  Indexer           $indexer
+     * @param  array             $config
      * @throws \RuntimeException
      */
     public function initSearchIndexer(Indexer $indexer, array $config)
@@ -81,7 +81,7 @@ class SearchHandler implements SearchHandlerInterface
     }
 
     /**
-     * @param ManagerRegistry $managerRegistry
+     * @param  ManagerRegistry   $managerRegistry
      * @throws \RuntimeException
      */
     public function initDoctrinePropertiesByManagerRegistry(ManagerRegistry $managerRegistry)
@@ -107,13 +107,14 @@ class SearchHandler implements SearchHandlerInterface
     }
 
     /**
-     * @param EntityManager $entityManager
+     * @param  EntityManager $entityManager
      * @return string
      */
     protected function getEntityIdentifierFieldName(EntityManager $entityManager)
     {
         /** @var $metadata \Doctrine\ORM\Mapping\ClassMetadata */
         $metadata = $entityManager->getMetadataFactory()->getMetadataFor($this->entityName);
+
         return $metadata->getSingleIdentifierFieldName();
     }
 
@@ -124,8 +125,8 @@ class SearchHandler implements SearchHandlerInterface
     {
         $this->checkAllDependenciesInjected();
 
-        $page = (int)$page > 0 ? (int)$page : 1;
-        $perPage = (int)$perPage > 0 ? (int)$perPage : 10;
+        $page = (int) $page > 0 ? (int) $page : 1;
+        $perPage = (int) $perPage > 0 ? (int) $perPage : 10;
         $perPage += 1;
 
         $items = $this->searchEntities($query, ($page - 1) * $perPage, $perPage);
@@ -149,7 +150,7 @@ class SearchHandler implements SearchHandlerInterface
     }
 
     /**
-     * @param array $items
+     * @param  array $items
      * @return array
      */
     protected function formatResult(array $items)
@@ -163,9 +164,9 @@ class SearchHandler implements SearchHandlerInterface
     /**
      * Search and return entities
      *
-     * @param string $search
-     * @param int $firstResult
-     * @param int $maxResults
+     * @param  string $search
+     * @param  int    $firstResult
+     * @param  int    $maxResults
      * @return array
      */
     protected function searchEntities($search, $firstResult, $maxResults)
@@ -189,9 +190,9 @@ class SearchHandler implements SearchHandlerInterface
     }
 
     /**
-     * @param string $search
-     * @param int $firstResult
-     * @param int $maxResults
+     * @param  string $search
+     * @param  int    $firstResult
+     * @param  int    $maxResults
      * @return array
      */
     protected function searchIds($search, $firstResult, $maxResults)
@@ -208,7 +209,7 @@ class SearchHandler implements SearchHandlerInterface
     }
 
     /**
-     * @param array $items
+     * @param  array $items
      * @return array
      */
     protected function convertItems(array $items)
@@ -217,6 +218,7 @@ class SearchHandler implements SearchHandlerInterface
         foreach ($items as $item) {
             $result[] = $this->convertItem($item);
         }
+
         return $result;
     }
 
@@ -237,8 +239,8 @@ class SearchHandler implements SearchHandlerInterface
     }
 
     /**
-     * @param string $name
-     * @param object|array $item
+     * @param  string       $name
+     * @param  object|array $item
      * @return mixed
      */
     protected function getPropertyValue($name, $item)

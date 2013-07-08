@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\FormBundle\Config;
 
-interface FormConfigInterface 
+interface FormConfigInterface
 {
     public function toArray();
 }

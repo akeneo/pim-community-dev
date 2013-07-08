@@ -14,8 +14,8 @@ class FixArrayToStringListenerTest extends \PHPUnit_Framework_TestCase
      * @dataProvider preBindDataProvider
      *
      * @param string $delimiter
-     * @param mixed $data
-     * @param mixed $expectedData
+     * @param mixed  $data
+     * @param mixed  $expectedData
      */
     public function testPreBind($delimiter, $data, $expectedData)
     {
