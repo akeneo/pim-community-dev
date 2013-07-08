@@ -64,14 +64,21 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
         $product1 = $this->createProduct();
         $product2 = $this->createProduct();
 
+        $this->assertFalse($this->category->hasProducts());
+        $this->assertEquals(0, $this->category->getProductsCount());
+
         // assert adding
         $this->assertEntity($this->category->addProduct($product1));
         $this->category->addProduct($product2);
         $this->assertCount(2, $this->category->getProducts());
+        $this->assertEquals(2, $this->category->getProductsCount());
+        $this->assertTrue($this->category->hasProducts());
 
         // assert removing
         $this->assertEntity($this->category->removeProduct($product1));
         $this->assertCount(1, $this->category->getProducts());
+        $this->assertEquals(1, $this->category->getProductsCount());
+        $this->assertTrue($this->category->hasProducts());
 
         // assert product entity
         $products = $this->category->getProducts();
@@ -143,6 +150,15 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEntity($this->category->removeTranslation($newTranslation));
         $this->assertCount(0, $this->category->getTranslations());
+    }
+
+    /**
+     * Test related method
+     * Only test if getCreated return a value or null. Setter is not accessible.
+     */
+    public function testGetCreated()
+    {
+        $this->assertNull($this->category->getCreated());
     }
 
     /**

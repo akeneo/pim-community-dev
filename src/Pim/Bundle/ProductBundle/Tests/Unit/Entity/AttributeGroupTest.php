@@ -134,6 +134,7 @@ class AttributeGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertEntity($group->addAttribute($newAttribute));
         $this->assertCount(1, $group->getAttributes());
         $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductAttribute', $group->getAttributes()->first());
+        $this->assertTrue($group->hasAttribute($newAttribute));
 
         $this->assertEntity($group->removeAttribute($newAttribute));
         $this->assertCount(0, $group->getAttributes());
