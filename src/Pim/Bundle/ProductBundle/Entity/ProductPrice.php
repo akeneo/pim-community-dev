@@ -148,7 +148,7 @@ class ProductPrice
      *
      * @return ProductPrice
      */
-    public function setValue($value)
+    public function setValue(ProductValue $value)
     {
         $this->value = $value;
 
