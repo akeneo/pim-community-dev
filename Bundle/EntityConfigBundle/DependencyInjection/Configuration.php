@@ -16,8 +16,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder->root('oro_entity_config')
             ->children()
                 ->scalarNode('cache_dir')->cannotBeEmpty()->defaultValue('%kernel.cache_dir%/oro_entity_config')->end()
-            ->end()
-        ;
+            ->end();
 
         return $treeBuilder;
     }
