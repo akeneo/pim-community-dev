@@ -1,4 +1,4 @@
-<?php                                                                           
+<?php
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Job;
 
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
@@ -84,7 +84,7 @@ class BatchStatusTest extends \PHPUnit_Framework_TestCase
 
         $started = new BatchStatus(BatchStatus::STARTED);
         $this->assertEquals(
-            new BatchStatus(BatchStatus::STARTED), 
+            new BatchStatus(BatchStatus::STARTED),
             $started->upgradeTo(BatchStatus::STARTING)
         );
     }
@@ -108,7 +108,7 @@ class BatchStatusTest extends \PHPUnit_Framework_TestCase
     {
         $failed = new BatchStatus(BatchStatus::FAILED);
         $this->assertTrue($failed->isUnsuccessful());
-        
+
         $completed = new BatchStatus(BatchStatus::COMPLETED);
         $this->assertFalse($completed->isUnsuccessful());
 

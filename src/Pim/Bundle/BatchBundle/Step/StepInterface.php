@@ -1,13 +1,12 @@
 <?php
-                                                                                
+
 namespace Pim\Bundle\BatchBundle\Step;
 
 /**
- * 
  * Batch domain interface representing the configuration of a step. As with the
  * Job, a Step is meant to explicitly represent the configuration of a step by
  * a developer, but also the ability to execute the step.
- * 
+ *
  * Inspired by Spring Batch org.springframework.batch.core.Step;
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
@@ -26,9 +25,9 @@ interface StepInterface
      * Process the step and assign progress and status meta information to the
      * StepExecution provided. The Step is responsible for setting the meta
      * information and also saving it if required by the implementation.
-     * 
+     *
      * @param StepExecution stepExecution an entity representing the step to be executed
-     * 
+     *
      * @throws JobInterruptedException if the step is interrupted externally
      */
     public function execute(StepExecution $stepExecution);

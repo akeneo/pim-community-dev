@@ -19,10 +19,17 @@ use Pim\Bundle\BatchBundle\Item\Support\EchoWriter;
 
 use Pim\Bundle\BatchBundle\Step\ItemStep;
 
+/**
+ * Batch command
+ *
+ * @author    Benoit Jacquemont <benoit@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class BatchCommand extends ContainerAwareCommand
 {
     /**
-     * @{inherit}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -32,7 +39,7 @@ class BatchCommand extends ContainerAwareCommand
     }
 
     /**
-     * @{inherit}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -62,5 +69,4 @@ class BatchCommand extends ContainerAwareCommand
         echo $simpleJob."\n";
         echo $jobExecution."\n";
     }
-
 }

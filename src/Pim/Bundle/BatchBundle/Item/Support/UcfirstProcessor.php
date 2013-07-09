@@ -5,7 +5,6 @@ namespace Pim\Bundle\BatchBundle\Item\Support;
 use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
 
 /**
- * 
  * Very basic sample transformer that will put the first letter of each item in uppercase
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
@@ -16,7 +15,7 @@ use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
 class UcfirstProcessor implements ItemProcessorInterface
 {
     /**
-     * @{inherit}
+     * {@inheritdoc}
      */
     public function process($item)
     {

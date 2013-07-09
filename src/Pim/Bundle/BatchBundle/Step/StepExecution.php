@@ -12,7 +12,6 @@ use Pim\Bundle\BatchBundle\Item\ExecutionContext;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * 
  * Batch domain object representation the execution of a step. Unlike
  * JobExecution, there are additional properties related the processing
  * of items such as commit count, etc.
@@ -101,7 +100,7 @@ class StepExecution
      *
      * @return ExecutionContext with its attributes
      */
-    public function getExecutionContext() {                                           
+    public function getExecutionContext() {
         return $this->executionContext;
     }
 
@@ -319,7 +318,7 @@ class StepExecution
     /**
      * @return the exitCode
      */
-    public function getExitStatus() {                                                       
+    public function getExitStatus() {
         return $this->exitStatus;
     }
 

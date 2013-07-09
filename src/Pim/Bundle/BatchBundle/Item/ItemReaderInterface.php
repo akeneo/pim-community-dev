@@ -2,15 +2,13 @@
 
 namespace Pim\Bundle\BatchBundle\Item;
 
-
 /**
- * 
  * Interface to provide data.
  *
  * Implementation are expected to be stateful and will be called multiple times
  * for each batch, with each call to read() returning a different value and
  * finally returning null when all input data is exhausted.
- * 
+ *
  * Inspired by Spring Batch  org.springframework.batch.item.ItemReader
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
@@ -23,8 +21,8 @@ interface ItemReaderInterface
     /**
      * Reads a piece of input data and advance to the next one. Implementations
      * <strong>must</strong> return <code>null</code> at the end of the input
-     * data set. 
-     * 
+     * data set.
+     *
      * @throws ParseException if there is a problem parsing the current record
      * (but the next one may still be valid)
      * @throws NonTransientResourceException if there is a fatal exception in

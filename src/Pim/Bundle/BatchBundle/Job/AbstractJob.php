@@ -44,7 +44,7 @@ abstract class AbstractJob implements JobInterface
     }
 
     /**
-     * @{inherit}
+     * {@inheritdoc}
      */
     public function getName() {
         return $this->name;

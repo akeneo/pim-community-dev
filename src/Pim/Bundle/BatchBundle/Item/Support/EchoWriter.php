@@ -5,7 +5,6 @@ namespace Pim\Bundle\BatchBundle\Item\Support;
 use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
 
 /**
- * 
  * Simple ItemReaderInterface implementations that echoes
  * the receive items
  *
@@ -17,11 +16,11 @@ use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
 class EchoWriter implements ItemWriterInterface
 {
     /**
-     * @{inherit}
+     * {@inheritdoc}
      */
     public function write(array $items)
     {
-        foreach($items as $item) {
+        foreach ($items as $item) {
             echo $item."\n";
         }
     }

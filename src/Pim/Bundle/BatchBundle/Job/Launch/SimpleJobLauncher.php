@@ -34,7 +34,7 @@ class SimpleJobLauncher implements JobLauncherInterface
     }
 
     /**
-     * @{inherit}
+     * {@inheritdoc}
      */
     public function run(JobInterface $job, JobParameters $jobParameters)
     {

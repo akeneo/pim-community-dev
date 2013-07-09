@@ -1,5 +1,5 @@
 <?php
-                                                                                
+
 namespace Pim\Bundle\BatchBundle\Step;
 
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
@@ -10,10 +10,9 @@ use Pim\Bundle\BatchBundle\Item\ExecutionContext;
 use Pim\Bundle\BatchBundle\Logger;
 
 /**
- * 
  * A Step implementation that provides common behavior to subclasses, including registering and calling
  * listeners.
- * 
+ *
  * Inspired by Spring Batch org.springframework.batch.core.step.AbstractStep;
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
@@ -30,7 +29,7 @@ abstract class AbstractStep implements StepInterface
 //    private JobRepository jobRepository;
 
     /**
-     * @{inherit}
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -82,13 +81,11 @@ abstract class AbstractStep implements StepInterface
     {
     }
 
-
-
     /**
      * Template method for step execution logic - calls abstract methods for resource initialization (
      * {@link #open(ExecutionContext)}), execution logic ({@link #doExecute(StepExecution)}) and resource closing (
      * {@link #close(ExecutionContext)}).
-     * 
+     *
      * @param StepExecution $stepExecution
      *
      * @throws JobInterruptException
@@ -114,7 +111,7 @@ abstract class AbstractStep implements StepInterface
 
             $this->doExecute($stepExecution);
 //            catch (RepeatException e) {
-            
+
             $exitStatus = new ExitStatus(ExitStatus::COMPLETED);
             $exitStatus->logicalAnd($stepExecution->getExitStatus());
 
@@ -231,9 +228,5 @@ abstract class AbstractStep implements StepInterface
 
         return $exitStatus;
     }
-
-
-
-
-
 }
+

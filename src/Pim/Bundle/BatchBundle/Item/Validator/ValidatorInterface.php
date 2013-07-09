@@ -3,7 +3,6 @@
 namespace Pim\Bundle\BatchBundle\Validator;
 
 /**
- * 
  * Interface to validate objects
  *
  * Inspired by Spring Batch  org.springframework.batch.item.validator.Validator
@@ -13,12 +12,13 @@ namespace Pim\Bundle\BatchBundle\Validator;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-public interface ValidatorInterface
+interface ValidatorInterface
 {
     /**
      * Method used to validate if the value is valid
-     * 
-     * @param object to be validated
+     *
+     * @param mixed $value object to be validated
+     *
      * @throws ValidationException
      */
     public function validate($value);

@@ -7,7 +7,6 @@ use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
 
 /**
- * 
  * Basic step implementation that read items, process them and write them
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
@@ -42,7 +41,7 @@ class ItemStep extends AbstractStep
     }
 
     /**
-     * @{inherit}
+     * {@inheritdoc}
      */
     public function doExecute(StepExecution $execution)
     {

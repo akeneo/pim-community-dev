@@ -1,4 +1,4 @@
-<?php                                                                           
+<?php
 
 namespace Pim\Bundle\BatchBundle\Step;
 
@@ -81,7 +81,7 @@ class BatchStatus
 
     /**
      * Convenience method to decide if a status indicates work is in progress.
-     * 
+     *
      * @return true if the status is STARTING, STARTED
      */
     public function isRunning() {
@@ -91,7 +91,7 @@ class BatchStatus
     /**
      * Convenience method to decide if a status indicates execution was
      * unsuccessful.
-     * 
+     *
      * @return true if the status is FAILED or greater
      */
     public function isUnsuccessful() {
@@ -105,7 +105,7 @@ class BatchStatus
      * returned. If both are STARTED or less than the value returned is the
      * largest in the sequence STARTING, STARTED, COMPLETED. Otherwise the value
      * returned is the maximum of the two.
-     * 
+     *
      * @param other another status to compare to
      * @return either this or the other status depending on their priority
      */
