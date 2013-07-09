@@ -15,12 +15,13 @@ class EntityConfigContainer
     protected $config;
 
     /**
+     * @param $scope
      * @param $config
      */
-    public function __construct($config)
+    public function __construct($scope, $config)
     {
         $this->config = $config;
-        $this->scope  = $config['scope'];
+        $this->scope  = $scope;
     }
 
     /**

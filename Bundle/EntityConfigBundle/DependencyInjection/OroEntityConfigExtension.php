@@ -40,17 +40,14 @@ class OroEntityConfigExtension extends Extension
             if (is_file($file = dirname($reflection->getFilename()) . '/Resources/config/entity_config.yml')) {
                 $bundleConfig = Yaml::parse(realpath($file));
 
-                if (isset($bundleConfig['oro_entity_config']) && isset($bundleConfig['oro_entity_config']['scope'])) {
-                    $scopes[] = $bundleConfig['oro_entity_config']['scope'];
-
-                    $definition = new Definition(
-                        'Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer',
-                        array($bundleConfig['oro_entity_config'])
-                    );
-                    $container->setDefinition(
-                        'oro_entity_config.entity_config.' . $bundleConfig['oro_entity_config']['scope'],
-                        $definition
-                    );
+                if (isset($bundleConfig['oro_entity_config']) && count($bundleConfig['oro_entity_config'])) {
+                    foreach ($bundleConfig['oro_entity_config'] as $scope => $config) {
+                        $definition = new Definition(
+                            'Oro\Bundle\EntityConfigBundle\DependencyInjection\EntityConfigContainer',
+                            array($scope, $config)
+                        );
+                        $container->setDefinition('oro_entity_config.entity_config.' . $scope, $definition);
+                    }
                 }
             }
         }

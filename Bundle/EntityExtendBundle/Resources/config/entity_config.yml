@@ -1,49 +1,48 @@
 oro_entity_config:
-    scope:                              extend
+    extend:
+        entity:
+            grid_action:                    ~
 
-    entity:
-        grid_action:                    ~
+            layout_action:                  ~
+    #            -                           {"name":"Create", "route":"oro_entityconfig_create", "title":"Create custom entity"}
+            items:
+                is_extend:
+                    required:               true
+                    grid:
+                        type:               boolean
+                        label:              'Is Extend Entity'
+                        filter_type:        oro_grid_orm_boolean
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        true
 
-        layout_action:                  ~
-#            -                           {"name":"Create", "route":"oro_entityconfig_create", "title":"Create custom entity"}
-        items:
-            is_extend:
-                required:               true
-                grid:
-                    type:               boolean
-                    label:              'Is Extend Entity'
-                    filter_type:        oro_grid_orm_boolean
-                    required:           true
-                    sortable:           true
-                    filterable:         true
-                    show_filter:        true
+                extend_class:
+                    required:               true
 
-            extend_class:
-                required:               true
+                proxy_class:
+                    required:               true
 
-            proxy_class:
-                required:               true
-
-    field:
-        grid_action:
-            -                           {"name":"Remove", "route":"oro_entityextend_field_remove", "type":"redirect", "icon":"trash",  "acl_resource":"root", "filter":"is_extend", "args":["id"]}
-        layout_action:
-            -                           {"name":"Create Field", "route":"oro_entityextend_field_create", "entity_id":true, "filter":"is_extend"}
-        items:
-            is_extend:
-                required:               true
-                grid:
-                    type:               boolean
-                    label:              'Is Extend Field'
-                    filter_type:        oro_grid_orm_boolean
-                    required:           true
-                    sortable:           true
-                    filterable:         true
-                    show_filter:        true
-                form:
-                    type:               choice
-                    options:
-                        choices:        ['No', 'Yes']
-                        read_only:      true
-                        required:       false
-                        label:          "Is Extend Field"
+        field:
+            grid_action:
+                -                           {"name":"Remove", "route":"oro_entityextend_field_remove", "type":"redirect", "icon":"trash",  "acl_resource":"root", "filter":"is_extend", "args":["id"]}
+            layout_action:
+                -                           {"name":"Create Field", "route":"oro_entityextend_field_create", "entity_id":true, "filter":"is_extend"}
+            items:
+                is_extend:
+                    required:               true
+                    grid:
+                        type:               boolean
+                        label:              'Is Extend Field'
+                        filter_type:        oro_grid_orm_boolean
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        true
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            read_only:      true
+                            required:       false
+                            label:          "Is Extend Field"

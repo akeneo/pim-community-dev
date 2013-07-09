@@ -1,12 +1,13 @@
 <?php
 
-namespace Oro\Bundle\GridBundle\Datagrid;
+namespace Oro\Bundle\EntityBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
-class ExtendEntityDatagrid extends DatagridManager
+class EntityDatagrid extends DatagridManager
 {
     protected $extendManager;
 

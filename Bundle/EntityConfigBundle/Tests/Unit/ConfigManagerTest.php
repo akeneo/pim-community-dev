@@ -57,7 +57,7 @@ class ConfigManagerTest extends AbstractEntityManagerTest
 
         $this->configCache->expects($this->any())->method('putConfigInCache')->will($this->returnValue(null));
 
-        $this->provider = new ConfigProvider($this->configManager, new EntityConfigContainer(array('scope' => 'test')));
+        $this->provider = new ConfigProvider($this->configManager, new EntityConfigContainer('test', array()));
     }
 
     public function testGetConfigFoundConfigEntity()

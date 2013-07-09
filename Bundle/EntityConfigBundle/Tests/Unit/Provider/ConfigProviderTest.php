@@ -49,7 +49,7 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
         $this->configManager->expects($this->any())->method('hasConfig')->will($this->returnValue(true));
         $this->configManager->expects($this->any())->method('flush')->will($this->returnValue(true));
 
-        $this->configContainer = new EntityConfigContainer(array('scope' => 'test'));
+        $this->configContainer = new EntityConfigContainer('test', array());
         $this->configProvider  = new ConfigProvider($this->configManager, $this->configContainer);
     }
 

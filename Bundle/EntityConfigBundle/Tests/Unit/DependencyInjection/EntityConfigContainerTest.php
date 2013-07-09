@@ -16,13 +16,16 @@ class EntityConfigContainerTest extends \PHPUnit_Framework_TestCase
     {
         /** @var Yaml $config */
         $this->config = Yaml::parse(__DIR__ . '/../Fixture/entity_config.yml');
+        $this->config = reset($this->config['oro_entity_config']);
 
-        $this->container = new EntityConfigContainer($this->config);
+        $scope = key($this->config);
+
+        $this->container = new EntityConfigContainer($scope, $this->config);
     }
 
     public function testContainer()
     {
-        $this->assertEquals($this->config['scope'], $this->container->getScope());
+        $this->assertEquals(key($this->config), $this->container->getScope());
 
         $this->assertEquals($this->config['field']['items'], $this->container->getFieldItems());
 

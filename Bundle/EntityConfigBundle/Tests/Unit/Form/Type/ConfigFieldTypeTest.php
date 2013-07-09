@@ -38,8 +38,12 @@ class ConfigFieldTypeTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $config         = Yaml::parse(file_get_contents(__DIR__ . '/../../Fixture/entity_config.yml'));
-        $configProvider = new ConfigProvider($this->configManager, new EntityConfigContainer($config));
+        $config = Yaml::parse(file_get_contents(__DIR__ . '/../../Fixture/entity_config.yml'));
+        $scope  = key($config['oro_entity_config']);
+        $config = reset($config['oro_entity_config']);
+
+        $configProvider = new ConfigProvider($this->configManager, new EntityConfigContainer($scope, $config));
+
         $entityConfig   = new EntityConfig(ConfigManagerTest::DEMO_ENTITY, 'datagrid');
         $entityConfig->addField(new FieldConfig(ConfigManagerTest::DEMO_ENTITY, 'testField', 'string', 'datagrid'));
 

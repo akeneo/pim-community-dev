@@ -36,8 +36,11 @@ class ConfigEntityTypeTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $config         = Yaml::parse(file_get_contents(__DIR__ . '/../../Fixture/entity_config.yml'));
-        $configProvider = new ConfigProvider($this->configManager, new EntityConfigContainer($config));
+        $config = Yaml::parse(file_get_contents(__DIR__ . '/../../Fixture/entity_config.yml'));
+        $scope  = key($config['oro_entity_config']);
+        $config = reset($config['oro_entity_config']);
+
+        $configProvider = new ConfigProvider($this->configManager, new EntityConfigContainer($scope, $config));
         $entityConfig   = new EntityConfig(ConfigManagerTest::DEMO_ENTITY, 'datagrid');
 
         $this->configManager->expects($this->any())->method('getConfig')->will($this->returnValue($entityConfig));
@@ -59,7 +62,7 @@ class ConfigEntityTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($form->isSynchronized());
         $this->assertEquals($formData, $form->getData());
 
-        $view = $form->createView();
+        $view     = $form->createView();
         $children = $view->children;
 
         foreach (array_keys($formData) as $key) {

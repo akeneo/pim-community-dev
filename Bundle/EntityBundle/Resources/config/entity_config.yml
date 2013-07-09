@@ -1,51 +1,139 @@
 oro_entity_config:
-    scope:                              entity
-
     entity:
-        form:
-            block_config:
-                entity:
-                    priority:           20
-        items:
-            icon:
-                grid:
-                    type:               string
-                    label:              'Icon'
-                    filter_type:        oro_grid_orm_string
-                    required:           true
-                    sortable:           true
-                    filterable:         true
-                    show_filter:        true
-                form:
-                    type:               text
-                    options:
-                        block:          entity
-                        required:       true
-            label:
-                grid:
-                    type:               string
-                    label:              'Label'
-                    filter_type:        oro_grid_orm_string
-                    required:           true
-                    sortable:           true
-                    filterable:         true
-                    show_filter:        true
-                form:
-                    type:               text
-                    options:
-                        block:          entity
-                        required:       true
-            description:
-                grid:
-                    type:               text
-                    label:              'Description'
-                    filter_type:        oro_grid_orm_string
-                    required:           false
-                    sortable:           false
-                    filterable:         true
-                    show_filter:        true
-                form:
-                    type:               textarea
-                    options:
-                        block:          entity
-                        required:       false
+        entity:
+            form:
+                block_config:
+                    entity:
+                        priority:           20
+            items:
+                icon:
+                    grid:
+                        type:               string
+                        label:              'Icon'
+                        filter_type:        oro_grid_orm_string
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        true
+                    form:
+                        type:               text
+                        options:
+                            block:          entity
+                            required:       true
+                label:
+                    grid:
+                        type:               string
+                        label:              'Label'
+                        filter_type:        oro_grid_orm_string
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        true
+                    form:
+                        type:               text
+                        options:
+                            block:          entity
+                            required:       true
+                description:
+                    grid:
+                        type:               text
+                        label:              'Description'
+                        filter_type:        oro_grid_orm_string
+                        required:           false
+                        sortable:           false
+                        filterable:         true
+                        show_filter:        true
+                    form:
+                        type:               textarea
+                        options:
+                            block:          entity
+                            required:       false
+
+
+    datagrid:
+        entity:
+            form:
+                block_config:
+                    datagrid:
+                        title:              'Datagrid Entity Config'
+                        priority:           30
+                        subblocks:
+                            base:           ~
+            items:
+                delete_action:
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          datagrid
+                            label:          "Delete Action"
+
+                create_action:
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          datagrid
+                            label:          "Create Action"
+        field:
+            form:
+                block_config:
+                    datagrid:
+                        title:              'Datagrid Config'
+                        subblocks:
+                            base:           ~
+            items:
+                enabled:
+                    grid:
+                        type:               boolean
+                        label:              'Show in Datagrid'
+                        filter_type:        oro_grid_orm_boolean
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        true
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          datagrid
+                            label:          "Show in Datagrid"
+
+                is_searchable:
+                    grid:
+                        type:               boolean
+                        label:              'Datagrid search'
+                        filter_type:        oro_grid_orm_boolean
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        true
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          datagrid
+                            label:          "Datagrid search"
+
+                is_filtrableble:
+                    grid:
+                        type:               boolean
+                        label:              'Datagrid filter'
+                        filter_type:        oro_grid_orm_boolean
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        true
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          datagrid
+                            label:          "Datagrid filter"
+
+
