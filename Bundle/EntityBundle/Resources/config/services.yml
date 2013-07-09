@@ -5,3 +5,7 @@ services:
 #    oro_entity.example:
 #        class: %oro_entity.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+
+    oro_entity.config.entity_config_provider:
+        tags:
+            - { name: oro_entity_config.provider, scope: entity }

@@ -6,6 +6,7 @@ oro_entity_config:
             block_config:
                 datagrid:
                     title:              'Datagrid Entity Config'
+                    priority:           30
                     subblocks:
                         base:           ~
         items:

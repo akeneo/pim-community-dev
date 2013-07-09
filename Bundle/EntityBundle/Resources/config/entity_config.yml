@@ -7,20 +7,6 @@ oro_entity_config:
                 entity:
                     priority:           20
         items:
-            label:
-                grid:
-                    type:               string
-                    label:              'Label'
-                    filter_type:        oro_grid_orm_string
-                    required:           true
-                    sortable:           true
-                    filterable:         true
-                    show_filter:        true
-                form:
-                    type:               text
-                    options:
-                        block:          entity
-                        required:       true
             icon:
                 grid:
                     type:               string
@@ -35,7 +21,29 @@ oro_entity_config:
                     options:
                         block:          entity
                         required:       true
+            label:
+                grid:
+                    type:               string
+                    label:              'Label'
+                    filter_type:        oro_grid_orm_string
+                    required:           true
+                    sortable:           true
+                    filterable:         true
+                    show_filter:        true
+                form:
+                    type:               text
+                    options:
+                        block:          entity
+                        required:       true
             description:
+                grid:
+                    type:               text
+                    label:              'Description'
+                    filter_type:        oro_grid_orm_string
+                    required:           false
+                    sortable:           false
+                    filterable:         true
+                    show_filter:        true
                 form:
                     type:               textarea
                     options:
