@@ -26,6 +26,7 @@ class ChannelIndex extends Page
     public function channelCanExport($channel, $category)
     {
         return $this->getElement('Channels')->find(
-            'css', sprintf('tr:contains("%s"):contains("%s")', $channel, $category));
+            'css', sprintf('tr:contains("%s"):contains("%s")', $channel, $category)
+        );
     }
 }
