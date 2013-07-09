@@ -11,6 +11,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
+use Pim\Bundle\ProductBundle\Manager\CategoryManager;
 
 /**
  * Channel datagrid manager
@@ -22,6 +23,19 @@ use Oro\Bundle\GridBundle\Property\UrlProperty;
  */
 class ChannelDatagridManager extends DatagridManager
 {
+    /**
+     * @var CategoryManager
+     */
+    protected $categoryManager;
+
+    /**
+     * @param CategoryManager $manager
+     */
+    public function setCategoryManager(CategoryManager $manager)
+    {
+        $this->categoryManager = $manager;
+    }
+
     /**
      * get properties
      * @return array
@@ -77,6 +91,31 @@ class ChannelDatagridManager extends DatagridManager
                 'sortable'    => true,
                 'filterable'  => true,
                 'show_filter' => true,
+            )
+        );
+        $fieldsCollection->add($field);
+
+        $trees = $this->categoryManager->getTrees();
+        $choices = array();
+        foreach ($trees as $tree) {
+            $choices[$tree->getId()] = $tree->getTitle();
+        }
+
+        $field = new FieldDescription();
+        $field->setName('category');
+        $field->setOptions(
+            array(
+                'type'          => FieldDescriptionInterface::TYPE_TEXT,
+                'label'         => $this->translate('Category tree'),
+                'field_name'    => 'category',
+                'filter_type'   => FilterInterface::TYPE_CHOICE,
+                'required'      => false,
+                'sortable'      => true,
+                'filterable'    => true,
+                'show_filter'   => true,
+                'field_options' => array(
+                    'choices' => $choices
+                ),
             )
         );
         $fieldsCollection->add($field);
