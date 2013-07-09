@@ -87,45 +87,15 @@ class TagController extends Controller
         $from = $request->get('from');
         $datagrid = $this->getSearchResultsDatagrid($from, $entity);
 
+        /** @var \Oro\Bundle\TagBundle\Provider\SearchProvider $provider */
+        $provider = $this->get('oro_tag.provider.search_provider');
+
         return array(
-            'tag' => $entity,
+            'tag'            => $entity,
             'from'           => $from,
-            'groupedResults' => $this->formatGrouppedResults($datagrid->getResults()),
+            'groupedResults' => $provider->getGroupedResults($entity->getId()),
             'datagrid'       => $datagrid->createView()
         );
-    }
-
-    private function formatGrouppedResults(array $rows)
-    {
-        // empty key array contains all data
-        $result = array(
-            '' => array(
-                'count' => 0,
-                'class' => '',
-                'config' => array()
-            )
-        );
-
-        /** @var $item ResultRecord */
-        foreach ($rows as $row) {
-            /** @var Item $item */
-            $item = $row->getValue('indexer_item');
-            $config = $item->getEntityConfig();
-            $alias = get_class($row->getValue('entity'));
-
-            if (!isset($result[$alias])) {
-                $result[$alias] = array(
-                    'count' => 0,
-                    'class' => $item->getEntityName(),
-                    'config' => $config,
-                );
-            }
-
-            $result[$alias]['count']++;
-            $result['']['count']++;
-        }
-
-        return $result;
     }
 
     /**

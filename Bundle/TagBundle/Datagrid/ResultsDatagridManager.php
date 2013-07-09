@@ -37,8 +37,8 @@ class ResultsDatagridManager extends SearchDatagridManager
 
         if ($this->searchEntity != '*') {
             $qb
-                ->andWhere($alias . '.entityName = :entityName')
-                ->setParameter('entityName', $this->searchEntity);
+                ->andWhere($alias . '.alias = :alias')
+                ->setParameter('alias', $this->searchEntity);
         }
 
         return $query;
