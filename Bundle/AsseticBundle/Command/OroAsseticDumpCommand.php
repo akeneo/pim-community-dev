@@ -25,8 +25,7 @@ class OroAsseticDumpCommand extends ContainerAwareCommand
         $this
             ->setName('oro:assetic:dump')
             ->setDescription('Dumps oro assetics')
-            ->addArgument('write_to', InputArgument::OPTIONAL, 'Override the configured asset root')
-        ;
+            ->addArgument('write_to', InputArgument::OPTIONAL, 'Override the configured asset root');
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)

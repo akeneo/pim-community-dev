@@ -94,7 +94,7 @@ class OroAssetManagerTest extends \PHPUnit_Framework_TestCase
     public function testGet()
     {
         $assets = $this->manager->get('uncompress_test_asset');
-        foreach($assets as $asset) {
+        foreach ($assets as $asset) {
             $this->assertEquals($this->assetFile->getSourcePath(), $asset->getSourcePath());
         }
     }

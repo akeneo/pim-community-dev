@@ -42,7 +42,6 @@ class AsseticLoaderTest extends \PHPUnit_Framework_TestCase
         $dir = new DirectoryResource(
             $loader,
             'OroTestBundle',
-
             'app/Resources/OroTestBundle/views/',
             '"/\.[^.]+\.twig$/"'
         );
@@ -54,11 +53,7 @@ class AsseticLoaderTest extends \PHPUnit_Framework_TestCase
 
         $this->am->am->expects($this->any())
             ->method('getResources')
-            ->will($this->returnValue(array(
-                        $resource
-                    )
-                )
-            );
+            ->will($this->returnValue(array($resource)));
 
         $assetNode = $this->getMockBuilder('Oro\Bundle\AsseticBundle\Node\OroAsseticNode')
             ->disableOriginalConstructor()
@@ -74,11 +69,7 @@ class AsseticLoaderTest extends \PHPUnit_Framework_TestCase
 
         $this->am->expects($this->any())
             ->method('getAssets')
-            ->will($this->returnValue(
-                    array(
-                        '841e611' => $assetNode
-                    )
-                ));
+            ->will($this->returnValue(array('841e611' => $assetNode)));
 
         /** @var $routeCollection \Symfony\Component\Routing\RouteCollection */
         $routeCollection = $this->loader->load('', 'oro_assetic');

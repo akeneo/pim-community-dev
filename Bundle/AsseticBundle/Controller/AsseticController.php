@@ -16,8 +16,7 @@ class AsseticController extends BaseController
         CacheInterface $cache,
         $enableProfiler = false,
         Profiler $profiler = null
-    )
-    {
+    ) {
         $this->request = $request;
         $this->am = $am;
         $this->cache = $cache;
