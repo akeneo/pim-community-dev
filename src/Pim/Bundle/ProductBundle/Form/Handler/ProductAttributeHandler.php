@@ -45,8 +45,12 @@ class ProductAttributeHandler
      * @param ObjectManager        $manager        Storage manager
      * @param AttributeTypeManager $attTypeManager Attribute type manager
      */
-    public function __construct(FormInterface $form, Request $request, ObjectManager $manager, AttributeTypeManager $attTypeManager)
-    {
+    public function __construct(
+        FormInterface $form,
+        Request $request,
+        ObjectManager $manager,
+        AttributeTypeManager $attTypeManager
+    ) {
         $this->form    = $form;
         $this->request = $request;
         $this->manager = $manager;

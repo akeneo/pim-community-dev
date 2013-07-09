@@ -71,6 +71,9 @@
     }
 
     function collapse(el, opts) {
+        if ($(el).find('.validation-error').length) {
+            return;
+        }
         prepareToggle(el, opts.expandIcon);
 
         getFields(el).hide().first().show();
@@ -109,20 +112,27 @@
         }
 
         return this.each(function() {
-            if (!$(this).hasClass('currencyfield')) {
-                $(this).addClass('currencyfield');
-                showTitle(this, opts);
+            var el = this;
+            if (!$(el).hasClass('currencyfield')) {
+                $(el).addClass('currencyfield');
+                showTitle(el, opts);
             }
 
-            prepareLabels(this, opts);
+            prepareLabels(el, opts);
 
-            if (getFields(this, opts).length > 1) {
-                bindEvents(this, opts);
-                if (!$(this).hasClass('scopablefield')) {
-                    toggleOpen(this, opts);
+            if (getFields(el, opts).length > 1) {
+                bindEvents(el, opts);
+                if (!$(el).hasClass('scopablefield')) {
+                    toggleOpen(el, opts);
                 } else {
-                    collapse(this, opts);
+                    collapse(el, opts);
                 }
+
+                $(el).closest('form').on('validate', function() {
+                    if ($(el).find('.validation-error:hidden').length) {
+                        expand(el, opts);
+                    }
+                });
             }
         });
     }

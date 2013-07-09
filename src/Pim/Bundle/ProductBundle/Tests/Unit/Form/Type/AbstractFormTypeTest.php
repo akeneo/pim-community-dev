@@ -1,14 +1,14 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Tests\Unit\Form\Type;
 
+use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
-
 use Symfony\Component\Security\Core\SecurityContext;
-
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
-
 use Symfony\Component\Form\Forms;
-
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
 
 /**
@@ -23,6 +23,49 @@ abstract class AbstractFormTypeTest extends TypeTestCase
 {
 
     /**
+     * Create an entityManager for testing
+     *
+     * @return EntityManager
+     */
+    public function createTestEntityManager()
+    {
+        $config = new \Doctrine\ORM\Configuration();
+        $config->setEntityNamespaces(array('SymfonyTestsDoctrine' => 'Symfony\Bridge\Doctrine\Tests\Fixtures'));
+        $config->setAutoGenerateProxyClasses(true);
+        $config->setProxyDir(\sys_get_temp_dir());
+        $config->setProxyNamespace('SymfonyTests\Doctrine');
+        $config->setMetadataDriverImpl(new AnnotationDriver(new AnnotationReader()));
+        $config->setQueryCacheImpl(new \Doctrine\Common\Cache\ArrayCache());
+        $config->setMetadataCacheImpl(new \Doctrine\Common\Cache\ArrayCache());
+
+        $params = array(
+            'driver' => 'pdo_sqlite',
+            'memory' => true,
+        );
+
+        return EntityManager::create($params, $config);
+    }
+
+    /**
+     * Create entity form type
+     *
+     * @return \Symfony\Bridge\Doctrine\Form\Type\EntityType
+     */
+    protected function createEntityType()
+    {
+        $em = $this->createTestEntityManager();
+
+        $registry = $this->getMockForAbstractClass('Doctrine\Common\Persistence\ManagerRegistry');
+        $registry->expects($this->any())
+                 ->method('getManagerForClass')
+                 ->will($this->returnValue($em));
+
+        $entityType = new EntityType($registry);
+
+        return $entityType;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
@@ -32,6 +75,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
         // redefine form factory and builder to add translatable field
         $this->builder->add('pim_translatable_field');
         $this->builder->add('entity');
+
         $this->factory = Forms::createFormFactoryBuilder()
             ->addTypeExtension(
                 new FormTypeValidatorExtension(
@@ -45,6 +89,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
                     'en_US'
                 )
             )
+            ->addType($this->createEntityType())
             ->getFormFactory();
     }
 
@@ -99,7 +144,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
      *
      * @return \Doctrine\Common\Persistence\ObjectManager
      */
-    private function getObjectManagerMock()
+    protected function getObjectManagerMock()
     {
         return $this->getMock('Doctrine\Common\Persistence\ObjectManager');
     }
@@ -109,7 +154,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
      *
      * @return \Symfony\Component\EventDispatcher\EventDispatcherInterface
      */
-    private function getEventDispatcherInterfaceMock()
+    protected function getEventDispatcherInterfaceMock()
     {
         return $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
     }
@@ -119,11 +164,23 @@ abstract class AbstractFormTypeTest extends TypeTestCase
      *
      * @return \Pim\Bundle\ProductBundle\Manager\MediaManager
      */
-    private function getMediaManagerMock()
+    protected function getMediaManagerMock()
     {
         return $this
             ->getMockBuilder('Pim\Bundle\ProductBundle\Manager\MediaManager')
             ->disableOriginalConstructor()
             ->getMock();
+    }
+
+    /**
+     * Assert field name and type
+     * @param string $name Field name
+     * @param string $type Field type alias
+     */
+    protected function assertField($name, $type)
+    {
+        $formType = $this->form->get($name);
+        $this->assertInstanceOf('\Symfony\Component\Form\Form', $formType);
+        $this->assertEquals($type, $formType->getConfig()->getType()->getInnerType()->getName());
     }
 }

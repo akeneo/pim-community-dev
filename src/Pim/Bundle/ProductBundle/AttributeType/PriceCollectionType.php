@@ -34,8 +34,12 @@ class PriceCollectionType extends AbstractAttributeType
      * @param ConstraintGuesserInterface $constraintGuesser the constraint guesser
      * @param CurrencyManager            $manager           the currency manager
      */
-    public function __construct($backendType, $formType, ConstraintGuesserInterface $constraintGuesser, CurrencyManager $manager)
-    {
+    public function __construct(
+        $backendType,
+        $formType,
+        ConstraintGuesserInterface $constraintGuesser,
+        CurrencyManager $manager
+    ) {
         parent::__construct($backendType, $formType, $constraintGuesser);
 
         $this->currencyManager = $manager;

@@ -83,6 +83,9 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($productAttribute->isSmart());
     }
 
+    /**
+     * Test get virtual group
+     */
     public function testGetVirtualGroup()
     {
         $productAttribute = new ProductAttribute();
@@ -437,6 +440,32 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     {
         $productAttribute = new ProductAttribute();
         $productAttribute->setTranslatableLocale('en_US');
+    }
+
+    /**
+     * Test getter/setter for sortOrder property
+     */
+    public function testGetSetSortOrder()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertEquals(0, $productAttribute->getSortOrder());
+
+        $expectedOrder = 3;
+        $this->assertEntity($productAttribute->setSortOrder($expectedOrder));
+        $this->assertEquals($expectedOrder, $productAttribute->getSortOrder());
+    }
+
+    /**
+     * Test getter/setter for defaultValue property
+     */
+    public function testGetSetDefaultValue()
+    {
+        $productAttribute = new ProductAttribute();
+        $this->assertEquals('', $productAttribute->getDefaultValue());
+
+        $expectedDefaultValue = 'test-default-value';
+        $this->assertEntity($productAttribute->setDefaultValue($expectedDefaultValue));
+        $this->assertEquals($expectedDefaultValue, $productAttribute->getDefaultValue());
     }
 
     /**

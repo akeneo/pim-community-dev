@@ -1,15 +1,9 @@
 <?php
 namespace Pim\Bundle\ConfigBundle\Tests\Unit\Form\Type;
 
+use Pim\Bundle\ProductBundle\Tests\Unit\Form\Type\AbstractFormTypeTest;
 use Pim\Bundle\ConfigBundle\Tests\Entity\ObjectTestEntity;
-
-use Symfony\Component\Form\Forms;
-
-use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
-
 use Pim\Bundle\ConfigBundle\Form\Type\ChannelType;
-
-use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
 
 /**
  * Test related class
@@ -19,7 +13,7 @@ use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class ChannelTypeTest extends TypeTestCase
+class ChannelTypeTest extends AbstractFormTypeTest
 {
 
     /**
@@ -28,15 +22,6 @@ class ChannelTypeTest extends TypeTestCase
     public function setUp()
     {
         parent::setUp();
-
-        // redefine form factory
-        $this->factory = Forms::createFormFactoryBuilder()
-            ->addTypeExtension(
-                new FormTypeValidatorExtension(
-                    $this->getMock('Symfony\Component\Validator\ValidatorInterface')
-                )
-            )
-            ->getFormFactory();
 
         // Create form type
         $this->type = new ChannelType($config);
@@ -61,18 +46,6 @@ class ChannelTypeTest extends TypeTestCase
 
         // Assert name
         $this->assertEquals('pim_config_channel', $this->form->getName());
-    }
-
-    /**
-     * Assert field name and type
-     * @param string $name Field name
-     * @param string $type Field type alias
-     */
-    protected function assertField($name, $type)
-    {
-        $formType = $this->form->get($name);
-        $this->assertInstanceOf('\Symfony\Component\Form\Form', $formType);
-        $this->assertEquals($type, $formType->getConfig()->getType()->getInnerType()->getName());
     }
 
     /**

@@ -16,8 +16,8 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\Role;
 
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
-use Pim\Bundle\ProductBundle\Entity\ProductFamily;
-use Pim\Bundle\ProductBundle\Entity\ProductFamilyTranslation;
+use Pim\Bundle\ProductBundle\Entity\Family;
+use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
 use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ConfigBundle\Entity\Locale;
@@ -227,7 +227,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
             $product = $this->aProductAvailableIn($data['sku'], $data['languages']);
             if ($data['family']) {
-                $product->setProductFamily($this->getFamily($data['family']));
+                $product->setFamily($this->getFamily($data['family']));
             }
             $pm->save($product);
         }
@@ -241,7 +241,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $em = $this->getEntityManager();
         foreach ($table->getHash() as $data) {
-            $family = new ProductFamily;
+            $family = new Family;
             $family->setCode($data['code']);
             $em->persist($family);
 
@@ -255,7 +255,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @Given /^the product family "([^"]*)" has the following attribute:$/
      */
-    public function theProductFamilyHasTheFollowingAttribute($family, TableNode $table)
+    public function theFamilyHasTheFollowingAttribute($family, TableNode $table)
     {
         $family = $this->getFamily($family);
 
@@ -314,7 +314,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $product = $this->getProduct($product);
         $family  = $this->getFamily($family);
 
-        $product->setProductFamily($family);
+        $product->setFamily($family);
         $this->getEntityManager()->flush();
     }
 
@@ -375,7 +375,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSwitchTheLocaleTo($locale)
     {
-        $this->getPage('Product edit')->switchLocale($this->getLocaleCode($locale));
+        $this->getPage('Product edit')->switchLocale($locale);
     }
 
     /**
@@ -384,7 +384,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function theLocaleSwitcherShouldContainTheFollowingItems(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            if (!$this->getPage('Product edit')->findLocaleLink($data['locale'], array($data['language'], $data['label']))) {
+            if (!$this->getPage('Product edit')->findLocaleLink($data['language'], $data['label'])) {
                 throw $this->createExpectationException(sprintf(
                     'Could not find locale "%s %s" in the locale switcher', $data['locale'], $data['label']
                 ));
@@ -1239,7 +1239,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     private function getFamily($code)
     {
-        return $this->getEntityOrException('PimProductBundle:ProductFamily', array(
+        return $this->getEntityOrException('PimProductBundle:Family', array(
             'code' => $code
         ));
     }
@@ -1277,13 +1277,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         return $entity;
     }
 
-    private function createFamilyTranslation(ProductFamily $family, $content, $locale = 'default')
+    private function createFamilyTranslation(Family $family, $content, $locale = 'default')
     {
-        $translation = new ProductFamilyTranslation();
+        $translation = new FamilyTranslation();
         $translation->setContent($content);
         $translation->setField('label');
         $translation->setLocale($locale);
-        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\ProductFamily');
+        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\Family');
         $translation->setForeignKey($family);
 
         $em = $this->getEntityManager();

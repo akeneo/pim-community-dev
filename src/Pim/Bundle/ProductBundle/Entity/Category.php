@@ -11,7 +11,6 @@ use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Pim\Bundle\ProductBundle\Model\CategoryInterface;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
 
-
 /**
  * Segment class allowing to organize a flexible product class into trees
  *

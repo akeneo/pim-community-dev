@@ -68,13 +68,15 @@ class AttributeOption extends AbstractEntityAttributeOption
 
     /**
      * Set default
-     * @param boolen $default
+     * @param boolean $default
      *
      * @return AttributeOption
      */
     public function setDefault($default)
     {
         $this->default = (bool) $default;
+
+        return $this;
     }
 
     /**

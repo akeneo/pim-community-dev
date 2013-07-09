@@ -18,12 +18,12 @@ Feature: Switch product locale
 
   Scenario: Successfully switch product current locale
     Given I am on the "Computer" product page
-    When I switch the locale to "french"
+    When I switch the locale to "French"
     Then the product name should be "ordinateur"
 
   Scenario: Successfully display nothing if no translation was set
     Given I am on the "Computer" product page
-    When I switch the locale to "french"
+    When I switch the locale to "French"
     Then the product screen should be empty
 
   Scenario: Successfully edit a translated value in the default locale
@@ -34,7 +34,7 @@ Feature: Switch product locale
 
   Scenario: Sucessfully edit a translated value in another locale
     Given I am on the "Computer" product page
-    And I switch the locale to "french"
+    And I switch the locale to "French"
     When I change the name to "ordinateur portable"
     And I save the product
     Then the product name should be "ordinateur portable"
@@ -49,6 +49,6 @@ Feature: Switch product locale
     And the product "Computer" belongs to the family "Technology"
     And I am on the "Computer" product page
     Then the locale switcher should contain the following items:
-      | locale | language | label      |
-      | en_US  | English  | computer   |
-      | fr_FR  | French   | ordinateur |
+      | language                | label      |
+      | English (United States) | computer   |
+      | French                  | ordinateur |

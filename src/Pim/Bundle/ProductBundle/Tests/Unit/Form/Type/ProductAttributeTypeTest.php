@@ -41,7 +41,6 @@ class ProductAttributeTypeTest extends AbstractFormTypeTest
      */
     public function setUp()
     {
-        $this->markTestIncomplete('Either drop this test class or find a neat way to add entity form type support');
         parent::setUp();
 
         // Create a mock for the form and exclude the availableLocales and getAttributeTypeChoices methods
@@ -77,18 +76,6 @@ class ProductAttributeTypeTest extends AbstractFormTypeTest
 
         // Assert name
         $this->assertEquals('pim_product_attribute', $this->form->getName());
-    }
-
-    /**
-     * Assert field name and type
-     * @param string $name Field name
-     * @param string $type Field type alias
-     */
-    protected function assertField($name, $type)
-    {
-        $formType = $this->form->get($name);
-        $this->assertInstanceOf('\Symfony\Component\Form\Form', $formType);
-        $this->assertEquals($type, $formType->getConfig()->getType()->getInnerType()->getName());
     }
 
     /**
