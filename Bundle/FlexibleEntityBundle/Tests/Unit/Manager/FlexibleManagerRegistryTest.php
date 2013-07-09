@@ -36,7 +36,7 @@ class FlexibleManagerRegistryTest extends \PHPUnit_Framework_TestCase
     /**
      * @var string
      */
-    protected $entityFQCN = 'Oro\\Bundle\\FlexibleEntityBundle\\Tests\\Unit\\Entity\\Demo\\Flexible';
+    protected $entityFQCN = 'Oro\\Bundle\\FlexibleEntityBundle\\Test\\Entity\\Demo';
 
     /**
      * @var FlexibleManager
