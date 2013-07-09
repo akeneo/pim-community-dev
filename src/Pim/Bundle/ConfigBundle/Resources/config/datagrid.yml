@@ -12,6 +12,8 @@ services:
               datagrid_name: channels
               entity_hint: channels
               route_name: pim_config_channel_index
+        calls:
+            - [ setCategoryManager, [@pim_product.manager.category] ]
 
     pim_config.datagrid.manager.currency:
         class: %pim_config.datagrid.manager.currency_datagrid.class%
