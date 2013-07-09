@@ -90,7 +90,7 @@ class FlexibleManagerRegistryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Cannot get flexible manager for class "Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\Flexible".
+     * @expectedExceptionMessage Cannot get flexible manager for class "Oro\Bundle\FlexibleEntityBundle\Test\Entity\Demo".
      */
     public function testGetManagerFails()
     {

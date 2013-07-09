@@ -60,7 +60,7 @@ class FlexibleManagerTest extends AbstractFlexibleManagerTest
         // get default locale
         $this->assertEquals($this->manager->getLocale(), $this->defaultLocale);
         // forced locale
-        $code = 'fr_FR';
+        $code = 'fr';
         $this->manager->setLocale($code);
         $this->assertEquals($this->manager->getLocale(), $code);
     }

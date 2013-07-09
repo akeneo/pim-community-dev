@@ -352,7 +352,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
                 if ($product->setLocale('en')->getValue('name') != null) {
                     $value = $this->getProductManager()->createFlexibleValue();
                     $value->setAttribute($attName);
-                    $value->setLocale('fr_FR');
+                    $value->setLocale('fr');
                     $value->setData('mon nom FR '.$ind);
                     $product->addValue($value);
                     $this->getProductManager()->getStorageManager()->persist($value);
@@ -365,7 +365,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
                 if ($product->setLocale('en')->setScope('ecommerce')->getValue('description') != null) {
                     // scope ecommerce
                     $value = $this->getProductManager()->createFlexibleValue();
-                    $value->setLocale('fr_FR');
+                    $value->setLocale('fr');
                     $value->setScope(ProductAttribute::SCOPE_ECOMMERCE);
                     $value->setAttribute($attDescription);
                     $value->setData('ma description FR (ecommerce) '.$ind);
@@ -373,7 +373,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
                     $this->getProductManager()->getStorageManager()->persist($value);
                     // scope mobile
                     $value = $this->getProductManager()->createFlexibleValue();
-                    $value->setLocale('fr_FR');
+                    $value->setLocale('fr');
                     $value->setScope(ProductAttribute::SCOPE_MOBILE);
                     $value->setAttribute($attDescription);
                     $value->setData('ma description FR (mobile) '.$ind);
@@ -400,7 +400,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
                 $option = $optValueEn->getOption();
                 $optValueFr = $this->getProductManager()->createAttributeOptionValue();
                 $optValueFr->setValue($colorFr);
-                $optValueFr->setLocale('fr_FR');
+                $optValueFr->setLocale('fr');
                 $option->addOptionValue($optValueFr);
                 $this->getProductManager()->getStorageManager()->persist($optValueFr);
                 $messages[]= "Option '".$colorEn."' has been translated";

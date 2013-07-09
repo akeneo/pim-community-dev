@@ -20,11 +20,11 @@ You can choose value locale as following and use any locale code you want (fr, f
 $value = $pm->createFlexibleValue();
 $value->setAttribute($attribute);
 $value->setData('my data');
-$value->setLocale('fr_FR');
+$value->setLocale('fr');
 $product->addValue($value);
 
 // add a value (shortcut !)
-$product->setName('my scoped and translated value', 'fr_FR');
+$product->setName('my scoped and translated value', 'fr');
 
 // by using current flexible manager locale
 $product->setName('my scoped and translated value');
@@ -61,14 +61,14 @@ $pm = $this->container->get('product_manager');
 
 // add a value (long version ...)
 $value = $pm->createFlexibleValue();
-$value->setLocale('fr_FR');
+$value->setLocale('fr');
 $value->setScope('my_scope_code');
 $value->setAttribute($attDescription);
 $value->setData('my scoped and translated value');
 $product->addValue($value);
 
 // add a value (shortcut !)
-$product->setDescription('my scoped and translated value', 'fr_FR', 'my_scope_code');
+$product->setDescription('my scoped and translated value', 'fr', 'my_scope_code');
 
 ```
 
