@@ -13,6 +13,7 @@ use Oro\Bundle\TestFrameworkBundle\Test\Client;
 class SoapDataAuditApiTest extends WebTestCase
 {
 
+    /** @var Client  */
     protected $client = null;
 
     public function setUp()
@@ -28,11 +29,31 @@ class SoapDataAuditApiTest extends WebTestCase
         );
     }
 
+    public function tearDown()
+    {
+        unset($this->client);
+    }
+
     /**
      * @return array
      */
     public function testPreconditions()
     {
+        //clear Audits
+        $result = $this->client->soapClient->getAudits();
+        $result = ToolsAPI::classToArray($result);
+        if (!empty($result)) {
+            if (!is_array(array_shift($result['item']))) {
+                $result[] = $result['item'];
+                unset($result['item']);
+            } else {
+                $result = $result['item'];
+            }
+            foreach ($result as $audit) {
+                $this->client->soapClient->deleteAudit($audit['id']);
+            }
+        }
+
         //create users
         $request = array(
             "username" => 'user_' . mt_rand(),
@@ -56,8 +77,22 @@ class SoapDataAuditApiTest extends WebTestCase
      */
     public function testGetAudits($response)
     {
-        $this->markTestSkipped('BAP-949');
         $result = $this->client->soapClient->getAudits();
+        $result = ToolsAPI::classToArray($result);
+
+        if (!is_array(reset($result['item']))) {
+            $result[] = $result['item'];
+            unset($result['item']);
+        } else {
+            $result = $result['item'];
+        }
+
+        $resultActual = reset($result);
+        //Bug BAP-1116
+        //$this->assertEquals($resultExpected['action'], 'create');
+        //$this->assertEquals($resultExpected['objectClass'], 'Oro\Bundle\UserBundle\Entity\User');
+        $this->assertEquals($response['username'], $resultActual['objectName']);
+        $this->assertEquals('admin', $resultActual['user']['username']);
 
         return $result;
     }
@@ -69,17 +104,26 @@ class SoapDataAuditApiTest extends WebTestCase
      */
     public function testGetAudit($response)
     {
-        $result = $this->client->soapClient->getAudit($response[0]['id']);
-
-        return $result;
+        foreach ($response as $audit) {
+            $result = $this->client->soapClient->getAudit($audit['id']);
+            $result = ToolsAPI::classToArray($result);
+            unset($result['loggedAt']);
+            unset($audit['loggedAt']);
+            $this->assertEquals($audit, $result);
+        }
     }
 
     /**
      * @param array $response
-     * @depends testGetAudit
+     * @depends testGetAudits
      */
     public function testDeleteAudit($response)
     {
-        $this->client->soapClient->deleteAudit($response[0]['id']);
+        foreach ($response as $audit) {
+            $this->client->soapClient->deleteAudit($audit['id']);
+        }
+        $result = $this->client->soapClient->getAudits();
+        $result = ToolsAPI::classToArray($result);
+        $this->assertEmpty($result);
     }
 }

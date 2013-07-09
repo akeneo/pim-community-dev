@@ -14,9 +14,8 @@ class SoapApiAclTest extends WebTestCase
 {
     const TEST_ROLE = 'ROLE_SUPER_ADMIN';
     const TEST_EDIT_ROLE = 'ROLE_USER';
-    /**
-     * @var Client
-     */
+
+    /** @var Client */
     protected $client = null;
 
     public function setUp()
@@ -50,8 +49,15 @@ class SoapApiAclTest extends WebTestCase
      */
     public function testGetAcl($acls)
     {
+        $i = 0;
         foreach ($acls as $acl) {
             $result = $this->client->soapClient->getAcl($acl);
+            $result = ToolsAPI::classToArray($result);
+            $this->assertEquals($acl, $result['id']);
+            $i++;
+            if ($i % 10 == 0) {
+                break;
+            }
         }
     }
 
@@ -126,17 +132,12 @@ class SoapApiAclTest extends WebTestCase
         $roleId = ToolsAPI::classToArray($roleId);
 
         $this->client->soapClient->addAclToRole($roleId['id'], 'oro_address');
+        $this->client->soapClient->addAclToRole($roleId['id'], 'root');
 
         $result =  $this->client->soapClient->getRoleAcl($roleId['id']);
         $result = ToolsAPI::classToArray($result);
         $actualAcl = $result['item'];
         sort($actualAcl);
-
-        foreach ($expectedAcl as $key => $val) {
-            if ($val == 'root') { // root resource will be deleted after any resource delete
-                unset($expectedAcl[ $key ]);
-            }
-        }
         sort($expectedAcl);
 
         $this->assertEquals($expectedAcl, $actualAcl);

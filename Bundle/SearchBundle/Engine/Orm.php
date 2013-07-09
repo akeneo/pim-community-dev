@@ -5,6 +5,7 @@ namespace Oro\Bundle\SearchBundle\Engine;
 use Doctrine\ORM\EntityManager;
 
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use JMS\JobQueueBundle\Entity\Job;
@@ -36,12 +37,12 @@ class Orm extends AbstractEngine
      */
     protected $mapper;
 
-    public function __construct(EntityManager $em, ContainerInterface $container, ObjectMapper $mapper, $logQueries)
+    public function __construct(EntityManager $em, EventDispatcher $dispatcher, ContainerInterface $container, ObjectMapper $mapper, $logQueries)
     {
+        parent::__construct($em, $dispatcher, $logQueries);
+
         $this->container = $container;
-        $this->em = $em;
         $this->mapper = $mapper;
-        $this->logQueries = $logQueries;
     }
 
     /**
