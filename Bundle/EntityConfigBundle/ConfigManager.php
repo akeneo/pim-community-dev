@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\EntityConfigBundle;
 
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;

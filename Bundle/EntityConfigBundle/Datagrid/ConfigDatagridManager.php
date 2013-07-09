@@ -74,7 +74,7 @@ class ConfigDatagridManager extends DatagridManager
     }
 
     /**
-     * @param string $scope
+     * @param  string $scope
      * @return array
      */
     protected function getObjectName($scope = 'name')
@@ -94,11 +94,10 @@ class ConfigDatagridManager extends DatagridManager
             $options['name'][$value['className']] = '';
             $options['module'][$value['className']] = '';
 
-            foreach ($className as $index => $name){
-                if (count($className)-1 == $index){
+            foreach ($className as $index => $name) {
+                if (count($className)-1 == $index) {
                     $options['name'][$value['className']] = $name;
-                }
-                elseif (!in_array($name, array('Bundle','Entity'))) {
+                } elseif (!in_array($name, array('Bundle','Entity'))) {
                     $options['module'][$value['className']] .= $name . '/';
                 }
             }
