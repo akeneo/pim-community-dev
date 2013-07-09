@@ -93,22 +93,7 @@ class DataBlocks
                     $this->formConfig->addBlock($block);
                 }
 
-                if (isset($child->vars['subblock']) && $block->hasSubBlock($child->vars['subblock'])) {
-                    $subBlock = $block->getSubBlock($child->vars['subblock']);
-                } elseif (!isset($child->vars['subblock'])) {
-                    $subBlocks = $block->getSubBlocks();
-                    $subBlock  = reset($subBlocks);
-                } else {
-                    if (isset($child->vars['subblock'])) {
-                        $subBlockCode = $child->vars['subblock'];
-                    } else {
-                        $subBlockCode = $name . '__subblock';
-                    }
-
-                    $subBlock = $this->createSubBlock($subBlockCode, array('title' => ''));
-
-                    $block->addSubBlock($subBlock);
-                }
+                $subBlock = $this->getSubBlock($name, $child, $block);
 
                 $tmpChild = $child;
                 $formPath = '';
@@ -126,6 +111,30 @@ class DataBlocks
 
             $this->renderBlock($child);
         }
+    }
+
+    protected function getSubBlock($name, FormView $child, BlockConfig $block)
+    {
+        $subBlock = null;
+        if (isset($child->vars['subblock']) && $block->hasSubBlock($child->vars['subblock'])) {
+            $subBlock = $block->getSubBlock($child->vars['subblock']);
+        } elseif (!isset($child->vars['subblock'])) {
+            $subBlocks = $block->getSubBlocks();
+            $subBlock  = reset($subBlocks);
+        }
+
+        if (!$subBlock) {
+            if (isset($child->vars['subblock'])) {
+                $subBlockCode = $child->vars['subblock'];
+            } else {
+                $subBlockCode = $name . '__subblock';
+            }
+
+            $subBlock = $this->createSubBlock($subBlockCode, array('title' => ''));
+            $block->addSubBlock($subBlock);
+        }
+
+        return $subBlock;
     }
 
     /**

@@ -125,25 +125,6 @@ class DataBlocksTest extends \PHPUnit_Framework_TestCase
 
         $formView = $builder->getForm()->createView();
 
-        //$formView->vars[
-        array('block_config' =>
-              array(
-                  'first'  => array(
-                      'priority'  => 1,
-                      'title'     => 'First Block',
-                      'subblocks' => array(
-                          'first'  => array(),
-                          'second' => array(
-                              'title' => 'Second SubBlock'
-                          ),
-                      ),
-                  ),
-                  'second' => array(
-                      'priority' => 2,
-                  )
-              )
-        );
-
         $result = $this->dataBlocks->render($this->twig, array('form' => $formView), $formView);
 
         $this->assertEquals($this->testFormConfig, $result);
