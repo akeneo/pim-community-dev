@@ -104,7 +104,7 @@ class ProductExtension extends \Twig_Extension
     public function flag($code)
     {
         return sprintf(
-            '<img class="flag flag-%s" alt="%s" /> <code class="flag-language">%s</code>',
+            '<img src="/bundles/pimui/images/blank.gif" class="flag flag-%s" alt="%s" /> <code class="flag-language">%s</code>',
             $this->getCountry($code),
             $this->localeLabel($code),
             $this->getLanguage($code)
