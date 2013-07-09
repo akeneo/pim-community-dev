@@ -3,6 +3,7 @@
 namespace Oro\Bundle\TagBundle\Entity;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\Expr\Join;
 
 class TagManager
 {
@@ -32,8 +33,8 @@ class TagManager
     /**
      * Adds a tag on the given taggable resource
      *
-     * @param Tag       $tag        Tag object
-     * @param Taggable  $resource   Taggable resource
+     * @param Tag      $tag      Tag object
+     * @param Taggable $resource Taggable resource
      */
     public function addTag(Tag $tag, Taggable $resource)
     {
@@ -43,8 +44,8 @@ class TagManager
     /**
      * Adds multiple tags on the given taggable resource
      *
-     * @param Tag[]     $tags       Array of Tag objects
-     * @param Taggable  $resource   Taggable resource
+     * @param Tag[]    $tags     Array of Tag objects
+     * @param Taggable $resource Taggable resource
      */
     public function addTags(array $tags, Taggable $resource)
     {
@@ -58,8 +59,8 @@ class TagManager
     /**
      * Removes an existant tag on the given taggable resource
      *
-     * @param Tag       $tag        Tag object
-     * @param Taggable  $resource   Taggable resource
+     * @param  Tag      $tag      Tag object
+     * @param  Taggable $resource Taggable resource
      * @return Boolean
      */
     public function removeTag(Tag $tag, Taggable $resource)
@@ -70,8 +71,8 @@ class TagManager
     /**
      * Replaces all current tags on the given taggable resource
      *
-     * @param Tag[]     $tags       Array of Tag objects
-     * @param Taggable  $resource   Taggable resource
+     * @param Tag[]    $tags     Array of Tag objects
+     * @param Taggable $resource Taggable resource
      */
     public function replaceTags(array $tags, Taggable $resource)
     {
@@ -82,19 +83,20 @@ class TagManager
     /**
      * Loads or creates a tag from tag name
      *
-     * @param array  $name  Tag name
+     * @param  array $name Tag name
      * @return Tag
      */
     public function loadOrCreateTag($name)
     {
         $tags = $this->loadOrCreateTags(array($name));
+
         return $tags[0];
     }
 
     /**
      * Loads or creates multiples tags from a list of tag names
      *
-     * @param array  $names   Array of tag names
+     * @param  array $names Array of tag names
      * @return Tag[]
      */
     public function loadOrCreateTags(array $names)
@@ -114,8 +116,7 @@ class TagManager
             ->where($builder->expr()->in('t.name', $names))
 
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
 
         $loadedNames = array();
         foreach ($tags as $tag) {
@@ -140,7 +141,7 @@ class TagManager
     /**
      * Saves tags for the given taggable resource
      *
-     * @param Taggable  $resource   Taggable resource
+     * @param Taggable $resource Taggable resource
      */
     public function saveTagging(Taggable $resource)
     {
@@ -190,7 +191,7 @@ class TagManager
     /**
      * Loads all tags for the given taggable resource
      *
-     * @param Taggable  $resource   Taggable resource
+     * @param Taggable $resource Taggable resource
      */
     public function loadTagging(Taggable $resource)
     {
@@ -201,25 +202,23 @@ class TagManager
     /**
      * Gets all tags for the given taggable resource
      *
-     * @param Taggable  $resource   Taggable resource
+     * @param Taggable $resource Taggable resource
+     * @return array
      */
     protected function getTagging(Taggable $resource)
     {
-        return $this->em
+        $query = $this->em
             ->createQueryBuilder()
 
             ->select('t')
             ->from($this->tagClass, 't')
 
-            ->innerJoin('t.tagging', 't2', Expr\Join::WITH, 't2.resourceId = :id AND t2.resourceType = :type')
-            ->setParameter('id', $resource->getTaggableId())
-            ->setParameter('type', $resource->getTaggableType())
+            ->innerJoin('t.tagging', 't2', Join::WITH, 't2.recordId = :recordId AND t2.entityName = :entityName')
+            ->setParameter('recordId', $resource->getTaggableId())
+            ->setParameter('entityName', get_class($resource))
+            ->getQuery();
 
-            // ->orderBy('t.name', 'ASC')
-
-            ->getQuery()
-            ->getResult()
-            ;
+        return $query->getResult();
     }
 
     /**
@@ -255,7 +254,7 @@ class TagManager
     /**
      * Returns an array of tag names for the given Taggable resource.
      *
-     * @param Taggable  $resource   Taggable resource
+     * @param  Taggable $resource Taggable resource
      * @return array
      */
     public function getTagNames(Taggable $resource)
@@ -274,7 +273,7 @@ class TagManager
     /**
      * Creates a new Tag object
      *
-     * @param string    $name   Tag name
+     * @param  string $name Tag name
      * @return Tag
      */
     protected function createTag($name)
@@ -285,8 +284,8 @@ class TagManager
     /**
      * Creates a new Tagging object
      *
-     * @param Tag       $tag        Tag object
-     * @param Taggable  $resource   Taggable resource object
+     * @param  Tag      $tag      Tag object
+     * @param  Taggable $resource Taggable resource object
      * @return Tagging
      */
     protected function createTagging(Tag $tag, Taggable $resource)

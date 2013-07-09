@@ -13,7 +13,9 @@ parameters:
     oro_tag.autocomplete.tag.search_handler.class: Oro\Bundle\FormBundle\Autocomplete\SearchHandler
     oro_tag.form.type.tag_select.class: Oro\Bundle\TagBundle\Form\Type\TagSelectType
 
-    oro_tag.provider.search_provider.class:  Oro\Bundle\TagBundle\Provider\SearchProvider
+    oro_tag.provider.search_provider.class: Oro\Bundle\TagBundle\Provider\SearchProvider
+
+    oro_tag.twig.tag.extension.class: Oro\Bundle\TagBundle\Twig\TagExtension
 
 services:
     oro_tag.tag.manager:
@@ -98,3 +100,13 @@ services:
             - @doctrine.orm.entity_manager
         tags:
             - { name: form.type, alias: oro_tag_select }
+
+    # Twig extension
+    oro_tag.twig.tag.extension:
+        class: %oro_tag.twig.tag.extension.class%
+        arguments:
+            - @oro_tag.tag.manager
+            - @router
+            - @security.context
+        tags:
+            - { name: twig.extension }

@@ -139,6 +139,16 @@ class Tag
     }
 
     /**
+     * Return tagging object
+     *
+     * @return Tagging
+     */
+    public function getTagging()
+    {
+        return $this->tagging;
+    }
+
+    /**
      * To string
      *
      * @return string

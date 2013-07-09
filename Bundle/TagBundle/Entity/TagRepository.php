@@ -23,8 +23,8 @@ class TagRepository extends EntityRepository
      * For a specific taggable type, this returns an array where they key
      * is the tag and the value is the number of times that tag is used
      *
-     * @param string $taggableType The taggable type / resource type
-     * @param null|integer $limit The max results to return
+     * @param  string       $taggableType The taggable type / resource type
+     * @param  null|integer $limit        The max results to return
      * @return array
      */
     public function getTagsWithCountArray($taggableType, $limit = null)
@@ -57,8 +57,8 @@ class TagRepository extends EntityRepository
      * Returns an array of ids (e.g. Post ids) for a given taggable
      * type that have the given tag
      *
-     * @param string $taggableType The type of object we're looking for
-     * @param string $tag The actual tag we're looking for
+     * @param  string $taggableType The type of object we're looking for
+     * @param  string $tag          The actual tag we're looking for
      * @return array
      */
     public function getResourceIdsForTag($taggableType, $tag)
@@ -100,7 +100,7 @@ class TagRepository extends EntityRepository
     /**
      * Returns a query builder returning tags for a given type
      *
-     * @param string $taggableType
+     * @param  string                     $taggableType
      * @return \Doctrine\ORM\QueryBuilder
      */
     public function getTagsQueryBuilder($taggableType)

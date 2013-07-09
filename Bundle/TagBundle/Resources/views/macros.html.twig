@@ -1,0 +1,17 @@
+{% macro renderView(entity) %}
+    <input type="hidden" id="tags" />
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var tags = {{ oro_tag_get_list(entity)|json_encode|raw }};
+
+            $('#tags').select2({
+                multiple: true
+                , query: function() { return false;}
+                , data: tags
+            });
+//            $('#tags').select2("data", tags);
+            $('#tags').select2("readonly", true);
+        });
+    </script>
+{% endmacro %}

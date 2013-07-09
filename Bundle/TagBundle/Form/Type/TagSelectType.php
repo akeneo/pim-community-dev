@@ -51,7 +51,7 @@ class TagSelectType extends AbstractType
 
         $builder->addEventListener(
             FormEvents::PRE_BIND,
-            function(FormEvent $event) use ($transformer) {
+            function (FormEvent $event) use ($transformer) {
                 //$form = $event->getForm();
                 $data = $event->getData();
                 $data = $transformer->reverseTransform($data);

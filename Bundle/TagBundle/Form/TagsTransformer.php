@@ -3,7 +3,6 @@
 namespace Oro\Bundle\TagBundle\Form;
 
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Mapping\MappingException;
 
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 use Symfony\Component\Form\Util\PropertyPath;
@@ -65,7 +64,7 @@ class TagsTransformer extends EntityToIdTransformer
     /**
      * Load entities by array of ids
      *
-     * @param array $ids
+     * @param  array                   $ids
      * @return array
      * @throws UnexpectedTypeException if query builder callback returns invalid type
      */

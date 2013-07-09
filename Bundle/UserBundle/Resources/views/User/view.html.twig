@@ -1,4 +1,6 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroTagBundle::macros.html.twig' as _tag %}
+
 {% set format = oro_config_value('oro_user.name_format') %}
 {% oro_title_set({params : {"%username%": entity.fullname(format)|default('N/A') }}) %}
 {% set entityClass = 'Oro_Bundle_UserBundle_Entity_User' %}
@@ -90,7 +92,8 @@
                         {
                             'title': 'Contact Information',
                             'data': [
-                                UI.attibuteRow('Email', {value: entity.email, hint: 'Primary'}, entity.emails|length ? {data: entity.emails, field:'email'} : {})
+                                UI.attibuteRow('Email', {value: entity.email, hint: 'Primary'}, entity.emails|length ? {data: entity.emails, field:'email'} : {}),
+                                UI.renderAttribute('Tags', _tag.renderView(entity))
                             ]
                         }
                     ]

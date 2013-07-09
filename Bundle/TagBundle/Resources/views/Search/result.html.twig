@@ -7,6 +7,7 @@
 {% import 'OroUserBundle::macros.html.twig' as macros %}
 
 {% set entity_output = oro_config_entity('Oro\\Bundle\\TagBundle\\Entity\\Tag') %}
+{% set showImage = false %}
 
 {% if entity %}
     {% set recordUrl = indexer_item.recordUrl %}
@@ -16,6 +17,6 @@
 {% set entityType = entity_output.name|trans({}, 'config') %}
 
 {% set entityInfo = [
-{'title': 'Created', 'value': entity.createdAt ? macros.time(entity.createdAt) : 'N/A'},
-{'title': 'Updated', 'value': entity.updatedAt ? macros.time(entity.updatedAt) : 'N/A'},
+    {'title': 'Created', 'value': entity.created ? macros.time(entity.created) : 'N/A'},
+    {'title': 'Updated', 'value': entity.updated ? macros.time(entity.updated) : 'N/A'},
 ] %}

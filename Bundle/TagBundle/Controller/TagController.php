@@ -4,8 +4,6 @@ namespace Oro\Bundle\TagBundle\Controller;
 
 use Oro\Bundle\GridBundle\Datagrid\Datagrid;
 use Oro\Bundle\GridBundle\Datagrid\DatagridView;
-use Oro\Bundle\GridBundle\Datagrid\ResultRecord;
-use Oro\Bundle\SearchBundle\Query\Result\Item;
 use Oro\Bundle\TagBundle\Datagrid\ResultsDatagridManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -99,8 +97,8 @@ class TagController extends Controller
     }
 
     /**
-     * @param string $from
-     * @param Tag $tag
+     * @param  string   $from
+     * @param  Tag      $tag
      * @return Datagrid
      */
     protected function getSearchResultsDatagrid($from, Tag $tag)
