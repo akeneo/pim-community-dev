@@ -102,7 +102,7 @@ class FieldsDatagridManager extends DatagridManager
                 'required'    => false,
                 'sortable'    => true,
                 'filterable'  => false,
-                'show_filter' => true,
+                'show_filter' => false,
             )
         );
         $fieldsCollection->add($fieldObjectId);
@@ -117,7 +117,7 @@ class FieldsDatagridManager extends DatagridManager
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
                 'sortable'    => true,
-                'filterable'  => false,
+                'filterable'  => true,
                 'show_filter' => false,
             )
         );
@@ -148,7 +148,7 @@ class FieldsDatagridManager extends DatagridManager
                 'required'    => true,
                 'sortable'    => true,
                 'filterable'  => false,
-                'show_filter' => true,
+                'show_filter' => false,
             )
         );
         $fieldsCollection->add($fieldObjectCreate);
@@ -164,7 +164,7 @@ class FieldsDatagridManager extends DatagridManager
                 'required'    => false,
                 'sortable'    => true,
                 'filterable'  => true,
-                'show_filter' => true,
+                'show_filter' => false,
             )
         );
         $fieldsCollection->add($fieldObjectUpdate);

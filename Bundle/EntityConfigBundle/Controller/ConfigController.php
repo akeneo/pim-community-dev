@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Controller;
 
+use Acme\Bundle\DemoBundle\Entity\Account;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -88,12 +89,25 @@ class ConfigController extends Controller
         /** @var  FieldsDatagridManager $datagridManager */
         $datagridManager = $this->get('oro_entity_config.fieldsdatagrid.manager');
         $datagridManager->setEntityId($id);
+        $datagridManager->getRouteGenerator()->setRouteParameters(
+            array(
+                'id' => $id
+            )
+        );
 
         $datagrid = $datagridManager->getDatagrid();
 
+        $entityName = strtolower(current(array_reverse(explode('\\', $entity->getClassname()))));
+        $link = $this->get('router')->match('/'.$entityName);
+        if (is_array($link)) {
+            $link = $this->generateUrl($link['_route']);
+        }
+
         return array(
-            'entity'   => $entity,
-            'datagrid' => $datagrid->createView()
+            'entity'     => $entity,
+            'datagrid'   => $datagrid->createView(),
+            'link'       => $link,
+            'entityName' => $entityName
         );
     }
 
