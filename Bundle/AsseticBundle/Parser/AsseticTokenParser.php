@@ -86,18 +86,22 @@ class AsseticTokenParser extends \Twig_TokenParser
         $nameUnCompress = substr(sha1($inputs['uncompress'][0] . array('oro_assets')), 0, 7);
 
         return new OroAsseticNode(
-            $this->factory->createAsset(
-                $inputs['compress'][0],
-                $filters,
-                $attributes + array('name' => $nameCompress, 'debug' => false)
+            array(
+                'name' => $nameCompress,
+                'data' => $this->factory->createAsset(
+                    $inputs['compress'][0],
+                    $filters,
+                    $attributes + array('name' => $nameCompress, 'debug' => false)
+                )
             ),
-            $nameCompress,
-            $this->factory->createAsset(
-                $inputs['uncompress'][0],
-                $filters,
-                $attributes + array('name' => $nameUnCompress, 'debug' => true)
+            array(
+                'name' => $nameUnCompress,
+                'data' => $this->factory->createAsset(
+                    $inputs['uncompress'][0],
+                    $filters,
+                    $attributes + array('name' => $nameUnCompress, 'debug' => true)
+                )
             ),
-            $nameUnCompress,
             $filters,
             $inputs,
             $body,

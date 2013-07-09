@@ -21,21 +21,19 @@ class OroAsseticNode extends \Twig_Node
     protected $nameUnCompress;
 
     public function __construct(
-        AssetInterface $compressAsset,
-        $nameUnCompress,
-        AssetInterface $unCompressAsset,
-        $nameCompress,
-        $filters,
-        $inputs,
+        array $compressAsset,
+        array $unCompressAsset,
+        array $filters,
+        array $inputs,
         \Twig_NodeInterface $body,
         array $attributes = array(),
         $lineno = 0,
         $tag = null
     ) {
-        $this->nameCompress = $nameCompress;
-        $this->nameUnCompress = $nameUnCompress;
-        $this->compressedAsset = $compressAsset;
-        $this->unCompressAsset = $unCompressAsset;
+        $this->nameCompress = $compressAsset['name'];
+        $this->nameUnCompress = $unCompressAsset['name'];
+        $this->compressedAsset = $compressAsset['asset'];
+        $this->unCompressAsset = $unCompressAsset['asset'];
 
         $nodes = array('body' => $body);
 

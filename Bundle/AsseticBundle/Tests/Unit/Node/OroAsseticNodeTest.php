@@ -23,10 +23,14 @@ class OroAsseticNodeTest extends \PHPUnit_Framework_TestCase
         $this->compressAsset = new AssetCollection(array($asset));
         $this->unCompressAsset = new AssetCollection(array($asset));
         $this->node = new OroAsseticNode(
-            $this->compressAsset,
-            'uncompress_asset',
-            $this->unCompressAsset,
-            'compress_asset',
+            array(
+                'name' => 'compress_test_asset',
+                'data' => $this->compressAsset
+            ),
+            array(
+                'name' => 'uncompress_test_asset',
+                'data' => $this->unCompressAsset
+            ),
             array(),
             array('compile1.css', 'compile2.css'),
             new \Twig_Node(),
