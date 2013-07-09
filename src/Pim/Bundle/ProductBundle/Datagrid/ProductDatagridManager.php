@@ -183,13 +183,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function createCategoryField()
     {
-        // get categories
         $em = $this->flexibleManager->getStorageManager();
-        $categories = $em->getRepository('PimProductBundle:Category')->findAll();
-        $choices = array();
-        foreach ($categories as $category) {
-            $choices[$category->getId()] = $category->getTitle();
-        }
+        $choices = $em->getRepository('PimProductBundle:Category')->getAllIdToTitle();
 
         $field = new FieldDescription();
         $field->setName('categories');
