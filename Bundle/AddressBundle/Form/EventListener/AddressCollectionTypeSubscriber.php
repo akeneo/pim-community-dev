@@ -2,7 +2,9 @@
 
 namespace Oro\Bundle\AddressBundle\Form\EventListener;
 
-use Symfony\Component\Form\Util\PropertyPath;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,6 +26,11 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
     protected $propertyPath;
 
     /**
+     * @var PropertyAccessor
+     */
+    protected $propertyAccessor;
+
+    /**
      * @var string
      */
     protected $entityClass;
@@ -36,6 +43,7 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
     {
         $this->property = $property;
         $this->propertyPath = new PropertyPath($this->property);
+        $this->propertyAccessor = PropertyAccess::getPropertyAccessor();
         $this->entityClass = $entityClass;
     }
 
@@ -65,11 +73,13 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
         }
 
         /** @var Collection $addresses */
-        $addresses = $this->propertyPath->getValue($data);
+        $addresses = $this->propertyAccessor->getValue($data, $this->propertyPath);
 
         if ($addresses->isEmpty()) {
-            $this->propertyPath->setValue(
+
+            $this->propertyAccessor->setValue(
                 $data,
+                $this->propertyPath,
                 array(new $this->entityClass())
             );
         }
@@ -89,14 +99,14 @@ class AddressCollectionTypeSubscriber implements EventSubscriberInterface
         }
 
         /** @var Collection $addresses */
-        $addresses = $this->propertyPath->getValue($data);
+        $addresses = $this->propertyAccessor->getValue($data, $this->propertyPath);
         $notEmptyAddresses = $addresses->filter(
             function (AbstractTypedAddress $address) {
                 return !$address->isEmpty();
             }
         );
 
-        $this->propertyPath->setValue($data, $notEmptyAddresses);
+        $this->propertyAccessor->setValue($data, $this->propertyPath, $notEmptyAddresses);
     }
 
     /**
