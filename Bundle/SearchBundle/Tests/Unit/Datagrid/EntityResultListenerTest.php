@@ -15,22 +15,14 @@ class EntityResultListenerTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $mapper;
-
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $router;
+    protected $dispatcher;
 
     /**
      * Set up test environment
      */
     public function setUp()
     {
-        $this->mapper = $this->getMockBuilder('Oro\Bundle\SearchBundle\Engine\ObjectMapper')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->router = $this->getMockBuilder('Symfony\Component\Routing\Router')
+        $this->dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcher')
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -73,7 +65,7 @@ class EntityResultListenerTest extends \PHPUnit_Framework_TestCase
 
         $event = new ResultDatagridEvent($datagrid);
 
-        $eventListener = new EntityResultListener($resultFormatter, self::TEST_DATAGRID_NAME, $this->mapper, $this->router);
+        $eventListener = new EntityResultListener($resultFormatter, self::TEST_DATAGRID_NAME, $this->dispatcher);
         $eventListener->processResult($event);
     }
 
@@ -116,24 +108,8 @@ class EntityResultListenerTest extends \PHPUnit_Framework_TestCase
         $event = new ResultDatagridEvent($datagrid);
         $event->setRows($providerItems);
 
-        //expected once to call getEntityUrl method
-        $this->mapper->expects($this->exactly(2))
-            ->method('getEntityMapParameter')
-            ->with(get_class($firstEntity), 'route')
-            ->will($this->returnValue(array('parameters' => array('parameter' => 'field'), 'name' => 'test_route')));
-
-        $this->mapper->expects($this->once())
-            ->method('getFieldValue')
-            ->with($firstEntity, 'field')
-            ->will($this->returnValue('test_data'));
-
-        $this->router->expects($this->once())
-            ->method('generate')
-            ->with('test_route', array('parameter' => 'test_data'), true)
-            ->will($this->returnValue('test_url'));
-
         // test
-        $eventListener = new EntityResultListener($resultFormatter, self::TEST_DATAGRID_NAME, $this->mapper, $this->router);
+        $eventListener = new EntityResultListener($resultFormatter, self::TEST_DATAGRID_NAME, $this->dispatcher);
         $eventListener->processResult($event);
 
         $expectedRows = array(
