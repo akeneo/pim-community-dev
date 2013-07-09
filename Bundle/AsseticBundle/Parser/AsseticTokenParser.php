@@ -93,7 +93,7 @@ class AsseticTokenParser extends \Twig_TokenParser
                 ),
                 'un_compress' => $this->factory->createAsset(
                     $inputs['uncompress'][0],
-                    $filters,
+                    array(),
                     $attributes + array('name' => $nameUnCompress, 'debug' => true)
                 )
             ),

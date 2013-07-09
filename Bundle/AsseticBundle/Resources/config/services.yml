@@ -35,7 +35,6 @@ services:
               - @oro_assetic.asset_manager
               - @assetic.cache
               - %assetic.enable_profiler%
-              - @profiler
           scope: prototype
           calls:
               - [setValueSupplier, [@assetic.value_supplier]]
