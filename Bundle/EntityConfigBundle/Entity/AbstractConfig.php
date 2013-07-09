@@ -5,6 +5,10 @@ namespace Oro\Bundle\EntityConfigBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\MappedSuperclass
+ * @ORM\HasLifecycleCallbacks
+ */
 abstract class AbstractConfig
 {
     /**
@@ -157,9 +161,9 @@ abstract class AbstractConfig
     /**
      * @ORM\PrePersist
      */
-    public function beforeSave()
+    public function prePersist()
     {
-        $this->created = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->created = $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
     /**
