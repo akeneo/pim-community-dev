@@ -1,4 +1,4 @@
-<?php                                                                           
+<?php
 
 namespace Pim\Bundle\BatchBundle\Job\Launch;
 
@@ -27,9 +27,10 @@ class SimpleJobLauncher implements JobLauncherInterface
     /**
      * Set the JobRepsitory.
      *
-     * @param jobRepository
+     * @param JobRepository $jobRepository
      */
-    public function setJobRepository(JobRepository $jobRepository) {
+    public function setJobRepository(JobRepository $jobRepository)
+    {
         $this->jobRepository = $jobRepository;
     }
 
@@ -56,9 +57,9 @@ class SimpleJobLauncher implements JobLauncherInterface
             for (StepExecution execution : lastExecution.getStepExecutions()) {
                 if (execution.getStatus() == BatchStatus.UNKNOWN) {
                     //throw
-                    throw new JobRestartException("Step [" + execution.getStepName() + "] is of status UNKNOWN"); 
+                    throw new JobRestartException("Step [" + execution.getStepName() + "] is of status UNKNOWN");
                 }//end if
-            }//end for          
+            }//end for
         }*/
 
         // Check the validity of the parameters before doing creating anything
@@ -71,7 +72,4 @@ class SimpleJobLauncher implements JobLauncherInterface
 
         return $jobExecution;
     }
-
-
-
 }

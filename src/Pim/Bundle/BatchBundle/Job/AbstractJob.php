@@ -1,5 +1,5 @@
 <?php
-                                                                                
+
 namespace Pim\Bundle\BatchBundle\Job;
 
 use Pim\Bundle\BatchBundle\Step\StepInterface;
@@ -7,12 +7,11 @@ use Pim\Bundle\BatchBundle\Step\StepInterface;
 use Pim\Bundle\BatchBundle\Logger;
 
 /**
- * 
  * Abstract implementation of the {@link Job} interface. Common dependencies
  * such as a {@link JobRepository}, {@link JobExecutionListener}s, and various
  * configuration parameters are set here. Therefore, common error handling and
  * listener calling activities are abstracted away from implementations.
-
+ *
  * Inspired by Spring Batch org.springframework.batch.core.job.AbstractJob;
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
@@ -37,24 +36,28 @@ abstract class AbstractJob implements JobInterface
     /**
      * Convenience constructor to immediately add name (which is mandatory)
      *
-     * @param name
+     * @param string $name
      */
-    public function __construct($name) {
+    public function __construct($name)
+    {
         $this->name = $name;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
     /**
      * Set the name property
      *
+     * @param string $name
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
     }
 
@@ -62,26 +65,28 @@ abstract class AbstractJob implements JobInterface
      * Retrieve the step with the given name. If there is no Step with the given
      * name, then return null.
      *
-     * @param stepName
+     * @param string $stepName
+     *
      * @return Step the Step
      */
-    public abstract function getStep($stepName);
+    abstract public function getStep($stepName);
 
     /**
      * Retrieve the step names.
      *
      * @return array the step names
      */
-    public abstract function getStepNames();
+    abstract public function getStepNames();
 
     /**
      * Public setter for the {@link JobRepository} that is needed to manage the
      * state of the batch meta domain (jobs, steps, executions) during the life
      * of a job.
      *
-     * @param jobRepository
+     * @param JobRepository $jobRepository
      */
-    public function setJobRepository(JobRepository $jobRepository) {
+    public function setJobRepository(JobRepository $jobRepository)
+    {
         $this->jobRepository = $jobRepository;
         $this->stepHandler = new SimpleStepHandler($jobRepository);
     }
@@ -91,7 +96,8 @@ abstract class AbstractJob implements JobInterface
      *
      * @return the jobRepository
      */
-    protected function getJobRepository() {
+    protected function getJobRepository()
+    {
         return $this->jobRepository;
     }
 
@@ -102,8 +108,7 @@ abstract class AbstractJob implements JobInterface
      * are concerned with the ordering of steps, and delegate actual step
      * processing to {@link #handleStep(Step, JobExecution)}.
      *
-     * @param execution
-     *            the current {@link JobExecution}
+     * @param JobExecution $execution the current {@link JobExecution}
      *
      * @throws JobExecutionException
      *             to signal a fatal batch framework error (not a business or
@@ -114,13 +119,14 @@ abstract class AbstractJob implements JobInterface
     /**
      * Run the specified job, handling all listener and repository calls, and
      * delegating the actual processing to {@link #doExecute(JobExecution)}.
+     * @param JobExecution $execution
      *
      * @see Job#execute(JobExecution)
      * @throws StartLimitExceededException
      *             if start limit of one of the steps was exceeded
      */
-    public final function execute(JobExecution $execution) {
-
+    final public function execute(JobExecution $execution)
+    {
         Logger::debug("Job execution starting: " . $execution);
 
         try {
@@ -162,7 +168,7 @@ abstract class AbstractJob implements JobInterface
             $execution->setExitStatus($this->getDefaultExitStatusForFailure($e));
             $execution->setStatus(new BatchStatus(BatchStatus::FAILED));
 //            $execution->addFailureException($e);
-        } 
+        }
 
         if ( ($execution->getStatus()->getValue() <= BatchStatus::STOPPED)
                 && $execution->getStepExecutions()->isEmpty()
@@ -193,10 +199,9 @@ abstract class AbstractJob implements JobInterface
      * to worry about populating the execution context on a restart, nor
      * detecting the interrupted state (in job or step execution).
      *
-     * @param step
-     *            the {@link Step} to execute
-     * @param execution
-     *            the current {@link JobExecution}
+     * @param StepInterface $step      the {@link Step} to execute
+     * @param JobExecution  $execution the current {@link JobExecution}
+     *
      * @return the {@link StepExecution} corresponding to this step
      *
      * @throws JobInterruptedException
@@ -218,7 +223,8 @@ abstract class AbstractJob implements JobInterface
      * Default mapping from throwable to {@link ExitStatus}. Clients can modify the exit code using a
      * {@link StepExecutionListener}.
      *
-     * @param ex the cause of the failure
+     * @param Exception $e the cause of the failure
+     *
      * @return an {@link ExitStatus}
      */
     private function getDefaultExitStatusForFailure(\Exception $e)
@@ -228,11 +234,9 @@ abstract class AbstractJob implements JobInterface
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             $exitStatus = new ExitStatus(ExitStatus::STOPPED);
             $exitStatus->addExitDescription(get_class(JobInterruptedException));
-        }
-        else if ($e instanceof NoSuchJobException || $e->getPrevious() instanceof NoSuchJobException) {
+        } elseif ($e instanceof NoSuchJobException || $e->getPrevious() instanceof NoSuchJobException) {
 //            exitStatus = new ExitStatus(ExitCodeMapper.NO_SUCH_JOB, ex.getClass().getName());
-        }
-        else {
+        } else {
             $exitStatus = new ExitStatus(ExitStatus::FAILED);
             $exitStatus->addExitDescription($e);
         }
@@ -240,20 +244,28 @@ abstract class AbstractJob implements JobInterface
         return $exitStatus;
     }
 
-
-    private function updateStatus(JobExecution $jobExecution, $status) {
+    /**
+     * Default mapping from throwable to {@link ExitStatus}. Clients can modify the exit code using a
+     * {@link StepExecutionListener}.
+     *
+     * @param JobExecution $jobExecution
+     * @param string       $status
+     *
+     * @return an {@link ExitStatus}
+     */
+    private function updateStatus(JobExecution $jobExecution, $status)
+    {
         $jobExecution->setStatus(new BatchStatus($status));
 //        $jobRepository->update($jobExecution);
     }
 
-    public function __toString() {
+    /**
+     * To string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
         return get_class($this) . ': [name=' . $this->name . ']';
     }
-
-
-
-
-
-
-
 }

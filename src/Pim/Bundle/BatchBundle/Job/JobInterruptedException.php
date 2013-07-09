@@ -3,7 +3,6 @@
 namespace Pim\Bundle\BatchBundle\Item;
 
 /**
- *
  * Exception to indicate the the job has been interrupted. The exception state
  * indicated is not normally recoverable by batch application clients, but
  * internally it is useful to force a check. The exception will often be wrapped
@@ -19,10 +18,15 @@ class JobInterruptedException extends \Exception
 {
     private $status;
 
-    public function __construct($message = "",
-                                $code = 0,
-                                \Exception $previous = null,
-                                BatchStatus $status = null) {
+    /**
+     * Constructor
+     * @param string      $message
+     * @param integer     $code
+     * @param Exception   $previous
+     * @param BatchStatus $status
+     */
+    public function __construct($message = "", $code = 0, \Exception $previous = null, BatchStatus $status = null)
+    {
         parent($message, $code, $exception);
 
         if ($status != null) {
@@ -32,15 +36,13 @@ class JobInterruptedException extends \Exception
         }
     }
 
-
     /**
      * The desired status of the surrounding execution after the interruption.
-     * 
+     *
      * @return the status of the interruption (default STOPPED)
      */
     public function getStatus()
     {
         return $this->status;
     }
-
 }
