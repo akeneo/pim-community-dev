@@ -45,19 +45,19 @@
 
 {% block oro_type_select_filter_js %}
     Oro.createInstanceFromConstructor(Oro.Filter.SelectFilter.extend({
-    'name':    {{ formView.vars.name|json_encode|raw }},
-    'label':   {{ formView.vars.label|json_encode|raw }},
-    'enabled': {{ formView.vars.show_filter|json_encode|raw }},
-    'options': {{ formView.children.value.vars.choices|oro_filter_choices|json_encode|raw }}
+        'name':    {{ formView.vars.name|json_encode|raw }},
+        'label':   {{ formView.vars.label|json_encode|raw }},
+        'enabled': {{ formView.vars.show_filter|json_encode|raw }},
+        'options': {{ formView.children.value.vars.choices|oro_filter_choices|json_encode|raw }}
     }))
 {% endblock %}
 
 {% block oro_type_multiselect_filter_js %}
     Oro.createInstanceFromConstructor(Oro.Filter.MultiSelectFilter.extend({
-    'name':    {{ formView.vars.name|json_encode|raw }},
-    'label':   {{ formView.vars.label|json_encode|raw }},
-    'enabled': {{ formView.vars.show_filter|json_encode|raw }},
-    'options': {{ formView.children.value.vars.choices|oro_filter_choices|json_encode|raw }}
+        'name':    {{ formView.vars.name|json_encode|raw }},
+        'label':   {{ formView.vars.label|json_encode|raw }},
+        'enabled': {{ formView.vars.show_filter|json_encode|raw }},
+        'options': {{ formView.children.value.vars.choices|oro_filter_choices|json_encode|raw }}
     }))
 {% endblock %}
 
