@@ -76,7 +76,7 @@
     </form>
 
         <div class="tab-pane" id="attributes">
-            <div id="attribute-buttons">
+            <div id="attribute-buttons" class="pull-right">
                 {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
                     'form': attributesForm,
                     'action': path('pim_product_family_addproductattributes', {'id': family.id})
