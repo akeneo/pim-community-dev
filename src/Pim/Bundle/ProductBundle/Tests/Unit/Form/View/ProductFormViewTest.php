@@ -119,7 +119,54 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($formView, $this->formView->getView());
     }
 
-    public function getValueMock(array $options)
+    public function testAddChildrenWithPriceValue()
+    {
+        $group = $this->getGroupMock(array(
+            'id'   => 1,
+            'name' => 'General',
+        ));
+
+        $attribute = $this->getAttributeMock(array(
+            'id'            => 42,
+            'virtualGroup'  => $group,
+            'code'          => 'name',
+            'label'         => 'Name',
+            'sortOrder'     => 0,
+            'scopable'      => false,
+            'attributeType' => 'pim_product_price_collection'
+        ));
+
+        $value = $this->getValueMock(array(
+            'attribute' => $attribute,
+            'removable' => false,
+        ));
+
+        $view = $this->getMock('Symfony\Component\Form\FormView');
+
+        $this->formView->addChildren($value, $view);
+
+        $formView = array(
+            1 => array(
+                'name'       => 'General',
+                'attributes' => array(
+                    42 => array(
+                        'isRemovable' => false,
+                        'code'        => 'name',
+                        'label'       => 'Name',
+                        'sortOrder'   => 0,
+                        'classes'     => array(
+                            'currency' => true
+                        ),
+                        'value'       => $view,
+                    ),
+                ),
+            ),
+        );
+
+        $this->assertEquals($formView, $this->formView->getView());
+    }
+
+    private function getValueMock(array $options)
     {
         $options = array_merge(array(
             'attribute' => null,
@@ -147,12 +194,13 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     private function getAttributeMock(array $options)
     {
         $options = array_merge(array(
-            'id'           => null,
-            'virtualGroup' => null,
-            'code'         => null,
-            'label'        => null,
-            'sortOrder'    => null,
-            'scopable'     => null,
+            'id'            => null,
+            'virtualGroup'  => null,
+            'code'          => null,
+            'label'         => null,
+            'sortOrder'     => null,
+            'scopable'      => null,
+            'attributeType' => null,
         ), $options);
 
         $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute');
@@ -182,10 +230,14 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             ->method('getScopable')
             ->will($this->returnValue($options['scopable']));
 
+        $attribute->expects($this->any())
+            ->method('getAttributeType')
+            ->will($this->returnValue($options['attributeType']));
+
         return $attribute;
     }
 
-    public function getGroupMock(array $options)
+    private function getGroupMock(array $options)
     {
         $options = array_merge(array(
             'id'   => null,

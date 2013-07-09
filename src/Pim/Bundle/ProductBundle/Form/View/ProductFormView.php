@@ -16,6 +16,11 @@ class ProductFormView
 {
     protected $view = array();
 
+    public function getView()
+    {
+        return $this->view;
+    }
+
     public function addChildren(ProductValue $value, FormView $view)
     {
         $attribute = $value->getAttribute();
@@ -40,6 +45,20 @@ class ProductFormView
         );
     }
 
+    private function getAttributeClasses(ProductAttribute $attribute)
+    {
+        $classes = array();
+        if ($attribute->getScopable()) {
+            $classes['scopable'] = true;
+        }
+
+        if ('pim_product_price_collection' === $attribute->getAttributeType()) {
+            $classes['currency'] = true;
+        }
+
+        return $classes;
+    }
+
     private function addValue(ProductValue $value, FormView $view)
     {
         $attribute = $value->getAttribute();
@@ -57,11 +76,13 @@ class ProductFormView
                 $this->getAttributeValues($attribute),
                 array($value->getScope() => $view)
             );
-            $attributeView['classes'] = array(
-                'scopable' => true,
-            );
         } else {
             $attributeView['value'] = $view;
+        }
+
+        $classes = $this->getAttributeClasses($attribute);
+        if (!empty($classes)) {
+            $attributeView['classes'] = $classes;
         }
 
         $this->view[$group->getId()]['attributes'] = array(
@@ -77,11 +98,6 @@ class ProductFormView
         }
 
         return $this->view[$group->getId()]['attributes'][$attribute->getId()]['values'];
-    }
-
-    public function getView()
-    {
-        return $this->view;
     }
 }
 
