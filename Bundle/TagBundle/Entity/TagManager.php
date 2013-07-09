@@ -5,6 +5,8 @@ namespace Oro\Bundle\TagBundle\Entity;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr;
 use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
+use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class TagManager
 {
@@ -28,13 +30,19 @@ class TagManager
      */
     protected $mapper;
 
-    public function __construct(EntityManager $em, $tagClass, $taggingClass, ObjectMapper $mapper)
+    /**
+     * @var SecurityContextInterface
+     */
+    protected $securityContext;
+
+    public function __construct(EntityManager $em, $tagClass, $taggingClass, ObjectMapper $mapper, SecurityContextInterface $securityContext)
     {
         $this->em = $em;
 
         $this->tagClass = $tagClass;
         $this->taggingClass = $taggingClass;
         $this->mapper = $mapper;
+        $this->securityContext = $securityContext;
     }
 
     /**
@@ -187,8 +195,15 @@ class TagManager
 
         foreach ($tagsToAdd as $tag) {
             $this->em->persist($tag);
+
             $alias = $this->mapper->getEntityConfig(get_class($resource));
-            $this->em->persist($this->createTagging($tag, $resource)->setAlias($alias['alias']));
+            $user = $this->securityContext->getToken()->getUser();
+
+            $tagging = $this->createTagging($tag, $resource)
+                ->setAlias($alias['alias'])
+                ->setUser($user);
+
+            $this->em->persist($tagging);
         }
 
         if (count($tagsToAdd)) {
