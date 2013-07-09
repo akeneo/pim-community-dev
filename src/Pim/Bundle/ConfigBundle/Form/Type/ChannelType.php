@@ -30,6 +30,8 @@ class ChannelType extends AbstractType
         $builder->add('code');
 
         $builder->add('name');
+
+        $builder->add('category');
     }
 
     /**
