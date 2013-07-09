@@ -446,9 +446,7 @@ class FixturesContext extends RawMinkContext
             $channel->setName($data['name']);
 
             if (isset($data['category'])) {
-                $category = $em->getRepository('PimProductBundle:Category')->findOneBy(array(
-                    'title' => $data['category']
-                ));
+                $category = $this->getCategory($data['category']);
                 $channel->setCategory($category);
             }
             $em->persist($channel);
@@ -638,6 +636,13 @@ class FixturesContext extends RawMinkContext
         }
 
         return $role;
+    }
+
+    private function getCategory($title)
+    {
+        return $this->getEntityOrException('PimProductBundle:Category', array(
+            'title' => $title,
+        ));
     }
 
     private function getEntityOrException($namespace, array $criteria)
