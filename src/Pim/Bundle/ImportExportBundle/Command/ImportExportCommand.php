@@ -27,8 +27,8 @@ class ImportExportCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('ie:test:test')
-            ->setDescription('Test import expor infrastructure');
+            ->setName('pim:import-export:job')
+            ->setDescription('Launch a registered job');
     }
 
     /**
@@ -36,7 +36,11 @@ class ImportExportCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $simpleJob = $this->getContainer()->get('pim_import_export.my_super_job');
+
+        $dummyJobParameters = new JobParameters();
         $dummyJobRepository = new JobRepository();
+
 
         $itemReader = new ArrayReader();
         $itemReader->setItems(array('hello', 'world', 'akeneo', 'is', 'great'));
@@ -49,15 +53,14 @@ class ImportExportCommand extends ContainerAwareCommand
         $step1->setProcessor($itemProcessor);
         $step1->setWriter($itemWriter);
 
-        $simpleJob = new SimpleJob("My super job");
+        //$simpleJob = new SimpleJob("My super job");
         $simpleJob->setJobRepository($dummyJobRepository);
         $simpleJob->addStep($step1);
-
-        $dummyJobParameters = new JobParameters();
 
         $jobLauncher = new SimpleJobLauncher();
         $jobLauncher->setJobRepository($dummyJobRepository);
         $jobExecution = $jobLauncher->run($simpleJob, $dummyJobParameters);
+
 
         echo $simpleJob."\n";
         echo $jobExecution."\n";
