@@ -140,10 +140,13 @@ class Tagging
      * Setter for alias
      *
      * @param string $alias
+     * @return $this
      */
     public function setAlias($alias)
     {
         $this->alias = $alias;
+
+        return $this;
     }
 
     /**

@@ -2,6 +2,7 @@
 namespace Oro\Bundle\TagBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\TagBundle\Entity\TagManager;
 use Oro\Bundle\TagBundle\Form\TagsTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,11 +18,18 @@ class TagSelectType extends AbstractType
     private $om;
 
     /**
-     * @param ObjectManager $om
+     * @var TagManager
      */
-    public function __construct(ObjectManager $om)
+    protected $tagManager;
+
+    /**
+     * @param ObjectManager $om
+     * @param TagManager $tagManager
+     */
+    public function __construct(ObjectManager $om, TagManager $tagManager)
     {
         $this->om = $om;
+        $this->tagManager = $tagManager;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -46,19 +54,9 @@ class TagSelectType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $transformer = new TagsTransformer($this->om, 'Oro\Bundle\TagBundle\Entity\Tag');
+        $transformer->setTagManager($this->tagManager);
+
         $builder->addModelTransformer($transformer);
-        //$builder->addViewTransformer($transformer);
-
-        $builder->addEventListener(
-            FormEvents::PRE_BIND,
-            function(FormEvent $event) use ($transformer) {
-                //$form = $event->getForm();
-                $data = $event->getData();
-                $data = $transformer->reverseTransform($data);
-
-                $event->setData($data);
-            }
-        );
     }
 
     public function getParent()

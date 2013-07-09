@@ -170,6 +170,8 @@ services:
         class:                        %oro_user.handler.user.class%
         scope:                        request
         arguments:                    ["@oro_user.form.user", "@request", "@oro_user.manager"]
+        tags:
+            - { name: oro_tag.tag_manager }
 
     oro_user.form.handler.user.api:
         class:                        %oro_user.handler.user.class%

@@ -4,6 +4,7 @@ namespace Oro\Bundle\TagBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
+use Doctrine\ORM\Event\OnFlushEventArgs;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -34,6 +35,14 @@ class TagListener implements ContainerAwareInterface
             $this->manager->deleteTagging($resource);
         }
     }
+
+//    public function postPersist(LifecycleEventArgs $args)
+//    {
+//        $entity = $args->getEntity();
+//        if ($entity instanceof Taggable) {
+//            $this->manager->saveTagging($entity);
+//        }
+//    }
 
     /**
      * {@inheritdoc}

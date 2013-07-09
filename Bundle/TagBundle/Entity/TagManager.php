@@ -3,6 +3,8 @@
 namespace Oro\Bundle\TagBundle\Entity;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\Expr;
+use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
 
 class TagManager
 {
@@ -21,12 +23,18 @@ class TagManager
      */
     protected $taggingClass;
 
-    public function __construct(EntityManager $em, $tagClass, $taggingClass)
+    /**
+     * @var ObjectMapper
+     */
+    protected $mapper;
+
+    public function __construct(EntityManager $em, $tagClass, $taggingClass, ObjectMapper $mapper)
     {
         $this->em = $em;
 
         $this->tagClass = $tagClass;
         $this->taggingClass = $taggingClass;
+        $this->mapper = $mapper;
     }
 
     /**
@@ -167,10 +175,10 @@ class TagManager
                     ->delete($this->taggingClass, 't')
                     ->where('t.tag_id')
                     ->where($builder->expr()->in('t.tag', $tagsToRemove))
-                    ->andWhere('t.resourceType = :resourceType')
-                    ->setParameter('resourceType', $resource->getTaggableType())
-                    ->andWhere('t.resourceId = :resourceId')
-                    ->setParameter('resourceId', $resource->getTaggableId())
+                    ->andWhere('t.entity_name = :entityName')
+                    ->setParameter('entityName', $resource->getTaggableType())
+                    ->andWhere('t.recordId = :recordId')
+                    ->setParameter('recordId', $resource->getTaggableId())
                     ->getQuery()
                     ->getResult()
                 ;
@@ -179,7 +187,8 @@ class TagManager
 
         foreach ($tagsToAdd as $tag) {
             $this->em->persist($tag);
-            $this->em->persist($this->createTagging($tag, $resource));
+            $alias = $this->mapper->getEntityConfig(get_class($resource));
+            $this->em->persist($this->createTagging($tag, $resource)->setAlias($alias['alias']));
         }
 
         if (count($tagsToAdd)) {
@@ -211,7 +220,7 @@ class TagManager
             ->select('t')
             ->from($this->tagClass, 't')
 
-            ->innerJoin('t.tagging', 't2', Expr\Join::WITH, 't2.resourceId = :id AND t2.resourceType = :type')
+            ->innerJoin('t.tagging', 't2', Expr\Join::WITH, 't2.recordId = :id AND t2.entityName = :type')
             ->setParameter('id', $resource->getTaggableId())
             ->setParameter('type', $resource->getTaggableType())
 

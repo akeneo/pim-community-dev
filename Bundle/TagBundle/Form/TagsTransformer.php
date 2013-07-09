@@ -6,6 +6,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Mapping\MappingException;
 
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
+use Oro\Bundle\TagBundle\Entity\TagManager;
 use Symfony\Component\Form\Util\PropertyPath;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -15,6 +16,8 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
  */
 class TagsTransformer extends EntityToIdTransformer
 {
+    protected $tagManager;
+
     /**
      * {@inheritdoc}
      */
@@ -40,22 +43,31 @@ class TagsTransformer extends EntityToIdTransformer
     /**
      * {@inheritdoc}
      */
-    public function reverseTransform($value)
+    public function reverseTransform($values)
     {
-        if (!is_array($value)) {
-            $value = explode(',', $value);
-            $value = array_filter($value, function($item){
-                return intval($item);
-            });
+        if (!is_array($values)) {
+            $values = explode(',', $values);
         }
 
-        if (!$value) {
-            return array();
+        $newValues = array_filter($values, function($item){
+            return !intval($item);
+        });
+
+        $values = array_filter($values, function($item){
+            return intval($item);
+        });
+
+
+        $entities = array();
+        if ($values) {
+            $entities = $this->loadEntitiesByIds($values);
         }
 
-        $entities = $this->loadEntitiesByIds($value);
+        if ($newValues) {
+            $entities = array_merge($entities, $this->tagManager->loadOrCreateTags($newValues));
+        }
 
-        if (count($entities) !== count($value)) {
+        if (count($entities) !== count($values) + count($newValues)) {
             throw new TransformationFailedException('Could not find all entities for the given IDs');
         }
 
@@ -85,5 +97,10 @@ class TagsTransformer extends EntityToIdTransformer
         }
 
         return $qb->getQuery()->execute();
+    }
+
+    public function setTagManager(TagManager $tagManager)
+    {
+        $this->tagManager = $tagManager;
     }
 }
