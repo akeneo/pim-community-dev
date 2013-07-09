@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Entity;
 
+use Oro\Bundle\TagBundle\Entity\Tag;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -275,7 +276,7 @@ class User extends AbstractEntityFlexible implements
     protected $emails;
 
     /**
-     * @var ArrayCollection
+     * @var Tag[]
      *
      */
     protected $tags;
@@ -289,7 +290,6 @@ class User extends AbstractEntityFlexible implements
         $this->groups   = new ArrayCollection();
         $this->statuses = new ArrayCollection();
         $this->emails   = new ArrayCollection();
-        $this->tags     = new ArrayCollection();
     }
 
     /**

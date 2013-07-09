@@ -94,5 +94,7 @@ services:
     # Autocomplete form type
     oro_tag.form.type.tag_select:
         class: %oro_tag.form.type.tag_select.class%
+        arguments:
+            - @doctrine.orm.entity_manager
         tags:
             - { name: form.type, alias: oro_tag_select }
