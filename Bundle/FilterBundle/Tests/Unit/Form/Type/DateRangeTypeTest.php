@@ -14,7 +14,7 @@ class DateRangeTypeTest extends AbstractTypeTestCase
     /**
      * @var string
      */
-    protected $defaultLocale = 'en_US';
+    protected $defaultLocale = 'en';
 
     protected function setUp()
     {
@@ -58,19 +58,6 @@ class DateRangeTypeTest extends AbstractTypeTestCase
     public function bindDataProvider()
     {
         return array(
-            /*'empty' => array(
-                'bindData' => array('start' => '', 'end' => ''),
-                'formData' => array('start' => null, 'end' => null),
-                'viewData' => array('start' => '', 'end' => ''),
-            ),
-            'default timezone' => array(
-                'bindData' => array('start' => '2012-01-01', 'end' => '2013-01-01'),
-                'formData' => array(
-                    'start' => $this->createDateTime('2012-01-01'),
-                    'end' => $this->createDateTime('2013-01-01')
-                ),
-                'viewData' => array('start' => '2012-01-01', 'end' => '2013-01-01'),
-            ),*/
             'custom format' => array(
                 'bindData' => array('start' => 'Jan 12, 1970', 'end' => 'Jan 12, 2013'),
                 'formData' => array(
@@ -85,30 +72,7 @@ class DateRangeTypeTest extends AbstractTypeTestCase
                         'format' => \IntlDateFormatter::MEDIUM
                     )
                 )
-            ),
-            /*'custom timezone' => array(
-                'bindData' => array('start' => '1/13/1970', 'end' => '1/13/2014'),
-                'formData' => array(
-                    'start' => $this->createDateTime('1970-01-13', 'Australia/Sydney')
-                        ->setTimezone(new \DateTimeZone('America/Los_Angeles')),
-                    'end' => $this->createDateTime('2014-01-13', 'Australia/Sydney')
-                        ->setTimezone(new \DateTimeZone('America/Los_Angeles')),
-                ),
-                'viewData' => array('start' => '1/13/70', 'end' => '1/13/14'),
-                'customOptions' => array(
-                    'field_options' => array(
-                        'model_timezone' => 'America/Los_Angeles',
-                        'view_timezone' => 'Australia/Sydney',
-                        'format' => \IntlDateFormatter::SHORT
-                    )
-                )
-            ),
-            'invalid format' => array(
-                'bindData' => array('start' => '1/13/1970', 'end' => '1/13/2014'),
-                'formData' => array(),
-                'viewData' => array('start' => '1/13/1970', 'end' => '1/13/2014'),
-                'customOptions' => array()
-            ),*/
+            )
         );
     }
 

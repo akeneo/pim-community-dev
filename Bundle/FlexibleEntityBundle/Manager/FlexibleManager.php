@@ -1,10 +1,13 @@
 <?php
 namespace Oro\Bundle\FlexibleEntityBundle\Manager;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
+
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Oro\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
 use Oro\Bundle\FlexibleEntityBundle\Event\FilterAttributeEvent;
 use Oro\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent;
@@ -17,7 +20,7 @@ use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOption;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOptionValue;
-use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 
 /**
  * Flexible object manager, allow to use flexible entity in storage agnostic way
@@ -44,6 +47,11 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
      * @var ObjectManager $storageManager
      */
     protected $storageManager;
+
+    /**
+     * @var FlexibleEntityRepository
+     */
+    protected $flexibleRepository;
 
     /**
      * @var EventDispatcherInterface $eventDispatcher
@@ -94,10 +102,14 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
         $this->eventDispatcher      = $eventDispatcher;
         $this->attributeTypeFactory = $attributeTypeFactory;
         $this->attributeTypes       = array();
+
+        $this->flexibleRepository   = $storageManager->getRepository($this->flexibleName);
+        $this->flexibleRepository->setFlexibleConfig($this->flexibleConfig);
     }
 
     /**
      * Get flexible entity config
+     *
      * @return array
      */
     public function getFlexibleConfig()
@@ -107,6 +119,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
 
     /**
      * Get flexible init mode
+     *
      * @return array
      */
     public function getFlexibleInitMode()
@@ -139,6 +152,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
     public function setLocale($code)
     {
         $this->locale = $code;
+        $this->flexibleRepository->setLocale($code);
 
         return $this;
     }
@@ -168,6 +182,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
     public function setScope($code)
     {
         $this->scope = $code;
+        $this->flexibleRepository->setScope($code);
 
         return $this;
     }
@@ -175,6 +190,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
 
     /**
      * Get object manager
+     *
      * @return ObjectManager
      */
     public function getStorageManager()
@@ -184,6 +200,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
 
     /**
      * Return implementation class that can be use to instanciate
+     *
      * @return string
      */
     public function getFlexibleName()
@@ -193,6 +210,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
 
     /**
      * Return class name that can be used to get the repository or instance
+     *
      * @return string
      */
     public function getAttributeName()
@@ -202,6 +220,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
 
     /**
      * Return class name that can be used to get the repository or instance
+     *
      * @return string
      */
     public function getAttributeOptionName()
@@ -211,6 +230,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
 
     /**
      * Return class name that can be used to get the repository or instance
+     *
      * @return string
      */
     public function getAttributeOptionValueName()
@@ -220,6 +240,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
 
     /**
      * Return class name that can be used to get the repository or instance
+     *
      * @return string
      */
     public function getFlexibleValueName()
@@ -229,21 +250,18 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
 
     /**
      * Return related repository
-     * @return Doctrine\Common\Persistence\ObjectRepository
+     *
+     * @return FlexibleEntityRepository
      */
     public function getFlexibleRepository()
     {
-        $repo = $this->storageManager->getRepository($this->getFlexibleName());
-        $repo->setFlexibleConfig($this->flexibleConfig);
-        $repo->setLocale($this->getLocale());
-        $repo->setScope($this->getScope());
-
-        return $repo;
+        return $this->flexibleRepository;
     }
 
     /**
      * Return related repository
-     * @return Doctrine\Common\Persistence\ObjectRepository
+     *
+     * @return ObjectRepository
      */
     public function getAttributeRepository()
     {
@@ -252,7 +270,8 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
 
     /**
      * Return related repository
-     * @return Doctrine\Common\Persistence\ObjectRepository
+     *
+     * @return ObjectRepository
      */
     public function getAttributeOptionRepository()
     {
@@ -261,7 +280,8 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
 
     /**
      * Return related repository
-     * @return Doctrine\Common\Persistence\ObjectRepository
+     *
+     * @return ObjectRepository
      */
     public function getAttributeOptionValueRepository()
     {
@@ -270,7 +290,8 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
 
     /**
      * Return related repository
-     * @return Doctrine\Common\Persistence\ObjectRepository
+     *
+     * @return ObjectRepository
      */
     public function getFlexibleValueRepository()
     {
@@ -283,6 +304,8 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
      * @param string $type attribute type
      *
      * @return AbstractAttribute
+     *
+     * @throws FlexibleConfigurationException If type is not useable for the flexible entity
      */
     public function createAttribute($type = null)
     {
@@ -314,6 +337,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
 
     /**
      * Return a new instance
+     *
      * @return AbstractAttributeOption
      */
     public function createAttributeOption()
@@ -327,6 +351,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
 
     /**
      * Return a new instance
+     *
      * @return AbstractAttributeOptionValue
      */
     public function createAttributeOptionValue()
@@ -365,6 +390,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
 
     /**
      * Return a new instance
+     *
      * @return FlexibleValueInterface
      */
     public function createFlexibleValue()
@@ -393,7 +419,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
      *
      * @param string $type
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
+     * @return FlexibleManager
      */
     public function addAttributeType($type)
     {
@@ -407,7 +433,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
      *
      * @param array $types
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
+     * @return FlexibleManager
      */
     public function setAttributeTypes($types)
     {
