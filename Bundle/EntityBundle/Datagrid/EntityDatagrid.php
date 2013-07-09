@@ -2,18 +2,18 @@
 
 namespace Oro\Bundle\EntityBundle\Datagrid;
 
+use Oro\Bundle\EntityConfigBundle\ConfigManager;
+
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 
-use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
-
 class EntityDatagrid extends DatagridManager
 {
-    protected $extendManager;
+    protected $configManager;
 
-    public function __construct(ExtendManager $extendManager)
+    public function __construct(ConfigManager $configManager)
     {
-        $this->extendManager = $extendManager;
+        $this->configManager = $configManager;
     }
 
     /**

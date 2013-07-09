@@ -53,9 +53,27 @@ class EntityConfigContainer
         return $entityItems;
     }
 
+    /**
+     * @return array
+     */
+    public function getEntityDefaultValues()
+    {
+        $result = array();
+        foreach ($this->getEntityItems() as $code => $item) {
+            if (isset($item['default_value'])) {
+                $result[$code] = $item['default_value'];
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return bool
+     */
     public function hasEntityForm()
     {
-        return (boolean) array_filter($this->getEntityItems(), function ($item) {
+        return (boolean)array_filter($this->getEntityItems(), function ($item) {
             return (isset($item['form']) && isset($item['form']['type']));
         });
     }
@@ -83,7 +101,7 @@ class EntityConfigContainer
     {
         $entityGridActions = array();
         if (isset($this->config['entity']) && isset($this->config['entity']['grid_action'])) {
-            $entityGridActions =  $this->config['entity']['grid_action'];
+            $entityGridActions = $this->config['entity']['grid_action'];
         }
 
         return $entityGridActions;
@@ -115,9 +133,24 @@ class EntityConfigContainer
         return $fieldItems;
     }
 
+    /**
+     * @return array
+     */
+    public function getFieldDefaultValues()
+    {
+        $result = array();
+        foreach ($this->getFieldItems() as $code => $item) {
+            if (isset($item['default_value'])) {
+                $result[$code] = $item['default_value'];
+            }
+        }
+
+        return $result;
+    }
+
     public function hasFieldForm()
     {
-        return (boolean) array_filter($this->getFieldItems(), function ($item) {
+        return (boolean)array_filter($this->getFieldItems(), function ($item) {
             return (isset($item['form']) && isset($item['form']['type']));
         });
     }

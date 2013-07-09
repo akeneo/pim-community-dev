@@ -107,7 +107,16 @@ class ConfigManager
      */
     public function addProvider(ConfigProvider $provider)
     {
-        $this->providers[] = $provider;
+        $this->providers[$provider->getScope()] = $provider;
+    }
+
+    /**
+     * @param $scope
+     * @return ConfigProvider
+     */
+    public function getProvider($scope)
+    {
+        return $this->providers[$scope];
     }
 
     /**
@@ -182,6 +191,15 @@ class ConfigManager
                     Events::NEW_FIELD_CONFIG,
                     new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
                 );
+
+                foreach ($this->getProviders() as $provider) {
+                    $provider->createFieldConfig(
+                        $doctrineMetadata->getName(),
+                        $fieldName,
+                        $type,
+                        $provider->getConfigContainer()->getEntityDefaultValues()
+                    );
+                }
             }
 
             foreach ($doctrineMetadata->getAssociationNames() as $fieldName) {
@@ -190,6 +208,22 @@ class ConfigManager
                 $this->eventDispatcher->dispatch(
                     Events::NEW_FIELD_CONFIG,
                     new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
+                );
+
+                foreach ($this->getProviders() as $provider) {
+                    $provider->createFieldConfig(
+                        $doctrineMetadata->getName(),
+                        $fieldName,
+                        $type,
+                        $provider->getConfigContainer()->getEntityDefaultValues()
+                    );
+                }
+            }
+
+            foreach ($this->getProviders() as $provider) {
+                $provider->createEntityConfig(
+                    $doctrineMetadata->getName(),
+                    $provider->getConfigContainer()->getEntityDefaultValues()
                 );
             }
         }

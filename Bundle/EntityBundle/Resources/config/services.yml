@@ -1,10 +1,12 @@
 parameters:
-#    oro_entity.example.class: Oro\Bundle\EntityBundle\Example
+    oro_entity.listener.config_subscriber.class:            Oro\Bundle\EntityBundle\EventListener\ConfigSubscriber
 
 services:
-#    oro_entity.example:
-#        class: %oro_entity.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    oro_entity.listener.config_subscriber:
+        class:                                              %oro_entity.listener.config_subscriber.class%
+#        arguments:                                          [@oro_entity.config.entity_config_provider]
+        tags:
+            - { name: kernel.event_subscriber}
 
     oro_entity.config.entity_config_provider:
         tags:

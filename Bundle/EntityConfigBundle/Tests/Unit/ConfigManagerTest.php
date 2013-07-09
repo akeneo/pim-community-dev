@@ -93,7 +93,8 @@ class ConfigManagerTest extends AbstractEntityManagerTest
 
     public function testGetConfigFoundCache()
     {
-        $this->configCache->expects($this->any())->method('loadConfigFromCache')->will($this->returnValue(new EntityConfig(self::DEMO_ENTITY, 'test')));
+        $entityConfig = new EntityConfig(self::DEMO_ENTITY, 'test');
+        $this->configCache->expects($this->any())->method('loadConfigFromCache')->will($this->returnValue($entityConfig));
 
         $this->configManager->setCache($this->configCache);
         $this->configManager->getConfig(self::DEMO_ENTITY, 'test');
@@ -101,22 +102,27 @@ class ConfigManagerTest extends AbstractEntityManagerTest
 
     public function testHasConfig()
     {
-        $this->configManager->hasConfig(self::DEMO_ENTITY, 'test');
+        $this->assertEquals(true, $this->configManager->hasConfig(self::DEMO_ENTITY, 'test'));
     }
+
 
     public function testAddAndGetProvider()
     {
         $this->configManager->addProvider($this->provider);
 
         $providers = $this->configManager->getProviders();
+        $provider = $this->configManager->getProvider('test');
 
-        $this->assertEquals(array($this->provider), $providers);
+        $this->assertEquals(array('test' => $this->provider), $providers);
+        $this->assertEquals($this->provider, $provider);
     }
 
     public function testInitConfigByDoctrineMetadata()
     {
         $meta = $this->em->getClassMetadata(ConfigEntity::ENTITY_NAME);
         $meta->setCustomRepositoryClass(self::NOT_FOUND_CONFIG_ENTITY_REPOSITORY);
+
+        $this->configManager->addProvider($this->provider);
 
         $this->configManager->initConfigByDoctrineMetadata($this->em->getClassMetadata(self::DEMO_ENTITY));
     }

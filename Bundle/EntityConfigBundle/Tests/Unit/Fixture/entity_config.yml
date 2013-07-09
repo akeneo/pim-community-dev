@@ -7,6 +7,7 @@ oro_entity_config:
                 -                           {"name":"Create", "route":"oro_entityextend_create", "entity_id":true, "filter":"is_extend"}
             items:
                 enabled:
+                    default_value:          true
                     grid:
                         type:               boolean
                         label:              'Show in Datagrid'
@@ -44,6 +45,7 @@ oro_entity_config:
                             base:           ~
             items:
                 enabled:
+                    default_value:          true
                     grid:
                         type:               boolean
                         label:              'Show in Datagrid'
@@ -61,6 +63,7 @@ oro_entity_config:
                             label:          "Show in Datagrid"
 
                 is_searchable:
+                    default_value:          false
                     grid:
                         type:               boolean
                         label:              'Datagrid search'
@@ -78,6 +81,7 @@ oro_entity_config:
                             label:          "Datagrid search"
 
                 is_filtrableble:
+                    default_value:          false
                     grid:
                         type:               boolean
                         label:              'Datagrid filter'

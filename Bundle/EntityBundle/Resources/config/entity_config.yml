@@ -61,6 +61,7 @@ oro_entity_config:
                             base:           ~
             items:
                 delete_action:
+                    default_value:          true
                     form:
                         type:               choice
                         options:
@@ -70,6 +71,7 @@ oro_entity_config:
                             label:          "Delete Action"
 
                 create_action:
+                    default_value:          true
                     form:
                         type:               choice
                         options:
@@ -86,6 +88,7 @@ oro_entity_config:
                             base:           ~
             items:
                 enabled:
+                    default_value:          true
                     grid:
                         type:               boolean
                         label:              'Show in Datagrid'
@@ -103,6 +106,7 @@ oro_entity_config:
                             label:          "Show in Datagrid"
 
                 is_searchable:
+                    default_value:          false
                     grid:
                         type:               boolean
                         label:              'Datagrid search'
@@ -120,6 +124,7 @@ oro_entity_config:
                             label:          "Datagrid search"
 
                 is_filtrableble:
+                    default_value:          false
                     grid:
                         type:               boolean
                         label:              'Datagrid filter'
