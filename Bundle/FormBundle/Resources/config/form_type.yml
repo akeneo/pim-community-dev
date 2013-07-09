@@ -5,7 +5,6 @@ parameters:
     oro_form.type.entity_identifier.class:          Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType
     oro_form.type.jqueryselect2_hidden.class:       Oro\Bundle\FormBundle\Form\Type\OroJquerySelect2HiddenType
     oro_form.extension.data_block.class:            Oro\Bundle\FormBundle\Form\Extension\DataBlockExtension
-    oro_form.type.translatable_entity.class:        Oro\Bundle\FormBundle\Form\Type\TranslatableEntityType
 
 services:
     # Form types
@@ -37,15 +36,3 @@ services:
         class: %oro_form.extension.data_block.class%
         tags:
             - { name: form.type_extension, alias: form }
-
-    oro_form.type.translatable_entity:
-        class: %oro_form.type.translatable_entity.class%
-        arguments: ["@doctrine"]
-        tags:
-            - { name: form.type, alias: translatable_entity }
-
-    oro_form.type.jqueryselect2_translatable_entity:
-        parent: genemu.form.jquery.type.select2
-        arguments: ["translatable_entity"]
-        tags:
-            - { name: form.type, alias: genemu_jqueryselect2_translatable_entity }
