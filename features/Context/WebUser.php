@@ -591,6 +591,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^I am on the channel creation page$/
+     */
+    public function iAmOnTheChannelCreationPage()
+    {
+        $this->openPage('Channel creation');
+    }
+
+    /**
      * @Then /^I should see the (.*) fields?$/
      */
     public function iShouldSeeTheFields($fields)
