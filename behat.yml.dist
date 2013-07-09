@@ -24,6 +24,16 @@ default:
         SensioLabs\Behat\PageObjectExtension\Extension: ~
 
 jenkins:
+    extensions:
+        Behat\MinkExtension\Extension:
+            default_session: symfony2
+            show_cmd: chromium-browser %s
+            selenium2: ~
+            base_url: http://behat-pim.ci/app_behat.php/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat
+        SensioLabs\Behat\PageObjectExtension\Extension: ~
     formatter:
         name: pretty,junit
         parameters:
