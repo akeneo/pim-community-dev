@@ -10,7 +10,8 @@ navigation.Item = Backbone.Model.extend({
     },
 
     url: function(a) {
-        var base = _.result(this, 'urlRoot') || _.result(this.collection, 'url') || urlError();
+        var urlRoot = _.result(this, 'urlRoot') ? Routing.generate('oro_api_get_navigationitems', { type: _.result(this, 'type') }) : false;
+        var base = urlRoot || _.result(this.collection, 'url') || urlError();
         base +=  (base.charAt(base.length - 1) === '/' ? '' : '/') + this.get('type');
         if (this.isNew()) {
             return base;

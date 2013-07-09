@@ -29,7 +29,7 @@ navigation.shortcut.MainView = Backbone.View.extend({
         } else if (!_.isUndefined(this.cache[query])) {
             process(this.cache[query]);
         } else {
-            var url = this.options.source + (this.options.source.charAt(this.options.source.length - 1) === '/' ? '' : '/')
+            var url =  Routing.generate(this.options.source, { 'query': query });
             $.get(url + encodeURIComponent(query), _.bind(function(data) {
                 this.data = data;
                 var result = [];
