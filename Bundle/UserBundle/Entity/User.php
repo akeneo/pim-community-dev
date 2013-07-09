@@ -276,8 +276,9 @@ class User extends AbstractEntityFlexible implements
 
     /**
      * @var ArrayCollection
+     *
      */
-    private $tags;
+    protected $tags;
 
     public function __construct()
     {
@@ -285,9 +286,10 @@ class User extends AbstractEntityFlexible implements
 
         $this->salt     = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
         $this->roles    = new ArrayCollection();
-        $this->groups    = new ArrayCollection();
+        $this->groups   = new ArrayCollection();
         $this->statuses = new ArrayCollection();
         $this->emails   = new ArrayCollection();
+        $this->tags     = new ArrayCollection();
     }
 
     /**

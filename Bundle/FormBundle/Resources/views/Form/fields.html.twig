@@ -130,6 +130,22 @@
     };
 {% endblock %}
 
+{% block oro_combobox_dataconfig_multi_autocomplete %}
+    {{ block('oro_combobox_dataconfig_autocomplete') }}
+
+    select2Config.multiple = true;
+    select2Config.createSearchChoice = function(term, data) {
+        if ($(data).filter(function() {
+            return this.name.localeCompare(term) === 0;
+        }).length === 0) {
+            return {
+                id: term,
+                name: term
+            };
+        }
+    }
+{% endblock %}
+
 {% block oro_combobox_dataconfig_grid %}
     {% set url = configs.ajax.url is defined ? configs.ajax.url : path(configs.route, {'_format': 'json'}) %}
     select2Config.ajax = {

@@ -54,8 +54,9 @@ class Tag
     public function __construct($name = null)
     {
         $this->setName($name);
-        $this->setCreated(new \DateTime('now'));
-        $this->setUpdated(new \DateTime('now'));
+
+        $this->setCreated(new \DateTime('now', new \DateTimeZone('UTC')));
+        $this->setUpdated(new \DateTime('now', new \DateTimeZone('UTC')));
     }
 
     /**

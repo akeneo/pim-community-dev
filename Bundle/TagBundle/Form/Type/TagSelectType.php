@@ -14,7 +14,8 @@ class TagSelectType extends AbstractType
                     'placeholder'  => 'oro.tag.form.choose_tag',
                     'multiple'     => true,
                     'tokenSeparators' => array(',', ' '),
-                    'tags' => array('dede', 'red'),
+                    'tags' => true,
+                    'extra_config' => 'multi_autocomplete',
                 ),
                 'autocomplete_alias' => 'tags',
             )

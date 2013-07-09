@@ -1,0 +1,5 @@
+css:
+  - 'bundles/orotag/css/bootstrap-tag-cloud.css'
+
+js:
+  - '@OroTagBundle/Resources/public/js/bootstrap-tag-cloud.js'
