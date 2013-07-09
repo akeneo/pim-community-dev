@@ -42,7 +42,8 @@ class Channel
     protected $name;
 
     /**
-     * @ORM\OneToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\Category")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\Category")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     protected $category;
 
