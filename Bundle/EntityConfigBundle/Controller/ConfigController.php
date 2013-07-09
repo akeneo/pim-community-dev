@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Controller;
 
-use Oro\Bundle\EntityConfigBundle\Datagrid\FieldsDatagridManager;
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -11,7 +9,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\GridBundle\Datagrid\Datagrid;
+
+use Oro\Bundle\EntityConfigBundle\Datagrid\FieldsDatagridManager;
 use Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager;
+
+use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
 
 /**
@@ -44,20 +46,6 @@ class ConfigController extends Controller
     }
 
     /**
-     * View Entity
-     * @Route("/view/{id}", name="oro_entityconfig_view")
-     * @Template()
-     */
-    public function viewAction($id)
-    {
-        $entity = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
-
-        return array(
-            'entity' => $entity,
-        );
-    }
-
-    /**
      * @Route("/update/{id}", name="oro_entityconfig_update")
      * @Template()
      */
@@ -85,6 +73,27 @@ class ConfigController extends Controller
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
+        );
+    }
+
+    /**
+     * View Entity
+     * @Route("/view/{id}", name="oro_entityconfig_view")
+     * @Template()
+     */
+    public function viewAction($id)
+    {
+        $entity = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
+
+        /** @var  FieldsDatagridManager $datagridManager */
+        $datagridManager = $this->get('oro_entity_config.fieldsdatagrid.manager');
+        $datagridManager->setEntityId($id);
+
+        $datagrid = $datagridManager->getDatagrid();
+
+        return array(
+            'entity'   => $entity,
+            'datagrid' => $datagrid->createView()
         );
     }
 

@@ -1,16 +1,12 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 
-
-{#{% set entityClass = 'Oro_Bundle_EntityConfigBundle_Entity_ConfigEntity' %}#}
-
+{% set gridId = 'fields-grid' %}
 
 {% block navButtons %}
     {{ UI.button({'path' : path('oro_entityconfig_index'), 'iClass' : 'icon-chevron-left ', 'title' : 'Back', 'label' : 'Back'}) }}
-
-    {#{% if resource_granted('oro_user_user_update') %}#}
-        {#{{ UI.button({'path' : path('oro_user_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}#}
-    {#{% endif %}#}
-
+    {% if resource_granted('oro_user_user_update') %}
+        {{ UI.button({'path' : path('oro_entityconfig_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}
+    {% endif %}
     {#{% if resource_granted('oro_user_user_delete') and entity.id!=app.user.id %}#}
         {#{{ UI.deleteButton({#}
         {#'dataUrl': path('oro_api_delete_user', {'id': entity.id}),#}
@@ -24,6 +20,22 @@
         {#}) }}#}
     {#{% endif %}#}
 {% endblock navButtons %}
+
+{% block head_script %}
+    {{ parent() }}
+
+    {#{% set listenerParameters = {#}
+        {#'columnName': 'has_role',#}
+        {#'selectors': {#}
+            {#'included': '#roleAppendUsers',#}
+            {#'excluded': '#roleRemoveUsers'#}
+        {#}#}
+    {#} %}#}
+
+    {#{% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId, 'parameters': listenerParameters} %}#}
+    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId, 'parameters': ''} %}
+
+{% endblock %}
 
 
 {% block pageHeader %}
@@ -52,17 +64,51 @@
                     'class': 'active',
                     'subblocks': [
                         {
-                            'title': 'Basic Information',
+                            'title': 'General Information',
                             'data': [
-                                UI.attibuteRow('Id', entity.id),
                                 UI.attibuteRow('Class name', entity.className),
+                                UI.attibuteRow('Created', UI.Time(entity.created)),
+                                UI.attibuteRow('Updated', UI.Time(entity.updated)),
+                                UI.attibuteRow('Updated', UI.Time(entity.updated)),
+                                UI.attibuteRow('Updated', UI.Time(entity.updated)),
+                                UI.attibuteRow('Updated', UI.Time(entity.updated)),
+                                UI.attibuteRow('Updated', UI.Time(entity.updated)),
+                                UI.attibuteRow('Updated', UI.Time(entity.updated)),
+                                UI.attibuteRow('Updated', UI.Time(entity.updated)),
+                                UI.attibuteRow('Updated', UI.Time(entity.updated)),
+                                UI.attibuteRow('Updated', UI.Time(entity.updated)),
+                                UI.attibuteRow('Updated', UI.Time(entity.updated)),
+                                UI.attibuteRow('Updated', UI.Time(entity.updated)),
+                                UI.attibuteRow('Updated', UI.Time(entity.updated)),
+                                UI.attibuteRow('Updated', UI.Time(entity.updated)),
+                                UI.attibuteRow('Updated', UI.Time(entity.updated)),
+                                UI.attibuteRow('Updated', UI.Time(entity.updated)),
+                            ]
+                        },
+                        {
+                            'title': 'Summary',
+                            'data': [
+                                UI.renderAttribute('Link', '<p class="control-label"><a href="">Link to entities list(grid)</a></p>'),
+                                UI.attibuteRow('# of records', entity.id),
                             ]
                         },
                     ]
                 },
+                {
+                    'title': 'Fields',
+                    'subblocks': [
+                        {
+                            'title': '',
+                            'useSpan': false,
+                            'data': [
+                                UI.gridBlock(gridId)
+                            ]
+                        }
+                    ]
+                }
             ]
         }
     %}
-    {{ parent() }}
 
+    {{ parent() }}
 {% endblock content_data %}

@@ -79,7 +79,7 @@ class ConfigDatagridManager extends DatagridManager
      */
     protected function getObjectName($scope = 'name')
     {
-        $options = array();
+        $options = array('name'=> array(), 'module'=> array());
 
         $query = $this->createQuery()->getQueryBuilder()
             ->add('select', 'a.className')
@@ -98,7 +98,7 @@ class ConfigDatagridManager extends DatagridManager
                 if (count($className)-1 == $index) {
                     $options['name'][$value['className']] = $name;
                 } elseif (!in_array($name, array('Bundle','Entity'))) {
-                    $options['module'][$value['className']] .= $name . '/';
+                    $options['module'][$value['className']] .= $name;
                 }
             }
         }
@@ -215,6 +215,17 @@ class ConfigDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
+        $clickAction = array(
+            'name'         => 'rowClick',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label'         => 'View',
+                'link'          => 'view_link',
+                'runOnRowClick' => true,
+            )
+        );
+
         $viewAction = array(
             'name'         => 'view',
             'type'         => ActionInterface::TYPE_REDIRECT,
@@ -248,7 +259,7 @@ class ConfigDatagridManager extends DatagridManager
             )
         );
 
-        $actions = array($viewAction, $updateAction, $fieldsAction);
+        $actions = array($clickAction, $viewAction, $updateAction, $fieldsAction);
 
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getEntityGridActions() as $config) {

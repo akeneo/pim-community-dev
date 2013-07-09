@@ -196,7 +196,7 @@ class ConfigManager
                         $doctrineMetadata->getName(),
                         $fieldName,
                         $type,
-                        $provider->getConfigContainer()->getEntityDefaultValues()
+                        $provider->getConfigContainer()->getFieldDefaultValues()
                     );
                 }
             }
@@ -214,7 +214,7 @@ class ConfigManager
                         $doctrineMetadata->getName(),
                         $fieldName,
                         $type,
-                        $provider->getConfigContainer()->getEntityDefaultValues()
+                        $provider->getConfigContainer()->getFieldDefaultValues()
                     );
                 }
             }

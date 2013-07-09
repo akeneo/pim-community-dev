@@ -5,6 +5,7 @@ namespace Oro\Bundle\EntityExtendBundle\EventListener;
 use Metadata\ClassHierarchyMetadata;
 use Metadata\MetadataFactory;
 
+use Oro\Bundle\EntityConfigBundle\Event\FieldConfigEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Oro\Bundle\EntityConfigBundle\Event\EntityConfigEvent;
@@ -57,10 +58,11 @@ class ConfigSubscriber implements EventSubscriberInterface
 
             $this->extendManager->getConfigProvider()->createEntityConfig(
                 $event->getClassName(),
-                array(
+                $values = array(
                     'is_extend'    => 'true',
                     'extend_class' => $extendClass,
                     'proxy_class'  => $proxyClass,
+                    'owner'        => 'System'
                 )
             );
         }
