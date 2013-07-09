@@ -5,7 +5,6 @@ namespace Oro\Bundle\SearchBundle\Tests\Functional\API;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\TestFrameworkBundle\Test\Client;
 use Oro\Bundle\TestFrameworkBundle\Test\ToolsAPI;
-use Acme\Bundle\TestsBundle\Tests\Functional\SearchBundle\API\DataFixtures;
 
 /**
  * @outputBuffering enabled
@@ -15,7 +14,7 @@ class SoapAdvancedSearchApiTest extends WebTestCase
 {
     /** Default value for offset and max_records */
     const DEFAULT_VALUE = 0;
-
+    /** @var Client */
     protected $client = null;
 
     protected static $hasLoaded = false;

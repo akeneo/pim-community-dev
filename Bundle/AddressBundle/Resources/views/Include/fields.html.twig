@@ -54,6 +54,7 @@
 {% endblock oro_region_widget %}
 
 {% block oro_address_widget %}
+    {{ form_row(form.label) }}
     {{ form_row(form.firstName) }}
     {{ form_row(form.lastName) }}
     {{ form_row(form.street) }}
@@ -77,7 +78,7 @@
         <div class="row-oro oro-multiselect-holder">
             {{ form_errors(form) }}
             {{ form_row(form.id) }}
-            {{ form_row(form.type) }}
+            {{ form_row(form.types) }}
             {{ form_row(form.primary) }}
             {{ block('oro_address_widget') }}
             <button class="removeRow btn btn-action btn-link" type="button" data-related="{{ name }}">×</button>
@@ -88,7 +89,7 @@
 {% block oro_address_collection_widget %}
     {% spaceless %}
         <div class="row-oro">
-            <div class="collection-fields-list" id="{{ id }}_collection" data-prototype="{{ _self.address_collection_prototype(form)|escape }}">
+            <div class="oro-address-collection collection-fields-list" id="{{ id }}_collection" data-prototype="{{ _self.address_collection_prototype(form)|escape }}">
                 {% for field in form.children %}
                     {{ _self.address_collection_prototype(field) }}
                 {% endfor %}
@@ -96,17 +97,29 @@
             <a class="btn add-list-item" href="javascript: void(0);"><i class="icon-plus"></i>{{ 'Add'|trans }}</a>
         </div>
         <script type="text/javascript">
-            /**
-             * Allow only 1 primary checkbox to be checked.
-             * This logic convert checkbox logic to logic used in radiobutton
-             */
             $(function() {
                 var container = $('#{{ id }}_collection');
+                /**
+                 * Allow only 1 primary checkbox to be checked.
+                 * This logic convert checkbox logic to logic used in radiobutton
+                 */
                 container.on('click', '[name$="[primary]"]', function() {
                     container.find('[name$="[primary]"]').each(function (idx, el) {
                         el.checked = false;
                     });
                     this.checked = true;
+                });
+
+                /**
+                 * Allow only 1 address with selected type
+                 */
+                container.on('click', '[name$="[types][]"]', function() {
+                    if (this.checked) {
+                        container.find('[name$="[types][]"][value="' + this.value + '"]').each(function (idx, el) {
+                            el.checked = false;
+                        });
+                        this.checked = true;
+                    }
                 });
             });
         </script>

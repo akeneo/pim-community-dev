@@ -12,7 +12,7 @@ use Oro\Bundle\TestFrameworkBundle\Test\Client;
  */
 class RestUsersApiTest extends WebTestCase
 {
-
+    /** @var Client  */
     protected $client = null;
 
     public function setUp()
@@ -33,10 +33,11 @@ class RestUsersApiTest extends WebTestCase
                 "plainPassword" => '1231231q',
                 "firstName" => "firstName",
                 "lastName" => "lastName",
-                "rolesCollection" => array("1")
+                "rolesCollection" => array("1"),
+                "attributes" => array("company" => "Some test company")
             )
         );
-        $this->client->request('POST', 'http://localhost/api/rest/latest/user', $request);
+        $this->client->request('POST', $this->client->generate('oro_api_post_user'), $request);
         $result = $this->client->getResponse();
         $this->assertJsonResponse($result, 201);
 
@@ -51,7 +52,7 @@ class RestUsersApiTest extends WebTestCase
     public function testApiUpdateUser($request)
     {
         //get user id
-        $this->client->request('GET', 'http://localhost/api/rest/latest/users?limit=100');
+        $this->client->request('GET', $this->client->generate('oro_api_get_users'), array('limit' => 100));
         $result = $this->client->getResponse();
         $this->assertJsonResponse($result, 200);
         $result = json_decode($result->getContent(), true);
@@ -59,11 +60,11 @@ class RestUsersApiTest extends WebTestCase
         //update user
         $request['user']['username'] .= '_Updated';
         unset($request['user']['plainPassword']);
-        $this->client->request('PUT', 'http://localhost/api/rest/latest/users' . '/' . $userId, $request);
+        $this->client->request('PUT', $this->client->generate('oro_api_put_user', array('id' => $userId)), $request);
         $result = $this->client->getResponse();
         $this->assertJsonResponse($result, 204);
         //open user by id
-        $this->client->request('GET', 'http://localhost/api/rest/latest/users' . '/' . $userId);
+        $this->client->request('GET', $this->client->generate('oro_api_get_user', array('id' => $userId)));
         $result = $this->client->getResponse();
         $this->assertJsonResponse($result, 200);
 
@@ -80,10 +81,10 @@ class RestUsersApiTest extends WebTestCase
      */
     public function testApiDeleteUser($userId)
     {
-        $this->client->request('DELETE', 'http://localhost/api/rest/latest/users' . '/' . $userId);
+        $this->client->request('DELETE', $this->client->generate('oro_api_delete_user', array('id' => $userId)));
         $result = $this->client->getResponse();
         $this->assertJsonResponse($result, 204);
-        $this->client->request('GET', 'http://localhost/api/rest/latest/users' . '/' . $userId);
+        $this->client->request('GET', $this->client->generate('oro_api_get_user', array('id' => $userId)));
         $result = $this->client->getResponse();
         $this->assertJsonResponse($result, 404);
     }

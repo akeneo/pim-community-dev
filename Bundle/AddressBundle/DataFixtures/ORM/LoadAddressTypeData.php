@@ -2,35 +2,60 @@
 
 namespace Oro\Bundle\AddressBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Oro\Bundle\AddressBundle\Entity\AddressType;
+use Oro\Bundle\TranslationBundle\DataFixtures\AbstractTranslatableEntityFixture;
 
-class LoadAddressTypeData extends AbstractFixture implements OrderedFixtureInterface
+class LoadAddressTypeData extends AbstractTranslatableEntityFixture
 {
+    const ADDRESS_TYPE_PREFIX = 'address_type';
+
     /**
-     * Load address types
-     *
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @var array
      */
-    public function load(ObjectManager $manager)
+    protected $addressTypes = array(
+        AddressType::TYPE_BILLING,
+        AddressType::TYPE_SHIPPING,
+    );
+
+    /**
+     * @return array
+     */
+    protected function getAddressTypes()
     {
-        $shippingAddressType = new AddressType();
-        $shippingAddressType->setType('shipping');
-
-        $billingAddressType = new AddressType();
-        $billingAddressType->setType('billing');
-
-        $manager->persist($shippingAddressType);
-        $manager->persist($billingAddressType);
-
-        $manager->flush();
+        return $this->addressTypes;
     }
 
-    public function getOrder()
+    /**
+     * {@inheritdoc}
+     */
+    protected function loadEntities(ObjectManager $manager)
     {
-        return 50;
+        $addressTypeRepository = $manager->getRepository('OroAddressBundle:AddressType');
+
+        $translationLocales = $this->getTranslationLocales();
+        $addressTypes = $this->getAddressTypes();
+
+        foreach ($translationLocales as $locale) {
+            foreach ($addressTypes as $addressName) {
+                // get address type entity
+                /** @var AddressType $addressType */
+                $addressType = $addressTypeRepository->findOneBy(array('name' => $addressName));
+                if (!$addressType) {
+                    $addressType = new AddressType($addressName);
+                }
+
+                // set locale and label
+                $addressTypeLabel = $this->translate($addressName, static::ADDRESS_TYPE_PREFIX, $locale);
+                $addressType->setLocale($locale)
+                    ->setLabel($addressTypeLabel);
+
+                // save
+                $manager->persist($addressType);
+            }
+
+            $manager->flush();
+        }
     }
 }
