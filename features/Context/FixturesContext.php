@@ -15,7 +15,9 @@ use Pim\Bundle\ProductBundle\Entity\Family;
 use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
 use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+use Pim\Bundle\ProductBundle\Entity\Category;
 use Pim\Bundle\ConfigBundle\Entity\Locale;
+use Pim\Bundle\ConfigBundle\Entity\Channel;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -416,6 +418,44 @@ class FixturesContext extends RawMinkContext
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * @Given /^the following categories:$/
+     */
+    public function theFollowingCategories(TableNode $table)
+    {
+        $em = $this->getEntityManager();
+        foreach ($table->getHash() as $data) {
+            $category = new Category();
+            $category->setCode($data['code']);
+            $category->setTitle($data['title']);
+
+            $em->persist($category);
+        }
+        $em->flush();
+    }
+
+    /**
+     * @Given /^the following channels:$/
+     */
+    public function theFollowingChannels(TableNode $table)
+    {
+        $em = $this->getEntityManager();
+        foreach ($table->getHash() as $data) {
+            $channel = new Channel();
+            $channel->setCode($data['code']);
+            $channel->setName($data['name']);
+
+            if (isset($data['category'])) {
+                $category = $em->getRepository('PimProductBundle:Category')->findOneBy(array(
+                    'title' => $data['category']
+                ));
+                $channel->setCategory($category);
+            }
+            $em->persist($channel);
+        }
+        $em->flush();
+    }
+
     public function getProduct($sku)
     {
         $pm   = $this->getProductManager();
@@ -662,6 +702,4 @@ class FixturesContext extends RawMinkContext
     {
         return $this->getMainContext()->listToArray($list);
     }
-
 }
-
