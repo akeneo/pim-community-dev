@@ -25,8 +25,8 @@ class TagApiType extends TagType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Oro\Bundle\TagBundle\Entity\Tag',
-                'intention'  => 'tag',
+                'data_class'      => 'Oro\Bundle\TagBundle\Entity\Tag',
+                'intention'       => 'tag',
                 'csrf_protection' => false
             )
         );

@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\TagBundle\Datagrid;
 
-use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
+use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
 use Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\EntityQueryFactory;
 
 class ResultsQueryFactory extends EntityQueryFactory
