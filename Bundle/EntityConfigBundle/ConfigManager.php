@@ -5,6 +5,7 @@ namespace Oro\Bundle\EntityConfigBundle;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Metadata\ClassHierarchyMetadata;
 use Metadata\MetadataFactory;
 
@@ -160,44 +161,37 @@ class ConfigManager
         return $metadata->getOutsideClassMetadata()->configurable;
     }
 
-    public function updateAll($flush = true)
+    public function initConfigByDoctrineMetadata(ClassMetadataInfo $doctrineMetadata)
     {
-        /** @var $doctrineMetadata ClassMetadata */
-        foreach ($this->em()->getMetadataFactory()->getAllMetadata() as $doctrineMetadata) {
-            /** @var ClassHierarchyMetadata $metadata */
-            $metadata = $this->metadataFactory->getMetadataForClass($doctrineMetadata->getName());
-            if ($metadata->getOutsideClassMetadata()->configurable
-                && !$this->em()->getRepository(ConfigEntity::ENTITY_NAME)->findOneBy(array(
-                    'className' => $doctrineMetadata->getName()))
-            ) {
+        /** @var ClassHierarchyMetadata $metadata */
+        $metadata = $this->metadataFactory->getMetadataForClass($doctrineMetadata->getName());
+        if ($metadata->getOutsideClassMetadata()->configurable
+            && !$this->em()->getRepository(ConfigEntity::ENTITY_NAME)->findOneBy(array(
+                'className' => $doctrineMetadata->getName()))
+        ) {
+
+            $this->eventDispatcher->dispatch(
+                Events::NEW_ENTITY_CONFIG,
+                new EntityConfigEvent($doctrineMetadata->getName(), $this)
+            );
+
+            foreach ($doctrineMetadata->getFieldNames() as $fieldName) {
+                $type = $doctrineMetadata->getTypeOfField($fieldName);
 
                 $this->eventDispatcher->dispatch(
-                    Events::NEW_ENTITY_CONFIG,
-                    new EntityConfigEvent($doctrineMetadata->getName(), $this)
+                    Events::NEW_FIELD_CONFIG,
+                    new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
                 );
-
-                foreach ($doctrineMetadata->getFieldNames() as $fieldName) {
-                    $type = $doctrineMetadata->getTypeOfField($fieldName);
-
-                    $this->eventDispatcher->dispatch(
-                        Events::NEW_FIELD_CONFIG,
-                        new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
-                    );
-                }
-
-                foreach ($doctrineMetadata->getAssociationNames() as $fieldName) {
-                    $type = $doctrineMetadata->isSingleValuedAssociation($fieldName) ? 'ref-one' : 'ref-many';
-
-                    $this->eventDispatcher->dispatch(
-                        Events::NEW_FIELD_CONFIG,
-                        new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
-                    );
-                }
             }
-        }
 
-        if ($flush) {
-            $this->flush();
+            foreach ($doctrineMetadata->getAssociationNames() as $fieldName) {
+                $type = $doctrineMetadata->isSingleValuedAssociation($fieldName) ? 'ref-one' : 'ref-many';
+
+                $this->eventDispatcher->dispatch(
+                    Events::NEW_FIELD_CONFIG,
+                    new FieldConfigEvent($doctrineMetadata->getName(), $fieldName, $type, $this)
+                );
+            }
         }
     }
 
@@ -230,11 +224,12 @@ class ConfigManager
     }
 
     /**
-     * @param array $entities
      * TODO:: remove configs
      */
-    public function flush(array $entities = array())
+    public function flush()
     {
+        $entities = array();
+
         foreach ($this->persistConfigs as $config) {
             $className = $config->getClassName();
 

@@ -13,15 +13,13 @@ abstract class AbstractConfig
 {
     /**
      * @var \DateTime $created
-     *
      * @ORM\Column(type="datetime")
      */
     protected $created;
 
     /**
      * @var \DateTime $updated
-     *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     protected $updated;
 
@@ -57,7 +55,7 @@ abstract class AbstractConfig
     }
 
     /**
-     * @param  callable                            $filter
+     * @param  callable $filter
      * @return array|ArrayCollection|ConfigValue[]
      */
     public function getValues(\Closure $filter = null)

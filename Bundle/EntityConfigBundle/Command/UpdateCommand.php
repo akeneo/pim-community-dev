@@ -19,7 +19,6 @@ class UpdateCommand extends BaseCommand
 
     /**
      * Runs command
-     *
      * @param  InputInterface  $input
      * @param  OutputInterface $output
      * @return int|null|void
@@ -28,7 +27,11 @@ class UpdateCommand extends BaseCommand
     {
         $output->writeln($this->getDescription());
 
-        $this->getConfigManager()->updateAll();
+        foreach ($this->getConfigManager()->em()->getMetadataFactory()->getAllMetadata() as $doctrineMetadata) {
+            $this->getConfigManager()->initConfigByDoctrineMetadata($doctrineMetadata);
+        }
+
+        $this->getConfigManager()->flush();
 
         $output->writeln('Completed');
     }
