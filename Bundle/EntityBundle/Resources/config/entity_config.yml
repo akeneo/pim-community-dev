@@ -42,13 +42,12 @@ oro_entity_config:
                         required:           false
                         sortable:           false
                         filterable:         true
-                        show_filter:        true
+                        show_filter:        false
                     form:
                         type:               textarea
                         options:
                             block:          entity
                             required:       false
-
 
     datagrid:
         entity:
