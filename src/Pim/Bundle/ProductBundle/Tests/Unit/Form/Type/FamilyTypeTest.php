@@ -20,7 +20,6 @@ class FamilyTypeTest extends AbstractFormTypeTest
      */
     public function setUp()
     {
-        $this->markTestIncomplete('Either drop this test class or find a neat way to add entity form type support');
         parent::setUp();
 
         // Create form type
@@ -35,7 +34,7 @@ class FamilyTypeTest extends AbstractFormTypeTest
     {
         // Assert fields
         $this->assertField('code', 'text');
-        $this->assertField('attributeAsLabel', 'choice');
+        $this->assertField('attributeAsLabel', 'entity');
 
         // Assert option class
         $this->assertEquals(
@@ -45,17 +44,5 @@ class FamilyTypeTest extends AbstractFormTypeTest
 
         // Assert name
         $this->assertEquals('pim_product_family', $this->form->getName());
-    }
-
-    /**
-     * Assert field name and type
-     * @param string $name Field name
-     * @param string $type Field type alias
-     */
-    protected function assertField($name, $type)
-    {
-        $formType = $this->form->get($name);
-        $this->assertInstanceOf('\Symfony\Component\Form\Form', $formType);
-        $this->assertEquals($type, $formType->getConfig()->getType()->getInnerType()->getName());
     }
 }

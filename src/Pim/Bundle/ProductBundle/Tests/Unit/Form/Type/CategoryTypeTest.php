@@ -59,16 +59,4 @@ class CategoryTypeTest extends AbstractFormTypeTest
         // Assert name
         $this->assertEquals('pim_category', $this->form->getName());
     }
-
-    /**
-     * Assert field name and type
-     * @param string $name Field name
-     * @param string $type Field type alias
-     */
-    protected function assertField($name, $type)
-    {
-        $formType = $this->form->get($name);
-        $this->assertInstanceOf('\Symfony\Component\Form\Form', $formType);
-        $this->assertEquals($type, $formType->getConfig()->getType()->getInnerType()->getName());
-    }
 }

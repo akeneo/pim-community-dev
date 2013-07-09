@@ -25,7 +25,6 @@ class ProductTypeTest extends AbstractFormTypeTest
      */
     public function setUp()
     {
-        $this->markTestIncomplete('Either drop this test class or find a neat way to add entity form type support');
         parent::setUp();
 
         $this->flexibleClass = 'Pim\Bundle\ProductBundle\Entity\Product';
@@ -71,22 +70,8 @@ class ProductTypeTest extends AbstractFormTypeTest
      */
     public function testFormCreate()
     {
-        $this->assertField('sku', 'text');
-
         $this->assertEquals($this->flexibleClass, $this->form->getConfig()->getDataClass());
 
         $this->assertEquals('pim_product', $this->form->getName());
-    }
-
-    /**
-     * Assert field name and type
-     * @param string $name Field name
-     * @param string $type Field type alias
-     */
-    protected function assertField($name, $type)
-    {
-        $formType = $this->form->get($name);
-        $this->assertInstanceOf('\Symfony\Component\Form\Form', $formType);
-        $this->assertEquals($type, $formType->getConfig()->getType()->getInnerType()->getName());
     }
 }

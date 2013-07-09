@@ -6,7 +6,7 @@
     {% block content %}
 
     {{ JSFV(form) }}
-    <form method="POST" class="form-horizontal" action="{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
+    <form id="{{ form.vars.id }}" method="POST" class="form-horizontal" action="{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
 
         {% set title = 'Products'|trans %}
 
@@ -27,25 +27,27 @@
 
         {% set subtitle %}
             <div id="locale-switcher" class="btn-group sub-title">
-                <span class="product-name dropdown-toggle" data-toggle="dropdown">{{ product.label }}<span class="caret"></span></span>
+                <span class="product-name dropdown-toggle" data-toggle="dropdown">
+                    {{ dataLocale|flag }}
+                    {{ product.label }}
+                    <span class="caret"></span>
+                </span>
                 <ul class="dropdown-menu">
                     {% for locale in form.vars.value.getLocales() %}
-                        <li>
-                            <a href="?dataLocale={{ locale.code }}" title="{{ locale.code|lower }}">
-                                <span class="icon">
+                        <li class="{{ locale.code == dataLocale ? 'activeLocale' : '' }}">
+                            <a href="?dataLocale={{ locale.code }}" title="{{ localeLabel(locale.code) }}">
                                     {% if locale.code == dataLocale %}
+                                <span class="icon">
                                         <i class="icon-bullet"></i>
-                                    {% endif %}
                                 </span>
+                                    {% endif %}
+                                {{ locale.code|flag }}
                                 <span class="title">{{ product.label(locale.code) }}</span>
-                                <span class="lang">{{ localeLabel(locale.code) }}</span>
                             </a>
                         </li>
                     {% endfor %}
                 </ul>
             </div>
-            <span class="closer separator">/</span>
-            <div class="sub-title lang">{{ localeLabel(dataLocale) }}</div>
         {% endset %}
 
         {% set left %}
@@ -107,7 +109,6 @@
     {{ parent() }}
 
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.bootstrap-modal.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.cookie.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.hotkeys.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.jstree.js') }}"></script>
 

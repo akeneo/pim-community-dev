@@ -2,17 +2,32 @@
 $(function() {
     'use strict';
 
-    var activeTab = $('[href=' + location.hash + ']');
+    var activeTab = $('[href=' + {{ tab ? ("'#" ~ tab ~ "'")|raw : 'location.hash' }} + ']');
     activeTab && activeTab.tab('show');
 
-    var updated = false;
+    var formAction = '{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}';
 
-    $('#updated').css('display', 'none');
-    $('form [id^="pim_product_"]').change(function(event){
-        updated = true;
-        $('#updated').css('display', 'inline-block');
-        $('form [id^="pim_product_"]').unbind('change');
+    $('#{{ form.vars.id }}').on('submit', function() {
+        var tab = $('#form-navbar .nav li.active a').attr('href');
+        tab && $(this).attr('action', formAction + '&tab=' + tab.substr(1));
+        return true;
     });
+
+    $('#locale-switcher a').on('click', function() {
+        var tab = $('.tab-groups li.tab.active a').attr('href');
+        tab && $(this).attr('href', $(this).attr('href') + '&tab=' + tab.substr(1));
+    })
+
+    var updated = false;
+    $('#updated').hide();
+
+    function formUpdated() {
+        updated = true;
+        $('#updated').show();
+        $('form [id^="{{ form.vars.id }}"]').off('change', formUpdated);
+    }
+
+    $('form [id^="{{ form.vars.id }}"]').on('change', formUpdated);
 
     $(window).on('beforeunload', function(){
         if (updated) {
@@ -65,13 +80,9 @@ $(function() {
 
     $('.remove-attribute').each(function() {
         var target = $(this).parent().find('input:not([type="hidden"]):not([class*=select2]), select, textarea').first();
-        $(this).insertAfter(target).css('margin-left', 20);
+        $(this).insertAfter(target).css('margin-left', 20).attr('tabIndex', -1);
     });
 
-    $('a.validation-tooltip').each(function() {
-        var tabId = $(this).parents('.tab-pane').attr('id');
-
-        $('a[href="#' + tabId + '"]').parents('li').addClass('error');
-    });
+    $('.wysihtml5-toolbar a').attr('tabIndex', -1);
 });
 </script>

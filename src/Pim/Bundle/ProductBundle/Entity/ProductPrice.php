@@ -2,6 +2,7 @@
 namespace Pim\Bundle\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
 
 /**
  * Price backend type entity
@@ -27,7 +28,7 @@ class ProductPrice
     /**
      * @var ProductValue
      *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Model\ProductValueInterface", inversedBy="prices", cascade="persist")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Model\ProductValueInterface", inversedBy="prices")
      * @ORM\JoinColumn(name="value_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $value;
@@ -148,7 +149,7 @@ class ProductPrice
      *
      * @return ProductPrice
      */
-    public function setValue($value)
+    public function setValue(ProductValueInterface $value)
     {
         $this->value = $value;
 

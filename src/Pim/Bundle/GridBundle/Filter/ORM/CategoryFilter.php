@@ -3,7 +3,6 @@
 namespace Pim\Bundle\GridBundle\Filter\ORM;
 
 use Oro\Bundle\GridBundle\Filter\ORM\ChoiceFilter;
-use Doctrine\ORM\Query\Expr\From;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\CategoryFilterType;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -17,7 +16,7 @@ use Doctrine\ORM\Query\Expr;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class CategoryFilter extends EntityFilter
+class CategoryFilter extends ChoiceFilter
 {
 
     /**
@@ -125,7 +124,10 @@ class CategoryFilter extends EntityFilter
     {
         return array_merge(
             parent::getDefaultOptions(),
-            array('form_type' => CategoryFilterType::NAME)
+            array(
+                'mapped_property' => 'id',
+                'form_type' => CategoryFilterType::NAME
+            )
         );
     }
 }

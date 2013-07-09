@@ -510,7 +510,7 @@ class ProductController extends Controller
         }
 
         $currencyManager = $this->container->get('pim_config.manager.currency');
-        $this->getProductManager()->addMissingPrices($currencyManager, $product, $this->getDataCurrency());
+        $this->getProductManager()->addMissingPrices($currencyManager, $product);
 
         return $product;
     }

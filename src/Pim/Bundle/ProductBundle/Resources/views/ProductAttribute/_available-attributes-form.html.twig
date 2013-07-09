@@ -1,4 +1,4 @@
-<form id="{{ form.vars.id }}" name="{{ form.vars.name }}" class="hidden" method="POST" action="{{ action }}">
+<form id="{{ form.vars.id }}" name="{{ form.vars.name }}" class="hide" method="POST" action="{{ action }}">
     {{ form_widget(form.attributes) }}
     {{ form_widget(form._token) }}
 </form>
@@ -9,6 +9,7 @@ $(function() {
     $('#{{ form.attributes.vars.id }}').pimMultiselect({
         title: "{{ 'Add attributes'|trans }}",
         placeholder: "{{ 'Search'|trans }}",
+        emptyText: "{{ 'There are no more attributes to add'|trans }}",
         appendTo: '#attribute-buttons',
         buttons: {
             "{{ 'Add'|trans }}": function() {
