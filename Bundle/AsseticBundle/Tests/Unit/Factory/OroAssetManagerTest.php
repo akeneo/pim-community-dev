@@ -58,12 +58,12 @@ class OroAssetManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->node = new OroAsseticNode(
             array(
-                'name' => 'compress_test_asset',
-                'data' => $this->compressAsset
+                'compress' => $this->compressAsset,
+                'un_compress' => $this->unCompressAsset
             ),
             array(
-                'name' => 'uncompress_test_asset',
-                'data' => $this->unCompressAsset
+                'un_compress' => 'uncompress_test_asset',
+                'compress' => 'compress_test_asset'
             ),
             array(),
             array('test.css'),

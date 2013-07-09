@@ -21,19 +21,19 @@ class OroAsseticNode extends \Twig_Node
     protected $nameUnCompress;
 
     public function __construct(
-        array $compressAsset,
-        array $unCompressAsset,
-        array $filters,
-        array $inputs,
+        array $assets,
+        array $names,
+        $filters,
+        $inputs,
         \Twig_NodeInterface $body,
         array $attributes = array(),
         $lineno = 0,
-        $tag = null
-    ) {
-        $this->nameCompress = $compressAsset['name'];
-        $this->nameUnCompress = $unCompressAsset['name'];
-        $this->compressedAsset = $compressAsset['asset'];
-        $this->unCompressAsset = $unCompressAsset['asset'];
+        $tag = null)
+    {
+        $this->nameCompress = $names['compress'];
+        $this->nameUnCompress = $names['un_compress'];
+        $this->compressedAsset = $assets['compress'];
+        $this->unCompressAsset = $assets['un_compress'];
 
         $nodes = array('body' => $body);
 
@@ -151,8 +151,9 @@ class OroAsseticNode extends \Twig_Node
         $compiler->subcompile($this->getPathFunction($name));
     }
 
-    /*
-     *
+    /**
+     * @param $name
+     * @return \Twig_Node_Expression_Function
      */
     private function getPathFunction($name)
     {

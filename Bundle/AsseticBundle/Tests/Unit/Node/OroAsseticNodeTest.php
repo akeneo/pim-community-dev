@@ -24,12 +24,12 @@ class OroAsseticNodeTest extends \PHPUnit_Framework_TestCase
         $this->unCompressAsset = new AssetCollection(array($asset));
         $this->node = new OroAsseticNode(
             array(
-                'name' => 'compress_test_asset',
-                'data' => $this->compressAsset
+                'compress' => $this->compressAsset,
+                'un_compress' => $this->unCompressAsset
             ),
             array(
-                'name' => 'uncompress_test_asset',
-                'data' => $this->unCompressAsset
+                'un_compress' => 'uncompress_test_asset',
+                'compress' => 'compress_test_asset'
             ),
             array(),
             array('compile1.css', 'compile2.css'),
@@ -52,7 +52,7 @@ class OroAsseticNodeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetNameUnCompress()
     {
-        $this->assertEquals('uncompress_asset', $this->node->getNameUnCompress());
+        $this->assertEquals('uncompress_test_asset', $this->node->getNameUnCompress());
     }
 
     public function testCompile()
