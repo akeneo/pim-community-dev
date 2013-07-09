@@ -2,6 +2,7 @@
 namespace Pim\Bundle\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
 
 /**
  * Price backend type entity
@@ -148,7 +149,7 @@ class ProductPrice
      *
      * @return ProductPrice
      */
-    public function setValue(ProductValue $value)
+    public function setValue(ProductValueInterface $value)
     {
         $this->value = $value;
 
