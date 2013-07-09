@@ -74,6 +74,40 @@ class ConfigDatagridManager extends DatagridManager
     }
 
     /**
+     * @param string $scope
+     * @return array
+     */
+    protected function getObjectName($scope = 'name')
+    {
+        $options = array();
+
+        $query = $this->createQuery()->getQueryBuilder()
+            ->add('select', 'a.className')
+            ->add('from', 'Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity a')
+            ->distinct('a.className');
+
+        $result = $query->getQuery()->getArrayResult();
+
+        foreach ((array) $result as $value) {
+            $className = explode('\\', $value['className']);
+
+            $options['name'][$value['className']] = '';
+            $options['module'][$value['className']] = '';
+
+            foreach ($className as $index => $name){
+                if (count($className)-1 == $index){
+                    $options['name'][$value['className']] = $name;
+                }
+                elseif (!in_array($name, array('Bundle','Entity'))) {
+                    $options['module'][$value['className']] .= $name . '/';
+                }
+            }
+        }
+
+        return $options[$scope];
+    }
+
+    /**
      * {@inheritDoc}
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
@@ -94,18 +128,38 @@ class ConfigDatagridManager extends DatagridManager
         );
         $fieldsCollection->add($fieldObjectId);
 
-        $fieldObjectName = new FieldDescription();
-        $fieldObjectName->setName('className');
-        $fieldObjectName->setOptions(
+        $fieldObjectModule = new FieldDescription();
+        $fieldObjectModule->setName('module');
+        $fieldObjectModule->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => 'Class Name',
+                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
+                'label'       => 'Module',
                 'field_name'  => 'className',
-                'filter_type' => FilterInterface::TYPE_STRING,
+                'filter_type' => FilterInterface::TYPE_CHOICE,
                 'required'    => false,
                 'sortable'    => true,
-                'filterable'  => false,
+                'filterable'  => true,
                 'show_filter' => false,
+                'choices'     => $this->getObjectName('module'),
+                'multiple'    => true,
+            )
+        );
+        $fieldsCollection->add($fieldObjectModule);
+
+        $fieldObjectName = new FieldDescription();
+        $fieldObjectName->setName('name');
+        $fieldObjectName->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
+                'label'       => 'Name',
+                'field_name'  => 'className',
+                'filter_type' => FilterInterface::TYPE_CHOICE,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => false,
+                'choices'     => $this->getObjectName(),
+                'multiple'    => true,
             )
         );
         $fieldsCollection->add($fieldObjectName);
@@ -134,8 +188,8 @@ class ConfigDatagridManager extends DatagridManager
                 'filter_type' => FilterInterface::TYPE_DATETIME,
                 'required'    => true,
                 'sortable'    => true,
-                'filterable'  => false,
-                'show_filter' => true,
+                'filterable'  => true,
+                'show_filter' => false,
             )
         );
         $fieldsCollection->add($fieldObjectCreate);
@@ -151,7 +205,7 @@ class ConfigDatagridManager extends DatagridManager
                 'required'    => false,
                 'sortable'    => true,
                 'filterable'  => true,
-                'show_filter' => true,
+                'show_filter' => false,
             )
         );
         $fieldsCollection->add($fieldObjectUpdate);
