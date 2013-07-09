@@ -16,7 +16,7 @@ class NumberFilterTypeTest extends AbstractTypeTestCase
     /**
      * @var string
      */
-    protected $defaultLocale = 'en_US';
+    protected $defaultLocale = 'en';
 
     protected function setUp()
     {
