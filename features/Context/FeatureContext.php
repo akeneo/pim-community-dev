@@ -4,8 +4,11 @@ namespace Context;
 
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Behat\Mink\Exception\ExpectationException;
+
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Main feature context
@@ -20,6 +23,7 @@ class FeatureContext extends RawMinkContext implements KernelAwareInterface
 
     public function __construct(array $parameters)
     {
+        $this->useContext('fixtures', new FixturesContext());
         $this->useContext('webUser', new WebUser());
     }
 
@@ -71,5 +75,20 @@ class FeatureContext extends RawMinkContext implements KernelAwareInterface
         $filename = rtrim($this->getMinkParameter('show_tmp_dir'), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.uniqid().'.html';
         file_put_contents($filename, $this->getSession()->getPage()->getContent());
         system(sprintf($this->getMinkParameter('show_cmd'), escapeshellarg($filename)));
+    }
+
+    public function listToArray($list)
+    {
+        return explode(', ', str_replace(' and ', ', ', $list));
+    }
+
+    public function createExpectationException($message)
+    {
+        return new ExpectationException($message, $this->getSession());
+    }
+
+    public function wait($time, $condition = null)
+    {
+        $this->getSession()->wait($time, $condition);
     }
 }
