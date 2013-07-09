@@ -13,6 +13,8 @@ parameters:
     oro_tag.autocomplete.tag.search_handler.class: Oro\Bundle\FormBundle\Autocomplete\SearchHandler
     oro_tag.form.type.tag_select.class: Oro\Bundle\TagBundle\Form\Type\TagSelectType
 
+    oro_tag.provider.search_provider.class:  Oro\Bundle\TagBundle\Provider\SearchProvider
+
 services:
     oro_tag.tag.manager:
         class: %oro_tag.tag.manager.class%
@@ -46,6 +48,12 @@ services:
         class: %oro_tag.tag.form.type.tag.class%
         tags:
             - { name: form.type, alias: oro_tag_tag }
+
+    oro_tag.provider.search_provider:
+        class: %oro_tag.provider.search_provider.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @oro_search.mapper
 
     # Tag API
     oro_tag.tag.manager.api:

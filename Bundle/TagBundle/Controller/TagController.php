@@ -2,7 +2,10 @@
 
 namespace Oro\Bundle\TagBundle\Controller;
 
+use Oro\Bundle\GridBundle\Datagrid\Datagrid;
 use Oro\Bundle\GridBundle\Datagrid\DatagridView;
+use Oro\Bundle\GridBundle\Datagrid\ResultRecord;
+use Oro\Bundle\SearchBundle\Query\Result\Item;
 use Oro\Bundle\TagBundle\Datagrid\ResultsDatagridManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -82,25 +85,25 @@ class TagController extends Controller
     public function searchAction(Tag $entity, Request $request)
     {
         $from = $request->get('from');
-        $datagridView = $this->getSearchResultsDatagridView($from, $entity);
+        $datagrid = $this->getSearchResultsDatagrid($from, $entity);
 
-        //$resultProvider = $this->get('oro_search.provider.result_statistics_provider');
+        /** @var \Oro\Bundle\TagBundle\Provider\SearchProvider $provider */
+        $provider = $this->get('oro_tag.provider.search_provider');
 
         return array(
-            'tag' => $entity,
+            'tag'            => $entity,
             'from'           => $from,
-            'groupedResults' => array(),
-            'datagrid'       => $datagridView
+            'groupedResults' => $provider->getGroupedResults($entity->getId()),
+            'datagrid'       => $datagrid->createView()
         );
     }
-
 
     /**
      * @param string $from
      * @param Tag $tag
-     * @return DatagridView
+     * @return Datagrid
      */
-    protected function getSearchResultsDatagridView($from, Tag $tag)
+    protected function getSearchResultsDatagrid($from, Tag $tag)
     {
         /** @var $datagridManager ResultsDatagridManager */
         $datagridManager = $this->get('oro_tag.datagrid_results.datagrid_manager');
@@ -115,7 +118,7 @@ class TagController extends Controller
             )
         );
 
-        return $datagridManager->getDatagrid()->createView();
+        return $datagridManager->getDatagrid();
     }
 
     /**
@@ -126,8 +129,8 @@ class TagController extends Controller
     public function searchResultsAjaxAction(Tag $entity, Request $request)
     {
         $from   = $request->get('from');
-        $datagridView = $this->getSearchResultsDatagridView($from, $entity);
+        $datagrid = $this->getSearchResultsDatagrid($from, $entity);
 
-        return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
+        return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagrid->createView());
     }
 }

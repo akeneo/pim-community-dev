@@ -46,14 +46,14 @@ class TaggingTest extends \PHPUnit_Framework_TestCase
 
         $this->tagging->setResource($resource);
 
-        $this->assertEquals(1, $this->tagging->getResourceId());
-        $this->assertEquals(get_class($resource), $this->tagging->getResourceType());
+        $this->assertEquals(1, $this->tagging->getRecordId());
+        $this->assertEquals(get_class($resource), $this->tagging->getEntityName());
 
         // test pass resource through constructor
         $tagging = new Tagging(null, $resource);
 
-        $this->assertEquals(1, $tagging->getResourceId());
-        $this->assertEquals(get_class($resource), $tagging->getResourceType());
+        $this->assertEquals(1, $tagging->getRecordId());
+        $this->assertEquals(get_class($resource), $tagging->getEntityName());
     }
 
     public function testDateTimeMethods()

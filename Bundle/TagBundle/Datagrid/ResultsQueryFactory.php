@@ -6,7 +6,6 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
 use Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\EntityQueryFactory;
-use Symfony\Component\Routing\Router;
 
 class ResultsQueryFactory extends EntityQueryFactory
 {
@@ -15,17 +14,14 @@ class ResultsQueryFactory extends EntityQueryFactory
      */
     protected $mapper;
 
-    protected $router;
-
     /**
      * {@inheritDoc}
      */
-    public function __construct(RegistryInterface $registry, $className, ObjectMapper $mapper, Router $router)
+    public function __construct(RegistryInterface $registry, $className, ObjectMapper $mapper)
     {
         parent::__construct($registry, $className);
 
         $this->mapper = $mapper;
-        $this->router = $router;
     }
 
     /**
@@ -33,13 +29,13 @@ class ResultsQueryFactory extends EntityQueryFactory
      */
     public function createQuery()
     {
-        $entityManager = $this->registry->getEntityManagerForClass($this->className);
-        $this->queryBuilder = $entityManager->getRepository($this->className)->createQueryBuilder($this->alias);
+        $em = $this->registry->getEntityManagerForClass($this->className);
+        $this->queryBuilder = $em->getRepository($this->className)->createQueryBuilder($this->alias);
 
         if (!$this->queryBuilder) {
             throw new \LogicException('Can\'t create datagrid query. Query builder is not configured.');
         }
 
-        return new ResultsQuery($this->queryBuilder, $this->mapper, $entityManager, $this->router);
+        return new ResultsQuery($this->queryBuilder, $em, $this->mapper);
     }
 }

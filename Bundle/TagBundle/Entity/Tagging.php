@@ -52,6 +52,12 @@ class Tagging
 
     /**
      * @var string
+     * @ORM\Column(name="alias", type="string", length=100)
+     */
+    protected $alias;
+
+    /**
+     * @var string
      * @ORM\Column(name="entity_name", type="string", length=100)
      */
     protected $entityName;
@@ -128,6 +134,26 @@ class Tagging
     public function getEntityName()
     {
         return $this->entityName;
+    }
+
+    /**
+     * Setter for alias
+     *
+     * @param string $alias
+     */
+    public function setAlias($alias)
+    {
+        $this->alias = $alias;
+    }
+
+    /**
+     * Getter for alias
+     *
+     * @return string
+     */
+    public function getAlias()
+    {
+        return $this->alias;
     }
 
     /**

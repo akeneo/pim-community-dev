@@ -163,8 +163,7 @@ $(document).ready(function () {
             case 9: // Tab key
                 if (D.shiftKey) {
                     select_previous();
-                }
-                else {
+                } else {
                     select_next();
                 }
                 evt.preventDefault();

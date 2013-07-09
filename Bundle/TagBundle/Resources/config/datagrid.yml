@@ -30,13 +30,13 @@ services:
             - @doctrine
             - %oro_tag.tagging.entity.class%
             - @oro_search.mapper
-            - @router
 
     oro_tag.datagrid_results.entity_result_listener:
         class: %oro_search.datagrid_results.entity_result_listener.class%
         arguments:
             - @oro_search.formatter.result_formatter
             - %oro_tag.datagrid_results.grid_name%
+            - @event_dispatcher
         tags:
             - name: kernel.event_listener
               event: oro_grid.datagrid.result
