@@ -26,7 +26,7 @@ $(function() {
     });
 
     var addBtn = $('<a href="{{ path('pim_product_attributegroup_create') }}">')
-        .html($('<i>', { class: 'icon-plus-sign' }));
+        .html($('<i>', { 'class': 'icon-plus-sign' }));
 
     $('#group-container').sidebarize({ buttons: [ addBtn ] });
 });

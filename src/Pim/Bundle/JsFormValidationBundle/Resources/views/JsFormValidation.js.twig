@@ -251,6 +251,7 @@ var jsfv = new function () {
                     if (!submitForm) {
                         e.stopImmediatePropagation();
                         showFirstTabWithErrors();
+                        $(form).trigger('validate');
                     }
                     return submitForm;
                 });

@@ -97,7 +97,7 @@ $(tree_id).jstree({
     .bind("move_node.jstree", function (e, data) {
         var this_jstree = $.jstree._focused();
         data.rslt.o.each(function (i) {
-    
+
             $.ajax({
                 async : false,
                 type: 'POST',
@@ -126,7 +126,7 @@ $(tree_id).jstree({
     })
     .bind('loaded.jstree', function(event, data) {
         if (event.namespace == 'jstree') {
-            data.inst.get_tree_select().select2();
+            data.inst.get_tree_select().select2({ width: '100%' });
         }
     })
     .bind("remove.jstree", function (event, data) {

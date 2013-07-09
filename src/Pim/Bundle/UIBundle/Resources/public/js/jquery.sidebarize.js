@@ -1,79 +1,97 @@
-/* ============================================================
+/**
  * jQuery hideable sidebar plugin
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
-(function($) {
+(function ($) {
     "use strict";
 
     function getAvailableHeight($element, opts) {
-        var height = $(window).height() - $element.offset().top - opts.heightCompensator;
-
+        var height = $(window).height() - $element.offset().top;
         // @todo: remove in production environment
-        if ($('.sf-toolbar').length && $('.sf-toolbar').height()) {
-            height -= 39;
+        if ($('.sf-toolbar').length) {
+            height -= $('.sf-toolbar').height() + 1;
         }
-
         return height;
     }
 
     function collapse($element, opts) {
-        $element.children().first().hide();
-        $element.children().eq(1).toggleClass('expanded collapsed').outerWidth(opts.collapsedSeparatorWidth);
-        $element.find('.sidebar-separator i.' + opts.expandIcon).show();
-        $(window).trigger('resize');
+        $('>.sidebar', $element).hide();
+        $('>.separator', $element).toggleClass('expanded collapsed').outerWidth(opts.collapsedSeparatorWidth).css({
+            'left': 0,
+            'cursor': 'default'
+        });
+        $('>.content', $element).css('left', opts.collapsedSeparatorWidth).width($(window).width() - opts.collapsedSeparatorWidth);
+        $element.find('.separator i.' + opts.expandIcon).show();
     }
 
     function expand($element, opts) {
-        $element.children().first().show();
-        $element.children().eq(1).toggleClass('expanded collapsed').outerWidth(opts.separatorWidth);
-        $element.find('.sidebar-separator i.' + opts.expandIcon).hide();
-        $(window).trigger('resize');
+        $('>.sidebar', $element).show();
+        var sidebarWidth = $('>.sidebar', $element).width();
+        $('>.separator', $element).toggleClass('expanded collapsed').outerWidth(opts.separatorWidth).css({
+            'left': sidebarWidth,
+            'cursor': opts.resizeCursor
+        });
+        $('>.content', $element).css('left', sidebarWidth + opts.separatorWidth).width($(window).width() - opts.separatorWidth - sidebarWidth);
+        $element.find('.separator i.' + opts.expandIcon).hide();
     }
 
     function adjustHeight($element, opts) {
         var height = getAvailableHeight($element, opts);
-
         $element.outerHeight(height);
-        $element.find('.sidebar-content').outerHeight(height - opts.controlsHeight);
     }
 
     function adjustWidth($element, opts) {
-        var totalWidth = $(window).width();
-        $element.outerWidth(totalWidth);
-
-        var contentWidth;
-        if ($element.children().first().is(':visible')) {
-            var sidebarWidth = Math.floor(totalWidth * opts.sidebarPercentage/100);
-            contentWidth = Math.floor(totalWidth - sidebarWidth - opts.separatorWidth);
-
-            $element.children().first().outerWidth(sidebarWidth);
+        var contentWidth = $(window).width();
+        if ($('>.separator', $element).hasClass('collapsed')) {
+            contentWidth -= opts.collapsedSeparatorWidth;
         } else {
-            contentWidth = Math.floor(totalWidth - opts.collapsedSeparatorWidth);
+            contentWidth -= opts.separatorWidth + $('>.sidebar', $element).width();
         }
-
-        $element.children().last().outerWidth(contentWidth);
+        $('>.content', $element).width(contentWidth);
     }
 
-    function prepareControls($element, opts) {
-        var $controls = $('<div>').addClass('sidebar-controls').css(opts.controlsCss).height(opts.controlsHeight);
-
-        var $collapseButton = $('<i>').addClass(opts.collapseIcon).on('click', function() {
-            collapse($element, opts);
-        }).appendTo($controls).css({ 'float': 'right', 'margin-top': 3 });
-
+    function prepare($element, opts) {
         var $sidebar = $element.children().first();
-        if (opts.controlsPosition === 'top') {
-            $sidebar.prepend($controls);
-        } else {
-            $sidebar.append($controls);
-        }
+        var $content = $element.children().last();
 
-        var $separator = $('<div>').addClass('sidebar-separator expanded').css(opts.separatorCss);
-        $separator.height('100%').insertAfter($sidebar).on('dblclick', function() {
+        var sidebarWidth = parseInt($.cookie(opts.widthCookie), 10) || opts.sidebarWidth;
+
+        $element.addClass('sidebarized').css('position', 'relative');
+
+        $sidebar = $sidebar.wrap($('<div>', { 'class': 'sidebar-content', 'height': '100%' })).parent().css('overflow', 'auto');
+        $sidebar = $sidebar.wrap($('<div>', { 'class': 'sidebar' })).parent().css({
+            'position': 'absolute',
+            'height': '100%',
+            'width': sidebarWidth
+        });
+
+        $content.addClass('content').css({
+            'height': '100%',
+            'overflow-y': 'auto',
+            'margin-left': '0',
+            'position': 'absolute',
+            'left': sidebarWidth + opts.separatorWidth
+        });
+
+        var $controls = $('<div>', {
+            'class': 'sidebar-controls',
+            css: opts.controlsCss,
+            height: opts.controlsHeight
+        }).prependTo($sidebar);
+
+        var $separator = $('<div>', {
+            'class': 'separator expanded',
+            'attr': {
+                unselectable: 'on'
+            },
+            css: opts.separatorCss,
+            height: '100%'
+        }).css({ 'cursor': opts.resizeCursor, 'left': sidebarWidth });
+
+        $separator.insertAfter($sidebar).on('dblclick', function () {
             if ($(this).hasClass('collapsed')) {
                 expand($element, opts);
             } else {
@@ -81,59 +99,110 @@
             }
         });
 
-        var $expandButton = $('<i>').addClass(opts.expandIcon).on('click', function() {
+        $('<i>', { 'class': opts.collapseIcon, css: opts.iconCss }).on('click', function () {
+            collapse($element, opts);
+        }).appendTo($controls);
+
+        $('<i>', { 'class': opts.expandIcon, css: opts.iconCss }).on('click', function () {
             expand($element, opts);
-        }).css({ 'position': 'absolute' }).appendTo($separator).hide();
+        }).appendTo($separator).hide();
 
-        if (opts.controlsPosition === 'top') {
-            $expandButton.css('top', 5);
-        } else {
-            $expandButton.css('bottom', 5);
-        }
+        opts.buttons.map(function (button) {
+            $(button).children('.dropdown-toggle').css(opts.buttonsCss);
+            $(button).css(opts.buttonsCss).appendTo($controls);
+        });
 
-        for (var i in opts.buttons) {
-            $(opts.buttons[i]).css({ 'float': 'left' }).appendTo($controls);
-        }
+        $element.find('.sidebar-list li').on('click', function () {
+            $(this).siblings().removeClass('active');
+            $(this).addClass('active');
+        });
     }
 
-    $.fn.sidebarize = function(options) {
+    $.fn.sidebarize = function (options) {
         var opts = $.extend({}, $.fn.sidebarize.defaults, options);
 
-        return this.each(function() {
+        if (!$.cookie) {
+            throw new Error('Sidebarize: jQuery cookie plugin is required');
+        }
+
+        return this.each(function () {
             var $element = $(this);
 
             if ($element.hasClass('sidebarized')) {
                 return;
             }
-
-            var $children = $element.children();
-            if ($children.length !== 2) {
+            if ($element.children().length !== 2) {
                 throw new Error('Sidebarize: the element must have 2 child elements');
             }
-            var $sidebar = $children.first();
-            var $content = $children.last();
 
-            $element.addClass('sidebarized');
-            $content.addClass('content pull-left');
+            prepare($element, opts);
 
-            $sidebar = $sidebar.wrap($('<div>').addClass('sidebar-content')).parent().css('overflow', 'auto');
-            $sidebar = $sidebar.wrap($('<div>').addClass('sidebar pull-left')).parent();
+            function startSplit() {
+                if ($('>.separator', $element).hasClass('collapsed')) {
+                    return;
+                }
+                $element.children().css('-webkit-user-select', 'none');
 
-            $sidebar.height('100%');
-            $content.height('100%').css({ 'overflow-y': 'auto', 'margin-left': '0' });
+                $(document).on('mousemove', doSplit).on('mouseup', endSplit);
+            }
 
-            prepareControls($element, opts);
+            function doSplit(e) {
+                var windowWidth = $(window).width();
+                var maxWidth = opts.maxSidebarWidth || windowWidth - opts.separatorWidth;
+                var position = e.pageX;
 
-            $element.find('.sidebar-list li').on('click', function() {
-                $element.find('.sidebar-list li').removeClass('active');
-                $(this).addClass('active');
-            });
+                position = Math.min(Math.max(position, opts.minSidebarWidth), maxWidth);
 
-            $(window).on('resize', function() {
+                $('>.separator', $element).css('left', position);
+                $('>.sidebar', $element).css('left', 0).width(position);
+                $('>.content', $element).css('left', position + opts.separatorWidth).width(windowWidth - position - opts.separatorWidth);
+            }
+
+            function endSplit() {
+                $(document).off('mousemove', doSplit).off('mouseup', endSplit);
+
+                $element.children().css('-webkit-user-select', 'text');
+            }
+
+            $('>.separator', $element).on('mousedown', startSplit);
+
+            if (opts.stateCookie) {
+                if ($.cookie(opts.stateCookie) === 'collapsed') {
+                    collapse($element, opts);
+                }
+            }
+
+            if (opts.widthCookie) {
+                $(window).on('unload', function () {
+                    $.cookie(
+                        opts.widthCookie,
+                        parseInt($('>.sidebar', $element).width(), 10),
+                        {
+                            expires: opts.cookieExpiration || 365,
+                            path: document.location.pathname
+                        }
+                    );
+                });
+            }
+
+            if (opts.stateCookie) {
+                $(window).on('unload', function () {
+                    $.cookie(
+                        opts.stateCookie,
+                        $('>.separator', $element).hasClass('expanded') ? 'expanded' : 'collapsed',
+                        {
+                            expires: opts.cookieExpiration || 365,
+                            path: document.location.pathname
+                        }
+                    );
+                });
+            }
+
+            $(window).on('resize', function () {
                 adjustHeight($element, opts);
                 adjustWidth($element, opts);
             });
-            $(document).ajaxSuccess(function() {
+            $(document).ajaxSuccess(function () {
                 adjustHeight($element, opts);
                 adjustWidth($element, opts);
             });
@@ -143,27 +212,48 @@
     };
 
     $.fn.sidebarize.defaults = {
-        sidebarPercentage: 15,
-        controlsHeight: 22,
-        controlsPosition: 'top',
-        heightCompensator: 2,
-        collapseIcon: 'icon-chevron-left',
-        expandIcon: 'icon-chevron-right',
+        sidebarWidth: 250,
+        minSidebarWidth: 200,
+        maxSidebarWidth: null,
+        widthCookie: 'sidebar_width',
+        stateCookie: 'sidebar_state',
+        cookieExpiration: 365,
+        separatorWidth: 9,
+        collapsedSeparatorWidth: 22,
+        controlsHeight: 25,
+        collapseIcon: 'fa-icon-chevron-left',
+        expandIcon: 'fa-icon-chevron-right',
+        resizeCursor: 'e-resize',
         controlsCss: {
             'border': '1px solid #ddd',
             'text-align': 'right'
         },
-        separatorWidth: 9,
-        collapsedSeparatorWidth: 22,
         separatorCss: {
-            'position': 'relative',
-            'float': 'left',
+            'z-index': '100',
+            'position': 'absolute',
+            'user-select': 'none',
+            '-webkit-user-select': 'none',
+            '-khtml-user-select': 'none',
+            '-moz-user-select': 'none',
             'width': '7px',
             'border': '1px solid #ddd'
         },
-        buttons: {}
+        iconCss: {
+            'font-weight': 'bold',
+            'font-size': 14,
+            'line-height': '20px',
+            'float': 'right',
+            'margin': '0',
+            'padding': '3px 6px 0',
+            'cursor': 'pointer'
+        },
+        buttonsCss: {
+            'float': 'left',
+            'height': '25px',
+            'line-height': '25px'
+        },
+        buttons: []
     };
-
 })(jQuery);
 
 $(function () {

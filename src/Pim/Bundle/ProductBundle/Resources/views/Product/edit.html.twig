@@ -28,20 +28,20 @@
         {% set subtitle %}
             <div id="locale-switcher" class="btn-group sub-title">
                 <span class="product-name dropdown-toggle" data-toggle="dropdown">
-                    {{ dataLocale|flag }} 
+                    {{ dataLocale|flag }}
                     {{ product.label }}
                     <span class="caret"></span>
                 </span>
                 <ul class="dropdown-menu">
                     {% for locale in form.vars.value.getLocales() %}
                         <li class="{{ locale.code == dataLocale ? 'activeLocale' : '' }}">
-                            <a href="?dataLocale={{ locale.code }}" title="{{ locale.code|lower }}">
+                            <a href="?dataLocale={{ locale.code }}" title="{{ localeLabel(locale.code) }}">
                                     {% if locale.code == dataLocale %}
                                 <span class="icon">
                                         <i class="icon-bullet"></i>
                                 </span>
                                     {% endif %}
-                                {{ locale.code|flag }} 
+                                {{ locale.code|flag }}
                                 <span class="title">{{ product.label(locale.code) }}</span>
                             </a>
                         </li>
@@ -109,7 +109,6 @@
     {{ parent() }}
 
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/backbone.bootstrap-modal.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.cookie.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.hotkeys.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.jstree.js') }}"></script>
 

@@ -48,8 +48,12 @@ class LocaleSubscriber implements EventSubscriberInterface
      * @param array                $existingLocales     Existing locales
      * @param array                $localesWithFallback Locales with a fallback
      */
-    public function __construct(FormFactoryInterface $factory = null, $locales = null, $existingLocales = null, $localesWithFallback = null)
-    {
+    public function __construct(
+        FormFactoryInterface $factory = null,
+        $locales = array(),
+        $existingLocales = array(),
+        $localesWithFallback = array()
+    ) {
         $this->factory = $factory;
         $this->locales = $locales;
         $this->existingLocales = $existingLocales;

@@ -8,6 +8,8 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
+use Pim\Bundle\ProductBundle\Model\ProductInterface;
+use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 
 /**
  * Value for a product attribute
@@ -25,13 +27,13 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     /**
      * @var Oro\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute
      *
-     * @ORM\ManyToOne(targetEntity="ProductAttribute")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\ProductAttribute")
      * @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $attribute;
 
     /**
-     * @var Product $entity
+     * @var ProductInterface $entity
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Model\ProductInterface", inversedBy="values")
      */
@@ -105,7 +107,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      *
      * @var ArrayCollection options
      *
-     * @ORM\ManyToMany(targetEntity="AttributeOption")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ProductBundle\Entity\AttributeOption")
      * @ORM\JoinTable(name="pim_product_value_option",
      *      joinColumns={@ORM\JoinColumn(name="value_id", referencedColumnName="id", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="option_id", referencedColumnName="id", onDelete="CASCADE")}
@@ -118,7 +120,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      *
      * @var Pim\Bundle\ProductBundle\Entity\AttributeOption $option
      *
-     * @ORM\ManyToOne(targetEntity="AttributeOption", cascade="persist")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\AttributeOption", cascade="persist")
      * @ORM\JoinColumn(name="option_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $option;
@@ -148,7 +150,11 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      *
      * @var ArrayCollection $prices
      *
-     * @ORM\OneToMany(targetEntity="ProductPrice", mappedBy="value", cascade={"persist", "remove"})
+     * @ORM\OneToMany(
+     *     targetEntity="Pim\Bundle\ProductBundle\Entity\ProductPrice",
+     *     mappedBy="value",
+     *     cascade={"persist", "remove"}
+     * )
      * @ORM\OrderBy({"currency" = "ASC"})
      */
     protected $prices;

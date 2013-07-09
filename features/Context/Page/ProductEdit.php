@@ -28,7 +28,7 @@ class ProductEdit extends Page
 
     public function findLocaleLink($locale, $content = null)
     {
-        $link = $this->getElement('Locales dropdown')->findLink(strtolower($locale));
+        $link = $this->getElement('Locales dropdown')->findLink($locale);
 
         if ($content) {
             if (strpos($link->getText(), $content) === false) {
@@ -51,7 +51,7 @@ class ProductEdit extends Page
 
     public function switchLocale($locale)
     {
-        $this->getElement('Locales dropdown')->clickLink(strtolower($locale));
+        $this->getElement('Locales dropdown')->clickLink($locale);
     }
 
     public function findLocale($locale, $label)

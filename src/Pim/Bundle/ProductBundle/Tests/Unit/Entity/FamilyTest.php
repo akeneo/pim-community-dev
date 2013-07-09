@@ -75,12 +75,14 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
             'Pim\Bundle\ProductBundle\Entity\ProductAttribute',
             $family->getAttributes()->first()
         );
+        $this->assertTrue($family->hasAttribute($newAttribute));
 
         $family->removeAttribute($newAttribute);
         $this->assertNotInstanceOf(
             'Pim\Bundle\ProductBundle\Entity\ProductAttribute',
             $family->getAttributes()->first()
         );
+        $this->assertFalse($family->hasAttribute($newAttribute));
     }
 
     /**
