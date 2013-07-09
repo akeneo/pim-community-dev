@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\AddressBundle\Tests\Unit\Type;
+namespace Oro\Bundle\AddressBundle\Tests\Unit\Form\Type;
 
 use Symfony\Component\Form\FormView;
 
