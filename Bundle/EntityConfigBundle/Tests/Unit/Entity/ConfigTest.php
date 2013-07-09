@@ -38,8 +38,8 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->configEntity->setUpdated(new \DateTime('2013-01-01'));
         $this->assertEquals('2013-01-01', $this->configEntity->getUpdated()->format('Y-m-d'));
 
-        /** test ConfigEntity beforeSave */
-        $this->configEntity->beforeSave();
+        /** test ConfigEntity prePersist */
+        $this->configEntity->prePersist();
         $currentDate = new \DateTime('now', new \DateTimeZone('UTC'));
         $this->assertEquals($currentDate->format('Y-m-d'), $this->configEntity->getCreated()->format('Y-m-d'));
 
