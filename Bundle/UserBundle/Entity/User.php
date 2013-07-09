@@ -1142,4 +1142,9 @@ class User extends AbstractEntityFlexible implements
 
         return $this->tags;
     }
+
+    public function setTags($tags)
+    {
+        $this->tags = $tags;
+    }
 }

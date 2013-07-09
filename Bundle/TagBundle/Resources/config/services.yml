@@ -24,6 +24,8 @@ services:
             - @doctrine.orm.entity_manager
             - %oro_tag.tag.entity.class%
             - %oro_tag.tagging.entity.class%
+            - @oro_search.mapper
+            - @security.context
 
     oro_tag.docrine.event.listener:
         class: %oro_tag.tag_listener.class%
@@ -31,6 +33,7 @@ services:
             - [ setContainer, [ @service_container ] ]
         tags:
             - { name: doctrine.event_listener, event: preRemove }
+#            - { name: doctrine.event_listener, event: postPersist }
 
     oro_tag.form.tag:
         class: Symfony\Component\Form\Form
@@ -98,6 +101,7 @@ services:
         class: %oro_tag.form.type.tag_select.class%
         arguments:
             - @doctrine.orm.entity_manager
+            - @oro_tag.tag.manager
         tags:
             - { name: form.type, alias: oro_tag_select }
 
