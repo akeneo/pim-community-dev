@@ -27,7 +27,6 @@ Oro.Tags.Select2View =  Oro.Tags.TagView.extend({
         var tagArray = [];
         _.each(tagCollection.models, function(tag, i) {
             tagArray.push(tag.attributes);
-            console.log(tag);
         });
 
         $(this.options.tagInputId).select2("data", tagArray);

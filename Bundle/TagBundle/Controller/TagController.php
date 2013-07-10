@@ -76,7 +76,7 @@ class TagController extends Controller
     }
 
     /**
-     *@Route("/search/{id}", name="oro_tag_search", requirements={"id"="\d+"}, defaults={"id"=0})
+     * @Route("/search/{id}", name="oro_tag_search", requirements={"id"="\d+"}, defaults={"id"=0})
      * @AclAncestor("oro_tag_grid_and_edit")
      * @Template
      */

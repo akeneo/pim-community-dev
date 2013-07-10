@@ -49,7 +49,7 @@
             var tagView = new Oro.Tags.Select2View({tagInputId: '#{{ form.tags.get('id') }}'});
             tagView.getCollection().reset(tags);
 
-            {% if is_granted('oro_tag_assign', form.vars.value) %}
+            {% if not resource_granted('oro_tag_assign') %}
             $('#{{ form.tags.get('id') }}').select2("readonly", true);
             {% endif %}
 });
