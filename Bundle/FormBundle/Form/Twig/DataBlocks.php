@@ -58,7 +58,7 @@ class DataBlocks
         $this->env              = $env;
 
         $tmpLoader = $env->getLoader();
-        $env->setLoader(new \Twig_Loader_String());
+        $env->setLoader(new \Twig_Loader_Chain(array($tmpLoader, new \Twig_Loader_String())));
 
         $this->renderBlock($form);
 

@@ -53,6 +53,7 @@ class ConfigController extends Controller
     {
         $entity  = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
         $request = $this->getRequest();
+
         $form    = $this->createForm(
             'oro_entity_config_config_entity_type',
             null,

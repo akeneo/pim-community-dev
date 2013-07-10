@@ -1,0 +1,53 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
+
+{% set title = 'Entitie Unique Keys' %}
+
+{% set formAction = path('oro_entityextend_entity_unique_key', {id: entity_id}) %}
+
+{% block navButtons %}
+    {{ UI.button({'path' : path('oro_entityconfig_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
+    {{ UI.buttonType({'type': 'submit', 'class': 'btn-success', 'label': 'Save'}) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      'entity',
+        'indexPath':   path('oro_entityconfig_index'),
+        'indexLabel': 'Entitie Unique Keys',
+        'entityTitle': 'N/A',
+        'hasAvatar':   false,
+        'imagePath':   '',
+    }
+    %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block stats %}
+    {{ parent() }}
+{% endblock stats %}
+
+{% block content_data %}
+    {% set id = 'configentity-unique' %}
+    {% set dataBlocks = [{
+            'title': 'Unique Keys',
+            'class': 'active',
+            'subblocks': [
+            {
+                'title': '',
+                'data': [
+                    UI.collectionField(form.keys, '', 'Add another')
+                ]
+            }
+            ]
+        }]
+    %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+        'hiddenData': form_rest(form)
+    }%}
+
+    {{ parent() }}
+{% endblock content_data %}

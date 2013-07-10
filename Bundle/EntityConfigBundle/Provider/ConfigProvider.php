@@ -4,6 +4,7 @@ namespace Oro\Bundle\EntityConfigBundle\Provider;
 
 use Doctrine\ORM\PersistentCollection;
 
+use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
@@ -168,6 +169,11 @@ class ConfigProvider implements ConfigProviderInterface
         }
 
         return $className;
+    }
+
+    public function persist(ConfigInterface $config)
+    {
+        $this->configManager->persist($config);
     }
 
     public function flush()
