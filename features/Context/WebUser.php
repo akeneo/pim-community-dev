@@ -624,6 +624,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^I fill in the following fields:$/
+     */
+    public function iFillInTheFollowingFields(TableNode $table)
+    {
+        foreach ($table->getRowsHash() as $field => $value) {
+            $this->getCurrentPage()->fillField($field, $value);
+        }
+    }
+
+    /**
      * @Given /^I press the "([^"]*)" button$/
      */
     public function iPressTheButton($button)

@@ -13,8 +13,4 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 class ChannelCreation extends Page
 {
     protected $path = '/configuration/channel/create';
-
-    protected $elements = array(
-
-    );
 }
