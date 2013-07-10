@@ -33,9 +33,10 @@ class FixturesContext extends RawMinkContext
     );
 
     private $attributeTypes = array(
-        'text'     => 'pim_product_text',
-        'number'   => 'pim_product_number',
-        'textarea' => 'pim_product_textarea',
+        'text'       => 'pim_product_text',
+        'number'     => 'pim_product_number',
+        'textarea'   => 'pim_product_textarea',
+        'identifier' => 'pim_product_identifier',
     );
 
     /**

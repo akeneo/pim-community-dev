@@ -293,7 +293,13 @@ class Family implements Translatable
     {
         return $this->attributes->filter(
             function ($attribute) {
-                return 'pim_product_text' === $attribute->getAttributeType();
+                return in_array(
+                    $attribute->getAttributeType(),
+                    array(
+                        'pim_product_text',
+                        'pim_product_identifier'
+                    )
+                );
             }
         )->toArray();
     }

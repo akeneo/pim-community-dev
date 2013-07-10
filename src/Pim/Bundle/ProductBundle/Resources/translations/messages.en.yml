@@ -179,6 +179,7 @@
 'Locales | Create'             : 'Locales | Create'
 'Locales | Edit'               : 'Locales | Edit'
 
+'pim_product_identifier'       : 'Identifier'
 'pim_product_text'             : 'Text'
 'pim_product_textarea'         : 'Text Area'
 'pim_product_number'           : 'Number'

@@ -320,7 +320,15 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      */
     public function isRemovable()
     {
-        if (null === $this->entity || null === $this->entity->getFamily()) {
+        if (null === $this->entity) {
+            return true;
+        }
+
+        if ('pim_product_identifier' === $this->attribute->getAttributeType()) {
+            return false;
+        }
+
+        if (null === $this->entity->getFamily()) {
             return true;
         }
 

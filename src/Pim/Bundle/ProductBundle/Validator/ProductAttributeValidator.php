@@ -219,6 +219,7 @@ class ProductAttributeValidator
                 self::isMaxFileSizeValid($productAttribute, $context);
                 break;
             case 'pim_product_text':
+            case 'pim_product_identifier':
                 self::isMaxCharactersValid($productAttribute, $context);
                 self::isValidationRuleValid($productAttribute, $context);
                 break;
@@ -243,7 +244,8 @@ class ProductAttributeValidator
         if ($value !== null) {
             $exclusions = array(
                     'pim_product_image',
-                    'pim_product_file'
+                    'pim_product_file',
+                    'pim_product_identifier',
             );
 
             if (in_array($productAttribute->getAttributeType(), $exclusions)) {
