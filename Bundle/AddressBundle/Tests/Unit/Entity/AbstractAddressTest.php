@@ -106,7 +106,7 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $result->expects($this->once())
+        $result->expects($this->any())
             ->method('__toString')
             ->will($this->returnValue($name));
 
@@ -120,7 +120,7 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
     protected function createMockRegion($name)
     {
         $result = $this->getMock('Oro\Bundle\AddressBundle\Entity\Region', array(), array('combinedCode'));
-        $result->expects($this->once())
+        $result->expects($this->any())
             ->method('__toString')
             ->will($this->returnValue($name));
 
