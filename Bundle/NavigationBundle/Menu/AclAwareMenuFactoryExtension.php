@@ -268,5 +268,3 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
         return md5($space . ':' . $value);
     }
 }
-
-

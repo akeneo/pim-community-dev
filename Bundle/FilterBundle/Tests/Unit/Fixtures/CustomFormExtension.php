@@ -12,7 +12,8 @@ class CustomFormExtension extends AbstractExtension
      */
     protected $initialTypes = array();
 
-    public function __construct(array $initialTypes) {
+    public function __construct(array $initialTypes)
+    {
         $this->initialTypes = $initialTypes;
     }
 

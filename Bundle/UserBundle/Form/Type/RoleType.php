@@ -61,7 +61,7 @@ class RoleType extends AbstractType
                     $form = $event->getForm();
 
                     $options = $form->get('role')->getConfig()->getOptions();
-                    if(array_key_exists('auto_initialize', $options)) {
+                    if (array_key_exists('auto_initialize', $options)) {
                         $options['auto_initialize'] = false;
                     }
 
