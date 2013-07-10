@@ -67,7 +67,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Create product using basic form
+     * Create product
      *
      * @param string $dataLocale data locale
      *
@@ -84,7 +84,7 @@ class ProductController extends Controller
 
         $entity = $this->getProductManager()->createFlexible(true);
 
-        if ($this->get('pim_product.form.handler.basic_product')->process($entity)) {
+        if ($this->get('pim_product.form.handler.product_create')->process($entity)) {
             $this->addFlash('success', 'Product successfully saved.');
 
             $dataLocale = $entity->getLocales()->first()->getCode();
@@ -98,7 +98,7 @@ class ProductController extends Controller
         }
 
         return array(
-            'form'       => $this->get('pim_product.form.basic_product')->createView(),
+            'form'       => $this->get('pim_product.form.product_create')->createView(),
             'dataLocale' => $this->getDataLocale()
         );
     }
