@@ -61,6 +61,69 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($formView, $this->formView->getView());
     }
 
+    public function testAddMultiChildrenInTheSameGroup()
+    {
+        $group = $this->getGroupMock(array(
+            'id'   => 1,
+            'name' => 'General',
+        ));
+
+        $nameAttr = $this->getAttributeMock(array(
+            'id'           => 42,
+            'virtualGroup' => $group,
+            'code'         => 'name',
+            'label'        => 'Name',
+            'sortOrder'    => 0,
+            'scopable'     => false,
+        ));
+        $nameValue = $this->getValueMock(array(
+            'attribute' => $nameAttr,
+            'removable' => true,
+        ));
+        $nameView = $this->getMock('Symfony\Component\Form\FormView');
+
+        $colorAttr = $this->getAttributeMock(array(
+            'id'           => 1337,
+            'virtualGroup' => $group,
+            'code'         => 'color',
+            'label'        => 'Color',
+            'sortOrder'    => 0,
+            'scopable'     => false,
+        ));
+        $colorValue = $this->getValueMock(array(
+            'attribute' => $colorAttr,
+            'removable' => false,
+        ));
+        $colorView = $this->getMock('Symfony\Component\Form\FormView');
+
+        $this->formView->addChildren($nameValue, $nameView);
+        $this->formView->addChildren($colorValue, $colorView);
+
+        $formView = array(
+            1 => array(
+                'name'       => 'General',
+                'attributes' => array(
+                    42 => array(
+                        'isRemovable' => true,
+                        'code'        => 'name',
+                        'label'       => 'Name',
+                        'sortOrder'   => 0,
+                        'value'       => $nameView
+                    ),
+                    1337 => array(
+                        'isRemovable' => false,
+                        'code'        => 'color',
+                        'label'       => 'Color',
+                        'sortOrder'   => 0,
+                        'value'       => $colorView,
+                    ),
+                ),
+            ),
+        );
+
+        $this->assertEquals($formView, $this->formView->getView());
+    }
+
     public function testAddChildrenWithScopableValue()
     {
         $group = $this->getGroupMock(array(

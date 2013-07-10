@@ -41,7 +41,8 @@ class ProductFormView
     private function initializeGroup(AttributeGroup $group)
     {
         $this->view[$group->getId()] = array(
-            'name' => $group->getName(),
+            'name'       => $group->getName(),
+            'attributes' => array(),
         );
     }
 
@@ -85,9 +86,7 @@ class ProductFormView
             $attributeView['classes'] = $classes;
         }
 
-        $this->view[$group->getId()]['attributes'] = array(
-            $attribute->getId() => $attributeView,
-        );
+        $this->view[$group->getId()]['attributes'][$attribute->getId()] = $attributeView;
     }
 
     private function getAttributeValues(ProductAttribute $attribute)
