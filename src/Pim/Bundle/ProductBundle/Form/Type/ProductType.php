@@ -120,27 +120,4 @@ class ProductType extends FlexibleType
     {
         return 'pim_product';
     }
-
-    /**
-     * Sort an array of by the values of its sortOrder key
-     *
-     * @param array $attributes
-     *
-     * @return array
-     */
-    protected function sortAttributes(array $attributes)
-    {
-        uasort(
-            $attributes,
-            function ($a, $b) {
-                if ($a['sortOrder'] === $b['sortOrder']) {
-                    return 0;
-                }
-
-                return $a['sortOrder'] > $b['sortOrder'] ? 1 : -1;
-            }
-        );
-
-        return $attributes;
-    }
 }
