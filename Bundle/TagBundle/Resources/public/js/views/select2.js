@@ -26,11 +26,8 @@ Oro.Tags.Select2View =  Oro.Tags.TagView.extend({
         var tagCollection = this.getCollection().getFilteredCollection(this.options.filter);
         var tagArray = [];
         _.each(tagCollection.models, function(tag, i) {
-            tagArray.push({
-                id: tag.get('id'),
-                name: tag.get('name'),
-                url: tag.get('url')
-            });
+            tagArray.push(tag.attributes);
+            console.log(tag);
         });
 
         $(this.options.tagInputId).select2("data", tagArray);

@@ -22,18 +22,24 @@
 #}
 {% macro tagInputField(label, form, defaultClass) %}
 
-    <ul class="inline" id="tag-sort-actions">
-        <li class="active">
-            <a href="javascript:void(0);" class="no-hash">
-                {% trans %}All tags{% endtrans %}
-            </a>
-        </li>
-        <li>
-            <a href="javascript:void(0);" data-type="owner" class="no-hash">
-                {% trans %}My tags{% endtrans %}
-            </a>
-        </li>
-    </ul>
+    <div>
+        <div class="controls">
+            <div>
+                <ul class="inline" id="tag-sort-actions">
+                    <li class="active">
+                        <a href="javascript:void(0);" class="no-hash">
+                            {% trans %}All tags{% endtrans %}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" data-type="owner" class="no-hash">
+                            {% trans %}My tags{% endtrans %}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
     {{ form_row(form.tags)  }}
 
