@@ -1005,6 +1005,16 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
     /**
      * {@inheritdoc}
      */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getTranslation($locale = null)
     {
         $locale = ($locale) ? $locale : $this->locale;

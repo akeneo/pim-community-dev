@@ -48,7 +48,7 @@ services:
         class: %pim_product.listener.user_context.class%
         arguments:
             - @security.context
-            - @stof_doctrine_extensions.listener.translatable
+            - @pim_translation.listener.add_locale
             - @pim_product.manager.product
         tags:
             - { name: kernel.event_subscriber }

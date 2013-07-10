@@ -58,4 +58,13 @@ interface TranslatableInterface
      * @return string
      */
     public function getTranslationFQCN();
+
+    /**
+     * Set the locale used by default for translation
+     *
+     * @param string
+     *
+     * @return Pim\Bundle\TranslationBundle\Entity\TranslatableInterface
+     */
+    public function setLocale($locale);
 }

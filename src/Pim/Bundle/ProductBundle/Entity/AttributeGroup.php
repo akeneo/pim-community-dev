@@ -279,6 +279,16 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
     /**
      * {@inheritdoc}
      */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getTranslations()
     {
         return $this->translations;

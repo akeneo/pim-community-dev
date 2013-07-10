@@ -215,6 +215,16 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     /**
      * {@inheritdoc}
      */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getTranslation($locale = null)
     {
         $locale = ($locale) ? $locale : $this->locale;
