@@ -69,7 +69,7 @@ class TagExtension extends \Twig_Extension
         /** @var Tag $tag */
         foreach ($entity->getTags() as $tag) {
             $entry = array(
-                'text' => $tag->getName(),
+                'name' => $tag->getName(),
                 'id'   => $tag->getId(),
                 'url'  => $this->router->generate('oro_tag_search', array('id' => $tag->getId()))
             );
