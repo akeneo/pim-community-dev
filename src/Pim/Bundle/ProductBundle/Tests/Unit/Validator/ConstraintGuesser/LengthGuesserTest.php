@@ -34,6 +34,12 @@ class LengthGuesserTest extends ConstraintGuesserTest
                 'attributeType' => 'pim_product_textarea',
             ))
         ));
+
+        $this->assertTrue($this->target->supportAttribute(
+            $this->getAttributeMock(array(
+                'attributeType' => 'pim_product_identifier',
+            ))
+        ));
     }
 
     public function testGuessLengthConstraint()
