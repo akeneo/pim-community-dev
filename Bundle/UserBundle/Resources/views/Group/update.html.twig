@@ -1,5 +1,4 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
-{% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
 
 {% set title = form.vars.value.id ? 'Update Group'|trans : 'Create Group'|trans %}
 {% oro_title_set({params : { "%group%": form.vars.value.name } }) %}

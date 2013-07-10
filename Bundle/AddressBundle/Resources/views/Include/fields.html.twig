@@ -1,5 +1,3 @@
-{% extends 'OroUIBundle:Form:fields.html.twig' %}
-
 {% block oro_region_widget %}
     {# // check if block was not included yet #}
     {% set _block = block('oro_region_updater_js') %}
@@ -124,4 +122,4 @@
             });
         </script>
     {% endspaceless %}
-{%  endblock oro_address_collection_widget %}
+{% endblock oro_address_collection_widget %}
