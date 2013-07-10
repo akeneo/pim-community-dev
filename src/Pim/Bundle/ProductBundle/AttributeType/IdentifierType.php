@@ -59,6 +59,15 @@ class IdentifierType extends OroTextType
                 )
             ),
             array(
+                'name'      => 'required',
+                'fieldType' => 'checkbox',
+                'options'   => array(
+                    'data'      => true,
+                    'disabled'  => true,
+                    'read_only' => true
+                )
+            ),
+            array(
                 'name'      => 'useableAsGridColumn',
                 'fieldType' => 'checkbox',
                 'options'   => array(
