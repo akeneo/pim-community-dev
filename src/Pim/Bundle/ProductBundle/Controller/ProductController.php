@@ -67,12 +67,12 @@ class ProductController extends Controller
     }
 
     /**
-     * Create product
+     * Create product using basic form
      *
      * @param string $dataLocale data locale
      *
      * @Route("/create/{dataLocale}", defaults={"dataLocale" = null})
-     * @Template("PimProductBundle:Product:edit.html.twig")
+     * @Template("PimProductBundle:Product:create.html.twig")
      *
      * @return array
      */
@@ -80,24 +80,7 @@ class ProductController extends Controller
     {
         $entity = $this->getProductManager()->createFlexible(true);
 
-        return $this->editAction($entity, $dataLocale);
-    }
-
-    /**
-     * Create product using simple form
-     *
-     * @param string $dataLocale data locale
-     *
-     * @Route("/quickcreate/{dataLocale}", defaults={"dataLocale" = null})
-     * @Template("PimProductBundle:Product:quickcreate.html.twig")
-     *
-     * @return array
-     */
-    public function quickCreateAction($dataLocale)
-    {
-        $entity = $this->getProductManager()->createFlexible(true);
-
-        if ($this->get('pim_product.form.handler.simple_product')->process($entity)) {
+        if ($this->get('pim_product.form.handler.basic_product')->process($entity)) {
             $this->addFlash('success', 'Product successfully saved.');
 
             $dataLocale = $entity->getLocales()->first()->getCode();
@@ -111,7 +94,7 @@ class ProductController extends Controller
         }
 
         return array(
-            'form'       => $this->get('pim_product.form.simple_product')->createView(),
+            'form'       => $this->get('pim_product.form.basic_product')->createView(),
             'dataLocale' => $this->getDataLocale()
         );
     }
