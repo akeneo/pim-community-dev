@@ -70,12 +70,12 @@ class CategoryType extends AbstractSegmentType
     {
         $builder->add(
             'title',
-            'collection',
+            'pim_translatable_field',
             array(
-                'type'         => 'text', /*new CategoryTitleType(),*/
-                'allow_add'    => true,
-                'allow_delete' => true,
-                'by_reference' => false
+                'field'             => 'title',
+                'translation_class' => 'Pim\\Bundle\\ProductBundle\\Entity\\CategoryTranslation',
+                'entity_class'      => 'Pim\\Bundle\\ProductBundle\\Entity\\Category',
+                'property_path'     => 'translations'
             )
         );
     }

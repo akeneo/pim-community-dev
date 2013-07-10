@@ -57,7 +57,7 @@ class PimTranslationExtensionTest extends \PHPUnit_Framework_TestCase
         $this->extension->load($this->configs, $this->containerBuilder);
 
         $serviceIds = $this->containerBuilder->getServiceIds();
-        $this->assertCount(2, $serviceIds);
+        $this->assertCount(3, $serviceIds);
         $this->assertTrue(in_array(self::PIM_TRANSLATION_FORM_TYPE, $serviceIds));
     }
 }

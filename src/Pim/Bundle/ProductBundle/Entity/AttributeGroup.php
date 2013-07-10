@@ -364,6 +364,8 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
      */
     public function setName($name)
     {
-        return $this->getTranslation()->setName($name);
+        $this->getTranslation()->setName($name);
+
+        return $this;
     }
 }

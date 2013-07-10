@@ -62,6 +62,7 @@ class AttributeDatagridManager extends DatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
+        /* TODO : to fix
         $field = new FieldDescription();
         $field->setName('label');
         $field->setOptions(
@@ -77,6 +78,7 @@ class AttributeDatagridManager extends DatagridManager
             )
         );
         $fieldsCollection->add($field);
+        */
 
         $field = $this->createAttributeTypeField();
         $fieldsCollection->add($field);

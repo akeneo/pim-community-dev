@@ -1090,8 +1090,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      */
     public function setLabel($label)
     {
-        $translation = $this->getTranslation();
-        $translation->setLabel($label);
+        $translation = $this->getTranslation()->setLabel($label);
 
         return $this;
     }
