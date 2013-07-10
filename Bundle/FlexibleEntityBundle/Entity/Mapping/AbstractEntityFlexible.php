@@ -264,7 +264,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         if (preg_match('/set(.*)/', $method, $matches)) {
             $attributeCode = Inflector::tableize($matches[1]);
             $method        = 'setData';
-        } else if (preg_match('/add(.*)/', $method, $matches)) {
+        } elseif (preg_match('/add(.*)/', $method, $matches)) {
             $attributeCode = Inflector::tableize($matches[1]);
             $method        = 'addData';
         }

@@ -305,8 +305,7 @@ class SegmentManager
         $i = 0;
         $parentFound = false;
 
-        while ( ($i < count($childPath))
-                && (!$parentFound) ) {
+        while ($i < count($childPath) && (!$parentFound)) {
             $parentFound = ($childPath[$i]->getId() === $parentNode->getId());
             $i++;
         }
