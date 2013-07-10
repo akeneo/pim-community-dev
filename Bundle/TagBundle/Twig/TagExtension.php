@@ -76,16 +76,17 @@ class TagExtension extends \Twig_Extension
             foreach ($tag->getTagging() as $tagging) {
                 if ($this->getUser()->getId() == $tagging->getUser()->getId()) {
                     $result[] = array(
-                        'text'  => $tag->getName(),
+                        'name'  => $tag->getName(),
                         'id'    => $tag->getId(),
                         'url'   => $this->router->generate('oro_tag_search', array('id' => $tag->getId())),
-                        'owner' => true
+                        'owner' => true,
                     );
                 } elseif (!isset($keys[$slug])) {
                     $result[] = array(
-                        'text' => $tag->getName(),
+                        'name' => $tag->getName(),
                         'id'   => $tag->getId(),
-                        'url'  => $this->router->generate('oro_tag_search', array('id' => $tag->getId()))
+                        'url'  => $this->router->generate('oro_tag_search', array('id' => $tag->getId())),
+                        'locked' => true,
                     );
                 }
             }

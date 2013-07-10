@@ -56,16 +56,16 @@ class TagSelectType extends AbstractType
         $transformer = new TagsTransformer($this->om, 'Oro\Bundle\TagBundle\Entity\Tag');
         $transformer->setTagManager($this->tagManager);
 
-        $builder->addEventListener(
-            FormEvents::PRE_BIND,
-            function (FormEvent $event) use ($transformer) {
-                //$form = $event->getForm();
-                $data = $event->getData();
-                $data = $transformer->reverseTransform($data);
-
-                $event->setData($data);
-            }
-        );
+//        $builder->addEventListener(
+//            FormEvents::PRE_BIND,
+//            function (FormEvent $event) use ($transformer) {
+//                //$form = $event->getForm();
+//                $data = $event->getData();
+//                $data = $transformer->reverseTransform($data);
+//
+//                $event->setData($data);
+//            }
+//        );
         $builder->addModelTransformer($transformer);
     }
 
