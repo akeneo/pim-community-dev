@@ -105,7 +105,6 @@ class ConfigManagerTest extends AbstractEntityManagerTest
         $this->assertEquals(true, $this->configManager->hasConfig(self::DEMO_ENTITY, 'test'));
     }
 
-
     public function testAddAndGetProvider()
     {
         $this->configManager->addProvider($this->provider);

@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Controller;
 
-use Acme\Bundle\DemoBundle\Entity\Account;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -97,17 +96,28 @@ class ConfigController extends Controller
 
         $datagrid = $datagridManager->getDatagrid();
 
-        $entityName = strtolower(current(array_reverse(explode('\\', $entity->getClassname()))));
-        $link = $this->get('router')->match('/'.$entityName);
+        $entityName = $moduleName = '';
+        $className = explode('\\', $entity->getClassname());
+        foreach ($className as $i => $name) {
+            if (count($className)-1 == $i) {
+                $entityName = $name;
+            } elseif (!in_array($name, array('Bundle','Entity'))) {
+                $moduleName .= $name;
+            }
+        }
+
+        $link = $this->get('router')->match('/'.strtolower($entityName));
         if (is_array($link)) {
             $link = $this->generateUrl($link['_route']);
         }
 
         return array(
             'entity'     => $entity,
+            'properties' => $entity->toArray('entity'),
             'datagrid'   => $datagrid->createView(),
             'link'       => $link,
-            'entityName' => $entityName
+            'entityName' => $entityName,
+            'moduleName' => $moduleName,
         );
     }
 
@@ -168,6 +178,7 @@ class ConfigController extends Controller
     public function fieldupdateAction($id)
     {
         $field   = $this->getDoctrine()->getRepository(ConfigField::ENTITY_NAME)->find($id);
+
         $form    = $this->createForm('oro_entity_config_config_field_type', null, array(
             'class_name' => $field->getEntity()->getClassName(),
             'field_name' => $field->getCode(),

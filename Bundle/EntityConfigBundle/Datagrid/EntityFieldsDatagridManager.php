@@ -2,19 +2,10 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Datagrid;
 
-use Doctrine\ORM\Query;
-
-use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
-use Oro\Bundle\GridBundle\Action\ActionInterface;
-use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
-use Oro\Bundle\GridBundle\Property\UrlProperty;
-
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
-use Oro\Bundle\EntityConfigBundle\ConfigManager;
 
 class EntityFieldsDatagridManager extends FieldsDatagrid
 {
@@ -23,9 +14,9 @@ class EntityFieldsDatagridManager extends FieldsDatagrid
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $fieldObjectName = new FieldDescription();
-        $fieldObjectName->setName('code');
-        $fieldObjectName->setOptions(
+        $fieldCode = new FieldDescription();
+        $fieldCode->setName('code');
+        $fieldCode->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
                 'label'       => 'Code',
@@ -37,7 +28,23 @@ class EntityFieldsDatagridManager extends FieldsDatagrid
                 'show_filter' => false,
             )
         );
-        $fieldsCollection->add($fieldObjectName);
+        $fieldsCollection->add($fieldCode);
+
+        $fieldType = new FieldDescription();
+        $fieldType->setName('type');
+        $fieldType->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => 'Type',
+                'field_name'  => 'type',
+                'filter_type' => FilterInterface::TYPE_STRING,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => false,
+            )
+        );
+        $fieldsCollection->add($fieldType);
 
         $this->addDynamicRows($fieldsCollection, true);
     }

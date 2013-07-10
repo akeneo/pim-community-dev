@@ -48,8 +48,71 @@ oro_entity_config:
                         options:
                             block:          entity
                             required:       false
+        field:
+            items:
+                icon:
+                    default_value:          false
+                    entity_grid:            false
+                    grid:
+                        type:               string
+                        label:              'Icon'
+                        filter_type:        oro_grid_orm_string
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        false
+                    form:
+                        type:               text
+                        options:
+                            block:          entity
+                            required:       true
+                name:
+                    default_value:          false
+                    grid:
+                        type:               string
+                        label:              'Name'
+                        filter_type:        oro_grid_orm_string
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        false
+                    form:
+                        type:               text
+                        options:
+                            block:          entity
+                            required:       true
+                label:
+                    default_value:          false
+                    grid:
+                        type:               string
+                        label:              'Label'
+                        filter_type:        oro_grid_orm_string
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        false
+                    form:
+                        type:               text
+                        options:
+                            block:          entity
+                            required:       true
+                description:
+                    grid:
+                        type:               text
+                        label:              'Description'
+                        filter_type:        oro_grid_orm_string
+                        required:           false
+                        sortable:           false
+                        filterable:         true
+                        show_filter:        false
+                    form:
+                        type:               textarea
+                        options:
+                            block:          entity
+                            required:       false
 
-#    datagrid:
+
+    datagrid:
 #        entity:
 #            form:
 #                block_config:
@@ -78,14 +141,14 @@ oro_entity_config:
 #                            empty_value:    false
 #                            block:          datagrid
 #                            label:          "Create Action"
-#        field:
-#            form:
-#                block_config:
-#                    datagrid:
-#                        title:              'Datagrid Config'
-#                        subblocks:
-#                            base:           ~
-#            items:
+        field:
+            form:
+                block_config:
+                    datagrid:
+                        title:              'Datagrid Config'
+                        subblocks:
+                            base:           ~
+            items:
 #                enabled:
 #                    default_value:          true
 #                    entity_grid:            false
@@ -105,9 +168,9 @@ oro_entity_config:
 #                            block:          datagrid
 #                            label:          "Show in Datagrid"
 #
-#                is_searchable:
-#                    default_value:          false
-#                    entity_grid:            false
+                is_searchable:
+                    default_value:          false
+                    entity_grid:            false
 #                    grid:
 #                        type:               boolean
 #                        label:              'Datagrid search'
@@ -116,17 +179,17 @@ oro_entity_config:
 #                        sortable:           true
 #                        filterable:         true
 #                        show_filter:        false
-#                    form:
-#                        type:               choice
-#                        options:
-#                            choices:        ['No', 'Yes']
-#                            empty_value:    false
-#                            block:          datagrid
-#                            label:          "Datagrid search"
-#
-#                is_filtrableble:
-#                    default_value:          false
-#                    entity_grid:            false
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          datagrid
+                            label:          "Datagrid search"
+
+                is_filtrableble:
+                    default_value:          false
+                    entity_grid:            false
 #                    grid:
 #                        type:               boolean
 #                        label:              'Datagrid filter'
@@ -135,10 +198,10 @@ oro_entity_config:
 #                        sortable:           true
 #                        filterable:         true
 #                        show_filter:        false
-#                    form:
-#                        type:               choice
-#                        options:
-#                            choices:        ['No', 'Yes']
-#                            empty_value:    false
-#                            block:          datagrid
-#                            label:          "Datagrid filter"
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          datagrid
+                            label:          "Datagrid filter"

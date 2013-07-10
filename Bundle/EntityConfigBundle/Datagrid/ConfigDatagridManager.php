@@ -111,22 +111,6 @@ class ConfigDatagridManager extends DatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $fieldObjectId = new FieldDescription();
-        $fieldObjectId->setName('Id');
-        $fieldObjectId->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                'label'       => 'Id',
-                'field_name'  => 'id',
-                'filter_type' => FilterInterface::TYPE_NUMBER,
-                'required'    => false,
-                'sortable'    => true,
-                'filterable'  => false,
-                'show_filter' => true,
-            )
-        );
-        $fieldsCollection->add($fieldObjectId);
-
         $fieldObjectModule = new FieldDescription();
         $fieldObjectModule->setName('module');
         $fieldObjectModule->setOptions(

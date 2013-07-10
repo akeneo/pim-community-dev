@@ -31,7 +31,7 @@
         'entity':      entity,
         'indexPath':   path('oro_entityconfig_index'),
         'indexLabel': 'Entities',
-        'entityTitle': entity.className,
+        'entityTitle': [moduleName, ':', entityName]|join,
         'hasAvatar':   false,
         'imagePath':   '',
     }
@@ -45,45 +45,52 @@
 {% block content_data %}
     {% set id = 'entityconfig-view' %}
     {% set link = '<p class="control-label"><a href="%link%">%entityName%</a></p>'|replace({'%link%': link, '%entityName%':entityName|capitalize}) %}
+
+    {% set generalFields = [
+        UI.attibuteRow('Class name', entity.className),
+        UI.attibuteRow('Module', moduleName),
+        UI.attibuteRow('Name', entityName),
+    ]%}
+
+    {% for key,property in properties %}
+        {% set generalFields = generalFields|merge([UI.attibuteRow(key|capitalize, property)])%}
+    {% endfor %}
+
     {% set data = {
-        'dataBlocks':
-            [
-                {
-                    'title': 'General',
-                    'class': 'active',
-                    'subblocks': [
-                        {
-                            'title': 'General Information',
-                            'data': [
-                                UI.attibuteRow('Class name', entity.className),
-                                UI.attibuteRow('Created', UI.Time(entity.created)),
-                                UI.attibuteRow('Updated', UI.Time(entity.updated)),
-                            ]
-                          },
-                        {
-                            'title': 'Summary',
-                            'data': [
-                                UI.renderAttribute('Link', link ),
-                                UI.attibuteRow('# of records', 0),
-                            ]
-                        },
-                    ]
-                },
-                {
-                    'title': 'Fields',
-                    'subblocks': [
-                        {
-                            'title': '',
-                            'useSpan': false,
-                            'data': [
-                                UI.gridBlock(gridId)
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-    %}
+        'dataBlocks': [
+            {
+                'title': 'General',
+                'class': 'active',
+                'subblocks': [
+                    {
+                        'title': 'General Information',
+                        'data': generalFields
+                    },
+                    {
+                        'title': 'Summary',
+                        'data': [
+                            UI.renderAttribute('Link', link ),
+                            UI.attibuteRow('# of records', 0),
+                            UI.attibuteRow('Created', UI.Time(entity.created)),
+                            UI.attibuteRow('Updated', UI.Time(entity.updated)),
+                        ]
+                    }
+                ]
+            },
+            {
+                'title': 'Fields',
+                'subblocks': [
+                    {
+                        'title': '',
+                        'useSpan': false,
+                        'data': [
+                            UI.gridBlock(gridId)
+                        ]
+                    }
+                ]
+            }
+        ]
+    }%}
 
     {{ parent() }}
 {% endblock content_data %}
