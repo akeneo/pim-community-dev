@@ -6,6 +6,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
+use Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\AvailableLocalesType;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 use Symfony\Component\Form\Forms;
@@ -66,6 +67,25 @@ abstract class AbstractFormTypeTest extends TypeTestCase
     }
 
     /**
+     * Create locales form type
+     *
+     * @return \Symfony\Bridge\Doctrine\Form\Type\EntityType
+     */
+    protected function createLocalesType()
+    {
+        $em = $this->createTestEntityManager();
+
+        $registry = $this->getMockForAbstractClass('Doctrine\Common\Persistence\ManagerRegistry');
+        $registry->expects($this->any())
+                 ->method('getManagerForClass')
+                 ->will($this->returnValue($em));
+
+        $entityType = new AvailableLocalesType($registry);
+
+        return $entityType;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
@@ -75,6 +95,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
         // redefine form factory and builder to add translatable field
         $this->builder->add('pim_translatable_field');
         $this->builder->add('entity');
+        $this->builder->add('pim_product_available_locales');
 
         $this->factory = Forms::createFormFactoryBuilder()
             ->addTypeExtension(
@@ -90,6 +111,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
                 )
             )
             ->addType($this->createEntityType())
+            ->addType($this->createLocalesType())
             ->getFormFactory();
     }
 
