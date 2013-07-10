@@ -81,7 +81,7 @@ class TagExtension extends \Twig_Extension
                 }
             }
 
-            if (!$this->context->isGranted('oro_tag_unassign', $tag)) {
+            if (!$this->context->isGranted('oro_tag_unassign', $tag) && !isset($entry['owner'])) {
                 $entry['locked'] = true;
             }
 
