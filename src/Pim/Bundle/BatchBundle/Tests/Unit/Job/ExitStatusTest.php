@@ -1,7 +1,7 @@
 <?php                                                                           
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Job;
+namespace Pim\Bundle\BatchBundle\Tests\Unit\Job;
 
-use Pim\Bundle\ImportExportBundle\Job\ExitStatus;
+use Pim\Bundle\BatchBundle\Job\ExitStatus;
 
 /**
  * Tests related to the ExitStatus class

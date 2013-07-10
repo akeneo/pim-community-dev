@@ -1,9 +1,0 @@
-parameters:                                                                     
-    pim_import_export.simple_job.class: Pim\Bundle\ImportExportBundle\Job\SimpleJob
-
-services:
-    pim_import_export.my_super_job:
-        class:     %pim_import_export.simple_job.class%
-        arguments: ['My Super Job as a service !']
-        tags:
-            - { name: pim_import_export.job }
