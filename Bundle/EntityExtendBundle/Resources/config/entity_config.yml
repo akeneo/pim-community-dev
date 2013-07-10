@@ -1,8 +1,8 @@
 oro_entity_config:
     extend:
         entity:
-            grid_action:                    ~
-
+            grid_action:
+                -                           {"name":"Unique Key", "route":"oro_entityextend_entity_unique_key", "type":"redirect", "icon":"th-large",  "acl_resource":"root", "args":["id"]}
             layout_action:                  ~
     #            -                           {"name":"Create", "route":"oro_entityconfig_create", "title":"Create custom entity"}
             items:
@@ -20,14 +20,6 @@ oro_entity_config:
 
                 is_extend:
                     required:               true
-#                    grid:
-#                        type:               boolean
-#                        label:              'Is Extend Entity'
-#                        filter_type:        oro_grid_orm_boolean
-#                        required:           true
-#                        sortable:           true
-#                        filterable:         true
-#                        show_filter:        true
 
                 extend_class:
                     required:               true
