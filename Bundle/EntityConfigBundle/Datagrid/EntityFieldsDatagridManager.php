@@ -16,7 +16,7 @@ use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
 use Oro\Bundle\EntityConfigBundle\ConfigManager;
 
-class FieldsDatagridManager extends FieldsDatagrid
+class EntityFieldsDatagridManager extends FieldsDatagrid
 {
     /**
      * {@inheritDoc}
@@ -39,38 +39,6 @@ class FieldsDatagridManager extends FieldsDatagrid
         );
         $fieldsCollection->add($fieldObjectName);
 
-        $this->addDynamicRows($fieldsCollection);
-
-        $fieldObjectCreate = new FieldDescription();
-        $fieldObjectCreate->setName('created');
-        $fieldObjectCreate->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_DATETIME,
-                'label'       => 'Create At',
-                'field_name'  => 'created',
-                'filter_type' => FilterInterface::TYPE_DATETIME,
-                'required'    => true,
-                'sortable'    => true,
-                'filterable'  => false,
-                'show_filter' => false,
-            )
-        );
-        $fieldsCollection->add($fieldObjectCreate);
-
-        $fieldObjectUpdate = new FieldDescription();
-        $fieldObjectUpdate->setName('updated');
-        $fieldObjectUpdate->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_DATETIME,
-                'label'       => 'Update At',
-                'field_name'  => 'updated',
-                'filter_type' => FilterInterface::TYPE_DATETIME,
-                'required'    => false,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => false,
-            )
-        );
-        $fieldsCollection->add($fieldObjectUpdate);
+        $this->addDynamicRows($fieldsCollection, true);
     }
 }

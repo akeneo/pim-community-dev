@@ -49,95 +49,96 @@ oro_entity_config:
                             block:          entity
                             required:       false
 
-    datagrid:
-        entity:
-            form:
-                block_config:
-                    datagrid:
-                        title:              'Datagrid Entity Config'
-                        priority:           30
-                        subblocks:
-                            base:           ~
-            items:
-                delete_action:
-                    default_value:          true
-                    form:
-                        type:               choice
-                        options:
-                            choices:        ['No', 'Yes']
-                            empty_value:    false
-                            block:          datagrid
-                            label:          "Delete Action"
-
-                create_action:
-                    default_value:          true
-                    form:
-                        type:               choice
-                        options:
-                            choices:        ['No', 'Yes']
-                            empty_value:    false
-                            block:          datagrid
-                            label:          "Create Action"
-        field:
-            form:
-                block_config:
-                    datagrid:
-                        title:              'Datagrid Config'
-                        subblocks:
-                            base:           ~
-            items:
-                enabled:
-                    default_value:          true
-                    grid:
-                        type:               boolean
-                        label:              'Show in Datagrid'
-                        filter_type:        oro_grid_orm_boolean
-                        required:           true
-                        sortable:           true
-                        filterable:         true
-                        show_filter:        false
-                    form:
-                        type:               choice
-                        options:
-                            choices:        ['No', 'Yes']
-                            empty_value:    false
-                            block:          datagrid
-                            label:          "Show in Datagrid"
-
-                is_searchable:
-                    default_value:          false
-                    grid:
-                        type:               boolean
-                        label:              'Datagrid search'
-                        filter_type:        oro_grid_orm_boolean
-                        required:           true
-                        sortable:           true
-                        filterable:         true
-                        show_filter:        false
-                    form:
-                        type:               choice
-                        options:
-                            choices:        ['No', 'Yes']
-                            empty_value:    false
-                            block:          datagrid
-                            label:          "Datagrid search"
-
-                is_filtrableble:
-                    default_value:          false
-                    grid:
-                        type:               boolean
-                        label:              'Datagrid filter'
-                        filter_type:        oro_grid_orm_boolean
-                        required:           true
-                        sortable:           true
-                        filterable:         true
-                        show_filter:        false
-                    form:
-                        type:               choice
-                        options:
-                            choices:        ['No', 'Yes']
-                            empty_value:    false
-                            block:          datagrid
-                            label:          "Datagrid filter"
-
-
+#    datagrid:
+#        entity:
+#            form:
+#                block_config:
+#                    datagrid:
+#                        title:              'Datagrid Entity Config'
+#                        priority:           30
+#                        subblocks:
+#                            base:           ~
+#            items:
+#                delete_action:
+#                    default_value:          true
+#                    form:
+#                        type:               choice
+#                        options:
+#                            choices:        ['No', 'Yes']
+#                            empty_value:    false
+#                            block:          datagrid
+#                            label:          "Delete Action"
+#
+#                create_action:
+#                    default_value:          true
+#                    form:
+#                        type:               choice
+#                        options:
+#                            choices:        ['No', 'Yes']
+#                            empty_value:    false
+#                            block:          datagrid
+#                            label:          "Create Action"
+#        field:
+#            form:
+#                block_config:
+#                    datagrid:
+#                        title:              'Datagrid Config'
+#                        subblocks:
+#                            base:           ~
+#            items:
+#                enabled:
+#                    default_value:          true
+#                    entity_grid:            false
+#                    grid:
+#                        type:               boolean
+#                        label:              'Show in Datagrid'
+#                        filter_type:        oro_grid_orm_boolean
+#                        required:           true
+#                        sortable:           true
+#                        filterable:         true
+#                        show_filter:        false
+#                    form:
+#                        type:               choice
+#                        options:
+#                            choices:        ['No', 'Yes']
+#                            empty_value:    false
+#                            block:          datagrid
+#                            label:          "Show in Datagrid"
+#
+#                is_searchable:
+#                    default_value:          false
+#                    entity_grid:            false
+#                    grid:
+#                        type:               boolean
+#                        label:              'Datagrid search'
+#                        filter_type:        oro_grid_orm_boolean
+#                        required:           true
+#                        sortable:           true
+#                        filterable:         true
+#                        show_filter:        false
+#                    form:
+#                        type:               choice
+#                        options:
+#                            choices:        ['No', 'Yes']
+#                            empty_value:    false
+#                            block:          datagrid
+#                            label:          "Datagrid search"
+#
+#                is_filtrableble:
+#                    default_value:          false
+#                    entity_grid:            false
+#                    grid:
+#                        type:               boolean
+#                        label:              'Datagrid filter'
+#                        filter_type:        oro_grid_orm_boolean
+#                        required:           true
+#                        sortable:           true
+#                        filterable:         true
+#                        show_filter:        false
+#                    form:
+#                        type:               choice
+#                        options:
+#                            choices:        ['No', 'Yes']
+#                            empty_value:    false
+#                            block:          datagrid
+#                            label:          "Datagrid filter"

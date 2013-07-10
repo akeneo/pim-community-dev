@@ -11,7 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\GridBundle\Datagrid\Datagrid;
 
-use Oro\Bundle\EntityConfigBundle\Datagrid\FieldsDatagridManager;
+use Oro\Bundle\EntityConfigBundle\Datagrid\EntityFieldsDatagridManager;
 use Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager;
 
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
@@ -86,8 +86,8 @@ class ConfigController extends Controller
     {
         $entity = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
 
-        /** @var  FieldsDatagridManager $datagridManager */
-        $datagridManager = $this->get('oro_entity_config.fieldsdatagrid.manager');
+        /** @var  EntityFieldsDatagridManager $datagridManager */
+        $datagridManager = $this->get('oro_entity_config.entityfieldsdatagrid.manager');
         $datagridManager->setEntityId($id);
         $datagridManager->getRouteGenerator()->setRouteParameters(
             array(

@@ -121,13 +121,20 @@ class EntityConfigContainer
     }
 
     /**
+     * @param bool $checkEntityGrid
      * @return array
      */
-    public function getFieldItems()
+    public function getFieldItems($checkEntityGrid = false)
     {
         $fieldItems = array();
         if (isset($this->config['field']) && isset($this->config['field']['items'])) {
-            $fieldItems = $this->config['field']['items'];
+            if ($checkEntityGrid) {
+                $fieldItems =  array_filter($this->config['field']['items'], function($item) {
+                    return isset($item['entity_grid']) ? (bool)$item['entity_grid'] : true;
+                });
+            } else {
+                return $this->config['field']['items'];
+            }
         }
 
         return $fieldItems;
