@@ -15,5 +15,12 @@ $(function() {
     $(document).delegate('.accordion', 'show hide', function(e) {
         $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('fa-icon-collapse-alt fa-icon-expand-alt');
     });
+
+    // Remove bap 'Loading Application' progressbar and partially fix page title regression issue
+    document.title = $('#page-title').text();
+    if ($('#progressbar').is(':visible')) {
+        $('#progressbar').hide();
+        $('#page').show();
+    }
 });
 
