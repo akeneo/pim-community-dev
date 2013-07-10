@@ -1,6 +1,7 @@
 Pim\Bundle\ProductBundle\Entity\ProductAttribute:
     constraints:
         - Pim\Bundle\ProductBundle\Validator\Constraints\ValidMetricAttribute: ~
+        - Pim\Bundle\ProductBundle\Validator\Constraints\SingleIdentifierAttribute: ~
         - Callback:
             methods:
                 - [Pim\Bundle\ProductBundle\Validator\ProductAttributeValidator, isValid]
