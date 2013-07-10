@@ -2,9 +2,8 @@
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\ProductBundle\Entity\ProductFamily;
-use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Pim\Bundle\ProductBundle\Entity\ProductFamilyTranslation;
+use Pim\Bundle\ProductBundle\Entity\Family;
+use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -40,11 +39,11 @@ class LoadFamilyData extends AbstractInstallerFixture
      * @param string        $code         Product family code
      * @param array         $data  Product family attributes
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductFamily
+     * @return \Pim\Bundle\ProductBundle\Entity\Family
      */
     protected function createFamily($code, $data)
     {
-        $family = new ProductFamily();
+        $family = new Family();
         $family->setCode($code);
         $family->setLabel($data['labels']['default']);
 
@@ -66,20 +65,20 @@ class LoadFamilyData extends AbstractInstallerFixture
     /**
      * Create a translation entity
      *
-     * @param ProductFamily $family  entity
-     * @param string        $locale  Locale used
-     * @param string        $content Translated content
+     * @param Family $family  entity
+     * @param string $locale  Locale used
+     * @param string $content Translated content
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation
+     * @return \Pim\Bundle\ProductBundle\Entity\FamilyTranslation
      */
     public function createTranslation($family, $locale, $content)
     {
-        $translation = new ProductFamilyTranslation();
+        $translation = new FamilyTranslation();
         $translation->setContent($content);
         $translation->setField('label');
         $translation->setForeignKey($family);
         $translation->setLocale($locale);
-        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\ProductFamily');
+        $translation->setObjectClass('Pim\Bundle\ProductBundle\Entity\Family');
 
         $family->addTranslation($translation);
     }

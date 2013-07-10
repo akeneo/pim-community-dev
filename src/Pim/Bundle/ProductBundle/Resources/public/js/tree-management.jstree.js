@@ -41,7 +41,7 @@ $(tree_id).jstree({
         "animation" : 200
     },
     "plugins" : [
-         "tree_selector", "themes", "json_data", "ui", "crrm", "types"
+         "tree_selector", "themes", "json_data", "ui", "crrm", "types", "dnd"
     ],
     "tree_selector" : {
         "ajax" : {
@@ -94,9 +94,39 @@ $(tree_id).jstree({
         "select_multiple_modifier" : false
     }
 })
+    .bind("move_node.jstree", function (e, data) {
+        var this_jstree = $.jstree._focused();
+        data.rslt.o.each(function (i) {
+
+            $.ajax({
+                async : false,
+                type: 'POST',
+                url: "move-node",
+                data : {
+                    "id" : $(this).attr("id").replace('node_',''),
+                    "parent" : data.rslt.cr === -1 ? 1 : data.rslt.np.attr("id").replace('node_',''),
+                    "prev_sibling" : this_jstree._get_prev(this, true) ? this_jstree._get_prev(this, true).attr('id').replace('node_','') : null,
+                    "position" : data.rslt.cp + i,
+                    "code" : data.rslt.name,
+                    "copy" : data.rslt.cy ? 1 : 0
+                },
+                success : function (r) {
+                    if(!r.status) {
+                        this_jstree.rollback(data.rlbk);
+                    }
+                    else {
+                        $(data.rslt.oc).attr("id", r.id);
+                        if(data.rslt.cy && $(data.rslt.oc).children("UL").length) {
+                            data.inst.refresh(data.inst._get_parent(data.rslt.oc));
+                        }
+                    }
+                }
+            });
+        });
+    })
     .bind('loaded.jstree', function(event, data) {
         if (event.namespace == 'jstree') {
-            data.inst.get_tree_select().select2();
+            data.inst.get_tree_select().select2({ width: '100%' });
         }
     })
     .bind("remove.jstree", function (event, data) {

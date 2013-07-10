@@ -17,7 +17,8 @@
         "akeneo/DemoBundle": "dev-master",
         "ddeboer/data-import": "dev-master",
         "knplabs/knp-gaufrette-bundle": "dev-master",
-        "fzaninotto/faker": "~1.2"
+        "fzaninotto/faker": "~1.2",
+        "genemu/form-bundle": "2.1.*"
     },
     "require-dev": {
         "behat/behat": "2.4.*",

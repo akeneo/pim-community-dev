@@ -1,15 +1,16 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity;
 
-use JMS\Serializer\Handler\ArrayCollectionHandler;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\ExecutionContext;
 use Symfony\Component\Validator\Constraints as Assert;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
+use JMS\Serializer\Handler\ArrayCollectionHandler;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\ConfigBundle\Entity\Locale;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
+use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
+use Pim\Bundle\ConfigBundle\Entity\Locale;
 use Pim\Bundle\ProductBundle\Model\ProductInterface;
 
 /**
@@ -22,6 +23,7 @@ use Pim\Bundle\ProductBundle\Model\ProductInterface;
  * @ORM\Table(name="pim_product")
  * @ORM\Entity(repositoryClass="Pim\Bundle\ProductBundle\Entity\Repository\ProductRepository")
  * @Assert\Callback(methods={"isLocalesValid"})
+ * @Oro\Loggable
  */
 class Product extends AbstractEntityFlexible implements ProductInterface
 {
@@ -33,38 +35,42 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      *     mappedBy="entity",
      *     cascade={"persist", "remove"}
      * )
+     * @Oro\Versioned
      */
     protected $values;
 
     /**
-     * @var productFamily
+     * @var family
      *
-     * @ORM\ManyToOne(targetEntity="ProductFamily")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\Family", cascade={"persist"})
      * @ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Oro\Versioned("getCode")
      */
-    protected $productFamily;
+    protected $family;
 
     /**
      * @var ArrayCollection $locales
      *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale", cascade={"persist"})
      * @ORM\JoinTable(
      *    name="pim_product_locale",
      *    joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
      *    inverseJoinColumns={@ORM\JoinColumn(name="locale_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
+     * @Oro\Versioned("getCode")
      */
     protected $locales;
 
     /**
      * @var ArrayCollection $categories
      *
-     * @ORM\ManyToMany(targetEntity="Category", mappedBy="products")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ProductBundle\Model\CategoryInterface", mappedBy="products")
      */
     protected $categories;
 
     /**
      * @ORM\Column(name="is_enabled", type="boolean")
+     *  @Oro\Versioned
      */
     protected $enabled = true;
 
@@ -81,23 +87,23 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     /**
      * Get product family
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductFamily
+     * @return \Pim\Bundle\ProductBundle\Entity\Family
      */
-    public function getProductFamily()
+    public function getFamily()
     {
-        return $this->productFamily;
+        return $this->family;
     }
 
     /**
      * Set product family
      *
-     * @param ProductFamily $productFamily
+     * @param Family $family
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Product
      */
-    public function setProductFamily($productFamily)
+    public function setFamily($family)
     {
-        $this->productFamily = $productFamily;
+        $this->family = $family;
 
         return $this;
     }
@@ -281,8 +287,8 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      */
     public function getLabel($locale = null)
     {
-        if ($this->productFamily) {
-            if ($attributeAsLabel = $this->productFamily->getAttributeAsLabel()) {
+        if ($this->family) {
+            if ($attributeAsLabel = $this->family->getAttributeAsLabel()) {
                 if ($locale) {
                     $this->setLocale($locale);
                 }
@@ -345,5 +351,13 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         $this->enabled = $enabled;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getLabel();
     }
 }

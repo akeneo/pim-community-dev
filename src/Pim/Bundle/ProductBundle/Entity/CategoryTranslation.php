@@ -33,7 +33,7 @@ class CategoryTranslation extends AbstractTranslation
     /**
      * Change foreign key to add constraint and work with basic entity
      *
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Model\CategoryInterface", inversedBy="translations")
      * @ORM\JoinColumn(name="foreign_key", referencedColumnName="id")
      */
     protected $foreignKey;

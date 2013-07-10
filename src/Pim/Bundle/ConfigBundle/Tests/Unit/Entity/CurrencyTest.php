@@ -17,12 +17,26 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
+     * @var Currency
+     */
+    protected $currency;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->currency = new Currency();
+    }
+
+    /**
      * Test related method
      */
     public function testConstruct()
     {
-        $currency = new Currency();
-        $this->assertInstanceOf('Pim\Bundle\ConfigBundle\Entity\Currency', $currency);
+        $this->assertEntity($this->currency);
     }
 
     /**
@@ -30,13 +44,12 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetId()
     {
-        $currency = new Currency();
-        $this->assertEmpty($currency->getId());
+        $this->assertEmpty($this->currency->getId());
 
         // change value and assert new
         $newId = 5;
-        $currency->setId($newId);
-        $this->assertEquals($newId, $currency->getId());
+        $this->assertEntity($this->currency->setId($newId));
+        $this->assertEquals($newId, $this->currency->getId());
     }
 
     /**
@@ -44,13 +57,12 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetCode()
     {
-        $currency = new Currency();
-        $this->assertEmpty($currency->getCode());
+        $this->assertEmpty($this->currency->getCode());
 
         // change value and assert new
         $newCode = 'EUR';
-        $currency->setCode($newCode);
-        $this->assertEquals($newCode, $currency->getCode());
+        $this->assertEntity($this->currency->setCode($newCode));
+        $this->assertEquals($newCode, $this->currency->getCode());
     }
 
     /**
@@ -58,13 +70,17 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsSetActivated()
     {
-        $currency = new Currency();
-        $this->assertTrue($currency->isActivated());
+        $this->assertTrue($this->currency->isActivated());
 
         // change value and assert new
         $newActivated = false;
-        $currency->setActivated($newActivated);
-        $this->assertFalse($currency->isActivated());
+        $this->assertEntity($this->currency->setActivated($newActivated));
+        $this->assertFalse($this->currency->isActivated());
+
+        // change value and assert new
+        $newActivated = true;
+        $this->assertEntity($this->currency->setActivated($newActivated));
+        $this->assertTrue($this->currency->isActivated());
     }
 
     /**
@@ -72,12 +88,11 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
      */
     public function testToggleActivation()
     {
-        $currency = new Currency();
-        $currency->toggleActivation();
-        $this->assertFalse($currency->isActivated());
+        $this->currency->toggleActivation();
+        $this->assertFalse($this->currency->isActivated());
 
-        $currency->toggleActivation();
-        $this->assertTrue($currency->isActivated());
+        $this->currency->toggleActivation();
+        $this->assertTrue($this->currency->isActivated());
     }
 
     /**
@@ -85,9 +100,8 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetLocales()
     {
-        $currency = new Currency();
-        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $currency->getLocales());
-        $this->assertCount(0, $currency->getLocales());
+        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $this->currency->getLocales());
+        $this->assertCount(0, $this->currency->getLocales());
 
         // create locales
         $listLocales = array('fr_FR', 'en_US', 'en_EN');
@@ -98,12 +112,24 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
 
         // Set locales and assert
         $newLocales = array($langFr, $langUs, $langEn);
-        $currency->setLocales(array($langFr, $langUs, $langEn));
-        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $currency->getLocales());
-        $this->assertCount(3, $currency->getLocales());
-        foreach ($currency->getLocales() as $locale) {
+        $this->assertEntity($this->currency->setLocales(array($langFr, $langUs, $langEn)));
+        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $this->currency->getLocales());
+        $this->assertCount(3, $this->currency->getLocales());
+        foreach ($this->currency->getLocales() as $locale) {
             $this->assertTrue(in_array($locale, $newLocales));
         }
+    }
+
+    /**
+     * Test related method
+     */
+    public function testToString()
+    {
+        $this->assertEquals('', $this->currency->__toString());
+
+        $expectedCode = 'test-code';
+        $this->currency->setCode($expectedCode);
+        $this->assertEquals($expectedCode, $this->currency->__toString());
     }
 
     /**
@@ -120,5 +146,15 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
         $locale->setFallback($fallback);
 
         return $locale;
+    }
+
+    /**
+     * Assert an entity
+     *
+     * @param Currency $entity
+     */
+    protected function assertEntity($entity)
+    {
+        $this->assertInstanceOf('Pim\Bundle\ConfigBundle\Entity\Currency', $entity);
     }
 }

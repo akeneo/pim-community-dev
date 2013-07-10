@@ -266,7 +266,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
         $this->useableAsGridFilter = false;
         $this->decimalsAllowed     = true;
         $this->negativeAllowed     = true;
-        $this->availableLocales  = new ArrayCollection();
+        $this->availableLocales    = new ArrayCollection();
         $this->translations        = new ArrayCollection();
     }
 
@@ -1047,7 +1047,12 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
 
     /**
      * Set all parameters with associative array
+     *
      * @param array $parameters
+     *
+     * @return ProductAttribute
+     *
+     * @throws \Exception
      */
     public function setParameters($parameters)
     {
@@ -1058,5 +1063,7 @@ class ProductAttribute extends AbstractEntityAttribute implements Translatable
             }
             $this->$method($value);
         }
+
+        return $this;
     }
 }

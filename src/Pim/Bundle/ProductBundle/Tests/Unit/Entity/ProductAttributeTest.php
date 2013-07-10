@@ -19,12 +19,56 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
+     * @var ProductAttribute
+     */
+    protected $attribute;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->attribute = new ProductAttribute();
+    }
+
+    /**
      * Test related method
      */
     public function testConstruct()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\ProductAttribute', $productAttribute);
+        $this->assertEntity($this->attribute);
+
+        $this->assertEmptyCollection($this->attribute->getOptions());
+        $this->assertNull($this->attribute->getAvailableLocales());
+        $this->assertEmptyCollection($this->attribute->getTranslations());
+
+        $this->assertFalse($this->attribute->getRequired());
+        $this->assertFalse($this->attribute->getUnique());
+        $this->assertNull($this->attribute->getDefaultValue());
+        $this->assertFalse($this->attribute->getSearchable());
+        $this->assertFalse($this->attribute->getTranslatable());
+        $this->assertFalse($this->attribute->getScopable());
+        $this->assertEquals('', $this->attribute->getDescription());
+        $this->assertFalse($this->attribute->isSmart());
+        $this->assertFalse($this->attribute->getVariant());
+        $this->assertFalse($this->attribute->isUseableAsGridColumn());
+        $this->assertFalse($this->attribute->isUseableAsGridFilter());
+        $this->assertTrue($this->attribute->isDecimalsAllowed());
+        $this->assertTrue($this->attribute->isNegativeAllowed());
+
+    }
+
+    /**
+     * Assert an empty collection
+     *
+     * @param \Doctrine\Common\Collections\Collection $collection
+     */
+    protected function assertEmptyCollection($collection)
+    {
+        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $collection);
+        $this->assertCount(0, $collection);
     }
 
     /**
@@ -32,13 +76,12 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetLabel()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertEmpty($productAttribute->getLabel());
+        $this->assertEmpty($this->attribute->getLabel());
 
         // Change value and assert new
         $newName = 'test-label';
-        $productAttribute->setLabel($newName);
-        $this->assertEquals($newName, $productAttribute->getLabel());
+        $this->assertEntity($this->attribute->setLabel($newName));
+        $this->assertEquals($newName, $this->attribute->getLabel());
     }
 
     /**
@@ -46,13 +89,12 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetDescription()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertEmpty($productAttribute->getDescription());
+        $this->assertEmpty($this->attribute->getDescription());
 
         // Change value and assert new
         $newDescription = 'test-description';
-        $productAttribute->setDescription($newDescription);
-        $this->assertEquals($newDescription, $productAttribute->getDescription());
+        $this->assertEntity($this->attribute->setDescription($newDescription));
+        $this->assertEquals($newDescription, $this->attribute->getDescription());
     }
 
     /**
@@ -60,13 +102,12 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetVariant()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertEmpty($productAttribute->getVariant());
+        $this->assertEmpty($this->attribute->getVariant());
 
         // change value and assert new
         $newVariant = 'test-variant';
-        $productAttribute->setVariant($newVariant);
-        $this->assertEquals($newVariant, $productAttribute->getVariant());
+        $this->assertEntity($this->attribute->setVariant($newVariant));
+        $this->assertEquals($newVariant, $this->attribute->getVariant());
     }
 
     /**
@@ -74,39 +115,41 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsSetSmart()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertFalse($productAttribute->isSmart());
+        $this->assertFalse($this->attribute->isSmart());
 
         // change value and assert new
         $newSmart = true;
-        $productAttribute->setSmart($newSmart);
-        $this->assertTrue($productAttribute->isSmart());
+        $this->assertEntity($this->attribute->setSmart($newSmart));
+        $this->assertTrue($this->attribute->isSmart());
     }
 
+    /**
+     * Test get virtual group
+     */
     public function testGetVirtualGroup()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $productAttribute->getVirtualGroup());
-        $this->assertEquals('Other', $productAttribute->getVirtualGroup()->getName());
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $this->attribute->getVirtualGroup());
+        $this->assertEquals('Other', $this->attribute->getVirtualGroup()->getName());
 
         $attributeGroup = new AttributeGroup();
-        $productAttribute->setGroup($attributeGroup);
-        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $productAttribute->getVirtualGroup());
-        $this->assertEquals($attributeGroup, $productAttribute->getGroup());
+        $this->assertEntity($this->attribute->setGroup($attributeGroup));
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $this->attribute->getVirtualGroup());
+        $this->assertEquals($attributeGroup, $this->attribute->getGroup());
     }
 
     /**
      * Test getter/setter for group property
+     *
+     * TODO : Test with null
      */
     public function testGetSetGroup()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getGroup());
+        $this->assertNull($this->attribute->getGroup());
 
         $attributeGroup = new AttributeGroup();
-        $productAttribute->setGroup($attributeGroup);
-        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $productAttribute->getGroup());
-        $this->assertEquals($attributeGroup, $productAttribute->getGroup());
+        $this->assertEntity($this->attribute->setGroup($attributeGroup));
+        $this->assertInstanceOf('Pim\Bundle\ProductBundle\Entity\AttributeGroup', $this->attribute->getGroup());
+        $this->assertEquals($attributeGroup, $this->attribute->getGroup());
     }
 
     /**
@@ -114,59 +157,61 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testToString()
     {
-        $productAttribute = new ProductAttribute();
         $string = 'test-string';
-        $productAttribute->setLabel($string);
-        $this->assertEquals($string, $productAttribute->__toString());
+        $this->attribute->setLabel($string);
+        $this->assertEquals($string, $this->attribute->__toString());
     }
 
     /**
      * Test is/setter for useableAsGridColumn property
+     *
+     * TODO : Test with the both values
      */
     public function testIsSetUseableAsGridColumn()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertFalse($productAttribute->isUseableAsGridColumn());
+        $this->assertFalse($this->attribute->isUseableAsGridColumn());
 
         // change value and assert new
         $newUseableAsGridColumn = true;
-        $productAttribute->setUseableAsGridColumn($newUseableAsGridColumn);
-        $this->assertTrue($productAttribute->isUseableAsGridColumn());
+        $this->assertEntity($this->attribute->setUseableAsGridColumn($newUseableAsGridColumn));
+        $this->assertTrue($this->attribute->isUseableAsGridColumn());
     }
 
     /**
      * Test is/setter for useableAsGridFilter property
+     *
+     * TODO : Test with the both values
      */
     public function testIsSetUseableAsGridFilter()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertFalse($productAttribute->isUseableAsGridFilter());
+        $this->assertFalse($this->attribute->isUseableAsGridFilter());
 
         // change value and assert new
         $newUseableAsGridFilter = true;
-        $productAttribute->setUseableAsGridFilter($newUseableAsGridFilter);
-        $this->assertTrue($productAttribute->isUseableAsGridFilter());
+        $this->assertEntity($this->attribute->setUseableAsGridFilter($newUseableAsGridFilter));
+        $this->assertTrue($this->attribute->isUseableAsGridFilter());
     }
 
     /**
      * Test get/add/remove availableLocales property
+     *
+     * TODO : Add more tests
      */
     public function testGetAddRemoveAvailableLocales()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getAvailableLocales());
+        $this->assertNull($this->attribute->getAvailableLocales());
 
         // Change value and assert new
         $newLocale = new Locale();
-        $productAttribute->addAvailableLocale($newLocale);
+        $this->attribute->addAvailableLocale($newLocale);
         $this->assertInstanceOf(
             'Pim\Bundle\ConfigBundle\Entity\Locale',
-            $productAttribute->getAvailableLocales()->first()
+            $this->attribute->getAvailableLocales()->first()
         );
-        $this->assertCount(1, $productAttribute->getAvailableLocales());
+        $this->assertCount(1, $this->attribute->getAvailableLocales());
 
-        $productAttribute->removeAvailableLocale($newLocale);
-        $this->assertNull($productAttribute->getAvailableLocales());
+        $this->attribute->removeAvailableLocale($newLocale);
+        $this->assertNull($this->attribute->getAvailableLocales());
     }
 
     /**
@@ -174,13 +219,12 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetMaxCharacters()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getMaxCharacters());
+        $this->assertNull($this->attribute->getMaxCharacters());
 
         // Change value and assert new
         $characters = 100;
-        $productAttribute->setMaxCharacters($characters);
-        $this->assertEquals($characters, $productAttribute->getMaxCharacters());
+        $this->assertEntity($this->attribute->setMaxCharacters($characters));
+        $this->assertEquals($characters, $this->attribute->getMaxCharacters());
     }
 
     /**
@@ -188,13 +232,12 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetValidationRule()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getValidationRule());
+        $this->assertNull($this->attribute->getValidationRule());
 
         // Change value and assert new
         $rule = 'email';
-        $productAttribute->setValidationRule($rule);
-        $this->assertEquals($rule, $productAttribute->getValidationRule());
+        $this->assertEntity($this->attribute->setValidationRule($rule));
+        $this->assertEquals($rule, $this->attribute->getValidationRule());
     }
 
     /**
@@ -202,26 +245,26 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetValidationRegexp()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getValidationRegexp());
+        $this->assertNull($this->attribute->getValidationRegexp());
 
         // Change value and assert new
         $regexp = '/[^0-9]/';
-        $productAttribute->setValidationRegexp($regexp);
-        $this->assertEquals($regexp, $productAttribute->getValidationRegexp());
+        $this->assertEntity($this->attribute->setValidationRegexp($regexp));
+        $this->assertEquals($regexp, $this->attribute->getValidationRegexp());
     }
 
     /**
      * Test is/setter for wysiwygEnabled property
+     *
+     * TODO : Test with the both values
      */
     public function testIsSetWysiwygEnabled()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->isWysiwygEnabled());
+        $this->assertNull($this->attribute->isWysiwygEnabled());
 
         // Change value and assert new
-        $productAttribute->setWysiwygEnabled(true);
-        $this->assertTrue($productAttribute->isWysiwygEnabled());
+        $this->assertEntity($this->attribute->setWysiwygEnabled(true));
+        $this->assertTrue($this->attribute->isWysiwygEnabled());
     }
 
     /**
@@ -229,13 +272,12 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetNumberMin()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getNumberMin());
+        $this->assertNull($this->attribute->getNumberMin());
 
         // Change value and assert new
         $number = 10;
-        $productAttribute->setNumberMin($number);
-        $this->assertEquals($number, $productAttribute->getNumberMin());
+        $this->assertEntity($this->attribute->setNumberMin($number));
+        $this->assertEquals($number, $this->attribute->getNumberMin());
     }
 
     /**
@@ -243,52 +285,54 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetNumberMax()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getNumberMax());
+        $this->assertNull($this->attribute->getNumberMax());
 
         // Change value and assert new
         $number = 20;
-        $productAttribute->setNumberMax($number);
-        $this->assertEquals($number, $productAttribute->getNumberMax());
+        $this->assertEntity($this->attribute->setNumberMax($number));
+        $this->assertEquals($number, $this->attribute->getNumberMax());
     }
 
     /**
      * Test is/setter for decimalsAllowed property
+     *
+     * TODO : Test with the both values
      */
     public function testIsSetDecimalsAllowed()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertTrue($productAttribute->isDecimalsAllowed());
+        $this->assertTrue($this->attribute->isDecimalsAllowed());
 
         $decimalsAllowed = false;
-        $productAttribute->setDecimalsAllowed($decimalsAllowed);
-        $this->assertEquals($decimalsAllowed, $productAttribute->isDecimalsAllowed());
+        $this->assertEntity($this->attribute->setDecimalsAllowed($decimalsAllowed));
+        $this->assertEquals($decimalsAllowed, $this->attribute->isDecimalsAllowed());
     }
 
     /**
      * Test is/setter for negativeAllowed property
+     *
+     * TODO : Test with the both values
      */
     public function testIsSetNegativeAllowed()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertTrue($productAttribute->isNegativeAllowed());
+        $this->assertTrue($this->attribute->isNegativeAllowed());
 
         // Change value and assert new
-        $productAttribute->setNegativeAllowed(false);
-        $this->assertFalse($productAttribute->isNegativeAllowed());
+        $this->assertEntity($this->attribute->setNegativeAllowed(false));
+        $this->assertFalse($this->attribute->isNegativeAllowed());
     }
 
     /**
      * Test is/setter for ValueCreationAllowed property
+     *
+     * TODO : Test with the both values
      */
     public function testIsSetValueCreationAllowed()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->isValueCreationAllowed());
+        $this->assertNull($this->attribute->isValueCreationAllowed());
 
         // Change value and assert new
-        $productAttribute->setValueCreationAllowed(true);
-        $this->assertTrue($productAttribute->isValueCreationAllowed());
+        $this->assertEntity($this->attribute->setValueCreationAllowed(true));
+        $this->assertTrue($this->attribute->isValueCreationAllowed());
     }
 
     /**
@@ -296,13 +340,12 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetDateType()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getDateType());
+        $this->assertNull($this->attribute->getDateType());
 
         // Change value and assert new
         $dateType = 'datetime';
-        $productAttribute->setDateType($dateType);
-        $this->assertEquals($dateType, $productAttribute->getDateType());
+        $this->assertEntity($this->attribute->setDateType($dateType));
+        $this->assertEquals($dateType, $this->attribute->getDateType());
     }
 
     /**
@@ -310,14 +353,13 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetDateMin()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getDateMin());
+        $this->assertNull($this->attribute->getDateMin());
 
         // Change value and assert new
         $date = new \DateTime();
-        $productAttribute->setDateMin($date);
-        $this->assertInstanceOf('DateTime', $productAttribute->getDateMin());
-        $this->assertEquals($date, $productAttribute->getDateMin());
+        $this->assertEntity($this->attribute->setDateMin($date));
+        $this->assertInstanceOf('DateTime', $this->attribute->getDateMin());
+        $this->assertEquals($date, $this->attribute->getDateMin());
     }
 
     /**
@@ -325,14 +367,13 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetDateMax()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getDateMax());
+        $this->assertNull($this->attribute->getDateMax());
 
         // Change value and assert new
         $date = new \DateTime();
-        $productAttribute->setDateMax($date);
-        $this->assertInstanceOf('DateTime', $productAttribute->getDateMax());
-        $this->assertEquals($date, $productAttribute->getDateMax());
+        $this->assertEntity($this->attribute->setDateMax($date));
+        $this->assertInstanceOf('DateTime', $this->attribute->getDateMax());
+        $this->assertEquals($date, $this->attribute->getDateMax());
     }
 
     /**
@@ -340,13 +381,12 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetMetricFamily()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getMetricFamily());
+        $this->assertNull($this->attribute->getMetricFamily());
 
         // Change value and assert new
         $type = 'weight';
-        $productAttribute->setMetricFamily($type);
-        $this->assertEquals($type, $productAttribute->getMetricFamily());
+        $this->assertEntity($this->attribute->setMetricFamily($type));
+        $this->assertEquals($type, $this->attribute->getMetricFamily());
     }
 
     /**
@@ -354,13 +394,12 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetDefaultMetricUnit()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getDefaultMetricUnit());
+        $this->assertNull($this->attribute->getDefaultMetricUnit());
 
         // Change value and assert new
         $unit = 'm';
-        $productAttribute->setDefaultMetricUnit($unit);
-        $this->assertEquals($unit, $productAttribute->getDefaultMetricUnit());
+        $this->assertEntity($this->attribute->setDefaultMetricUnit($unit));
+        $this->assertEquals($unit, $this->attribute->getDefaultMetricUnit());
     }
 
     /**
@@ -368,13 +407,12 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetAllowedFileSources()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getAllowedFileSources());
+        $this->assertNull($this->attribute->getAllowedFileSources());
 
         // Change value and assert new
         $source = 'upload';
-        $productAttribute->setAllowedFileSources($source);
-        $this->assertEquals($source, $productAttribute->getAllowedFileSources());
+        $this->assertEntity($this->attribute->setAllowedFileSources($source));
+        $this->assertEquals($source, $this->attribute->getAllowedFileSources());
     }
 
     /**
@@ -382,13 +420,12 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetMaxFileSize()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertNull($productAttribute->getMaxFileSize());
+        $this->assertNull($this->attribute->getMaxFileSize());
 
         // Change value and assert new
         $size = 1024;
-        $productAttribute->setMaxFileSize($size);
-        $this->assertEquals($size, $productAttribute->getMaxFileSize());
+        $this->assertEntity($this->attribute->setMaxFileSize($size));
+        $this->assertEquals($size, $this->attribute->getMaxFileSize());
     }
 
     /**
@@ -396,13 +433,12 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetAllowedFileExtensions()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertEmpty($productAttribute->getAllowedFileExtensions());
+        $this->assertEmpty($this->attribute->getAllowedFileExtensions());
 
         // Change value and assert new
         $extensions = array('jpg', 'png', 'gif');
-        $productAttribute->setAllowedFileExtensions(' jpg, png,gif');
-        $this->assertEquals($extensions, $productAttribute->getAllowedFileExtensions());
+        $this->assertEntity($this->attribute->setAllowedFileExtensions(' jpg, png,gif'));
+        $this->assertEquals($extensions, $this->attribute->getAllowedFileExtensions());
     }
 
     /**
@@ -410,23 +446,22 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testTranslations()
     {
-        $productAttribute = new ProductAttribute();
-        $this->assertCount(0, $productAttribute->getTranslations());
+        $this->assertCount(0, $this->attribute->getTranslations());
 
         // Change value and assert new
         $newTranslation = new ProductAttributeTranslation();
-        $this->assertEntity($productAttribute->addTranslation($newTranslation));
-        $this->assertCount(1, $productAttribute->getTranslations());
+        $this->assertEntity($this->attribute->addTranslation($newTranslation));
+        $this->assertCount(1, $this->attribute->getTranslations());
         $this->assertInstanceOf(
             'Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation',
-            $productAttribute->getTranslations()->first()
+            $this->attribute->getTranslations()->first()
         );
 
-        $productAttribute->addTranslation($newTranslation);
-        $this->assertCount(1, $productAttribute->getTranslations());
+        $this->attribute->addTranslation($newTranslation);
+        $this->assertCount(1, $this->attribute->getTranslations());
 
-        $this->assertEntity($productAttribute->removeTranslation($newTranslation));
-        $this->assertCount(0, $productAttribute->getTranslations());
+        $this->assertEntity($this->attribute->removeTranslation($newTranslation));
+        $this->assertCount(0, $this->attribute->getTranslations());
     }
 
     /**
@@ -435,8 +470,66 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetTranslatableLocale()
     {
-        $productAttribute = new ProductAttribute();
-        $productAttribute->setTranslatableLocale('en_US');
+        $this->attribute->setTranslatableLocale('en_US');
+    }
+
+    /**
+     * Test getter/setter for sortOrder property
+     */
+    public function testGetSetSortOrder()
+    {
+        $this->assertEquals(0, $this->attribute->getSortOrder());
+
+        $expectedOrder = 3;
+        $this->assertEntity($this->attribute->setSortOrder($expectedOrder));
+        $this->assertEquals($expectedOrder, $this->attribute->getSortOrder());
+    }
+
+    /**
+     * Test getter/setter for defaultValue property
+     */
+    public function testGetSetDefaultValue()
+    {
+        $this->assertEquals('', $this->attribute->getDefaultValue());
+
+        $expectedDefaultValue = 'test-default-value';
+        $this->assertEntity($this->attribute->setDefaultValue($expectedDefaultValue));
+        $this->assertEquals($expectedDefaultValue, $this->attribute->getDefaultValue());
+    }
+
+    /**
+     * Data provider for set parameters method
+     *
+     * @static
+     *
+     * @return array
+     */
+    public static function setParametersDataProvider()
+    {
+        return array(
+            array(
+                'someValues' =>
+                    array('sortOrder' => 5, 'maxFileSize' => 4, 'dateMin' => '2013-06-15', 'decimalsAllowed' => true)
+            ),
+            array(
+                'onlyOneValue' => array('negativeAllowed' => false)
+            ),
+            array(
+                'noValue' => array()
+            )
+        );
+    }
+
+    /**
+     * Test related method
+     *
+     * @param array $parameters
+     *
+     * @dataProvider setParametersDataProvider
+     */
+    public function testSetParameters($parameters)
+    {
+        $this->assertEntity($this->attribute->setParameters($parameters));
     }
 
     /**

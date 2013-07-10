@@ -1,19 +1,15 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity;
 
-use Pim\Bundle\ProductBundle\Model\CategoryInterface;
-
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
-use Gedmo\Translatable\Translatable;
-
-use Gedmo\Mapping\Annotation as Gedmo;
-
 use Doctrine\ORM\Mapping as ORM;
-
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Gedmo\Translatable\Translatable;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
+use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
+use Pim\Bundle\ProductBundle\Model\CategoryInterface;
+use Pim\Bundle\ProductBundle\Model\ProductInterface;
 
 /**
  * Segment class allowing to organize a flexible product class into trees
@@ -30,6 +26,9 @@ use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
  * @Gedmo\Tree(type="nested")
  * @Gedmo\TranslationEntity(class="Pim\Bundle\ProductBundle\Entity\CategoryTranslation")
  * @UniqueEntity(fields="code", message="This code is already taken")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @Oro\Loggable
  */
 class Category extends AbstractSegment implements Translatable, CategoryInterface
 {
@@ -37,7 +36,7 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
      * @var Category $parent
      *
      * @Gedmo\TreeParent
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Model\CategoryInterface", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $parent;
@@ -45,7 +44,11 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
     /**
      * @var \Doctrine\Common\Collections\Collection $children
      *
-     * @ORM\OneToMany(targetEntity="Category", mappedBy="parent", cascade={"persist"})
+     * @ORM\OneToMany(
+     *     targetEntity="Pim\Bundle\ProductBundle\Model\CategoryInterface",
+     *     mappedBy="parent",
+     *     cascade={"persist"}
+     * )
      * @ORM\OrderBy({"left" = "ASC"})
      */
     protected $children;
@@ -53,7 +56,7 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
     /**
      * @var \Doctrine\Common\Collections\Collection $products
      *
-     * @ORM\ManyToMany(targetEntity="Product", inversedBy="categories")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ProductBundle\Model\ProductInterface", inversedBy="categories")
      * @ORM\JoinTable(
      *     name="pim_category_product",
      *     joinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="CASCADE")},
@@ -61,6 +64,14 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
      * )
      */
     protected $products;
+
+    /**
+     * @var string $code
+     *
+     * @ORM\Column(name="code", type="string", length=100)
+     * @Oro\Versioned
+     */
+    protected $code;
 
     /**
      * @var string $title
@@ -146,11 +157,11 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
     /**
      * Add product to this category node
      *
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Category
      */
-    public function addProduct(Product $product)
+    public function addProduct(ProductInterface $product)
     {
         $this->products[] = $product;
 
@@ -170,11 +181,11 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
     /**
      * Remove product for this category node
      *
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Category
      */
-    public function removeProduct(Product $product)
+    public function removeProduct(ProductInterface $product)
     {
         $this->products->removeElement($product);
 
@@ -287,5 +298,13 @@ class Category extends AbstractSegment implements Translatable, CategoryInterfac
         $this->translations->removeElement($translation);
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getTitle();
     }
 }

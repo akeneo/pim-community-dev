@@ -1,7 +1,11 @@
 <?php
+
 namespace Pim\Bundle\ProductBundle\Twig;
 
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Locale\Locale;
 use Symfony\Component\Locale\Stub\StubLocale;
+use Pim\Bundle\ConfigBundle\Manager\LocaleManager;
 
 /**
  * Display currency symbol from code
@@ -12,13 +16,35 @@ use Symfony\Component\Locale\Stub\StubLocale;
  */
 class ProductExtension extends \Twig_Extension
 {
+    protected $securityContext;
+
+    protected $localeManager;
+
+    /**
+     * @param SecurityContextInterface $securityContext
+     */
+    public function __construct(SecurityContextInterface $securityContext, LocaleManager $localeManager)
+    {
+        $this->securityContext = $securityContext;
+        $this->localeManager   = $localeManager;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function getFunctions()
     {
         return array(
-            'currencySymbol' => new \Twig_Function_Method($this, 'currencySymbolFunction'),
+            'currencySymbol' => new \Twig_Function_Method($this, 'currencySymbol'),
+            'localeLabel'    => new \Twig_Function_Method($this, 'localeLabel'),
+            'localeCurrency' => new \Twig_Function_Method($this, 'localeCurrency'),
+        );
+    }
+
+    public function getFilters()
+    {
+        return array(
+            'flag' => new \Twig_Filter_Method($this, 'flag', array('is_safe' => array('html'))),
         );
     }
 
@@ -29,11 +55,112 @@ class ProductExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function currencySymbolFunction($currency)
+    public function currencySymbol($currency)
     {
         $currencies = StubLocale::getCurrenciesData('en');
 
         return (isset($currencies[$currency])) ? $currencies[$currency]['symbol'] : null;
+    }
+
+    /**
+     * Get displayed locale from locale code
+     *
+     * @param string $locale
+     *
+     * @return string
+     */
+    public function localeLabel($code)
+    {
+        if ($catalogLocale = $this->getCatalogLocale()) {
+            $countries = Locale::getDisplayLocales($catalogLocale);
+
+            if (isset($countries[$code])) {
+                return $countries[$code];
+            }
+
+            list($lang) = explode('_', $code);
+            if (isset($countries[$lang])) {
+                return $countries[$lang];
+            }
+        }
+
+        return $code;
+    }
+
+    /**
+     * Get locale currency
+     *
+     * @return string
+     */
+    public function localeCurrency()
+    {
+        return $this->getCatalogCurrency();
+    }
+
+    /**
+     * @param string $code
+     * @return string
+     */
+    public function flag($code)
+    {
+        return sprintf(
+            '<img src="/bundles/pimui/images/blank.gif" class="flag flag-%s" alt="%s" /> <code class="flag-language">%s</code>',
+            $this->getCountry($code),
+            $this->localeLabel($code),
+            $this->getLanguage($code)
+        );
+    }
+
+    /**
+     * @param string $code
+     * @return string
+     */
+    private function getCountry($code)
+    {
+        $parts = explode('_', $code);
+        if (isset($parts[1])) {
+            return strtolower($parts[1]);
+        }
+
+        return 'unknown';
+    }
+
+    /**
+     * @param strin $code
+     * @return string
+     */
+    private function getLanguage($code)
+    {
+        list($language) = explode('_', $code);
+
+        return $language;
+    }
+
+    /**
+     * @return string|NULL
+     */
+    private function getCatalogLocale()
+    {
+        if (null === $token = $this->securityContext->getToken()) {
+            return null;
+        }
+
+        if (!is_object($user = $token->getUser())) {
+            return null;
+        }
+
+        return (string) $user->cataloglocale;
+    }
+
+    /**
+     * @return string|NULL
+     */
+    private function getCatalogCurrency()
+    {
+        $localeCode = $this->getCatalogLocale();
+        $locale = $this->localeManager->getLocaleByCode($localeCode);
+
+        return ($locale !== null) ? $locale->getDefaultCurrency()->getCode() : null;
     }
 
     /**

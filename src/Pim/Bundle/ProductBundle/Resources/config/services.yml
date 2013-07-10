@@ -1,156 +1,4 @@
-parameters:
-    pim_product.manager.product.class:                Pim\Bundle\ProductBundle\Manager\ProductManager
-
-    pim_product.entity.product.class:                 Pim\Bundle\ProductBundle\Entity\Product
-    pim_product.form.type.product.class:              Pim\Bundle\ProductBundle\Form\Type\ProductType
-    pim_product.form.type.simple_product.class:       Pim\Bundle\ProductBundle\Form\Type\SimpleProductType
-    pim_product.form.type.product_value.class:        Pim\Bundle\ProductBundle\Form\Type\ProductValueType
-
-    pim_product.handler.simple_product.class:          Pim\Bundle\ProductBundle\Form\Handler\SimpleProductHandler
-
-    pim_product.entity.product_attribute.class:        Pim\Bundle\ProductBundle\Entity\ProductAttribute
-    pim_product.entity.product_value.class:            Pim\Bundle\ProductBundle\Entity\ProductValue
-
-    pim_product.form.type.product_attribute.class:     Pim\Bundle\ProductBundle\Form\Type\ProductAttributeType
-    pim_product.form.handler.product_attribute.class:  Pim\Bundle\ProductBundle\Form\Handler\ProductAttributeHandler
-
-    pim_product.entity.attribute_group.class:          Pim\Bundle\ProductBundle\Entity\AttributeGroup
-    pim_product.handler.attribute_group.class:         Pim\Bundle\ProductBundle\Form\Handler\AttributeGroupHandler
-    pim_product.type.attribute_group.class:            Pim\Bundle\ProductBundle\Form\Type\AttributeGroupType
-
-    pim_product.entity.export_profile.class:           Pim\Bundle\ProductBundle\Entity\ExportProfile
-    pim_product.handler.export_profile.class:          Pim\Bundle\ProductBundle\Form\Handler\ExportProfileHandler
-    pim_product.type.export_profile.class:             Pim\Bundle\ProductBundle\Form\Type\ExportProfileType
-
-    pim_product.entity.category.class:                 Pim\Bundle\ProductBundle\Entity\Category
-    pim_product.manager.category.class:                Pim\Bundle\ProductBundle\Manager\CategoryManager
-
-    pim_product.listener.user_context.class:           Pim\Bundle\ProductBundle\EventListener\UserContextListener
-    
-    pim_product.subscriber.add_attribute_type.class:   Pim\Bundle\ProductBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
-
-    pim_product.manager.audit.class:                   Pim\Bundle\ProductBundle\Manager\AuditManager
-    pim_product.manager.attribute_type.class:          Pim\Bundle\ProductBundle\Manager\AttributeTypeManager
-    pim_product.manager.media.class:                   Pim\Bundle\ProductBundle\Manager\MediaManager
-
-    pim_product.form.type.product_value_wysiwyg.class:          Pim\Bundle\ProductBundle\Form\Type\WysiwygType
-    pim_product.form.type.product_value_price.class:            Pim\Bundle\ProductBundle\Form\Type\PriceType
-    pim_product.form.type.product_value_price_collection.class: Pim\Bundle\ProductBundle\Form\Type\PriceCollectionType
-
-    pim_product.form.type.attribute_property_scopable.class:         Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\ScopableType
-    pim_product.form.type.attribute_property_available_locale.class: Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\AvailableLocalesType
-    pim_product.form.type.attribute_property_options.class:          Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\OptionsType
-
 services:
-    # Managers
-    pim_product.manager.product:
-        class: %pim_product.manager.product.class%
-        arguments:
-            - %pim_product.entity.product.class%
-            - %oro_flexibleentity.flexible_config%
-            - @doctrine.orm.entity_manager
-            - @event_dispatcher
-            - @oro_flexibleentity.attributetype.factory
-            - @pim_product.manager.media
-        tags:
-            - { name: oro_flexibleentity_manager, entity: %pim_product.entity.product.class%}
-        calls:
-            - [ addAttributeType, ['pim_product_text'] ]
-            - [ addAttributeType, ['pim_product_textarea'] ]
-            - [ addAttributeType, ['pim_product_number'] ]
-            - [ addAttributeType, ['pim_product_price_collection'] ]
-            - [ addAttributeType, ['pim_product_multiselect'] ]
-            - [ addAttributeType, ['pim_product_simpleselect'] ]
-            - [ addAttributeType, ['pim_product_file'] ]
-            - [ addAttributeType, ['pim_product_image'] ]
-            - [ addAttributeType, ['pim_product_boolean'] ]
-            - [ addAttributeType, ['pim_product_date'] ]
-            - [ addAttributeType, ['pim_product_metric'] ]
-
-    pim_product.manager.audit:
-        class: %pim_product.manager.audit.class%
-        arguments:
-            - @doctrine.orm.entity_manager
-
-    pim_product.manager.category:
-        class:     %pim_product.manager.category.class%
-        arguments: [@doctrine.orm.entity_manager, %pim_product.entity.category.class%]
-
-    # Form
-    pim_product.form.simple_product:
-        class:           Symfony\Component\Form\Form
-        factory_method:  createNamed
-        factory_service: form.factory
-        arguments: ["pim_simple_product_form", "pim_simple_product"]
-
-    pim_product.form.attribute:
-        class:           Symfony\Component\Form\Form
-        factory_method:  createNamed
-        factory_service: form.factory
-        arguments: ["pim_product_attribute_form", "pim_product_attribute"]
-
-    pim_product.form.attribute_group:
-        class:           Symfony\Component\Form\Form
-        factory_method:  createNamed
-        factory_service: form.factory
-        arguments: ["pim_attribute_group_form", "pim_attribute_group"]
-
-    pim_product.form.export_profile:
-        class:           Symfony\Component\Form\Form
-        factory_method:  createNamed
-        factory_service: form.factory
-        arguments: ["pim_export_profile_form", "pim_export_profile"]
-
-    # Types
-    pim_product.form.type.product:
-        class:     %pim_product.form.type.product.class%
-        arguments: [@pim_product.manager.product, 'pim_product_value']
-        tags:
-            - { name: form.type, alias: pim_product }
-
-    pim_product.form.type.simple_product:
-        class:     %pim_product.form.type.simple_product.class%
-        arguments: [@pim_product.manager.product, 'pim_product_value']
-        tags:
-            - { name: form.type, alias: pim_simple_product }
-
-    pim_product.form.type.product_value:
-        class:     %pim_product.form.type.product_value.class%
-        arguments: [@pim_product.manager.product, @oro_flexibleentity.value_form.value_subscriber]
-        tags:
-            - { name: form.type, alias: pim_product_value }
-
-    pim_product.form.type.attribute:
-        class: %pim_product.form.type.product_attribute.class%
-        tags:
-            - { name: form.type, alias: pim_product_attribute }
-        arguments: [@pim_product.manager.attribute_type, @pim_product.form.subscriber.attribute]
-
-    pim_product.form.type.attribute_group:
-        class: %pim_product.type.attribute_group.class%
-        tags:
-            - { name: form.type, alias: pim_attribute_group }
-
-    pim_product.form.type.export_profile:
-        class: %pim_product.type.export_profile.class%
-        tags:
-            - { name: form.type, alias: pim_export_profile }
-
-    pim_product.form.type.wysiwyg:
-        class: %pim_product.form.type.product_value_wysiwyg.class%
-        tags:
-            - { name: form.type, alias: pim_wysiwyg }
-
-    pim_product.form.type.price:
-        class: %pim_product.form.type.product_value_price.class%
-        tags:
-            - { name: form.type, alias: pim_product_price }
-
-    pim_product.form.type.price_collection:
-        class: %pim_product.form.type.product_value_price_collection.class%
-        tags:
-            - { name: form.type, alias: pim_product_price_collection }
-
     # Attribute property types
     pim_product.form.type.scopable:
         class: %pim_product.form.type.attribute_property_scopable.class%
@@ -166,27 +14,6 @@ services:
         class: %pim_product.form.type.attribute_property_options.class%
         tags:
             - { name: form.type, alias: pim_product_options }
-
-    # Handlers
-    pim_product.form.handler.simple_product:
-        class: %pim_product.handler.simple_product.class%
-        scope: request
-        arguments: [@pim_product.form.simple_product, @request, @pim_product.manager.product]
-
-    pim_product.form.handler.attribute:
-        class: %pim_product.form.handler.product_attribute.class%
-        scope: request
-        arguments: [@pim_product.form.attribute, @request, @doctrine.orm.entity_manager, @pim_product.manager.attribute_type]
-
-    pim_product.form.handler.attribute_group:
-        class: %pim_product.handler.attribute_group.class%
-        scope: request
-        arguments: [@pim_product.form.attribute_group, @request, @doctrine.orm.entity_manager]
-
-    pim_product.form.handler.export_profile:
-        class: %pim_product.handler.export_profile.class%
-        scope: request
-        arguments: [@pim_product.form.export_profile, @request, @doctrine.orm.entity_manager]
 
     # Subscribers
     pim_product.form.subscriber.attribute:
@@ -207,19 +34,12 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_value_validator }
 
-    # Media
-    pim_product.manager.media:
-        class:     %pim_product.manager.media.class%
-        arguments: [@knp_gaufrette.filesystem_map, "pim", %upload_dir%]
-
-    # Attribute manager
-    pim_product.manager.attribute_type:
-        class:     %pim_product.manager.attribute_type.class%
-        arguments: [@pim_product.manager.product, @pim_config.manager.locale, @oro_flexibleentity.attributetype.factory]
-
     # twig extension
     pim_product.twig.product_extension:
         class: Pim\Bundle\ProductBundle\Twig\ProductExtension
+        arguments:
+            - @security.context
+            - @pim_config.manager.locale
         tags:
             - { name: twig.extension }
 

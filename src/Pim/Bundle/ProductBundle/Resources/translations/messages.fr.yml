@@ -47,7 +47,7 @@
 'Smart': __Smart
 'Useableasgridcolumn': 'Utilisable comme colonne de grille'
 'Useableasgridfilter': 'Utilisable comme filtre de grille'
-'Productfamily': 'Famille de produit'
+'Family': 'Famille'
 'Availablelocales': 'Locales disponibles'
 'Locale specific': '__Locale specific'
 'Choose a currency': '__Choose a currency'

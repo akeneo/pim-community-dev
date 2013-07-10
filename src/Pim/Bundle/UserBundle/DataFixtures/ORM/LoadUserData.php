@@ -25,6 +25,11 @@ use Oro\Bundle\UserBundle\Entity\User;
 class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
     /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
      * @var UserManager
      */
     protected $userManager;
@@ -39,7 +44,8 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      */
     public function setContainer(ContainerInterface $container = null)
     {
-        $this->userManager = $container->get('oro_user.manager');
+        $this->container      = $container;
+        $this->userManager    = $container->get('oro_user.manager');
         $this->userRepository = $this->userManager->getFlexibleRepository();
     }
 
@@ -49,10 +55,18 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     public function load(ObjectManager $manager)
     {
         $users = $this->userRepository->findAll();
-        $scope = $this->userManager->getStorageManager()->getRepository('PimConfigBundle:Channel')->findOneBy(array());
+
+        $locale       = current($this->getLocaleManager()->getLocales(array('code' => 'en_US')));
+        $localeAttr   = $this->findAttribute('cataloglocale');
+        $localeOption = $this->findAttributeOptionWithValue($localeAttr, $locale->getCode());
+
+        $scope       = current($this->getChannelManager()->getChannels());
+        $scopeAttr   = $this->findAttribute('catalogscope');
+        $scopeOption = $this->findAttributeOptionWithValue($scopeAttr, $scope->getCode());
+
         foreach ($users as $user) {
-            $this->setFlexibleAttributeValueOption($user, 'cataloglocale', 'en_US');
-            $this->setFlexibleAttributeValueOption($user, 'catalogscope', $scope->getCode());
+            $user->setCataloglocale($localeOption);
+            $user->setCatalogscope($scopeOption);
             $this->persist($user);
         }
 
@@ -60,23 +74,23 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     }
 
     /**
-     * Sets a flexible attribute value as option with given value
+     * Get locale manager
      *
-     * @param AbstractFlexible $flexibleEntity
-     * @param string           $attributeCode
-     * @param string           $value
-     *
-     * @return void
-     * @throws \LogicException
+     * @return \Pim\Bundle\ConfigBundle\Manager\LocaleManager
      */
-    private function setFlexibleAttributeValueOption(AbstractFlexible $flexibleEntity, $attributeCode, $value)
+    protected function getLocaleManager()
     {
-        if ($attribute = $this->findAttribute($attributeCode)) {
-            $option = $this->findAttributeOptionWithValue($attribute, $value);
-            $this->getFlexibleValueForAttribute($flexibleEntity, $attribute)->setOption($option);
-        } else {
-            throw new \LogicException(sprintf('Cannot set value, attribute "%s" is missing', $attributeCode));
-        }
+        return $this->container->get('pim_config.manager.locale');
+    }
+
+    /**
+     * Get channel manager
+     *
+     * @return \Pim\Bundle\ConfigBundle\Manager\ChannelManager
+     */
+    protected function getChannelManager()
+    {
+        return $this->container->get('pim_config.manager.channel');
     }
 
     /**
@@ -86,7 +100,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      *
      * @return AbstractAttribute
      */
-    private function findAttribute($attributeCode)
+    protected function findAttribute($attributeCode)
     {
         return $this->userRepository->findAttributeByCode($attributeCode);
     }
@@ -100,14 +114,13 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      * @return AbstractAttributeOption
      * @throws \LogicException
      */
-    private function findAttributeOptionWithValue(AbstractAttribute $attribute, $value)
+    protected function findAttributeOptionWithValue(AbstractAttribute $attribute, $value)
     {
         /** @var $options \Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption[] */
         $options = $this->userManager->getAttributeOptionRepository()->findBy(
             array('attribute' => $attribute)
         );
 
-        $selectedOption = null;
         foreach ($options as $option) {
             if ($value == $option->getOptionValue()->getValue()) {
                 return $option;
@@ -118,33 +131,13 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     }
 
     /**
-     * Gets or creates a flexible value for attribute
-     *
-     * @param AbstractFlexible  $flexibleEntity
-     * @param AbstractAttribute $attribute
-     *
-     * @return FlexibleValueInterface
-     */
-    private function getFlexibleValueForAttribute(AbstractFlexible $flexibleEntity, AbstractAttribute $attribute)
-    {
-        $flexibleValue = $flexibleEntity->getValue($attribute->getCode());
-        if (!$flexibleValue) {
-            $flexibleValue = $this->userManager->createFlexibleValue();
-            $flexibleValue->setAttribute($attribute);
-            $flexibleEntity->addValue($flexibleValue);
-        }
-
-        return $flexibleValue;
-    }
-
-    /**
      * Persist object
      *
      * @param mixed $object
      *
      * @return void
      */
-    private function persist($object)
+    protected function persist($object)
     {
         $this->userManager->getStorageManager()->persist($object);
     }
@@ -154,7 +147,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      *
      * @return void
      */
-    private function flush()
+    protected function flush()
     {
         $this->userManager->getStorageManager()->flush();
     }

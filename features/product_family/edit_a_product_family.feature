@@ -1,7 +1,7 @@
 Feature: Edit a product family
   In order to provide accurate information about a product family
   As an user
-  I need to be able to edit its code and the translations of its label
+  I need to be able to edit its code and the translations of its name
 
   Background:
     Given the following families:
@@ -36,8 +36,8 @@ Feature: Edit a product family
     And I save the family
     Then I should see "The code must only contain alphanumeric characters."
 
-  Scenario: Successfully set the translations of the label
+  Scenario: Successfully set the translations of the name
     Given I am on the "Jewels" family page
-    And I change the english Label to "Jewelery"
+    And I change the english Name to "Jewelery"
     And I save the family
     Then I should see the families Bags, Jewelery and Smartphone

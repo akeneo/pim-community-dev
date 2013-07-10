@@ -2,8 +2,8 @@
 namespace Pim\Bundle\ConfigBundle\Entity;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
 use Doctrine\ORM\Mapping as ORM;
+use Pim\Bundle\ProductBundle\Entity\Category;
 
 /**
  * Channel entity
@@ -18,7 +18,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Channel
 {
-
     /**
      * @var integer $id
      *
@@ -41,6 +40,12 @@ class Channel
      * @ORM\Column(name="name", type="string", length=100)
      */
     protected $name;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\Category")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     */
+    protected $category;
 
     /**
      * Get id
@@ -110,6 +115,30 @@ class Channel
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return Category
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * Set category
+     *
+     * @param Category $category
+     *
+     * @return Channel
+     */
+    public function setCategory(Category $category)
+    {
+        $this->category = $category;
 
         return $this;
     }

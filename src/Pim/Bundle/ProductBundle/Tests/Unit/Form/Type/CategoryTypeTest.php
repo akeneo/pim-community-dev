@@ -29,12 +29,15 @@ class CategoryTypeTest extends AbstractFormTypeTest
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 
         // Create form type
-        $this->type = new CategoryType();
+        $this->type = new CategoryType(
+            'Pim\Bundle\ProductBundle\Entity\Category',
+            'Pim\Bundle\ProductBundle\Entity\CategoryTranslation'
+        );
         $this->form = $this->factory->create($this->type);
     }
 
@@ -55,17 +58,5 @@ class CategoryTypeTest extends AbstractFormTypeTest
 
         // Assert name
         $this->assertEquals('pim_category', $this->form->getName());
-    }
-
-    /**
-     * Assert field name and type
-     * @param string $name Field name
-     * @param string $type Field type alias
-     */
-    protected function assertField($name, $type)
-    {
-        $formType = $this->form->get($name);
-        $this->assertInstanceOf('\Symfony\Component\Form\Form', $formType);
-        $this->assertEquals($type, $formType->getConfig()->getType()->getInnerType()->getName());
     }
 }

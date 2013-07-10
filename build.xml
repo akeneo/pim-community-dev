@@ -145,9 +145,8 @@
 
     <target name="behat" description="Run acceptance tests with Behat">
         <exec executable="bin/behat">
+            <env key="DISPLAY" value=":0" />
             <arg value="--profile=jenkins" />
-            <arg value="--tags=~javascript" />
-            <arg value="--no-paths" />
             <arg value="--ansi" />
         </exec>
     </target>

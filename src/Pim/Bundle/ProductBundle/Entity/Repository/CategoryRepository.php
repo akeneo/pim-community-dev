@@ -170,4 +170,28 @@ class CategoryRepository extends SegmentRepository
 
         return $this->buildTreeNode($nodes);
     }
+
+    /**
+     * Return associative array of category id to title
+     *
+     * @return array
+     */
+    public function getAllIdToTitle()
+    {
+        $meta = $this->getClassMetadata();
+        $config = $this->listener->getConfiguration($this->_em, $meta->name);
+
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('category.title')
+            ->from($config['useObjectClass'], 'category', 'category.id')
+            ->orderBy('category.title');
+
+        $categories = $qb->getQuery()->execute(array(), \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+        $choices = array();
+        foreach ($categories as $categoryId => $categoryData) {
+            $choices[$categoryId] = $categoryData['title'];
+        }
+
+        return $choices;
+    }
 }

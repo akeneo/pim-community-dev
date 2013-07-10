@@ -2,17 +2,17 @@
 namespace Pim\Bundle\ProductBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 
 /**
- * Repository for AttributeGroup entity
+ * Repository for attribute entity
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
-class ProductAttributeRepository extends EntityRepository
+class ProductAttributeRepository extends AttributeRepository
 {
     /**
      * Get the query builder to find all product attributes except the ones

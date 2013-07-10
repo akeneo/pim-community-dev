@@ -33,7 +33,7 @@
         <fieldset>
             <div class="input-prepend">
                 <label for="prependedInput" class="add-on">{{ 'Username'|trans }}</label>
-                <input type="text" id="prependedInput" class="span2" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'Username or Email'|trans }}" />
+                <input type="text" id="prependedInput" autofocus="autofocus" class="span2" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'Username or Email'|trans }}" />
             </div>
             <div class="input-prepend">
                 <label for="prependedInput2" class="add-on">{{ 'Password'|trans }}</label>
@@ -48,8 +48,6 @@
                 <button type="submit" class="btn btn-large btn-primary" id="_submit" name="_submit">{{ 'Log in'|trans }}</button>
             </div>
             <div class="signin-help">
-                <a href="#">{{ 'Forgot your username?'|trans }}</a>
-                <div class="divider-vertical-small"></div>
                 <a href="{{ path('oro_user_reset_request') }}">{{ 'Forgot your password?'|trans }}</a>
             </div>
         </fieldset>

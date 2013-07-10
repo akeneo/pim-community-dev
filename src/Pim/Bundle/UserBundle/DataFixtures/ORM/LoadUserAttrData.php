@@ -77,7 +77,7 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
      *
      * @return AbstractAttribute
      */
-    private function createAttribute($attributeType, $attributeCode)
+    protected function createAttribute($attributeType, $attributeCode)
     {
         $result = $this->userManager->createAttribute($attributeType);
         $result->setCode($attributeCode);
@@ -93,7 +93,7 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
      *
      * @return AbstractAttributeOption
      */
-    private function createAttributeOptionWithValue($value)
+    protected function createAttributeOptionWithValue($value)
     {
         $option = $this->userManager->createAttributeOption();
         $optionValue = $this->userManager->createAttributeOptionValue()->setValue($value);
@@ -113,8 +113,13 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
      *
      * @return AbstractAttribute
      */
-    private function createAttributeWithOptions($attributeType, $attributeCode, array $optionValues, $required = false, $label = false)
-    {
+    protected function createAttributeWithOptions(
+        $attributeType,
+        $attributeCode,
+        array $optionValues,
+        $required = false,
+        $label = false
+    ) {
         $attribute = $this->createAttribute($attributeType, $attributeCode);
         foreach ($optionValues as $value) {
             $attribute->addOption($this->createAttributeOptionWithValue($value));
@@ -132,9 +137,19 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
      *
      * @return array
      */
-    private function getLocales()
+    protected function getLocales()
     {
-        return array('en_US');
+        return $this->getLocaleManager()->getActiveCodes();
+    }
+
+    /**
+     * Get locale manager
+     *
+     * @return \Pim\Bundle\ConfigBundle\Manager\LocaleManager
+     */
+    protected function getLocaleManager()
+    {
+        return $this->container->get('pim_config.manager.locale');
     }
 
     /**
@@ -142,35 +157,26 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
      *
      * @return array
      */
-    private function getScopes()
+    protected function getScopes()
     {
-        $scopes = $this->userManager->getStorageManager()->getRepository('PimConfigBundle:Channel')->findAll();
-        $codes = array();
-        foreach ($scopes as $scope) {
-            $codes[]= $scope->getCode();
+        $channels = $this->getChannelManager()->getChannels();
+
+        $choices = array();
+        foreach ($channels as $channel) {
+            $choices[] = $channel->getCode();
         }
 
-        return $codes;
+        return $choices;
     }
 
     /**
-     * Generates a locale
+     * Get channel manager
      *
-     * @return string
+     * @return \Pim\Bundle\ConfigBundle\Manager\ChannelManager
      */
-    private function generateLocale()
+    protected function getChannelManager()
     {
-        return 'en_US';
-    }
-
-    /**
-     * Generates a scope
-     *
-     * @return string
-     */
-    private function generateScope()
-    {
-        return current($this->getLocales());
+        return $this->container->get('pim_config.manager.channel');
     }
 
     /**

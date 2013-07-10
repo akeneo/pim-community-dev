@@ -1,23 +1,21 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-
-use Pim\Bundle\GridBundle\Property\CurrencyProperty;
-
 use Oro\Bundle\GridBundle\Property\FixedProperty;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Oro\Bundle\GridBundle\Property\FieldProperty;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-use Pim\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\GridBundle\Filter\FilterInterface;
+use Pim\Bundle\GridBundle\Property\CurrencyProperty;
 
 /**
  * Grid manager
@@ -73,6 +71,14 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'pim_product_product_edit',
                 array('id', 'dataLocale' => self::LOCALE_FIELD_NAME)
             ),
+            new UrlProperty(
+                'edit_categories_link',
+                $this->router,
+                'pim_product_product_edit',
+                array('id', 'dataLocale' => self::LOCALE_FIELD_NAME),
+                false,
+                '#categories'
+            ),
             new UrlProperty('delete_link', $this->router, 'pim_product_product_remove', array('id')),
         );
     }
@@ -125,6 +131,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $result['show_filter'] = $attribute->isUseableAsGridFilter();
         $result['show_column'] = $attribute->isUseableAsGridColumn();
 
+        $backendType = $attribute->getBackendType();
+        if ($backendType !== AbstractAttributeType::BACKEND_TYPE_OPTION and $result['type'] === FieldDescriptionInterface::TYPE_OPTIONS) {
+            $result['sortable'] = false;
+        }
+
         return $result;
     }
 
@@ -137,7 +148,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     {
         // get families
         $em = $this->flexibleManager->getStorageManager();
-        $families = $em->getRepository('PimProductBundle:ProductFamily')->findAll();
+        $families = $em->getRepository('PimProductBundle:Family')->findAll();
         $choices = array();
         foreach ($families as $family) {
             $choices[$family->getId()] = $family->getLabel();
@@ -149,7 +160,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
                 'label'       => $this->translate('Family'),
-                'field_name'  => 'productFamily',
+                'field_name'  => 'family',
                 'filter_type' => FilterInterface::TYPE_CHOICE,
                 'required'    => false,
                 'sortable'    => true,
@@ -172,13 +183,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function createCategoryField()
     {
-        // get categories
         $em = $this->flexibleManager->getStorageManager();
-        $categories = $em->getRepository('PimProductBundle:Category')->findAll();
-        $choices = array();
-        foreach ($categories as $category) {
-            $choices[$category->getId()] = $category->getTitle();
-        }
+        $choices = $em->getRepository('PimProductBundle:Category')->getAllIdToTitle();
 
         $field = new FieldDescription();
         $field->setName('categories');
@@ -282,6 +288,18 @@ class ProductDatagridManager extends FlexibleDatagridManager
             )
         );
 
+        $editCategoriesAction = array(
+            'name'         => 'edit_categories',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label'   => $this->translate('Edit categories'),
+                'icon'    => 'folder-close',
+                'link'    => 'edit_categories_link',
+                'backUrl' => true
+            )
+        );
+
         $deleteAction = array(
             'name'         => 'delete',
             'type'         => ActionInterface::TYPE_DELETE,
@@ -293,7 +311,12 @@ class ProductDatagridManager extends FlexibleDatagridManager
             )
         );
 
-        return array($clickAction, $editAction, $deleteAction);
+        return array(
+            $clickAction,
+            $editAction,
+            $editCategoriesAction,
+            $deleteAction
+        );
     }
 
     /**

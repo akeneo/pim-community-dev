@@ -83,7 +83,6 @@
         getFields(el).first().off('click', 'label span').on('click', 'label span', function() {
             toggleOpen(el, opts);
         });
-
     }
 
     function prepareToggle(el, icon) {
@@ -103,6 +102,9 @@
     }
 
     function collapse(el, opts) {
+        if ($(el).find('.validation-error').length) {
+            return;
+        }
         prepareToggle(el, opts.expandIcon);
 
         getFields(el).hide().first().show();
@@ -152,24 +154,31 @@
         }
 
         return this.each(function() {
-            if (!$(this).hasClass('scopablefield')) {
-                showTitle(this, opts);
+            var el = this;
+            if (!$(el).hasClass('scopablefield')) {
+                showTitle(el, opts);
             }
 
-            if (getFields(this, opts).length < 2) {
-                prepareLabels(this, opts);
+            if (getFields(el, opts).length < 2) {
+                prepareLabels(el, opts);
             } else {
-                sortFields(this, opts);
-                prepareLabels(this, opts);
-                bindEvents(this, opts);
-                if (!$(this).hasClass('scopablefield') || opts.toggleOnUpdate === true) {
-                    toggleOpen(this, opts);
+                sortFields(el, opts);
+                prepareLabels(el, opts);
+                bindEvents(el, opts);
+                if (!$(el).hasClass('scopablefield') || opts.toggleOnUpdate === true) {
+                    toggleOpen(el, opts);
                 } else {
-                    collapse(this, opts);
+                    collapse(el, opts);
                 }
+
+                $(el).closest('form').on('validate', function() {
+                    if ($(el).find('.validation-error:hidden').length) {
+                        expand(el, opts);
+                    }
+                });
             }
 
-            $(this).addClass('scopablefield');
+            $(el).addClass('scopablefield');
         });
     }
 

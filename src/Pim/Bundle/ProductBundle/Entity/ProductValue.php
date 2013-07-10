@@ -1,12 +1,15 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Entity;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
+use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
+use Pim\Bundle\ProductBundle\Model\ProductInterface;
+use Pim\Bundle\ProductBundle\Entity\ProductPrice;
 
 /**
  * Value for a product attribute
@@ -17,30 +20,94 @@ use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
  *
  * @ORM\Table(name="pim_product_value")
  * @ORM\Entity
+ * @Oro\Loggable
  */
 class ProductValue extends AbstractEntityFlexibleValue implements ProductValueInterface
 {
     /**
      * @var Oro\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute
      *
-     * @ORM\ManyToOne(targetEntity="ProductAttribute")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\ProductAttribute")
      * @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $attribute;
 
     /**
-     * @var Product $entity
+     * @var ProductInterface $entity
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Model\ProductInterface", inversedBy="values")
      */
     protected $entity;
 
     /**
+     * Store varchar value
+     * @var string $varchar
+     *
+     * @ORM\Column(name="value_string", type="string", length=255, nullable=true)
+     * @Oro\Versioned
+     */
+    protected $varchar;
+
+    /**
+     * Store int value
+     * @var integer $integer
+     *
+     * @ORM\Column(name="value_integer", type="integer", nullable=true)
+     * @Oro\Versioned
+     */
+    protected $integer;
+
+    /**
+     * Store decimal value
+     * @var double $decimal
+     *
+     * @ORM\Column(name="value_decimal", type="decimal", nullable=true)
+     * @Oro\Versioned
+     */
+    protected $decimal;
+
+    /**
+     * Store boolean value
+     * @var boolean $boolean
+     *
+     * @ORM\Column(name="value_boolean", type="boolean", nullable=true)
+     * @Oro\Versioned
+     */
+    protected $boolean;
+
+    /**
+     * Store text value
+     * @var string $text
+     *
+     * @ORM\Column(name="value_text", type="text", nullable=true)
+     * @Oro\Versioned
+     */
+    protected $text;
+
+    /**
+     * Store date value
+     * @var date $date
+     *
+     * @ORM\Column(name="value_date", type="date", nullable=true)
+     * @Oro\Versioned
+     */
+    protected $date;
+
+    /**
+     * Store datetime value
+     * @var date $datetime
+     *
+     * @ORM\Column(name="value_datetime", type="datetime", nullable=true)
+     * @Oro\Versioned
+     */
+    protected $datetime;
+
+    /**
      * Store options values
      *
      * @var ArrayCollection options
      *
-     * @ORM\ManyToMany(targetEntity="AttributeOption")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ProductBundle\Entity\AttributeOption")
      * @ORM\JoinTable(name="pim_product_value_option",
      *      joinColumns={@ORM\JoinColumn(name="value_id", referencedColumnName="id", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="option_id", referencedColumnName="id", onDelete="CASCADE")}
@@ -53,7 +120,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      *
      * @var Pim\Bundle\ProductBundle\Entity\AttributeOption $option
      *
-     * @ORM\ManyToOne(targetEntity="AttributeOption", cascade="persist")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\ProductBundle\Entity\AttributeOption", cascade="persist")
      * @ORM\JoinColumn(name="option_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $option;
@@ -83,7 +150,11 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      *
      * @var ArrayCollection $prices
      *
-     * @ORM\OneToMany(targetEntity="ProductPrice", mappedBy="value", cascade={"persist", "remove"})
+     * @ORM\OneToMany(
+     *     targetEntity="Pim\Bundle\ProductBundle\Entity\ProductPrice",
+     *     mappedBy="value",
+     *     cascade={"persist", "remove"}
+     * )
      * @ORM\OrderBy({"currency" = "ASC"})
      */
     protected $prices;
@@ -245,45 +316,15 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     }
 
     /**
-     * Sort price, default currency is first
-     *
-     * @param string $defaultCurrencyCode
-     *
-     * @return ProductValue
-     */
-    public function sortPrices($defaultCurrencyCode)
-    {
-        // get default price by currency
-        $defaultPrice = $this->getPrices()->filter(
-            function ($price) use ($defaultCurrencyCode) {
-                return ($price->getCurrency() === $defaultCurrencyCode);
-            }
-        );
-        $defaultPrice = $defaultPrice->first();
-        // sort prices
-        $prices = $this->getPrices();
-        $sortedPrices = new ArrayCollection();
-        $sortedPrices[]= $defaultPrice;
-        foreach ($prices as $price) {
-            if ($price->getCurrency() !== $defaultCurrencyCode) {
-                $sortedPrices[]= $price;
-            }
-        }
-        $this->setPrices($sortedPrices);
-
-        return $this;
-    }
-
-    /**
      * @return boolean
      */
     public function isRemovable()
     {
-        if (null === $this->entity || null === $this->entity->getProductFamily()) {
+        if (null === $this->entity || null === $this->entity->getFamily()) {
             return true;
         }
 
-        return !$this->entity->getProductFamily()->getAttributes()->contains($this->getAttribute());
+        return !$this->entity->getFamily()->getAttributes()->contains($this->getAttribute());
     }
 
     /**

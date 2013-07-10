@@ -48,8 +48,11 @@ class UserContextListener implements EventSubscriberInterface
      * @param TranslatableListener     $listener
      * @param ProductManager           $productManager
      */
-    public function __construct(SecurityContextInterface $securityContext, TranslatableListener $listener, ProductManager $productManager)
-    {
+    public function __construct(
+        SecurityContextInterface $securityContext,
+        TranslatableListener $listener,
+        ProductManager $productManager
+    ) {
         $this->securityContext = $securityContext;
         $this->listener        = $listener;
         $this->productManager  = $productManager;
@@ -70,7 +73,7 @@ class UserContextListener implements EventSubscriberInterface
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if (HttpKernel::MASTER_REQUEST !== $event->getRequestType() || null === $user = $this->getUser()) {
+        if (HttpKernel::MASTER_REQUEST !== $event->getRequestType() || null === $this->getUser()) {
             return;
         }
 

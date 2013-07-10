@@ -1,0 +1,19 @@
+<form id="pim_product_product_create" method="POST" class="form-horizontal" data-title="{{ 'Create a new product'|trans }}" data-button-submit="{{ 'Create'|trans }}"  data-button-cancel="{{ 'Cancel'|trans }}" action="{{ path('pim_product_product_create', { dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
+
+    {{ JSFV(form) }}
+
+    {% if form.vars.errors|length %}
+        <div class="alert alert-error">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+    <div class="row-fluid">
+        {{ form_row(form.id) }}
+        {{ form_row(form.values) }}
+        {{ form_row(form.family, { attr: { 'data-placeholder': 'Choose a product family'|trans }}) }}
+        {{ form_row(form.locales) }}
+        {{ form_row(form._token) }}
+    </div>
+
+</form>

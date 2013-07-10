@@ -1,0 +1,142 @@
+{% extends 'PimProductBundle:Family:index.html.twig' %}
+
+{% set title = 'Family'|trans %}
+
+{% block familyTab %}
+{{ JSFV(form) }}
+<form action="{{ path('pim_product_family_edit', { id: family.id }) }}" method="POST" class="form-horizontal">
+
+    {{ form_row(form._token) }}
+
+    <div class="form-row">
+        <h3>
+            {{ title }} - {{ family.label }}
+            <button type="submit" class="btn btn-primary pull-right">{{ ' Save'|trans }}</button>
+
+            <a href="{{ path('pim_product_family_remove', {'id': family.id}) }}"
+                class="btn pull-right" data-method="DELETE"
+                data-confirm="{{ 'Are you sure you want to remove the family %family%?'|trans({'%family%': family.label}) }}">
+                {{ 'Delete'|trans }}
+            </a>
+        </h3>
+    </div>
+
+    <div id="form-navbar" class="navbar navbar-static scrollspy-nav">
+        <div class="navbar-inner">
+            <div class="row-fluid">
+                <ul class="nav">
+                    <li class="active"><a href="#properties" data-toggle="tab">{{ 'Properties' | trans }}</a></li>
+                    <li><a href="#attributes" data-toggle="tab">{{ 'Attributes' | trans }}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-content">
+
+        {% if form.vars.errors|length %}
+        <div class="alert alert-error">
+            {{ form_errors(form) }}
+        </div>
+        {% endif %}
+
+        <div class="tab-pane active" id="properties">
+            <div id="accordion1" class="accordion">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
+                            <i class="fa-icon-collapse-alt"></i>
+                            {{ "General Properties"|trans }}
+                        </a>
+                    </div>
+                    <div id="collapseOne" class="accordion-body in">
+                        <div class="accordion-inner">
+                            {{ form_row(form.code) }}
+                            {{ form_row(form.attributeAsLabel) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="accordion2" class="accordion">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                            <i class="fa-icon-collapse-alt"></i>
+                            {{ "Locale values"|trans }}
+                        </a>
+                    </div>
+                    <div id="collapseTwo" class="accordion-body in">
+                        <div class="accordion-inner">
+                            {{ form_row(form.name) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+        <div class="tab-pane" id="attributes">
+            <div id="attribute-buttons">
+                {% include 'PimProductBundle:ProductAttribute:_available-attributes-form.html.twig' with {
+                    'form': attributesForm,
+                    'action': path('pim_product_family_addproductattributes', {'id': family.id})
+                } %}
+            </div>
+            <table class="table groups">
+                <thead>
+                    <th>{{ 'Label'|upper }}</th>
+                    <th>&nbsp;</th>
+                </thead>
+
+                <tbody>
+                    {% if family.attributes|length > 0 %}
+                        {% set attributeGroup = family.attributes.first.group %}
+                        <tr class="group">
+                            <td colspan="2"><i class="fa-icon-collapse-alt"></i> {{ attributeGroup ? attributeGroup.name : 'Other'|trans }}</td>
+                        </tr>
+                        {% for attribute in family.attributes %}
+                            {% if attribute.group != attributeGroup %}
+                            </tbody>
+                            <tbody>
+                                <tr class="group">
+                                    <td colspan="2"><i class="fa-icon-collapse-alt"></i> {{ attribute.group ? attribute.group.name : 'Other'|trans }}</td>
+                                </tr>
+                            {% endif %}
+                            <tr>
+                                <td>{{ attribute.label }}</td>
+                                <td>
+                                    <a href="{{ path('pim_product_family_removeproductattribute', {'familyId': family.id, 'attributeId': attribute.id}) }}"
+                                        class="remove-attribute" data-method="DELETE"
+                                        data-confirm="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attribute.label}) }}">
+                                        <i class="icon-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% set attributeGroup = attribute.group %}
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block head_script_component %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(function() {
+
+            var activeTab = $('[href=' + location.hash + ']');
+            activeTab && activeTab.tab('show');
+
+            $('.group').click(function(event) {
+                event.preventDefault();
+                $(this).parent().find('tr:not(.group)').toggle();
+                $(this).find('i').toggleClass('fa-icon-expand-alt fa-icon-collapse-alt');
+            });
+
+        });
+    </script>
+{% endblock %}

@@ -48,7 +48,6 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      *
      * @param FormFactoryInterface $formFactory
      * @param ValidatorInterface   $validator
-     * @param TranslationFactory   $translationFactory
      * @param multitype:mixed      $options
      */
     public function __construct(FormFactoryInterface $formFactory, ValidatorInterface $validator, array $options)
@@ -123,7 +122,6 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      */
     public function bind(DataEvent $event)
     {
-        $data = $event->getData();
         $form = $event->getForm();
 
         foreach ($this->getFieldNames() as $locale => $fieldName) {
@@ -142,7 +140,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
 
             $errors = $this->validator->validate(
                 $translation,
-                array(sprintf("%s:%s", $this->getOption('field'), $locale))
+                array($locale)
             );
 
             if (count($errors) > 0) {
@@ -234,10 +232,10 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
 
         if ($this->getOption('only_default')) {
             $defaultLocale = $this->getOption('default_locale');
-            $collection[$defaultLocale] = sprintf('%s:%s', $this->getOption('field'), $defaultLocale);
+            $collection[$defaultLocale] = $defaultLocale;
         } else {
             foreach ($this->getOption('locales') as $locale) {
-                $collection[$locale] = sprintf('%s:%s', $this->getOption('field'), $locale);
+                $collection[$locale] = $locale;
             }
         }
 
@@ -248,6 +246,8 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      * Get an option value
      *
      * @param string $name
+     *
+     * @return mixed
      *
      * @throws MissingOptionException
      */

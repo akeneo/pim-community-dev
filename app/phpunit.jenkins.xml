@@ -39,6 +39,7 @@
                 <directory>../src/*/Bundle/*Bundle/Tests</directory>
                 <directory>../src/*/Bundle/*Bundle/vendor</directory>
                 <directory>../src/*/Bundle/*Bundle/cov</directory>
+                <directory>../src/*/Bundle/*Bundle/DataFixtures</directory>
             </exclude>
         </whitelist>
     </filter>

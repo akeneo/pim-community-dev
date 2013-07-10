@@ -48,8 +48,12 @@ class LocaleSubscriber implements EventSubscriberInterface
      * @param array                $existingLocales     Existing locales
      * @param array                $localesWithFallback Locales with a fallback
      */
-    public function __construct(FormFactoryInterface $factory = null, $locales = null, $existingLocales = null, $localesWithFallback = null)
-    {
+    public function __construct(
+        FormFactoryInterface $factory = null,
+        $locales = array(),
+        $existingLocales = array(),
+        $localesWithFallback = array()
+    ) {
         $this->factory = $factory;
         $this->locales = $locales;
         $this->existingLocales = $existingLocales;
@@ -121,7 +125,7 @@ class LocaleSubscriber implements EventSubscriberInterface
     {
         $choices = $this->locales;
 
-        foreach ($choices as $code => $label) {
+        foreach (array_keys($choices) as $code) {
             if (!in_array($code, $this->existingLocales)) {
                 unset($choices[$code]);
             }

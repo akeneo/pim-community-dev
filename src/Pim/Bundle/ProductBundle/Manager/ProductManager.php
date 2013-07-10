@@ -29,8 +29,14 @@ class ProductManager extends FlexibleManager
     /**
      * {@inheritDoc}
      */
-    public function __construct($flexibleName, $flexibleConfig, ObjectManager $storageManager, EventDispatcherInterface $eventDispatcher, AttributeTypeFactory $attributeTypeFactory, $mediaManager)
-    {
+    public function __construct(
+        $flexibleName,
+        $flexibleConfig,
+        ObjectManager $storageManager,
+        EventDispatcherInterface $eventDispatcher,
+        AttributeTypeFactory $attributeTypeFactory,
+        $mediaManager
+    ) {
         parent::__construct($flexibleName, $flexibleConfig, $storageManager, $eventDispatcher, $attributeTypeFactory);
 
         $this->mediaManager = $mediaManager;
@@ -47,7 +53,7 @@ class ProductManager extends FlexibleManager
      *
      * @param ProductInterface $product
      * @param ArrayCollection  $categories
-     * @param boolean          $onlyTree
+     * @param array            $onlyTree
      */
     public function save(ProductInterface $product, ArrayCollection $categories = null, array $onlyTree = null)
     {
@@ -82,7 +88,7 @@ class ProductManager extends FlexibleManager
         $locales = $product->getLocales();
         $attributes = $product->getAttributes();
 
-        if ($family = $product->getProductFamily()) {
+        if ($family = $product->getFamily()) {
             foreach ($family->getAttributes() as $attribute) {
                 $attributes[] = $attribute;
             }
@@ -147,17 +153,15 @@ class ProductManager extends FlexibleManager
     /**
      * Add missing prices (a price per currency)
      *
-     * @param CurrencyManager  $manager         the currency manager
-     * @param ProductInterface $product         the product
-     * @param Currency         $defaultCurrency the first to display
+     * @param CurrencyManager  $manager the currency manager
+     * @param ProductInterface $product the product
      */
-    public function addMissingPrices(CurrencyManager $manager, ProductInterface $product, $defaultCurrency)
+    public function addMissingPrices(CurrencyManager $manager, ProductInterface $product)
     {
         foreach ($product->getValues() as $value) {
             if ($value->getAttribute()->getAttributeType() === 'pim_product_price_collection') {
                 $activeCurrencies = $manager->getActiveCodes();
                 $value->addMissingPrices($activeCurrencies);
-                $value->sortPrices($defaultCurrency->getCode());
                 $value->removeDisabledPrices($activeCurrencies);
             }
         }
@@ -262,8 +266,11 @@ class ProductManager extends FlexibleManager
      * @param ArrayCollection  $categories
      * @param array            $onlyTrees
      */
-    public function setCategories(ProductInterface $product, ArrayCollection $categories = null, array $onlyTrees = null)
-    {
+    public function setCategories(
+        ProductInterface $product,
+        ArrayCollection $categories = null,
+        array $onlyTrees = null
+    ) {
         // Remove current categories
         $currentCategories = $product->getCategories();
         foreach ($currentCategories as $currentCategory) {
@@ -292,9 +299,7 @@ class ProductManager extends FlexibleManager
      */
     public function find($id)
     {
-        $product = $this
-            ->getFlexibleRepository()
-            ->findWithSortedAttribute($id);
+        $product = $this->getFlexibleRepository()->findWithSortedAttribute($id);
 
         if ($product) {
             $this->ensureRequiredAttributeValues($product);
