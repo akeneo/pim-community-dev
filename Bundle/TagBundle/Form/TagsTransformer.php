@@ -51,7 +51,7 @@ class TagsTransformer extends EntityToIdTransformer
         $newValues = array_filter(
             $values,
             function ($item) {
-                return !intval($item);
+                return !intval($item) && !empty($item);
             }
         );
 
