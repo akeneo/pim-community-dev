@@ -36,8 +36,7 @@ class TagRepository extends EntityRepository
         }
 
         $tags = $qb->getQuery()
-            ->getResult(AbstractQuery::HYDRATE_SCALAR)
-        ;
+            ->getResult(AbstractQuery::HYDRATE_SCALAR);
 
         $arr = array();
         foreach ($tags as $tag) {
@@ -68,8 +67,7 @@ class TagRepository extends EntityRepository
             ->setParameter('tag', $tag)
             ->select('tagging.resourceId')
             ->getQuery()
-            ->execute(array(), AbstractQuery::HYDRATE_SCALAR)
-        ;
+            ->execute(array(), AbstractQuery::HYDRATE_SCALAR);
 
         $ids = array();
         foreach ($results as $result) {
@@ -91,8 +89,7 @@ class TagRepository extends EntityRepository
         $qb = $this->getTagsQueryBuilder($taggableType)
             ->groupBy('tagging.tag')
             ->select('tag.'.$this->tagQueryField.', COUNT(tagging.tag) as tag_count')
-            ->orderBy('tag_count', 'DESC')
-        ;
+            ->orderBy('tag_count', 'DESC');
 
         return $qb;
     }
@@ -108,7 +105,6 @@ class TagRepository extends EntityRepository
         return $this->createQueryBuilder('tag')
             ->join('tag.tagging', 'tagging')
             ->where('tagging.resourceType = :resourceType')
-            ->setParameter('resourceType', $taggableType)
-        ;
+            ->setParameter('resourceType', $taggableType);
     }
 }

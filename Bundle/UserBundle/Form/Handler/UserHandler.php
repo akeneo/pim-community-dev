@@ -24,6 +24,9 @@ class UserHandler extends AbstractUserHandler implements TagHandlerInterface
         $this->manager->reloadUser($user);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setTagManager(TagManager $tagManager)
     {
         $this->tagManager = $tagManager;

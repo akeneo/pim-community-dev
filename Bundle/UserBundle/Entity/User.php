@@ -1122,9 +1122,7 @@ class User extends AbstractEntityFlexible implements
     }
 
     /**
-     * Returns the unique taggable resource identifier
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getTaggableId()
     {
@@ -1132,9 +1130,7 @@ class User extends AbstractEntityFlexible implements
     }
 
     /**
-     * Returns the collection of tags for this Taggable entity
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getTags()
     {
@@ -1143,8 +1139,13 @@ class User extends AbstractEntityFlexible implements
         return $this->tags;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setTags($tags)
     {
         $this->tags = $tags;
+
+        return $this;
     }
 }

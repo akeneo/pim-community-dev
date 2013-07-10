@@ -6,8 +6,6 @@ use Oro\Bundle\TagBundle\Entity\TagManager;
 use Oro\Bundle\TagBundle\Form\TagsTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class TagSelectType extends AbstractType
@@ -24,7 +22,7 @@ class TagSelectType extends AbstractType
 
     /**
      * @param ObjectManager $om
-     * @param TagManager $tagManager
+     * @param TagManager    $tagManager
      */
     public function __construct(ObjectManager $om, TagManager $tagManager)
     {

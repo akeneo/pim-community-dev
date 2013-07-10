@@ -108,7 +108,8 @@ class UserType extends FlexibleType
                     'label'          => ' '
                 )
             )
-            ->add('tags',
+            ->add(
+                'tags',
                 'oro_tag_select'
             );
     }

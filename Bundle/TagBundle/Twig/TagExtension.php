@@ -58,7 +58,7 @@ class TagExtension extends \Twig_Extension
     /**
      * Return array of tags
      *
-     * @param Taggable $entity
+     * @param  Taggable $entity
      * @return array
      */
     public function get(Taggable $entity)

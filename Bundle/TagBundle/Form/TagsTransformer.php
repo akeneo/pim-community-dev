@@ -48,14 +48,19 @@ class TagsTransformer extends EntityToIdTransformer
             $values = explode(',', $values);
         }
 
-        $newValues = array_filter($values, function($item){
-            return !intval($item);
-        });
+        $newValues = array_filter(
+            $values,
+            function ($item) {
+                return !intval($item);
+            }
+        );
 
-        $values = array_filter($values, function($item){
-            return intval($item);
-        });
-
+        $values = array_filter(
+            $values,
+            function ($item) {
+                return intval($item);
+            }
+        );
 
         $entities = array();
         if ($values) {

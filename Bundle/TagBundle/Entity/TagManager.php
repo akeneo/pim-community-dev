@@ -173,10 +173,14 @@ class TagManager
         if ($oldTags !== null and is_array($oldTags) and !empty($oldTags)) {
             $tagsToRemove = array();
 
+
+
             foreach ($oldTags as $oldTag) {
-                if ($newTags->exists(function ($index, $newTag) use ($oldTag) {
+                $callback = function ($index, $newTag) use ($oldTag) {
                     return $newTag->getName() == $oldTag->getName();
-                })) {
+                };
+
+                if ($newTags->exists($callback)) {
                     $tagsToAdd->removeElement($oldTag);
                 } else {
                     $tagsToRemove[] = $oldTag->getId();
@@ -193,8 +197,7 @@ class TagManager
                     ->andWhere('t.recordId = :recordId')
                     ->setParameter('recordId', $resource->getTaggableId())
                     ->getQuery()
-                    ->getResult()
-                ;
+                    ->getResult();
             }
         }
 
@@ -230,7 +233,7 @@ class TagManager
     /**
      * Gets all tags for the given taggable resource
      *
-     * @param Taggable $resource Taggable resource
+     * @param  Taggable $resource Taggable resource
      * @return array
      */
     protected function getTagging(Taggable $resource)

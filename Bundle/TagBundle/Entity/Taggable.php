@@ -17,4 +17,12 @@ interface Taggable
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getTags();
+
+    /**
+     * Set tag collection
+     *
+     * @param $tags
+     * @return $this
+     */
+    public function setTags($tags);
 }

@@ -4,7 +4,6 @@ namespace Oro\Bundle\TagBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
-use Doctrine\ORM\Event\OnFlushEventArgs;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

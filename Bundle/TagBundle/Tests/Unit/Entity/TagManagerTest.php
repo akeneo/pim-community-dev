@@ -15,7 +15,6 @@ class TagManagerTest extends \PHPUnit_Framework_TestCase
     protected $mapper;
     protected $securityContext;
 
-
     public function setUp()
     {
         $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
