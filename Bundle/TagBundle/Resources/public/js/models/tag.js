@@ -5,6 +5,6 @@ Oro.Tags.Tag = Backbone.Model.extend({
     defaults: {
         owner: false,
         url: '',
-        text: ''
+        name: ''
     }
 });

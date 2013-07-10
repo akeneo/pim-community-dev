@@ -98,19 +98,4 @@ class TagExtension extends \Twig_Extension
     {
         return 'oro_tag';
     }
-
-    /**
-     * Return slug
-     *
-     * @param string $name
-     * @return string
-     */
-    private function slugify($name)
-    {
-        $slug = mb_convert_case($name, MB_CASE_LOWER, mb_detect_encoding($name));
-        $slug = str_replace(' ', '-', $slug);
-        $slug = str_replace('--', '-', $slug);
-
-        return $slug;
-    }
 }
