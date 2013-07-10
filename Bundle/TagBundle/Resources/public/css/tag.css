@@ -4,3 +4,15 @@
 .tag-view #tag-sort-actions {
     margin-top: 5px;
 }
+.select2-search-choice-close {
+    display: block;
+    width: 12px;
+    height: 13px;
+    position: absolute;
+    right: 3px;
+    top: 4px;
+
+    font-size: 1px;
+    outline: none;
+    background: url("/bundles/orotag/img/select2.png") right top no-repeat;
+}

@@ -64,30 +64,28 @@ class TagExtension extends \Twig_Extension
     public function get(Taggable $entity)
     {
         $this->manager->loadTagging($entity);
-
-        // we have to keep all own tags and only one from another users
         $result = array();
-        $keys = array();
+
         /** @var Tag $tag */
         foreach ($entity->getTags() as $tag) {
-            $slug = $this->slugify($tag->getName());
-
-            if (!isset($keys[$slug])) {
-                $result[] = array(
-                    'text' => $tag->getName(),
-                    'id'   => $tag->getId(),
-                    'url'  => $this->router->generate('oro_tag_search', array('id' => $tag->getId()))
-                );
-            }
+            $entry = array(
+                'text' => $tag->getName(),
+                'id'   => $tag->getId(),
+                'url'  => $this->router->generate('oro_tag_search', array('id' => $tag->getId()))
+            );
 
             /** @var Tagging $tagging */
             foreach ($tag->getTagging() as $tagging) {
                 if ($this->getUser()->getId() == $tagging->getUser()->getId()) {
-                    $current = end($result);
-                    $current['owner'] = true;
-                    $result[count($result) - 1] = $current;
+                    $entry['owner'] = true;
                 }
             }
+
+            if (!$this->context->isGranted('oro_tag_unassign', $tag)) {
+                $entry['locked'] = true;
+            }
+
+            $result[] = $entry;
         }
 
         return $result;

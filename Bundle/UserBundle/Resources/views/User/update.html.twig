@@ -1,4 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroTagBundle::macros.html.twig' as _tag %}
 {% set format = oro_config_value('oro_user.name_format') %}
 {% form_theme form with ['OroUIBundle:Form:fields.html.twig', 'OroFormBundle:Form:fields.html.twig'] %}
 
@@ -72,7 +73,7 @@
                     'data': [
                         form_row(form.email),
                         UI.collectionField(form.emails, 'Additional emails', 'Add another email'),
-                        UI.tagInputField('Tags', form)
+                        _tag.tagInputField('Tags', form)
                     ]
                 }
             ]

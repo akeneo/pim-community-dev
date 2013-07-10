@@ -16,3 +16,28 @@
         });
     </script>
 {% endmacro %}
+
+{#
+    Render input for tags
+#}
+{% macro tagInputField(label, form, defaultClass) %}
+    {{ form_row(form.tags)  }}
+    {{ block('oro_tag_select_row') }}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var tags = {{ oro_tag_get_list(form.vars.value)|json_encode|raw }};
+            $('#{{ form.tags.get('id') }}').select2("data", tags);
+            $('.select2-search-choice div').click(function(){
+                var tagName = $(this).attr('title');
+                var tag = tags.filter(function(item){ return item.name == tagName })
+                var url = tag[0].url;
+
+                window.location = url;
+            });
+            {% if is_granted('oro_tag_assign', form.vars.value) %}
+            $('#{{ form.tags.get('id') }}').select2("readonly", true);
+            {% endif %}
+});
+    </script>
+{% endmacro %}
