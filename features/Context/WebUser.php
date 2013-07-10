@@ -614,6 +614,28 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^the fields (.*) should be disabled$/
+     */
+    public function theFieldsShouldBeDisabled($fields)
+    {
+        $fields = $this->listToArray($fields);
+        foreach ($fields as $fieldName) {
+            $field = $this->getCurrentPage()->findField($fieldName);
+            if (!$field) {
+                throw $this->createExpectationException(sprintf(
+                    'Expecting to see field "%s".', $fieldName
+                ));
+                return;
+            }
+            if (!$field->hasAttribute('disabled')) {
+                throw $this->createExpectationException(sprintf(
+                    'Expecting field "%s" to be disabled.', $fieldName
+                ));
+            }
+        }
+    }
+
+    /**
      * @Given /^I fill in the following informations:$/
      */
     public function iFillInTheFollowingInformations(TableNode $table)

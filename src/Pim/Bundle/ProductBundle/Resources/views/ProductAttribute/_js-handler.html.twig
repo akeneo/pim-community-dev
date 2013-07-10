@@ -19,6 +19,7 @@ $(function() {
 
     function initializeForm() {
         $('#'+formName+' .switch:not(.has-switch)').bootstrapSwitch();
+        $('#'+formName+' a.validation-tooltip').tooltip();
         $('#'+formName+' select').select2();
         $('#'+formName+' input.multiselect').select2({ tags: $('#'+formName+' input.multiselect').val() });
         initializeOptions();

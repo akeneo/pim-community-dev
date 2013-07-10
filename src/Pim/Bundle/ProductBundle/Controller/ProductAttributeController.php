@@ -208,6 +208,14 @@ class ProductAttributeController extends Controller
      */
     public function removeAction(ProductAttribute $entity)
     {
+        if ($entity->getAttributeType() === 'pim_product_identifier') {
+            if ($this->getRequest()->isXmlHttpRequest()) {
+                return new Response('', 403);
+            } else {
+                return $this->redirect($this->generateUrl('pim_product_productattribute_index'));
+            }
+        }
+
         $em = $this->getProductManager()->getStorageManager();
         $em->remove($entity);
         $em->flush();
