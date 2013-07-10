@@ -411,7 +411,7 @@ Oro.Navigation = Backbone.Router.extend({
                 return this.getCorrectedData(rawData, jsonStartPos);
             }
         } else if (jsonStartPos === 0) {
-            dataObj = $.parseJSON(data);
+            dataObj = $.parseJSON(rawData);
         } else {
             throw "Unexpected content format";
         }
