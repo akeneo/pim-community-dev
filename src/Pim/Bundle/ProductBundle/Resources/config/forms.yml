@@ -1,10 +1,10 @@
 services:
     # Form
-    pim_product.form.simple_product:
+    pim_product.form.product_create:
         class:           Symfony\Component\Form\Form
         factory_method:  createNamed
         factory_service: form.factory
-        arguments: ["pim_simple_product_form", "pim_simple_product"]
+        arguments: ["pim_product_create_form", "pim_product_create"]
 
     pim_product.form.attribute:
         class:           Symfony\Component\Form\Form

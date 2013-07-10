@@ -8,14 +8,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
 
 /**
- * Form handler for simple product type
+ * Form handler for product creation form type
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class SimpleProductHandler
+class ProductCreateHandler
 {
 
     /**

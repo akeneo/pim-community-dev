@@ -37,6 +37,14 @@ class FeatureContext extends RawMinkContext implements KernelAwareInterface
     }
 
     /**
+     * @AfterScenario
+     */
+    public function closeConnection()
+    {
+        $this->getEntityManager()->getConnection()->close();
+    }
+
+    /**
      * Sets Kernel instance.
      *
      * @param KernelInterface $kernel HttpKernel instance
