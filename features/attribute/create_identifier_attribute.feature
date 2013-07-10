@@ -1,9 +1,9 @@
+@javascript
 Feature: Create an identifier attribute
   In order to have a unique identifier for each product
   As a user
   I need to create an identifier attribute
 
-  @javascript
   Scenario: Successfully create an identifier attribute
     Given I am logged in as "admin"
     And I am on the attribute creation page
@@ -18,3 +18,19 @@ Feature: Create an identifier attribute
       | Position        | 1              |
     And I press the "Save" button
     Then I should see "Attribute successfully saved"
+
+  Scenario: Fail to create an identifier attribute
+    Given the following product attribute:
+      | label         | type       |
+      | My identifier | identifier |
+    And I am logged in as "admin"
+    And I am on the attribute creation page
+    And I select the attribute type "Identifier"
+    And I fill in the following informations:
+      | Name            | mySecondId        |
+      | Default         | Sku2              |
+      | Max characters  | 100               |
+      | Description     | My 2nd identifier |
+      | Position        | 2                 |
+    And I press the "Save" button
+    Then I should see "An identifier attribute already exists"
