@@ -78,6 +78,10 @@ class ProductController extends Controller
      */
     public function createAction($dataLocale)
     {
+        if (!$this->getRequest()->isXmlHttpRequest()) {
+            return $this->redirect($this->generateUrl('pim_product_product_index'));
+        }
+
         $entity = $this->getProductManager()->createFlexible(true);
 
         if ($this->get('pim_product.form.handler.basic_product')->process($entity)) {
