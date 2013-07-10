@@ -1,5 +1,8 @@
 css:
-  - 'bundles/orotag/css/bootstrap-tag-cloud.css'
+  - 'bundles/orotag/css/tag.css'
 
 js:
   - '@OroTagBundle/Resources/public/js/bootstrap-tag-cloud.js'
+  - '@OroTagBundle/Resources/public/js/models/tag.js'
+  - '@OroTagBundle/Resources/public/js/views/tag.js'
+  - '@OroTagBundle/Resources/public/js/collections/tag.js'

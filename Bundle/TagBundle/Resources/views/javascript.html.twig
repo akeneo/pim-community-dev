@@ -1,0 +1,32 @@
+{% block oro_tag_view_js %}
+    <script type="text/html" id="tag-view-template">
+        <div class="tag-view span6">
+            <ul class="inline" id="tag-sort-actions">
+                <li class="active">
+                    <a href="javascript:void(0);" class="no-hash">
+                        {% trans %}All tags{% endtrans %}
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0);" data-type="owner" class="no-hash">
+                        {% trans %}My tags{% endtrans %}
+                    </a>
+                </li>
+            </ul>
+
+            <div class="well well-small">
+                <ul id="tag-list" class="inline">
+                    <% _.each(collection.models, function(tag, i) { %>
+                        <li>
+                            <a href="<%= tag.get("url") %>">
+                                <span class="label label-info">
+                                    <%= tag.get("text") %>
+                                </span>
+                            </a>
+                        </li>
+                    <%}) %>
+                </ul>
+            </div>
+        </div>
+    </script>
+{% endblock oro_tag_view_js %}

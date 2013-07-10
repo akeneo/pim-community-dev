@@ -1,17 +1,18 @@
 {% macro renderView(entity) %}
-    <input type="hidden" id="tags" />
+    {# // check if block was not included yet #}
+    {% set _block = block('oro_tag_view_js') %}
+    {% if (_block is empty) %}
+        {% include 'OroTagBundle::javascript.html.twig' %}
+        {{ block('oro_tag_view_js')|raw }}
+    {% endif %}
+
+    <div id="tags"></div>
 
     <script type="text/javascript">
         $(document).ready(function () {
             var tags = {{ oro_tag_get_list(entity)|json_encode|raw }};
-
-            $('#tags').select2({
-                multiple: true
-                , query: function() { return false;}
-                , data: tags
-            });
-//            $('#tags').select2("data", tags);
-            $('#tags').select2("readonly", true);
+            var tagView = new Oro.Tags.TagView();
+            tagView.getCollection().reset(tags);
         });
     </script>
 {% endmacro %}
