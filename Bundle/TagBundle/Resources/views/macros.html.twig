@@ -33,7 +33,15 @@
                 var tag = tags.filter(function(item){ return item.name == tagName })
                 var url = tag[0].url;
 
-                window.location = url;
+                if (Oro.hashNavigationEnabled()) {
+                    var navigationObject = Oro.Registry.getElement("oro.hashnavigation.object");
+                    navigationObject.setLocation(url);
+                } else {
+                    window.location = url;
+                }
+
+
+
             });
             {% if is_granted('oro_tag_assign', form.vars.value) %}
             $('#{{ form.tags.get('id') }}').select2("readonly", true);
