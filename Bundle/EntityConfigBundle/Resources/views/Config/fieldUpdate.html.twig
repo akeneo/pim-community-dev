@@ -7,18 +7,16 @@
 {% set formAction = path('oro_entityconfig_field_update', {id: field.id}) %}
 
 {% block navButtons %}
-    {{ UI.button({'path' : path('oro_entityconfig_fields', {id: field.entity.id}), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
+    {{ UI.button({'path' : path('oro_entityconfig_view', {id: field.entity.id}), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
     {{ UI.buttonType({'type': 'submit', 'class': 'btn-success', 'label': 'Save'}) }}
 {% endblock navButtons %}
 
 {% block pageHeader %}
     {% set breadcrumbs = {
         'entity':      'entity',
-        'indexPath':   path('oro_entityconfig_fields', {id: field.entity.id}),
+        'indexPath':   path('oro_entityconfig_view', {id: field.entity.id}),
         'indexLabel': 'Field',
         'entityTitle': field.entity.id,
-        'hasAvatar':   false,
-        'imagePath':   '',
     }
     %}
     {{ parent() }}

@@ -133,7 +133,7 @@ class EntityConfigContainer
                     return isset($item['entity_grid']) ? (bool) $item['entity_grid'] : true;
                 });
             } else {
-                return $this->config['field']['items'];
+                $fieldItems = $this->config['field']['items'];
             }
         }
 

@@ -75,7 +75,7 @@ class FieldsDatagrid extends DatagridManager
     protected function getProperties()
     {
         $properties = array(
-            new UrlProperty('view_link', $this->router, 'oro_entityconfig_field_view', array('id')),
+//            new UrlProperty('view_link', $this->router, 'oro_entityconfig_field_view', array('id')),
             new UrlProperty('update_link', $this->router, 'oro_entityconfig_field_update', array('id')),
         );
         foreach ($this->configManager->getProviders() as $provider) {
@@ -105,18 +105,30 @@ class FieldsDatagrid extends DatagridManager
      */
     protected function addDynamicRows($fieldsCollection, $checkEntityGrid = false)
     {
+        $fields = array();
+
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getFieldItems($checkEntityGrid) as $code => $item) {
                 if (isset($item['grid'])) {
-                    $fieldObjectName = new FieldDescription();
-                    $fieldObjectName->setName($code);
-                    $fieldObjectName->setOptions(array_merge($item['grid'], array(
+                    $fieldObject = new FieldDescription();
+                    $fieldObject->setName($code);
+                    $fieldObject->setOptions(array_merge($item['grid'], array(
                         'expression' => 'cfv_' . $code . '.value',
                         'field_name' => $code,
                     )));
-                    $fieldsCollection->add($fieldObjectName);
+
+                    if (isset($item['priority']) && !isset($fields[$item['priority']])) {
+                        $fields[$item['priority']] = $fieldObject;
+                    } else {
+                        $fields[] = $fieldObject;
+                    }
                 }
             }
+        }
+
+        ksort($fields);
+        foreach ($fields as $field) {
+            $fieldsCollection->add($field);
         }
     }
 
@@ -125,16 +137,16 @@ class FieldsDatagrid extends DatagridManager
      */
     protected function getRowActions()
     {
-        $viewAction = array(
-            'name'         => 'view',
-            'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
-            'options'      => array(
-                'label' => 'View',
-                'icon'  => 'book',
-                'link'  => 'view_link',
-            )
-        );
+//        $viewAction = array(
+//            'name'         => 'view',
+//            'type'         => ActionInterface::TYPE_REDIRECT,
+//            'acl_resource' => 'root',
+//            'options'      => array(
+//                'label' => 'View',
+//                'icon'  => 'book',
+//                'link'  => 'view_link',
+//            )
+//        );
 
         $updateAction = array(
             'name'         => 'update',
@@ -147,7 +159,11 @@ class FieldsDatagrid extends DatagridManager
             )
         );
 
-        $actions = array($viewAction, $updateAction);
+        $actions = array(
+//            $viewAction,
+            $updateAction
+        );
+
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getFieldGridActions() as $config) {
                 $configItem = array(

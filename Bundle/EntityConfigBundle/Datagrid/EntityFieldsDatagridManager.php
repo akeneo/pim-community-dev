@@ -19,12 +19,12 @@ class EntityFieldsDatagridManager extends FieldsDatagrid
         $fieldCode->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => 'Code',
+                'label'       => 'Name',
                 'field_name'  => 'code',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
                 'sortable'    => true,
-                'filterable'  => true,
+                'filterable'  => false,
                 'show_filter' => false,
             )
         );
@@ -35,12 +35,12 @@ class EntityFieldsDatagridManager extends FieldsDatagrid
         $fieldType->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => 'Type',
+                'label'       => 'DataType',
                 'field_name'  => 'type',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
                 'sortable'    => true,
-                'filterable'  => true,
+                'filterable'  => false,
                 'show_filter' => false,
             )
         );

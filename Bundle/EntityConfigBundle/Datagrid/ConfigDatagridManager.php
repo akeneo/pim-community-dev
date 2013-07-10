@@ -56,7 +56,7 @@ class ConfigDatagridManager extends DatagridManager
         $properties = array(
             new UrlProperty('view_link', $this->router, 'oro_entityconfig_view', array('id')),
             new UrlProperty('update_link', $this->router, 'oro_entityconfig_update', array('id')),
-            new UrlProperty('fields_link', $this->router, 'oro_entityconfig_fields', array('id')),
+//            new UrlProperty('fields_link', $this->router, 'oro_entityconfig_fields', array('id')),
         );
 
         foreach ($this->configManager->getProviders() as $provider) {
@@ -111,24 +111,6 @@ class ConfigDatagridManager extends DatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $fieldObjectModule = new FieldDescription();
-        $fieldObjectModule->setName('module');
-        $fieldObjectModule->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
-                'label'       => 'Module',
-                'field_name'  => 'className',
-                'filter_type' => FilterInterface::TYPE_CHOICE,
-                'required'    => false,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => false,
-                'choices'     => $this->getObjectName('module'),
-                'multiple'    => true,
-            )
-        );
-        $fieldsCollection->add($fieldObjectModule);
-
         $fieldObjectName = new FieldDescription();
         $fieldObjectName->setName('name');
         $fieldObjectName->setOptions(
@@ -140,12 +122,30 @@ class ConfigDatagridManager extends DatagridManager
                 'required'    => false,
                 'sortable'    => true,
                 'filterable'  => true,
-                'show_filter' => false,
+                'show_filter' => true,
                 'choices'     => $this->getObjectName(),
                 'multiple'    => true,
             )
         );
         $fieldsCollection->add($fieldObjectName);
+
+        $fieldObjectModule = new FieldDescription();
+        $fieldObjectModule->setName('module');
+        $fieldObjectModule->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
+                'label'       => 'Module',
+                'field_name'  => 'className',
+                'filter_type' => FilterInterface::TYPE_CHOICE,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+                'choices'     => $this->getObjectName('module'),
+                'multiple'    => true,
+            )
+        );
+        $fieldsCollection->add($fieldObjectModule);
 
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
@@ -172,7 +172,7 @@ class ConfigDatagridManager extends DatagridManager
                 'required'    => true,
                 'sortable'    => true,
                 'filterable'  => true,
-                'show_filter' => false,
+                'show_filter' => true,
             )
         );
         $fieldsCollection->add($fieldObjectCreate);
@@ -188,7 +188,7 @@ class ConfigDatagridManager extends DatagridManager
                 'required'    => false,
                 'sortable'    => true,
                 'filterable'  => true,
-                'show_filter' => false,
+                'show_filter' => true,
             )
         );
         $fieldsCollection->add($fieldObjectUpdate);
@@ -232,18 +232,23 @@ class ConfigDatagridManager extends DatagridManager
             )
         );
 
-        $fieldsAction = array(
-            'name'         => 'fields',
-            'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
-            'options'      => array(
-                'label' => 'Fields',
-                'icon'  => 'th-list',
-                'link'  => 'fields_link',
-            )
-        );
+//        $fieldsAction = array(
+//            'name'         => 'fields',
+//            'type'         => ActionInterface::TYPE_REDIRECT,
+//            'acl_resource' => 'root',
+//            'options'      => array(
+//                'label' => 'Fields',
+//                'icon'  => 'th-list',
+//                'link'  => 'fields_link',
+//            )
+//        );
 
-        $actions = array($clickAction, $viewAction, $updateAction, $fieldsAction);
+        $actions = array(
+            $clickAction,
+            $viewAction,
+            $updateAction,
+//            $fieldsAction
+        );
 
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getEntityGridActions() as $config) {

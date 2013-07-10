@@ -1,5 +1,7 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% set gridId = 'fields-grid' %}
+{% oro_title_set({params : {"%entityName%": entityName|default('N/A') }}) %}
+
 {% block navButtons %}
     {{ UI.button({'path' : path('oro_entityconfig_index'), 'iClass' : 'icon-chevron-left ', 'title' : 'Back', 'label' : 'Back'}) }}
     {% if resource_granted('oro_user_user_update') %}
@@ -32,8 +34,6 @@
         'indexPath':   path('oro_entityconfig_index'),
         'indexLabel': 'Entities',
         'entityTitle': [moduleName, ':', entityName]|join,
-        'hasAvatar':   false,
-        'imagePath':   '',
     }
     %}
     {{ parent() }}
@@ -47,14 +47,14 @@
     {% set link = '<p class="control-label"><a href="%link%">%entityName%</a></p>'|replace({'%link%': link, '%entityName%':entityName|capitalize}) %}
 
     {% set generalFields = [
-        UI.attibuteRow('Class name', entity.className),
-        UI.attibuteRow('Module', moduleName),
         UI.attibuteRow('Name', entityName),
+        UI.attibuteRow('Module', moduleName),
     ]%}
 
     {% for key,property in properties %}
         {% set generalFields = generalFields|merge([UI.attibuteRow(key|capitalize, property)])%}
     {% endfor %}
+    {#{% set generalFields = generalFields|merge([UI.attibuteRow('Type', entity.type )])%}#}
 
     {% set data = {
         'dataBlocks': [

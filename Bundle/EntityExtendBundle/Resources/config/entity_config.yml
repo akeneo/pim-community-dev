@@ -11,12 +11,21 @@ oro_entity_config:
                     required:               true
                     grid:
                         type:               string
-                        label:              'Owner'
+                        label:              'Type'
                         filter_type:        oro_grid_orm_string
                         required:           true
                         sortable:           true
                         filterable:         true
                         show_filter:        false
+                    form:
+                        type:               text
+                        block:              entity
+                        options:
+#                            read_only:      true
+                            required:       false
+                            label:          'Type'
+
+
 
                 is_extend:
                     required:               true
@@ -29,21 +38,29 @@ oro_entity_config:
 
         field:
             grid_action:
-                -                           {"name":"Remove", "route":"oro_entityextend_field_remove", "type":"redirect", "icon":"trash",  "acl_resource":"root", "filter":"is_extend", "args":["id"]}
+                -                           {'name':'Remove', 'route':'oro_entityextend_field_remove', 'type':'redirect', 'icon':'trash', 'acl_resource':'root', 'filter':'is_extend', 'args':['id']}
             layout_action:
-                -                           {"name":"Create Field", "route":"oro_entityextend_field_create", "entity_id":true, "filter":"is_extend"}
+                -                           {'name':'Create Field', 'route':'oro_entityextend_field_create', 'entity_id':true, 'filter':'is_extend'}
             items:
                 owner:
+                    priority:               20
                     default_value:          'System'
                     required:               true
                     grid:
                         type:               string
-                        label:              'Owner'
+                        label:              'Type'
                         filter_type:        oro_grid_orm_string
                         required:           true
                         sortable:           true
-                        filterable:         true
+                        filterable:         false
                         show_filter:        false
+                    form:
+                        type:               text
+                        options:
+                            read_only:      true
+                            required:       false
+                            label:          'Type'
+
 
                 is_extend:
                     required:               true

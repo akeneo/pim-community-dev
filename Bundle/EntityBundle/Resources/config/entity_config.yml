@@ -11,9 +11,9 @@ oro_entity_config:
                         type:               string
                         label:              'Icon'
                         filter_type:        oro_grid_orm_string
-                        required:           true
+                        required:           false
                         sortable:           true
-                        filterable:         true
+                        filterable:         false
                         show_filter:        false
                     form:
                         type:               text
@@ -28,7 +28,7 @@ oro_entity_config:
                         required:           true
                         sortable:           true
                         filterable:         true
-                        show_filter:        false
+                        show_filter:        true
                     form:
                         type:               text
                         options:
@@ -40,9 +40,9 @@ oro_entity_config:
                         label:              'Description'
                         filter_type:        oro_grid_orm_string
                         required:           false
-                        sortable:           false
+                        sortable:           true
                         filterable:         true
-                        show_filter:        false
+                        show_filter:        true
                     form:
                         type:               textarea
                         options:
@@ -50,38 +50,8 @@ oro_entity_config:
                             required:       false
         field:
             items:
-                icon:
-                    default_value:          false
-                    entity_grid:            false
-                    grid:
-                        type:               string
-                        label:              'Icon'
-                        filter_type:        oro_grid_orm_string
-                        required:           true
-                        sortable:           true
-                        filterable:         true
-                        show_filter:        false
-                    form:
-                        type:               text
-                        options:
-                            block:          entity
-                            required:       true
-                name:
-                    default_value:          false
-                    grid:
-                        type:               string
-                        label:              'Name'
-                        filter_type:        oro_grid_orm_string
-                        required:           true
-                        sortable:           true
-                        filterable:         true
-                        show_filter:        false
-                    form:
-                        type:               text
-                        options:
-                            block:          entity
-                            required:       true
                 label:
+                    priority:               10
                     default_value:          false
                     grid:
                         type:               string
@@ -89,7 +59,7 @@ oro_entity_config:
                         filter_type:        oro_grid_orm_string
                         required:           true
                         sortable:           true
-                        filterable:         true
+                        filterable:         false
                         show_filter:        false
                     form:
                         type:               text
@@ -97,13 +67,14 @@ oro_entity_config:
                             block:          entity
                             required:       true
                 description:
+                    priority:               30
                     grid:
                         type:               text
                         label:              'Description'
                         filter_type:        oro_grid_orm_string
                         required:           false
-                        sortable:           false
-                        filterable:         true
+                        sortable:           true
+                        filterable:         false
                         show_filter:        false
                     form:
                         type:               textarea
@@ -167,18 +138,18 @@ oro_entity_config:
 #                            empty_value:    false
 #                            block:          datagrid
 #                            label:          "Show in Datagrid"
-#
+
                 is_searchable:
                     default_value:          false
                     entity_grid:            false
-#                    grid:
-#                        type:               boolean
-#                        label:              'Datagrid search'
-#                        filter_type:        oro_grid_orm_boolean
-#                        required:           true
-#                        sortable:           true
-#                        filterable:         true
-#                        show_filter:        false
+                    grid:
+                        type:               boolean
+                        label:              'Datagrid search'
+                        filter_type:        oro_grid_orm_boolean
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        false
                     form:
                         type:               choice
                         options:
@@ -187,9 +158,9 @@ oro_entity_config:
                             block:          datagrid
                             label:          "Datagrid search"
 
-                is_filtrableble:
-                    default_value:          false
-                    entity_grid:            false
+#                is_filtrableble:
+#                    default_value:          false
+#                    entity_grid:            false
 #                    grid:
 #                        type:               boolean
 #                        label:              'Datagrid filter'
@@ -198,10 +169,10 @@ oro_entity_config:
 #                        sortable:           true
 #                        filterable:         true
 #                        show_filter:        false
-                    form:
-                        type:               choice
-                        options:
-                            choices:        ['No', 'Yes']
-                            empty_value:    false
-                            block:          datagrid
-                            label:          "Datagrid filter"
+#                    form:
+#                        type:               choice
+#                        options:
+#                            choices:        ['No', 'Yes']
+#                            empty_value:    false
+#                            block:          datagrid
+#                            label:          "Datagrid filter"

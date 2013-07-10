@@ -176,7 +176,7 @@ class ConfigController extends Controller
      * @Route("/field/update/{id}", name="oro_entityconfig_field_update")
      * @Template()
      */
-    public function fieldupdateAction($id)
+    public function fieldUpdateAction($id)
     {
         $field   = $this->getDoctrine()->getRepository(ConfigField::ENTITY_NAME)->find($id);
 
@@ -193,7 +193,7 @@ class ConfigController extends Controller
                 //persist data inside the form
                 $this->get('session')->getFlashBag()->add('success', 'ConfigField successfully saved');
 
-                return $this->redirect($this->generateUrl('oro_entityconfig_fields',
+                return $this->redirect($this->generateUrl('oro_entityconfig_view',
                     array(
                         'id' => $field->getEntity()->getId()
                     )
