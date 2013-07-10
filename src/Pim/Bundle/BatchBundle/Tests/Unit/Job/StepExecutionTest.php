@@ -14,17 +14,26 @@ use Pim\Bundle\BatchBundle\Job\StepExecution;;
 class StepExecutionTest extends \PHPUnit_Framework_TestCase
 {
     /* @var StepExecution $execution */
-    private StepExecution execution = null;
+    private $execution = null;
 
+    /* @var StepExecution $blankExecution */
+    private $blankExecution = null;
 
-    private StepExecution blankExecution = newStepExecution(new StepSupport("blank"), null);
-
-    private ExecutionContext foobarEc = new ExecutionContext();
+    /* @var ExecutionContext $foobarEc */
+    private $foobarEc = null;
 
     public function __construct()
     {
         parent::__construct();
+       /* 
         $this->execution = :newStepExecution(new StepSupport("stepName"), new Long(23));
+        $this->blankExecution = newStepExecution(new StepSupport("blank"), null);
+        $this->foobarEc = new ExecutionContext();
+        */
+    }
 
-
+    public function testExecutionContext()
+    {
+        $this->assertNull($this->foobarEc);
+    }
 }
