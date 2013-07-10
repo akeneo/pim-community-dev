@@ -76,7 +76,7 @@ class Configuration implements ConfigurationInterface
 
                 // optional, default locale used for entity values
                 ->scalarNode('default_locale')
-                    ->defaultValue('en_US')
+                    ->defaultValue('en')
                 ->end()
 
                 // optional, default scope used for entity values
