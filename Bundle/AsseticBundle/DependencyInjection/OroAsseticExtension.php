@@ -72,6 +72,22 @@ class OroAsseticExtension extends Extension
 
         }
 
+        $container->setParameter(
+            'oro_assetic.assets_groups',
+            array(
+                'js' => array_keys($js),
+                'css' => array_keys($css)
+            )
+        );
+
+        $container->setParameter(
+            'oro_assetic.compiled_assets_groups',
+            array(
+                'js' => $config['uncompress_js'],
+                'css' => $config['uncompress_css']
+            )
+        );
+
         return array(
             'css' => $this->getAssetics($css, $config['uncompress_css']),
             'js' => $this->getAssetics($js, $config['uncompress_js']),

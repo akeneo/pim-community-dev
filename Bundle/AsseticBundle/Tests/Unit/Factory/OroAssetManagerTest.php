@@ -82,7 +82,19 @@ class OroAssetManagerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->node));
 
 
-        $this->manager = new OroAssetManager($this->am, $this->twig);
+        $this->manager = new OroAssetManager($this->am, $this->twig, array('assetGroups'), array('compiledGroup'));
+    }
+
+    public function testGetGroups()
+    {
+        $data = $this->manager->getAssetGroups();
+        $this->assertEquals('assetGroups', $data[0]);
+    }
+
+    public function testCompiledGroups()
+    {
+        $data = $this->manager->getCompiledGroups();
+        $this->assertEquals('compiledGroup', $data[0]);
     }
 
     public function testGetAssets()

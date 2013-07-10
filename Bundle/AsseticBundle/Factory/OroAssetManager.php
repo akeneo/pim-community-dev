@@ -18,20 +18,41 @@ class OroAssetManager
     /**
      * @var \Twig_Environment
      */
-    private $twig;
+    protected $twig;
 
-    private $assets;
-    private $loaded;
-    private $loading;
+    protected $assetGroups;
+    protected $compiledGroups;
+
+    protected $assets;
+    protected $loaded;
+    protected $loading;
 
 
-    public function __construct(LazyAssetManager $am, \Twig_Environment $twig)
+    public function __construct(LazyAssetManager $am, \Twig_Environment $twig, $assetGroups, $compiledGroups)
     {
         $this->loaded = false;
         $this->loading = false;
         $this->am = $am;
         $this->assets = array();
         $this->twig = $twig;
+        $this->assetGroups = $assetGroups;
+        $this->compiledGroups = $compiledGroups;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAssetGroups()
+    {
+        return $this->assetGroups;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCompiledGroups()
+    {
+        return $this->compiledGroups;
     }
 
     /**

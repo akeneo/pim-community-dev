@@ -20,11 +20,12 @@ class OroAsseticDumpCommand extends ContainerAwareCommand
      */
     protected $am;
 
-    public function configure()
+    protected function configure()
     {
         $this
             ->setName('oro:assetic:dump')
             ->setDescription('Dumps oro assetics')
+            ->addArgument('show-groups', InputArgument::OPTIONAL, 'Show list of css and js groups')
             ->addArgument('write_to', InputArgument::OPTIONAL, 'Override the configured asset root');
     }
 
@@ -34,15 +35,58 @@ class OroAsseticDumpCommand extends ContainerAwareCommand
         $this->am = $this->getContainer()->get('oro_assetic.asset_manager');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln(sprintf('Dumping all <comment>%s</comment> assets.', $input->getOption('env')));
-        $output->writeln(sprintf('Debug mode is <comment>%s</comment>.', 'off'));
-        $output->writeln('');
+        if ($input->getArgument('show-groups') !== null) {
+            $output->writeln('Get list of js and css groups');
+            $this->getGroupList($output);
+        } else {
+            $output->writeln(sprintf('Dumping all <comment>%s</comment> assets.', $input->getOption('env')));
+            $output->writeln(sprintf('Debug mode is <comment>%s</comment>.', 'off'));
+            $output->writeln('');
 
-        $this->dumpAssets($output);
+            $this->dumpAssets($output);
+        }
     }
 
+    protected function getGroupList($output)
+    {
+        $assets = $this->am->getAssetGroups();
+        $compiledGroups = $this->am->getCompiledGroups();
+
+        $output->writeln('');
+        $output->writeln('<comment>Js</comment> groups:');
+        $this->writeGroups($assets['js'], $compiledGroups['js'], $output);
+
+        $output->writeln('');
+        $output->writeln('<comment>Css</comment> groups:');
+        $this->writeGroups($assets['css'], $compiledGroups['css'], $output);
+    }
+
+    protected function writeGroups($groups, $compiledGroups, $output)
+    {
+        foreach ($groups as $group)
+        {
+            if (in_array($group, $compiledGroups)) {
+                $output->writeln(sprintf(
+                        '<comment>%s</comment> (compiled)',
+                        $group
+                    )
+                );
+            } else {
+                $output->writeln(sprintf(
+                        '<info>%s</info>',
+                        $group
+                    )
+                );
+            }
+        }
+    }
+
+    /**
+     * Dump files
+     * @param $output
+     */
     protected function dumpAssets($output)
     {
         foreach ($this->am->getAssets() as $asset) {
