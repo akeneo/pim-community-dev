@@ -109,6 +109,7 @@ class AttributeTypeSubscriber implements EventSubscriberInterface
         // replace by disabled and read-only
         $options['disabled']  = true;
         $options['read_only'] = true;
+        $options['auto_initialize'] = false;
         $formField = $this->factory->createNamed($name, $type, null, $options);
         $form->add($formField);
     }

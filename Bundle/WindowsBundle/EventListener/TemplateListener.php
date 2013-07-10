@@ -5,6 +5,7 @@ namespace Oro\Bundle\WindowsBundle\EventListener;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
+use Symfony\Component\Templating\TemplateReferenceInterface;
 
 class TemplateListener
 {
@@ -34,6 +35,9 @@ class TemplateListener
         $request = $event->getRequest();
         if ($container = $request->query->get('_widgetContainer', $request->request->get('_widgetContainer'))) {
             $template = $request->attributes->get('_template');
+            if ($template instanceof TemplateReferenceInterface) {
+                $template = $template->getLogicalName();
+            }
             if (strpos($template, self::TEMPLATE_PARTS_SEPARATOR) !== false) {
                 $templateParts = explode(self::TEMPLATE_PARTS_SEPARATOR, $template);
                 if ($templateParts) {

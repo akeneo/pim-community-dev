@@ -53,7 +53,7 @@ class FlexibleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetLocale()
     {
-        $code = 'fr_FR';
+        $code = 'fr';
         $this->flexible->setLocale($code);
         $this->assertEquals($this->flexible->getLocale(), $code);
     }
