@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\TagBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr;
@@ -164,6 +165,9 @@ class TagManager
     {
         $oldTags = $this->getTagging($resource);
         $newTags = $resource->getTags();
+        if (!($newTags instanceof ArrayCollection)) {
+            $newTags = new ArrayCollection($newTags);
+        }
         $tagsToAdd = $newTags;
 
         if ($oldTags !== null and is_array($oldTags) and !empty($oldTags)) {
@@ -183,10 +187,9 @@ class TagManager
                 $builder = $this->em->createQueryBuilder();
                 $builder
                     ->delete($this->taggingClass, 't')
-                    ->where('t.tag_id')
                     ->where($builder->expr()->in('t.tag', $tagsToRemove))
-                    ->andWhere('t.entity_name = :entityName')
-                    ->setParameter('entityName', $resource->getTaggableType())
+                    ->andWhere('t.entityName = :entityName')
+                    ->setParameter('entityName', get_class($resource))
                     ->andWhere('t.recordId = :recordId')
                     ->setParameter('recordId', $resource->getTaggableId())
                     ->getQuery()

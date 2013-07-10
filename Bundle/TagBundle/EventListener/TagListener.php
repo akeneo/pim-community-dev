@@ -36,14 +36,6 @@ class TagListener implements ContainerAwareInterface
         }
     }
 
-//    public function postPersist(LifecycleEventArgs $args)
-//    {
-//        $entity = $args->getEntity();
-//        if ($entity instanceof Taggable) {
-//            $this->manager->saveTagging($entity);
-//        }
-//    }
-
     /**
      * {@inheritdoc}
      */
