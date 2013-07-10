@@ -135,7 +135,7 @@ class ProductController extends Controller
         $request  = $this->getRequest();
         $channels = $this->getChannelRepository()->findAll();
         $trees    = $this->getCategoryManager()->getEntityRepository()->getProductsCountByTree($product);
-
+        $datagrid = $this->get('pim_product.datagrid.manager.product_history')->getDatagrid();
         $form     = $this->createForm(
             'pim_product',
             $product,
@@ -179,7 +179,8 @@ class ProductController extends Controller
             'trees'          => $trees,
             'created'        => $auditManager->getFirstLogEntry($product),
             'updated'        => $auditManager->getLastLogEntry($product),
-            'tab'            => $request->query->get('tab')
+            'tab'            => $request->query->get('tab'),
+            'datagrid'       => $datagrid->createView(),
         );
     }
 

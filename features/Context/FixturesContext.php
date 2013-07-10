@@ -18,6 +18,7 @@ use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 use Pim\Bundle\ProductBundle\Entity\Category;
 use Pim\Bundle\ConfigBundle\Entity\Locale;
 use Pim\Bundle\ConfigBundle\Entity\Channel;
+use Oro\Bundle\DataAuditBundle\Entity\Audit;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -452,6 +453,41 @@ class FixturesContext extends RawMinkContext
             $em->persist($channel);
         }
         $em->flush();
+    }
+
+    /**
+     * @Given /^the following updates:$/
+     */
+    public function theFollowingUpdates(TableNode $table)
+    {
+        $em = $this->getEntityManager();
+        foreach ($table->getHash() as $data) {
+            $audit = new Audit;
+            $audit->setAction($data['action']);
+            $audit->setLoggedAt(new \DateTime($data['loggedAt']));
+            $product = $this->getProduct($data['sku']);
+            $audit->setObjectId($product->getId());
+            $audit->setObjectClass(get_class($product));
+            $audit->setObjectName($product->getLabel());
+            $audit->setVersion(1);
+            $audit->setData(array('name' => array(
+                'old' => 'foo',
+                'new' => 'bar',
+            )));
+            $user = $this->getUser($data['updatedBy']);
+            $audit->setUsername($user->getUsername());
+            $audit->setUser($user);
+            $em->persist($audit);
+        }
+
+        $em->flush();
+    }
+
+    private function getUser($username)
+    {
+        return $this->getEntityOrException('OroUserBundle:User', array(
+            'username' => $username,
+        ));
     }
 
     public function getProduct($sku)
