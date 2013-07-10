@@ -65,20 +65,17 @@ class OroAsseticDumpCommand extends ContainerAwareCommand
 
     protected function writeGroups($groups, $compiledGroups, $output)
     {
-        foreach ($groups as $group)
-        {
+        foreach ($groups as $group) {
             if (in_array($group, $compiledGroups)) {
                 $output->writeln(sprintf(
-                        '<comment>%s</comment> (compiled)',
-                        $group
-                    )
-                );
+                    '<comment>%s</comment> (compiled)',
+                    $group
+                ));
             } else {
                 $output->writeln(sprintf(
-                        '<info>%s</info>',
-                        $group
-                    )
-                );
+                    '<info>%s</info>',
+                    $group
+                ));
             }
         }
     }
