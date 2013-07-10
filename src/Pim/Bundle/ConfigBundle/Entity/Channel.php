@@ -3,7 +3,10 @@ namespace Pim\Bundle\ConfigBundle\Entity;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\ProductBundle\Entity\Category;
+use Pim\Bundle\ConfigBundle\Entity\Currency;
+use Pim\Bundle\ConfigBundle\Entity\Locale;
 
 /**
  * Channel entity
@@ -46,6 +49,39 @@ class Channel
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     protected $category;
+
+    /**
+     * @var ArrayCollection $currencies
+     *
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Currency", cascade={"persist"})
+     * @ORM\JoinTable(
+     *    name="pim_channel_currency",
+     *    joinColumns={@ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE")},
+     *    inverseJoinColumns={@ORM\JoinColumn(name="currency_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
+     */
+    protected $currencies;
+
+    /**
+     * @var ArrayCollection $locales
+     *
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Locale", cascade={"persist"})
+     * @ORM\JoinTable(
+     *    name="pim_channel_locale",
+     *    joinColumns={@ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE")},
+     *    inverseJoinColumns={@ORM\JoinColumn(name="locale_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
+     */
+    protected $locales;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->currencies = new ArrayCollection();
+        $this->locales    = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -139,6 +175,110 @@ class Channel
     public function setCategory(Category $category)
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get currencies
+     *
+     * @return ArrayCollection
+     */
+    public function getCurrencies()
+    {
+        return $this->currencies;
+    }
+
+    /**
+     * Add currency
+     *
+     * @param Currency $currency
+     *
+     * @return Channel
+     */
+    public function addCurrency(Currency $currency)
+    {
+        $this->currencies[] = $currency;
+
+        return $this;
+    }
+
+    /**
+     * Remove currency
+     *
+     * @param Currency $currency
+     *
+     * @return Channel
+     */
+    public function removeCurrency(Currency $currency)
+    {
+        $this->currencies->removeElement($currency);
+
+        return $this;
+    }
+
+    /**
+     * Set currencies
+     *
+     * @param ArrayCollection $currencies
+     *
+     * @return Channel
+     */
+    public function setCurrencies($currencies)
+    {
+        $this->currencies = $currencies;
+
+        return $this;
+    }
+
+    /**
+     * Get locales
+     *
+     * @return ArrayCollection
+     */
+    public function getLocales()
+    {
+        return $this->locales;
+    }
+
+    /**
+     * Add locale
+     *
+     * @param Locale $locale
+     *
+     * @return Channel
+     */
+    public function addLocale(Locale $locale)
+    {
+        $this->locales[] = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Remove locale
+     *
+     * @param Locale $locale
+     *
+     * @return Channel
+     */
+    public function removeLocale(Locale $locale)
+    {
+        $this->locales->removeElement($locale);
+
+        return $this;
+    }
+
+    /**
+     * Set locales
+     *
+     * @param ArrayCollection $locales
+     *
+     * @return Channel
+     */
+    public function setLocales($locales)
+    {
+        $this->locales = $locales;
 
         return $this;
     }
