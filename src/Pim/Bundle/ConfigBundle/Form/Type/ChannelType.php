@@ -2,10 +2,9 @@
 namespace Pim\Bundle\ConfigBundle\Form\Type;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\Form\AbstractType;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Type for channel form
@@ -29,9 +28,20 @@ class ChannelType extends AbstractType
 
         $builder->add('code');
 
-        $builder->add('name');
+        $builder->add('name', 'text', array(
+            'label' => 'Default label'
+        ));
 
         $builder->add('category');
+
+        $builder->add('currencies', 'entity', array(
+            'required' => true,
+            'multiple' => true,
+            'class' => 'Pim\Bundle\ConfigBundle\Entity\Currency',
+            'query_builder' => function (EntityRepository $repository) {
+                return $repository->getActivatedCurrenciesQB();
+            }
+        ));
     }
 
     /**

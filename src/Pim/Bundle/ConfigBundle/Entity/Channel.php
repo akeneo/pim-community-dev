@@ -4,6 +4,7 @@ namespace Pim\Bundle\ConfigBundle\Entity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\ProductBundle\Entity\Category;
+use Pim\Bundle\ConfigBundle\Entity\Currency;
 
 /**
  * Channel entity
@@ -46,6 +47,18 @@ class Channel
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     protected $category;
+
+    /**
+     * @var ArrayCollection $currencies
+     *
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\ConfigBundle\Entity\Currency")
+     * @ORM\JoinTable(
+     *    name="pim_channel_currency",
+     *    joinColumns={@ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE")},
+     *    inverseJoinColumns={@ORM\JoinColumn(name="currency_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
+     */
+    protected $currencies;
 
     /**
      * Get id
@@ -139,6 +152,56 @@ class Channel
     public function setCategory(Category $category)
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get currencies
+     *
+     * @return ArrayCollection
+     */
+    public function getCurrencies()
+    {
+        return $this->currencies;
+    }
+
+    /**
+     * Add currency
+     *
+     * @param Currency $currency
+     *
+     * @return Channel
+     */
+    public function addCurrency(Currency $currency)
+    {
+        $this->currencies[] = $currency;
+
+        return $this;
+    }
+
+    /**
+     * Remove currency
+     *
+     * @param Currency $currency
+     *
+     * @return Channel
+     */
+    public function removecurrency(\Pim\Bundle\ConfigBundle\Entity\currency $currency)
+    {
+        $this->currencies->removeElement($currency);
+    }
+
+    /**
+     * Set currencies
+     *
+     * @param ArrayCollection $currencies
+     *
+     * @return Channel
+     */
+    public function setCurrencies($currencies)
+    {
+        $this->currencies = $currencies;
 
         return $this;
     }
