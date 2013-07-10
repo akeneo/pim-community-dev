@@ -23,7 +23,7 @@ parameters:
     pim_product.type.export_profile.class:             Pim\Bundle\ProductBundle\Form\Type\ExportProfileType
 
     pim_product.entity.category.class:                 Pim\Bundle\ProductBundle\Entity\Category
-    pim_product.entity.category_translation.class:     Pim\Bundle\ProductBundle\Entity\CategoryTranslation
+    pim_product.entity.category_translation.class:     Pim\Bundle\ProductBundle\Entity\CategoryMyTranslation
     pim_product.manager.category.class:                Pim\Bundle\ProductBundle\Manager\CategoryManager
     pim_product.form.type.category.class:              Pim\Bundle\ProductBundle\Form\Type\CategoryType
 

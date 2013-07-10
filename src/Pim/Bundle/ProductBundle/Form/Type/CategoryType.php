@@ -54,9 +54,11 @@ class CategoryType extends AbstractSegmentType
 
         $this->addTitleField($builder);
 
+        /*
         // Add isDynamic field is needed
         $subscriber = new CategorySubscriber($builder->getFormFactory());
         $builder->addEventSubscriber($subscriber);
+        */
     }
 
     /**
@@ -68,12 +70,12 @@ class CategoryType extends AbstractSegmentType
     {
         $builder->add(
             'title',
-            'pim_translatable_field',
+            'collection',
             array(
-                'field'             => 'title',
-                'translation_class' => $this->translationClassName,
-                'entity_class'      => $this->className,
-                'property_path'     => 'translations'
+                'type'         => 'text', /*new CategoryTitleType(),*/
+                'allow_add'    => true,
+                'allow_delete' => true,
+                'by_reference' => false
             )
         );
     }

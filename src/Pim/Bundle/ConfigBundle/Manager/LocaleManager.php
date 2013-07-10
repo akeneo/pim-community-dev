@@ -15,7 +15,6 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class LocaleManager
 {
-
     /**
      * @var \Doctrine\Common\Persistence\ObjectManager
      */
@@ -25,6 +24,20 @@ class LocaleManager
      * @var \Symfony\Component\Security\Core\SecurityContext
      */
     protected $securityContext;
+
+    /**
+     * Used to load catalog data in the expected locale
+     *
+     * @var string
+     */
+    protected $dataLocale;
+
+    /**
+     * Used to translate UI in the expected locale
+     *
+     * @var string
+     */
+    protected $uiLocale;
 
     /**
      * Constructor
@@ -134,5 +147,45 @@ class LocaleManager
         $user = $this->securityContext->getToken()->getUser();
 
         return (string) $user->getValue('cataloglocale');
+    }
+
+    /**
+     * @return locale $locale
+     */
+    public function getDataLocale($locale)
+    {
+        if ($this->dataLocale === null) {
+            $this->dataLocale = $this->getUserLocaleCode();
+        }
+
+        return $this->dataLocale;
+    }
+
+    /**
+     * @param locale $locale
+     */
+    public function setDataLocale($locale)
+    {
+        $this->dataLocale = $locale;
+    }
+
+    /**
+     * @return locale $locale
+     */
+    public function getUILocale($locale)
+    {
+        if ($this->uiLocale === null) {
+            $this->uiLocale = 'en_US'; // TODO : we must use a dedicated ui locale conf ?
+        }
+
+        return $this->uiLocale;
+    }
+
+    /**
+     * @param locale $locale
+     */
+    public function setUILocale($locale)
+    {
+        $this->uiLocale = $locale;
     }
 }

@@ -151,7 +151,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $families = $em->getRepository('PimProductBundle:Family')->findAll();
         $choices = array();
         foreach ($families as $family) {
-            $choices[$family->getId()] = $family->getLabel();
+            $choices[$family->getId()] = ($family->getLabel() != '') ? $family->getLabel() : $family->getCode();
         }
 
         $field = new FieldDescription();

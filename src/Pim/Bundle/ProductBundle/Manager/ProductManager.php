@@ -94,7 +94,7 @@ class ProductManager extends FlexibleManager
             }
         }
 
-        $attributes = array_unique($attributes, SORT_REGULAR);
+// TODO : nesting dep        $attributes = array_unique($attributes, SORT_REGULAR);
 
         foreach ($attributes as $attribute) {
             $existingValues = array();

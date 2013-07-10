@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\TranslationBundle\Tests\Entity;
 
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslatableEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Translatable\Translatable;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -16,7 +15,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @Gedmo\TranslationEntity(class="Pim\Bundle\TranslationBundle\Tests\Entity\ItemTranslation")
  */
-class Item extends AbstractTranslatableEntity implements Translatable
+class Item implements Translatable
 {
 
     /**
