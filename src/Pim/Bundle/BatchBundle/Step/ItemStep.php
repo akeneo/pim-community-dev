@@ -25,16 +25,28 @@ class ItemStep extends AbstractStep
     /* @var ItemProcessorInterface $processor */
     private $processor = null;
 
+    /**
+     * Set reader
+     * @param ItemReaderInterface $reader
+     */
     public function setReader(ItemReaderInterface $reader)
     {
         $this->reader = $reader;
     }
 
+    /**
+     * Set writer
+     * @param ItemWriterInterface $writer
+     */
     public function setWriter(ItemWriterInterface $writer)
     {
         $this->writer = $writer;
     }
 
+    /**
+     * Set processor
+     * @param ItemProcessorInterface $processor
+     */
     public function setProcessor(ItemProcessorInterface $processor)
     {
         $this->processor = $processor;
@@ -58,4 +70,3 @@ class ItemStep extends AbstractStep
         }
     }
 }
-

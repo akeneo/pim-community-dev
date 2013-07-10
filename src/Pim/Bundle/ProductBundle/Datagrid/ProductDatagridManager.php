@@ -1,23 +1,21 @@
 <?php
 namespace Pim\Bundle\ProductBundle\Datagrid;
 
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-
-use Pim\Bundle\GridBundle\Property\CurrencyProperty;
-
 use Oro\Bundle\GridBundle\Property\FixedProperty;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Oro\Bundle\GridBundle\Property\FieldProperty;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-use Pim\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\GridBundle\Filter\FilterInterface;
+use Pim\Bundle\GridBundle\Property\CurrencyProperty;
 
 /**
  * Grid manager
@@ -133,6 +131,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $result['show_filter'] = $attribute->isUseableAsGridFilter();
         $result['show_column'] = $attribute->isUseableAsGridColumn();
 
+        $backendType = $attribute->getBackendType();
+        if ($backendType !== AbstractAttributeType::BACKEND_TYPE_OPTION and $result['type'] === FieldDescriptionInterface::TYPE_OPTIONS) {
+            $result['sortable'] = false;
+        }
+
         return $result;
     }
 
@@ -180,13 +183,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function createCategoryField()
     {
-        // get categories
         $em = $this->flexibleManager->getStorageManager();
-        $categories = $em->getRepository('PimProductBundle:Category')->findAll();
-        $choices = array();
-        foreach ($categories as $category) {
-            $choices[$category->getId()] = $category->getTitle();
-        }
+        $choices = $em->getRepository('PimProductBundle:Category')->getAllIdToTitle();
 
         $field = new FieldDescription();
         $field->setName('categories');
