@@ -13,11 +13,11 @@ services:
         tags:
             - { name: form.type, alias: pim_product }
 
-    pim_product.form.type.simple_product:
-        class:     %pim_product.form.type.simple_product.class%
+    pim_product.form.type.product_create:
+        class:     %pim_product.form.type.product_create.class%
         arguments: [@pim_product.manager.product, 'pim_product_value']
         tags:
-            - { name: form.type, alias: pim_simple_product }
+            - { name: form.type, alias: pim_product_create }
 
     pim_product.form.type.product_value:
         class:     %pim_product.form.type.product_value.class%
