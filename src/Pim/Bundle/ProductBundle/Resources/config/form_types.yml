@@ -1,8 +1,15 @@
 services:
+    pim_product.form.type.product.view:
+        public: false
+        class: %pim_product.form.type.product.view.class%
+
     # Types
     pim_product.form.type.product:
         class:     %pim_product.form.type.product.class%
-        arguments: [@pim_product.manager.product, 'pim_product_value']
+        arguments:
+            - @pim_product.manager.product
+            - 'pim_product_value'
+            - @pim_product.form.type.product.view
         tags:
             - { name: form.type, alias: pim_product }
 
@@ -14,7 +21,10 @@ services:
 
     pim_product.form.type.product_value:
         class:     %pim_product.form.type.product_value.class%
-        arguments: [@pim_product.manager.product, @oro_flexibleentity.value_form.value_subscriber]
+        arguments:
+            - @pim_product.manager.product
+            - @oro_flexibleentity.value_form.value_subscriber
+            - @pim_product.form.type.product.view
         tags:
             - { name: form.type, alias: pim_product_value }
 
