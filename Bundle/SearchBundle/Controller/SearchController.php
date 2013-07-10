@@ -31,6 +31,7 @@ class SearchController extends Controller
     /**
      * Show search block
      *
+     * @Route("search-bar", name="oro_search_bar")
      * @Template("OroSearchBundle:Search:searchBar.html.twig")
      */
     public function searchBarAction()

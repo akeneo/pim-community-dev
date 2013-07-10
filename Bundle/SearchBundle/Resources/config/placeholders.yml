@@ -1,9 +1,9 @@
-#placeholders:
-#    navbar:
-#        items:
-#            search:
-#                order: 200
-#
-#items:
-#   search:
-#        action: OroSearchBundle:Search:searchBar
+placeholders:
+    navbar:
+        items:
+            search:
+                order: 200
+
+items:
+   search:
+        action: /search/search-bar

@@ -53,6 +53,11 @@ class PlaceholderNode extends \Twig_Node
                     $block = new Twig_Node_Include($expr, $this->variables, true, $this->lineno, $this->tag);
                     $block->compile($compiler);
                 } elseif (array_key_exists('action', $item)) {
+                    /**
+                     * TODO: In Symfony 2.2 render syntax was changed
+                     * @link https://magecore.atlassian.net/browse/BAP-1127
+                     * For rendering controllers as Bundle:Controller:action seems required another way of Expression initialization
+                     */
                     $expr = new Twig_Node_Expression_Constant($item['action'], $this->lineno);
                     $attr = new Twig_Node_Expression_Constant(array(), $this->lineno);
                     if ($this->variables === null) {
