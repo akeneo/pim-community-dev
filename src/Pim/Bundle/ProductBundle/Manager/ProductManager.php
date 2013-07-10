@@ -165,6 +165,15 @@ class ProductManager extends FlexibleManager
     }
 
     /**
+     * Return the identifier attribute
+     * @return ProductAttribute|null
+     */
+    public function getIdentifierAttribute()
+    {
+        return $this->getAttributeRepository()->findOneBy(array('attributeType' => 'pim_product_identifier'));
+    }
+
+    /**
      * Add empty values for product family and product-specific attributes for relevant scopes and locales
      *
      * It makes sure that if an attribute is translatable/scopable, then all values
