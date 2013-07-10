@@ -390,18 +390,31 @@ Oro.Navigation = Backbone.Router.extend({
     /**
      * Make data more bulletproof.
      *
-     * @param {String} data
+     * @param {String} rawData
      * @returns {Object}
+     * @param prevPos
      */
-    getCorrectedData: function(data) {
-        data = $.trim(data);
-        var jsonStartPos = data.indexOf('{');
-        var additionalData = '';
-        if (jsonStartPos > 0) {
-            additionalData = data.substr(0, jsonStartPos);
-            data = data.substr(jsonStartPos);
+    getCorrectedData: function(rawData, prevPos) {
+        if (_.isUndefined(prevPos)) {
+            prevPos = -1;
         }
-        var dataObj = (data.indexOf('http') === 0) ? {'redirect': true, 'fullRedirect': true, 'location': data} : $.parseJSON(data);
+        rawData = $.trim(rawData);
+        var jsonStartPos = rawData.indexOf('{', prevPos + 1);
+        var additionalData = '';
+        var dataObj = null;
+        if (jsonStartPos > 0) {
+            additionalData = rawData.substr(0, jsonStartPos);
+            var data = rawData.substr(jsonStartPos);
+            try {
+                dataObj = $.parseJSON(data);
+            } catch (err) {
+                return this.getCorrectedData(rawData, jsonStartPos);
+            }
+        } else if (jsonStartPos === 0) {
+            dataObj = $.parseJSON(data);
+        } else {
+            throw "Unexpected content format";
+        }
 
         if (additionalData) {
             additionalData = '<div class="alert alert-info fade in top-messages"><a class="close" data-dismiss="alert" href="#">&times;</a>'
@@ -418,78 +431,88 @@ Oro.Navigation = Backbone.Router.extend({
     /**
      * Handling ajax response data. Updating content area with new content, processing title and js
      *
-     * @param {String} data
+     * @param {String} rawData
      * @param options
      */
-    handleResponse: function (data, options) {
+    handleResponse: function (rawData, options) {
         if (_.isUndefined(options)) {
             options = {};
         }
         try {
-            data = this.getCorrectedData(data);
-            if (data.redirect !== undefined && data.redirect) {
-                var redirectUrl = data.location;
-                var urlParts = redirectUrl.split('url=');
-                if (urlParts[1]) {
-                    redirectUrl = urlParts[1];
-                }
-                if(data.fullRedirect) {
-                    var delimiter = '?';
-                    if (redirectUrl.indexOf(delimiter) !== -1) {
-                        delimiter = '&';
-                    }
-                    window.location.replace(redirectUrl + delimiter + '_rand=' + Math.random());
+            var data = (rawData.indexOf('http') === 0) ? {'redirect': true, 'fullRedirect': true, 'location': rawData} : this.getCorrectedData(rawData);
+            if (_.isObject(data)) {
+                if (data.redirect !== undefined && data.redirect) {
+                    this.processRedirect(data);
                 } else {
-                    this.setLocation(redirectUrl);
+                    this.clearContainer();
+                    var content = data.content;
+                    if (options.fromCache) {
+                        //don't load additional scripts for cached page to prevent duplicated scripts loading
+                        content = content.replace(/<script.*?><\/script>/ig, '');
+                    }
+                    this.selectorCached.container.html(content);
+                    this.selectorCached.menu.html(data.mainMenu);
+                    /**
+                     * Collecting javascript from head and append them to content
+                     */
+                    if (data.scripts.length) {
+                        this.selectorCached.container.append(data.scripts);
+                    }
+                    /**
+                     * Setting page title
+                     */
+                    document.title = data.title;
+                    /**
+                     * Setting serialized titles for pinbar and favourites buttons
+                     */
+                    var titleSerialized = data.titleSerialized;
+                    if (titleSerialized) {
+                        titleSerialized = $.parseJSON(titleSerialized);
+                        $('.top-action-box .btn').filter('.minimize-button, .favorite-button').data('title', titleSerialized);
+                    }
+                    if (!options.fromCache) {
+                        this.processClicks(this.selectorCached.menu.find(this.selectors.links));
+                        this.processClicks(this.selectorCached.container.find(this.selectors.links));
+                        this.processAnchors(this.selectorCached.container.find(this.selectors.scrollLinks));
+                        this.updateMenuTabs(data);
+                        this.processForms(this.selectorCached.container.find(this.selectors.forms));
+                        this.addMessages(data.flashMessages);
+                        this.processPinButton(data.showPinButton);
+                        Oro.Events.trigger("hash_navigation_content:refresh", this);
+                    }
+                    this.hideActiveDropdowns();
                 }
-            } else {
-                this.clearContainer();
-                var content = data.content;
-                if (options.fromCache) {
-                    //don't load additional scripts for cached page to prevent dublicated scripts loading
-                    content = content.replace(/<script.*?><\/script>/ig, '');
-                }
-                this.selectorCached.container.html(content);
-                this.selectorCached.menu.html(data.mainMenu);
-                /**
-                 * Collecting javascript from head and append them to content
-                 */
-                if (data.scripts.length) {
-                    this.selectorCached.container.append(data.scripts);
-                }
-                /**
-                 * Setting page title
-                 */
-                document.title = data.title;
-                /**
-                 * Setting serialized titles for pinbar and favourites buttons
-                 */
-                var titleSerialized = data.titleSerialized;
-                if (titleSerialized) {
-                    titleSerialized = $.parseJSON(titleSerialized);
-                    $('.top-action-box .btn').filter('.minimize-button, .favorite-button').data('title', titleSerialized);
-                }
-                if (!options.fromCache) {
-                    this.processClicks(this.selectorCached.menu.find(this.selectors.links));
-                    this.processClicks(this.selectorCached.container.find(this.selectors.links));
-                    this.processAnchors(this.selectorCached.container.find(this.selectors.scrollLinks));
-                    this.updateMenuTabs(data);
-                    this.processForms(this.selectorCached.container.find(this.selectors.forms));
-                    this.addMessages(data.flashMessages);
-                    this.processPinButton(data.showPinButton);
-                    Oro.Events.trigger("hash_navigation_content:refresh", this);
-                }
-                this.hideActiveDropdowns();
             }
         }
         catch (err) {
             if (!_.isUndefined(console)) {
                 console.error(err);
             }
-            this.showError('', "Sorry, page was not loaded correctly");
+            if (Oro.debug) {
+                document.body.innerHTML = rawData;
+            } else {
+                this.showError('', Translator.get("Sorry, page was not loaded correctly"));
+            }
         }
         if (!options.fromCache) {
             this.triggerCompleteEvent();
+        }
+    },
+
+    processRedirect: function (data) {
+        var redirectUrl = data.location;
+        var urlParts = redirectUrl.split('url=');
+        if (urlParts[1]) {
+            redirectUrl = urlParts[1];
+        }
+        if(data.fullRedirect) {
+            var delimiter = '?';
+            if (redirectUrl.indexOf(delimiter) !== -1) {
+                delimiter = '&';
+            }
+            window.location.replace(redirectUrl + delimiter + '_rand=' + Math.random());
+        } else {
+            this.setLocation(redirectUrl);
         }
     },
 
