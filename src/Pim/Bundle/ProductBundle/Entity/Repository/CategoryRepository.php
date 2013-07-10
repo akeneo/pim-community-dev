@@ -20,6 +20,15 @@ use Oro\Bundle\SegmentationTreeBundle\Entity\Repository\SegmentRepository;
  */
 class CategoryRepository extends SegmentRepository
 {
+    /**
+     * Get query builder for all existitng category trees
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getTreesQB()
+    {
+        return $this->getChildrenQueryBuilder(null, true, null, 'ASC', null);
+    }
 
     /**
      * Shortcut to get all children query builder

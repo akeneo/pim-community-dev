@@ -6,6 +6,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
+use Pim\Bundle\ProductBundle\Form\Type\AttributeProperty\AvailableLocalesType;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 use Symfony\Component\Form\Forms;

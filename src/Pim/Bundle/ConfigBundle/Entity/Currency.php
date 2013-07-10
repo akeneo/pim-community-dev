@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ORM\Table(name="pim_currency")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Pim\Bundle\ConfigBundle\Entity\Repository\CurrencyRepository")
  * @UniqueEntity("code")
  */
 class Currency

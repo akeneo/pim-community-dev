@@ -591,6 +591,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^I am on the channel creation page$/
+     */
+    public function iAmOnTheChannelCreationPage()
+    {
+        $this->openPage('Channel creation');
+    }
+
+    /**
      * @Then /^I should see the (.*) fields?$/
      */
     public function iShouldSeeTheFields($fields)
@@ -631,6 +639,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      * @Given /^I fill in the following informations:$/
      */
     public function iFillInTheFollowingInformations(TableNode $table)
+    {
+        foreach ($table->getRowsHash() as $field => $value) {
+            $this->getCurrentPage()->fillField($field, $value);
+        }
+    }
+
+    /**
+     * @Given /^I fill in the following fields:$/
+     */
+    public function iFillInTheFollowingFields(TableNode $table)
     {
         foreach ($table->getRowsHash() as $field => $value) {
             $this->getCurrentPage()->fillField($field, $value);
