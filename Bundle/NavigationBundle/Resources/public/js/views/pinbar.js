@@ -169,7 +169,7 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
     {
         var pinnedItem = this.getItemForCurrentPage();
         if (pinnedItem.length) {
-            _.each(pinnedItem, function(item) {item.destroy({wait: false});});
+            _.each(pinnedItem, function(item) {item.destroy({wait: true});});
         } else {
             this.goToLatestOpenedPage();
         }

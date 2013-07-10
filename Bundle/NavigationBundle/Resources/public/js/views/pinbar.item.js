@@ -43,7 +43,7 @@ navigation.pinbar.ItemView = Backbone.View.extend({
 
     unpin: function()
     {
-        this.model.destroy({wait: false});
+        this.model.destroy({wait: true});
         return false;
     },
 
