@@ -7,12 +7,12 @@
 {%- endmacro %}
 
 {% macro collection_prototype(widget) %}
-    {% if widget.get('prototype') %}
-        {% set form = widget.get('prototype') %}
-        {% set name = widget.get('prototype').get('name') %}
+    {% if 'prototype' in widget.vars|keys %}
+        {% set form = widget.vars.prototype %}
+        {% set name = widget.vars.prototype.vars.name %}
     {% else %}
         {% set form = widget %}
-        {% set name = widget.get('full_name') %}
+        {% set name = widget.vars.full_name %}
     {% endif %}
     <div data-content="{{ name }}">
         <div class="row-oro">
