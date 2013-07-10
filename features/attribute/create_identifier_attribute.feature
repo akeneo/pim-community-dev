@@ -26,6 +26,7 @@ Feature: Create an identifier attribute
     And I am logged in as "admin"
     And I am on the attribute creation page
     And I select the attribute type "Identifier"
+    Then I should see "An identifier attribute already exists"
     And I fill in the following informations:
       | Name            | mySecondId        |
       | Default         | Sku2              |

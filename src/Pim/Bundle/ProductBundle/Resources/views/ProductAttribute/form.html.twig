@@ -37,11 +37,9 @@
     {{ elements.form_navbar(['Parameters', 'Values']) }}
 
     <div class="row-fluid">
-        {% if form.vars.errors|length %}
-            <div class="alert alert-error">
-                {{ form_errors(form) }}
-            </div>
-        {% endif %}
+
+        {{ elements.form_errors(form) }}
+
         <div data-spy="scroll" data-target="#form-navbar" data-offset="50" class="scrollspy row-fluid">
             <div id="parameters">
                 <h3 class="scrollspy-title">{{ "Parameters"|trans }}</h3>
