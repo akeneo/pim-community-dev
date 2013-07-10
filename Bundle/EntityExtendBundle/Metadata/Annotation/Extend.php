@@ -10,5 +10,4 @@ use Doctrine\Common\Annotations\Annotation;
  */
 class Extend
 {
-
 }

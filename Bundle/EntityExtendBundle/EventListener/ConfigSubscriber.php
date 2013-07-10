@@ -5,7 +5,6 @@ namespace Oro\Bundle\EntityExtendBundle\EventListener;
 use Metadata\ClassHierarchyMetadata;
 use Metadata\MetadataFactory;
 
-use Oro\Bundle\EntityConfigBundle\Event\FieldConfigEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Oro\Bundle\EntityConfigBundle\Event\EntityConfigEvent;

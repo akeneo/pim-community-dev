@@ -85,7 +85,6 @@ class FieldType extends AbstractType
         ));
     }
 
-
     /**
      * {@inheritdoc}
      */

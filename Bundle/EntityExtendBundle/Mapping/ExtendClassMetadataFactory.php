@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Mapping;
 
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\Mapping\ClassMetadataFactory;
 
 class ExtendClassMetadataFactory extends ClassMetadataFactory
@@ -15,5 +14,4 @@ class ExtendClassMetadataFactory extends ClassMetadataFactory
 
         return parent::getMetadataFor($className);
     }
-
 }
