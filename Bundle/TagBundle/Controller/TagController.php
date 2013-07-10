@@ -77,7 +77,12 @@ class TagController extends Controller
 
     /**
      * @Route("/search/{id}", name="oro_tag_search", requirements={"id"="\d+"}, defaults={"id"=0})
-     * @AclAncestor("oro_tag_grid_and_edit")
+     * @Acl(
+     *      id="oro_tag_search",
+     *      name="Search entities by tag",
+     *      description="User can find entities by tag",
+     *      parent="oro_tag"
+     * )
      * @Template
      */
     public function searchAction(Tag $entity, Request $request)
