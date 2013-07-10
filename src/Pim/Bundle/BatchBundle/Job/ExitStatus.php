@@ -1,4 +1,4 @@
-<?php                                                                           
+<?php
 
 namespace Pim\Bundle\BatchBundle\Job;
 
@@ -64,6 +64,12 @@ class ExitStatus
     private $exitCode;
     private $exitDescription;
 
+    /**
+     * Constructor
+     *
+     * @param integer $exitCode
+     * @param string  $exitDescription
+     */
     public function __construct($exitCode = self::UNKNOWN, $exitDescription = "")
     {
         $this->exitCode = $exitCode;
@@ -82,6 +88,8 @@ class ExitStatus
 
     /**
      * Getter for the exit description (defaults to blank)
+     *
+     * @return string
      */
     public function getExitDescription()
     {
@@ -90,8 +98,9 @@ class ExitStatus
 
     /**
      * Set the current status
+     * @param integer $exitCode
      *
-     * @return $this
+     * @return ExitStatus
      */
     public function setExitCode($exitCode)
     {
@@ -124,8 +133,9 @@ class ExitStatus
      *
      * If the input is null just return this.
      *
-     * @param status an {@link ExitStatus} to combine with this one.
-     * @return a new {@link ExitStatus} combining the current value and the
+     * @param ExitStatus $status an {@link ExitStatus} to combine with this one.
+     *
+     * @return ExisStatus a new {@link ExitStatus} combining the current value and the
      * argument provided.
      */
     public function logicalAnd(ExitStatus $status)
@@ -141,7 +151,10 @@ class ExitStatus
     }
 
     /**
-     * @param status an {@link ExitStatus} to compare
+     * Compare ExitStatus with another one
+     *
+     * @param ExitStatus $status an {@link ExitStatus} to compare
+     *
      * @return 1,0,-1 according to the severity and exit code
      */
     public function compareTo(ExitStatus $status)
@@ -160,7 +173,8 @@ class ExitStatus
      *
      * @return severity
      */
-    private function severity() {
+    private function severity()
+    {
         $severity = 7;
 
         if (array_key_exists($this->exitCode, self::$statusSeverity)) {
@@ -172,6 +186,8 @@ class ExitStatus
 
     /**
      * Return the string representation of the current status
+     *
+     * @return string
      */
     public function __toString()
     {
@@ -181,9 +197,10 @@ class ExitStatus
     /**
      * Check if this status represents a running process.
      *
-     * @return true if the exit code is "RUNNING" or "UNKNOWN"
+     * @return boolean true if the exit code is "RUNNING" or "UNKNOWN"
      */
-    public function isRunning() {
+    public function isRunning()
+    {
         return ( ("RUNNING" ==  $this->exitCode) || ("UNKNOWN" == $this->exitCode) );
     }
 
@@ -192,8 +209,9 @@ class ExitStatus
      * already a description present the two will be concatenated with a
      * semicolon.
      *
-     * @param description the description to add. Can be an exception.
+     * @param string $description the description to add. Can be an exception.
      *  In this case, the stack trace is used as description
+     *
      * @return a new {@link ExitStatus} with the same properties but a new exit
      * description
      */
@@ -209,7 +227,4 @@ class ExitStatus
 
         return $this;
     }
-
-
 }
-

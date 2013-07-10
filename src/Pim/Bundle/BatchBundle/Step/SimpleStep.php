@@ -12,12 +12,16 @@ namespace Pim\Bundle\BatchBundle\Step;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class BatchStatus
+class SimpleStep
 {
-    const __default = self::UNKNOWN;
+    const __DEFAULT = self::UNKNOWN;
 
     protected $value;
 
+    /**
+     * Constructor
+     * @param mixed $status
+     */
     public function __construct($status = self::UNKNOWN)
     {
         $this->value = $status;
@@ -56,6 +60,7 @@ class BatchStatus
 
     /**
      * Set the current status
+     * @param mixed $value
      *
      * @return $this
      */
@@ -75,7 +80,15 @@ class BatchStatus
         return $this->value;
     }
 
-    public static function max(BatchStatus $status1, BatchStatus $status2) {
+    /**
+     * Return batch status with the highest value
+     * @param BatchStatus $status1
+     * @param BatchStatus $status2
+     *
+     * @return BatchStatus
+     */
+    public static function max(BatchStatus $status1, BatchStatus $status2)
+    {
         return $status1->value > $status2->value ? $status1 : $status2;
     }
 
@@ -84,7 +97,8 @@ class BatchStatus
      *
      * @return true if the status is STARTING, STARTED
      */
-    public function isRunning() {
+    public function isRunning()
+    {
         return $this->value == self::STARTING || $this->value == self::STARTED;
     }
 
@@ -94,7 +108,8 @@ class BatchStatus
      *
      * @return true if the status is FAILED or greater
      */
-    public function isUnsuccessful() {
+    public function isUnsuccessful()
+    {
         return ($this->value == self::FAILED || $this->value > self::FAILED);
     }
 
@@ -106,10 +121,12 @@ class BatchStatus
      * largest in the sequence STARTING, STARTED, COMPLETED. Otherwise the value
      * returned is the maximum of the two.
      *
-     * @param other another status to compare to
-     * @return either this or the other status depending on their priority
+     * @param BatchStatus $other another status to compare to
+     *
+     * @return BatchStatus either this or the other status depending on their priority
      */
-    public function upgradeTo(BatchStatus $other) {
+    public function upgradeTo(BatchStatus $other)
+    {
         if ($this->value > self::STARTED || $other->value > self::STARTED) {
             return max($this, $other);
         }
@@ -123,11 +140,10 @@ class BatchStatus
 
     /**
      * Return the string representation of the current status
+     * @return string
      */
     public function __toString()
     {
         return self::$statusLabels[$this->value];
     }
-
 }
-

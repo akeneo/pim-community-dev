@@ -1,12 +1,11 @@
 <?php
-                                                                                
+
 namespace Pim\Bundle\BatchBundle\Job;
 
 /**
- * 
  * Batch domain object representing a job. Job is an explicit abstraction
- * representing the configuration of a job specified by a developer. 
- * 
+ * representing the configuration of a job specified by a developer.
+ *
  * Inspired by Spring Batch  org.springframework.batch.core.Job;
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
@@ -26,9 +25,8 @@ interface JobInterface
      * and statistics as necessary. This method should not throw any exceptions
      * for failed execution. Clients should be careful to inspect the
      * {@link JobExecution} status to determine success or failure.
-     * 
-     * @param execution a {@link JobExecution}
+     *
+     * @param JobExecution $execution a {@link JobExecution}
      */
     public function execute(JobExecution $execution);
-
 }

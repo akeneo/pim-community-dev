@@ -548,24 +548,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
-    public function getGroup($name)
-    {
-        try {
-            return $this->getEntityOrException('PimProductBundle:AttributeGroup', array(
-                'name' => $name
-            ));
-        } catch (\InvalidArgumentException $e) {
-            return null;
-        }
-    }
-
-    public function getFamily($code)
-    {
-        return $this->getEntityOrException('PimProductBundle:Family', array(
-            'code' => $code
-        ));
-    }
-
     /**
      * @Given /^I choose "([^"]*)" as the label of the family$/
      */
@@ -597,6 +579,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheAttributeCreationPage()
     {
         $this->openPage('Attribute creation');
+    }
+
+    /**
+     * @Given /^I am on the channels page$/
+     */
+    public function iAmOnTheChannelsPage()
+    {
+        $this->openPage('Channel index');
+        $this->wait(5000, '$("table.grid tbody tr").length > 0');
     }
 
     /**
@@ -685,6 +676,46 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
     }
 
+    /**
+     * @Then /^I should see channels (.*)$/
+     */
+    public function iShouldSeeChannels($channels)
+    {
+        $channels = $this->listToArray($channels);
+
+        foreach ($channels as $channel) {
+            if (!$this->getPage('Channel index')->findChannelRow($channel)) {
+                throw $this->createExpectationException(
+                    sprintf('Expecting to see channel %s, not found', $channel)
+                );
+            }
+        }
+    }
+
+    /**
+     * @Given /^the channel (.*) is able to export category (.*)$/
+     */
+    public function theChannelIsAbleToExportCategory($channel, $category)
+    {
+        if (!$this->getPage('Channel index')->channelCanExport($channel, $category)) {
+            throw $this->createExpectationException(
+                sprintf('Expecting channel %s to be able to export category %s', $channel, $category)
+            );
+        }
+    }
+
+    /**
+     * @Given /^the channel (.*) is not able to export category (.*)$/
+     */
+    public function theChannelIsNotAbleToExportCategory($channel, $category)
+    {
+        if ($this->getPage('Channel index')->channelCanExport($channel, $category)) {
+            throw $this->createExpectationException(
+                sprintf('Expecting channel %s not to be able to export category %s', $channel, $category)
+            );
+        }
+    }
+
     private function openPage($page, array $options = array())
     {
         $this->currentPage = $page;
@@ -703,6 +734,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             case 'Family edit.Code':
                 return 'inv@lid';
         }
+    }
+
+    private function wait($time, $condition = null)
+    {
+        return $this->getMainContext()->wait($time, $condition);
     }
 
     private function getProduct($sku)
