@@ -102,7 +102,7 @@ class ConfigFieldGridController extends Controller
 
         /** @var ConfigManager $configManager */
         $configManager = $this->get('oro_entity_config.config_manager');
-        $configManager->clearCache();
+        $configManager->clearCache($fieldConfig->getClassName());
 
         return new RedirectResponse($this->getRequest()->headers->get('referer'));
     }

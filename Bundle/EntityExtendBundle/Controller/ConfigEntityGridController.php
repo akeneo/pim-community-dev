@@ -6,12 +6,13 @@ use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
 
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeysType;
+use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyCollectionType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\FormError;
 
 /**
  * Class ConfigGridController
@@ -33,7 +34,7 @@ class ConfigEntityGridController extends Controller
         $data = $entityConfig->has('unique_key') ? unserialize($entityConfig->get('unique_key')) : array() ;
 
         $request = $this->getRequest();
-        $form    = $this->createForm(new UniqueKeysType($entityConfig->getFields(function (FieldConfig $fieldConfig) {
+        $form    = $this->createForm(new UniqueKeyCollectionType($entityConfig->getFields(function (FieldConfig $fieldConfig) {
             return $fieldConfig->getType() != 'ref-many';
         })), $data);
 
@@ -41,11 +42,27 @@ class ConfigEntityGridController extends Controller
             $form->bind($request);
 
             if ($form->isValid()) {
-                $entityConfig->set('unique_key', serialize($form->getData()));
-                $configProvider->persist($entityConfig);
-                $configProvider->flush();
+                $data = $form->getData();
 
-                return $this->redirect($this->generateUrl('oro_entityconfig_index'));
+                $error = false;
+                $names = array();
+                foreach($data['keys'] as $key){
+                    if (in_array($key['name'], $names)) {
+                        $error = true;
+                        $form->addError(new FormError(sprintf('Name for key should be unique, key "%s" is not unique.', $key['name'])));
+                        break;
+                    }
+
+                    $names[] = $key['name'];
+                }
+
+                if (!$error) {
+                    $entityConfig->set('unique_key', serialize($form->getData()));
+                    $configProvider->persist($entityConfig);
+                    $configProvider->flush();
+
+                    return $this->redirect($this->generateUrl('oro_entityconfig_view', array('id'=> $entity->getId())));
+                }
             }
         }
 

@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 
-class UniqueKeysType extends AbstractType
+class UniqueKeyCollectionType extends AbstractType
 {
     /**
      * @var FieldConfig[]
@@ -19,22 +19,16 @@ class UniqueKeysType extends AbstractType
         $this->fields = $fields;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $choices = array_map(function (FieldConfig $field) {
-            return ucfirst($field->getCode());
-        }, $this->fields);
-
         $builder->add(
             'keys',
             'collection',
             array(
-                'type'           => 'choice',
-                'options'        => array(
-                    'multiple'    => true,
-                    'choices'     => $choices,
-                    //'empty_value' => false
-                ),
+                'type'           => new UniqueKeyType($this->fields),
                 'allow_add'      => true,
                 'allow_delete'   => true,
                 'prototype'      => true,
@@ -44,12 +38,11 @@ class UniqueKeysType extends AbstractType
         );
     }
 
-
     /**
      * {@inheritdoc}
      */
     public function getName()
     {
-        return 'oro_entity_extend_unique_keys_type';
+        return 'oro_entity_extend_unique_key_collection_type';
     }
 }

@@ -6,7 +6,7 @@
 {% set formAction = path('oro_entityextend_entity_unique_key', {id: entity_id}) %}
 
 {% block navButtons %}
-    {{ UI.button({'path' : path('oro_entityconfig_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
+    {{ UI.button({'path' : path('oro_entityconfig_view', {id: entity_id}), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
     {{ UI.buttonType({'type': 'submit', 'class': 'btn-success', 'label': 'Save'}) }}
 {% endblock navButtons %}
 
@@ -14,10 +14,8 @@
     {% set breadcrumbs = {
         'entity':      'entity',
         'indexPath':   path('oro_entityconfig_index'),
-        'indexLabel': 'Entitie Unique Keys',
-        'entityTitle': 'N/A',
-        'hasAvatar':   false,
-        'imagePath':   '',
+        'indexLabel': 'Entities',
+        'entityTitle': 'Unique Keys',
     }
     %}
     {{ parent() }}
@@ -36,7 +34,7 @@
             {
                 'title': '',
                 'data': [
-                    UI.collectionField(form.keys, '', 'Add another')
+                    UI.collectionField(form.keys, 'Unique Keys', 'Add another')
                 ]
             }
             ]

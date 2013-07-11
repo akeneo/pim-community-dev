@@ -1,6 +1,6 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% set gridId = 'fields-grid' %}
-{% oro_title_set({params : {"%entityName%": entityName|default('N/A') }}) %}
+{% oro_title_set({params : {"%entityName%": entity_config.get('label')|default('N/A') }}) %}
 
 {% block navButtons %}
     {{ UI.button({'path' : path('oro_entityconfig_index'), 'iClass' : 'icon-chevron-left ', 'title' : 'Back', 'label' : 'Back'}) }}
@@ -21,7 +21,7 @@
         'entity':      entity,
         'indexPath':   path('oro_entityconfig_index'),
         'indexLabel': 'Entities',
-        'entityTitle': [moduleName, ':', entityName]|join,
+        'entityTitle': entity_config.get('label'),
     }
     %}
     {{ parent() }}
@@ -30,7 +30,7 @@
 {% block stats %}
     <li>{{ 'Created'|trans }}: {{ UI.Time(entity.created) }}</li>
     <li>{{ 'Updated'|trans }}: {{ UI.Time(entity.updated) }}</li>
-    <li>{{ ['<a href="', link, '">', 'List'|trans, '</a>']|join|raw }}</li>
+    <li>{{ ['<a href="', link, '">', entity_config.get('plural_label'), ' List'|trans, '</a>']|join|raw }}</li>
 
     {#UI.attibuteRow('# of records', 0),#}
 {% endblock stats%}
@@ -39,11 +39,14 @@
     {% set id = 'entityconfig-view' %}
 
     {% set generalFields = [
-        UI.attibuteRow('Name', entityName),
-        UI.attibuteRow('Module', moduleName),
+        UI.attibuteRow('Name', entity_name),
+        UI.attibuteRow('Module', module_name),
     ]%}
 
-    {% for key,property in properties %}
+    {{ dump(unique_key) }}
+    {#{{ dump(config) }}#}
+
+    {% for key,property in entity_config.getValues %}
         {% set generalFields = generalFields|merge([UI.attibuteRow(key|replace('_',' ')|capitalize, property)])%}
     {% endfor %}
     {#{% set generalFields = generalFields|merge([UI.attibuteRow('Type', entity.type )])%}#}
