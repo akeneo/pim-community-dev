@@ -35,6 +35,12 @@ class ConfigEntity extends AbstractConfig
     protected $fields;
 
     /**
+     * @var ConfigLog[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="ConfigLog", mappedBy="entity", cascade={"all"})
+     */
+    protected $diffs;
+
+    /**
      * @var string
      * @ORM\Column(name="class_name", type="string", length=255, nullable=false)
      */
@@ -117,5 +123,30 @@ class ConfigEntity extends AbstractConfig
         });
 
         return reset($values);
+    }
+
+    /**
+     * @param ConfigLog[] $diffs
+     * @return $this
+     */
+    public function setDiffs($diffs)
+    {
+        $this->diffs = $diffs;
+
+        return $this;
+    }
+
+    /**
+     * @return ConfigLog[]
+     */
+    public function getDiffs()
+    {
+        return $this->diffs;
+    }
+
+    public function __clone()
+    {
+        $this->fields = $this->fields ? clone $this->fields : $this->fields;
+        $this->values = $this->values ? clone $this->values : $this->values;
     }
 }
