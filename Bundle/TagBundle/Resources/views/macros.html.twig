@@ -25,18 +25,8 @@
     <div>
         <div class="controls">
             <div>
-                <ul class="inline" id="tag-sort-actions">
-                    <li class="active">
-                        <a href="javascript:void(0);" class="no-hash">
-                            {% trans %}All tags{% endtrans %}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" data-type="owner" class="no-hash">
-                            {% trans %}My tags{% endtrans %}
-                        </a>
-                    </li>
-                </ul>
+                {% import _self as _ %}
+               {{ _.tagSortActions() }}
             </div>
         </div>
     </div>
@@ -54,4 +44,22 @@
             {% endif %}
         });
     </script>
+{% endmacro %}
+
+{#
+    Render sort actions list
+#}
+{% macro tagSortActions() %}
+    <ul class="inline" id="tag-sort-actions">
+        <li class="active">
+            <a href="javascript:void(0);" class="no-hash">
+                {% trans %}All tags{% endtrans %}
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0);" data-type="owner" class="no-hash">
+                {% trans %}My tags{% endtrans %}
+            </a>
+        </li>
+    </ul>
 {% endmacro %}

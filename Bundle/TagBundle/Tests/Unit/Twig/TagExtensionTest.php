@@ -100,7 +100,7 @@ class TagExtensionTest extends \PHPUnit_Framework_TestCase
         $userMock = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
 
         $tagging->expects($this->exactly(2))
-            ->method('getUser')
+            ->method('getCreatedBy')
             ->will($this->returnValue($userMock));
         $tagging->expects($this->any())
             ->method('getTag')

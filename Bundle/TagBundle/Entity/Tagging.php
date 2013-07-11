@@ -9,11 +9,11 @@ use Oro\Bundle\UserBundle\Entity\User;
 /**
  * @ORM\Table(
  *     name="oro_tag_tagging",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="tagging_idx", columns={"tag_id", "entity_name", "record_id", "user_id"})}
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="tagging_idx", columns={"tag_id", "entity_name", "record_id", "created_by"})}
  * )
  * @ORM\Entity
  */
-class Tagging
+class Tagging implements ContainAuthorInterface
 {
     /**
      * @var integer $id
@@ -33,9 +33,9 @@ class Tagging
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id", onDelete="SET NULL")
      */
-    protected $user;
+    protected $createdBy;
 
     /**
      * @var \Datetime $created
@@ -161,25 +161,21 @@ class Tagging
     {
         return $this->recordId;
     }
+
     /**
-     * Return tag relation owner user
-     *
-     * @return User
+     * {@inheritDoc}
      */
-    public function getUser()
+    public function getCreatedBy()
     {
-        return $this->user;
+        return $this->createdBy;
     }
 
     /**
-     * Set user
-     *
-     * @param User $user
-     * @return $this
+     * {@inheritDoc}
      */
-    public function setUser(User $user)
+    public function setCreatedBy(User $user)
     {
-        $this->user = $user;
+        $this->createdBy = $user;
 
         return $this;
     }

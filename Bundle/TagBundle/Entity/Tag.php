@@ -5,6 +5,8 @@ namespace Oro\Bundle\TagBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 
+use Oro\Bundle\UserBundle\Entity\User;
+
 /**
  * Tag
  *
@@ -12,7 +14,7 @@ use Doctrine\ORM\PersistentCollection;
  * @ORM\HasLifecycleCallbacks
  * @ORM\Entity
  */
-class Tag
+class Tag implements ContainAuthorInterface, ContainUpdaterInterface
 {
     /**
      * @var integer
@@ -47,6 +49,20 @@ class Tag
      * @ORM\OneToMany(targetEntity="Tagging", mappedBy="tag", fetch="EAGER")
      */
     protected $tagging;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $createdBy;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="updated_by", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $updatedBy;
 
     /**
      * Constructor
@@ -148,6 +164,42 @@ class Tag
     public function getTagging()
     {
         return $this->tagging;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUpdatedBy()
+    {
+        return $this->updatedBy;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setUpdatedBy(User $user)
+    {
+        $this->updatedBy = $user;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setCreatedBy(User $user)
+    {
+        $this->createdBy = $user;
+
+        return $this;
     }
 
     /**

@@ -205,11 +205,9 @@ class TagManager
             $this->em->persist($tag);
 
             $alias = $this->mapper->getEntityConfig(get_class($resource));
-            $user = $this->securityContext->getToken()->getUser();
 
             $tagging = $this->createTagging($tag, $resource)
-                ->setAlias($alias['alias'])
-                ->setUser($user);
+                ->setAlias($alias['alias']);
 
             $this->em->persist($tagging);
         }

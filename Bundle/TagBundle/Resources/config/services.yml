@@ -2,6 +2,7 @@ parameters:
     oro_tag.tag.entity.class: Oro\Bundle\TagBundle\Entity\Tag
     oro_tag.tagging.entity.class: Oro\Bundle\TagBundle\Entity\Tagging
     oro_tag.tag_listener.class: Oro\Bundle\TagBundle\EventListener\TagListener
+    oro_tag.owner_listener.class: Oro\Bundle\TagBundle\EventListener\OwnerListener
 
     oro_tag.tag.form.type.tag.class: Oro\Bundle\TagBundle\Form\Type\TagType
     oro_tag.tag.form.type.tag.api.class: Oro\Bundle\TagBundle\Form\Type\TagApiType
@@ -33,7 +34,14 @@ services:
             - [ setContainer, [ @service_container ] ]
         tags:
             - { name: doctrine.event_listener, event: preRemove }
-#            - { name: doctrine.event_listener, event: postPersist }
+
+    oro_tag.docrine.event.owner_listener:
+        class: %oro_tag.owner_listener.class%
+        calls:
+            - [ setContainer, [ @service_container ] ]
+        tags:
+            - { name: doctrine.event_listener, event: prePersist, method: process }
+            - { name: doctrine.event_listener, event: preUpdate, method: process }
 
     oro_tag.form.tag:
         class: Symfony\Component\Form\Form
@@ -94,7 +102,7 @@ services:
             - %oro_tag.tag.entity.class%
             - ["name"]
         tags:
-            - { name: oro_form.autocomplete.search_handler, alias: tags, acl_resource: oro_tag_assign }
+            - { name: oro_form.autocomplete.search_handler, alias: tags, acl_resource: oro_tag_assign_unassign }
 
     # Autocomplete form type
     oro_tag.form.type.tag_select:

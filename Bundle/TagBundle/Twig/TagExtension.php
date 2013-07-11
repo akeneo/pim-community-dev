@@ -81,7 +81,7 @@ class TagExtension extends \Twig_Extension
             );
             /** @var Tagging $tagging */
             foreach ($tag->getTagging() as $tagging) {
-                if ($this->getUser()->getId() == $tagging->getUser()->getId()) {
+                if ($this->getUser()->getId() == $tagging->getCreatedBy()->getId()) {
                     $entry['owner'] = true;
                 }
             }
