@@ -280,8 +280,8 @@ class ConfigManager
      */
     public function flush()
     {
-        $entities  = array();
-        $diffStart = array();
+        $entities        = array();
+        $diffEntityStart = array();
 
         foreach ($this->persistConfigs as $config) {
             $className = $config->getClassName();
@@ -289,8 +289,13 @@ class ConfigManager
             if (isset($entities[$className])) {
                 $configEntity = $entities[$className];
             } else {
-                $configEntity          = $entities[$className] = $this->findOrCreateConfigEntity($className);
-                $diffStart[$className] = clone $configEntity;
+                $configEntity = $entities[$className] = $this->findOrCreateConfigEntity($className);
+
+                foreach ($this->getProviders() as $provider) {
+                    $oldConfig = new EntityConfig($className, $provider->getScope());
+                    $oldConfig->setValues($configEntity->toArray($provider->getScope()));
+                    $diffEntityStart[$className][$provider->getScope()] = $oldConfig;
+                }
             }
 
             if ($config instanceof FieldConfigInterface) {
@@ -310,28 +315,26 @@ class ConfigManager
         foreach ($entities as $entity) {
             $this->em()->persist($entity);
 
-            $this->saveDiff($diffStart[$entity->getClassName()], $entity);
+            $this->saveDiff($diffEntityStart[$entity->getClassName()], $entity);
         }
 
         $this->em()->flush();
     }
 
-    protected function saveDiff(ConfigEntity $oldEntity, ConfigEntity $entity)
+    protected function saveDiff($oldConfigs, $newEntity)
     {
         $diff = array();
         foreach ($this->getProviders() as $provider) {
-            $oldConfig = new EntityConfig($entity->getClassName(), $provider->getScope());
-            $oldConfig->setValues($oldEntity->toArray($provider->getScope()));
+            $config    = $provider->getConfig($newEntity->getClassName());
+            $oldConfig = $oldConfigs[$provider->getScope()];
 
-            $config = $provider->getConfig($entity->getClassName());
-
-            $diff[$provider->getScope()] = array_diff_assoc($config->getValues(), $oldConfig->getValues());
+            $diff[$provider->getScope()] = array_diff($config->getValues(), $oldConfig->getValues());
         }
 
         $configLog = new ConfigLog();
         $configLog->setUsername($this->getSecurityContext()->getToken()->getUsername());
         $configLog->setDiff($diff);
-        $configLog->setEntity($entity);
+        $configLog->setEntity($newEntity);
 
         $this->em()->persist($configLog);
     }
