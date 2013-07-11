@@ -153,7 +153,6 @@ class ProductController extends Controller
                         array(
                             'id'         => $product->getId(),
                             'dataLocale' => $this->getDataLocale(),
-                            'tab'        => $request->query->get('tab')
                         )
                     )
                 );
@@ -173,7 +172,6 @@ class ProductController extends Controller
             'trees'          => $trees,
             'created'        => $auditManager->getFirstLogEntry($product),
             'updated'        => $auditManager->getLastLogEntry($product),
-            'tab'            => $request->query->get('tab')
         );
     }
 

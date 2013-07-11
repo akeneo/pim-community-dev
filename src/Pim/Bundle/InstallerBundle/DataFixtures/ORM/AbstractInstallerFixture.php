@@ -16,9 +16,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
  *
  * @abstract
  */
-abstract class AbstractInstallerFixture
-    extends AbstractFixture
-    implements OrderedFixtureInterface, ContainerAwareInterface
+abstract class AbstractInstallerFixture extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
