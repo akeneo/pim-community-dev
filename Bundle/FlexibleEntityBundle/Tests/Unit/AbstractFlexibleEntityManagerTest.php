@@ -8,7 +8,6 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Symfony\Component\DependencyInjection\Container;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 
@@ -84,7 +83,7 @@ abstract class AbstractFlexibleManagerTest extends AbstractOrmTest
         $this->attributeOptionValueClassName = 'Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOptionValue';
         $this->flexibleClassName             = 'Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\Flexible';
         $this->flexibleValueClassName        = 'Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\FlexibleValue';
-        $this->defaultLocale                 = 'en_US';
+        $this->defaultLocale                 = 'en';
         $this->defaultScope                  = 'mobile';
         $this->flexibleConfig = array(
             'entities_config' => array(
