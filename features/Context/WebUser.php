@@ -260,8 +260,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function attributesInGroupShouldBe($group, $attributes)
     {
+        $page       = $this->getPage('Product edit');
         $attributes = $this->listToArray($attributes);
+        $page->visitGroup($group);
+
         $group = $this->getGroup($group) ?: 'Other';
+
 
         if (count($attributes) !== $actual = $this->getPage('Product edit')->getFieldsCountFor($group)) {
             throw $this->createExpectationException(sprintf(
@@ -270,18 +274,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             ));
         }
 
-        foreach ($attributes as $index => $attribute) {
-            $field = $this
-                ->getPage('Product edit')
-                ->getFieldAt($group, $index)
-            ;
+        $labels = array_map(function($field) {
+            return $field->getText();
+        }, $this->getPage('Product edit')->getFieldsForGroup($group));
 
-            if ($attribute !== $name = $field->getText()) {
-                throw new \Exception(sprintf('
-                    Expecting to see field "%s" at position %d, but saw "%s"',
-                    $attribute, $index + 1, $name
-                ));
-            }
+        if (count(array_diff($attributes, $labels))) {
+            throw $this->createExpectationException(sprintf('
+                Expecting to see attributes "%s" in group "%s", but saw "%s".',
+                join('", "', $attributes), $group, join('", "', $labels)
+            ));
         }
     }
 
@@ -375,7 +376,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I add available attributes (.*)$/
+     * @Given /^I add available attributes? (.*)$/
      */
     public function iAddAvailableAttributes($attributes)
     {

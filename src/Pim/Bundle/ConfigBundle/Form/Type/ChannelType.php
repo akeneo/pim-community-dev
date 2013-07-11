@@ -28,29 +28,41 @@ class ChannelType extends AbstractType
 
         $builder->add('code');
 
-        $builder->add('name', 'text', array(
-            'label' => 'Default label'
-        ));
+        $builder->add(
+            'name',
+            'text',
+            array(
+                'label' => 'Default label'
+            )
+        );
 
-        $builder->add('currencies', 'entity', array(
-            'required'      => true,
-            'multiple'      => true,
-            'class'         => 'Pim\Bundle\ConfigBundle\Entity\Currency',
-            'query_builder' => function (EntityRepository $repository) {
-                return $repository->getActivatedCurrenciesQB();
-            }
-        ));
+        $builder->add(
+            'currencies',
+            'entity',
+            array(
+                'required'      => true,
+                'multiple'      => true,
+                'class'         => 'Pim\Bundle\ConfigBundle\Entity\Currency',
+                'query_builder' => function (EntityRepository $repository) {
+                    return $repository->getActivatedCurrenciesQB();
+                }
+            )
+        );
 
         $builder->add('locales', 'pim_product_available_locales');
 
-        $builder->add('category', 'entity', array(
-            'label'         => 'Category tree',
-            'required'      => true,
-            'class'         => 'Pim\Bundle\ProductBundle\Entity\Category',
-            'query_builder' => function (EntityRepository $repository) {
-                return $repository->getTreesQB();
-            }
-        ));
+        $builder->add(
+            'category',
+            'entity',
+            array(
+                'label'         => 'Category tree',
+                'required'      => true,
+                'class'         => 'Pim\Bundle\ProductBundle\Entity\Category',
+                'query_builder' => function (EntityRepository $repository) {
+                    return $repository->getTreesQB();
+                }
+            )
+        );
     }
 
     /**
