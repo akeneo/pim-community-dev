@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\TagBundle\Twig;
 
+use Oro\Bundle\UserBundle\Acl\ManagerInterface;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -27,12 +28,18 @@ class TagExtension extends \Twig_Extension
      */
     protected $context;
 
-    public function __construct(TagManager $manager, Router $router, SecurityContextInterface $securityContext)
-    {
-        $this->manager = $manager;
-        $this->router = $router;
+    /**
+     * @var \Oro\Bundle\UserBundle\Acl\ManagerInterface
+     */
+    private $aclManager;
 
-        $this->context = $securityContext;
+    public function __construct(TagManager $manager, Router $router, SecurityContextInterface $securityContext, ManagerInterface $aclManager)
+    {
+        $this->manager    = $manager;
+        $this->router     = $router;
+        $this->aclManager = $aclManager;
+
+        $this->context    = $securityContext;
     }
 
     /**
@@ -74,19 +81,21 @@ class TagExtension extends \Twig_Extension
                 'url'  => $this->router->generate('oro_tag_search', array('id' => $tag->getId()))
             );
 
-            $tag->getTagging()->filter(
-                function ($tagging) use ($tag) {
-                    return $tagging->getTag()->getId() == $tag->getId();
+            $taggingCollection = $tag->getTagging()->filter(
+                function (Tagging $tagging) use ($entity) {
+                    // only use tagging entities that related to current entity
+                    return $tagging->getEntityName() == get_class($entity)
+                        && $tagging->getRecordId() == $entity->getTaggableId();
                 }
             );
             /** @var Tagging $tagging */
-            foreach ($tag->getTagging() as $tagging) {
+            foreach ($taggingCollection as $tagging) {
                 if ($this->getUser()->getId() == $tagging->getCreatedBy()->getId()) {
                     $entry['owner'] = true;
                 }
             }
 
-            if (!$this->context->isGranted('oro_tag_unassign', $this->getUser()) && !isset($entry['owner'])) {
+            if (!$this->aclManager->isResourceGranted('oro_tag_unassign_global') && !isset($entry['owner'])) {
                 $entry['locked'] = true;
             }
 

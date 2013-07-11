@@ -30,6 +30,11 @@ class TagExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
+    protected $aclManager;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
     protected $user;
 
     /**
@@ -47,6 +52,7 @@ class TagExtensionTest extends \PHPUnit_Framework_TestCase
         $this->securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
 
         $this->user = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
+        $this->aclManager = $this->getMockForAbstractClass('Oro\Bundle\UserBundle\Acl\ManagerInterface');
 
         $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
         $token->expects($this->any())
@@ -57,7 +63,7 @@ class TagExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('getToken')
             ->will($this->returnValue($token));
 
-        $this->extension = new TagExtension($this->manager, $this->router, $this->securityContext);
+        $this->extension = new TagExtension($this->manager, $this->router, $this->securityContext, $this->aclManager);
     }
 
     public function testName()
@@ -103,8 +109,11 @@ class TagExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('getCreatedBy')
             ->will($this->returnValue($userMock));
         $tagging->expects($this->any())
-            ->method('getTag')
-            ->will($this->returnValue($tag1));
+            ->method('getEntityName')
+            ->will($this->returnValue(get_class($tag1)));
+        $tagging->expects($this->any())
+            ->method('getRecordId')
+            ->will($this->returnValue(1));
 
         $userMock->expects($this->at(0))
             ->method('getId')
@@ -131,6 +140,18 @@ class TagExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('getTags')
             ->will($this->returnValue($tags));
 
+        $entity->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue(1));
+
+        $this->aclManager->expects($this->at(0))
+            ->method('isResourceGranted')
+            ->will($this->returnValue(true));
+
+        $this->aclManager->expects($this->at(1))
+            ->method('isResourceGranted')
+            ->will($this->returnValue(false));
+
         $result = $this->extension->get($entity);
 
         $this->assertCount(2, $result);
@@ -141,6 +162,6 @@ class TagExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('owner', $result[0]);
 
         $this->assertArrayNotHasKey('owner', $result[1]);
-
+        $this->arrayHasKey('locked', $result[1]);
     }
 }

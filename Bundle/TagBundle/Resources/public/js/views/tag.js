@@ -15,6 +15,9 @@ Oro.Tags.TagView =  Backbone.View.extend({
         this.listenTo(this, 'filter', this.render);
 
         this.template = $('#tag-view-template').html();
+
+        // process filter action binding
+        $('#tag-sort-actions a').click(_.bind(this.filter, this));
     },
 
     /**
@@ -24,6 +27,12 @@ Oro.Tags.TagView =  Backbone.View.extend({
      */
     filter: function(e) {
         var $el = $(e.target);
+
+        // clear all active links
+        $el.parents('ul').find('a.active').removeClass('active');
+        // make current filter active
+        $el.addClass('active');
+
         this.options.filter = $el.data('type');
         this.trigger('filter');
 
@@ -45,7 +54,7 @@ Oro.Tags.TagView =  Backbone.View.extend({
      * @returns {}
      */
     render: function() {
-        $('#tags').html(
+        $('#tags-holder').html(
             _.template(
                 this.template,
                 {
@@ -53,9 +62,6 @@ Oro.Tags.TagView =  Backbone.View.extend({
                 }
             )
         );
-        // process filter action binding
-        $('#tag-sort-actions a').click(_.bind(this.filter, this));
-
         // process tag click redirect
         if (Oro.hashNavigationEnabled()) {
             var navigationObject = Oro.Registry.getElement("oro.hashnavigation.object");

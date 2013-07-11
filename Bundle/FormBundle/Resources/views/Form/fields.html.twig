@@ -138,10 +138,14 @@
         if ($(data).filter(function() {
             return this.name.localeCompare(term) === 0;
         }).length === 0) {
-            return {
-                id: term,
-                name: term
-            };
+            {% if not resource_granted('oro_tag_create') %}
+                return null;
+            {% else %}
+                return {
+                    id: term,
+                    name: term
+                };
+            {% endif %}
         }
     }
 {% endblock %}

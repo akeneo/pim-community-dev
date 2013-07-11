@@ -120,5 +120,6 @@ services:
             - @oro_tag.tag.manager
             - @router
             - @security.context
+            - @oro_user.acl_manager
         tags:
             - { name: twig.extension }

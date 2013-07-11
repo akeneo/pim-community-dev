@@ -2,9 +2,10 @@
 
 namespace Oro\Bundle\TagBundle;
 
-use Oro\Bundle\TagBundle\DependencyInjection\Compiler\TagManagerPass;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
+use Oro\Bundle\TagBundle\DependencyInjection\Compiler\TagManagerPass;
 
 class OroTagBundle extends Bundle
 {
