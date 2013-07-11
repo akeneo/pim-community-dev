@@ -149,6 +149,7 @@ class Page
     /**
      * @param $xpath
      * @param string $message
+     * @return $this
      */
     public function assertElementPresent($xpath, $message = '')
     {
@@ -156,11 +157,13 @@ class Page
             $this->isElementPresent($xpath),
             $message
         );
+        return $this;
     }
 
     /**
      * @param $xpath
      * @param string $message
+     * @return $this
      */
     public function assertElementNotPresent($xpath, $message = '')
     {
@@ -168,6 +171,7 @@ class Page
             $this->isElementPresent($xpath),
             $message
         );
+        return $this;
     }
 
     /**

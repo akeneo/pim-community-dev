@@ -1,9 +1,11 @@
 js:
-  - '@OroWindowsBundle/Resources/public/js/jquery.dialog.extended.js'
-  - '@OroWindowsBundle/Resources/public/js/views/dialog.js'
+  'windows':
+      - '@OroWindowsBundle/Resources/public/js/jquery.dialog.extended.js'
+      - '@OroWindowsBundle/Resources/public/js/views/dialog.js'
 
-  - '@OroWindowsBundle/Resources/public/js/models/state.js'
-  - '@OroWindowsBundle/Resources/public/js/collections/state.js'
-  - '@OroWindowsBundle/Resources/public/js/views/dialog.js'
+      - '@OroWindowsBundle/Resources/public/js/models/state.js'
+      - '@OroWindowsBundle/Resources/public/js/collections/state.js'
+      - '@OroWindowsBundle/Resources/public/js/views/dialog.js'
 css:
-  - 'bundles/orowindows/css/jquery.dialog.extended.css'
+  'windows':
+      - 'bundles/orowindows/css/jquery.dialog.extended.css'

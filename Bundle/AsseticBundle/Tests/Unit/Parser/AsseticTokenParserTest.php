@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\NavigationBundle\Tests\Unit\Twig;
+namespace Oro\Bundle\AsseticBundle\Tests\Unit\Parser;
 
-use Oro\Bundle\NavigationBundle\Twig\AsseticTokenParser;
+use Oro\Bundle\AsseticBundle\Parser\AsseticTokenParser;
 
 use \Twig_Token;
 use \Twig_TokenStream;
@@ -26,13 +26,17 @@ class AsseticTokenParserTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->assets = array(
-            'css' => array(
-                'first.css',
-                'second.css'
+            'compress' => array(
+                array(
+                    'first.css',
+                    'second.css'
+                )
             ),
-            'js'  => array(
-                'first.js',
-                'second.js'
+            'uncompress' => array(
+                array(
+                    'first.js',
+                    'second.js'
+                )
             )
         );
 
@@ -101,7 +105,7 @@ class AsseticTokenParserTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->assetsFactory->expects($this->once())
+        $this->assetsFactory->expects($this->any())
             ->method('createAsset')
             ->will($this->returnValue($assert));
         /**

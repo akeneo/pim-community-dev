@@ -10,6 +10,7 @@ class Contact extends Page implements Entity
     protected $firstname;
     protected $lastname;
     protected $email;
+    protected $primary;
     protected $street;
     protected $city;
     protected $zipcode;
@@ -28,11 +29,12 @@ class Contact extends Page implements Entity
         $this->firstname = $this->byId('orocrm_contact_form_values_1_varchar');
         $this->lastname = $this->byId('orocrm_contact_form_values_2_varchar');
         $this->email = $this->byId('orocrm_contact_form_values_10_varchar');
-        $this->street = $this->byId('orocrm_contact_form_multiAddress_0_street');
-        $this->city = $this->byId('orocrm_contact_form_multiAddress_0_city');
-        $this->zipcode = $this->byId('orocrm_contact_form_multiAddress_0_postalCode');
-        $this->country = $this->byXpath("//div[@id='s2id_orocrm_contact_form_multiAddress_0_country']/a");
-        $this->state = $this->byXpath("//div[@id='s2id_orocrm_contact_form_multiAddress_0_state']/a");
+        $this->primary = $this->byId('orocrm_contact_form_addresses_0_primary');
+        $this->street = $this->byId('orocrm_contact_form_addresses_0_street');
+        $this->city = $this->byId('orocrm_contact_form_addresses_0_city');
+        $this->zipcode = $this->byId('orocrm_contact_form_addresses_0_postalCode');
+        $this->country = $this->byXpath("//div[@id='s2id_orocrm_contact_form_addresses_0_country']/a");
+        $this->state = $this->byXpath("//div[@id='s2id_orocrm_contact_form_addresses_0_state']/a");
         $this->assignedto = $this->byXpath("//div[@id='s2id_orocrm_contact_form_values_8_user']/a");
         $this->reportsto = $this->byXpath("//div[@id='s2id_orocrm_contact_form_values_9_contact']/a");
 
@@ -73,6 +75,13 @@ class Contact extends Page implements Entity
     public function getEmail()
     {
         return $this->email->value();
+    }
+
+    public function setPrimary()
+    {
+        $this->primary->click();
+
+        return $this;
     }
 
     public function setStreet($street)
