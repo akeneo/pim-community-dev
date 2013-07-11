@@ -31,4 +31,4 @@ services:
             - name: oro_grid.datagrid.manager
               datagrid_name: attributes
               entity_hint: attributes
-              route_name: pim_product_productattribute_index
+              route_name: pim_product_product_edit

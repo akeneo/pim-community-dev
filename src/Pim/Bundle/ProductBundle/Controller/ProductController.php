@@ -121,6 +121,13 @@ class ProductController extends Controller
     {
         $product  = $this->findProductOr404($id);
         $request  = $this->getRequest();
+        $datagrid = $this->getDataAuditDatagrid($product);
+
+        // Refreshing the history datagrid
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('OroGridBundle:Datagrid:list.json.php', array('datagrid' => $datagrid->createView()));
+        }
+
         $channels = $this->getChannelRepository()->findAll();
         $trees    = $this->getCategoryManager()->getEntityRepository()->getProductsCountByTree($product);
         $form     = $this->createForm(
@@ -129,7 +136,6 @@ class ProductController extends Controller
             array('currentLocale' => $this->getDataLocale())
         );
 
-        $datagrid = $this->getDataAuditDatagrid($product);
 
         if ($request->getMethod() === 'POST') {
             $form->bind($request);
@@ -538,7 +544,10 @@ class ProductController extends Controller
         $queryFactory = $this->get('pim_product.datagrid.manager.product_history.default_query_factory');
         $queryFactory->setQueryBuilder($this->getDataAuditRepository()->getLogEntriesQueryBuilder($product));
 
-        return $this->get('pim_product.datagrid.manager.product_history')->getDatagrid();
+        $datagridManager = $this->get('pim_product.datagrid.manager.product_history');
+        $datagridManager->getRouteGenerator()->setRouteParameters(array('id' => $product->getId()));
+
+        return $datagridManager->getDatagrid();
     }
 
     private function getDataAuditRepository()
