@@ -89,6 +89,7 @@ class Family implements Translatable
 
     /**
      * @ORM\ManyToOne(targetEntity="ProductAttribute")
+     * @ORM\JoinColumn(name="label_attribute_id", referencedColumnName="id", onDelete="SET NULL")
      * @Oro\Versioned("getCode")
      */
     protected $attributeAsLabel;
