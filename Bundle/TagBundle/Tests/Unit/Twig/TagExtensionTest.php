@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\TagBundle\Tests\Unit\Twig;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\TagBundle\Twig\TagExtension;
 
 class TagExtensionTest extends \PHPUnit_Framework_TestCase
@@ -79,28 +80,31 @@ class TagExtensionTest extends \PHPUnit_Framework_TestCase
         $tag1->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('test name 1'));
-        $tag1->expects($this->exactly(2))
+        $tag1->expects($this->any())
             ->method('getId')
             ->will($this->returnValue(1));
-        $tag1->expects($this->once())
+        $tag1->expects($this->exactly(2))
             ->method('getTagging')
-            ->will($this->returnValue(array($tagging)));
+            ->will($this->returnValue(new ArrayCollection(array($tagging))));
 
         $tag2->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('test name 2'));
-        $tag2->expects($this->exactly(2))
+        $tag2->expects($this->any())
             ->method('getId')
             ->will($this->returnValue(2));
-        $tag2->expects($this->once())
+        $tag2->expects($this->exactly(2))
             ->method('getTagging')
-            ->will($this->returnValue(array($tagging)));
+            ->will($this->returnValue(new ArrayCollection(array($tagging))));
 
         $userMock = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
 
         $tagging->expects($this->exactly(2))
             ->method('getUser')
             ->will($this->returnValue($userMock));
+        $tagging->expects($this->any())
+            ->method('getTag')
+            ->will($this->returnValue($tag1));
 
         $userMock->expects($this->at(0))
             ->method('getId')

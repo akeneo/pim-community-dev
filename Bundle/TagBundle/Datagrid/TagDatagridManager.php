@@ -83,7 +83,6 @@ class TagDatagridManager extends DatagridManager
         $clickAction = array(
             'name'         => 'rowClick',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'oro_tag_grid_and_edit',
             'options'      => array(
                 'label'         => $this->translate('Search by tag'),
                 'link'          => 'search_link',
@@ -94,7 +93,6 @@ class TagDatagridManager extends DatagridManager
         $viewAction = array(
             'name'         => 'search',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'oro_tag_grid_and_edit',
             'options'      => array(
                 'label' => $this->translate('Search by tag'),
                 'icon'  => 'search',
@@ -105,7 +103,7 @@ class TagDatagridManager extends DatagridManager
         $updateAction = array(
             'name'         => 'update',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'oro_tag_grid_and_edit',
+            'acl_resource' => 'oro_tag_update',
             'options'      => array(
                 'label'   => $this->translate('Update'),
                 'icon'    => 'edit',

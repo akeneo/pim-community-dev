@@ -2,15 +2,18 @@
 
 namespace Oro\Bundle\TagBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
 class TagManagerPass implements CompilerPassInterface
 {
     const SERVICE_KEY = 'oro_tag.tag.manager';
     const TAG = 'oro_tag.tag_manager';
 
+    /**
+     * {@inheritDoc}
+     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasDefinition(self::SERVICE_KEY)) {

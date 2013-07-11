@@ -33,6 +33,7 @@ class Tagging
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $user;
 
@@ -42,13 +43,6 @@ class Tagging
      * @ORM\Column(type="datetime")
      */
     protected $created;
-
-    /**
-     * @var \Datetime $updated
-     *
-     * @ORM\Column(type="datetime")
-     */
-    protected $updated;
 
     /**
      * @var string
@@ -81,8 +75,7 @@ class Tagging
             $this->setResource($resource);
         }
 
-        $this->setCreated(new \DateTime('now'));
-        $this->setUpdated(new \DateTime('now'));
+        $this->setCreatedAt(new \DateTime('now'));
     }
 
     /**
@@ -197,7 +190,7 @@ class Tagging
      * @param \DateTime $date
      * @return $this
      */
-    public function setCreated(\DateTime $date)
+    public function setCreatedAt(\DateTime $date)
     {
         $this->created = $date;
 
@@ -209,31 +202,8 @@ class Tagging
      *
      * @return \Datetime
      */
-    public function getCreated()
+    public function getCreatedAt()
     {
         return $this->created;
-    }
-
-    /**
-     * Set updated date
-     *
-     * @param \DateTime $date
-     * @return $this
-     */
-    public function setUpdated(\DateTime $date)
-    {
-        $this->updated = $date;
-
-        return $this;
-    }
-
-    /**
-     * Get updated date
-     *
-     * @return \Datetime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
     }
 }

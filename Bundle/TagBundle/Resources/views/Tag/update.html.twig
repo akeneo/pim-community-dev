@@ -1,12 +1,13 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
-
-{% set title = form.vars.value.name|default('N/A')|trans %}
-{% oro_title_set({params : {"%tag.name%": form.vars.value.name} }) %}
-{% set formAction = path('oro_tag_update', { id: form.vars.value.id }) %}
+{% set title = form.vars.value.id ? form.vars.value.name|default('N/A') : 'Add Tag'|trans %}
+{% if form.vars.value.id %}
+    {% oro_title_set({params : {"%tag.name%": form.vars.value.name} }) %}
+{% endif %}
+{% set formAction = form.vars.value.id ? path('oro_tag_update', { id: form.vars.value.id }) : path('oro_tag_create') %}
 
 {% block navButtons %}
-    {% if resource_granted('oro_tag_delete') %}
+    {% if form.vars.value.id and resource_granted('oro_tag_delete') %}
         {{
             UI.deleteButton({
                 'dataUrl': path('oro_api_delete_tag', {'id': form.vars.value.id}),

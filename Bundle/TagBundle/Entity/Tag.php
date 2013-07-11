@@ -3,11 +3,13 @@
 namespace Oro\Bundle\TagBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * Tag
  *
  * @ORM\Table(name="oro_tag_tag")
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Entity
  */
 class Tag
@@ -55,8 +57,8 @@ class Tag
     {
         $this->setName($name);
 
-        $this->setCreated(new \DateTime('now', new \DateTimeZone('UTC')));
-        $this->setUpdated(new \DateTime('now', new \DateTimeZone('UTC')));
+        $this->setCreatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
+        $this->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
     }
 
     /**
@@ -98,7 +100,7 @@ class Tag
      * @param \DateTime $date
      * @return $this
      */
-    public function setCreated(\DateTime $date)
+    public function setCreatedAt(\DateTime $date)
     {
         $this->created = $date;
 
@@ -110,7 +112,7 @@ class Tag
      *
      * @return \Datetime
      */
-    public function getCreated()
+    public function getCreatedAt()
     {
         return $this->created;
     }
@@ -121,7 +123,7 @@ class Tag
      * @param \DateTime $date
      * @return $this
      */
-    public function setUpdated(\DateTime $date)
+    public function setUpdatedAt(\DateTime $date)
     {
         $this->updated = $date;
 
@@ -133,7 +135,7 @@ class Tag
      *
      * @return \Datetime
      */
-    public function getUpdated()
+    public function getUpdatedAt()
     {
         return $this->updated;
     }
@@ -141,7 +143,7 @@ class Tag
     /**
      * Return tagging object
      *
-     * @return Tagging
+     * @return PersistentCollection
      */
     public function getTagging()
     {
@@ -156,5 +158,14 @@ class Tag
     public function __toString()
     {
         return $this->getName();
+    }
+
+    /**
+     * Pre update event handler
+     * @ORM\PreUpdate
+     */
+    public function doUpdate()
+    {
+        $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 }

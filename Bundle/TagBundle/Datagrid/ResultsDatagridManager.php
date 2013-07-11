@@ -28,16 +28,13 @@ class ResultsDatagridManager extends SearchDatagridManager
         $aliases = $qb->getRootAliases();
         $alias = end($aliases);
 
-        $qb
-            ->where($alias . '.tag = :tag')
+        $qb->where($alias . '.tag = :tag')
             ->setParameter('tag', $this->tag->getId());
-
         $qb->addGroupBy($alias . '.entityName')
             ->addGroupBy($alias . '.recordId');
 
         if ($this->searchEntity != '*') {
-            $qb
-                ->andWhere($alias . '.alias = :alias')
+            $qb->andWhere($alias . '.alias = :alias')
                 ->setParameter('alias', $this->searchEntity);
         }
 

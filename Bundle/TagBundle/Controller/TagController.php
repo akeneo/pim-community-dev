@@ -2,9 +2,7 @@
 
 namespace Oro\Bundle\TagBundle\Controller;
 
-use Oro\Bundle\GridBundle\Datagrid\Datagrid;
-use Oro\Bundle\GridBundle\Datagrid\DatagridView;
-use Oro\Bundle\TagBundle\Datagrid\ResultsDatagridManager;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -12,9 +10,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\TagBundle\Entity\Tag;
 use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\GridBundle\Datagrid\Datagrid;
 use Oro\Bundle\TagBundle\Datagrid\TagDatagridManager;
-use Symfony\Component\HttpFoundation\Request;
+use Oro\Bundle\TagBundle\Datagrid\ResultsDatagridManager;
 
 /**
  * @Acl(
@@ -34,9 +32,9 @@ class TagController extends Controller
      *      defaults={"_format" = "html"}
      * )
      * @Acl(
-     *      id="oro_tag_grid_and_edit",
-     *      name="View and edit tags",
-     *      description="User can see grid of tags and edit tag",
+     *      id="oro_tag_list",
+     *      name="View list of tags",
+     *      description="User can see grid of tags",
      *      parent="oro_tag"
      * )
      * @Template
@@ -55,8 +53,28 @@ class TagController extends Controller
     }
 
     /**
+     * @Route("/create", name="oro_tag_create")
+     * @Acl(
+     *      id="oro_tag_create",
+     *      name="Create tag",
+     *      description="User can create tags from grid",
+     *      parent="oro_tag"
+     * )
+     * @Template("OroTagBundle:Tag:update.html.twig")
+     */
+    public function createAction()
+    {
+        return $this->updateAction(new Tag());
+    }
+
+    /**
      * @Route("/update/{id}", name="oro_tag_update", requirements={"id"="\d+"}, defaults={"id"=0})
-     * @AclAncestor("oro_tag_grid_and_edit")
+     * @Acl(
+     *      id="oro_tag_update",
+     *      name="Update tag",
+     *      description="User can edit tags",
+     *      parent="oro_tag"
+     * )
      * @Template
      */
     public function updateAction(Tag $entity)
@@ -77,12 +95,6 @@ class TagController extends Controller
 
     /**
      * @Route("/search/{id}", name="oro_tag_search", requirements={"id"="\d+"}, defaults={"id"=0})
-     * @Acl(
-     *      id="oro_tag_search",
-     *      name="Search entities by tag",
-     *      description="User can find entities by tag",
-     *      parent="oro_tag"
-     * )
      * @Template
      */
     public function searchAction(Tag $entity, Request $request)
@@ -102,6 +114,19 @@ class TagController extends Controller
     }
 
     /**
+     * Return search results in json for datagrid
+     *
+     * @Route("/ajax/{id}", name="oro_tag_search_ajax", requirements={"id"="\d+"}, defaults={"id"=0})
+     */
+    public function searchResultsAjaxAction(Tag $entity, Request $request)
+    {
+        $from   = $request->get('from');
+        $datagrid = $this->getSearchResultsDatagrid($from, $entity);
+
+        return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagrid->createView());
+    }
+
+    /**
      * @param  string   $from
      * @param  Tag      $tag
      * @return Datagrid
@@ -113,7 +138,6 @@ class TagController extends Controller
 
         $datagridManager->setSearchEntity($from);
         $datagridManager->setTag($tag);
-
         $datagridManager->getRouteGenerator()->setRouteParameters(
             array(
                 'from'   => $from,
@@ -122,18 +146,5 @@ class TagController extends Controller
         );
 
         return $datagridManager->getDatagrid();
-    }
-
-    /**
-     * Return search results in json for datagrid
-     *
-     * @Route("/ajax/{id}", name="oro_tag_search_ajax", requirements={"id"="\d+"}, defaults={"id"=0})
-     */
-    public function searchResultsAjaxAction(Tag $entity, Request $request)
-    {
-        $from   = $request->get('from');
-        $datagrid = $this->getSearchResultsDatagrid($from, $entity);
-
-        return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagrid->createView());
     }
 }

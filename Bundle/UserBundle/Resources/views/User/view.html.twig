@@ -72,6 +72,12 @@
     {% endfor %}
 
     {% set id = 'user-profile' %}
+
+    {% set dataSubBlocks = [UI.attibuteRow('Email', {value: entity.email, hint: 'Primary'}, entity.emails|length ? {data: entity.emails, field:'email'} : {})] %}
+    {% if resource_granted('oro_tag_view_tag_cloud') %}
+        {% set dataSubBlocks = dataSubBlocks|merge([UI.renderAttribute('Tags', _tag.renderView(entity))]) %}
+    {% endif %}
+
     {% set data = {
         'dataBlocks':
             [
@@ -91,10 +97,7 @@
                         },
                         {
                             'title': 'Contact Information',
-                            'data': [
-                                UI.attibuteRow('Email', {value: entity.email, hint: 'Primary'}, entity.emails|length ? {data: entity.emails, field:'email'} : {}),
-                                UI.renderAttribute('Tags', _tag.renderView(entity))
-                            ]
+                            'data': dataSubBlocks
                         }
                     ]
                 },

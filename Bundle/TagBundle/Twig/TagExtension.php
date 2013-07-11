@@ -74,6 +74,11 @@ class TagExtension extends \Twig_Extension
                 'url'  => $this->router->generate('oro_tag_search', array('id' => $tag->getId()))
             );
 
+            $tag->getTagging()->filter(
+                function ($tagging) use ($tag) {
+                    return $tagging->getTag()->getId() == $tag->getId();
+                }
+            );
             /** @var Tagging $tagging */
             foreach ($tag->getTagging() as $tagging) {
                 if ($this->getUser()->getId() == $tagging->getUser()->getId()) {

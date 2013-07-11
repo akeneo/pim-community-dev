@@ -31,10 +31,10 @@ class TagTest extends \PHPUnit_Framework_TestCase
         $timeCreated = new \DateTime('now');
         $timeUpdated = new \DateTime('now');
 
-        $this->tag->setCreated($timeCreated);
-        $this->tag->setUpdated($timeUpdated);
+        $this->tag->setCreatedAt($timeCreated);
+        $this->tag->setUpdatedAt($timeUpdated);
 
-        $this->assertEquals($timeCreated, $this->tag->getCreated());
-        $this->assertEquals($timeUpdated, $this->tag->getUpdated());
+        $this->assertEquals($timeCreated, $this->tag->getCreatedAt());
+        $this->assertEquals($timeUpdated, $this->tag->getUpdatedAt());
     }
 }
