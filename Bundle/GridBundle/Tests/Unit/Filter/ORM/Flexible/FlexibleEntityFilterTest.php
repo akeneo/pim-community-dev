@@ -10,10 +10,6 @@ use Oro\Bundle\GridBundle\Filter\ORM\EntityFilter;
 
 /**
  * Test related class
- *
- * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  */
 class FlexibleEntityFilterTest extends FlexibleFilterTestCase
 {
