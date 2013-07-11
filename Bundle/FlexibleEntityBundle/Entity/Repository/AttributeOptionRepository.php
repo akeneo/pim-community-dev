@@ -17,7 +17,7 @@ class AttributeOptionRepository extends EntityRepository
      *
      * @param AbstractAttribute $attribute
      *
-     * @return Doctrine\ORM\QueryBuilder
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function findAllForAttributeWithValues(AbstractAttribute $attribute)
     {
