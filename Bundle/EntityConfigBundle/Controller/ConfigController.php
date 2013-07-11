@@ -112,13 +112,17 @@ class ConfigController extends Controller
             $link = $this->generateUrl($link['_route']);
         }
 
+        $uk = array();
+
         return array(
             'entity'     => $entity,
             'properties' => $entity->toArray('entity'),
+//            'properties_extend' => $entity->toArray('extend'),
             'datagrid'   => $datagrid->createView(),
             'link'       => $link,
             'entityName' => $entityName,
             'moduleName' => $moduleName,
+            'uk'         => $uk,
         );
     }
 

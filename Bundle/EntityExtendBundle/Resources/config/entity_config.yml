@@ -7,6 +7,7 @@ oro_entity_config:
     #            -                           {"name":"Create", "route":"oro_entityconfig_create", "title":"Create custom entity"}
             items:
                 owner:
+                    priority:               40
                     default_value:          'System'
                     required:               true
                     grid:
@@ -16,12 +17,12 @@ oro_entity_config:
                         required:           true
                         sortable:           true
                         filterable:         true
-                        show_filter:        false
+                        show_filter:        true
                     form:
                         type:               text
                         block:              entity
                         options:
-#                            read_only:      true
+                            read_only:      true
                             required:       false
                             label:          'Type'
 

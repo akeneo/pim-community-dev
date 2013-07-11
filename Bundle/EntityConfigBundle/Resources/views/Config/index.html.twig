@@ -9,10 +9,10 @@
     {% set buttons = [] %}
     {% for button in buttonConfig %}
         {% set buttons = buttons|merge([UI.addButton({
-        'path': path(button.route, button.args|default({})),
-        'title': button.title|default(button.name),
-        'label': button.name,
-        'aClass': button.aClass|default('')
+            'path': path(button.route, button.args|default({})),
+            'title': button.title|default(button.name),
+            'label': button.name,
+            'aClass': button.aClass|default('')
         })]) %}
     {% endfor %}
 

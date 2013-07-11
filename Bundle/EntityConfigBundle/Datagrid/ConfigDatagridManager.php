@@ -147,6 +147,7 @@ class ConfigDatagridManager extends DatagridManager
         );
         $fieldsCollection->add($fieldObjectModule);
 
+        $fields = array();
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
                 if (isset($item['grid'])) {
@@ -156,9 +157,20 @@ class ConfigDatagridManager extends DatagridManager
                         'expression' => 'cev' . $code . '.value',
                         'field_name' => $code,
                     )));
-                    $fieldsCollection->add($fieldObjectProvider);
+
+                    if (isset($item['priority']) && !isset($fields[$item['priority']])) {
+                        $fields[$item['priority']] = $fieldObjectProvider;
+                    } else {
+                        $fields[] = $fieldObjectProvider;
+                    }
+
+//                    $fieldsCollection->add($fieldObjectProvider);
                 }
             }
+        }
+        ksort($fields);
+        foreach ($fields as $field) {
+            $fieldsCollection->add($field);
         }
 
         $fieldObjectCreate = new FieldDescription();

@@ -7,19 +7,7 @@
     {% if resource_granted('oro_user_user_update') %}
         {{ UI.button({'path' : path('oro_entityconfig_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}
     {% endif %}
-
-    {#{% if resource_granted('oro_user_user_delete') and entity.id!=app.user.id %}#}
-        {#{{ UI.deleteButton({#}
-        {#'dataUrl': path('oro_api_delete_user', {'id': entity.id}),#}
-        {#'dataRedirect': path('oro_user_index'),#}
-        {#'aCss': 'no-hash remove-button',#}
-        {#'id': 'btn-remove-user',#}
-        {#'dataId': entity.id,#}
-        {#'dataMessage': 'Are you sure you want to delete this user?',#}
-        {#'title': 'Delete user',#}
-        {#'label': 'Delete'#}
-        {#}) }}#}
-    {#{% endif %}#}
+    {{ UI.button({'path' : path('oro_entityextend_entity_unique_key', { id: entity.id }), 'iClass' : 'th-large', 'title' : 'Unique Keys', 'label' : 'Unique Keys'}) }}
 {% endblock navButtons %}
 
 {% block head_script %}
@@ -40,11 +28,15 @@
 {% endblock pageHeader %}
 
 {% block stats %}
+    <li>{{ 'Created'|trans }}: {{ UI.Time(entity.created) }}</li>
+    <li>{{ 'Updated'|trans }}: {{ UI.Time(entity.updated) }}</li>
+    <li>{{ ['<a href="', link, '">', 'List'|trans, '</a>']|join|raw }}</li>
+
+    {#UI.attibuteRow('# of records', 0),#}
 {% endblock stats%}
 
 {% block content_data %}
     {% set id = 'entityconfig-view' %}
-    {% set link = '<p class="control-label"><a href="%link%">%entityName%</a></p>'|replace({'%link%': link, '%entityName%':entityName|capitalize}) %}
 
     {% set generalFields = [
         UI.attibuteRow('Name', entityName),
@@ -52,7 +44,7 @@
     ]%}
 
     {% for key,property in properties %}
-        {% set generalFields = generalFields|merge([UI.attibuteRow(key|capitalize, property)])%}
+        {% set generalFields = generalFields|merge([UI.attibuteRow(key|replace('_',' ')|capitalize, property)])%}
     {% endfor %}
     {#{% set generalFields = generalFields|merge([UI.attibuteRow('Type', entity.type )])%}#}
 
@@ -67,12 +59,8 @@
                         'data': generalFields
                     },
                     {
-                        'title': 'Summary',
+                        'title': 'Unique Keys',
                         'data': [
-                            UI.renderAttribute('Link', link ),
-                            UI.attibuteRow('# of records', 0),
-                            UI.attibuteRow('Created', UI.Time(entity.created)),
-                            UI.attibuteRow('Updated', UI.Time(entity.updated)),
                         ]
                     }
                 ]
