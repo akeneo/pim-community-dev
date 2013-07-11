@@ -10,6 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\GridBundle\Datagrid\Datagrid;
 
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+
 use Oro\Bundle\EntityConfigBundle\Datagrid\EntityFieldsDatagridManager;
 use Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager;
 
@@ -54,7 +56,7 @@ class ConfigController extends Controller
         $entity  = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
         $request = $this->getRequest();
 
-        $form    = $this->createForm(
+        $form = $this->createForm(
             'oro_entity_config_config_entity_type',
             null,
             array('class_name' => $entity->getClassName())
@@ -98,23 +100,26 @@ class ConfigController extends Controller
         $datagrid = $datagridManager->getDatagrid();
 
         $entityName = $moduleName = '';
-        $className = explode('\\', $entity->getClassname());
+        $className  = explode('\\', $entity->getClassName());
         foreach ($className as $i => $name) {
-            if (count($className)-1 == $i) {
+            if (count($className) - 1 == $i) {
                 $entityName = $name;
-            } elseif (!in_array($name, array('Bundle','Entity'))) {
+            } elseif (!in_array($name, array('Bundle', 'Entity'))) {
                 $moduleName .= $name;
             }
         }
 
-        $link = $this->get('router')->match('/'.strtolower($entityName));
+        $link = $this->get('router')->match('/' . strtolower($entityName));
         if (is_array($link)) {
             $link = $this->generateUrl($link['_route']);
         }
 
+        /** @var ConfigProvider $entityConfigProvider */
+        $entityConfigProvider = $this->get('oro_entity.config.entity_config_provider');
+
         return array(
             'entity'     => $entity,
-            'properties' => $entity->toArray('entity'),
+            'config'     => $entityConfigProvider->getConfig($entity->getClassName()),
             'datagrid'   => $datagrid->createView(),
             'link'       => $link,
             'entityName' => $entityName,
@@ -178,7 +183,7 @@ class ConfigController extends Controller
      */
     public function fieldUpdateAction($id)
     {
-        $field   = $this->getDoctrine()->getRepository(ConfigField::ENTITY_NAME)->find($id);
+        $field = $this->getDoctrine()->getRepository(ConfigField::ENTITY_NAME)->find($id);
 
         $form    = $this->createForm('oro_entity_config_config_field_type', null, array(
             'class_name' => $field->getEntity()->getClassName(),
