@@ -37,6 +37,7 @@ class FixturesContext extends RawMinkContext
         'number'     => 'pim_product_number',
         'textarea'   => 'pim_product_textarea',
         'identifier' => 'pim_product_identifier',
+        'metric'     => 'pim_product_metric',
     );
 
     /**
@@ -337,6 +338,18 @@ class FixturesContext extends RawMinkContext
             if ($family = $data['family']) {
                 $family = $this->getFamily($family);
                 $family->addAttribute($attribute);
+            }
+
+            if ($data['type'] === 'metric') {
+                if (!empty($data['metric family']) && !empty($data['default metric unit'])) {
+                    $attribute->setMetricFamily($data['metric family']);
+                    $attribute->setDefaultMetricUnit($data['default metric unit']);
+                } else {
+                    throw new \InvalidArgumentException(sprintf(
+                        'Expecting metric family and default metric unit to be defined for attribute "%s"',
+                        $data['label']
+                    ));
+                }
             }
 
             if (!empty($data['product'])) {

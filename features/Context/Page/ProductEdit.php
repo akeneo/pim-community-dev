@@ -22,6 +22,7 @@ class ProductEdit extends Page
         'Available attributes menu'       => array('css' => 'button:contains("Add attributes")'),
         'Title'                           => array('css' => '.navbar-title'),
         'Tabs'                            => array('css' => '#form-navbar'),
+        'Groups'                          => array('css' => '.tab-groups'),
         'Locales selector'                => array('css' => '#pim_product_locales'),
         'Enable switcher'                 => array('css' => '#pim_product_enabled'),
     );
@@ -61,31 +62,12 @@ class ProductEdit extends Page
         ));
     }
 
-    public function getFieldAt($group, $position)
-    {
-        $fields = $this->getFieldsForGroup($group);
-
-        if (0 === count($fields)) {
-            throw new \Exception(sprintf(
-                'Couldn\'t find group "%s"', $group
-            ));
-        }
-
-        if (!isset($fields[$position])) {
-            throw new \Exception(sprintf(
-                'Couldn\'t find %dth field in group "%s"', $position + 1, $group
-            ));
-        }
-
-        return $fields[$position];
-    }
-
     public function getFieldsCountFor($group)
     {
         return count($this->getFieldsForGroup($group));
     }
 
-    private function getFieldsForGroup($group)
+    public function getFieldsForGroup($group)
     {
         $locator = sprintf(
             '#tabs-%s label', $group instanceof AttributeGroup ? $group->getId() : 0
@@ -130,16 +112,16 @@ class ProductEdit extends Page
 
     public function selectAvailableAttribute($attribute)
     {
-        $elt = $this
+        $label = $this
             ->getElement('Available attributes')
-            ->find('css', sprintf('li:contains("%s") input[type="checkbox"]', $attribute))
+            ->find('css', sprintf('li:contains("%s") label', $attribute))
         ;
 
-        if (!$elt) {
+        if (!$label) {
             throw new \Exception(sprintf('Could not find available attribute "%s".', $attribute));
         }
 
-        $elt->check();
+        $label->click();
     }
 
     public function addSelectedAvailableAttributes()
@@ -187,6 +169,11 @@ class ProductEdit extends Page
     public function visitTab($tab)
     {
         $this->getElement('Tabs')->clickLink($tab);
+    }
+
+    public function visitGroup($group)
+    {
+        $this->getElement('Groups')->clickLink($group);
     }
 
     public function disableProduct()

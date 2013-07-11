@@ -14,10 +14,12 @@ class FamilyEdit extends Page
     protected $path = '/enrich/family/edit/{family_id}';
 
     protected $elements = array(
-        'Available attributes'       => array('css' => '#pim_available_product_attributes_attributes'),
-        'Attributes'                 => array('css' => '#attributes table'),
-        'Tabs'                       => array('css' => '#form-navbar'),
-        'Attribute as label choices' => array('css' => '#pim_product_family_attributeAsLabel'),
+        'Available attributes'            => array('css' => '#pim_available_product_attributes_attributes'),
+        'Available attributes menu'       => array('css' => 'button:contains("Add attributes")'),
+        'Available attributes add button' => array('css' => 'a:contains("Add")'),
+        'Attributes'                      => array('css' => '#attributes table'),
+        'Tabs'                            => array('css' => '#form-navbar'),
+        'Attribute as label choices'      => array('css' => '#pim_product_family_attributeAsLabel'),
     );
 
     public function getAvailableAttribute($attribute, $group)
@@ -61,7 +63,10 @@ class FamilyEdit extends Page
 
     public function addSelectedAvailableAttributes()
     {
-        $this->pressButton('Add attributes');
+        $this
+            ->getElement('Available attributes add button')
+            ->press()
+        ;
     }
 
     public function save()
@@ -126,8 +131,24 @@ class FamilyEdit extends Page
 
     public function selectAttributeAsLabel($attribute)
     {
-        $this->getElement('Attribute as label choices')->selectOption($attribute);
+        $label = $this
+            ->getElement('Available attributes')
+            ->find('css', sprintf('li:contains("%s") label', $attribute))
+        ;
+
+        if (!$label) {
+            throw new \Exception(sprintf('Could not find available attribute "%s".', $attribute));
+        }
+
+        $label->click();
 
         return $this;
     }
+
+    public function openAvailableAttributesMenu()
+    {
+        $this->visitTab('Attributes');
+        $this->getElement('Available attributes menu')->click();
+    }
+
 }

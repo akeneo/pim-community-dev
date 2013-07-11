@@ -8,6 +8,8 @@ use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
 use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
 
 /**
+ * Custom form view for Product form
+ *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -16,11 +18,18 @@ class ProductFormView
 {
     protected $view = array();
 
+    /**
+     * @return FormView
+     */
     public function getView()
     {
         return $this->view;
     }
 
+    /**
+     * @param ProductValue $value
+     * @param FormView     $view
+     */
     public function addChildren(ProductValue $value, FormView $view)
     {
         $attribute = $value->getAttribute();
@@ -35,16 +44,27 @@ class ProductFormView
         $this->orderGroupAttributes($group);
     }
 
+    /**
+     * @param AttributeGroup $group
+     */
     private function orderGroupAttributes(AttributeGroup $group)
     {
         $this->view[$group->getId()]['attributes'] = $this->sortAttributes($this->view[$group->getId()]['attributes']);
     }
 
+    /**
+     * @param AttributeGroup $group
+     *
+     * @return boolean
+     */
     private function hasGroup(AttributeGroup $group)
     {
         return isset($this->view[$group->getId()]);
     }
 
+    /**
+     * @param AttributeGroup $group
+     */
     private function initializeGroup(AttributeGroup $group)
     {
         $this->view[$group->getId()] = array(
@@ -53,6 +73,11 @@ class ProductFormView
         );
     }
 
+    /**
+     * @param ProductAttribute $attribute
+     *
+     * @return array
+     */
     private function getAttributeClasses(ProductAttribute $attribute)
     {
         $classes = array();
@@ -67,6 +92,10 @@ class ProductFormView
         return $classes;
     }
 
+    /**
+     * @param ProductValue $value
+     * @param FormView     $view
+     */
     private function addValue(ProductValue $value, FormView $view)
     {
         $attribute = $value->getAttribute();
@@ -96,6 +125,11 @@ class ProductFormView
         $this->view[$group->getId()]['attributes'][$attribute->getId()] = $attributeView;
     }
 
+    /**
+     * @param ProductAttribute $attribute
+     *
+     * @return ArrayCollection
+     */
     private function getAttributeValues(ProductAttribute $attribute)
     {
         $group = $attribute->getVirtualGroup();
@@ -129,4 +163,3 @@ class ProductFormView
         return $attributes;
     }
 }
-
