@@ -2,8 +2,10 @@
 $(function() {
     'use strict';
 
-    var activeTab = $('[href=' + location.hash + ']');
-    activeTab && activeTab.tab('show');
+    if (/^#[a-zA-Z0-9-_]+$/i.test(location.hash)) {
+        var activeTab = $('[href=' + location.hash + ']');
+        activeTab && activeTab.tab('show');
+    }
 
     var formAction = '{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}';
 
