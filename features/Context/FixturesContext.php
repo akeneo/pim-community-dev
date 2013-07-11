@@ -37,6 +37,7 @@ class FixturesContext extends RawMinkContext
         'number'     => 'pim_product_number',
         'textarea'   => 'pim_product_textarea',
         'identifier' => 'pim_product_identifier',
+        'metric'     => 'pim_product_metric',
     );
 
     /**

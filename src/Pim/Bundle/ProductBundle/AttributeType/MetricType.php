@@ -2,6 +2,7 @@
 namespace Pim\Bundle\ProductBundle\AttributeType;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\MetricType as OroMetricType;
 
 /**
@@ -13,6 +14,17 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\MetricType as OroMetricType;
  */
 class MetricType extends OroMetricType
 {
+   /**
+     * {@inheritdoc}
+     */
+    protected function prepareValueFormOptions(FlexibleValueInterface $value)
+    {
+        $options   = parent::prepareValueFormOptions($value);
+        $options['default_unit'] = array($options['default_unit']);
+
+        return $options;
+    }
+
     /**
      * {@inheritdoc}
      */
