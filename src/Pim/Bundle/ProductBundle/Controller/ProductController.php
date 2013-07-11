@@ -187,41 +187,6 @@ class ProductController extends Controller
     }
 
     /**
-     * Generate an array composed of an array of categories ids
-     * from category_id_* params and an array of tree ids from
-     * apply_to_tree_* params
-     *
-     * @param array $requestParameters
-     *
-     * @return array of categories data structured of two arrays
-     *      categories, trees
-     */
-    protected function getCategoriesData(array $requestParameters)
-    {
-        $categories = array();
-        $trees = array();
-
-        foreach ($requestParameters as $key => $value) {
-            if ($value === "1") {
-                if (strpos($key, static::CATEGORY_PREFIX) === 0) {
-
-                    $catId = (int) str_replace(static::CATEGORY_PREFIX, '', $key);
-                    if ($catId > 0) {
-                        $categories[] = $catId;
-                    }
-                } elseif (strpos($key, static::TREE_APPLY_PREFIX) === 0) {
-                    $treeId = (int) str_replace(static::TREE_APPLY_PREFIX, '', $key);
-                    if ($treeId > 0) {
-                        $trees[] = $treeId;
-                    }
-                }
-            }
-        }
-
-        return array('categories' => $categories, "trees" => $trees);
-    }
-
-    /**
      * Add attributes to product
      *
      * @param int $id The product id to which add attributes
@@ -354,6 +319,41 @@ class ProductController extends Controller
     }
 
     /**
+     * Generate an array composed of an array of categories ids
+     * from category_id_* params and an array of tree ids from
+     * apply_to_tree_* params
+     *
+     * @param array $requestParameters
+     *
+     * @return array of categories data structured of two arrays
+     *      categories, trees
+     */
+    protected function getCategoriesData(array $requestParameters)
+    {
+        $categories = array();
+        $trees = array();
+
+        foreach ($requestParameters as $key => $value) {
+            if ($value === "1") {
+                if (strpos($key, static::CATEGORY_PREFIX) === 0) {
+
+                    $catId = (int) str_replace(static::CATEGORY_PREFIX, '', $key);
+                    if ($catId > 0) {
+                        $categories[] = $catId;
+                    }
+                } elseif (strpos($key, static::TREE_APPLY_PREFIX) === 0) {
+                    $treeId = (int) str_replace(static::TREE_APPLY_PREFIX, '', $key);
+                    if ($treeId > 0) {
+                        $trees[] = $treeId;
+                    }
+                }
+            }
+        }
+
+        return array('categories' => $categories, "trees" => $trees);
+    }
+
+    /**
      * Get product manager
      *
      * @return ProductManager
@@ -375,7 +375,6 @@ class ProductController extends Controller
     {
         return $this->container->get('pim_product.manager.category');
     }
-
 
     /**
      * Get locale manager
