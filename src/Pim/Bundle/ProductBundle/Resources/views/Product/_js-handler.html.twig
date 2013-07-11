@@ -25,9 +25,11 @@ $(function() {
         updated = true;
         $('#updated').show();
         $('form [id^="{{ form.vars.id }}"]').off('change', formUpdated);
+        $('form#{{ form.vars.id }}').off('click', 'ins.jstree-checkbox', formUpdated);
     }
 
     $('form [id^="{{ form.vars.id }}"]').on('change', formUpdated);
+    $('form#{{ form.vars.id }}').on('click', 'ins.jstree-checkbox', formUpdated);
 
     $(window).on('beforeunload', function(){
         if (updated) {
