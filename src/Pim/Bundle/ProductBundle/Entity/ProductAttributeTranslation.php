@@ -31,7 +31,7 @@ class ProductAttributeTranslation extends AbstractTranslation
     /**
      * @var string $label
      *
-     * @ORM\Column(name="label", type="string", length=64)
+     * @ORM\Column(name="label", type="string", length=64, nullable=true)
      */
     protected $label;
 

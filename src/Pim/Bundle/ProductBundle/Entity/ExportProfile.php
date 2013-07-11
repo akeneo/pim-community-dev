@@ -121,7 +121,7 @@ class ExportProfile implements TranslatableInterface
     public function getTranslation($locale = null)
     {
         $locale = ($locale) ? $locale : $this->locale;
-        foreach ($this->translations as $translation) {
+        foreach ($this->getTranslations() as $translation) {
             if ($translation->getLocale() == $locale) {
                 return $translation;
             }
@@ -129,7 +129,9 @@ class ExportProfile implements TranslatableInterface
 
         $translationClass = $this->getTranslationFQCN();
         $translation      = new $translationClass();
+        $translation->setLocale($locale);
         $translation->setForeignKey($this);
+        $this->addTranslation($translation);
 
         return $translation;
     }
@@ -161,7 +163,7 @@ class ExportProfile implements TranslatableInterface
      */
     public function getTranslationFQCN()
     {
-        return 'Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation';
+        return 'Pim\Bundle\ProductBundle\Entity\ExportProfileTranslation';
     }
 
     /**

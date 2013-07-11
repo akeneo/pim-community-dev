@@ -50,6 +50,7 @@ class ProductController extends Controller
      */
     public function indexAction(Request $request)
     {
+        // TODO : useless cause done by Context Listener ?
         $this->getProductManager()->setLocale($this->getDataLocale());
         $this->getProductManager()->setScope($this->getDataScope());
 

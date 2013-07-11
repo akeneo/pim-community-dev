@@ -31,7 +31,7 @@ class AttributeGroupTranslation extends AbstractTranslation
     /**
      * @var string $name
      *
-     * @ORM\Column(name="label", type="string", length=100)
+     * @ORM\Column(name="label", type="string", length=100, nullable=true)
      */
     protected $name;
 

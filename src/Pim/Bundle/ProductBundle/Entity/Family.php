@@ -238,7 +238,7 @@ class Family implements TranslatableInterface
     public function getTranslation($locale = null)
     {
         $locale = ($locale) ? $locale : $this->locale;
-        foreach ($this->translations as $translation) {
+        foreach ($this->getTranslations() as $translation) {
             if ($translation->getLocale() == $locale) {
                 return $translation;
             }
@@ -246,7 +246,9 @@ class Family implements TranslatableInterface
 
         $translationClass = $this->getTranslationFQCN();
         $translation      = new $translationClass();
+        $translation->setLocale($locale);
         $translation->setForeignKey($this);
+        $this->addTranslation($translation);
 
         return $translation;
     }

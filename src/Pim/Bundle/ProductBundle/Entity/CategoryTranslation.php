@@ -31,7 +31,7 @@ class CategoryTranslation extends AbstractTranslation
     /**
      * @var string $title
      *
-     * @ORM\Column(name="title", type="string", length=64)
+     * @ORM\Column(name="title", type="string", length=64, nullable=true)
      */
     protected $title;
 
