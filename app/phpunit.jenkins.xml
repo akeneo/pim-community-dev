@@ -40,6 +40,8 @@
                 <directory>../src/*/Bundle/*Bundle/vendor</directory>
                 <directory>../src/*/Bundle/*Bundle/cov</directory>
                 <directory>../src/*/Bundle/*Bundle/DataFixtures</directory>
+                <!-- exclude BatchBundle -->
+                <directory>../src/*/Bundle/BatchBundle</directory>
             </exclude>
         </whitelist>
     </filter>
