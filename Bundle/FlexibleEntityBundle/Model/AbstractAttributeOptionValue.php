@@ -6,9 +6,6 @@ use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
 /**
  * Abstract entity attribute option value, independent of storage
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  */
 abstract class AbstractAttributeOptionValue implements TranslatableInterface
 {
