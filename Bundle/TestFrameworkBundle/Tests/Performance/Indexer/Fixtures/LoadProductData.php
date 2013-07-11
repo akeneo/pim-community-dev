@@ -96,7 +96,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         $messages = array();
 
         // force in english
-        $this->getProductManager()->setLocale('en_US');
+        $this->getProductManager()->setLocale('en');
 
         // attribute name (if not exists)
         $attributeCode = 'name';
@@ -186,7 +186,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         $messages = array();
 
         // force in english because product is translatable
-        $this->getProductManager()->setLocale('en_US');
+        $this->getProductManager()->setLocale('en');
 
         // get attributes
         $attName = $this->getProductManager()->getFlexibleRepository()->findAttributeByCode('name');
@@ -349,10 +349,10 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         foreach ($products as $product) {
             // translate name value
             if ($attName) {
-                if ($product->setLocale('en_US')->getValue('name') != null) {
+                if ($product->setLocale('en')->getValue('name') != null) {
                     $value = $this->getProductManager()->createFlexibleValue();
                     $value->setAttribute($attName);
-                    $value->setLocale('fr_FR');
+                    $value->setLocale('fr');
                     $value->setData('mon nom FR '.$ind);
                     $product->addValue($value);
                     $this->getProductManager()->getStorageManager()->persist($value);
@@ -361,11 +361,11 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             }
             // translate description value
             if ($attDescription) {
-                // check if a value en_US + scope ecommerce exists
-                if ($product->setLocale('en_US')->setScope('ecommerce')->getValue('description') != null) {
+                // check if a value en + scope ecommerce exists
+                if ($product->setLocale('en')->setScope('ecommerce')->getValue('description') != null) {
                     // scope ecommerce
                     $value = $this->getProductManager()->createFlexibleValue();
-                    $value->setLocale('fr_FR');
+                    $value->setLocale('fr');
                     $value->setScope(ProductAttribute::SCOPE_ECOMMERCE);
                     $value->setAttribute($attDescription);
                     $value->setData('ma description FR (ecommerce) '.$ind);
@@ -373,7 +373,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
                     $this->getProductManager()->getStorageManager()->persist($value);
                     // scope mobile
                     $value = $this->getProductManager()->createFlexibleValue();
-                    $value->setLocale('fr_FR');
+                    $value->setLocale('fr');
                     $value->setScope(ProductAttribute::SCOPE_MOBILE);
                     $value->setAttribute($attDescription);
                     $value->setData('ma description FR (mobile) '.$ind);
@@ -400,7 +400,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
                 $option = $optValueEn->getOption();
                 $optValueFr = $this->getProductManager()->createAttributeOptionValue();
                 $optValueFr->setValue($colorFr);
-                $optValueFr->setLocale('fr_FR');
+                $optValueFr->setLocale('fr');
                 $option->addOptionValue($optValueFr);
                 $this->getProductManager()->getStorageManager()->persist($optValueFr);
                 $messages[]= "Option '".$colorEn."' has been translated";

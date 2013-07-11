@@ -1,10 +1,10 @@
 <?php
 
-namespace Oro\Bundle\NavigationBundle\Twig;
+namespace Oro\Bundle\AsseticBundle\Parser;
 
 use Assetic\Asset\AssetInterface;
 use Assetic\Factory\AssetFactory;
-use Symfony\Bundle\AsseticBundle\Twig\AsseticNode;
+use Oro\Bundle\AsseticBundle\Node\OroAsseticNode;
 
 class AsseticTokenParser extends \Twig_TokenParser
 {
@@ -23,7 +23,7 @@ class AsseticTokenParser extends \Twig_TokenParser
     private $output;
 
     /**
-     * @param array        $assets
+     * @param array $assets
      * @param AssetFactory $factory
      * @param              $tag
      * @param              $output
@@ -45,9 +45,9 @@ class AsseticTokenParser extends \Twig_TokenParser
 
         $filters = array();
         $attributes = array(
-            'output'   => $this->output,
+            'output' => $this->output,
             'var_name' => 'asset_url',
-            'vars'     => array(),
+            'vars' => array(),
         );
 
         $stream = $this->parser->getStream();
@@ -81,14 +81,29 @@ class AsseticTokenParser extends \Twig_TokenParser
         $body = $this->parser->subparse(array($this, 'testEndTag'), true);
         $stream->expect(\Twig_Token::BLOCK_END_TYPE);
 
-        $name = $this->factory->generateAssetName($inputs, $filters, $attributes);
+        $nameUnCompress = $this->factory->generateAssetName($inputs['compress'][0], $filters, $attributes);
+        $nameCompress = substr(sha1(serialize($inputs['uncompress'][0]) . 'oro_assets'), 0, 7);
 
-        return new AsseticNode(
-            $this->factory->createAsset($inputs, $filters, $attributes + array('name' => $name)),
-            $body,
-            $inputs,
+        return new OroAsseticNode(
+            array(
+                'compress' => $this->factory->createAsset(
+                    $inputs['compress'][0],
+                    $filters,
+                    $attributes + array('name' => $nameCompress, 'debug' => false)
+                ),
+                'un_compress' => $this->factory->createAsset(
+                    $inputs['uncompress'][0],
+                    array(),
+                    $attributes + array('name' => $nameUnCompress, 'debug' => true)
+                )
+            ),
+            array(
+                'un_compress' => $nameUnCompress,
+                'compress' => $nameCompress
+            ),
             $filters,
-            $name,
+            $inputs,
+            $body,
             $attributes,
             $token->getLine(),
             $this->getTag()
@@ -119,7 +134,7 @@ class AsseticTokenParser extends \Twig_TokenParser
      * Get value from stream
      *
      * @param \Twig_TokenStream $stream
-     * @param bool              $isBool
+     * @param bool $isBool
      *
      * @return bool|string
      */

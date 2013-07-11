@@ -9,7 +9,6 @@ ACL implementation from Oro UserBundle.
 * [Installation](#installation)
 * [Your first menu](#first-menu)
 * [Rendering Menus](#rendering-menus)
-* [Work with assets](#work-with-assets)
 * [Hash Navigation](#hash-navigation)
 
 <a name="installation"></a>
@@ -187,38 +186,6 @@ arguments and call KmpMenu renderer with the resulting options.
     {{ oro_menu_render('navbar', array('template' => 'SomeUserBundle:Menu:customdesign.html.twig')) }}
 {% endblock content %}
 ```
-
-<a name="work-with-assets"></a>
-
-## Work with assets
-
-To implement hashtag navigation we must all basic javascript and css files was loaded in main template.
-To do this, each bundle can has config file assets.yml with the list of js and css files.
-
-```yaml
-js:
-  - '@Path/To/Js/first.js'
-  - '@Path/To/Js/second.js'
-  - '@Path/To/Js/third.js'
-css:
-  - '@Path/To/Css/first.css'
-  - '@Path/To/Css/second.css'
-  - '@Path/To/Css/third.css'
-```
-
-In main template must be added the next tags:
-
-```
-    {% oro_js filter='array with filters' output='js/name_of_output_file.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endoro_js %}
-    {% oro_css filter='array with filters' output='css/name_of_output_file.css' %}
-        <link rel="stylesheet" media="all" href="{{ asset_url }}" />
-    {% endoro_css %}
-```
-This tags is the same as assettics "javascripts" and "stylesheets" tags but without list of files.
-
-When you run dump assets command, files from config files will be minimized and converted due the filters array.
 
 <a name="hash-navigation"></a>
 

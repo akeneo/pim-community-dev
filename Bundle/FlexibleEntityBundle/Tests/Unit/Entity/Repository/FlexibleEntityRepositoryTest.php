@@ -66,7 +66,7 @@ class FlexibleEntityRepositoryTest extends AbstractFlexibleManagerTest
      */
     public function testGetLocale()
     {
-        $code = 'fr_FR';
+        $code = 'fr';
         $this->repository->setLocale($code);
         $this->assertEquals($this->repository->getLocale(), $code);
     }
