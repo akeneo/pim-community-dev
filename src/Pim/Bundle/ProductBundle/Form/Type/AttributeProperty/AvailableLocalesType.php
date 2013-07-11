@@ -2,7 +2,6 @@
 namespace Pim\Bundle\ProductBundle\Form\Type\AttributeProperty;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Doctrine\ORM\EntityRepository;
 
@@ -15,7 +14,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class AvailableLocalesType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */

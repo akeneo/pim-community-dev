@@ -20,49 +20,55 @@ class ImageType extends OroImageType
     {
         $properties = array(
             array(
-                'name' => 'allowedFileSources',
+                'name'      => 'allowedFileSources',
                 'fieldType' => 'choice',
-                'options' => array(
+                'options'   => array(
                     'required' => true,
-                    'choices' => array(
-                        'upload' => 'Upload',
+                    'choices'  => array(
+                        'upload'   => 'Upload',
                         'external' => 'External'
                     )
                 )
             ),
             array(
-                'name' => 'maxFileSize',
+                'name'      => 'maxFileSize',
                 'fieldType' => 'integer'
             ),
             array(
-                'name' => 'allowedFileExtensions',
-                'data' => implode(',', $attribute->getAllowedFileExtensions()),
+                'name'    => 'allowedFileExtensions',
+                'data'    => implode(',', $attribute->getAllowedFileExtensions()),
                 'options' => array(
                     'by_reference' => false,
-                    'attr' => array('class' => 'multiselect')
+                    'attr'         => array(
+                        'class' => 'multiselect'
+                    )
                 )
             ),
             array(
-                'name' => 'translatable',
-                'fieldType' => 'checkbox'
-            ),
-            array(
-                'name' => 'availableLocales',
-                'fieldType' => 'pim_product_available_locales'
-            ),
-            array(
-                'name' => 'scopable',
-                'fieldType' => 'pim_product_scopable',
-                'options' => array(
-                    'disabled' => (bool) $attribute->getId(),
+                'name'      => 'translatable',
+                'fieldType' => 'checkbox',
+                'options'   => array(
+                    'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
                 )
             ),
             array(
-                'name' => 'unique',
+                'name'      => 'availableLocales',
+                'fieldType' => 'pim_product_available_locales'
+            ),
+            array(
+                'name'      => 'scopable',
+                'fieldType' => 'pim_product_scopable',
+                'options'   => array(
+                    'disabled'  => (bool) $attribute->getId(),
+                    'read_only' => (bool) $attribute->getId()
+                )
+            ),
+            array(
+                'name'      => 'unique',
                 'fieldType' => 'checkbox',
-                'options' => array(
-                    'disabled' => true,
+                'options'   => array(
+                    'disabled'  => true,
                     'read_only' => true
                 )
             )
