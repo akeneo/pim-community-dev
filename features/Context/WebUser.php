@@ -375,7 +375,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I add available attributes (.*)$/
+     * @Given /^I add available attributes? (.*)$/
      */
     public function iAddAvailableAttributes($attributes)
     {
