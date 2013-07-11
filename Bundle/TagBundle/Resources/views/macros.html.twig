@@ -45,8 +45,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var tags = {{ oro_tag_get_list(form.vars.value)|json_encode|raw }};
-            var tagView = new Oro.Tags.Select2View({tagInputId: '#{{ form.tags.get('id') }}'});
-            tagView.getCollection().reset(tags);
+            var tagView = new Oro.Tags.Select2View({tagInputId: '#{{ form.tags.get('id') }}', tags: tags});
 
             {% if not resource_granted('oro_tag_assign_unassign') %}
                 $('#{{ form.tags.get('id') }}').select2("readonly", true);

@@ -3,7 +3,8 @@ Oro.Tags = Oro.Tags || {};
 
 Oro.Tags.Select2View =  Oro.Tags.TagView.extend({
     options: {
-        tagInputId: null
+        tagInputId: null,
+        tags: null,
     },
 
     /**
@@ -19,6 +20,9 @@ Oro.Tags.Select2View =  Oro.Tags.TagView.extend({
         self = this;
         $(this.options.tagInputId).on("change", this.updateHiddenInputs);
 
+        if (this.options.tags != null) {
+            this.getCollection().reset(this.options.tags);
+        }
     },
 
     updateHiddenInputs: function(event) {
