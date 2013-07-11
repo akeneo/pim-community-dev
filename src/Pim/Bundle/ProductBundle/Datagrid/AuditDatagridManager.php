@@ -20,10 +20,10 @@ class AuditDatagridManager extends DatagridManager
     protected $authorExpression = <<<DQL
 CONCAT(
     CONCAT(
-        CONCAT(u.firstName, \' \'),
-        CONCAT(u.lastName, \' \')
+        CONCAT(u.firstName, ' '),
+        CONCAT(u.lastName, ' ')
     ),
-    CONCAT(\' - \', u.email)
+    CONCAT(' - ', u.email)
 )
 DQL;
 
@@ -42,15 +42,9 @@ DQL;
                 'field_name'  => 'action',
                 'filter_type' => FilterInterface::TYPE_CHOICE,
                 'required'    => false,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
-                'choices'     => array(
-                    LoggableManager::ACTION_UPDATE => 'Updated',
-                    LoggableManager::ACTION_CREATE => 'Created',
-                    LoggableManager::ACTION_REMOVE => 'Deleted',
-                ),
-                'multiple' => true,
+                'sortable'    => false,
+                'filterable'  => false,
+                'show_filter' => false,
             )
         );
         $fieldsCollection->add($fieldAction);
@@ -64,8 +58,8 @@ DQL;
                 'field_name'  => 'version',
                 'filter_type' => FilterInterface::TYPE_NUMBER,
                 'required'    => false,
-                'sortable'    => true,
-                'filterable'  => true,
+                'sortable'    => false,
+                'filterable'  => false,
                 'show_filter' => false,
             )
         );
@@ -80,9 +74,9 @@ DQL;
                 'field_name'  => 'data',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
+                'sortable'    => false,
+                'filterable'  => false,
+                'show_filter' => false,
             )
         );
         $templateDataProperty = new TwigTemplateProperty(
@@ -102,9 +96,9 @@ DQL;
                 'expression'  => $this->authorExpression,
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
+                'sortable'    => false,
+                'filterable'  => false,
+                'show_filter' => false,
             )
         );
         $fieldAuthor->setFieldName('author');
@@ -119,12 +113,24 @@ DQL;
                 'field_name'  => 'loggedAt',
                 'filter_type' => FilterInterface::TYPE_DATETIME,
                 'required'    => false,
-                'sortable'    => true,
-                'filterable'  => true,
+                'sortable'    => false,
+                'filterable'  => false,
                 'show_filter' => false,
             )
         );
         $fieldsCollection->add($fieldLogged);
+    }
+
+    protected function createQuery()
+    {
+        $query = parent::createQuery();
+
+        $query->leftJoin('a.user', 'u');
+        $query->addSelect('a', true);
+        $query->addSelect('u', true);
+        $query->addSelect($this->authorExpression . ' AS author', true);
+
+        return $query;
     }
 }
 
