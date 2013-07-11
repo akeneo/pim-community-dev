@@ -26,13 +26,19 @@ class ProductValueType extends FlexibleValueType
     /**
      * {@inheritdoc}
      */
-    public function __construct(FlexibleManager $flexibleManager, EventSubscriberInterface $subscriber, ProductFormView $productFormView)
-    {
+    public function __construct(
+        FlexibleManager $flexibleManager,
+        EventSubscriberInterface $subscriber,
+        ProductFormView $productFormView
+    ) {
         parent::__construct($flexibleManager, $subscriber);
 
         $this->productFormView = $productFormView;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         if ($form->getData() instanceof ProductValue) {
