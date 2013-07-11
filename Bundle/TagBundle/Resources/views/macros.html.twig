@@ -39,6 +39,8 @@
     </div>
 
     {{ form_row(form.tags)  }}
+    <input type="hidden" id="{{ form.tags.get('id') }}_owner" name="{{ form.get('name') }}[{{ form.tags.get('name') }}][owner]"  value="">
+    <input type="hidden" id="{{ form.tags.get('id') }}_all"   name="{{ form.get('name') }}[{{ form.tags.get('name') }}][all]"  value="">
 
     <script type="text/javascript">
         $(document).ready(function () {

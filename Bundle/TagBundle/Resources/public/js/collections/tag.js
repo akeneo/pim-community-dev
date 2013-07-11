@@ -20,5 +20,14 @@ Oro.Tags.TagCollection = Backbone.Collection.extend({
         });
 
         return new Oro.Tags.TagCollection(filtered);
+    },
+
+    toArray: function() {
+        var tagArray = [];
+        _.each(this.models, function(tag) {
+            tagArray.push(tag.attributes);
+        });
+
+        return tagArray;
     }
 });

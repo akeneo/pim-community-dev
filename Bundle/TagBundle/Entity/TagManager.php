@@ -165,22 +165,19 @@ class TagManager
     {
         $oldTags = $this->getTagging($resource);
         $newTags = $resource->getTags();
-        if (!($newTags instanceof ArrayCollection)) {
-            $newTags = new ArrayCollection($newTags);
-        }
-        $tagsToAdd = $newTags;
+
+        $newTagsArray = array_unique(array_merge($newTags['all'], $newTags['owner']));
+        $tagsToAdd = new ArrayCollection($newTagsArray);
 
         if ($oldTags !== null and is_array($oldTags) and !empty($oldTags)) {
             $tagsToRemove = array();
-
-
 
             foreach ($oldTags as $oldTag) {
                 $callback = function ($index, $newTag) use ($oldTag) {
                     return $newTag->getName() == $oldTag->getName();
                 };
 
-                if ($newTags->exists($callback)) {
+                if ($tagsToAdd->exists($callback)) {
                     $tagsToAdd->removeElement($oldTag);
                 } else {
                     $tagsToRemove[] = $oldTag->getId();

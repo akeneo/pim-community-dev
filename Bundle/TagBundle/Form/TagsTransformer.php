@@ -44,35 +44,41 @@ class TagsTransformer extends EntityToIdTransformer
      */
     public function reverseTransform($values)
     {
-        if (!is_array($values)) {
-            $values = explode(',', $values);
-        }
-
-        $newValues = array_filter(
-            $values,
-            function ($item) {
-                return !intval($item) && !empty($item);
-            }
+        $entities = array(
+            'all'   => array(),
+            'owner' => array()
         );
 
-        $values = array_filter(
-            $values,
-            function ($item) {
-                return intval($item);
+        foreach (array('all', 'owner') as $type) {
+            if (!is_array($values[$type])) {
+                $values[$type] = explode(',', $values[$type]);
             }
-        );
 
-        $entities = array();
-        if ($values) {
-            $entities = $this->loadEntitiesByIds($values);
-        }
+            $newValues[$type] = array_filter(
+                $values[$type],
+                function ($item) {
+                    return !intval($item) && !empty($item);
+                }
+            );
 
-        if ($newValues) {
-            $entities = array_merge($entities, $this->tagManager->loadOrCreateTags($newValues));
-        }
+            $values[$type] = array_filter(
+                $values[$type],
+                function ($item) {
+                    return intval($item);
+                }
+            );
 
-        if (count($entities) !== count($values) + count($newValues)) {
-            throw new TransformationFailedException('Could not find all entities for the given IDs');
+            if ($values[$type]) {
+                $entities[$type] = $this->loadEntitiesByIds($values[$type]);
+            }
+
+            if ($newValues[$type]) {
+                $entities[$type] = array_merge($entities[$type], $this->tagManager->loadOrCreateTags($newValues[$type]));
+            }
+
+            if (count($entities[$type]) !== count($values[$type]) + count($newValues[$type])) {
+                throw new TransformationFailedException('Could not find all entities for the given IDs');
+            }
         }
 
         return $entities;
